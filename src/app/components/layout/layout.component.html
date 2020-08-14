@@ -1,0 +1,70 @@
+<div class="container1">
+    <!-- @{{isAuthenticated | json}} -->
+    <div *ngIf="isAuthenticated; then authSection; else authLess;"></div>
+    <ng-template #authSection>
+        <ng-container *ngIf="isCompleteness == '1'">
+            <app-header></app-header> 
+            <div class="side-data-cont">
+                <app-sidebar></app-sidebar>
+            </div>
+            <div class="main-content-detail">
+                <div class="container-fluid">
+                    <div class="main-dashboard-cnt">
+                        <router-outlet></router-outlet>                    
+                    </div>
+                    <div class="foot-cont foot-dash">
+                        <app-footer></app-footer>
+                    </div>
+                </div>
+            </div>
+            <!-- INCLUDE AUTH SECTION -->
+            <!-- Page Wrapper -->
+            <!-- <div id="wrapper">
+                <app-sidebar></app-sidebar>
+                <div id="content-wrapper" class="d-flex flex-column">
+                    <div id="content">
+                        <app-header></app-header>
+                        <div class="container-fluid">
+                            <router-outlet></router-outlet>
+                        </div>
+                    </div>
+                <app-footer></app-footer>
+                </div>
+            </div> -->
+        </ng-container>
+        <ng-container *ngIf="isCompleteness == '0'">
+            <app-header></app-header> 
+            <app-profile-completation></app-profile-completation>
+        </ng-container>
+    </ng-template>
+
+    
+
+    <ng-template #authLess>
+        <!-- Enter.... -->
+        <div *ngIf="currentState === '/sign-in'; then logInSection;"></div>
+        <ng-template #logInSection>
+            <app-signin></app-signin>
+        </ng-template>
+        <div *ngIf="currentState === '/sign-up'; then signUpSection;"></div>
+        <ng-template #signUpSection>
+            <portal-sign-up></portal-sign-up>
+        </ng-template>
+        <div *ngIf="currentState =='verify-account' then verifyAccount;"></div>
+        <ng-template #verifyAccount>
+            <app-verify-account [verifyId]="verifyId"></app-verify-account>
+        </ng-template>
+        <div *ngIf="currentState === '/forgot-password'; then forgotPassword;"></div>
+        <ng-template #forgotPassword>
+            <app-forgot-password></app-forgot-password>
+        </ng-template>
+        <div *ngIf="currentState =='reset-password'; then resetPassword;"></div>
+        <ng-template #resetPassword>
+            <app-reset-password  [resetId]="pageId" ></app-reset-password>
+        </ng-template>
+        <!-- <div *ngIf="currentState =='/profile-completation'; then profileCompletation;"></div>
+        <ng-template #profileCompletation>
+            <app-profile-completation></app-profile-completation>
+        </ng-template> -->
+    </ng-template> 
+</div>

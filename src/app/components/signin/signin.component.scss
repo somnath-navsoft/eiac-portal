@@ -1,0 +1,21 @@
+/*-------------------------
+*   Setting - Change Password
+*   Modified: @Navsoft
+--------------------------*/
+.panel.panel-info-password {background:#FFF; box-shadow: 0 2px 12px rgba(0,0,0,0.2); border-radius: 6px;}
+.panel.panel-info-password .panel-heading {padding: 16px; box-shadow: 0 1px 1px rgba(0,0,0,0.2);}
+.panel.panel-info-password .panel-body {padding:12px;}
+.logopanel {display: block; margin:0 auto 20px; text-align: center;}
+.panel.panel-info-password .panel-body .form-group {max-width:460px; position: relative;;}
+.change-password .form-control {border: 1px solid rgba(0,0,0,0.2); padding: 12px; border-radius: 4px; height: auto; width: 95%; }
+.change-password .valid-error{border: 1px solid #FF0000;}
+.passwordsuggestion {list-style-type: none; display: flex; padding-top:10px;}
+.passwordsuggestion li {padding-right: 10px;}
+.passwordsuggestion li div {border:1px solid #797979; background: #FFF; color: #797979; font-size: 11px; border-radius: 2px;  width: 26px; text-align: center; line-height: 26px;}
+.passwordsuggestion li.greensuggest div {background: rgb(38, 209, 89); color: #FFF; border:0px;}
+.passwordsuggestion li.redsuggest div {background: rgb(180, 25, 50); color: #FFF;  border:0px;}
+.panel-footer {padding:0px 16px 16px}
+.panel-footer .submit-button {background: #db2e94; line-height: 30px; padding: 8px 20px; font-weight: 700; min-width: 150px;}
+.checkbutton {position: absolute; top: 3px; right: 0px; color: #b5b5b5; font-size: 21px;}
+.checkbutton.checkactive {color:  rgb(38, 209, 89);}
+input::placeholder { color: #000; opacity: 0.7; }

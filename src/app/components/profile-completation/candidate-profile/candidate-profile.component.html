@@ -1,0 +1,171 @@
+<section>
+    <div class="form-wrapper-pro">
+        <div class="container-fluid">
+            <form #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)" autocomplete="off">
+                <div class="form-hdr profile-hdr">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-main complete-usr">
+                                <h1>COMPLETE YOUR PROFILE</h1>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="progress-br">
+                                <mat-progress-bar mode="determinate" value="45"></mat-progress-bar>
+                                <span>45%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-bdy">
+                    <div class="row m-0">
+                        <div class="wrapper">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12 p-0">
+                                        <div class="form-subhdr">
+                                            <h5>PERSONAL DETAILS</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Title</mat-label>
+                                            <input matInput [(ngModel)]="candidateProfile.title" name="title" (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="" required>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>First Name</mat-label>
+                                            <input matInput [(ngModel)]="candidateProfile.first_name" (keypress)="Service.inputFilter($event, Service.regExName)" name="first_name" placeholder="" required>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Last Name</mat-label>
+                                            <input matInput [(ngModel)]="candidateProfile.last_name" name="last_name" placeholder="" required>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Date of Birth</mat-label>
+                                            <input matInput readonly="true" (click)="Service._openCalendar(date_of_birth)" [(ngModel)]="candidateProfile.date_of_birth" [matDatepicker]="date_of_birth" name="date_of_birth" [matDatepicker]="" placeholder="" required>
+                                            <mat-datepicker-toggle matSuffix [for]="date_of_birth"></mat-datepicker-toggle>
+                                            <mat-datepicker #date_of_birth  disabled="false" ></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Personal E-mail</mat-label>
+                                            <input matInput [(ngModel)]="candidateProfile.personal_email" name="personal_email" placeholder="" required>
+                                        </mat-form-field>
+
+                                        <p class="error" *ngIf="candidateProfile.personal_email && !Service.checkInput('email',candidateProfile.personal_email)">Please Enter Correct Email Id</p>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Company E-Mail</mat-label>
+                                            <input matInput [(ngModel)]="candidateProfile.company_email" name="company_email" placeholder="" required>
+                                        </mat-form-field>
+
+                                        <p class="error" *ngIf="candidateProfile.company_email && !Service.checkInput('email',candidateProfile.company_email)">Please Enter Correct Email Id</p>
+                                    </div>
+                                    <!-- <div class="col-md-4"> 
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Mailing Address</mat-label>
+                                            <input matInput [(ngModel)]="candidateProfile.mailing_address" name="mailing_address" placeholder="" required>
+                                        </mat-form-field>
+                                    </div> -->
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Designation</mat-label>
+                                            <input matInput [(ngModel)]="candidateProfile.designation" name="designation" placeholder="" required>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Nationality</mat-label>
+                                            <input matInput [(ngModel)]="candidateProfile.nationality" name="nationality" placeholder="" required>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Phone (with Area Code)</mat-label>
+                                            <input matInput [(ngModel)]="candidateProfile.phone_with_area" name="phone_with_area" placeholder="" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" required>
+                                        </mat-form-field>
+                                        <p class="error" *ngIf="candidateProfile.phone_with_area && !Service.checkInput('onlyNumberWithPlus',candidateProfile.phone_with_area)">Please Enter Only Number</p> 
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Fax (with Area Code)</mat-label>
+                                            <input matInput [(ngModel)]="candidateProfile.fax_with_area" name="fax_with_area" placeholder="" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" required>
+                                        </mat-form-field>
+                                        <p class="error" *ngIf="candidateProfile.fax_with_area && !Service.checkInput('onlyNumberWithPlus',candidateProfile.fax_with_area)">Please Enter Only Number</p>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Office/Institution</mat-label>
+                                            <input matInput [(ngModel)]="candidateProfile.office_institution" name="office_institution" placeholder="" required>
+                                        </mat-form-field>
+                                    </div>
+                                   
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>P.O. Box Mailing Address</mat-label>
+                                            <input matInput [(ngModel)]="candidateProfile.pobox_mailing_address" name="office_email" placeholder="" required>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Office Address</mat-label>
+                                            <input matInput [(ngModel)]="candidateProfile.office_address" name="office_address" placeholder="" required>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Office Phone (with Area Code)</mat-label>
+                                            <input matInput [(ngModel)]="candidateProfile.officephone_with_area" name="officephone_with_area" placeholder="" required>
+                                        </mat-form-field>
+                                        <p class="error" *ngIf="candidateProfile.officephone_with_area && !Service.checkInput('onlyNumberWithPlus',candidateProfile.officephone_with_area)">Please Enter Only Number</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="bttns-health bttn-staff">
+                            <button class="cancel-bttn">CANCEL</button> 
+                            <button class="submit-bttn submit-health">CONTINUE</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+

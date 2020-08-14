@@ -1,0 +1,267 @@
+<!-- <p>trainer-service-list works!</p> -->
+
+<div class="main-detail">
+    <div class="container-fluid">
+        <div class="main-dashboard">
+            <flash-messages></flash-messages>
+            <div class="row m-3">
+                <div class="col-md-8">
+                    
+                    <div class="dashbrd-hdr">
+                        <h3>Training Service</h3>
+                    </div>
+                </div>
+                <div class="col-md-4"> 
+                    <div class="tbl-filter-data">
+                        <ul>
+                            <li>
+                                <div class="filter">
+                                    <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a>
+                                    <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="add-data">
+                                    <a href="javascript:void(0)" 
+                                    routerLink="/dashboard/cab_client/training-apply">Apply Now</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <ng-container *ngIf="advSearch" class="tbl-filter-data">
+                <div class="filter-dash">
+                    <div class="close-bttn">
+                        <span class="icon-close" (click)="filterSearchSec()"></span>
+                    </div>
+                <div class="row m-0" >
+                    <div class="col-md-4">
+                        <div class="user-details">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Search by Course ID</mat-label> 
+                            <input type="text" matInput [(ngModel)]="selectCode" placeholder="Search by CODE" class="form-control">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="user-details">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Search by Fees</mat-label> 
+                            <input matInput type="number" [(ngModel)]="selectFees" placeholder="Search by Fees" class="form-control">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="user-details">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Select Course Type</mat-label>                             
+                                <mat-select placeholder="Select" 
+                                  [ngModelOptions]="{standalone: true}" [(ngModel)]="selectCustomCourse" required>
+                                      <mat-option *ngFor="let item of selectCustomCourses;" [value]="item.value">{{item.title}}</mat-option>
+                                  </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-0">
+                    <div class="col-md-4">
+                        <div class="user-details">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Select Agreement Status</mat-label>                             
+                                <mat-select placeholder="Select Status" 
+                                  [ngModelOptions]="{standalone: true}" [(ngModel)]="selectAgreementStatus" required>
+                                      <mat-option *ngFor="let item of agreementStatus;" [value]="item.value">{{item.title}}</mat-option>
+                                  </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="user-details">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Select Payment Status</mat-label>                             
+                                <mat-select placeholder="Select Status" 
+                                  [ngModelOptions]="{standalone: true}" [(ngModel)]="selectPaymentStatus" required>
+                                      <mat-option *ngFor="let item of paymentStatus;" [value]="item.value">{{item.title}}</mat-option>
+                                  </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-0">
+                    <div class="col-md-12"> 
+                        <div class="filter-search">
+                            <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
+                            <a href="javascript:void(0)" (click)="filterSearchReset()">RESET</a>
+                        </div>         
+                    </div>
+                </div>
+            </div>
+            </ng-container>            
+        <!-- </div> -->
+        <div class="table-dashboard-cont">
+            <div class="row m-0">
+                <div class="col-md-12 p-0">
+                    <!-- @{{trainerdata | json}} -->
+                    <table>
+                        <tr>
+                            <th>Course Type&nbsp;
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'training_course_type', curSortDir.training_course_type)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.training_course_type"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.training_course_type"></span>
+                                </a>
+                            </th>
+                            <th>Course ID&nbsp;
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'course_code', curSortDir.course_code)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.course_code"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.course_code"></span>
+                                </a>
+                            </th>
+                            <th>Agreement
+                                &nbsp;
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'agreement_status', curSortDir.agreement_status)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.agreement_status"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.agreement_status"></span>
+                                </a>
+                            </th>
+                            <th>Payment Status&nbsp;
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'payment_status', curSortDir.payment_status)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.payment_status"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.payment_status"></span>
+                                </a>
+                            </th>
+                            <th>Action</th>
+                        </tr>
+                        <!-- trainerdata.records != undefined && -->
+                    <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
+                        <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }">
+                            <td>
+                                <!-- {{item.training_course_type}} -->
+                                <span [innerHTML]="(item.training_course_type === 'custom_course') ? 'Custom Course' : 'Public Course'"></span>
+                            </td>
+                            <td class="fnt-clr">{{item.course_code}}</td>
+                            <td>
+                                <span *ngIf="item.agreement_status === 'pending'">Pending</span>
+                            </td>
+                            <td>
+                                <span *ngIf="item.payment_status === 'voucher_sent'">Voucher Received</span>
+                                <span *ngIf="item.payment_status === 'pending'">Pending</span>
+                            </td>                            
+                            <td class="action fnt-clr">
+                                <!-- href="javascript:void(0)" -->
+                                <ng-container *ngIf="item.training_course_type === 'custom_course'" class="action fnt-clr">
+                                    <a href="javascript:void(0)" (click)="openView(courseView, item.id)" title="View" alt="View"><span class="icon-document"></span></a>
+                                    <a routerLink="/dashboard/cab_client/training-apply/{{item.id}}" title="Edit" alt="Edit"><span class="icon-edit"></span></a>
+                                    <a href="javascript:void(0)" (click)="openDelete(item.id)" title="Delete" alt="Delete"><span class="icon-bin"></span></a>
+                                </ng-container>
+                                <ng-container *ngIf="item.training_course_type === 'public_course'"  class="action fnt-clr">
+                                    <a href="javascript:void(0)"  (click)="openView(courseView, item.id)" title="View" alt="View"><span class="icon-document"></span></a>
+                                    <a href="javascript:void(0)" title="Download" alt="Download"><span class="icon-download-diff"></span></a>
+                                </ng-container>
+                                
+                            </td>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="dataLoad && trainerdata.length == 0">
+                        <tr>
+                            <td colspan="5">
+                                No Records
+                            </td>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="!dataLoad">
+                        <tr>
+                            <td colspan="5" align="center">
+                                Loading...
+                            </td>
+                        </tr>
+                    </ng-container>
+                    </table>
+                    <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
+                        <pagination-controls (pageChange)="pageCurrentNumber = $event"></pagination-controls>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        <!-- Modal DELETE -->
+        <custom-modal *ngIf="deleteConfirm" (onDeleteAction)="deleteCourse(selectDeleteID)" [parent]="this" [modalType]="'delete'"></custom-modal>
+        <!-- <ng-template #courseDelete let-modal>
+            <div class="modal-header">
+              <h4 class="modal-title" id="modal-basic-title">Delete Confirmation</h4>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body"> 
+                <p>Are you sure?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">CANCEL</button>  
+              <button type="button" class="btn btn-outline-dark" (click)="deleteCourse(selectDeleteID)">OK</button>
+            </div>
+          </ng-template> -->
+        <!--  -->
+        <!-- Modal VIEW -->
+        <ng-template #courseView let-modal>
+            <div class="modal-header">
+              <h4 class="modal-title" id="modal-basic-title">COURSE VIEW</h4>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body"> 
+                <ng-container *ngIf="selectCourseData != undefined">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Course Code</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <span [innerHTML]="selectCourseData.course_code"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Agreement Status</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <span [innerHTML]="selectCourseData.agreement_status | titlecase"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Payment Status</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <span [innerHTML]="selectCourseData.payment_status | titlecase"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Course Type</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <span [innerHTML]="(selectCourseData.training_course_type === 'custom_course') ? 'Custom Course' : 'Public Course'"></span>
+                    </div>
+                </div>
+                <div class="row" *ngIf="selectCourseData.customCourseListDetails != undefined && selectCourseData.customCourseListDetails.length > 0">
+                    <div class="col-md-6">
+                        <h5>Course Information</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <ng-container *ngIf="selectCourseData.customCourseListDetails != undefined && selectCourseData.customCourseListDetails.length > 0">
+                            <ng-container *ngFor="let item of selectCourseData.customCourseListDetails; let row = index">
+                                {{row + 1}}.&nbsp;{{item.name}}<br/>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                </div>
+                </ng-container>
+            </div>
+            <div class="modal-footer">
+              <!-- <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">CANCEL</button> -->
+            </div>
+          </ng-template>
+          <!-- Modal -->
+        </div>
+    </div>
+</div>

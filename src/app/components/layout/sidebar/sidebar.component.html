@@ -1,0 +1,60 @@
+<div class="side-menu-al">
+    <div class="dashboard-cnts">
+        <div class="dash-content">
+            <span class="icon-dashboard"></span>
+            <span class="side-content"><a routerLink="dashboard/{{userType}}">DASHBOARD</a></span>
+        </div>
+    </div>
+    <div class="dash-data">
+        <div class="dashboard-cnts" >
+            <div class="dash-content">
+                <span class="icon-service"></span>
+                <span class="side-content">
+                    <a routerLink="dashboard/{{userType}}">
+                    MY SERVICE :: User - {{(userType == 'cab_client') ? 'Cab Client' : userType | titlecase}}</a>
+                </span>
+            </div>
+            <div class="serv-data">
+                <ul>
+                    <!-- [href]="(item.link == '#') ? 'javascript:void(0)' : item.link" -->
+                    <!-- (item.link == '#') ? 'javascript:void(0)' : item.link -->
+                    <!-- [routerLink]="(data.link == '#') ? 'javascript:void(0)' : data.link" -->
+                    <ng-container *ngFor="let item of dashMenu.menu">
+                        <li (click)="accDropDown(item.heading)">
+                            <a href="javascript:void(0)" (click)="goToLink(item.link)"
+                            *ngIf="item.heading">{{item.heading}}</a>
+                        </li>   
+                        <ng-container *ngIf="item.submenu.length > 0">
+                            <div class="sub-side-cont"  *ngIf="item.sub">
+                                <ul>
+                                    <li *ngFor="let data of item.submenu">
+                                        <a href="javascript:void(0)" (click)="goToLink(data.link)" *ngIf="data.title">{{data.title}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </ng-container>                        
+                    </ng-container>
+                    
+                    <!-- <li (click)="accDropDown()"><a href="javascript:void(0)">ACCREDITATION SERVICE</a></li>
+                    <div class="sub-side-cont" *ngIf="accData">
+                            <ul>
+                                <li><a routerLink="/dashboard/application">Application</a></li>
+                                <li><a routerLink="/dashboard/quotation">Quotation</a></li>
+                                <li><a routerLink="/dashboard/agreement">Agreement</a></li>
+                                <li><a routerLink="/dashboard/assessment-plan">Assessment Plan</a></li>
+                                <li><a routerLink="/dashboard/support-ticket-request">Support Ticket Request</a></li>
+                                <li><a routerLink="/dashboard/record-update">Record Update</a></li>
+                                <li><a routerLink="/dashboard/current-certifications">Current Certifications</a></li>
+                                <li><a routerLink="/dashboard/cab-repository">CAB Repository</a></li>
+                                <li><a routerLink="/dashboard/case-management">Case Management</a></li>
+                                <li><a routerLink="/dashboard/billing-accounts">Billing & Accounts</a></li>
+                            </ul>
+                        </div>
+                    <li><a href="javascript:void(0)">PROFICIENCY TESTING SERVEICE</a></li>
+                    <li><a href="javascript:void(0)">TRAINING SERVICE</a></li>
+                    <li><a routerLink= "/dashboard/registration-service">REGISTRATION SERVICE</a></li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

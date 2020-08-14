@@ -1,0 +1,21 @@
+<!-- Delete Dialog -->
+<ng-container *ngIf="modalType === 'delete'">
+    <span id="openDialog" (click)="openDialog(deleteDialog)"></span>
+    <ng-template #deleteDialog >
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{_constant.deleteConfirmDialogHeader}}</h4>
+        <button type="button" class="close"  id="closeDialog" aria-label="Close" (click)="closeAction()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body"> 
+          <p>{{_constant.deleteConfirmText}}</p> 
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="cancelDialog" class="btn btn-outline-dark" (click)="closeAction()">{{_constant.dialogCancelButtonText}}</button>  
+        <button type="button" class="btn btn-outline-dark" (click)="deleteAction()">{{_constant.dialogOKButtonText}}</button>
+      </div>
+    </ng-template>
+</ng-container>
+
+<!-- View Record Dialog -->

@@ -1,0 +1,163 @@
+<!-- <p>trainer-service-list works!</p> -->
+
+<div class="main-detail">
+    <div class="container-fluid">
+        <div class="main-dashboard">
+            <div class="row">
+                <div class="col-md-8">
+                    <flash-messages></flash-messages>
+                    <div class="dashbrd-hdr">
+                        <h3>Agenda</h3>
+                    </div>
+                </div>
+                <div class="col-md-4"> 
+                    
+                    <div class="tbl-filter-data">
+                        <ul>
+                            <li>
+                                <div class="filter">
+                                    <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a>
+                                    <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <ng-container *ngIf="advSearch" class="tbl-filter-data">
+
+                <div class="filter-dash">
+                    <div class="close-bttn">
+                        <span class="icon-close" (click)="filterSearchSec()"></span>
+                    </div>
+                    <div class="row m-0">
+                        <div class="col-md-4">
+                            <div class="usr-details">
+                                <mat-form-field class="cab-data">
+                                <mat-label>Course Title</mat-label> 
+                                <input type="text" matInput [(ngModel)]="selectCourse" placeholder="Search by Course">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="usr-details">
+                                <mat-form-field class="cab-data">
+                                <mat-label>Start Date </mat-label> 
+                                <input matInput [matDatepicker]="pickerStart" 
+                                [(ngModel)]="selectStartDate">
+                                <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                                <mat-datepicker #pickerStart></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="usr-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>End Date</mat-label>                             
+                                    <input matInput [matDatepicker]="pickerEnd"
+                                    [(ngModel)]="selectEndDate">
+                                    <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickerEnd></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"> 
+                        <div class="filter-search">
+                            <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
+                            <a href="javascript:void(0)" (click)="filterSearchReset()">RESET</a>
+                        </div>         
+                    </div>
+                </div>
+            </ng-container>        
+        <div class="table-dashboard-cont">
+            <div class="row m-0">
+                <div class="col-md-12 p-0">
+                    <!-- @{{trainerdata | json}} -->
+                    <table>
+                        <tr>
+                            <th>Event Title&nbsp;
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'course', curSortDir.course)">
+                                <span class="icon-arrow-down" *ngIf="!curSortDir.course"></span>
+                                <span class="icon-arrow-up" *ngIf="curSortDir.course"></span>
+                                </a>
+                            </th>
+                            <th>Date
+                                <!-- <a href="javascript:void(0)">
+                                <span class="icon-arrow-down"></span>
+                                </a> -->
+                            </th>
+                            <th>No. Of Participants
+                                &nbsp;
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'participants', curSortDir.participants)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.participants"></span>
+                                    <span class="icon-arrow-up" *ngIf="curSortDir.participants"></span>
+    
+                                </a>
+                            </th>
+                            <!-- <th>Action</th> -->
+                        </tr>
+                        <!-- trainerdata.records != undefined && -->
+                    <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
+                        <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }">
+                            <td> 
+                                <span [innerHTML]="item.course != undefined ? item.course.name : (item.courseDetails != undefined) ? item.courseDetails : ''"></span>
+                            </td>
+                            <td class="fnt-clr">
+                                <!-- {{item.eventDates | json}} -->
+                                <ng-container *ngIf="item.eventDates.length > 0">
+                                    <ng-container *ngFor="let data of item.eventDates">
+                                        <span [innerHTML]="data.event_date | date: 'dd/MM/yyyy'"></span><br/>
+                                    </ng-container>
+                                </ng-container>
+                            </td>
+                            <td>
+                                <span [innerHTML]="item.participants"></span>
+                            </td>
+                                                       
+                            <!-- <td class="action fnt-clr">
+                                <ng-container *ngIf="item.training_course_type === 'custom_course'" class="action fnt-clr">
+                                    <a href="javascript:void(0)" (click)="openView(courseView, item.id)"><span class="icon-edit">View</span></a>
+                                    <a routerLink="/dashboard/cab_client/training-apply/{{item.id}}"><span class="icon-edit">Edit</span></a>
+                                    <a href="javascript:void(0)" (click)="openDelete(courseDelete, item.id)"><span class="icon-delete"></span></a>
+                                </ng-container>
+                                <ng-container *ngIf="item.training_course_type === 'public_course'"  class="action fnt-clr">
+                                    <a href="javascript:void(0)"  (click)="openView(courseView, item.id)"><span class="icon-edit">View</span></a>
+                                    <a href="javascript:void(0)">Download</a>
+                                </ng-container>
+                                
+                            </td> -->
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="dataLoad && trainerdata.length == 0">
+                        <tr>
+                            <td colspan="5">
+                                No Records
+                            </td>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="!dataLoad">
+                        <tr>
+                            <td colspan="5" align="center">
+                                Loading...
+                            </td>
+                        </tr>
+                    </ng-container>
+                    </table>
+                    <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
+                        <pagination-controls (pageChange)="pageCurrentNumber = $event"></pagination-controls>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        <!-- Modal DELETE -->
+        
+        <!--  -->
+        <!-- Modal VIEW -->
+        
+          <!-- Modal -->
+        </div>
+    </div>
+</div>
