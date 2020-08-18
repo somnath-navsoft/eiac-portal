@@ -182,6 +182,7 @@ export class ClientCabProfileComponent implements OnInit {
             console.log(res,'res')
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
+              this.Service.headerStepMove('application_information',this.headerSteps,'personal_details')
               // this.router.navigateByUrl('/sign-in');
             }else{
               
