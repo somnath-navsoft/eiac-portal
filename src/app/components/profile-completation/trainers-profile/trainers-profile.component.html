@@ -61,13 +61,6 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <mat-form-field class="cab-data">
-                                                    <mat-label>Title</mat-label>
-                                                    <input matInput [(ngModel)]="step1Data.title" name="title" (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="" required>
-                                                </mat-form-field>
-                                            </div>
-    
-                                            <div class="col-md-4">
-                                                <mat-form-field class="cab-data">
                                                     <mat-label>First Name</mat-label>
                                                     <input matInput [(ngModel)]="step1Data.first_name" (keypress)="Service.inputFilter($event, Service.regExName)" name="first_name" placeholder="" required>
                                                 </mat-form-field>
@@ -78,6 +71,15 @@
                                                     <mat-label>Last Name</mat-label>
                                                     <input matInput [(ngModel)]="step1Data.last_name" name="last_name" placeholder="" required>
                                                 </mat-form-field>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Office E-Mail</mat-label>
+                                                    <input matInput [(ngModel)]="step1Data.office_email" name="office_email" placeholder="" required>
+                                                </mat-form-field>
+    
+                                                <p class="error" *ngIf="step1Data.office_email && !Service.checkInput('email',step1Data.office_email)">Please Enter Correct Email Id</p>
                                             </div>
                                         </div>
     
@@ -149,15 +151,6 @@
                                         </div>
     
                                         <div class="row">
-                                            <div class="col-md-4">
-                                                <mat-form-field class="cab-data">
-                                                    <mat-label>Office E-Mail</mat-label>
-                                                    <input matInput [(ngModel)]="step1Data.office_email" name="office_email" placeholder="" required>
-                                                </mat-form-field>
-    
-                                                <p class="error" *ngIf="step1Data.office_email && !Service.checkInput('email',step1Data.office_email)">Please Enter Correct Email Id</p>
-                                            </div>
-    
                                             <div class="col-md-4">
                                                 <mat-form-field class="cab-data">
                                                     <mat-label>Office Phone (with Area Code)</mat-label>

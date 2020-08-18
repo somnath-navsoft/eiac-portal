@@ -28,6 +28,7 @@ export class TrainersProfileComponent implements OnInit {
   headerSteps:any[] = [];
   userEmail:any;
   userType:any;
+  progressValue:any;
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -48,6 +49,44 @@ export class TrainersProfileComponent implements OnInit {
         title:'applicant_trainer', desc:'3. Applicant <br> Trainer', activeStep:false, stepComp:false, active:'', nextStep:null
       }
     );
+
+    this.loadStep1Data();
+  }
+
+  loadStep1Data(){
+    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail)
+    .subscribe(
+      res => {
+        if(res['status'] == true) {
+          // console.log(res,'res');
+          this.step1Data.first_name = res['data']['user_data'][0].first_name;
+          this.step1Data.last_name = res['data']['user_data'][0].last_name;
+          this.step1Data.personal_email = res['data']['user_data'][0].email;
+
+          if(res['data'].step1) {
+            this.progressValue = 40;
+          }else if(res['data'].step1 && res['data'].step2) {
+            this.progressValue = 40;
+          }else if(res['data'].step1 && res['data'].step2 && res['data'].step2) {
+            this.progressValue = 100;
+          }
+
+          if(res['data'].step1 != '') {
+            var step1 = res['data'].step1[0];
+
+            this.step1Data.office_email = step1.office_email;
+            this.step1Data.date_of_birth = new Date(step1.dob);
+            this.step1Data.mailing_address = step1.mailing_address;
+            this.step1Data.phone_with_area = step1.phone;
+            this.step1Data.fax_with_area = step1.fax_no;
+            this.step1Data.office_institution = step1.office;
+            this.step1Data.designation = step1.designation;
+            this.step1Data.office_address = step1.office_address;
+            this.step1Data.officephone_with_area = step1.office_tel_no;
+            this.step1Data.officefax_with_area = step1.office_fax_no;
+          }
+        }
+      });
   }
 
   validateFile(fileEvent: any,doc_name:any) {

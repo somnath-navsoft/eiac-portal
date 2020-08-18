@@ -59,6 +59,7 @@ export class AuthEffects {
   ofType(AuthActionTypes.LOGIN_SUCCESS),
   tap((user) => {
     var authUserData = this._appServ.decodeJWT(user.payload.token);
+    console.log(">>>Effects LAnd URL:",authUserData );
     if(authUserData.isVerified == '0')
     {
       // sessionStorage.setItem('token', user.payload.token);
@@ -72,11 +73,13 @@ export class AuthEffects {
     }else if(authUserData.isCompleteness == '0')
     {
       sessionStorage.setItem('token', user.payload.token);
+      sessionStorage.setItem('email', authUserData.email);
       this._appServ.getUserType();
       sessionStorage.setItem('type', this._constants.logType);
       this.router.navigateByUrl('/profile-completation');
     }else{
       sessionStorage.setItem('token', user.payload.token);
+      sessionStorage.setItem('email', authUserData.email);
       this._appServ.getUserType();
       sessionStorage.setItem('type', this._constants.logType);
       //this._appServ.updateStoreAuthenticated();
