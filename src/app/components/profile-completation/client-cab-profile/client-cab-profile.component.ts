@@ -30,6 +30,10 @@ export class ClientCabProfileComponent implements OnInit {
   step1DataBodyFormFile:any = new FormData();
   step2DataBodyFormFile:any = new FormData();
   file_validation:boolean = true;
+  progressValue:any;
+  headerSteps:any[] = [];
+  fileType:File;
+  fileAny:any;
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -44,6 +48,14 @@ export class ClientCabProfileComponent implements OnInit {
     // this.clientCabForm.nameOftheOwner = this.nameOftheOwner;
     // this.clientCabForm.companyBodMembers = this.companyBodMembers
     // this.companyBodMembers ? this.clientCabForm.step2 = this.companyBodMembers : '';
+    this.headerSteps.push(
+      {
+      title:'personal_details', desc:'1. Personal <br> Details', activeStep:true, stepComp:true, active:'user-done', nextStep:'application_information'
+      },
+      {
+      title:'application_information', desc:'2. Application <br> Information', activeStep:false, stepComp:false, active:'', nextStep:null
+      }
+    );
     this.loadCountryStateCity();
     this.loadStep1Data();
     // console.log(this.constant.API_ENDPOINT.profileService,'hyyhhh')
@@ -53,17 +65,47 @@ export class ClientCabProfileComponent implements OnInit {
     this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail)
     .subscribe(
       res => {
+        // console.log(res['data'],'data');
         if(res['status'] == true) {
-          // console.log(res['data'].step1[0],'data');
+          
           this.step1Data.first_name = res['data']['user_data'][0].first_name;
           this.step1Data.last_name = res['data']['user_data'][0].last_name;
           this.step1Data.personal_email = res['data']['user_data'][0].email;
-          var step1 = res['data'].step1[0];
+
+          if(res['data'].step1) {
+            this.progressValue = 50;
+          }else if(res['data'].step1 && res['data'].step2) {
+            this.progressValue = 100;
+          }
+          
           if(res['data'].step1 != '') {
-            
+            var step1 = res['data'].step1[0];
+
+            var stateList =  this.Service.getState();
+            var cityList =  this.Service.getCity();
+
+            stateList.subscribe( result => {
+              for(let key in result['states']) {
+                if(result['states'][key]['name'] == step1.state )
+                {
+                  this.allStateList.push(result['states'][key]);
+                }
+              }
+            });
+
+            cityList.subscribe( result => {
+              for(let key in result['cities']) {
+                if(result['cities'][key]['name'] == step1.city )
+                {
+                  this.allCityList.push(result['cities'][key]);
+                }
+              }
+            });
+
             this.step1Data.title = step1.cab_name;
             this.step1Data.date_of_birth = new Date(step1.dob);
-            this.step1Data.trade_license = step1.trade_license;
+            // this.fileType = this.constant.mediaPath+step1.trade_license;
+            // this.step1Data.trade_license = this.constant.mediaPath+step1.trade_license;
             this.step1Data.phone_with_area = step1.tel_no;
             this.step1Data.fax_with_area = step1.fax_no;
             this.step1Data.office_email = step1.official_email;
@@ -79,10 +121,36 @@ export class ClientCabProfileComponent implements OnInit {
             this.step1Data.officephone_with_area = step1.office_tel_no;
             this.step1Data.officefax_with_area = step1.office_fax_no;
             this.step1Data.trade_license_number = step1.trade_license_number;
+            this.step1Data.official_website = step1.official_website;
             this.step1Data.date_issue = new Date(step1.date_of_issue);
             this.step1Data.date_expire = new Date(step1.date_of_expiry);
-            this.step1Data.date_establishment = new Date(step1.date_of_establisment);
+            this.step1Data.date_of_establisment = new Date(step1.date_of_establisment);
             // this.step1Data.title = step1.is_certification_main_activity;
+          }
+          if(res['data'].step2 != '') {
+            var step2 = res['data'].step2; 
+
+            this.nameOftheOwner = step2.cabOwnerData;
+            this.companyBodMembers = step2.cabBodData;
+            this.step2Data.contact_person_name = step2.cabContactData[0].name;
+            this.step2Data.contact_person_designation = step2.cabContactData[0].designation;
+            this.step2Data.contact_person_email = step2.cabContactData[0].email;
+            this.step2Data.contact_person_mobile = step2.cabContactData[0].mobile_no;
+            this.step2Data.contact_person_phone = step2.cabContactData[0].phone_no;
+            this.step2Data.authorised_contact = step2.cabContactData[0].contacts == true ? 1 : 0 ;
+            this.step2Data.is_bod = step2.cabBodData != '' ? '1' : '0' ;
+            this.is_bod = step2.cabBodData != '' ? '1' : '0' ;
+
+            // this.step2Data.date_of_establishment = step2.date_of_establishment;
+            // this.step2Data.legal_license = res['data'].step1[0].trade_license_number;
+            // this.step2Data.certification_main_activity = step2.certification_main_activity;
+            // this.step2Data.main_activity_describe = res['data'].step1[0].other_description;
+            // this.step2Data.is_bod = step2.is_bod;
+            // this.step2Data.companyBodMembers = step2.companyBodMembers;
+            this.step2Data.date_of_establishment = new Date(res['data'].step1[0].date_of_establisment);
+            this.step2Data.legal_license = res['data'].step1[0].trade_license_number;
+            this.step2Data.main_activity_describe = res['data'].step1[0].other_description;
+            this.step2Data.certification_main_activity = res['data'].step1[0].is_certification_main_activity == true ? 1 : 0;
           }
         }
       });
@@ -106,7 +174,7 @@ export class ClientCabProfileComponent implements OnInit {
       // this.step1Data.officephone_with_area = '7867667768876876';
       // this.step1Data.officefax_with_area = '7867667768876876';
       this.clientCabForm.step1 = this.step1Data;
-      // console.log(this.clientCabForm);
+      // console.log(JSON.stringify(this.clientCabForm),'stringify');
       this.step1DataBodyFormFile.append('data',JSON.stringify(this.clientCabForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step1DataBodyFormFile)
         .subscribe(
@@ -132,7 +200,7 @@ export class ClientCabProfileComponent implements OnInit {
     var ex_type = ['pdf','png'];
     var ex_check = this.Service.isInArray(file_exe,ex_type);
     if(ex_check){
-      this.step1DataBodyFormFile.append('qualification_degree',fileEvent.target.files[0]);
+      this.step1DataBodyFormFile.append('trade_license',fileEvent.target.files[0]);
       this.file_validation = true;
       return true;
     }else{

@@ -198,6 +198,8 @@ function getFeesPerTrainee(training_days){
     //console.log("cur active: ", activeCurr, " -- ", this.headerSteps);
     let curStep = stepData.findIndex(rec => rec.title === stepId.toString());
     //console.log(">>>>CUR Active: ", curStep);
+    stepData[curStep].active = 'user-done';
+
     if(curStep > 0 || curStep == 0){
       //this.headerSteps[curStep].activeStep = true;
 
@@ -244,6 +246,7 @@ function getFeesPerTrainee(training_days){
          if(myClasses[i].id != stepId){
            //myClasses[i].style.display = 'none';
            elem.style.display = 'none';
+          //  stepData[curStep].active = '';
          }
      }
    }

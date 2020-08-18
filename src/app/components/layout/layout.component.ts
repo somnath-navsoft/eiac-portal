@@ -75,7 +75,7 @@ export class LayoutComponent implements OnInit {
         }
         // console.log('>>> router...', this.currentState);
         // console.log('>>> router...', splitForverifyAccount);
-      });
+      }); 
 
       // this.router.params.switchMap(params => { 
       // })
@@ -87,21 +87,25 @@ export class LayoutComponent implements OnInit {
       this.getState.subscribe((state) => {
         // console.log(">>>layout State subscribed: ", state);
 
-        // console.log("@@@Auth status: ", state);
-        if(state.user.token != null) {
+        //console.log("@@@Auth status: ", state);
+        if(state.user != null && state.user.token != undefined && state.user.token != null) {
+          
           let authUserData = this._service.decodeJWT(state.user.token);
-          if(authUserData.isVerified == '0')
+          if(state.user.token !=null && authUserData.isVerified == '0')
           {
+            
             this.isAuthenticated = false;
-          }else if(authUserData.isCompleteness == '0'){
+          }else if(state.user.token !=null &&  authUserData.isCompleteness == '0'){
             this.isAuthenticated = state.isAuthenticated;
             this.isCompleteness = '0';
-          }else{
+          }else if(state.user.token !=null){
             this.isAuthenticated = state.isAuthenticated;
             this.isCompleteness = '1';
+            //console.log('@Enter....1.2: ');
           }
         }
         else{
+          //console.log('@Enter....2');
           this.isAuthenticated = state.isAuthenticated;
         }
         

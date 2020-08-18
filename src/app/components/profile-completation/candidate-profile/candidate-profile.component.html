@@ -18,6 +18,29 @@
                     </div>
                 </div>
 
+                <ng-container>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="user-steps">
+                                <ng-container *ngFor="let item of headerSteps; let k=index;">
+                                <div class="user-next {{item.active}}">
+                                    <div class="usernext-icon">
+                                        <span class="icon-google-docs"></span>
+                                    </div>
+                                    <div class="user-details-pending" 
+                                    id="personal_details_header" (click)="Service.headerStepMove(item.title, headerSteps)" [ngStyle]="{'cursor':'pointer'}">
+                                        <span [innerHTML]="item.desc"></span>
+                                    </div>
+                                </div>
+                                <div class="next-step">
+                                    <span class="icon-r-arrow"></span>
+                                </div>
+                              </ng-container>                              
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+
                 <div class="form-bdy">
                     <div class="row m-0">
                         <div class="wrapper">
@@ -32,13 +55,6 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <mat-form-field class="cab-data">
-                                            <mat-label>Title</mat-label>
-                                            <input matInput [(ngModel)]="candidateProfile.title" name="title" (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="" required>
-                                        </mat-form-field>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <mat-form-field class="cab-data">
                                             <mat-label>First Name</mat-label>
                                             <input matInput [(ngModel)]="candidateProfile.first_name" (keypress)="Service.inputFilter($event, Service.regExName)" name="first_name" placeholder="" required>
                                         </mat-form-field>
@@ -50,9 +66,8 @@
                                             <input matInput [(ngModel)]="candidateProfile.last_name" name="last_name" placeholder="" required>
                                         </mat-form-field>
                                     </div>
-                                </div>
 
-                                <div class="row">
+                                    
                                     <div class="col-md-4">
                                         <mat-form-field class="cab-data">
                                             <mat-label>Date of Birth</mat-label>
@@ -61,11 +76,21 @@
                                             <mat-datepicker #date_of_birth  disabled="false" ></mat-datepicker>
                                         </mat-form-field>
                                     </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Office Phone (with Area Code)</mat-label>
+                                            <input matInput [(ngModel)]="candidateProfile.officephone_with_area" name="officephone_with_area" placeholder="" required>
+                                        </mat-form-field>
+                                        <p class="error" *ngIf="candidateProfile.officephone_with_area && !Service.checkInput('onlyNumberWithPlus',candidateProfile.officephone_with_area)">Please Enter Only Number</p>
+                                    </div>
 
                                     <div class="col-md-4">
                                         <mat-form-field class="cab-data">
                                             <mat-label>Personal E-mail</mat-label>
-                                            <input matInput [(ngModel)]="candidateProfile.personal_email" name="personal_email" placeholder="" required>
+                                            <input matInput readonly [(ngModel)]="candidateProfile.personal_email" name="personal_email" placeholder="" required>
                                         </mat-form-field>
 
                                         <p class="error" *ngIf="candidateProfile.personal_email && !Service.checkInput('email',candidateProfile.personal_email)">Please Enter Correct Email Id</p>
@@ -141,14 +166,6 @@
                                             <mat-label>Office Address</mat-label>
                                             <input matInput [(ngModel)]="candidateProfile.office_address" name="office_address" placeholder="" required>
                                         </mat-form-field>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <mat-form-field class="cab-data">
-                                            <mat-label>Office Phone (with Area Code)</mat-label>
-                                            <input matInput [(ngModel)]="candidateProfile.officephone_with_area" name="officephone_with_area" placeholder="" required>
-                                        </mat-form-field>
-                                        <p class="error" *ngIf="candidateProfile.officephone_with_area && !Service.checkInput('onlyNumberWithPlus',candidateProfile.officephone_with_area)">Please Enter Only Number</p>
                                     </div>
                                 </div>
                             </div>

@@ -16,14 +16,37 @@
                     </div>
                 </div>
             </div>
-            <mat-horizontal-stepper #stepper [selectedIndex]="0">
+
+            <ng-container>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="user-steps">
+                            <ng-container *ngFor="let item of headerSteps; let k=index;">
+                            <div class="user-next {{item.active}}">
+                                <div class="usernext-icon">
+                                    <span class="icon-google-docs"></span>
+                                </div>
+                                <div class="user-details-pending" 
+                                id="personal_details_header" (click)="Service.headerStepMove(item.title, headerSteps)" [ngStyle]="{'cursor':'pointer'}">
+                                    <span [innerHTML]="item.desc"></span>
+                                </div>
+                            </div>
+                            <div class="next-step">
+                                <span class="icon-r-arrow"></span>
+                            </div>
+                          </ng-container>                              
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <!-- <mat-horizontal-stepper #stepper [selectedIndex]="0">
                 <mat-step>
                     <ng-template matStepLabel>
                         <span>
                             1. Personal Details
                         </span>
-                    </ng-template>
-                    <div class="form-bdy">
+                    </ng-template> -->
+                    <div class="form-bdy cust-stepper" id="personal_details">
                         <div class="row m-0">
                             <div class="wrapper">
                                 <div class="col-md-12">
@@ -165,16 +188,16 @@
                             </div>
                         </div>
                     </div>
-                </mat-step>
+                <!-- </mat-step>
 
                 <mat-step>
                     <ng-template matStepLabel>
                         <span (click)="stepClick($event)">
                             2. EDUCATIONAL INFORMATION
                         </span>
-                    </ng-template>
+                    </ng-template> -->
 
-                    <div class="form-bdy">
+                    <div class="form-bdy cust-stepper" id="educational_information" [ngStyle]="{'display': 'none'}">
                         <div class="row m-0">
                             <div class="wrapper">
                                 <div class="col-md-12">
@@ -188,7 +211,7 @@
                                     <form #ngForm2="ngForm" (ngSubmit)="onSubmitStep2(ngForm2)" autocomplete="off">
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <div class="matupload position-relative">
+                                                <!-- <div class="matupload position-relative">
                                                     <mat-form-field  class="lng-data">
                                                             <input matInput readonly="true" name="qualification_degree_file" [(ngModel)]="step2Data.qualification_degree_file"  placeholder="Qualification/Degrees" required>
                                                     </mat-form-field>
@@ -196,7 +219,16 @@
                                                         <input type="file" name="qualification_degree" [(ngModel)]="step2Data.qualification_degree" (change)="validateFile($event,'qualification_degree')" required>
                                                         <span class="icon-attach attach-data"></span>
                                                     </span>                                               
-                                                </div>
+                                                </div> -->
+
+                                                <mat-form-field  class="cab-data">
+                                                    <mat-label>Qualification/Degrees</mat-label>
+                                                    <input matInput name="qualification_degree" [(ngModel)]="step2Data.qualification_degree" placeholder="Qualification/Degrees" required>
+                                                </mat-form-field>
+                                                <span class="fileupload">
+                                                    <input type="file" name="qualification_degree_file" [(ngModel)]="step2Data.qualification_degree_file" (change)="validateFile($event,'qualification_degree')" required>
+                                                    <span class="icon-attach attach-data"></span>
+                                                </span>
                                                 <p class="error" *ngIf="!file_validation1">Please Upload a valid file (ex: pdf,png)</p>
                                             </div>
                                             
@@ -208,22 +240,22 @@
                                             </div>
         
                                             <div class="col-md-4">
-                                                <div class="matupload position-relative">
-                                                    <mat-form-field  class="lng-data">
-                                                            <input matInput readonly="true" name="education_specialization_file" [(ngModel)]="step2Data.education_specialization_file"  placeholder="Specialization" required>
-                                                    </mat-form-field>
-                                                    <span class="fileupload">
-                                                        <input type="file" name="education_specialization" [(ngModel)]="step2Data.education_specialization" (change)="validateFile($event,'education_specialization')" required>
-                                                        <span class="icon-attach attach-data"></span>
-                                                    </span>                                               
-                                                </div>
+                                                <mat-form-field  class="cab-data">
+                                                    <mat-label>Specialization</mat-label>
+                                                    <input matInput name="education_specialization" [(ngModel)]="step2Data.education_specialization" placeholder="Specialization" required>
+                                                </mat-form-field>
+                                                <span class="fileupload">
+                                                    <input type="file" name="education_specialization_file" [(ngModel)]="step2Data.education_specialization_file" (change)="validateFile($event,'education_specialization')" required>
+                                                    <span class="icon-attach attach-data"></span>
+                                                </span>
+
                                                 <p class="error" *ngIf="!file_validation2">Please Upload a valid file (ex: pdf,png)</p>
                                             </div>
                                         </div>
                                         
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <div class="matupload position-relative">
+                                                <!-- <div class="matupload position-relative">
                                                     <mat-form-field  class="lng-data">
                                                             <input matInput readonly="true" name="further_education_file" [(ngModel)]="step2Data.further_education_file" placeholder="Further Education (if any)">
                                                     </mat-form-field>
@@ -231,7 +263,16 @@
                                                         <input type="file" name="further_education" [(ngModel)]="step2Data.further_education" (change)="validateFile($event,'further_education')">
                                                         <span class="icon-attach attach-data"></span>
                                                     </span>
-                                                </div>
+                                                </div> -->
+
+                                                <mat-form-field  class="cab-data">
+                                                    <mat-label>Further Education (if any)</mat-label>
+                                                    <input matInput name="further_education" [(ngModel)]="step2Data.further_education" placeholder="Further Education (if any)" required>
+                                                </mat-form-field>
+                                                <span class="fileupload">
+                                                    <input type="file" name="further_education_file" [(ngModel)]="step2Data.further_education_file" (change)="validateFile($event,'further_education')" required>
+                                                    <span class="icon-attach attach-data"></span>
+                                                </span>
                                                 <p class="error" *ngIf="!file_validation3">Please Upload a valid file (ex: pdf,png)</p>
                                             </div>
         
@@ -417,15 +458,15 @@
                             </div>
                         </div>
                     </div>
-                </mat-step>
+                <!-- </mat-step>
 
                 <mat-step>
                     <ng-template matStepLabel>
                         <span (click)="stepClick($event)">
                             3. APPLICANT ASSESSOR
                         </span>
-                    </ng-template>
-                    <div class="form-bdy">
+                    </ng-template> -->
+                    <div class="form-bdy cust-stepper" id="applicant_trainer" [ngStyle]="{'display': 'none'}">
                         <div class="row m-0">
                             <div class="wrapper">
                                 <div class="col-md-12">
@@ -482,8 +523,8 @@
                             </div>
                         </div>
                     </div>
-                </mat-step>
-            </mat-horizontal-stepper>
+                <!-- </mat-step>
+            </mat-horizontal-stepper> -->
         </div>
     </div>
 </section>
