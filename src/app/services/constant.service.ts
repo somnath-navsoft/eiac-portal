@@ -70,7 +70,7 @@ export class Constants{
 				{
 					heading: 'Profile', link: '#', sub: true,
 					submenu: [
-						{title: 'Update Profile', link: '#'},
+						{title: 'Update Profile', link: '/profile-completation'},
 						{title: 'Current Certification', link: '#'},
 						{title: 'Agreements', link: '#'},
 						{title: 'Records', link: '#'},
@@ -116,7 +116,7 @@ export class Constants{
 				{
 					heading: 'Profile', link: '#', sub: true,
 					submenu: [
-						{title: 'Update Profile', link: '#'},
+						{title: 'Update Profile', link: '/profile-completation'},
 						{title: 'Qualification', link: '#'},
 						{title: 'Expertise', link: '#'},
 						{title: 'Agreements', link: '#'},
@@ -175,7 +175,7 @@ export class Constants{
 				{
 					heading: 'Profile', link: '#', sub: true,
 					submenu: [
-						{title: 'Update Profile', link: '#'},
+						{title: 'Update Profile', link: '/profile-completation'},
 						{title: 'Qualifications', link: '#'},
 						{title: 'Expertise', link: '#'},
 						{title: 'Agreements', link: '#'},
@@ -257,7 +257,7 @@ export class Constants{
 				{
 					heading: 'Profile', link: '#', sub: true,
 					submenu: [
-						{title: 'Update Profile', link: '/dashboard/trainers/update-profile'},
+						{title: 'Update Profile', link: '/profile-completation'},
 						{title: 'Qualifications', link: '/dashboard/trainers/qualifications'},
 						{title: 'Expertise', link: '/dashboard/trainers/expertise'},
 						{title: 'Agreements', link: '/dashboard/trainers/agreements'},

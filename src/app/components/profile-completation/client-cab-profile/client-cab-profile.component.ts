@@ -74,7 +74,7 @@ export class ClientCabProfileComponent implements OnInit {
 
           if(res['data'].step1) {
             this.progressValue = 50;
-          }else if(res['data'].step1 && res['data'].step2) {
+          }if(res['data'].step1 && res['data'].step2) {
             this.progressValue = 100;
           }
           
