@@ -1,140 +1,142 @@
 <section>
     <div class="form-wrapper-pro">
         <div class="container-fluid">
-            <form #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)" autocomplete="off">
-                <div class="form-hdr profile-hdr">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="form-main complete-usr">
-                                <h1>COMPLETE YOUR PROFILE</h1>
+            <div class="main-dashboard-cnt">
+                <form #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)" autocomplete="off">
+                    <div class="form-hdr profile-hdr">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-main complete-usr">
+                                    <h1>COMPLETE YOUR PROFILE</h1>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="progress-br">
-                                <mat-progress-bar mode="determinate" value="{{progressValue}}"></mat-progress-bar>
-                                <span>{{progressValue}}</span>
+                            <div class="col-md-4">
+                                <div class="progress-br">
+                                    <mat-progress-bar mode="determinate" value="{{progressValue}}"></mat-progress-bar>
+                                    <span>{{progressValue}}% </span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <ng-container>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="user-steps">
-                                <ng-container *ngFor="let item of headerSteps; let k=index;">
-                                <div class="user-next {{item.active}}">
-                                    <div class="usernext-icon">
-                                        <span class="icon-google-docs"></span>
-                                    </div>
-                                    <div class="user-details-pending" 
-                                    id="personal_details_header" (click)="Service.headerStepMove(item.title, headerSteps)" [ngStyle]="{'cursor':'pointer'}">
-                                        <span [innerHTML]="item.desc"></span>
-                                    </div>
-                                </div>
-                                <div class="next-step">
-                                    <span class="icon-r-arrow"></span>
-                                </div>
-                              </ng-container>                              
-                            </div>
-                        </div>
-                    </div>
-                </ng-container>
-
-                <div class="form-bdy cust-stepper" id="personal_details">
-                    <div class="row m-0">
-                        <div class="wrapper">
+                    <ng-container>
+                        <div class="row">
                             <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-12 p-0">
-                                        <div class="form-subhdr">
-                                            <h5>PERSONAL DETAILS</h5>
+                                <div class="user-steps">
+                                    <ng-container *ngFor="let item of headerSteps; let k=index;">
+                                    <div class="user-next {{item.active}}">
+                                        <div class="usernext-icon">
+                                            <span class="icon-google-docs"></span>
+                                        </div>
+                                        <div class="user-details-pending" 
+                                        id="personal_details_header" (click)="Service.headerStepMove(item.title, headerSteps)" [ngStyle]="{'cursor':'pointer'}">
+                                            <span [innerHTML]="item.desc"></span>
                                         </div>
                                     </div>
+                                    <div class="next-step">
+                                        <span class="icon-r-arrow"></span>
+                                    </div>
+                                </ng-container>                              
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <mat-form-field class="cab-data">
-                                            <mat-label>First Name</mat-label>
-                                            <input matInput [(ngModel)]="eiacStaff.first_name" (keypress)="Service.inputFilter($event, Service.regExName)" name="first_name" placeholder="" required>
-                                        </mat-form-field>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <div class="form-bdy cust-stepper" id="personal_details">
+                        <div class="row m-0">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr">
+                                                <h5>PERSONAL DETAILS</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>First Name</mat-label>
+                                                <input matInput [(ngModel)]="eiacStaff.first_name" (keypress)="Service.inputFilter($event, Service.regExName)" name="first_name" placeholder="" required>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Last Name</mat-label>
+                                                <input matInput [(ngModel)]="eiacStaff.last_name" name="last_name" placeholder="" required>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Department</mat-label>
+                                                <input matInput [(ngModel)]="eiacStaff.department" name="department" placeholder="" required>
+                                            </mat-form-field>
+                                        </div>
                                     </div>
 
-                                    <div class="col-md-4">
-                                        <mat-form-field class="cab-data">
-                                            <mat-label>Last Name</mat-label>
-                                            <input matInput [(ngModel)]="eiacStaff.last_name" name="last_name" placeholder="" required>
-                                        </mat-form-field>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Company Email ID</mat-label>
+                                                <input matInput [(ngModel)]="eiacStaff.company_email" name="company_email" placeholder="" required>
+                                            </mat-form-field>
+
+                                            <p class="error" *ngIf="eiacStaff.company_email && !Service.checkInput('email',eiacStaff.company_email)">Please Enter Correct Email Id</p>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Personal Email ID</mat-label>
+                                                <input matInput readonly [(ngModel)]="eiacStaff.personal_email" name="personal_email" placeholder="" required>
+                                            </mat-form-field>
+
+                                            <p class="error" *ngIf="eiacStaff.personal_email && !Service.checkInput('email',eiacStaff.personal_email)">Please Enter Correct Email Id</p>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Company Mobile no. (with Area Code)</mat-label>
+                                                <input matInput [(ngModel)]="eiacStaff.company_phone_with_area" name="company_phone_with_area" placeholder="" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" required>
+                                            </mat-form-field>
+                                            <p class="error" *ngIf="eiacStaff.company_phone_with_area && !Service.checkInput('onlyNumberWithPlus',eiacStaff.company_phone_with_area)">Please Enter Only Number</p> 
+                                        </div>
                                     </div>
 
-                                    <div class="col-md-4">
-                                        <mat-form-field class="cab-data">
-                                            <mat-label>Department</mat-label>
-                                            <input matInput [(ngModel)]="eiacStaff.department" name="department" placeholder="" required>
-                                        </mat-form-field>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Personal Mobile no. (with Area Code)</mat-label>
+                                                <input matInput [(ngModel)]="eiacStaff.personal_phone_with_area" name="personal_phone_with_area" placeholder="" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" required>
+                                            </mat-form-field>
+                                            <p class="error" *ngIf="eiacStaff.personal_phone_with_area && !Service.checkInput('onlyNumberWithPlus',eiacStaff.personal_phone_with_area)">Please Enter Only Number</p> 
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Designation</mat-label>
+                                                <input matInput [(ngModel)]="eiacStaff.designation" name="designation" placeholder="" required>
+                                            </mat-form-field>
+                                        </div>
                                     </div>
+
                                 </div>
-
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <mat-form-field class="cab-data">
-                                            <mat-label>Company Email ID</mat-label>
-                                            <input matInput [(ngModel)]="eiacStaff.company_email" name="company_email" placeholder="" required>
-                                        </mat-form-field>
-
-                                        <p class="error" *ngIf="eiacStaff.company_email && !Service.checkInput('email',eiacStaff.company_email)">Please Enter Correct Email Id</p>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <mat-form-field class="cab-data">
-                                            <mat-label>Personal Email ID</mat-label>
-                                            <input matInput readonly [(ngModel)]="eiacStaff.personal_email" name="personal_email" placeholder="" required>
-                                        </mat-form-field>
-
-                                        <p class="error" *ngIf="eiacStaff.personal_email && !Service.checkInput('email',eiacStaff.personal_email)">Please Enter Correct Email Id</p>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <mat-form-field class="cab-data">
-                                            <mat-label>Company Mobile no. (with Area Code)</mat-label>
-                                            <input matInput [(ngModel)]="eiacStaff.company_phone_with_area" name="company_phone_with_area" placeholder="" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" required>
-                                        </mat-form-field>
-                                        <p class="error" *ngIf="eiacStaff.company_phone_with_area && !Service.checkInput('onlyNumberWithPlus',eiacStaff.company_phone_with_area)">Please Enter Only Number</p> 
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <mat-form-field class="cab-data">
-                                            <mat-label>Personal Mobile no. (with Area Code)</mat-label>
-                                            <input matInput [(ngModel)]="eiacStaff.personal_phone_with_area" name="personal_phone_with_area" placeholder="" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" required>
-                                        </mat-form-field>
-                                        <p class="error" *ngIf="eiacStaff.personal_phone_with_area && !Service.checkInput('onlyNumberWithPlus',eiacStaff.personal_phone_with_area)">Please Enter Only Number</p> 
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <mat-form-field class="cab-data">
-                                            <mat-label>Designation</mat-label>
-                                            <input matInput [(ngModel)]="eiacStaff.designation" name="designation" placeholder="" required>
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="bttns-health bttn-staff">
-                            <a routerLink="/dashboard/operations/home" *ngIf="isCompleteness == '1'" class="cancel-bttn">CANCEL</a>
-                            <a href="javascript:void(0)" *ngIf="isCompleteness == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
-                            <button class="submit-bttn submit-health">CONTINUE</button>
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="bttns-health bttn-staff">
+                                <a routerLink="/dashboard/operations/home" *ngIf="isCompleteness == '1'" class="cancel-bttn">CANCEL</a>
+                                <a href="javascript:void(0)" *ngIf="isCompleteness == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
+                                <button class="submit-bttn submit-health">CONTINUE</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 </section>

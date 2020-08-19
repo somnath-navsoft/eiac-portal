@@ -59,7 +59,7 @@ export class AuthEffects {
   ofType(AuthActionTypes.LOGIN_SUCCESS),
   tap((user) => {
     var authUserData = this._appServ.decodeJWT(user.payload.token);
-    console.log(">>>Effects LAnd URL:",authUserData );
+    // console.log(">>>Effects LAnd URL:",authUserData );
     if(authUserData.isVerified == '0')
     {
       // sessionStorage.setItem('token', user.payload.token);

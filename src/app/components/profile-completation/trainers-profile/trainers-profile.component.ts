@@ -28,7 +28,7 @@ export class TrainersProfileComponent implements OnInit {
   headerSteps:any[] = [];
   userEmail:any;
   userType:any;
-  progressValue:any;
+  progressValue:any = 0;
   isCompleteness:any
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
