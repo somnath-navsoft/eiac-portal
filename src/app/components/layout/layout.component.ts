@@ -48,7 +48,7 @@ export class LayoutComponent implements OnInit {
       filter(event => event instanceof NavigationEnd)
     ).subscribe(event => {
         let data: any = event;
-        // //console.log('>>> router...', event);
+        //console.log('>>> router...', event);
 
         var wholeUrl = data.urlAfterRedirects;
         

@@ -261,10 +261,10 @@
 
                                                 <mat-form-field  class="cab-data">
                                                     <mat-label>Further Education (if any)</mat-label>
-                                                    <input matInput name="further_education" [(ngModel)]="step2Data.further_education" placeholder="Further Education (if any)" required>
+                                                    <input matInput name="further_education" [(ngModel)]="step2Data.further_education" placeholder="Further Education (if any)">
                                                 </mat-form-field>
                                                 <span class="fileupload">
-                                                    <input type="file" name="further_education_file" [(ngModel)]="step2Data.further_education_file" (change)="validateFile($event,'further_education')" required>
+                                                    <input type="file" name="further_education_file" [(ngModel)]="step2Data.further_education_file" (change)="validateFile($event,'further_education')">
                                                     <span class="icon-attach attach-data"></span>
                                                 </span>
                                                 <p class="error" *ngIf="!file_validation3">Please Upload a valid file (ex: pdf,png)</p>
