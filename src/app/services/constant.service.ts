@@ -203,7 +203,7 @@ export class Constants{
 			type: 'operations',
 			menu: [
 				{
-					heading: 'Profile Update', link: '#',
+					heading: 'Update Profile', link: '/profile-completation',
 					submenu: []
 				},
 				{

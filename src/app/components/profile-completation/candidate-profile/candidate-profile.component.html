@@ -11,8 +11,8 @@
                         </div>
                         <div class="col-md-4">
                             <div class="progress-br">
-                                <mat-progress-bar mode="determinate" value="45"></mat-progress-bar>
-                                <span>45%</span>
+                                <mat-progress-bar mode="determinate" value="{{progressValue}}"></mat-progress-bar>
+                                <span>{{progressValue}}</span>
                             </div>
                         </div>
                     </div>
@@ -176,7 +176,8 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="bttns-health bttn-staff">
-                            <button class="cancel-bttn">CANCEL</button> 
+                            <a routerLink="/dashboard/candidate/home" *ngIf="isCompleteness == '1'"  class="cancel-bttn">CANCEL</a>
+                            <a href="javascript:void(0)" *ngIf="isCompleteness == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a> 
                             <button class="submit-bttn submit-health">CONTINUE</button>
                         </div>
                     </div>

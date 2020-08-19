@@ -29,6 +29,7 @@ export class TrainersProfileComponent implements OnInit {
   userEmail:any;
   userType:any;
   progressValue:any;
+  isCompleteness:any
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -37,6 +38,7 @@ export class TrainersProfileComponent implements OnInit {
   ngOnInit() {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
+    this.isCompleteness = sessionStorage.getItem('isCompleteness');
 
     this.headerSteps.push(
       {

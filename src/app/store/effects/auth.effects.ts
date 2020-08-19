@@ -74,12 +74,14 @@ export class AuthEffects {
     {
       sessionStorage.setItem('token', user.payload.token);
       sessionStorage.setItem('email', authUserData.email);
+      sessionStorage.setItem('isCompleteness', authUserData.isCompleteness);
       this._appServ.getUserType();
       sessionStorage.setItem('type', this._constants.logType);
       this.router.navigateByUrl('/profile-completation');
     }else{
       sessionStorage.setItem('token', user.payload.token);
       sessionStorage.setItem('email', authUserData.email);
+      sessionStorage.setItem('isCompleteness', authUserData.isCompleteness);
       this._appServ.getUserType();
       sessionStorage.setItem('type', this._constants.logType);
       //this._appServ.updateStoreAuthenticated();

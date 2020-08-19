@@ -31,6 +31,8 @@ export class AppService {
   public regExCont: any;
   public regExNumb: any;
   public regExEmail: any;
+  user = null;
+  
   constructor(public http: HttpClient, private _constant: Constants,
     private _flashMessage: FlashMessagesService,
     public dialog: MatDialog,public snackBar: MatSnackBar, private store: Store<AppState>) { 
@@ -118,6 +120,11 @@ function getFeesPerTrainee(training_days){
       this.store.dispatch(new LogInSuccess({token: getToken}));
     }
   }
+
+  logOut(): void {
+    this.store.dispatch(new LogOut(this.user));
+  }
+
   //All Message dialog
   openMessageDialog(message: string, messageHeading: string, timeout?:number){
     this.snackBar.open(message, messageHeading, {

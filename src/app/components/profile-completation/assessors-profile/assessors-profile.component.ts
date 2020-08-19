@@ -33,6 +33,9 @@ export class AssessorsProfileComponent implements OnInit {
   schemeSlideData:any;
   flag:any = 'inspection-bodies';
   schemeMainData:any;
+  userEmail:any;
+  userType:any;
+  isCompleteness:any;
 
   step2DataBodyFormFile: any = new FormData();
 
@@ -41,6 +44,10 @@ export class AssessorsProfileComponent implements OnInit {
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
   ngOnInit() {
+    this.userEmail = sessionStorage.getItem('email');
+    this.userType = sessionStorage.getItem('type');
+    this.isCompleteness = sessionStorage.getItem('isCompleteness');
+
     this.step3Data.list_auditor = '1' ;
     this.step3Data.attend_accreditation = '1' ;
     this.step3Data.attend_accreditation2 = '1' ;

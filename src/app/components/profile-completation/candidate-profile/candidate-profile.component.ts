@@ -16,12 +16,15 @@ export class CandidateProfileComponent implements OnInit {
   userEmail:any;
   userType:any;
   headerSteps:any[] = [];
+  isCompleteness:any;
+  progressValue:any = 0;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
   ngOnInit() {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
+    this.isCompleteness = sessionStorage.getItem('isCompleteness');
 
     this.headerSteps.push(
       {
@@ -36,6 +39,11 @@ export class CandidateProfileComponent implements OnInit {
     this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail)
     .subscribe(
       res => {
+
+        if(res['data'].step1) {
+          this.progressValue = 100;
+        }
+
         if(res['status'] == true) {
           // console.log(res['data'].step1[0],'data');
           this.candidateProfile.first_name = res['data']['user_data'][0].first_name;

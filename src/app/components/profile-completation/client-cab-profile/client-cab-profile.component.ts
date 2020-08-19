@@ -30,10 +30,11 @@ export class ClientCabProfileComponent implements OnInit {
   step1DataBodyFormFile:any = new FormData();
   step2DataBodyFormFile:any = new FormData();
   file_validation:boolean = true;
-  progressValue:any;
+  progressValue:any = 0;
   headerSteps:any[] = [];
   fileType:File;
   fileAny:any;
+  isCompleteness:any;
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -44,6 +45,7 @@ export class ClientCabProfileComponent implements OnInit {
     
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
+    this.isCompleteness = sessionStorage.getItem('isCompleteness');
     // this.nameOftheOwner ? this.clientCabForm.step2 = this.nameOftheOwner : '';
     // this.clientCabForm.nameOftheOwner = this.nameOftheOwner;
     // this.clientCabForm.companyBodMembers = this.companyBodMembers

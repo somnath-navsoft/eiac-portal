@@ -16,12 +16,15 @@ export class InternalOperationsProfileComponent implements OnInit {
   userEmail:any;
   userType:any;
   headerSteps:any[] = [];
+  isCompleteness:any;
+  progressValue:any = 0;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
   ngOnInit() {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
+    this.isCompleteness = sessionStorage.getItem('isCompleteness');
 
     this.headerSteps.push(
       {
@@ -38,6 +41,10 @@ export class InternalOperationsProfileComponent implements OnInit {
       res => {
         if(res['status'] == true) {
           // console.log(res['data'].step1[0],'data');
+          if(res['data'].step1) {
+            this.progressValue = 100;
+          }
+
           this.eiacStaff.first_name = res['data']['user_data'][0].first_name;
           this.eiacStaff.last_name = res['data']['user_data'][0].last_name;
           this.eiacStaff.personal_email = res['data']['user_data'][0].email;
