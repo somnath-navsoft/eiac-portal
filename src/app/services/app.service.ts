@@ -32,7 +32,7 @@ export class AppService {
   public regExNumb: any;
   public regExEmail: any;
   user = null;
-  
+
   constructor(public http: HttpClient, private _constant: Constants,
     private _flashMessage: FlashMessagesService,
     public dialog: MatDialog,public snackBar: MatSnackBar, private store: Store<AppState>) { 
@@ -197,66 +197,78 @@ function getFeesPerTrainee(training_days){
 
 
   //------------------ Custom Step Function ---------------------
-  headerStepMove(stepId: string,stepData: any[],target?:string){
-    let stepElem = document.getElementById(stepId);
-    let targetElem = document.getElementById(target);
-    //search active steps
-    let activeCurr = stepData.find(rec => rec.activeStep == true);
-    //console.log("cur active: ", activeCurr, " -- ", this.headerSteps);
-    let curStep = stepData.findIndex(rec => rec.title === stepId.toString());
-    //console.log(">>>>CUR Active: ", curStep);
-    stepData[curStep].active = 'user-done';
+  headerStepMove(stepId: string,stepData: any[],target?:any){
+        let stepElem = document.getElementById(stepId);
+        let targetElem = document.getElementById(target);
+        // console.log('Get...',stepData);
 
-    if(curStep > 0 || curStep == 0){
-      //this.headerSteps[curStep].activeStep = true;
-
-      if(curStep-1 < 0){
-       if(activeCurr){
-         activeCurr.activeStep = false;
+        //search active steps
+        let activeCurr = stepData.find(rec => rec.activeStep == true);
+        //console.log("cur active: ", activeCurr, " -- ", this.headerSteps);
+        let curStep = stepData.findIndex(rec => rec.title === stepId.toString());
+        // console.log(">>>>CUR Active: ", stepElem);
+        
+        var myClasses2 = document.querySelectorAll('.cust-stepper'),
+        i2 = 0,
+        l2 = myClasses2.length;
+        for (i2; i2 < l2; i2++) {
+            stepData[i2].active = '';
         }
-        stepData[curStep].activeStep = true;
-        //return false;
-      }
-       var prevSteps = stepData[curStep-1];
-       //console.log("prev steps: >>>>", prevSteps);
-       if(prevSteps){
-           let prevStepComp = prevSteps.stepComp;
-           if(!prevStepComp){
-             return false;
-           }else{
-             //console.log(">>>Change status....");
-             if(activeCurr){
-               activeCurr.activeStep = false;
-              }
-            stepData[curStep].activeStep = true;
-           }
-       }
-       if(stepElem){
-         stepElem.style.display = 'block';
-       }
-    }
-    ////console.log(">>>Elem: ", stepElem, " -- ", stepId, " -- ",);
-    if(targetElem){
-     //console.log('@Target defined...', targetElem)
-     targetElem.style.display = 'none';
-   }else{
-     //console.log('@Target not defined...')
-     //hide all open class
-     var myClasses = document.querySelectorAll('.cust-stepper'),
-         i = 0,
-         l = myClasses.length;
-     //console.log(">>>Class list: ", myClasses);
+        stepData[curStep].active = 'user-done';
 
-     for (i; i < l; i++) {
-         //console.log(">>>Class elem: ", myClasses[i].id);
-         let elem: any = myClasses[i]
-         if(myClasses[i].id != stepId){
-           //myClasses[i].style.display = 'none';
-           elem.style.display = 'none';
-          //  stepData[curStep].active = '';
-         }
-     }
-   }
+        if(curStep > 0 || curStep == 0){
+          //this.headerSteps[curStep].activeStep = true;
+          
+            stepElem.style.display = 'block';
+
+            var myClasses = document.querySelectorAll('.cust-stepper'),
+            i = 0,
+            l = myClasses.length;
+              //console.log(">>>Class list: ", myClasses);
+
+              for (i; i < l; i++) {
+                  //console.log(">>>Class elem: ", myClasses[i].id);
+                  let elem: any = myClasses[i]
+                  //  console.log(">>>>CUR Active: ", myClasses[i].id);
+                  if(myClasses[i].id != stepId){
+                    //myClasses[i].style.display = 'none';
+                    elem.style.display = 'none';
+                    //  stepData[curStep].active = '';
+                  }
+              }
+          
+
+          if(curStep-1 < 0){
+          if(activeCurr){
+            activeCurr.activeStep = false;
+            }
+            stepData[curStep].activeStep = true;
+            //return false;
+          }
+          var prevSteps = stepData[curStep-1];
+          //console.log("prev steps: >>>>", prevSteps);
+          if(prevSteps){
+              let prevStepComp = prevSteps.stepComp;
+              if(!prevStepComp){
+                return false;
+              }else{
+                //console.log(">>>Change status....");
+                if(activeCurr){
+                  activeCurr.activeStep = false;
+                  }
+                stepData[curStep].activeStep = true;
+              }
+          }
+          
+        }
+        ////console.log(">>>Elem: ", stepElem, " -- ", stepId, " -- ",);
+        if(targetElem != null){
+        console.log('Not null', target)
+        targetElem.style.display = 'none';
+      }else{
+        console.log('Its null', target);
+        
+      }
   }
   moveSteps(fromStep: string, toStep: string, stepData: any[]){
       let curStep     = stepData.find(rec => rec.title === fromStep);
@@ -273,7 +285,7 @@ function getFeesPerTrainee(training_days){
         targetElem.style.display = 'none';
       }
       //console.log("build stete: ", this.headerSteps);
-      this.headerStepMove(toStep, stepData);
+      this.headerStepMove(toStep, stepData,'');
   }
 
 

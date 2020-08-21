@@ -184,7 +184,7 @@ export class ClientCabProfileComponent implements OnInit {
             console.log(res,'res')
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
-              this.Service.headerStepMove('application_information',this.headerSteps,'personal_details')
+              this.Service.headerStepMove('application_information',this.headerSteps,'personal_details');
               // this.router.navigateByUrl('/sign-in');
             }else{
               
@@ -271,7 +271,7 @@ export class ClientCabProfileComponent implements OnInit {
       if(this.companyBodMembers) {
         this.clientCabForm.step2['companyBodMembers'] = this.companyBodMembers;
       }
-      console.log(this.clientCabForm);
+      // console.log(this.clientCabForm);
       // this.clientCabFormFile.append('data',JSON.stringify(this.clientCabForm));
       
       // this.clientCabForm.step2 = this.companyBodMembers;

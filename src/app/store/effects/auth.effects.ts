@@ -59,7 +59,7 @@ export class AuthEffects {
   ofType(AuthActionTypes.LOGIN_SUCCESS),
   tap((user) => {
     var authUserData = this._appServ.decodeJWT(user.payload.token);
-    console.log(">>>Effects LAnd URL:",authUserData );
+    // console.log(">>>Effects LAnd URL:",authUserData );
     if(authUserData.isVerified == '0')
     {
       // sessionStorage.setItem('token', user.payload.token);
@@ -74,14 +74,12 @@ export class AuthEffects {
     {
       sessionStorage.setItem('token', user.payload.token);
       sessionStorage.setItem('email', authUserData.email);
-      sessionStorage.setItem('isCompleteness', authUserData.isCompleteness);
       this._appServ.getUserType();
       sessionStorage.setItem('type', this._constants.logType);
       this.router.navigateByUrl('/profile-completation');
     }else{
       sessionStorage.setItem('token', user.payload.token);
       sessionStorage.setItem('email', authUserData.email);
-      sessionStorage.setItem('isCompleteness', authUserData.isCompleteness);
       this._appServ.getUserType();
       sessionStorage.setItem('type', this._constants.logType);
       //this._appServ.updateStoreAuthenticated();
@@ -103,10 +101,11 @@ export class AuthEffects {
       if(user.payload.token != '' && user.payload.token != null){
         //console.log("#Enter effects...1");
         return user;
-      }else{
-        //console.log("#Enter effects...2");
-        this.router.navigateByUrl('/sign-in');
       }
+      // else{
+      //   //console.log("#Enter effects...2");
+      //   this.router.navigateByUrl('/sign-in');
+      // }
   }));
 
   @Effect({ dispatch: false })

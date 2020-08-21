@@ -28,7 +28,7 @@ export class TrainersProfileComponent implements OnInit {
   headerSteps:any[] = [];
   userEmail:any;
   userType:any;
-  progressValue:any;
+  progressValue:any = 0;
   isCompleteness:any
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
@@ -48,7 +48,7 @@ export class TrainersProfileComponent implements OnInit {
         title:'educational_information', desc:'2. Educational <br> Information', activeStep:false, stepComp:false, active:'', nextStep:'applicant_trainer'
       },
       {
-        title:'applicant_trainer', desc:'3. Applicant <br> Trainer', activeStep:false, stepComp:false, active:'', nextStep:null
+        title:'applicant_trainer', desc:'3. Applicant <br> Trainer', activeStep:false, stepComp:false, active:'', nextStep:'null'
       }
     );
 
@@ -67,10 +67,13 @@ export class TrainersProfileComponent implements OnInit {
 
           if(res['data'].step1) {
             this.progressValue = 40;
+            // this.headerSteps[1].stepComp = true;
           }else if(res['data'].step1 && res['data'].step2) {
             this.progressValue = 40;
+            // this.headerSteps[2].stepComp = true;
           }else if(res['data'].step1 && res['data'].step2 && res['data'].step2) {
             this.progressValue = 100;
+            
           }
 
           if(res['data'].step1 != '') {
@@ -86,6 +89,37 @@ export class TrainersProfileComponent implements OnInit {
             this.step1Data.office_address = step1.office_address;
             this.step1Data.officephone_with_area = step1.office_tel_no;
             this.step1Data.officefax_with_area = step1.office_fax_no;
+          }
+          if(res['data'].step2 != '') {
+            var step2 = res['data'].step2[0];
+
+            let other_course = JSON.parse(step2.other_course);
+            this.step2Data.which = other_course.which;
+            this.step2Data.completeProfileFrom = new Date(other_course.from);
+            this.step2Data.completeProfileTill = new Date(other_course.to);
+
+            let education = JSON.parse(step2.education);
+            this.step2Data.qualification_degree = education.qualification;
+            this.step2Data.university_college = education.institute;
+            this.step2Data.education_specialization = education.specialization;
+            this.step2Data.further_education = education.further_education;
+            this.step2Data.others_education = education.other_education_details;
+
+            let language = JSON.parse(step2.language);
+            this.english = language.english
+            this.arabic = language.arabic
+            this.others = language.others
+            // var language = step1.office_address;
+            // this.step2Data.officephone_with_area = step1.office_tel_no;
+            // this.step2Data.officefax_with_area = step1.office_fax_no;
+          }
+
+          if(res['data'].step3 != '') {
+            var step3 = res['data'].step3[0];
+            this.step3Data.place = step3.place;
+            this.step3Data.date = new Date(step3.registration_date);
+            this.step3Data.digital_signature = step3.signature;
+            this.step3Data.confirm_box = step3.signature;
           }
         }
       });
@@ -147,6 +181,7 @@ export class TrainersProfileComponent implements OnInit {
           if(res['status'] == true) {
             this.toastr.success(res['msg'], '');
             // this.router.navigateByUrl('/sign-in');
+            this.Service.headerStepMove('educational_information',this.headerSteps,'personal_details');
           }else{
             
             this.toastr.warning(res['msg'], '');
@@ -181,6 +216,7 @@ export class TrainersProfileComponent implements OnInit {
           if(res['status'] == true) {
             this.toastr.success(res['msg'], '');
             // this.router.navigateByUrl('/sign-in');
+            this.Service.headerStepMove('applicant_trainer',this.headerSteps,'personal_details');
           }else{
             
             this.toastr.warning(res['msg'], '');
