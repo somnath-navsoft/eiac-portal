@@ -96,6 +96,9 @@ import { CandidateAgendaListComponent } from './components/dashboard/candidate/c
 import { CandidateAttendanceListComponent } from './components/dashboard/candidate/candidate-attendance-list/candidate-attendance-list.component';
 import { CustomModalComponent } from './components/utility/custom-modal/custom-modal.component';
 import { ModalModule } from 'ngx-bootstrap/modal'; 
+import { NgxPayPalModule } from 'ngx-paypal';
+import {StripeCheckoutModule} from 'ng-stripe-checkout';
+
 export const MY_FORMATS = {
   parse: {
     dateInput: 'LL',
@@ -124,6 +127,8 @@ export const MY_FORMATS = {
   imports: [
     CommonModule,
     FormsModule,
+    NgxPayPalModule,
+    StripeCheckoutModule,
     HttpClientModule,
     AppRoutingModule,
     AppMaterialModule,
