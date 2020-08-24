@@ -783,9 +783,18 @@
                                                 <div class="table-content-health">
                                                     <table>
                                                         <tr>
+                                                            <th class="manage-first" colspan="8" >{{row.new_no}}
+                                                                <a href="javascript:void(0)" (click)="isTableAcc(i)"><span *ngIf="isAccData != i" class="icon-add-plus"></span></a>
+                                                                
+                                                                <a href="javascript:void(0)" (click)="isTableClose()"><span *ngIf="isAccData == i" class="icon-substract"></span></a>
+                                                            </th>
+                                                        </tr>
+
+                                                        <tr>
                                                             <th>Field</th>
                                                             <th>Years of Experience</th>
                                                         </tr>
+                                                        
                                                         <tr *ngFor="let item of row['technical_fields']; let i = index;">
                                                             <td>{{item.title}}</td>
                                                             <td>

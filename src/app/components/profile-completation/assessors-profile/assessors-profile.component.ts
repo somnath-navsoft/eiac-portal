@@ -48,6 +48,7 @@ export class AssessorsProfileComponent implements OnInit {
   tradeLicensedValidation1:any = false;
   tradeLicensedValidation2:any = false;
   tradeLicensedValidation3:any;
+  public isAccData: any = '';
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -85,6 +86,15 @@ export class AssessorsProfileComponent implements OnInit {
     this.loadStepsData();
   }
 
+  isTableAcc(id) {
+    this.isAccData = id;
+    //console.log(this.isAccData);
+  }
+  isTableClose() {
+    this.isAccData = '';
+    //console.log(this.isAccData,'jhhjhjgghjgh');
+  }
+
   loadStepsData() {
     this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail)
     .subscribe(
@@ -98,15 +108,15 @@ export class AssessorsProfileComponent implements OnInit {
 
           this.technicalFields = res['data'].technical_field;
 
-          if(res['data'].step1) {
+          if(res['data'].step1[0].office_email) {
             this.progressValue = 22;
-          }if(res['data'].step1 && res['data'].step2) {
+          }if(res['data'].step1[0].office_email && res['data'].step2.detail) {
             this.progressValue = 44;
-          }if(res['data'].step1 && res['data'].step2 && res['data'].step3) {
+          }if(res['data'].step1[0].office_email && res['data'].step2.detail && res['data'].step3.experience_1) {
             this.progressValue = 66;
-          }if(res['data'].step1 && res['data'].step2 && res['data'].step3 && res['data'].step4) {
+          }if(res['data'].step1[0].office_email && res['data'].step2.detail && res['data'].step3.experience_1 && res['data'].step4['technical_experience']) {
             this.progressValue = 88;
-          }if(res['data'].step1 && res['data'].step2 && res['data'].step3 && res['data'].step4 && res['data'].step5) {
+          }if(res['data'].step1 && res['data'].step2 && res['data'].step3 && res['data'].step4 && res['data'].step5[0].place) {
             this.progressValue = 100;
           }
 

@@ -26,8 +26,11 @@ export class VerifyAccountComponent implements OnInit {
     this.appService.getwithoutData(this.appService.apiServerUrl+"/"+this.constant.API_ENDPOINT.emailVerification+'?email='+email+'&hash='+hash)
     .subscribe(
       res => {
-        if(res['status'] != true) {
+        console.log(res,'Verify Account Data');
+        if(!res['status']) {
           this.router.navigateByUrl('/sign-in');
+        }else{
+          console.log('Not Verified');
         }
       });
       
