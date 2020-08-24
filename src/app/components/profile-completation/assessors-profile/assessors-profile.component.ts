@@ -19,9 +19,9 @@ export class AssessorsProfileComponent implements OnInit {
   step3Data:any = {};
   step4Data:any = {};
   step5Data:any = {};
-  file_validation1:boolean;
-  file_validation2:boolean;
-  file_validation3:boolean;
+  file_validation1:boolean = true;
+  file_validation2:boolean = true;
+  file_validation3:boolean = true;
   arabic:any = {};
   english:any = {};
   others:any = {};
@@ -45,6 +45,9 @@ export class AssessorsProfileComponent implements OnInit {
   step4DataBodyFormFile:any = new FormData();
   step5DataBodyFormFile:any = new FormData();
   technicalFields:any[] = [];
+  tradeLicensedValidation1:any = false;
+  tradeLicensedValidation2:any = false;
+  tradeLicensedValidation3:any;
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -148,6 +151,10 @@ export class AssessorsProfileComponent implements OnInit {
             this.step2Data.which = step2['which_forum'][0].organization;
             this.step2Data.completeProfileFrom = new Date(step2['which_forum'][0].date_from);
             this.step2Data.completeProfileTill = new Date(step2['which_forum'][0].date_to);
+
+            this.tradeLicensedValidation1 = this.constant.mediaPath+step2.qualification_file;
+            this.tradeLicensedValidation2 = this.constant.mediaPath+step2.specialization_file;
+            this.tradeLicensedValidation3 = this.constant.mediaPath+step2.further_education_file;
           }
           if(res['data'].step3 != '') {
             var step3 = res['data'].step3;
@@ -221,18 +228,22 @@ export class AssessorsProfileComponent implements OnInit {
       // this.step2Data.qualification_degree_file = fileEvent.target.files[0].name;
       this.step2DataBodyFormFile.append('qualification_degree_file',fileEvent.target.files[0]);
       this.file_validation1 = true;
+      this.tradeLicensedValidation1 = true;
       return true;
     }else if(!ex_check && doc_name == 'qualification_degree'){
       this.file_validation1 = false;
+      this.tradeLicensedValidation1 = false;
       return false;
     }
     else if(ex_check && doc_name == 'education_specialization'){
       // this.step2Data.education_specialization_file = fileEvent.target.files[0].name;
       this.step2DataBodyFormFile.append('education_specialization_file',fileEvent.target.files[0]);
       this.file_validation2 = true;
+      this.tradeLicensedValidation2 = true;
       return true;
     }else if(!ex_check && doc_name == 'education_specialization'){
       this.file_validation2 = false;
+      this.tradeLicensedValidation2 = false;
       return false;
     }else if(ex_check && doc_name == 'further_education'){
       // this.step2Data.further_education_file = fileEvent.target.files[0].name;
@@ -295,33 +306,42 @@ export class AssessorsProfileComponent implements OnInit {
   }
 
   onSubmitStep2(ngForm2:any) {
-    if(ngForm2.form.valid) {
-      this.assessorsProfile = {};
-      this.assessorsProfile.step2 = {};
-      
-      this.step2Data.arabic = this.arabic;
-      this.step2Data.english = this.english;
-      this.step2Data.others = this.others;
+    if(this.tradeLicensedValidation1 == false)
+      {
+        this.file_validation1 = false;
+        this.toastr.warning('Please Fill required field','');
+      }else if(this.tradeLicensedValidation2 == false)
+      {
+        this.file_validation2 = false;
+        this.toastr.warning('Please Fill required field','');
+      }
+      else if(ngForm2.form.valid) {
+        this.assessorsProfile = {};
+        this.assessorsProfile.step2 = {};
+        
+        this.step2Data.arabic = this.arabic;
+        this.step2Data.english = this.english;
+        this.step2Data.others = this.others;
 
-      this.assessorsProfile.step2 = this.step2Data;
-      this.assessorsProfile.email = this.userEmail;
-      this.assessorsProfile.userType = this.userType;
+        this.assessorsProfile.step2 = this.step2Data;
+        this.assessorsProfile.email = this.userEmail;
+        this.assessorsProfile.userType = this.userType;
 
-      //console.log(this.assessorsProfile);
-      this.step2DataBodyFormFile.append('data',JSON.stringify(this.assessorsProfile));
-      //console.log(this.step2DataBodyFormFile);
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step2DataBodyFormFile)
-      .subscribe(
-        res => {
-          if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
-            // this.router.navigateByUrl('/sign-in');
-            this.Service.headerStepMove('educational_information',this.headerSteps,'employment');
-          }else{
-            
-            this.toastr.warning(res['msg'], '');
-          }
-        });
+        //console.log(this.assessorsProfile);
+        this.step2DataBodyFormFile.append('data',JSON.stringify(this.assessorsProfile));
+        //console.log(this.step2DataBodyFormFile);
+        this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step2DataBodyFormFile)
+        .subscribe(
+          res => {
+            if(res['status'] == true) {
+              this.toastr.success(res['msg'], '');
+              // this.router.navigateByUrl('/sign-in');
+              this.Service.headerStepMove('educational_information',this.headerSteps,'employment');
+            }else{
+              
+              this.toastr.warning(res['msg'], '');
+            }
+          });
     }else{
       this.toastr.warning('Please Fill required field','');
     }
