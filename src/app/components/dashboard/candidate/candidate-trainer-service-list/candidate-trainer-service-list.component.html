@@ -7,7 +7,13 @@
                 <div class="col-md-8">
                     <flash-messages></flash-messages>
                     <div class="dashbrd-hdr">
-                        <h3>Training Service</h3>
+                        <h3>Training Service</h3><br/>
+                        <!-- (click)="onClickBuy()" -->
+                        <!-- <span class="icon-wallet" [ngStyle]="{'cursor':'pointer'}"></span>
+                        <hr> -->
+                        <!-- <ngx-paypal [config]="payPalConfig"></ngx-paypal> -->
+                        <!-- id="paypal-button" <ion-nav [root]="rootPage"></ion-nav> -->
+                        <!-- <div id="paypal"></div> -->
                     </div>
                 </div>
                 <div class="col-md-4"> 
@@ -144,7 +150,7 @@
                             </tr>
                             <!-- trainerdata.records != undefined && -->
                         <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
-                            <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }">
+                            <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let k=index">
                                 <td>
                                     <!-- {{item.training_course_type}} -->
                                     <span [innerHTML]="(item.training_course_type === 'custom_course') ? 'Custom Course' : 'Public Course'"></span>
@@ -163,6 +169,9 @@
                                         <a href="javascript:void(0)" (click)="openView(courseView, item.id)" title="View" alt="View"><span class="icon-document"></span></a>
                                         <a routerLink="/dashboard/candidate/training-apply/{{item.id}}" title="Edit" alt="Edit"><span class="icon-edit"></span></a>
                                         <a href="javascript:void(0)" (click)="openDelete(item.id)" title="Delete" alt="Delete"><span class="icon-bin"></span></a>
+                                        <ng-container *ngIf="k == 0 || k == 2">
+                                            <span class="icon-wallet" (click)="openPaymentView(paymentView, item.id)"></span>
+                                        </ng-container>
                                     </ng-container>
                                     <ng-container *ngIf="item.training_course_type === 'public_course'"  class="action fnt-clr">
                                         <a href="javascript:void(0)"  (click)="openView(courseView, item.id)"  title="View" alt="View">
@@ -196,24 +205,44 @@
             </div>
         <!-- Modal DELETE -->
         <custom-modal *ngIf="deleteConfirm" (onDeleteAction)="deleteCourse(selectDeleteID)" [parent]="this" [modalType]="'delete'"></custom-modal>
-        
-        <!-- <ng-template #courseDelete let-modal>
-            <div class="modal-header">
-              <h4 class="modal-title" id="modal-basic-title">Delete Confirmation</h4>
-              <button type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body"> 
-                <p>Are you sure?</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-outline-dark" (click)="modalRef.hide()">CANCEL</button>  
-              <button type="button" class="btn btn-outline-dark" (click)="deleteCourse(selectDeleteID)">OK</button>
-            </div>
-          </ng-template> -->
-        <!--  -->
-        
+        <!-- Payment Review Modal -->
+            <ng-template #paymentView let-modal>
+                <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title">Payment Review</h4>
+                <button type="button" class="close" aria-label="Close" (click)="paymentCloseDialog()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body"> 
+                    <ng-container *ngIf="paymentReview != undefined && paymentReview.length > 0">
+                        <p>Review Courses</p><br/>
+                        <ng-container *ngFor="let item of paymentReview">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Course</h5>
+                                </div>
+                                <div class="col-md-6">
+                                    <span [innerHTML]="item.title"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Price</h5>
+                                </div>
+                                <div class="col-md-6">
+                                    <span [innerHTML]="item.price"></span>
+                                </div>
+                            </div>
+                            <hr>
+                            <!-- <p>Course Name: </p>&nbsp;{{item.title}}<br/>
+                            <p>Course Amount: </p>&nbsp;{{item.price}}<br/> -->
+                        </ng-container>
+                        <div id="paypalPayment"></div>
+                    </ng-container>
+                </div>
+                <div class="modal-footer"></div>
+            </ng-template>
+        <!-- Payment Review Modal -->
             <!-- Modal VIEW -->
             <ng-template #courseView let-modal>
                 <div class="modal-header">
@@ -267,6 +296,9 @@
                                 </ng-container>
                             </ng-container>
                         </div>
+                    </div>
+                    <div>
+                        <span (click)="onClickBuy()">Click to payment...</span>
                     </div>
                     </ng-container>
                 </div>

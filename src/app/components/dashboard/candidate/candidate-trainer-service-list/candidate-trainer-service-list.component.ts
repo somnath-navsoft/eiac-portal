@@ -1,21 +1,5 @@
-/*
-import { Component, OnInit } from '@angular/core';
 
-@Component({
-  selector: 'app-candidate-trainer-service-list',
-  templateUrl: './candidate-trainer-service-list.component.html',
-  styleUrls: ['./candidate-trainer-service-list.component.scss']
-})
-export class CandidateTrainerServiceListComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-}
-*/
-import { Component, OnInit, OnDestroy, TemplateRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, TemplateRef, ViewChild, ElementRef } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { AppService } from '../../../../services/app.service';
@@ -29,7 +13,15 @@ import { TrainerModel} from '../../../../models/trainer';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import {CustomModalComponent} from '../../../utility/custom-modal/custom-modal.component';
+import {
+  IPayPalConfig,
+  ICreateOrderRequest 
+} from 'ngx-paypal';
 
+import {StripeCheckoutLoader, StripeCheckoutHandler, IStripeCheckoutOptions} from 'ng-stripe-checkout';
+
+
+declare let paypal: any;
 @Component({ 
   selector: 'app-candidate-trainer-service-list',
   templateUrl: './candidate-trainer-service-list.component.html',
@@ -73,8 +65,19 @@ export class CandidateTrainerServiceListComponent implements OnInit, OnDestroy {
   selectDeleteID: number =0;
 
   deleteConfirm: boolean = false;
+  public payPalConfig ? : IPayPalConfig;
+  //private stripeCheckoutHandler: StripeCheckoutHandler;
+  paymentReview: any[] = [];
+  selectCourses: any = [];
+  transactions: any[] =[];
+  transactionsItem: any={};
 
+  totalVal: any =1.00;
+
+  @ViewChild('paypal', { static: true }) paypalElement: ElementRef;
+  //private stripeCheckoutLoader: StripeCheckoutLoader,
   constructor(private store: Store<TrainerState>, private _service: AppService, private _constant: Constants,
+    
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent,
     private modalRefService: BsModalService) { 
     this.store.dispatch(new Listing({}));
@@ -83,6 +86,343 @@ export class CandidateTrainerServiceListComponent implements OnInit, OnDestroy {
       backdropClass:'customBackdrop'
     }
   } 
+
+  private loadExternalScript(scriptUrl: string) {
+    return new Promise((resolve, reject) => {
+      const scriptElement = document.createElement('script')
+      scriptElement.src = scriptUrl
+      scriptElement.onload = resolve
+      //console.log("load script...");
+      document.body.appendChild(scriptElement)
+  })
+}
+
+ngAfterViewInit(): void {
+  //Aa_cAg0C6jOVqGZNIBKbOvQHoeDf65clD6LOx-ueefdSMjtdA05nGSNp7qlITU46I4e_UHFOq55SihSS
+  //----abhishek.das@navsoft.in
+  //----AaradqmTEUZmA70-KmyJ4hDka2Ed1OVWiwMcD3Vb2MzN-OFWD0kc34uUx1xzfPqk2aEY7_fvc5Zi5AlL
+  //Ac8bEfv_0vym_lRhTt37A3pbc6Kbr2JXUknS_x7TO6wOGVKKbqpgVhn9xgNdq2S3vtcQEqvY4NJvLVYs
+  //------------------
+  //---das.abhishek77@gmail.com
+  //---AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl
+  //https://www.paypalobjects.com/api/checkout.js
+  
+  let url ='https://www.paypalobjects.com/api/checkout.js';
+  //this.loadExternalScript(url);
+
+  /*
+  this.loadExternalScript("https://www.paypalobjects.com/api/checkout.js").then(() => {
+      paypal.Button.render({
+        env: 'sandbox',
+        client: {
+          sandbox: 'AbP1IN2Lh73n4OhEnK9Uo1HH5PnzRjGtCHe-Us_8qOaa6YWHmSYjERJz6pgiAaRgEf7-pHDYo8PgA-xv'
+        },
+        commit: true,
+        payment: function (data, actions) {
+          console.log(">>> paymen: ", data, " -- ", actions)
+          return actions.payment.create({
+            payment: {
+              transactions: [
+                {
+                  amount: { total: '1.00', currency: 'INR' }
+                }
+              ]
+            }
+          })
+        },
+        onAuthorize: function(data, actions) {
+          console.log(">>> onAuthorize: ", data, " -- ", actions)
+          return actions.payment.execute().then(function(payment) {
+            // TODO
+          })
+        }
+      }, '#paypal-button');
+    });
+    */
+  
+
+
+  //https://www.paypalobjects.com/api/checkout.js
+
+  // if(this.paymentReview.length){
+
+  //   this.loadExternalScript("https://www.paypalobjects.com/api/checkout.js").then(() => {
+  //   paypal.Button.render({
+  //     env: 'sandbox',
+  //     client: {
+  //       sandbox: 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
+  //     },
+  //     commit: true,
+  //     payment: function (data, actions) {
+  //       console.log("@Paypal payment actionms: ", actions, " -- ", data);
+  //       return actions.payment.create({
+  //         payment: {
+  //           transactions: [
+  //             {
+  //               amount: { "total": "3.00", currency: 'USD',
+  //               "details": {
+  //                 "subtotal": "3.00",
+  //               } 
+  //             },
+  //               item_list: {
+  //                 items: [
+  //                   {
+  //                   "name": "Course 1",
+  //                   "description": "Calibration Laboratories",
+  //                   "quantity": "1",
+  //                   "price": "1",                    
+  //                   "currency": "USD"
+  //                   },
+  //                   {
+  //                     "name": "Course 2",
+  //                     "description": "Inspection Bodies",
+  //                     "quantity": "1",
+  //                     "price": "2",                      
+  //                     "currency": "USD"
+  //                     }                    
+  //                 ]                
+  //               }
+  //             }
+  //           ]
+  //         }
+  //       })
+  //     },
+  //     onAuthorize: function(data, actions) {
+  //       console.log("@Paypal onAuthorize actionms: ", actions, " -- ", data);
+  //       return actions.payment.execute().then(function(payment) {
+  //         // TODO
+  //         console.log(">>>Success: ", payment);
+  //       })
+  //     },
+  //     onCancel: (data, actions) => {
+  //       console.log('OnCancel', data, actions);
+  //       //this.showCancel = true;
+
+  //   },
+  //   onError: err => {
+  //       console.log('OnError', err);
+  //       //this.showError = true;
+  //   },
+  //   onClick: (data, actions) => {
+  //       console.log('onClick', data, actions);
+  //       //this.resetStatus();
+  //   },
+  //   }, '#paypalPayment');
+  // });
+  // }
+ 
+//  this.stripeCheckoutLoader.createHandler({
+//     key: 'pk_test_51HHqRNJ6ZMl7d4yhsXNcoo6GhSWI5Ui23ajjeq4UUinTknogJsa9uLosfaW6MRQyEAjkwlgsxAxe0T3FvhstNT6r00QckjHaxZ',
+//     // token: (token) => {
+//     //     // Do something with the token...
+//     //     console.log('Payment successful!', token);
+//     // },
+//   }).then((handler: StripeCheckoutHandler) => {
+//     //console.log("Exceptions :", handler);
+//     this.stripeCheckoutHandler = handler;
+//   });
+}
+paymentCloseDialog(){
+  //console.log("@payment dialog close....");
+  this.paymentReview = [];
+  this.modalService.dismissAll();
+}
+
+createPaymentButton(itemData: any){
+  //console.log("creating....buttons...", this.paymentReview, " :: ", this.paymentReview.length, " -- ",this.transactionsItem, " --- ", this.transactions);
+  /*
+  transactions: [
+              {
+                amount: { "total": "0.10", currency: 'USD',
+                        "details": {
+                          "subtotal": "0.10",
+                        } 
+                },
+                item_list: {
+                  items: [
+                    {
+                    "name": "Course 1",
+                    "description": "Calibration Laboratories",
+                    "quantity": "1",
+                    "price": "0.05",                    
+                    "currency": "USD"
+                    },
+                    {
+                      "name": "Course 2",
+                      "description": "Inspection Bodies",
+                      "quantity": "1",
+                      "price": "0.05",                      
+                      "currency": "USD"
+                      }                    
+                  ]                
+                }
+              }
+            ]
+  */
+ //AQaHF_liOK0SQfGII9rnE1UFmesqFzoLVpFzdOEcOjLAyl4A6omCL6yeto0JLDGnOiQijjirk9tG9BAq = abhishek.navsoft@gmail.com
+ //AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl = das.abhishek77@gmail.com
+ //Get transaction ID - https://developer.paypal.com/docs/checkout/reference/server-integration/get-transaction/#on-the-server
+  if(this.paymentReview.length){
+    this.loadExternalScript("https://www.paypalobjects.com/api/checkout.js").then(() => {
+    paypal.Button.render({
+      env: 'sandbox',
+      client: {
+        sandbox: 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
+      },
+      commit: true,
+      payment: function (data, actions) {
+        console.log("@Paypal payment actionms: ", actions, " -- ", data, " --- ", itemData);        
+        // const paymentId = actions.payment.create({
+        //   transactions: [itemData]
+        // })
+        // paymentId.then((res) => {
+        //   console.log("Payment Processed")
+        // }).catch((err) => {
+        //     console.error("Payment Error")
+        // });
+        // return paymentId;
+
+        return actions.payment.create({
+          payment: {
+            transactions: [itemData]
+          }
+        })
+      },
+      onAuthorize: function(data, actions) {
+        console.log("@Paypal onAuthorize actionms: ", actions, " -- ", data);
+        return actions.payment.execute().then(function(payment) {
+          // TODO
+          console.log(">>>Success: ", payment);
+        })
+      },
+      onCancel: (data, actions) => {
+        console.log('OnCancel', data, actions);
+        //this.showCancel = true;
+
+    },
+    onError: err => {
+        console.log('OnError', err);
+        //this.showError = true;
+    },
+    onClick: (data, actions) => {
+        console.log('onClick', data, actions);
+        //this.resetStatus();
+    },
+    }, '#paypalPayment');
+  });
+  }
+}
+
+getAllCourse(){
+  this.subscriptions.push(this._trainerService.getTrainerCourseAll()
+     .subscribe(
+        result => {
+          let data: any = result;
+          this.selectCourses = data.records;
+          console.log(">>>>course: ", this.selectCourses);
+        }
+     ))
+}
+
+openPaymentView(content, id){
+  if(id){     
+
+    //PAYPAL Checkout Items Configure
+    //declare amount key
+    this.transactionsItem['amount'] = {};
+    this.transactionsItem['amount']['total'] = 0.00;
+    this.transactionsItem['amount']['currency'] = 'USD';
+    this.transactionsItem['amount']['details'] = {};
+    this.transactionsItem['amount']['details']['subtotal'] = 0.00;
+    //declare Items data
+    this.transactionsItem['item_list'] = {};
+    this.transactionsItem['item_list']['items'] = [];
+
+    //PAYPAL Checkout Items Configure
+
+
+    this.subscriptions.push(this._trainerService.getTrainerCourseByID(id)
+        .subscribe(
+           result => {
+             let data: any = result;
+             let calcPrice: any= 0.00;
+              if(data != undefined && data.records != undefined){
+                console.log(">>>get data: ", data.records);
+                if(data.records.customCourseListDetails != undefined && data.records.customCourseListDetails.length){
+                  data.records.customCourseListDetails.forEach(rec => {
+                    console.log("@get course: ", rec);
+                    let findData = this.selectCourses.find(item => item.id == rec.id);
+                    if(findData){
+                      let price = 0.05;
+                      this.transactionsItem['item_list']['items'].push({name: findData.courseDetails, quantity: 1, price: 0.05, currency: 'USD'});
+                      calcPrice+= price;
+                      this.paymentReview.push({title: findData.courseDetails , price: findData.fees_per_trainee})
+                    }
+                  })
+                  if(calcPrice > 0){
+                      //console.log("Calculate price: ", calcPrice);
+                      this.transactionsItem['amount']['total'] = calcPrice.toFixed(2);
+                      this.transactionsItem['amount']['details']['subtotal'] = calcPrice.toFixed(2);
+                      this.transactions.push(this.transactionsItem);
+                      //console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
+                  }
+                }
+                //this.paymentReview.push(data.records);
+                //console.log(">>>review: ", this.paymentReview, " :: ");
+                setTimeout(() => {
+                  this.createPaymentButton(this.transactionsItem);
+                }, 100)
+                
+              }
+           },
+           error => {
+            if(error != undefined && typeof error === 'object'){
+             this.modalService.dismissAll();
+            }
+          },
+          () => {
+            this.modalService.open(content, this.modalOptions).result.then((result) => {
+              this.closeResult = `Closed with: ${result}`;
+              //console.log("Closed: ", this.closeResult);
+              this.courseViewData['courseDuration'] = '';
+              this.courseViewData['courseFees'] = '';
+            }, (reason) => {
+              this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+            });
+          }
+        )
+    );
+  }
+}
+
+// public onClickBuy() {
+//   console.log("onClickBuy :");
+//   this.stripeCheckoutHandler.open({
+//     amount: 2,
+//     currency: 'INR',
+//     description: "Course Payment",
+//     name:''
+// }).then((token) => {
+//     // Do something with the token...
+//     console.log('Payment successful!', token);
+// }).catch((err) => {
+//     // Payment failed or was canceled by user...
+//     if (err !== 'stripe_closed') {
+//         console.log("Payment Error: ", err);
+//         throw err;
+//     }
+// });
+//   // this.stripeCheckoutHandler.open({
+//   //     amount: 1.00,
+//   //     currency: 'INR',
+//   // });
+// }
+
+// public onClickCancel() {
+//   console.log("onClickCancel :");
+//   // If the window has been opened, this is how you can close it:
+//   this.stripeCheckoutHandler.close();
+// }
 
 
   //Delete Course
@@ -191,8 +531,125 @@ export class CandidateTrainerServiceListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
      this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
+  //AbP1IN2Lh73n4OhEnK9Uo1HH5PnzRjGtCHe-Us_8qOaa6YWHmSYjERJz6pgiAaRgEf7-pHDYo8PgA-xv - abhishek.das@navsoft.in
+  //AW9aM0m3mC6WOAAmMFpTS9UVhnqKPqg8r7Gdi5hYUjg1Rt6v969mTPU_X1oIw5apJEXaEkcfQb3YfgpV - abhishek.navsoft@gmail.com
+  //Acl1AWWet2z5VxLDkSc9jp4HGUDn5XINrJC1o9wgn121b_8nlUG-KdbDUvyfb1NJ6-Rdg9-sMc_YXrKO - abhishek.das.navsoft@gmail.com
+  private initConfig(): void {
+    this.payPalConfig = {
+        currency: 'INR',
+        clientId: 'Acl1AWWet2z5VxLDkSc9jp4HGUDn5XINrJC1o9wgn121b_8nlUG-KdbDUvyfb1NJ6-Rdg9-sMc_YXrKO',
+        
+        // createOrderOnClient: (data) => < ICreateOrderRequest > {
+        //   intent: 'CAPTURE',
+        //   purchase_units: [{
+        //     amount: {
+        //       currency_code: 'INR',
+        //       value: '1.00',
+        //     },
+        //     items: [{
+        //       name: 'Course Payment',
+        //       quantity: '1'
+        //   }]
+        //   }]
+        // },
+        onApprove: (data, actions) => {
+            console.log('onApprove - transaction was approved, but not authorized', data, actions);
+            actions.order.get().then(details => {
+                console.log('onApprove - you can get full order details inside onApprove: ', details);
+            });
+
+        },
+        onClientAuthorization: (data) => {
+            console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
+            //this.showSuccess = true;
+        },
+        onCancel: (data, actions) => {
+            console.log('OnCancel', data, actions);
+            //this.showCancel = true;
+
+        },
+        onError: err => {
+            console.log('OnError', err);
+            //this.showError = true;
+        },
+        onClick: (data, actions) => {
+            console.log('onClick', data, actions);
+            //this.resetStatus();
+        },
+    };
+}
 
   ngOnInit() {
+    //this.initConfig();
+    //return;
+
+
+    
+    
+    setTimeout(() => {
+      // this.paypal.Button.render({
+      //   env: 'sandbox',
+      //   client: {
+      //     sandbox: 'Acl1AWWet2z5VxLDkSc9jp4HGUDn5XINrJC1o9wgn121b_8nlUG-KdbDUvyfb1NJ6-Rdg9-sMc_YXrKO'
+      //   },
+      //   commit: true,
+      //   payment: function (data, actions) {
+      //     console.log("@Paypal payment actionms: ", actions, " -- ", data);
+      //     return actions.payment.create({
+      //       payment: {
+      //         transactions: [
+      //           {
+      //             amount: { total: '1.00', currency: 'INR' }
+      //           }
+      //         ]
+      //       }
+      //     })
+      //   },
+      //   onAuthorize: function(data, actions) {
+      //     console.log("@Paypal onAuthorize actionms: ", actions, " -- ", data);
+      //     return actions.payment.execute().then(function(payment) {
+      //       // TODO
+      //     })
+      //   }
+      // }, '#paypal');
+    }, 100)
+    
+    /*
+    setTimeout(() => {
+      console.log('eee');
+      paypal
+      .Buttons({
+        createOrder: (data, actions) => {
+          return actions.order.create({
+            purchase_units: [
+              {
+                description: 'Test Course',
+                amount: {
+                  currency_code: 'INR',
+                  value: '1.00'
+                }
+              }
+            ]
+          });
+        },
+        onApprove: async (data, actions) => {
+          const order = await actions.order.capture();
+          //this.paidFor = true;
+          console.log("Approve: ",order);
+        },
+        onError: err => {
+          console.log("Error: ",err);
+        }
+      })
+      .render(this.paypalElement.nativeElement);
+    }, 100)
+    */
+    
+
+    
+
+
+    /////////////////////////////////
     this.getTrainerCourse = this.store.select(selectTrainerList);
     this.curSortDir['training_course_type']   = false;
     this.curSortDir['course_code']            = false;
@@ -211,7 +668,7 @@ export class CandidateTrainerServiceListComponent implements OnInit, OnDestroy {
     //this.courseViewData['courseDuration'] = '';
     this.courseViewData['courseFees'] = '';
     this.courseViewData['courseID'] = 0;
-
+    this.getAllCourse();
     //Get params
     this.loadPageData();
   }
