@@ -268,9 +268,9 @@
                                                 <input matInput name="trade_license_number" [(ngModel)]="step1Data.trade_license_number" placeholder="Trade License Number" required>
                                             </mat-form-field>
                                             <span class="fileupload">
-                                                <input type="file" name="trade_license" [(ngModel)]="fileAny" (change)="validateFile($event)" required>
+                                                <input type="file" name="trade_license" [(ngModel)]="fileAny" (change)="validateFile($event)">
                                                 <span class="icon-attach attach-data"></span>
-                                            </span>
+                                            </span><a *ngIf="tradeLicensedValidation != false" target="_blank" routerLink="{{tradeLicensedValidation}}" href="javascript:void(0)">Link</a>
                                             <p class="error" *ngIf="!file_validation">Please Upload a valid file (ex: pdf,png)</p>
                                             {{step1Data.trade_license}}
                                         </div>
@@ -437,7 +437,7 @@
                                     <div class="col-12"> 
                                         <div class="add-new">
                                             <a  href="javascript:void(0)" (click)="addRow(nameOftheOwner)">
-                                                <span class="icon-add"></span>
+                                                <span class="icon-add-round"></span>
                                                 <span>ADD NEW</span>
                                             </a>
                                         </div>
@@ -543,7 +543,7 @@
                                     <div class="col-12">
                                         <div class="add-new">
                                             <a  href="javascript:void(0)" (click)="addRow(companyBodMembers)">
-                                                <span class="icon-add"></span>
+                                                <span class="icon-add-round"></span>
                                                 <span>ADD NEW</span>
                                             </a>
                                         </div>

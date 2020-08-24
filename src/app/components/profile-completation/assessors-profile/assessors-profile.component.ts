@@ -36,8 +36,15 @@ export class AssessorsProfileComponent implements OnInit {
   userEmail:any;
   userType:any;
   isCompleteness:any;
+  headerSteps:any[] = [];
+  progressValue:any;
 
+  step1DataBodyFormFile: any = new FormData();
   step2DataBodyFormFile: any = new FormData();
+  step3DataBodyFormFile:any = new FormData();
+  step4DataBodyFormFile:any = new FormData();
+  step5DataBodyFormFile:any = new FormData();
+  technicalFields:any[] = [];
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -48,12 +55,138 @@ export class AssessorsProfileComponent implements OnInit {
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
 
+    this.headerSteps.push(
+      {
+      title:'personal_details', desc:'1. Personal <br> Details', activeStep:true, stepComp:true, active:'user-done', nextStep:'educational_information'
+      },
+      {
+      title:'educational_information', desc:'2. Educational <br> Information', activeStep:false, stepComp:false, active:'', nextStep:'employment'
+      },
+      {
+      title:'employment', desc:'3. Employment', activeStep:false, stepComp:false, active:'', nextStep:'knowledge_experience'
+      },
+      {
+      title:'knowledge_experience', desc:'4. Knowledge <br> And Experience', activeStep:false, stepComp:false, active:'', nextStep:'applicant_trainer'
+      },
+      {
+      title:'applicant_trainer', desc:'5. Applicant <br> Trainer', activeStep:false, stepComp:false, active:'', nextStep:null
+      }
+    );
+
     this.step3Data.list_auditor = '1' ;
     this.step3Data.attend_accreditation = '1' ;
     this.step3Data.attend_accreditation2 = '1' ;
     this.step3Data.practical_assessment_experience = '1' ;
 
     this.loadknowledgeExperience();
+    this.loadStepsData();
+  }
+
+  loadStepsData() {
+    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail)
+    .subscribe(
+      res => {
+        // console.log(res['data'],'data');
+        if(res['status'] == true) {
+          
+          this.step1Data.first_name = res['data']['user_data'][0].first_name;
+          this.step1Data.last_name = res['data']['user_data'][0].last_name;
+          this.step1Data.personal_email = res['data']['user_data'][0].email;
+
+          this.technicalFields = res['data'].technical_field;
+
+          if(res['data'].step1) {
+            this.progressValue = 22;
+          }if(res['data'].step1 && res['data'].step2) {
+            this.progressValue = 44;
+          }if(res['data'].step1 && res['data'].step2 && res['data'].step3) {
+            this.progressValue = 66;
+          }if(res['data'].step1 && res['data'].step2 && res['data'].step3 && res['data'].step4) {
+            this.progressValue = 88;
+          }if(res['data'].step1 && res['data'].step2 && res['data'].step3 && res['data'].step4 && res['data'].step5) {
+            this.progressValue = 100;
+          }
+
+          if(res['data'].step1 != '') {
+            var step1 = res['data'].step1[0];
+            this.step1Data.office_email = step1.office_email;
+            this.step1Data.date_of_birth = step1.dob;
+            this.step1Data.mailing_address = step1.mailing_address;
+            // this.step1Data.phone_with_area = step1.first_name;
+            this.step1Data.fax_with_area = step1.fax_no;
+            this.step1Data.office_institution = step1.office;
+            this.step1Data.designation = step1.designation;
+            this.step1Data.office_address = step1.office_address;
+            this.step1Data.officephone_with_area = step1.office_tel_no;
+            this.step1Data.officefax_with_area = step1.office_fax_no;
+          }
+          if(res['data'].step2 != '') {
+            var step2 = res['data'].step2;
+
+            var language = step2['language'];
+            for(let key in language)
+            {
+              if(language[key].language == 'arabic')
+              {
+                this.arabic = language[key];
+              }
+              if(language[key].language == 'english')
+              {
+                this.english = language[key];
+              }
+              if(language[key].language == 'others')
+              {
+                this.others = language[key];
+              }
+            }
+
+            this.step2Data.qualification_degree = step2['education'][0].detail;
+            this.step2Data.university_college = step2['education'][0].organization;
+            this.step2Data.education_specialization = step2['education'][0].specialization;
+            this.step2Data.further_education = step2['further_education'][0].detail;
+            this.step2Data.others = step2['others_education'][0].detail;
+            this.step2Data.which = step2['which_forum'][0].organization;
+            this.step2Data.completeProfileFrom = new Date(step2['which_forum'][0].date_from);
+            this.step2Data.completeProfileTill = new Date(step2['which_forum'][0].date_to);
+          }
+          if(res['data'].step3 != '') {
+            var step3 = res['data'].step3;
+            this.step3Data.list_auditor = step3.experience_1 != '' ? '1' : '0';
+            this.list_auditor = step3.experience_1;
+
+            this.step3Data.attend_accreditation = step3.experience_2 != '' ? '1' : '0';
+            this.attend_accreditation = step3.experience_2;
+
+            this.step3Data.attend_accreditation2 = step3.experience_3 != '' ? '1' : '0';
+            this.attend_accreditation2 = step3.experience_3;
+
+            this.step3Data.practical_assessment_experience = step3.experience_4 != '' ? '1' : '0';
+            this.practical_assessment_experience = step3.experience_4;
+          }
+          if(res['data'].step4 != '') {
+            // console.log(res['data'].technical_field);
+            var step4 = res['data'].step4;
+            // console.log(step4['technical_experience'],'step5');
+            for(let key in step4['technical_experience']) {
+              this.technicalFields.forEach(res => {
+                for(let nxtkey in res['technical_fields']) {
+                  if(key == res['technical_fields'][nxtkey].field_mgmt) {
+                    res['technical_fields'][nxtkey].knowledge_experienced = step4['technical_experience'][key];
+                  }
+                }
+              });
+            }
+            // console.log(this.technicalFields,'step5');
+          }
+          if(res['data'].step5 != '') {
+            var step5 = res['data'].step5[0];
+            this.step5Data.confirm_box = step5.status;
+            this.step5Data.place = step5.place;
+            this.step5Data.digital_signature = step5.signature;
+            this.step5Data.date = new Date(step5.date);
+          }
+        }
+      });
   }
 
   loadknowledgeExperience() {
@@ -85,8 +218,8 @@ export class AssessorsProfileComponent implements OnInit {
     var ex_type = ['pdf','png'];
     var ex_check = this.Service.isInArray(file_exe,ex_type);
     if(ex_check && doc_name == 'qualification_degree'){
-      this.step2Data.qualification_degree_file = fileEvent.target.files[0].name;
-      this.step2DataBodyFormFile.append('qualification_degree',fileEvent.target.files[0]);
+      // this.step2Data.qualification_degree_file = fileEvent.target.files[0].name;
+      this.step2DataBodyFormFile.append('qualification_degree_file',fileEvent.target.files[0]);
       this.file_validation1 = true;
       return true;
     }else if(!ex_check && doc_name == 'qualification_degree'){
@@ -94,16 +227,16 @@ export class AssessorsProfileComponent implements OnInit {
       return false;
     }
     else if(ex_check && doc_name == 'education_specialization'){
-      this.step2Data.education_specialization_file = fileEvent.target.files[0].name;
-      this.step2DataBodyFormFile.append('education_specialization',fileEvent.target.files[0]);
+      // this.step2Data.education_specialization_file = fileEvent.target.files[0].name;
+      this.step2DataBodyFormFile.append('education_specialization_file',fileEvent.target.files[0]);
       this.file_validation2 = true;
       return true;
     }else if(!ex_check && doc_name == 'education_specialization'){
       this.file_validation2 = false;
       return false;
     }else if(ex_check && doc_name == 'further_education'){
-      this.step2Data.further_education_file = fileEvent.target.files[0].name;
-      this.step2DataBodyFormFile.append('further_education',fileEvent.target.files[0]);
+      // this.step2Data.further_education_file = fileEvent.target.files[0].name;
+      this.step2DataBodyFormFile.append('further_education_file',fileEvent.target.files[0]);
       this.file_validation3 = true;
       return true;
     }else if(!ex_check && doc_name == 'further_education'){
@@ -135,8 +268,26 @@ export class AssessorsProfileComponent implements OnInit {
 
   onSubmitStep1(ngForm1:any) {
     if(ngForm1.form.valid) {
+      this.assessorsProfile.step1 = {};
+      this.assessorsProfile.email = this.userEmail;
+      this.assessorsProfile.userType = this.userType;
       this.assessorsProfile.step1 = this.step1Data;
       //console.log(this.assessorsProfile);
+
+      this.step1DataBodyFormFile.append('data',JSON.stringify(this.assessorsProfile));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step1DataBodyFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.headerStepMove('personal_details',this.headerSteps,'educational_information');
+            // this.router.navigateByUrl('/sign-in');
+          }else{
+            
+            this.toastr.warning(res['msg'], '');
+          }
+        });
       this.stepper.next();
     }else{
       this.toastr.warning('Please Fill required field','');
@@ -153,10 +304,24 @@ export class AssessorsProfileComponent implements OnInit {
       this.step2Data.others = this.others;
 
       this.assessorsProfile.step2 = this.step2Data;
+      this.assessorsProfile.email = this.userEmail;
+      this.assessorsProfile.userType = this.userType;
 
       //console.log(this.assessorsProfile);
       this.step2DataBodyFormFile.append('data',JSON.stringify(this.assessorsProfile));
       //console.log(this.step2DataBodyFormFile);
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step2DataBodyFormFile)
+      .subscribe(
+        res => {
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            // this.router.navigateByUrl('/sign-in');
+            this.Service.headerStepMove('educational_information',this.headerSteps,'employment');
+          }else{
+            
+            this.toastr.warning(res['msg'], '');
+          }
+        });
     }else{
       this.toastr.warning('Please Fill required field','');
     }
@@ -167,6 +332,8 @@ export class AssessorsProfileComponent implements OnInit {
       this.assessorsProfile = {};
       this.assessorsProfile.step3 = {};
       this.assessorsProfile.step3 = this.step3Data;
+      this.assessorsProfile.email = this.userEmail;
+      this.assessorsProfile.userType = this.userType;
 
       this.assessorsProfile.step3['list_auditorArr'] = [];
       this.assessorsProfile.step3['attend_accreditationArr'] = [];
@@ -174,18 +341,32 @@ export class AssessorsProfileComponent implements OnInit {
       this.assessorsProfile.step3['practical_assessment_experienceArr'] = [];
       
       if(this.list_auditor){
-        this.assessorsProfile.step3['list_auditorArr'].push(this.list_auditor);
+        this.assessorsProfile.step3['list_auditorArr'] = this.list_auditor;
       }
       if(this.attend_accreditation){
-        this.assessorsProfile.step3['attend_accreditationArr'].push(this.attend_accreditation);
+        this.assessorsProfile.step3['attend_accreditationArr'] = this.attend_accreditation;
       }
       if(this.attend_accreditation2){
-        this.assessorsProfile.step3['attend_accreditation2Arr'].push(this.attend_accreditation2);
+        this.assessorsProfile.step3['attend_accreditation2Arr'] = this.attend_accreditation2;
       }
       if(this.practical_assessment_experience){
-        this.assessorsProfile.step3['practical_assessment_experienceArr'].push(this.practical_assessment_experience);
+        this.assessorsProfile.step3['practical_assessment_experienceArr'] = this.practical_assessment_experience;
       }
 
+      this.step3DataBodyFormFile.append('data',JSON.stringify(this.assessorsProfile));
+      //console.log(this.step2DataBodyFormFile);
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step3DataBodyFormFile)
+      .subscribe(
+        res => {
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            // this.router.navigateByUrl('/sign-in');
+            this.Service.headerStepMove('employment',this.headerSteps,'knowledge_experience');
+          }else{
+            
+            this.toastr.warning(res['msg'], '');
+          }
+        });
       //console.log(this.assessorsProfile);
     }else{
       this.toastr.warning('Please Fill required field','');
@@ -195,17 +376,52 @@ export class AssessorsProfileComponent implements OnInit {
   onSubmitStep4(ngForm4:any) {
     // //console.log(this.schemeSlideData,'schemeSlideData');
     // schemeMainData
-    var blankArr = {};
-    this.schemeSlideData.forEach((res,key) => {
-      
-      if(res['knowledge_experienced'] && res['knowledge_experienced'] != ''){
-        var key1 = res.id;
-        var value = res['knowledge_experienced'];
-        blankArr[key1] = value;
+    if(ngForm4.form.valid) {
+
+        this.assessorsProfile = {};
+        this.assessorsProfile.step4 = {};
+        this.assessorsProfile.email = this.userEmail;
+        this.assessorsProfile.userType = this.userType;
+
+        this.assessorsProfile.step4['technical_experience'] = [];
+
+        var blankArr = {};
+        // primaryJson['course'] = [];
+        this.technicalFields.forEach((res,key) => {
+          for(let key2 in res['technical_fields']){
+            // console.log(res['technical_fields'][key2],'knowledge_experienced');
+            if(res['technical_fields'][key2].knowledge_experienced && res['technical_fields'][key2].knowledge_experienced != ''){
+              var key1 = res['technical_fields'][key2].field_mgmt;
+              var value = res['technical_fields'][key2]['knowledge_experienced'];
+              
+              blankArr[key1] = value;
+              
+            }
+            this.assessorsProfile.step4['technical_experience'] = blankArr;
+            
+          }
+        });
+        // console.log(this.technicalFields,'technicalFields');
+
+        this.step4DataBodyFormFile.append('data',JSON.stringify(this.assessorsProfile));
+        //console.log(this.step2DataBodyFormFile);
+        this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step4DataBodyFormFile)
+        .subscribe(
+          res => {
+            if(res['status'] == true) {
+              this.toastr.success(res['msg'], '');
+              // this.router.navigateByUrl('/sign-in');
+              this.Service.headerStepMove('employment',this.headerSteps,'knowledge_experience');
+            }else{
+              
+              this.toastr.warning(res['msg'], '');
+            }
+          });
+        // this.Service.headerStepMove('knowledge_experience',this.headerSteps,'applicant_trainer');
         
+      }else{
+        this.toastr.warning('Please Fill required field','');
       }
-    });
-    //console.log(blankArr);
 
     // this.schemeSlideData.find(res => res['knowledge_experienced'] != '' );
   }
@@ -219,6 +435,21 @@ export class AssessorsProfileComponent implements OnInit {
         this.assessorsProfile = {};
         this.assessorsProfile.step5 = this.step5Data;
         //console.log(this.assessorsProfile);
+
+        this.assessorsProfile.email = this.userEmail;
+        this.assessorsProfile.userType = this.userType;
+        this.step5DataBodyFormFile.append('data',JSON.stringify(this.assessorsProfile));
+        this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step5DataBodyFormFile)
+        .subscribe(
+          res => {
+            if(res['status'] == true) {
+              this.toastr.success(res['msg'], '');
+              // this.router.navigateByUrl('/sign-in');
+            }else{
+              
+              this.toastr.warning(res['msg'], '');
+            }
+          });
       }
     }else{
       this.toastr.warning('Please Fill required field','');

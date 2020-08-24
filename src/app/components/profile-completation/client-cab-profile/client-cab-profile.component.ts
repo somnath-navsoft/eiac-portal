@@ -35,6 +35,7 @@ export class ClientCabProfileComponent implements OnInit {
   fileType:File;
   fileAny:any;
   isCompleteness:any;
+  tradeLicensedValidation:any = false;
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -74,9 +75,9 @@ export class ClientCabProfileComponent implements OnInit {
           this.step1Data.last_name = res['data']['user_data'][0].last_name;
           this.step1Data.personal_email = res['data']['user_data'][0].email;
 
-          if(res['data'].step1) {
+          if(res['data'].step1[0].designation) {
             this.progressValue = 50;
-          }if(res['data'].step1 && res['data'].step2) {
+          }if(res['data'].step1[0].designation && res['data'].step2[0].designation) {
             this.progressValue = 100;
           }
           
@@ -108,6 +109,7 @@ export class ClientCabProfileComponent implements OnInit {
             this.step1Data.date_of_birth = new Date(step1.dob);
             // this.fileType = this.constant.mediaPath+step1.trade_license;
             // this.step1Data.trade_license = this.constant.mediaPath+step1.trade_license;
+            this.tradeLicensedValidation = this.constant.mediaPath+step1.trade_license;
             this.step1Data.phone_with_area = step1.tel_no;
             this.step1Data.fax_with_area = step1.fax_no;
             this.step1Data.office_email = step1.official_email;
@@ -166,12 +168,12 @@ export class ClientCabProfileComponent implements OnInit {
 
   onSubmitStep1(ngForm1) {
     // //console.log(this.clientCabForm);
-    if(ngForm1.form.valid) {
+    if(ngForm1.form.valid && this.tradeLicensedValidation != false) {
       // this.clientCabFormFile.append('data',JSON.stringify(this.clientCabForm));
       this.clientCabForm.step1 = {};
       this.clientCabForm.email = this.userEmail;
       this.clientCabForm.userType = this.userType;
-      this.clientCabForm.step1.first_name = this.step1Data.cab_profile_title+" "+this.step1Data.first_name;
+      // this.clientCabForm.step1.first_name = this.step1Data.cab_profile_title+" "+this.step1Data.first_name;
       // this.step1Data.city = 'mumbai';
       // this.step1Data.officephone_with_area = '7867667768876876';
       // this.step1Data.officefax_with_area = '7867667768876876';
@@ -192,7 +194,11 @@ export class ClientCabProfileComponent implements OnInit {
             }
           });
       // this.stepper.next();
-    }else{
+    }else if(ngForm1.form.valid && this.tradeLicensedValidation == false) {
+      this.file_validation = false;
+      this.toastr.warning('Please Fill required field','');
+    }
+    else {
       this.toastr.warning('Please Fill required field','');
     }
   }
@@ -205,9 +211,11 @@ export class ClientCabProfileComponent implements OnInit {
     if(ex_check){
       this.step1DataBodyFormFile.append('trade_license',fileEvent.target.files[0]);
       this.file_validation = true;
+      this.tradeLicensedValidation = true;
       return true;
     }else{
       this.file_validation = false;
+      this.tradeLicensedValidation = false;
     }
   }
 

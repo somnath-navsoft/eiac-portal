@@ -68,18 +68,20 @@ export class AuthEffects {
       // console.log(authUserData,'authUserData');
       this.router.navigateByUrl('/sign-in');
       sessionStorage.setItem('token', '');
-      this.toastr.error('Please complete your verification before Sign in','Validation Error', {timeOut: 30000});
+      // this.toastr.error('Please complete your verification before Sign in','Validation Error', {timeOut: 30000});
       // this.authService.appErrorStack.next('Please complete your verification before Sign in');
     }else if(authUserData.isCompleteness == '0')
     {
       sessionStorage.setItem('token', user.payload.token);
       sessionStorage.setItem('email', authUserData.email);
+      sessionStorage.setItem('isVerified', authUserData.isVerified);
       this._appServ.getUserType();
       sessionStorage.setItem('type', this._constants.logType);
       this.router.navigateByUrl('/profile-completation');
     }else{
       sessionStorage.setItem('token', user.payload.token);
       sessionStorage.setItem('email', authUserData.email);
+      sessionStorage.setItem('isCompleteness', authUserData.isVerified);
       this._appServ.getUserType();
       sessionStorage.setItem('type', this._constants.logType);
       //this._appServ.updateStoreAuthenticated();

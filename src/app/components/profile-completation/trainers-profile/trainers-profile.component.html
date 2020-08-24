@@ -215,15 +215,14 @@
                                                             <span class="icon-attach attach-data"></span>
                                                         </span>                                               
                                                     </div> -->
-
                                                     <mat-form-field  class="cab-data">
                                                         <mat-label>Qualification/Degrees</mat-label>
                                                         <input matInput name="qualification_degree" [(ngModel)]="step2Data.qualification_degree" placeholder="Qualification/Degrees" required>
                                                     </mat-form-field>
                                                     <span class="fileupload">
-                                                        <input type="file" name="qualification_degree_file" [(ngModel)]="step2Data.qualification_degree_file" (change)="validateFile($event,'qualification_degree')" required>
+                                                        <input type="file" name="qualification_degree_file" [(ngModel)]="step2Data.qualification_degree_file" (change)="validateFile($event,'qualification_degree')">
                                                         <span class="icon-attach attach-data"></span>
-                                                    </span>
+                                                    </span><a *ngIf="tradeLicensedValidation1 != false" target="_blank" routerLink="{{tradeLicensedValidation1}}" href="javascript:void(0)">Link</a>
                                                     <p class="error" *ngIf="!file_validation1">Please Upload a valid file (ex: pdf,png)</p>
                                                 </div>
                                                 
@@ -240,9 +239,9 @@
                                                         <input matInput name="education_specialization" [(ngModel)]="step2Data.education_specialization" placeholder="Specialization" required>
                                                     </mat-form-field>
                                                     <span class="fileupload">
-                                                        <input type="file" name="education_specialization_file" [(ngModel)]="step2Data.education_specialization_file" (change)="validateFile($event,'education_specialization')" required>
+                                                        <input type="file" name="education_specialization_file" [(ngModel)]="step2Data.education_specialization_file" (change)="validateFile($event,'education_specialization')">
                                                         <span class="icon-attach attach-data"></span>
-                                                    </span>
+                                                    </span><a *ngIf="tradeLicensedValidation2 != false" target="_blank" routerLink="{{tradeLicensedValidation2}}" href="javascript:void(0)">Link</a>
 
                                                     <p class="error" *ngIf="!file_validation2">Please Upload a valid file (ex: pdf,png)</p>
                                                 </div>
@@ -267,7 +266,7 @@
                                                     <span class="fileupload">
                                                         <input type="file" name="further_education_file" [(ngModel)]="step2Data.further_education_file" (change)="validateFile($event,'further_education')">
                                                         <span class="icon-attach attach-data"></span>
-                                                    </span>
+                                                    </span><a *ngIf="tradeLicensedValidation3 != false" target="_blank" routerLink="{{tradeLicensedValidation3}}" href="javascript:void(0)">Link</a>
                                                     <p class="error" *ngIf="!file_validation3">Please Upload a valid file (ex: pdf,png)</p>
                                                 </div>
             

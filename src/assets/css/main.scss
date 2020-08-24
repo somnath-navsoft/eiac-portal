@@ -552,6 +552,7 @@ a:hover { text-decoration: none; }
 .submit-health { color: #ffffff; background: #B54150; border: 1px solid #B54150; padding: 10px 53px; }
 .form-subheader-data h5 { background: #E7E7E7; color: #AA9777; font-size: 22px; font-family: "Dubai Bold"; padding: 10px 25px; margin: 0; }
 .ownr-details { background: #F9F9F9; padding: 20px; margin-top: 20px; }
+.remove-clss { text-align: right; color: #B54150; }
 .add-new a { font-size: 24px; color: #B54150; letter-spacing: 3px; font-family: "Dubai Regular"; padding: 15px 0; display: block; }
 .add-new a:hover { color: #B54150; text-decoration: none; }
 .form-subhdr { margin: 0 -15px; }
@@ -659,6 +660,19 @@ a:hover { text-decoration: none; }
 .filter-search a { background: #B54150; color: #fff; font-size: 15px; font-family: 'Dubai Regular'; padding: 5px 15px; border-radius: 5px; }
 
 
+// ================FORMS================== //
+.table-content-health table { width: 100%; border-collapse: collapse; margin-top: 25px;}
+.table-content-health { margin: 30px 0; overflow: scroll; }
+.table-content-health table { width: 100%; border-collapse: collapse; margin-top: 30px;}
+.table-content-health th {padding: 10px; text-align: center; background: #E7E7E7;  border: 1px solid #DCDAD5;}
+.table-content-health td { padding: 25px 10px 20px; background: #F9F9F9; border: 1px solid #DCDAD5;}
+.table-content-health td input:focus { outline: none;}
+.table-content-health td span{ font-size: 22px;}
+.table-content-health .content-icn {text-align: center; color: #B54150;}
+.form-subheader-desc { background: #E7E7E7; text-align: right; margin: 0 -15px;}
+.form-subheader-desc .mat-radio-button { padding: 10px 15px; }
+.form-subheader-desc .mat-radio-label { margin: 0; }
+.qualifi-att { padding: 12px; }
 
 
 //==================RESPONSIVE==================//
