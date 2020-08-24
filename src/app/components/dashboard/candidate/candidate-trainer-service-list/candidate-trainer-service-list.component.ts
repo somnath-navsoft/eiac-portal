@@ -1,20 +1,4 @@
-/*
-import { Component, OnInit } from '@angular/core';
 
-@Component({
-  selector: 'app-candidate-trainer-service-list',
-  templateUrl: './candidate-trainer-service-list.component.html',
-  styleUrls: ['./candidate-trainer-service-list.component.scss']
-})
-export class CandidateTrainerServiceListComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-}
-*/
 import { Component, OnInit, OnDestroy, TemplateRef, ViewChild, ElementRef } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
@@ -85,6 +69,10 @@ export class CandidateTrainerServiceListComponent implements OnInit, OnDestroy {
   //private stripeCheckoutHandler: StripeCheckoutHandler;
   paymentReview: any[] = [];
   selectCourses: any = [];
+  transactions: any[] =[];
+  transactionsItem: any={};
+
+  totalVal: any =1.00;
 
   @ViewChild('paypal', { static: true }) paypalElement: ElementRef;
   //private stripeCheckoutLoader: StripeCheckoutLoader,
@@ -104,7 +92,7 @@ export class CandidateTrainerServiceListComponent implements OnInit, OnDestroy {
       const scriptElement = document.createElement('script')
       scriptElement.src = scriptUrl
       scriptElement.onload = resolve
-      console.log("load script...");
+      //console.log("load script...");
       document.body.appendChild(scriptElement)
   })
 }
@@ -235,32 +223,21 @@ ngAfterViewInit(): void {
 //   });
 }
 paymentCloseDialog(){
-  console.log("@payment dialog close....");
+  //console.log("@payment dialog close....");
   this.paymentReview = [];
   this.modalService.dismissAll();
 }
 
-createPaymentButton(){
-  console.log("creating....buttons...", this.paymentReview, " :: ", this.paymentReview.length);
-  if(this.paymentReview.length){
-    this.loadExternalScript("https://www.paypalobjects.com/api/checkout.js").then(() => {
-    paypal.Button.render({
-      env: 'sandbox',
-      client: {
-        sandbox: 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
-      },
-      commit: true,
-      payment: function (data, actions) {
-        console.log("@Paypal payment actionms: ", actions, " -- ", data);
-        return actions.payment.create({
-          payment: {
-            transactions: [
+createPaymentButton(itemData: any){
+  //console.log("creating....buttons...", this.paymentReview, " :: ", this.paymentReview.length, " -- ",this.transactionsItem, " --- ", this.transactions);
+  /*
+  transactions: [
               {
                 amount: { "total": "0.10", currency: 'USD',
-                "details": {
-                  "subtotal": "0.10",
-                } 
-              },
+                        "details": {
+                          "subtotal": "0.10",
+                        } 
+                },
                 item_list: {
                   items: [
                     {
@@ -281,6 +258,33 @@ createPaymentButton(){
                 }
               }
             ]
+  */
+ //AQaHF_liOK0SQfGII9rnE1UFmesqFzoLVpFzdOEcOjLAyl4A6omCL6yeto0JLDGnOiQijjirk9tG9BAq = abhishek.navsoft@gmail.com
+ //AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl = das.abhishek77@gmail.com
+ //Get transaction ID - https://developer.paypal.com/docs/checkout/reference/server-integration/get-transaction/#on-the-server
+  if(this.paymentReview.length){
+    this.loadExternalScript("https://www.paypalobjects.com/api/checkout.js").then(() => {
+    paypal.Button.render({
+      env: 'sandbox',
+      client: {
+        sandbox: 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
+      },
+      commit: true,
+      payment: function (data, actions) {
+        console.log("@Paypal payment actionms: ", actions, " -- ", data, " --- ", itemData);        
+        // const paymentId = actions.payment.create({
+        //   transactions: [itemData]
+        // })
+        // paymentId.then((res) => {
+        //   console.log("Payment Processed")
+        // }).catch((err) => {
+        //     console.error("Payment Error")
+        // });
+        // return paymentId;
+
+        return actions.payment.create({
+          payment: {
+            transactions: [itemData]
           }
         })
       },
@@ -322,10 +326,26 @@ getAllCourse(){
 
 openPaymentView(content, id){
   if(id){     
+
+    //PAYPAL Checkout Items Configure
+    //declare amount key
+    this.transactionsItem['amount'] = {};
+    this.transactionsItem['amount']['total'] = 0.00;
+    this.transactionsItem['amount']['currency'] = 'USD';
+    this.transactionsItem['amount']['details'] = {};
+    this.transactionsItem['amount']['details']['subtotal'] = 0.00;
+    //declare Items data
+    this.transactionsItem['item_list'] = {};
+    this.transactionsItem['item_list']['items'] = [];
+
+    //PAYPAL Checkout Items Configure
+
+
     this.subscriptions.push(this._trainerService.getTrainerCourseByID(id)
         .subscribe(
            result => {
              let data: any = result;
+             let calcPrice: any= 0.00;
               if(data != undefined && data.records != undefined){
                 console.log(">>>get data: ", data.records);
                 if(data.records.customCourseListDetails != undefined && data.records.customCourseListDetails.length){
@@ -333,13 +353,26 @@ openPaymentView(content, id){
                     console.log("@get course: ", rec);
                     let findData = this.selectCourses.find(item => item.id == rec.id);
                     if(findData){
+                      let price = 0.05;
+                      this.transactionsItem['item_list']['items'].push({name: findData.courseDetails, quantity: 1, price: 0.05, currency: 'USD'});
+                      calcPrice+= price;
                       this.paymentReview.push({title: findData.courseDetails , price: findData.fees_per_trainee})
                     }
                   })
+                  if(calcPrice > 0){
+                      //console.log("Calculate price: ", calcPrice);
+                      this.transactionsItem['amount']['total'] = calcPrice.toFixed(2);
+                      this.transactionsItem['amount']['details']['subtotal'] = calcPrice.toFixed(2);
+                      this.transactions.push(this.transactionsItem);
+                      //console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
+                  }
                 }
                 //this.paymentReview.push(data.records);
-                console.log(">>>review: ", this.paymentReview, " :: ");
-                this.createPaymentButton();
+                //console.log(">>>review: ", this.paymentReview, " :: ");
+                setTimeout(() => {
+                  this.createPaymentButton(this.transactionsItem);
+                }, 100)
+                
               }
            },
            error => {

@@ -26,7 +26,7 @@ export class AssessorsProfileComponent implements OnInit {
   english:any = {};
   others:any = {};
   step3ClickObj:any = {};
-  list_auditor:Array<any> = [{}];
+  list_auditor:Array<any> = [{}]; 
   attend_accreditation:Array<any> = [{}];
   attend_accreditation2:Array<any> = [{}];
   practical_assessment_experience:Array<any> = [{}];

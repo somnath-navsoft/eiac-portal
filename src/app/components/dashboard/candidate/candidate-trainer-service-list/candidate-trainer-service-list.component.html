@@ -9,8 +9,8 @@
                     <div class="dashbrd-hdr">
                         <h3>Training Service</h3><br/>
                         <!-- (click)="onClickBuy()" -->
-                        <span class="icon-wallet" [ngStyle]="{'cursor':'pointer'}"></span>
-                        <hr>
+                        <!-- <span class="icon-wallet" [ngStyle]="{'cursor':'pointer'}"></span>
+                        <hr> -->
                         <!-- <ngx-paypal [config]="payPalConfig"></ngx-paypal> -->
                         <!-- id="paypal-button" <ion-nav [root]="rootPage"></ion-nav> -->
                         <!-- <div id="paypal"></div> -->
@@ -215,10 +215,27 @@
                 </div>
                 <div class="modal-body"> 
                     <ng-container *ngIf="paymentReview != undefined && paymentReview.length > 0">
-                        <p>Checkout Courses:</p><br/>
+                        <p>Review Courses</p><br/>
                         <ng-container *ngFor="let item of paymentReview">
-                            <p>Course Name: </p>&nbsp;{{item.title}}<br/>
-                            <p>Course Amount: </p>&nbsp;{{item.price}}<br/>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Course</h5>
+                                </div>
+                                <div class="col-md-6">
+                                    <span [innerHTML]="item.title"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Price</h5>
+                                </div>
+                                <div class="col-md-6">
+                                    <span [innerHTML]="item.price"></span>
+                                </div>
+                            </div>
+                            <hr>
+                            <!-- <p>Course Name: </p>&nbsp;{{item.title}}<br/>
+                            <p>Course Amount: </p>&nbsp;{{item.price}}<br/> -->
                         </ng-container>
                         <div id="paypalPayment"></div>
                     </ng-container>
