@@ -20,17 +20,14 @@ export class VerifyAccountComponent implements OnInit {
     var email = splitEmail[0];
     var hash = splitId[2];
 
-    console.log(email,'email');
-    console.log(hash,'hash');
-    console.log(this.appService.apiServerUrl+"/"+this.constant.API_ENDPOINT.emailVerification+'?email='+email+'&hash='+hash,'Url');
+    // console.log(email);
+    // console.log(hash);
+    // console.log(this.appService.apiServerUrl+"/"+this.constant.API_ENDPOINT.emailVerification+'?email='+email+'&hash='+hash);
     this.appService.getwithoutData(this.appService.apiServerUrl+"/"+this.constant.API_ENDPOINT.emailVerification+'?email='+email+'&hash='+hash)
     .subscribe(
       res => {
-        console.log(res,'Verify Account Data');
-        if(!res['status']) {
+        if(res['status'] != true) {
           this.router.navigateByUrl('/sign-in');
-        }else{
-          console.log('Not Verified');
         }
       });
       
