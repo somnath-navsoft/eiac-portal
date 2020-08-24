@@ -68,13 +68,13 @@ export class TrainersProfileComponent implements OnInit {
           this.step1Data.last_name = res['data']['user_data'][0].last_name;
           this.step1Data.personal_email = res['data']['user_data'][0].email;
 
-          if(res['data'].step1) {
+          if(res['data'].step1[0].office_email) {
             this.progressValue = 40;
             // this.headerSteps[1].stepComp = true;
-          }else if(res['data'].step1 && res['data'].step2) {
+          }if(res['data'].step1[0].office_email && res['data'].step2[0].other_course) {
             this.progressValue = 80;
             // this.headerSteps[2].stepComp = true;
-          }else if(res['data'].step1 && res['data'].step2 && res['data'].step2) {
+          }if(res['data'].step1[0].office_email && res['data'].step2[0].language && res['data'].step2[0].place) {
             this.progressValue = 100;
             
           }
