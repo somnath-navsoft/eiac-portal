@@ -195,6 +195,7 @@ export class TrainersProfileComponent implements OnInit {
           if(res['status'] == true) {
             this.toastr.success(res['msg'], '');
             // this.router.navigateByUrl('/sign-in');
+            this.progressValue == 0 || this.progressValue < 40 ? this.progressValue = 40 : this.progressValue = this.progressValue ;
             this.Service.headerStepMove('educational_information',this.headerSteps,'personal_details');
           }else{
             
@@ -240,6 +241,7 @@ export class TrainersProfileComponent implements OnInit {
           if(res['status'] == true) {
             this.toastr.success(res['msg'], '');
             // this.router.navigateByUrl('/sign-in');
+            this.progressValue == 40 || this.progressValue < 80 ? this.progressValue = 80 : this.progressValue = this.progressValue ;
             this.Service.headerStepMove('applicant_trainer',this.headerSteps,'personal_details');
           }else{
             
@@ -271,6 +273,7 @@ export class TrainersProfileComponent implements OnInit {
           res => {
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
+              this.progressValue == 80 || this.progressValue < 100 ? this.progressValue = 100 : this.progressValue = this.progressValue ;
               // this.router.navigateByUrl('/sign-in');
             }else{
               

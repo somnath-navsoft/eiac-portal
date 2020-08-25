@@ -167,7 +167,7 @@ export class AssessorsProfileComponent implements OnInit {
             this.step2Data.university_college = step2['education'][0].organization;
             this.step2Data.education_specialization = step2['education'][0].specialization;
             this.step2Data.further_education = step2['further_education'][0].detail;
-            this.step2Data.others = step2['others_education'][0].detail;
+            this.step2Data.others_education = step2['others_education'][0].detail;
             this.step2Data.which = step2['which_forum'][0].organization;
             this.step2Data.completeProfileFrom = new Date(step2['which_forum'][0].date_from);
             this.step2Data.completeProfileTill = new Date(step2['which_forum'][0].date_to);
@@ -324,6 +324,7 @@ export class AssessorsProfileComponent implements OnInit {
           console.log(res,'res')
           if(res['status'] == true) {
             this.toastr.success(res['msg'], '');
+            this.progressValue == 0 || this.progressValue < 22 ? this.progressValue = 22 : this.progressValue = this.progressValue ;
             this.Service.headerStepMove('educational_information',this.headerSteps,'personal_details');
             // this.router.navigateByUrl('/sign-in');
           }else{
@@ -368,6 +369,7 @@ export class AssessorsProfileComponent implements OnInit {
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
               // this.router.navigateByUrl('/sign-in');
+              this.progressValue == 22 || this.progressValue < 44 ? this.progressValue = 44 : this.progressValue = this.progressValue ;
               this.Service.headerStepMove('employment',this.headerSteps,'educational_information');
             }else{
               
@@ -413,6 +415,7 @@ export class AssessorsProfileComponent implements OnInit {
           if(res['status'] == true) {
             this.toastr.success(res['msg'], '');
             // this.router.navigateByUrl('/sign-in');
+            this.progressValue == 44 || this.progressValue < 66 ? this.progressValue = 66 : this.progressValue = this.progressValue ;
             this.Service.headerStepMove('knowledge_experience',this.headerSteps,'employment');
           }else{
             
@@ -463,6 +466,7 @@ export class AssessorsProfileComponent implements OnInit {
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
               // this.router.navigateByUrl('/sign-in');
+              this.progressValue == 66 || this.progressValue < 88 ? this.progressValue = 88 : this.progressValue = this.progressValue ;
               this.Service.headerStepMove('applicant_trainer',this.headerSteps,'knowledge_experience');
             }else{
               
@@ -496,6 +500,7 @@ export class AssessorsProfileComponent implements OnInit {
           res => {
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
+              this.progressValue == 88 || this.progressValue < 100 ? this.progressValue = 100 : this.progressValue = this.progressValue ;
               // this.router.navigateByUrl('/sign-in');
             }else{
               

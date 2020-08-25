@@ -189,6 +189,7 @@ export class ClientCabProfileComponent implements OnInit {
             console.log(res,'res')
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
+              this.progressValue == 0 || this.progressValue < 50 ? this.progressValue = 50 : this.progressValue = this.progressValue ;
               this.Service.headerStepMove('application_information',this.headerSteps,'personal_details');
               // this.router.navigateByUrl('/sign-in');
             }else{
@@ -294,6 +295,7 @@ export class ClientCabProfileComponent implements OnInit {
             console.log(res,'res')
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
+              this.progressValue == 50 ? this.progressValue = 100 : this.progressValue = this.progressValue ;
               // this.router.navigateByUrl('/sign-in');
             }else{
               
