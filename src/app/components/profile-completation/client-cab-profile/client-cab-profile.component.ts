@@ -80,7 +80,7 @@ export class ClientCabProfileComponent implements OnInit {
 
           if(res['data'].step1[0].designation) {
             this.progressValue = 50;
-          }if(res['data'].step1[0].designation && res['data'].step2[0].designation) {
+          }if(res['data'].step1[0].designation && res['data'].step2.cabContactData[0].designation) {
             this.progressValue = 100;
           }
           
