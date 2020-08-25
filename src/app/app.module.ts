@@ -98,6 +98,8 @@ import { CustomModalComponent } from './components/utility/custom-modal/custom-m
 import { ModalModule } from 'ngx-bootstrap/modal'; 
 import { NgxPayPalModule } from 'ngx-paypal';
 import {StripeCheckoutModule} from 'ng-stripe-checkout';
+import { ApplicationRegistrationComponent } from './components/dashboard/cab/application-registration/application-registration.component';
+import { ApplicationAccreditationComponent } from './components/dashboard/cab/application-accreditation/application-accreditation.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -123,7 +125,7 @@ export const MY_FORMATS = {
     MyfilesComponent, TrainersHomeComponent, TrainersAddComponent, TrainersEditComponent, TrainerServiceComponent, TrainerServiceListComponent, ProfileCompletationComponent, ClientCabProfileComponent, CandidateProfileComponent, TrainersProfileComponent, AssessorsProfileComponent, InternalOperationsProfileComponent,
     UpdateProfileComponent, QualificatiosComponent, ExpertiseComponent, AgreementsComponent,
     TrainerServiceComponent, TrainerServiceListComponent,
-    MyfilesComponent, TrainersHomeComponent, TrainersAddComponent, TrainersEditComponent, VerifyAccountComponent, ForgotPasswordComponent, ResetPasswordComponent,MyfilesComponent, TrainersHomeComponent, TrainersAddComponent, TrainersEditComponent, TrainerServiceComponent, CabDashboardComponent, CabTrainerServiceComponent, CabTrainerServiceListComponent, OperationsComponent, OperationsDashboardComponent, OperationsTrainerServiceListComponent, TrainersDashboardComponent, CandidateDashboardComponent, OperationsTrainerServiceComponent, CandidateTrainerServiceComponent, CandidateTrainerServiceListComponent, TrainersEventListComponent, TrainersAttendanceListComponent, TrainersAgendaListComponent, CandidateAgendaListComponent, CandidateAttendanceListComponent, CustomModalComponent],
+    MyfilesComponent, TrainersHomeComponent, TrainersAddComponent, TrainersEditComponent, VerifyAccountComponent, ForgotPasswordComponent, ResetPasswordComponent,MyfilesComponent, TrainersHomeComponent, TrainersAddComponent, TrainersEditComponent, TrainerServiceComponent, CabDashboardComponent, CabTrainerServiceComponent, CabTrainerServiceListComponent, OperationsComponent, OperationsDashboardComponent, OperationsTrainerServiceListComponent, TrainersDashboardComponent, CandidateDashboardComponent, OperationsTrainerServiceComponent, CandidateTrainerServiceComponent, CandidateTrainerServiceListComponent, TrainersEventListComponent, TrainersAttendanceListComponent, TrainersAgendaListComponent, CandidateAgendaListComponent, CandidateAttendanceListComponent, CustomModalComponent, ApplicationRegistrationComponent, ApplicationAccreditationComponent],
   imports: [
     CommonModule,
     FormsModule,

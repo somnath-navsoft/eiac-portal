@@ -240,7 +240,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Date of Establishment</mat-label>
-                                                <input matInput readonly="true" (click)="Service._openCalendar(date_of_establishment)" [(ngModel)]="step1Data.date_of_establisment" [matDatepicker]="date_of_establishment" name="date_of_establishment" placeholder="Date of Establishment" required>
+                                                <input matInput readonly="true" (click)="Service._openCalendar(date_of_establishment)" [max]="today" [(ngModel)]="step1Data.date_of_establisment" [matDatepicker]="date_of_establishment" name="date_of_establishment" placeholder="Date of Establishment" required>
                                                 <mat-datepicker-toggle matSuffix [for]="date_of_establishment"></mat-datepicker-toggle>
                                                 <mat-datepicker #date_of_establishment  disabled="false" ></mat-datepicker>
                                             </mat-form-field>
@@ -270,8 +270,8 @@
                                             <span class="fileupload">
                                                 <input type="file" name="trade_license" [(ngModel)]="fileAny" (change)="validateFile($event)">
                                                 <span class="icon-attach attach-data"></span>
-                                            </span><a  class="image_file_link" *ngIf="tradeLicensedValidation != false" target="_blank" routerLink="{{tradeLicensedValidation}}" href="javascript:void(0)">Link</a>
-                                            <p class="error" *ngIf="!file_validation">Please Upload a valid file (ex: pdf,png)</p>
+                                            </span><a  class="image_file_link" *ngIf="tradeLicensedValidation != false && tradeLicensedValidation != true" target="_blank" [href]="tradeLicensedValidation">Link</a>
+                                            <p class="error" *ngIf="!file_validation">Please Upload a valid file (ex: pdf,png,jpg,jpeg)</p>
                                             {{step1Data.trade_license}}
                                         </div>
                                     </div>
@@ -346,7 +346,7 @@
                                     <div class="col-md-4 col-sm-12">
                                         <mat-form-field class="cab-data">
                                             <mat-label>Contact Person Phone</mat-label>
-                                            <input type="text" onpaste="return false" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="contact_person_phone" [(ngModel)]="step2Data.contact_person_phone"  required>
+                                            <input type="text"  maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="contact_person_phone" [(ngModel)]="step2Data.contact_person_phone"  required>
                                         </mat-form-field>
                                         <p class="error" *ngIf="step2Data.contact_person_phone && !Service.checkInput('onlyNumberWithPlus',step2Data.contact_person_phone)">Please Enter Correct Mobile Phone No</p> 
                                     </div>
@@ -354,7 +354,7 @@
                                     <div class="col-md-4 col-sm-12">
                                         <mat-form-field class="cab-data">
                                             <mat-label>Contact Person Mobile</mat-label>
-                                            <input matInput type="text" onpaste="return false" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" placeholder="Contact Person Mobile" name="contact_person_mobile" [(ngModel)]="step2Data.contact_person_mobile"  required>
+                                            <input matInput type="text"  maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" placeholder="Contact Person Mobile" name="contact_person_mobile" [(ngModel)]="step2Data.contact_person_mobile"  required>
                                         </mat-form-field>
                                         <p class="error" *ngIf="step2Data.contact_person_mobile && !Service.checkInput('onlyNumberWithPlus',step2Data.contact_person_mobile)">Please Enter Correct Mobile Phone No</p> 
                                     </div>
@@ -392,14 +392,14 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Name</mat-label>
-                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Name"  maxlength="60"  name="name_{{i}}" [(ngModel)]="nameOftheOwner[i].name" required>
+                                                        <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Name"  maxlength="60"  name="name_{{i}}" [(ngModel)]="nameOftheOwner[i].name" required>
                                                         <mat-error></mat-error>    
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Designation</mat-label>
-                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" required placeholder="Designation" name="designation_{{i}}" [(ngModel)]="nameOftheOwner[i].designation" required>
+                                                        <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" required placeholder="Designation" name="designation_{{i}}" [(ngModel)]="nameOftheOwner[i].designation" required>
                                                         <mat-error></mat-error> 
                                                     </mat-form-field>
                                                 </div>
@@ -408,7 +408,7 @@
                                                 <div class="col-md-4 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Mobile Phone No.</mat-label>
-                                                        <input type="text" onpaste="return false" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" matInput autocomplete="off"  placeholder="Mobile No." name="mobile_no_{{i}}" [(ngModel)]="nameOftheOwner[i].mobile_no" required>
+                                                        <input type="text"  maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" matInput autocomplete="off"  placeholder="Mobile No." name="mobile_no_{{i}}" [(ngModel)]="nameOftheOwner[i].mobile_no" required>
                                                         <mat-error></mat-error>
                                                     </mat-form-field>
                                                     <p class="error" *ngIf="nameOftheOwner[i].mobile_no && !Service.checkInput('onlyNumberWithPlus',nameOftheOwner[i].mobile_no)">Please Enter Correct Mobile Phone No</p> 
@@ -416,14 +416,14 @@
                                                 <div class="col-md-4 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Land Line Phone No.</mat-label>
-                                                        <input onpaste="return false" matInput autocomplete="off"  placeholder="Landline No."  name="land_line_no_{{i}}" [(ngModel)]="nameOftheOwner[i].phone_no" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" required >
+                                                        <input  matInput autocomplete="off"  placeholder="Landline No."  name="land_line_no_{{i}}" [(ngModel)]="nameOftheOwner[i].phone_no" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" required >
                                                     </mat-form-field>
                                                     <p class="error" *ngIf="nameOftheOwner[i].phone_no && !Service.checkInput('onlyNumberWithPlus',nameOftheOwner[i].phone_no)">Please Enter Correct Land Line Phone No.</p> 
                                                 </div>
                                                 <div class="col-md-4 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Email Address</mat-label>
-                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" type="email" matInput autocomplete="off"  placeholder="Email Address"  name="email_{{i}}" [(ngModel)]="nameOftheOwner[i].email" required >
+                                                        <input type="email" matInput autocomplete="off"  placeholder="Email Address"  name="email_{{i}}" [(ngModel)]="nameOftheOwner[i].email" required >
                                                         <mat-error></mat-error>
                                                     </mat-form-field>
                                                     <p class="error" *ngIf="nameOftheOwner[i].email && !Service.checkInput('email',nameOftheOwner[i].email)">Please Enter Correct Email Id</p>
@@ -475,21 +475,21 @@
                                                 <div class="col-md-4 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Name the members of Board of Directors (BOD) (if any)</mat-label>
-                                                        <input matInput onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name the members of Board of Directors (BOD)"  name="bod_directors_name_{{i}}" [(ngModel)]="companyBodMembers[i].name"  required>
+                                                        <input matInput  (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name the members of Board of Directors (BOD)"  name="bod_directors_name_{{i}}" [(ngModel)]="companyBodMembers[i].name"  required>
                                                     </mat-form-field>
                                                 </div>
 
                                                 <div class="col-md-4 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Company Name of BOD Member is working</mat-label>
-                                                        <input matInput placeholder="Company Name of BOD Member is working" onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" name="company_name_bod_{{i}}" [(ngModel)]="companyBodMembers[i].bod_company"  required>
+                                                        <input matInput placeholder="Company Name of BOD Member is working"  (keypress)="Service.inputFilter($event, Service.regExName)" name="company_name_bod_{{i}}" [(ngModel)]="companyBodMembers[i].bod_company"  required>
                                                     </mat-form-field>
                                                 </div>
 
                                                 <div class="col-md-4 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Managing Director/Chief Executive</mat-label>
-                                                        <input matInput placeholder="Managing Director/Chief Executive" onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" name="managing_director_ceo_{{i}}" [(ngModel)]="companyBodMembers[i].director"  required>
+                                                        <input matInput placeholder="Managing Director/Chief Executive"  (keypress)="Service.inputFilter($event, Service.regExName)" name="managing_director_ceo_{{i}}" [(ngModel)]="companyBodMembers[i].director"  required>
                                                     </mat-form-field>
                                                 </div>
                                             </div>
@@ -498,21 +498,21 @@
                                                 <div class="col-md-4 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Designation</mat-label>
-                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="bod_designation_{{i}}" [(ngModel)]="companyBodMembers[i].designation" required>
+                                                        <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="bod_designation_{{i}}" [(ngModel)]="companyBodMembers[i].designation" required>
                                                     </mat-form-field>
                                                 </div>
 
                                                 <div class="col-md-4 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Authorized Contact Person Name</mat-label>
-                                                        <input matInput placeholder="Authorized Contact Person Name"   name="authorized_contact_person_{{i}}" [(ngModel)]="companyBodMembers[i].authorized_contact_person" onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" required>
+                                                        <input matInput placeholder="Authorized Contact Person Name"   name="authorized_contact_person_{{i}}" [(ngModel)]="companyBodMembers[i].authorized_contact_person"  (keypress)="Service.inputFilter($event, Service.regExName)" required>
                                                     </mat-form-field>
                                                 </div>
 
                                                 <div class="col-md-4 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Mobile Phone No.</mat-label>
-                                                        <input onpaste="return false" type="text" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="bod_mobile_no_{{i}}" [(ngModel)]="companyBodMembers[i].mobile_no" required>
+                                                        <input  type="text" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="bod_mobile_no_{{i}}" [(ngModel)]="companyBodMembers[i].mobile_no" required>
                                                     </mat-form-field>
                                                     <p class="error" *ngIf="companyBodMembers[i].mobile_no && !Service.checkInput('onlyNumberWithPlus',companyBodMembers[i].mobile_no)">Please Enter Correct Telephone Number</p> 
                                                 </div>
@@ -522,7 +522,7 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Land Line Phone No.</mat-label>
-                                                        <input onpaste="return false" type="text" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="bod_land_line_no_{{i}}" [(ngModel)]="companyBodMembers[i].phone_no" required>
+                                                        <input  type="text" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="bod_land_line_no_{{i}}" [(ngModel)]="companyBodMembers[i].phone_no" required>
                                                     </mat-form-field>
                                                     <p class="error" *ngIf="companyBodMembers[i].phone_no && !Service.checkInput('onlyNumberWithPlus',companyBodMembers[i].phone_no)">Please Enter Correct Telephone Number</p> 
                                                 </div>
@@ -530,7 +530,7 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Email Address</mat-label>
-                                                        <input matInput placeholder="Authorized Contact Person Name"   name="email_address_{{i}}" [(ngModel)]="companyBodMembers[i].email" onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" required>
+                                                        <input matInput placeholder="Authorized Contact Person Name"   name="email_address_{{i}}" [(ngModel)]="companyBodMembers[i].email"  required>
                                                     </mat-form-field>
                                                     <p class="error" *ngIf="companyBodMembers[i].email && !Service.checkInput('email',companyBodMembers[i].email)">Please Enter Correct Email Id</p>
                                                 </div>

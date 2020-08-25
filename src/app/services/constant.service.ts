@@ -35,6 +35,7 @@ export class Constants{
 		updateCourse: 'trainer/cust-course-update/',
 		emailVerification: 'user-email-verification/',
 		profileService: 'profile-service/',
+		service_details_page: 'pillar_page/',
 	}
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."
 	public loggedIn													=	new Subject<any>();
@@ -78,20 +79,20 @@ export class Constants{
 					]
 				},
 				{
+					heading: 'Application', link: '#', sub: true,
+					submenu: [
+						{title: 'Accreditation', link: '#'},
+						{title: 'Registration', link: '/dashboard/cab_client/application-registration'},
+						//{title: 'Training Service', link: '#'},
+						//{title: 'Training Apply', link: '/dashboard/cab_client/training-apply'},
+						{title: 'Training', link: '/dashboard/cab_client/training-service'}
+					]
+				},
+				{
 					heading: 'Status', link: '#', sub: true,
 					submenu: [
 						{title: 'Application Listing', link: '#'},
 						{title: 'Vouchers', link: '#'},
-					]
-				},
-				{
-					heading: 'Services', link: '#', sub: true,
-					submenu: [
-						{title: 'Accreditation Service', link: '#'},
-						{title: 'Registration Service', link: '#'},
-						//{title: 'Training Service', link: '#'},
-						//{title: 'Training Apply', link: '/dashboard/cab_client/training-apply'},
-						{title: 'Training Service', link: '/dashboard/cab_client/training-service'}
 					]
 				},
 				{

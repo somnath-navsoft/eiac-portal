@@ -254,7 +254,7 @@ export class AssessorsProfileComponent implements OnInit {
   validateFile(fileEvent: any,doc_name:any) {
     var file_name = fileEvent.target.files[0].name;
     var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
-    var ex_type = ['pdf','png'];
+    var ex_type = ['pdf','png','jpg','jpeg','JPEG'];
     var ex_check = this.Service.isInArray(file_exe,ex_type);
     if(ex_check && doc_name == 'qualification_degree'){
       // this.step2Data.qualification_degree_file = fileEvent.target.files[0].name;

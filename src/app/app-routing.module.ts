@@ -51,6 +51,7 @@ import { VerifyAccountComponent } from './components/verify-account/verify-accou
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { ProfileCompletationComponent } from './components/profile-completation/profile-completation.component';
+import { ApplicationRegistrationComponent } from './components/dashboard/cab/application-registration/application-registration.component';
 
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
@@ -95,6 +96,7 @@ const routes: Routes = [
         { path: 'training-apply', component:CabTrainerServiceComponent, canActivate: [AuthGuard] },
         { path: 'training-apply/:id', component:CabTrainerServiceComponent, canActivate: [AuthGuard] },
         { path: 'training-service', component:CabTrainerServiceListComponent, canActivate: [AuthGuard] },
+        { path: 'application-registration', component:ApplicationRegistrationComponent, canActivate: [AuthGuard] },
       ]
     },
 

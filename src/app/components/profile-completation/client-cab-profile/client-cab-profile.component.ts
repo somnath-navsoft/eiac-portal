@@ -209,7 +209,7 @@ export class ClientCabProfileComponent implements OnInit {
   validateFile(fileEvent: any) {
     var file_name = fileEvent.target.files[0].name;
     var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
-    var ex_type = ['pdf','png'];
+    var ex_type = ['pdf','png','jpg','jpeg','JPEG'];
     var ex_check = this.Service.isInArray(file_exe,ex_type);
     if(ex_check){
       this.step1DataBodyFormFile.append('trade_license',fileEvent.target.files[0]);
