@@ -72,7 +72,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Date of Birth</mat-label>
-                                                <input matInput readonly="true" (click)="Service._openCalendar(date_of_birth)" [(ngModel)]="candidateProfile.date_of_birth" [matDatepicker]="date_of_birth" name="date_of_birth" [matDatepicker]="" placeholder="" required>
+                                                <input matInput readonly="true" (click)="Service._openCalendar(date_of_birth)" [(ngModel)]="candidateProfile.date_of_birth" [max]="today"  [matDatepicker]="date_of_birth" name="date_of_birth" [matDatepicker]="" placeholder="" required>
                                                 <mat-datepicker-toggle matSuffix [for]="date_of_birth"></mat-datepicker-toggle>
                                                 <mat-datepicker #date_of_birth  disabled="false" ></mat-datepicker>
                                             </mat-form-field>

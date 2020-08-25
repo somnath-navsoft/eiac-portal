@@ -33,10 +33,13 @@ export class TrainersProfileComponent implements OnInit {
   tradeLicensedValidation1:any = false;
   tradeLicensedValidation2:any = false;
   tradeLicensedValidation3:any;
+  today = new Date();
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
+  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) {
+    this.today.setDate(this.today.getDate());
+   }
 
   ngOnInit() {
     this.userEmail = sessionStorage.getItem('email');

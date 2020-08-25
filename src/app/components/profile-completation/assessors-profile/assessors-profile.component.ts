@@ -49,10 +49,14 @@ export class AssessorsProfileComponent implements OnInit {
   tradeLicensedValidation2:any = false;
   tradeLicensedValidation3:any;
   public isAccData: any = '';
+  isdDynamicsopenClose:any;
+  today = new Date();
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
+  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) {
+    this.today.setDate(this.today.getDate());
+   }
 
   ngOnInit() {
     this.userEmail = sessionStorage.getItem('email');
@@ -82,10 +86,15 @@ export class AssessorsProfileComponent implements OnInit {
     this.step3Data.attend_accreditation2 = '1' ;
     this.step3Data.practical_assessment_experience = '1' ;
 
-    this.loadknowledgeExperience();
+    // this.loadknowledgeExperience();
     this.loadStepsData();
   }
 
+  // setexDate(){
+  //   let cdate =this.assessorsProfile.date_of_birth;
+  //   this.minDate = new Date(cdate  + (60*60*24*1000));
+  // }
+  
   isTableAcc(id) {
     this.isAccData = id;
     //console.log(this.isAccData);
@@ -105,6 +114,7 @@ export class AssessorsProfileComponent implements OnInit {
           this.step1Data.first_name = res['data']['user_data'][0].first_name;
           this.step1Data.last_name = res['data']['user_data'][0].last_name;
           this.step1Data.personal_email = res['data']['user_data'][0].email;
+          this.step1Data.phone_with_area = res['data']['user_data'][0].contact;
 
           this.technicalFields = res['data'].technical_field;
 
@@ -206,15 +216,27 @@ export class AssessorsProfileComponent implements OnInit {
       });
   }
 
-  loadknowledgeExperience() {
-    this.Service.getwithoutData('https://service.eiac.gov.ae/webservice/service_page/?data=inspection-bodies')
-    .subscribe(
-      res => {
-        this.schemeMainData = res['schemeData'];
-        this.schemeSlideData = res['schemeData'];
-        // //console.log(this.schemeSlideData,'schemeSlideData');
-      })
+  dynamicsopenClose(id,status)
+  {
+    if(status == 'open')
+    {
+      this.isdDynamicsopenClose = id;
+    }else if(status == 'close'){
+      this.isdDynamicsopenClose = '0';
+    }
+    //console.log(this.isdDynamicsopenClose);
+    //console.log(status);
   }
+
+  // loadknowledgeExperience() {
+  //   this.Service.getwithoutData('https://service.eiac.gov.ae/webservice/service_page/?data=inspection-bodies')
+  //   .subscribe(
+  //     res => {
+  //       this.schemeMainData = res['schemeData'];
+  //       this.schemeSlideData = res['schemeData'];
+  //       // //console.log(this.schemeSlideData,'schemeSlideData');
+  //     })
+  // }
 
   profileData() {
     this.isProfileData = !this.isProfileData;
@@ -302,7 +324,7 @@ export class AssessorsProfileComponent implements OnInit {
           console.log(res,'res')
           if(res['status'] == true) {
             this.toastr.success(res['msg'], '');
-            this.Service.headerStepMove('personal_details',this.headerSteps,'educational_information');
+            this.Service.headerStepMove('educational_information',this.headerSteps,'personal_details');
             // this.router.navigateByUrl('/sign-in');
           }else{
             
@@ -346,7 +368,7 @@ export class AssessorsProfileComponent implements OnInit {
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
               // this.router.navigateByUrl('/sign-in');
-              this.Service.headerStepMove('educational_information',this.headerSteps,'employment');
+              this.Service.headerStepMove('employment',this.headerSteps,'educational_information');
             }else{
               
               this.toastr.warning(res['msg'], '');
@@ -391,7 +413,7 @@ export class AssessorsProfileComponent implements OnInit {
           if(res['status'] == true) {
             this.toastr.success(res['msg'], '');
             // this.router.navigateByUrl('/sign-in');
-            this.Service.headerStepMove('employment',this.headerSteps,'knowledge_experience');
+            this.Service.headerStepMove('knowledge_experience',this.headerSteps,'employment');
           }else{
             
             this.toastr.warning(res['msg'], '');
@@ -441,7 +463,7 @@ export class AssessorsProfileComponent implements OnInit {
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
               // this.router.navigateByUrl('/sign-in');
-              this.Service.headerStepMove('employment',this.headerSteps,'knowledge_experience');
+              this.Service.headerStepMove('knowledge_experience',this.headerSteps,'employment');
             }else{
               
               this.toastr.warning(res['msg'], '');

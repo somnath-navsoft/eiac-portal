@@ -65,8 +65,8 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 .remembr-pwd span { text-align: right; }
 .forgot { color: #000000; font-family: "Dubai Regular"; font-size: 16px; }
 .forgot:hover { color: #000000; text-decoration: none; }
-.foot-cont { position: fixed; bottom: 0; left: 23%; }
-.foot-dash  { left: 50%; }
+.foot-cont { position: relative; }
+.footer-content { position: absolute; left: 50%; transform: translateX(-50%); bottom: 0;}
 .footer-content p { margin: 0; padding: 15px; font-size: 13px; color: #5D5D5D; background: #ffffff;  }
 .remembr-pwd .mat-checkbox-frame { border-color: rgba(153, 153, 153, 1); border-width: 1px; border-radius: 0; width: 20px; height: 20px; }
 .remembr-pwd .mat-checkbox-inner-container { height: 20px; width: 20px;}
@@ -664,7 +664,7 @@ a:hover { text-decoration: none; }
 .table-content-health table { width: 100%; border-collapse: collapse; margin-top: 25px;}
 .table-content-health { margin: 30px 0; overflow: scroll; }
 .table-content-health table { width: 100%; border-collapse: collapse; margin-top: 30px;}
-.table-content-health th {padding: 10px; text-align: center; background: #E7E7E7;  border: 1px solid #DCDAD5;}
+.table-content-health th {padding: 10px; text-align: right; background: #E7E7E7;  border: 1px solid #DCDAD5;}
 .table-content-health td { padding: 25px 10px 20px; background: #F9F9F9; border: 1px solid #DCDAD5;}
 .table-content-health td input:focus { outline: none;}
 .table-content-health td span{ font-size: 22px;}
@@ -682,4 +682,10 @@ a:hover { text-decoration: none; }
   .sub-msg-dash { font-size: 14px; }
   .dash-msg { margin: 0 -5px; }
   .trainer_head { margin: 0 -10px; }
+}
+
+.image_file_link {
+  display: inline-block;
+  margin: 15px 10px;
+  color: #121212;
 }

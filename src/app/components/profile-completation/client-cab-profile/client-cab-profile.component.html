@@ -88,7 +88,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Date of Birth</mat-label>
-                                                <input matInput readonly="true" (click)="Service._openCalendar(date_of_birth)" [(ngModel)]="step1Data.date_of_birth" [matDatepicker]="date_of_birth" name="date_of_birth" placeholder="" required>
+                                                <input matInput readonly="true" (click)="Service._openCalendar(date_of_birth)" [(ngModel)]="step1Data.date_of_birth" [matDatepicker]="date_of_birth" name="date_of_birth" [max]="today"  placeholder="" required>
                                                 <mat-datepicker-toggle matSuffix [for]="date_of_birth"></mat-datepicker-toggle>
                                                 <mat-datepicker #date_of_birth  disabled="false" ></mat-datepicker>
                                             </mat-form-field>
@@ -270,7 +270,7 @@
                                             <span class="fileupload">
                                                 <input type="file" name="trade_license" [(ngModel)]="fileAny" (change)="validateFile($event)">
                                                 <span class="icon-attach attach-data"></span>
-                                            </span><a *ngIf="tradeLicensedValidation != false" target="_blank" routerLink="{{tradeLicensedValidation}}" href="javascript:void(0)">Link</a>
+                                            </span><a  class="image_file_link" *ngIf="tradeLicensedValidation != false" target="_blank" routerLink="{{tradeLicensedValidation}}" href="javascript:void(0)">Link</a>
                                             <p class="error" *ngIf="!file_validation">Please Upload a valid file (ex: pdf,png)</p>
                                             {{step1Data.trade_license}}
                                         </div>

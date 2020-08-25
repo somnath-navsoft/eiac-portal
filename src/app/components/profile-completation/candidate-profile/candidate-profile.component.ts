@@ -18,8 +18,11 @@ export class CandidateProfileComponent implements OnInit {
   headerSteps:any[] = [];
   isCompleteness:any;
   progressValue:any = 0;
+  today = new Date();
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
+  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { 
+    this.today.setDate(this.today.getDate());
+  }
 
   ngOnInit() {
     this.userEmail = sessionStorage.getItem('email');

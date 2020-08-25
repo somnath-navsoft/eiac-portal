@@ -88,7 +88,7 @@
                                                 <div class="col-md-4">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Date of Birth</mat-label>
-                                                        <input matInput readonly="true" (click)="Service._openCalendar(date_of_birth)" [(ngModel)]="step1Data.date_of_birth" [matDatepicker]="date_of_birth" name="date_of_birth" [matDatepicker]="" placeholder="" required>
+                                                        <input matInput readonly="true" (click)="Service._openCalendar(date_of_birth)" [max]="today" [(ngModel)]="step1Data.date_of_birth" [matDatepicker]="date_of_birth" name="date_of_birth" [matDatepicker]="" placeholder="" required>
                                                         <mat-datepicker-toggle matSuffix [for]="date_of_birth"></mat-datepicker-toggle>
                                                         <mat-datepicker #date_of_birth  disabled="false" ></mat-datepicker>
                                                     </mat-form-field>
@@ -97,7 +97,7 @@
                                                 <div class="col-md-4">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Personal E-mail</mat-label>
-                                                        <input matInput [(ngModel)]="step1Data.personal_email" name="personal_email" placeholder="" required>
+                                                        <input matInput readonly="true" [(ngModel)]="step1Data.personal_email" name="personal_email" placeholder="" required>
                                                     </mat-form-field>
         
                                                     <p class="error" *ngIf="step1Data.personal_email && !Service.checkInput('email',step1Data.personal_email)">Please Enter Correct Email Id</p>
@@ -222,7 +222,7 @@
                                                     <span class="fileupload">
                                                         <input type="file" name="qualification_degree_file" [(ngModel)]="step2Data.qualification_degree_file" (change)="validateFile($event,'qualification_degree')">
                                                         <span class="icon-attach attach-data"></span>
-                                                    </span><a *ngIf="tradeLicensedValidation1 != false && tradeLicensedValidation1 != true" target="_blank" routerLink="{{tradeLicensedValidation1}}" href="javascript:void(0)">Link</a>
+                                                    </span><a class="image_file_link" *ngIf="tradeLicensedValidation1 != false && tradeLicensedValidation1 != true" target="_blank" routerLink="{{tradeLicensedValidation1}}" href="javascript:void(0)">Link</a>
                                                     <p class="error" *ngIf="!file_validation1">Please Upload a valid file (ex: pdf,png)</p>
                                                 </div>
                                                 
@@ -241,7 +241,7 @@
                                                     <span class="fileupload">
                                                         <input type="file" name="education_specialization_file" [(ngModel)]="step2Data.education_specialization_file" (change)="validateFile($event,'education_specialization')">
                                                         <span class="icon-attach attach-data"></span>
-                                                    </span><a *ngIf="tradeLicensedValidation2 != false && tradeLicensedValidation2 != true" target="_blank" routerLink="{{tradeLicensedValidation2}}" href="javascript:void(0)">Link</a>
+                                                    </span><a class="image_file_link" *ngIf="tradeLicensedValidation2 != false && tradeLicensedValidation2 != true" target="_blank" routerLink="{{tradeLicensedValidation2}}" href="javascript:void(0)">Link</a>
 
                                                     <p class="error" *ngIf="!file_validation2">Please Upload a valid file (ex: pdf,png)</p>
                                                 </div>
