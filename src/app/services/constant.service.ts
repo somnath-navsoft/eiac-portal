@@ -81,7 +81,7 @@ export class Constants{
 				{
 					heading: 'Application', link: '#', sub: true,
 					submenu: [
-						{title: 'Accreditation', link: '#'},
+						{title: 'Accreditation', link: '/dashboard/cab_client/application-accreditation'},
 						{title: 'Registration', link: '/dashboard/cab_client/application-registration'},
 						//{title: 'Training Service', link: '#'},
 						//{title: 'Training Apply', link: '/dashboard/cab_client/training-apply'},

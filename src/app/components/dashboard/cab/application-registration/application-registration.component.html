@@ -6,17 +6,17 @@
                     <div class="service_desc_sec">
                         <img class="service_img" src="{{constant.mediaPath}}{{row.service_page.thumb_image}}">
                     </div>
-                    <a href="javascript:void(0)" routerLink="/{{row.service_page.meta_title !='' ? 'service/'+row.service_page.meta_title : '#'}}">
-                        <div class="service_desc">
-                            <h4 >{{row.title}}</h4>
+                    <div class="service_desc">
+                        <h4 >{{row.title}}</h4>
                         <p class="service-data" [innerHtml]="row.short_description">
                         
                         </p>
                         <div class="start-now-bttn">
-                            <a href="javascript:void(0)" routerLink="/{{row.service_page.meta_title !='' ? 'service/'+row.service_page.meta_title : '#'}}">Apply Now<span class="icon-right-arrow"></span></a>
+                            <a *ngIf="row.title == 'Work Activity Permit'" href="javascript:void(0)" routerLink="/dashboard/cab_client/work-permit-form">Apply Now<span class="icon-right-arrow"></span></a>
+
+                            <a *ngIf="row.title == 'No Objection Certificate'" href="javascript:void(0)" routerLink="/dashboard/cab_client/no-objection-form">Apply Now<span class="icon-right-arrow"></span></a>
                         </div>
                     </div>
-                </a>
                 </div>
             </div>
             
