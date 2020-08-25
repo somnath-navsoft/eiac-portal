@@ -37,7 +37,7 @@ export class AssessorsProfileComponent implements OnInit {
   userType:any;
   isCompleteness:any;
   headerSteps:any[] = [];
-  progressValue:any;
+  progressValue:any = 0;
 
   step1DataBodyFormFile: any = new FormData();
   step2DataBodyFormFile: any = new FormData();
