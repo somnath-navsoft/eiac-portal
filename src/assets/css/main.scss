@@ -173,8 +173,8 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 }
 .lang-name { text-align: center; }
 .desc-content-prof { display: flex; justify-content: space-around; }
-.open-cls { background: #E7E7E7; margin: 0 -15px; padding: 10px 25px; text-align: right; }
-.open-cls a { color: #AA9777; }
+.open-cls { background: #E7E7E7; margin: 0 -15px; padding: 10px 25px; text-align: right; height:100%; display: flex;justify-content: flex-end }
+.open-cls a { color: #AA9777; vertical-align: middle;}
 .open-cls a:hover { text-decoration: none; }
 .signature { margin-top: 20px; }
 .signature .mat-checkbox-frame {
