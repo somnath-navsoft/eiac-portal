@@ -463,7 +463,7 @@ export class AssessorsProfileComponent implements OnInit {
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
               // this.router.navigateByUrl('/sign-in');
-              this.Service.headerStepMove('knowledge_experience',this.headerSteps,'employment');
+              this.Service.headerStepMove('applicant_trainer',this.headerSteps,'knowledge_experience');
             }else{
               
               this.toastr.warning(res['msg'], '');
