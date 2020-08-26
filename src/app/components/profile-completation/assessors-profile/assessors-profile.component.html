@@ -230,7 +230,7 @@
                                         <span class="fileupload">
                                             <input type="file" name="education_specialization_file" [(ngModel)]="step2Data.education_specialization_file" (change)="validateFile($event,'education_specialization')">
                                             <span class="icon-attach attach-data"></span>
-                                        </span><a  class="image_file_link" *ngIf="tradeLicensedValidation2 != false && tradeLicensedValidation2 != true" target="_blank" [href]="tradeLicensedValidation2">Link</a>
+                                        </span><a class="image_file_link" *ngIf="tradeLicensedValidation2 != false && tradeLicensedValidation2 != true" target="_blank" [href]="tradeLicensedValidation2">Link</a>
                                         <p class="error" *ngIf="!file_validation2">Please Upload a valid file (ex: pdf,png,jpg,jpeg)</p>
                                     </div>
                                 </div>
@@ -243,14 +243,14 @@
                                         <span class="fileupload">
                                             <input type="file" name="further_education_file" [(ngModel)]="step2Data.further_education_file" (change)="validateFile($event,'further_education')">
                                             <span class="icon-attach attach-data"></span>
-                                        </span><a  class="image_file_link" *ngIf="tradeLicensedValidation3" target="_blank" [href]="tradeLicensedValidation3">Link</a>
+                                        </span><a class="image_file_link" *ngIf="tradeLicensedValidation3" target="_blank" [href]="tradeLicensedValidation3">Link</a>
                                         <p class="error" *ngIf="!file_validation3">Please Upload a valid file (ex: pdf,png,jpg,jpeg)</p>
                                     </div>
 
                                     <div class="col-md-8">
                                         <mat-form-field class="cab-data">
                                             <mat-label>Others</mat-label>
-                                            <input matInput [(ngModel)]="step2Data.others_education" name="others_education" placeholder="" required>
+                                            <input matInput [(ngModel)]="step2Data.others_education" name="others_education" placeholder="">
                                         </mat-form-field>
                                     </div>
                                 </div>
@@ -273,7 +273,7 @@
                                     <div class="col-md-4">
                                         <mat-form-field class="cab-data">
                                             <mat-label>From</mat-label>
-                                            <input matInput [matDatepicker]="from" name="completeProfileFrom" [(ngModel)]="step2Data.completeProfileFrom" readonly="true" (click)="Service._openCalendar(from)" placeholder="From" required>
+                                            <input matInput [matDatepicker]="from" name="completeProfileFrom" [(ngModel)]="step2Data.completeProfileFrom" [max]="today" readonly="true" (click)="Service._openCalendar(from)" placeholder="From" required>
                                             <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
                                             <mat-datepicker #from disabled="false"></mat-datepicker>
                                         </mat-form-field>
@@ -281,7 +281,7 @@
                                     <div class="col-md-4">
                                         <mat-form-field class="cab-data">
                                             <mat-label>Till</mat-label>
-                                            <input matInput [(ngModel)]="step2Data.completeProfileTill" name="completeProfileTill" [matDatepicker]="till" (click)="Service._openCalendar(till)" placeholder="Till" required>
+                                            <input matInput [(ngModel)]="step2Data.completeProfileTill" name="completeProfileTill" [matDatepicker]="till" [max]="today" (click)="Service._openCalendar(till)" placeholder="Till" required>
                                             <mat-datepicker-toggle  matSuffix [for]="till"></mat-datepicker-toggle>
                                             <mat-datepicker #till disabled="false"></mat-datepicker>
                                         </mat-form-field>
@@ -869,7 +869,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Date</mat-label>
-                                                <input matInput name="confirm_date" [(ngModel)]="step5Data.date"  [matDatepicker]="confirm_date" readonly="true" placeholder="Date" (click)="Service._openCalendar(confirm_date)" required>
+                                                <input matInput name="confirm_date" [max]="today" [(ngModel)]="step5Data.date"  [matDatepicker]="confirm_date" readonly="true" placeholder="Date" (click)="Service._openCalendar(confirm_date)" required>
                                                 <mat-datepicker-toggle  matSuffix [for]="confirm_date"></mat-datepicker-toggle>
                                                 <mat-datepicker #confirm_date disabled="false"></mat-datepicker>
                                             </mat-form-field>

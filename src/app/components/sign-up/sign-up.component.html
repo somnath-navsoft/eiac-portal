@@ -131,6 +131,7 @@
                                         <mat-label>Mobile Number</mat-label>
                                         <input matInput maxlength="15" minlength="10"  maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" name="mobile" required [(ngModel)]="userData.mobile" placeholder="Mobile Number">
                                     </mat-form-field>
+                                    <!-- <p class="error" *ngIf="userData.mobile && !Service.checkInput('onlyNumber',userData.mobile)">Please Enter Only Number</p>  -->
                                 </div>
                                 <!-- <mat-form-field class="cab-data">
                                     <mat-label>Confirm Email Address</mat-label>
