@@ -36,6 +36,8 @@ export class Constants{
 		emailVerification: 'user-email-verification/',
 		profileService: 'profile-service/',
 		service_details_page: 'pillar_page/',
+		healthcare_form_basic_data: 'healthcare_form/',
+		pt_provider: 'pt-provider-form/',
 	}
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."
 	public loggedIn													=	new Subject<any>();

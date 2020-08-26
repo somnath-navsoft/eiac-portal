@@ -32,6 +32,7 @@ export class AppService {
   public regExNumb: any;
   public regExEmail: any;
   user = null;
+  public mapboxToken = '';
 
   constructor(public http: HttpClient, private _constant: Constants,
     private _flashMessage: FlashMessagesService,
@@ -67,7 +68,26 @@ function getFeesPerTrainee(training_days){
 }
 
 */
+addMinutesToTime()
+{
+  var x = 30; //minutes interval
+  var timesVal = []; // time array
+  var timesKey = []; // time array
+  var tt = 0; // start time
+  var ap = [' AM', ' PM']; // AM-PM
+  var newdutyTimeArr = [];
 
+  for (var i=0;tt<24*60; i++) {
+    var hh = Math.floor(tt/60); // getting hours of day in 0-24 format
+    var mm = (tt%60); // getting minutes of the hour in 0-55 format
+    timesKey[i] = ("0" + (hh % 24)).slice(-2) + ':' + ("0" + mm).slice(-2) + ':00'; // pushing data in array in [00:00 - 12:00 AM/PM format]
+    timesVal[i] = ("0" + (hh % 12)).slice(-2) + ':' + ("0" + mm).slice(-2) + ap[Math.floor(hh/12)]; // pushing data in array in [00:00 - 12:00 AM/PM format]
+    tt = tt + x;
+    newdutyTimeArr.push({'key':timesKey[i],'val':timesVal[i]});
+  }
+  
+  return newdutyTimeArr;
+}
 
   decodeJWT(token: string){
     let decoded: any;

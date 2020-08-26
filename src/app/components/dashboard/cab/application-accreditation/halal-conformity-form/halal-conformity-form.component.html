@@ -1,1 +1,1413 @@
-<p>halal-conformity-form works!</p>
+<!-- <app-loader *ngIf="loader"></app-loader> -->
+<div class="main-content">
+    <!-- <section>
+        <div class="hdr-content" [style.background-image]="'url('+banner+')'">
+            <app-partial-header></app-partial-header>
+            <a class="banner-link" [href]="bannerURL" target="{{bannerLinkTarget}}" title="{{bannerImageTitle}}">
+                <div class="row m-0">
+                    <div class="col-12">
+                        <div class="bg-contnt">
+                            <span class="bg-dfnt">Halal Conformity Bodies</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-0">
+                    <div class="col-12">
+                        <div class="stremline">
+                            <div class="cnt-service">
+                                <a href="javascript:void(0)" class="start-now-top">START NOW</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section> -->
+    <section>
+        <div class="form-wrapper">
+            <div class="container-fluid">
+                <form  #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)"  autocomplete="off">
+                    <div class="form-hdr">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-main">
+                                    <h1>HALAL CONFIRMITY ASSESSMENT BODIES APPLICATION FORM</h1>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="bttns-health bttns-rig">
+                                    <a href="javascript:void(0)" class="review-bttn" [routerLink]="['/application-form/publications']" [queryParams]="{publicationId: '10'}" target="_blank">REVIEW DOCUMENTS</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-bdy">
+                        <div class="row m-0">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr">
+                                                <h5>1. APPLICANT INFORMATION</h5>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-6 col-sm-12">
+                                            <!-- <mat-form-field class="cab-data">
+                                                <mat-label>Upload valid Legal-Professional / Commercial / Trade license</mat-label>
+                                                <input matInput placeholder="" name="license" [(ngModel)]="publicHalalConformityForm.license" required>
+                                                <span class="icon-attach attach-data"></span>
+                                            </mat-form-field> -->
+                                            <div class="matupload position-relative">
+                                                <mat-form-field  class="lng-data">
+                                                <input matInput readonly="true" name="trade_license_name" [(ngModel)]="publicHalalConformityForm.trade_license_name" required placeholder="Upload valid Legal-Professional / Commercial / Trade license">
+                                                </mat-form-field>
+                                                <span class="fileupload">
+                                                    <input type="file" name="trade_license" [(ngModel)]="publicHalalConformityForm.trade_license" (change)="validateFile($event,'trade_license')" required>
+                                                    <span class="icon-attach attach-data"></span>
+                                                </span>                                               
+                                            </div>
+                                            <p class="error" *ngIf="!file_validation">Please Upload a valid file (ex: doc,odt,pdf,rtf,docx,xlsx)</p>
+                                        </div>
+                                        <div class="col-md-3 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Date of Issue</mat-label>
+                                                <input [matDatepicker]="date_of_issue" readonly="true" matInput placeholder="" name="date_of_issue" (click)="Service._openCalendar(date_of_issue)" [(ngModel)]="publicHalalConformityForm.date_of_issue" required (dateChange)="setexDate()">
+                                                <mat-datepicker-toggle matSuffix [for]="date_of_issue"></mat-datepicker-toggle>
+                                                <mat-datepicker #date_of_issue readonly="false"></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-3 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Date of Expiry</mat-label>
+                                                <input [matDatepicker]="date_of_expiry" [min]="minDate" readonly="false" matInput placeholder="" name="date_of_expiry" (click)="Service._openCalendar(date_of_expiry)" [(ngModel)]="publicHalalConformityForm.date_of_expiry" required>
+                                                <mat-datepicker-toggle matSuffix [for]="date_of_expiry"></mat-datepicker-toggle>
+                                                <mat-datepicker #date_of_expiry readonly="true"></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Date of Establishment</mat-label>
+                                                <input [matDatepicker]="date_of_establishment" readonly="true" matInput placeholder="" name="date_of_establishment" (click)="Service._openCalendar(date_of_establishment)" [(ngModel)]="publicHalalConformityForm.date_of_establishment" required>
+                                                <mat-datepicker-toggle matSuffix [for]="date_of_establishment"></mat-datepicker-toggle>
+                                                <mat-datepicker #date_of_establishment readonly="false"></mat-datepicker>
+
+                                            </mat-form-field>
+                                        </div>
+                                        <!-- <div class="col-md-3 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Location Latitude</mat-label>
+                                                <input matInput placeholder="" name="location_latitude" [(ngModel)]="publicHalalConformityForm.location_latitude" required>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-3 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Location Longitude</mat-label>
+                                                <input matInput placeholder="" name="location_longitude" [(ngModel)]="publicHalalConformityForm.location_longitude" required>
+                                            </mat-form-field>
+                                        </div> -->
+                                        <div class="col-md-6 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Location Latitude/Longitude</mat-label>
+                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" (keypress)="getPlaceName()" [matAutocomplete] = "auto" placeholder="Location Latitude" name="location_latitude" [(ngModel)]="publicHalalConformityForm.search_location_name" required>
+                                                <mat-autocomplete #auto = "matAutocomplete" >
+                                                    <mat-option *ngFor = "let searchCountryList of searchCountryLists" (click)="getLatitudelongitude(searchCountryList.geometry.coordinates[0],searchCountryList.geometry.coordinates[1])" [value] = "searchCountryList.place_name">
+                                                       {{searchCountryList.place_name}}
+                                                    </mat-option>
+                                                 </mat-autocomplete>
+                                                <mat-error></mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <mat-form-field class="cab-data">
+                                                    <mat-label>Commercial Name</mat-label>
+                                                    <textarea onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" [(ngModel)]="publicHalalConformityForm.official_commercial_name"  placeholder="Registered Physical Location Address" name="official_commercial_name" required></textarea>
+                                                    <mat-error></mat-error> 
+                                                </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                            <mat-label>Type of Service Required</mat-label>
+                                            <mat-select matInput name="labour_type" [(ngModel)]="publicHalalConformityForm.labour_type" required placeholder="">
+                                                <mat-option (click)="idToName('labour_type_name',item.title)" *ngFor="let item of allService" [value]='item.id'>{{item.title}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Registered Physical Location Address:</mat-label>
+                                                <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="" name="physical_location_address" [(ngModel)]="publicHalalConformityForm.physical_location_address" required>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Mailing Address</mat-label>
+                                                <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="" name="mailing_address" [(ngModel)]="publicHalalConformityForm.mailing_address" required>
+                                            </mat-form-field>
+                                            <!-- <p class="error" *ngIf="publicHalalConformityForm.mailing_address && !Service.checkInput('email',publicHalalConformityForm.mailing_address)">Please Enter Correct Mailing Address</p> -->
+                                        </div>
+                                        <div class="col-md-3">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>PO Box No./ZIP Code</mat-label>
+                                                <input matInput placeholder="" (keypress)="Service.allowCharacterAndDigitsOnly($event)"  name="po_box" [(ngModel)]="publicHalalConformityForm.po_box" required>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Country</mat-label>
+                                                    <mat-select placeholder="Select"  name="country_id" [(ngModel)]="publicHalalConformityForm.country_id" required>
+                                                        <mat-option [value]="item.CountryName" (click)="idToName('country',item.CountryName)" *ngFor="let item of getCountryLists; let i = index;">{{item.CountryName}}</mat-option>
+                                                    </mat-select>
+                                                    <mat-error></mat-error>      
+                                                </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>City</mat-label>
+                                                <mat-select required="" [(ngModel)]="publicHalalConformityForm.city" name="city">
+                                                    <mat-option  *ngFor="let allCityByCountryName of allCityByCountry; let i = index" [value]='allCityByCountryName'>
+                                                    {{allCityByCountryName}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <!-- <div class="col-md-3">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>City</mat-label>
+                                                <input matInput placeholder="" name="city" [(ngModel)]="publicHalalConformityForm.city" required>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Country</mat-label>
+                                                <mat-select required matInput placeholder="" [(ngModel)]="publicHalalConformityForm.country_id" name="country_id">
+                                                    <mat-option (click)="idToName('country',item.title)" *ngFor="let item of allCountry" [value]='item.country'>{{item.title}}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div> -->
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Telephone Number</mat-label>
+                                                <input matInput placeholder="" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)"  name="telephone" [(ngModel)]="publicHalalConformityForm.telephone" required>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Fax Number</mat-label>
+                                                <input matInput placeholder="" type="text" (keypress)="Service.IsNumeric($event)" name="fax_no" [(ngModel)]="publicHalalConformityForm.fax_no" required>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Official E-mail Address</mat-label>
+                                                <input matInput placeholder="" name="official_email" [(ngModel)]="publicHalalConformityForm.official_email" required>
+                                            </mat-form-field>
+                                            <p class="error" *ngIf="publicHalalConformityForm.official_email && !Service.checkInput('email',publicHalalConformityForm.official_email)">Please Enter Correct Mailing Address</p>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Official Website</mat-label>
+                                                <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="" name="official_website" [(ngModel)]="publicHalalConformityForm.official_website" required>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>OWNERSHIP OF THE ORGANIZATION</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" *ngFor="let item of ownershipOfTheCompany; let i = index;">
+                                        <div class="col-12">
+                                            <div class="ownr-details">
+                                                <div class="row" *ngIf="i >= 1">
+                                                    <div class="col-12">
+                                                        <div class="remove-clss">
+                                                            <span class="icon-cancel" (click)="removeRow(ownershipOfTheCompany, i)"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Name</mat-label>
+                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off"  placeholder="Name"  maxlength="20"  name="name_{{i}}" [(ngModel)]="ownershipOfTheCompany[i].name" required>
+                                                            <mat-error></mat-error>    
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Designation</mat-label>
+                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" required placeholder="Designation"   name="designation_{{i}}" [(ngModel)]="ownershipOfTheCompany[i].designation" required>
+                                                            <mat-error></mat-error> 
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Mobile Phone No.</mat-label>
+                                                            <input type="text" maxlength="14" minlength="10" (keypress)="Service.IsNumeric($event)"  matInput autocomplete="off"  placeholder="Mobile No." name="telephone_no_{{i}}" [(ngModel)]="ownershipOfTheCompany[i].telephone_no" maxlength="10" required>
+                                                            <mat-error></mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Land Line Phone No.</mat-label>
+                                                            <input  matInput autocomplete="off"  placeholder="Landline No."  name="mobile_no_{{i}}" [(ngModel)]="ownershipOfTheCompany[i].mobile_no" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" required >
+                                                            <mat-error></mat-error>      
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Email Address</mat-label>
+                                                            <input  type="email" matInput autocomplete="off"  placeholder="Email Address"  name="email_{{i}}" [(ngModel)]="ownershipOfTheCompany[i].email" required >
+                                                            <mat-error></mat-error>
+                                                        </mat-form-field>
+                                                        <p class="error" *ngIf="ownershipOfTheCompany[i].email && !Service.checkInput('email',ownershipOfTheCompany[i].email)">Please Enter Correct Mailing Address</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="add-new">
+                                                <a href="javascript:void(0)" (click)="addRow(ownershipOfTheCompany)">
+                                                    <span class="icon-add"></span>
+                                                    <span>ADD NEW</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row tog-content">
+                                        <div class="col-6 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>MANAGING DIRECTOR/CHIEF EXECUTIVE</h5>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row" *ngFor="let item of managing_director; let i = index;">
+                                        <div class="col-12">
+                                            <div class="ownr-details">
+                                                <div class="row" *ngIf="i >= 1">
+                                                    <div class="col-12">
+                                                        <div class="remove-clss">
+                                                            <span class="icon-cancel" (click)="removeRow(managing_director, i)"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Name</mat-label>
+                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off"  placeholder="Name"  maxlength="20"  name="managing_director_name_{{i}}" [(ngModel)]="managing_director[i].name" required>
+                                                            <mat-error></mat-error>    
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Designation</mat-label>
+                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" required placeholder="Designation"   name="managing_director_designation_{{i}}" [(ngModel)]="managing_director[i].designation" required>
+                                                            <mat-error></mat-error> 
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Mobile Phone No.</mat-label>
+                                                            <input type="text" maxlength="14" minlength="10" (keypress)="Service.IsNumeric($event)"  matInput autocomplete="off"  placeholder="Mobile No." name="telephone_no_{{i}}" [(ngModel)]="managing_director[i].telephone_no" maxlength="10" required>
+                                                            <mat-error></mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Land Line Phone No.</mat-label>
+                                                            <input  matInput autocomplete="off"  placeholder="Landline No."  name="mobile_no_{{i}}" [(ngModel)]="managing_director[i].mobile_no" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" required >
+                                                            <mat-error></mat-error>      
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Email Address</mat-label>
+                                                            <input  type="email" matInput autocomplete="off"  placeholder="Email Address"  name="email_{{i}}" [(ngModel)]="managing_director[i].email" required >
+                                                            <mat-error></mat-error>
+                                                        </mat-form-field>
+                                                        <p class="error" *ngIf="managing_director[i].email && !Service.checkInput('email',managing_director[i].email)">Please Enter Correct Mailing Address</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Date of Establishment of Certification Body</mat-label>
+                                                            <input [matDatepicker]="picker" matInput readonly="true" (dateChange)="Service.inputEvent($event,i,managing_director)" placeholder="" name="date_of_establishment_{{i}}" (click)="Service._openCalendar(picker)" [(ngModel)]="managing_director[i].certificate_expiry_date" required>
+                                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                            <mat-datepicker #picker readonly="false"></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Legal Status (License Name/Registration Number) of HCAB</mat-label>
+                                                            <input matInput placeholder="" name="legal_status_{{i}}" [(ngModel)]="managing_director[i].legal_status" required>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="add-new">
+                                                <a   href="javascript:void(0)" (click)="addRow(managing_director)">
+                                                    <span class="icon-add"></span>
+                                                    <span>ADD NEW</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row tog-content">
+                                        <div class="col-md-6 col-sm-6 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>DOES THE HCABS IS MANAGED BY BOARD OF DIRECTORS ?</h5>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 p-0">
+                                            <div class="form-subheader-desc">
+                                                <!-- <mat-radio-group name="is_bod" required [(ngModel)]="publicHalalConformityForm.is_bod">
+                                                    <mat-radio-button value="1"(click)='is_toggle("is_bod",1)'>Yes</mat-radio-button>
+                                                    <mat-radio-button value="0" (click)='is_toggle("is_bod",0)' >No</mat-radio-button>
+                                                </mat-radio-group> -->
+
+                                                <mat-radio-group name="is_bod" [(ngModel)]="publicHalalConformityForm.is_bod">
+                                                    <mat-radio-button value="1" (click)='is_toggle("is_bod",1)'>Yes</mat-radio-button>
+                                                    <mat-radio-button value="0" (click)='is_toggle("is_bod",0)'>No</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="is_bod">
+                                        <div class="col-md-12" *ngFor="let item of boardOfDirector; let i = index;">
+                                            <div class="ownr-details">
+                                                <div class="row" *ngIf="i >= 1">
+                                                    <div class="col-12">
+                                                        <div class="remove-clss">
+                                                            <span class="icon-cancel" (click)="removeRow(boardOfDirector, i)"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Name the HCABS member of Board of Directors</mat-label>
+                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="name_{{i}}" [(ngModel)]="boardOfDirector[i].name" required>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Designation</mat-label>
+                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="designation_{{i}}" [(ngModel)]="boardOfDirector[i].designation" required>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Relationship</mat-label>
+                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="relationship_{{i}}" [(ngModel)]="boardOfDirector[i].relationship" required>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Current Occupation</mat-label>
+                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="current_occupation_{{i}}" [(ngModel)]="boardOfDirector[i].current_occupation" required>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Employment</mat-label>
+                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="employment_{{i}}" [(ngModel)]="boardOfDirector[i].employment" required>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="is_bod">
+                                        <div class="col-12">
+                                            <div class="add-new">
+                                                <a href="javascript:void(0)" (click)="addRow(boardOfDirector)">
+                                                    <span class="icon-add"></span>
+                                                    <span>ADD NEW</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row my-3">
+                                        <div class="col-md-4">
+                                            <div class="form-data">
+                                                <h5>Is Halal Conformity Assessment is the main activity of the organaization</h5>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-radio-group name="is_main_activity" required [(ngModel)]="publicHalalConformityForm.is_main_activity">
+                                                <div class="desc-content">
+                                                    <mat-radio-button value="1" required>Yes</mat-radio-button>
+                                                    <mat-radio-button value="0" required>No</mat-radio-button>
+                                                </div>
+                                            </mat-radio-group>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>(If No, please indicate what are other activities related to HCAB)</mat-label>
+                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="is_main_activity_note" [required]="publicHalalConformityForm.is_main_activity == 0" [(ngModel)]="publicHalalConformityForm.is_main_activity_note">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row my-3">
+                                        <div class="col-md-4">
+                                            <div class="form-data">
+                                                <h5>Does HCAB or any of its staff have any ownership, business relationship with a 
+                                                    consultancy works, Halal production or Halal products trade or business, etc</h5>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-radio-group name="hcab_staff" required [(ngModel)]="publicHalalConformityForm.hcab_staff">
+                                                <div class="desc-content">
+                                                    <mat-radio-button value="1" required>Yes</mat-radio-button>
+                                                    <mat-radio-button value="0" required>No</mat-radio-button>
+                                                </div>
+                                            </mat-radio-group>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>(If Yes, please describe and add the business details)</mat-label>
+                                                <input matInput placeholder="" name="hcab_staff_description" [(ngModel)]="publicHalalConformityForm.hcab_staff_description" [required]="publicHalalConformityForm.hcab_staff == '0'">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row tog-content">
+                                        <div class="col-md-10 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>IF HCAB HAS ANY OTHER LOCATION(S) OTHER THAN THE MAIN/HEAD OFFICE OR BRANCHES WHERE KEY ACTIVITIES TAKES PLACE</h5>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 p-0">
+                                            <div class="form-subheader-desc">
+                                                <mat-radio-group name="is_cab_location" [(ngModel)]="publicHalalConformityForm.is_cab_location">
+                                                    <mat-radio-button value="1" (click)='is_toggle("is_cab_location",1)'>Yes</mat-radio-button>
+                                                    <mat-radio-button value="0" (click)='is_toggle("is_cab_location",0)'>No</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="is_cab_location">
+                                        <div class="col-md-12">
+                                            <div class="table-content-health">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Location Type</th>
+                                                            <th>Address/City/Country</th>
+                                                            <th>*Key Activities carried out at this Location</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody >
+                                                        
+                                                        <tr *ngFor="let item of hcabLocationList; let i = index;">
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="hcabLocationList_location_type_{{i}}" [(ngModel)]="hcabLocationList[i].hcabLocationList_location_type" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="hcabLocationList_address_{{i}}" [(ngModel)]="hcabLocationList[i].hcabLocationList_address" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="hcabLocationList_key_activities_{{i}}" [(ngModel)]="hcabLocationList[i].hcabLocationList_key_activities" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td class="content-icn">
+                                                                <span *ngIf="i >= 0" class="icon-add" (click)="addRow(hcabLocationList)"></span>&nbsp;
+                                                                <span *ngIf="i >= 1" class="icon-cancel" (click)="openDialog(hcabLocationList,i)"></span>
+                                                            </td>
+                                                        </tr>
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="imp-mean">
+                                                <span>(*) as example of the key activities include: policy formulation, 
+                                                    process and/or procedure development, proceedings of safeguarding impartiality 
+                                                    committee/scheme committee, approval of auditors/examiners/inspectors, application &amp; 
+                                                    contract review, selection of auditors/examiners/inspectors, handling of contractual 
+                                                    agreements with auditors/examiners/inspectors, monitoring of auditors/examiners/inspectors, 
+                                                    planning of audits/ examinations/inspections, review, approval and decision on the results 
+                                                    of audits/examinations/inspections and preparation, release and control of certificates, 
+                                                    Final decision on appeals and complaints.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row tog-content">
+                                        <div class="col-md-10 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>DOES HCAB CURRENTLY HOLD ANY OTHER CURRENT OR PREVIOUS ACCREDITATION (S) ?</h5>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 p-0">
+                                            <div class="form-subheader-desc">
+                                                <mat-radio-group name="is_cab_accdiations" [(ngModel)]="publicHalalConformityForm.is_cab_accdiations">
+                                                    <mat-radio-button value="1" (click)='is_toggle("is_cab_accdiations",1)'>Yes</mat-radio-button>
+                                                    <mat-radio-button value="0" (click)='is_toggle("is_cab_accdiations",0)'>No</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <div class="row" *ngIf="is_cab_accdiations">
+                                        <div class="col-md-12">
+                                            <div class="table-content-health">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Standard Name</th>
+                                                            <th>Accreditation Body...</th>
+                                                            <th>Entity Location...</th>
+                                                            <th>Scope of Accreditation</th>
+                                                            <th>Initial Accreditation Date</th>
+                                                            <th>Expiry Date of Latest Ac...</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody >
+                                                        
+                                                        <tr *ngFor="let item of hcabAccreditation; let i = index;">
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="hcabAccreditation_standard_name_{{i}}" [(ngModel)]="hcabAccreditation[i].hcabAccreditation_standard_name" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="hcabAccreditation_accreditation_body_{{i}}" [(ngModel)]="hcabAccreditation[i].hcabAccreditation_accreditation_body" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="hcabAccreditation_entity_location_{{i}}" [(ngModel)]="hcabAccreditation[i].hcabAccreditation_entity_location" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="hcabAccreditation_scope_accreditation_{{i}}" [(ngModel)]="hcabAccreditation[i].hcabAccreditation_scope_accreditation" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input [matDatepicker]="hcabAccreditation_initial_accreditation_date" (dateChange)="Service.inputEvent($event,i,hcabAccreditation)" readonly="true" matInput placeholder="" name="hcabAccreditation_initial_accreditation_date_{{i}}" (click)="Service._openCalendar(hcabAccreditation_initial_accreditation_date)" [(ngModel)]="hcabAccreditation[i].certificate_expiry_date" required>
+                                                                    <mat-datepicker-toggle matSuffix [for]="hcabAccreditation_initial_accreditation_date"></mat-datepicker-toggle>
+                                                                    <mat-datepicker #hcabAccreditation_initial_accreditation_date readonly="false"></mat-datepicker>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input [matDatepicker]="certificate_expiry_date_second" (dateChange)="Service.inputEventForSecond($event,i,hcabAccreditation)" readonly="true" matInput placeholder="" name="hcabAccreditation_expiry_accreditation_date_{{i}}" (click)="Service._openCalendar(certificate_expiry_date_second)" [(ngModel)]="hcabAccreditation[i].certificate_expiry_date_second" required>
+                                                                    <mat-datepicker-toggle matSuffix [for]="certificate_expiry_date_second"></mat-datepicker-toggle>
+                                                                    <mat-datepicker #certificate_expiry_date_second readonly="false"></mat-datepicker>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td class="content-icn">
+                                                                <span *ngIf="i >= 0" class="icon-add" (click)="addRow(hcabAccreditation)"></span>&nbsp;
+                                                                <span *ngIf="i >= 1" class="icon-cancel" (click)="openDialog(hcabAccreditation,i)"></span>
+                                                            </td>
+                                                        </tr>
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-bdy">
+                        <div class="row m-0">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr">
+                                                <h5>2. HCAB PERSONNEL INFORMATION</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>TECHNICAL MANAGER</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Name</mat-label>
+                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="name_technical" [(ngModel)]="technicalManager.name" required>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Designation</mat-label>
+                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="designation_technical" [(ngModel)]="technicalManager.designation" required>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Mobile Phone No.</mat-label>
+                                                <input matInput placeholder="" maxlength="14" minlength="10" (keypress)="Service.IsNumeric($event)" name="mobileno_technical" [(ngModel)]="technicalManager.mobileno" required>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Email Address</mat-label>
+                                                <input matInput placeholder="" name="email_technical" [(ngModel)]="technicalManager.email" required>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Relevant Experience</mat-label>
+                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="relevent_experience_technical" [(ngModel)]="technicalManager.relevent_experience" required>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>ISLAMIC AFFAIRS EXPERT</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Name</mat-label>
+                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="name" [(ngModel)]="islamicAffair.name" required>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Designation</mat-label>
+                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="designation" [(ngModel)]="islamicAffair.designation" required>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Mobile Phone No.</mat-label>
+                                                <input matInput placeholder="" maxlength="14" minlength="10" (keypress)="Service.IsNumeric($event)" name="islamic_mobile_no" [(ngModel)]="islamicAffair.mobile_no" required>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Email Address</mat-label>
+                                                <input matInput placeholder="" name="email" [(ngModel)]="islamicAffair.email" required>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Relevant Experience</mat-label>
+                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="relevent_experience" [(ngModel)]="islamicAffair.relevent_experience" required>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>QUALITY MANAGER</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Name</mat-label>
+                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="name" [(ngModel)]="qualityManager.name" required>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Designation</mat-label>
+                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="designation" [(ngModel)]="qualityManager.designation" required>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Mobile Phone No.</mat-label>
+                                                <input matInput maxlength="14" minlength="10" (keypress)="Service.IsNumeric($event)" placeholder="" name="mobile_no" [(ngModel)]="qualityManager.mobile_no" required>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Email Address</mat-label>
+                                                <input matInput placeholder="" name="email" [(ngModel)]="qualityManager.email" required>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Relevant Experience</mat-label>
+                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="relevent_experience" [(ngModel)]="qualityManager.relevent_experience" required>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>SUMMARY OF NUMBER AND PERSONNEL WORKING AND RUNNING THE HCAB WORKS</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-content-health">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="20%">Position</th>
+                                                            <th>Total No.</th>
+                                                            <th>Full Time Direct Employees Name</th>
+                                                            <th>Contracted Full or Part Time Employees Name</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let item of summaryDetail; let i = index;">
+                                                            <td>{{item['position']}}
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="total_no_{{i}}" [(ngModel)]="summaryDetail[i].total_no" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="fulltime_emp_name_{{i}}" [(ngModel)]="summaryDetail[i].fulltime_emp_name" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="parttime_emp_name_{{i}}" [(ngModel)]="summaryDetail[i].parttime_emp_name" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-bdy">
+                        <div class="row m-0">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr">
+                                                <h5>3. SCOPE OF ACCREDITATION</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="scope-acc">
+                                                <h5>Please indicate the standard against which you are applying for EIAC Halal Accreditation :</h5>
+                                                <ul>
+                                                    <li><mat-checkbox>UAE.S 2055 -2: 2016</mat-checkbox></li>
+                                                    <li><mat-checkbox>GSO.S 2055-2:2015</mat-checkbox></li>
+                                                    <li><mat-checkbox>UAE.S 2055 -2: 2016</mat-checkbox></li>
+                                                    <li><mat-checkbox>OIC/SMIIC-2: 2011</mat-checkbox></li>
+                                                    <li><mat-checkbox>Halal Inspection bodies for providing Halal products market surveillance</mat-checkbox></li>
+                                                    <li><mat-checkbox>Halal Inspection bodies for Slaughter houses Inspection</mat-checkbox></li>
+                                                    <li><mat-checkbox>Halal products testing compliance</mat-checkbox></li>
+                                                    <li><mat-checkbox>Others :</mat-checkbox></li>
+                                                </ul>   
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>HALAL CONFORMITY ASSESSMENT SCOPE (FOR HALAL CERTIFICATION AND INSPECTION BODIES)</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-content-health">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Category Codes</th>
+                                                            <th>Categories</th>
+                                                            <th>Products/Sectors Products Group</th>
+                                                            <th>Products Specification/Standards</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        
+                                                        <tr *ngFor="let item of halalConformityAssessment; let i = index;">
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <!-- <input matInput placeholder="" name="halal_conformity_categorycodes_{{i}}" [(ngModel)]="halalConformityAssessment[i].halal_conformity_categorycodes" required> -->
+
+                                                                    <mat-select required matInput placeholder="" [(ngModel)]="halalConformityAssessment[i].halal_conformity_categorycodes" name="country_id">
+                                                                        <mat-option *ngFor="let item of categoryDetail" [value]='item.key'>{{item.val}}</mat-option>
+                                                                    </mat-select>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="halal_conformity_categories_{{i}}" [(ngModel)]="halalConformityAssessment[i].halal_conformity_categories" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="halal_conformity_sectors_products_{{i}}" [(ngModel)]="halalConformityAssessment[i].halal_conformity_sectors_products" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="halal_conformity_products_specifications_{{i}}" [(ngModel)]="halalConformityAssessment[i].halal_conformity_products_specifications" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td class="content-icn">
+                                                                <span *ngIf="i >= 0" class="icon-add" (click)="addRow(halalConformityAssessment)"></span>&nbsp;
+                                                                <span *ngIf="i >= 1" class="icon-cancel" (click)="openDialog(halalConformityAssessment,i)"></span>
+                                                            </td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>LIST OF CERTIFIED SLAUGHTERHOUSES AND MEAT PRODUCTS REGISTERED BY MINISTRY OF CLIMATIC CHANGES AND ENVIRONMENT (MOCCE) UAE</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-content-health">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Slaughterhouse/Abattoir</th>
+                                                            <th>Country</th>
+                                                            <th>Contact details of the slau...</th>
+                                                            <th>Animal</th>
+                                                            <th>Meat Type</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        
+                                                        <tr *ngFor="let item of certifiedSlaughterhouse; let i = index;">
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="slaughterhouse_abattoir_{{i}}" [(ngModel)]="certifiedSlaughterhouse[i].slaughterhouse_abattoir" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="slaughterhouse_country_{{i}}" [(ngModel)]="certifiedSlaughterhouse[i].slaughterhouse_country" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="slaughterhouse_contact_details_{{i}}" [(ngModel)]="certifiedSlaughterhouse[i].slaughterhouse_contact_details" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="slaughterhouse_animal_{{i}}" [(ngModel)]="certifiedSlaughterhouse[i].slaughterhouse_animal" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="slaughterhouse_meat_type_{{i}}" [(ngModel)]="certifiedSlaughterhouse[i].slaughterhouse_meat_type" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td class="content-icn">
+                                                                <span *ngIf="i >= 0" class="icon-add" (click)="addRow(certifiedSlaughterhouse)"></span>&nbsp;
+                                                                <span *ngIf="i >= 1" class="icon-cancel" (click)="openDialog(certifiedSlaughterhouse,i)"></span>
+                                                            </td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>HALAL PRODUCTS TESTING COMPLIANCE (HALAL PRODUCTS TESTING LABORATORIES)</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-content-health">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Type of Task</th>
+                                                            <th>Materials/Products</th>
+                                                            <th>Task Name</th>
+                                                            <th>Standard Test Method</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        
+                                                        <tr *ngFor="let item of halalProductTesting; let i = index;">
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="halalProductTesting_type_of_task_{{i}}" [(ngModel)]="halalProductTesting[i].halalProductTesting_type_of_task" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="halalProductTesting_materials_{{i}}" [(ngModel)]="halalProductTesting[i].halalProductTesting_materials" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="halalProductTesting_task_name_{{i}}" [(ngModel)]="halalProductTesting[i].halalProductTesting_task_name" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="halalProductTesting_standard_test_method_{{i}}" [(ngModel)]="halalProductTesting[i].halalProductTesting_standard_test_method" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td class="content-icn">
+                                                                <span *ngIf="i >= 0" class="icon-add" (click)="addRow(halalProductTesting)"></span>&nbsp;
+                                                                <span *ngIf="i >= 1" class="icon-cancel" (click)="openDialog(halalProductTesting,i)"></span>
+                                                            </td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-bdy">
+                        <div class="row m-0">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr">
+                                                <h5>4. OTHER HCAB DETAILS</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>SCOPE OF HALAL CONFORMITY ASSESSMENT CERTIFICATION:</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-content-health">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Type of Establishment</th>
+                                                            <th>Name of Establishment</th>
+                                                            <th>Contact Details, Name...</th>
+                                                            <th>Location/Distance/Ti...</th>
+                                                            <th>Product Category</th>
+                                                            <th>Products</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        
+                                                        <tr *ngFor="let item of scopeOfHalalConformity; let i = index;">
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="scopeOfHalalConformity_typeof_establishment_{{i}}" [(ngModel)]="scopeOfHalalConformity[i].scopeOfHalalConformity_typeof_establishment" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="scopeOfHalalConformity_nameof_establishment_{{i}}" [(ngModel)]="scopeOfHalalConformity[i].scopeOfHalalConformity_nameof_establishment" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="scopeOfHalalConformity_contact_details_{{i}}" [(ngModel)]="scopeOfHalalConformity[i].scopeOfHalalConformity_contact_details" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="scopeOfHalalConformity_location_distance_{{i}}" [(ngModel)]="scopeOfHalalConformity[i].scopeOfHalalConformity_location_distance" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="scopeOfHalalConformity_product_category_{{i}}" [(ngModel)]="scopeOfHalalConformity[i].scopeOfHalalConformity_product_category" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="scopeOfHalalConformity_products_{{i}}" [(ngModel)]="scopeOfHalalConformity[i].scopeOfHalalConformity_products" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td class="content-icn">
+                                                                <span *ngIf="i >= 0" class="icon-add" (click)="addRow(scopeOfHalalConformity)"></span>&nbsp;
+                                                                <span *ngIf="i >= 1" class="icon-cancel" (click)="openDialog(scopeOfHalalConformity,i)"></span>
+                                                            </td>
+                                                        </tr>
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>AUTHORIZED PERSONS FOR SIGNING THE HALAL CERTIFICATES</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-content-health">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Name of the Authorized Persons</th>
+                                                            <th>Signature Specimen</th>
+                                                            <th>Contact Details (Tel, Mobile No. and Email)</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        
+                                                        <tr *ngFor="let item of authorizedHalalCertificates; let i = index;">
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="halalCertificates_authorised_person_name_{{i}}" [(ngModel)]="authorizedHalalCertificates[i].halalCertificates_authorised_person_name" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="halalCertificates_signature_specimen_{{i}}" [(ngModel)]="authorizedHalalCertificates[i].halalCertificates_signature_specimen" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="halalCertificates_contact_details_{{i}}" [(ngModel)]="authorizedHalalCertificates[i].halalCertificates_contact_details" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td class="content-icn">
+                                                                <span *ngIf="i >= 0" class="icon-add" (click)="addRow(authorizedHalalCertificates)"></span>&nbsp;
+                                                                <span *ngIf="i >= 1" class="icon-cancel" (click)="openDialog(authorizedHalalCertificates,i)"></span>
+                                                            </td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>OTHER RECOGNIZED LOGOS OR SYMBOLS USED BY THE HCAB</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-md-4 col-sm-12">
+                                            <div class="matupload position-relative">
+                                                <mat-form-field>
+                                                        <input matInput name="recognized_logo1_name" [(ngModel)]="publicHalalConformityForm.recognized_logo1_name" required placeholder="Logo1">
+                                                </mat-form-field>
+                                                <span class="fileupload">
+                                                    <input type="file" name="recognized_logo1" [(ngModel)]="publicHalalConformityForm.recognized_logo1" (change)="validateFile($event,'recognized_logo1')" required>
+                                                    <span class="icon-attach attach-data"></span>
+                                                </span>                                               
+                                            </div>
+                                            <p class="error" *ngIf="!file_validation2">Please Upload a valid file (ex: jpg,JPEG,gif,png)</p>
+                                        </div>
+
+                                        <div class="col-md-4 col-sm-12">
+                                            <div class="matupload position-relative">
+                                                <mat-form-field>
+                                                        <input matInput name="recognized_logo2_name" [(ngModel)]="publicHalalConformityForm.recognized_logo2_name" required placeholder="Logo2">
+                                                </mat-form-field>
+                                                <span class="fileupload">
+                                                    <input type="file" name="recognized_logo2" [(ngModel)]="publicHalalConformityForm.recognized_logo2" (change)="validateFile($event,'recognized_logo2')" required>
+                                                    <span class="icon-attach attach-data"></span>
+                                                </span>                                               
+                                            </div>
+                                            <p class="error" *ngIf="!file_validation3">Please Upload a valid file (ex: jpg,JPEG,gif,png)</p>
+                                        </div>
+
+                                        <div class="col-md-4 col-sm-12">
+                                            <div class="matupload position-relative">
+                                                <mat-form-field>
+                                                        <input matInput name="recognized_logo3_name" [(ngModel)]="publicHalalConformityForm.recognized_logo3_name" required placeholder="Logo3">
+                                                </mat-form-field>
+                                                <span class="fileupload">
+                                                    <input type="file" name="recognized_logo3" [(ngModel)]="publicHalalConformityForm.recognized_logo3" (change)="validateFile($event,'recognized_logo3')" required>
+                                                    <span class="icon-attach attach-data"></span>
+                                                </span>                                               
+                                            </div>
+                                            <p class="error" *ngIf="!file_validation4">Please Upload a valid file (ex: jpg,JPEG,gif,png)</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-bdy">
+                        <div class="row m-0">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr">
+                                                <h5>5. TERMS AND CONDITIONS</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="tandc-halal">
+                                                <ul>
+                                                    <li>1. All applications shall be submitted electronically in word format to EAIC along with a payment 
+                                                        of AED 510 for application fees paid as stated in the fee structure guideline. Applicants from outside 
+                                                        UAE application fees are AED 610.</li>
+                                                    <li>2. The signed, stamped and scanned copy of the last page of this application form 
+                                                        (APPENDIX AUTHORIZATION OF THE AGREEMENT) shall also be submitted to EIAC.</li>
+                                                    <li>3. The applicant hereby confirms that the information provided in this application form is true and 
+                                                        correct. The applicant acknowledges that he agrees to abide by the terms and condition stated in the 
+                                                        accreditation agreement.</li>
+                                                    <li>4. Appeals can be made in writing against any decision related to accreditation made by EIAC, using 
+                                                        the Appeal Notice Form within thirty (30) calendar days of receiving the decision. Appeals will be processed 
+                                                        in accordance with the EIAC Appeal Procedure. The flowchart for appeal handling process is available on EAIC 
+                                                        web site.</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-bdy">
+                        <div class="row m-0">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr">
+                                                <h5>6. AUTHORIZATION OF THE APPLICATION</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="auth-content">
+                                                <mat-checkbox name="authorization_confirm1" [(ngModel)]="authorizationList.authorization_confirm1"required>I have read and understood and confirm to abide by the 
+                                                    Accreditation Agreement* (EIAC-PR- 002/FM-007) at all times, attached with this 
+                                                    application on the behalf of the Applicant Company :</mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>SIGNED FOR AND ON BEHALF OF APPLICANT</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Organization Name</mat-label>
+                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="onbehalf_company_name" [(ngModel)]="publicHalalConformityForm.onbehalf_company_name" required>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Full Name of Authorized Representative</mat-label>
+                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="onbehalf_representative_name" [(ngModel)]="publicHalalConformityForm.onbehalf_representative_name" required>
+                                            </mat-form-field>
+                                        </div> 
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Digital Signature</mat-label>
+                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="signed_behalf_ofapplicant_digital_signature" [(ngModel)]="publicHalalConformityForm.signed_behalf_ofapplicant_digital_signature" required>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Date</mat-label>
+                                                <input [matDatepicker]="onbehalf_representative_date" [value]="Service.returnCurrentDate()" matInput readonly="true" placeholder="" name="onbehalf_representative_date" [(ngModel)]="publicHalalConformityForm.onbehalf_representative_date">
+                                                
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <div class="confirm">
+                                <mat-checkbox name="authorization_confirm2" [(ngModel)]="authorizationList.authorization_confirm2" required>I confirm that the information given in this form are true, complete and accurate. I 
+                                    understand & agree that inaccurate information provided could delay or reject my application.</mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-0">
+                        <!-- <div class="col-md-3 col-sm-12 p-0">
+                        </div> -->
+                        <div class="form-group col-md-6 p-0">
+                            <div class="md-form">
+                                <label for="form1"></label>
+                                <re-captcha #captchaRef="reCaptcha" (resolved)="resolvedSecurity($event)"></re-captcha>
+                                <span *ngIf="!checkCaptchaValidation && afterSubmit == true">
+                                    <mat-error>Security Check is required</mat-error>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 col-sm-12">
+                            <div class="bttns-health">
+                                <!-- <button class="cancel-bttn">CANCEL</button> -->
+                                <button class="submit-bttn submit-health">SUBMIT</button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="bttns-health bttns-rig">
+                                <!-- <button class="review-bttn">REVIEW DOCUMENTS</button> -->
+                                <a href="javascript:void(0)" class="review-bttn" [routerLink]="['/application-form/publications']" [queryParams]="{publicationId: '10'}" target="_blank">REVIEW DOCUMENTS</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <section class="service_bg">
+        <div class="container-fluid h-100">
+            <div class="row justify-content-end h-100 m-0">
+                <div class="col-lg-4 col-sm-6 p-0 align-self-center">
+                    <!-- <form>
+                        <div class="service-exp">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <span class="heading">Get accredited, remain certified, and increase your impact.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </form> -->
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<app-footer (onData)="getData($event)"></app-footer>

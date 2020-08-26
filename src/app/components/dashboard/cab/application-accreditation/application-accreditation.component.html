@@ -4,7 +4,7 @@
             <div class="service-hdr-data">
                 <div class="service_desc_sec">
                     <!-- application-form -->
-                    <a href="javascript:void(0)" routerLink="/{{row.service_page.meta_title !='' ? 'service/'+row.service_page.meta_title : '#'}}">
+                    <a href="javascript:void(0)" routerLink="/{{row.service_page.meta_title !='' ? '/dashboard/cab_client/'+row.service_page.meta_title+'-form' : '#'}}">
                         <img class="service_img" src="{{constant.mediaPath}}{{row.service_page.thumb_image}}">
                     </a>
                 </div>
