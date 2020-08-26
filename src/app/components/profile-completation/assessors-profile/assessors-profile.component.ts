@@ -36,6 +36,7 @@ export class AssessorsProfileComponent implements OnInit {
   userEmail:any;
   userType:any;
   isCompleteness:any;
+  profileComplete:any;
   headerSteps:any[] = [];
   progressValue:any = 0;
 
@@ -62,6 +63,7 @@ export class AssessorsProfileComponent implements OnInit {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
+    this.profileComplete = sessionStorage.getItem('profileComplete');
 
     this.headerSteps.push(
       {

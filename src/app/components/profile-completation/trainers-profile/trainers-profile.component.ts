@@ -30,6 +30,7 @@ export class TrainersProfileComponent implements OnInit {
   userType:any;
   progressValue:any = 0;
   isCompleteness:any;
+  profileComplete:any;
   tradeLicensedValidation1:any = false;
   tradeLicensedValidation2:any = false;
   tradeLicensedValidation3:any;
@@ -45,6 +46,7 @@ export class TrainersProfileComponent implements OnInit {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
+    this.profileComplete = sessionStorage.getItem('profileComplete');
 
     this.headerSteps.push(
       {

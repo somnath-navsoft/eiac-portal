@@ -35,6 +35,7 @@ export class ClientCabProfileComponent implements OnInit {
   fileType:File;
   fileAny:any;
   isCompleteness:any;
+  profileComplete:any;
   tradeLicensedValidation:any = false;
   today = new Date();
   
@@ -50,6 +51,7 @@ export class ClientCabProfileComponent implements OnInit {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
+    this.profileComplete = sessionStorage.getItem('profileComplete');
     // this.nameOftheOwner ? this.clientCabForm.step2 = this.nameOftheOwner : '';
     // this.clientCabForm.nameOftheOwner = this.nameOftheOwner;
     // this.clientCabForm.companyBodMembers = this.companyBodMembers

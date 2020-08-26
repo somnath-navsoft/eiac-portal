@@ -38,6 +38,7 @@ export class Constants{
 		service_details_page: 'pillar_page/',
 		healthcare_form_basic_data: 'healthcare_form/',
 		pt_provider: 'pt-provider-form/',
+		testing_cal_form_basic_data: 'testing_calibration_form_management/',
 	}
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."
 	public loggedIn													=	new Subject<any>();

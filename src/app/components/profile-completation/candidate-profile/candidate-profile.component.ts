@@ -17,6 +17,7 @@ export class CandidateProfileComponent implements OnInit {
   userType:any;
   headerSteps:any[] = [];
   isCompleteness:any;
+  profileComplete:any;
   progressValue:any = 0;
   today = new Date();
 
@@ -28,6 +29,7 @@ export class CandidateProfileComponent implements OnInit {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
+    this.profileComplete = sessionStorage.getItem('profileComplete');
 
     this.headerSteps.push(
       {
