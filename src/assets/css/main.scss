@@ -11,6 +11,18 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
   white-space: normal !important;
 }
 
+.confirm .mat-checkbox-layout {
+  white-space: normal !important;
+}
+
+.terms-condition .mat-checkbox-layout {
+  white-space: normal !important;
+}
+
+.auth .mat-checkbox-layout {
+  white-space: normal !important;
+}
+
 //==================DU PORTAL==================//
 
 //==================FOR BEFORE LOGIN==================//
@@ -65,8 +77,8 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 .remembr-pwd span { text-align: right; }
 .forgot { color: #000000; font-family: "Dubai Regular"; font-size: 16px; }
 .forgot:hover { color: #000000; text-decoration: none; }
-.foot-cont { position: fixed; bottom: 0; left: 23%; }
-.foot-dash  { left: 50%; }
+.foot-cont { position: relative; }
+.footer-content { position: absolute; left: 50%; transform: translateX(-50%); bottom: 0;}
 .footer-content p { margin: 0; padding: 15px; font-size: 13px; color: #5D5D5D; background: #ffffff;  }
 .remembr-pwd .mat-checkbox-frame { border-color: rgba(153, 153, 153, 1); border-width: 1px; border-radius: 0; width: 20px; height: 20px; }
 .remembr-pwd .mat-checkbox-inner-container { height: 20px; width: 20px;}
@@ -173,8 +185,8 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 }
 .lang-name { text-align: center; }
 .desc-content-prof { display: flex; justify-content: space-around; }
-.open-cls { background: #E7E7E7; margin: 0 -15px; padding: 10px 25px; text-align: right; }
-.open-cls a { color: #AA9777; }
+.open-cls { background: #E7E7E7; margin: 0 -15px; padding: 10px 25px; text-align: right; height:100%; display: flex;justify-content: flex-end }
+.open-cls a { color: #AA9777; vertical-align: middle;}
 .open-cls a:hover { text-decoration: none; }
 .signature { margin-top: 20px; }
 .signature .mat-checkbox-frame {
@@ -188,6 +200,19 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 .wrappr-complete { padding: 20px 15px 0; }
 .form-bdy { background: #EFEFEF; margin-top: 30px; padding-bottom: 25px; }
 
+
+.service-desc {color: #77777B; font-family: 'Dubai Regular'; font-size: 22px;}
+.service-hdr-data { display: flex; margin-bottom: 40px; align-items: flex-start; }
+.service_desc_sec { width: 150px; height: 150px; }
+.service-hdr-data a { color: #77777B;  display: contents; }
+.service-hdr-data a:hover { color: #77777B; text-decoration: none;}
+.service_img { min-height: 150px; min-width: 150px; }
+.service-hdr { display: flex;}
+.service-hdr a:hover { color: #77777B; text-decoration: none;}
+.service_desc { padding: 0 30px; width: 100%; }
+.service_desc h4 {font-size: 25px; color: #77777B; font-family: 'Dubai Regular';}
+.service_desc .service-data {color: #77777B; font-family: 'Dubai Regular'; font-size: 18px; margin: 0; }
+.service_desc a{color: #B54150; font-size: 20px; font-family: 'Dubai Bold';}
 
 //==================SUCCESS==================//
 .form-success { background: #EFEFEF; padding: 50px; margin: 50px; margin-top: 120px; text-align: center; }
@@ -554,6 +579,7 @@ a:hover { text-decoration: none; }
 .submit-health { color: #ffffff; background: #B54150; border: 1px solid #B54150; padding: 10px 53px; }
 .form-subheader-data h5 { background: #E7E7E7; color: #AA9777; font-size: 22px; font-family: "Dubai Bold"; padding: 10px 25px; margin: 0; }
 .ownr-details { background: #F9F9F9; padding: 20px; margin-top: 20px; }
+.remove-clss { text-align: right; color: #B54150; }
 .add-new a { font-size: 24px; color: #B54150; letter-spacing: 3px; font-family: "Dubai Regular"; padding: 15px 0; display: block; }
 .add-new a:hover { color: #B54150; text-decoration: none; }
 .form-subhdr { margin: 0 -15px; }
@@ -661,8 +687,53 @@ a:hover { text-decoration: none; }
 .filter-search a { background: #B54150; color: #fff; font-size: 15px; font-family: 'Dubai Regular'; padding: 5px 15px; border-radius: 5px; }
 
 
+// ================FORMS================== //
+.table-content-health table { width: 100%; border-collapse: collapse; margin-top: 25px;}
+.table-content-health { margin: 30px 0; overflow: scroll; }
+.table-content-health table { width: 100%; border-collapse: collapse; margin-top: 30px;}
+.table-content-health th {padding: 10px; text-align: right; background: #E7E7E7;  border: 1px solid #DCDAD5;}
+.table-content-health td { padding: 25px 10px 20px; background: #F9F9F9; border: 1px solid #DCDAD5;}
+.table-content-health td input:focus { outline: none;}
+.table-content-health td span{ font-size: 22px;}
+.table-content-health .content-icn {text-align: center; color: #B54150;}
+.form-subheader-desc { background: #E7E7E7; text-align: right; margin: 0 -15px;}
+.form-subheader-desc .mat-radio-button { padding: 10px 15px; }
+.form-subheader-desc .mat-radio-label { margin: 0; }
+.qualifi-att { padding: 12px; }
 
 
+// MAT
+.confirm .mat-checkbox-frame {
+  border-color: rgba(153, 153, 153, 1); 
+  border-width: 1px; 
+  border-radius: 0; 
+  width: 20px; 
+  height: 20px;
+}
+.confirm .mat-checkbox-inner-container { height: 20px; width: 20px; margin-top: 7px; }
+.confirm .mat-checkbox-layout .mat-checkbox-label { line-height: 34px; font-family: "Dubai Medium"; font-size: 24px; }
+.terms-condition .mat-checkbox-frame {
+  border-color: rgba(153, 153, 153, 1); 
+  border-width: 1px; 
+  border-radius: 0; 
+  width: 20px; 
+  height: 20px;
+}
+.terms-condition .mat-checkbox-inner-container { height: 20px; width: 20px; margin-top: 7px; }
+.terms-condition .mat-checkbox-layout .mat-checkbox-label { line-height: 34px; font-family: "Dubai Medium"; font-size: 24px; }
+
+.auth .mat-checkbox-frame {
+  border-color: rgba(153, 153, 153, 1); 
+  border-width: 1px; 
+  border-radius: 0; 
+  width: 20px; 
+  height: 20px;
+}
+.auth .mat-checkbox-inner-container { height: 20px; width: 20px; margin-top: 7px; }
+.auth .mat-checkbox-layout .mat-checkbox-label { line-height: 34px; font-family: "Dubai Medium"; font-size: 24px; }
+
+
+.assess-dir { background: #EFEFEF; margin-top: 30px; padding-bottom: 30px; }
 
 
 .train-bdy { background: #EFEFEF; margin-top: 30px; padding-bottom: 25px; }
@@ -690,6 +761,23 @@ a:hover { text-decoration: none; }
   &:focus { outline: none; }
 }
 
+.assess-app {margin-top: 50px;}
+// .access-data { padding: 0 10px;}
+.cab-info h5 { margin: 0; color: #B54150; font-family: 'Dubai Bold'; font-size: 22px; padding: 15px 30px; background: #E7E7E7; margin: 0 -15px;}
+.cab-data { width: 100%;}
+.criteria-data { width: 100%; font-size: 22px;}
+.cab-data .mat-form-field-label { color: #3F3F3F; font-family: 'Dubai Regular';}
+.attach-data {position: absolute; right:10px; color: #3F3F3F;}
+.pledge { padding: 10px; font-family: 'Dubai Regular'; font-size: 22px;}
+.pledge ol li { line-height: 50px;}
+.pledge p span { color: #B54150;}
+.pledge p { margin-bottom: 20px; }
+.bttns { text-align: right; padding: 40px 0; font-family: 'Dubai Bold'; font-size: 26px;}
+.cancel-bttn {border: 1px solid #B54150; background: transparent; color: #B54150; margin-right: 30px; padding: 10px 52px;}
+.cancel-bttn:focus {outline: none;}
+.submit-bttn {color: #ffffff; background: #B54150; border: 1px solid #B54150; padding: 10px 53px;}
+.submit-bttn:focus {outline: none;}
+
 //==================RESPONSIVE==================//
 @media(max-width: 1366px) {
   .dash-logo { height: 50px; min-width: 50px; margin-right: 10px; }
@@ -697,4 +785,10 @@ a:hover { text-decoration: none; }
   .sub-msg-dash { font-size: 14px; }
   .dash-msg { margin: 0 -5px; }
   .trainer_head { margin: 0 -10px; }
+}
+
+.image_file_link {
+  display: inline-block;
+  margin: 15px 10px;
+  color: #121212;
 }

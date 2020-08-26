@@ -35,10 +35,15 @@ export class ClientCabProfileComponent implements OnInit {
   fileType:File;
   fileAny:any;
   isCompleteness:any;
-
+  profileComplete:any;
+  tradeLicensedValidation:any = false;
+  today = new Date();
+  
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
+  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { 
+    this.today.setDate(this.today.getDate());
+  }
 
   ngOnInit() {
     this.step2Data.is_bod = '0';
@@ -46,6 +51,7 @@ export class ClientCabProfileComponent implements OnInit {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
+    this.profileComplete = sessionStorage.getItem('profileComplete');
     // this.nameOftheOwner ? this.clientCabForm.step2 = this.nameOftheOwner : '';
     // this.clientCabForm.nameOftheOwner = this.nameOftheOwner;
     // this.clientCabForm.companyBodMembers = this.companyBodMembers
@@ -74,9 +80,9 @@ export class ClientCabProfileComponent implements OnInit {
           this.step1Data.last_name = res['data']['user_data'][0].last_name;
           this.step1Data.personal_email = res['data']['user_data'][0].email;
 
-          if(res['data'].step1) {
+          if(res['data'].step1[0].designation) {
             this.progressValue = 50;
-          }if(res['data'].step1 && res['data'].step2) {
+          }if(res['data'].step1[0].designation && res['data'].step2.cabContactData[0].designation) {
             this.progressValue = 100;
           }
           
@@ -108,6 +114,7 @@ export class ClientCabProfileComponent implements OnInit {
             this.step1Data.date_of_birth = new Date(step1.dob);
             // this.fileType = this.constant.mediaPath+step1.trade_license;
             // this.step1Data.trade_license = this.constant.mediaPath+step1.trade_license;
+            this.tradeLicensedValidation = this.constant.mediaPath+step1.trade_license;
             this.step1Data.phone_with_area = step1.tel_no;
             this.step1Data.fax_with_area = step1.fax_no;
             this.step1Data.office_email = step1.official_email;
@@ -166,12 +173,12 @@ export class ClientCabProfileComponent implements OnInit {
 
   onSubmitStep1(ngForm1) {
     // //console.log(this.clientCabForm);
-    if(ngForm1.form.valid) {
+    if(ngForm1.form.valid && this.tradeLicensedValidation != false) {
       // this.clientCabFormFile.append('data',JSON.stringify(this.clientCabForm));
       this.clientCabForm.step1 = {};
       this.clientCabForm.email = this.userEmail;
       this.clientCabForm.userType = this.userType;
-      this.clientCabForm.step1.first_name = this.step1Data.cab_profile_title+" "+this.step1Data.first_name;
+      // this.clientCabForm.step1.first_name = this.step1Data.cab_profile_title+" "+this.step1Data.first_name;
       // this.step1Data.city = 'mumbai';
       // this.step1Data.officephone_with_area = '7867667768876876';
       // this.step1Data.officefax_with_area = '7867667768876876';
@@ -184,6 +191,7 @@ export class ClientCabProfileComponent implements OnInit {
             console.log(res,'res')
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
+              this.progressValue == 0 || this.progressValue < 50 ? this.progressValue = 50 : this.progressValue = this.progressValue ;
               this.Service.headerStepMove('application_information',this.headerSteps,'personal_details');
               // this.router.navigateByUrl('/sign-in');
             }else{
@@ -192,7 +200,11 @@ export class ClientCabProfileComponent implements OnInit {
             }
           });
       // this.stepper.next();
-    }else{
+    }else if(ngForm1.form.valid && this.tradeLicensedValidation == false) {
+      this.file_validation = false;
+      this.toastr.warning('Please Fill required field','');
+    }
+    else {
       this.toastr.warning('Please Fill required field','');
     }
   }
@@ -200,14 +212,16 @@ export class ClientCabProfileComponent implements OnInit {
   validateFile(fileEvent: any) {
     var file_name = fileEvent.target.files[0].name;
     var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
-    var ex_type = ['pdf','png'];
+    var ex_type = ['pdf','png','jpg','jpeg','JPEG'];
     var ex_check = this.Service.isInArray(file_exe,ex_type);
     if(ex_check){
       this.step1DataBodyFormFile.append('trade_license',fileEvent.target.files[0]);
       this.file_validation = true;
+      this.tradeLicensedValidation = true;
       return true;
     }else{
       this.file_validation = false;
+      this.tradeLicensedValidation = false;
     }
   }
 
@@ -283,6 +297,7 @@ export class ClientCabProfileComponent implements OnInit {
             console.log(res,'res')
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
+              this.progressValue == 50 ? this.progressValue = 100 : this.progressValue = this.progressValue ;
               // this.router.navigateByUrl('/sign-in');
             }else{
               

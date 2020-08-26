@@ -55,7 +55,7 @@
                                     <div class="usernext-icon">
                                         <span [ngClass]="(item.activeClass === 'user-done') ? 'icon-tick' : item.icon"></span>
                                         <!-- <span [ngClass]="(item.activeStep) ? item.icon : (item.stepComp) ? 'icon-tick'  : item.icon"></span> -->
-                                    </div>
+                                    </div> 
                                     <div class="user-details-pending" 
                                     id="course_header" (click)="_service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}">
                                         <span [innerHTML]="item.desc"></span>

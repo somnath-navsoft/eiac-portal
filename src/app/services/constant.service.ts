@@ -37,6 +37,10 @@ export class Constants{
 		updateCourse: 'trainer/cust-course-update/',
 		emailVerification: 'user-email-verification/',
 		profileService: 'profile-service/',
+		service_details_page: 'pillar_page/',
+		healthcare_form_basic_data: 'healthcare_form/',
+		pt_provider: 'pt-provider-form/',
+		testing_cal_form_basic_data: 'testing_calibration_form_management/',
 	}
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."
 	public loggedIn													=	new Subject<any>();
@@ -73,21 +77,38 @@ export class Constants{
 					heading: 'Messages', link: '#',
 					submenu: []
 				},
-				{
-					heading: 'Application', link: '#', sub: true,
-					submenu: [
-						{title: 'Accreditation', link: '#'},
-						{title: 'Registration', link: '#'},
-						{title: 'Training', link: '/dashboard/cab_client/training-course'}
-					]
-				},
+				// {
+				// 	heading: 'Application', link: '#', sub: true,
+				// 	submenu: [
+				// 		{title: 'Accreditation', link: '#'},
+				// 		{title: 'Registration', link: '#'},
+				// 		{title: 'Training', link: '/dashboard/cab_client/training-course'}
+				// 	]
+				// },
 				{
 					heading: 'Status', link: '#', sub: true,
 					submenu: []
 				},
 				{
 					heading: 'Events', link: '#', sub: true,
-					submenu: []
+					submenu: [],
+				},
+				{
+					heading: 'Application', link: '#', sub: true,
+					submenu: [
+						{title: 'Accreditation', link: '/dashboard/cab_client/application-accreditation'},
+						{title: 'Registration', link: '/dashboard/cab_client/application-registration'},
+						//{title: 'Training Service', link: '#'},
+						//{title: 'Training Apply', link: '/dashboard/cab_client/training-apply'},
+						{title: 'Training', link: '/dashboard/cab_client/training-course'}
+					]
+				},
+				{
+					heading: 'Status', link: '#', sub: true,
+					submenu: [
+						{title: 'Application Listing', link: '#'},
+						{title: 'Vouchers', link: '#'},
+					]
 				},
 				{
 					heading: 'Schedule', link: '#', sub: true,

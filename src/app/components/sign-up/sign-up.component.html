@@ -116,7 +116,7 @@
                                     <input matInput name="name" required [(ngModel)]="userData.name" placeholder="Name">
                                 </mat-form-field>
                                 <div class="usr-mobile">
-                                    <mat-form-field class="cab-data mobile-code">
+                                    <mat-form-field class="cab-data mobile-code mr-2">
                                         <mat-label>code</mat-label>
                                         <!-- <input matInput name="code" required [(ngModel)]="userData.code" placeholder=""> -->
                                         <mat-select placeholder="Select" name="code"  [(ngModel)]="userData.code" required>
@@ -130,7 +130,9 @@
                                     <mat-form-field class="cab-data">
                                         <mat-label>Mobile Number</mat-label>
                                         <input matInput maxlength="15" minlength="10"  maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" name="mobile" required [(ngModel)]="userData.mobile" placeholder="Mobile Number">
+                                        <mat-error class="error" *ngIf="userData.mobile && !Service.checkInput('onlyNumber',userData.mobile)">Please Enter Only Number</mat-error>
                                     </mat-form-field>
+                                     
                                 </div>
                                 <!-- <mat-form-field class="cab-data">
                                     <mat-label>Confirm Email Address</mat-label>

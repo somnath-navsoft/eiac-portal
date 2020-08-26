@@ -1,0 +1,32 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 p-0 mb-3">
+                <div class="dashbrd-hdr">
+                    <h3>Registrations</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-12 p-0" *ngFor="let row of serviceList; let i = index;">
+                <div class="service-hdr-data">
+                    <div class="service_desc_sec">
+                        <img class="service_img" src="{{constant.mediaPath}}{{row.service_page.thumb_image}}">
+                    </div>
+                    <div class="service_desc">
+                        <h4 >{{row.title}}</h4>
+                        <p class="service-data" [innerHtml]="row.short_description">
+                        
+                        </p>
+                        <div class="start-now-bttn">
+                            <a *ngIf="row.title == 'Work Activity Permit'" href="javascript:void(0)" routerLink="/dashboard/cab_client/work-permit-form">Apply Now<span class="icon-right-arrow"></span></a>
+
+                            <a *ngIf="row.title == 'No Objection Certificate'" href="javascript:void(0)" routerLink="/dashboard/cab_client/no-objection-form">Apply Now<span class="icon-right-arrow"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>

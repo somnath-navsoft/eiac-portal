@@ -17,6 +17,7 @@ export class InternalOperationsProfileComponent implements OnInit {
   userType:any;
   headerSteps:any[] = [];
   isCompleteness:any;
+  profileComplete:any;
   progressValue:any = 0;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
@@ -24,7 +25,8 @@ export class InternalOperationsProfileComponent implements OnInit {
   ngOnInit() {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
-    this.isCompleteness = sessionStorage.getItem('isCompleteness');
+    this.isCompleteness = sessionStorage.getItem('profileComplete');
+    this.profileComplete = sessionStorage.getItem('profileComplete');
 
     this.headerSteps.push(
       {

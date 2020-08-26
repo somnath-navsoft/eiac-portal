@@ -1,22 +1,4 @@
-<!-- <div class="main-detail">
-    <div class="user-header"> 
-        <div class="container-fluid p-0">
-            <div class="main-dashboard-cnt">
-                <div class="row">
-                    <div class="col-md-12">
-                    
-                    </div>                    
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
 <div class="main-detail">
-    <!-- ============================================= -->
-    
-    
-    
-    <!-- ================================== -->
       <div class="user-header"> 
           <div class="container-fluid p-0">
               <div class="main-dashboard-cnt">
@@ -48,10 +30,10 @@
                         <div class="col-md-12">
                             <div class="user-steps">
                                 <ng-container *ngFor="let item of headerSteps; let k=index;">
-                                <div class="user-next" [ngClass]="(item.stepComp === true) ? 'user-done' : item.active">
+                                <div class="user-next" [ngClass]="(item.activeClass != '') ? item.activeClass : ''">
                                     <div class="usernext-icon">
                                         <!-- [class]="item.icon" -->
-                                        <span [ngClass]="(item.stepComp === true) ? 'icon-tick' : item.icon"></span>
+                                        <span [ngClass]="(item.activeClass === 'user-done') ? 'icon-tick' : item.icon"></span>
                                     </div>
                                     <div class="user-details-pending" 
                                     id="course_header" (click)="_service.headerStepMove(item.title, headerSteps)" [ngStyle]="{'cursor':'pointer'}">
@@ -65,11 +47,11 @@
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <!-- <div>
                         <div class="col-md-12">
                             {{publicTrainingForm |  json}}
                         </div>
-                    </div>
+                    </div> -->
                   </ng-container>                 
               
                 </div>

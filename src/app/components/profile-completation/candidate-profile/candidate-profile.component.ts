@@ -17,14 +17,19 @@ export class CandidateProfileComponent implements OnInit {
   userType:any;
   headerSteps:any[] = [];
   isCompleteness:any;
+  profileComplete:any;
   progressValue:any = 0;
+  today = new Date();
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
+  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { 
+    this.today.setDate(this.today.getDate());
+  }
 
   ngOnInit() {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
+    this.profileComplete = sessionStorage.getItem('profileComplete');
 
     this.headerSteps.push(
       {
@@ -55,6 +60,7 @@ export class CandidateProfileComponent implements OnInit {
             this.candidateProfile.date_of_birth = new Date(step1.dob);
             this.candidateProfile.company_email = step1.office_email;
             this.candidateProfile.designation = step1.designation;
+            this.candidateProfile.nationality = step1.country;
             this.candidateProfile.fax_with_area = step1.fax_no;
             this.candidateProfile.office_institution = step1.office;
             this.candidateProfile.pobox_mailing_address = step1.mailing_address;

@@ -104,6 +104,16 @@ import { CabTrainingInpremiseCourseComponent } from './components/dashboard/cab/
 
 import { CandidateTrainingApplicationComponent } from './components/dashboard/candidate/candidate-training-application/candidate-training-application.component';
 import { CandidateTrainingPublicCourseComponent } from './components/dashboard/candidate/candidate-training-public-course/candidate-training-public-course.component';
+import { ApplicationRegistrationComponent } from './components/dashboard/cab/application-registration/application-registration.component';
+import { ApplicationAccreditationComponent } from './components/dashboard/cab/application-accreditation/application-accreditation.component';
+import { NoObjectionFormComponent } from './components/dashboard/cab/application-registration/no-objection-form/no-objection-form.component';
+import { WorkPermitFormComponent } from './components/dashboard/cab/application-registration/work-permit-form/work-permit-form.component';
+import { InspectionBodiesFormComponent } from './components/dashboard/cab/application-accreditation/inspection-bodies-form/inspection-bodies-form.component';
+import { TestingCalibrationFormComponent } from './components/dashboard/cab/application-accreditation/testing-calibration-form/testing-calibration-form.component';
+import { CertificationBodiesFormComponent } from './components/dashboard/cab/application-accreditation/certification-bodies-form/certification-bodies-form.component';
+import { HealthCareFormComponent } from './components/dashboard/cab/application-accreditation/health-care-form/health-care-form.component';
+import { HalalConformityFormComponent } from './components/dashboard/cab/application-accreditation/halal-conformity-form/halal-conformity-form.component';
+import { PtProvidersFormComponent } from './components/dashboard/cab/application-accreditation/pt-providers-form/pt-providers-form.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -129,7 +139,8 @@ export const MY_FORMATS = {
     MyfilesComponent, TrainersHomeComponent, TrainersAddComponent, TrainersEditComponent, TrainerServiceComponent, TrainerServiceListComponent, ProfileCompletationComponent, ClientCabProfileComponent, CandidateProfileComponent, TrainersProfileComponent, AssessorsProfileComponent, InternalOperationsProfileComponent,
     UpdateProfileComponent, QualificatiosComponent, ExpertiseComponent, AgreementsComponent,
     TrainerServiceComponent, TrainerServiceListComponent,
-    MyfilesComponent, TrainersHomeComponent, TrainersAddComponent, TrainersEditComponent, VerifyAccountComponent, ForgotPasswordComponent, ResetPasswordComponent,MyfilesComponent, TrainersHomeComponent, TrainersAddComponent, TrainersEditComponent, TrainerServiceComponent, CabDashboardComponent, CabTrainerServiceComponent, CabTrainerServiceListComponent, OperationsComponent, OperationsDashboardComponent, OperationsTrainerServiceListComponent, TrainersDashboardComponent, CandidateDashboardComponent, OperationsTrainerServiceComponent, CandidateTrainerServiceComponent, CandidateTrainerServiceListComponent, TrainersEventListComponent, TrainersAttendanceListComponent, TrainersAgendaListComponent, CandidateAgendaListComponent, CandidateAttendanceListComponent, CustomModalComponent, CabTrainingApplicationComponent, CabTrainingPublicCourseComponent, CabTrainingInpremiseCourseComponent, CandidateTrainingApplicationComponent, CandidateTrainingPublicCourseComponent],
+    MyfilesComponent, TrainersHomeComponent, TrainersAddComponent, TrainersEditComponent, VerifyAccountComponent, ForgotPasswordComponent, ResetPasswordComponent,MyfilesComponent, TrainersHomeComponent, TrainersAddComponent, TrainersEditComponent, TrainerServiceComponent, CabDashboardComponent, CabTrainerServiceComponent, CabTrainerServiceListComponent, OperationsComponent, OperationsDashboardComponent, OperationsTrainerServiceListComponent, TrainersDashboardComponent, CandidateDashboardComponent, OperationsTrainerServiceComponent, CandidateTrainerServiceComponent, CandidateTrainerServiceListComponent, TrainersEventListComponent, TrainersAttendanceListComponent, TrainersAgendaListComponent, CandidateAgendaListComponent, CandidateAttendanceListComponent, CustomModalComponent, ApplicationRegistrationComponent, ApplicationAccreditationComponent, NoObjectionFormComponent, WorkPermitFormComponent, InspectionBodiesFormComponent, TestingCalibrationFormComponent, CertificationBodiesFormComponent, HealthCareFormComponent, HalalConformityFormComponent, PtProvidersFormComponent, CabTrainingApplicationComponent,CabTrainingPublicCourseComponent,CabTrainingInpremiseCourseComponent,CandidateTrainingApplicationComponent,
+    CandidateTrainingPublicCourseComponent],
   imports: [
     CommonModule,
     FormsModule,

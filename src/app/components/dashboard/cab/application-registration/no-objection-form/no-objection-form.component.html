@@ -1,0 +1,948 @@
+<!-- <app-loader *ngIf="loader"></app-loader> -->
+<div class="main-content">
+        <!-- <section>
+            <div class="hdr-content"  [style.background-image]="'url('+banner+')'">
+                    <app-partial-header></app-partial-header>
+                    <div class="row m-0">
+                        <div class="col-12">
+                            <div class="bg-contnt">
+                                <span class="bg-dfnt">No Objection <br> Certificate
+                                </span>        
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </section> -->
+        <section>
+            <div class="form-wrapper">
+                <div class="cointainer-fluid">
+                    <form #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)"  autocomplete="off">
+                        <div class="cont-header">
+                            <div class="row">
+                                <div class="col-md-9 col-sm-12">
+                                    <div class="form-main">
+                                        <h1>APPLICATION FOR NO OBJECTION CERTIFICATE</h1>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-5 col-sm-12">
+                                    <div class="download">
+                                        <a class="dwnload" href="javascript:void(0)">
+                                            <span class="icon-download"></span>
+                                        DOWNLOAD</a>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="assess-dir">
+                            <div class="row m-0">
+                                <div class="wrapper">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12 p-0">
+                                                <div class="cab-info">
+                                                    <h5>1. CONTACT PERSON INFORMATION</h5>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-8 col-sm-12">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Confirmity Assessment Body (CAB) Name</mat-label>
+                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Cab Name" name="cab_name" [(ngModel)]="noObjectionForm.cab_name" required>
+                                                    <mat-error></mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-4 col-sm-12">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Applicant Name</mat-label>
+                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="" name="applicant_name" [(ngModel)]="noObjectionForm.applicant_name" required>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            
+                                            <div class="col-md-4 col-sm-12">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Designation</mat-label>
+                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="" name="designation" [(ngModel)]="noObjectionForm.designation" required>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-4 col-sm-12">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Email Address</mat-label>
+                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="" name="email_add" [(ngModel)]="noObjectionForm.email_address" required>
+                                                </mat-form-field>
+                                                <p class="error" *ngIf="noObjectionForm.email_address && !Service.checkInput('email',noObjectionForm.email_address)">Please Enter Correct Email Id</p> 
+                                            </div>
+                                            <div class="col-md-4 col-sm-12">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Mobile No.</mat-label>
+                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event)" type="text" minlength="10" maxlength="15" (keypress)="Service.IsNumeric($event)" matInput placeholder="" name="mobile_num" [(ngModel)]="noObjectionForm.mobile_number" required>
+                                                </mat-form-field>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="assess-dir">
+                            <div class="row m-0">
+                                <div class="wrapper">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-12 p-0">
+                                                <div class="cab-info">
+                                                    <h5>2. CAB INFORMATION</h5>
+                                                </div>
+                                                <hr>
+                                                <div class="sub-head-obj">
+                                                    <h5>CAB TYPE:</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row pb-3">
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <div class="subhead-def">
+                                                            <span>a) Laboratory :</span>
+                                                        </div>
+                                                    </div>
+                                                    <mat-radio-group  name="laboratory" [(ngModel)]="noObjectionForm.laboratory">
+                                                        <div class="subhead-radio">
+                                                        <div class="col">
+                                                            <div class="subhead-opt">
+                                                                <mat-radio-button value="Testing Laboratory" (click)='cabType("testing_laboratory")'>Testing Laboratory</mat-radio-button>
+                                                                <mat-radio-button value="Calibration Laboratory" (click)='cabType("calibration_laboratory")'>Calibration Laboratory</mat-radio-button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </mat-radio-group>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <div class="subhead-def">
+                                                            <span>b) Inspection Body :</span>
+                                                        </div>
+                                                    </div>
+                                                    <mat-radio-group  name="inspection_body" [(ngModel)]="noObjectionForm.inspection_body">
+                                                        <div class="col">
+                                                            <div class="subhead-opt">
+                                                                <mat-radio-button value="Engineering IB" (click)='cabType("inspection_body")'>Engineering IB</mat-radio-button>
+                                                                <mat-radio-button value="Sustainability IB" (click)='cabType("inspection_body")'>Sustainability IB</mat-radio-button>
+                                                            </div>
+                                                        </div>
+                                                    </mat-radio-group>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row pb-3">
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <div class="subhead-def">
+                                                            <span>c) Certification Body :</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <mat-radio-group  name="for_certification_body" [(ngModel)]="noObjectionForm.for_certification_body">
+                                                        <div class="col">
+                                                            <div class="subhead-opt">
+                                                                <mat-radio-button (click)='cabType("certification_body")' value="Management System CB">Management System CB</mat-radio-button>
+                                                                <mat-radio-button (click)='cabType("certification_body")' value="Product CB">Product CB</mat-radio-button>
+                                                                <mat-radio-button (click)='cabType("certification_body")' value="Personal CB">Personal CB</mat-radio-button>
+                                                            </div>
+                                                        </div>
+                                                    </mat-radio-group>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <div class="subhead-def">
+                                                            <span>d) Halal CAB :</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <mat-radio-group  name="halal_cab" [(ngModel)]="noObjectionForm.halal_cab">
+                                                        <div class="col">
+                                                            <div class="subhead-opt">
+                                                                <mat-radio-button (click)='cabType("halal_cab")' value="Lab">Lab</mat-radio-button>
+                                                                <mat-radio-button (click)='cabType("halal_cab")' value="IB">IB</mat-radio-button>
+                                                                <mat-radio-button (click)='cabType("halal_cab")' value="CB">CB</mat-radio-button>
+                                                            </div>
+                                                        </div>
+                                                    </mat-radio-group>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="assess-dir">
+                            <div class="row m-0">
+                                <div class="wrapper">
+                                    <div class="col-md-12">
+                                        <div class="row" *ngIf="laboratory =='testing_laboratory' || certification_body =='certification_body' || inspection_body =='inspection_body' || halal_cab =='halal_cab'">
+                                            <div class="col-md-12 p-0">
+                                                <div class="cab-info">
+                                                    <h5>3. LIST OF SERVICES SCOPE</h5>
+                                                </div>
+                                                <hr>
+                                                <div class="sub-head-obj" *ngIf="laboratory =='testing_laboratory'">
+                                                    <h5>FOR TESTING LAB : (ISO/ IEC 17025)</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="row pb-3">
+                                            
+                                        </div> -->
+                                        <div class="row pb-3" *ngIf="laboratory =='testing_laboratory'">
+                                            <mat-radio-group name="for_testing_lab" [(ngModel)]="noObjectionForm.for_testing_lab">
+                                                <div class="col">
+                                                    <div class="subhead-opt">
+                                                        <mat-radio-button value="Construction Materials">Construction Materials</mat-radio-button>
+                                                        <mat-radio-button value="Environmental">Environmental</mat-radio-button>
+                                                        <mat-radio-button value="Construction Food">Construction Food</mat-radio-button>
+                                                        <mat-radio-button value="Geo-technical Investigation">Geo-technical Investigation</mat-radio-button>
+                                                        <mat-radio-button value="Precious Metals">Precious Metals</mat-radio-button>
+                                                        <mat-radio-button value="Petroleum & Petrochemical">Petroleum & Petrochemical</mat-radio-button>
+                                                        <mat-radio-button value="Electrical Appliances">Electrical Appliances</mat-radio-button>
+                                                        <mat-radio-button value="Metallurgical">Metallurgical</mat-radio-button>
+                                                        <mat-radio-button value="Textile">Textile</mat-radio-button>
+                                                        <mat-radio-button value="Other">Other</mat-radio-button>
+                                                    </div>
+                                                </div>
+                                            </mat-radio-group>
+                                            
+                                            <div class="col col-md-4">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Description</mat-label>
+                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="" name="testing_lab_other_desc" [(ngModel)]="noObjectionForm.testing_lab_other_desc">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" *ngIf="laboratory =='testing_laboratory'">
+                                            <div class="col-md-12">
+                                                <div class="table-content">
+                                                    <table>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Type of Task</th>
+                                                                <th>Materials/Products</th>
+                                                                <th>Task Name</th>
+                                                                <th>Standard Method</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of testingLabJson; let i = index;">
+                                                                <td>
+            
+                                                                    <mat-form-field class="cab-data">
+                                                                        <mat-label>Type Here</mat-label>
+                                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Type Here" name="type_of_task_{{i}}" [(ngModel)]="testingLabJson[i].type_of_task" required>
+                                                                    </mat-form-field>
+                                                                </td>
+                                                                <td>
+                                                                    <mat-form-field class="cab-data">
+                                                                        <mat-label>Type Here</mat-label>
+                                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Type Here" name="materials_products_{{i}}" [(ngModel)]="testingLabJson[i].materials_products" required>
+                                                                    </mat-form-field>
+                                                                </td>
+                                                                <td>
+                                                                    <mat-form-field class="cab-data">
+                                                                        <mat-label>Type Here</mat-label>
+                                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Type Here" name="task_name_{{i}}" [(ngModel)]="testingLabJson[i].task_name" required>
+                                                                    </mat-form-field>
+                                                                </td>
+                                                                <td>
+                                                                    <mat-form-field class="cab-data">
+                                                                        <mat-label>Type Here</mat-label>
+                                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Type Here" name="standared_method_{{i}}" [(ngModel)]="testingLabJson[i].standared_method" required>
+                                                                    </mat-form-field>
+                                                                </td>
+                                                                <td class="content-icn">
+                                                                        <span *ngIf="i >= 0" class="icon-add" (click)="addRow(testingLabJson)"></span>&nbsp;
+                                                                        <span *ngIf="i >= 1" class="icon-cancel" (click)="openDialog(testingLabJson,i)"></span>
+                                                                </td>
+                                                            </tr>
+            
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div *ngIf="laboratory =='calibration_laboratory'">
+                                            <div class="row mt-3">
+                                                <div class="col-md-12 p-0">
+                                                    <div class="sub-head-obj">
+                                                        <h5>FOR CALIBRATION LAB : (ISO/ IEC 17025)</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <mat-radio-group name="for_calibration_lab" [(ngModel)]="noObjectionForm.for_calibration_lab">
+                                                <div class="row pb-3">
+                                                    <div class="col">
+                                                        <div class="subhead-opt">
+                                                            <mat-radio-button value="Density">Density</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="subhead-opt">
+                                                            <mat-radio-button value="Chemical">Chemical</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="subhead-opt">
+                                                            <mat-radio-button value="Electrical">Electrical</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="subhead-opt">
+                                                            <mat-radio-button value="Flow">Flow</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="subhead-opt">
+                                                            <mat-radio-button value="Fiber Optics">Fiber Optics</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row pb-3">
+                                                    <div class="col">
+                                                        <div class="subhead-opt">
+                                                            <mat-radio-button value="Hardness">Hardness</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="subhead-opt">
+                                                            <mat-radio-button value="Mass">Mass</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="subhead-opt">
+                                                            <mat-radio-button value="Radiological">Radiological</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="subhead-opt">
+                                                            <mat-radio-button value="Pressure">Pressure</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="subhead-opt">
+                                                            <mat-radio-button value="Temperature">Temperature</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row pb-3">
+                                                    <div class="col">
+                                                        <div class="subhead-opt">
+                                                            <mat-radio-button value="Ultrasonic">Ultrasonic</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="subhead-opt">
+                                                            <mat-radio-button value="Torque">Torque</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="subhead-opt">
+                                                            <mat-radio-button value="Viscosity">Viscosity</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="subhead-opt">
+                                                            <mat-radio-button value="Acoustics">Acoustics</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="subhead-opt">
+                                                            <mat-radio-button value="Accelerometer">Accelerometer</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row pb-3">
+                                                    <div class="col">
+                                                        <div class="subhead-opt">
+                                                            <mat-radio-button value="Dimensional">Dimensional</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="subhead-opt">
+                                                            <mat-radio-button value="Force">Force</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="subhead-opt">
+                                                            <mat-radio-button value="Optical">Optical</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="subhead-opt">
+                                                            <mat-radio-button value="Volume">Volume</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="subhead-opt">
+                                                            <mat-radio-button value="Humidity">Humidity</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row pb-3">
+                                                    <div class="col-md-2 col-sm-12">
+                                                        <div class="subhead-opt">
+                                                            <mat-radio-button value="Other">Other</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                
+                                                </div> 
+                                            </mat-radio-group>
+                                            <div class="col-md-2 col-sm-4">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Description</mat-label>
+                                                    <input matInput placeholder="" name="calibration_lab_other_desc" [(ngModel)]="noObjectionForm.calibration_lab_other_desc">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row" *ngIf="laboratory =='calibration_laboratory'">
+                                            <div class="col-md-12">
+                                                <div class="table-content">
+                                                    <table>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Calibration Field/Measured Quantity</th>
+                                                                <th>Calibration Method</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of calibrationLabJson; let i = index;">
+                                                                <td>
+            
+                                                                    <mat-form-field class="cab-data">
+                                                                        <mat-label>Type Here</mat-label>
+                                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Type Here" name="calibration_field_{{i}}" [(ngModel)]="calibrationLabJson[i].calibration_field" required>
+                                                                    </mat-form-field>
+                                                                </td>
+                                                                <td>
+                                                                    <mat-form-field class="cab-data">
+                                                                        <mat-label>Type Here</mat-label>
+                                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Type Here" name="calibration_method_{{i}}" [(ngModel)]="calibrationLabJson[i].calibration_method" required>
+                                                                    </mat-form-field>
+                                                                </td>
+                                                                <td class="content-icn">
+                                                                        <span *ngIf="i >= 0" class="icon-add" (click)="addRow(calibrationLabJson)"></span>&nbsp;
+                                                                        <span *ngIf="i >= 1" class="icon-cancel" (click)="openDialog(calibrationLabJson,i)"></span>
+                                                                </td>
+                                                            </tr>
+            
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3" *ngIf="certification_body =='certification_body'">
+                                            <div class="col-md-12 p-0">
+                                                <div class="sub-head-obj">
+                                                    <h5>FOR CERTIFICATION BODY : ISO/ IEC 17021 (CERTIFICATION OF MANAGEMENT SYSTEMS) :</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <mat-radio-group *ngIf="certification_body =='certification_body'" name="for_certification_bodies" [(ngModel)]="noObjectionForm.for_certification_bodies">
+                                            <div class="row pb-3">
+                                                <div class="col">
+                                                    <div class="subhead-opt">
+                                                        <mat-radio-button value="ISO 9001">ISO 9001</mat-radio-button>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="subhead-opt">
+                                                        <mat-radio-button value="ISO 22000">ISO 22000</mat-radio-button>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="subhead-opt">
+                                                        <mat-radio-button value="SO 14001">SO 14001</mat-radio-button>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="subhead-opt">
+                                                        <mat-radio-button value="OHSAS 18001">OHSAS 18001</mat-radio-button>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="subhead-opt">
+                                                        <mat-radio-button value="HACCP">HACCP</mat-radio-button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row pb-3">
+                                                <div class="col">
+                                                    <div class="subhead-opt">
+                                                        <mat-radio-button value="Other">Other</mat-radio-button>
+                                                    </div>
+                                                </div>
+                                               
+                                            </div>
+                                        </mat-radio-group>
+                                         <div class="col" *ngIf="certification_body =='certification_body'">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Description</mat-label>
+                                                <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="" name="inspection_bodies_other_desc" [(ngModel)]="noObjectionForm.for_certification_body_description">
+                                            </mat-form-field>
+                                        </div>
+
+                                        <!-- <div class="row pb-3">
+                                            <div class="col">
+                                                <div class="subhead-opt">
+                                                    <mat-checkbox>ISO 9001</mat-checkbox>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="subhead-opt">
+                                                    <mat-checkbox>ISO 22000</mat-checkbox>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="subhead-opt">
+                                                    <mat-checkbox>SO 14001</mat-checkbox>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="subhead-opt">
+                                                    <mat-checkbox>OHSAS 18001</mat-checkbox>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="subhead-opt">
+                                                    <mat-checkbox>HACCP</mat-checkbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row pb-3">
+                                            <div class="col">
+                                                <div class="subhead-opt">
+                                                    <mat-checkbox>Other</mat-checkbox>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Description</mat-label>
+                                                    <input matInput placeholder="" name="for_certification_body_description" [(ngModel)]="noObjectionForm.for_certification_body_description">
+                                                </mat-form-field>
+                                            </div>
+                                        </div> -->
+                                        
+                                        <div class="row" *ngIf="certification_body =='certification_body'">
+                                            <div class="col-md-12 p-0">
+                                                <div class="sub-head-obj">
+                                                    <h5><mat-checkbox name="certification_of_product" [(ngModel)]="noObjectionForm.certification_of_product">ISO/ IEC 17065 (CERTIFICATION OF PRODUCTS, PROCESSES & SERVICES) </mat-checkbox></h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row p-0" *ngIf="certification_body =='certification_body'">
+                                            <div class="col-md-12 p-0">
+                                                <div class="sub-head-obj">
+                                                    <h5><mat-checkbox name="certification_of_person" [(ngModel)]="noObjectionForm.certification_of_person">ISO/IEC 17024 (CERTIFICATION OF PERSONS)</mat-checkbox></h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" *ngIf="inspection_body =='inspection_body'">
+                                            <div class="col-md-12 p-0">
+                                                <div class="sub-head-obj">
+                                                    <h5><mat-checkbox>FOR INSPECTION BODIES : (ISO/ IEC 17020)</mat-checkbox></h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <mat-radio-group *ngIf="inspection_body =='inspection_body'" name="for_inspection_bodies" [(ngModel)]="noObjectionForm.for_inspection_bodies">
+                                            <div class="row pb-3">
+                                                <div class="col">
+                                                    <div class="subhead-opt">
+                                                        <mat-radio-button value="Lifting Equipment Inspection">Lifting Equipment Inspection</mat-radio-button>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="subhead-opt">
+                                                        <mat-radio-button value="Pressure Equipment Inspection">Pressure Equipment Inspection</mat-radio-button>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="subhead-opt">
+                                                        <mat-radio-button value="Lifting accessories Inspection">Lifting accessories Inspection</mat-radio-button>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="subhead-opt">
+                                                        <mat-radio-button value="Non Destructive Testing">Non Destructive Testing</mat-radio-button>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="subhead-opt">
+                                                        <mat-radio-button value="Sustainability Inspection">Sustainability Inspection</mat-radio-button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row pb-3">
+                                                <div class="col">
+                                                    <div class="subhead-opt">
+                                                        <mat-radio-button value="Other">Other</mat-radio-button>
+                                                    </div>
+                                                </div>
+                                               
+                                            </div>
+                                        </mat-radio-group>
+                                         <div class="col" *ngIf="inspection_body =='inspection_body'">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Description</mat-label>
+                                                <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="" name="inspection_bodies_other_desc" [(ngModel)]="noObjectionForm.inspection_bodies_other_desc">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="row" *ngIf="inspection_body =='inspection_body'">
+                                            <div class="col-md-12">
+                                                <div class="table-content">
+                                                    <table>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Type of Task</th>
+                                                                <th>Materials/Products</th>
+                                                                <th>Task Name</th>
+                                                                <th>Standard Method</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of inspectionBodyJson; let i = index;">
+                                                                <td>
+                                                                    <mat-form-field class="cab-data">
+                                                                        <mat-label>Type Here</mat-label>
+                                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Type Here" name="type_of_task_{{i}}" [(ngModel)]="inspectionBodyJson[i].type_of_task" required>
+                                                                    </mat-form-field>
+                                                                </td>
+                                                                <td>
+                                                                    <mat-form-field class="cab-data">
+                                                                        <mat-label>Type Here</mat-label>
+                                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Type Here" name="materials_or_products_{{i}}" [(ngModel)]="inspectionBodyJson[i].materials_or_products" required>
+                                                                    </mat-form-field>
+                                                                </td>
+                                                                <td>
+                                                                    <mat-form-field class="cab-data">
+                                                                            <mat-label>Type Here</mat-label>
+                                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Type Here" name="task_name_{{i}}" [(ngModel)]="inspectionBodyJson[i].task_name" required>
+                                                                        </mat-form-field>
+                                                                </td>
+                                                                <td>
+                                                                        <mat-form-field class="cab-data">
+                                                                            <mat-label>Type Here</mat-label>
+                                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Type Here" name="standared_method_{{i}}" [(ngModel)]="inspectionBodyJson[i].standared_method" required>
+                                                                            </mat-form-field>
+                                                                </td>
+                                                                
+                                                                <td class="content-icn">
+                                                                        <span *ngIf="i >= 0" class="icon-add" (click)="addRow(inspectionBodyJson)"></span>&nbsp;
+                                                                        <span *ngIf="i >= 1" class="icon-cancel" (click)="openDialog(inspectionBodyJson,i)"></span>
+                                                                </td>
+                                                            </tr>
+            
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3" *ngIf="halal_cab =='halal_cab'">
+                                            <div class="col-md-12 p-0">
+                                                <div class="sub-head-obj">
+                                                    <h5>FOR HALAL CAB :</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row pb-3" *ngIf="halal_cab =='halal_cab'">
+                                            <mat-radio-group name="for_halal_cab" [(ngModel)]="noObjectionForm.for_halal_cab">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="subhead-opt">
+                                                        <mat-radio-button value="Lab">Lab</mat-radio-button>
+                                                        <mat-radio-button value="IB">IB</mat-radio-button>
+                                                        <mat-radio-button value="CB">CB</mat-radio-button>
+                                                        <mat-radio-button value="Other">Other</mat-radio-button>
+                                                    </div>
+                                                </div>
+                                            </mat-radio-group>
+                                            <div class="col-md-4 col-sm-12">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Description</mat-label>
+                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="" name="halal_cab_other_desc" [(ngModel)]="noObjectionForm.halal_cab_other_desc">
+                                                </mat-form-field>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="assess-dir">
+                            <div class="row m-0">
+                                <div class="wrapper">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12 p-0">
+                                                <div class="cab-info">
+                                                    <h5>4. LIST OF INSTRUMENTS AND EQUIPMENT</h5>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="table-content">
+                                                    <table>
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="10%">No.</th>
+                                                                <th>Name of Instrument / Equipment</th>
+                                                                <th>Usage of Instrument / Equipment</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of instrumentEqipmentJson; let i = index;">
+                                                                <td>{{("0" + (i+1)).slice(-2)}}</td>
+                                                                <td>
+            
+                                                                    <mat-form-field class="cab-data">
+                                                                        <mat-label>Type Here</mat-label>
+                                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Type Here" name="name_of_instrument_{{i}}" [(ngModel)]="instrumentEqipmentJson[i].name_of_instrument" required>
+                                                                    </mat-form-field>
+                                                                </td>
+                                                                <td>
+                                                                    <mat-form-field class="cab-data">
+                                                                        <mat-label>Type Here</mat-label>
+                                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Type Here" name="usage_of_instrument_{{i}}" [(ngModel)]="instrumentEqipmentJson[i].usage_of_instrument" required>
+                                                                    </mat-form-field>
+                                                                </td>
+                                                                
+                                                                <td class="content-icn">
+                                                                        <span *ngIf="i >= 0" class="icon-add" (click)="addRow(instrumentEqipmentJson)"></span>&nbsp;
+                                                                        <span *ngIf="i >= 1" class="icon-cancel" (click)="openDialog(instrumentEqipmentJson,i)"></span>
+                                                                </td>
+                                                            </tr>
+            
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="assess-dir">
+                            <div class="row m-0">
+                                <div class="wrapper">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12 p-0">
+                                                <div class="cab-info">
+                                                    <h5>5. LIST OF STAFF</h5>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="table-content">
+                                                    <table>
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="10%">No.</th>
+                                                                <th>Job Title</th>
+                                                                <th>Qualifications</th>
+                                                                <th>Experiences</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of staffJson; let i = index;">
+                                                                <td>{{("0" + (i+1)).slice(-2)}}</td>
+                                                                <td>
+            
+                                                                    <mat-form-field class="cab-data">
+                                                                        <mat-label>Type Here</mat-label>
+                                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off" placeholder="Type Here" name="job_title_{{i}}" [(ngModel)]="staffJson[i].job_title" required>
+                                                                    </mat-form-field>
+                                                                </td>
+                                                                <td>
+                                                                    <mat-form-field class="cab-data">
+                                                                        <mat-label>Type Here</mat-label>
+                                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Type Here" name="qualification_{{i}}" [(ngModel)]="staffJson[i].qualification" required>
+                                                                    </mat-form-field>
+                                                                </td>
+                                                                <td>
+                                                                    <mat-form-field class="cab-data">
+                                                                            <mat-label>Type Here</mat-label>
+                                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Type Here" name="experiences_{{i}}" [(ngModel)]="staffJson[i].experiences" required>
+                                                                        </mat-form-field>
+                                                                </td>
+                                                            
+                                                                <td class="content-icn">
+                                                                        <span *ngIf="i >= 0" class="icon-add" (click)="addRow(staffJson)"></span>&nbsp;
+                                                                        <span *ngIf="i >= 1" class="icon-cancel" (click)="openDialog(staffJson,i)"></span>
+                                                                </td>
+                                                            </tr>
+            
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="assess-dir">
+                            <div class="row m-0">
+                                <div class="wrapper">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12 p-0">
+                                                <div class="cab-info">
+                                                    <h5>6. TESTIMONY</h5>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-md-12">
+                                                <div class="testimomny-data">
+                                                    <p>I have read and been informed about the content & clauses of Law No. 2 for 2010.
+                                                        I have received a copy of the Law and agree to abide by the content & clauses as a 
+                                                        Conformity Assessment Body working in the emirate of Dubai. I, the undersigned , confirm 
+                                                        that I will not engage in any activity of a Conformity Assessment Body prior to obtaining a 
+                                                        permit to act form from Emirates International Accreditation Centre, within six months from the 
+                                                        date of issuance the Professional Trade License Please read Law No. 2 for 2010 carefully to 
+                                                        ensure that you understand the policy before signing this document.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 col-sm-12">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Person In Charge</mat-label>
+                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="" name="person_in" [(ngModel)]="noObjectionForm.person_in">
+                                                </mat-form-field> 
+                                            </div>
+                                            <!-- <div class="col-md-4 col-sm-12">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Charge</mat-label>
+                                                    <input matInput placeholder="" name="testimony_charge" [(ngModel)]="noObjectionForm.charge">
+                                                </mat-form-field> 
+                                            </div> -->
+                                            <div class="col-md-4 col-sm-12">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Designation</mat-label>
+                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="" name="testimony_designation" [(ngModel)]="noObjectionForm.testimony_designation">
+                                                </mat-form-field> 
+                                            </div>
+                                            <div class="col-md-4 col-sm-12">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Mobile No.</mat-label>
+                                                    <input type="text" minlength="10" maxlength="15" (keypress)="Service.IsNumeric($event)" onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="" name="testimony_mobile_number" [(ngModel)]="noObjectionForm.testimony_mobile_no">
+                                                </mat-form-field> 
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            
+                                            <div class="col-md-4 col-sm-12">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Email Address</mat-label>
+                                                    <input matInput onpaste="return false" (keypress)="Service.inputFilter($event)" placeholder="" name="testimony_email" [(ngModel)]="noObjectionForm.testimony_email">
+                                                </mat-form-field> 
+                                                <p class="error" *ngIf="noObjectionForm.testimony_email && !Service.checkInput('email',noObjectionForm.testimony_email)">Please Enter Correct Email Id</p> 
+                                            </div>
+                                            <div class="col-md-4 col-sm-12">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Signature</mat-label>
+                                                    <input matInput onpaste="return false" (keypress)="Service.inputFilter($event)" placeholder="" name="signature" [(ngModel)]="noObjectionForm.signature">
+                                                </mat-form-field> 
+                                            </div>
+                                            <div class="col-md-4 col-sm-12">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Date</mat-label>
+                                                    <!-- <input matInput placeholder="" name="testimony_date" [(ngModel)]="noObjectionForm.date"> -->
+                                                    <input matInput readonly="true" [matDatepicker]="testimony_date"  placeholder="Date of Issue" name="testimony_date" [(ngModel)]="noObjectionForm.testimony_date" [value]="Service.returnCurrentDate()">
+                                                    
+                                                </mat-form-field>   
+                                            </div>
+                                        </div>
+                                        <!-- <div class="row">
+                                           
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="confirm">
+                                    <mat-checkbox name="authorization_confirm1" [(ngModel)]="authorizationList.authorization_confirm1" >I confirm that the information given in this form are true, complete and accurate. 
+                                    I understand & agree that inaccurate information provided could delay or reject my application.</mat-checkbox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-0">
+                            <!-- <div class="col-md-3 col-sm-12 p-0">
+                            </div> -->
+                            <div class="form-group col-md-6 p-0">
+                                <div class="md-form">
+                                    <label for="form1"></label>
+                                    <re-captcha (resolved)="resolvedSecurity($event)"></re-captcha>
+                                    <span *ngIf="checkCaptchaValidation != true">
+                                        <mat-error>Security Check is required</mat-error>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-0">
+                            <div class="col-md-8 col-sm-12">
+                                <div class="bttns-health">
+                                    <!-- <button class="cancel-bttn">CANCEL</button> -->
+                                    <button class="submit-bttn submit-health">SUBMIT</button>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                <div class="bttns-health bttns-rig">
+                                    <button class="review-bttn">REVIEW DOCUMENTS</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <section class="service_bg">
+            <div class="container-fluid h-100">
+                <div class="row justify-content-end h-100 m-0">
+                    <div class="col-lg-4 col-sm-6 p-0 align-self-center">
+                        <form>
+                            <div class="service-exp">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <span class="heading">Get accredited, remain certified, and increase your impact.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <app-footer></app-footer>
