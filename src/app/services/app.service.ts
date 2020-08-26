@@ -195,97 +195,172 @@ function getFeesPerTrainee(training_days){
     return (obj && (Object.keys(obj).length === 0));
   }
 
-
   //------------------ Custom Step Function ---------------------
-  headerStepMove(stepId: string,stepData: any[],target?:any){
-        let stepElem = document.getElementById(stepId);
-        let targetElem = document.getElementById(target);
-        // console.log('Get...',stepData);
-
-        //search active steps
-        let activeCurr = stepData.find(rec => rec.activeStep == true);
-        //console.log("cur active: ", activeCurr, " -- ", this.headerSteps);
-        let curStep = stepData.findIndex(rec => rec.title === stepId.toString());
-        // console.log(">>>>CUR Active: ", stepElem);
-        
-        var myClasses2 = document.querySelectorAll('.cust-stepper'),
-        i2 = 0,
-        l2 = myClasses2.length;
-        for (i2; i2 < l2; i2++) {
-            stepData[i2].active = '';
+  traverseSteps(stepId: string,stepData: any[],target?:any){
+      console.log('traverseSteps> ');
+      if(stepData.length){
+        let curStepIndex = stepData.findIndex(rec => rec.title === stepId.toString());
+        if(curStepIndex >= 0 && curStepIndex < stepData.length){
+            console.log('@Enter ....1');
+            stepData.forEach((item,index) => {
+                if(item.activeClass != '' && (item.activeClass === 'user-present' || item.activeClass === 'user-done')){
+                  console.log('@Enter ....2 -- Find active class: ', item.activeClass, " -- index ",curStepIndex, " -- ", index );
+                    if(index === curStepIndex){
+                      let getSelData: any = stepData[index]
+                      if(getSelData){
+                        getSelData.activeClass = 'user-present';
+                      }
+                    }else{
+                      item.activeClass = '';
+                    }
+                }
+                if(index < curStepIndex && stepData[index].stepComp === true){
+                  stepData[index].activeClass = 'user-done';
+                }
+            })
         }
-        stepData[curStep].active = 'user-done';
-
-        if(curStep > 0 || curStep == 0){
-          //this.headerSteps[curStep].activeStep = true;
-          
-            stepElem.style.display = 'block';
-
-            var myClasses = document.querySelectorAll('.cust-stepper'),
-            i = 0,
-            l = myClasses.length;
-              //console.log(">>>Class list: ", myClasses);
-
-              for (i; i < l; i++) {
-                  //console.log(">>>Class elem: ", myClasses[i].id);
-                  let elem: any = myClasses[i]
-                  //  console.log(">>>>CUR Active: ", myClasses[i].id);
-                  if(myClasses[i].id != stepId){
-                    //myClasses[i].style.display = 'none';
-                    elem.style.display = 'none';
-                    //  stepData[curStep].active = '';
-                  }
-              }
-          
-
-          if(curStep-1 < 0){
-          if(activeCurr){
-            activeCurr.activeStep = false;
-            }
-            stepData[curStep].activeStep = true;
-            //return false;
-          }
-          var prevSteps = stepData[curStep-1];
-          //console.log("prev steps: >>>>", prevSteps);
-          if(prevSteps){
-              let prevStepComp = prevSteps.stepComp;
-              if(!prevStepComp){
-                return false;
-              }else{
-                //console.log(">>>Change status....");
-                if(activeCurr){
-                  activeCurr.activeStep = false;
-                  }
-                stepData[curStep].activeStep = true;
-              }
-          }
-          
-        }
-        ////console.log(">>>Elem: ", stepElem, " -- ", stepId, " -- ",);
-        if(targetElem != null){
-        console.log('Not null', target)
-        targetElem.style.display = 'none';
-      }else{
-        console.log('Its null', target);
-        
       }
   }
+
+  headerStepMove(stepId: string,stepData: any[],sec?: string,target?:any){
+
+    let stepElem = document.getElementById(stepId);
+     let targetElem = document.getElementById(target);
+     //search active steps
+     let activeCurr = stepData.find(rec => rec.activeStep == true);
+     let curStep = stepData.findIndex(rec => rec.title === stepId.toString());
+     if(curStep > 0 || curStep == 0){
+       if(curStep-1 < 0){
+        if(activeCurr){
+          activeCurr.activeStep = false;
+         }
+         stepData[curStep].activeStep = true;
+       }
+        var prevSteps = stepData[curStep-1];
+        if(prevSteps){
+            let prevStepComp = prevSteps.stepComp;
+            if(!prevStepComp){
+              return false;
+            }else{
+              if(activeCurr){
+                activeCurr.activeStep = false;
+               }
+               stepData[curStep].activeStep = true;
+            }
+        }
+        if(stepElem){
+          stepElem.style.display = 'block';
+        }
+     }
+     if(targetElem){
+      targetElem.style.display = 'none';
+    }else{
+      stepData[curStep].activeClass = 'user-present';
+      var myClasses = document.querySelectorAll('.cust-stepper'),
+          i = 0,
+          l = myClasses.length;
+       for (i; i < l; i++) {
+          let elem: any = myClasses[i]
+          if(myClasses[i].id != stepId){
+            elem.style.display = 'none';
+          }
+      }
+    }
+    //console.log("@Step Data: ", stepData);
+    if(sec != '' && sec === 'menu'){
+      this.traverseSteps(stepId, stepData,target)
+    }    
+  }
+
+  
+  // headerStepMove123(stepId: string,stepData: any[],target?:any){
+  //       let stepElem = document.getElementById(stepId);
+  //       let targetElem = document.getElementById(target);
+  //       // console.log('Get...',stepData);
+
+  //       //search active steps
+  //       let activeCurr = stepData.find(rec => rec.activeStep == true);
+  //       //console.log("cur active: ", activeCurr, " -- ", this.headerSteps);
+  //       let curStep = stepData.findIndex(rec => rec.title === stepId.toString());
+  //       // console.log(">>>>CUR Active: ", stepElem);
+        
+  //       var myClasses2 = document.querySelectorAll('.cust-stepper'),
+  //       i2 = 0,
+  //       l2 = myClasses2.length;
+  //       for (i2; i2 < l2; i2++) {
+  //           stepData[i2].active = '';
+  //       }
+  //       stepData[curStep].active = 'user-done';
+
+  //       if(curStep > 0 || curStep == 0){
+  //         //this.headerSteps[curStep].activeStep = true;
+          
+  //           stepElem.style.display = 'block';
+
+  //           var myClasses = document.querySelectorAll('.cust-stepper'),
+  //           i = 0,
+  //           l = myClasses.length;
+  //             //console.log(">>>Class list: ", myClasses);
+
+  //             for (i; i < l; i++) {
+  //                 //console.log(">>>Class elem: ", myClasses[i].id);
+  //                 let elem: any = myClasses[i]
+  //                 //  console.log(">>>>CUR Active: ", myClasses[i].id);
+  //                 if(myClasses[i].id != stepId){
+  //                   //myClasses[i].style.display = 'none';
+  //                   elem.style.display = 'none';
+  //                   //  stepData[curStep].active = '';
+  //                 }
+  //             }
+          
+
+  //         if(curStep-1 < 0){
+  //         if(activeCurr){
+  //           activeCurr.activeStep = false;
+  //           }
+  //           stepData[curStep].activeStep = true;
+  //           //return false;
+  //         }
+  //         var prevSteps = stepData[curStep-1];
+  //         //console.log("prev steps: >>>>", prevSteps);
+  //         if(prevSteps){
+  //             let prevStepComp = prevSteps.stepComp;
+  //             if(!prevStepComp){
+  //               return false;
+  //             }else{
+  //               //console.log(">>>Change status....");
+  //               if(activeCurr){
+  //                 activeCurr.activeStep = false;
+  //                 }
+  //               stepData[curStep].activeStep = true;
+  //             }
+  //         }
+          
+  //       }
+  //       ////console.log(">>>Elem: ", stepElem, " -- ", stepId, " -- ",);
+  //       if(targetElem != null){
+  //       console.log('Not null', target)
+  //       targetElem.style.display = 'none';
+  //     }else{
+  //       console.log('Its null', target);
+        
+  //     }
+  // }okkkkk
   moveSteps(fromStep: string, toStep: string, stepData: any[]){
       let curStep     = stepData.find(rec => rec.title === fromStep);
       let findStep    = stepData.findIndex(rec => rec.title === toStep);
-      //console.log("find stete: ", findStep);
       if(findStep){
-        stepData[findStep].active = 'user-done';
-        //previous steps;
+        stepData[findStep].activeClass = 'user-present';
         curStep.stepComp = true;
+        curStep.activeClass = 'user-done';
         curStep.activeStep = false;
         stepData[findStep].activeStep = true;
         let prevTitle = stepData[findStep-1].title;
         let targetElem = document.getElementById(prevTitle.toString());
         targetElem.style.display = 'none';
       }
-      //console.log("build stete: ", this.headerSteps);
-      this.headerStepMove(toStep, stepData,'');
+      console.log("#Step Data: ", stepData);
+      this.headerStepMove(toStep, stepData);
   }
 
 

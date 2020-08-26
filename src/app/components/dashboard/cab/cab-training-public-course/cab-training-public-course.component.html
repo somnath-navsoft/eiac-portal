@@ -1,0 +1,544 @@
+<!-- <div class="main-detail">
+    <div class="user-header"> 
+        <div class="container-fluid p-0">
+            <div class="main-dashboard-cnt">
+                <div class="row">
+                    <div class="col-md-12">
+                    
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+<div class="main-detail">
+    <!-- ============================================= -->
+    
+    
+    
+    <!-- ================================== -->
+      <div class="user-header"> 
+          <div class="container-fluid p-0">
+              <div class="main-dashboard-cnt">
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="dashbrd-hdr">
+                              <h3>Apply Public Course</h3>
+                          </div>
+                          <!-- {{applyForm | json}}<br>
+                          # {{selectCustomCourse}} -->
+                      </div>
+                      <!-- <div class="col-md-6">
+                          <div class="create-app">
+                            
+                              <mat-form-field class="crt-app">
+                                  <mat-label>Select Course Type</mat-label>                             
+                                  <mat-select placeholder="Select" 
+                                    (ngModelChange)="selectCourseType($event)"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="selectCustomCourse" required>
+                                        <mat-option *ngFor="let item of selectCustomCourses;" [value]="item.value">{{item.title}}</mat-option>
+                                    </mat-select>
+                              </mat-form-field>
+                          </div>
+                      </div> -->
+                  </div>
+    
+                  <ng-container>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="user-steps">
+                                <ng-container *ngFor="let item of headerSteps; let k=index;">
+                                <div class="user-next" [ngClass]="(item.stepComp === true) ? 'user-done' : item.active">
+                                    <div class="usernext-icon">
+                                        <!-- [class]="item.icon" -->
+                                        <span [ngClass]="(item.stepComp === true) ? 'icon-tick' : item.icon"></span>
+                                    </div>
+                                    <div class="user-details-pending" 
+                                    id="course_header" (click)="_service.headerStepMove(item.title, headerSteps)" [ngStyle]="{'cursor':'pointer'}">
+                                        <span [innerHTML]="item.desc"></span>
+                                    </div>
+                                </div>
+                                <div class="next-step" *ngIf="k < headerSteps.length-1">
+                                    <span class="icon-arrow-right"></span>
+                                </div>
+                              </ng-container>                              
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="col-md-12">
+                            {{publicTrainingForm |  json}}
+                        </div>
+                    </div>
+                  </ng-container>                 
+              
+                </div>
+          </div>
+      </div>
+
+    <!-- Course Section -->
+    <div class="form-maindata">
+        <div class="container-fluid p-0 cust-stepper" id="course">
+            <form #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)"  autocomplete="off">
+                <div class="form-bdy">
+                    <!-- <div class="row m-0">
+                        <div class="wrapper">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12 p-0">
+                                        <div class="form-subhdr">
+                                            <h5>Course Details</h5>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <ng-container *ngFor="let item of courseSelection; let i = index;">
+                                    <div class="row" *ngIf="i >= 1">
+                                        <hr>
+                                    </div>
+                                    <div class="row" >
+                                        <div class="col-md-6">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Select Course</mat-label>
+                                                <mat-select [ngModelOptions]="{standalone: true}"                                                    
+                                                [(ngModel)]="item.course" placeholder="Select" required>
+                                                    <mat-option [value]="item.id" *ngFor="let item of selectCourses">{{item.courseDetails}}</mat-option>
+                                                </mat-select>
+                                                <mat-error></mat-error>
+                                            </mat-form-field>
+                                            <ng-container *ngIf="i >= 1">
+                                                <div class="remove-clss">
+                                                    <span class="icon-cancel" (click)="removeRow(courseSelection, i)">X</span>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                    
+                            </ng-container>
+                            <div class="row">
+                                    <div class="col-12"> 
+                                        <div class="add-new">
+                                            <a  href="javascript:void(0)" (click)="addRow(courseSelection)">
+                                                <span class="icon-add"></span>
+                                                <span>ADD NEW</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                            </div>
+                            <div class="row" >
+                                <div class="col-md-6">
+                                    <mat-form-field class="cab-data">
+                                        <mat-label>Select Course Type</mat-label>
+                                        <mat-select [ngModelOptions]="{standalone: true}"  [disabled] = "courseTypeDisabled"                                                   
+                                        [(ngModel)]="selectCustomCourseType" placeholder="Select" required>
+                                            <mat-option [value]="item.id" *ngFor="let item of selectPublicCourseOptions.courseType">{{item.courseType}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="agree-condi">
+                                            <mat-checkbox [(ngModel)]="isAgree" [ngModelOptions]="{standalone: true}">Agree to Terms & Conditions</mat-checkbox>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div> -->
+                    
+                    <section>
+                        <div class="">
+                            <div class="container-fluid">                                
+                                    
+                                    <div class="train-bdy">
+                                        <div class="row m-0">
+                                            <div class="wrapper">
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-12 p-0">
+                                                            <div class="train-header">
+                                                                <h5>Course Type</h5>
+                                                            </div>
+                                                            <hr>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12  mt-3">
+                                                            <mat-form-field class="crt-app">
+                                                                <mat-label>Select Course Type</mat-label>                             
+                                                                <mat-select placeholder="Select"
+                                                                  [ngModelOptions]="{standalone: true}" 
+                                                                  [(ngModel)]="publicTrainingForm.training_form_type" required>
+                                                                      <mat-option *ngFor="let item of selectCustomCourses;" [value]="item.value">{{item.title}}</mat-option>
+                                                                  </mat-select>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="train-bdy">
+                                        <div class="row m-0">
+                                            <div class="wrapper">
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-12 p-0">
+                                                            <div class="train-header">
+                                                                <h5>APPLICANT INFORMATION</h5>
+                                                            </div>
+                                                            <hr>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-3">
+                                                        <div class="col-md-4 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Organization Name</mat-label>
+                                                                <input matInput name="organization_name" 
+                                                                [(ngModel)]="publicTrainingForm.organization_name" required>
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Mailing Address</mat-label>
+                                                                <input matInput type="email" email="true" name="mailing_address" [(ngModel)]="publicTrainingForm.mailing_address" required>
+                                                            </mat-form-field>
+                                                            <!-- <p class="error" *ngIf="publicTrainingForm.mailing_address && !_service.checkInput('email',publicTrainingForm.mailing_address)">Please Enter Correct Official E-mail Address</p> -->
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>PO Box No./ZIP Code</mat-label>
+                                                                <input matInput name="zip_code" (keypress)="_service.IsNumeric($event)" [(ngModel)]="publicTrainingForm.zip_code" required>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-4 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>City</mat-label>
+                                                                <input matInput name="city" [(ngModel)]="publicTrainingForm.city" required>
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Country</mat-label>
+                                                                <mat-select placeholder="Select" name="country" [(ngModel)]="publicTrainingForm.country_id" required>
+                                                                    <mat-option (click)="idToName('country',countryList.title)" 
+                                                                    *ngFor="let countryList of countryLists;let i = index;" 
+                                                                    [value]="countryList.country">{{countryList.title}}</mat-option>
+                                                                </mat-select>
+                                                                <mat-error></mat-error>
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Telephone Number</mat-label>
+                                                                <input type="text" maxlength="15" minlength="10" matInput (keypress)="_service.IsNumeric($event)" name="telephone_number" [(ngModel)]="publicTrainingForm.telephone_number" required>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-4 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Fax No.</mat-label>
+                                                                <input type="text" (keypress)="_service.IsNumeric($event)" matInput placeholder="" name="fax_no" [(ngModel)]="publicTrainingForm.fax_no" required>
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Official Email Address</mat-label>
+                                                                <input matInput type="email" email="true" placeholder="" name="official_email" [(ngModel)]="publicTrainingForm.official_email" required>
+                                                            </mat-form-field>
+                                                            <!-- <p class="error" *ngIf="publicTrainingForm.official_email && !_service.checkInput('email',publicTrainingForm.official_email)">Please Enter Correct Official E-mail Address</p> -->
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Official Website</mat-label>
+                                                                <input matInput name="official_website" [(ngModel)]="publicTrainingForm.official_website" required>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-4 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Authorized Contact Person Name</mat-label>
+                                                                <input matInput placeholder="" name="authorized_contact_person" [(ngModel)]="publicTrainingForm.authorized_contact_person" required>
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Designation</mat-label>
+                                                                <input matInput name="designation" [(ngModel)]="publicTrainingForm.designation" required>
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Mobile Phone Number</mat-label>
+                                                                <input type="text" maxlength="14" minlength="10" (keypress)="_service.IsNumeric($event)" matInput name="mobile_phone_number" [(ngModel)]="publicTrainingForm.mobile_phone_number" required>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="train-bdy">
+                                        <div class="row m-0">
+                                            <div class="wrapper">
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-12 p-0">
+                                                            <div class="train-header">
+                                                                <h5>PARTICIPANT/TRAINEES DETAILS</h5>
+                                                            </div>
+                                                            <hr>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-3">
+                                                        <div class="col-md-12">
+                                                            <div class="table-training">
+                                                                <table>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>#</th>
+                                                                            <th colspan="1">Participant / Trainee Name</th>
+                                                                            <th>E-mail Address</th>
+                                                                            <th>Phone Number</th>
+                                                                            <th></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr *ngFor="let item of participant_details; let i = index;">
+                                                                            <td>{{i+1}}</td>
+                                                                            <td>
+                                                                                <div class="name">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <mat-form-field class="cab-data">
+                                                                                                <mat-label>First Name</mat-label>
+                                                                                                <input  required matInput name="first_name_{{i}}" [(ngModel)]="participant_details[i].first_name" (keyup)="onKeyCalculate()">
+                                                                                            </mat-form-field>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <mat-form-field class="cab-data">
+                                                                                                <mat-label>Last Name</mat-label>
+                                                                                                <input required matInput name="last_name_{{i}}" [(ngModel)]="participant_details[i].last_name" (keyup)="onKeyCalculate()">
+                                                                                            </mat-form-field>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td>
+                                                                                <mat-form-field class="cab-data">
+                                                                                    <mat-label>Type Here</mat-label>
+                                                                                    <input  required matInput placeholder="" type="email" email="true" name="email_address_{{i}}" [(ngModel)]="participant_details[i].email_address" (keyup)="onKeyCalculate()">
+                                                                                </mat-form-field>
+                                                                            </td>
+                                                                            <td>
+                                                                                <mat-form-field class="cab-data">
+                                                                                    <mat-label>Type Here</mat-label>
+                                                                                    <input type="text" maxlength="14" minlength="10" (keypress)="_service.IsNumeric($event)" matInput required name="phone_number_{{i}}" [(ngModel)]="participant_details[i].phone_number" (keyup)="onKeyCalculate()" >
+                                                                                </mat-form-field>
+                                                                            </td>
+                                                                            <td class="content-icn">
+                                                                                <span *ngIf="i >= 0" class="icon-add" (click)="addRow(participant_details)">+</span>&nbsp;
+                                                                                <span *ngIf="i >= 1" class="icon-cancel" (click)="removeRow(participant_details,i)">x</span>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="train-bdy">
+                                        <div class="row m-0">
+                                            <div class="wrapper">
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-12 p-0">
+                                                            <div class="train-header">
+                                                                <h5>TRAINING DETAILS</h5>
+                                                            </div>
+                                                            <hr>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-12">                
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Requested Training Course Title</mat-label>
+                                                                <mat-select placeholder="Select" 
+                                                                (ngModelChange) = "selectEventCourse($event)"
+                                                                [ngModelOptions]="{standalone: true}" name="training_course_title_name" 
+                                                                [(ngModel)]="publicTrainingForm.event_management_id" required>
+                                                                    <mat-option *ngFor="let eventList of eventLists;let i = index;" 
+                                                                    [value]="eventList.id">{{eventList.course.name}}</mat-option>
+                                                                </mat-select>
+                                                                <mat-error></mat-error>
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Training Duration</mat-label>
+                                                                <input type="text" matInput class="fee-inp" name="training_duration" [disabled]="true"
+                                                                [ngModelOptions]="{standalone: true}"
+                                                                [(ngModel)]="publicTrainingForm.training_duration" (ngModelChange)="calculationData($event)" required>&nbsp;
+                                                                <!-- <mat-select (ngModelChange)="calculationData($event)" placeholder="Select" 
+                                                                    name="training_duration" 
+                                                                [(ngModel)]="publicTrainingForm.training_duration" required>
+                                                                    <mat-option [value]="1">1</mat-option>
+                                                                    <mat-option [value]="2">2</mat-option>
+                                                                    <mat-option [value]="3">3</mat-option>
+                                                                </mat-select>
+                                                                <mat-error></mat-error> -->
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="train-bdy">
+                                        <div class="row m-0">
+                                            <div class="wrapper">
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-12 p-0">
+                                                            <div class="train-header">
+                                                                <h5>FEES DETAILS</h5>
+                                                            </div>
+                                                            <hr>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="table-training">
+                                                                <table>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>#</th>
+                                                                            <th>Program Name</th>
+                                                                            <th>Fee/Day Per Trainee</th>
+                                                                            <th>No. of Participants</th>
+                                                                            <th>Amount (AED)</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody class="fee">
+                                                                        <tr>
+                                                                            <td>1</td>
+                                                                            <td>Tuition Fees</td>
+                                                                            <td>{{fee_day_pertime1}}</td>
+                                                                            <td>
+                                                                                <input type="text" class="fee-inp" name="no_of_participants1" [disabled]="!editable" [(ngModel)]="participant_trainee">
+                                                                            </td>
+                                                                            <td>{{amount1}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>2</td>
+                                                                            <td>TAX (VAT)</td>
+                                                                            <td>{{fee_day_pertime2}}</td>
+                                                                            <td>
+                                                                                <input type="text" class="fee-inp" name="no_of_participants2" [disabled]="!editable" [(ngModel)]="participant_trainee">
+                                                                            </td>
+                                                                            <td>{{amount2}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>3</td>
+                                                                            <td>Knowledge Fees - Per Participant درهم المعرفة</td>
+                                                                            <td>{{fee_day_pertime3}}</td>
+                                                                            <td>
+                                                                                <input type="text" class="fee-inp" name="no_of_participants3" [disabled]="!editable" [(ngModel)]="participant_trainee">
+                                                                            </td>
+                                                                            <td>{{amount3}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>4</td>
+                                                                            <td>Knowledge Fees - Per Participant درهم الابتكار</td>
+                                                                            <td>{{fee_day_pertime4}}</td>
+                                                                            <td>
+                                                                                <input type="text" class="fee-inp" name="no_of_participants4" [disabled]="!editable" [(ngModel)]="participant_trainee">
+                                                                            </td>
+                                                                            <td>{{amount4}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td></td>
+                                                                            <td colspan="3"><b>Total</b></td>
+                                                                            <td><b>{{total}}</b></td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>             
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="bttns-health bttn-staff">
+                            <!--  (click)="onCourseNext()" -->
+                            <button class="cancel-bttn" routerLink="/dashboard/cab_client/training-course">BACK</button> 
+                            <button class="submit-bttn submit-health" >PROCEEDS FOR PAYMENT</button>                                
+                        </div>
+                    </div>
+                </div> 
+            </form>                  
+        </div>    
+        <div class="container-fluid p-0 cust-stepper"  id="payment" [ngStyle]="{'display': 'none'}">
+            <div class="container-fluid p-0">
+                <form action="">
+                    <div class="form-bdy">
+                        <div class="row m-0">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr">
+                                                <h5>Payment</h5>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
+
+                                    <!-- <ng-container *ngFor="let item of selectCoursePayment;let i=index">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                {{item.courseDetails}}
+                                            </div>
+                                            <div class="col-md-4">
+                                               $&nbsp;{{item.fees_per_trainee}}
+                                            </div>
+                                        </div>
+                                        <hr *ngIf="i>=1">
+                                        </ng-container>  -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="bttns-health bttn-staff">
+                                <button class="cancel-bttn" (click)="_service.headerStepMove('course',headerSteps,'payment')">BACK</button> 
+                                <button class="submit-bttn submit-health" (click)="onPaymentRequest()">SAVE</button>                                
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>           
+    </div>
+
+</div>

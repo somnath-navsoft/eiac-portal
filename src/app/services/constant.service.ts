@@ -22,6 +22,8 @@ export class Constants{
 		trainerCourseDelete: 'trainer/course-delete/',
 		trainerCourseVoucherSave: 'trainer/course-voucher-save/',
 
+		savePublicTrainingForm:'trainer/training-application-form/',
+
 		searchCourse: 'trainer/search-course/',
 		searchTrainerEvent: 'trainer/search-event/',
 		searchTrainerAttendance: 'trainer/search-attendance/',
@@ -68,46 +70,47 @@ export class Constants{
 			type: 'cab_client',
 			menu: [
 				{
-					heading: 'Profile', link: '#', sub: true,
+					heading: 'Messages', link: '#',
+					submenu: []
+				},
+				{
+					heading: 'Application', link: '#', sub: true,
 					submenu: [
-						{title: 'Update Profile', link: '/profile-completation'},
-						{title: 'Current Certification', link: '#'},
-						{title: 'Agreements', link: '#'},
-						{title: 'Records', link: '#'},
-						{title: 'My Files', link: '#'}
+						{title: 'Accreditation', link: '#'},
+						{title: 'Registration', link: '#'},
+						{title: 'Training', link: '/dashboard/cab_client/training-course'}
 					]
 				},
 				{
 					heading: 'Status', link: '#', sub: true,
-					submenu: [
-						{title: 'Application Listing', link: '#'},
-						{title: 'Vouchers', link: '#'},
-					]
+					submenu: []
 				},
 				{
-					heading: 'Services', link: '#', sub: true,
-					submenu: [
-						{title: 'Accreditation Service', link: '#'},
-						{title: 'Registration Service', link: '#'},
-						//{title: 'Training Service', link: '#'},
-						//{title: 'Training Apply', link: '/dashboard/cab_client/training-apply'},
-						{title: 'Training Service', link: '/dashboard/cab_client/training-service'}
-					]
+					heading: 'Events', link: '#', sub: true,
+					submenu: []
 				},
+				{
+					heading: 'Schedule', link: '#', sub: true,
+					submenu: []
+				},				
 				{
 					heading: 'Documents', link: '#',
 					submenu: []
-				},
+				},								
 				{
-					heading: 'Billing & Accounts', link: '#', sub: true,
-					submenu: [
-						{title: 'Application', link: '#'},
-					]
-				},
-				{
-					heading: 'Messages', link: '#',
+					heading: 'Accounts', link: '#', sub: true,
 					submenu: []
 				},
+				{
+					heading: 'Profile', link: '#', sub: true,
+					submenu: [
+						{title: 'Profile', link: '/profile-completation'},
+						{title: 'Certification', link: '#'},
+						{title: 'Agreements', link: '#'},
+						{title: 'Records', link: '#'},
+						{title: 'My Files', link: '#'}
+					]
+				}
 			]
 		},
 		{
@@ -127,7 +130,7 @@ export class Constants{
 				{
 					heading: 'Services', link: '#', sub: true,
 					submenu: [
-						{title: 'Training', link: '/dashboard/candidate/training-service'},
+						{title: 'Training', link: '/dashboard/candidate/training-course'}
 					]
 				},
 				{

@@ -52,6 +52,14 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { ProfileCompletationComponent } from './components/profile-completation/profile-completation.component';
 
+import { CabTrainingApplicationComponent } from './components/dashboard/cab/cab-training-application/cab-training-application.component';
+import { CabTrainingPublicCourseComponent } from './components/dashboard/cab/cab-training-public-course/cab-training-public-course.component';
+import { CabTrainingInpremiseCourseComponent } from './components/dashboard/cab/cab-training-inpremise-course/cab-training-inpremise-course.component';
+
+import { CandidateTrainingApplicationComponent } from './components/dashboard/candidate/candidate-training-application/candidate-training-application.component';
+import { CandidateTrainingPublicCourseComponent } from './components/dashboard/candidate/candidate-training-public-course/candidate-training-public-course.component';
+
+
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
   { path: 'sign-in', component: SigninComponent, canActivate: [AuthCheck] },
@@ -84,17 +92,19 @@ const routes: Routes = [
           { path: 'home', component:OperationsDashboardComponent, canActivate: [AuthGuard]},
           { path: 'training-apply/:id', component:OperationsTrainerServiceComponent, canActivate: [AuthGuard] },
           { path: 'training-service', component:OperationsTrainerServiceListComponent, canActivate: [AuthGuard] },
-        ]
+        ] 
     },
 
     //Cab client
-    { path: 'cab_client', component: CabComponent, canActivate: [AuthGuard], 
+    { path: 'cab_client', component: CabComponent, canActivate: [AuthGuard],  
       children:[
         { path: '', redirectTo:'home', pathMatch:'full'},
         { path: 'home', component:CabDashboardComponent, canActivate: [AuthGuard]},
         { path: 'training-apply', component:CabTrainerServiceComponent, canActivate: [AuthGuard] },
         { path: 'training-apply/:id', component:CabTrainerServiceComponent, canActivate: [AuthGuard] },
-        { path: 'training-service', component:CabTrainerServiceListComponent, canActivate: [AuthGuard] },
+        { path: 'training-course', component:CabTrainingApplicationComponent, canActivate: [AuthGuard] },
+        { path: 'training-public-course', component:CabTrainingPublicCourseComponent, canActivate: [AuthGuard] },
+        { path: 'training-inpremise-course', component:CabTrainingInpremiseCourseComponent, canActivate: [AuthGuard] },
       ]
     },
 
@@ -115,6 +125,8 @@ const routes: Routes = [
         { path: 'training-service', component:CandidateTrainerServiceListComponent, canActivate: [AuthGuard] },
         { path: 'attendane-list', component:CandidateAttendanceListComponent, canActivate: [AuthGuard] },
         { path: 'agenda-list', component:CandidateAgendaListComponent, canActivate: [AuthGuard] },
+        { path: 'training-public-course', component:CandidateTrainingPublicCourseComponent, canActivate: [AuthGuard] },
+        { path: 'training-course', component:CandidateTrainingApplicationComponent, canActivate: [AuthGuard] },
       ]
     },
 

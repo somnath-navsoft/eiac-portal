@@ -1,5 +1,5 @@
 <div class="container1">
-    <!-- @{{isAuthenticated | json}} -->
+    <!-- @{{isAuthenticated }} || @{{isCompleteness}} -->
     <div *ngIf="isAuthenticated; then authSection; else authLess;"></div>
     <ng-template #authSection>
         <ng-container *ngIf="isCompleteness == '1'">
@@ -18,19 +18,6 @@
                 </div>
             </div>
             <!-- INCLUDE AUTH SECTION -->
-            <!-- Page Wrapper -->
-            <!-- <div id="wrapper">
-                <app-sidebar></app-sidebar>
-                <div id="content-wrapper" class="d-flex flex-column">
-                    <div id="content">
-                        <app-header></app-header>
-                        <div class="container-fluid">
-                            <router-outlet></router-outlet>
-                        </div>
-                    </div>
-                <app-footer></app-footer>
-                </div>
-            </div> -->
         </ng-container>
         <ng-container *ngIf="isCompleteness == '0'">
             <app-header></app-header> 

@@ -263,10 +263,12 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 .main-dashboard-cnt { padding: 20px 0; }
 .main-dashboard-cnt .user-steps { display: flex; justify-content: center; align-items: center; height: 100%; }
 .user-steps .user-next { border: 1px solid #CECECE ; background: #FFF; padding: 20px 18px; color: #1D1D1D; text-align: center; height: 100%; }
-.user-steps .user-done { border: 1px solid #B19782; background: #B19782; color: #FFF; }
+.user-steps .user-present { border: 1px solid #B19782; background: #B19782; color: #FFF; }
+.user-steps .user-done { border: 1px solid #B54150; background: #B54150; color: #FFF; }
 .user-steps .user-next .usernext-icon { font-size: 30px; }
 .user-steps .user-next .user-details-pendin { font-size: 14px; }
-.user-steps .next-step { padding: 0 5px; display: flex; justify-content: center; align-items: center; height: 100%; color: #B19782; }
+.user-steps .next-step { padding: 0 5px; display: flex; justify-content: center; align-items: center; height: 100%; color: black; } 
+// color: #B19782;
 .bttn-staff { display: flex; justify-content: space-between; align-content: center; width: 100%; height: 100%; }
 .agree-condi { padding-top: 20px; color: #7A7A7A; font-family: 'Dubai Regular'; font-size: 18px; }
 .agree-condi .mat-checkbox-frame {
@@ -660,6 +662,33 @@ a:hover { text-decoration: none; }
 
 
 
+
+
+
+.train-bdy { background: #EFEFEF; margin-top: 30px; padding-bottom: 25px; }
+.train-header { margin: 0 -15px;}
+.train-header h5 {
+  margin: 0;
+  background: #E7E7E7;
+  color: #B54150;
+  font-family: "Dubai Bold";
+  font-size: 22px;
+  letter-spacing: 2px;
+  padding: 14px 25px;
+}
+.table-training table { margin-top: 20px; width: 100%;}
+.table-training th { text-align: center; padding: 10px; border: 1px solid #DCDAD5; background: #E7E7E7; font-family: "Dubai Bold"; }
+.table-training td { text-align: center; padding: 35px 20px 20px; border: 1px solid #DCDAD5; background: #F9F9F9; font-family: "Dubai Regular";}
+.table-training .content-icn {text-align: center; color: #B54150;}
+.table-training .fee td { padding: 5px;}
+.table-training input.fee-inp {
+  width: 120px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  border-bottom: 1px solid #D3D1CE;
+  &:focus { outline: none; }
+}
 
 //==================RESPONSIVE==================//
 @media(max-width: 1366px) {

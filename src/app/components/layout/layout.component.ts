@@ -6,7 +6,7 @@ import { Router, NavigationEnd, ActivatedRoute} from '@angular/router'
 import { LogOut, LogInSuccess, LogInState } from '../../store/actions/auth.actions';
 import { filter} from 'rxjs/operators';
 
-import { AppService } from '../../services/app.service';
+import { AppService } from '../../services/app.service'; 
 
 @Component({
   selector: 'portal-layout',
@@ -67,13 +67,14 @@ export class LayoutComponent implements OnInit {
         }else if(splitUrl[1] == 'verify-account')
         {
           this.currentState = 'verify-account';
-        }else if(splitUrl[1] == 'profile-completation')
+        }
+        else if(splitUrl[1] == 'profile-completation')
         {
           this.currentState = 'profile-completation';
         }else{
           this.currentState = data.urlAfterRedirects;
         }
-        // console.log('>>> router...', this.currentState);
+        //console.log('>>> router...', this.currentState);
         // console.log('>>> router...', splitForverifyAccount);
       }); 
 
@@ -87,21 +88,25 @@ export class LayoutComponent implements OnInit {
       this.getState.subscribe((state) => {
         // console.log(">>>layout State subscribed: ", state);
 
-        //console.log("@@@Auth status: ", state);
+        console.log("@@@Auth status: ", state);
         if(state.user != null && state.user.token != undefined && state.user.token != null) {
           
           let authUserData = this._service.decodeJWT(state.user.token);
-          if(state.user.token !=null && authUserData.isVerified == '0')
-          {
-            
-            this.isAuthenticated = false;
-          }else if(state.user.token !=null &&  authUserData.isCompleteness == '0'){
-            this.isAuthenticated = state.isAuthenticated;
-            this.isCompleteness = '0';
-          }else if(state.user.token !=null){
+          /*
+          else if(state.user.token !=null &&  authUserData.isCompleteness == '0'){
+            console.log('@Enter....1.0: ');
             this.isAuthenticated = state.isAuthenticated;
             this.isCompleteness = '1';
-            //console.log('@Enter....1.2: ');
+          }
+          */
+          if(state.user.token !=null && authUserData.isVerified == '0')
+          {
+            console.log('@Enter....1: ');
+            this.isAuthenticated = false;
+          }else if(state.user.token !=null){
+            console.log('@Enter....1.1: ');
+            this.isAuthenticated = state.isAuthenticated;
+            this.isCompleteness = '1';
           }
         }
         else{
