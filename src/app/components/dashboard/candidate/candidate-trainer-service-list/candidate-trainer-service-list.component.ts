@@ -261,7 +261,7 @@ createPaymentButton(itemData: any){
   */
  //AQaHF_liOK0SQfGII9rnE1UFmesqFzoLVpFzdOEcOjLAyl4A6omCL6yeto0JLDGnOiQijjirk9tG9BAq = abhishek.navsoft@gmail.com
  //AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl = das.abhishek77@gmail.com
- //Get transaction ID - https://developer.paypal.com/docs/checkout/reference/server-integration/get-transaction/#on-the-server
+ //Get transaction ID - https://uateloper.paypal.com/docs/checkout/reference/server-integration/get-transaction/#on-the-server
   if(this.paymentReview.length){
     this.loadExternalScript("https://www.paypalobjects.com/api/checkout.js").then(() => {
     paypal.Button.render({
