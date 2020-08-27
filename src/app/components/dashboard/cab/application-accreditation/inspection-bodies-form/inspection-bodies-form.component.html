@@ -50,7 +50,7 @@
                                         <hr>
                                     </div>
                                 </div>
-                                <form #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)" autocomplete="off">  
+                                <form #ngForm1="ngForm" (ngSubmit)="onSubmitApplication(ngForm1)" autocomplete="off">  
                                     <div class="row">
                                         <div class="col-md-6 col-sm-12">
                                             <div class="matupload position-relative">
@@ -143,7 +143,7 @@
                                                 <textarea matInput onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" autocomplete="off"  placeholder="Registered Physical Location Address" name="physical_location_address" [(ngModel)]="inspectionBodyForm.physical_location_address"  required></textarea>
                                                 <mat-error></mat-error> 
                                             </mat-form-field>
-                                        </div>
+                                        </div> 
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3">
@@ -167,7 +167,7 @@
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Country</mat-label>
-                                                    <mat-select placeholder="Select"  name="country_id" [(ngModel)]="inspectionBodyForm.country_id" required>
+                                                    <mat-select placeholder="Select"  name="country_id" [(ngModel)]="inspectionBodyForm.country_id">
                                                         <mat-option [value]="item.CountryName" (click)="idToName('country',item.CountryName)" *ngFor="let item of getCountryLists; let i = index;">{{item.CountryName}}</mat-option>
                                                     </mat-select> 
                                                     <mat-error></mat-error>      
@@ -177,7 +177,7 @@
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>City</mat-label>
-                                                <mat-select required="" [(ngModel)]="inspectionBodyForm.city" name="city">
+                                                <mat-select [(ngModel)]="inspectionBodyForm.city" name="city">
                                                     <mat-option  *ngFor="let allCityByCountryName of allCityByCountry; let i = index" [value]='allCityByCountryName'>
                                                     {{allCityByCountryName}}
                                                     </mat-option>
@@ -231,7 +231,7 @@
                                                 <div class="row" *ngIf="i >= 1">
                                                     <div class="col-12">
                                                         <div class="remove-clss">
-                                                                <span class="icon-cancel" (click)="removeRow(ownOrgBasicInfo, i)"></span>
+                                                                <span class="icon-close-round" (click)="removeRow(ownOrgBasicInfo, i)"></span>
                                                             </div>
                                                         </div>
                                                 </div>
@@ -285,7 +285,7 @@
                                         <div class="col-12"> 
                                             <div class="add-new">
                                                 <a  href="javascript:void(0)" (click)="addRow(ownOrgBasicInfo)">
-                                                    <span class="icon-add"></span>
+                                                    <span class="icon-add-round"></span>
                                                     <span>ADD NEW</span>
                                                 </a>
                                             </div>
@@ -313,7 +313,7 @@
                                                 <div class="row" *ngIf="i >= 1">
                                                     <div class="col-12">
                                                         <div class="remove-clss">
-                                                                <span class="icon-cancel" (click)="removeRow(ownOrgMembInfo, i)"></span>
+                                                                <span class="icon-close-round" (click)="removeRow(ownOrgMembInfo, i)"></span>
                                                             </div>
                                                         </div>
                                                 </div>
@@ -363,7 +363,7 @@
                                         <div class="col-12">
                                             <div class="add-new">
                                                 <a  href="javascript:void(0)" (click)="addRow(ownOrgMembInfo)">
-                                                    <span class="icon-add"></span>
+                                                    <span class="icon-add-round"></span>
                                                     <span>ADD NEW</span>
                                                 </a>
                                             </div>
@@ -578,8 +578,8 @@
                                                                 </mat-form-field>
                                                                 </td>
                                                             <td class="content-icn">
-                                                                <span *ngIf="i >= 0" class="icon-add" (click)="addRow(accreditationInfo)"></span>&nbsp;
-                                                                <span *ngIf="i >= 1" class="icon-cancel" (click)="openDialogBox(accreditationInfo,i)"></span>
+                                                                <span *ngIf="i >= 0" class="icon-add-round-round" (click)="addRow(accreditationInfo)"></span>&nbsp;
+                                                                <span *ngIf="i >= 1" class="icon-close-round" (click)="removeRow(accreditationInfo,i)"></span>
                                                             </td>
                                                         </tr>
 
@@ -649,8 +649,8 @@
                                                                     </mat-form-field>
                                                                     <td>                                                            
                                                                     <td class="content-icn">
-                                                                        <span *ngIf="k >= 0" class="icon-add" (click)="addScopeLine(scope.accr_title[0], i1, k, dynamicScopeModel[scope.accr_title[0]].fieldLines)"></span>&nbsp;
-                                                                        <span *ngIf="k >= 1" class="icon-cancel" (click)="removeScopeLine(scope.accr_title[0], k)"></span>
+                                                                        <span *ngIf="k >= 0" class="icon-add-round" (click)="addScopeLine(scope.accr_title[0], i1, k, dynamicScopeModel[scope.accr_title[0]].fieldLines)"></span>&nbsp;
+                                                                        <span *ngIf="k >= 1" class="icon-close-round" (click)="removeScopeLine(scope.accr_title[0], k)"></span>
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
@@ -664,8 +664,9 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="bttns-health bttn-staff">
-                                                <a routerLink="/dashboard/cab-client/home" class="cancel-bttn">BACK</a>
-                                                <button class="submit-bttn submit-health">SUBMIT</button>
+                                                <!--  (click)="onSubmitApplication()" -->
+                                                <button class="cancel-bttn" routerLink="/dashboard/cab_client/application-accreditation">BACK</button>
+                                                <button class="submit-bttn submit-health">CONTINUE</button>
                                             </div>
                                         </div>
                                     </div>
@@ -675,9 +676,10 @@
                     </div>
                 </div>
 
-                    <div class="form-bdy cust-stepper" id="profciency_testing_participation">
+                    <div class="form-bdy cust-stepper" id="profciency_testing_participation"  [ngStyle]="{'display':'none'}">
                         <div class="row m-0">
                             <div class="wrapper">
+                                <form #ngForm2="ngForm" (ngSubmit)="onSubmitTestingParticipation(ngForm2)" autocomplete="off">  
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-md-12 p-0">
@@ -689,7 +691,7 @@
                                                 </div>
                                                 <div class="col-md-6 col-sm-12ssss p-0">
                                                     <div class="form-subheader-desc">
-                                                        <mat-radio-group name="proficiency_testing_val" [(ngModel)]="inspectionBodyForm.proficiency_testing_val">
+                                                        <mat-radio-group name="proficiency_testing_val" [(ngModel)]="inspectionBodyForm.proficiency_testing_val" required>
                                                             <mat-radio-button value="1" (click)='proficiency_testing(1)'>Yes </mat-radio-button>
                                                             <mat-radio-button value="0" (click)='proficiency_testing(0)'>No </mat-radio-button>
                                                         </mat-radio-group>
@@ -742,8 +744,8 @@
                                                                 </mat-form-field>
                                                                 </td>
                                                             <td class="content-icn">
-                                                                <span *ngIf="i >= 0" class="icon-add" (click)="addRow(proficiencyTesting)"></span>&nbsp;
-                                                                <span *ngIf="i >= 1" class="icon-cancel" (click)="openDialogBox(proficiencyTesting,i)"></span>
+                                                                <span *ngIf="i >= 0" class="icon-add-round-round" (click)="addRow(proficiencyTesting)"></span>&nbsp;
+                                                                <span *ngIf="i >= 1" class="icon-close-round" (click)="removeRow(proficiencyTesting,i)"></span>
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -752,14 +754,27 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="bttns-health bttn-staff">
+                                                <!-- (click)="onSubmitTestingParticipation()" -->
+                                                <button class="cancel-bttn"  type="button" (click)="Service.headerStepMove('application_information',headerSteps,'menu','profciency_testing_participation')">BACK</button> 
+                                                <button class="cancel-bttn" type="button">SAVE AS DRAFT</button> 
+                                                <button class="submit-bttn submit-health" >CONTINUE</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                                </form>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-bdy cust-stepper" id="personal_information">
+                    <div class="form-bdy cust-stepper" id="personal_information"  [ngStyle]="{'display':'none'}">
                         <div class="row m-0">
                             <div class="wrapper">
+                                <form #ngForm3="ngForm" (ngSubmit)="onSubmitPersonalInformation(ngForm3)" autocomplete="off">  
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-md-12 p-0">
@@ -855,14 +870,25 @@
                                             </mat-form-field>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="bttns-health bttn-staff">
+                                                <!-- (click)="onSubmitPersonalInformation()" -->
+                                                <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('profciency_testing_participation',headerSteps,'menu','personal_information')">BACK</button> 
+                                                <button class="submit-bttn submit-health" >CONTINUE</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                                </form>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-bdy cust-stepper" id="personal_information">
+                    <div class="form-bdy cust-stepper" id="information_audit_management"  [ngStyle]="{'display':'none'}">
                         <div class="row m-0">
                             <div class="wrapper">
+                                <form #ngForm4="ngForm" (ngSubmit)="onSubmitInformationAuditManagement(ngForm4)" autocomplete="off">  
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-md-12 p-0">
@@ -892,14 +918,25 @@
 
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="bttns-health bttn-staff">
+                                                <!-- (click)="onSubmitInformationAuditManagement()" -->
+                                                <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('personal_information',headerSteps,'menu','information_audit_management')">BACK</button> 
+                                                <button class="submit-bttn submit-health" >CONTINUE</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                                </form>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-bdy cust-stepper" id="perlim_visit">
+                    <div class="form-bdy cust-stepper" id="perlim_visit"  [ngStyle]="{'display':'none'}">
                         <div class="row m-0">
                             <div class="wrapper">
+                                <form #ngForm5="ngForm" (ngSubmit)="onSubmitPerlimVisit(ngForm5)" autocomplete="off">  
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-md-12 p-0">
@@ -909,22 +946,77 @@
                                             <hr>
                                         </div>
                                     </div>
+                                    <div class="row">                                         
+                                                <div class="col-md-12 p-0">
+                                                    <div class="row">
+                                                        <div class="col-md-6 p-0">
+                                                            <div class="form-subhdr">
+                                                                <h5>Request for perlim visit</h5>
+                                                            </div>
+                                                        </div>
+                                                        @@{{inspectionBodyForm.perlim_visit_val |  json}}
+                                                        <!-- (click)='proficiency_testing(1)' -->
+                                                        <div class="col-md-6">
+                                                            <div class="form-subheader-desc">
+                                                                <mat-radio-group name="perlim_visit_val" 
+                                                                [(ngModel)]="inspectionBodyForm.perlim_visit_val" required>
+                                                                    <mat-radio-button value="1">Yes </mat-radio-button>
+                                                                    <mat-radio-button value="0">No </mat-radio-button>
+                                                                </mat-radio-group>
+                                                            </div>
+                                                        </div>
+                                                    </div>                                                    
+                                                </div>
+                                    </div>
                                     <div class="row">
-                                        
+                                        <div class="col-md-12" *ngIf="inspectionBodyForm.perlim_visit_val === '1'">
+                                                <div class="col-md-6">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Select Date</mat-label>
+                                                        <input matInput  readonly="true" (click)="Service._openCalendar(perlim_visit_select_date)"  
+                                                        [matDatepicker]="perlim_visit_select_date"  placeholder="Select Date" name="perlim_visit_select_date" 
+                                                        [(ngModel)]="inspectionBodyForm.perlim_visit_select_date" (dateChange)="setexDate()" required>
+                                                        <mat-datepicker-toggle matSuffix [for]="perlim_visit_select_date"></mat-datepicker-toggle>
+                                                        <mat-datepicker #perlim_visit_select_date  disabled="false" ></mat-datepicker>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Select Time</mat-label>
+                                                        <mat-select placeholder="Select" name="perlim_visit_select_time" 
+                                                        (selectionChange)="getDutyTimeForm1Index($event)" 
+                                                        [(ngModel)]="inspectionBodyForm.perlim_visit_select_time">
+                                                            <mat-option *ngFor="let item of addMinutesToTime; let i = index;" 
+                                                            [value]="item.val">{{item.val}}</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="bttns-health bttn-staff">
+                                                <!--  (click)="onSubmitPerlimVisit()" -->
+                                                <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','perlim_visit')">BACK</button> 
+                                                <button class="submit-bttn submit-health">CONTINUE</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                            </form>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-bdy cust-stepper" id="undertaking_applicant">
+                    <div class="form-bdy cust-stepper" id="undertaking_applicant"  [ngStyle]="{'display':'none'}">
                         <div class="row m-0">
                             <div class="wrapper">
+                                <form #ngForm6="ngForm" (ngSubmit)="onSubmitUndertakingApplicant(ngForm6)" autocomplete="off">
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr">
-                                                <h5>6. UNDERTAKING</h5>
+                                                <h5>6. UNDERTAKING & APPLICANT COMPANY</h5>
                                             </div>
                                             <hr>
                                         </div>
@@ -1108,69 +1200,117 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row m-0">
+                                        <div class="wrapper">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-md-12 p-0">
+                                                        <div class="form-subhdr">
+                                                            <h5>ON THE BEHALF OF THE APPLICANT COMPANY</h5>
+                                                        </div>
+                                                        <hr>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-12 p-0">
+                                                        <div class="form-subheader-data subhead-dt">
+                                                            <h5>SIGNED FOR AND ON BEHALF OF APPLICANT</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Organization Name</mat-label>
+                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Organization Name" name="onbehalf_company_name"  [(ngModel)]="inspectionBodyForm.onbehalf_company_name" required>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Full Name of Authorized Representative</mat-label>
+                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Full Name of Authorized Representative" name="onbehalf_representative_name" [(ngModel)]="inspectionBodyForm.onbehalf_representative_name" required>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Designation</mat-label>
+                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="designation" [(ngModel)]="inspectionBodyForm.onbehalf_designation">
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Digital Signature</mat-label>
+                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Digital Signature" name="digi_sign" [(ngModel)]="inspectionBodyForm.add_lab_address">
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Date</mat-label>
+                                                            <input matInput [matDatepicker]="onbehalf_representative_date" readonly="true" placeholder="Date" name="onbehalf_representative_date" [(ngModel)]="inspectionBodyForm.onbehalf_representative_date" [value]="Service.returnCurrentDate()">
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="bttns-health bttn-staff">
+                                                <!-- (click)="onSubmitUndertakingApplicant()" -->
+                                                <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('perlim_visit',headerSteps,'menu','undertaking_applicant')">BACK</button> 
+                                                <button class="submit-bttn submit-health" >CONTINUE</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                                </form>
                             </div>
                         </div>
+                        
+                    </div>
 
+                    <div class="form-bdy cust-stepper" id="payment" [ngStyle]="{'display':'none'}">
                         <div class="row m-0">
                             <div class="wrapper">
+                                <form #ngForm7="ngForm" (ngSubmit)="onSubmitPaymentInformation(ngForm7)" autocomplete="off">
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr">
-                                                <h5>7. ON THE BEHALF OF THE APPLICANT COMPANY</h5>
+                                                <h5>7. Payment Information</h5>
                                             </div>
                                             <hr>
                                         </div>
                                     </div>
-                                    <div class="row mt-3">
-                                        <div class="col-12 p-0">
-                                            <div class="form-subheader-data subhead-dt">
-                                                <h5>SIGNED FOR AND ON BEHALF OF APPLICANT</h5>
+                                    <div class="row">
+                                        <div class="matupload position-relative">
+                                        <mat-form-field  class="lng-data">
+                                            <input matInput readonly="true" name="payment_receipt_name" [(ngModel)]="inspectionBodyForm.payment_receipt_name"  placeholder="Upload valid Legal-Professional / Commercial / Trade license" required>
+                                        </mat-form-field>
+                                        <span class="fileupload">
+                                            <input type="file" name="payment_receipt" 
+                                            [(ngModel)]="inspectionBodyForm.payment_receipt" 
+                                            (change)="validateFile($event, 'payment_receipt')" required>
+                                            <span class="icon-attach attach-data"></span>
+                                        </span>                                               
+                                        </div>
+                                        <p class="error" *ngIf="!file_validation">Please Upload a valid file (ex: pdf,png)</p>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="bttns-health bttn-staff">
+                                                <!-- (click)="onSubmitPaymentInformation()" -->
+                                                <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','payment')">BACK</button> 
+                                                <button class="submit-bttn submit-health" >SUBMIT</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-4 col-sm-12">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Organization Name</mat-label>
-                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Organization Name" name="onbehalf_company_name"  [(ngModel)]="inspectionBodyForm.onbehalf_company_name" required>
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-md-4 col-sm-12">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Full Name of Authorized Representative</mat-label>
-                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Full Name of Authorized Representative" name="onbehalf_representative_name" [(ngModel)]="inspectionBodyForm.onbehalf_representative_name" required>
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-md-4 col-sm-12">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Designation</mat-label>
-                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="designation" [(ngModel)]="inspectionBodyForm.onbehalf_designation">
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6 col-sm-12">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Digital Signature</mat-label>
-                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Digital Signature" name="digi_sign" [(ngModel)]="inspectionBodyForm.add_lab_address">
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-md-6 col-sm-12">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Date</mat-label>
-                                                <input matInput [matDatepicker]="onbehalf_representative_date" readonly="true" placeholder="Date" name="onbehalf_representative_date" [(ngModel)]="inspectionBodyForm.onbehalf_representative_date" [value]="Service.returnCurrentDate()">
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
                                 </div>
+                                </form>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="form-bdy">
-                        
                     </div>
 
                     <!-- <div class="row">
@@ -1192,13 +1332,13 @@
                             </div>
                         </div>
                     </div> -->
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-md-8 col-sm-12">
                             <div class="bttns-health">
                                 <button class="submit-bttn submit-health">SUBMIT</button>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
             </div>
         </div>
     </section>

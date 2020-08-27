@@ -228,6 +228,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.loadData();
     this.loadFormDynamicTable();
     this.loader = false;
+    //
     this.headerSteps.push(
       {
       title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-user', activeClass:'user-present'
@@ -239,13 +240,16 @@ export class InspectionBodiesFormComponent implements OnInit {
       title:'personal_information', desc:'3. Personal Information', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
-      title:'perlim_visit', desc:'4. Perlim Visit', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'information_audit_management', desc:'4. Internal Audit & Management', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
-      title:'undertaking_applicant', desc:'5. Undertaking & Applicant Company', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'perlim_visit', desc:'5. Perlim Visit', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
-      title:'payment_complete', desc:'5. Payment Complete', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'undertaking_applicant', desc:'6. Undertaking & Applicant Company', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      },
+      {
+      title:'payment', desc:'7. Payment Information', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
       }
     );
   }
@@ -510,21 +514,36 @@ export class InspectionBodiesFormComponent implements OnInit {
       }
   }
 
-  validateFile(fileEvent: any) {
+  validateFile(fileEvent: any, type?:string) {
     var file_name = fileEvent.target.files[0].name;
     var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
     var ex_type = ['pdf','png'];
     var ex_check = this.Service.isInArray(file_exe,ex_type);
-    if(ex_check){
-      this.inspectionBodyForm.trade_license_name = fileEvent.target.files[0].name;
-      this.inspectionBodyFormFile.append('trade_license_file',fileEvent.target.files[0]);
-      this.file_validation = true;
-      return true;
+    if(type === undefined){
+      if(ex_check){
+        this.inspectionBodyForm.trade_license_name = fileEvent.target.files[0].name;
+        this.inspectionBodyFormFile.append('trade_license_file',fileEvent.target.files[0]);
+        this.file_validation = true;
+        return true;
+      }
+      else{
+        this.file_validation = false;
+        return false;
+      }
     }
-    else{
-      this.file_validation = false;
-      return false;
+    if(type !== undefined && type !+ '' && type === 'payment_receipt'){
+      if(ex_check){
+        this.inspectionBodyForm.payment_receipt_name = fileEvent.target.files[0].name;
+        this.inspectionBodyFormFile.append('payment_receipt_file',fileEvent.target.files[0]);
+        this.file_validation = true;
+        return true;
+      }
+      else{
+        this.file_validation = false;
+        return false;
+      }
     }
+    
   }
   emailValidation(email){
     // var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -838,6 +857,63 @@ openDialogBox(obj: any, index: number) {
       el.scrollIntoView({ behavior: 'smooth' });
      }
    }
+
+
+   //Step FORM Action
+   onSubmitApplication(ngForm: any){
+    console.log("Step Application submit...", " -- ", ngForm.form);
+     if(!ngForm.form.valid){
+      this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+     }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }     
+   }
+   onSubmitUndertakingApplicant(ngForm: any){
+    console.log("Step UndertakingApplicant submit...");
+    if(!ngForm.form.valid){
+      this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+    }else{
+    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }    
+   }
+   onSubmitPerlimVisit(ngForm: any){
+      console.log("Step PerlimVisit submit...", ngForm.form);
+      if(!ngForm.form.valid){
+        this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+      }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+      }     
+   }
+   onSubmitInformationAuditManagement(ngForm: any){
+    console.log("Step InformationAuditManagement submit...");
+    if(!ngForm.form.valid){
+      this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
+    }else{
+     this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+   }     
+  }
+  onSubmitPersonalInformation(ngForm: any){
+    console.log("Step PersonalInformation submit...");
+     if(!ngForm.form.valid){
+      this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+     }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }     
+  }
+  onSubmitTestingParticipation(ngForm: any){
+    console.log("Step TestingParticipation submit...", " -- ", ngForm.form);
+     if(!ngForm.form.valid){
+      this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+     }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    } 
+    
+  }
+  onSubmitPaymentInformation(ngForm: any){
+    console.log("payment submitting.....");
+  }
+   //Step FORM Action
+
 
   onSubmit(ngForm){
     //this.getErrorScroll(this.inspectionBodyForm);
