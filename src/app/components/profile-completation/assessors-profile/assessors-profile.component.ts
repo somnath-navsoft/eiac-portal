@@ -52,6 +52,7 @@ export class AssessorsProfileComponent implements OnInit {
   public isAccData: any = '';
   isdDynamicsopenClose:any;
   today = new Date();
+  minDate = new Date();
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -104,6 +105,11 @@ export class AssessorsProfileComponent implements OnInit {
   isTableClose() {
     this.isAccData = '';
     //console.log(this.isAccData,'jhhjhjgghjgh');
+  }
+
+  setexDate(date){
+    let cdate = date;
+    this.minDate = new Date(cdate  + (60*60*24*1000));
   }
 
   loadStepsData() {
@@ -169,14 +175,14 @@ export class AssessorsProfileComponent implements OnInit {
             this.step2Data.university_college = step2['education'][0].organization;
             this.step2Data.education_specialization = step2['education'][0].specialization;
             this.step2Data.further_education = step2['further_education'][0].detail;
-            this.step2Data.others_education = step2['others_education'][0].detail;
+            this.step2Data.others_education = step2['others_education'] ? step2['others_education'][0].detail : '';
             this.step2Data.which = step2['which_forum'][0].organization;
             this.step2Data.completeProfileFrom = new Date(step2['which_forum'][0].date_from);
             this.step2Data.completeProfileTill = new Date(step2['which_forum'][0].date_to);
 
-            this.tradeLicensedValidation1 = this.constant.mediaPath+step2.qualification_file;
-            this.tradeLicensedValidation2 = this.constant.mediaPath+step2.specialization_file;
-            this.tradeLicensedValidation3 = this.constant.mediaPath+step2.further_education_file;
+            this.tradeLicensedValidation1 = this.constant.mediaPath+step2['education'][0].qualification_file;
+            this.tradeLicensedValidation2 = this.constant.mediaPath+step2['education'][0].specialization_file;
+            this.tradeLicensedValidation3 = this.constant.mediaPath+step2['further_education'][0].qualification_file;
           }
           if(res['data'].step3 != '') {
             var step3 = res['data'].step3;
@@ -212,7 +218,7 @@ export class AssessorsProfileComponent implements OnInit {
             this.step5Data.confirm_box = step5.status;
             this.step5Data.place = step5.place;
             this.step5Data.digital_signature = step5.signature;
-            this.step5Data.date = new Date(step5.date);
+            this.step5Data.date = new Date(step5.registration_date);
           }
         }
       });
@@ -335,7 +341,7 @@ export class AssessorsProfileComponent implements OnInit {
             this.toastr.warning(res['msg'], '');
           }
         });
-      this.stepper.next();
+      // this.stepper.next();
     }else{
       this.toastr.warning('Please Fill required field','');
     }
