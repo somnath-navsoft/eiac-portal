@@ -98,6 +98,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       } 
     }        
   }
+  headerSteps:any[] = [];
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
@@ -226,36 +227,27 @@ export class InspectionBodiesFormComponent implements OnInit {
     //this.dynamicScopeModelValues[0] = {};
     this.loadData();
     this.loadFormDynamicTable();
-    // this.loadCountryStateCity();
-    // setTimeout(() => {
-    //   ////console.log("reloading page...");
-    //   //window.location.reload();
-    //   // this.toastr.error('Please Reload page again','');
-    //   this.toastr.error('Please Reload page to form submit again', 'Major Error', {
-    //     timeOut: 900000
-    //   });
-    //   }, 600000);
-    ////console.log(this.countryList,'countryList');
-    
-    //Oman | Arab | UnitedArab Emirates |
-
-    //load criteria
-    //this.loadCriteriaScope();
-
-    // this.dynamicScopeOptions.push({
-    //     scopeTitle:'',
-    //     fieldColumns:[],
-    //     fieldLines:[],
-    // })
-    //this.checkCaptchaValidation = true;
     this.loader = false;
-    /*
-    setTimeout(() => {
-      //console.log("reloading page...");    
-       window.location.reload();
-    }, 30000); // Activate after 25 seconds.
-    */
-   
+    this.headerSteps.push(
+      {
+      title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-user', activeClass:'user-present'
+      },
+      {
+      title:'profciency_testing_participation', desc:'2. Profciency Testing Participation', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      },
+      {
+      title:'personal_information', desc:'3. Personal Information', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      },
+      {
+      title:'perlim_visit', desc:'4. Perlim Visit', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      },
+      {
+      title:'undertaking_applicant', desc:'5. Undertaking & Applicant Company', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      },
+      {
+      title:'payment_complete', desc:'5. Payment Complete', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      }
+    );
   }
 
   scrollForm(el: HTMLElement)
