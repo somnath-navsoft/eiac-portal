@@ -8,6 +8,7 @@ import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material';
 import { RecaptchaComponent } from 'ng-recaptcha';
 
+declare let paypal: any;
 @Component({
   selector: 'app-inspection-bodies-form',
   templateUrl: './inspection-bodies-form.component.html',
@@ -79,6 +80,9 @@ export class InspectionBodiesFormComponent implements OnInit {
   dynamicScopeFieldColumns:any[]  = [];   //Master column data for each section
   criteriaMaster: any[] = [];
 
+  transactions: any[] =[];
+  transactionsItem: any={};
+
 
   //dynamicScopeOptions:any[] = [];  
   //dynamicScopeModelValues:any={};
@@ -106,6 +110,23 @@ export class InspectionBodiesFormComponent implements OnInit {
     //  console.log(">>>>Get MapBox Value: ", getVal);
      this.Service.mapboxToken = getVal;
     }
+
+    //Paypal Button creation
+    private loadExternalScript(scriptUrl: string) {
+      return new Promise((resolve, reject) => {
+        const scriptElement = document.createElement('script')
+        scriptElement.src = scriptUrl
+        scriptElement.onload = resolve
+        //console.log("load script...");
+        document.body.appendChild(scriptElement)
+      })
+    }
+
+    saveInspectopnAfterPayment(theData: any){
+      console.log(">>> The Data: ", theData);
+   }
+
+    //Paypal Button creation
     
   onChange(prevFieldId,row,curField,field) {
     ////console.log(prevFieldId.value,'sfasfdas');
@@ -862,7 +883,7 @@ openDialogBox(obj: any, index: number) {
    //Step FORM Action
    onSubmitApplication(ngForm: any){
     console.log("Step Application submit...", " -- ", ngForm.form);
-     if(!ngForm.form.valid){
+     if(ngForm.form.valid){
       this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
      }else{
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
@@ -870,7 +891,7 @@ openDialogBox(obj: any, index: number) {
    }
    onSubmitUndertakingApplicant(ngForm: any){
     console.log("Step UndertakingApplicant submit...");
-    if(!ngForm.form.valid){
+    if(ngForm.form.valid){
       this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
     }else{
     this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
@@ -878,7 +899,7 @@ openDialogBox(obj: any, index: number) {
    }
    onSubmitPerlimVisit(ngForm: any){
       console.log("Step PerlimVisit submit...", ngForm.form);
-      if(!ngForm.form.valid){
+      if(ngForm.form.valid){
         this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
       }else{
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
@@ -886,7 +907,7 @@ openDialogBox(obj: any, index: number) {
    }
    onSubmitInformationAuditManagement(ngForm: any){
     console.log("Step InformationAuditManagement submit...");
-    if(!ngForm.form.valid){
+    if(ngForm.form.valid){
       this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
     }else{
      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
@@ -894,7 +915,7 @@ openDialogBox(obj: any, index: number) {
   }
   onSubmitPersonalInformation(ngForm: any){
     console.log("Step PersonalInformation submit...");
-     if(!ngForm.form.valid){
+     if(ngForm.form.valid){
       this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
      }else{
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
@@ -902,7 +923,7 @@ openDialogBox(obj: any, index: number) {
   }
   onSubmitTestingParticipation(ngForm: any){
     console.log("Step TestingParticipation submit...", " -- ", ngForm.form);
-     if(!ngForm.form.valid){
+     if(ngForm.form.valid){
       this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
      }else{
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});

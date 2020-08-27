@@ -1258,9 +1258,11 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="bttns-health bttn-staff">
-                                                <!-- (click)="onSubmitUndertakingApplicant()" -->
                                                 <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('perlim_visit',headerSteps,'menu','undertaking_applicant')">BACK</button> 
-                                                <button class="submit-bttn submit-health" >CONTINUE</button>
+                                                <button class="submit-bttn submit-health"  *ngIf="!transactions.length">PROCEEDS FOR PAYMENT</button>
+                                                <ng-container *ngIf="transactions.length">
+                                                    <div id="paypalPayment"></div>
+                                                </ng-container>                                                 
                                             </div>
                                         </div>
                                     </div>
