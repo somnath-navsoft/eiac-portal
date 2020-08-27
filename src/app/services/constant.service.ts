@@ -41,6 +41,8 @@ export class Constants{
 		healthcare_form_basic_data: 'healthcare_form/',
 		pt_provider: 'pt-provider-form/',
 		testing_cal_form_basic_data: 'testing_calibration_form_management/',
+		inspection_form_basic_data: 'inspection_body_form_management/',
+		criteriaIdByScope: this.apiUrl + 'criteria_wise_scope/',
 	}
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."
 	public loggedIn													=	new Subject<any>();
