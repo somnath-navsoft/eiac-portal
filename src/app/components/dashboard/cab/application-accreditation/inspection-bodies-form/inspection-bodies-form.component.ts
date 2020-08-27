@@ -2,17 +2,18 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Constants } from 'src/app/services/constant.service';
 import { AppService } from 'src/app/services/app.service';
-import { ToastrService } from 'ngx-toastr';
 import { HostListener, ElementRef } from '@angular/core';
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material';
 import { RecaptchaComponent } from 'ng-recaptcha';
+import { ToastrService, Overlay, OverlayContainer } from 'ngx-toastr';
 
 declare let paypal: any;
 @Component({
   selector: 'app-inspection-bodies-form',
   templateUrl: './inspection-bodies-form.component.html',
-  styleUrls: ['./inspection-bodies-form.component.scss']
+  styleUrls: ['./inspection-bodies-form.component.scss'],
+  providers: [Constants, AppService, ToastrService, Overlay, OverlayContainer]
 })
 export class InspectionBodiesFormComponent implements OnInit {
 
@@ -82,6 +83,7 @@ export class InspectionBodiesFormComponent implements OnInit {
 
   transactions: any[] =[];
   transactionsItem: any={};
+  total: any = 0;
 
 
   //dynamicScopeOptions:any[] = [];  
@@ -104,7 +106,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   }
   headerSteps:any[] = [];
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
+  constructor(public Service: AppService, public _toaster: ToastrService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
   getData(getVal){
     //  console.log(">>>>Get MapBox Value: ", getVal);
@@ -124,7 +126,63 @@ export class InspectionBodiesFormComponent implements OnInit {
 
     saveInspectopnAfterPayment(theData: any){
       console.log(">>> The Data: ", theData);
+      this.transactions = [];
+      this.toastr.success('Payment Success, Please upload payment receipt, Thank you.','Paypal>>',{timeOut:5500});
+      this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
    }
+   createPaymentButton(itemData: any, formObj?:any, compObj?:any){
+    //console.log("creating....buttons...", this.paymentReview, " :: ", this.paymentReview.length, " -- ",this.transactionsItem, " --- ", this.transactions);
+   //AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl = das.abhishek77@gmail.com
+   //Get transaction ID - https://developer.paypal.com/docs/checkout/reference/server-integration/get-transaction/#on-the-server
+    if(this.transactions.length){
+      this.loadExternalScript("https://www.paypalobjects.com/api/checkout.js").then(() => {
+      paypal.Button.render({
+        env: 'sandbox',
+        client: {
+          sandbox: 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
+        },
+        commit: true,
+        payment: function (data, actions) {
+          console.log("@Paypal payment actionms: ", actions, " -- ", data, " --- ", itemData);        
+          return actions.payment.create({
+            payment: {
+              transactions: [itemData]
+            }
+          })
+        },
+        onAuthorize: function(data, actions) {
+          console.log("@Paypal onAuthorize actionms: ", actions, " -- ", data);
+          return actions.payment.execute().then(function(payment) {
+            console.log(">>>Success: ", payment);
+            formObj.paypalReturn = payment;
+            formObj.paypalStatus = 'success';
+            console.log("<<<Review obj: ", formObj, " :: ", compObj);
+            compObj.saveInspectopnAfterPayment(formObj);
+          })
+        },
+        onCancel: (data, actions) => {
+          console.log('OnCancel', data, actions);
+          //this.showCancel = true;
+          formObj.paypalReturn = data;
+          formObj.paypalStatus = 'cancel';
+          this._toaster.warning("You have cancelled payment, Continue next step please complete payment process again.", 'Paypal>>',{timeOut:6500}); 
+  
+      },
+      onError: err => {
+          console.log('OnError', err);
+          formObj.paypalReturn = err;
+          formObj.paypalStatus = 'error';
+          //compObj.saveCourseAfterPayment(formObj);
+          this._toaster.error("Paypal transaction error has occured, please try again", 'Payment Return'); 
+      },
+      onClick: (data, actions) => {
+          console.log('onClick', data, actions);
+          //this.resetStatus();
+      }
+      }, '#paypalPayment');
+    });
+    }
+  }
 
     //Paypal Button creation
     
@@ -883,7 +941,7 @@ openDialogBox(obj: any, index: number) {
    //Step FORM Action
    onSubmitApplication(ngForm: any){
     console.log("Step Application submit...", " -- ", ngForm.form);
-     if(ngForm.form.valid){
+     if(!ngForm.form.valid){
       this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
      }else{
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
@@ -891,15 +949,47 @@ openDialogBox(obj: any, index: number) {
    }
    onSubmitUndertakingApplicant(ngForm: any){
     console.log("Step UndertakingApplicant submit...");
-    if(ngForm.form.valid){
-      this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+    if(!ngForm.form.valid){
+
+      //Paypal config data
+      //applyTrainerPublicCourse
+      this.transactionsItem['amount']               = {};
+      this.transactionsItem['amount']['total']      = 0.00;
+      this.transactionsItem['amount']['currency']   = 'USD';
+      this.transactionsItem['amount']['details']    = {};
+      this.transactionsItem['amount']['details']['subtotal'] = 0.00;
+      //declare Items data
+      this.transactionsItem['item_list']            = {};
+      this.transactionsItem['item_list']['items']   = [];
+      let custPrice: any = 0.01;
+      this.total = 0.05;
+        this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity: 1, price: custPrice, currency: 'USD'});
+          if(this.total > 0){
+            //console.log("Calculate price: ", calcPrice);
+            this.transactionsItem['amount']['total'] = custPrice.toFixed(2);
+            this.transactionsItem['amount']['details']['subtotal'] = custPrice.toFixed(2);
+            this.transactions.push(this.transactionsItem);
+            //console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
+          }
+          setTimeout(() => {
+            this.createPaymentButton(this.transactionsItem, this.inspectionBodyForm, this);
+            let elem = document.getElementsByClassName('paypal-button-logo');
+            console.log("button creting...");
+            if(elem){
+              console.log("button creted...");
+            }else{
+              console.log("Loding button...");
+            }
+          }, 100)
+
+      //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
     }else{
     this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }    
    }
    onSubmitPerlimVisit(ngForm: any){
       console.log("Step PerlimVisit submit...", ngForm.form);
-      if(ngForm.form.valid){
+      if(!ngForm.form.valid){
         this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
       }else{
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
@@ -907,7 +997,7 @@ openDialogBox(obj: any, index: number) {
    }
    onSubmitInformationAuditManagement(ngForm: any){
     console.log("Step InformationAuditManagement submit...");
-    if(ngForm.form.valid){
+    if(!ngForm.form.valid){
       this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
     }else{
      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
@@ -915,7 +1005,7 @@ openDialogBox(obj: any, index: number) {
   }
   onSubmitPersonalInformation(ngForm: any){
     console.log("Step PersonalInformation submit...");
-     if(ngForm.form.valid){
+     if(!ngForm.form.valid){
       this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
      }else{
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
@@ -923,7 +1013,7 @@ openDialogBox(obj: any, index: number) {
   }
   onSubmitTestingParticipation(ngForm: any){
     console.log("Step TestingParticipation submit...", " -- ", ngForm.form);
-     if(ngForm.form.valid){
+     if(!ngForm.form.valid){
       this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
      }else{
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
