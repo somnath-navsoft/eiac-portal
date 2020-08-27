@@ -67,19 +67,19 @@ export class AssessorsProfileComponent implements OnInit {
 
     this.headerSteps.push(
       {
-      title:'personal_details', desc:'1. Personal <br> Details', activeStep:true, stepComp:true, active:'user-done', nextStep:'educational_information'
+      title:'personal_details', desc:'1. Personal <br> Details', activeStep:true, stepComp:false, icon:'icon-user', activeClass:'user-present'
       },
       {
-      title:'educational_information', desc:'2. Educational <br> Information', activeStep:false, stepComp:false, active:'', nextStep:'employment'
+      title:'educational_information', desc:'2. Educational <br> Information', activeStep:false, stepComp:false, icon:'icon-book', activeClass:''
       },
       {
-      title:'employment', desc:'3. Employment', activeStep:false, stepComp:false, active:'', nextStep:'knowledge_experience'
+      title:'employment', desc:'3. Employment', activeStep:false, stepComp:false, icon:'icon-work', activeClass:''
       },
       {
-      title:'knowledge_experience', desc:'4. Knowledge <br> And Experience', activeStep:false, stepComp:false, active:'', nextStep:'applicant_trainer'
+      title:'knowledge_experience', desc:'4. Knowledge <br> And Experience', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
-      title:'applicant_trainer', desc:'5. Applicant <br> Trainer', activeStep:false, stepComp:false, active:'', nextStep:null
+      title:'applicant_trainer', desc:'5. Applicant <br> Trainer', activeStep:false, stepComp:false, icon:'icon-doc-edit', activeClass:''
       }
     );
 
@@ -327,8 +327,9 @@ export class AssessorsProfileComponent implements OnInit {
           if(res['status'] == true) {
             this.toastr.success(res['msg'], '');
             this.progressValue == 0 || this.progressValue < 22 ? this.progressValue = 22 : this.progressValue = this.progressValue ;
-            this.Service.headerStepMove('educational_information',this.headerSteps,'personal_details');
+            // this.Service.headerStepMove('educational_information',this.headerSteps,'personal_details');
             // this.router.navigateByUrl('/sign-in');
+            this.Service.moveSteps('personal_details','educational_information', this.headerSteps);
           }else{
             
             this.toastr.warning(res['msg'], '');
@@ -372,7 +373,8 @@ export class AssessorsProfileComponent implements OnInit {
               this.toastr.success(res['msg'], '');
               // this.router.navigateByUrl('/sign-in');
               this.progressValue == 22 || this.progressValue < 44 ? this.progressValue = 44 : this.progressValue = this.progressValue ;
-              this.Service.headerStepMove('employment',this.headerSteps,'educational_information');
+              // this.Service.headerStepMove('employment',this.headerSteps,'educational_information');
+              this.Service.moveSteps('educational_information','employment', this.headerSteps);
             }else{
               
               this.toastr.warning(res['msg'], '');
@@ -418,7 +420,8 @@ export class AssessorsProfileComponent implements OnInit {
             this.toastr.success(res['msg'], '');
             // this.router.navigateByUrl('/sign-in');
             this.progressValue == 44 || this.progressValue < 66 ? this.progressValue = 66 : this.progressValue = this.progressValue ;
-            this.Service.headerStepMove('knowledge_experience',this.headerSteps,'employment');
+            // this.Service.headerStepMove('knowledge_experience',this.headerSteps,'employment');
+            this.Service.moveSteps('employment','knowledge_experience', this.headerSteps);
           }else{
             
             this.toastr.warning(res['msg'], '');
@@ -469,7 +472,8 @@ export class AssessorsProfileComponent implements OnInit {
               this.toastr.success(res['msg'], '');
               // this.router.navigateByUrl('/sign-in');
               this.progressValue == 66 || this.progressValue < 88 ? this.progressValue = 88 : this.progressValue = this.progressValue ;
-              this.Service.headerStepMove('applicant_trainer',this.headerSteps,'knowledge_experience');
+              // this.Service.headerStepMove('applicant_trainer',this.headerSteps,'knowledge_experience');
+              this.Service.moveSteps('knowledge_experience','applicant_trainer', this.headerSteps);
             }else{
               
               this.toastr.warning(res['msg'], '');

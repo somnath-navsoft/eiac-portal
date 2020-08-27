@@ -23,18 +23,19 @@
                         <div class="col-md-12">
                             <div class="user-steps">
                                 <ng-container *ngFor="let item of headerSteps; let k=index;">
-                                <div class="user-next {{item.active}}">
-                                    <div class="usernext-icon">
-                                        <span class="icon-google-docs"></span>
+                                    <div class="user-next" [ngClass]="(item.activeClass != '') ? item.activeClass : ''">
+                                        <div class="usernext-icon">
+                                            <span [ngClass]="(item.activeClass === 'user-done') ? 'icon-tick' : item.icon"></span>
+                                        </div>
+
+                                        <div class="user-details-pending" 
+                                        id="course_header" (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}">
+                                            <span [innerHTML]="item.desc"></span>
+                                        </div>
                                     </div>
-                                    <div class="user-details-pending" 
-                                    id="personal_details_header" (click)="Service.headerStepMove(item.title, headerSteps)" [ngStyle]="{'cursor':'pointer'}">
-                                        <span [innerHTML]="item.desc"></span>
+                                    <div class="next-step" *ngIf="k < headerSteps.length-1">
+                                        <span class="icon-arrow-right"></span>
                                     </div>
-                                </div>
-                                <div class="next-step">
-                                    <span class="icon-r-arrow"></span>
-                                </div>
                               </ng-container>                              
                             </div>
                         </div>

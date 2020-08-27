@@ -68,6 +68,7 @@ export class CertificationBodiesFormComponent implements OnInit {
   getCountryLists:any;
 
   afterSubmit:boolean = false;
+  today = new Date();
 
   @ViewChild('mydiv', null) mydiv: ElementRef;
   @ViewChild('captchaRef',{static:true}) captchaRef: RecaptchaComponent;
@@ -82,7 +83,9 @@ export class CertificationBodiesFormComponent implements OnInit {
     }        
   }
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
+  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) {
+    this.today.setDate(this.today.getDate());
+  }
 
   getData(getVal){
     // console.log(">>>>Get MapBox Value: ", getVal);
