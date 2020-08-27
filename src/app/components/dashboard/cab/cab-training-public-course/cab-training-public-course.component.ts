@@ -1,3 +1,5 @@
+
+
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../../../../services/app.service';
 import { TrainerService } from '../../../../services/trainer.service';
@@ -6,6 +8,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService, Overlay, OverlayContainer } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscription } from 'rxjs';
+
+
+
+declare let paypal: any;
 @Component({
   selector: 'app-cab-training-public-course',
   templateUrl: './cab-training-public-course.component.html',
@@ -39,6 +45,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   total:any;
   count:number=0;
   selectCustomCourses: any[] = [];
+  transactions: any[] =[];
+  transactionsItem: any={};
 
   constructor(private _service: AppService, private http: HttpClient,
     public _toaster: ToastrService, private _router: Router, private _route: ActivatedRoute,
@@ -84,15 +92,130 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     //this.eventLists.push({name:'Test course', id:61});
     //this.publicTrainingForm.event_management_id = 61;
     this.publicTrainingForm.training_form_type = 'public' ;
-    //Declare header steps
+    //Declare header steps 
+    //, nextStep:'paymentCheck'
     this.headerSteps.push(
       {
-      title:'course', desc:'1. Course <br> Information', icon:'icon-google-doc', activeStep:true, stepComp:false, active:'user-present', nextStep:'payment'
+      title:'course', desc:'1. Course <br> Information', icon:'icon-google-doc', activeStep:true, stepComp:false, activeClass:'user-present',
       },
+      // {
+      // title:'paymentCheck', desc:'2. Payment <br> Check', icon:'icon-wallet', activeStep:false, stepComp:false, activeClass:'',
+      // },
+      // {
+      // title:'paymentReview', desc:'2. Payment <br> Review', icon:'icon-wallet', activeStep:false, stepComp:false, activeClass:'',
+      // },
       {
-      title:'payment', desc:'2. Payment <br> Information', icon: 'icon-payment', activeStep:false, stepComp:false, active:'', nextStep:null
+      title:'payment', desc:'3. Payment <br> Information', icon: 'icon-payment', activeStep:false, stepComp:false, activeClass:'',
       }
     );    
+  }
+
+  //Paypal Button creation
+  private loadExternalScript(scriptUrl: string) {
+    return new Promise((resolve, reject) => {
+      const scriptElement = document.createElement('script')
+      scriptElement.src = scriptUrl
+      scriptElement.onload = resolve
+      //console.log("load script...");
+      document.body.appendChild(scriptElement)
+  })
+}
+
+  saveCourseAfterPayment(theData: any){
+      console.log(">>> The Data: ", theData);
+      this.subscriptions.push(this._trainerService.applyTrainerPublicCourse(theData)
+      .subscribe(
+        result => {
+          let data: any = result;
+            console.log("Apply Course results: ", data);
+            if(data != undefined && typeof data === 'object' && data.status == true){
+              //this._service.headerStepMove('payment',this.headerSteps,'course');
+              this._service.moveSteps('course','payment', this.headerSteps);
+              this.transactions = [];
+              this._toaster.success(data.msg, ''); 
+            }
+            if(data != undefined && typeof data === 'object' && data.status == false){
+              this._toaster.error(data.msg, '');
+            }
+        }
+        )
+      )
+
+  }
+  createPaymentButton(itemData: any, formObj?:any, compObj?:any){
+    //console.log("creating....buttons...", this.paymentReview, " :: ", this.paymentReview.length, " -- ",this.transactionsItem, " --- ", this.transactions);
+   //AQaHF_liOK0SQfGII9rnE1UFmesqFzoLVpFzdOEcOjLAyl4A6omCL6yeto0JLDGnOiQijjirk9tG9BAq = abhishek.navsoft@gmail.com
+   //AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl = das.abhishek77@gmail.com
+   //Get transaction ID - https://developer.paypal.com/docs/checkout/reference/server-integration/get-transaction/#on-the-server
+    if(this.transactions.length){
+      this.loadExternalScript("https://www.paypalobjects.com/api/checkout.js").then(() => {
+      paypal.Button.render({
+        env: 'sandbox',
+        client: {
+          sandbox: 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
+        },
+        commit: true,
+        payment: function (data, actions) {
+          console.log("@Paypal payment actionms: ", actions, " -- ", data, " --- ", itemData);        
+          // const paymentId = actions.payment.create({
+          //   transactions: [itemData]
+          // })
+          // paymentId.then((res) => {
+          //   console.log("Payment Processed")
+          // }).catch((err) => {
+          //     console.error("Payment Error")
+          // });
+          // return paymentId;
+  
+          return actions.payment.create({
+            payment: {
+              transactions: [itemData]
+            }
+          })
+        },
+        onAuthorize: function(data, actions) {
+          console.log("@Paypal onAuthorize actionms: ", actions, " -- ", data);
+          return actions.payment.execute().then(function(payment) {
+            console.log(">>>Success: ", payment);
+            formObj.paypalReturn = payment;
+            formObj.paypalStatus = 'success';
+            console.log("<<<Review obj: ", formObj, " :: ", compObj);
+            compObj.saveCourseAfterPayment(formObj);
+          })
+        },
+        onCancel: (data, actions) => {
+          console.log('OnCancel', data, actions);
+          //this.showCancel = true;
+          formObj.paypalReturn = data;
+          formObj.paypalStatus = 'cancel';
+          //compObj.saveCourseAfterPayment(formObj);
+          this._toaster.warning("You have cancelled payment, please success payment to continue next step", 'Payment Return'); 
+  
+      },
+      onError: err => {
+          console.log('OnError', err);
+          formObj.paypalReturn = err;
+          formObj.paypalStatus = 'error';
+          //compObj.saveCourseAfterPayment(formObj);
+          this._toaster.error("Paypal transaction error has occured, please try again", 'Payment Return'); 
+      },
+      onClick: (data, actions) => {
+          console.log('onClick', data, actions);
+          //this.resetStatus();
+      },
+      }, '#paypalPayment');
+    });
+    }
+  }
+
+
+  onLoadFile(theEvt: any){
+    if (theEvt.target.files && theEvt.target.files[0]) {
+      let file = theEvt.target.files[0];
+      //validation here then attribute the value to your model
+      this.publicTrainingForm.paymentReceipt = file;
+      console.log("Payment receipt: ", this.publicTrainingForm);
+    }
   }
 
   selectEventCourse(theValue: any){
@@ -189,6 +312,16 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   {
     this.first_programe_val = event.target.value;
   }
+  paymentReview(){
+    this._service.moveSteps('paymentReview','payment', this.headerSteps);
+  }
+  paymentCheck(){
+    this._service.moveSteps('paymentCheck','paymentReview', this.headerSteps);
+  }
+  onSubmitPass(){
+    console.log('submit passss..........');
+    this._service.moveSteps('course','paymentCheck',this.headerSteps)
+  }
 
   onSubmit(ngForm){
     //this.publicTrainingForm.country_id = 4;
@@ -196,29 +329,36 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     // if(this.publicTrainingForm.fax_no === ''){
     //   this.publicTrainingForm.fax_no = ' ';
     // }
-    console.log(this.publicTrainingForm, ":: Submit Data:: ");
+    console.log(this.publicTrainingForm, ":: Submit Data:: ", " :: ", ngForm.form);
     if(ngForm.form.valid){
       //this.publicTrainingForm.training_form_type = 'public';
 
       //applyTrainerPublicCourse
+      this.transactionsItem['amount']               = {};
+      this.transactionsItem['amount']['total']      = 0.00;
+      this.transactionsItem['amount']['currency']   = 'USD';
+      this.transactionsItem['amount']['details']    = {};
+      this.transactionsItem['amount']['details']['subtotal'] = 0.00;
+      //declare Items data
+      this.transactionsItem['item_list']            = {};
+      this.transactionsItem['item_list']['items']   = [];
 
-      this.subscriptions.push(this._trainerService.applyTrainerPublicCourse(this.publicTrainingForm)
-          .subscribe(
-             result => {
-               let data: any = result;
-                console.log("Apply Course results: ", data);
-                if(data != undefined && typeof data === 'object' && data.status == true){
-                  //this._service.headerStepMove('payment',this.headerSteps,'course');
-                  this._service.moveSteps('course','payment', this.headerSteps);
-                  this._toaster.success(data.msg, '');
-                  
-                }
-                if(data != undefined && typeof data === 'object' && data.status == false){
-                  this._toaster.error(data.msg, '');
-                }
-             }
-            )
-          )
+      let findData = this.eventLists.find(item => item.id == this.publicTrainingForm.event_management_id);
+      if(findData){
+        let custPrice: any = 0.01;
+        this.transactionsItem['item_list']['items'].push({name: findData.course.name, quantity: 1, price: custPrice, currency: 'USD'});
+          if(this.total > 0){
+            //console.log("Calculate price: ", calcPrice);
+            this.transactionsItem['amount']['total'] = custPrice.toFixed(2);
+            this.transactionsItem['amount']['details']['subtotal'] = custPrice.toFixed(2);
+            this.transactions.push(this.transactionsItem);
+            //console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
+          }
+          setTimeout(() => {
+            this.createPaymentButton(this.transactionsItem, this.publicTrainingForm, this);
+          }, 100)
+      }
+      return;      
       /*
        this._service.post(this._constant.API_ENDPOINT.public_training_form,this.publicTrainingForm)
        .subscribe(
@@ -244,8 +384,23 @@ export class CabTrainingPublicCourseComponent implements OnInit {
      }
   }
 
-  onPaymentSubmit(){
+  isValidReceipt(){
+    console.log("check upload...", this.publicTrainingForm.paymentReceipt);
+    if(this.publicTrainingForm.paymentReceipt == undefined || this.publicTrainingForm.paymentReceipt === ''){
+        return false;
+    }
+    return true;
+  }
 
+  onPaymentReceiptSubmit(ngForm: any){
+    //console.log(this.publicTrainingForm, ":: Submit Receipt Data:: ", ngForm.form);
+    if(this.isValidReceipt()){
+        //upload payment
+        console.log("@Enter uploading receipt....");
+    }else{
+      this._toaster.warning('Please Check the required fields','Validation Error')
+    }
   }
 
 }
+

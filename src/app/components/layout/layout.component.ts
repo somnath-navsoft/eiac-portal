@@ -91,7 +91,7 @@ export class LayoutComponent implements OnInit {
         console.log("@@@Auth status: ", state);
         if(state.user != null && state.user.token != undefined && state.user.token != null) {
           
-          let authUserData = this._service.decodeJWT(state.user.token);
+          let authUserData = this._service.decodeJWT(state.user.token); 
           /*
           else if(state.user.token !=null &&  authUserData.isCompleteness == '0'){
             console.log('@Enter....1.0: ');

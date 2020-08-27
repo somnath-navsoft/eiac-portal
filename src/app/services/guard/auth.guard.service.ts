@@ -10,12 +10,12 @@ export class AuthGuard implements CanActivate {
     }
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         let getLocalToken = sessionStorage.getItem('token');
-        this.token = (getLocalToken != 'null') ? getLocalToken : '';        
-        //console.log('Auth guard: 1',this.token);
+        this.token = (getLocalToken != null) ? getLocalToken : '';        
+        console.log('Auth guard: 1',this.token);
         //this.token == undefined || this.token == '' || 
         //this.token == 'null' ||
-        if (this.token == '')  {
-            //console.log('Auth guard 2: ',this.token);
+        if (this.token == '' || this.token == null)  {
+            console.log('Auth guard 2: ',this.token);
             this.router.navigate(['/sign-in']);
             return false;
         }

@@ -98,12 +98,12 @@ export class CandidateTrainingPublicCourseComponent implements OnInit {
       {
       title:'course', desc:'1. Course <br> Information', icon:'icon-google-doc', activeStep:true, stepComp:false, activeClass:'user-present',
       },
-      {
-      title:'paymentCheck', desc:'2. Payment <br> Check', icon:'icon-wallet', activeStep:false, stepComp:false, activeClass:'',
-      },
-      {
-      title:'paymentReview', desc:'2. Payment <br> Review', icon:'icon-wallet', activeStep:false, stepComp:false, activeClass:'',
-      },
+      // {
+      // title:'paymentCheck', desc:'2. Payment <br> Check', icon:'icon-wallet', activeStep:false, stepComp:false, activeClass:'',
+      // },
+      // {
+      // title:'paymentReview', desc:'2. Payment <br> Review', icon:'icon-wallet', activeStep:false, stepComp:false, activeClass:'',
+      // },
       {
       title:'payment', desc:'3. Payment <br> Information', icon: 'icon-payment', activeStep:false, stepComp:false, activeClass:'',
       }
@@ -188,16 +188,16 @@ export class CandidateTrainingPublicCourseComponent implements OnInit {
           //this.showCancel = true;
           formObj.paypalReturn = data;
           formObj.paypalStatus = 'cancel';
-          compObj.saveCourseAfterPayment(formObj);
-          this._toaster.error("You have cancelled payment, please success payment to continue next step", 'Payment Return'); 
+          //compObj.saveCourseAfterPayment(formObj);
+          this._toaster.warning("You have cancelled payment, please success payment to continue next step", 'Payment Return'); 
   
       },
       onError: err => {
           console.log('OnError', err);
           formObj.paypalReturn = err;
           formObj.paypalStatus = 'error';
-          compObj.saveCourseAfterPayment(formObj);
-          this._toaster.error("Paypal error has occured, please try again", 'Payment Return'); 
+          //compObj.saveCourseAfterPayment(formObj);
+          this._toaster.error("Paypal transaction error has occured, please try again", 'Payment Return'); 
       },
       onClick: (data, actions) => {
           console.log('onClick', data, actions);
@@ -205,6 +205,16 @@ export class CandidateTrainingPublicCourseComponent implements OnInit {
       },
       }, '#paypalPayment');
     });
+    }
+  }
+
+
+  onLoadFile(theEvt: any){
+    if (theEvt.target.files && theEvt.target.files[0]) {
+      let file = theEvt.target.files[0];
+      //validation here then attribute the value to your model
+      this.publicTrainingForm.paymentReceipt = file;
+      console.log("Payment receipt: ", this.publicTrainingForm);
     }
   }
 
@@ -319,7 +329,7 @@ export class CandidateTrainingPublicCourseComponent implements OnInit {
     // if(this.publicTrainingForm.fax_no === ''){
     //   this.publicTrainingForm.fax_no = ' ';
     // }
-    console.log(this.publicTrainingForm, ":: Submit Data:: ");
+    console.log(this.publicTrainingForm, ":: Submit Data:: ", " :: ", ngForm.form);
     if(ngForm.form.valid){
       //this.publicTrainingForm.training_form_type = 'public';
 
@@ -374,8 +384,22 @@ export class CandidateTrainingPublicCourseComponent implements OnInit {
      }
   }
 
-  onPaymentSubmit(){
+  isValidReceipt(){
+    console.log("check upload...", this.publicTrainingForm.paymentReceipt);
+    if(this.publicTrainingForm.paymentReceipt == undefined || this.publicTrainingForm.paymentReceipt === ''){
+        return false;
+    }
+    return true;
+  }
 
+  onPaymentReceiptSubmit(ngForm: any){
+    //console.log(this.publicTrainingForm, ":: Submit Receipt Data:: ", ngForm.form);
+    if(this.isValidReceipt()){
+        //upload payment
+        console.log("@Enter uploading receipt....");
+    }else{
+      this._toaster.warning('Please Check the required fields','Validation Error')
+    }
   }
 
 }

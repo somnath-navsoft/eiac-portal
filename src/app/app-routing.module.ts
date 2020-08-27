@@ -65,6 +65,7 @@ import { PtProvidersFormComponent } from './components/dashboard/cab/application
 import { CabTrainingApplicationComponent } from './components/dashboard/cab/cab-training-application/cab-training-application.component';
 import { CabTrainingPublicCourseComponent } from './components/dashboard/cab/cab-training-public-course/cab-training-public-course.component';
 import { CabTrainingInpremiseCourseComponent } from './components/dashboard/cab/cab-training-inpremise-course/cab-training-inpremise-course.component';
+import { CabTrainingPublicCourseListComponent } from './components/dashboard/cab/cab-training-public-course-list/cab-training-public-course-list.component';
 
 import { CandidateTrainingApplicationComponent } from './components/dashboard/candidate/candidate-training-application/candidate-training-application.component';
 import { CandidateTrainingPublicCourseComponent } from './components/dashboard/candidate/candidate-training-public-course/candidate-training-public-course.component';
@@ -72,8 +73,9 @@ import { CandidateTrainingPublicCourseComponent } from './components/dashboard/c
 
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
+  //component:DashboardComponent, canActivate: [AuthGuard],
   { path: 'sign-in', component: SigninComponent, canActivate: [AuthCheck] },
-  { path: 'dashboard', component:DashboardComponent, canActivate: [AuthGuard],
+  { path: 'dashboard',canActivate: [AuthGuard], 
     children: [
       //Trainers
       { path: 'trainers', component: TrainersComponent, canActivate: [AuthGuard],
@@ -103,7 +105,7 @@ const routes: Routes = [
           { path: 'training-apply/:id', component:OperationsTrainerServiceComponent, canActivate: [AuthGuard] },
           { path: 'training-service', component:OperationsTrainerServiceListComponent, canActivate: [AuthGuard] },
         ] 
-    },
+    }, 
 
     //Cab client
     { path: 'cab_client', component: CabComponent, canActivate: [AuthGuard],  
@@ -114,6 +116,7 @@ const routes: Routes = [
         { path: 'training-apply/:id', component:CabTrainerServiceComponent, canActivate: [AuthGuard] },
         { path: 'training-course', component:CabTrainingApplicationComponent, canActivate: [AuthGuard] },
         { path: 'training-public-course', component:CabTrainingPublicCourseComponent, canActivate: [AuthGuard] },
+        { path: 'training-public-course-list', component:CabTrainingPublicCourseListComponent, canActivate: [AuthGuard] },
         { path: 'training-inpremise-course', component:CabTrainingInpremiseCourseComponent, canActivate: [AuthGuard] },
         { path: 'training-service', component:CabTrainerServiceListComponent, canActivate: [AuthGuard] },
         { path: 'application-registration', component:ApplicationRegistrationComponent, canActivate: [AuthGuard] },
@@ -136,7 +139,8 @@ const routes: Routes = [
       ]
     },
     //Candidate
-    { path: 'candidate', component: CandidateComponent, canActivate: [AuthGuard],
+    //, 
+    { path: 'candidate',component: CandidateComponent, canActivate: [AuthGuard],
       children:[
         { path: '', redirectTo:'home', pathMatch:'full'},
         { path: 'home', component:CandidateDashboardComponent, canActivate: [AuthGuard]},
@@ -145,7 +149,7 @@ const routes: Routes = [
         { path: 'training-service', component:CandidateTrainerServiceListComponent, canActivate: [AuthGuard] },
         { path: 'attendane-list', component:CandidateAttendanceListComponent, canActivate: [AuthGuard] },
         { path: 'agenda-list', component:CandidateAgendaListComponent, canActivate: [AuthGuard] },
-        { path: 'training-public-course', component:CandidateTrainingPublicCourseComponent, canActivate: [AuthGuard] },
+        { path: 'training-public-course', component:CandidateTrainingPublicCourseComponent, canActivate: [AuthGuard]},
         { path: 'training-course', component:CandidateTrainingApplicationComponent, canActivate: [AuthGuard] },
       ]
     },

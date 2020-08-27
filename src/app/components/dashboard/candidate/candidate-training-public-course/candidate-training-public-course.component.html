@@ -51,10 +51,8 @@
                                 <ng-container *ngFor="let item of headerSteps; let k=index;">
                                     <!-- #Active: {{item.activeClass}} -->
                                 <div class="user-next" [ngClass]="(item.activeClass != '') ? item.activeClass : ''">
-                                <!-- <div class="user-next" [ngClass]="(item.activeStep) ? 'user-present' : (item.stepComp) ? 'user-done' : item.active"> -->
                                     <div class="usernext-icon">
                                         <span [ngClass]="(item.activeClass === 'user-done') ? 'icon-tick' : item.icon"></span>
-                                        <!-- <span [ngClass]="(item.activeStep) ? item.icon : (item.stepComp) ? 'icon-tick'  : item.icon"></span> -->
                                     </div> 
                                     <div class="user-details-pending" 
                                     id="course_header" (click)="_service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}">
@@ -83,7 +81,7 @@
     <div class="form-maindata">
         <div class="container-fluid p-0 cust-stepper" id="course">
             <!--   -->
-            <!-- <form #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)" autocomplete="off"> -->
+            <form #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)" autocomplete="off">
                 <div class="form-bdy">                    
                     <section>
                         <div class="">
@@ -426,17 +424,17 @@
                     <div class="col-md-12">
                         <div class="bttns-health bttn-staff">
                             <button class="cancel-bttn" routerLink="/dashboard/candidate/training-course">BACK</button> 
-                            <!--  -->
-                            <button class="submit-bttn submit-health" (click)="onSubmitPass()" *ngIf="!transactions.length">PROCEEDS FOR PAYMENT</button>
+                            <!-- (click)="onSubmitPass()" -->
+                            <button class="submit-bttn submit-health"  *ngIf="!transactions.length">PROCEEDS FOR PAYMENT</button>
                             <ng-container *ngIf="transactions.length">
                                 <div id="paypalPayment"></div>
                             </ng-container>                                                             
                         </div>
                     </div>
                 </div> 
-            <!-- </form> -->
+            </form>
         </div>
-        <div class="container-fluid p-0 cust-stepper"  id="paymentCheck" [ngStyle]="{'display': 'none'}">
+        <!-- <div class="container-fluid p-0 cust-stepper"  id="paymentCheck" [ngStyle]="{'display': 'none'}">
             <div class="container-fluid p-0">
                 <form action="">
                     <div class="form-bdy">
@@ -455,7 +453,6 @@
                             </div>
                         </div>
                         <div class="row">
-                            <!-- Upload receipt -->
                             <p>Payment Check...</p>
                         </div>
                         <div class="row">
@@ -490,7 +487,6 @@
                             </div>
                         </div>
                         <div class="row">
-                            <!-- Upload receipt -->
                             <p>Payment Review...</p>
                         </div>
                         <div class="row">
@@ -505,10 +501,10 @@
                     </div>
                 </form>
             </div>
-        </div>     
+        </div>      -->
         <div class="container-fluid p-0 cust-stepper"  id="payment" [ngStyle]="{'display': 'none'}">
             <div class="container-fluid p-0">
-                <form action="">
+                <!-- <form #ngForm="ngForm2" (ngSubmit)="onPaymentReceiptSubmit(ngForm2)" autocomplete="off"> -->
                     <div class="form-bdy">
                         <div class="row m-0">
                             <div class="wrapper">
@@ -522,22 +518,45 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- Upload receipt -->
-                                <p>Payment receipt...</p>
+                                <!-- <p>Payment receipt...</p> -->
+                                <div class="row">
+                                <div class="col-md-12">
+                                    <!-- <mat-form-field class="cab-data"> -->
+                                        <p>Upload Receipt</p>
+                                        <!-- <input matInput name="paymentReceipt" 
+                                         required
+                                        [(ngModel)]="publicTrainingForm.paymentReceipt" placeholder="Upload Payment Receipt" required> -->
+                                    <!-- </mat-form-field> -->
+                                    <!-- <mat-form-field class="cab-data"> -->
+                                    <span class="fileupload">
+                                        <input type="file"  name="paymentReceipt_file" 
+                                        [(ngModel)]="publicTrainingForm.paymentReceipt_file" 
+                                        (change)="onLoadFile($event)">
+                                        <span class="icon-attach attach-data"></span>
+                                    </span>
+                                <!-- </mat-form-field> -->
+                                    <!-- <span class="fileupload">
+                                        <input type="file" name="qualification_degree_file" [(ngModel)]="step2Data.qualification_degree_file" (change)="validateFile($event,'qualification_degree')">
+                                        <span class="icon-attach attach-data"></span>
+                                    </span><a class="image_file_link" *ngIf="tradeLicensedValidation1 != false && tradeLicensedValidation1 != true" target="_blank" [href]="tradeLicensedValidation1">Link</a>
+                                    <p class="error" *ngIf="!file_validation1">Please Upload a valid file (ex: pdf,png,jpg,jpeg)</p> -->
+                                </div>
                                 
-                            </div>
+                                </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="bttns-health bttn-staff">
-                                <button class="cancel-bttn" (click)="_service.headerStepMove('paymentReview',headerSteps,'menu','payment')">BACK</button> 
-                                <button class="submit-bttn submit-health" (click)="onPaymentRequest()">SAVE</button>                                
+                                <!-- (click)="onPaymentRequest()" -->
+                                <button class="cancel-bttn" (click)="_service.headerStepMove('course',headerSteps,'menu','payment')">BACK</button> 
+                                <button class="submit-bttn submit-health" (click)="onPaymentReceiptSubmit()">SAVE</button>                                
                             </div>
                         </div>
                     </div>
-                </form>
+                    </div>
+                <!-- </form> -->
             </div>
         </div>           
     </div>

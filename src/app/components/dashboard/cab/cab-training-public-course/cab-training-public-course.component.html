@@ -1,4 +1,22 @@
+<!-- <div class="main-detail">
+    <div class="user-header"> 
+        <div class="container-fluid p-0">
+            <div class="main-dashboard-cnt">
+                <div class="row">
+                    <div class="col-md-12">
+                    
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
 <div class="main-detail">
+    <!-- ============================================= -->
+    
+    
+    
+    <!-- ================================== -->
       <div class="user-header"> 
           <div class="container-fluid p-0">
               <div class="main-dashboard-cnt">
@@ -27,16 +45,17 @@
     
                   <ng-container>
                     <div class="row">
+
                         <div class="col-md-12">
                             <div class="user-steps">
                                 <ng-container *ngFor="let item of headerSteps; let k=index;">
+                                    <!-- #Active: {{item.activeClass}} -->
                                 <div class="user-next" [ngClass]="(item.activeClass != '') ? item.activeClass : ''">
                                     <div class="usernext-icon">
-                                        <!-- [class]="item.icon" -->
                                         <span [ngClass]="(item.activeClass === 'user-done') ? 'icon-tick' : item.icon"></span>
-                                    </div>
+                                    </div> 
                                     <div class="user-details-pending" 
-                                    id="course_header" (click)="_service.headerStepMove(item.title, headerSteps)" [ngStyle]="{'cursor':'pointer'}">
+                                    id="course_header" (click)="_service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}">
                                         <span [innerHTML]="item.desc"></span>
                                     </div>
                                 </div>
@@ -61,78 +80,12 @@
     <!-- Course Section -->
     <div class="form-maindata">
         <div class="container-fluid p-0 cust-stepper" id="course">
-            <form #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)"  autocomplete="off">
-                <div class="form-bdy">
-                    <!-- <div class="row m-0">
-                        <div class="wrapper">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-12 p-0">
-                                        <div class="form-subhdr">
-                                            <h5>Course Details</h5>
-                                        </div>
-                                        <hr>
-                                    </div>
-                                </div>
-                                <ng-container *ngFor="let item of courseSelection; let i = index;">
-                                    <div class="row" *ngIf="i >= 1">
-                                        <hr>
-                                    </div>
-                                    <div class="row" >
-                                        <div class="col-md-6">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Select Course</mat-label>
-                                                <mat-select [ngModelOptions]="{standalone: true}"                                                    
-                                                [(ngModel)]="item.course" placeholder="Select" required>
-                                                    <mat-option [value]="item.id" *ngFor="let item of selectCourses">{{item.courseDetails}}</mat-option>
-                                                </mat-select>
-                                                <mat-error></mat-error>
-                                            </mat-form-field>
-                                            <ng-container *ngIf="i >= 1">
-                                                <div class="remove-clss">
-                                                    <span class="icon-cancel" (click)="removeRow(courseSelection, i)">X</span>
-                                                </div>
-                                            </ng-container>
-                                        </div>
-                                    </div>
-                                    
-                            </ng-container>
-                            <div class="row">
-                                    <div class="col-12"> 
-                                        <div class="add-new">
-                                            <a  href="javascript:void(0)" (click)="addRow(courseSelection)">
-                                                <span class="icon-add"></span>
-                                                <span>ADD NEW</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                            </div>
-                            <div class="row" >
-                                <div class="col-md-6">
-                                    <mat-form-field class="cab-data">
-                                        <mat-label>Select Course Type</mat-label>
-                                        <mat-select [ngModelOptions]="{standalone: true}"  [disabled] = "courseTypeDisabled"                                                   
-                                        [(ngModel)]="selectCustomCourseType" placeholder="Select" required>
-                                            <mat-option [value]="item.id" *ngFor="let item of selectPublicCourseOptions.courseType">{{item.courseType}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-                            </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="agree-condi">
-                                            <mat-checkbox [(ngModel)]="isAgree" [ngModelOptions]="{standalone: true}">Agree to Terms & Conditions</mat-checkbox>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div> -->
-                    
+            <!--   -->
+            <form #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)" autocomplete="off">
+                <div class="form-bdy">                    
                     <section>
                         <div class="">
-                            <div class="container-fluid">                                
+                            <div class="container-fluid">                               
                                     
                                     <div class="train-bdy">
                                         <div class="row m-0">
@@ -470,15 +423,18 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="bttns-health bttn-staff">
-                            <!--  (click)="onCourseNext()" -->
-                            <button class="cancel-bttn" routerLink="/dashboard/cab_client/training-course">BACK</button> 
-                            <button class="submit-bttn submit-health" >PROCEEDS FOR PAYMENT</button>                                
+                            <button class="cancel-bttn" routerLink="/dashboard/candidate/training-course">BACK</button> 
+                            <!-- (click)="onSubmitPass()" -->
+                            <button class="submit-bttn submit-health"  *ngIf="!transactions.length">PROCEEDS FOR PAYMENT</button>
+                            <ng-container *ngIf="transactions.length">
+                                <div id="paypalPayment"></div>
+                            </ng-container>                                                             
                         </div>
                     </div>
                 </div> 
-            </form>                  
-        </div>    
-        <div class="container-fluid p-0 cust-stepper"  id="payment" [ngStyle]="{'display': 'none'}">
+            </form>
+        </div>
+        <!-- <div class="container-fluid p-0 cust-stepper"  id="paymentCheck" [ngStyle]="{'display': 'none'}">
             <div class="container-fluid p-0">
                 <form action="">
                     <div class="form-bdy">
@@ -488,37 +444,119 @@
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr">
-                                                <h5>Payment</h5>
+                                                <h5>Payment Check</h5>
                                             </div>
                                             <hr>
                                         </div>
                                     </div>
-
-                                    <!-- <ng-container *ngFor="let item of selectCoursePayment;let i=index">
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                {{item.courseDetails}}
-                                            </div>
-                                            <div class="col-md-4">
-                                               $&nbsp;{{item.fees_per_trainee}}
-                                            </div>
-                                        </div>
-                                        <hr *ngIf="i>=1">
-                                        </ng-container>  -->
-
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
+                            <p>Payment Check...</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <button class="cancel-bttn" (click)="_service.headerStepMove('course',headerSteps,'menu','paymentCheck')">BACK</button> 
+                                    <button class="submit-bttn submit-health" (click)="paymentCheck()">CONTINUE</button>
+                                                                                               
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="container-fluid p-0 cust-stepper"  id="paymentReview" [ngStyle]="{'display': 'none'}">
+            <div class="container-fluid p-0">
+                <form action="">
+                    <div class="form-bdy">
+                        <div class="row m-0">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr">
+                                                <h5>Payment Review</h5>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <p>Payment Review...</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <button class="cancel-bttn" (click)="_service.headerStepMove('paymentCheck',headerSteps,'menu','paymentReview')">BACK</button> 
+                                    <button class="submit-bttn submit-health" (click)="paymentReview()">CONTINUE</button>
+                                                                                               
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>      -->
+        <div class="container-fluid p-0 cust-stepper"  id="payment" [ngStyle]="{'display': 'none'}">
+            <div class="container-fluid p-0">
+                <!-- <form #ngForm="ngForm2" (ngSubmit)="onPaymentReceiptSubmit(ngForm2)" autocomplete="off"> -->
+                    <div class="form-bdy">
+                        <div class="row m-0">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr">
+                                                <h5>Payment Information</h5>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Upload receipt -->
+                                <!-- <p>Payment receipt...</p> -->
+                                <div class="row">
+                                <div class="col-md-12">
+                                    <!-- <mat-form-field class="cab-data"> -->
+                                        <p>Upload Receipt</p>
+                                        <!-- <input matInput name="paymentReceipt" 
+                                         required
+                                        [(ngModel)]="publicTrainingForm.paymentReceipt" placeholder="Upload Payment Receipt" required> -->
+                                    <!-- </mat-form-field> -->
+                                    <!-- <mat-form-field class="cab-data"> -->
+                                    <span class="fileupload">
+                                        <input type="file"  name="paymentReceipt_file" 
+                                        [(ngModel)]="publicTrainingForm.paymentReceipt_file" 
+                                        (change)="onLoadFile($event)">
+                                        <span class="icon-attach attach-data"></span>
+                                    </span>
+                                <!-- </mat-form-field> -->
+                                    <!-- <span class="fileupload">
+                                        <input type="file" name="qualification_degree_file" [(ngModel)]="step2Data.qualification_degree_file" (change)="validateFile($event,'qualification_degree')">
+                                        <span class="icon-attach attach-data"></span>
+                                    </span><a class="image_file_link" *ngIf="tradeLicensedValidation1 != false && tradeLicensedValidation1 != true" target="_blank" [href]="tradeLicensedValidation1">Link</a>
+                                    <p class="error" *ngIf="!file_validation1">Please Upload a valid file (ex: pdf,png,jpg,jpeg)</p> -->
+                                </div>
+                                
+                                </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="bttns-health bttn-staff">
-                                <button class="cancel-bttn" (click)="_service.headerStepMove('course',headerSteps,'payment')">BACK</button> 
-                                <button class="submit-bttn submit-health" (click)="onPaymentRequest()">SAVE</button>                                
+                                <!-- (click)="onPaymentRequest()" -->
+                                <button class="cancel-bttn" (click)="_service.headerStepMove('course',headerSteps,'menu','payment')">BACK</button> 
+                                <button class="submit-bttn submit-health" (click)="onPaymentReceiptSubmit()">SAVE</button>                                
                             </div>
                         </div>
                     </div>
-                </form>
+                    </div>
+                <!-- </form> -->
             </div>
         </div>           
     </div>
