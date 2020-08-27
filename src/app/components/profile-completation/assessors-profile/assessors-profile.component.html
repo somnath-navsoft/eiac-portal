@@ -274,7 +274,7 @@
                                     <div class="col-md-4">
                                         <mat-form-field class="cab-data">
                                             <mat-label>From</mat-label>
-                                            <input matInput [matDatepicker]="from" name="completeProfileFrom" [(ngModel)]="step2Data.completeProfileFrom" [max]="today" readonly="true" (click)="Service._openCalendar(from)" placeholder="From" required>
+                                            <input matInput [matDatepicker]="from" name="completeProfileFrom" [(ngModel)]="step2Data.completeProfileFrom" [max]="today" readonly="true" (click)="Service._openCalendar(from)" (dateChange)="setexDate(step2Data.completeProfileFrom)" placeholder="From" required>
                                             <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
                                             <mat-datepicker #from disabled="false"></mat-datepicker>
                                         </mat-form-field>
@@ -282,7 +282,7 @@
                                     <div class="col-md-4">
                                         <mat-form-field class="cab-data">
                                             <mat-label>Till</mat-label>
-                                            <input matInput [(ngModel)]="step2Data.completeProfileTill" name="completeProfileTill" [matDatepicker]="till" [max]="today" (click)="Service._openCalendar(till)" placeholder="Till" required>
+                                            <input matInput [(ngModel)]="step2Data.completeProfileTill" name="completeProfileTill" [matDatepicker]="till" [min]="minDate" (click)="Service._openCalendar(till)" placeholder="Till" required>
                                             <mat-datepicker-toggle  matSuffix [for]="till"></mat-datepicker-toggle>
                                             <mat-datepicker #till disabled="false"></mat-datepicker>
                                         </mat-form-field>
@@ -547,7 +547,7 @@
                                                         <td>
                                                             <mat-form-field class="cab-data">
                                                                 <mat-label>Select</mat-label>
-                                                                <input matInput [(ngModel)]="attend_accreditation[i].date_from" name="attend_accreditation_date_from_{{i}}" [matDatepicker]="attend_accreditation_date_from" placeholder="Select" (click)="Service._openCalendar(attend_accreditation_date_from)" readonly="true" required>
+                                                                <input matInput [(ngModel)]="attend_accreditation[i].date_from" name="attend_accreditation_date_from_{{i}}" (dateChange)="setexDate(attend_accreditation[i].date_from)" [matDatepicker]="attend_accreditation_date_from" placeholder="Select" (click)="Service._openCalendar(attend_accreditation_date_from)" readonly="true" required>
                                                                 <mat-datepicker-toggle matSuffix [for]="attend_accreditation_date_from"></mat-datepicker-toggle>
                                                                 <mat-datepicker #attend_accreditation_date_from disabled="false" ></mat-datepicker>
                                                             </mat-form-field>
@@ -555,7 +555,7 @@
                                                         <td>
                                                             <mat-form-field class="cab-data">
                                                                 <mat-label>Select</mat-label>
-                                                                <input matInput [(ngModel)]="attend_accreditation[i].date_to" name="attend_accreditation_date_to_{{i}}" [matDatepicker]="attend_accreditation_date_to" placeholder="Select" (click)="Service._openCalendar(attend_accreditation_date_to)" readonly="true" required>
+                                                                <input matInput [(ngModel)]="attend_accreditation[i].date_to" name="attend_accreditation_date_to_{{i}}" [max]="minDate" [matDatepicker]="attend_accreditation_date_to" placeholder="Select" (click)="Service._openCalendar(attend_accreditation_date_to)" readonly="true" required>
                                                                 <mat-datepicker-toggle  matSuffix [for]="attend_accreditation_date_to"></mat-datepicker-toggle>
                                                                 <mat-datepicker #attend_accreditation_date_to readonly="false"></mat-datepicker>
                                                             </mat-form-field>
@@ -611,7 +611,7 @@
                                                         <td>
                                                             <mat-form-field class="cab-data">
                                                                 <mat-label>Select</mat-label>
-                                                                <input matInput [(ngModel)]="attend_accreditation2[i].date_from" name="attend_accreditation2_date_from_{{i}}" [matDatepicker]="attend_accreditation2_date_from" placeholder="Select" (click)="Service._openCalendar(attend_accreditation2_date_from)" readonly="true" required>
+                                                                <input matInput [(ngModel)]="attend_accreditation2[i].date_from" name="attend_accreditation2_date_from_{{i}}" (dateChange)="setexDate(attend_accreditation2[i].date_from)" [matDatepicker]="attend_accreditation2_date_from" placeholder="Select" (click)="Service._openCalendar(attend_accreditation2_date_from)" readonly="true" required>
                                                                 <mat-datepicker-toggle matSuffix [for]="attend_accreditation2_date_from"></mat-datepicker-toggle>
                                                                 <mat-datepicker #attend_accreditation2_date_from disabled="false" ></mat-datepicker>
                                                             </mat-form-field>
@@ -619,7 +619,7 @@
                                                         <td>
                                                             <mat-form-field class="cab-data">
                                                                 <mat-label>Select</mat-label>
-                                                                <input matInput [(ngModel)]="attend_accreditation2[i].date_to" name="attend_accreditation2_date_to_{{i}}" [matDatepicker]="attend_accreditation2_date_to" placeholder="Select" (click)="Service._openCalendar(attend_accreditation2_date_to)" readonly="true" required>
+                                                                <input matInput [(ngModel)]="attend_accreditation2[i].date_to" name="attend_accreditation2_date_to_{{i}}" [matDatepicker]="attend_accreditation2_date_to" placeholder="Select" (click)="Service._openCalendar(attend_accreditation2_date_to)" readonly="true" [max]="minDate" required>
                                                                 <mat-datepicker-toggle  matSuffix [for]="attend_accreditation2_date_to"></mat-datepicker-toggle>
                                                                 <mat-datepicker #attend_accreditation2_date_to readonly="false"></mat-datepicker>
                                                             </mat-form-field>
@@ -704,9 +704,9 @@
                                                         <td>
                                                             <mat-form-field class="cab-data">
                                                                 <mat-label>Select</mat-label>
-                                                                <mat-select placeholder="Select" name="assesment_type"  [(ngModel)]="practical_assessment_experience[i].assessment_type" required>
-                                                                    <mat-option [value]="1">Yes</mat-option>
-                                                                    <mat-option [value]="0">No</mat-option>
+                                                                <mat-select placeholder="Select" name="assesment_type_{{i}}"  [(ngModel)]="practical_assessment_experience[i].assessment_type" required>
+                                                                    <mat-option value="1">Yes</mat-option>
+                                                                    <mat-option value="0">No</mat-option>
                                                                 </mat-select>
                                                             </mat-form-field>
                                                         </td>

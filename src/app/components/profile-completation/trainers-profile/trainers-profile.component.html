@@ -297,7 +297,7 @@
                                                 <div class="col-md-4">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>From</mat-label>
-                                                        <input matInput [matDatepicker]="from" name="completeProfileFrom" [(ngModel)]="step2Data.completeProfileFrom" readonly="true" (click)="Service._openCalendar(from)" [max]="today" placeholder="From" required>
+                                                        <input matInput [matDatepicker]="from" name="completeProfileFrom" [(ngModel)]="step2Data.completeProfileFrom" (dateChange)="setexDate(step2Data.completeProfileFrom)" readonly="true" (click)="Service._openCalendar(from)" [max]="today" placeholder="From" required>
                                                         <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
                                                         <mat-datepicker #from disabled="false"></mat-datepicker>
                                                     </mat-form-field>
@@ -305,7 +305,7 @@
                                                 <div class="col-md-4">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Till</mat-label>
-                                                        <input matInput [(ngModel)]="step2Data.completeProfileTill" name="completeProfileTill" [max]="today" [matDatepicker]="till" (click)="Service._openCalendar(till)" placeholder="Till" required>
+                                                        <input matInput [(ngModel)]="step2Data.completeProfileTill" name="completeProfileTill" [min]="minDate" [matDatepicker]="till" (click)="Service._openCalendar(till)" placeholder="Till" required>
                                                         <mat-datepicker-toggle  matSuffix [for]="till"></mat-datepicker-toggle>
                                                         <mat-datepicker #till disabled="false"></mat-datepicker>
                                                     </mat-form-field>

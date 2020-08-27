@@ -35,6 +35,7 @@ export class TrainersProfileComponent implements OnInit {
   tradeLicensedValidation2:any = false;
   tradeLicensedValidation3:any;
   today = new Date();
+  minDate = new Date();
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -61,6 +62,11 @@ export class TrainersProfileComponent implements OnInit {
     );
 
     this.loadStep1Data();
+  }
+
+  setexDate(date){
+    let cdate = date;
+    this.minDate = new Date(cdate  + (60*60*24*1000));
   }
 
   loadStep1Data(){

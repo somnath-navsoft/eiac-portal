@@ -217,11 +217,11 @@ addMinutesToTime()
 
   //------------------ Custom Step Function ---------------------
   traverseSteps(stepId: string,stepData: any[],target?:any){
-      console.log('traverseSteps> ');
+      // console.log('traverseSteps> ');
       if(stepData.length){
         let curStepIndex = stepData.findIndex(rec => rec.title === stepId.toString());
         if(curStepIndex >= 0 && curStepIndex < stepData.length){
-            console.log('@Enter ....1');
+            // console.log('@Enter ....1');
             stepData.forEach((item,index) => {
                 if(item.activeClass != '' && (item.activeClass === 'user-present' || item.activeClass === 'user-done')){
                   console.log('@Enter ....2 -- Find active class: ', item.activeClass, " -- index ",curStepIndex, " -- ", index );
