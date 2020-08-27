@@ -88,7 +88,7 @@ export class LayoutComponent implements OnInit {
       this.getState.subscribe((state) => {
         // console.log(">>>layout State subscribed: ", state);
 
-        console.log("@@@Auth status: ", state);
+        // console.log("@@@Auth status: ", state);
         if(state.user != null && state.user.token != undefined && state.user.token != null) {
           
           let authUserData = this._service.decodeJWT(state.user.token);
@@ -101,10 +101,10 @@ export class LayoutComponent implements OnInit {
           */
           if(state.user.token !=null && authUserData.isVerified == '0')
           {
-            console.log('@Enter....1: ');
+            // console.log('@Enter....1: ');
             this.isAuthenticated = false;
           }else if(state.user.token !=null){
-            console.log('@Enter....1.1: ');
+            // console.log('@Enter....1.1: ');
             this.isAuthenticated = state.isAuthenticated;
             this.isCompleteness = '1';
           }

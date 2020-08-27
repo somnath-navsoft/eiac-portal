@@ -74,6 +74,16 @@ export class Constants{
 			type: 'cab_client',
 			menu: [
 				{
+					heading: 'Profile', link: '#', sub: true,
+					submenu: [
+						{title: 'Profile', link: '/profile-completation'},
+						{title: 'Certification', link: '#'},
+						{title: 'Agreements', link: '#'},
+						{title: 'Records', link: '#'},
+						{title: 'My Files', link: '#'}
+					]
+				},
+				{
 					heading: 'Messages', link: '#',
 					submenu: []
 				},
@@ -121,16 +131,6 @@ export class Constants{
 				{
 					heading: 'Accounts', link: '#', sub: true,
 					submenu: []
-				},
-				{
-					heading: 'Profile', link: '#', sub: true,
-					submenu: [
-						{title: 'Profile', link: '/profile-completation'},
-						{title: 'Certification', link: '#'},
-						{title: 'Agreements', link: '#'},
-						{title: 'Records', link: '#'},
-						{title: 'My Files', link: '#'}
-					]
 				}
 			]
 		},

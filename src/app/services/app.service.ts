@@ -379,7 +379,7 @@ addMinutesToTime()
         let targetElem = document.getElementById(prevTitle.toString());
         targetElem.style.display = 'none';
       }
-      console.log("#Step Data: ", stepData);
+      // console.log("#Step Data: ", stepData);
       this.headerStepMove(toStep, stepData);
   }
 

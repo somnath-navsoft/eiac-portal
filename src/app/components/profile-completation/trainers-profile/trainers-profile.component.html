@@ -23,19 +23,20 @@
                         <div class="col-md-12">
                             <div class="user-steps">
                                 <ng-container *ngFor="let item of headerSteps; let k=index;">
-                                <div class="user-next {{item.active}}">
-                                    <div class="usernext-icon">
-                                        <span class="icon-google-docs"></span>
+                                    <div class="user-next" [ngClass]="(item.activeClass != '') ? item.activeClass : ''">
+                                        <div class="usernext-icon">
+                                            <span [ngClass]="(item.activeClass === 'user-done') ? 'icon-tick' : item.icon"></span>
+                                        </div>
+
+                                        <div class="user-details-pending" 
+                                        id="course_header" (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}">
+                                            <span [innerHTML]="item.desc"></span>
+                                        </div>
                                     </div>
-                                    <div class="user-details-pending" 
-                                    id="personal_details_header" (click)="Service.headerStepMove(item.title, headerSteps)" [ngStyle]="{'cursor':'pointer'}">
-                                        <span [innerHTML]="item.desc"></span>
+                                    <div class="next-step" *ngIf="k < headerSteps.length-1">
+                                        <span class="icon-arrow-right"></span>
                                     </div>
-                                </div>
-                                <div class="next-step">
-                                    <span class="icon-r-arrow"></span>
-                                </div>
-                            </ng-container>                              
+                              </ng-container>                              
                             </div>
                         </div>
                     </div>
@@ -136,22 +137,13 @@
                                             </div>
         
                                             <div class="row">
-                                                <div class="col-md-3">
+                                                <div class="col-md-4">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Designation</mat-label>
                                                         <input matInput [(ngModel)]="step1Data.designation" name="designation" placeholder="" required>
                                                     </mat-form-field>
                                                 </div>
-        
-                                                <div class="col-md-9">
-                                                    <mat-form-field class="cab-data">
-                                                        <mat-label>Office Address</mat-label>
-                                                        <input matInput [(ngModel)]="step1Data.office_address" name="office_address" placeholder="" required>
-                                                    </mat-form-field>
-                                                </div>
-                                            </div>
-        
-                                            <div class="row">
+
                                                 <div class="col-md-4">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Office Phone (with Area Code)</mat-label>
@@ -166,6 +158,15 @@
                                                         <input matInput [(ngModel)]="step1Data.officefax_with_area" name="officefax_with_area" placeholder="" required>
                                                     </mat-form-field>
                                                     <p class="error" *ngIf="step1Data.officefax_with_area && !Service.checkInput('onlyNumberWithPlus',step1Data.officefax_with_area)">Please Enter Only Number</p>
+                                                </div>
+                                            </div>
+        
+                                            <div class="row">
+                                                <div class="col-md-9">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Office Address</mat-label>
+                                                        <input matInput [(ngModel)]="step1Data.office_address" name="office_address" placeholder="" required>
+                                                    </mat-form-field>
                                                 </div>
                                             </div>
         

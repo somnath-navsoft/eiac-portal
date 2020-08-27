@@ -33,7 +33,7 @@ export class CandidateProfileComponent implements OnInit {
 
     this.headerSteps.push(
       {
-      title:'personal_details', desc:'1. Personal <br> Details', activeStep:true, stepComp:true, active:'user-done', nextStep:'application_information'
+      title:'personal_details', desc:'1. Personal <br> Details', activeStep:true, stepComp:false, icon:'icon-user', activeClass:'user-present'
       }
     );
 
@@ -84,6 +84,7 @@ export class CandidateProfileComponent implements OnInit {
             console.log(res,'res')
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
+              this.progressValue == 0 || this.progressValue < 100 ? this.progressValue = 100 : this.progressValue = this.progressValue ;
               // this.router.navigateByUrl('/sign-in');
             }else{
               
