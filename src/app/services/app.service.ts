@@ -32,7 +32,7 @@ export class AppService {
   public regExNumb: any;
   public regExEmail: any;
   user = null;
-  public mapboxToken = '';
+  public mapboxToken = 'pk.eyJ1IjoicHJpbmF2IiwiYSI6ImNrNmh4YXVpcTJwbnMzbm4zYTc1ZG5kbHIifQ.lEliOwWLfcau6c0McnkGUA';
 
   constructor(public http: HttpClient, private _constant: Constants,
     private _flashMessage: FlashMessagesService,
