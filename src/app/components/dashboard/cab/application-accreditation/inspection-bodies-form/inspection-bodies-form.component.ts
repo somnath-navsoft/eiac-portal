@@ -20,10 +20,10 @@ export class InspectionBodiesFormComponent implements OnInit {
   public newRow: any = {};
   public inspectionBodyForm: any = {};
   public inspectionBodyFormFile: any = new FormData();
-  public ownOrgBasicInfo: Array<any> = [];
-  public ownOrgMembInfo: Array<any> = [];
+  public ownOrgBasicInfo: Array<any> = [{}];
+  public ownOrgMembInfo: Array<any> = [{}];
   public proficiencyTesting: Array<any> = [];
-  public accreditationInfo: Array<any> = [];
+  public accreditationInfo: Array<any> = [{}];
   public technicalManager: any = {};
   public managementManager: any = {}
   public inspectionBodyInfo:Array<any>=[];
@@ -52,7 +52,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   selectedFood2: string;
   rowCount:number=1;
   field2:number=2;
-  public minDate;
+  public minDate = new Date();
   public authorizationList:any;
   public authorizationStatus: boolean = false;
   public isSubmit:boolean = true;
@@ -84,7 +84,17 @@ export class InspectionBodiesFormComponent implements OnInit {
   transactions: any[] =[];
   transactionsItem: any={};
   total: any = 0;
-
+  allStateList: Array<any> = [];
+  allCityList: Array<any> = [];
+  step1Data:any = {};
+  fileAny:any = {};
+  tradeLicensedValidation:any = false;
+  step1DataBodyFormFile:any = new FormData();
+  userEmail:any;
+  userType:any;
+  isCompleteness:any;
+  profileComplete:any;
+  today = new Date();
 
   //dynamicScopeOptions:any[] = [];  
   //dynamicScopeModelValues:any={};
@@ -106,7 +116,9 @@ export class InspectionBodiesFormComponent implements OnInit {
   }
   headerSteps:any[] = [];
 
-  constructor(public Service: AppService, public _toaster: ToastrService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
+  constructor(public Service: AppService, public _toaster: ToastrService, public constant:Constants,public router: Router,public toastr: ToastrService) { 
+    this.today.setDate(this.today.getDate());
+  }
 
   getData(getVal){
     //  console.log(">>>>Get MapBox Value: ", getVal);
@@ -299,6 +311,11 @@ export class InspectionBodiesFormComponent implements OnInit {
   }
 
   ngOnInit() { 
+
+    this.userEmail = sessionStorage.getItem('email');
+    this.userType = sessionStorage.getItem('type');
+    this.isCompleteness = sessionStorage.getItem('isCompleteness');
+    this.profileComplete = sessionStorage.getItem('profileComplete');
     
     this.inspectionBodyForm.criteria_request = 'ISO/IEC17020';
     // this.titleService.setTitle('EIAC - Inspection Bodies');
@@ -306,6 +323,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     //this.dynamicScopeModelValues[0] = {};
     this.loadData();
     this.loadFormDynamicTable();
+    this.loadCountryStateCity();
     this.loader = false;
     //
     this.headerSteps.push(
@@ -331,6 +349,47 @@ export class InspectionBodiesFormComponent implements OnInit {
       title:'payment', desc:'7. Payment Information', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
       }
     );
+  }
+
+  statelistById = async(country_id) => {
+    this.allStateList = [];
+    let stateList =  this.Service.getState();
+    await stateList.subscribe( result => {
+        for(let key in result['states']) {
+          if(result['states'][key]['country_id'] == country_id )
+          {
+            this.allStateList.push(result['states'][key]);
+          }
+        }
+    });
+    // console.log(this.allStateList);
+  }
+
+  citylistById = async(state_id) => {
+    this.allCityList = [];
+    let cityList =  this.Service.getCity();
+    await cityList.subscribe( result => {
+        for(let key in result['cities']) {
+          if(result['cities'][key]['state_id'] == state_id )
+          {
+            this.allCityList.push(result['cities'][key]);
+          }
+        }
+    },
+    error =>{
+        console.log("Error: ", error);
+    }
+    
+    );
+  }
+  
+  loadCountryStateCity = async() => {
+    let countryList =  this.Service.getCountry();
+    await countryList.subscribe(record => {
+      // console.log(record,'record');
+      this.getCountryLists = record['countries'];
+    });
+    
   }
 
   scrollForm(el: HTMLElement)
@@ -359,9 +418,9 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.proficiency_testing_val = value;
   }
   loadFormDynamicTable(){
-    this.ownOrgBasicInfo  =   [{}];
-    this.ownOrgMembInfo = [{}];
-    this.accreditationInfo = [{}];
+    // this.ownOrgBasicInfo  =   [{}];
+    // this.ownOrgMembInfo = [{}];
+    // this.accreditationInfo = [{}];
     this. proficiencyTesting =[{}];
     this.inspectionBodyInfo=[{}];
     this.medicaMainlLabInfo=[{}];
@@ -376,10 +435,6 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,authorization_confirm3:false,undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false};
 
 
-  }
-  setexDate(){
-    let cdate =this.inspectionBodyForm.date_of_issue;
-    this.minDate = new Date(cdate  + (60*60*24*1000));
   }
 
   getCriteria(value){
@@ -592,38 +647,6 @@ export class InspectionBodiesFormComponent implements OnInit {
           }
       }
   }
-
-  validateFile(fileEvent: any, type?:string) {
-    var file_name = fileEvent.target.files[0].name;
-    var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
-    var ex_type = ['pdf','png'];
-    var ex_check = this.Service.isInArray(file_exe,ex_type);
-    if(type === undefined){
-      if(ex_check){
-        this.inspectionBodyForm.trade_license_name = fileEvent.target.files[0].name;
-        this.inspectionBodyFormFile.append('trade_license_file',fileEvent.target.files[0]);
-        this.file_validation = true;
-        return true;
-      }
-      else{
-        this.file_validation = false;
-        return false;
-      }
-    }
-    if(type !== undefined && type !+ '' && type === 'payment_receipt'){
-      if(ex_check){
-        this.inspectionBodyForm.payment_receipt_name = fileEvent.target.files[0].name;
-        this.inspectionBodyFormFile.append('payment_receipt_file',fileEvent.target.files[0]);
-        this.file_validation = true;
-        return true;
-      }
-      else{
-        this.file_validation = false;
-        return false;
-      }
-    }
-    
-  }
   emailValidation(email){
     // var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     // if(!regex.test(email)){
@@ -692,48 +715,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     }    
     //console.log("Add Line status: ", this.dynamicScopeModel);
   }
-  // removeScopeLine(secIndex:any, remIndex:number){
-  //   for(var key in this.dynamicScopeModel){
-  //     if( key === secIndex ){
-  //       if(this.dynamicScopeModel[key].fieldLines != undefined){
-  //       let obj = this.dynamicScopeModel[key].fieldLines;
-  //       let index = remIndex;
-  //       const dialogRef = this.dialog.open(DialogBoxComponent,{
-  //         data:{
-  //           message: 'Are you sure want to delete?',
-  //           buttonText: {
-  //             ok: 'Yes',
-  //             cancel: 'No'
-  //           },
-  //           obj:obj,
-  //           index:index,
-  //         }
-  //       });
-  //     }
-  //     }
-  //   }
-  // }
-  //Dynamic Scope binding ----  Abhishek @Navsoft
-
-  /*
-openDialogBox(obj: any, index: number) {
-      const dialogRef = this.dialog.open(DialogBoxComponent,{
-        data:{
-          message: 'Are you sure want to delete?',
-          buttonText: {
-            ok: 'Yes',
-            cancel: 'No'
-          },
-          obj:obj,
-          index:index,
-        }
-      });
-    }
-
-  */
-
-
-  //organizationArray
+  
   addRow(obj: any = [],type?: string){
     if(type != '' && type != undefined){
       let getIndex    =   obj.findIndex(rec => rec.type == type);
@@ -774,23 +756,7 @@ openDialogBox(obj: any, index: number) {
   showHideMembInfo(data){
     this.orgMembToggle  = data.checked;
   }
-  // openDialog(){
-  //   const dialogRef = this.dialog.open(ConfirmationDialog, {
-	// 		data: {
-  //       title : 'The Accreditation Agreement',
-  //       content:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        
-	// 		  }, 
-	// 		  height: '300px',
-	// 		  width: '700px',
-	// 		  disableClose: true
-  //     });
-  //     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
-  //       if (confirmed) {
-  //           this.is_agreement=true;
-  //       }
-  //     });
-  // }
+  
   getFieldTooltip123(modelValue: any, modelObject: any, type: any){
     ////console.log("Model Tooltip: ", modelValue, " --- ", modelObject);
     let getValue: number;
@@ -812,84 +778,6 @@ openDialogBox(obj: any, index: number) {
       }
   }
   }
-/*
-  scrollToView(el: HTMLElement) {
-    el.scrollIntoView();
-  }
-
-  scrollTo(el: Element): void {
-    //console.log('Scroll calling...', el);
-    if (el) {
-       el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
- }
-
-  //Scroll To Pending Error Selector
-  scrollToError(ngForm): void {
-    //const firstElementWithError = document.querySelector('.ng-  invalid[formControlName]');
-    const formElementWithError = document.querySelector('.ng-invalid');
-    ////console.log('Error Required: ',formElementWithError);
-    this.scrollTo(formElementWithError);
-
-      let target;
-      let theFormControl:any;
-
-      let invalidElement: any =[];
-
-      if(!ngForm.valid){
-        for (var i in ngForm) { 
-                 
-          if(ngForm[i] != undefined && ngForm[i] != null && typeof ngForm[i] == "object"){
-            //console.log(ngForm[i]);  
-            //theFormControl = ngForm[i];
-            //break;
-            for(var k in ngForm[i]){
-              let element = ngForm[i][k];
-              //
-              // if (Object.prototype.hasOwnProperty.call(element, 'status') != undefined) {
-              // //if(element.hasOwnProperty('status')){
-              //   //console.log('Found Status: ',element.status, " :: ");
-              //   invalidElement.push(element);
-              //   // if(element.status != undefined && element.status === 'INVALID'){
-              //   //   target = ngForm[i][k];
-              //   //   break;
-              //   // }else{
-              //   //   //console.log('@: ',element.status);
-              //   // }
-              // }
-                  
-              // if(element.status != undefined && element.status != null){
-              //   //console.log('@: ',element.valid);
-              // }              
-            }
-
-            // ngForm[i].forEach(element => {
-            //     //console.log('@: ',element);
-            // });
-
-          }  
-          // if(!ngForm[i].valid) {
-          //   target = ngForm[i];
-          //   break;
-          // }
-        }
-
-        //console.log('Total invalid Elem: ', invalidElement);
-
-        if(target) {
-          ////console.log('Calling Scroll target.....');
-          //target.nativeElement.scrollIntoView(true);
-          //$('html,body').animate({scrollTop: $(target.nativeElement).offset().top}, 'slow');
-        }
-
-        if(theFormControl != undefined){
-          ////console.log(theFormControl, " ==> ");
-        }
-      }
- }
-
-
-  */
 
    scrollToError(theForm: any){
      console.log("scroll to find...");
@@ -937,15 +825,76 @@ openDialogBox(obj: any, index: number) {
      }
    }
 
+   validateFile(fileEvent: any) {
+    var file_name = fileEvent.target.files[0].name;
+    var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
+    var ex_type = ['pdf','png','jpg','jpeg','JPEG'];
+    var ex_check = this.Service.isInArray(file_exe,ex_type);
+    if(ex_check){
+      this.step1DataBodyFormFile.append('trade_license',fileEvent.target.files[0]);
+      this.file_validation = true;
+      this.tradeLicensedValidation = true;
+      return true;
+    }else{
+      this.file_validation = false;
+      this.tradeLicensedValidation = false;
+    }
+  }
+
+  setexDate(date){
+    let cdate = date;
+    this.minDate = new Date(cdate  + (60*60*24*1000));
+  }
 
    //Step FORM Action
-   onSubmitApplication(ngForm: any){
-    console.log("Step Application submit...", " -- ", ngForm.form);
-     if(!ngForm.form.valid){
-      this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
-     }else{
-      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
-    }     
+   onSubmitApplication(ngForm1: any){
+    // console.log("Step Application submit...", " -- ", ngForm.form);
+    //  if(!ngForm.form.valid){
+    //   this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+    //  }else{
+    //   this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    // }
+
+    if(ngForm1.form.valid && this.tradeLicensedValidation != false) {
+      this.inspectionBodyForm.step1 = {};
+      this.inspectionBodyForm.email = this.userEmail;
+      this.inspectionBodyForm.userType = this.userType;
+      this.inspectionBodyForm.step1 = this.step1Data;
+
+      this.inspectionBodyForm.step1['ownOrgBasicInfo'] = [];
+      this.inspectionBodyForm.step1['ownOrgMembInfo'] = [];
+      this.inspectionBodyForm.step1['accreditationInfo'] = [];
+      
+      if(this.ownOrgBasicInfo) {
+        this.inspectionBodyForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
+      }
+      if(this.ownOrgMembInfo) {
+        this.inspectionBodyForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
+      }
+      if(this.accreditationInfo) {
+        this.inspectionBodyForm.step1['accreditationInfo'] = this.accreditationInfo;
+      }
+      
+
+      this.step1DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step1DataBodyFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else if(ngForm1.form.valid && this.tradeLicensedValidation == false) {
+      this.file_validation = false;
+      this.toastr.warning('Please Fill required field','');
+    }
+    else {
+      this.toastr.warning('Please Fill required field','');
+    }
    }
    onSubmitUndertakingApplicant(ngForm: any){
     console.log("Step UndertakingApplicant submit...");
@@ -1230,9 +1179,9 @@ openDialogBox(obj: any, index: number) {
     }
     getPlaceName(data)
     {
-      if(typeof this.inspectionBodyForm.search_location_name != 'undefined')
+      if(typeof this.step1Data.search_location_name != 'undefined')
       {
-        this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.inspectionBodyForm.search_location_name+'.json?access_token='+this.Service.mapboxToken+'','')
+        this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.step1Data.search_location_name+'.json?access_token='+this.Service.mapboxToken+'','')
           .subscribe(res => {
               // //console.log(res['features']);
               this.searchCountryLists = res['features'];
