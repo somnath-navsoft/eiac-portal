@@ -977,8 +977,7 @@ openDialogBox(obj: any, index: number) {
             console.log("button creting...");
             if(elem){
               console.log("button creted...");
-            }else{
-              console.log("Loding button...");
+              
             }
           }, 100)
 
