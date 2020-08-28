@@ -87,13 +87,21 @@ export class InspectionBodiesFormComponent implements OnInit {
   allStateList: Array<any> = [];
   allCityList: Array<any> = [];
   step1Data:any = {};
-  step2Data:any = {}
-  step3Data:any = {}
+  step2Data:any = {};
+  step3Data:any = {};
+  step4Data:any = {};
+  step5Data:any = {};
+  step6Data:any = {};
+  step7Data:any = {};
   fileAny:any;
   tradeLicensedValidation:any = false;
   step1DataBodyFormFile:any = new FormData();
   step2DataBodyFormFile:any = new FormData();
   step3DataBodyFormFile:any = new FormData();
+  step4DataBodyFormFile:any = new FormData();
+  step5DataBodyFormFile:any = new FormData();
+  step6DataBodyFormFile:any = new FormData();
+  step7DataBodyFormFile:any = new FormData();
   userEmail:any;
   userType:any;
   isCompleteness:any;
@@ -850,8 +858,49 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.minDate = new Date(cdate  + (60*60*24*1000));
   }
 
-   //Step FORM Action
-   onSubmitApplication(ngForm1: any){
+  onSubmitUndertakingApplicant(ngForm: any){
+    console.log("Step UndertakingApplicant submit...");
+    if(!ngForm.form.valid){
+
+      //Paypal config data
+      //applyTrainerPublicCourse
+      this.transactionsItem['amount']               = {};
+      this.transactionsItem['amount']['total']      = 0.00;
+      this.transactionsItem['amount']['currency']   = 'USD';
+      this.transactionsItem['amount']['details']    = {};
+      this.transactionsItem['amount']['details']['subtotal'] = 0.00;
+      //declare Items data
+      this.transactionsItem['item_list']            = {};
+      this.transactionsItem['item_list']['items']   = [];
+      let custPrice: any = 0.01;
+      this.total = 0.05;
+        this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity: 1, price: custPrice, currency: 'USD'});
+          if(this.total > 0){
+            //console.log("Calculate price: ", calcPrice);
+            this.transactionsItem['amount']['total'] = custPrice.toFixed(2);
+            this.transactionsItem['amount']['details']['subtotal'] = custPrice.toFixed(2);
+            this.transactions.push(this.transactionsItem);
+            //console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
+          }
+          setTimeout(() => {
+            this.createPaymentButton(this.transactionsItem, this.inspectionBodyForm, this);
+            let elem = document.getElementsByClassName('paypal-button-logo');
+            console.log("button creting...");
+            if(elem){
+              console.log("button creted...");
+            }else{
+              console.log("Loding button...");
+            }
+          }, 100)
+
+      //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+    }else{
+    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }    
+  }
+
+  //Step FORM Action
+  onSubmitApplication(ngForm1: any){
     // console.log("Step Application submit...", " -- ", ngForm.form);
     //  if(!ngForm.form.valid){
     //   this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
@@ -901,92 +950,8 @@ export class InspectionBodiesFormComponent implements OnInit {
     else {
       this.toastr.warning('Please Fill required field','');
     }
-   }
-   onSubmitUndertakingApplicant(ngForm: any){
-    console.log("Step UndertakingApplicant submit...");
-    if(!ngForm.form.valid){
-
-      //Paypal config data
-      //applyTrainerPublicCourse
-      this.transactionsItem['amount']               = {};
-      this.transactionsItem['amount']['total']      = 0.00;
-      this.transactionsItem['amount']['currency']   = 'USD';
-      this.transactionsItem['amount']['details']    = {};
-      this.transactionsItem['amount']['details']['subtotal'] = 0.00;
-      //declare Items data
-      this.transactionsItem['item_list']            = {};
-      this.transactionsItem['item_list']['items']   = [];
-      let custPrice: any = 0.01;
-      this.total = 0.05;
-        this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity: 1, price: custPrice, currency: 'USD'});
-          if(this.total > 0){
-            //console.log("Calculate price: ", calcPrice);
-            this.transactionsItem['amount']['total'] = custPrice.toFixed(2);
-            this.transactionsItem['amount']['details']['subtotal'] = custPrice.toFixed(2);
-            this.transactions.push(this.transactionsItem);
-            //console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
-          }
-          setTimeout(() => {
-            this.createPaymentButton(this.transactionsItem, this.inspectionBodyForm, this);
-            let elem = document.getElementsByClassName('paypal-button-logo');
-            console.log("button creting...");
-            if(elem){
-              console.log("button creted...");
-            }else{
-              console.log("Loding button...");
-            }
-          }, 100)
-
-      //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
-    }else{
-    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
-    }    
-   }
-   onSubmitPerlimVisit(ngForm: any){
-      console.log("Step PerlimVisit submit...", ngForm.form);
-      if(!ngForm.form.valid){
-        this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
-      }else{
-      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
-      }     
-   }
-   onSubmitInformationAuditManagement(ngForm: any){
-    console.log("Step InformationAuditManagement submit...");
-    if(!ngForm.form.valid){
-      this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
-    }else{
-     this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
-   }     
   }
-  onSubmitPersonalInformation(ngForm3: any){
-    // console.log("Step PersonalInformation submit...");
-    //  if(!ngForm.form.valid){
-    //   this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
-    //  }else{
-    //   this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
-    // }
-    this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
-    if(ngForm3.form.valid) {
-      this.inspectionBodyForm = {};
-      this.inspectionBodyForm.step3 = {};
-      this.inspectionBodyForm.email = this.userEmail;
-      this.inspectionBodyForm.userType = this.userType;
-      this.inspectionBodyForm.step3 = this.step3Data;
 
-      // this.step3DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
-      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step3DataBodyFormFile)
-      // .subscribe(
-      //   res => {
-      //     console.log(res,'res')
-      //     if(res['status'] == true) {
-      //       this.toastr.success(res['msg'], '');
-      //       this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
-      //     }else{
-      //       this.toastr.warning(res['msg'], '');
-      //     }
-      //   });
-    }
-  }
   onSubmitTestingParticipation(ngForm2: any){
     this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
     // console.log("Step TestingParticipation submit...", " -- ", ngForm.form);
@@ -1020,12 +985,87 @@ export class InspectionBodiesFormComponent implements OnInit {
             this.toastr.warning(res['msg'], '');
           }
         });
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
-    
   }
-  onSubmitPaymentInformation(ngForm: any){
+
+  onSubmitPersonalInformation(ngForm3: any){
+    // console.log("Step PersonalInformation submit...");
+    //  if(!ngForm.form.valid){
+    //   this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+    //  }else{
+    //   this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    // }
+    this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+    if(ngForm3.form.valid) {
+      this.inspectionBodyForm = {};
+      this.inspectionBodyForm.step3 = {};
+      this.inspectionBodyForm.email = this.userEmail;
+      this.inspectionBodyForm.userType = this.userType;
+      this.inspectionBodyForm.step3 = this.step4Data;
+
+      this.step3DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step3DataBodyFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+  }
+
+  onSubmitInformationAuditManagement(ngForm4: any){
+  //   console.log("Step InformationAuditManagement submit...");
+  //   if(!ngForm.form.valid){
+  //     this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
+  //   }else{
+  //    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+  //  }     
+
+    if(ngForm4.form.valid) {
+      this.inspectionBodyForm = {};
+      this.inspectionBodyForm.step4 = {};
+      this.inspectionBodyForm.email = this.userEmail;
+      this.inspectionBodyForm.userType = this.userType;
+      this.inspectionBodyForm.step4 = this.step4Data;
+
+      // this.step4DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
+      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step4DataBodyFormFile)
+      // .subscribe(
+      //   res => {
+      //     console.log(res,'res')
+      //     if(res['status'] == true) {
+      //       this.toastr.success(res['msg'], '');
+      //       this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
+      //     }else{
+      //       this.toastr.warning(res['msg'], '');
+      //     }
+      //   });
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+  }
+  
+  onSubmitPerlimVisit(ngForm: any){
+    console.log("Step PerlimVisit submit...", ngForm.form);
+    if(!ngForm.form.valid){
+      this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+    }else{
+    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }     
+ }
+
+onSubmitPaymentInformation(ngForm: any){
     console.log("payment submitting.....");
-  }
+}
    //Step FORM Action
 
 
