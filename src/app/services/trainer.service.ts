@@ -31,6 +31,10 @@ export class TrainerService {
     //console.log(">>> GET URL: ", url);
     return this.http.get(url, this._service.getReqHeaders());
   }
+  getTrainerPublicCourse(){
+    const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.savePublicTrainingForm;
+    return this.http.get(url, this._service.getReqHeaders());
+  }
   //Get Trainer Public Course options
   getTrainerPublicCourseOptions(){
     let url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.allPublicCourseOptions;
@@ -39,6 +43,14 @@ export class TrainerService {
   //Submit Voucher
   courseVoucherSave(postData: any){
     const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.trainerCourseVoucherSave;
+    return this.http.post(url, postData, this._service.getReqHeaders());
+  }
+
+
+
+  //Apply Trainer Public Course
+  applyTrainerPublicCourse(postData: any){
+    const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.savePublicTrainingForm;
     return this.http.post(url, postData, this._service.getReqHeaders());
   }
    

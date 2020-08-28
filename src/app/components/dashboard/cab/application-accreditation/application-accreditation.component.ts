@@ -24,7 +24,7 @@ export class ApplicationAccreditationComponent implements OnInit {
     this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.service_details_page+"?data=accreditation_service")
       .subscribe(
         res => {
-          console.log(res,'res');
+          // console.log(res,'res');
           this.serviceList  = res['allServiceList'];
         });
   }

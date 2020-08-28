@@ -35,6 +35,7 @@ export class ClientCabProfileComponent implements OnInit {
   fileType:File;
   fileAny:any;
   isCompleteness:any;
+  profileComplete:any;
   tradeLicensedValidation:any = false;
   today = new Date();
   
@@ -50,16 +51,17 @@ export class ClientCabProfileComponent implements OnInit {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
+    this.profileComplete = sessionStorage.getItem('profileComplete');
     // this.nameOftheOwner ? this.clientCabForm.step2 = this.nameOftheOwner : '';
     // this.clientCabForm.nameOftheOwner = this.nameOftheOwner;
     // this.clientCabForm.companyBodMembers = this.companyBodMembers
     // this.companyBodMembers ? this.clientCabForm.step2 = this.companyBodMembers : '';
     this.headerSteps.push(
       {
-      title:'personal_details', desc:'1. Personal <br> Details', activeStep:true, stepComp:true, active:'user-done', nextStep:'application_information'
+      title:'personal_details', desc:'1. Personal <br> Details', activeStep:true, stepComp:false, icon:'icon-user', activeClass:'user-present'
       },
       {
-      title:'application_information', desc:'2. Application <br> Information', activeStep:false, stepComp:false, active:'', nextStep:null
+      title:'application_information', desc:'2. Application <br> Information', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       }
     );
     this.loadCountryStateCity();
@@ -190,7 +192,8 @@ export class ClientCabProfileComponent implements OnInit {
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
               this.progressValue == 0 || this.progressValue < 50 ? this.progressValue = 50 : this.progressValue = this.progressValue ;
-              this.Service.headerStepMove('application_information',this.headerSteps,'personal_details');
+              // this.Service.headerStepMove('application_information',this.headerSteps,'personal_details');
+              this.Service.moveSteps('personal_details','application_information', this.headerSteps);
               // this.router.navigateByUrl('/sign-in');
             }else{
               

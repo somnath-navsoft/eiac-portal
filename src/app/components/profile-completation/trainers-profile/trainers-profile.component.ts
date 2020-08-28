@@ -30,10 +30,12 @@ export class TrainersProfileComponent implements OnInit {
   userType:any;
   progressValue:any = 0;
   isCompleteness:any;
+  profileComplete:any;
   tradeLicensedValidation1:any = false;
   tradeLicensedValidation2:any = false;
   tradeLicensedValidation3:any;
   today = new Date();
+  minDate = new Date();
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -45,20 +47,26 @@ export class TrainersProfileComponent implements OnInit {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
+    this.profileComplete = sessionStorage.getItem('profileComplete');
 
     this.headerSteps.push(
       {
-        title:'personal_details', desc:'1. Personal <br> Details', activeStep:true, stepComp:true, active:'user-done', nextStep:'educational_information'
+        title:'personal_details', desc:'1. Personal <br> Details', activeStep:true, stepComp:false, icon:'icon-user', activeClass:'user-present'
       },
       {
-        title:'educational_information', desc:'2. Educational <br> Information', activeStep:false, stepComp:false, active:'', nextStep:'applicant_trainer'
+        title:'educational_information', desc:'2. Educational <br> Information', activeStep:false, stepComp:false, icon:'icon-book', activeClass:''
       },
       {
-        title:'applicant_trainer', desc:'3. Applicant <br> Trainer', activeStep:false, stepComp:false, active:'', nextStep:'null'
+        title:'applicant_trainer', desc:'3. Applicant <br> Trainer', activeStep:false, stepComp:false, icon:'icon-doc-edit', activeClass:''
       }
     );
 
     this.loadStep1Data();
+  }
+
+  setexDate(date){
+    let cdate = date;
+    this.minDate = new Date(cdate  + (60*60*24*1000));
   }
 
   loadStep1Data(){
@@ -196,7 +204,8 @@ export class TrainersProfileComponent implements OnInit {
             this.toastr.success(res['msg'], '');
             // this.router.navigateByUrl('/sign-in');
             this.progressValue == 0 || this.progressValue < 40 ? this.progressValue = 40 : this.progressValue = this.progressValue ;
-            this.Service.headerStepMove('educational_information',this.headerSteps,'personal_details');
+            // this.Service.headerStepMove('educational_information',this.headerSteps,'personal_details');
+            this.Service.moveSteps('personal_details','educational_information', this.headerSteps);
           }else{
             
             this.toastr.warning(res['msg'], '');
@@ -242,7 +251,8 @@ export class TrainersProfileComponent implements OnInit {
             this.toastr.success(res['msg'], '');
             // this.router.navigateByUrl('/sign-in');
             this.progressValue == 40 || this.progressValue < 80 ? this.progressValue = 80 : this.progressValue = this.progressValue ;
-            this.Service.headerStepMove('applicant_trainer',this.headerSteps,'personal_details');
+            // this.Service.headerStepMove('applicant_trainer',this.headerSteps,'personal_details');
+            this.Service.moveSteps('educational_information','applicant_trainer', this.headerSteps);
           }else{
             
             this.toastr.warning(res['msg'], '');

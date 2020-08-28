@@ -23,19 +23,20 @@
                         <div class="col-md-12">
                             <div class="user-steps">
                                 <ng-container *ngFor="let item of headerSteps; let k=index;">
-                                <div class="user-next {{item.active}}">
-                                    <div class="usernext-icon">
-                                        <span class="icon-google-docs"></span>
+                                    <div class="user-next" [ngClass]="(item.activeClass != '') ? item.activeClass : ''">
+                                        <div class="usernext-icon">
+                                            <span [ngClass]="(item.activeClass === 'user-done') ? 'icon-tick' : item.icon"></span>
+                                        </div>
+
+                                        <div class="user-details-pending" 
+                                        id="course_header" (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}">
+                                            <span [innerHTML]="item.desc"></span>
+                                        </div>
                                     </div>
-                                    <div class="user-details-pending" 
-                                    id="personal_details_header" (click)="Service.headerStepMove(item.title, headerSteps)" [ngStyle]="{'cursor':'pointer'}">
-                                        <span [innerHTML]="item.desc"></span>
+                                    <div class="next-step" *ngIf="k < headerSteps.length-1">
+                                        <span class="icon-arrow-right"></span>
                                     </div>
-                                </div>
-                                <div class="next-step">
-                                    <span class="icon-r-arrow"></span>
-                                </div>
-                            </ng-container>                              
+                              </ng-container>                              
                             </div>
                         </div>
                     </div>
@@ -136,22 +137,13 @@
                                             </div>
         
                                             <div class="row">
-                                                <div class="col-md-3">
+                                                <div class="col-md-4">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Designation</mat-label>
                                                         <input matInput [(ngModel)]="step1Data.designation" name="designation" placeholder="" required>
                                                     </mat-form-field>
                                                 </div>
-        
-                                                <div class="col-md-9">
-                                                    <mat-form-field class="cab-data">
-                                                        <mat-label>Office Address</mat-label>
-                                                        <input matInput [(ngModel)]="step1Data.office_address" name="office_address" placeholder="" required>
-                                                    </mat-form-field>
-                                                </div>
-                                            </div>
-        
-                                            <div class="row">
+
                                                 <div class="col-md-4">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Office Phone (with Area Code)</mat-label>
@@ -170,10 +162,19 @@
                                             </div>
         
                                             <div class="row">
+                                                <div class="col-md-9">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Office Address</mat-label>
+                                                        <input matInput [(ngModel)]="step1Data.office_address" name="office_address" placeholder="" required>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+        
+                                            <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="bttns-health bttn-staff">
-                                                        <a routerLink="/dashboard/trainers/home" *ngIf="isCompleteness == '1'"  class="cancel-bttn">CANCEL</a>
-                                                        <a href="javascript:void(0)" *ngIf="isCompleteness == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
+                                                        <a routerLink="/dashboard/trainers/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
+                                                        <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
                                                         <button class="submit-bttn submit-health">CONTINUE</button>
                                                     </div>
                                                 </div>
@@ -296,7 +297,7 @@
                                                 <div class="col-md-4">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>From</mat-label>
-                                                        <input matInput [matDatepicker]="from" name="completeProfileFrom" [(ngModel)]="step2Data.completeProfileFrom" readonly="true" (click)="Service._openCalendar(from)" [max]="today" placeholder="From" required>
+                                                        <input matInput [matDatepicker]="from" name="completeProfileFrom" [(ngModel)]="step2Data.completeProfileFrom" (dateChange)="setexDate(step2Data.completeProfileFrom)" readonly="true" (click)="Service._openCalendar(from)" [max]="today" placeholder="From" required>
                                                         <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
                                                         <mat-datepicker #from disabled="false"></mat-datepicker>
                                                     </mat-form-field>
@@ -304,7 +305,7 @@
                                                 <div class="col-md-4">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Till</mat-label>
-                                                        <input matInput [(ngModel)]="step2Data.completeProfileTill" name="completeProfileTill" [max]="today" [matDatepicker]="till" (click)="Service._openCalendar(till)" placeholder="Till" required>
+                                                        <input matInput [(ngModel)]="step2Data.completeProfileTill" name="completeProfileTill" [min]="minDate" [matDatepicker]="till" (click)="Service._openCalendar(till)" placeholder="Till" required>
                                                         <mat-datepicker-toggle  matSuffix [for]="till"></mat-datepicker-toggle>
                                                         <mat-datepicker #till disabled="false"></mat-datepicker>
                                                     </mat-form-field>
@@ -442,8 +443,8 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="bttns-health bttn-staff">
-                                                        <a routerLink="/dashboard/trainers/home" *ngIf="isCompleteness == '1'"  class="cancel-bttn">CANCEL</a>
-                                                        <a href="javascript:void(0)" *ngIf="isCompleteness == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
+                                                        <a routerLink="/dashboard/trainers/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
+                                                        <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
                                                         <button class="submit-bttn submit-health">CONTINUE</button>
                                                     </div>
                                                 </div>
@@ -508,9 +509,9 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="bttns-health bttn-staff">
-                                                        <a routerLink="/dashboard/trainers/home" *ngIf="isCompleteness == '1'"  class="cancel-bttn">CANCEL</a>
-                                                        <a href="javascript:void(0)" *ngIf="isCompleteness == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a> 
-                                                        <button class="submit-bttn submit-health">CONTINUE</button>
+                                                        <a routerLink="/dashboard/trainers/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
+                                                        <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a> 
+                                                        <button class="submit-bttn submit-health">SUBMIT</button>
                                                     </div>
                                                 </div>
                                             </div>

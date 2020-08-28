@@ -24,19 +24,20 @@
                             <div class="col-md-12">
                                 <div class="user-steps">
                                     <ng-container *ngFor="let item of headerSteps; let k=index;">
-                                    <div class="user-next {{item.active}}">
-                                        <div class="usernext-icon">
-                                            <span class="icon-google-docs"></span>
+                                        <div class="user-next" [ngClass]="(item.activeClass != '') ? item.activeClass : ''">
+                                            <div class="usernext-icon">
+                                                <span [ngClass]="(item.activeClass === 'user-done') ? 'icon-tick' : item.icon"></span>
+                                            </div>
+    
+                                            <div class="user-details-pending" 
+                                            id="course_header" (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}">
+                                                <span [innerHTML]="item.desc"></span>
+                                            </div>
                                         </div>
-                                        <div class="user-details-pending" 
-                                        id="personal_details_header" (click)="Service.headerStepMove(item.title, headerSteps)" [ngStyle]="{'cursor':'pointer'}">
-                                            <span [innerHTML]="item.desc"></span>
+                                        <div class="next-step" *ngIf="k < headerSteps.length-1">
+                                            <span class="icon-arrow-right"></span>
                                         </div>
-                                    </div>
-                                    <div class="next-step">
-                                        <span class="icon-r-arrow"></span>
-                                    </div>
-                                </ng-container>                              
+                                  </ng-container>                              
                                 </div>
                             </div>
                         </div>
@@ -177,9 +178,10 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="bttns-health bttn-staff">
-                                <a routerLink="/dashboard/candidate/home" *ngIf="isCompleteness == '1'"  class="cancel-bttn">CANCEL</a>
-                                <a href="javascript:void(0)" *ngIf="isCompleteness == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a> 
-                                <button class="submit-bttn submit-health">CONTINUE</button>
+                                <a routerLink="/dashboard/candidate/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
+                                <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a> 
+                                <button *ngIf="profileComplete == '0'" class="submit-bttn submit-health">SUBMIT</button>
+                                <button *ngIf="profileComplete == '1'" class="submit-bttn submit-health">SAVE</button>
                             </div>
                         </div>
                     </div>

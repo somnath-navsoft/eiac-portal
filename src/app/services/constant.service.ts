@@ -22,6 +22,8 @@ export class Constants{
 		trainerCourseDelete: 'trainer/course-delete/',
 		trainerCourseVoucherSave: 'trainer/course-voucher-save/',
 
+		savePublicTrainingForm:'trainer/training-application-form/',
+
 		searchCourse: 'trainer/search-course/',
 		searchTrainerEvent: 'trainer/search-event/',
 		searchTrainerAttendance: 'trainer/search-attendance/',
@@ -38,6 +40,9 @@ export class Constants{
 		service_details_page: 'pillar_page/',
 		healthcare_form_basic_data: 'healthcare_form/',
 		pt_provider: 'pt-provider-form/',
+		testing_cal_form_basic_data: 'testing_calibration_form_management/',
+		inspection_form_basic_data: 'inspection_body_form_management/',
+		criteriaIdByScope: this.apiUrl + 'criteria_wise_scope/',
 	}
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."
 	public loggedIn													=	new Subject<any>();
@@ -73,12 +78,32 @@ export class Constants{
 				{
 					heading: 'Profile', link: '#', sub: true,
 					submenu: [
-						{title: 'Update Profile', link: '/profile-completation'},
-						{title: 'Current Certification', link: '#'},
+						{title: 'Profile', link: '/profile-completation'},
+						{title: 'Certification', link: '#'},
 						{title: 'Agreements', link: '#'},
 						{title: 'Records', link: '#'},
 						{title: 'My Files', link: '#'}
 					]
+				},
+				{
+					heading: 'Messages', link: '#',
+					submenu: []
+				},
+				// {
+				// 	heading: 'Application', link: '#', sub: true,
+				// 	submenu: [
+				// 		{title: 'Accreditation', link: '#'},
+				// 		{title: 'Registration', link: '#'},
+				// 		{title: 'Training', link: '/dashboard/cab_client/training-course'}
+				// 	]
+				// },
+				{
+					heading: 'Status', link: '#', sub: true,
+					submenu: []
+				},
+				{
+					heading: 'Events', link: '#', sub: true,
+					submenu: [],
 				},
 				{
 					heading: 'Application', link: '#', sub: true,
@@ -87,7 +112,7 @@ export class Constants{
 						{title: 'Registration', link: '/dashboard/cab_client/application-registration'},
 						//{title: 'Training Service', link: '#'},
 						//{title: 'Training Apply', link: '/dashboard/cab_client/training-apply'},
-						{title: 'Training', link: '/dashboard/cab_client/training-service'}
+						{title: 'Training', link: '/dashboard/cab_client/training-course'}
 					]
 				},
 				{
@@ -98,19 +123,17 @@ export class Constants{
 					]
 				},
 				{
+					heading: 'Schedule', link: '#', sub: true,
+					submenu: []
+				},				
+				{
 					heading: 'Documents', link: '#',
 					submenu: []
-				},
+				},								
 				{
-					heading: 'Billing & Accounts', link: '#', sub: true,
-					submenu: [
-						{title: 'Application', link: '#'},
-					]
-				},
-				{
-					heading: 'Messages', link: '#',
+					heading: 'Accounts', link: '#', sub: true,
 					submenu: []
-				},
+				}
 			]
 		},
 		{
@@ -130,7 +153,7 @@ export class Constants{
 				{
 					heading: 'Services', link: '#', sub: true,
 					submenu: [
-						{title: 'Training', link: '/dashboard/candidate/training-service'},
+						{title: 'Training', link: '/dashboard/candidate/training-course'}
 					]
 				},
 				{

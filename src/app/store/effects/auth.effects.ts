@@ -75,13 +75,19 @@ export class AuthEffects {
       sessionStorage.setItem('token', user.payload.token);
       sessionStorage.setItem('email', authUserData.email);
       sessionStorage.setItem('isVerified', authUserData.isVerified);
+      sessionStorage.setItem('profileComplete', authUserData.isCompleteness);
       this._appServ.getUserType();
       sessionStorage.setItem('type', this._constants.logType);
-      this.router.navigateByUrl('/profile-completation');
+      //this.router.navigateByUrl('/profile-completation');
+
+      let landURL = '/dashboard/' + this._constants.logType + '/home';
+      this.router.navigateByUrl(landURL);
+
     }else{
       sessionStorage.setItem('token', user.payload.token);
       sessionStorage.setItem('email', authUserData.email);
       sessionStorage.setItem('isCompleteness', authUserData.isVerified);
+      sessionStorage.setItem('profileComplete', authUserData.isCompleteness);
       this._appServ.getUserType();
       sessionStorage.setItem('type', this._constants.logType);
       //this._appServ.updateStoreAuthenticated();
