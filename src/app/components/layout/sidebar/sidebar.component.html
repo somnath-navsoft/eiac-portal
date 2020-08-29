@@ -38,14 +38,22 @@
 
                     <ng-container *ngFor="let item of dashMenu">
                         <li (click)="accDropDown(item.title)">
-                            <a href="javascript:void(0)" (click)="goToLink(item.title)"
-                            *ngIf="item.title">{{item.title}}</a>
+                            <a href="javascript:void(0)" (click)="goToLink(item.title)">{{item.title}}
+                                <span class="pub-data">
+                                    <span *ngIf="item.title != currentTitle && item.child_menu" class="icon-switch"></span>
+                                    <span *ngIf="item.title == currentTitle && item.child_menu" class="icon-switch"></span>
+                                </span>
+                            </a>
+
+                            <!-- <a href="javascript:void(0)" (click)="goToLink(item.title)" >{{item.title}}
+                                <span *ngIf="item.title == currentTitle && item.child_menu" class="icon-down-arrow"></span>
+                            </a> -->
                         </li>   
                         <ng-container *ngIf="item.child_menu">
                             <div class="sub-side-cont" *ngIf="item.title == currentTitle">
                                 <ul>
                                     <li *ngFor="let data of item.child_menu">
-                                        <a href="javascript:void(0)" (click)="goToLink(data.menu.link)" *ngIf="data.title">{{data.title}}</a>
+                                        <a href="javascript:void(0)" (click)="goToLink(data.menu.link)">{{data.title}}</a>
                                     </li>
                                 </ul>
                             </div>
