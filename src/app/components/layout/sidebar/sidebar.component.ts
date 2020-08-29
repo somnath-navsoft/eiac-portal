@@ -33,7 +33,7 @@ export class SidebarComponent implements OnInit {
     .subscribe(
       res => {
         this.dashMenu = res['menu'];
-        console.log(this.dashMenu,'dashMenu');
+        // console.log(this.dashMenu,'dashMenu');
         // let getTypeMenu = this.dashMenu.find(rec => rec.type === this.userType);
         // this.dashMenu = getTypeMenu;
       })

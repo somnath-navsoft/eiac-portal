@@ -55,7 +55,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   public minDate = new Date();
   public authorizationList:any;
   public recommend:any;
-  public authorizationStatus: boolean = false;
+  public authorizationStatus: boolean = true;
   recommendStatus:boolean = false
   public isSubmit:boolean = true;
   dutyTime1: boolean = true;
@@ -446,7 +446,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.inspectionBodyForm.managementManager        = this.managementManager;
     this.inspectionBodyForm.inspectionBodyInfo           = this.inspectionBodyInfo;
     this.inspectionBodyForm.medicaMainlLabInfo        = this.medicaMainlLabInfo;
-    this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false};
+    this.authorizationList = {undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false,authorization_confirm1:false,authorization_confirm2:false};
 
     this.recommend = {first:false,second:false,third:false,fourth:false}
   }
@@ -870,15 +870,16 @@ export class InspectionBodiesFormComponent implements OnInit {
     for(let key in this.authorizationList) {
       if(this.authorizationList[key] == false) {
         this.authorizationStatus = false;
+      }else {
+        this.authorizationStatus = true;
       }
     }
-    console.log(this.authorizationList);
-  for(let key in this.recommend) {
+    
+    for(let key in this.recommend) {
       if(this.recommend[key] == true) {
         this.recommendStatus = true;
       }
     }
-
     if(this.authorizationStatus == false){
       this.isSubmit = false;
       this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
@@ -898,11 +899,10 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.inspectionBodyForm.step6 = {};
       this.inspectionBodyForm.email = this.userEmail;
       this.inspectionBodyForm.userType = this.userType;
-      this.step6Data = this.authorizationStatus;
-      this.step6Data = this.recommend;
+      this.step6Data.authorizationList = this.authorizationList;
+      this.step6Data.recommend = this.recommend;
 
       this.inspectionBodyForm.step6 = this.step6Data;
-      console.log(this.inspectionBodyForm);
       this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
 
       this.step6DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
