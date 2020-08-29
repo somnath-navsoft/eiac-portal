@@ -54,7 +54,9 @@ export class InspectionBodiesFormComponent implements OnInit {
   field2:number=2;
   public minDate = new Date();
   public authorizationList:any;
+  public recommend:any;
   public authorizationStatus: boolean = false;
+  recommendStatus:boolean = false
   public isSubmit:boolean = true;
   dutyTime1: boolean = true;
   dutyTime2: boolean = true;
@@ -444,9 +446,9 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.inspectionBodyForm.managementManager        = this.managementManager;
     this.inspectionBodyForm.inspectionBodyInfo           = this.inspectionBodyInfo;
     this.inspectionBodyForm.medicaMainlLabInfo        = this.medicaMainlLabInfo;
-    this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,authorization_confirm3:false,undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false};
+    this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false};
 
-
+    this.recommend = {first:false,second:false,third:false,fourth:false}
   }
 
   getCriteria(value){
@@ -858,9 +860,63 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.minDate = new Date(cdate  + (60*60*24*1000));
   }
 
-  onSubmitUndertakingApplicant(ngForm: any){
-    console.log("Step UndertakingApplicant submit...");
-    if(!ngForm.form.valid){
+  onSubmitUndertakingApplicant(ngForm6: any){
+    // Object.keys(this.authorizationList).forEach(key => {
+    //   if(this.authorizationList[key]==false){
+    //     this.authorizationStatus = false;
+    //   }
+    // })
+
+    for(let key in this.authorizationList) {
+      if(this.authorizationList[key] == false) {
+        this.authorizationStatus = false;
+      }
+    }
+    console.log(this.authorizationList);
+  for(let key in this.recommend) {
+      if(this.recommend[key] == true) {
+        this.recommendStatus = true;
+      }
+    }
+
+    if(this.authorizationStatus == false){
+      this.isSubmit = false;
+      this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
+    }else if(this.recommendStatus != true){
+      this.isSubmit = false;
+      this.toastr.error('Please Check any recommend the visit ', '');
+    }
+    if(ngForm6.form.valid){
+
+      // this.step6Data = this.recommend.first;
+      // this.step6Data = this.recommend.second;
+      // this.step6Data = this.recommend.first;
+      // this.step6Data = this.recommend.first;
+      // this.step6Data = this.recommend.first;
+
+      this.inspectionBodyForm = {};
+      this.inspectionBodyForm.step6 = {};
+      this.inspectionBodyForm.email = this.userEmail;
+      this.inspectionBodyForm.userType = this.userType;
+      this.step6Data = this.authorizationStatus;
+      this.step6Data = this.recommend;
+
+      this.inspectionBodyForm.step6 = this.step6Data;
+      console.log(this.inspectionBodyForm);
+      this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+
+      this.step6DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step6DataBodyFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
 
       //Paypal config data
       //applyTrainerPublicCourse
@@ -1005,18 +1061,18 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.inspectionBodyForm.userType = this.userType;
       this.inspectionBodyForm.step3 = this.step4Data;
 
-      this.step3DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step3DataBodyFormFile)
-      .subscribe(
-        res => {
-          console.log(res,'res')
-          if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
-            this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
-          }else{
-            this.toastr.warning(res['msg'], '');
-          }
-        });
+      // this.step3DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
+      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step3DataBodyFormFile)
+      // .subscribe(
+      //   res => {
+      //     console.log(res,'res')
+      //     if(res['status'] == true) {
+      //       this.toastr.success(res['msg'], '');
+      //       this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+      //     }else{
+      //       this.toastr.warning(res['msg'], '');
+      //     }
+      //   });
     }else{
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
@@ -1029,7 +1085,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   //   }else{
   //    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
   //  }     
-
+  this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
     if(ngForm4.form.valid) {
       this.inspectionBodyForm = {};
       this.inspectionBodyForm.step4 = {};
@@ -1054,13 +1110,36 @@ export class InspectionBodiesFormComponent implements OnInit {
     }
   }
   
-  onSubmitPerlimVisit(ngForm: any){
-    console.log("Step PerlimVisit submit...", ngForm.form);
-    if(!ngForm.form.valid){
-      this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+  onSubmitPerlimVisit(ngForm5: any){
+    // console.log("Step PerlimVisit submit...", ngForm.form);
+    // if(!ngForm.form.valid){
+    //   this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+    // }else{
+    // this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    // }     
+    this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+    if(ngForm5.form.valid) {
+      this.inspectionBodyForm = {};
+      this.inspectionBodyForm.step5 = {};
+      this.inspectionBodyForm.email = this.userEmail;
+      this.inspectionBodyForm.userType = this.userType;
+      this.inspectionBodyForm.step5 = this.step5Data;
+
+      // this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
+      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step5DataBodyFormFile)
+      // .subscribe(
+      //   res => {
+      //     console.log(res,'res')
+      //     if(res['status'] == true) {
+      //       this.toastr.success(res['msg'], '');
+      //       this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+      //     }else{
+      //       this.toastr.warning(res['msg'], '');
+      //     }
+      //   });
     }else{
-    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
-    }     
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
  }
 
 onSubmitPaymentInformation(ngForm: any){

@@ -139,7 +139,7 @@
                                         <div class="col-md-8">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Registered Physical Location Address</mat-label>
-                                                <textarea matInput onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" autocomplete="off"  placeholder="Registered Physical Location Address" name="physical_location_address" [(ngModel)]="step1Data.physical_location_address"  required></textarea>
+                                                <input matInput onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" autocomplete="off"  placeholder="Registered Physical Location Address" name="physical_location_address" [(ngModel)]="step1Data.physical_location_address" required>
                                             </mat-form-field>
                                         </div> 
 
@@ -946,18 +946,18 @@
                                             <hr>
                                         </div>
                                     </div>
-                                    <div class="row">                                         
+                                    <div class="row mt-3">                                         
                                                 <div class="col-md-12 p-0">
                                                     <div class="row">
-                                                        <div class="col-md-6 p-0">
-                                                            <div class="form-subhdr">
+                                                        <div class="col-md-6">
+                                                            <div class="request-subhdr">
                                                                 <h5>Request for perlim visit</h5>
                                                             </div>
                                                         </div>
-                                                        @@{{inspectionBodyForm.perlim_visit_val |  json}}
+                                                        <!-- @@{{inspectionBodyForm.perlim_visit_val |  json}} -->
                                                         <!-- (click)='proficiency_testing(1)' -->
                                                         <div class="col-md-6">
-                                                            <div class="form-subheader-desc">
+                                                            <div class="request_frm">
                                                                 <mat-radio-group name="perlim_visit_val" 
                                                                 [(ngModel)]="inspectionBodyForm.perlim_visit_val" required>
                                                                     <mat-radio-button value="1">Yes </mat-radio-button>
@@ -970,28 +970,30 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12" *ngIf="inspectionBodyForm.perlim_visit_val === '1'">
+                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Select Date</mat-label>
                                                         <input matInput  readonly="true" (click)="Service._openCalendar(perlim_visit_select_date)"  
                                                         [matDatepicker]="perlim_visit_select_date"  placeholder="Select Date" name="perlim_visit_select_date" 
-                                                        [(ngModel)]="inspectionBodyForm.perlim_visit_select_date" (dateChange)="setexDate()" required>
+                                                        [(ngModel)]="step5Data.perlim_visit_select_date" (dateChange)="setexDate()" required>
                                                         <mat-datepicker-toggle matSuffix [for]="perlim_visit_select_date"></mat-datepicker-toggle>
                                                         <mat-datepicker #perlim_visit_select_date  disabled="false" ></mat-datepicker>
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <mat-form-field class="cab-data">
+                                                    <mat-form-field class="frm-data">
                                                         <mat-label>Select Time</mat-label>
                                                         <mat-select placeholder="Select" name="perlim_visit_select_time" 
                                                         (selectionChange)="getDutyTimeForm1Index($event)" 
-                                                        [(ngModel)]="inspectionBodyForm.perlim_visit_select_time">
+                                                        [(ngModel)]="step5Data.perlim_visit_select_time">
                                                             <mat-option *ngFor="let item of addMinutesToTime; let i = index;" 
                                                             [value]="item.val">{{item.val}}</mat-option>
                                                         </mat-select>
                                                     </mat-form-field>
                                                 </div>
                                             </div>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
@@ -1058,10 +1060,10 @@
                                             </div>
                                             <div class="recommend">
                                                 <span class="confirm">I recommend the visit to be conducted in the</span>
-                                                <mat-checkbox>1st</mat-checkbox>
-                                                <mat-checkbox>2nd</mat-checkbox>
-                                                <mat-checkbox>3rd</mat-checkbox>
-                                                <mat-checkbox>4th quarter of the year</mat-checkbox>
+                                                <mat-checkbox name="1st" [(ngModel)]="recommend.first">1st</mat-checkbox>
+                                                <mat-checkbox name="2nd" [(ngModel)]="recommend.second">2nd</mat-checkbox>
+                                                <mat-checkbox name="3rd" [(ngModel)]="recommend.third">3rd</mat-checkbox>
+                                                <mat-checkbox name="4th" [(ngModel)]="recommend.fourth">4th quarter of the year</mat-checkbox>
                                             </div>
                                             <div class="auth">
                                                 <ul>
@@ -1222,19 +1224,19 @@
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Organization Name</mat-label>
-                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Organization Name" name="onbehalf_company_name"  [(ngModel)]="inspectionBodyForm.onbehalf_company_name" required>
+                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Organization Name" name="onbehalf_company_name" [(ngModel)]="step6Data.organization_name" required>
                                                         </mat-form-field>
                                                     </div>
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Full Name of Authorized Representative</mat-label>
-                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Full Name of Authorized Representative" name="onbehalf_representative_name" [(ngModel)]="inspectionBodyForm.onbehalf_representative_name" required>
+                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Full Name of Authorized Representative" name="onbehalf_representative_name" [(ngModel)]="step6Data.authorized_representative" required>
                                                         </mat-form-field>
                                                     </div>
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Designation</mat-label>
-                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="designation" [(ngModel)]="inspectionBodyForm.onbehalf_designation">
+                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="designation" [(ngModel)]="step6Data.designation">
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
@@ -1242,13 +1244,13 @@
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Digital Signature</mat-label>
-                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Digital Signature" name="digi_sign" [(ngModel)]="inspectionBodyForm.add_lab_address">
+                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Digital Signature" name="digi_sign" [(ngModel)]="step6Data.digital_signature">
                                                         </mat-form-field>
                                                     </div>
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Date</mat-label>
-                                                            <input matInput [matDatepicker]="onbehalf_representative_date" readonly="true" placeholder="Date" name="onbehalf_representative_date" [(ngModel)]="inspectionBodyForm.onbehalf_representative_date" [value]="Service.returnCurrentDate()">
+                                                            <input matInput [matDatepicker]="onbehalf_representative_date" readonly="true" placeholder="Date" name="onbehalf_representative_date" [(ngModel)]="step6Data.date" [value]="Service.returnCurrentDate()">
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
