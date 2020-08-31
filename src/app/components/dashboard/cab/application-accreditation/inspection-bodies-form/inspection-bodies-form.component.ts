@@ -54,13 +54,9 @@ export class InspectionBodiesFormComponent implements OnInit {
   field2:number=2;
   public minDate = new Date();
   public authorizationList:any;
-<<<<<<< HEAD
-  public authorizationStatus: boolean = false;
-=======
   public recommend:any;
   public authorizationStatus: boolean = true;
   recommendStatus:boolean = false
->>>>>>> origin/development
   public isSubmit:boolean = true;
   dutyTime1: boolean = true;
   dutyTime2: boolean = true;
@@ -399,274 +395,6 @@ export class InspectionBodiesFormComponent implements OnInit {
     }
     
     );
-<<<<<<< HEAD
-  }
-  
-  loadCountryStateCity = async() => {
-    let countryList =  this.Service.getCountry();
-    await countryList.subscribe(record => {
-      // console.log(record,'record');
-      this.getCountryLists = record['countries'];
-    });
-    
-  }
-
-  scrollForm(el: HTMLElement)
-  {
-    //this.vps.scrollToAnchor(el);
-    el.scrollIntoView({behavior: 'smooth'});
-  }
-
-  resolvedSecurity(captchaResponse: string) {
-    let captchaStatus   =  captchaResponse;
-    if(captchaStatus != ''){
-      this.checkSecurity = true;
-      this.checkCaptchaValidation = true;
-    }
-  }
-  bod_toggle(value,type){
-    if(type == 'is_bod')
-    {
-      this.is_bod = value;
-    }else if(type == "is_hold_other_accreditation_toggle")
-    {
-      this.is_hold_other_accreditation_toggle = value;
-    }
-  }
-  proficiency_testing(value){
-    this.proficiency_testing_val = value;
-  }
-  loadFormDynamicTable(){
-    // this.ownOrgBasicInfo  =   [{}];
-    // this.ownOrgMembInfo = [{}];
-    // this.accreditationInfo = [{}];
-    this. proficiencyTesting =[{}];
-    this.inspectionBodyInfo=[{}];
-    this.medicaMainlLabInfo=[{}];
-    this.inspectionBodyForm.organizationBasicInfo    = this.ownOrgBasicInfo;
-    this.inspectionBodyForm.organizationMemberInfo   = this.ownOrgMembInfo;
-    this.inspectionBodyForm.accreditationInfo        = this.accreditationInfo;
-    this.inspectionBodyForm.proficiencyTesting       = this.proficiencyTesting;
-    this.inspectionBodyForm.technicalManager         = this.technicalManager;
-    this.inspectionBodyForm.managementManager        = this.managementManager;
-    this.inspectionBodyForm.inspectionBodyInfo           = this.inspectionBodyInfo;
-    this.inspectionBodyForm.medicaMainlLabInfo        = this.medicaMainlLabInfo;
-    this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,authorization_confirm3:false,undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false};
-
-
-  }
-
-  getCriteria(value){
-    //console.log("select Criteris: ", value);
-    if(value != undefined && value > 0){
-       //Get fullscope
-       let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.criteriaIdByScope + value;
-       //console.log("API: ", apiURL);
-
-       this.fullScope = [];
-       this.dynamicScopeModel = [];
-       this.dynamicScopeFieldColumns = [];
-
-       this.Service.get(apiURL,'').subscribe(record => {
-            //console.log('Fullscope: ', record);
-            let dataScope:any = [];
-            let fieldTitleValue: any = [];
-            dataScope = record;
-            //this.fullScope   = dataScope.fullScope;
-            dataScope.fullScope.forEach(dataRec => {
-              if(dataRec.firstFieldValues != undefined){
-                this.fullScope.push(dataRec);
-              }
-            })
-
-            //console.log("full scope: ", this.fullScope);
-            //return;
-            if(dataScope.fullScope.length > 0){
-              var counter = 0;
-              dataScope.fullScope.forEach((rec, key) => {
-                //console.log("-- ", rec, " :: ", key, " --- ", counter++);
-                if(rec.firstFieldValues != undefined){
-                  //console.log('null bababab');
-                  let defLine = {};
-                    let customKey = rec.accr_title[0];
-                    this.dynamicScopeModel[customKey] = [];
-                    this.dynamicScopeFieldColumns[key] = [];
-                    fieldTitleValue[key] = [];
-                    this.dynamicScopeModel[customKey].fieldLines = [];
-                    //Initialize fields values
-                    if(rec.firstFieldValues != undefined){
-                      ////console.log("first value length: ", rec.firstFieldValues.length);
-                      defLine['firstFieldValues'] = rec.firstFieldValues;
-                    }
-                    if(rec.fields.length > 0){
-                      rec.fields.forEach((data,key1) =>{
-                          let fieldValues = data.title.split(" ").join("")+"Values";
-                          let fieldTitle = data.title.split(" ").join("_");
-                          this.dynamicScopeFieldColumns[key].push({title: fieldTitle, values:fieldValues});
-                          defLine[fieldValues] = [];
-
-                          if(defLine['firstFieldValues'].length > 0){
-                            ////console.log("calling.....default...");
-                            let getValue = defLine['firstFieldValues'][0].field_value;
-                            if(key1 === 0){
-                              fieldTitleValue[key].push({title: fieldTitle, defValue: getValue, secName: customKey});
-                            }
-                            //Default load next column                  
-                            this.onChangeScopeOption(getValue,key,0,0,customKey,'initLoad');
-                          }
-                      })
-                    }
-                    //Load first field value default by selecting first item
-                    this.dynamicScopeModel[customKey].fieldLines.push(defLine);
-                }
-                //if(key >=0 && key<=7){
-                    
-                //}
-          })
-          //set default value
-          //Load first field value default by selecting first item
-          this.loadDefaultColumnValues(this.dynamicScopeModel);
-
-        }
-        //console.log(">>>> ", this.dynamicScopeModel, " --- ", this.dynamicScopeFieldColumns);
-       })
-    }
-  }
-
-  loadData(){
-    this.Service.get(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,'')
-    .subscribe(
-      res => {
-        //console.log("@@@@ ", res);
-        this.inspectionBodyScopeFields = res['medicalLabScopeFields'];
-        this.countryList = res['allCountry'];
-        this.labTypeList = res['allLabtype'];
-        //this.fullScope   = res['fullScope'];
-        this.criteriaMaster = res['criteriaMaster'];
-
-
-        Object.keys(res['scopeValue']).forEach(key => {
-
-          this.inspectionBodyData[this.rowCount]=[];
-          this.inspectionBodyData[this.rowCount].field1  = res['scopeValue'][key].values;
-          this.medicalLabFirstData      = res['scopeValue'][key].values;
-          //this.dynamicFirstFieldValues  = res['scopeValue'][key].values;
-        });
-
-        //Dynamic Scope binding ----  Abhishek @Navsoft
-        // let fieldTitleValue: any = [];
-        // if(res['fullScope'].length > 0){
-        //   res['fullScope'].forEach((rec, key) => {
-        //         ////console.log("-- ", rec, " :: ", key);
-        //         let defLine = {};
-        //         let customKey = rec.accr_title[0];
-        //         this.dynamicScopeModel[customKey] = [];
-        //         this.dynamicScopeFieldColumns[key] = [];
-        //         fieldTitleValue[key] = [];
-        //         this.dynamicScopeModel[customKey].fieldLines = [];
-        //         //Initialize fields values
-        //         if(rec.firstFieldValues != undefined){
-        //           ////console.log("first value length: ", rec.firstFieldValues.length);
-        //           defLine['firstFieldValues'] = rec.firstFieldValues;
-        //         }
-        //         if(rec.fields.length > 0){
-        //           rec.fields.forEach((data,key1) =>{
-        //               let fieldValues = data.title.split(" ").join("")+"Values";
-        //               let fieldTitle = data.title.split(" ").join("_");
-        //               this.dynamicScopeFieldColumns[key].push({title: fieldTitle, values:fieldValues});
-        //               defLine[fieldValues] = [];
-
-        //               if(defLine['firstFieldValues'].length > 0){
-        //                 ////console.log("calling.....default...");
-        //                 let getValue = defLine['firstFieldValues'][0].field_value;
-        //                 if(key1 === 0){
-        //                   fieldTitleValue[key].push({title: fieldTitle, defValue: getValue, secName: customKey});
-        //                 }
-        //                 //Default load next column                  
-        //                 this.onChangeScopeOption(getValue,key,0,0,customKey,'initLoad');
-        //               }
-        //           })
-        //         }
-        //         //Load first field value default by selecting first item
-
-        //         this.dynamicScopeModel[customKey].fieldLines.push(defLine);
-        //         ////console.log(defLine['firstFieldValues'].length, " -- ", customKey, " ===== ", fieldTitleValue );
-        //         // if(defLine['firstFieldValues'].length > 0){
-        //         //   //console.log("For Key: ", key, " --- ", this.dynamicScopeFieldColumns[key]);
-        //         //   let fieldColumns: any = [];
-        //         //   fieldColumns = this.dynamicScopeFieldColumns[key];
-                  
-        //         //   this.dynamicScopeFieldColumns.forEach((recCol, keyCol) => {
-        //         //         //console.log(" >>>   ^^ ", recCol, " :: ", keyCol)
-        //         //         if(keyCol === 0){
-        //         //           let getModelKey = recCol[0].title;
-        //         //           let getDefValue = 0;
-        //         //           fieldTitleValue.forEach((recV,keyV) => {
-        //         //               ////console.log("*** ", recV, " -- ", keyV)
-        //         //               if(recV[keyV].title === getModelKey){
-        //         //                  getDefValue = recV[keyV].defValue;
-        //         //               }
-        //         //           })
-        //         //           ////console.log(getModelKey, " --- FindValue:  ", getDefValue);
-        //         //           //console.log("***** Model Status: ", this.dynamicScopeModel[customKey]);
-        //         //           this.dynamicScopeModel[customKey].fieldLines[0][getModelKey] = getDefValue;
-        //         //         }
-        //         //   })
-        //         // }
-        //   })
-
-        //   //set default value
-        //   //Load first field value default by selecting first item
-        //   this.loadDefaultColumnValues(this.dynamicScopeModel);
-        // }
-        ////console.log(res,'::Result::');
-        ////console.log(">>>> ", this.dynamicScopeModel, " --- ", this.dynamicScopeFieldColumns);
-        //Dynamic Scope binding ----  Abhishek @Navsoft
-      },
-      error => {
-      
-  })
-
-    if(this.inspectionBodyScopeFields.length<1){
-      this.inspectionBodyScopeFields=  [{},{},{},{},{},{}];
-    }
-  }
-
-  loadDefaultColumnValues(modelObject: any){
-      ////console.log("### Setting default values: ", modelObject, " --- ", typeof(modelObject), " === ", this.dynamicScopeFieldColumns);
-      var lineCount = 0;
-      let getModelKey = '';
-      let getFistValue = 0;
-      for(var key in modelObject){
-          ////console.log(key," ----- ", modelObject[key]);
-        if(modelObject[key].fieldLines[0].firstFieldValues.length > 0){
-          ////console.log(">>> Firstfieldvalues: ", key , modelObject[key].fieldLines[0].firstFieldValues);
-          if(this.dynamicScopeFieldColumns.length > 0){
-            getModelKey = this.dynamicScopeFieldColumns[lineCount][0].title;
-          }
-          getFistValue = modelObject[key].fieldLines[0].firstFieldValues[0].field_value;
-          ////console.log("Field/model value: ", getFistValue, " :: ", getModelKey);
-          if(getModelKey != '' && getFistValue > 0){
-            modelObject[key].fieldLines[0][getModelKey] = getFistValue;
-          }
-        }
-        lineCount++;
-      }
-  }
-
-  getDutyTimeForm1Index(indexVal){
-    //console.log('Get Index: ', indexVal.value, " -- ", indexVal);
-      var keyVal;
-      for(keyVal in this.addMinutesToTime){
-          //console.log(keyVal);
-          if(indexVal.value === this.addMinutesToTime[keyVal].val){
-            //console.log("match ", this.addMinutesToTime[keyVal].val);
-            this.getDutyTimeForm1IndexValue = keyVal;
-            return;
-          }
-      }
-  }
-=======
   }
   
   loadCountryStateCity = async() => {
@@ -933,7 +661,6 @@ export class InspectionBodiesFormComponent implements OnInit {
           }
       }
   }
->>>>>>> origin/development
   emailValidation(email){
     // var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     // if(!regex.test(email)){
@@ -1133,11 +860,6 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.minDate = new Date(cdate  + (60*60*24*1000));
   }
 
-<<<<<<< HEAD
-  onSubmitUndertakingApplicant(ngForm: any){
-    console.log("Step UndertakingApplicant submit...");
-    if(!ngForm.form.valid){
-=======
   onSubmitUndertakingApplicant(ngForm6: any){
     // Object.keys(this.authorizationList).forEach(key => {
     //   if(this.authorizationList[key]==false){
@@ -1195,7 +917,6 @@ export class InspectionBodiesFormComponent implements OnInit {
             this.toastr.warning(res['msg'], '');
           }
         });
->>>>>>> origin/development
 
       //Paypal config data
       //applyTrainerPublicCourse
@@ -1242,8 +963,6 @@ export class InspectionBodiesFormComponent implements OnInit {
     //  }else{
     //   this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     // }
-<<<<<<< HEAD
-=======
     
     
     if(this.step1Data.duty_shift == '1' && typeof this.step1Data.duty_from1 == 'undefined' && typeof this.step1Data.duty_to1 == 'undefined')
@@ -1292,7 +1011,6 @@ export class InspectionBodiesFormComponent implements OnInit {
     }else{
       this.dutyTime1 = true;
     }
->>>>>>> origin/development
     this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
 
     if(ngForm1.form.valid && this.tradeLicensedValidation != false) {
@@ -1391,20 +1109,6 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.inspectionBodyForm.userType = this.userType;
       this.inspectionBodyForm.step3 = this.step4Data;
 
-<<<<<<< HEAD
-      this.step3DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step3DataBodyFormFile)
-      .subscribe(
-        res => {
-          console.log(res,'res')
-          if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
-            this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
-          }else{
-            this.toastr.warning(res['msg'], '');
-          }
-        });
-=======
       // this.step3DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
       // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step3DataBodyFormFile)
       // .subscribe(
@@ -1417,7 +1121,6 @@ export class InspectionBodiesFormComponent implements OnInit {
       //       this.toastr.warning(res['msg'], '');
       //     }
       //   });
->>>>>>> origin/development
     }else{
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
@@ -1430,11 +1133,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   //   }else{
   //    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
   //  }     
-<<<<<<< HEAD
-
-=======
   this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
->>>>>>> origin/development
     if(ngForm4.form.valid) {
       this.inspectionBodyForm = {};
       this.inspectionBodyForm.step4 = {};
@@ -1459,15 +1158,6 @@ export class InspectionBodiesFormComponent implements OnInit {
     }
   }
   
-<<<<<<< HEAD
-  onSubmitPerlimVisit(ngForm: any){
-    console.log("Step PerlimVisit submit...", ngForm.form);
-    if(!ngForm.form.valid){
-      this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
-    }else{
-    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
-    }     
-=======
   onSubmitPerlimVisit(ngForm5: any){
     // console.log("Step PerlimVisit submit...", ngForm.form);
     // if(!ngForm.form.valid){
@@ -1498,7 +1188,6 @@ export class InspectionBodiesFormComponent implements OnInit {
     }else{
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
->>>>>>> origin/development
  }
 
 onSubmitPaymentInformation(ngForm: any){

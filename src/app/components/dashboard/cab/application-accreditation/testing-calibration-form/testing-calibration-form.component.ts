@@ -93,9 +93,6 @@ export class TestingCalibrationFormComponent implements OnInit {
       }
     }        
   }
-<<<<<<< HEAD
-
-=======
   headerSteps:any[] = [];
   public recommend:any;
   allStateList: Array<any> = [];
@@ -124,7 +121,6 @@ export class TestingCalibrationFormComponent implements OnInit {
   transactions: any[] =[];
   transactionsItem: any={};
   
->>>>>>> origin/development
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
   getData(getVal){
@@ -251,22 +247,6 @@ export class TestingCalibrationFormComponent implements OnInit {
     //this.checkCaptchaValidation = true;
     
     this.loader = false;
-<<<<<<< HEAD
-
-  }
-
-  // idToName(title,val) {
-  //   if(title == 'country')
-  //   {
-  //     //this.country_name = val;
-  //     this.testingCalForm.country_name = val;
-  //     this.loadCountryCity(this.testingCalForm.country_name);
-  //   }else{
-  //     this.testingCalForm.accredation_type_name = val;
-  //   }
-    
-  // }
-=======
     this.headerSteps.push(
       {
       title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-user', activeClass:'user-present'
@@ -291,7 +271,6 @@ export class TestingCalibrationFormComponent implements OnInit {
       }
     );
   }
->>>>>>> origin/development
   
   getPlaceName()
   {
@@ -324,8 +303,6 @@ export class TestingCalibrationFormComponent implements OnInit {
   }
   bod_toggle(value){
     this.is_bod = value;
-<<<<<<< HEAD
-=======
   }
 
   loadFormDynamicTable(){
@@ -348,306 +325,7 @@ export class TestingCalibrationFormComponent implements OnInit {
     this.testingCalForm.medicaMainlLabInfo        = this.medicaMainlLabInfo;
     this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,authorization_confirm3:false,undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false,undertaking_confirm8:false,undertaking_confirm9:false};
     this.recommend = {first:false,second:false,third:false,fourth:false}
->>>>>>> origin/development
   }
-  loadFormDynamicTable(){
-    this.ownOrgBasicInfo  =   [{}];
-    this.ownOrgMembInfo = [{}];
-    this.accreditationInfo = [{}];
-    this. proficiencyTesting =[{}];
-    this.testingLabInfo={part1:[{}],part2:[{}]};
-    this.calLabInfo={part1:[{}],part2:[{}]};
-    this.medicaMainlLabInfo=[{}];
-    
-    this.testingCalForm.organizationBasicInfo    = this.ownOrgBasicInfo;
-    this.testingCalForm.organizationMemberInfo   = this.ownOrgMembInfo;
-    this.testingCalForm.accreditationInfo        = this.accreditationInfo;
-    this.testingCalForm.proficiencyTesting       = this.proficiencyTesting;
-    this.testingCalForm.technicalManager         = this.technicalManager;
-    this.testingCalForm.managementManager        = this.managementManager;
-    this.testingCalForm.testingLabInfo           = this.testingLabInfo;
-    this.testingCalForm.calLabInfo               = this.calLabInfo;
-    this.testingCalForm.medicaMainlLabInfo        = this.medicaMainlLabInfo;
-    this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,authorization_confirm3:false,undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false,undertaking_confirm8:false,undertaking_confirm9:false};
-
-  }
-  setexDate(){
-    let cdate =this.testingCalForm.date_of_issue;
-    this.minDate = new Date(cdate  + (60*60*24*1000));
-  }
-  loadData(){
-    this.Service.get(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testing_cal_form_basic_data,'')
-    .subscribe(
-      res => {
-        this.testingLabScopeFields = res['testLabScopeFields'];
-        this.calLabScopeFields = res['calLabScopeFields'];
-        this.countryList = res['allCountry'];
-        this.labTypeList = res['allLabtype'];
-        //Testing Scope
-        Object.keys(res['scopeValueTl']).forEach(key => {
-          
-          this.testingLabData['part1'][this.testingLabRowCount1] = {}
-          this.testingLabData['part2'][this.testingLabRowCount2] = {}
-          this.testingLabData['part1'][this.testingLabRowCount1].field1 = res['scopeValueTl'][key].values;
-          this.testingLabData['part2'][this.testingLabRowCount2].field1 = res['scopeValueTl'][key].values;
-          this.testingLabFirstData = res['scopeValueTl'][key].values;
-
-        });
-
-        //Calibration Scope
-
-        Object.keys(res['scopeValueCl']).forEach(key => {
-          
-          this.calLabData['part1'][this.calLabRowCount1] = {}
-          this.calLabData['part2'][this.calLabRowCount2] = {}
-          this.calLabData['part1'][this.calLabRowCount1].field1 = res['scopeValueCl'][key].values;
-          this.calLabData['part2'][this.calLabRowCount2].field1 = res['scopeValueCl'][key].values;
-          this.calLabFirstData = res['scopeValueCl'][key].values;
-        });
-        //console.log("========>");
-        //console.log(this.testingLabData);
-
-      },
-      error => {
-      
-  })
-
-    if(this.testingLabScopeFields.length<1){
-      this.testingLabScopeFields=  [{},{},{},{},{},{}];
-    }
-  }
-  
-  validateFile(fileEvent: any) {
-    var file_name = fileEvent.target.files[0].name;
-    var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
-    var ex_type = ['pdf','png'];
-    var ex_check = this.Service.isInArray(file_exe,ex_type);
-    if(ex_check){
-      this.testingCalForm.trade_license_name = fileEvent.target.files[0].name;
-      this.testingCalFormFile.append('trade_license_file',fileEvent.target.files[0]);
-      this.file_validation = true;
-      return true;
-    }
-    else{
-      this.file_validation = false;
-      return false;
-    }
-}
-  //organizationArray
-  addRow(obj: any = [],type?: string){
-    if(type != '' && type != undefined){
-      //console.log('1st')
-      let getIndex    =   obj.findIndex(rec => rec.type == type);
-      this.newRow     =   {};
-      obj[getIndex].data.push(this.newRow);
-    }
-    if(type === '' || type == undefined){
-      let objlength = obj.length+1;
-      this.testingLabData['part1']['row'+objlength]={};
-      this.testingLabData['part1']['row'+objlength].field1 = this.testingLabFirstData;
-      this.newRow     =   {};
-      obj.push(this.newRow);
-    }
-      
-    return true;
-  }
-
-  addMLRow(obj: any = [],type: string,tableType: string,tableSection: string){ 
-
-    this[tableType+'RowCount'+tableSection]++;
-    if(type === '' || type == undefined){
-      let objlength = obj.length+1;
-      this[tableType+'Data']['part'+tableSection][this[tableType+'RowCount'+tableSection]]=[];
-      this[tableType+'Data']['part'+tableSection][this[tableType+'RowCount'+tableSection]].field1 = this[tableType+'FirstData'];
-      this.newRow     =   {};
-      obj.push(this.newRow);
-    }
-    return true;
-  }
-
-  
-  showHideMembInfo(data){
-    this.orgMembToggle  = data.checked;
-  }
-
-  accreditationType (id){
-    this.accreditationTypeId = id;
-    //this.testingCalForm.laboratory_type_name = title;
-  }
-
-  accreditationRequired(title) {
-    this.testingCalForm.accredation_type_name = title;
-  }
-
-  onSubmit(ngForm){
-    ////console.log(this.testingCalForm);
-    // if(this.checkSecurity == true)
-    // {
-    //   this.checkCaptchaValidation = true;
-    // }else{
-    //   this.checkCaptchaValidation = false;
-    // }
-    // if(!this.testingCalForm.authorization_confirm1){
-    //   this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
-    // }
-    // if(!this.testingCalForm.authorization_confirm2){
-    //   this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
-    // }
-    // if(!this.testingCalForm.authorization_confirm3){
-    //   this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
-    // }
-    // if(!this.testingCalForm.recommend_confirm){
-    //   this.toastr.error('Please Check Recommend Confirm ', '');
-    // }
-    this.authorizationStatus = true;
-    this.isSubmit = true;
-    this.afterSubmit = true;
-    Object.keys(this.authorizationList).forEach(key => {
-      if(this.authorizationList[key]==false){
-        //console.log(this.authorizationList[key])
-        this.authorizationStatus = false;
-      }
-    })
-    if(!this.authorizationStatus){
-      this.isSubmit = false;
-      this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
-    }
-    // if(!this.Service.checkInput('email',this.testingCalForm.mailing_address)){
-    //   this.isSubmit = false;
-    //   //this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
-    // }
-
-    if(this.testingCalForm.duty_shift == '1' && typeof this.testingCalForm.duty_from1 == 'undefined' && typeof this.testingCalForm.duty_to1 == 'undefined')
-    {
-      ////console.log();
-      this.dutyTime1 = false;
-      this.isSubmit = false;
-    }else{
-      this.dutyTime1 = true;
-    }
-    if(this.testingCalForm.duty_shift == '2' && typeof this.testingCalForm.duty_from2 == 'undefined' && typeof this.testingCalForm.duty_to2 == 'undefined')
-    {
-      if(typeof this.testingCalForm.duty_from1 == 'undefined' || typeof this.testingCalForm.duty_to1 == 'undefined')
-      {
-        this.dutyTime1 = false;
-      }else{
-        this.dutyTime1 = true;
-      }
-      this.dutyTime2 = false;
-      this.isSubmit = false;
-    }else{
-      this.dutyTime2 = true;
-    }
-    if(this.testingCalForm.duty_shift == '3' && typeof this.testingCalForm.duty_from3 == 'undefined' && typeof this.testingCalForm.duty_to3 == 'undefined')
-    {
-      if(typeof this.testingCalForm.duty_from1 == 'undefined' || typeof this.testingCalForm.duty_to1 == 'undefined')
-      {
-        this.dutyTime1 = false;
-      }else{
-        this.dutyTime1 = true;
-      }
-      if(typeof this.testingCalForm.duty_from2 == 'undefined' || typeof this.testingCalForm.duty_to2 == 'undefined')
-      {
-        this.dutyTime2 = false;
-      }else{
-        this.dutyTime2 = true;
-      }
-      ////console.log();
-      this.dutyTime3 = false;
-      this.isSubmit = false;
-    }else{
-      this.dutyTime3 = true;
-    }
-
-    if(ngForm.form.valid && this.checkCaptchaValidation == true){
-      this.testingCalForm.is_bod = this.is_bod;
-      this.testingCalFormFile.append('data',JSON.stringify(this.testingCalForm));
-      this.loader = true;
-       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testing_cal_form_basic_data,this.testingCalFormFile)
-       .subscribe(
-         res => {
-           if(res['status']==true){
-            this.loader = false;
-            this.captchaRef.reset();
-            this.checkCaptchaValidation = false;
-            this.afterSubmit = false;
-             this.toastr.success(res['msg'], '');
-             this.router.navigate(['application-form/service/testing_calibration']);
-           }
-           else{
-             this.toastr.error(res['msg'],'')
-           }
-         },
-         error => {
-           this.toastr.error('Something went wrong','')
-     })
-     }
-     else{
-       this.toastr.warning('Please Fill required field','')
-     }
-  }
-
-  dayTimeChange(event,dayTime)
-  {
-    ////console.log(dayTime);
-    if(event.value != '' && dayTime == '1')
-    {
-      this.dutyTime1 = true;
-    }
-    if(event.value != '' && dayTime == '2')
-    {
-      this.dutyTime2 = true;
-    }
-    if(event.value != '' && dayTime == '3')
-    {
-      this.dutyTime3 = true;
-    }
-  }
-
-  // openDialog(obj: any, index: number) {
-  //   const dialogRef = this.dialog.open(DialogBoxComponent,{
-  //     data:{
-  //       message: 'Are you sure want to delete?',
-  //       buttonText: {
-  //         ok: 'Yes',
-  //         cancel: 'No'
-  //       },
-  //       obj:obj,
-  //       index:index,
-  //     }
-  //   });
-  // }
-
-  removeRow(obj: any, index: number, type?:string){
-
-    if(type === '' || type == undefined){
-      obj.splice(index, 1);
-    }    
-    return true;
-  }
-
-  // openAuthorizationDialog() {
-  //   const dialogRef = this.dialog.open(DialogBoxComponent,{
-  //     data:{
-  //       message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-  //       buttonText: {
-  //         ok: 'Accept',
-  //         cancel: 'Cancel'
-  //       },
-  //       obj:'',
-  //       index:'',
-  //       authorization_checked:true,
-  //     },
-  //     height: '300px',
-  //     width: '600px',
-  //   });
-  //   dialogRef.afterClosed().pipe(
-  //     filter(name => name)
-  //   ).subscribe(name => {
-  //     this.authorization_confirm2 = name.authorization;
-  //     this.authorizationList.authorization_confirm2 = this.authorization_confirm2;
-  //   })
-  // }
 
   setexDate(){
     let cdate =this.testingCalForm.date_of_issue;

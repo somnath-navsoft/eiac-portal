@@ -91,34 +91,19 @@ export class LayoutComponent implements OnInit {
         // console.log("@@@Auth status: ", state);
         if(state.user != null && state.user.token != undefined && state.user.token != null) {
           
-<<<<<<< HEAD
-          let authUserData = this._service.decodeJWT(state.user.token); 
-          /*
-          else if(state.user.token !=null &&  authUserData.isCompleteness == '0'){
-            console.log('@Enter....1.0: ');
-            this.isAuthenticated = state.isAuthenticated;
-            this.isCompleteness = '1';
-          }
-          */
-=======
           let authUserData = this._service.decodeJWT(state.user.token);
           // console.log(authUserData,'authUserData')
->>>>>>> origin/development
           if(state.user.token !=null && authUserData.isVerified == '0')
           {
-            // console.log('@Enter....1: ');
+            
             this.isAuthenticated = false;
-<<<<<<< HEAD
-          }else if(state.user.token !=null){
-            // console.log('@Enter....1.1: ');
-=======
           }else if(state.user.token !=null && authUserData.isCompleteness == '0'){
             this.isAuthenticated = state.isAuthenticated;
             this.isCompleteness = '0';
           }else if(state.user.token !=null && authUserData.isCompleteness == '1'){
->>>>>>> origin/development
             this.isAuthenticated = state.isAuthenticated;
             this.isCompleteness = '1';
+            //console.log('@Enter....1.2: ');
           }
         }
         else{

@@ -11,11 +11,7 @@ export class AuthGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         let getLocalToken = sessionStorage.getItem('token');
         this.token = (getLocalToken != null) ? getLocalToken : '';        
-<<<<<<< HEAD
-        console.log('Auth guard: 1',this.token);
-=======
         // console.log('Auth guard: 1',this.token);
->>>>>>> origin/development
         //this.token == undefined || this.token == '' || 
         //this.token == 'null' ||
         if (this.token == '' || this.token == null)  {
