@@ -775,8 +775,16 @@ a:hover { text-decoration: none; }
 .bttns { text-align: right; padding: 40px 0; font-family: 'Dubai Bold'; font-size: 26px;}
 .cancel-bttn {border: 1px solid #B54150; background: transparent; color: #B54150; margin-right: 30px; padding: 10px 52px;}
 .cancel-bttn:focus {outline: none;}
+<<<<<<< HEAD
 .submit-bttn {color: #ffffff; background: #B54150; border: 1px solid #B54150; padding: 10px 53px;}
 .submit-bttn:focus {outline: none;}
+=======
+.submit-bttn {color: #ffffff; background: #B54150; border: 1px solid #e6b3ba; padding: 10px 53px;}
+.submit-bttn:focus {outline: none;}
+.frm-data { width: 45%; margin-right: 10px; }
+.frm-data .mat-form-field-label { color: #3F3F3F; font-family: 'Dubai Regular';}
+.request_frm { margin: 0 -15px; }
+>>>>>>> origin/development
 
 //==================RESPONSIVE==================//
 @media(max-width: 1366px) {

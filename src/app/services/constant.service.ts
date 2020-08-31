@@ -43,6 +43,10 @@ export class Constants{
 		testing_cal_form_basic_data: 'testing_calibration_form_management/',
 		inspection_form_basic_data: 'inspection_body_form_management/',
 		criteriaIdByScope: this.apiUrl + 'criteria_wise_scope/',
+<<<<<<< HEAD
+=======
+		userPermissionData: this.apiUrl + 'user-permission-data/',
+>>>>>>> origin/development
 	}
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."
 	public loggedIn													=	new Subject<any>();
