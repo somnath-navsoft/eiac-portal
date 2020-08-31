@@ -963,6 +963,54 @@ export class InspectionBodiesFormComponent implements OnInit {
     //  }else{
     //   this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     // }
+    
+    
+    if(this.step1Data.duty_shift == '1' && typeof this.step1Data.duty_from1 == 'undefined' && typeof this.step1Data.duty_to1 == 'undefined')
+    {
+      this.dutyTime1 = false;
+      this.isSubmit = false;
+    }else{
+      this.dutyTime1 = true;
+    }
+    if(this.step1Data.duty_shift == '2' && typeof this.step1Data.duty_from2 == 'undefined' && typeof this.step1Data.duty_to2 == 'undefined')
+    {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+      }else{
+        this.dutyTime1 = true;
+      }
+      this.dutyTime2 = false;
+      this.isSubmit = false;
+    }else{
+      this.dutyTime2 = true;
+    }
+    if(this.step1Data.duty_shift == '3' && typeof this.step1Data.duty_from3 == 'undefined' && typeof this.step1Data.duty_to3 == 'undefined')
+    {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+      }else{
+        this.dutyTime1 = true;
+      }
+      if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
+      {
+        this.dutyTime2 = false;
+      }else{
+        this.dutyTime2 = true;
+      }
+      this.dutyTime3 = false;
+      this.isSubmit = false;
+    }else{
+      this.dutyTime3 = true;
+    }
+
+    if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
+      this.dutyTime1 = false;
+      this.isSubmit = false;
+    }else{
+      this.dutyTime1 = true;
+    }
     this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
 
     if(ngForm1.form.valid && this.tradeLicensedValidation != false) {

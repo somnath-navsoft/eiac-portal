@@ -78,10 +78,10 @@ export class AuthEffects {
       sessionStorage.setItem('profileComplete', authUserData.isCompleteness);
       this._appServ.getUserType();
       sessionStorage.setItem('type', this._constants.logType);
-      //this.router.navigateByUrl('/profile-completation');
+      this.router.navigateByUrl('/profile-completation');
 
-      let landURL = '/dashboard/' + this._constants.logType + '/home';
-      this.router.navigateByUrl(landURL);
+      // let landURL = '/dashboard/' + this._constants.logType + '/home';
+      // this.router.navigateByUrl(landURL);
 
     }else{
       sessionStorage.setItem('token', user.payload.token);

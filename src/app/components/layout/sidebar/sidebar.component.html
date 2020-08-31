@@ -40,8 +40,8 @@
                         <li (click)="accDropDown(item.title)">
                             <a href="javascript:void(0)" (click)="goToLink(item.title)">{{item.title}}
                                 <span class="pub-data">
-                                    <span *ngIf="item.title != currentTitle && item.child_menu" class="icon-switch"></span>
-                                    <span *ngIf="item.title == currentTitle && item.child_menu" class="icon-switch"></span>
+                                    <span *ngIf="item.title != currentTitle && item.child_menu" class="icon-down-arrow"></span>
+                                    <span *ngIf="item.title == currentTitle && item.child_menu" class="icon-up-arrow"></span>
                                 </span>
                             </a>
 

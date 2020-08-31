@@ -93,7 +93,34 @@ export class TestingCalibrationFormComponent implements OnInit {
       }
     }        
   }
-
+  headerSteps:any[] = [];
+  public recommend:any;
+  allStateList: Array<any> = [];
+  allCityList: Array<any> = [];
+  step1Data:any = {};
+  step2Data:any = {};
+  step3Data:any = {};
+  step4Data:any = {};
+  step5Data:any = {};
+  step6Data:any = {};
+  step7Data:any = {};
+  fileAny:any;
+  tradeLicensedValidation:any = false;
+  step1DataBodyFormFile:any = new FormData();
+  step2DataBodyFormFile:any = new FormData();
+  step3DataBodyFormFile:any = new FormData();
+  step4DataBodyFormFile:any = new FormData();
+  step5DataBodyFormFile:any = new FormData();
+  step6DataBodyFormFile:any = new FormData();
+  step7DataBodyFormFile:any = new FormData();
+  userEmail:any;
+  userType:any;
+  isCompleteness:any;
+  profileComplete:any;
+  today = new Date();
+  transactions: any[] =[];
+  transactionsItem: any={};
+  
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
   getData(getVal){
@@ -220,20 +247,30 @@ export class TestingCalibrationFormComponent implements OnInit {
     //this.checkCaptchaValidation = true;
     
     this.loader = false;
-
+    this.headerSteps.push(
+      {
+      title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-user', activeClass:'user-present'
+      },
+      {
+      title:'profciency_testing_participation', desc:'2. Profciency Testing Participation', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      },
+      {
+      title:'personal_information', desc:'3. Personal Information', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      },
+      {
+      title:'information_audit_management', desc:'4. Internal Audit & Management', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      },
+      {
+      title:'perlim_visit', desc:'5. Perlim Visit', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      },
+      {
+      title:'undertaking_applicant', desc:'6. Undertaking & Applicant Company', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      },
+      {
+      title:'payment', desc:'7. Payment Information', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
+      }
+    );
   }
-
-  // idToName(title,val) {
-  //   if(title == 'country')
-  //   {
-  //     //this.country_name = val;
-  //     this.testingCalForm.country_name = val;
-  //     this.loadCountryCity(this.testingCalForm.country_name);
-  //   }else{
-  //     this.testingCalForm.accredation_type_name = val;
-  //   }
-    
-  // }
   
   getPlaceName()
   {
@@ -267,6 +304,7 @@ export class TestingCalibrationFormComponent implements OnInit {
   bod_toggle(value){
     this.is_bod = value;
   }
+
   loadFormDynamicTable(){
     this.ownOrgBasicInfo  =   [{}];
     this.ownOrgMembInfo = [{}];
@@ -286,8 +324,9 @@ export class TestingCalibrationFormComponent implements OnInit {
     this.testingCalForm.calLabInfo               = this.calLabInfo;
     this.testingCalForm.medicaMainlLabInfo        = this.medicaMainlLabInfo;
     this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,authorization_confirm3:false,undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false,undertaking_confirm8:false,undertaking_confirm9:false};
-
+    this.recommend = {first:false,second:false,third:false,fourth:false}
   }
+
   setexDate(){
     let cdate =this.testingCalForm.date_of_issue;
     this.minDate = new Date(cdate  + (60*60*24*1000));
@@ -337,19 +376,18 @@ export class TestingCalibrationFormComponent implements OnInit {
   validateFile(fileEvent: any) {
     var file_name = fileEvent.target.files[0].name;
     var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
-    var ex_type = ['pdf','png'];
+    var ex_type = ['pdf','png','jpg','jpeg','JPEG'];
     var ex_check = this.Service.isInArray(file_exe,ex_type);
     if(ex_check){
-      this.testingCalForm.trade_license_name = fileEvent.target.files[0].name;
-      this.testingCalFormFile.append('trade_license_file',fileEvent.target.files[0]);
+      this.step1DataBodyFormFile.append('trade_license',fileEvent.target.files[0]);
       this.file_validation = true;
+      this.tradeLicensedValidation = true;
       return true;
-    }
-    else{
+    }else{
       this.file_validation = false;
-      return false;
+      this.tradeLicensedValidation = false;
     }
-}
+  }
   //organizationArray
   addRow(obj: any = [],type?: string){
     if(type != '' && type != undefined){
