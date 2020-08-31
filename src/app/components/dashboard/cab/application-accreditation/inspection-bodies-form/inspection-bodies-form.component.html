@@ -154,7 +154,7 @@
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>PO Box No./ZIP Code</mat-label>
-                                                <input onpaste="return false" (keypress)="Service.IsNumeric($event)" matInput autocomplete="off"  placeholder="PO BOX NO./Zip Code" name="po_box" [(ngModel)]="step1Data.po_box" (keypress)="Service.IsNumeric($event)"  required>
+                                                <input onpaste="return false" (keypress)="Service.IsNumeric($event)" matInput autocomplete="off"  placeholder="PO BOX NO./Zip Code" name="po_box" [(ngModel)]="step1Data.po_box" required>
                                                 <mat-error></mat-error> 
                                             </mat-form-field>
                                             <p class="error" *ngIf="step1Data.po_box && !Service.checkInput('onlyNumberWithPlus',step1Data.po_box)">Please Enter Correct Zip Code</p> 
@@ -774,7 +774,7 @@
                 <div class="form-bdy cust-stepper" id="personal_information"  [ngStyle]="{'display':'none'}">
                     <div class="row m-0">
                         <div class="wrapper">
-                            <form #ngForm3="ngForm" (ngSubmit)="onSubmitPersonalInformation(ngForm3)" autocomplete="off">  
+                        <form #ngForm3="ngForm" (ngSubmit)="onSubmitPersonalInformation(ngForm3)" autocomplete="off">  
                             <div class="col-12">
                                 <div class="row">
                                     <div class="col-md-12 p-0">
@@ -880,7 +880,7 @@
                                     </div>
                                 </div>
                             </div>
-                            </form>
+                        </form>
                         </div>
                     </div>
                 </div>

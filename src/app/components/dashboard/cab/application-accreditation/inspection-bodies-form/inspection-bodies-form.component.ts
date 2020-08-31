@@ -1107,7 +1107,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.inspectionBodyForm.step3 = {};
       this.inspectionBodyForm.email = this.userEmail;
       this.inspectionBodyForm.userType = this.userType;
-      this.inspectionBodyForm.step3 = this.step4Data;
+      this.inspectionBodyForm.step3 = this.step3Data;
 
       // this.step3DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
       // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step3DataBodyFormFile)

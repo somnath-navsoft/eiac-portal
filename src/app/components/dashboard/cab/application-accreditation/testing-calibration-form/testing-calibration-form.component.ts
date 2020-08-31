@@ -120,7 +120,8 @@ export class TestingCalibrationFormComponent implements OnInit {
   today = new Date();
   transactions: any[] =[];
   transactionsItem: any={};
-  
+  is_hold_other_accreditation_toggle: any = 0;
+
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
   getData(getVal){
@@ -243,6 +244,7 @@ export class TestingCalibrationFormComponent implements OnInit {
     this.addMinutesToTime = this.Service.addMinutesToTime();
     this.loadData();
     this.loadFormDynamicTable();
+    this.loadCountryStateCity();
     // this.loadCountryStateCity();
     //this.checkCaptchaValidation = true;
     
@@ -274,9 +276,9 @@ export class TestingCalibrationFormComponent implements OnInit {
   
   getPlaceName()
   {
-    if(typeof this.testingCalForm.search_location_name != 'undefined')
+    if(typeof this.step1Data.search_location_name != 'undefined')
     {
-      this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.testingCalForm.search_location_name+'.json?access_token='+this.Service.mapboxToken+'','')
+      this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.step1Data.search_location_name+'.json?access_token='+this.Service.mapboxToken+'','')
         .subscribe(res => {
             // //console.log(res['features']);
             this.searchCountryLists = res['features'];
@@ -301,8 +303,18 @@ export class TestingCalibrationFormComponent implements OnInit {
     }
     //console.log(`Resolved captcha with response: ${captchaResponse}`);
   }
-  bod_toggle(value){
-    this.is_bod = value;
+  // bod_toggle(value){
+  //   this.is_bod = value;
+  // }
+
+  bod_toggle(value,type){
+    if(type == 'is_bod')
+    {
+      this.is_bod = value;
+    }else if(type == "is_hold_other_accreditation_toggle")
+    {
+      this.is_hold_other_accreditation_toggle = value;
+    }
   }
 
   loadFormDynamicTable(){
@@ -434,6 +446,47 @@ export class TestingCalibrationFormComponent implements OnInit {
     this.testingCalForm.accredation_type_name = title;
   }
 
+  statelistById = async(country_id) => {
+    this.allStateList = [];
+    let stateList =  this.Service.getState();
+    await stateList.subscribe( result => {
+        for(let key in result['states']) {
+          if(result['states'][key]['country_id'] == country_id )
+          {
+            this.allStateList.push(result['states'][key]);
+          }
+        }
+    });
+    // console.log(this.allStateList);
+  }
+
+  citylistById = async(state_id) => {
+    this.allCityList = [];
+    let cityList =  this.Service.getCity();
+    await cityList.subscribe( result => {
+        for(let key in result['cities']) {
+          if(result['cities'][key]['state_id'] == state_id )
+          {
+            this.allCityList.push(result['cities'][key]);
+          }
+        }
+    },
+    error =>{
+        console.log("Error: ", error);
+    }
+    
+    );
+  }
+  
+  loadCountryStateCity = async() => {
+    let countryList =  this.Service.getCountry();
+    await countryList.subscribe(record => {
+      // console.log(record,'record');
+      this.getCountryLists = record['countries'];
+    });
+    
+  }
+
   onSubmit(ngForm){
     ////console.log(this.testingCalForm);
     // if(this.checkSecurity == true)
@@ -541,6 +594,209 @@ export class TestingCalibrationFormComponent implements OnInit {
        this.toastr.warning('Please Fill required field','')
      }
   }
+
+  onSubmitApplication(ngForm1: any){
+    if(this.step1Data.duty_shift == '1' && typeof this.step1Data.duty_from1 == 'undefined' && typeof this.step1Data.duty_to1 == 'undefined')
+    {
+      this.dutyTime1 = false;
+      this.isSubmit = false;
+    }else{
+      this.dutyTime1 = true;
+    }
+    if(this.step1Data.duty_shift == '2' && typeof this.step1Data.duty_from2 == 'undefined' && typeof this.step1Data.duty_to2 == 'undefined')
+    {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+      }else{
+        this.dutyTime1 = true;
+      }
+      this.dutyTime2 = false;
+      this.isSubmit = false;
+    }else{
+      this.dutyTime2 = true;
+    }
+    if(this.step1Data.duty_shift == '3' && typeof this.step1Data.duty_from3 == 'undefined' && typeof this.step1Data.duty_to3 == 'undefined')
+    {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+      }else{
+        this.dutyTime1 = true;
+      }
+      if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
+      {
+        this.dutyTime2 = false;
+      }else{
+        this.dutyTime2 = true;
+      }
+      this.dutyTime3 = false;
+      this.isSubmit = false;
+    }else{
+      this.dutyTime3 = true;
+    }
+
+    if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
+      this.dutyTime1 = false;
+      this.isSubmit = false;
+    }else{
+      this.dutyTime1 = true;
+    }
+    this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+
+    if(ngForm1.form.valid && this.tradeLicensedValidation != false) {
+      this.testingCalForm = {};
+      this.testingCalForm.step1 = {};
+      this.testingCalForm.email = this.userEmail;
+      this.testingCalForm.userType = this.userType;
+      this.testingCalForm.step1 = this.step1Data;
+
+      this.testingCalForm.step1['ownOrgBasicInfo'] = [];
+      this.testingCalForm.step1['ownOrgMembInfo'] = [];
+      this.testingCalForm.step1['accreditationInfo'] = [];
+      
+      if(this.ownOrgBasicInfo) {
+        this.testingCalForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
+      }
+      if(this.ownOrgMembInfo) {
+        this.testingCalForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
+      }
+      if(this.accreditationInfo) {
+        this.testingCalForm.step1['accreditationInfo'] = this.accreditationInfo;
+      }
+      
+
+      this.step1DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step1DataBodyFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else if(ngForm1.form.valid && this.tradeLicensedValidation == false) {
+      this.file_validation = false;
+      this.toastr.warning('Please Fill required field','');
+    }
+    else {
+      this.toastr.warning('Please Fill required field','');
+    }
+  }
+
+  onSubmitTestingParticipation(ngForm2: any){
+    this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+
+    if(ngForm2.form.valid) {
+      this.testingCalForm = {};
+      this.testingCalForm.step2 = {};
+      this.testingCalForm.email = this.userEmail;
+      this.testingCalForm.userType = this.userType;
+      this.testingCalForm.step2 = this.step2Data;
+
+      this.testingCalForm.step2['proficiencyTesting'] = [];
+      
+      if(this.ownOrgBasicInfo) {
+        this.testingCalForm.step2['proficiencyTesting'] = this.proficiencyTesting;
+      }
+
+      this.step2DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step2DataBodyFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+  }
+
+  onSubmitPersonalInformation(ngForm3: any){
+    this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+    if(ngForm3.form.valid) {
+      this.testingCalForm = {};
+      this.testingCalForm.step3 = {};
+      this.testingCalForm.email = this.userEmail;
+      this.testingCalForm.userType = this.userType;
+      this.testingCalForm.step3 = this.step3Data;
+
+      this.step3DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step3DataBodyFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+  }
+
+  onSubmitInformationAuditManagement(ngForm4: any){
+  this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
+    if(ngForm4.form.valid) {
+      this.testingCalForm = {};
+      this.testingCalForm.step4 = {};
+      this.testingCalForm.email = this.userEmail;
+      this.testingCalForm.userType = this.userType;
+      this.testingCalForm.step4 = this.step4Data;
+
+      this.step4DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step4DataBodyFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+  }
+  
+  onSubmitPerlimVisit(ngForm5: any){
+    this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+    if(ngForm5.form.valid) {
+      this.testingCalForm = {};
+      this.testingCalForm.step5 = {};
+      this.testingCalForm.email = this.userEmail;
+      this.testingCalForm.userType = this.userType;
+      this.testingCalForm.step5 = this.step5Data;
+
+      this.step5DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step5DataBodyFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+ }
 
   dayTimeChange(event,dayTime)
   {
