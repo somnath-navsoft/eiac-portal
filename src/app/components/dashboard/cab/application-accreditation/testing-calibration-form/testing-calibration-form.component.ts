@@ -7,6 +7,7 @@ import { HostListener, ElementRef } from '@angular/core';
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material';
 import { RecaptchaComponent } from 'ng-recaptcha';
+declare let paypal: any;
 
 @Component({
   selector: 'app-testing-calibration-form',
@@ -121,6 +122,9 @@ export class TestingCalibrationFormComponent implements OnInit {
   transactions: any[] =[];
   transactionsItem: any={};
   is_hold_other_accreditation_toggle: any = 0;
+  getDutyTimeForm1IndexValue:number;
+  recommendStatus:boolean = false
+  total: any = 0;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
@@ -135,6 +139,19 @@ export class TestingCalibrationFormComponent implements OnInit {
     el.scrollIntoView({behavior: 'smooth'});
   }
   
+  getDutyTimeForm1Index(indexVal){
+    //console.log('Get Index: ', indexVal.value, " -- ", indexVal);
+      var keyVal;
+      for(keyVal in this.addMinutesToTime){
+          //console.log(keyVal);
+          if(indexVal.value === this.addMinutesToTime[keyVal].val){
+            //console.log("match ", this.addMinutesToTime[keyVal].val);
+            this.getDutyTimeForm1IndexValue = keyVal;
+            return;
+          }
+      }
+  }
+
   onChange(prevFieldId,row,curField,field,tableType,tableSection) {
 
       let ScopeData = 'ScopeData';
@@ -798,6 +815,95 @@ export class TestingCalibrationFormComponent implements OnInit {
     }
  }
 
+ onSubmitUndertakingApplicant(ngForm6: any){
+  for(let key in this.authorizationList) {
+    if(this.authorizationList[key] == false) {
+      this.authorizationStatus = false;
+    }else {
+      this.authorizationStatus = true;
+    }
+  }
+  
+  for(let key in this.recommend) {
+    if(this.recommend[key] == true) {
+      this.recommendStatus = true;
+    }
+  }
+  if(this.authorizationStatus == false){
+    this.isSubmit = false;
+    this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
+  }else if(this.recommendStatus != true){
+    this.isSubmit = false;
+    this.toastr.error('Please Check any recommend the visit ', '');
+  }
+  if(ngForm6.form.valid){
+
+    // this.step6Data = this.recommend.first;
+    // this.step6Data = this.recommend.second;
+    // this.step6Data = this.recommend.first;
+    // this.step6Data = this.recommend.first;
+    // this.step6Data = this.recommend.first;
+
+    this.testingCalForm = {};
+    this.testingCalForm.step6 = {};
+    this.testingCalForm.email = this.userEmail;
+    this.testingCalForm.userType = this.userType;
+    this.step6Data.authorizationList = this.authorizationList;
+    this.step6Data.recommend = this.recommend;
+
+    this.testingCalForm.step6 = this.step6Data;
+    this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+
+    this.step6DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step6DataBodyFormFile)
+    .subscribe(
+      res => {
+        console.log(res,'res')
+        if(res['status'] == true) {
+          this.toastr.success(res['msg'], '');
+          this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+        }else{
+          this.toastr.warning(res['msg'], '');
+        }
+      });
+
+    //Paypal config data
+    //applyTrainerPublicCourse
+    this.transactionsItem['amount']               = {};
+    this.transactionsItem['amount']['total']      = 0.00;
+    this.transactionsItem['amount']['currency']   = 'USD';
+    this.transactionsItem['amount']['details']    = {};
+    this.transactionsItem['amount']['details']['subtotal'] = 0.00;
+    //declare Items data
+    this.transactionsItem['item_list']            = {};
+    this.transactionsItem['item_list']['items']   = [];
+    let custPrice: any = 0.01;
+    this.total = 0.05;
+      this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity: 1, price: custPrice, currency: 'USD'});
+        if(this.total > 0){
+          //console.log("Calculate price: ", calcPrice);
+          this.transactionsItem['amount']['total'] = custPrice.toFixed(2);
+          this.transactionsItem['amount']['details']['subtotal'] = custPrice.toFixed(2);
+          this.transactions.push(this.transactionsItem);
+          //console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
+        }
+        setTimeout(() => {
+          this.createPaymentButton(this.transactionsItem, this.testingCalForm, this);
+          let elem = document.getElementsByClassName('paypal-button-logo');
+          console.log("button creting...");
+          if(elem){
+            console.log("button creted...");
+          }else{
+            console.log("Loding button...");
+          }
+        }, 100)
+
+    //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+  }else{
+  this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+  }    
+}
+
   dayTimeChange(event,dayTime)
   {
     ////console.log(dayTime);
@@ -812,6 +918,70 @@ export class TestingCalibrationFormComponent implements OnInit {
     if(event.value != '' && dayTime == '3')
     {
       this.dutyTime3 = true;
+    }
+  }
+
+  //Paypal Button creation
+  private loadExternalScript(scriptUrl: string) {
+    return new Promise((resolve, reject) => {
+      const scriptElement = document.createElement('script')
+      scriptElement.src = scriptUrl
+      scriptElement.onload = resolve
+      //console.log("load script...");
+      document.body.appendChild(scriptElement)
+    })
+  }
+
+  createPaymentButton(itemData: any, formObj?:any, compObj?:any){
+    //console.log("creating....buttons...", this.paymentReview, " :: ", this.paymentReview.length, " -- ",this.transactionsItem, " --- ", this.transactions);
+   //AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl = das.abhishek77@gmail.com
+   //Get transaction ID - https://developer.paypal.com/docs/checkout/reference/server-integration/get-transaction/#on-the-server
+    if(this.transactions.length){
+      this.loadExternalScript("https://www.paypalobjects.com/api/checkout.js").then(() => {
+      paypal.Button.render({
+        env: 'sandbox',
+        client: {
+          sandbox: 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
+        },
+        commit: true,
+        payment: function (data, actions) {
+          console.log("@Paypal payment actionms: ", actions, " -- ", data, " --- ", itemData);        
+          return actions.payment.create({
+            payment: {
+              transactions: [itemData]
+            }
+          })
+        },
+        onAuthorize: function(data, actions) {
+          console.log("@Paypal onAuthorize actionms: ", actions, " -- ", data);
+          return actions.payment.execute().then(function(payment) {
+            console.log(">>>Success: ", payment);
+            formObj.paypalReturn = payment;
+            formObj.paypalStatus = 'success';
+            console.log("<<<Review obj: ", formObj, " :: ", compObj);
+            compObj.saveInspectopnAfterPayment(formObj);
+          })
+        },
+        onCancel: (data, actions) => {
+          console.log('OnCancel', data, actions);
+          //this.showCancel = true;
+          formObj.paypalReturn = data;
+          formObj.paypalStatus = 'cancel';
+          this.toastr.warning("You have cancelled payment, Continue next step please complete payment process again.", 'Paypal>>',{timeOut:6500});
+      },
+      onError: err => {
+          console.log('OnError', err);
+          formObj.paypalReturn = err;
+          formObj.paypalStatus = 'error';
+          //compObj.saveCourseAfterPayment(formObj);
+          this.toastr.error("Paypal transaction error has occured, please try again", 'Payment Return'); 
+      },
+      onClick: (data, actions) => {
+          console.log('onClick', data, actions);
+          //this.resetStatus();
+      }
+      }, '#paypalPayment');
+    });
     }
   }
 

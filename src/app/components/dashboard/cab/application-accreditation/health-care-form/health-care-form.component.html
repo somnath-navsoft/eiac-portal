@@ -1,47 +1,45 @@
 <!-- <app-loader *ngIf="loader"></app-loader> -->
     <div class="main-content">
-        <!-- <section>
-            
-            <div class="container-fluid p-0">
-                <div class="hdr-content"  [style.background-image]="'url('+banner+')'">
-                    <app-partial-header></app-partial-header>
-                    <a class="banner-link" [href]="bannerURL" target="{{bannerLinkTarget}}" title="{{bannerImageTitle}}">
-                        <div class="row m-0"> 
-                            <div class="col-12"> 
-                                <div class="bg-contnt">
-                                    <span class="bg-fnt"><span>مختبرات الفحص والمعايرة</span></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row m-0">
-                            <div class="col-12">
-                                <div class="stremline">
-                                    <div class="cnt">
-                                        <h1>Healthcare Laboratories</h1>
-                                        <a href="javascript:void(0)" (click)="scrollForm(targetList)" class="start-now-top">START NOW</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </section> -->
        
         <section>
             <div class="form_main">
                 <div class="container-fluid">
-                    <form  #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)"  autocomplete="off">
+                    <!-- <form  #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)"  autocomplete="off"> -->
                         <div class="form-hdr">
                             <div class="row">
-                                <div class="col-md-8">
-                                    <div class="form-main">
-                                        <h1>Healthcare Provider</h1>
+                                <div class="col-md-12 p-0 mb-3">
+                                    <div class="dashbrd-hdr">
+                                        <h3>Healthcare Provider</h3>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-bdy" #targetList>
+
+                        <ng-container>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="user-steps">
+                                        <ng-container *ngFor="let item of headerSteps; let k=index;">
+                                            <div class="user-next" [ngClass]="(item.activeClass != '') ? item.activeClass : ''">
+                                                <div class="usernext-icon">
+                                                    <span [ngClass]="(item.activeClass === 'user-done') ? 'icon-tick' : item.icon"></span>
+                                                </div>
+        
+                                                <div class="user-details-pending" 
+                                                id="course_header" (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}">
+                                                    <span [innerHTML]="item.desc"></span>
+                                                </div>
+                                            </div>
+                                            <div class="next-step" *ngIf="k < headerSteps.length-1">
+                                                <span class="icon-arrow-right"></span>
+                                            </div>
+                                        </ng-container>                              
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <div class="form-bdy cust-stepper" id="application_information">
                             <div class="row m-0">
                                 <div class="wrapper">
                                     <div class="col-md-12">
@@ -53,500 +51,489 @@
                                                 <hr>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-6 col-sm-12">
-                                                <div class="matupload position-relative">
-                                                <mat-form-field  class="lng-data">
-                                                        <input readonly="true" onpaste="return false" (keypress)="Service.inputFilter($event)" matInput name="trade_license_name" [(ngModel)]="healthCareForm.trade_license_name" required placeholder="Upload valid Legal-Professional / Commercial / Trade license" >
-                                                </mat-form-field>
-                                                <span class="fileupload">
-                                                    <input type="file" name="trade_license" [(ngModel)]="healthCareForm.trade_license" (change)="validateFile($event)" required>
-                                                     <span class="icon-attach attach-data"></span>
-                                                </span>                                               
+                                        <form #ngForm1="ngForm" (ngSubmit)="onSubmitApplication(ngForm1)" autocomplete="off">
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <mat-form-field  class="cab-data">
+                                                        <mat-label>Trade License Number</mat-label>
+                                                        <input matInput name="trade_license_number" [(ngModel)]="step1Data.trade_license_number" placeholder="Trade License Number" required>
+                                                    </mat-form-field>
+                                                    <span class="fileupload">
+                                                        <input type="file" name="trade_license" [(ngModel)]="fileAny" (change)="validateFile($event)">
+                                                        <span class="icon-attach attach-data"></span>
+                                                    </span>
+                                                    <p class="error" *ngIf="file_validation == false">Please Upload a valid file (ex: pdf,png,jpg,jpeg)</p>
                                                 </div>
-                                                <p class="error" *ngIf="!file_validation">Please Upload a valid file (ex: pdf,png)</p>
+
+                                                <div class="col-md-3 col-sm-12">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Date of Issue</mat-label>
+                                                        <input matInput [matDatepicker]="issue_data"  readonly="true"   placeholder="Date of Issue" name="date_of_issue" (click)="Service._openCalendar(issue_data)" [(ngModel)]="healthCareForm.date_of_issue" (dateChange)="setexDate()"  required>
+                                                        <mat-datepicker-toggle matSuffix [for]="issue_data"></mat-datepicker-toggle>
+                                                        <mat-datepicker #issue_data  disabled="false" ></mat-datepicker>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3 col-sm-12">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Date of Expiry</mat-label>
+                                                        <input matInput [min]="minDate"  readonly="true" [matDatepicker]="expiry_data" (click)="Service._openCalendar(expiry_data)" name="date_of_expiry" [(ngModel)]="healthCareForm.date_of_expiry" placeholder="Date of Expiry" required>
+                                                        <mat-datepicker-toggle matSuffix [for]="expiry_data"></mat-datepicker-toggle>
+                                                        <mat-datepicker #expiry_data  disabled="false" ></mat-datepicker>
+                                                        <mat-error></mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Date of Establishment</mat-label>
+                                                        <input matInput [matDatepicker]="picker"  readonly="true"  placeholder="Date Of Establishment" name="date_of_establishment" (click)="Service._openCalendar(picker)" [(ngModel)]="healthCareForm.date_of_establishment" required>
+                                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                        <mat-datepicker #picker  disabled="false" ></mat-datepicker>
+                                                        <mat-error></mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Location Latitude/Longitude</mat-label>
+                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off" (keyup)="getPlaceName()" [matAutocomplete] = "auto" placeholder="Location Latitude" name="location_latitude" [(ngModel)]="healthCareForm.search_location_name" required>
+                                                        <mat-autocomplete #auto = "matAutocomplete" >
+                                                            <mat-option *ngFor = "let searchCountryList of searchCountryLists" (click)="getLatitudelongitude(searchCountryList.geometry.coordinates[0],searchCountryList.geometry.coordinates[1])" [value] = "searchCountryList.place_name">
+                                                            {{searchCountryList.place_name}}
+                                                            </mat-option>
+                                                        </mat-autocomplete>
+                                                        <mat-error></mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12 align-self-end">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Cab Type</mat-label>
+                                                        <mat-select placeholder="Select"  name="cab_type" [(ngModel)]="healthCareForm.cab_type" required (selectionChange)="labTypeChange($event)">
+                                                            <mat-option [value]="item.title" *ngFor="let item of labTypeList; let i = index;">{{item.title}}</mat-option>
+                                                        </mat-select>
+                                                        <mat-error></mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>CAB Name official and Commercial Name</mat-label>
+                                                        <input matInput onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" autocomplete="off" placeholder="Commercial Name" name="official_commercial_name" [(ngModel)]="healthCareForm.official_commercial_name"  required>
+                                                        <mat-error></mat-error>      
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12 align-self-end">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Type of Accreditation Required</mat-label>
+                                                        <mat-select placeholder="Select" name="accredation_type_id"  [(ngModel)]="healthCareForm.accredation_type_id" required>
+                                                            <mat-option (click)="idToName('accredation_type_id','Initial')" [value]="1">Initial</mat-option>
+                                                            <mat-option (click)="idToName('accredation_type_id','Extension')" [value]="2">Extension</mat-option>
+                                                        </mat-select>
+                                                        <mat-error></mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Criteria for which Accreditation is Requested</mat-label>
+                                                        <mat-select placeholder="Select" name="criteria_request"  [(ngModel)]="healthCareForm.criteria_request" required>
+                                                            <mat-option [value]="1">Hospital/Day Care Surgery/ (ISQua Framework)</mat-option>
+                                                            <mat-option [value]="2">ISO 15189: Medical Laboratory</mat-option>
+                                                            <mat-option [value]="3">ISO 22870: Point of Care Testing (POCT)</mat-option>
+                                                            <mat-option [value]="4">20658: Sample Collection Centers</mat-option>
+                                                        </mat-select>
+                                                        <mat-error></mat-error> 
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Registered Physical Location Address</mat-label>
+                                                        <textarea matInput autocomplete="off" onpaste="return false" (keypress)="Service.inputFilter($event)"  placeholder="Registered Physical Location Address" name="physical_location_address" [(ngModel)]="healthCareForm.physical_location_address"  required></textarea>
+                                                        <mat-error></mat-error> 
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-3">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>PO Box No./ZIP Code</mat-label>
+                                                        <input  matInput autocomplete="off" (keypress)="Service.allowCharacterAndDigitsOnly($event)" placeholder="PO BOX NO./Zip Code" name="po_box" [(ngModel)]="healthCareForm.po_box"  required>
+                                                        <mat-error></mat-error> 
+                                                    </mat-form-field>
+                                                </div>
+                                                
+                                                <div class="col-md-3">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Country</mat-label>
+                                                        <mat-select placeholder="Select" name="country" [(ngModel)]="step1Data.country" required>
+                                                            <mat-option [value]="item.name" (click)="statelistById(item.id)" *ngFor="let item of getCountryLists; let i = index;">{{item.name}}</mat-option>
+                                                        </mat-select> 
+                                                    </mat-form-field>
+                                                </div>
+                                                
+                                                <div class="col-md-3">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>State</mat-label>
+                                                        <mat-select placeholder="Select" name="state" [(ngModel)]="step1Data.state" required>
+                                                            <mat-option [value]="item.name" (click)="citylistById(item.id)" *ngFor="let item of allStateList; let i = index;">{{item.name}}</mat-option>
+                                                        </mat-select>    
+                                                    </mat-form-field>
+                                                </div>
+        
+                                                <div class="col-md-3">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>City</mat-label>
+                                                        <mat-select placeholder="Select" required name="city" [(ngModel)]="step1Data.city">
+                                                            <mat-option [value]="item.name" *ngFor="let item of allCityList; let i = index;">{{item.name}}</mat-option>
+                                                        </mat-select>      
+                                                    </mat-form-field>
+                                                </div>
 
                                             </div>
-                                            <div class="col-md-3 col-sm-12">
-                                                <mat-form-field class="cab-data">
-                                                    <mat-label>Date of Issue</mat-label>
-                                                    <input matInput [matDatepicker]="issue_data"  readonly="true"   placeholder="Date of Issue" name="date_of_issue" (click)="Service._openCalendar(issue_data)" [(ngModel)]="healthCareForm.date_of_issue" (dateChange)="setexDate()"  required>
-                                                    <mat-datepicker-toggle matSuffix [for]="issue_data"></mat-datepicker-toggle>
-                                                    <mat-datepicker #issue_data  disabled="false" ></mat-datepicker>
-                                                </mat-form-field>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Telephone Number</mat-label>
+                                                        <input type="text" onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)"   placeholder="Telephone No" name="telephone" [(ngModel)]="healthCareForm.telephone"   required>
+                                                        <mat-error></mat-error>                                            </mat-form-field>
+                                                        <p class="error" *ngIf="healthCareForm.telephone && !Service.checkInput('onlyNumberWithPlus',healthCareForm.telephone)">Please Enter Correct Phone Number</p>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Fax Number</mat-label>
+                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off" type="text"  placeholder="Fax No"  name="fax_no" [(ngModel)]="healthCareForm.fax_no" (keypress)="Service.IsNumeric($event)" required>
+                                                        <mat-error></mat-error> 
+                                                    </mat-form-field>
+                                                    <p class="error" *ngIf="healthCareForm.fax_no && !Service.checkInput('onlyNumberWithPlus',healthCareForm.fax_no)">Please Enter Correct Fax Number</p>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Official E-mail Address</mat-label>
+                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Official Email Address" name="official_email" [(ngModel)]="healthCareForm.official_email"  required>
+                                                        <mat-error></mat-error> 
+                                                    </mat-form-field>
+                                                    <p class="error" *ngIf="healthCareForm.official_email && !Service.checkInput('email',healthCareForm.official_email)">Please Enter Correct Email Id</p>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Official Website</mat-label>
+                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Official Website"  name="official_website" [(ngModel)]="healthCareForm.official_website"  required>
+                                                        <mat-error></mat-error> 
+                                                        <p class="error" *ngIf="healthCareForm.official_website && !Service.checkInput('url',healthCareForm.official_website)">Invalid URL</p> 
+                                                    </mat-form-field>
+                                                </div>
                                             </div>
-                                            <div class="col-md-3 col-sm-12">
-                                                <mat-form-field class="cab-data">
-                                                    <mat-label>Date of Expiry</mat-label>
-                                                    <input matInput [min]="minDate"  readonly="true" [matDatepicker]="expiry_data" (click)="Service._openCalendar(expiry_data)" name="date_of_expiry" [(ngModel)]="healthCareForm.date_of_expiry" placeholder="Date of Expiry" required>
-                                                    <mat-datepicker-toggle matSuffix [for]="expiry_data"></mat-datepicker-toggle>
-                                                    <mat-datepicker #expiry_data  disabled="false" ></mat-datepicker>
-                                                    <mat-error></mat-error>
-                                                </mat-form-field>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Mailing Address</mat-label>
+                                                        <input type="email" onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Mailing Address"   name="mailing_address" [(ngModel)]="healthCareForm.mailing_address"  required>
+                                                        <mat-error></mat-error> 
+                                                    </mat-form-field>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Official E-mail Address2</mat-label>
+                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Official Email Address" name="official_email2" [(ngModel)]="healthCareForm.official_email2"  required>
+                                                        <mat-error></mat-error> 
+                                                    </mat-form-field>
+                                                    <p class="error" *ngIf="healthCareForm.official_email2 && !Service.checkInput('email',healthCareForm.official_email2)">Please Enter Correct Email Id</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6 col-sm-12">
-                                                <mat-form-field class="cab-data">
-                                                    <mat-label>Date of Establishment</mat-label>
-                                                    <input matInput [matDatepicker]="picker"  readonly="true"  placeholder="Date Of Establishment" name="date_of_establishment" (click)="Service._openCalendar(picker)" [(ngModel)]="healthCareForm.date_of_establishment" required>
-                                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                                    <mat-datepicker #picker  disabled="false" ></mat-datepicker>
-                                                    <mat-error></mat-error>
-                                                </mat-form-field>
+
+                                            <div class="row">
+                                                <div class="col-12 p-0">
+                                                    <div class="form-subheader-data">
+                                                        <h5>OWNERSHIP OF THE ORGANIZATION</h5>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-md-6 col-sm-12">
-                                                <mat-form-field class="cab-data">
-                                                    <mat-label>Location Latitude/Longitude</mat-label>
-                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off" (keyup)="getPlaceName()" [matAutocomplete] = "auto" placeholder="Location Latitude" name="location_latitude" [(ngModel)]="healthCareForm.search_location_name" required>
-                                                    <mat-autocomplete #auto = "matAutocomplete" >
-                                                        <mat-option *ngFor = "let searchCountryList of searchCountryLists" (click)="getLatitudelongitude(searchCountryList.geometry.coordinates[0],searchCountryList.geometry.coordinates[1])" [value] = "searchCountryList.place_name">
-                                                           {{searchCountryList.place_name}}
-                                                        </mat-option>
-                                                     </mat-autocomplete>
-                                                    <mat-error></mat-error>
-                                                </mat-form-field>
-                                            </div>
-                                            <!-- <div class="col-md-3 col-sm-12">
-                                                <mat-form-field class="cab-data">
-                                                    <mat-label>Location Longitude</mat-label>
-                                                    <input  matInput autocomplete="off"  placeholder="Location Longitude"  name="location_longitude" [(ngModel)]="healthCareForm.location_longitude"  required>
-                                                    <mat-error></mat-error>  
-                                                </mat-form-field>
-                                            </div> -->
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6 col-sm-12 align-self-end">
-                                                <mat-form-field class="cab-data">
-                                                    <mat-label>Laboratory Type</mat-label>
-                                                    <mat-select placeholder="Select"  name="laboratory_type" [(ngModel)]="healthCareForm.laboratory_type" required (selectionChange)="labTypeChange($event)">
-                                                        <mat-option [value]="item.title" *ngFor="let item of labTypeList; let i = index;">{{item.title}}</mat-option>
-                                                    </mat-select>
-                                                    <mat-error></mat-error>
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="col-md-6 col-sm-12">
-                                                <mat-form-field class="cab-data">
-                                                    <mat-label>Commercial Name</mat-label>
-                                                    <input matInput onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" autocomplete="off" placeholder="Commercial Name" name="official_commercial_name" [(ngModel)]="healthCareForm.official_commercial_name"  required>
-                                                    <mat-error></mat-error>      
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6 col-sm-12 align-self-end">
-                                                <mat-form-field class="cab-data">
-                                                    <mat-label>Type of Accreditation Required</mat-label>
-                                                    <mat-select placeholder="Select" name="accredation_type_id"  [(ngModel)]="healthCareForm.accredation_type_id" required>
-                                                        <mat-option (click)="idToName('accredation_type_id','Initial')" [value]="1">Initial</mat-option>
-                                                        <mat-option (click)="idToName('accredation_type_id','Extension')" [value]="2">Extension</mat-option>
-                                                    </mat-select>
-                                                    <mat-error></mat-error>
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="col-md-6 col-sm-12">
-                                                <mat-form-field class="cab-data">
-                                                    <mat-label>Criteria for which Accreditation is Requested</mat-label>
-                                                    <mat-select placeholder="Select" name="criteria_request"  [(ngModel)]="healthCareForm.criteria_request" required>
-                                                        <mat-option [value]="1">Hospital/Day Care Surgery/ (ISQua Framework)</mat-option>
-                                                        <mat-option [value]="2">ISO 15189: Medical Laboratory</mat-option>
-                                                        <mat-option [value]="3">ISO 22870: Point of Care Testing (POCT)</mat-option>
-                                                        <mat-option [value]="4">20658: Sample Collection Centers</mat-option>
-                                                    </mat-select>
-                                                    <mat-error></mat-error> 
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <mat-form-field class="cab-data">
-                                                    <mat-label>Registered Physical Location Address</mat-label>
-                                                    <textarea matInput autocomplete="off" onpaste="return false" (keypress)="Service.inputFilter($event)"  placeholder="Registered Physical Location Address" name="physical_location_address" [(ngModel)]="healthCareForm.physical_location_address"  required></textarea>
-                                                    <mat-error></mat-error> 
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <mat-form-field class="cab-data">
-                                                    <mat-label>Mailing Address</mat-label>
-                                                    <input type="email" onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Mailing Address"   name="mailing_address" [(ngModel)]="healthCareForm.mailing_address"  required>
-                                                    <mat-error></mat-error> 
-                                                </mat-form-field>
-                                                <!-- <p class="error" *ngIf="healthCareForm.mailing_address && !Service.checkInput('email',healthCareForm.mailing_address)">Please Enter Correct Email Id</p> -->
-                                            </div>
-                                            <div class="col-md-3">
-                                                <mat-form-field class="cab-data">
-                                                    <mat-label>PO Box No./ZIP Code</mat-label>
-                                                    <input  matInput autocomplete="off" (keypress)="Service.allowCharacterAndDigitsOnly($event)" placeholder="PO BOX NO./Zip Code" name="po_box" [(ngModel)]="healthCareForm.po_box"  required>
-                                                    <mat-error></mat-error> 
-                                                </mat-form-field>
+                                            <div class="row" *ngFor="let item of ownOrgBasicInfo; let i = index;">
+                                                <div class="col-12">
+                                                    <div class="ownr-details">
+                                                        <div class="row" *ngIf="i >= 1">
+                                                            <div class="col-12">
+                                                                <div class="remove-clss">
+                                                                        <span class="icon-cancel" (click)="removeRow(ownOrgBasicInfo, i)"></span>
+                                                                    </div>
+                                                                </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-sm-12">  
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Name</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Name"  maxlength="20"  name="name_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].name" required>
+                                                                    <mat-error></mat-error>    
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-12">
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Designation</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off" required placeholder="Designation"   name="designation_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].designation" required>
+                                                                    <mat-error></mat-error> 
+                                                                </mat-form-field>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-4 col-sm-12">
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Mobile Phone No.</mat-label>
+                                                                    <input type="text" onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Mobile No." maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" name="telephone_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].telephone_no" required>
+                                                                    <mat-error></mat-error>
+                                                                </mat-form-field>
+                                                                <p class="error" *ngIf="ownOrgBasicInfo[i].telephone_no && !Service.checkInput('onlyNumberWithPlus',ownOrgBasicInfo[i].telephone_no)">Please Enter Correct Telephone Number</p>
+                                                            </div>
+                                                            <div class="col-md-4 col-sm-12">
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Land Line Phone No.</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  type="text" placeholder="Landline No." maxlength="15" minlength="10"  (keypress)="Service.IsNumeric($event)"  name="mobile_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].mobile_no" required >
+                                                                    <mat-error></mat-error>      
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <div class="col-md-4 col-sm-12">
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Email Address</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event)" type="email" matInput autocomplete="off"  placeholder="Email Address"  name="email_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].email" required >
+                                                                    <mat-error></mat-error>
+                                                                </mat-form-field>
+                                                                <p class="error" *ngIf="ownOrgBasicInfo[i].email && !Service.checkInput('email',ownOrgBasicInfo[i].email)">Please Enter Correct Email Id</p>
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
                                             </div>
                                             
-                                            <div class="col-md-3">
-                                                <mat-form-field class="cab-data">
-                                                <mat-label>Country</mat-label>
-                                                    <mat-select placeholder="Select"  name="country_id" [(ngModel)]="healthCareForm.country_id" required>
-                                                        <mat-option [value]="item.CountryName" (click)="idToName('country',item.CountryName)" *ngFor="let item of getCountryLists; let i = index;">{{item.CountryName}}</mat-option>
-                                                    </mat-select>
-                                                    <mat-error></mat-error>      
-                                                </mat-form-field>
-                                            </div>
-    
-                                            <div class="col-md-3">
-                                                <mat-form-field class="cab-data">
-                                                    <mat-label>City</mat-label>
-                                                    <mat-select required="" [(ngModel)]="healthCareForm.city" name="city">
-                                                        <mat-option  *ngFor="let allCityByCountryName of allCityByCountry; let i = index" [value]='allCityByCountryName'>
-                                                        {{allCityByCountryName}}
-                                                        </mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
-                                            </div>
-
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <mat-form-field class="cab-data">
-                                                    <mat-label>Telephone Number</mat-label>
-                                                    <input type="text" onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)"   placeholder="Telephone No" name="telephone" [(ngModel)]="healthCareForm.telephone"   required>
-                                                    <mat-error></mat-error>                                            </mat-form-field>
-                                                    <p class="error" *ngIf="healthCareForm.telephone && !Service.checkInput('onlyNumberWithPlus',healthCareForm.telephone)">Please Enter Correct Phone Number</p>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <mat-form-field class="cab-data">
-                                                    <mat-label>Fax Number</mat-label>
-                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off" type="text"  placeholder="Fax No"  name="fax_no" [(ngModel)]="healthCareForm.fax_no" (keypress)="Service.IsNumeric($event)" required>
-                                                    <mat-error></mat-error> 
-                                                </mat-form-field>
-                                                <p class="error" *ngIf="healthCareForm.fax_no && !Service.checkInput('onlyNumberWithPlus',healthCareForm.fax_no)">Please Enter Correct Fax Number</p>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <mat-form-field class="cab-data">
-                                                    <mat-label>Official E-mail Address</mat-label>
-                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Official Email Address" name="official_email" [(ngModel)]="healthCareForm.official_email"  required>
-                                                    <mat-error></mat-error> 
-                                                </mat-form-field>
-                                                <p class="error" *ngIf="healthCareForm.official_email && !Service.checkInput('email',healthCareForm.official_email)">Please Enter Correct Email Id</p>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <mat-form-field class="cab-data">
-                                                    <mat-label>Official Website</mat-label>
-                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Official Website"  name="official_website" [(ngModel)]="healthCareForm.official_website"  required>
-                                                    <mat-error></mat-error> 
-                                                    <p class="error" *ngIf="healthCareForm.official_website && !Service.checkInput('url',healthCareForm.official_website)">Invalid URL</p> 
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <mat-form-field class="cab-data">
-                                                    <mat-label>Official E-mail Address2</mat-label>
-                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Official Email Address" name="official_email2" [(ngModel)]="healthCareForm.official_email2"  required>
-                                                    <mat-error></mat-error> 
-                                                </mat-form-field>
-                                                <p class="error" *ngIf="healthCareForm.official_email2 && !Service.checkInput('email',healthCareForm.official_email2)">Please Enter Correct Email Id</p>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <mat-form-field class="cab-data">
-                                                    <mat-label>Trade License Number</mat-label>
-                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Trade License Number"  name="trade_license_number" [(ngModel)]="healthCareForm.trade_license_number"  required>
-                                                    <mat-error></mat-error>  
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-12 p-0">
-                                                <div class="form-subheader-data">
-                                                    <h5>OWNERSHIP OF THE ORGANIZATION</h5>
+                                            <div class="row">
+                                                <div class="col-12"> 
+                                                    <div class="add-new">
+                                                        <a  href="javascript:void(0)" (click)="addRow(ownOrgBasicInfo)">
+                                                            <span class="icon-add"></span>
+                                                            <span>ADD NEW</span>
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row" *ngFor="let item of ownOrgBasicInfo; let i = index;">
-                                            <div class="col-12">
-                                                <div class="ownr-details">
-                                                    <div class="row" *ngIf="i >= 1">
-                                                        <div class="col-12">
-                                                            <div class="remove-clss">
-                                                                    <span class="icon-cancel" (click)="removeRow(ownOrgBasicInfo, i)"></span>
+
+                                            <div class="row tog-content">
+                                                <div class="col-md-6 col-sm-12 p-0">
+                                                    <div class="form-subheader-data">
+                                                        <h5>DOES THE COMPANY HAVE BOARD MEMBERS ?</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12 p-0">
+                                                    <div class="form-subheader-desc">
+                                                        <mat-radio-group name="is_bod" [(ngModel)]="healthCareForm.is_bod">
+                                                            <mat-radio-button value="1" (click)='bod_toggle("1")'>Yes</mat-radio-button>
+                                                            <mat-radio-button value="0" (click)='bod_toggle("0")'>No</mat-radio-button>
+                                                        </mat-radio-group>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row"*ngFor="let item of ownOrgMembInfo; let i = index;">
+                                                <div class="col-12" *ngIf="is_bod == '1'" >
+                                                    <div class="ownr-details">
+                                                        <div class="row" *ngIf="i >= 1">
+                                                            <div class="col-12">
+                                                                <div class="remove-clss">
+                                                                        <span class="icon-cancel" (click)="removeRow(ownOrgMembInfo, i)"></span>
+                                                                    </div>
                                                                 </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-sm-12">
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Name the members of Board of Directors (BOD) (if any)</mat-label>
+                                                                    <input matInput placeholder="Name the members of Board of Directors (BOD)" onpaste="return false" (keypress)="Service.inputFilter($event)" name="namebod_{{i}}" [(ngModel)]="ownOrgMembInfo[i].name"  required>
+                                                                </mat-form-field>
                                                             </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-6 col-sm-12">  
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Name</mat-label>
-                                                                <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Name"  maxlength="20"  name="name_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].name" required>
-                                                                <mat-error></mat-error>    
-                                                            </mat-form-field>
+                                                            <div class="col-md-6 col-sm-12">
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>List the Companies name of BOD members</mat-label>
+                                                                    <input matInput placeholder="List the Companies name of BOD members" onpaste="return false" (keypress)="Service.inputFilter($event)" name="list_comp_{{i}}" [(ngModel)]="ownOrgMembInfo[i].list_comp"  required>
+                                                                </mat-form-field>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-md-6 col-sm-12">
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Designation</mat-label>
-                                                                <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off" required placeholder="Designation"   name="designation_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].designation" required>
-                                                                <mat-error></mat-error> 
-                                                            </mat-form-field>
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-sm-12">
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Authorized Contact Person Name</mat-label>
+                                                                    <input matInput placeholder="Authorized Contact Person Name"   name="contact_person_{{i}}" [(ngModel)]="ownOrgMembInfo[i].contact_person" onpaste="return false" (keypress)="Service.inputFilter($event)" required>
+                                                                </mat-form-field>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-4 col-sm-12">
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Mobile Phone No.</mat-label>
-                                                                <input type="text" onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  placeholder="Mobile No." maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" name="telephone_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].telephone_no" required>
-                                                                <mat-error></mat-error>
-                                                            </mat-form-field>
-                                                            <p class="error" *ngIf="ownOrgBasicInfo[i].telephone_no && !Service.checkInput('onlyNumberWithPlus',ownOrgBasicInfo[i].telephone_no)">Please Enter Correct Telephone Number</p>
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-sm-12">
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Designation</mat-label>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="Designation" name="designationbod_{{i}}" [(ngModel)]="ownOrgMembInfo[i].designation" required>
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-12">
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Mobile Phone No.</mat-label>
+                                                                    <input type="text" onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="Mobile Phone No." name="mobile_nobod_{{i}}" maxlength="14" minlength="10" (keypress)="Service.IsNumeric($event)" [(ngModel)]="ownOrgMembInfo[i].mobile_no" required maxlength="15">
+                                                                </mat-form-field>
+                                                                <p class="error" *ngIf="ownOrgMembInfo[i].mobile_no && !Service.checkInput('onlyNumberWithPlus',ownOrgMembInfo[i].mobile_no)">Please Enter Correct Telephone Number</p>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-md-4 col-sm-12">
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Land Line Phone No.</mat-label>
-                                                                <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput autocomplete="off"  type="text" placeholder="Landline No." maxlength="15" minlength="10"  (keypress)="Service.IsNumeric($event)"  name="mobile_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].mobile_no" required >
-                                                                <mat-error></mat-error>      
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <div class="col-md-4 col-sm-12">
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Email Address</mat-label>
-                                                                <input onpaste="return false" (keypress)="Service.inputFilter($event)" type="email" matInput autocomplete="off"  placeholder="Email Address"  name="email_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].email" required >
-                                                                <mat-error></mat-error>
-                                                            </mat-form-field>
-                                                            <p class="error" *ngIf="ownOrgBasicInfo[i].email && !Service.checkInput('email',ownOrgBasicInfo[i].email)">Please Enter Correct Email Id</p>
 
-                                                        </div>
                                                     </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="row" *ngIf="is_bod == '1'">
+                                                <div class="col-12">
+                                                    <div class="add-new">
+                                                        <a  href="javascript:void(0)" (click)="addRow(ownOrgMembInfo)">
+                                                            <span class="icon-add"></span>
+                                                            <span>ADD NEW</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
 
+                                            <div class="row">
+                                                <div class="col-12 p-0">
+                                                    <div class="form-subheader-data">
+                                                        <h5>WORKING TIME</h5>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        
-                                        <div class="row">
-                                            <div class="col-12"> 
-                                                <div class="add-new">
-                                                    <a  href="javascript:void(0)" (click)="addRow(ownOrgBasicInfo)">
-                                                        <span class="icon-add"></span>
-                                                        <span>ADD NEW</span>
-                                                    </a>
+                                            <div class="row mt-4">
+                                                <div class="col-md-3">
+                                                    <div class="form-sub">
+                                                        <span>Duty Period: *</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="row tog-content">
-                                            <div class="col-md-6 col-sm-12 p-0">
-                                                <div class="form-subheader-data">
-                                                    <h5>DOES THE COMPANY HAVE BOARD MEMBERS ?</h5>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-12 p-0">
-                                                <div class="form-subheader-desc">
-                                                    <mat-radio-group name="is_bod" [(ngModel)]="healthCareForm.is_bod">
-                                                        <mat-radio-button value="1" (click)='bod_toggle("1")'>Yes</mat-radio-button>
-                                                        <mat-radio-button value="0" (click)='bod_toggle("0")'>No</mat-radio-button>
+                                                <div class="col-md-9">
+                                                    <mat-radio-group name="duty_shift" required [(ngModel)]="healthCareForm.duty_shift">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <label class="check-rdo">
+                                                                    <mat-radio-button value="1" required>One Shift </mat-radio-button>
+                                                                </label>
+                                                            </div>  
+                                                            <div class="col-md-4">
+                                                                <label class="check-rdo">
+                                                                    <mat-radio-button value="2" required>Two Shifts</mat-radio-button>
+                                                                </label>
+                                                            </div>  
+                                                            <div class="col-md-4">
+                                                                <label class="check-rdo">
+                                                                        <mat-radio-button value="3" required>Three Shifts</mat-radio-button>
+                                                                </label>
+                                                            </div>
+                                                        </div>
                                                     </mat-radio-group>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row"*ngFor="let item of ownOrgMembInfo; let i = index;">
-                                            <div class="col-12" *ngIf="is_bod == '1'" >
-                                                <div class="ownr-details">
-                                                    <div class="row" *ngIf="i >= 1">
-                                                        <div class="col-12">
-                                                            <div class="remove-clss">
-                                                                    <span class="icon-cancel" (click)="removeRow(ownOrgMembInfo, i)"></span>
-                                                                </div>
-                                                            </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-6 col-sm-12">
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Name the members of Board of Directors (BOD) (if any)</mat-label>
-                                                                <input matInput placeholder="Name the members of Board of Directors (BOD)" onpaste="return false" (keypress)="Service.inputFilter($event)" name="namebod_{{i}}" [(ngModel)]="ownOrgMembInfo[i].name"  required>
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <div class="col-md-6 col-sm-12">
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>List the Companies name of BOD members</mat-label>
-                                                                <input matInput placeholder="List the Companies name of BOD members" onpaste="return false" (keypress)="Service.inputFilter($event)" name="list_comp_{{i}}" [(ngModel)]="ownOrgMembInfo[i].list_comp"  required>
-                                                            </mat-form-field>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12 col-sm-12">
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Authorized Contact Person Name</mat-label>
-                                                                <input matInput placeholder="Authorized Contact Person Name"   name="contact_person_{{i}}" [(ngModel)]="ownOrgMembInfo[i].contact_person" onpaste="return false" (keypress)="Service.inputFilter($event)" required>
-                                                            </mat-form-field>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-6 col-sm-12">
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Designation</mat-label>
-                                                                <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="Designation" name="designationbod_{{i}}" [(ngModel)]="ownOrgMembInfo[i].designation" required>
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <div class="col-md-6 col-sm-12">
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Mobile Phone No.</mat-label>
-                                                                <input type="text" onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="Mobile Phone No." name="mobile_nobod_{{i}}" maxlength="14" minlength="10" (keypress)="Service.IsNumeric($event)" [(ngModel)]="ownOrgMembInfo[i].mobile_no" required maxlength="15">
-                                                            </mat-form-field>
-                                                            <p class="error" *ngIf="ownOrgMembInfo[i].mobile_no && !Service.checkInput('onlyNumberWithPlus',ownOrgMembInfo[i].mobile_no)">Please Enter Correct Telephone Number</p>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                                
-                                            </div>
-                                        </div>
-                                        <div class="row" *ngIf="is_bod == '1'">
-                                            <div class="col-12">
-                                                <div class="add-new">
-                                                    <a  href="javascript:void(0)" (click)="addRow(ownOrgMembInfo)">
-                                                        <span class="icon-add"></span>
-                                                        <span>ADD NEW</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-12 p-0">
-                                                <div class="form-subheader-data">
-                                                    <h5>WORKING TIME</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-4">
-                                            <div class="col-md-3">
-                                                <div class="form-sub">
-                                                    <span>Duty Period: *</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-9">
-                                            <mat-radio-group name="duty_shift" required [(ngModel)]="healthCareForm.duty_shift">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <label class="check-rdo">
-                                                            <mat-radio-button value="1" required>One Shift </mat-radio-button>
-                                                        </label>
-                                                    </div>  
-                                                    <div class="col-md-4">
-                                                        <label class="check-rdo">
-                                                            <mat-radio-button value="2" required>Two Shifts</mat-radio-button>
-                                                        </label>
-                                                    </div>  
-                                                    <div class="col-md-4">
-                                                        <label class="check-rdo">
-                                                                <mat-radio-button value="3" required>Three Shifts</mat-radio-button>
-                                                        </label>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-sub">
+                                                        <span>Duty Time: *</span>
                                                     </div>
                                                 </div>
-                                            </mat-radio-group>
-                                        </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <div class="form-sub">
-                                                    <span>Duty Time: *</span>
+                                                <div class="col-md-3">
+                                                    <mat-form-field class="frm-data">
+                                                        <mat-label>From</mat-label>
+
+                                                        <mat-select placeholder="Select"  name="duty_from1" [(ngModel)]="healthCareForm.duty_from1">
+                                                            <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                    <mat-form-field class="frm-data">
+                                                        <mat-label>To</mat-label>
+
+                                                        <mat-select placeholder="Select" (selectionChange)="dayTimeChange($event,1)" name="duty_to1" [(ngModel)]="healthCareForm.duty_to1">
+                                                            <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                    <p class="error" *ngIf="!dutyTime1">Please enter from and to duty time</p>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field class="frm-data">
+                                                        <mat-label>From</mat-label>
+
+                                                        <mat-select placeholder="Select"  name="duty_from2" [(ngModel)]="healthCareForm.duty_from2">
+                                                            <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                    <mat-form-field class="frm-data">
+                                                        <mat-label>To</mat-label>
+
+                                                        <mat-select placeholder="Select" (selectionChange)="dayTimeChange($event,2)" name="duty_to2" [(ngModel)]="healthCareForm.duty_to2">
+                                                            <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                    <p class="error" *ngIf="!dutyTime2">Please enter from and to duty time</p>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field class="frm-data">
+                                                        <mat-label>From</mat-label>
+                                                        <mat-select placeholder="Select"  name="duty_from3" [(ngModel)]="healthCareForm.duty_from3">
+                                                            <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                    <mat-form-field class="frm-data">
+                                                        <mat-label>To</mat-label>
+                                                        <mat-select placeholder="Select" (selectionChange)="dayTimeChange($event,3)" name="duty_to3" [(ngModel)]="healthCareForm.duty_to3">
+                                                            <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key" 
+                                                            >{{item.val}}</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                    <p class="error" *ngIf="!dutyTime3">Please enter from and to duty time</p>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
-                                                <mat-form-field class="frm-data">
-                                                    <mat-label>From</mat-label>
-
-                                                    <mat-select placeholder="Select"  name="duty_from1" [(ngModel)]="healthCareForm.duty_from1">
-                                                        <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
-                                                <mat-form-field class="frm-data">
-                                                    <mat-label>To</mat-label>
-
-                                                    <mat-select placeholder="Select" (selectionChange)="dayTimeChange($event,1)" name="duty_to1" [(ngModel)]="healthCareForm.duty_to1">
-                                                        <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
-                                                <p class="error" *ngIf="!dutyTime1">Please enter from and to duty time</p>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <mat-form-field class="frm-data">
-                                                    <mat-label>From</mat-label>
-
-                                                    <mat-select placeholder="Select"  name="duty_from2" [(ngModel)]="healthCareForm.duty_from2">
-                                                        <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
-                                                <mat-form-field class="frm-data">
-                                                    <mat-label>To</mat-label>
-
-                                                    <mat-select placeholder="Select" (selectionChange)="dayTimeChange($event,2)" name="duty_to2" [(ngModel)]="healthCareForm.duty_to2">
-                                                        <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
-                                                <p class="error" *ngIf="!dutyTime2">Please enter from and to duty time</p>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <mat-form-field class="frm-data">
-                                                    <mat-label>From</mat-label>
-                                                   
-
-                                                    <mat-select placeholder="Select"  name="duty_from3" [(ngModel)]="healthCareForm.duty_from3">
-                                                        <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
-                                                <mat-form-field class="frm-data">
-                                                    <mat-label>To</mat-label>
-                                                    
-
-                                                    <mat-select placeholder="Select" (selectionChange)="dayTimeChange($event,3)" name="duty_to3" [(ngModel)]="healthCareForm.duty_to3">
-
-                                                        <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key" 
-                                                        >{{item.val}}</mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
-                                                <p class="error" *ngIf="!dutyTime3">Please enter from and to duty time</p>
-                                            </div>
-                                        </div>
-                                        
                                     
-                                        <div class="row mt-4">
-                                            <div class="col-md-3">
-                                                <div class="form-sub">
+                                            <div class="row mt-4">
+                                                <div class="col-md-3">
+                                                    <div class="form-sub">
                                                         <span>Is Testing/Calibration the main activity of the organization :*</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <mat-radio-group name="is_main_activity" [(ngModel)]="healthCareForm.is_main_activity">
-                                                    <div class="row">
-                                                        <div class="col-md-4">
-                                                            <label class="check-rdo">
-                                                                    <mat-radio-button value="true">Yes </mat-radio-button>
-                                                            </label>
-                                                        </div>  
-                                                        <div class="col-md-4">
-                                                            <label class="check-rdo">
-                                                                    <mat-radio-button value="false">No </mat-radio-button>
-                                                            </label>
-                                                        </div>  
-                                                
                                                     </div>
-                                                </mat-radio-group>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <mat-form-field class="cab-data">
-                                                    <mat-label>(If No, indicate what are other activities related to the organization)</mat-label>
-                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="" name="indication" [(ngModel)]="healthCareForm.indication" [required]="healthCareForm.is_main_activity == 'false'" >
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-12 p-0">
-                                                <div class="form-subheader-data">
-                                                    <h5>EXISTING ACCREDITATION OR CERTIFICATION GRANTED TO THE ORGANIZATION</h5>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-radio-group name="is_main_activity" [(ngModel)]="healthCareForm.is_main_activity">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <label class="check-rdo">
+                                                                    <mat-radio-button value="true">Yes </mat-radio-button>
+                                                                </label>
+                                                            </div>  
+                                                            <div class="col-md-4">
+                                                                <label class="check-rdo">
+                                                                    <mat-radio-button value="false">No </mat-radio-button>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </mat-radio-group>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>(If No, indicate what are other activities related to the organization)</mat-label>
+                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="" name="indication" [(ngModel)]="healthCareForm.indication" [required]="healthCareForm.is_main_activity == 'false'" >
+                                                    </mat-form-field>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row mt-4">
+                                            <div class="row">
+                                                <div class="col-12 p-0">
+                                                    <div class="form-subheader-data">
+                                                        <h5>EXISTING ACCREDITATION OR CERTIFICATION GRANTED TO THE ORGANIZATION</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-4">
                                                 <div class="col-md-3">
                                                     <div class="form-sub">
                                                             <span>Does the Organization hold any other Accreditation's?*</span>
@@ -571,70 +558,63 @@
                                                 </div>
                                             </div>
 
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="table-content-health tbl-cnt">
+                                                        <table>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Name of Scheme</th>
+                                                                    <th>Name of Accreditation Body</th>
+                                                                    <th>Scope of Accreditation & Certificate No</th>
+                                                                    <th>Expiry Date of Certificate</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr  *ngFor="let item of accreditationInfo; let i = index;">
+                                                                    <td>
+                                                                        <mat-form-field class="cab-data">
+                                                                            <mat-label>Type Here</mat-label>
+                                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="" name="scheme_name_{{i}}" [(ngModel)]="accreditationInfo[i].scheme_name" required>
+                                                                        </mat-form-field>
+                                                                    </td>
+                                                                    <td>
+                                                                        <mat-form-field class="cab-data">
+                                                                            <mat-label>Type Here</mat-label>
+                                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="" name="acccreditation_body_name_{{i}}" [(ngModel)]="accreditationInfo[i].acccreditation_body_name" required>
+                                                                        </mat-form-field>
+                                                                    </td>
+                                                                    <td>
+                                                                        <mat-form-field class="cab-data">
+                                                                            <mat-label>Type Here</mat-label>
+                                                                            <input matInput onpaste="return false" (keypress)="Service.inputFilter($event)" placeholder="" name="acccreditation_scope_{{i}}" [(ngModel)]="accreditationInfo[i].acccreditation_scope" required>
+                                                                        </mat-form-field>
+                                                                    </td>
+                                                                    <td>
+                                                                        <mat-form-field class="cab-data">
+                                                                            <input matInput (dateChange)="Service.inputEvent($event,i,accreditationInfo)" [matDatepicker]="certificate_expiry_date"  readonly="true" placeholder="Expiry Date of Certificate" name="certificate_expiry_date_{{i}}" (click)="Service._openCalendar(certificate_expiry_date)" [(ngModel)]="accreditationInfo[i].certificate_expiry_date" required>
+                                                                            <mat-datepicker-toggle matSuffix [for]="certificate_expiry_date"></mat-datepicker-toggle>
+                                                                            <mat-datepicker #certificate_expiry_date  disabled="false"></mat-datepicker>
+                                                                        </mat-form-field>
+                                                                    </td>
+                                                                    <td class="content-icn">
+                                                                        <span *ngIf="i >= 0" class="icon-add" (click)="addRow(accreditationInfo,'')"></span> &nbsp;
+                                                                        <span *ngIf="i >= 1" class="icon-cancel" (click)="openDialog(accreditationInfo,i)"></span>
+                                                                    </td>
+                                                                </tr>
 
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="table-content-health tbl-cnt">
-                                                    <table>
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Name of Scheme</th>
-                                                                <th>Name of Accreditation Body</th>
-                                                                <th>Scope of Accreditation & Certificate No</th>
-                                                                <th>Expiry Date of Certificate</th>
-                                                                <th></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr  *ngFor="let item of accreditationInfo; let i = index;">
-                                                                <td>
-                                                                    <mat-form-field class="cab-data">
-                                                                        <mat-label>Type Here</mat-label>
-                                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="" name="scheme_name_{{i}}" [(ngModel)]="accreditationInfo[i].scheme_name" required>
-                                                                    </mat-form-field>
-                                                                </td>
-                                                                <td>
-                                                                    <mat-form-field class="cab-data">
-                                                                        <mat-label>Type Here</mat-label>
-                                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event)" matInput placeholder="" name="acccreditation_body_name_{{i}}" [(ngModel)]="accreditationInfo[i].acccreditation_body_name" required>
-                                                                    </mat-form-field>
-                                                                </td>
-                                                                <td>
-                                                                    <mat-form-field class="cab-data">
-                                                                        <mat-label>Type Here</mat-label>
-                                                                        <input matInput onpaste="return false" (keypress)="Service.inputFilter($event)" placeholder="" name="acccreditation_scope_{{i}}" [(ngModel)]="accreditationInfo[i].acccreditation_scope" required>
-                                                                    </mat-form-field>
-                                                                </td>
-                                                                <td>
-                                                                    <mat-form-field class="cab-data">
-                                                                        <input matInput (dateChange)="Service.inputEvent($event,i,accreditationInfo)" [matDatepicker]="certificate_expiry_date"  readonly="true" placeholder="Expiry Date of Certificate" name="certificate_expiry_date_{{i}}" (click)="Service._openCalendar(certificate_expiry_date)" [(ngModel)]="accreditationInfo[i].certificate_expiry_date" required>
-                                                                        <mat-datepicker-toggle matSuffix [for]="certificate_expiry_date"></mat-datepicker-toggle>
-                                                                        <mat-datepicker #certificate_expiry_date  disabled="false"></mat-datepicker>
-                                                                    </mat-form-field>
-
-                                                                   
-                                                                </td>
-                                                                <!-- <mat-form-field>
-                                                                    <input matInput placeholder="" name="date_val_{{i}}" value="accreditationInfo[i].certificate_expiry_date | date:'MM-dd-yyyy'" [(ngModel)]="accreditationInfo[i].certificate_hiddenexpiry_date">
-                                                                </mat-form-field> -->
-                                                                <!-- <mat-form-field>
-                                                                    <input matInput placeholder="" name="date_val_{{i}}" [(ngModel)]="accreditationInfo[i].certificate_hiddenexpiry_dates">
-                                                                </mat-form-field> -->
-                                                                <td class="content-icn">
-                                                                    <span *ngIf="i >= 0" class="icon-add" (click)="addRow(accreditationInfo,'')"></span> &nbsp;
-                                                                    <span *ngIf="i >= 1" class="icon-cancel" (click)="openDialog(accreditationInfo,i)"></span>
-                                                                </td>
-                                                            </tr>
-
-                                                        </tbody>
-                                                    </table>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-bdy">
                             <div class="row m-0">
                                 <div class="wrapper">
@@ -1876,7 +1856,7 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    <!-- </form> -->
                 </div>
             </div>
         </section>
