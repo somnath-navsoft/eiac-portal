@@ -424,6 +424,7 @@ loadCountryStateCity = async() => {
    this.sampleCollectionCenter=[{}];
    this.pointOfCareInfo=[{}];
    this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,authorization_confirm3:false,undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false,undertaking_confirm8:false,undertaking_confirm9:false};
+   this.recommend = {first:false,second:false,third:false,fourth:false}
    this.healthCareForm.organizationBasicInfo    = this.ownOrgBasicInfo;
    this.healthCareForm.organizationMemberInfo   = this.ownOrgMembInfo;
    this.healthCareForm.accreditationInfo        = this.accreditationInfo;
@@ -496,9 +497,9 @@ loadCountryStateCity = async() => {
 
  getPlaceName()
  {
-   if(typeof this.healthCareForm.search_location_name != 'undefined')
+   if(typeof this.step1Data.search_location_name != 'undefined')
    {
-     this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.healthCareForm.search_location_name+'.json?access_token='+this.Service.mapboxToken+'','')
+     this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.step1Data.search_location_name+'.json?access_token='+this.Service.mapboxToken+'','')
        .subscribe(res => {
            ////console.log(res['features']);
            this.searchCountryLists = res['features'];
