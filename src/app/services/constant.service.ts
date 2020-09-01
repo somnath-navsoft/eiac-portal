@@ -6,7 +6,7 @@ import { Subject} from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class Constants{
-	public apiUrl: string 					= '';
+	public apiUrl: string 					= 'https://dev-service.eiac.gov.ae/webservice/';
 	public mediaPath: string 				= 'https://dev-service.eiac.gov.ae';
 	//trainerAPI: '/trainer',
 	//all_services: this.apiUrl + 'service_page/',
@@ -43,6 +43,7 @@ export class Constants{
 		testing_cal_form_basic_data: 'testing_calibration_form_management/',
 		inspection_form_basic_data: 'inspection_body_form_management/',
 		criteriaIdByScope: this.apiUrl + 'criteria_wise_scope/',
+		criteriaScope: this.apiUrl + 'inspection_body_form_management/?scheme=',
 	}
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."
 	public loggedIn													=	new Subject<any>();
