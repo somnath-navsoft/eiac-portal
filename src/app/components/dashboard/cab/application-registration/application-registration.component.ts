@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 export class ApplicationRegistrationComponent implements OnInit {
 
   serviceList:any;
+  loader:boolean = true;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
@@ -21,11 +22,13 @@ export class ApplicationRegistrationComponent implements OnInit {
   }
 
   loadService() {
+    this.loader = false;
     this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.service_details_page+"?data=registration_service")
-      .subscribe(
-        res => {
-          console.log(res,'res');
-          this.serviceList  = res['allServiceList'];
-        });
+    .subscribe(
+      res => {
+        // console.log(res,'res');
+        this.serviceList  = res['allServiceList'];
+        this.loader = true;
+      });
   }
 }

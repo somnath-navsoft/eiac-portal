@@ -7,6 +7,7 @@ import { HostListener, ElementRef } from '@angular/core';
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material';
 import { RecaptchaComponent } from 'ng-recaptcha';
+declare let paypal: any;
 
 @Component({
   selector: 'app-pt-providers-form',
@@ -64,6 +65,7 @@ export class PtProvidersFormComponent implements OnInit {
   dutyTime3: boolean = true;
   searchCountryLists:any;
   onbehalf_representative_date:boolean = false;
+  recommendStatus:boolean = false
 
   foods = [
     {value: 'steak-0', viewValue: 'Steak'},
@@ -83,6 +85,34 @@ export class PtProvidersFormComponent implements OnInit {
       }
     }        
   }
+  public recommend:any;
+  transactions: any[] =[];
+  transactionsItem: any={};
+  total: any = 0;
+  allStateList: Array<any> = [];
+  allCityList: Array<any> = [];
+  step1Data:any = {};
+  step2Data:any = {};
+  step3Data:any = {};
+  step4Data:any = {};
+  step5Data:any = {};
+  step6Data:any = {};
+  step7Data:any = {};
+  fileAny:any;
+  tradeLicensedValidation:any = false;
+  step1DataBodyFormFile:any = new FormData();
+  step2DataBodyFormFile:any = new FormData();
+  step3DataBodyFormFile:any = new FormData();
+  step4DataBodyFormFile:any = new FormData();
+  step5DataBodyFormFile:any = new FormData();
+  step6DataBodyFormFile:any = new FormData();
+  step7DataBodyFormFile:any = new FormData();
+  userEmail:any;
+  userType:any;
+  isCompleteness:any;
+  profileComplete:any;
+  today = new Date();
+  headerSteps:any[] = [];
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
@@ -99,21 +129,32 @@ export class PtProvidersFormComponent implements OnInit {
    //this.checkCaptchaValidation = false;
    this.loader = false;
   //  this.setting();
+
+  this.headerSteps.push(
+    {
+    title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-user', activeClass:'user-present'
+    },
+    {
+    title:'profciency_testing_participation', desc:'2. Profciency Testing Participation', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    },
+    {
+    title:'personal_information', desc:'3. Personal Information', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    },
+    {
+    title:'information_audit_management', desc:'4. Internal Audit & Management', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    },
+    {
+    title:'perlim_visit', desc:'5. Perlim Visit', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    },
+    {
+    title:'undertaking_applicant', desc:'6. Undertaking & Applicant Company', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    },
+    {
+    title:'payment', desc:'7. Payment Information', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
+    }
+  );
  }
 
- setexDate(evnt){
-   let cdate =this.ptProvidersForm.date_of_issue;
-   this.minDate = new Date(cdate  + (60*60*24*1000));
- }
-//  setting(){
-
-//    this.placesRef.options.componentRestrictions = new ComponentRestrictions({
-//      country: 'IN'
-//    });
-//    this.placesRef.options.types = [];
-
-//    this.placesRef.reset();
-//  }
  resolvedSecurity(captchaResponse: string) {
    let captchaStatus   =  captchaResponse;
    if(captchaStatus != ''){
@@ -132,7 +173,8 @@ export class PtProvidersFormComponent implements OnInit {
    this.scopeForTesting   =[{}];
    this.scopeForMedical   =[{}];
    this.scopeForCalibration   =[{}];
-   this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,authorization_confirm4:false,recommend_confirm:false,undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false,undertaking_confirm8:false,undertaking_confirm9:false};
+   this.authorizationList = {undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false,authorization_confirm1:false,authorization_confirm2:false};
+   this.recommend = {first:false,second:false,third:false,fourth:false}
 
    this.medicaMainlLabInfo=[{}];
    this.ptProvidersForm.organizationBasicInfo    = this.ownOrgBasicInfo;
@@ -173,24 +215,26 @@ export class PtProvidersFormComponent implements OnInit {
 
  }
 
- validateFile(fileEvent: any) {
-   var file_name = fileEvent.target.files[0].name;
-   var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
-   var ex_type = ['doc','odt','pdf','rtf','docx','xlsx'];
-   var ex_check = this.Service.isInArray(file_exe,ex_type);
-   if(ex_check){
-     this.ptProvidersForm.trade_license_name =fileEvent.target.files[0].name;
-     this.ptProvidersFormFile.append('trade_license_file',fileEvent.target.files[0]);
-     this.file_validation = true;
+validateFile(fileEvent: any) {
+  var file_name = fileEvent.target.files[0].name;
+  var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
+  var ex_type = ['pdf','png','jpg','jpeg','JPEG'];
+  var ex_check = this.Service.isInArray(file_exe,ex_type);
+  if(ex_check){
+    this.step1DataBodyFormFile.append('trade_license',fileEvent.target.files[0]);
+    this.file_validation = true;
+    this.tradeLicensedValidation = true;
+    return true;
+  }else{
+    this.file_validation = false;
+    this.tradeLicensedValidation = false;
+  }
+}
 
-     return true;
-   }
-   else{
-     this.file_validation = false;
-
-     return false;
-   }
- }
+setexDate(date){
+  let cdate = date;
+  this.minDate = new Date(cdate  + (60*60*24*1000));
+}
 
  emailValidation(email){
    // var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -229,23 +273,7 @@ export class PtProvidersFormComponent implements OnInit {
  showHideMembInfo(data){
    this.orgMembToggle  = data.checked;
  }
- // openDialog(){
- //   const dialogRef = this.dialog.open(ConfirmationDialog, {
- // 		data: {
- //       title : 'The Accreditation Agreement',
- //       content:"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-       
- // 		  }, 
- // 		  height: '300px',
- // 		  width: '700px',
- // 		  disableClose: true
- //     });
- //     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
- //       if (confirmed) {
- //           this.is_agreement=true;
- //       }
- //     });
- // }
+
  onSubmit(ngForm){
    this.authorizationStatus = true;
    this.isSubmit = true;
@@ -347,7 +375,369 @@ export class PtProvidersFormComponent implements OnInit {
        this.toastr.warning('Please Fill required field','')
      }
 
-   }
+  }
+
+  private loadExternalScript(scriptUrl: string) {
+    return new Promise((resolve, reject) => {
+      const scriptElement = document.createElement('script')
+      scriptElement.src = scriptUrl
+      scriptElement.onload = resolve
+      //console.log("load script...");
+      document.body.appendChild(scriptElement)
+    })
+  }
+
+  onSubmitApplication(ngForm1: any){
+    if(this.step1Data.duty_shift == '1' && typeof this.step1Data.duty_from1 == 'undefined' && typeof this.step1Data.duty_to1 == 'undefined')
+    {
+      this.dutyTime1 = false;
+      this.isSubmit = false;
+    }else{
+      this.dutyTime1 = true;
+    }
+    if(this.step1Data.duty_shift == '2' && typeof this.step1Data.duty_from2 == 'undefined' && typeof this.step1Data.duty_to2 == 'undefined')
+    {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+      }else{
+        this.dutyTime1 = true;
+      }
+      this.dutyTime2 = false;
+      this.isSubmit = false;
+    }else{
+      this.dutyTime2 = true;
+    }
+    if(this.step1Data.duty_shift == '3' && typeof this.step1Data.duty_from3 == 'undefined' && typeof this.step1Data.duty_to3 == 'undefined')
+    {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+      }else{
+        this.dutyTime1 = true;
+      }
+      if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
+      {
+        this.dutyTime2 = false;
+      }else{
+        this.dutyTime2 = true;
+      }
+      this.dutyTime3 = false;
+      this.isSubmit = false;
+    }else{
+      this.dutyTime3 = true;
+    }
+  
+    if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
+      this.dutyTime1 = false;
+      this.isSubmit = false;
+    }else{
+      this.dutyTime1 = true;
+    }
+    this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+  
+    if(ngForm1.form.valid && this.tradeLicensedValidation != false) {
+      this.ptProvidersForm = {};
+      this.ptProvidersForm.step1 = {};
+      this.ptProvidersForm.email = this.userEmail;
+      this.ptProvidersForm.userType = this.userType;
+      this.ptProvidersForm.step1 = this.step1Data;
+  
+      this.ptProvidersForm.step1['ownOrgBasicInfo'] = [];
+      this.ptProvidersForm.step1['ownOrgMembInfo'] = [];
+      this.ptProvidersForm.step1['accreditationInfo'] = [];
+      
+      if(this.ownOrgBasicInfo) {
+        this.ptProvidersForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
+      }
+      if(this.ownOrgMembInfo) {
+        this.ptProvidersForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
+      }
+      if(this.accreditationInfo) {
+        this.ptProvidersForm.step1['accreditationInfo'] = this.accreditationInfo;
+      }
+      
+  
+      this.step1DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step1DataBodyFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else if(ngForm1.form.valid && this.tradeLicensedValidation == false) {
+      this.file_validation = false;
+      this.toastr.warning('Please Fill required field','');
+    }
+    else {
+      this.toastr.warning('Please Fill required field','');
+    }
+  }
+  
+  onSubmitTestingParticipation(ngForm2: any){
+    this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+  
+    if(ngForm2.form.valid) {
+      this.ptProvidersForm = {};
+      this.ptProvidersForm.step2 = {};
+      this.ptProvidersForm.email = this.userEmail;
+      this.ptProvidersForm.userType = this.userType;
+      this.ptProvidersForm.step2 = this.step2Data;
+  
+      this.ptProvidersForm.step2['proficiencyTesting'] = [];
+      
+      if(this.ownOrgBasicInfo) {
+        this.ptProvidersForm.step2['proficiencyTesting'] = this.proficiencyTesting;
+      }
+  
+      this.step2DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step2DataBodyFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+  }
+  
+  onSubmitPersonalInformation(ngForm3: any){
+    this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+    if(ngForm3.form.valid) {
+      this.ptProvidersForm = {};
+      this.ptProvidersForm.step3 = {};
+      this.ptProvidersForm.email = this.userEmail;
+      this.ptProvidersForm.userType = this.userType;
+      this.ptProvidersForm.step3 = this.step3Data;
+  
+      this.step3DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step3DataBodyFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+  }
+  
+  onSubmitInformationAuditManagement(ngForm4: any){
+  this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
+    if(ngForm4.form.valid) {
+      this.ptProvidersForm = {};
+      this.ptProvidersForm.step4 = {};
+      this.ptProvidersForm.email = this.userEmail;
+      this.ptProvidersForm.userType = this.userType;
+      this.ptProvidersForm.step4 = this.step4Data;
+  
+      this.step4DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step4DataBodyFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+  }
+  
+  onSubmitPerlimVisit(ngForm5: any){
+    this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+    if(ngForm5.form.valid) {
+      this.ptProvidersForm = {};
+      this.ptProvidersForm.step5 = {};
+      this.ptProvidersForm.email = this.userEmail;
+      this.ptProvidersForm.userType = this.userType;
+      this.ptProvidersForm.step5 = this.step5Data;
+  
+      this.step5DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step5DataBodyFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+  }
+  
+  onSubmitUndertakingApplicant(ngForm6: any){
+  for(let key in this.authorizationList) {
+    if(this.authorizationList[key] == false) {
+      this.authorizationStatus = false;
+    }else {
+      this.authorizationStatus = true;
+    }
+  }
+  
+  for(let key in this.recommend) {
+    if(this.recommend[key] == true) {
+      this.recommendStatus = true;
+    }
+  }
+  if(this.authorizationStatus == false){
+    this.isSubmit = false;
+    this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
+  }else if(this.recommendStatus != true){
+    this.isSubmit = false;
+    this.toastr.error('Please Check any recommend the visit ', '');
+  }
+  if(ngForm6.form.valid){
+  
+    // this.step6Data = this.recommend.first;
+    // this.step6Data = this.recommend.second;
+    // this.step6Data = this.recommend.first;
+    // this.step6Data = this.recommend.first;
+    // this.step6Data = this.recommend.first;
+  
+    this.ptProvidersForm = {};
+    this.ptProvidersForm.step6 = {};
+    this.ptProvidersForm.email = this.userEmail;
+    this.ptProvidersForm.userType = this.userType;
+    this.step6Data.authorizationList = this.authorizationList;
+    this.step6Data.recommend = this.recommend;
+  
+    this.ptProvidersForm.step6 = this.step6Data;
+    this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+  
+    this.step6DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step6DataBodyFormFile)
+    .subscribe(
+      res => {
+        console.log(res,'res')
+        if(res['status'] == true) {
+          this.toastr.success(res['msg'], '');
+          this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+        }else{
+          this.toastr.warning(res['msg'], '');
+        }
+      });
+  
+    //Paypal config data
+    //applyTrainerPublicCourse
+    this.transactionsItem['amount']               = {};
+    this.transactionsItem['amount']['total']      = 0.00;
+    this.transactionsItem['amount']['currency']   = 'USD';
+    this.transactionsItem['amount']['details']    = {};
+    this.transactionsItem['amount']['details']['subtotal'] = 0.00;
+    //declare Items data
+    this.transactionsItem['item_list']            = {};
+    this.transactionsItem['item_list']['items']   = [];
+    let custPrice: any = 0.01;
+    this.total = 0.05;
+      this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity: 1, price: custPrice, currency: 'USD'});
+        if(this.total > 0){
+          //console.log("Calculate price: ", calcPrice);
+          this.transactionsItem['amount']['total'] = custPrice.toFixed(2);
+          this.transactionsItem['amount']['details']['subtotal'] = custPrice.toFixed(2);
+          this.transactions.push(this.transactionsItem);
+          //console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
+        }
+        setTimeout(() => {
+          this.createPaymentButton(this.transactionsItem, this.ptProvidersForm, this);
+          let elem = document.getElementsByClassName('paypal-button-logo');
+          console.log("button creting...");
+          if(elem){
+            console.log("button creted...");
+          }else{
+            console.log("Loding button...");
+          }
+        }, 100)
+  
+    //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+  }else{
+    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }    
+  }
+
+  saveInspectopnAfterPayment(theData: any){
+    console.log(">>> The Data: ", theData);
+    this.transactions = [];
+    this.toastr.success('Payment Success, Please upload payment receipt, Thank you.','Paypal>>',{timeOut:5500});
+    this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+ }
+ createPaymentButton(itemData: any, formObj?:any, compObj?:any){
+  //console.log("creating....buttons...", this.paymentReview, " :: ", this.paymentReview.length, " -- ",this.transactionsItem, " --- ", this.transactions);
+ //AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl = das.abhishek77@gmail.com
+ //Get transaction ID - https://developer.paypal.com/docs/checkout/reference/server-integration/get-transaction/#on-the-server
+  if(this.transactions.length){
+    this.loadExternalScript("https://www.paypalobjects.com/api/checkout.js").then(() => {
+    paypal.Button.render({
+      env: 'sandbox',
+      client: {
+        sandbox: 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
+      },
+      commit: true,
+      payment: function (data, actions) {
+        console.log("@Paypal payment actionms: ", actions, " -- ", data, " --- ", itemData);        
+        return actions.payment.create({
+          payment: {
+            transactions: [itemData]
+          }
+        })
+      },
+      onAuthorize: function(data, actions) {
+        console.log("@Paypal onAuthorize actionms: ", actions, " -- ", data);
+        return actions.payment.execute().then(function(payment) {
+          console.log(">>>Success: ", payment);
+          formObj.paypalReturn = payment;
+          formObj.paypalStatus = 'success';
+          console.log("<<<Review obj: ", formObj, " :: ", compObj);
+          compObj.saveInspectopnAfterPayment(formObj);
+        })
+      },
+      onCancel: (data, actions) => {
+        console.log('OnCancel', data, actions);
+        //this.showCancel = true;
+        formObj.paypalReturn = data;
+        formObj.paypalStatus = 'cancel';
+        this.toastr.warning("You have cancelled payment, Continue next step please complete payment process again.", 'Paypal>>',{timeOut:6500}); 
+
+    },
+    onError: err => {
+        console.log('OnError', err);
+        formObj.paypalReturn = err;
+        formObj.paypalStatus = 'error';
+        //compObj.saveCourseAfterPayment(formObj);
+        this.toastr.error("Paypal transaction error has occured, please try again", 'Payment Return'); 
+    },
+    onClick: (data, actions) => {
+        console.log('onClick', data, actions);
+        //this.resetStatus();
+    }
+    }, '#paypalPayment');
+  });
+  }
+}
 
    getPlaceName()
    {
@@ -386,42 +776,5 @@ export class PtProvidersFormComponent implements OnInit {
        this.dutyTime3 = true;
      }
    }
-
-  //  openDialogBoxes(obj: any, index: number) {
-  //    const dialogRef = this.dialog.open(DialogBoxComponent,{
-  //      data:{
-  //        message: 'Are you sure want to delete?',
-  //        buttonText: {
-  //          ok: 'Yes',
-  //          cancel: 'No'
-  //        },
-  //        obj:obj,
-  //        index:index,
-  //      }
-  //    });
-  //  }
-
-  //  openAuthorizationDialog() {
-  //    const dialogRef = this.dialog.open(DialogBoxComponent,{
-  //      data:{
-  //        message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-  //        buttonText: {
-  //          ok: 'Accept',
-  //          cancel: 'Cancel'
-  //        },
-  //        obj:'',
-  //        index:'',
-  //        authorization_checked:true,
-  //      },
-  //      height: '300px',
-  //      width: '600px',
-  //    });
-  //    dialogRef.afterClosed().pipe(
-  //      filter(name => name)
-  //    ).subscribe(name => {
-  //      this.authorization_confirm2 = name.authorization;
-  //      this.authorizationList.authorization_confirm2 = this.authorization_confirm2;
-  //    })
-  //  }
 
 }

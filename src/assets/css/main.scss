@@ -23,6 +23,9 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
   white-space: normal !important;
 }
 
+.recommend .mat-checkbox-layout {
+  white-space: normal !important;
+}
 //==================DU PORTAL==================//
 
 //==================FOR BEFORE LOGIN==================//
@@ -732,7 +735,15 @@ a:hover { text-decoration: none; }
 .auth .mat-checkbox-inner-container { height: 20px; width: 20px; margin-top: 7px; }
 .auth .mat-checkbox-layout .mat-checkbox-label { line-height: 34px; font-family: "Dubai Medium"; font-size: 24px; }
 
-
+.recommend .mat-checkbox-frame {
+  border-color: rgba(153, 153, 153, 1); 
+  border-width: 1px; 
+  border-radius: 0; 
+  width: 20px; 
+  height: 20px;
+}
+.recommend .mat-checkbox-inner-container { height: 20px; width: 20px; margin-top: 7px; }
+.recommend .mat-checkbox-layout .mat-checkbox-label { line-height: 34px; font-family: "Dubai Medium"; font-size: 24px; }
 .assess-dir { background: #EFEFEF; margin-top: 30px; padding-bottom: 30px; }
 
 
@@ -781,6 +792,40 @@ a:hover { text-decoration: none; }
 .frm-data .mat-form-field-label { color: #3F3F3F; font-family: 'Dubai Regular';}
 .request_frm { margin: 0 -15px; }
 
+.auth-details table { width: 100%; background: #F9F9F9; font-family: "Dubai Regular"; }
+.auth-details td{ padding: 10px 25px; border: 1px solid #DCDAD5; font-family: "Dubai Regular"; font-size: 22px; }
+.auth-details td span { color: #AA9777; text-decoration: underline;}
+.auth { padding: 15px; line-height: 35px; }
+.auth .mat-checkbox-layout .mat-checkbox-label { font-size: 24px; font-family: "Dubai Medium"; color: #222222; }
+.auth .acc-auth { color: #AA9777; text-decoration: underline; }
+
+.auth .acc-auth { color: #AA9777; }
+.auth ul { margin: 0; padding: 0; list-style-type: none;}
+.auth .mat-checkbox-layout .mat-checkbox-label { font-size: 22px; font-family: "Dubai Medium"; color: #222222; }
+.authData { color: #222222; font-family: "Dubai Medium"; font-size: 22px; padding: 20px 0; }
+
+
+// Terms And Conditions
+
+.terms-condition { height: 480px; margin: 20px; overflow-y: scroll; background: #ffffff; font-family: "Dubai Regular"; }
+.tnc { padding: 20px; }
+.tnc p { padding: 0 10px; margin-bottom: 5px; }
+.tnc .tnc-sub h5 { color: #B54150;  margin-bottom: 10px; display: inline-block; }
+.tnc h3 {
+  color: #B54150;
+  margin-bottom: 15px;
+}
+.tnc ol { padding-left: 40px; }
+.tnc ol { counter-reset: item; list-style-type: none; }
+.tnc ol li{ display: block; font-size: 20px; }
+.tnc ol li:before { content: counters(item, ".") "."; counter-increment: item; margin-right: 10px; color: #B54150; font-size: 22px; }
+.tnc li li:before { content: counters(item, ".") " "; counter-increment: item; color: #444444; font-size: 20px; }
+.tnc ul { list-style: disc; padding: 0 45px; }
+.tnc ul li:before { content: none;}
+.tnc ul li { display: list-item; }
+.tnc ol ol ol { counter-reset: list; margin: 0; }
+.tnc ol ol ol > li { list-style: none; position: relative; }
+.tnc ol ol ol > li:before { counter-increment: list; content: "("counter(list, lower-alpha)")"; position: absolute; left: -1.4em; }
 //==================RESPONSIVE==================//
 @media(max-width: 1366px) {
   .dash-logo { height: 50px; min-width: 50px; margin-right: 10px; }

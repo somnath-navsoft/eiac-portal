@@ -356,8 +356,8 @@ export class TestingCalibrationFormComponent implements OnInit {
     this.recommend = {first:false,second:false,third:false,fourth:false}
   }
 
-  setexDate(){
-    let cdate =this.testingCalForm.date_of_issue;
+  setexDate(date){
+    let cdate = date;
     this.minDate = new Date(cdate  + (60*60*24*1000));
   }
   loadData(){
