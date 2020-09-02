@@ -18,7 +18,7 @@ export class CertificationBodiesFormComponent implements OnInit {
   public certificationBodiesForm: any = {};
   public organizationBasicInfo: Array<any> = [];
   public organizationMemberInfo: Array<any> = [];
-  public accreditationInfo: Array<any> = [];
+  public accreditationInfo: Array<any> = []; 
   public summaryDetail: Array<any> = [];
   public auditorsExaminersFulltime: Array<any> = [];
   public auditorsExaminersParttime: Array<any> = [];
