@@ -157,7 +157,7 @@
                                                 <input matInput [(ngModel)]="step1Data.office_email" name="office_email" placeholder="Office E-mail" required>
                                             </mat-form-field>
 
-                                            <p class="error" *ngIf="step1Data.personal_email && !Service.checkInput('email',step1Data.office_email)">Please Enter Correct Email Id</p>
+                                            <p class="error" *ngIf="step1Data.office_email && !Service.checkInput('email',step1Data.office_email)">Please Enter Correct Email Id</p>
                                         </div>
                                     </div>
 
