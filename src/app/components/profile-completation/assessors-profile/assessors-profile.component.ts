@@ -126,17 +126,7 @@ export class AssessorsProfileComponent implements OnInit {
 
           this.technicalFields = res['data'].technical_field;
 
-          if(res['data'].step1[0].office_email) {
-            this.progressValue = 22;
-          }if(res['data'].step1[0].office_email && res['data'].step2.detail) {
-            this.progressValue = 44;
-          }if(res['data'].step1[0].office_email && res['data'].step2.detail && res['data'].step3.experience_1) {
-            this.progressValue = 66;
-          }if(res['data'].step1[0].office_email && res['data'].step2.detail && res['data'].step3.experience_1 && res['data'].step4['technical_experience']) {
-            this.progressValue = 88;
-          }if(res['data'].step1 && res['data'].step2 && res['data'].step3 && res['data'].step4 && res['data'].step5[0].place) {
-            this.progressValue = 100;
-          }
+          
 
           if(res['data'].step1 != '') {
             var step1 = res['data'].step1[0];
@@ -219,6 +209,18 @@ export class AssessorsProfileComponent implements OnInit {
             this.step5Data.place = step5.place;
             this.step5Data.digital_signature = step5.signature;
             this.step5Data.date = new Date(step5.registration_date);
+          }
+
+          if(res['data'].step1[0].office_email) {
+            this.progressValue = 22;
+          }if(res['data'].step1[0].office_email && res['data'].step2.detail) {
+            this.progressValue = 44;
+          }if(res['data'].step1[0].office_email && res['data'].step2.detail && res['data'].step3.experience_1) {
+            this.progressValue = 66;
+          }if(res['data'].step1[0].office_email && res['data'].step2.detail && res['data'].step3.experience_1 && res['data'].step4['technical_experience']) {
+            this.progressValue = 88;
+          }if(res['data'].step1 && res['data'].step2 && res['data'].step3 && res['data'].step4 && res['data'].step5[0].place) {
+            this.progressValue = 100;
           }
         }
       });

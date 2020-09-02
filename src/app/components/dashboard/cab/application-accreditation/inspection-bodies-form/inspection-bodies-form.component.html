@@ -187,6 +187,7 @@
                                             </mat-form-field>
                                         </div>
                                     </div>
+
                                     <div class="row" id="2ndStep">
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">
@@ -196,6 +197,7 @@
                                             </mat-form-field>
                                             <p class="error" *ngIf="step1Data.telephone && !Service.checkInput('onlyNumberWithPlus',step1Data.telephone)">Please Enter Correct Telephone Number</p> 
                                         </div>
+
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Fax Number</mat-label>
@@ -204,6 +206,7 @@
                                             </mat-form-field>
                                             <p class="error" *ngIf="step1Data.fax_no && !Service.checkInput('onlyNumberWithPlus',step1Data.fax_no)">Please Enter Correct Fax Number</p> 
                                         </div>
+
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Official E-mail Address</mat-label>
@@ -212,6 +215,7 @@
                                             </mat-form-field>
                                             <p class="error" *ngIf="step1Data.official_email && !Service.checkInput('email',step1Data.official_email)">Please Enter Correct Email Id</p>
                                         </div>
+
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Official Website</mat-label>
@@ -220,6 +224,7 @@
                                             </mat-form-field>
                                         </div>
                                     </div>
+
                                     <div class="row"  id="ownOrgBasicInfos">
                                         <div class="col-12 p-0">
                                             <div class="form-subheader-data">
@@ -294,74 +299,75 @@
                                         </div>
                                     </div>
                                     <div class="row tog-content">
-                                            <div class="col-md-6 col-sm-12 p-0">
-                                                <div class="form-subheader-data">
-                                                    <h5>DOES THE COMPANY HAVE BOARD MEMBERS ?</h5>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-12ssss p-0">
-                                                <div class="form-subheader-desc">
-                                                    <mat-radio-group name="is_bod" [(ngModel)]="inspectionBodyForm.is_bod">
-                                                        <mat-radio-button value="1" (click)='bod_toggle(1,"is_bod")'>Yes</mat-radio-button>
-                                                        <mat-radio-button value="0" (click)='bod_toggle(0,"is_bod")'>No</mat-radio-button>
-                                                    </mat-radio-group>
-                                                </div>
+                                        <div class="col-md-6 col-sm-12 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>DOES THE COMPANY HAVE BOARD MEMBERS ?</h5>
                                             </div>
                                         </div>
-
-                                    <div id="is_bod_complete" class="row"*ngFor="let item of ownOrgMembInfo; let i = index;">
-                                        <div class="col-12"  *ngIf="is_bod" >
-                                            <div class="ownr-details">
-                                                <div class="row" *ngIf="i >= 1">
-                                                    <div class="col-12">
-                                                        <div class="remove-clss">
-                                                                <span class="icon-close-round" (click)="removeRow(ownOrgMembInfo, i)"></span>
-                                                            </div>
-                                                        </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6 col-sm-12">
-                                                        <mat-form-field class="cab-data">
-                                                            <mat-label>Name the members of Board of Directors (BOD) (if any)</mat-label>
-                                                            <input matInput onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name the members of Board of Directors (BOD)"  name="name_{{i}}" [(ngModel)]="ownOrgMembInfo[i].name"  required>
-                                                        </mat-form-field>
-                                                    </div>
-                                                    <div class="col-md-6 col-sm-12">
-                                                        <mat-form-field class="cab-data">
-                                                            <mat-label>List the Companies name of BOD members</mat-label>
-                                                            <input matInput placeholder="List the Companies name of BOD members" onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" name="list_comp_{{i}}" [(ngModel)]="ownOrgMembInfo[i].list_comp"  required>
-                                                        </mat-form-field>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <mat-form-field class="cab-data">
-                                                            <mat-label>Authorized Contact Person Name</mat-label>
-                                                            <input matInput placeholder="Authorized Contact Person Name"   name="contact_person_{{i}}" [(ngModel)]="ownOrgMembInfo[i].contact_person" onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" required>
-                                                        </mat-form-field>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6 col-sm-12">
-                                                        <mat-form-field class="cab-data">
-                                                            <mat-label>Designation</mat-label>
-                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="designation_{{i}}" [(ngModel)]="ownOrgMembInfo[i].designation" required>
-                                                        </mat-form-field>
-                                                    </div>
-                                                    <div class="col-md-6 col-sm-12">
-                                                        <mat-form-field class="cab-data">
-                                                            <mat-label>Mobile Phone No.</mat-label>
-                                                            <input onpaste="return false" type="text" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="mobile_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].mobile_no" required>
-                                                        </mat-form-field>
-                                                        <p class="error" *ngIf="ownOrgMembInfo[i].mobile_no && !Service.checkInput('onlyNumberWithPlus',ownOrgMembInfo[i].mobile_no)">Please Enter Correct Telephone Number</p> 
-                                                    </div>
-                                                </div>
-
+                                        <div class="col-md-6 col-sm-12ssss p-0">
+                                            <div class="form-subheader-desc">
+                                                <mat-radio-group name="is_bod" [(ngModel)]="step1Data.is_bod">
+                                                    <mat-radio-button value="1">Yes</mat-radio-button>
+                                                    <mat-radio-button value="0">No</mat-radio-button>
+                                                </mat-radio-group>
                                             </div>
-                                            
                                         </div>
                                     </div>
-                                    <div class="row" *ngIf="is_bod">
+                                    <ng-container *ngIf="step1Data.is_bod == '1'">
+                                        <div class="row" *ngFor="let item of ownOrgMembInfo; let i = index;">
+                                            <div class="col-12" *ngIf="step1Data.is_bod == '1'">
+                                                <div class="ownr-details">
+                                                    <div class="row" *ngIf="i >= 1">
+                                                        <div class="col-12">
+                                                            <div class="remove-clss">
+                                                                    <span class="icon-close-round" (click)="removeRow(ownOrgMembInfo, i)"></span>
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Name the members of Board of Directors (BOD) (if any)</mat-label>
+                                                                <input matInput onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name the members of Board of Directors (BOD)"  name="name_{{i}}" [(ngModel)]="ownOrgMembInfo[i].name"  required>
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>List the Companies name of BOD members</mat-label>
+                                                                <input matInput placeholder="List the Companies name of BOD members" onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" name="list_comp_{{i}}" [(ngModel)]="ownOrgMembInfo[i].list_comp"  required>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Authorized Contact Person Name</mat-label>
+                                                                <input matInput placeholder="Authorized Contact Person Name"   name="contact_person_{{i}}" [(ngModel)]="ownOrgMembInfo[i].contact_person" onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" required>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Designation</mat-label>
+                                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="designation_{{i}}" [(ngModel)]="ownOrgMembInfo[i].designation" required>
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Mobile Phone No.</mat-label>
+                                                                <input onpaste="return false" type="text" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="mobile_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].mobile_no" required>
+                                                            </mat-form-field>
+                                                            <p class="error" *ngIf="ownOrgMembInfo[i].mobile_no && !Service.checkInput('onlyNumberWithPlus',ownOrgMembInfo[i].mobile_no)">Please Enter Correct Telephone Number</p> 
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                    <div class="row" *ngIf="step1Data.is_bod == '1'">
                                         <div class="col-12">
                                             <div class="add-new">
                                                 <a  href="javascript:void(0)" (click)="addRow(ownOrgMembInfo)">
@@ -371,6 +377,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="row">
                                         <div class="col-12 p-0">
                                             <div class="form-subheader-data">
@@ -518,15 +525,15 @@
                                             </div>
                                         </div>
                                         <div class="col-md-9">
-                                            <mat-radio-group name="is_hold_other_accreditation" [(ngModel)]="inspectionBodyForm.is_hold_other_accreditation">
+                                            <mat-radio-group name="is_hold_other_accreditation" [(ngModel)]="step1Data.is_hold_other_accreditation">
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <div class="subhead-opt">
                                                             <label class="check-rdo">
-                                                                    <mat-radio-button (click)='bod_toggle(1,"is_hold_other_accreditation_toggle")' value="1">Yes </mat-radio-button>
+                                                                    <mat-radio-button value="1">Yes </mat-radio-button>
                                                             </label>
                                                             <label class="check-rdo">
-                                                                    <mat-radio-button (click)='bod_toggle(0,"is_hold_other_accreditation_toggle")' value="0">No </mat-radio-button>
+                                                                    <mat-radio-button value="0">No </mat-radio-button>
                                                             </label>
                                                         </div>
                                                     </div>                                                    
@@ -536,7 +543,7 @@
                                     </div>
 
 
-                                    <div class="row" id="is_hold_other_accreditations" *ngIf="is_hold_other_accreditation_toggle">
+                                    <div class="row" id="is_hold_other_accreditations" *ngIf="step1Data.is_hold_other_accreditation == '1'">
                                         <div class="col-md-12">
                                             <div class="table-content-health">
                                                 <table>
@@ -666,6 +673,7 @@
                                             <div class="bttns-health bttn-staff">
                                                 <!--  (click)="onSubmitApplication()" -->
                                                 <button class="cancel-bttn" routerLink="/dashboard/cab_client/application-accreditation">BACK</button>
+                                                <button class="cancel-bttn" type="button" (click)="savedraftStep('step1')">SAVE AS DRAFT</button>
                                                 <button class="submit-bttn submit-health">CONTINUE</button>
                                             </div>
                                         </div>
@@ -760,7 +768,7 @@
                                             <div class="bttns-health bttn-staff">
                                                 <!-- (click)="onSubmitTestingParticipation()" -->
                                                 <button class="cancel-bttn"  type="button" (click)="Service.headerStepMove('application_information',headerSteps,'menu','profciency_testing_participation')">BACK</button> 
-                                                <button class="cancel-bttn" type="button">SAVE AS DRAFT</button> 
+                                                <button class="cancel-bttn" type="button" (click)="savedraftStep('step2')">SAVE AS DRAFT</button> 
                                                 <button class="submit-bttn submit-health" >CONTINUE</button>
                                             </div>
                                         </div>
@@ -875,6 +883,7 @@
                                         <div class="bttns-health bttn-staff">
                                             <!-- (click)="onSubmitPersonalInformation()" -->
                                             <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('profciency_testing_participation',headerSteps,'menu','personal_information')">BACK</button> 
+                                            <button class="cancel-bttn" type="button" (click)="savedraftStep('step3')">SAVE AS DRAFT</button>
                                             <button class="submit-bttn submit-health" >CONTINUE</button>
                                         </div>
                                     </div>
@@ -923,6 +932,7 @@
                                             <div class="bttns-health bttn-staff">
                                                 <!-- (click)="onSubmitInformationAuditManagement()" -->
                                                 <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('personal_information',headerSteps,'menu','information_audit_management')">BACK</button> 
+                                                <button class="cancel-bttn" type="button" (click)="savedraftStep('step4')">SAVE AS DRAFT</button>
                                                 <button class="submit-bttn submit-health" >CONTINUE</button>
                                             </div>
                                         </div>
@@ -1000,6 +1010,7 @@
                                         <div class="bttns-health bttn-staff">
                                             <!--  (click)="onSubmitPerlimVisit()" -->
                                             <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','perlim_visit')">BACK</button> 
+                                            <button class="cancel-bttn" type="button" (click)="savedraftStep('step5')">SAVE AS DRAFT</button>
                                             <button class="submit-bttn submit-health">CONTINUE</button>
                                         </div>
                                     </div>
@@ -1261,6 +1272,7 @@
                                     <div class="col-md-12">
                                         <div class="bttns-health bttn-staff">
                                             <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('perlim_visit',headerSteps,'menu','undertaking_applicant')">BACK</button> 
+                                            <button class="cancel-bttn" type="button" (click)="savedraftStep('step6')">SAVE AS DRAFT</button>
                                             <button class="submit-bttn submit-health"  *ngIf="!transactions.length">PROCEEDS FOR PAYMENT</button>
                                             <ng-container *ngIf="transactions.length">
                                                 <div id="paypalPayment"></div>
