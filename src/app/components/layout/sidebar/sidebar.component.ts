@@ -14,6 +14,7 @@ export class SidebarComponent implements OnInit {
   userType: string  = '';
   userEmail:any;
   currentTitle:any;
+  isdDynamicsopenClose:any;
   
   constructor(private _constants:  Constants, private _service: AppService, 
               private _router: Router) { }
@@ -37,6 +38,18 @@ export class SidebarComponent implements OnInit {
         // let getTypeMenu = this.dashMenu.find(rec => rec.type === this.userType);
         // this.dashMenu = getTypeMenu;
       })
+  }
+
+  dynamicsopenClose(id,status)
+  {
+    if(status == 'open')
+    {
+      this.isdDynamicsopenClose = id;
+    }else if(status == 'close'){
+      this.isdDynamicsopenClose = '0';
+    }
+    console.log(this.isdDynamicsopenClose);
+    console.log(status);
   }
 
   accDropDown(itemHeading: string) { 
