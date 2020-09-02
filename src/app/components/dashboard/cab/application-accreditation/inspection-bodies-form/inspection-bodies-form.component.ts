@@ -299,7 +299,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         selectValue = getValues;
       }
 
-      this.Service.put(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,{'value_id' : selectValue})
+      /*this.Service.put(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,{'value_id' : selectValue})
       .subscribe(
         record => {
             //console.log("SErvice Data: ", record, " -- ", record['scopeValue'].length);
@@ -316,7 +316,7 @@ export class InspectionBodiesFormComponent implements OnInit {
                 this.dynamicScopeModel[secName].fieldLines[lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex].values] = record['scopeValue'];
             }
             //console.log("@@@Updated Model Values: ", this.dynamicScopeModel, " :: ", record['scopeValue'].length);
-        });
+        });*/
   }
 
   loadCriteriaScope(value){
@@ -452,21 +452,78 @@ export class InspectionBodiesFormComponent implements OnInit {
   }
 
   getCriteria(value){
-    //console.log("select Criteris: ", value);
+    console.log("select Criteris: ", value);
     if(value != undefined && value > 0){
        //Get fullscope
-       let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.criteriaIdByScope + value;
-       //console.log("API: ", apiURL);
+       //let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.criteriaIdByScope + value;
+       //this.Service.apiServerUrl+"/"
+       //value =18;
+       let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data+"?scheme="+value;
+       //this.constant.API_ENDPOINT.criteriaScope + value;
+       console.log("API: ", apiURL);
 
        this.fullScope = [];
        this.dynamicScopeModel = [];
        this.dynamicScopeFieldColumns = [];
 
-       this.Service.get(apiURL,'').subscribe(record => {
-            //console.log('Fullscope: ', record);
+       this.Service.getwithoutData(apiURL).subscribe(record => {
+            console.log('Fullscope: ', record);
             let dataScope:any = [];
             let fieldTitleValue: any = [];
-            dataScope = record;
+            dataScope = record['data'];
+            let customKey;
+            if(dataScope.firstColumnData != undefined && dataScope.firstColumnData.length > 0){
+              let firstColumValues = dataScope.firstColumnData[0];
+              console.log(">>Firstcolumn: ", firstColumValues);
+              //this.fullScope.push(dataScope.scopeValue);
+              this.fullScope = [{
+                title: "lifting_equipment", id:1, name:"Lifting Equipment"
+              }];//dataScope.schemes;
+            }
+
+            if(dataScope.scopeValue.length){
+              var counter = 0;let defLine = {};
+              dataScope.scopeValue.forEach((rec, key) => {
+                console.log("-- ", rec, " :: ", key, " --- ", counter++);
+                
+                 customKey = this.fullScope[0].title;//rec.title.toString().toLowerCase().split(' ').join('_');//rec.accr_title[0];
+                this.dynamicScopeModel[customKey] = [];
+                this.dynamicScopeFieldColumns[key] = [];
+                fieldTitleValue[key] = [];
+                this.dynamicScopeModel[customKey].fieldLines = [];
+                if(dataScope.firstColumnData != undefined && dataScope.firstColumnData.length > 0){
+                  ////console.log("first value length: ", rec.firstFieldValues.length);
+                  defLine['firstFieldValues'] = dataScope.firstColumnData;
+                }
+                let fieldValues = rec.title.split(" ").join("")+"Values";
+                let fieldTitle = rec.title.split(" ").join("_");
+                this.dynamicScopeFieldColumns[key].push({title: fieldTitle, values:fieldValues, name: rec.title});
+                defLine[fieldValues] = [];
+
+                console.log(">>> Field values: ", fieldValues);
+
+                if(defLine['firstFieldValues'].length > 0){
+                  console.log("calling.....default...1");
+                  let getValue = defLine['firstFieldValues'][0].value;
+                  if(key === 0){
+                    console.log("calling.....default...1.1");
+                    fieldTitleValue[key].push({title: fieldTitle, defValue: getValue, secName: customKey});
+                  }
+                  console.log("calling.....default...1.2");
+                  //Default load next column                  
+                  this.onChangeScopeOption(getValue,key,0,0,customKey,'initLoad');
+                }
+                console.log("calling.....default...1.3");
+                //Load first field value default by selecting first item
+                this.dynamicScopeModel[customKey].fieldLines.push(defLine);
+              });
+            }
+            //Load first field value default by selecting first item
+            console.log("calling.....default...1.4", this.dynamicScopeModel[customKey].fieldLines);
+            //console.log("@Loading default column values.........");
+            this.loadDefaultColumnValues(this.dynamicScopeModel);
+
+          /*
             //this.fullScope   = dataScope.fullScope;
             dataScope.fullScope.forEach(dataRec => {
               if(dataRec.firstFieldValues != undefined){
@@ -481,7 +538,7 @@ export class InspectionBodiesFormComponent implements OnInit {
               dataScope.fullScope.forEach((rec, key) => {
                 //console.log("-- ", rec, " :: ", key, " --- ", counter++);
                 if(rec.firstFieldValues != undefined){
-                  //console.log('null bababab');
+                  console.log('>>> firstFieldValues null bababab');
                   let defLine = {};
                     let customKey = rec.accr_title[0];
                     this.dynamicScopeModel[customKey] = [];
@@ -514,16 +571,14 @@ export class InspectionBodiesFormComponent implements OnInit {
                     //Load first field value default by selecting first item
                     this.dynamicScopeModel[customKey].fieldLines.push(defLine);
                 }
-                //if(key >=0 && key<=7){
-                    
-                //}
           })
           //set default value
           //Load first field value default by selecting first item
           this.loadDefaultColumnValues(this.dynamicScopeModel);
 
         }
-        //console.log(">>>> ", this.dynamicScopeModel, " --- ", this.dynamicScopeFieldColumns);
+        */
+        console.log(">>>> ", this.dynamicScopeModel, " --- ", this.dynamicScopeFieldColumns, " ::-> ",this.fullScope);
        })
     }
   }
@@ -532,21 +587,22 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.Service.get(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,'')
     .subscribe(
       res => {
-        //console.log("@@@@ ", res);
+        console.log("@Load scope....", res);
         this.inspectionBodyScopeFields = res['medicalLabScopeFields'];
         this.countryList = res['allCountry'];
         this.labTypeList = res['allLabtype'];
         //this.fullScope   = res['fullScope'];
-        this.criteriaMaster = res['criteriaMaster'];
+        //this.criteriaMaster = res['criteriaMaster'];
+        this.criteriaMaster = res['data']['schemes'];
+        console.log("#Get criteria: ", this.criteriaMaster);
 
+        // Object.keys(res['scopeValue']).forEach(key => {
 
-        Object.keys(res['scopeValue']).forEach(key => {
-
-          this.inspectionBodyData[this.rowCount]=[];
-          this.inspectionBodyData[this.rowCount].field1  = res['scopeValue'][key].values;
-          this.medicalLabFirstData      = res['scopeValue'][key].values;
-          //this.dynamicFirstFieldValues  = res['scopeValue'][key].values;
-        });
+        //   this.inspectionBodyData[this.rowCount]=[];
+        //   this.inspectionBodyData[this.rowCount].field1  = res['scopeValue'][key].values;
+        //   this.medicalLabFirstData      = res['scopeValue'][key].values;
+        //   //this.dynamicFirstFieldValues  = res['scopeValue'][key].values;
+        // });
 
         //Dynamic Scope binding ----  Abhishek @Navsoft
         // let fieldTitleValue: any = [];
@@ -628,25 +684,26 @@ export class InspectionBodiesFormComponent implements OnInit {
   }
 
   loadDefaultColumnValues(modelObject: any){
-      ////console.log("### Setting default values: ", modelObject, " --- ", typeof(modelObject), " === ", this.dynamicScopeFieldColumns);
+      console.log("### Setting default values: ", modelObject, " --- ", typeof(modelObject), " === ", this.dynamicScopeFieldColumns);
       var lineCount = 0;
       let getModelKey = '';
       let getFistValue = 0;
       for(var key in modelObject){
-          ////console.log(key," ----- ", modelObject[key]);
+          console.log(key," ----- ", modelObject[key]);
         if(modelObject[key].fieldLines[0].firstFieldValues.length > 0){
-          ////console.log(">>> Firstfieldvalues: ", key , modelObject[key].fieldLines[0].firstFieldValues);
+          console.log(">>> Firstfieldvalues: ", key , modelObject[key].fieldLines[0].firstFieldValues);
           if(this.dynamicScopeFieldColumns.length > 0){
             getModelKey = this.dynamicScopeFieldColumns[lineCount][0].title;
           }
           getFistValue = modelObject[key].fieldLines[0].firstFieldValues[0].field_value;
-          ////console.log("Field/model value: ", getFistValue, " :: ", getModelKey);
+          console.log("Field/model value: ", getFistValue, " :: ", getModelKey);
           if(getModelKey != '' && getFistValue > 0){
             modelObject[key].fieldLines[0][getModelKey] = getFistValue;
           }
         }
         lineCount++;
       }
+      //console.log("@Final Model column: ", model);
   }
 
   getDutyTimeForm1Index(indexVal){
@@ -692,21 +749,26 @@ export class InspectionBodiesFormComponent implements OnInit {
     }
   }
 
+  removeScopeLine(secName: string, lineIndex: number){
+      if(this.dynamicScopeModel[secName].fieldLines != undefined && this.dynamicScopeModel[secName].fieldLines.length > 0){
+        this.dynamicScopeModel[secName].fieldLines.splice(lineIndex, 1);
+      }
+  }
   
   addScopeLine(secName:any, secIndex: number, lineIndex: number, lineData: any){
     let line     =   {};    
-    ////console.log("Total line: ", lineData, " - ", lineIndex, " == ", lineData.length);
+    console.log("Total line: ", lineData, " - ", lineIndex, " == ", lineData.length);
     if(lineData != undefined && lineData.length > 0){
       lineIndex  = lineData.length;
     }
 
     for(var key in this.dynamicScopeModel){
-        ////console.log("Key: ", key , " :: ", this.dynamicScopeModel[key]);
+        console.log("Key: ", key , " :: ", this.dynamicScopeModel[key]);
         let getValue: any = 0;
         if( key === secName ){
           if(this.dynamicScopeModel[key].fieldLines != undefined){
             let fieldValues = this.dynamicScopeModel[key].fieldLines[0].firstFieldValues;
-            ////console.log("Fieldvalues:: ", fieldValues);
+            console.log("Fieldvalues:: ", fieldValues);
             line['firstFieldValues'] = fieldValues;
             this.dynamicScopeModel[key].fieldLines.push(line);
             if(fieldValues.length > 0 && typeof fieldValues[0] === "object" && fieldValues[0].field_value != undefined){
@@ -944,8 +1006,7 @@ export class InspectionBodiesFormComponent implements OnInit {
             console.log("button creting...");
             if(elem){
               console.log("button creted...");
-            }else{
-              console.log("Loding button...");
+              
             }
           }, 100)
 
@@ -1107,7 +1168,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.inspectionBodyForm.step3 = {};
       this.inspectionBodyForm.email = this.userEmail;
       this.inspectionBodyForm.userType = this.userType;
-      this.inspectionBodyForm.step3 = this.step4Data;
+      this.inspectionBodyForm.step3 = this.step3Data;
 
       // this.step3DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
       // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step3DataBodyFormFile)

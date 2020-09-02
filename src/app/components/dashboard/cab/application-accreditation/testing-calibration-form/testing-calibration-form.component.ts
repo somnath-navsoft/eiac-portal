@@ -7,6 +7,7 @@ import { HostListener, ElementRef } from '@angular/core';
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material';
 import { RecaptchaComponent } from 'ng-recaptcha';
+declare let paypal: any;
 
 @Component({
   selector: 'app-testing-calibration-form',
@@ -120,7 +121,11 @@ export class TestingCalibrationFormComponent implements OnInit {
   today = new Date();
   transactions: any[] =[];
   transactionsItem: any={};
-  
+  is_hold_other_accreditation_toggle: any = 0;
+  getDutyTimeForm1IndexValue:number;
+  recommendStatus:boolean = false
+  total: any = 0;
+
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
   getData(getVal){
@@ -134,6 +139,19 @@ export class TestingCalibrationFormComponent implements OnInit {
     el.scrollIntoView({behavior: 'smooth'});
   }
   
+  getDutyTimeForm1Index(indexVal){
+    //console.log('Get Index: ', indexVal.value, " -- ", indexVal);
+      var keyVal;
+      for(keyVal in this.addMinutesToTime){
+          //console.log(keyVal);
+          if(indexVal.value === this.addMinutesToTime[keyVal].val){
+            //console.log("match ", this.addMinutesToTime[keyVal].val);
+            this.getDutyTimeForm1IndexValue = keyVal;
+            return;
+          }
+      }
+  }
+
   onChange(prevFieldId,row,curField,field,tableType,tableSection) {
 
       let ScopeData = 'ScopeData';
@@ -243,6 +261,7 @@ export class TestingCalibrationFormComponent implements OnInit {
     this.addMinutesToTime = this.Service.addMinutesToTime();
     this.loadData();
     this.loadFormDynamicTable();
+    this.loadCountryStateCity();
     // this.loadCountryStateCity();
     //this.checkCaptchaValidation = true;
     
@@ -274,9 +293,9 @@ export class TestingCalibrationFormComponent implements OnInit {
   
   getPlaceName()
   {
-    if(typeof this.testingCalForm.search_location_name != 'undefined')
+    if(typeof this.step1Data.search_location_name != 'undefined')
     {
-      this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.testingCalForm.search_location_name+'.json?access_token='+this.Service.mapboxToken+'','')
+      this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.step1Data.search_location_name+'.json?access_token='+this.Service.mapboxToken+'','')
         .subscribe(res => {
             // //console.log(res['features']);
             this.searchCountryLists = res['features'];
@@ -301,8 +320,18 @@ export class TestingCalibrationFormComponent implements OnInit {
     }
     //console.log(`Resolved captcha with response: ${captchaResponse}`);
   }
-  bod_toggle(value){
-    this.is_bod = value;
+  // bod_toggle(value){
+  //   this.is_bod = value;
+  // }
+
+  bod_toggle(value,type){
+    if(type == 'is_bod')
+    {
+      this.is_bod = value;
+    }else if(type == "is_hold_other_accreditation_toggle")
+    {
+      this.is_hold_other_accreditation_toggle = value;
+    }
   }
 
   loadFormDynamicTable(){
@@ -327,8 +356,8 @@ export class TestingCalibrationFormComponent implements OnInit {
     this.recommend = {first:false,second:false,third:false,fourth:false}
   }
 
-  setexDate(){
-    let cdate =this.testingCalForm.date_of_issue;
+  setexDate(date){
+    let cdate = date;
     this.minDate = new Date(cdate  + (60*60*24*1000));
   }
   loadData(){
@@ -432,6 +461,47 @@ export class TestingCalibrationFormComponent implements OnInit {
 
   accreditationRequired(title) {
     this.testingCalForm.accredation_type_name = title;
+  }
+
+  statelistById = async(country_id) => {
+    this.allStateList = [];
+    let stateList =  this.Service.getState();
+    await stateList.subscribe( result => {
+        for(let key in result['states']) {
+          if(result['states'][key]['country_id'] == country_id )
+          {
+            this.allStateList.push(result['states'][key]);
+          }
+        }
+    });
+    // console.log(this.allStateList);
+  }
+
+  citylistById = async(state_id) => {
+    this.allCityList = [];
+    let cityList =  this.Service.getCity();
+    await cityList.subscribe( result => {
+        for(let key in result['cities']) {
+          if(result['cities'][key]['state_id'] == state_id )
+          {
+            this.allCityList.push(result['cities'][key]);
+          }
+        }
+    },
+    error =>{
+        console.log("Error: ", error);
+    }
+    
+    );
+  }
+  
+  loadCountryStateCity = async() => {
+    let countryList =  this.Service.getCountry();
+    await countryList.subscribe(record => {
+      // console.log(record,'record');
+      this.getCountryLists = record['countries'];
+    });
+    
   }
 
   onSubmit(ngForm){
@@ -542,6 +612,298 @@ export class TestingCalibrationFormComponent implements OnInit {
      }
   }
 
+  onSubmitApplication(ngForm1: any){
+    if(this.step1Data.duty_shift == '1' && typeof this.step1Data.duty_from1 == 'undefined' && typeof this.step1Data.duty_to1 == 'undefined')
+    {
+      this.dutyTime1 = false;
+      this.isSubmit = false;
+    }else{
+      this.dutyTime1 = true;
+    }
+    if(this.step1Data.duty_shift == '2' && typeof this.step1Data.duty_from2 == 'undefined' && typeof this.step1Data.duty_to2 == 'undefined')
+    {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+      }else{
+        this.dutyTime1 = true;
+      }
+      this.dutyTime2 = false;
+      this.isSubmit = false;
+    }else{
+      this.dutyTime2 = true;
+    }
+    if(this.step1Data.duty_shift == '3' && typeof this.step1Data.duty_from3 == 'undefined' && typeof this.step1Data.duty_to3 == 'undefined')
+    {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+      }else{
+        this.dutyTime1 = true;
+      }
+      if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
+      {
+        this.dutyTime2 = false;
+      }else{
+        this.dutyTime2 = true;
+      }
+      this.dutyTime3 = false;
+      this.isSubmit = false;
+    }else{
+      this.dutyTime3 = true;
+    }
+
+    if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
+      this.dutyTime1 = false;
+      this.isSubmit = false;
+    }else{
+      this.dutyTime1 = true;
+    }
+    this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+
+    if(ngForm1.form.valid && this.tradeLicensedValidation != false) {
+      this.testingCalForm = {};
+      this.testingCalForm.step1 = {};
+      this.testingCalForm.email = this.userEmail;
+      this.testingCalForm.userType = this.userType;
+      this.testingCalForm.step1 = this.step1Data;
+
+      this.testingCalForm.step1['ownOrgBasicInfo'] = [];
+      this.testingCalForm.step1['ownOrgMembInfo'] = [];
+      this.testingCalForm.step1['accreditationInfo'] = [];
+      
+      if(this.ownOrgBasicInfo) {
+        this.testingCalForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
+      }
+      if(this.ownOrgMembInfo) {
+        this.testingCalForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
+      }
+      if(this.accreditationInfo) {
+        this.testingCalForm.step1['accreditationInfo'] = this.accreditationInfo;
+      }
+      
+
+      this.step1DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step1DataBodyFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else if(ngForm1.form.valid && this.tradeLicensedValidation == false) {
+      this.file_validation = false;
+      this.toastr.warning('Please Fill required field','');
+    }
+    else {
+      this.toastr.warning('Please Fill required field','');
+    }
+  }
+
+  onSubmitTestingParticipation(ngForm2: any){
+    this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+
+    if(ngForm2.form.valid) {
+      this.testingCalForm = {};
+      this.testingCalForm.step2 = {};
+      this.testingCalForm.email = this.userEmail;
+      this.testingCalForm.userType = this.userType;
+      this.testingCalForm.step2 = this.step2Data;
+
+      this.testingCalForm.step2['proficiencyTesting'] = [];
+      
+      if(this.ownOrgBasicInfo) {
+        this.testingCalForm.step2['proficiencyTesting'] = this.proficiencyTesting;
+      }
+
+      this.step2DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step2DataBodyFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+  }
+
+  onSubmitPersonalInformation(ngForm3: any){
+    this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+    if(ngForm3.form.valid) {
+      this.testingCalForm = {};
+      this.testingCalForm.step3 = {};
+      this.testingCalForm.email = this.userEmail;
+      this.testingCalForm.userType = this.userType;
+      this.testingCalForm.step3 = this.step3Data;
+
+      this.step3DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step3DataBodyFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+  }
+
+  onSubmitInformationAuditManagement(ngForm4: any){
+  this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
+    if(ngForm4.form.valid) {
+      this.testingCalForm = {};
+      this.testingCalForm.step4 = {};
+      this.testingCalForm.email = this.userEmail;
+      this.testingCalForm.userType = this.userType;
+      this.testingCalForm.step4 = this.step4Data;
+
+      this.step4DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step4DataBodyFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+  }
+  
+  onSubmitPerlimVisit(ngForm5: any){
+    this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+    if(ngForm5.form.valid) {
+      this.testingCalForm = {};
+      this.testingCalForm.step5 = {};
+      this.testingCalForm.email = this.userEmail;
+      this.testingCalForm.userType = this.userType;
+      this.testingCalForm.step5 = this.step5Data;
+
+      this.step5DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step5DataBodyFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+ }
+
+ onSubmitUndertakingApplicant(ngForm6: any){
+  for(let key in this.authorizationList) {
+    if(this.authorizationList[key] == false) {
+      this.authorizationStatus = false;
+    }else {
+      this.authorizationStatus = true;
+    }
+  }
+  
+  for(let key in this.recommend) {
+    if(this.recommend[key] == true) {
+      this.recommendStatus = true;
+    }
+  }
+  if(this.authorizationStatus == false){
+    this.isSubmit = false;
+    this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
+  }else if(this.recommendStatus != true){
+    this.isSubmit = false;
+    this.toastr.error('Please Check any recommend the visit ', '');
+  }
+  if(ngForm6.form.valid){
+
+    // this.step6Data = this.recommend.first;
+    // this.step6Data = this.recommend.second;
+    // this.step6Data = this.recommend.first;
+    // this.step6Data = this.recommend.first;
+    // this.step6Data = this.recommend.first;
+
+    this.testingCalForm = {};
+    this.testingCalForm.step6 = {};
+    this.testingCalForm.email = this.userEmail;
+    this.testingCalForm.userType = this.userType;
+    this.step6Data.authorizationList = this.authorizationList;
+    this.step6Data.recommend = this.recommend;
+
+    this.testingCalForm.step6 = this.step6Data;
+    this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+
+    this.step6DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step6DataBodyFormFile)
+    .subscribe(
+      res => {
+        console.log(res,'res')
+        if(res['status'] == true) {
+          this.toastr.success(res['msg'], '');
+          this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+        }else{
+          this.toastr.warning(res['msg'], '');
+        }
+      });
+
+    //Paypal config data
+    //applyTrainerPublicCourse
+    this.transactionsItem['amount']               = {};
+    this.transactionsItem['amount']['total']      = 0.00;
+    this.transactionsItem['amount']['currency']   = 'USD';
+    this.transactionsItem['amount']['details']    = {};
+    this.transactionsItem['amount']['details']['subtotal'] = 0.00;
+    //declare Items data
+    this.transactionsItem['item_list']            = {};
+    this.transactionsItem['item_list']['items']   = [];
+    let custPrice: any = 0.01;
+    this.total = 0.05;
+      this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity: 1, price: custPrice, currency: 'USD'});
+        if(this.total > 0){
+          //console.log("Calculate price: ", calcPrice);
+          this.transactionsItem['amount']['total'] = custPrice.toFixed(2);
+          this.transactionsItem['amount']['details']['subtotal'] = custPrice.toFixed(2);
+          this.transactions.push(this.transactionsItem);
+          //console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
+        }
+        setTimeout(() => {
+          this.createPaymentButton(this.transactionsItem, this.testingCalForm, this);
+          let elem = document.getElementsByClassName('paypal-button-logo');
+          console.log("button creting...");
+          if(elem){
+            console.log("button creted...");
+          }else{
+            console.log("Loding button...");
+          }
+        }, 100)
+
+    //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+  }else{
+  this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+  }    
+}
+
   dayTimeChange(event,dayTime)
   {
     ////console.log(dayTime);
@@ -556,6 +918,70 @@ export class TestingCalibrationFormComponent implements OnInit {
     if(event.value != '' && dayTime == '3')
     {
       this.dutyTime3 = true;
+    }
+  }
+
+  //Paypal Button creation
+  private loadExternalScript(scriptUrl: string) {
+    return new Promise((resolve, reject) => {
+      const scriptElement = document.createElement('script')
+      scriptElement.src = scriptUrl
+      scriptElement.onload = resolve
+      //console.log("load script...");
+      document.body.appendChild(scriptElement)
+    })
+  }
+
+  createPaymentButton(itemData: any, formObj?:any, compObj?:any){
+    //console.log("creating....buttons...", this.paymentReview, " :: ", this.paymentReview.length, " -- ",this.transactionsItem, " --- ", this.transactions);
+   //AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl = das.abhishek77@gmail.com
+   //Get transaction ID - https://developer.paypal.com/docs/checkout/reference/server-integration/get-transaction/#on-the-server
+    if(this.transactions.length){
+      this.loadExternalScript("https://www.paypalobjects.com/api/checkout.js").then(() => {
+      paypal.Button.render({
+        env: 'sandbox',
+        client: {
+          sandbox: 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
+        },
+        commit: true,
+        payment: function (data, actions) {
+          console.log("@Paypal payment actionms: ", actions, " -- ", data, " --- ", itemData);        
+          return actions.payment.create({
+            payment: {
+              transactions: [itemData]
+            }
+          })
+        },
+        onAuthorize: function(data, actions) {
+          console.log("@Paypal onAuthorize actionms: ", actions, " -- ", data);
+          return actions.payment.execute().then(function(payment) {
+            console.log(">>>Success: ", payment);
+            formObj.paypalReturn = payment;
+            formObj.paypalStatus = 'success';
+            console.log("<<<Review obj: ", formObj, " :: ", compObj);
+            compObj.saveInspectopnAfterPayment(formObj);
+          })
+        },
+        onCancel: (data, actions) => {
+          console.log('OnCancel', data, actions);
+          //this.showCancel = true;
+          formObj.paypalReturn = data;
+          formObj.paypalStatus = 'cancel';
+          this.toastr.warning("You have cancelled payment, Continue next step please complete payment process again.", 'Paypal>>',{timeOut:6500});
+      },
+      onError: err => {
+          console.log('OnError', err);
+          formObj.paypalReturn = err;
+          formObj.paypalStatus = 'error';
+          //compObj.saveCourseAfterPayment(formObj);
+          this.toastr.error("Paypal transaction error has occured, please try again", 'Payment Return'); 
+      },
+      onClick: (data, actions) => {
+          console.log('onClick', data, actions);
+          //this.resetStatus();
+      }
+      }, '#paypalPayment');
+    });
     }
   }
 
