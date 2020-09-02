@@ -455,10 +455,12 @@ loadCountryStateCity = async() => {
    this.healthCareForm.neurophysiologyAccreditation         = this.neurophysiologyAccreditation;
 
  }
- setexDate(){
-   let cdate =this.healthCareForm.date_of_issue;
-   this.minDate = new Date(cdate  + (60*60*24*1000));
- }
+ 
+ setexDate(date){
+  let cdate = date;
+  this.minDate = new Date(cdate  + (60*60*24*1000));
+}
+
  loadData(){
    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcare_form_basic_data)
    .subscribe(
