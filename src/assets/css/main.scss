@@ -268,21 +268,37 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 
 
 //==================SIDEBAR DU PORTAL==================//
-.side-data-cont { position: fixed; top: 70px; width: 250px; background: #191919; height: 100vh; }
-.side-menu-al { padding: 0 15px; }
-.dashboard-cnts { color: #ffffff; padding: 10px; font-size: 15px; font-family: "Dubai Bold"; border-top: 1px solid rgba(255, 255, 255, 0.1); margin: 0 -15px; }
-.side-content {  margin-left: 13px; }
-.dash-content {  padding: 7px 10px; }
-.dash-content:hover { background: rgba(255, 255, 255, 0.1); border-radius: 15px; }
-.serv-data ul { list-style: none; padding: 0; margin: 0; }
-.serv-data li { padding: 7px 0 7px 39px; }
-.sub-side-cont  li { color: #D5C8BA; font-family: "Dubai Regular"; }
-.sub-side-cont li:hover { background: rgba(255, 255, 255, 0.1); border-radius: 15px; }
-.serv-data li:hover { background: rgba(255, 255, 255, 0.1); border-radius: 15px; } //:last-child
-.dashboard-cnts:last-child { border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-.dashboard-cnts a { color: #ffffff; }
-.dashboard-cnts a:hover { text-decoration: none; color: #ffffff; }
-.sub-side-cont ul { padding: 0 0 0 20px; }
+.side-data-cont { position: fixed; top: 65px; width: 250px; background: #191919; height: 100vh; }
+// .side-menu-al { padding: 0 15px; }
+.side-menu-al { position: relative; overflow: hidden; width: auto; height: 90%; }
+.left_menu_portal { list-style: none; width: 100%; transition: 0.3s all; padding: 0; }
+.left_menu_portal li { border-bottom: 1px solid #303030; transition: all .3s; }
+.left_menu_portal li a {
+  display: block;
+  color: #fff;
+  border-radius: 0;
+  padding: .3125rem .09375rem .3125rem 1.625rem;
+  line-height: 40px;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  position: relative;
+  transform: .3s all;
+}
+.left_menu_portal a span { margin-right: 15px; }
+.left_menu_portal .dropcontent { padding: 0 15px; list-style: none; }
+.left_menu_portal li ul.dropcontent li { border-bottom: 0; padding-bottom: 3px; }
+.left_menu_portal li ul.dropcontent li a {
+  padding: 0;
+  border-radius: 15px;
+  padding-left: 40px;
+  line-height: 30px;
+  text-transform: capitalize;
+  font-weight: normal;
+  color: #D5C8BA;
+}
+.left_menu_portal li .dropdown { position: absolute; right: 5px; font-size: 12px; margin: 0; }
+.sub-side-cont li a:hover { background: rgba(255, 255, 255, 0.1); border-radius: 15px; }
 
 //==================DASHBOARD==================//
 .main-content-detail { width: calc(100% - 250px); margin: 70px 0 0 250px; }
