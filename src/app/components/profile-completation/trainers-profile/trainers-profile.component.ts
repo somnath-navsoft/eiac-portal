@@ -130,13 +130,13 @@ export class TrainersProfileComponent implements OnInit {
             this.step3Data.digital_signature = step3.signature;
             this.step3Data.confirm_box = step3.signature;
           }
-          if(res['data'].step1[0].office_email) {
+          if(res['data'].step1 && res['data'].step1[0].office_email) {
             this.progressValue = 40;
             // this.headerSteps[1].stepComp = true;
-          }if(res['data'].step1[0].office_email && res['data'].step2[0].other_course) {
+          }if(res['data'].step1 && res['data'].step1[0].office_email && res['data'].step2 && res['data'].step2[0].other_course) {
             this.progressValue = 80;
             // this.headerSteps[2].stepComp = true;
-          }if(res['data'].step1[0].office_email && res['data'].step2[0].language && res['data'].step2[0].place) {
+          }if(res['data'].step1 && res['data'].step1[0].office_email && res['data'].step2 && res['data'].step2[0].language && res['data'].step3 && res['data'].step3[0].place) {
             this.progressValue = 100;
             
           }
