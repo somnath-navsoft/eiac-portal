@@ -104,6 +104,13 @@ export class InspectionBodiesFormComponent implements OnInit {
   step5DataBodyFormFile:any = new FormData();
   step6DataBodyFormFile:any = new FormData();
   step7DataBodyFormFile:any = new FormData();
+  step1DraftDataBodyFormFile:any = new FormData();
+  step2DraftDataBodyFormFile:any = new FormData();
+  step3DraftDataBodyFormFile:any = new FormData();
+  step4DraftDataBodyFormFile:any = new FormData();
+  step5DraftDataBodyFormFile:any = new FormData();
+  step6DraftDataBodyFormFile:any = new FormData();
+  step7DraftDataBodyFormFile:any = new FormData();
   userEmail:any;
   userType:any;
   isCompleteness:any;
@@ -449,6 +456,72 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.authorizationList = {undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false,authorization_confirm1:false,authorization_confirm2:false};
 
     this.recommend = {first:false,second:false,third:false,fourth:false}
+
+    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail)
+    .subscribe(
+      res => {
+        if(res['status'] != true) {
+          if(res['data'].step1 != '') {
+            var step1 = res['data'].step1[0];
+
+            var stateList =  this.Service.getState();
+            var cityList =  this.Service.getCity();
+
+            stateList.subscribe( result => {
+              for(let key in result['states']) {
+                if(result['states'][key]['name'] == step1.state )
+                {
+                  this.allStateList.push(result['states'][key]);
+                }
+              }
+            });
+
+            cityList.subscribe( result => {
+              for(let key in result['cities']) {
+                if(result['cities'][key]['name'] == step1.city )
+                {
+                  this.allCityList.push(result['cities'][key]);
+                }
+              }
+            });
+
+            this.tradeLicensedValidation = this.constant.mediaPath+step1.trade_license;
+            this.step1Data.trade_license_number = step1.office_email;
+            this.step1Data.date_of_issue = new Date(step1.dob);
+            this.step1Data.date_of_expiry = step1.mailing_address;
+            this.step1Data.date_of_establishment = step1.phone;
+            this.step1Data.search_location_name = step1.fax_no;
+            this.step1Data.official_commercial_name = step1.office;
+            this.step1Data.accredation_type_id = step1.designation;
+            this.step1Data.criteria_request = step1.office_address;
+            this.step1Data.physical_location_address = step1.office_tel_no;
+            this.step1Data.po_box = step1.office_fax_no;
+            this.step1Data.country = step1.office_fax_no;
+            this.step1Data.state = step1.office_fax_no;
+            this.step1Data.city = step1.office_fax_no;
+            this.step1Data.telephone = step1.office_fax_no;
+            this.step1Data.fax_no = step1.office_fax_no;
+            this.step1Data.official_email = step1.office_fax_no;
+            this.step1Data.official_website = step1.office_fax_no;
+
+            this.ownOrgBasicInfo = step1.cabOwnerData;
+            this.step1Data.is_bod = step1.cabOwnerData != '' ? '1' : '0';
+            this.ownOrgMembInfo = step1.ownOrgMembInfo;
+            this.step1Data.duty_from1 = step1.duty_from1;
+            this.step1Data.duty_to1 = step1.duty_to1;
+            this.step1Data.duty_from2 = step1.duty_to2;
+            this.step1Data.duty_from3 = step1.duty_from3;
+            this.step1Data.duty_to3 = step1.duty_to3;
+            this.step1Data.indication = step1.indication;
+            this.step1Data.is_hold_other_accreditation = step1.is_hold_other_accreditation;
+            this.step1Data.accreditationInfo = step1.is_hold_other_accreditation != '' ? '1' : '0';;
+            this.step1Data.duty_to3 = step1.duty_to3;
+          }
+          if(res['data'].step2 != '') {
+            
+          }
+        }
+    });
   }
 
   getCriteria(value){
@@ -1255,9 +1328,47 @@ onSubmitPaymentInformation(ngForm: any){
     console.log("payment submitting.....");
 }
    //Step FORM Action
+savedraftStep(stepsCount) {
+  if(stepsCount == 'step1') {
+    // console.log(this.step1Data,'step1Data');
+    this.inspectionBodyForm = {};
+      this.inspectionBodyForm.step1 = {};
+      this.inspectionBodyForm.email = this.userEmail;
+      this.inspectionBodyForm.userType = this.userType;
+      this.inspectionBodyForm.step1 = this.step1Data;
 
+      this.inspectionBodyForm.step1['ownOrgBasicInfo'] = [];
+      this.inspectionBodyForm.step1['ownOrgMembInfo'] = [];
+      this.inspectionBodyForm.step1['accreditationInfo'] = [];
+      
+      if(this.ownOrgBasicInfo) {
+        this.inspectionBodyForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
+      }
+      if(this.ownOrgMembInfo) {
+        this.inspectionBodyForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
+      }
+      if(this.accreditationInfo) {
+        this.inspectionBodyForm.step1['accreditationInfo'] = this.accreditationInfo;
+      }
+      
+    console.log(this.inspectionBodyForm,'step1DraftDataBodyFormFile')
 
-  onSubmit(ngForm){
+    this.step1DraftDataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step1DraftDataBodyFormFile)
+    .subscribe(
+      res => {
+        console.log(res,'res')
+        if(res['status'] == true) {
+          this.toastr.success(res['msg'], '');
+          this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+        }else{
+          this.toastr.warning(res['msg'], '');
+        }
+      });
+  }
+}
+
+onSubmit(ngForm){
     //this.getErrorScroll(this.inspectionBodyForm);
     //console.log(this.inspectionBodyForm);
     //this.is_bod = !this.is_bod || typeof this.is_bod == 'undefined' ? "0" : ""+this.is_bod+"";

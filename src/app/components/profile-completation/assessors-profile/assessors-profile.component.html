@@ -176,6 +176,7 @@
                                         <div class="bttns-health bttn-staff">
                                             <a routerLink="/dashboard/assessors/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
                                             <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
+                                            <button class="cancel-bttn" type="button" (click)="savedraftStep('step1')">SAVE AS DRAFT</button>
                                             <button class="submit-bttn submit-health">CONTINUE</button>
                                         </div>
                                     </div>
@@ -422,6 +423,7 @@
                                         <div class="bttns-health bttn-staff">
                                             <a routerLink="/dashboard/assessors/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
                                             <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
+                                            <button class="cancel-bttn" type="button" (click)="savedraftStep('step2')">SAVE AS DRAFT</button>
                                             <button class="submit-bttn submit-health">CONTINUE</button>
                                         </div>
                                     </div>
@@ -735,6 +737,7 @@
                                             <div class="bttns-health bttn-staff">
                                                 <a routerLink="/dashboard/assessors/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
                                                 <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
+                                                <button class="cancel-bttn" type="button" (click)="savedraftStep('step3')">SAVE AS DRAFT</button>
                                                 <button class="submit-bttn submit-health">CONTINUE</button>
                                             </div>
                                         </div>
@@ -822,6 +825,7 @@
                                             <div class="bttns-health bttn-staff">
                                                 <a routerLink="/dashboard/assessors/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
                                                 <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
+                                                <button class="cancel-bttn" type="button" (click)="savedraftStep('step4')">SAVE AS DRAFT</button>
                                                 <button class="submit-bttn submit-health">CONTINUE</button>
                                             </div>
                                         </div>
@@ -888,6 +892,7 @@
                                             <div class="bttns-health bttn-staff">
                                                 <a routerLink="/dashboard/assessors/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
                                                 <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
+                                                <button class="cancel-bttn" type="button" (click)="savedraftStep('step5')">SAVE AS DRAFT</button>
                                                 <button class="submit-bttn submit-health">SUBMIT</button>
                                             </div>
                                         </div>

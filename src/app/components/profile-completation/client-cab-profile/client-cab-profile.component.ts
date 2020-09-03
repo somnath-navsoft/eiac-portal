@@ -79,10 +79,10 @@ export class ClientCabProfileComponent implements OnInit {
           this.step1Data.first_name = res['data']['user_data'][0].first_name;
           this.step1Data.last_name = res['data']['user_data'][0].last_name;
           this.step1Data.personal_email = res['data']['user_data'][0].email;
-
-          if(res['data'].step1[0].designation) {
+          
+          if(res['data'].step1 && res['data'].step1[0].designation) {
             this.progressValue = 50;
-          }if(res['data'].step1[0].designation && res['data'].step2.cabContactData[0].designation) {
+          }if(res['data'].step1 && res['data'].step1[0].designation && res['data'].step2 && res['data'].step2.cabContactData[0].designation) {
             this.progressValue = 100;
           }
           
@@ -161,6 +161,7 @@ export class ClientCabProfileComponent implements OnInit {
             this.step2Data.main_activity_describe = res['data'].step1[0].other_description;
             this.step2Data.certification_main_activity = res['data'].step1[0].is_certification_main_activity == true ? 1 : 0;
           }
+
         }
       });
   }
