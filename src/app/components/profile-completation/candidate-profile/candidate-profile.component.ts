@@ -77,6 +77,7 @@ export class CandidateProfileComponent implements OnInit {
     if(ngForm.form.valid) {
       this.candidateProfile.email = this.userEmail;
       this.candidateProfile.userType = this.userType;
+      this.candidateProfile.isDraft = 0;
       this.candidateFormFile.append('data',JSON.stringify(this.candidateProfile));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.candidateFormFile)
         .subscribe(
@@ -93,6 +94,25 @@ export class CandidateProfileComponent implements OnInit {
           });
     }else{
       this.toastr.warning('Please Fill required field','');
+    }
+  }
+
+  savedraftStep(stepCount) {
+    if(stepCount == 'step1') {
+      this.candidateProfile.email = this.userEmail;
+      this.candidateProfile.userType = this.userType;
+      this.candidateProfile.isDraft = 1;
+      this.candidateFormFile.append('data',JSON.stringify(this.candidateProfile));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.candidateFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
     }
   }
 }

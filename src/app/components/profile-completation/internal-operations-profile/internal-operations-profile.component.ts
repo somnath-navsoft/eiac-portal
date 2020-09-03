@@ -70,6 +70,7 @@ export class InternalOperationsProfileComponent implements OnInit {
       //console.log(this.eiacStaff);
       this.eiacStaff.email = this.userEmail;
       this.eiacStaff.userType = this.userType;
+      this.eiacStaff.isDraft = 0;
       this.eiacStaffFormFile.append('data',JSON.stringify(this.eiacStaff));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.eiacStaffFormFile)
         .subscribe(
@@ -89,4 +90,22 @@ export class InternalOperationsProfileComponent implements OnInit {
     }
   }
 
+  savedraftStep(stepCount) {
+    if(stepCount == 'step1') {
+      this.eiacStaff.email = this.userEmail;
+      this.eiacStaff.userType = this.userType;
+      this.eiacStaff.isDraft = 1;
+      this.eiacStaffFormFile.append('data',JSON.stringify(this.eiacStaff));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.eiacStaffFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }
+  }
 }

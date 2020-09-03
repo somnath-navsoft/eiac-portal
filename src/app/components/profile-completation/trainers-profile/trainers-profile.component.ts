@@ -132,9 +132,11 @@ export class TrainersProfileComponent implements OnInit {
           }
           if(res['data'].step1 && res['data'].step1[0].office_email) {
             this.progressValue = 40;
+            this.Service.moveSteps('personal_details','educational_information', this.headerSteps);
             // this.headerSteps[1].stepComp = true;
           }if(res['data'].step1 && res['data'].step1[0].office_email && res['data'].step2 && res['data'].step2[0].other_course) {
             this.progressValue = 80;
+            this.Service.moveSteps('educational_information','applicant_trainer', this.headerSteps);
             // this.headerSteps[2].stepComp = true;
           }if(res['data'].step1 && res['data'].step1[0].office_email && res['data'].step2 && res['data'].step2[0].language && res['data'].step3 && res['data'].step3[0].place) {
             this.progressValue = 100;
@@ -294,6 +296,65 @@ export class TrainersProfileComponent implements OnInit {
       }
     }else{
       this.toastr.warning('Please Fill required field','');
+    }
+  }
+
+  savedraftStep(stepCount) {
+    if(stepCount == 'step1') {
+      this.trainersProfile.step1 = {};
+      this.trainersProfile.step1 = this.step1Data;
+
+      this.trainersProfile.email = this.userEmail;
+      this.trainersProfile.userType = this.userType;
+      this.step1DataBodyFormFile.append('data',JSON.stringify(this.trainersProfile));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step1DataBodyFormFile)
+      .subscribe(
+        res => {
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else if(stepCount == 'step2') {
+      this.trainersProfile = {};
+      this.trainersProfile.step2 = {};
+      
+      this.step2Data.arabic = this.arabic;
+      this.step2Data.english = this.english;
+      this.step2Data.others = this.others;
+
+      this.trainersProfile.step2 = this.step2Data;
+      this.trainersProfile.email = this.userEmail;
+      this.trainersProfile.userType = this.userType;
+
+      this.step2DataBodyFormFile.append('data',JSON.stringify(this.trainersProfile));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step2DataBodyFormFile)
+      .subscribe(
+        res => {
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else if(stepCount == 'step3') {
+      this.trainersProfile = {};
+      this.trainersProfile.step3 = {};
+      this.trainersProfile.step3 = this.step3Data;
+
+      this.trainersProfile.email = this.userEmail;
+      this.trainersProfile.userType = this.userType;
+      this.step3DataBodyFormFile.append('data',JSON.stringify(this.trainersProfile));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step3DataBodyFormFile)
+      .subscribe(
+        res => {
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
     }
   }
 }

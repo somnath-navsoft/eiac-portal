@@ -180,6 +180,7 @@
                             <div class="bttns-health bttn-staff">
                                 <a routerLink="/dashboard/candidate/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
                                 <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a> 
+                                <button class="cancel-bttn" type="button" (click)="savedraftStep('step1')">SAVE AS DRAFT</button>
                                 <button *ngIf="profileComplete == '0'" class="submit-bttn submit-health">SUBMIT</button>
                                 <button *ngIf="profileComplete == '1'" class="submit-bttn submit-health">SAVE</button>
                             </div>
