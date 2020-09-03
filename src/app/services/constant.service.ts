@@ -6,7 +6,7 @@ import { Subject} from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class Constants{
-	public apiUrl: string 					= 'https://dev-service.eiac.gov.ae/webservice/';
+	public apiUrl: string 					= '';
 	public mediaPath: string 				= 'https://dev-service.eiac.gov.ae';
 	//trainerAPI: '/trainer',
 	//all_services: this.apiUrl + 'service_page/',
