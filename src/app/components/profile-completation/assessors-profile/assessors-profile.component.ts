@@ -154,6 +154,7 @@ export class AssessorsProfileComponent implements OnInit {
             this.step1Data.office_address = step1.office_address;
             this.step1Data.officephone_with_area = step1.office_tel_no;
             this.step1Data.officefax_with_area = step1.office_fax_no;
+            this.step1Data.nationality = step1.nationality;
           }
           if(res['data'].step2 != '') {
             var step2 = res['data'].step2;

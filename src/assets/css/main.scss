@@ -186,6 +186,10 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
   font-family: "Dubai Bold";
   font-size: 16px;
 }
+.progress_bar { margin: -22px -30px; margin-bottom: 20px; }
+.progress_bar .mat-progress-bar { height: 10px; }
+.progress_bar .mat-progress-bar-fill::after { background: #B19782; } 
+.progress_bar .mat-progress-bar-buffer { background: #D8CABD;}
 .lang-name { text-align: center; }
 .desc-content-prof { display: flex; justify-content: space-around; }
 .open-cls { background: #E7E7E7; margin: 0 -15px; padding: 10px 25px; text-align: right; height:100%; display: flex;justify-content: flex-end }
@@ -250,7 +254,7 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 .search-cnt .form-control:focus { box-shadow: none; }
 .usr-info { position: relative; float: right; }
 .usr-info ul { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; }
-.usr-info li { color: #ffffff; padding: 10px 15px; }
+.usr-info li { color: #ffffff; padding: 10px 15px; font-family: 'Dubai Regular'; font-size: 15px;}
 .usr-info a { color: #ffffff; }
 .usr-info a:hover { color: #ffffff; text-decoration: none; }
 .usr-info img { position: relative; top: 2px; }
@@ -306,12 +310,13 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 .main-content-portal h3 { margin: 0; }
 .main-dashboard-cnt { padding: 20px 0; }
 .main-dashboard-cnt .user-steps { display: flex; justify-content: center; align-items: center; height: 100%; }
-.user-steps .user-next { border: 1px solid #CECECE ; background: #FFF; padding: 20px 18px; color: #1D1D1D; text-align: center; height: 100%; }
+.user-steps .user-next { border: 1px solid #CECECE ; background: #FFF; padding: 20px 18px; color: #1D1D1D; text-align: center; height: 100%; width: 120px; }
 .user-steps .user-present { border: 1px solid #B19782; background: #B19782; color: #FFF; }
 .user-steps .user-done { border: 1px solid #B54150; background: #B54150; color: #FFF; }
 .user-steps .user-next .usernext-icon { font-size: 30px; }
 .user-steps .user-next .user-details-pendin { font-size: 14px; }
 .user-steps .next-step { padding: 0 5px; display: flex; justify-content: center; align-items: center; height: 100%; color: black; } 
+.user-details-pending { font-size: 14px; font-family: 'Dubai Medium'; }
 // color: #B19782;
 .bttn-staff { display: flex; justify-content: space-between; align-content: center; width: 100%; height: 100%; }
 .agree-condi { padding-top: 20px; color: #7A7A7A; font-family: 'Dubai Regular'; font-size: 18px; }
@@ -842,6 +847,12 @@ a:hover { text-decoration: none; }
 .tnc ol ol ol { counter-reset: list; margin: 0; }
 .tnc ol ol ol > li { list-style: none; position: relative; }
 .tnc ol ol ol > li:before { counter-increment: list; content: "("counter(list, lower-alpha)")"; position: absolute; left: -1.4em; }
+
+.button-content a { color: #a56069; }
+.button-content button { background: #AA9777; border: 1px solid #AA9777; color: #fff; }
+.progress-top { height: 5px; background: #AA9777; margin: 0 -15px; }
+
+
 //==================RESPONSIVE==================//
 @media(max-width: 1366px) {
   .dash-logo { height: 50px; min-width: 50px; margin-right: 10px; }
@@ -849,6 +860,7 @@ a:hover { text-decoration: none; }
   .sub-msg-dash { font-size: 14px; }
   .dash-msg { margin: 0 -5px; }
   .trainer_head { margin: 0 -10px; }
+  .left_menu_portal li a { line-height: 30px; }
 }
 
 .image_file_link {

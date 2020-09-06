@@ -47,6 +47,9 @@ export class ClientCabProfileComponent implements OnInit {
   accreditationInfo:any[] = [{}];
   addMinutesToTime:any;
   getDutyTimeForm1IndexValue:number;
+  searchCountryLists:any[] = [];
+  titleArr:any[] = [];
+  titleFind:any;
   
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -74,8 +77,8 @@ export class ClientCabProfileComponent implements OnInit {
       title:'application_information', desc:'2. Application <br> Information', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       }
     );
-    this.loadCountryStateCity();
-    this.loadStep1Data();
+   this.titleArr = ['Mr.','Ms.','Dr.','Prof.','Mrs.'];
+   this.loadStep1Data();
     // console.log(this.constant.API_ENDPOINT.profileService,'hyyhhh')
   }
 
@@ -94,18 +97,19 @@ export class ClientCabProfileComponent implements OnInit {
 
   loadStep1Data(){
 
-    this.Service.get(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,'')
-    .subscribe(
-      res => {
-      this.criteriaMaster = res['data']['schemes'];
-    });
-
     this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail)
     .subscribe(
       res => {
         // console.log(res['data'],'data');
         if(res['status'] == true) {
+
+          var first_nameData = res['data']['user_data'][0].first_name.split(' ');
+          this.titleArr.forEach((res,key) => {
+            if(res == first_nameData[0])
+            this.titleFind = first_nameData[0];
+          })
           
+          this.step1Data.title = this.titleFind;
           this.step1Data.first_name = res['data']['user_data'][0].first_name;
           this.step1Data.last_name = res['data']['user_data'][0].last_name;
           this.step1Data.personal_email = res['data']['user_data'][0].email;
@@ -119,27 +123,6 @@ export class ClientCabProfileComponent implements OnInit {
           
           if(res['data'].step1 != '') {
             var step1 = res['data'].step1[0];
-
-            var stateList =  this.Service.getState();
-            var cityList =  this.Service.getCity();
-
-            stateList.subscribe( result => {
-              for(let key in result['states']) {
-                if(result['states'][key]['name'] == step1.state )
-                {
-                  this.allStateList.push(result['states'][key]);
-                }
-              }
-            });
-
-            cityList.subscribe( result => {
-              for(let key in result['cities']) {
-                if(result['cities'][key]['name'] == step1.city )
-                {
-                  this.allCityList.push(result['cities'][key]);
-                }
-              }
-            });
 
             this.step1Data.title = step1.cab_name;
             this.step1Data.date_of_birth = new Date(step1.dob);
@@ -197,6 +180,21 @@ export class ClientCabProfileComponent implements OnInit {
       });
   }
 
+  getPlaceName(data)
+    {
+      if(typeof this.step1Data.applicant_location != 'undefined')
+      {
+        this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.step1Data.applicant_location+'.json?access_token='+this.Service.mapboxToken+'','')
+          .subscribe(res => {
+              // //console.log(res['features']);
+              this.searchCountryLists = res['features'];
+            },
+            error => {
+            
+        })
+      }
+    }
+
   stepClick(event: any){
     this.stepper.selected.completed = false;
     this.stepper.previous();
@@ -204,109 +202,27 @@ export class ClientCabProfileComponent implements OnInit {
   }
 
   onSubmitStep1(ngForm1) {
-    // //console.log(this.clientCabForm);
-    // if(ngForm1.form.valid && this.tradeLicensedValidation != false) {
-    //   this.clientCabForm.step1 = {};
-    //   this.clientCabForm.email = this.userEmail;
-    //   this.clientCabForm.userType = this.userType;
-    //   this.clientCabForm.step1 = this.step1Data;
-    //   this.step1DataBodyFormFile.append('data',JSON.stringify(this.clientCabForm));
-    //   this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step1DataBodyFormFile)
-    //     .subscribe(
-    //       res => {
-    //         console.log(res,'res')
-    //         if(res['status'] == true) {
-    //           this.toastr.success(res['msg'], '');
-    //           this.progressValue == 0 || this.progressValue < 50 ? this.progressValue = 50 : this.progressValue = this.progressValue ;
-    //           this.Service.moveSteps('personal_details','application_information', this.headerSteps);
-    //         }else{
-              
-    //           this.toastr.warning(res['msg'], '');
-    //         }
-    //       });
-    // }else if(ngForm1.form.valid && this.tradeLicensedValidation == false) {
-    //   this.file_validation = false;
-    //   this.toastr.warning('Please Fill required field','');
-    // }
-    // else {
-    //   this.toastr.warning('Please Fill required field','');
-    // }
-
-    if(this.step1Data.duty_shift == '1' && typeof this.step1Data.duty_from1 == 'undefined' && typeof this.step1Data.duty_to1 == 'undefined')
-    {
-      this.dutyTime1 = false;
-    }else{
-      this.dutyTime1 = true;
-    }
-    if(this.step1Data.duty_shift == '2' && typeof this.step1Data.duty_from2 == 'undefined' && typeof this.step1Data.duty_to2 == 'undefined')
-    {
-      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
-      {
-        this.dutyTime1 = false;
-      }else{
-        this.dutyTime1 = true;
-      }
-      this.dutyTime2 = false;
-    }else{
-      this.dutyTime2 = true;
-    }
-    if(this.step1Data.duty_shift == '3' && typeof this.step1Data.duty_from3 == 'undefined' && typeof this.step1Data.duty_to3 == 'undefined')
-    {
-      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
-      {
-        this.dutyTime1 = false;
-      }else{
-        this.dutyTime1 = true;
-      }
-      if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
-      {
-        this.dutyTime2 = false;
-      }else{
-        this.dutyTime2 = true;
-      }
-      this.dutyTime3 = false;
-    }else{
-      this.dutyTime3 = true;
-    }
-
-    if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
-      this.dutyTime1 = false;
-    }else{
-      this.dutyTime1 = true;
-    }
-
+    //console.log(this.clientCabForm);
     if(ngForm1.form.valid && this.tradeLicensedValidation != false) {
-      this.clientCabForm = {};
       this.clientCabForm.step1 = {};
       this.clientCabForm.email = this.userEmail;
       this.clientCabForm.userType = this.userType;
+      this.step1Data.first_name = this.step1Data.title+' '+this.step1Data.first_name;
       this.clientCabForm.step1 = this.step1Data;
-
-      this.clientCabForm.step1['ownOrgBasicInfo'] = [];
-      this.clientCabForm.step1['ownOrgMembInfo'] = [];
-      this.clientCabForm.step1['accreditationInfo'] = [];
-      
-      if(this.ownOrgBasicInfo) {
-        this.clientCabForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
-      }
-      if(this.ownOrgMembInfo) {
-        this.clientCabForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
-      }
-      if(this.accreditationInfo) {
-        this.clientCabForm.step1['accreditationInfo'] = this.accreditationInfo;
-      }
       this.step1DataBodyFormFile.append('data',JSON.stringify(this.clientCabForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step1DataBodyFormFile)
-      .subscribe(
-        res => {
-          console.log(res,'res')
-          if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
-            this.Service.moveSteps('personal_details','application_information', this.headerSteps);
-          }else{
-            this.toastr.warning(res['msg'], '');
-          }
-        });
+        .subscribe(
+          res => {
+            console.log(res,'res')
+            if(res['status'] == true) {
+              this.toastr.success(res['msg'], '');
+              this.progressValue == 0 || this.progressValue < 50 ? this.progressValue = 50 : this.progressValue = this.progressValue ;
+              this.Service.moveSteps('personal_details','application_information', this.headerSteps);
+            }else{
+              
+              this.toastr.warning(res['msg'], '');
+            }
+          });
     }else if(ngForm1.form.valid && this.tradeLicensedValidation == false) {
       this.file_validation = false;
       this.toastr.warning('Please Fill required field','');
@@ -330,47 +246,6 @@ export class ClientCabProfileComponent implements OnInit {
       this.file_validation = false;
       this.tradeLicensedValidation = false;
     }
-  }
-
-  statelistById = async(country_id) => {
-    this.allStateList = [];
-    let stateList =  this.Service.getState();
-    await stateList.subscribe( result => {
-        for(let key in result['states']) {
-          if(result['states'][key]['country_id'] == country_id )
-          {
-            this.allStateList.push(result['states'][key]);
-          }
-        }
-    });
-    // console.log(this.allStateList);
-  }
-
-  citylistById = async(state_id) => {
-    this.allCityList = [];
-    let cityList =  this.Service.getCity();
-    await cityList.subscribe( result => {
-        for(let key in result['cities']) {
-          if(result['cities'][key]['state_id'] == state_id )
-          {
-            this.allCityList.push(result['cities'][key]);
-          }
-        }
-    },
-    error =>{
-        console.log("Error: ", error);
-    }
-    
-    );
-  }
-  
-  loadCountryStateCity = async() => {
-    let countryList =  this.Service.getCountry();
-    await countryList.subscribe(record => {
-      // console.log(record,'record');
-      this.getCountryLists = record['countries'];
-    });
-    
   }
 
   onSubmitStep2(ngForm2) {

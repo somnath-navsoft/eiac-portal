@@ -77,7 +77,7 @@
 
                                                 <div class="col-md-4">
                                                     <mat-form-field class="cab-data">
-                                                        <mat-label>Office E-Mail</mat-label>
+                                                        <mat-label>Company E-Mail</mat-label>
                                                         <input matInput [(ngModel)]="step1Data.office_email" name="office_email" placeholder="" required>
                                                     </mat-form-field>
         
@@ -105,7 +105,7 @@
                                                 </div>
                                                 <div class="col-md-4"> 
                                                     <mat-form-field class="cab-data">
-                                                        <mat-label>Mailing Address</mat-label>
+                                                        <mat-label>P.O Box Mailing Address</mat-label>
                                                         <input matInput [(ngModel)]="step1Data.mailing_address" name="mailing_address" placeholder="" required>
                                                     </mat-form-field>
                                                 </div>
@@ -173,9 +173,11 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="bttns-health bttn-staff">
-                                                        <a routerLink="/dashboard/trainers/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
-                                                        <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
-                                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step1')">SAVE AS DRAFT</button>
+                                                        <div class="button-content">
+                                                            <a routerLink="/dashboard/trainers/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
+                                                            <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
+                                                            <button class="cancel-bttn" type="button" (click)="savedraftStep('step1')">SAVE AS DRAFT</button>
+                                                        </div>
                                                         <button class="submit-bttn submit-health">CONTINUE</button>
                                                     </div>
                                                 </div>
@@ -444,9 +446,11 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="bttns-health bttn-staff">
-                                                        <a routerLink="/dashboard/trainers/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
-                                                        <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
-                                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step2')">SAVE AS DRAFT</button>
+                                                        <div class="button-content">
+                                                            <a routerLink="/dashboard/trainers/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
+                                                            <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
+                                                            <button class="cancel-bttn" type="button" (click)="savedraftStep('step2')">SAVE AS DRAFT</button>
+                                                        </div>
                                                         <button class="submit-bttn submit-health">CONTINUE</button>
                                                     </div>
                                                 </div>
@@ -511,9 +515,11 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="bttns-health bttn-staff">
-                                                        <a routerLink="/dashboard/trainers/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
-                                                        <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
-                                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step3')">SAVE AS DRAFT</button>
+                                                        <div class="button-content">
+                                                            <a routerLink="/dashboard/trainers/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
+                                                            <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
+                                                            <button class="cancel-bttn" type="button" (click)="savedraftStep('step3')">SAVE AS DRAFT</button>
+                                                        </div>
                                                         <button class="submit-bttn submit-health">SUBMIT</button>
                                                     </div>
                                                 </div>
