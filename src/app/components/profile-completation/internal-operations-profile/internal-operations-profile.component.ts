@@ -23,6 +23,7 @@ export class InternalOperationsProfileComponent implements OnInit {
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
   ngOnInit() {
+    this.stepDefaultValue();
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('profileComplete');
@@ -35,6 +36,17 @@ export class InternalOperationsProfileComponent implements OnInit {
     );
 
     this.loadStep1Data();
+  }
+
+  stepDefaultValue() {
+    this.eiacStaff.first_name = '';
+    this.eiacStaff.last_name = '';
+    this.eiacStaff.department = '';
+    this.eiacStaff.company_email = '';
+    this.eiacStaff.personal_email = '';
+    this.eiacStaff.company_phone_with_area = '';
+    this.eiacStaff.personal_phone_with_area = '';
+    this.eiacStaff.designation = '';
   }
 
   loadStep1Data() {

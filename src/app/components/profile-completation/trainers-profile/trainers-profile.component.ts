@@ -36,6 +36,9 @@ export class TrainersProfileComponent implements OnInit {
   tradeLicensedValidation3:any;
   today = new Date();
   minDate = new Date();
+  titleArr:any[] = [];
+  titleFind:any;
+  loader:boolean = true;
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -44,6 +47,7 @@ export class TrainersProfileComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.stepDefaultValue();
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
@@ -62,6 +66,7 @@ export class TrainersProfileComponent implements OnInit {
     );
 
     this.loadStep1Data();
+    this.titleArr = ['Mr.','Ms.','Dr.','Prof.','Mrs.'];
   }
 
   setexDate(date){
@@ -69,20 +74,60 @@ export class TrainersProfileComponent implements OnInit {
     this.minDate = new Date(cdate  + (60*60*24*1000));
   }
 
+  stepDefaultValue(){
+    this.step1Data.first_name = '';
+    this.step1Data.last_name = '';
+    this.step1Data.personal_email = '';
+    this.step1Data.office_email = '';
+    this.step1Data.date_of_birth = '';
+    this.step1Data.mailing_address = '';
+    this.step1Data.phone_with_area = '';
+    this.step1Data.fax_with_area = '';
+    this.step1Data.office_institution = '';
+    this.step1Data.designation = '';
+    this.step1Data.office_address = '';
+    this.step1Data.officephone_with_area = '';
+    this.step1Data.officefax_with_area = '';
+
+    this.step2Data.which = '';
+    this.step2Data.completeProfileFrom = '';
+    this.step2Data.completeProfileTill = '';
+
+    this.step2Data.qualification_degree = '';
+    this.step2Data.university_college = '';
+    this.step2Data.education_specialization = '';
+    this.step2Data.further_education = '';
+    this.step2Data.others_education = '';
+
+    this.english = '';
+    this.arabic = '';
+    this.others = '';
+
+    this.step3Data.place = '';
+    this.step3Data.date = '';
+    this.step3Data.digital_signature = '';
+    this.step3Data.confirm_box = '';
+  }
+
   loadStep1Data(){
     this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail)
     .subscribe(
       res => {
         if(res['status'] == true) {
-          // console.log(res,'res');
-          this.step1Data.first_name = res['data']['user_data'][0].first_name;
-          this.step1Data.last_name = res['data']['user_data'][0].last_name;
-          this.step1Data.personal_email = res['data']['user_data'][0].email;
-
-          
 
           if(res['data'].step1 != '') {
             var step1 = res['data'].step1[0];
+
+            var first_nameData = res['data']['user_data'][0].first_name.split(' ');
+            this.titleArr.forEach((res,key) => {
+              if(res == first_nameData[0])
+              this.titleFind = first_nameData[0];
+            })
+          
+            this.step1Data.title = this.titleFind;
+            this.step1Data.first_name = first_nameData[1];
+            this.step1Data.last_name = res['data']['user_data'][0].last_name;
+            this.step1Data.personal_email = res['data']['user_data'][0].email;
 
             this.step1Data.office_email = step1.office_email;
             this.step1Data.date_of_birth = new Date(step1.dob);
@@ -192,7 +237,9 @@ export class TrainersProfileComponent implements OnInit {
 
   onSubmitStep1(ngForm1:any) {
     if(ngForm1.form.valid) {
+      this.trainersProfile = {};
       this.trainersProfile.step1 = {};
+      this.step1Data.first_name = this.step1Data.title+' '+this.step1Data.first_name;
       this.trainersProfile.step1 = this.step1Data;
       //console.log(this.trainersProfile);
       // this.stepper.next();
@@ -200,6 +247,7 @@ export class TrainersProfileComponent implements OnInit {
       this.trainersProfile.email = this.userEmail;
       this.trainersProfile.userType = this.userType;
       this.step1DataBodyFormFile.append('data',JSON.stringify(this.trainersProfile));
+      this.loader = false;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step1DataBodyFormFile)
       .subscribe(
         res => {
@@ -209,6 +257,7 @@ export class TrainersProfileComponent implements OnInit {
             this.progressValue == 0 || this.progressValue < 40 ? this.progressValue = 40 : this.progressValue = this.progressValue ;
             // this.Service.headerStepMove('educational_information',this.headerSteps,'personal_details');
             this.Service.moveSteps('personal_details','educational_information', this.headerSteps);
+            this.loader = true;
           }else{
             
             this.toastr.warning(res['msg'], '');
@@ -245,6 +294,7 @@ export class TrainersProfileComponent implements OnInit {
       //console.log(this.trainersProfile);
       // this.step2DataBodyFormFile.append('data',JSON.stringify(this.trainersProfile));
       //console.log(this.step2DataBodyFormFile);
+      this.loader = false;
 
       this.step2DataBodyFormFile.append('data',JSON.stringify(this.trainersProfile));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step2DataBodyFormFile)
@@ -256,6 +306,7 @@ export class TrainersProfileComponent implements OnInit {
             this.progressValue == 40 || this.progressValue < 80 ? this.progressValue = 80 : this.progressValue = this.progressValue ;
             // this.Service.headerStepMove('applicant_trainer',this.headerSteps,'personal_details');
             this.Service.moveSteps('educational_information','applicant_trainer', this.headerSteps);
+            this.loader = true;
           }else{
             
             this.toastr.warning(res['msg'], '');
@@ -281,12 +332,14 @@ export class TrainersProfileComponent implements OnInit {
         this.trainersProfile.email = this.userEmail;
         this.trainersProfile.userType = this.userType;
         this.step3DataBodyFormFile.append('data',JSON.stringify(this.trainersProfile));
+        this.loader = false;
         this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step3DataBodyFormFile)
         .subscribe(
           res => {
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
               this.progressValue == 80 || this.progressValue < 100 ? this.progressValue = 100 : this.progressValue = this.progressValue ;
+              this.loader = true;
               // this.router.navigateByUrl('/sign-in');
             }else{
               
@@ -301,15 +354,20 @@ export class TrainersProfileComponent implements OnInit {
 
   savedraftStep(stepCount) {
     if(stepCount == 'step1') {
+      this.trainersProfile = {};
       this.trainersProfile.step1 = {};
+      this.trainersProfile.isDraft = 1;
+      this.step1Data.first_name = this.step1Data.title+' '+this.step1Data.first_name;
       this.trainersProfile.step1 = this.step1Data;
 
       this.trainersProfile.email = this.userEmail;
       this.trainersProfile.userType = this.userType;
       this.step1DataBodyFormFile.append('data',JSON.stringify(this.trainersProfile));
+      this.loader = false;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step1DataBodyFormFile)
       .subscribe(
         res => {
+          this.loader = true;
           if(res['status'] == true) {
             this.toastr.success(res['msg'], '');
           }else{
@@ -323,15 +381,17 @@ export class TrainersProfileComponent implements OnInit {
       this.step2Data.arabic = this.arabic;
       this.step2Data.english = this.english;
       this.step2Data.others = this.others;
+      this.trainersProfile.isDraft = 1;
 
       this.trainersProfile.step2 = this.step2Data;
       this.trainersProfile.email = this.userEmail;
       this.trainersProfile.userType = this.userType;
-
+      this.loader = false;
       this.step2DataBodyFormFile.append('data',JSON.stringify(this.trainersProfile));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step2DataBodyFormFile)
       .subscribe(
         res => {
+          this.loader = true;
           if(res['status'] == true) {
             this.toastr.success(res['msg'], '');
           }else{
@@ -341,14 +401,17 @@ export class TrainersProfileComponent implements OnInit {
     }else if(stepCount == 'step3') {
       this.trainersProfile = {};
       this.trainersProfile.step3 = {};
+      this.trainersProfile.isDraft = 1;
       this.trainersProfile.step3 = this.step3Data;
 
       this.trainersProfile.email = this.userEmail;
       this.trainersProfile.userType = this.userType;
       this.step3DataBodyFormFile.append('data',JSON.stringify(this.trainersProfile));
+      this.loader = false;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step3DataBodyFormFile)
       .subscribe(
         res => {
+          this.loader = true;
           if(res['status'] == true) {
             this.toastr.success(res['msg'], '');
           }else{

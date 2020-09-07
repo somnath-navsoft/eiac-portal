@@ -30,12 +30,14 @@ export class CandidateProfileComponent implements OnInit {
   file_validation:boolean = true;
   nameOftheOwner:any[] = [{}];
   companyBodMembers:any[] = [{}];
+  loader:boolean = true;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { 
     this.today.setDate(this.today.getDate());
   }
 
   ngOnInit() {
+    this.stepDefaultValue();
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
@@ -52,6 +54,51 @@ export class CandidateProfileComponent implements OnInit {
 
     this.loadStep1Data();
     this.titleArr = ['Mr.','Ms.','Dr.','Prof.','Mrs.'];
+  }
+
+  stepDefaultValue() {
+    // this.step1Data.title = '';
+    this.step1Data.first_name = '';
+    this.step1Data.last_name = '';
+    this.step1Data.date_of_birth = '';
+    this.step1Data.company_email = '';
+    this.step1Data.personal_email = '';
+    this.step1Data.designation = '';
+    this.step1Data.nationality = '';
+    this.step1Data.mailing_address = '';
+    this.step1Data.office_institution = '';
+    this.step1Data.phone_with_area = '';
+    this.step1Data.fax_with_area = '';
+    this.step1Data.office_address = '';
+    this.step1Data.officephone_with_area = '';
+    this.step1Data.trade_license_number = '';
+    this.step2Data.contact_person_name = '';
+    this.step2Data.contact_person_designation = '';
+    this.step2Data.contact_person_email = '';
+    this.step2Data.contact_person_phone = '';
+    this.step2Data.contact_person_mobile = '';
+    this.step2Data.authorised_contact = '';
+    this.step2Data.date_of_establishment = '';
+    this.step2Data.legal_license = '';
+    this.step2Data.certification_main_activity = '';
+    this.step2Data.main_activity_describe = '';
+    this.nameOftheOwner = [{
+      name:'',
+      designation:'',
+      mobile_no:'',
+      phone_no:'',
+      email:'',
+    }];
+    this.companyBodMembers = [{
+      name:'',
+      bod_company:'',
+      director:'',
+      designation:'',
+      authorized_contact_person:'',
+      mobile_no:'',
+      phone_no:'',
+      email:'',
+    }];
   }
 
   validateFile(fileEvent: any) {
@@ -82,12 +129,13 @@ export class CandidateProfileComponent implements OnInit {
         if(res['data'].step1 != '') {
           var first_nameData = res['data']['user_data'][0].first_name.split(' ');
           this.titleArr.forEach((res,key) => {
-            if(res == first_nameData[0])
-            this.titleFind = first_nameData[0];
+            if(res == first_nameData[0]){
+              this.titleFind = first_nameData[0];
+            }
           })
           
           this.step1Data.title = this.titleFind;
-          this.step1Data.first_name = res['data']['user_data'][0].first_name;
+          this.step1Data.first_name = first_nameData[1];
           this.step1Data.last_name = res['data']['user_data'][0].last_name;
           this.step1Data.personal_email = res['data']['user_data'][0].email;
           
@@ -158,24 +206,25 @@ export class CandidateProfileComponent implements OnInit {
   onSubmitStep1(ngForm1) {
     //console.log(this.candidateProfile);
     if(ngForm1.form.valid && this.tradeLicensedValidation != false) {
+      this.candidateProfile = {};
       this.candidateProfile.step1 = {};
       this.candidateProfile.email = this.userEmail;
       this.candidateProfile.userType = this.userType;
       this.step1Data.first_name = this.step1Data.title+' '+this.step1Data.first_name;
       this.candidateProfile.step1 = this.step1Data;
       this.step1DataBodyFormFile.append('data',JSON.stringify(this.candidateProfile));
+      this.loader = false;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step1DataBodyFormFile)
         .subscribe(
           res => {
-            console.log(res,'res')
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
               this.progressValue == 0 || this.progressValue < 50 ? this.progressValue = 50 : this.progressValue = this.progressValue ;
               this.Service.moveSteps('personal_details','application_information', this.headerSteps);
             }else{
-              
               this.toastr.warning(res['msg'], '');
             }
+            this.loader = true;
           });
     }else if(ngForm1.form.valid && this.tradeLicensedValidation == false) {
       this.file_validation = false;
@@ -210,19 +259,19 @@ export class CandidateProfileComponent implements OnInit {
       
       // this.candidateProfile.step2 = this.companyBodMembers;
       // this.candidateProfile.step2 = this.nameOftheOwner;
+      this.loader = false;
       this.step2DataBodyFormFile.append('data',JSON.stringify(this.candidateProfile));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step2DataBodyFormFile)
         .subscribe(
           res => {
-            console.log(res,'res')
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
               this.progressValue == 50 ? this.progressValue = 100 : this.progressValue = this.progressValue ;
               // this.router.navigateByUrl('/sign-in');
             }else{
-              
               this.toastr.warning(res['msg'], '');
             }
+            this.loader = true;
           });
     }else{
       this.toastr.warning('Please Fill required field','');
@@ -231,19 +280,55 @@ export class CandidateProfileComponent implements OnInit {
 
   savedraftStep(stepCount) {
     if(stepCount == 'step1') {
+      this.candidateProfile = {};
+      this.candidateProfile.step1 = {};
       this.candidateProfile.email = this.userEmail;
       this.candidateProfile.userType = this.userType;
       this.candidateProfile.isDraft = 1;
+      this.step1Data.first_name = this.step1Data.title+' '+this.step1Data.first_name;
+      this.candidateProfile.step1 = this.step1Data;
       this.step1DataBodyFormFile.append('data',JSON.stringify(this.candidateProfile));
+      this.loader = false;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step1DataBodyFormFile)
       .subscribe(
         res => {
-          console.log(res,'res')
           if(res['status'] == true) {
             this.toastr.success(res['msg'], '');
           }else{
             this.toastr.warning(res['msg'], '');
           }
+          this.loader = true;
+        });
+    }else if(stepCount == 'step2'){
+      this.candidateProfile = {};
+      this.candidateProfile.step2 = {};
+
+      this.candidateProfile.email = this.userEmail;
+      this.candidateProfile.userType = this.userType;
+      this.candidateProfile.step2 = this.step2Data;
+      this.candidateProfile.isDraft = 1;
+
+      this.candidateProfile.step2['nameOftheOwner'] = [];
+      this.candidateProfile.step2['companyBodMembers'] = [];
+      
+      if(this.nameOftheOwner) {
+        this.candidateProfile.step2['nameOftheOwner'] = this.nameOftheOwner;
+      }
+      if(this.companyBodMembers) {
+        this.candidateProfile.step2['companyBodMembers'] = this.companyBodMembers;
+      }
+      this.loader = false;
+      this.step2DataBodyFormFile.append('data',JSON.stringify(this.candidateProfile));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step2DataBodyFormFile)
+      .subscribe(
+        res => {
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+          }else{
+            
+            this.toastr.warning(res['msg'], '');
+          }
+          this.loader = true;
         });
     }
   }

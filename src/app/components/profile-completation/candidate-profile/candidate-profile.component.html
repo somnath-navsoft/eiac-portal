@@ -1,3 +1,4 @@
+<app-loader *ngIf="!loader"></app-loader>
 <section>
     <div class="form-wrapper-pro">
         <div class="container-fluid">
@@ -103,7 +104,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Personal E-mail</mat-label>
-                                                <input readonly matInput [(ngModel)]="step1Data.personal_email" name="personal_email" placeholder="" required>
+                                                <input matInput [(ngModel)]="step1Data.personal_email" name="personal_email" placeholder="" required>
                                             </mat-form-field>
 
                                             <p class="error" *ngIf="step1Data.personal_email && !Service.checkInput('email',step1Data.personal_email)">Please Enter Correct Email Id</p>
@@ -192,7 +193,7 @@
                                     <div class="row tog-content">
                                         <div class="col-md-6 col-sm-12 p-0">
                                             <div class="form-subheader-data">
-                                                <h5>APPLICANT INFORMATION SAME AS ABOVE ?</h5>
+                                                <h5>APPLICANT INFORMATION SAME AS ABOVE?</h5>
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-sm-12ssss p-0">

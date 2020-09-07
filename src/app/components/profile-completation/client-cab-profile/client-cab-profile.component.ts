@@ -50,6 +50,7 @@ export class ClientCabProfileComponent implements OnInit {
   searchCountryLists:any[] = [];
   titleArr:any[] = [];
   titleFind:any;
+  loader:boolean = true;
   
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -58,6 +59,7 @@ export class ClientCabProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.stepDefaultValue();
     this.step2Data.is_bod = '0';
     this.addMinutesToTime = this.Service.addMinutesToTime();
 
@@ -80,6 +82,56 @@ export class ClientCabProfileComponent implements OnInit {
    this.titleArr = ['Mr.','Ms.','Dr.','Prof.','Mrs.'];
    this.loadStep1Data();
     // console.log(this.constant.API_ENDPOINT.profileService,'hyyhhh')
+  }
+
+  stepDefaultValue() {
+    this.step1Data.first_name = '';
+    this.step1Data.last_name = '';
+    this.step1Data.date_of_birth = '';
+    this.step1Data.company_email = '';
+    this.step1Data.designation = '';
+    this.step1Data.nationality = '';
+    this.step1Data.mailing_address = '';
+    this.step1Data.office_institution = '';
+    this.step1Data.phone_with_area = '';
+    this.step1Data.fax_with_area = '';
+    this.step1Data.office_address = '';
+    this.step1Data.officephone_with_area = '';
+    this.step1Data.trade_license_number = '';
+    this.step1Data.applicant_commercial_name = '';
+    this.step1Data.applicant_location = '';
+    this.step1Data.applicant_mailing_address = '';
+    this.step1Data.applicant_phone_with_area = '';
+    this.step1Data.applicant_fax_with_area = '';
+    this.step1Data.applicant_official_email = '';
+    this.step2Data.contact_person_name = '';
+    this.step2Data.contact_person_designation = '';
+    this.step2Data.contact_person_email = '';
+    this.step2Data.contact_person_phone = '';
+    this.step2Data.contact_person_mobile = '';
+    this.step2Data.authorised_contact = '';
+    this.nameOftheOwner = [{
+      name:'',
+      designation:'',
+      mobile_no:'',
+      phone_no:'',
+      email:'',
+    }];
+    this.step2Data.is_bod = '';
+    this.companyBodMembers = [{
+      name:'',
+      bod_company:'',
+      director:'',
+      designation:'',
+      authorized_contact_person:'',
+      mobile_no:'',
+      phone_no:'',
+      email:'',
+    }];
+    this.step2Data.date_of_establishment = '';
+    this.step2Data.legal_license = '';
+    this.step2Data.certification_main_activity = '';
+    this.step2Data.main_activity_describe = '';
   }
 
   getDutyTimeForm1Index(indexVal){
@@ -210,18 +262,18 @@ export class ClientCabProfileComponent implements OnInit {
       this.step1Data.first_name = this.step1Data.title+' '+this.step1Data.first_name;
       this.clientCabForm.step1 = this.step1Data;
       this.step1DataBodyFormFile.append('data',JSON.stringify(this.clientCabForm));
+      this.loader = false;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step1DataBodyFormFile)
         .subscribe(
           res => {
-            console.log(res,'res')
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
               this.progressValue == 0 || this.progressValue < 50 ? this.progressValue = 50 : this.progressValue = this.progressValue ;
               this.Service.moveSteps('personal_details','application_information', this.headerSteps);
             }else{
-              
               this.toastr.warning(res['msg'], '');
             }
+            this.loader = true;
           });
     }else if(ngForm1.form.valid && this.tradeLicensedValidation == false) {
       this.file_validation = false;
@@ -273,10 +325,10 @@ export class ClientCabProfileComponent implements OnInit {
       // this.clientCabForm.step2 = this.companyBodMembers;
       // this.clientCabForm.step2 = this.nameOftheOwner;
       this.step2DataBodyFormFile.append('data',JSON.stringify(this.clientCabForm));
+      this.loader = false;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step2DataBodyFormFile)
         .subscribe(
           res => {
-            console.log(res,'res')
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
               this.progressValue == 50 ? this.progressValue = 100 : this.progressValue = this.progressValue ;
@@ -285,6 +337,7 @@ export class ClientCabProfileComponent implements OnInit {
               
               this.toastr.warning(res['msg'], '');
             }
+            this.loader = true;
           });
     }else{
       this.toastr.warning('Please Fill required field','');
@@ -296,17 +349,21 @@ export class ClientCabProfileComponent implements OnInit {
       this.clientCabForm.step1 = {};
       this.clientCabForm.email = this.userEmail;
       this.clientCabForm.userType = this.userType;
+      this.clientCabForm.userType = this.userType;
+      this.clientCabForm.isDraft = 1;
+      this.step1Data.first_name = this.step1Data.title+' '+this.step1Data.first_name;
       this.clientCabForm.step1 = this.step1Data;
       this.step1DataBodyFormFile.append('data',JSON.stringify(this.clientCabForm));
+      this.loader = false;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step1DataBodyFormFile)
       .subscribe(
         res => {
-          console.log(res,'res')
           if(res['status'] == true) {
             this.toastr.success(res['msg'], '');
           }else{
             this.toastr.warning(res['msg'], '');
           }
+          this.loader = false;
         });
     }else if(stepCount == 'step2') {
       this.clientCabForm = {};
@@ -314,6 +371,7 @@ export class ClientCabProfileComponent implements OnInit {
 
       this.clientCabForm.email = this.userEmail;
       this.clientCabForm.userType = this.userType;
+      this.clientCabForm.isDraft = 1;
       this.clientCabForm.step2 = this.step2Data;
 
       this.clientCabForm.step2['nameOftheOwner'] = [];
@@ -325,17 +383,17 @@ export class ClientCabProfileComponent implements OnInit {
       if(this.companyBodMembers) {
         this.clientCabForm.step2['companyBodMembers'] = this.companyBodMembers;
       }
-      
+      this.loader = false;
       this.step2DataBodyFormFile.append('data',JSON.stringify(this.clientCabForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step2DataBodyFormFile)
       .subscribe(
         res => {
-          console.log(res,'res')
           if(res['status'] == true) {
             this.toastr.success(res['msg'], '');
           }else{
             this.toastr.warning(res['msg'], '');
           }
+          this.loader = true;
         });
     }
   }

@@ -53,6 +53,9 @@ export class AssessorsProfileComponent implements OnInit {
   isdDynamicsopenClose:any;
   today = new Date();
   minDate = new Date();
+  titleArr:any[] = [];
+  titleFind:any;
+  loader:boolean = true;
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -93,6 +96,45 @@ export class AssessorsProfileComponent implements OnInit {
     this.loadStepsData();
   }
 
+  stepDefaultValue() {
+    this.step1Data.first_name = '';
+    this.step1Data.last_name = '';
+    this.step1Data.personal_email = '';
+    this.step1Data.phone_with_area = '';
+    this.step1Data.office_email = '';
+    this.step1Data.date_of_birth = '';
+    this.step1Data.mailing_address = '';
+    this.step1Data.fax_with_area = '';
+    this.step1Data.office_institution = '';
+    this.step1Data.designation = '';
+    this.step1Data.office_address = '';
+    this.step1Data.officephone_with_area = '';
+    this.step1Data.officefax_with_area = '';
+    this.step1Data.nationality = '';
+    this.step2Data.which = '';
+    this.step2Data.completeProfileFrom = '';
+    this.step2Data.completeProfileTill = '';
+    this.step2Data.qualification_degree = '';
+    this.step2Data.university_college = '';
+    this.step2Data.education_specialization = '';
+    this.step2Data.further_education = '';
+    this.step2Data.others_education = '';
+
+    this.english = '';
+    this.arabic = '';
+    this.others = '';
+
+    this.list_auditor = [{}];
+    this.attend_accreditation = [{}];
+    this.attend_accreditation2 = [{}];
+    this.practical_assessment_experience = [{}];
+
+    this.assessorsProfile.step4['technical_experience'] = [];
+    this.step5Data.confirm_box = '';
+    this.step5Data.place = '';
+    this.step5Data.digital_signature = '';
+    this.step5Data.date = '';
+  }
   // setexDate(){
   //   let cdate =this.assessorsProfile.date_of_birth;
   //   this.minDate = new Date(cdate  + (60*60*24*1000));
@@ -119,6 +161,14 @@ export class AssessorsProfileComponent implements OnInit {
         // console.log(res['data'],'data');
         if(res['status'] == true) {
           
+          var first_nameData = res['data']['user_data'][0].first_name.split(' ');
+          this.titleArr.forEach((res,key) => {
+            if(res == first_nameData[0])
+            this.titleFind = first_nameData[0];
+          })
+          
+          this.step1Data.title = this.titleFind;
+
           this.step1Data.first_name = res['data']['user_data'][0].first_name;
           this.step1Data.last_name = res['data']['user_data'][0].last_name;
           this.step1Data.personal_email = res['data']['user_data'][0].email;
@@ -325,17 +375,18 @@ export class AssessorsProfileComponent implements OnInit {
 
   onSubmitStep1(ngForm1:any) {
     if(ngForm1.form.valid) {
+      this.assessorsProfile = {};
       this.assessorsProfile.step1 = {};
       this.assessorsProfile.email = this.userEmail;
       this.assessorsProfile.userType = this.userType;
+      this.step1Data.first_name = this.step1Data.title+' '+this.step1Data.first_name;
       this.assessorsProfile.step1 = this.step1Data;
       //console.log(this.assessorsProfile);
-
+      this.loader = false;
       this.step1DataBodyFormFile.append('data',JSON.stringify(this.assessorsProfile));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step1DataBodyFormFile)
       .subscribe(
         res => {
-          console.log(res,'res')
           if(res['status'] == true) {
             this.toastr.success(res['msg'], '');
             this.progressValue == 0 || this.progressValue < 22 ? this.progressValue = 22 : this.progressValue = this.progressValue ;
@@ -343,9 +394,9 @@ export class AssessorsProfileComponent implements OnInit {
             // this.router.navigateByUrl('/sign-in');
             this.Service.moveSteps('personal_details','educational_information', this.headerSteps);
           }else{
-            
             this.toastr.warning(res['msg'], '');
           }
+          this.loader = true;
         });
       // this.stepper.next();
     }else{
@@ -374,7 +425,7 @@ export class AssessorsProfileComponent implements OnInit {
         this.assessorsProfile.step2 = this.step2Data;
         this.assessorsProfile.email = this.userEmail;
         this.assessorsProfile.userType = this.userType;
-
+        this.loader = false;
         //console.log(this.assessorsProfile);
         this.step2DataBodyFormFile.append('data',JSON.stringify(this.assessorsProfile));
         //console.log(this.step2DataBodyFormFile);
@@ -388,9 +439,9 @@ export class AssessorsProfileComponent implements OnInit {
               // this.Service.headerStepMove('employment',this.headerSteps,'educational_information');
               this.Service.moveSteps('educational_information','employment', this.headerSteps);
             }else{
-              
               this.toastr.warning(res['msg'], '');
             }
+            this.loader = true;
           });
     }else{
       this.toastr.warning('Please Fill required field','');
@@ -422,6 +473,7 @@ export class AssessorsProfileComponent implements OnInit {
       if(this.practical_assessment_experience){
         this.assessorsProfile.step3['practical_assessment_experienceArr'] = this.practical_assessment_experience;
       }
+      this.loader = false;
 
       this.step3DataBodyFormFile.append('data',JSON.stringify(this.assessorsProfile));
       //console.log(this.step2DataBodyFormFile);
@@ -435,9 +487,9 @@ export class AssessorsProfileComponent implements OnInit {
             // this.Service.headerStepMove('knowledge_experience',this.headerSteps,'employment');
             this.Service.moveSteps('employment','knowledge_experience', this.headerSteps);
           }else{
-            
             this.toastr.warning(res['msg'], '');
           }
+          this.loader = true;
         });
       //console.log(this.assessorsProfile);
     }else{
@@ -474,7 +526,7 @@ export class AssessorsProfileComponent implements OnInit {
           }
         });
         // console.log(this.technicalFields,'technicalFields');
-
+        this.loader = false;
         this.step4DataBodyFormFile.append('data',JSON.stringify(this.assessorsProfile));
         //console.log(this.step2DataBodyFormFile);
         this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step4DataBodyFormFile)
@@ -490,6 +542,7 @@ export class AssessorsProfileComponent implements OnInit {
               
               this.toastr.warning(res['msg'], '');
             }
+            this.loader = true;
           });
         // this.Service.headerStepMove('knowledge_experience',this.headerSteps,'applicant_trainer');
         
@@ -509,7 +562,7 @@ export class AssessorsProfileComponent implements OnInit {
         this.assessorsProfile = {};
         this.assessorsProfile.step5 = this.step5Data;
         //console.log(this.assessorsProfile);
-
+        this.loader = false;
         this.assessorsProfile.email = this.userEmail;
         this.assessorsProfile.userType = this.userType;
         this.step5DataBodyFormFile.append('data',JSON.stringify(this.assessorsProfile));
@@ -521,9 +574,9 @@ export class AssessorsProfileComponent implements OnInit {
               this.progressValue == 88 || this.progressValue < 100 ? this.progressValue = 100 : this.progressValue = this.progressValue ;
               // this.router.navigateByUrl('/sign-in');
             }else{
-              
               this.toastr.warning(res['msg'], '');
             }
+            this.loader = true;
           });
       }
     }else{
@@ -533,21 +586,24 @@ export class AssessorsProfileComponent implements OnInit {
 
   savedraftStep(stepCount) {
     if(stepCount == 'step1') {
+      this.assessorsProfile = {};
       this.assessorsProfile.step1 = {};
       this.assessorsProfile.email = this.userEmail;
       this.assessorsProfile.userType = this.userType;
+      this.step1Data.first_name = this.step1Data.title+' '+this.step1Data.first_name;
       this.assessorsProfile.step1 = this.step1Data;
-
+      this.assessorsProfile.isDraft = 1;
+      this.loader = false;
       this.step1DataBodyFormFile.append('data',JSON.stringify(this.assessorsProfile));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step1DataBodyFormFile)
       .subscribe(
         res => {
-          console.log(res,'res')
           if(res['status'] == true) {
             this.toastr.success(res['msg'], '');
           }else{
             this.toastr.warning(res['msg'], '');
           }
+          this.loader = true;
         });
     }else if(stepCount == 'step2') {
       this.assessorsProfile = {};
@@ -560,7 +616,8 @@ export class AssessorsProfileComponent implements OnInit {
       this.assessorsProfile.step2 = this.step2Data;
       this.assessorsProfile.email = this.userEmail;
       this.assessorsProfile.userType = this.userType;
-
+      this.assessorsProfile.isDraft = 1;
+      this.loader = false;
       this.step2DataBodyFormFile.append('data',JSON.stringify(this.assessorsProfile));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step2DataBodyFormFile)
       .subscribe(
@@ -568,9 +625,9 @@ export class AssessorsProfileComponent implements OnInit {
           if(res['status'] == true) {
             this.toastr.success(res['msg'], '');
           }else{
-            
             this.toastr.warning(res['msg'], '');
           }
+          this.loader = true;
         });
     }else if(stepCount == 'step3') {
       this.assessorsProfile = {};
@@ -578,6 +635,7 @@ export class AssessorsProfileComponent implements OnInit {
       this.assessorsProfile.step3 = this.step3Data;
       this.assessorsProfile.email = this.userEmail;
       this.assessorsProfile.userType = this.userType;
+      this.assessorsProfile.isDraft = 1;
 
       this.assessorsProfile.step3['list_auditorArr'] = [];
       this.assessorsProfile.step3['attend_accreditationArr'] = [];
@@ -596,7 +654,7 @@ export class AssessorsProfileComponent implements OnInit {
       if(this.practical_assessment_experience){
         this.assessorsProfile.step3['practical_assessment_experienceArr'] = this.practical_assessment_experience;
       }
-
+      this.loader = false;
       this.step3DataBodyFormFile.append('data',JSON.stringify(this.assessorsProfile));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step3DataBodyFormFile)
       .subscribe(
@@ -606,13 +664,15 @@ export class AssessorsProfileComponent implements OnInit {
           }else{
             this.toastr.warning(res['msg'], '');
           }
+          this.loader = true;
         });
     }else if(stepCount == 'step4') {
       this.assessorsProfile = {};
       this.assessorsProfile.step4 = {};
       this.assessorsProfile.email = this.userEmail;
       this.assessorsProfile.userType = this.userType;
-
+      this.assessorsProfile.isDraft = 1;
+      this.loader = false;
       this.assessorsProfile.step4['technical_experience'] = [];
       var blankArr = {};
       this.technicalFields.forEach((res,key) => {
@@ -637,13 +697,15 @@ export class AssessorsProfileComponent implements OnInit {
           }else{
             this.toastr.warning(res['msg'], '');
           }
+          this.loader = true;
         });
     }else if(stepCount == 'step5') {
       this.assessorsProfile = {};
       this.assessorsProfile.step5 = this.step5Data;
-
+      this.loader = false;
       this.assessorsProfile.email = this.userEmail;
       this.assessorsProfile.userType = this.userType;
+      this.assessorsProfile.isDraft = 1;
       this.step5DataBodyFormFile.append('data',JSON.stringify(this.assessorsProfile));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step5DataBodyFormFile)
       .subscribe(
@@ -653,6 +715,7 @@ export class AssessorsProfileComponent implements OnInit {
           }else{
             this.toastr.warning(res['msg'], '');
           }
+          this.loader = true;
         });
     } 
   }
