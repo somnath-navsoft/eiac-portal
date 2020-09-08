@@ -1444,7 +1444,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.file_validation = false;
       this.toastr.warning('Please Fill required field','');
     }
-      */
+      */   
     }else if(ngForm1.form.valid && this.tradeLicensedValidation == false) {
       this.file_validation = false;
       this.toastr.warning('Please Fill required field','');

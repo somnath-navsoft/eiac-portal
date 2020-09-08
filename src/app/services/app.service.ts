@@ -556,7 +556,7 @@ addMinutesToTime()
     }
 
     getCountry(){
-      var countryURL = this.assetsBasePath + 'countries.json';
+      var countryURL = this.assetsBasePath + 'countries.json';   
       //var cscObj = new csc();
       //let countryCCC = this.objCountry.getAllCountries();
       return this.http.get(countryURL);

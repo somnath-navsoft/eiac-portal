@@ -35,7 +35,7 @@ export class Constants{
 		allPublicCourseOptions: 'trainer/public-course-options',
 
 		saveCourse: 'trainer/cust-course-save/',
-		savePublicCourse: 'trainer/public-course-save/',		
+		savePublicCourse: 'trainer/public-course-save/',   		
 		updateCourse: 'trainer/cust-course-update/',
 		emailVerification: 'user-email-verification/',
 		profileService: 'profile-service/',

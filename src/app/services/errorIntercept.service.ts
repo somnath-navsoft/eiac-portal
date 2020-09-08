@@ -24,8 +24,8 @@ export class ErrorInterceptor implements HttpInterceptor {
       .handle(request)
       .pipe(
         catchError((error: HttpErrorResponse) => {
-          ////console.log('@Error: ', error);
-          let parsrUrlService: any;
+          ////console.log('@Error: ', error);  
+          let parsrUrlService: any; 
           if(error.url != undefined){
             let getURL = this.authService.BASE_URL + '/';
             parsrUrlService = error.url.toString().split(getURL).pop();

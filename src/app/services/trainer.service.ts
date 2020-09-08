@@ -75,7 +75,7 @@ export class TrainerService {
     return this.http.post(url, postData, this._service.getReqHeaders());
   }
   //Update Trainer Course
-  updateTrainerCourse(postData: any, postId: number){
+  updateTrainerCourse(postData: any, postId: number){  
     const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.updateCourse + postId + '/';
     //console.log("Update URL: ", url);
     return this.http.put(url, postData, this._service.getReqHeaders());
