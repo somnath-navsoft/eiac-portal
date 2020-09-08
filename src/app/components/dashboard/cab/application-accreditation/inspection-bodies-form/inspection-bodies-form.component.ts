@@ -1030,7 +1030,7 @@ export class InspectionBodiesFormComponent implements OnInit {
    validateFile(fileEvent: any, type?: any) {
     var file_name = fileEvent.target.files[0].name;
     var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
-    var ex_type = ['pdf'];
+    var ex_type = ['png','pdf'];
     var ex_check = this.Service.isInArray(file_exe,ex_type);
     if(ex_check){
       if(type == undefined){
@@ -1439,6 +1439,12 @@ export class InspectionBodiesFormComponent implements OnInit {
       //       this.toastr.warning(res['msg'], '');
       //     }
       //   });
+      /*
+          else if(ngForm1.form.valid && this.tradeLicensedValidation == false) {
+      this.file_validation = false;
+      this.toastr.warning('Please Fill required field','');
+    }
+      */
     }else if(ngForm1.form.valid && this.tradeLicensedValidation == false) {
       this.file_validation = false;
       this.toastr.warning('Please Fill required field','');
