@@ -21,6 +21,8 @@ export class Constants{
 		trainerCourseByID: 'trainer/custom-course-dtls/',
 		trainerCourseDelete: 'trainer/course-delete/',
 		trainerCourseVoucherSave: 'trainer/course-voucher-save/',
+		trainerCoursePageDetails : 'trainer/training-page-details/',
+		trainerCourseTypeDetails: 'trainer/training-course-type/',
 
 		savePublicTrainingForm:'trainer/training-application-form/',
 

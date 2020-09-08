@@ -14,6 +14,16 @@ export class TrainerService {
   constructor(private http: HttpClient, private _service: AppService, private _constants: Constants) {
   }
 
+  //Get Trainer Page Details
+  getTrainerPageDetails(){
+    let url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.trainerCoursePageDetails;
+    return this.http.get(url, this._service.getReqHeaders());
+  }
+  //Get Trainer Course Details
+  getTrainerCourseTypeDetails(){
+    let url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.trainerCourseTypeDetails;
+    return this.http.get(url, this._service.getReqHeaders());
+  }
   //Get Trainer Course
   getTrainerCourseAll(){
     let url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.allCourse;

@@ -39,7 +39,7 @@ export class ErrorInterceptor implements HttpInterceptor {
               switch(error.status){
                 case 500:
                   ////console.log("HTTP error occured.....");
-                  this._service.openMessageDialog(error.message, error.statusText, 0);                
+                  //this._service.openMessageDialog(error.message, error.statusText, 0);                
                   break;
               }
               //this.store.dispatch(new AddGlobalError({ error: error.error.message }));
