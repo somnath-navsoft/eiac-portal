@@ -1,4 +1,4 @@
-<div class="side-menu-al">
+<!-- <div class="side-menu-al">
     <div class="dashboard-cnts">
         <div class="dash-content">
             <span class="icon-dashboard"></span>
@@ -6,7 +6,7 @@
         </div>
     </div>
     <div class="dash-data">
-        <div class="dashboard-cnts" >
+        <div class="dashboard-cnts" > -->
             <!-- <div class="dash-content">
                 <span class="icon-service"></span>
                 <span class="side-content">
@@ -14,8 +14,8 @@
                     MY SERVICE :: User - {{(userType == 'cab_client') ? 'Cab Client' : userType | titlecase}}</a>
                 </span>
             </div> -->
-            <div class="serv-data">
-                <ul>
+            <!-- <div class="serv-data">
+                <ul> -->
                     <!-- [href]="(item.link == '#') ? 'javascript:void(0)' : item.link" -->
                     <!-- (item.link == '#') ? 'javascript:void(0)' : item.link -->
                     <!-- [routerLink]="(data.link == '#') ? 'javascript:void(0)' : data.link" -->
@@ -36,19 +36,19 @@
                         </ng-container>                        
                     </ng-container> -->
 
-                    <ng-container *ngFor="let item of dashMenu">
+                    <!-- <ng-container *ngFor="let item of dashMenu">
                         <li (click)="accDropDown(item.title)">
                             <a href="javascript:void(0)" (click)="goToLink(item.menu.link)">{{item.title}}
                                 <span class="pub-data">
                                     <span *ngIf="item.title != currentTitle && item.child_menu" class="icon-down-arrow"></span>
                                     <span *ngIf="item.title == currentTitle && item.child_menu" class="icon-up-arrow"></span>
                                 </span>
-                            </a>
+                            </a> -->
 
                             <!-- <a href="javascript:void(0)" (click)="goToLink(item.title)" >{{item.title}}
                                 <span *ngIf="item.title == currentTitle && item.child_menu" class="icon-down-arrow"></span>
                             </a> -->
-                        </li>   
+                        <!-- </li>   
                         <ng-container *ngIf="item.child_menu">
                             <div class="sub-side-cont" *ngIf="item.title == currentTitle">
                                 <ul>
@@ -58,7 +58,7 @@
                                 </ul>
                             </div>
                         </ng-container>                        
-                    </ng-container>
+                    </ng-container> -->
                     
                     <!-- <li (click)="accDropDown()"><a href="javascript:void(0)">ACCREDITATION SERVICE</a></li>
                     <div class="sub-side-cont" *ngIf="accData">
@@ -78,8 +78,37 @@
                     <li><a href="javascript:void(0)">PROFICIENCY TESTING SERVEICE</a></li>
                     <li><a href="javascript:void(0)">TRAINING SERVICE</a></li>
                     <li><a routerLink= "/dashboard/registration-service">REGISTRATION SERVICE</a></li> -->
-                </ul>
+                <!-- </ul>
             </div>
         </div>
     </div>
+</div> -->
+
+<div class="side-menu-al">
+    <ul class="left_menu_portal">
+        <li>
+            <a routerLink="dashboard/{{userType}}"><span class="icon-dashboard"></span>DASHBOARD</a>
+        </li>
+        <ng-container *ngFor="let item of dashMenu">
+        <li (click)="accDropDown(item.title)">
+            <a href="javascript:void(0)"  (click)="goToLink(item.menu.link)"><span class="icon-dashboard"></span>{{item.title}}
+                <span class="dropdown">
+                    <span *ngIf="item.title != currentTitle && item.child_menu" class="icon-down-arrow"></span>
+                    <span *ngIf="item.title == currentTitle && item.child_menu" class="icon-up-arrow"></span>
+                </span>
+            </a>
+            <ng-container *ngIf="item.child_menu">
+                <div class="sub-side-cont" *ngIf="item.title == currentTitle">
+                    <ul class="dropcontent">
+                        <li *ngFor="let data of item.child_menu">
+                                <a href="javascript:void(0)" (click)="goToLink(data.menu.link)">{{data.title}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </ng-container>
+            </li>
+        </ng-container>
+    </ul>
 </div>
+
+    

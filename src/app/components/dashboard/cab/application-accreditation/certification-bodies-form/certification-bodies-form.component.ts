@@ -70,6 +70,9 @@ export class CertificationBodiesFormComponent implements OnInit {
   afterSubmit:boolean = false;
   today = new Date();
 
+  //step wizard declaration
+  headerSteps: any[] =[];
+
   @ViewChild('mydiv', null) mydiv: ElementRef;
   @ViewChild('captchaRef',{static:true}) captchaRef: RecaptchaComponent;
   @HostListener('scroll', ['$event.target'])
@@ -94,6 +97,35 @@ export class CertificationBodiesFormComponent implements OnInit {
 ngOnInit() {
   // this.titleService.setTitle('EIAC - Certification Bodies');
   //this.checkCaptchaValidation = true;
+
+
+  //Step wizard declaration
+  this.headerSteps.push(
+    {
+    title:'application_information', desc:'1. Applicant Information', activeStep:true, stepComp:false, icon:'icon-user', activeClass:'user-present'
+    },
+    {
+    title:'personal_information', desc:'2. Personnel Information', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    },
+    {
+    title:'information_audit_managemen  t', desc:'3. Scope of Accreditation', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    },
+    {
+    title:'perlim_visit', desc:'4. QMS ISO 9001 Certification', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    },
+    {
+    title:'undertaking_applicant', desc:'5. EMS ISO 14001 Certification', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    },
+    {
+      title:'undertaking_applicant', desc:'5. EMS ISO 14001 Certification', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      },
+    {
+    title:'payment', desc:'7. Payment Information', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
+    }
+  );
+
+
+
   this.loadFormDynamicTable();
 }
 

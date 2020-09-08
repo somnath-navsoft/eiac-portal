@@ -19,10 +19,12 @@ export class InternalOperationsProfileComponent implements OnInit {
   isCompleteness:any;
   profileComplete:any;
   progressValue:any = 0;
+  loader:boolean = true;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
   ngOnInit() {
+    this.stepDefaultValue();
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('profileComplete');
@@ -35,6 +37,17 @@ export class InternalOperationsProfileComponent implements OnInit {
     );
 
     this.loadStep1Data();
+  }
+
+  stepDefaultValue() {
+    this.eiacStaff.first_name = '';
+    this.eiacStaff.last_name = '';
+    this.eiacStaff.department = '';
+    this.eiacStaff.company_email = '';
+    this.eiacStaff.personal_email = '';
+    this.eiacStaff.company_phone_with_area = '';
+    this.eiacStaff.personal_phone_with_area = '';
+    this.eiacStaff.designation = '';
   }
 
   loadStep1Data() {
@@ -70,23 +83,42 @@ export class InternalOperationsProfileComponent implements OnInit {
       //console.log(this.eiacStaff);
       this.eiacStaff.email = this.userEmail;
       this.eiacStaff.userType = this.userType;
+      this.eiacStaff.isDraft = 0;
       this.eiacStaffFormFile.append('data',JSON.stringify(this.eiacStaff));
+      this.loader = false;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.eiacStaffFormFile)
         .subscribe(
           res => {
-            console.log(res,'res')
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
               this.progressValue == 0 || this.progressValue < 100 ? this.progressValue = 100 : this.progressValue = this.progressValue ;
               // this.router.navigateByUrl('/sign-in');
             }else{
-              
               this.toastr.warning(res['msg'], '');
             }
+            this.loader = true;
           });
     }else{
       this.toastr.warning('Please Fill required field','');
     }
   }
 
+  savedraftStep(stepCount) {
+    if(stepCount == 'step1') {
+      this.eiacStaff.email = this.userEmail;
+      this.eiacStaff.userType = this.userType;
+      this.eiacStaff.isDraft = 1;
+      this.eiacStaffFormFile.append('data',JSON.stringify(this.eiacStaff));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.eiacStaffFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }
+  }
 }

@@ -2,7 +2,10 @@
     <section>
         <div class="form_main">
             <div class="container-fluid">
-                
+                <!-- <div class="progress-top"></div> -->
+                <div class="progress_bar">
+                    <mat-progress-bar mode="determinate" value="50"></mat-progress-bar>
+                </div>
                 <div class="form-hdr">
                     <div class="row">
                         <div class="col-md-12 p-0 mb-3">
@@ -61,10 +64,10 @@
                                                 <input type="file" name="trade_license" [(ngModel)]="fileAny" (change)="validateFile($event)">
                                                 <span class="icon-attach attach-data"></span>
                                             </span>
-                                            <p class="error" *ngIf="file_validation == false">Please Upload a valid file (ex: pdf,png,jpg,jpeg)</p>
+                                            <p class="error" *ngIf="file_validation == false">Please Upload a valid file (ex: pdf,png)</p>
                                         </div>
                                         <div class="col-md-3 col-sm-12">
-                                            <mat-form-field class="cab-data">
+                                            <mat-form-field class="cab-data">  
                                                 <mat-label>Date of Issue</mat-label>
                                                 <input matInput  readonly="true" (click)="Service._openCalendar(issue_data)"  [matDatepicker]="issue_data"  placeholder="Date of Issue" name="date_of_issue" [(ngModel)]="step1Data.date_of_issue" (dateChange)="setexDate(step1Data.date_of_issue)" required>
                                                 <mat-datepicker-toggle matSuffix [for]="issue_data"></mat-datepicker-toggle>
@@ -117,7 +120,8 @@
                                         <div class="col-md-6 col-sm-12 align-self-end">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Type of Accreditation Required</mat-label>
-                                                <mat-select placeholder="Select" name="accredation_type_id"  [(ngModel)]="step1Data.accredation_type_id" required>
+                                                <mat-select placeholder="Select" name="accredation_type_id"  [(ngModel)]="step1Data.accredation_criteria
+                                                " required>
                                                     <mat-option [value]="1">Initial</mat-option>
                                                     <mat-option [value]="2">Extension</mat-option>
                                                 </mat-select>
@@ -127,7 +131,7 @@
                                         
                                         <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
-                                                @{{step1Data.criteria_request}}
+                                                <!-- @{{step1Data.criteria_request}} -->
                                                 <mat-label>Criteria for which Accreditation is Requested</mat-label>
                                                 <mat-select (selectionChange)="getCriteria(step1Data.criteria_request)" placeholder="Select" name="criteria_request"  
                                                 [(ngModel)]="step1Data.criteria_request" required>
@@ -175,7 +179,7 @@
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>State</mat-label>
-                                                <mat-select placeholder="Select" name="state" [(ngModel)]="step1Data.state" required>
+                                                <mat-select placeholder="Select" name="state" [(ngModel)]="step1Data.state"  required>
                                                     <mat-option [value]="item.name" (click)="citylistById(item.id)" *ngFor="let item of allStateList; let i = index;">{{item.name}}</mat-option>
                                                 </mat-select>    
                                             </mat-form-field>
@@ -184,7 +188,7 @@
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>City</mat-label>
-                                                <mat-select placeholder="Select" required name="city" [(ngModel)]="step1Data.city">
+                                                <mat-select placeholder="Select" name="city" [(ngModel)]="step1Data.city"  required>
                                                     <mat-option [value]="item.name" *ngFor="let item of allCityList; let i = index;">{{item.name}}</mat-option>
                                                 </mat-select>      
                                             </mat-form-field>
@@ -609,8 +613,8 @@
                                     <div class="row" *ngIf="fullScope.length === 0">
                                         <h5>No Records</h5>
                                     </div>
-                                    @{{fullScope | json}} || 
-                                    #{{dynamicScopeModel | json}}
+                                    <!-- @{{fullScope | json}} ||  -->
+                                    <!-- #{{dynamicScopeModel | json}} -->
 
                                     <div class="row" *ngIf="fullScope.length > 0">
                                         <div class="col-12" *ngFor="let scope of fullScope; let i1 = index;">
@@ -635,17 +639,18 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr *ngFor="let item of dynamicScopeModel[scope.title].fieldLines; let k = index;">
-                                                                    <td>{{("0" + (k+1)).slice(-2)}}</td>
+                                                                <!-- <tr *ngFor="let item of dynamicScopeModel[scope.title].fieldLines; let k = index;"> -->
+                                                                <tr *ngFor="let item of dynamicScopeModel.fieldLines; let k = index;">
+                                                                    <td>{{("0" + (k+1)).slice(-2)}} -- {{dynamicScopeModel.fieldLines[k][dynamicScopeFieldColumns[1][0].title]}}</td>
                                                                     <td *ngFor="let fieldsColumn of dynamicScopeFieldColumns; let p = index;">
-                                                                        Column...{{p}} 
+                                                                        <!-- Column...{{p}}  -->
                                                                         <mat-form-field class="cab-data" *ngIf="p == 0">
                                                                             <mat-label>Select</mat-label>    
                                                                             <mat-select required="" 
-                                                                            [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.title].fieldLines[k][dynamicScopeFieldColumns[i1][p].title], dynamicScopeModel[scope.title].fieldLines[k].firstFieldValues)" matTooltipPosition='above'
-                                                                            [(ngModel)]="dynamicScopeModel[scope.title].fieldLines[k][dynamicScopeFieldColumns[i1][p].title]" name="dynamicScopeFieldColumns[i1][p].title" [ngModelOptions]="{standalone: true}" 
-                                                                            (selectionChange)="onChangeScopeOption($event,i1,k,p,scope.title)">
-                                                                                <mat-option *ngFor="let j1 of dynamicScopeModel[scope.title].fieldLines[k].firstFieldValues" [value]='j1.field_value'>
+                                                                            [matTooltip]="getFieldTooltip(dynamicScopeModel.fieldLines[k][dynamicScopeFieldColumns[i1][p].title], dynamicScopeModel.fieldLines[k].firstFieldValues)" matTooltipPosition='above'
+                                                                            [(ngModel)]="dynamicScopeModel.fieldLines[k][dynamicScopeFieldColumns[i1][p].title]" name="dynamicScopeFieldColumns[i1][p].title" [ngModelOptions]="{standalone: true}" 
+                                                                            (selectionChange)="onChangeScopeOption($event,k,p)">
+                                                                                <mat-option *ngFor="let j1 of dynamicScopeModel.fieldLines[k].firstFieldValues" [value]='j1.field_value'>
                                                                                 {{j1.value}}
                                                                                 </mat-option>
                                                                             </mat-select>
@@ -656,13 +661,13 @@
                                                                              <!-- @{{dynamicScopeFieldColumns[p][i1].title}} -->
                                                                             <!-- <span *ngIf="dynamicScopeFieldColumns[i1].title != undefined">{{dynamicScopeFieldColumns[i1].title}}</span> -->
                                                                             <!-- @{{dynamicScopeFieldColumns[i1][p].title}} || {{dynamicScopeModel[scope.title].fieldLines[k][dynamicScopeFieldColumns[i1][p].title]}} -->
-                                                                            <!--  //[ngModelOptions]="{standalone: true}" -->
-                                                                            <mat-select required="" 
-                                                                            [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.title].fieldLines[k][dynamicScopeFieldColumns[p][i1].title], dynamicScopeModel[scope.title].fieldLines[k][dynamicScopeFieldColumns[p][i1].values])" 
-                                                                            matTooltipPosition='above' [(ngModel)]="dynamicScopeModel[scope.title].fieldLines[k][dynamicScopeFieldColumns[p][i1].title]"
+                                                                            <!--  //[ngModelOptions]="{standalone: true}" required=""-->
+                                                                            <mat-select  
+                                                                            [matTooltip]="getFieldTooltip(dynamicScopeModel.fieldLines[k][dynamicScopeFieldColumns[p][i1].title], dynamicScopeModel.fieldLines[k][dynamicScopeFieldColumns[p][i1].values])" 
+                                                                            matTooltipPosition='above' [(ngModel)]="dynamicScopeModel.fieldLines[k][dynamicScopeFieldColumns[p][i1].title]"
                                                                              name="dynamicScopeFieldColumns[p][i1].title" 
-                                                                            (selectionChange)="onChangeScopeOption($event,i1,k,p,scope.title)">
-                                                                                <mat-option *ngFor="let j2 of dynamicScopeModel[scope.title].fieldLines[k][dynamicScopeFieldColumns[p][i1].values]" [value]='j2.field_value'>
+                                                                            (selectionChange)="onChangeScopeOption($event,k,p)" [ngModelOptions]="{standalone: true}">
+                                                                                <mat-option *ngFor="let j2 of dynamicScopeModel.fieldLines[k][dynamicScopeFieldColumns[p][i1].values]" [value]='j2.field_value'>
                                                                                 {{j2.value}}
                                                                                 </mat-option>
                                                                             </mat-select>
@@ -670,8 +675,8 @@
                                                                         
                                                                     </td>
                                                                     <td class="content-icn">
-                                                                        <span *ngIf="k >= 0" class="icon-add-round" (click)="addScopeLine(scope.title, i1, k, dynamicScopeModel[scope.title].fieldLines)"></span>&nbsp;
-                                                                        <span *ngIf="k >= 1" class="icon-close-round" (click)="removeScopeLine(scope.title, k)"></span>
+                                                                        <span *ngIf="k >= 0" class="icon-add-round" (click)="addScopeLine(k, dynamicScopeModel.fieldLines)"></span>&nbsp;
+                                                                        <span *ngIf="k >= 1" class="icon-close-round" (click)="removeScopeLine(k)"></span>
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
@@ -748,9 +753,10 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="bttns-health bttn-staff">
-                                                <!--  (click)="onSubmitApplication()" -->
+                                                <!--  (click)="onSubmitApplication()" | savedraftStep('step1')-->
                                                 <button class="cancel-bttn" routerLink="/dashboard/cab_client/application-accreditation">BACK</button>
-                                                <button class="cancel-bttn" type="button" (click)="savedraftStep('step1')">SAVE AS DRAFT</button>
+
+                                                <button class="cancel-bttn" type="button" (click)="onSubmitApplication(ngForm1, true)">SAVE AS DRAFT</button>
                                                 <button class="submit-bttn submit-health">CONTINUE</button>
                                             </div>
                                         </div>
@@ -771,7 +777,7 @@
                                             <div class="row tog-content m-0">
                                                 <div class="col-md-6 col-sm-12 p-0">
                                                     <div class="form-subhdr">
-                                                        <h5>2. INFORMATION ABOUT PROFICIENCY TESTING PARTICIPATION</h5>
+                                                        <h5>2. INFORMATION ABOUT PROFICIENCY TESTING PARTICIPATION *</h5>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12ssss p-0">
@@ -805,13 +811,16 @@
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="test_name_{{i}}" [(ngModel)]="proficiencyTesting[i].test_name" required> 
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)"
+                                                                     matInput placeholder="" name="test_name_{{i}}" [(ngModel)]="proficiencyTesting[i].test_name" required> 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput [matDatepicker]="participate_date"  (click)="Service._openCalendar(participate_date)" (dateChange)="Service.inputEvent($event,i,proficiencyTesting)" readonly="true" placeholder="Date of Issue" name="participate_date_{{i}}" [(ngModel)]="proficiencyTesting[i].certificate_expiry_date" required>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                                    matInput [matDatepicker]="participate_date"  (click)="Service._openCalendar(participate_date)" 
+                                                                    (dateChange)="Service.inputEvent($event,i,proficiencyTesting)" readonly="true" placeholder="Date of Issue" name="participate_date_{{i}}" [(ngModel)]="proficiencyTesting[i].participation_date" required>
                                                                         <mat-datepicker-toggle matSuffix [for]="participate_date"></mat-datepicker-toggle>
                                                                     <mat-datepicker #participate_date disabled="false"></mat-datepicker>
                                                                 </mat-form-field>
@@ -825,7 +834,8 @@
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="result_summery_{{i}}" [(ngModel)]="proficiencyTesting[i].result_summery" required> 
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="result_summery_{{i}}" 
+                                                                    [(ngModel)]="proficiencyTesting[i].result" required> 
                                                                 </mat-form-field>
                                                                 </td>
                                                             <td class="content-icn">
@@ -845,7 +855,11 @@
                                             <div class="bttns-health bttn-staff">
                                                 <!-- (click)="onSubmitTestingParticipation()" -->
                                                 <button class="cancel-bttn"  type="button" (click)="Service.headerStepMove('application_information',headerSteps,'menu','profciency_testing_participation')">BACK</button> 
+<<<<<<< HEAD
                                                 <button class="cancel-bttn" type="button" (click)="savedraftStep('step2')">SAVE AS DRAFT</button> 
+=======
+                                                <button class="cancel-bttn" type="button" (click)="onSubmitTestingParticipation(ngForm2, true)">SAVE AS DRAFT</button> 
+>>>>>>> origin/development
                                                 <button class="submit-bttn submit-health" >CONTINUE</button>
                                             </div>
                                         </div>
@@ -880,13 +894,13 @@
                                     <div class="col-md-6 col-sm-12">
                                         <mat-form-field class="cab-data">
                                             <mat-label>Name</mat-label>
-                                            <input matInput onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name" name="name_technical" [(ngModel)]="step3Data.name" required>
+                                            <input matInput onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name" name="name_technical" [(ngModel)]="step3Data.name_technical" required>
                                         </mat-form-field>
                                     </div>
                                     <div class="col-md-6 col-sm-12">
                                         <mat-form-field class="cab-data">
                                             <mat-label>Designation</mat-label>
-                                            <input matInput onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Designation" name="designation_technical" [(ngModel)]="step3Data.designation" required>
+                                            <input matInput onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Designation" name="designation_technical" [(ngModel)]="step3Data.designation_technical" required>
                                         </mat-form-field>
                                     </div>
                                 </div>
@@ -894,21 +908,21 @@
                                     <div class="col-md-4 col-sm-12">
                                         <mat-form-field class="cab-data">
                                             <mat-label>Mobile Phone No.</mat-label>
-                                            <input type="text" onpaste="return false" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="mobile_no_technical" [(ngModel)]="step3Data.mobile_no"  required>
+                                            <input type="text" onpaste="return false" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="mobile_no_technical" [(ngModel)]="step3Data.mobile_no_technical"  required>
                                         </mat-form-field>
-                                        <p class="error" *ngIf="step3Data.mobile_no && !Service.checkInput('onlyNumberWithPlus',step3Data.mobile_no)">Please Enter Correct Mobile Phone No</p> 
+                                        <p class="error" *ngIf="step3Data.mobile_no_technical && !Service.checkInput('onlyNumberWithPlus',step3Data.mobile_no_technical)">Please Enter Correct Mobile Phone No</p> 
                                     </div>
                                     <div class="col-md-4 col-sm-12">
                                         <mat-form-field class="cab-data">
                                             <mat-label>Email Address</mat-label>
-                                            <input matInput onpaste="return false" placeholder="Email Address" name="tech_email_technical" [(ngModel)]="step3Data.email" required>
+                                            <input matInput onpaste="return false" placeholder="Email Address" name="tech_email_technical" [(ngModel)]="step3Data.tech_email_technical" required>
                                         </mat-form-field>
-                                        <p class="error" *ngIf="step3Data.email && !Service.checkInput('email',step3Data.email)">Please Enter Correct Email Id</p> 
+                                        <p class="error" *ngIf="step3Data.tech_email_technical && !Service.checkInput('email',step3Data.tech_email_technical)">Please Enter Correct Email Id</p> 
                                     </div>
                                     <div class="col-md-4 col-sm-12">
                                         <mat-form-field class="cab-data">
                                             <mat-label>Relevant Experience</mat-label>
-                                            <input onpaste="return false" (keypress)="Service.IsNumeric($event)" matInput placeholder="Relevant Experience" name="relevent_experience_technical" [(ngModel)]="step3Data.relevent_experience" required>
+                                            <input onpaste="return false" (keypress)="Service.IsNumeric($event)" matInput placeholder="Relevant Experience" name="relevent_experience_technical" [(ngModel)]="step3Data.relevent_experience_technical" required>
                                         </mat-form-field>
                                     </div>
                                 </div>
@@ -929,7 +943,8 @@
                                     <div class="col-md-6 col-sm-12">
                                         <mat-form-field class="cab-data">
                                             <mat-label>Designation</mat-label>
-                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="management_designation" [(ngModel)]="step3Data.management_designation" required>
+                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="management_designation" 
+                                            [(ngModel)]="step3Data.management_designation" required>
                                         </mat-form-field>
                                     </div>
                                 </div>
@@ -958,9 +973,12 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="bttns-health bttn-staff">
-                                            <!-- (click)="onSubmitPersonalInformation()" -->
                                             <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('profciency_testing_participation',headerSteps,'menu','personal_information')">BACK</button> 
+<<<<<<< HEAD
                                             <button class="cancel-bttn" type="button" (click)="savedraftStep('step3')">SAVE AS DRAFT</button>
+=======
+                                            <button class="cancel-bttn" type="button" (click)="onSubmitPersonalInformation(ngForm3, true)('step3')">SAVE AS DRAFT</button>
+>>>>>>> origin/development
                                             <button class="submit-bttn submit-health" >CONTINUE</button>
                                         </div>
                                     </div>
@@ -1009,7 +1027,11 @@
                                             <div class="bttns-health bttn-staff">
                                                 <!-- (click)="onSubmitInformationAuditManagement()" -->
                                                 <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('personal_information',headerSteps,'menu','information_audit_management')">BACK</button> 
+<<<<<<< HEAD
                                                 <button class="cancel-bttn" type="button" (click)="savedraftStep('step4')">SAVE AS DRAFT</button>
+=======
+                                                <button class="cancel-bttn" type="button" (click)="onSubmitInformationAuditManagement(ngForm4, true)">SAVE AS DRAFT</button>
+>>>>>>> origin/development
                                                 <button class="submit-bttn submit-health" >CONTINUE</button>
                                             </div>
                                         </div>
@@ -1038,7 +1060,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="request-subhdr">
-                                                    <h5>Request for perlim visit</h5>
+                                                    <h5>Request for perlim visit *</h5>
                                                 </div>
                                             </div>
                                             <!-- @@{{inspectionBodyForm.perlim_visit_val |  json}} -->
@@ -1046,7 +1068,7 @@
                                             <div class="col-md-6">
                                                 <div class="request_frm">
                                                     <mat-radio-group name="perlim_visit_val" 
-                                                    [(ngModel)]="inspectionBodyForm.perlim_visit_val" required>
+                                                    [(ngModel)]="step5Data.perlim_visit_val" required>
                                                         <mat-radio-button value="1">Yes </mat-radio-button>
                                                         <mat-radio-button value="0">No </mat-radio-button>
                                                     </mat-radio-group>
@@ -1056,7 +1078,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-12" *ngIf="inspectionBodyForm.perlim_visit_val === '1'">
+                                    <div class="col-md-12" *ngIf="step5Data.perlim_visit_val === '1'">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <mat-form-field class="cab-data">
@@ -1073,7 +1095,7 @@
                                                     <mat-label>Select Time</mat-label>
                                                     <mat-select placeholder="Select" name="perlim_visit_select_time" 
                                                     (selectionChange)="getDutyTimeForm1Index($event)" 
-                                                    [(ngModel)]="step5Data.perlim_visit_select_time">
+                                                    [(ngModel)]="step5Data.perlim_visit_select_time" required>
                                                         <mat-option *ngFor="let item of addMinutesToTime; let i = index;" 
                                                         [value]="item.val">{{item.val}}</mat-option>
                                                     </mat-select>
@@ -1087,7 +1109,11 @@
                                         <div class="bttns-health bttn-staff">
                                             <!--  (click)="onSubmitPerlimVisit()" -->
                                             <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','perlim_visit')">BACK</button> 
+<<<<<<< HEAD
                                             <button class="cancel-bttn" type="button" (click)="savedraftStep('step5')">SAVE AS DRAFT</button>
+=======
+                                            <button class="cancel-bttn" type="button" (click)="onSubmitPerlimVisit(ngForm5, true)">SAVE AS DRAFT</button>
+>>>>>>> origin/development
                                             <button class="submit-bttn submit-health">CONTINUE</button>
                                         </div>
                                     </div>
@@ -1349,7 +1375,11 @@
                                     <div class="col-md-12">
                                         <div class="bttns-health bttn-staff">
                                             <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('perlim_visit',headerSteps,'menu','undertaking_applicant')">BACK</button> 
+<<<<<<< HEAD
                                             <button class="cancel-bttn" type="button" (click)="savedraftStep('step6')">SAVE AS DRAFT</button>
+=======
+                                            <button class="cancel-bttn" type="button" (click)="onSubmitUndertakingApplicant(ngForm6, true)">SAVE AS DRAFT</button>
+>>>>>>> origin/development
                                             <button class="submit-bttn submit-health"  *ngIf="!transactions.length">PROCEEDS FOR PAYMENT</button>
                                             <ng-container *ngIf="transactions.length">
                                                 <div id="paypalPayment"></div>
@@ -1389,13 +1419,14 @@
                                         <span class="icon-attach attach-data"></span>
                                     </span>                                               
                                     </div>
-                                    <p class="error" *ngIf="!file_validation">Please Upload a valid file (ex: pdf,png)</p>
+                                    <p class="error" *ngIf="!file_validation">Please Upload a valid file (ex: pdf)</p>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="bttns-health bttn-staff">
                                             <!-- (click)="onSubmitPaymentInformation()" -->
                                             <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','payment')">BACK</button> 
+                                            <button class="cancel-bttn" type="button" (click)="onSubmitPaymentInformation(ngForm7, true)">SAVE AS DRAFT</button>
                                             <button class="submit-bttn submit-health" >SUBMIT</button>
                                         </div>
                                     </div>

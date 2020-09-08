@@ -116,6 +116,8 @@ import { HalalConformityFormComponent } from './components/dashboard/cab/applica
 import { PtProvidersFormComponent } from './components/dashboard/cab/application-accreditation/pt-providers-form/pt-providers-form.component';
 import { CabTrainingPublicCourseListComponent } from './components/dashboard/cab/cab-training-public-course-list/cab-training-public-course-list.component';
 import { LoaderComponent } from './components/loader/loader.component';
+import { OperationMessageComponent } from './components/dashboard/operations/operation-message/operation-message.component';
+import { OperationMessageDetailsComponent } from './components/dashboard/operations/operation-message/operation-message-details/operation-message-details.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -144,7 +146,9 @@ export const MY_FORMATS = {
     MyfilesComponent, TrainersHomeComponent, TrainersAddComponent, TrainersEditComponent, VerifyAccountComponent, ForgotPasswordComponent, ResetPasswordComponent,MyfilesComponent, TrainersHomeComponent, TrainersAddComponent, TrainersEditComponent, TrainerServiceComponent, CabDashboardComponent, CabTrainerServiceComponent, CabTrainerServiceListComponent, OperationsComponent, OperationsDashboardComponent, OperationsTrainerServiceListComponent, TrainersDashboardComponent, CandidateDashboardComponent, OperationsTrainerServiceComponent, CandidateTrainerServiceComponent, CandidateTrainerServiceListComponent, TrainersEventListComponent, TrainersAttendanceListComponent, TrainersAgendaListComponent, CandidateAgendaListComponent, CandidateAttendanceListComponent, CustomModalComponent, ApplicationRegistrationComponent, ApplicationAccreditationComponent, NoObjectionFormComponent, WorkPermitFormComponent, InspectionBodiesFormComponent, TestingCalibrationFormComponent, CertificationBodiesFormComponent, HealthCareFormComponent, HalalConformityFormComponent, PtProvidersFormComponent, CabTrainingApplicationComponent,CabTrainingPublicCourseComponent,CabTrainingInpremiseCourseComponent,CandidateTrainingApplicationComponent,
     CandidateTrainingPublicCourseComponent,
     CabTrainingPublicCourseListComponent,
-    LoaderComponent],
+    LoaderComponent,
+    OperationMessageComponent,
+    OperationMessageDetailsComponent],
   imports: [
     CommonModule,
     FormsModule,
