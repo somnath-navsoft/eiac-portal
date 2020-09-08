@@ -19,6 +19,7 @@ export class InternalOperationsProfileComponent implements OnInit {
   isCompleteness:any;
   profileComplete:any;
   progressValue:any = 0;
+  loader:boolean = true;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
@@ -84,18 +85,18 @@ export class InternalOperationsProfileComponent implements OnInit {
       this.eiacStaff.userType = this.userType;
       this.eiacStaff.isDraft = 0;
       this.eiacStaffFormFile.append('data',JSON.stringify(this.eiacStaff));
+      this.loader = false;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.eiacStaffFormFile)
         .subscribe(
           res => {
-            console.log(res,'res')
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
               this.progressValue == 0 || this.progressValue < 100 ? this.progressValue = 100 : this.progressValue = this.progressValue ;
               // this.router.navigateByUrl('/sign-in');
             }else{
-              
               this.toastr.warning(res['msg'], '');
             }
+            this.loader = true;
           });
     }else{
       this.toastr.warning('Please Fill required field','');

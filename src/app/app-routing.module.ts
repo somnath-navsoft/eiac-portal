@@ -69,7 +69,8 @@ import { CabTrainingPublicCourseListComponent } from './components/dashboard/cab
 
 import { CandidateTrainingApplicationComponent } from './components/dashboard/candidate/candidate-training-application/candidate-training-application.component';
 import { CandidateTrainingPublicCourseComponent } from './components/dashboard/candidate/candidate-training-public-course/candidate-training-public-course.component';
-
+import { OperationMessageComponent } from './components/dashboard/operations/operation-message/operation-message.component';
+import { OperationMessageDetailsComponent } from './components/dashboard/operations/operation-message/operation-message-details/operation-message-details.component';
 
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
@@ -104,6 +105,8 @@ const routes: Routes = [
           { path: 'home', component:OperationsDashboardComponent, canActivate: [AuthGuard]},
           { path: 'training-apply/:id', component:OperationsTrainerServiceComponent, canActivate: [AuthGuard] },
           { path: 'training-service', component:OperationsTrainerServiceListComponent, canActivate: [AuthGuard] },
+          { path: 'message', component:OperationMessageComponent, canActivate: [AuthGuard] },
+          { path: 'message-detail/:id', component:OperationMessageDetailsComponent, canActivate: [AuthGuard] },
         ] 
     }, 
 
