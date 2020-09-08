@@ -12,7 +12,7 @@ import { Component, OnInit } from '@angular/core';
 export class ApplicationAccreditationComponent implements OnInit {
 
   serviceList:any;
-  loader:boolean = true;
+  loader:boolean = true; 
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 

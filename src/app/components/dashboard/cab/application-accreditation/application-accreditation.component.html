@@ -13,7 +13,7 @@
           <div class="col-md-4" *ngFor="let row of serviceList; let i = index;">
             <div class="accreditation-container">
               <div class="acc-main">
-                <div class="accreditation-img">
+                <div class="accreditation-img"> 
                   <img src="{{constant.mediaPath}}{{row.service_page.thumb_image}}" alt="">
                   <div class="acc-hov acc-apply">
                     <a href="javascript:void(0)" routerLink="/{{row.service_page.meta_title !='' ? '/dashboard/cab_client/'+row.service_page.meta_title+'-form' : '#'}}">APPLY NOW</a>
