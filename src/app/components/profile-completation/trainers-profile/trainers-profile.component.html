@@ -1,3 +1,4 @@
+<app-loader *ngIf="!loader"></app-loader>
 <section>
     <div class="form-wrapper-pro">
         <div class="container-fluid">
@@ -63,6 +64,16 @@
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <mat-form-field class="cab-data">
+                                                        <mat-label>Title</mat-label>
+                                                        <mat-select placeholder="Select" name="title" [(ngModel)]="step1Data.title" required>
+                                                            <mat-option *ngFor="let titleRow of titleArr; let i =index;" value="{{titleRow}}">{{titleRow}}</mat-option>
+                                                        </mat-select>
+                                                        <mat-error></mat-error>
+                                                    </mat-form-field>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <mat-form-field class="cab-data">
                                                         <mat-label>First Name</mat-label>
                                                         <input matInput [(ngModel)]="step1Data.first_name" (keypress)="Service.inputFilter($event, Service.regExName)" name="first_name" placeholder="" required>
                                                     </mat-form-field>
@@ -73,15 +84,6 @@
                                                         <mat-label>Last Name</mat-label>
                                                         <input matInput [(ngModel)]="step1Data.last_name" name="last_name" placeholder="" required>
                                                     </mat-form-field>
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <mat-form-field class="cab-data">
-                                                        <mat-label>Office E-Mail</mat-label>
-                                                        <input matInput [(ngModel)]="step1Data.office_email" name="office_email" placeholder="" required>
-                                                    </mat-form-field>
-        
-                                                    <p class="error" *ngIf="step1Data.office_email && !Service.checkInput('email',step1Data.office_email)">Please Enter Correct Email Id</p>
                                                 </div>
                                             </div>
         
@@ -98,14 +100,14 @@
                                                 <div class="col-md-4">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Personal E-mail</mat-label>
-                                                        <input matInput readonly="true" [(ngModel)]="step1Data.personal_email" name="personal_email" placeholder="" required>
+                                                        <input matInput [(ngModel)]="step1Data.personal_email" name="personal_email" placeholder="" required>
                                                     </mat-form-field>
         
                                                     <p class="error" *ngIf="step1Data.personal_email && !Service.checkInput('email',step1Data.personal_email)">Please Enter Correct Email Id</p>
                                                 </div>
                                                 <div class="col-md-4"> 
                                                     <mat-form-field class="cab-data">
-                                                        <mat-label>Mailing Address</mat-label>
+                                                        <mat-label>P.O Box Mailing Address</mat-label>
                                                         <input matInput [(ngModel)]="step1Data.mailing_address" name="mailing_address" placeholder="" required>
                                                     </mat-form-field>
                                                 </div>
@@ -162,20 +164,31 @@
                                             </div>
         
                                             <div class="row">
-                                                <div class="col-md-9">
+                                                <div class="col-md-8">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Office Address</mat-label>
                                                         <input matInput [(ngModel)]="step1Data.office_address" name="office_address" placeholder="" required>
                                                     </mat-form-field>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Company E-Mail</mat-label>
+                                                        <input matInput [(ngModel)]="step1Data.office_email" name="office_email" placeholder="" required>
+                                                    </mat-form-field>
+        
+                                                    <p class="error" *ngIf="step1Data.office_email && !Service.checkInput('email',step1Data.office_email)">Please Enter Correct Email Id</p>
                                                 </div>
                                             </div>
         
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="bttns-health bttn-staff">
-                                                        <a routerLink="/dashboard/trainers/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
-                                                        <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
-                                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step1')">SAVE AS DRAFT</button>
+                                                        <div class="button-content">
+                                                            <a routerLink="/dashboard/trainers/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
+                                                            <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
+                                                            <button class="cancel-bttn" type="button" (click)="savedraftStep('step1')">SAVE AS DRAFT</button>
+                                                        </div>
                                                         <button class="submit-bttn submit-health">CONTINUE</button>
                                                     </div>
                                                 </div>
@@ -444,9 +457,11 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="bttns-health bttn-staff">
-                                                        <a routerLink="/dashboard/trainers/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
-                                                        <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
-                                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step2')">SAVE AS DRAFT</button>
+                                                        <div class="button-content">
+                                                            <a routerLink="/dashboard/trainers/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
+                                                            <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
+                                                            <button class="cancel-bttn" type="button" (click)="savedraftStep('step2')">SAVE AS DRAFT</button>
+                                                        </div>
                                                         <button class="submit-bttn submit-health">CONTINUE</button>
                                                     </div>
                                                 </div>
@@ -511,9 +526,11 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="bttns-health bttn-staff">
-                                                        <a routerLink="/dashboard/trainers/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
-                                                        <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
-                                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step3')">SAVE AS DRAFT</button>
+                                                        <div class="button-content">
+                                                            <a routerLink="/dashboard/trainers/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
+                                                            <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
+                                                            <button class="cancel-bttn" type="button" (click)="savedraftStep('step3')">SAVE AS DRAFT</button>
+                                                        </div>
                                                         <button class="submit-bttn submit-health">SUBMIT</button>
                                                     </div>
                                                 </div>

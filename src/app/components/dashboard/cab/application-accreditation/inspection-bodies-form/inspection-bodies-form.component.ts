@@ -1030,7 +1030,7 @@ export class InspectionBodiesFormComponent implements OnInit {
    validateFile(fileEvent: any, type?: any) {
     var file_name = fileEvent.target.files[0].name;
     var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
-    var ex_type = ['pdf','png','jpg','jpeg','JPEG'];
+    var ex_type = ['pdf'];
     var ex_check = this.Service.isInArray(file_exe,ex_type);
     if(ex_check){
       if(type == undefined){
