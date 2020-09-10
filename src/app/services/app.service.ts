@@ -22,7 +22,6 @@ export class AppService {
   
   public apiServerUrl         =   'https://dev-service.eiac.gov.ae/webservice';
   public apiRequestUrl        =   'https://dev-service.eiac.gov.ae/';
-  public apiLocalURL          =   'http://localhost:3000';
   public countryURL           =   "https://raw.githubusercontent.com/sagarshirbhate/Country-State-City-Database/master/Contries.json";
   public assetsBasePath       =   "https://dev-portal.eiac.gov.ae/assets/csc-json/";
 
@@ -249,6 +248,7 @@ addMinutesToTime()
      //search active steps
      let activeCurr = stepData.find(rec => rec.activeStep == true);
      let curStep = stepData.findIndex(rec => rec.title === stepId.toString());
+     console.log('Hedaers enter.....1')
      if(curStep > 0 || curStep == 0){
        if(curStep-1 < 0){
         if(activeCurr){
@@ -269,12 +269,15 @@ addMinutesToTime()
             }
         }
         if(stepElem){
+          console.log('Hedaers enter.....2')
           stepElem.style.display = 'block';
         }
      }
      if(targetElem){
+      console.log('Hedaers enter.....3')
       targetElem.style.display = 'none';
     }else{
+      console.log('Hedaers enter.....4')
       stepData[curStep].activeClass = 'user-present';
       var myClasses = document.querySelectorAll('.cust-stepper'),
           i = 0,
@@ -288,6 +291,7 @@ addMinutesToTime()
     }
     //console.log("@Step Data: ", stepData);
     if(sec != '' && sec === 'menu'){
+      console.log('Hedaers enter.....5')
       this.traverseSteps(stepId, stepData,target)
     }    
   }
@@ -307,6 +311,47 @@ addMinutesToTime()
       }
       // console.log("#Step Data: ", stepData);
       this.headerStepMove(toStep, stepData);
+  }
+
+  moveJumpSteps(jumpStep: string, stepData: any[]){
+      let jumpToStep = stepData.findIndex(rec => rec.title === jumpStep);
+      console.log('Jumpstep: ', jumpToStep);
+      if(jumpToStep){
+        stepData.forEach((item,index) => {
+            let theStep = item.title;
+            let prevStep = '';
+            let nextStep = '';
+            let stepElem:any = '';
+            if(index > jumpToStep){
+              return;
+            }
+              if(index > 0){
+                prevStep = stepData[index - 1].title;
+              }
+              if(index > 0 && index <= jumpToStep){
+                nextStep = stepData[index + 1].title;
+              }
+              console.log(index, " - ", theStep, " << ", prevStep, " >> ", nextStep );
+              if(prevStep != ''){
+                this.moveSteps(prevStep,theStep, stepData);
+              }
+              if(prevStep != '' && index == (jumpToStep-1)){
+                
+                stepElem = document.getElementById(theStep);
+                console.log('target...', stepElem);
+                if(stepElem){
+                  console.log('target opening...', theStep);
+                  this.headerStepMove(theStep,stepData, '');
+                  console.log('target opening...1');
+                  // if(stepElem.style.display == 'none'){
+                  //   console.log('target opening...1');
+                  //   stepElem.style.display = 'block';
+                  // }
+                  
+                }
+              }
+        })
+      }
   }
 
 
@@ -368,7 +413,7 @@ addMinutesToTime()
       //////console.log('======');
       //////console.log(body)
       //////console.log('======');
-      return this.http.post(url, body);
+      return this.http.post(url, body, this.getReqHeaders());
     }
 
     // post(url: string, body: any) {
@@ -394,7 +439,7 @@ addMinutesToTime()
       if(paramType != '' && paramValue != ''){
         params = new HttpParams().set(paramType, paramValue);
         let requestOptions = new RequestOptions();
-        requestOptions.headers = headers;
+        requestOptions.headers = headers; 
         requestOptions.params = params;
         //const httpParams: HttpParamsOptions = { fromObject: myObject } as HttpParamsOptions;
         const options = { params: params, headers: headers };
@@ -405,13 +450,13 @@ addMinutesToTime()
 
     getwithoutData(url: string) {
       let params = new HttpParams(); 
-      return this.http.get(url);
+      return this.http.get(url, this.getReqHeaders());
     }
     delete() {
 
     }
     put(url: string, body: any) {
-      return this.http.put(url, body);
+      return this.http.put(url, body, this.getReqHeaders());
     }
 
     public isValidEmail(email: string){
@@ -511,7 +556,7 @@ addMinutesToTime()
     }
 
     getCountry(){
-      var countryURL = this.assetsBasePath + 'countries.json';
+      var countryURL = this.assetsBasePath + 'countries.json';   
       //var cscObj = new csc();
       //let countryCCC = this.objCountry.getAllCountries();
       return this.http.get(countryURL);

@@ -1,29 +1,30 @@
-<div class="main-detail">
-    <div class="user-header"> 
-        <div class="container-fluid p-0">
-            <div class="main-dashboard-cnt">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="dashbrd-hdr">
-                            <h3>Apply Public Course</h3>
-                        </div>
-                    </div>
+<app-loader *ngIf="loaderData"></app-loader>
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 p-0 mb-3">
+                <div class="dashbrd-hdr">
+                    <h3>Apply Public Course</h3>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="form-maindata">
-        <div class="container-fluid p-0">
-            <section>
-                <div>
-                    <div class="container-fluid">
-                    <a routerLink="/dashboard/cab_client/training-public-course">
-                        <p>Apply now</p>
-                    </a>
+        <div class="row">
+            <div class="col-md-6 col-sm-12 p-0" *ngFor="let row of pageDetails; let i = index;">
+                <div class="service-hdr-data">
+                    <div class="service_desc_sec">
+                        <img class="service_img" [src]="_constant.mediaPath+row.course_type_img_thumb">
+                    </div>
+                    <div class="service_desc">
+                        <h4 >{{row.courseTypeDetails.name}}</h4>
+                        <p class="service-data" [innerHtml]="row.courseTypeDetails.description"></p>
+                        <div class="start-now-bttn">
+                            <a routerLink="/dashboard/cab_client/training-public-course">Apply Now</a>
+                        </div>
                     </div>
                 </div>
-            </section> 
+            </div>            
         </div>
     </div>
-
 </div>
+
+
