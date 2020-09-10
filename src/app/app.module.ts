@@ -118,6 +118,8 @@ import { CabTrainingPublicCourseListComponent } from './components/dashboard/cab
 import { LoaderComponent } from './components/loader/loader.component';
 import { OperationMessageComponent } from './components/dashboard/operations/operation-message/operation-message.component';
 import { OperationMessageDetailsComponent } from './components/dashboard/operations/operation-message/operation-message-details/operation-message-details.component';
+import { MessageComponent } from './components/dashboard/message/message.component';
+import { MessageDetailComponent } from './components/dashboard/message/message-detail/message-detail.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -148,7 +150,9 @@ export const MY_FORMATS = {
     CabTrainingPublicCourseListComponent,
     LoaderComponent,
     OperationMessageComponent,
-    OperationMessageDetailsComponent],
+    OperationMessageDetailsComponent,
+    MessageComponent,
+    MessageDetailComponent],
   imports: [
     CommonModule,
     FormsModule,

@@ -504,7 +504,13 @@
                                                 <div class="col-md-4">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Place</mat-label>
-                                                        <input matInput name="place" [(ngModel)]="step3Data.place" placeholder="Place" required>
+                                                        <input matInput autocomplete="off" (keyup)="getPlaceName($event)" [matAutocomplete] = "auto" placeholder="Place" name="place" [(ngModel)]="step3Data.place" required>
+                                                        <mat-autocomplete #auto = "matAutocomplete" >
+                                                            <mat-option *ngFor = "let searchCountryList of searchCountryLists"  [value] = "searchCountryList.place_name">
+                                                            {{searchCountryList.place_name}}
+                                                            </mat-option>
+                                                        </mat-autocomplete>
+                                                        <mat-error></mat-error>
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="col-md-4">

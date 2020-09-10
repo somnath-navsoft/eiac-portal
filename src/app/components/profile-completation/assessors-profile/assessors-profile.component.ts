@@ -86,7 +86,7 @@ export class AssessorsProfileComponent implements OnInit {
       title:'applicant_trainer', desc:'5. Applicant <br> Trainer', activeStep:false, stepComp:false, icon:'icon-doc-edit', activeClass:''
       }
     );
-
+    this.titleArr = ['Mr.','Ms.','Dr.','Prof.','Mrs.'];
     this.step3Data.list_auditor = '1' ;
     this.step3Data.attend_accreditation = '1' ;
     this.step3Data.attend_accreditation2 = '1' ;
@@ -120,9 +120,9 @@ export class AssessorsProfileComponent implements OnInit {
     this.step2Data.further_education = '';
     this.step2Data.others_education = '';
 
-    this.english = '';
-    this.arabic = '';
-    this.others = '';
+    this.english = {};
+    this.arabic = {};
+    this.others = {};
 
     this.list_auditor = [{}];
     this.attend_accreditation = [{}];
@@ -155,44 +155,46 @@ export class AssessorsProfileComponent implements OnInit {
   }
 
   loadStepsData() {
+    this.loader = false;
     this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail)
     .subscribe(
       res => {
         // console.log(res['data'],'data');
         if(res['status'] == true) {
-          
+          this.loader = true;
           var first_nameData = res['data']['user_data'][0].first_name.split(' ');
-          this.titleArr.forEach((res,key) => {
-            if(res == first_nameData[0])
-            this.titleFind = first_nameData[0];
+          this.titleArr.forEach((res2,key) => {
+            if(res2 == first_nameData[0]){
+              this.titleFind = first_nameData[0];
+              // this.firstName = first_nameData[1];
+            }
           })
-          
+        
           this.step1Data.title = this.titleFind;
-
-          this.step1Data.first_name = res['data']['user_data'][0].first_name;
+          this.step1Data.first_name = first_nameData[1] && first_nameData[1] != '' ? first_nameData[1] : this.titleFind;
           this.step1Data.last_name = res['data']['user_data'][0].last_name;
           this.step1Data.personal_email = res['data']['user_data'][0].email;
           this.step1Data.phone_with_area = res['data']['user_data'][0].contact;
 
           this.technicalFields = res['data'].technical_field;
 
-          if(res['data'].step1 && res['data'].step1[0].office_email) {
+          if(res['data'].step1 && res['data'].step1 != '' && res['data'].step1[0] && res['data']['user_data'][0].first_name != "" && res['data'].step1[0].office_email != "" && res['data'].step1[0].dob && res['data'].step1[0].mailing_address && res['data'].step1[0].fax_no && res['data'].step1[0].office && res['data'].step1[0].designation && res['data'].step1[0].office_address && res['data'].step1[0].office_tel_no && res['data'].step1[0].office_fax_no /*&& res['data'].step1[0].nationality*/) {
             this.progressValue = 22;
             this.Service.moveSteps('personal_details','educational_information', this.headerSteps);
-          }if(res['data'].step1 && res['data'].step1[0].office_email && res['data'].step2 && res['data'].step2['education'][0].detail) {
+          }if(res['data'].step2 && res['data'].step2 != '' && res['data'].step2['others_education'] != '' && res['data'].step2['education'] != '' && res['data'].step2['language'] != '' && res['data'].step2['which_forum'] != '') {
             this.progressValue = 44;
             this.Service.moveSteps('educational_information','employment', this.headerSteps);
-          }if(res['data'].step1 && res['data'].step1[0].office_email && res['data'].step2 && res['data'].step2['education'][0].detail && res['data'].step3 && res['data'].step3.experience_1) {
+          }if(res['data'].step3 && res['data'].step3 != '' && res['data'].step3.experience_1 != '' && res['data'].step3.experience_2 != '' && res['data'].step3.experience_3 != '' && res['data'].step3.experience_4 != '') {
             this.progressValue = 66;
             this.Service.moveSteps('employment','knowledge_experience', this.headerSteps);
-          }if(res['data'].step1[0].office_email && res['data'].step2 && res['data'].step2['education'][0].detail && res['data'].step3 && res['data'].step3.experience_1 && res['data'].step4 && res['data'].step4['technical_experience']) {
+          }if(res['data'].step4 && res['data'].step4 != '' && res['data'].step4['technical_experience'] != '') {
             this.progressValue = 88;
             this.Service.moveSteps('knowledge_experience','applicant_trainer', this.headerSteps);
-          }if(res['data'].step1 && res['data'].step1[0].office_email && res['data'].step2 && res['data'].step2['education'][0].detail && res['data'].step3 && res['data'].step3.experience_1 && res['data'].step4 && res['data'].step4['technical_experience'] && res['data'].step5 && res['data'].step5[0].place) {
+          }if(res['data'].step5 && res['data'].step5 != '' && res['data'].step5[0].place && res['data'].step5[0].place != null && res['data'].step5[0].registration_date != null && res['data'].step5[0].signature != null) {
             this.progressValue = 100;
           }
 
-          if(res['data'].step1 != '') {
+          if(res['data'].step1 != '' && res['data'].step1[0]) {
             var step1 = res['data'].step1[0];
             this.step1Data.office_email = step1.office_email;
             this.step1Data.date_of_birth = step1.dob;
@@ -203,41 +205,45 @@ export class AssessorsProfileComponent implements OnInit {
             this.step1Data.designation = step1.designation;
             this.step1Data.office_address = step1.office_address;
             this.step1Data.officephone_with_area = step1.office_tel_no;
-            this.step1Data.officefax_with_area = step1.office_fax_no;
+            // this.step1Data.officefax_with_area = step1.office_fax_no;
             this.step1Data.nationality = step1.nationality;
           }
           if(res['data'].step2 != '') {
             var step2 = res['data'].step2;
 
             var language = step2['language'];
-            for(let key in language)
-            {
-              if(language[key].language == 'arabic')
+            if(language != null) {
+              for(let key in language)
               {
-                this.arabic = language[key];
-              }
-              if(language[key].language == 'english')
-              {
-                this.english = language[key];
-              }
-              if(language[key].language == 'others')
-              {
-                this.others = language[key];
+                if(language[key].language == 'arabic')
+                {
+                  this.arabic = language[key];
+                }
+                if(language[key].language == 'english')
+                {
+                  this.english = language[key];
+                }
+                if(language[key].language == 'others')
+                {
+                  this.others = language[key];
+                }
               }
             }
 
-            this.step2Data.qualification_degree = step2['education'][0].detail;
-            this.step2Data.university_college = step2['education'][0].organization;
-            this.step2Data.education_specialization = step2['education'][0].specialization;
-            this.step2Data.further_education = step2['further_education'][0].detail;
-            this.step2Data.others_education = step2['others_education'] ? step2['others_education'][0].detail : '';
-            this.step2Data.which = step2['which_forum'][0].organization;
-            this.step2Data.completeProfileFrom = new Date(step2['which_forum'][0].date_from);
-            this.step2Data.completeProfileTill = new Date(step2['which_forum'][0].date_to);
+            if(step2['education'] != null && step2['education'][0]) {
+              this.step2Data.qualification_degree = step2['education'][0].detail;
+              this.step2Data.university_college = step2['education'][0].organization;
+              this.step2Data.education_specialization = step2['education'][0].specialization;
+              this.step2Data.further_education = step2['further_education'][0].detail;
+              this.step2Data.others_education = step2['others_education'] ? step2['others_education'][0].detail : '';
+              this.step2Data.which = step2['which_forum'][0].organization;
+              this.step2Data.completeProfileFrom = new Date(step2['which_forum'][0].date_from);
+              this.step2Data.completeProfileTill = new Date(step2['which_forum'][0].date_to);
 
-            this.tradeLicensedValidation1 = this.constant.mediaPath+step2['education'][0].qualification_file;
-            this.tradeLicensedValidation2 = this.constant.mediaPath+step2['education'][0].specialization_file;
-            this.tradeLicensedValidation3 = this.constant.mediaPath+step2['further_education'][0].qualification_file;
+              this.tradeLicensedValidation1 = this.constant.mediaPath+step2['education'][0].qualification_file;
+              this.tradeLicensedValidation2 = this.constant.mediaPath+step2['education'][0].specialization_file;
+              this.tradeLicensedValidation3 = step2['further_education'][0].qualification_file != null ? this.constant.mediaPath+step2['further_education'][0].qualification_file : '';
+            }
           }
           if(res['data'].step3 != '') {
             var step3 = res['data'].step3;
@@ -268,7 +274,7 @@ export class AssessorsProfileComponent implements OnInit {
             }
             // console.log(this.technicalFields,'step5');
           }
-          if(res['data'].step5 != '') {
+          if(res['data'].step5 != '' && res['data'].step5[0]) {
             var step5 = res['data'].step5[0];
             this.step5Data.confirm_box = step5.status;
             this.step5Data.place = step5.place;
@@ -380,6 +386,7 @@ export class AssessorsProfileComponent implements OnInit {
       this.assessorsProfile.email = this.userEmail;
       this.assessorsProfile.userType = this.userType;
       this.step1Data.first_name = this.step1Data.title+' '+this.step1Data.first_name;
+      this.step1Data.officefax_with_area = 34352535;
       this.assessorsProfile.step1 = this.step1Data;
       //console.log(this.assessorsProfile);
       this.loader = false;

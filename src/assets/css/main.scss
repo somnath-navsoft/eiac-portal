@@ -447,6 +447,7 @@ a:hover { text-decoration: none; }
 // .createapp-main .mat-tab-label-active { background: #BCAF9D; color: #FFFFFF;  }
 // .createapp-main .mat-tab-label-active:nth-child(2)::before, .createapp-main .mat-tab-label-active:nth-child(3)::before { border: 32px solid #BCAF9D;  }
 .request { padding: 40px 0 30px; font-size: 20px; font-family: "Dubai Regular"; color: #1D1D1D; }
+.tab-data { padding: 0 20px; }
 
 //==================APPLICATION DETAILS==================//
 .main-dashboard-cnt .appl-cnt { margin: 0; margin-top: 10px; margin-bottom: 20px; }
@@ -517,7 +518,7 @@ a:hover { text-decoration: none; }
 .ass-details p { color: #656565; font-size: 16px; font-family: "Dubai Regular"; line-height: 2; }
 .attach-cnt { padding: 10px 0; }
 .cmnt-content { background: #EFEFEF; padding: 50px; margin-bottom: 40px; }
-.bttns-appln { padding-top: 50px; font-family: "Dubai Bold"; font-size: 26px;}
+.bttns-appln { padding-top: 0px; font-family: "Dubai Bold"; font-size: 26px;}
 
 //==================POPUPS==================//
 .main-dil-cnt { padding: 50px; position: relative; }
