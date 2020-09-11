@@ -53,6 +53,8 @@ export class ClientCabProfileComponent implements OnInit {
   loader:boolean = true;
   firstName:any;
   minDate:any;
+  step1SaveDraft:any;
+  step2SaveDraft:any;
   
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -155,13 +157,13 @@ export class ClientCabProfileComponent implements OnInit {
   }
 
   loadStep1Data(){
-
+    this.loader = false;
     this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail)
     .subscribe(
       res => {
         // console.log(res['data'],'data');
         if(res['status'] == true) {
-          
+          this.loader = true;
           var first_nameData = res['data']['user_data'][0].first_name.split(' ');
           
           this.titleArr.forEach((res2,key) => {
@@ -175,12 +177,21 @@ export class ClientCabProfileComponent implements OnInit {
           this.step1Data.last_name = res['data']['user_data'][0].last_name;
           this.step1Data.personal_email = res['data']['user_data'][0].email;
           
-          if(res['data'].step1 !='' && res['data'].step1[0] && res['data'].step1[0].dob != null && res['data'].step1[0].official_email !='' && res['data'].step1[0].designation !='' && res['data'].step1[0].nationality !='' && res['data'].step1[0].mailing_address !='' && res['data'].step1[0].office !='' && res['data'].step1[0].tel_no !='' && res['data'].step1[0].fax_no !='' && res['data'].step1[0].office_address !='') {
+          if(res['data'].step1 !='' && res['data'].step1[0] && res['data'].step1[0].dob != null && res['data'].step1[0].official_email !='' && res['data'].step1[0].office_tel_no !='' && res['data'].step1[0].designation !='' && res['data'].step1[0].nationality !='' && res['data'].step1[0].mailing_address !='' && res['data'].step1[0].office !='' && res['data'].step1[0].tel_no !='' && res['data'].step1[0].fax_no !='' && res['data'].step1[0].office_address !='') {
             this.progressValue = 50;
             this.Service.moveSteps('personal_details','application_information', this.headerSteps);
-          }if(res['data'].step2 !='' && res['data'].step2 && res['data'].step1[0].office_tel_no !='' && res['data'].step1[0].trade_license_number !='' && res['data'].step1[0].applicant_location !='' && res['data'].step1[0].applicant_address !='' && res['data'].step1[0].applicant_tel_no !='' && res['data'].step1[0].applicant_fax_no !='' && res['data'].step1[0].applicant_email !='' && res['data'].step1[0].applicant_website !='' && res['data'].step1[0].date_of_issue != null && res['data'].step1[0].date_of_expiry != null && res['data'].step1[0].cab_name !='' && res['data'].step1[0].po_box !='' && res['data'].step1[0].country !='' && res['data'].step1[0].state !='' && res['data'].step1[0].city !='' && res['data'].step1[0].date_of_establisment !='' && res['data'].step2.cabOwnerData != '' && res['data'].step2.cabBodData != '' && res['data'].step2.cabContactData[0].name != '' && res['data'].step2.cabContactData[0].designation != '' && res['data'].step2.cabContactData[0].email != '' && res['data'].step2.cabContactData[0].phone_no != '' && res['data'].step2.cabContactData[0].mobile_no != '') {
+          }if(res['data'].step2 !='' && res['data'].step2 && res['data'].step1[0].trade_license_number !='' && res['data'].step1[0].applicant_location !='' && res['data'].step1[0].applicant_address !='' && res['data'].step1[0].applicant_tel_no !='' && res['data'].step1[0].applicant_fax_no !='' && res['data'].step1[0].applicant_email !='' && res['data'].step1[0].applicant_website !='' && res['data'].step1[0].date_of_issue != null && res['data'].step1[0].date_of_expiry != null && res['data'].step1[0].cab_name !='' && res['data'].step1[0].po_box !='' && res['data'].step1[0].country !='' && res['data'].step1[0].state !='' && res['data'].step1[0].city !='' && res['data'].step1[0].date_of_establisment !='' && res['data'].step2.cabOwnerData != '' && res['data'].step2.cabBodData != '' && res['data'].step2.cabContactData[0].name != '' && res['data'].step2.cabContactData[0].designation != '' && res['data'].step2.cabContactData[0].email != '' && res['data'].step2.cabContactData[0].phone_no != '' && res['data'].step2.cabContactData[0].mobile_no != '') {
             this.progressValue = 100;
           }
+
+          // if(res['data'].step1 !='' && res['data'].step1[0] && res['data'].step1[0].application_status == 1) {
+          //   this.progressValue = 50;
+          //   this.Service.moveSteps('personal_details','application_information', this.headerSteps);
+          //   this.step1SaveDraft = '1';
+          // }else if(res['data'].step2 !='' && res['data'].step2[0] && res['data'].step2[0].application_status == 1) {
+          //   this.step2SaveDraft = '1';
+          //   this.progressValue = 100;
+          // }
           
           if(res['data'].step1 != '') {
             var step1 = res['data'].step1[0];
@@ -195,6 +206,7 @@ export class ClientCabProfileComponent implements OnInit {
             this.step1Data.phone_with_area = step1.tel_no;
             this.step1Data.fax_with_area = step1.fax_no;
             this.step1Data.office_address = step1.office_address;
+            this.step1Data.officephone_with_area = step1.office_tel_no;
             
           }
           if(res['data'].step2 != '') {
@@ -224,7 +236,6 @@ export class ClientCabProfileComponent implements OnInit {
               }
             });
 
-            this.step2Data.officephone_with_area = step1.office_tel_no;
             this.step2Data.trade_license_number = step1.trade_license_number;
             this.step2Data.trade_license_name = trade_license_split[4];
             this.step2Data.applicant_commercial_name = step1.cab_name;
@@ -276,9 +287,9 @@ export class ClientCabProfileComponent implements OnInit {
 
   getPlaceName(data)
     {
-      if(typeof this.step1Data.applicant_location != 'undefined')
+      if(typeof this.step2Data.applicant_location != 'undefined')
       {
-        this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.step1Data.applicant_location+'.json?access_token='+this.Service.mapboxToken+'','')
+        this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.step2Data.applicant_location+'.json?access_token='+this.Service.mapboxToken+'','')
           .subscribe(res => {
               // //console.log(res['features']);
               this.searchCountryLists = res['features'];

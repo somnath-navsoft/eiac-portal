@@ -120,15 +120,15 @@ export class TrainersProfileComponent implements OnInit {
           this.loader = true;
           
           var first_nameData = res['data']['user_data'][0].first_name.split(' ');
+          
           this.titleArr.forEach((res2,key) => {
             if(res2 == first_nameData[0]){
               this.titleFind = first_nameData[0];
               // this.firstName = first_nameData[1];
             }
           })
-        
           this.step1Data.title = this.titleFind;
-          this.step1Data.first_name = first_nameData[1] && first_nameData[1] != '' ? first_nameData[1] : this.titleFind;
+          this.step1Data.first_name = this.titleFind != '' && this.titleFind != undefined ? first_nameData[1] : first_nameData[0];
           this.step1Data.last_name = res['data']['user_data'][0].last_name;
           this.step1Data.personal_email = res['data']['user_data'][0].email;
 

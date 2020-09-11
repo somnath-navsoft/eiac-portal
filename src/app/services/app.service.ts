@@ -248,7 +248,7 @@ addMinutesToTime()
      //search active steps
      let activeCurr = stepData.find(rec => rec.activeStep == true);
      let curStep = stepData.findIndex(rec => rec.title === stepId.toString());
-     console.log('Hedaers enter.....1')
+    //  console.log('Hedaers enter.....1')
      if(curStep > 0 || curStep == 0){
        if(curStep-1 < 0){
         if(activeCurr){
@@ -269,15 +269,15 @@ addMinutesToTime()
             }
         }
         if(stepElem){
-          console.log('Hedaers enter.....2')
+          // console.log('Hedaers enter.....2')
           stepElem.style.display = 'block';
         }
      }
      if(targetElem){
-      console.log('Hedaers enter.....3')
+      // console.log('Hedaers enter.....3')
       targetElem.style.display = 'none';
     }else{
-      console.log('Hedaers enter.....4')
+      // console.log('Hedaers enter.....4')
       stepData[curStep].activeClass = 'user-present';
       var myClasses = document.querySelectorAll('.cust-stepper'),
           i = 0,
@@ -291,7 +291,7 @@ addMinutesToTime()
     }
     //console.log("@Step Data: ", stepData);
     if(sec != '' && sec === 'menu'){
-      console.log('Hedaers enter.....5')
+      // console.log('Hedaers enter.....5')
       this.traverseSteps(stepId, stepData,target)
     }    
   }
@@ -315,7 +315,7 @@ addMinutesToTime()
 
   moveJumpSteps(jumpStep: string, stepData: any[]){
       let jumpToStep = stepData.findIndex(rec => rec.title === jumpStep);
-      console.log('Jumpstep: ', jumpToStep);
+      // console.log('Jumpstep: ', jumpToStep);
       if(jumpToStep){
         stepData.forEach((item,index) => {
             let theStep = item.title;
@@ -331,18 +331,18 @@ addMinutesToTime()
               if(index > 0 && index <= jumpToStep){
                 nextStep = stepData[index + 1].title;
               }
-              console.log(index, " - ", theStep, " << ", prevStep, " >> ", nextStep );
+              // console.log(index, " - ", theStep, " << ", prevStep, " >> ", nextStep );
               if(prevStep != ''){
                 this.moveSteps(prevStep,theStep, stepData);
               }
               if(prevStep != '' && index == (jumpToStep-1)){
                 
                 stepElem = document.getElementById(theStep);
-                console.log('target...', stepElem);
+                // console.log('target...', stepElem);
                 if(stepElem){
-                  console.log('target opening...', theStep);
+                  // console.log('target opening...', theStep);
                   this.headerStepMove(theStep,stepData, '');
-                  console.log('target opening...1');
+                  // console.log('target opening...1');
                   // if(stepElem.style.display == 'none'){
                   //   console.log('target opening...1');
                   //   stepElem.style.display = 'block';
