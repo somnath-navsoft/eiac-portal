@@ -184,7 +184,6 @@ export class SignUpComponent implements OnInit {
     // //console.log(this.userData.cpassword,'password');
     if(this.isValid()){
       this.userData.password = this.changePasswordForm.password;
-      console.log(this.userData)
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.signUp,this.userData)
         .subscribe(
           res => {

@@ -213,7 +213,7 @@ export class ClientCabProfileComponent implements OnInit {
             var step2 = res['data'].step2;
 
             // this.tradeLicensedValidation = this.constant.mediaPath+step1.trade_license;
-            var trade_license_split = step1.trade_license.split('/');
+            var trade_license_split = step1.trade_license != null ? step1.trade_license.split('/') : '';
 
             var stateList =  this.Service.getState();
             var cityList =  this.Service.getCity();
@@ -308,7 +308,7 @@ export class ClientCabProfileComponent implements OnInit {
 
   onSubmitStep1(ngForm1) {
     //console.log(this.clientCabForm);
-    if(ngForm1.form.valid && this.tradeLicensedValidation != false) {
+    if(ngForm1.form.valid) {
       this.clientCabForm.step1 = {};
       this.clientCabForm.email = this.userEmail;
       this.clientCabForm.userType = this.userType;
@@ -328,9 +328,6 @@ export class ClientCabProfileComponent implements OnInit {
             }
             this.loader = true;
           });
-    }else if(ngForm1.form.valid && this.tradeLicensedValidation == false) {
-      this.file_validation = false;
-      this.toastr.warning('Please Fill required field','');
     }
     else {
       this.toastr.warning('Please Fill required field','');
@@ -396,7 +393,7 @@ export class ClientCabProfileComponent implements OnInit {
   }
 
   onSubmitStep2(ngForm2) {
-    if(ngForm2.form.valid) {
+    if(ngForm2.form.valid  && this.tradeLicensedValidation != false) {
       
       this.clientCabForm = {};
       this.clientCabForm.step2 = {};
@@ -434,6 +431,9 @@ export class ClientCabProfileComponent implements OnInit {
             }
             this.loader = true;
           });
+    }else if(ngForm2.form.valid && this.tradeLicensedValidation == false) {
+      this.file_validation = false;
+      this.toastr.warning('Please Fill required field','');
     }else{
       this.toastr.warning('Please Fill required field','');
     }
@@ -458,7 +458,7 @@ export class ClientCabProfileComponent implements OnInit {
           }else{
             this.toastr.warning(res['msg'], '');
           }
-          this.loader = false;
+          this.loader = true;
         });
     }else if(stepCount == 'step2') {
       this.clientCabForm = {};

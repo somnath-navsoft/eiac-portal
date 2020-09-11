@@ -412,8 +412,14 @@ addMinutesToTime()
     post(url: string, body: any) {
       //////console.log('======');
       //////console.log(body)
-      //////console.log('======');
-      return this.http.post(url, body, this.getReqHeaders());
+      ////console.log('======');
+      console.log(this.getToken(),'Auth');
+      if(this.getToken() != 'undefined' && this.getToken() != ''){
+        return this.http.post(url, body, this.getReqHeaders());
+      }
+      else{
+        return this.http.post(url, body);
+      }
     }
 
     // post(url: string, body: any) {
