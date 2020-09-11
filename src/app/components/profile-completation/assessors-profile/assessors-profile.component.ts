@@ -94,6 +94,7 @@ export class AssessorsProfileComponent implements OnInit {
 
     // this.loadknowledgeExperience();
     this.loadStepsData();
+    this.stepDefaultValue();
   }
 
   stepDefaultValue() {
@@ -120,15 +121,49 @@ export class AssessorsProfileComponent implements OnInit {
     this.step2Data.further_education = '';
     this.step2Data.others_education = '';
 
-    this.english = {};
-    this.arabic = {};
-    this.others = {};
+    this.english = {
+      read:0,
+      write:0,
+      speak:0
+    };
+    this.arabic = {
+      read:0,
+      write:0,
+      speak:0
+    };
+    this.others = {
+      read:0,
+      write:0,
+      speak:0
+    };
 
-    this.list_auditor = [{}];
-    this.attend_accreditation = [{}];
-    this.attend_accreditation2 = [{}];
-    this.practical_assessment_experience = [{}];
+    this.list_auditor = [{
+      detail:'',
+      organization:'',
+      date_to:'',
+    }];
+    this.attend_accreditation = [{
+      detail:'',
+      date_from:'',
+      date_to:'',
+      organization:'',
+    }];
+    this.attend_accreditation2 = [{
+      organization:'',
+      date_from:'',
+      date_to:'',
+    }];
+    this.practical_assessment_experience = [{
+      date_to:'',
+      standard:'',
+      technical:'',
+      role:'',
+      commissioned_by:'',
+      assessment_type:'',
+      accreditation_activity:'',
+    }];
 
+    this.assessorsProfile.step4 = {};
     this.assessorsProfile.step4['technical_experience'] = [];
     this.step5Data.confirm_box = '';
     this.step5Data.place = '';
@@ -170,6 +205,7 @@ export class AssessorsProfileComponent implements OnInit {
               // this.firstName = first_nameData[1];
             }
           })
+          
           this.step1Data.title = this.titleFind;
           this.step1Data.first_name = this.titleFind != '' && this.titleFind != undefined ? first_nameData[1] : first_nameData[0];
           this.step1Data.last_name = res['data']['user_data'][0].last_name;
@@ -231,17 +267,17 @@ export class AssessorsProfileComponent implements OnInit {
             }
 
             if(step2['education'] != null && step2['education'][0]) {
-              this.step2Data.qualification_degree = step2['education'][0].detail;
-              this.step2Data.university_college = step2['education'][0].organization;
-              this.step2Data.education_specialization = step2['education'][0].specialization;
-              this.step2Data.further_education = step2['further_education'][0].detail;
-              this.step2Data.others_education = step2['others_education'] ? step2['others_education'][0].detail : '';
-              this.step2Data.which = step2['which_forum'][0].organization;
-              this.step2Data.completeProfileFrom = new Date(step2['which_forum'][0].date_from);
-              this.step2Data.completeProfileTill = new Date(step2['which_forum'][0].date_to);
+              this.step2Data.qualification_degree = step2['education'] !='' && step2['education'][0].detail ? step2['education'][0].detail : '';
+              this.step2Data.university_college = step2['education'] !='' && step2['education'][0] ? step2['education'][0].organization : '';
+              this.step2Data.education_specialization = step2['education'] !='' && step2['education'][0].specialization ? step2['education'][0].specialization : '';
+              this.step2Data.further_education = step2['further_education'] !='' && step2['further_education'][0].detail ? step2['further_education'][0].detail : '';
+              this.step2Data.others_education = step2['others_education'] && step2['others_education'][0].detail ? step2['others_education'][0].detail : '';
+              this.step2Data.which = step2['which_forum'] && step2['which_forum'][0].organization ? step2['which_forum'][0].organization : '';
+              this.step2Data.completeProfileFrom = step2['which_forum'] && step2['which_forum'][0].date_from ? new Date(step2['which_forum'][0].date_from) : '';
+              this.step2Data.completeProfileTill = step2['which_forum'] && step2['which_forum'][0].date_to ? new Date(step2['which_forum'][0].date_to) : '';
 
-              this.tradeLicensedValidation1 = this.constant.mediaPath+step2['education'][0].qualification_file;
-              this.tradeLicensedValidation2 = this.constant.mediaPath+step2['education'][0].specialization_file;
+              this.tradeLicensedValidation1 = step2['education'][0].qualification_file != null ? this.constant.mediaPath+step2['education'][0].qualification_file : '';
+              this.tradeLicensedValidation2 = step2['education'][0].specialization_file != null ? this.constant.mediaPath+step2['education'][0].specialization_file : '';
               this.tradeLicensedValidation3 = step2['further_education'][0].qualification_file != null ? this.constant.mediaPath+step2['further_education'][0].qualification_file : '';
             }
           }

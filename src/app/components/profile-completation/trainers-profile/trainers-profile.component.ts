@@ -101,9 +101,21 @@ export class TrainersProfileComponent implements OnInit {
     this.step2Data.further_education = '';
     this.step2Data.others_education = '';
 
-    this.english = {};
-    this.arabic = {};
-    this.others = {};
+    this.english = {
+      read:0,
+      write:0,
+      speak:0
+    };
+    this.arabic = {
+      read:0,
+      write:0,
+      speak:0
+    };
+    this.others = {
+      read:0,
+      write:0,
+      speak:0
+    };
 
     this.step3Data.place = '';
     this.step3Data.date = '';
@@ -176,8 +188,8 @@ export class TrainersProfileComponent implements OnInit {
               this.step2Data.further_education = education.further_education;
               this.step2Data.others_education = education.other_education_details;
 
-              this.tradeLicensedValidation1 = this.constant.mediaPath+step2.qualification_file;
-              this.tradeLicensedValidation2 = this.constant.mediaPath+step2.specialization_file;
+              this.tradeLicensedValidation1 = step2.qualification_file != null ? this.constant.mediaPath+step2.qualification_file : '';
+              this.tradeLicensedValidation2 = step2.specialization_file != null ? this.constant.mediaPath+step2.specialization_file : '';
               this.tradeLicensedValidation3 = step2.further_education_file != null ? this.constant.mediaPath+step2.further_education_file : '';
             }
 
@@ -226,7 +238,7 @@ export class TrainersProfileComponent implements OnInit {
     var ex_check = this.Service.isInArray(file_exe,ex_type);
     if(ex_check && doc_name == 'qualification_degree'){
       // this.step2Data.qualification_degree_file = fileEvent.target.files[0].name;
-      this.step2DataBodyFormFile.append('qualification_degree_file',fileEvent.target.files[0]);
+      this.step2DataBodyFormFile.append('qualification_file',fileEvent.target.files[0]);
       this.file_validation1 = true;
       this.tradeLicensedValidation1 = true;
       return true;
@@ -237,7 +249,7 @@ export class TrainersProfileComponent implements OnInit {
     }
     else if(ex_check && doc_name == 'education_specialization'){
       // this.step2Data.education_specialization_file = fileEvent.target.files[0].name;
-      this.step2DataBodyFormFile.append('education_specialization_file',fileEvent.target.files[0]);
+      this.step2DataBodyFormFile.append('specialization_file',fileEvent.target.files[0]);
       this.file_validation2 = true;
       this.tradeLicensedValidation2 = true;
       return true;

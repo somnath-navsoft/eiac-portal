@@ -212,7 +212,7 @@ export class ClientCabProfileComponent implements OnInit {
           if(res['data'].step2 != '') {
             var step2 = res['data'].step2;
 
-            // this.tradeLicensedValidation = this.constant.mediaPath+step1.trade_license;
+            this.tradeLicensedValidation = this.constant.mediaPath+step1.trade_license;
             var trade_license_split = step1.trade_license != null ? step1.trade_license.split('/') : '';
 
             var stateList =  this.Service.getState();
@@ -382,7 +382,7 @@ export class ClientCabProfileComponent implements OnInit {
     var ex_check = this.Service.isInArray(file_exe,ex_type);
     if(ex_check){
       this.step2Data.trade_license_name = fileEvent.target.files[0].name;
-      this.step1DataBodyFormFile.append('trade_license',fileEvent.target.files[0]);
+      this.step2DataBodyFormFile.append('trade_license',fileEvent.target.files[0]);
       this.file_validation = true;
       this.tradeLicensedValidation = true;
       return true;

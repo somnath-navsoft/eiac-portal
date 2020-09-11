@@ -95,14 +95,16 @@ export class CandidateProfileComponent implements OnInit {
     this.step1Data.fax_with_area = '';
     this.step1Data.office_address = '';
     this.step1Data.officephone_with_area = '';
-    // this.step1Data.trade_license_number = '';
     
-    // this.step2Data.contact_person_name = '';
-    // this.step2Data.contact_person_designation = '';
-    // this.step2Data.contact_person_email = '';
-    // this.step2Data.contact_person_phone = '';
-    // this.step2Data.contact_person_mobile = '';
-    // this.step2Data.authorised_contact = '';
+    this.step1Data.applicant_office_institution = '';
+    this.step1Data.applicant_phone_with_area = '';
+    this.step1Data.applicant_fax_with_area = '';
+    this.step1Data.applicant_office_address = '';
+    this.step1Data.applicant_officephone_with_area = '';
+    this.step1Data.applicant_mailing_address = '';
+    this.step1Data.applicant_official_email = '';
+    this.step1Data.applicant_official_website = '';
+
     this.step2Data.date_establishment = '';
     this.step2Data.legal_license = '';
     this.step2Data.certification_main_activity = '';
