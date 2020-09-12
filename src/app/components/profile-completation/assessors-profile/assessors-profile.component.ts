@@ -214,20 +214,9 @@ export class AssessorsProfileComponent implements OnInit {
 
           this.technicalFields = res['data'].technical_field;
 
-          if(res['data'].step1 && res['data'].step1 != '' && res['data'].step1[0] && res['data']['user_data'][0].first_name != "" && res['data'].step1[0].office_email != "" && res['data'].step1[0].dob && res['data'].step1[0].mailing_address && res['data'].step1[0].fax_no && res['data'].step1[0].office && res['data'].step1[0].designation && res['data'].step1[0].office_address && res['data'].step1[0].office_tel_no && res['data'].step1[0].office_fax_no /*&& res['data'].step1[0].nationality*/) {
+          if(res['data'].step1 != '' && res['data'].step1[0] && res['data']['user_data'][0].first_name != "" && res['data'].step1[0].office_email != "" && res['data'].step1[0].dob != null && res['data'].step1[0].mailing_address != "" && res['data'].step1[0].fax_no != "" && res['data'].step1[0].office != "" && res['data'].step1[0].designation != "" && res['data'].step1[0].office_address != "" && res['data'].step1[0].office_tel_no != "" && res['data'].step1[0].nationality) {
             this.progressValue = 22;
             this.Service.moveSteps('personal_details','educational_information', this.headerSteps);
-          }if(res['data'].step2 && res['data'].step2 != '' && res['data'].step2['others_education'] != '' && res['data'].step2['education'] != '' && res['data'].step2['language'] != '' && res['data'].step2['which_forum'] != '') {
-            this.progressValue = 44;
-            this.Service.moveSteps('educational_information','employment', this.headerSteps);
-          }if(res['data'].step3 && res['data'].step3 != '' && res['data'].step3.experience_1 != '' && res['data'].step3.experience_2 != '' && res['data'].step3.experience_3 != '' && res['data'].step3.experience_4 != '') {
-            this.progressValue = 66;
-            this.Service.moveSteps('employment','knowledge_experience', this.headerSteps);
-          }if(res['data'].step4 && res['data'].step4 != '' && res['data'].step4['technical_experience'] != '') {
-            this.progressValue = 88;
-            this.Service.moveSteps('knowledge_experience','applicant_trainer', this.headerSteps);
-          }if(res['data'].step5 && res['data'].step5 != '' && res['data'].step5[0].place && res['data'].step5[0].place != null && res['data'].step5[0].registration_date != null && res['data'].step5[0].signature != null) {
-            this.progressValue = 100;
           }
 
           if(res['data'].step1 != '' && res['data'].step1[0]) {
