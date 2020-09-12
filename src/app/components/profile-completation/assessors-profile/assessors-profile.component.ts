@@ -56,6 +56,7 @@ export class AssessorsProfileComponent implements OnInit {
   titleArr:any[] = [];
   titleFind:any;
   loader:boolean = true;
+  searchCountryLists:any[] = [];
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -97,6 +98,20 @@ export class AssessorsProfileComponent implements OnInit {
     this.stepDefaultValue();
   }
 
+  getPlaceName(data)
+    {
+      if(typeof this.step5Data.place != 'undefined')
+      {
+        this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.step5Data.place+'.json?access_token='+this.Service.mapboxToken+'','')
+          .subscribe(res => {
+              // //console.log(res['features']);
+              this.searchCountryLists = res['features'];
+            },
+            error => {
+            
+        })
+      }
+    }
   stepDefaultValue() {
     this.step1Data.first_name = '';
     this.step1Data.last_name = '';
@@ -214,10 +229,143 @@ export class AssessorsProfileComponent implements OnInit {
 
           this.technicalFields = res['data'].technical_field;
 
-          if(res['data'].step1 != '' && res['data'].step1[0] && res['data']['user_data'][0].first_name != "" && res['data'].step1[0].office_email != "" && res['data'].step1[0].dob != null && res['data'].step1[0].mailing_address != "" && res['data'].step1[0].fax_no != "" && res['data'].step1[0].office != "" && res['data'].step1[0].designation != "" && res['data'].step1[0].office_address != "" && res['data'].step1[0].office_tel_no != "" && res['data'].step1[0].nationality) {
+          if(res['data'].step1 != '' && res['data'].step1[0] && res['data']['user_data'][0].first_name != "" && res['data'].step1[0].office_email != "" && res['data'].step1[0].dob != null && res['data'].step1[0].mailing_address != "" && res['data'].step1[0].fax_no != "" && res['data'].step1[0].office != "" && res['data'].step1[0].designation != "" && res['data'].step1[0].office_address != "" && res['data'].step1[0].office_tel_no != "" && res['data'].step1[0].nationality != '') {
             this.progressValue = 22;
             this.Service.moveSteps('personal_details','educational_information', this.headerSteps);
           }
+          if(res['data'].step2 != '' && res['data'].step2['education'] && res['data'].step2['education'][0].qualification_file != null && res['data'].step2['education'][0].specialization_file != null && res['data'].step2['education'][0].detail && res['data'].step2['education'][0].organization && res['data'].step2['education'][0].specialization && res['data'].step2['which_forum'] && res['data'].step2['which_forum'][0].organization && res['data'].step2['which_forum'][0].date_from && res['data'].step2['which_forum'][0].date_to) {
+            this.progressValue = 44;
+            this.Service.moveSteps('educational_information','employment', this.headerSteps);
+          }
+          if(res['data'].step3 != '' && res['data'].step3.experience_1 != '' && res['data'].step3.experience_2 != '' && res['data'].step3.experience_3 != '' && res['data'].step3.experience_4 != '') {
+
+            var experience1_detail = 0;var experience1_organization = 0;var experience1_date_to = 0;
+            var experience2_detail = 0;var experience2_date_from = 0;var experience2_date_to = 0;var experience2_organization = 0;
+            var experience3_organization = 0;var experience3_date_from = 0;var experience3_date_to = 0;
+            var experience4_date_to = 0;var experience4_standard = 0;var experience4_technical = 0;var experience4_role = 0;var experience4_commissioned_by = 0;var experience4_assessment_type = 0;var experience4_accreditation_activity = 0;
+
+            var experience_1 = res['data'].step3.experience_1;
+            var experience_2 = res['data'].step3.experience_2;
+            var experience_3 = res['data'].step3.experience_3;
+            var experience_4 = res['data'].step3.experience_4;
+
+            if(experience_1 != '') {
+              for(var key in experience_1) {
+                if(experience_1[key].detail != "") {
+                  experience1_detail = 1;
+                }else{
+                  experience1_detail = 0;
+                }
+                if(experience_1[key].organization != "") {
+                  experience1_organization = 1
+                }else{
+                  experience1_organization = 0;
+                }
+                if(experience_1[key].date_to != null) {
+                  experience1_date_to = 1
+                }else{
+                  experience1_date_to = 0;
+                }
+              }
+            }
+            if(experience_2 != '') {
+              for(var key in experience_2) {
+                if(experience_2[key].detail != "") {
+                  experience2_detail = 1;
+                }else{
+                  experience2_detail = 0;
+                }
+                if(experience_2[key].date_from != "") {
+                  experience2_date_from = 1
+                }else{
+                  experience2_date_from = 0;
+                }
+                if(experience_2[key].date_to != null) {
+                  experience2_date_to = 1
+                }else{
+                  experience2_date_to = 0;
+                }
+                if(experience_2[key].organization != null) {
+                  experience2_organization = 1
+                }else{
+                  experience2_organization = 0;
+                }
+              }
+            }
+            if(experience_3 != '') {
+              for(var key in experience_3) {
+                if(experience_3[key].organization != "") {
+                  experience3_organization = 1;
+                }else{
+                  experience3_organization = 0;
+                }
+                if(experience_3[key].date_from != "") {
+                  experience3_date_from = 1
+                }else{
+                  experience3_date_from = 0;
+                }
+                if(experience_3[key].date_to != null) {
+                  experience3_date_to = 1
+                }else{
+                  experience3_date_to = 0;
+                }
+              }
+            }
+            if(experience_4 != '') {
+              for(var key in experience_4) {
+                if(experience_4[key].date_to != "") {
+                  experience4_date_to = 1;
+                }else{
+                  experience4_date_to = 0;
+                }
+                if(experience_4[key].standard != "") {
+                  experience4_standard = 1
+                }else{
+                  experience4_standard = 0;
+                }
+                if(experience_4[key].technical != null) {
+                  experience4_technical = 1
+                }else{
+                  experience4_technical = 0;
+                }
+                if(experience_4[key].role != null) {
+                  experience4_role = 1
+                }else{
+                  experience4_role = 0;
+                }
+                if(experience_4[key].commissioned_by != null) {
+                  experience4_commissioned_by = 1
+                }else{
+                  experience4_commissioned_by = 0;
+                }
+                if(experience_4[key].assessment_type != null) {
+                  experience4_assessment_type = 1
+                }else{
+                  experience4_assessment_type = 0;
+                }
+                if(experience_4[key].accreditation_activity != null) {
+                  experience4_accreditation_activity = 1
+                }else{
+                  experience4_accreditation_activity = 0;
+                }
+              }
+            }
+
+            if(experience1_detail == 1 && experience1_organization == 1 && experience1_date_to == 1 && experience2_detail == 1 && experience2_date_from == 1 && experience2_date_to == 1 && experience2_organization == 1 && experience3_organization == 1 && experience3_date_from == 1 && experience3_date_to == 1 && experience4_date_to == 1 && experience4_standard == 1 && experience4_technical == 1 && experience4_role == 1 && experience4_commissioned_by == 1 && experience4_assessment_type == 1 && experience4_accreditation_activity == 1){
+              // this.exp1_result = 1;
+              this.progressValue = 66;
+              this.Service.moveSteps('employment','knowledge_experience', this.headerSteps);
+            }
+            
+          }
+          if(res['data'].step4 && res['data'].step4 != '' && res['data'].step4['technical_experience'] && res['data'].step4['technical_experience'] != '') {
+            this.progressValue = 88;
+            this.Service.moveSteps('knowledge_experience','applicant_trainer', this.headerSteps);
+          }
+          // if(res['data'].step5 && res['data'].step5 != '' && res['data'].step5[0].place && res['data'].step5[0].place != null && res['data'].step5[0].registration_date != null && res['data'].step5[0].signature != null) {
+          //   this.progressValue = 100;
+          // }
+          
 
           if(res['data'].step1 != '' && res['data'].step1[0]) {
             var step1 = res['data'].step1[0];
@@ -256,18 +404,18 @@ export class AssessorsProfileComponent implements OnInit {
             }
 
             if(step2['education'] != null && step2['education'][0]) {
-              this.step2Data.qualification_degree = step2['education'] !='' && step2['education'][0].detail ? step2['education'][0].detail : '';
-              this.step2Data.university_college = step2['education'] !='' && step2['education'][0] ? step2['education'][0].organization : '';
-              this.step2Data.education_specialization = step2['education'] !='' && step2['education'][0].specialization ? step2['education'][0].specialization : '';
-              this.step2Data.further_education = step2['further_education'] !='' && step2['further_education'][0].detail ? step2['further_education'][0].detail : '';
+              this.step2Data.qualification_degree = step2['education'] && step2['education'][0].detail ? step2['education'][0].detail : '';
+              this.step2Data.university_college = step2['education'] && step2['education'][0].organization ? step2['education'][0].organization : '';
+              this.step2Data.education_specialization = step2['education'] && step2['education'][0].specialization ? step2['education'][0].specialization : '';
+              this.step2Data.further_education = step2['further_education'] && step2['further_education'][0].detail ? step2['further_education'][0].detail : '';
               this.step2Data.others_education = step2['others_education'] && step2['others_education'][0].detail ? step2['others_education'][0].detail : '';
               this.step2Data.which = step2['which_forum'] && step2['which_forum'][0].organization ? step2['which_forum'][0].organization : '';
               this.step2Data.completeProfileFrom = step2['which_forum'] && step2['which_forum'][0].date_from ? new Date(step2['which_forum'][0].date_from) : '';
               this.step2Data.completeProfileTill = step2['which_forum'] && step2['which_forum'][0].date_to ? new Date(step2['which_forum'][0].date_to) : '';
 
-              this.tradeLicensedValidation1 = step2['education'][0].qualification_file != null ? this.constant.mediaPath+step2['education'][0].qualification_file : '';
-              this.tradeLicensedValidation2 = step2['education'][0].specialization_file != null ? this.constant.mediaPath+step2['education'][0].specialization_file : '';
-              this.tradeLicensedValidation3 = step2['further_education'][0].qualification_file != null ? this.constant.mediaPath+step2['further_education'][0].qualification_file : '';
+              this.tradeLicensedValidation1 = step2['education'] && step2['education'][0].qualification_file != null ? this.constant.mediaPath+step2['education'][0].qualification_file : '';
+              this.tradeLicensedValidation2 = step2['education'] && step2['education'][0].specialization_file != null ? this.constant.mediaPath+step2['education'][0].specialization_file : '';
+              this.tradeLicensedValidation3 = step2['further_education'] && step2['further_education'][0].qualification_file != null ? this.constant.mediaPath+step2['further_education'][0].qualification_file : '';
             }
           }
           if(res['data'].step3 != '') {
