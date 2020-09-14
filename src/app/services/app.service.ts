@@ -128,6 +128,7 @@ addMinutesToTime()
     let header = {
       headers: new HttpHeaders()
         .set('Authorization',  `Bearer ${this.getToken()}`)
+        .set('Content-Type',  'application/json')
     }
     return header;
   }

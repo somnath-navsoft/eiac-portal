@@ -118,7 +118,10 @@ import { CabTrainingPublicCourseListComponent } from './components/dashboard/cab
 import { LoaderComponent } from './components/loader/loader.component';
 import { OperationMessageComponent } from './components/dashboard/operations/operation-message/operation-message.component';
 import { OperationMessageDetailsComponent } from './components/dashboard/operations/operation-message/operation-message-details/operation-message-details.component';
+import { OperationsAccreditationServiceListComponent } from './components/dashboard/operations/operations-accreditation-service-list/operations-accreditation-service-list.component';
 
+import { ViewerComponentComponent} from './components/utility/viewer-component/viewer-component.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 export const MY_FORMATS = {
   parse: {
     dateInput: 'LL',
@@ -136,7 +139,7 @@ export const MY_FORMATS = {
 //Eiac Staff sub component
 
 @NgModule({
-  declarations: [ DashboardComponent, SignUpComponent,AppComponent, LayoutComponent, 
+  declarations: [ DashboardComponent, SignUpComponent,AppComponent, LayoutComponent, ViewerComponentComponent,
     HeaderComponent, FooterComponent, SidebarComponent, SigninComponent, TrainersComponent, 
     CabComponent, CandidateComponent, AssessorsComponent, AssessorsDashboardComponent, 
     UpdateProfileComponent, QualificatiosComponent, ExpertiseComponent, AgreementsComponent, 
@@ -148,12 +151,14 @@ export const MY_FORMATS = {
     CabTrainingPublicCourseListComponent,
     LoaderComponent,
     OperationMessageComponent,
-    OperationMessageDetailsComponent],
+    OperationMessageDetailsComponent,
+    OperationsAccreditationServiceListComponent],
   imports: [
     CommonModule,
     FormsModule,
     NgxPayPalModule,
     StripeCheckoutModule,
+    PdfViewerModule,
     HttpClientModule,
     AppRoutingModule,
     AppMaterialModule,
@@ -187,7 +192,8 @@ export const MY_FORMATS = {
     StoreModule.forRoot(reducers, {}),
     EffectsModule.forRoot([AuthEffects, TrainerEffects]),
   ],
-  exports: [],
+  entryComponents: [ViewerComponentComponent],
+  exports: [PdfViewerModule],
   //providers: [ AuthEffects, AuthService,AppService,TrainerService,],
   providers: [ AuthEffects, AuthService,AppService,Constants,TrainerService,ToastrService,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},Overlay,OverlayContainer,{

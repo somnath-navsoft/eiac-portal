@@ -7,17 +7,24 @@ import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material';
 import { RecaptchaComponent } from 'ng-recaptcha';
 import { ToastrService, Overlay, OverlayContainer } from 'ngx-toastr';
+import  { UiDialogService } from  '../../../../../services/uiDialog.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
 
 declare let paypal: any;
 @Component({
   selector: 'app-inspection-bodies-form',
   templateUrl: './inspection-bodies-form.component.html',
   styleUrls: ['./inspection-bodies-form.component.scss'],
-  providers: [Constants, AppService, ToastrService, Overlay, OverlayContainer]
+  providers: [Constants, AppService, ToastrService, Overlay, OverlayContainer, UiDialogService]
 })
 export class InspectionBodiesFormComponent implements OnInit {
 
   public newRow: any = {};
+  public loaderPdf: boolean = false;
+  public completeLoaded: boolean = false;
+  public errorLoader: boolean = false;
   public inspectionBodyForm: any = {};
   public inspectionBodyFormFile: any = new FormData();
   public ownOrgBasicInfo: Array<any> = [{}];
@@ -36,7 +43,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   public fullScope:any[]=[];
   public mailing_address:boolean=true;
   public orgMembToggle: boolean = false;
-  public is_bod: any = 0;
+  public is_bod_select: any = 0;
   is_hold_other_accreditation_toggle: any = 0;
   public proficiency_testing_val: any = 0;
   public is_agreement: boolean=false;
@@ -55,8 +62,13 @@ export class InspectionBodiesFormComponent implements OnInit {
   public minDate = new Date();
   public authorizationList:any;
   public recommend:any;
-  public authorizationStatus: boolean = true;
-  recommendStatus:boolean = false
+  public authorizationStatus: boolean = false;
+  recommendStatus:boolean = false;
+
+  readAccredAgreem: boolean = false;
+  readReviewChecklist: boolean = false;
+  readTermsCond: boolean = false;
+
   public isSubmit:boolean = true;
   dutyTime1: boolean = true;
   dutyTime2: boolean = true;
@@ -120,7 +132,18 @@ export class InspectionBodiesFormComponent implements OnInit {
   profileComplete:any;
   today = new Date();
 
-  formApplicationId: number = 785;
+  formApplicationId: number = 833;
+  scopeDataLoad: boolean = false;
+  accreditationChecked = true;
+  deliveryAddrChecked = true;
+  isApplicationSubmitted: boolean = false;
+  isPrelimSubmitted: boolean = false;
+
+  accredAgreemFile: any;
+  checklistDocFile: any;
+  modalOptions:NgbModalOptions;
+  closeResult: string;
+  pathPDF: any;
 
   //dynamicScopeOptions:any[] = [];  
   //dynamicScopeModelValues:any={};
@@ -137,14 +160,25 @@ export class InspectionBodiesFormComponent implements OnInit {
       if(( elem.srcElement.offsetHeight + elem.srcElement.scrollTop) >=  elem.srcElement.scrollHeight) {
          ////console.log("Yo have reached!");
          this.authorizationList.authorization_confirm2 = true;
+         this.readTermsCond = true;
+      }else{
+        this.authorizationList.authorization_confirm2 = false;
+        this.readTermsCond = false;
       } 
     }        
   }
   headerSteps:any[] = [];
 
-  constructor(public Service: AppService, public _toaster: ToastrService, public constant:Constants,public router: Router,public toastr: ToastrService) { 
+  constructor(public Service: AppService, public uiDialog: UiDialogService, public sanitizer: DomSanitizer,
+    private modalService: NgbModal,
+    public _toaster: ToastrService, public constant:Constants,public router: Router,public toastr: ToastrService) { 
     this.today.setDate(this.today.getDate());
   }
+
+  checkAction(objKey: string, type: string){
+
+
+  }  
 
   getData(getVal){
     //  console.log(">>>>Get MapBox Value: ", getVal);
@@ -347,6 +381,75 @@ export class InspectionBodiesFormComponent implements OnInit {
     
 
   }
+  agreeView(){
+    this.modalService.dismissAll();
+    this.authorizationList.undertaking_confirmTop2 = true;
+    this.readAccredAgreem = true;
+  }
+  closeChecklistDialog(){
+    this.modalService.dismissAll();
+    this.authorizationList.undertaking_confirm2 = true;
+    this.readReviewChecklist= true;
+  }
+  
+  onError(error: any) {
+    // do anything
+    //console.log('PDF Error: ', error)
+    this.errorLoader = true;
+  }
+
+  completeLoadPDF(pdfLoad: PDFDocumentProxy){
+    //console.log("Completed Load PDF :: ", pdfLoad);
+    this.loaderPdf = false;
+    this.completeLoaded = true;
+  }
+
+  onProgress(progressData: PDFProgressData){
+   //console.log("Loding Pdf :: ", progressData);
+    this.loaderPdf = true;
+  }
+
+  getSantizeUrl(url : string) { 
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url); 
+  }
+
+  openView(content, type:string) {
+    let pathData: any;
+    if(type != undefined && type == 'agreement'){
+      pathData = this.getSantizeUrl(this.accredAgreemFile);
+      this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
+    }
+    if(type != undefined && type == 'checklist'){
+      pathData = this.getSantizeUrl(this.checklistDocFile);
+      this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
+    }
+
+    console.log(">>> open view", this.pathPDF, " -- ",  this.pathPDF);
+
+    this.modalService.open(content, this.modalOptions).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      //console.log("Closed: ", this.closeResult);
+      //this.courseViewData['courseDuration'] = '';
+      //this.courseViewData['courseFees'] = '';
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      //console.log("Closed with ESC ");
+      
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      //console.log("Closed with CLOSE ICON ");
+     
+      return 'by clicking on a backdrop';
+    } else {
+      //console.log("Closed ",`with: ${reason}`);
+      
+      return  `with: ${reason}`;
+    }
+  }
 
   ngOnInit() { 
 
@@ -354,6 +457,17 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
     this.profileComplete = sessionStorage.getItem('profileComplete');
+
+    this.modalOptions = {
+      backdrop:'static',
+      backdropClass:'customBackdrop'
+    }
+
+    this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');
+    this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Document%20review%20Checklist-%20ISO%2017020-%202012_Inspection%20Bodies.pdf');
+
+    //this.step1Data.accredation_criteria = 1;//
+    //this.step1Data.certificate_delivery_addr = true;
     
     this.inspectionBodyForm.criteria_request = 'ISO/IEC17020';
     // this.titleService.setTitle('EIAC - Inspection Bodies');
@@ -375,17 +489,26 @@ export class InspectionBodiesFormComponent implements OnInit {
       title:'personal_information', desc:'3. Personal Information', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
-      title:'information_audit_management', desc:'4. Internal Audit & Management', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'information_audit_management', desc:'4. Internal Audit & MRM Date', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
-      title:'perlim_visit', desc:'5. Perlim Visit', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+        title:'scope_accreditation', desc:'5. Accreditation Scope - Testing Laboratory', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
-      title:'undertaking_applicant', desc:'6. Undertaking & Applicant Company', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'perlim_visit', desc:'6. Prelim Visit', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
-      // {
-      // title:'payment', desc:'7. Payment Information', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
-      // }
+      {
+      title:'undertaking_applicant', desc:'7. Authorization of the Application', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      },
+      {
+        title:'proforma_invoice', desc:'8. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      },
+      {
+        title:'payment_update', desc:'9. Payment Update', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      },
+      {
+        title:'application_complete', desc:'10. Application Complete', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      },
     );
   }
 
@@ -446,7 +569,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   bod_toggle(value,type){
     if(type == 'is_bod')
     {
-      this.is_bod = value;
+      this.is_bod_select = value;
     }else if(type == "is_hold_other_accreditation_toggle")
     {
       this.is_hold_other_accreditation_toggle = value;
@@ -470,7 +593,8 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.inspectionBodyForm.managementManager        = this.managementManager;
     this.inspectionBodyForm.inspectionBodyInfo           = this.inspectionBodyInfo;
     this.inspectionBodyForm.medicaMainlLabInfo        = this.medicaMainlLabInfo;
-    this.authorizationList = {undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false,authorization_confirm1:false,authorization_confirm2:false};
+    this.authorizationList = {undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false,authorization_confirm1:false,
+      authorization_confirm2:false, undertaking_confirmTop1: false, undertaking_confirmTop2: false, undertaking_confirmTop3: false};
 
     this.recommend = {first:false,second:false,third:false,fourth:false}
 
@@ -543,6 +667,7 @@ export class InspectionBodiesFormComponent implements OnInit {
 
   getCriteria(value){
     console.log("select Criteris: ", value);
+    this.scopeDataLoad = true;
     if(value != undefined && value > 0){
        //Get fullscope
        //let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.criteriaIdByScope + value;
@@ -561,6 +686,7 @@ export class InspectionBodiesFormComponent implements OnInit {
             let dataScope:any = [];
             let fieldTitleValue: any = [];
             dataScope = record['data'];
+            this.scopeDataLoad = false;
             let customKey;
             if(dataScope.firstColumnData != undefined && dataScope.firstColumnData.length > 0){
               let firstColumValues = dataScope.firstColumnData[0];
@@ -705,7 +831,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   }
 
   loadData(){
-    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data)
+  this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data)
     .subscribe(
       res => {
         console.log("@Load scope....", res);
@@ -717,87 +843,23 @@ export class InspectionBodiesFormComponent implements OnInit {
         this.criteriaMaster = res['data']['schemes'];
         console.log("#Get criteria: ", this.criteriaMaster);
 
-        // Object.keys(res['scopeValue']).forEach(key => {
-
-        //   this.inspectionBodyData[this.rowCount]=[];
-        //   this.inspectionBodyData[this.rowCount].field1  = res['scopeValue'][key].values;
-        //   this.medicalLabFirstData      = res['scopeValue'][key].values;
-        //   //this.dynamicFirstFieldValues  = res['scopeValue'][key].values;
-        // });
-
-        //Dynamic Scope binding ----  Abhishek @Navsoft
-        // let fieldTitleValue: any = [];
-        // if(res['fullScope'].length > 0){
-        //   res['fullScope'].forEach((rec, key) => {
-        //         ////console.log("-- ", rec, " :: ", key);
-        //         let defLine = {};
-        //         let customKey = rec.accr_title[0];
-        //         this.dynamicScopeModel[customKey] = [];
-        //         this.dynamicScopeFieldColumns[key] = [];
-        //         fieldTitleValue[key] = [];
-        //         this.dynamicScopeModel[customKey].fieldLines = [];
-        //         //Initialize fields values
-        //         if(rec.firstFieldValues != undefined){
-        //           ////console.log("first value length: ", rec.firstFieldValues.length);
-        //           defLine['firstFieldValues'] = rec.firstFieldValues;
-        //         }
-        //         if(rec.fields.length > 0){
-        //           rec.fields.forEach((data,key1) =>{
-        //               let fieldValues = data.title.split(" ").join("")+"Values";
-        //               let fieldTitle = data.title.split(" ").join("_");
-        //               this.dynamicScopeFieldColumns[key].push({title: fieldTitle, values:fieldValues});
-        //               defLine[fieldValues] = [];
-
-        //               if(defLine['firstFieldValues'].length > 0){
-        //                 ////console.log("calling.....default...");
-        //                 let getValue = defLine['firstFieldValues'][0].field_value;
-        //                 if(key1 === 0){
-        //                   fieldTitleValue[key].push({title: fieldTitle, defValue: getValue, secName: customKey});
-        //                 }
-        //                 //Default load next column                  
-        //                 this.onChangeScopeOption(getValue,key,0,0,customKey,'initLoad');
-        //               }
-        //           })
-        //         }
-        //         //Load first field value default by selecting first item
-
-        //         this.dynamicScopeModel[customKey].fieldLines.push(defLine);
-        //         ////console.log(defLine['firstFieldValues'].length, " -- ", customKey, " ===== ", fieldTitleValue );
-        //         // if(defLine['firstFieldValues'].length > 0){
-        //         //   //console.log("For Key: ", key, " --- ", this.dynamicScopeFieldColumns[key]);
-        //         //   let fieldColumns: any = [];
-        //         //   fieldColumns = this.dynamicScopeFieldColumns[key];
-                  
-        //         //   this.dynamicScopeFieldColumns.forEach((recCol, keyCol) => {
-        //         //         //console.log(" >>>   ^^ ", recCol, " :: ", keyCol)
-        //         //         if(keyCol === 0){
-        //         //           let getModelKey = recCol[0].title;
-        //         //           let getDefValue = 0;
-        //         //           fieldTitleValue.forEach((recV,keyV) => {
-        //         //               ////console.log("*** ", recV, " -- ", keyV)
-        //         //               if(recV[keyV].title === getModelKey){
-        //         //                  getDefValue = recV[keyV].defValue;
-        //         //               }
-        //         //           })
-        //         //           ////console.log(getModelKey, " --- FindValue:  ", getDefValue);
-        //         //           //console.log("***** Model Status: ", this.dynamicScopeModel[customKey]);
-        //         //           this.dynamicScopeModel[customKey].fieldLines[0][getModelKey] = getDefValue;
-        //         //         }
-        //         //   })
-        //         // }
-        //   })
-
-        //   //set default value
-        //   //Load first field value default by selecting first item
-        //   this.loadDefaultColumnValues(this.dynamicScopeModel);
-        // }
-        ////console.log(res,'::Result::');
-        ////console.log(">>>> ", this.dynamicScopeModel, " --- ", this.dynamicScopeFieldColumns);
-        //Dynamic Scope binding ----  Abhishek @Navsoft
       },
       error => {
       
   })
+
+
+  ///get info
+  let getUserdata = '';
+  let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
+  console.log("app info: ", url);
+  this.Service.getwithoutData(url)
+    .subscribe(
+      res => {
+        let getData: any = res;
+        console.log(getData);
+
+      })
 
     if(this.inspectionBodyScopeFields.length<1){
       this.inspectionBodyScopeFields=  [{},{},{},{},{},{}];
@@ -1036,7 +1098,12 @@ export class InspectionBodiesFormComponent implements OnInit {
       if(type == undefined){
         this.step1DataBodyFormFile.append('trade_license',fileEvent.target.files[0]);
       }if(type != undefined){
-        this.step7DataBodyFormFile.append(type,fileEvent.target.files[0]);
+        console.log(">>>File: ", fileEvent.target.files[0]);
+        this.step5Data.payment_receipt = fileEvent.target.files[0].name;
+        this.step5Data.payment_receipt_file = fileEvent.target.files[0];
+        this.step5DataBodyFormFile.append(type,fileEvent.target.files[0]);
+        console.log(">>> data file: ", this.step5DataBodyFormFile);
+        //this.step7DataBodyFormFile.append(type,fileEvent.target.files[0]);
       }
       
       this.file_validation = true;
@@ -1062,49 +1129,68 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.minDate = new Date(cdate  + (60*60*24*1000));
   }
 
-  onSubmitUndertakingApplicant(ngForm6: any, type?: boolean){
+  onSubmitUndertakingApplicant(ngForm7: any, type?: boolean){
     // Object.keys(this.authorizationList).forEach(key => {
     //   if(this.authorizationList[key]==false){
     //     this.authorizationStatus = false;
     //   }
     // })
-
+    let checkCount = 0;
     for(let key in this.authorizationList) {
-      if(this.authorizationList[key] == false) {
-        this.authorizationStatus = false;
-      }else {
-        this.authorizationStatus = true;
-      }
+      console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
+      if(this.authorizationList[key]) {  
+        this.authorizationStatus = true;      
+        checkCount++;
+      } 
+      // if(this.authorizationList[key]) {
+      //   this.authorizationStatus = true;
+      // }     
     }
+    if(this.authorizationStatus && checkCount == 12){
+      this.authorizationStatus = true;
+    }else{
+      this.authorizationStatus = false;
+    }
+
+    console.log("authorize checklist count: ",checkCount)
+    // for(let key in this.authorizationList) {
+    //   console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
+    //   if(this.authorizationList[key]) {
+    //     this.authorizationStatus = true;
+    //   }      
+    // }
     
-    for(let key in this.recommend) {
-      if(this.recommend[key] == true) {
-        this.recommendStatus = true;
-      }
-    }
-    if(this.authorizationStatus == false){
-      this.isSubmit = false;
+    // for(let key in this.recommend) {
+    //   if(this.recommend[key] == true) {
+    //     this.recommendStatus = true;
+    //   }
+    // }
+    if(!this.authorizationStatus){
+      //this.isSubmit = false;
       this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
-    }else if(this.recommendStatus != true){
-      this.isSubmit = false;
-      this.toastr.error('Please Check any recommend the visit ', '');
     }
+    // else if(this.recommendStatus != true){
+    //   this.isSubmit = false;
+    //   this.toastr.error('Please Check any recommend the visit ', '');
+    // }
     this.inspectionBodyForm = {};
-      this.inspectionBodyForm.step6 = {};
+      this.inspectionBodyForm.step7 = {};
       //this.inspectionBodyForm.email = this.userEmail;
       //this.inspectionBodyForm.userType = this.userType;
-      this.step6Data.authorizationList = this.authorizationList;
-      this.step6Data.recommend = this.recommend;
+      this.step7Data.authorizationList = this.authorizationList;
+      this.step7Data.recommend = this.recommend;
 
-      console.log("@@@Step6 Data: ", this.step6Data);
-      this.inspectionBodyForm.step6 = this.step6Data;
-      this.inspectionBodyForm.step6.email = this.userEmail;
-      this.inspectionBodyForm.step6.userType = this.userType;
-      this.inspectionBodyForm.step6.application_id = this.formApplicationId;
+      console.log("@@@Step7 Data: ", this.step7Data);
+      this.inspectionBodyForm.step7 = this.step7Data;
+      this.inspectionBodyForm.step7.email = this.userEmail;
+      this.inspectionBodyForm.step7.userType = this.userType;
+      this.inspectionBodyForm.step7.application_id = this.formApplicationId;
 
-      console.log(">>>Step6 Data: ", this.inspectionBodyForm);
+      console.log(">>>Step7 submit Data: ", this.inspectionBodyForm);
 
-    if(ngForm6.form.valid && type == undefined){
+      return;
+
+    if(ngForm7.form.valid && type == undefined && this.authorizationStatus == true){
 
       // this.step6Data = this.recommend.first;
       // this.step6Data = this.recommend.second;
@@ -1125,24 +1211,25 @@ export class InspectionBodiesFormComponent implements OnInit {
 
       //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
 
-      console.log(">>>Step6 Data: ", this.inspectionBodyForm);
+      console.log(">>>Step7 Data: ", this.inspectionBodyForm);
       //return;
-      this.inspectionBodyForm.step6.is_draft = false;
+      this.inspectionBodyForm.step7.is_draft = false;
+      this.inspectionBodyForm.saved_step = 7;
       //this.step6DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
       // setTimeout(() => {
       //   this.toastr.success("Please wait paypal", '');
       // }, 500)
-      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.inspectionBodyForm)
-      // .subscribe(
-      //   res => {
-      //     console.log(res,'res')
-      //     if(res['status'] == true) {
-      //       this.toastr.success(res['msg'], '');
-      //       this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
-      //     }else{
-      //       this.toastr.warning(res['msg'], '');
-      //     }
-      //   });
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            //this.toastr.success(res['msg'], '');
+            //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
 
       //Paypal config data
       //applyTrainerPublicCourse
@@ -1177,24 +1264,25 @@ export class InspectionBodiesFormComponent implements OnInit {
       //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
     }else if(type != undefined && type == true){
       this.inspectionBodyForm.step6.is_draft = true;
-      this.toastr.success('Application Successfully Submitted', '');
-          setTimeout(()=> {
-            this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-          }, 2000)
-      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
-      // .subscribe(
-      // res => {
-      //   console.log(res,'res')
-      //   if(res['status'] == true) {
-      //     this.toastr.success(res['msg'], '');
+      this.inspectionBodyForm.saved_step     = 7; 
+      // this.toastr.success('Application Successfully Submitted', '');
       //     setTimeout(()=> {
       //       this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
       //     }, 2000)
-      //     //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
-      //   }else{
-      //     this.toastr.warning(res['msg'], '');
-      //   }
-      // });
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
+      .subscribe(
+      res => {
+        console.log(res,'res')
+        if(res['status'] == true) {
+          this.toastr.success(res['msg'], '');
+          setTimeout(()=> {
+            this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+          }, 2000)
+          //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+        }else{
+          this.toastr.warning(res['msg'], '');
+        }
+      });
       }else{
     this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }    
@@ -1209,9 +1297,10 @@ export class InspectionBodiesFormComponent implements OnInit {
     //   this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     // }
     
-    console.log("Submit calling: ", ngForm1, " -- ", type);
+    //console.log("Submit calling: ", ngForm1, " -- ", type); 
     //return;
-    
+    this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+    this.isApplicationSubmitted = true;
     if(this.step1Data.duty_shift == '1' && typeof this.step1Data.duty_from1 == 'undefined' && typeof this.step1Data.duty_to1 == 'undefined')
     {
       this.dutyTime1 = false;
@@ -1262,6 +1351,41 @@ export class InspectionBodiesFormComponent implements OnInit {
 
     this.inspectionBodyForm = {};
     this.inspectionBodyForm.step1 = {};
+    //
+    if(this.step1Data.criteria_request != undefined){
+      let schemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id);
+      console.log("scheme data: ", schemeData);
+      if(schemeData){
+        this.step1Data.criteria_request = schemeData.title;
+        this.inspectionBodyForm.step1['scheme'] = schemeData.scope_accridiation.id;
+      }
+    }
+    // if(this.step1Data.is_bod != undefined && this.step1Data.is_bod == 1){
+    //   this.step1Data.is_bod = "true";
+    // }
+    // if(this.step1Data.is_bod != undefined && this.step1Data.is_bod == 0){
+    //   this.step1Data.is_bod = "false";
+    // }//
+
+    // if(this.step1Data.is_hold_other_accreditation != undefined && this.step1Data.is_hold_other_accreditation == 1){
+    //   this.step1Data.is_hold_other_accreditation = "true";
+    // }
+    // if(this.step1Data.is_hold_other_accreditation != undefined && this.step1Data.is_hold_other_accreditation == 0){
+    //   this.step1Data.is_hold_other_accreditation = "false";
+    // }
+    if(this.step1Data.is_main_activity_note == undefined){
+      this.step1Data.is_main_activity_note = " ";
+    }
+    if(this.step1Data.fax_no == undefined || this.step1Data.fax_no === ''){
+      this.step1Data.fax_no = " ";
+    }
+    if(this.step1Data.official_email == undefined){
+      this.step1Data.official_email = " ";
+    }
+
+    
+
+
     this.inspectionBodyForm.step1 = this.step1Data;      
     this.inspectionBodyForm.step1['ownOrgBasicInfo'] = [];
     this.inspectionBodyForm.step1['ownOrgMembInfo'] = [];
@@ -1275,6 +1399,588 @@ export class InspectionBodiesFormComponent implements OnInit {
     }
     if(this.accreditationInfo) {
       this.inspectionBodyForm.step1['accreditationInfo'] = this.accreditationInfo;
+    }
+    let scopeValues: any =[];
+    let scopeIds:any =[];
+    let scopeSelValues:any =[];
+    console.log("dynamic ", this.dynamicScopeModel, " -- ", this.dynamicScopeFieldColumns);
+    var key = '';
+    var key2 = '';
+    let resultAr: any={};
+    let scopeCollections: any={};
+    scopeCollections['scope_heading'] = {};
+    scopeCollections['scope_value'] = [];
+
+    // this.dynamicScopeFieldColumns.forEach((item,key) => {
+    //     //console.log(item);
+    //     let keyIds = item[0].idVal;
+    //     let name = item[0].name;
+    //     //console.log("...", name);
+    //     let tempObj = {};
+    //    tempObj[keyIds] = name;
+    //     //console.log("...", tempObj);
+    //     //scopeCollections['scope_heading'][key] = {};  
+    //     //scopeCollections['scope_heading'][key] = tempObj; 
+    //     //scopeCollections['scope_heading'] = tempObj; 
+    //     scopeCollections['scope_heading'][keyIds] = name;
+    //     //scopeCollections['scope_heading'][0].push( tempObj); 
+    //     //let custKey = ids.toString();
+    //     //this.dynamicScopeModel.fieldLines[key][this.dynamicScopeFieldColumns[key][0].title] = getValue;
+    //     //scopeCollections['scope_heading'][key][custKey] = 'test';
+    //     //scopeCollections['scope_heading'].push(tempObj);
+    //     // scopeCollections['scope_heading'][key] = {
+    //     //   tempObj
+    //     // }
+    // });
+    // console.log(">>> build scope: ", scopeCollections);
+    // //return;
+
+
+    // for(key in this.dynamicScopeModel){
+    //     if(key == 'fieldLines'){
+    //       this.dynamicScopeModel.fieldLines.forEach((rec,key1) => {
+    //             console.log(rec, " -- ", key);
+    //             //resultAr[key1] = [];
+    //             scopeIds = [];
+    //             scopeSelValues = [];
+    //             if(typeof rec === 'object'){
+    //               for(key2 in rec){
+                      
+    //                   let selectVal;
+    //                   let selectId;
+                      
+    //                   let getDataValues = this.dynamicScopeFieldColumns.find(item => item[0].values == key2)
+    //                   let getSelectValues = this.dynamicScopeFieldColumns.find(item => item[0].title == key2)
+    //                   if(getDataValues){
+    //                     let fdata: any = getDataValues[0];                        
+    //                     if(fdata.values == key2){
+    //                       selectId = fdata.idVal;//rec[key2][0].id;
+    //                       scopeIds.push({id: selectId})
+    //                     }
+    //                   }
+    //                   if(getSelectValues){
+    //                     let fdata: any = getSelectValues[0];
+    //                     if(fdata.title == key2){
+    //                       selectVal = rec[key2];
+    //                       scopeSelValues.push({value: selectVal})
+    //                     }
+    //                   }
+    //                   //scopeValues.push({id:selectId , value: selectVal});
+
+    //                   console.log("scope aa: ", key2, " -- ", selectVal, " -- ", selectId);
+
+    //               }
+    //             }
+    //             resultAr[key1] = [];
+                
+    //             for(var k=0; k<scopeIds.length; k++){
+    //               let idKey = scopeIds[k].id;
+    //               let valueKey = scopeSelValues[k].value;
+    //               let tempObj = {};
+    //               tempObj[idKey] = valueKey;
+    //               resultAr[key1].push({id: idKey, value: valueKey});
+    //            }
+    //            //resultAr[key1] = tempObj;
+    //            console.log('scope object: ', " -- ", resultAr);
+    //       })
+    //     }
+    // }
+    
+    // if(scopeCollections){
+    //   let resultTempAr: any ={};
+    //   let tempObj: any = {};
+    //   let rstAr: any=[];
+    //   var p;
+    //   for(p in resultAr){
+    //     console.log(p, " -- ", resultAr[p])
+    //     //resultTempAr[p] = [];
+    //     if(resultAr[p].length){
+    //       resultAr[p].forEach(item =>{
+    //         tempObj = {};
+    //           //tempObj[item.id] = item.value;
+    //           resultTempAr[item.id] = item.value;
+    //           //resultTempAr[p].push(tempObj);
+    //       })
+    //     }
+    //     rstAr.push(resultTempAr);
+    //   }
+    //   console.log('<<>>>> ', resultTempAr, " -- ", rstAr);
+    //   scopeCollections['scope_value'] = rstAr;
+    // }
+
+
+    // }
+    // console.log("@selected scope values: ", scopeIds, " =-- ", scopeSelValues);
+    // console.log("#Scope result: ", resultAr, " -- ", scopeCollections);
+    // // this.dynamicScopeModel.forEach(rec => {
+    // //      if(rec.fieldLines){
+    // //       console.log("field rows: ", rec.fieldLines);
+    // //      }
+    // // })
+    // if(scopeCollections != undefined){
+    //   this.inspectionBodyForm.step1['scope_heading'] = scopeCollections['scope_heading'];
+    //   this.inspectionBodyForm.step1['scope_value'] = scopeCollections['scope_value'];
+    // }
+    //console.log(">> submit: ", this.inspectionBodyForm);
+    //return;    
+    //this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+    //&& this.tradeLicensedValidation != false
+    if(ngForm1.form.valid ) {
+
+      if(this.step1Data.is_bod_select != undefined && this.step1Data.is_bod_select == 1){
+        this.step1Data.is_bod = "true";
+      }
+      if(this.step1Data.is_bod_select != undefined && this.step1Data.is_bod_select == 0){
+        this.step1Data.is_bod = "false";
+      }//
+  
+      if(this.step1Data.is_hold_other_accreditation_select != undefined && this.step1Data.is_hold_other_accreditation_select == 1){
+        this.step1Data.is_hold_other_accreditation = "true";
+      }
+      if(this.step1Data.is_hold_other_accreditation_select != undefined && this.step1Data.is_hold_other_accreditation_select == 0){
+        this.step1Data.is_hold_other_accreditation = "false";
+      }
+      
+      this.inspectionBodyForm.email = this.userEmail;
+      this.inspectionBodyForm.userType = this.userType;//
+      this.inspectionBodyForm.saved_step = 1;
+      this.inspectionBodyForm.step1 = this.step1Data;      
+
+      this.inspectionBodyForm.step1['ownOrgBasicInfo'] = [];
+      this.inspectionBodyForm.step1['ownOrgMembInfo'] = [];
+      this.inspectionBodyForm.step1['accreditationInfo'] = [];
+      
+      if(this.ownOrgBasicInfo) {
+        this.inspectionBodyForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
+      }
+      if(this.ownOrgMembInfo) {
+        this.inspectionBodyForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
+      }
+      if(this.accreditationInfo) {
+        this.inspectionBodyForm.step1['accreditationInfo'] = this.accreditationInfo;
+      }
+      
+      //return;
+      //this.inspectionBodyForm.step1['trade_license'] = this.step1DataBodyFormFile;
+      // this.inspectionBodyForm.step1.is_draft = false;
+      // console.log(">>> First Step Data: ", this.inspectionBodyForm);
+      // return;
+      //this.step1DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
+          // this.toastr.success('Application Successfully Submitted', '');
+          // setTimeout(()=> {
+          //   this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+          // }, 1000)
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
+      .subscribe(
+        res => {
+          console.log(res,'response')
+          if(res['status'] == true) {
+            let data: any = {};
+            this.isApplicationSubmitted = false;
+             data = res;
+             console.log(res,'Data')
+            if(data.application_id != undefined && data.application_id > 0){
+              this.formApplicationId = data.application_id;
+              console.log(this.formApplicationId,'App id assigned')
+            }
+            this.toastr.success(res['msg'],);
+            this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+      /*
+          else if(ngForm1.form.valid && this.tradeLicensedValidation == false) {
+      this.file_validation = false;
+      this.toastr.warning('Please Fill required field','');
+    }
+      */   
+     //&& this.tradeLicensedValidation == false
+     /*
+      else if(ngForm1.form.valid ) {
+      this.file_validation = false;
+      this.toastr.warning('Please Fill required field','');
+    }
+     */
+    }else if(!ngForm1.form.valid && type != undefined && type == true){
+        console.log("save a draft...");
+        this.inspectionBodyForm.step1.is_draft = true;
+        this.inspectionBodyForm.saved_step = 1;
+        if(this.step1DataBodyFormFile != undefined){
+          //this.inspectionBodyForm.step1['trade_license'] = this.step1DataBodyFormFile;
+        }        
+        // console.log(">>> Save a draft First Step Data: ", this.inspectionBodyForm);
+        // this.toastr.success("Record saved successfully");
+        // setTimeout(()=> {
+        //   this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+        // },2000) 
+        //this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+        this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
+        .subscribe(
+          res => {
+            console.log(res,'res')
+            if(res['status'] == true) {
+              this.toastr.success(res['msg'],);
+              this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+            }else{
+              this.toastr.warning(res['msg'], '');
+            }
+          });
+    }
+    else {
+      this.toastr.warning('Please Fill required field','');
+    }
+  }
+
+  onSubmitTestingParticipation(ngForm2: any, type?:boolean){
+    this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+    this.inspectionBodyForm = {};
+    this.inspectionBodyForm.step2 = {};
+    //this.inspectionBodyForm.email = this.userEmail;
+    //this.inspectionBodyForm.userType = this.userType;
+    this.inspectionBodyForm.step2 = this.step2Data;
+    this.inspectionBodyForm.step2.email = this.userEmail;
+    this.inspectionBodyForm.step2.userType = this.userType;
+    this.inspectionBodyForm.step2.application_id = this.formApplicationId;
+    this.inspectionBodyForm.step2['proficiencyTesting'] = [];
+    this.inspectionBodyForm.step2.is_draft = false;
+    this.inspectionBodyForm.saved_step = 2;
+
+    if(this.proficiencyTesting.length > 0 && this.step2Data.proficiency_testing_val > 0) {
+      this.inspectionBodyForm.step2['proficiencyTesting'] = this.proficiencyTesting;
+    }
+
+    //console.log("@Step2 submit...", this.inspectionBodyForm, " --- ", this.formApplicationId);
+    //return;
+
+    if(ngForm2.form.valid && type == undefined) {
+      // this.inspectionBodyForm = {};
+      // this.inspectionBodyForm.step2 = {};
+      // //this.inspectionBodyForm.email = this.userEmail;
+      // //this.inspectionBodyForm.userType = this.userType;
+      // this.inspectionBodyForm.step2 = this.step2Data;
+      // this.inspectionBodyForm.step2.email = this.userEmail;
+      // this.inspectionBodyForm.step2.userType = this.userType;
+      // this.inspectionBodyForm.step2['proficiencyTesting'] = [];
+      
+      // if(this.ownOrgBasicInfo) {
+      //   this.inspectionBodyForm.step2['proficiencyTesting'] = this.proficiencyTesting;
+      // }
+      
+      //return;
+      //this.inspectionBodyForm.step2.is_draft = false;
+      //this.inspectionBodyForm.saved_step = 2;
+      console.log(">>>step2 submit data: ", this.inspectionBodyForm, " --- ", this.formApplicationId);
+      //return;
+      //this.step2DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
+          // this.toastr.success('Application Successfully Submitted', '');
+          // setTimeout(()=> {
+          //   this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+          // }, 1000)
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
+      .subscribe(
+        res => {
+          console.log(res,'res...')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else if(type != undefined && type == true){
+      this.inspectionBodyForm.step2.is_draft = true;
+      this.inspectionBodyForm.saved_step = 2;
+      console.log('save draft....2');
+          // this.toastr.success('Application Successfully Submitted', '');
+          // setTimeout(()=> {
+          //   this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+          // }, 1000)
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            console.log('save draft....2');
+            setTimeout(()=> {
+              this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+            },2000) 
+            //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }
+    else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+  }
+
+  onSubmitPersonalInformation(ngForm3: any, type?: boolean){
+    // console.log("Step PersonalInformation submit...");
+   this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+      this.inspectionBodyForm = {};
+      this.inspectionBodyForm.step3 = {};
+      //this.inspectionBodyForm.email = this.userEmail;
+      //this.inspectionBodyForm.userType = this.userType;
+      this.inspectionBodyForm.step3.email = this.userEmail;
+      this.inspectionBodyForm.step3.userType = this.userType;
+      this.inspectionBodyForm.step3.application_id = this.formApplicationId;
+      //this.inspectionBodyForm.step3 = this.step3Data;
+
+      this.inspectionBodyForm.step3.technicalManager = {};
+      //if(this.step3Data.name_technical != '' && this.step3Data.designation_technical != '' && this.step3Data.mobile_no_technical != ''
+        // && this.step3Data.tech_email_technical != '' && this.step3Data.relevent_experience_technical != ''){
+          this.inspectionBodyForm.step3.technicalManager['name'] = (this.step3Data.name_technical != '' && this.step3Data.name_technical != undefined) ? this.step3Data.name_technical : '';
+          this.inspectionBodyForm.step3.technicalManager['designation'] = (this.step3Data.designation_technical != '' && this.step3Data.designation_technical != undefined) ? this.step3Data.designation_technical : '';
+          this.inspectionBodyForm.step3.technicalManager['mobile_no'] = (this.step3Data.mobile_no_technical != '' && this.step3Data.mobile_no_technical != undefined) ? this.step3Data.mobile_no_technical : '';
+          this.inspectionBodyForm.step3.technicalManager['email'] = (this.step3Data.tech_email_technical != '' && this.step3Data.tech_email_technical != undefined) ? this.step3Data.tech_email_technical : '';
+          this.inspectionBodyForm.step3.technicalManager['relevent_experience'] = (this.step3Data.relevent_experience_technical != '' && this.step3Data.mobile_no_technical != undefined) ? this.step3Data.relevent_experience_technical : '';
+      //}     
+
+      this.inspectionBodyForm.step3.managementManager = {};
+      //if(this.step3Data.management_name != '' && this.step3Data.management_designation != '' && this.step3Data.management_mobile_no != ''
+        // && this.step3Data.management_email != '' && this.step3Data.management_relevent_experience != ''){
+          this.inspectionBodyForm.step3.managementManager['name'] = (this.step3Data.management_name != '' && this.step3Data.management_name != undefined) ? this.step3Data.management_name : '';
+          this.inspectionBodyForm.step3.managementManager['designation'] = (this.step3Data.management_designation != '' && this.step3Data.management_designation != undefined) ? this.step3Data.management_designation : '' ;
+          this.inspectionBodyForm.step3.managementManager['mobile_no'] = (this.step3Data.management_mobile_no != '' && this.step3Data.management_mobile_no != undefined) ? this.step3Data.management_mobile_no : '';
+          this.inspectionBodyForm.step3.managementManager['email'] = (this.step3Data.management_email != '' && this.step3Data.management_email != undefined) ? this.step3Data.management_email : '';
+          this.inspectionBodyForm.step3.managementManager['relevent_experience'] = (this.step3Data.management_relevent_experience != '' && this.step3Data.management_relevent_experience != undefined) ? this.step3Data.management_relevent_experience : '';
+      //}
+
+      console.log('>>> step 3 ', this.inspectionBodyForm);
+    if(ngForm3.form.valid && type == undefined) {
+      // this.inspectionBodyForm = {};
+      // this.inspectionBodyForm.step3 = {};
+      // //this.inspectionBodyForm.email = this.userEmail;
+      // //this.inspectionBodyForm.userType = this.userType;
+      // this.inspectionBodyForm.step3.email = this.userEmail;
+      // this.inspectionBodyForm.step3.userType = this.userType;
+      // //this.inspectionBodyForm.step3 = this.step3Data;
+
+      // this.inspectionBodyForm.step3.technicalManager = {};
+      // this.inspectionBodyForm.step3.technicalManager['name'] = this.step3Data.name_technical;
+      // this.inspectionBodyForm.step3.technicalManager['designation'] = this.step3Data.designation_technical;
+      // this.inspectionBodyForm.step3.technicalManager['mobile_no'] = this.step3Data.mobile_no_technical;
+      // this.inspectionBodyForm.step3.technicalManager['email'] = this.step3Data.tech_email_technical;
+      // this.inspectionBodyForm.step3.technicalManager['relevent_experience'] = this.step3Data.relevent_experience_technical;
+
+      // this.inspectionBodyForm.step3.managementManager = {};
+      // this.inspectionBodyForm.step3.managementManager['name'] = this.step3Data.management_name;
+      // this.inspectionBodyForm.step3.managementManager['designation'] = this.step3Data.management_designation;
+      // this.inspectionBodyForm.step3.managementManager['mobile_no'] = this.step3Data.management_mobile_no;
+      // this.inspectionBodyForm.step3.managementManager['email'] = this.step3Data.management_email;
+      // this.inspectionBodyForm.step3.managementManager['relevent_experience'] = this.step3Data.management_relevent_experience;
+
+      
+      //return;
+
+      this.inspectionBodyForm.step3.is_draft = false;
+      this.inspectionBodyForm.saved_step = 3;
+      console.log(">>> Step3 submit: ", this.inspectionBodyForm);
+      // this.step3DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
+      // this.toastr.success('Application Successfully Submitted', '');
+      //     setTimeout(()=> {
+      //       this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+      //     }, 1000)
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else if( type != undefined && type == true){
+      this.inspectionBodyForm.step3.is_draft  = true;
+      this.inspectionBodyForm.saved_step      = 3;
+      // this.toastr.success('Application Successfully Submitted', '');
+      //     setTimeout(()=> {
+      //       this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+      //     }, 1000)
+      console.log("save a draft ..setp 3: ");
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
+      .subscribe(
+      res => {
+        console.log(res,'res')
+        if(res['status'] == true) {
+          this.toastr.success(res['msg'], '');
+          setTimeout(()=> {
+            this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+          },2000)          
+          //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+        }else{
+          this.toastr.warning(res['msg'], '');
+        }
+      });
+      }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+  }
+
+  onSubmitInformationAuditManagement(ngForm4: any, type?:boolean){
+  //  console.log("Step InformationAuditManagement submit...");   
+    this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
+    this.inspectionBodyForm = {};
+      this.inspectionBodyForm.step4 = {};
+      console.log(">>> step4 data: ", this.step4Data);
+      this.step4Data['audit_date'] = (this.step4Data.audit_date != '') ? this.step4Data.audit_date : null;
+      this.step4Data['mrm_date'] = (this.step4Data.mrm_date != undefined) ? this.step4Data.mrm_date : null;
+
+      this.inspectionBodyForm.step4 = this.step4Data; 
+      this.inspectionBodyForm.step4.email = this.userEmail;
+      this.inspectionBodyForm.step4.application_id = this.formApplicationId;
+      this.inspectionBodyForm.step4.userType = this.userType;
+
+      console.log(">>> step4 data: ", this.inspectionBodyForm);
+    if(ngForm4.form.valid && type == undefined) {
+      // this.inspectionBodyForm = {};
+      // this.inspectionBodyForm.step4 = {};
+
+      // this.inspectionBodyForm.step4 = this.step4Data; 
+      // this.inspectionBodyForm.step4.email = this.userEmail;
+      // this.inspectionBodyForm.step4.userType = this.userType;
+
+      
+      //return;
+      this.inspectionBodyForm.step4.is_draft = false;
+      this.inspectionBodyForm.saved_step = 4;
+      //this.step4DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else if(type != undefined && type == true){
+      this.inspectionBodyForm.step4.is_draft = true;
+      this.inspectionBodyForm.saved_step = 4;
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
+      .subscribe(
+      res => {
+        console.log(res,'res')
+        if(res['status'] == true) {
+          this.toastr.success(res['msg'], '');
+          setTimeout(()=> {
+            this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+          },2000) 
+          //this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
+        }else{
+          this.toastr.warning(res['msg'], '');
+        }
+      });
+      }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+  }
+  
+  onSubmitPerlimVisit(ngForm: any, type?:boolean){
+    // console.log("Step PerlimVisit submit...", ngForm.form);    
+    this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+    this.inspectionBodyForm = {};
+    this.inspectionBodyForm.step6 = {};
+    this.isPrelimSubmitted = true;
+
+    console.log("@@@@Step6 data: ", this.step6Data);
+    this.step6Data.is_prelim_visit = (this.step6Data.prelim_visit_val == "1") ? true : false;
+    let dtFormat = '';
+    if(this.step6Data.prelim_visit_select_date != undefined && this.step6Data.prelim_visit_select_date._i != undefined){
+      var dtData = this.step6Data.prelim_visit_select_date._i;
+      var year = dtData.year;
+      var month = dtData.month;
+      var date = dtData.date;
+    }
+    //let dtData = this.step5Data.perlim_visit_select_date._i;
+    //let year = dtData.year;
+    //let month = dtData.month;
+    //let date = dtData.date;
+    dtFormat = year + "-" + month + "-" + date;
+    console.log("date format: ", dtFormat, " -- ", dtData);
+    this.step6Data['prelim_visit_date'] = (this.step6Data.prelim_visit_select_date != undefined) ? dtFormat : null;
+    this.step6Data['prelim_visit_time'] = (this.step6Data.prelim_visit_select_time != undefined) ? this.step6Data.prelim_visit_select_time : null;
+
+    this.inspectionBodyForm.step6 = this.step6Data;
+    this.inspectionBodyForm.step6.email = this.userEmail;
+    this.inspectionBodyForm.step6.application_id = this.formApplicationId;
+    this.inspectionBodyForm.step6.userType = this.userType;
+    this.inspectionBodyForm.step6.is_draft = false;
+    this.inspectionBodyForm.saved_step = 6;
+    
+
+    //console.log(">>> Step6 data: ", this.inspectionBodyForm);
+    //return;
+
+    if(ngForm.form.valid && type == undefined) {
+      // this.inspectionBodyForm = {};
+      // this.inspectionBodyForm.step5 = {};
+      // this.step5Data.is_perlim_visit = (this.step5Data.perlim_visit_val) ? true : false;
+      // this.inspectionBodyForm.step5 = this.step5Data;
+      // this.inspectionBodyForm.step5.email = this.userEmail;
+      // this.inspectionBodyForm.step5.userType = this.userType;
+
+      
+      //this.inspectionBodyForm.step6.is_draft = false;
+      //this.inspectionBodyForm.saved_step = 6;
+      //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          this.isPrelimSubmitted = false;
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else if(type != undefined && type == true){
+      this.inspectionBodyForm.step6.is_draft = true;
+      this.inspectionBodyForm.saved_step = 6;
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
+      .subscribe(
+      res => {
+        console.log(res,'res')
+        if(res['status'] == true) {
+          this.toastr.success(res['msg'], '');
+          //this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+          setTimeout(()=> {
+            this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+          },2000) 
+          //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+        }else{
+          this.toastr.warning(res['msg'], '');
+        }
+      });
+      }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+ }
+
+
+ onSubmitScopeAccreditation(ngForm: any, type?: boolean){
+  this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+
+  this.inspectionBodyForm = {};
+  this.inspectionBodyForm.step5 = {};
+  this.inspectionBodyForm.step5 = this.step5Data;
+  this.inspectionBodyForm.step5.application_id = this.formApplicationId;
+  if(this.step5Data.criteria_request != undefined){
+    let schemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id);
+    console.log("scheme data: ", schemeData);
+      if(schemeData){
+      this.step5Data.criteria_request = schemeData.title;
+      this.inspectionBodyForm.step5['scheme'] = schemeData.scope_accridiation.id;
+      }
     }
     let scopeValues: any =[];
     let scopeIds:any =[];
@@ -1394,368 +2100,21 @@ export class InspectionBodiesFormComponent implements OnInit {
     //      }
     // })
     if(scopeCollections != undefined){
-      this.inspectionBodyForm.step1['scope_heading'] = scopeCollections['scope_heading'];
-      this.inspectionBodyForm.step1['scope_value'] = scopeCollections['scope_value'];
+      this.inspectionBodyForm.step5['scope_heading'] = scopeCollections['scope_heading'];
+      this.inspectionBodyForm.step5['scope_value'] = scopeCollections['scope_value'];
     }
-    console.log(">> submit: ", this.inspectionBodyForm);
+    // this.inspectionBodyForm.step5['application_id'] = 812;
+    // this.inspectionBodyForm.step5['is_perlim_visit'] = false;
+    // let dtFormat: string = "2020-09-12";
+    // this.step5Data['perlim_visit_date'] = dtFormat ;
+    // this.step5Data['perlim_visit_time'] = "01:30AM";
+    
+    console.log(">>> step5 submit...", this.step5Data, " -- ", this.inspectionBodyForm);
     //return;
 
-    if(ngForm1.form.valid && this.tradeLicensedValidation != false) {
-      
-      //this.inspectionBodyForm.email = this.userEmail;
-      //this.inspectionBodyForm.userType = this.userType;
-      // this.inspectionBodyForm.step1 = this.step1Data;      
-
-      // this.inspectionBodyForm.step1['ownOrgBasicInfo'] = [];
-      // this.inspectionBodyForm.step1['ownOrgMembInfo'] = [];
-      // this.inspectionBodyForm.step1['accreditationInfo'] = [];
-      
-      // if(this.ownOrgBasicInfo) {
-      //   this.inspectionBodyForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
-      // }
-      // if(this.ownOrgMembInfo) {
-      //   this.inspectionBodyForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
-      // }
-      // if(this.accreditationInfo) {
-      //   this.inspectionBodyForm.step1['accreditationInfo'] = this.accreditationInfo;
-      // }
-      console.log(">>> First Step Data: ", this.inspectionBodyForm);
-      //return;
-      this.inspectionBodyForm.step1['trade_license'] = this.step1DataBodyFormFile;
-      this.inspectionBodyForm.step1.is_draft = false;
-      //this.step1DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
-          this.toastr.success('Application Successfully Submitted', '');
-          setTimeout(()=> {
-            this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
-          }, 1000)
-      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
-      // .subscribe(
-      //   res => {
-      //     console.log(res,'res')
-      //     if(res['status'] == true) {
-      //       this.toastr.success(res['msg'],);
-      //       this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
-      //     }else{
-      //       this.toastr.warning(res['msg'], '');
-      //     }
-      //   });
-      /*
-          else if(ngForm1.form.valid && this.tradeLicensedValidation == false) {
-      this.file_validation = false;
-      this.toastr.warning('Please Fill required field','');
-    }
-      */   
-    }else if(ngForm1.form.valid && this.tradeLicensedValidation == false) {
-      this.file_validation = false;
-      this.toastr.warning('Please Fill required field','');
-    }else if(!ngForm1.form.valid && type != undefined && type == true){
-        console.log("save a draft...");
-        this.inspectionBodyForm.step1.is_draft = true;
-        if(this.step1DataBodyFormFile != undefined){
-          this.inspectionBodyForm.step1['trade_license'] = this.step1DataBodyFormFile;
-        }        
-        console.log(">>> Save a draft First Step Data: ", this.inspectionBodyForm);
-        this.toastr.success("Record saved successfully");
-        setTimeout(()=> {
-          this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-        },2000) 
-        //this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
-        // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
-        // .subscribe(
-        //   res => {
-        //     console.log(res,'res')
-        //     if(res['status'] == true) {
-        //       this.toastr.success(res['msg'],);
-        //       this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
-        //     }else{
-        //       this.toastr.warning(res['msg'], '');
-        //     }
-        //   });
-    }
-    else {
-      this.toastr.warning('Please Fill required field','');
-    }
-  }
-
-  onSubmitTestingParticipation(ngForm2: any, type?:boolean){
-    //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
-    this.inspectionBodyForm = {};
-    this.inspectionBodyForm.step2 = {};
-    //this.inspectionBodyForm.email = this.userEmail;
-    //this.inspectionBodyForm.userType = this.userType;
-    this.inspectionBodyForm.step2 = this.step2Data;
-    this.inspectionBodyForm.step2.email = this.userEmail;
-    this.inspectionBodyForm.step2.userType = this.userType;
-    this.inspectionBodyForm.step2.application_id = this.formApplicationId;
-    this.inspectionBodyForm.step2['proficiencyTesting'] = [];
-    
-    if(this.ownOrgBasicInfo) {
-      this.inspectionBodyForm.step2['proficiencyTesting'] = this.proficiencyTesting;
-    }
-
-    console.log("@Step2 submit...", this.inspectionBodyForm);
-
-    if(ngForm2.form.valid && type == undefined) {
-      // this.inspectionBodyForm = {};
-      // this.inspectionBodyForm.step2 = {};
-      // //this.inspectionBodyForm.email = this.userEmail;
-      // //this.inspectionBodyForm.userType = this.userType;
-      // this.inspectionBodyForm.step2 = this.step2Data;
-      // this.inspectionBodyForm.step2.email = this.userEmail;
-      // this.inspectionBodyForm.step2.userType = this.userType;
-      // this.inspectionBodyForm.step2['proficiencyTesting'] = [];
-      
-      // if(this.ownOrgBasicInfo) {
-      //   this.inspectionBodyForm.step2['proficiencyTesting'] = this.proficiencyTesting;
-      // }
-      console.log(">>>step2 data: ", this.inspectionBodyForm);
-      //return;
-      this.inspectionBodyForm.step2.is_draft = false;
-      //this.step2DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
-          this.toastr.success('Application Successfully Submitted', '');
-          setTimeout(()=> {
-            this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
-          }, 1000)
-      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
-      // .subscribe(
-      //   res => {
-      //     console.log(res,'res')
-      //     if(res['status'] == true) {
-      //       this.toastr.success(res['msg'], '');
-      //       this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
-      //     }else{
-      //       this.toastr.warning(res['msg'], '');
-      //     }
-      //   });
-    }else if(type != undefined && type == true){
-      this.inspectionBodyForm.step2.is_draft = true;
-      console.log('save draft....1');
-          this.toastr.success('Application Successfully Submitted', '');
-          setTimeout(()=> {
-            this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-          }, 1000)
-      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
-      // .subscribe(
-      //   res => {
-      //     console.log(res,'res')
-      //     if(res['status'] == true) {
-      //       this.toastr.success(res['msg'], '');
-      //       console.log('save draft....2');
-      //       setTimeout(()=> {
-      //         this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-      //       },2000) 
-      //       //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
-      //     }else{
-      //       this.toastr.warning(res['msg'], '');
-      //     }
-      //   });
-    }
-    else{
-      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
-    }
-  }
-
-  onSubmitPersonalInformation(ngForm3: any, type?: boolean){
-    // console.log("Step PersonalInformation submit...");
-    //this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
-    this.inspectionBodyForm = {};
-      this.inspectionBodyForm.step3 = {};
-      //this.inspectionBodyForm.email = this.userEmail;
-      //this.inspectionBodyForm.userType = this.userType;
-      this.inspectionBodyForm.step3.email = this.userEmail;
-      this.inspectionBodyForm.step3.userType = this.userType;
-      this.inspectionBodyForm.step3.application_id = this.formApplicationId;
-      //this.inspectionBodyForm.step3 = this.step3Data;
-
-      this.inspectionBodyForm.step3.technicalManager = {};
-      //if(this.step3Data.name_technical != '' && this.step3Data.designation_technical != '' && this.step3Data.mobile_no_technical != ''
-        // && this.step3Data.tech_email_technical != '' && this.step3Data.relevent_experience_technical != ''){
-          this.inspectionBodyForm.step3.technicalManager['name'] = (this.step3Data.name_technical != '' && this.step3Data.name_technical != undefined) ? this.step3Data.name_technical : '';
-          this.inspectionBodyForm.step3.technicalManager['designation'] = (this.step3Data.designation_technical != '' && this.step3Data.designation_technical != undefined) ? this.step3Data.designation_technical : '';
-          this.inspectionBodyForm.step3.technicalManager['mobile_no'] = (this.step3Data.mobile_no_technical != '' && this.step3Data.mobile_no_technical != undefined) ? this.step3Data.mobile_no_technical : '';
-          this.inspectionBodyForm.step3.technicalManager['email'] = (this.step3Data.tech_email_technical != '' && this.step3Data.tech_email_technical != undefined) ? this.step3Data.tech_email_technical : '';
-          this.inspectionBodyForm.step3.technicalManager['relevent_experience'] = (this.step3Data.relevent_experience_technical != '' && this.step3Data.mobile_no_technical != undefined) ? this.step3Data.relevent_experience_technical : '';
-      //}     
-
-      this.inspectionBodyForm.step3.managementManager = {};
-      //if(this.step3Data.management_name != '' && this.step3Data.management_designation != '' && this.step3Data.management_mobile_no != ''
-        // && this.step3Data.management_email != '' && this.step3Data.management_relevent_experience != ''){
-          this.inspectionBodyForm.step3.managementManager['name'] = (this.step3Data.management_name != '' && this.step3Data.management_name != undefined) ? this.step3Data.management_name : '';
-          this.inspectionBodyForm.step3.managementManager['designation'] = (this.step3Data.management_designation != '' && this.step3Data.management_designation != undefined) ? this.step3Data.management_designation : '' ;
-          this.inspectionBodyForm.step3.managementManager['mobile_no'] = (this.step3Data.management_mobile_no != '' && this.step3Data.management_mobile_no != undefined) ? this.step3Data.management_mobile_no : '';
-          this.inspectionBodyForm.step3.managementManager['email'] = (this.step3Data.management_email != '' && this.step3Data.management_email != undefined) ? this.step3Data.management_email : '';
-          this.inspectionBodyForm.step3.managementManager['relevent_experience'] = (this.step3Data.management_relevent_experience != '' && this.step3Data.management_relevent_experience != undefined) ? this.step3Data.management_relevent_experience : '';
-      //}
-
-      console.log('>>> ', this.inspectionBodyForm);
-    if(ngForm3.form.valid && type == undefined) {
-      // this.inspectionBodyForm = {};
-      // this.inspectionBodyForm.step3 = {};
-      // //this.inspectionBodyForm.email = this.userEmail;
-      // //this.inspectionBodyForm.userType = this.userType;
-      // this.inspectionBodyForm.step3.email = this.userEmail;
-      // this.inspectionBodyForm.step3.userType = this.userType;
-      // //this.inspectionBodyForm.step3 = this.step3Data;
-
-      // this.inspectionBodyForm.step3.technicalManager = {};
-      // this.inspectionBodyForm.step3.technicalManager['name'] = this.step3Data.name_technical;
-      // this.inspectionBodyForm.step3.technicalManager['designation'] = this.step3Data.designation_technical;
-      // this.inspectionBodyForm.step3.technicalManager['mobile_no'] = this.step3Data.mobile_no_technical;
-      // this.inspectionBodyForm.step3.technicalManager['email'] = this.step3Data.tech_email_technical;
-      // this.inspectionBodyForm.step3.technicalManager['relevent_experience'] = this.step3Data.relevent_experience_technical;
-
-      // this.inspectionBodyForm.step3.managementManager = {};
-      // this.inspectionBodyForm.step3.managementManager['name'] = this.step3Data.management_name;
-      // this.inspectionBodyForm.step3.managementManager['designation'] = this.step3Data.management_designation;
-      // this.inspectionBodyForm.step3.managementManager['mobile_no'] = this.step3Data.management_mobile_no;
-      // this.inspectionBodyForm.step3.managementManager['email'] = this.step3Data.management_email;
-      // this.inspectionBodyForm.step3.managementManager['relevent_experience'] = this.step3Data.management_relevent_experience;
-
-      console.log(">>> Step3 post: ", this.inspectionBodyForm);
-      //return;
-
-      this.inspectionBodyForm.step3.is_draft = false;
-      this.step3DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
-      this.toastr.success('Application Successfully Submitted', '');
-          setTimeout(()=> {
-            this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
-          }, 1000)
-      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
-      // .subscribe(
-      //   res => {
-      //     console.log(res,'res')
-      //     if(res['status'] == true) {
-      //       this.toastr.success(res['msg'], '');
-      //       this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
-      //     }else{
-      //       this.toastr.warning(res['msg'], '');
-      //     }
-      //   });
-    }else if( type != undefined && type == true){
-      this.inspectionBodyForm.step3.is_draft = true;
-      this.toastr.success('Application Successfully Submitted', '');
-          setTimeout(()=> {
-            this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-          }, 1000)
-      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
-      // .subscribe(
-      // res => {
-      //   console.log(res,'res')
-      //   if(res['status'] == true) {
-      //     this.toastr.success(res['msg'], '');
-      //     setTimeout(()=> {
-      //       this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-      //     },2000)          
-      //     //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
-      //   }else{
-      //     this.toastr.warning(res['msg'], '');
-      //   }
-      // });
-      }else{
-      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
-    }
-  }
-
-  onSubmitInformationAuditManagement(ngForm4: any, type?:boolean){
-  //   console.log("Step InformationAuditManagement submit...");   
-    //this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
-    this.inspectionBodyForm = {};
-      this.inspectionBodyForm.step4 = {};
-      console.log(">>> step4 data: ", this.step4Data);
-      this.step4Data['audit_date'] = (this.step4Data.audit_date != '') ? this.step4Data.audit_date : null;
-      this.step4Data['mrm_date'] = (this.step4Data.mrm_date != undefined) ? this.step4Data.mrm_date : null;
-
-      this.inspectionBodyForm.step4 = this.step4Data; 
-      this.inspectionBodyForm.step4.email = this.userEmail;
-      this.inspectionBodyForm.step4.application_id = this.formApplicationId;
-      this.inspectionBodyForm.step4.userType = this.userType;
-
-      console.log(">>> step4 data: ", this.inspectionBodyForm);
-    if(ngForm4.form.valid && type == undefined) {
-      // this.inspectionBodyForm = {};
-      // this.inspectionBodyForm.step4 = {};
-
-      // this.inspectionBodyForm.step4 = this.step4Data; 
-      // this.inspectionBodyForm.step4.email = this.userEmail;
-      // this.inspectionBodyForm.step4.userType = this.userType;
-
-      
-      //return;
-      this.inspectionBodyForm.step4.is_draft = false;
-      //this.step4DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
-      .subscribe(
-        res => {
-          console.log(res,'res')
-          if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
-            this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
-          }else{
-            this.toastr.warning(res['msg'], '');
-          }
-        });
-    }else if(type != undefined && type == true){
-      this.inspectionBodyForm.step4.is_draft = true;
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
-      .subscribe(
-      res => {
-        console.log(res,'res')
-        if(res['status'] == true) {
-          this.toastr.success(res['msg'], '');
-          setTimeout(()=> {
-            this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-          },2000) 
-          //this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
-        }else{
-          this.toastr.warning(res['msg'], '');
-        }
-      });
-      }else{
-      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
-    }
-  }
-  
-  onSubmitPerlimVisit(ngForm5: any, type?:boolean){
-    // console.log("Step PerlimVisit submit...", ngForm.form);    
-    //this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
-    this.inspectionBodyForm = {};
-    this.inspectionBodyForm.step5 = {};
-
-    console.log("@@@@Step5 data: ", this.step5Data);
-    this.step5Data.is_perlim_visit = (this.step5Data.perlim_visit_val) ? true : false;
-    let dtFormat = '';
-    if(this.step5Data.perlim_visit_select_date != undefined && this.step5Data.perlim_visit_select_date._i != undefined){
-      var dtData = this.step5Data.perlim_visit_select_date._i;
-      var year = dtData.year;
-      var month = dtData.month;
-      var date = dtData.date;
-    }
-    //let dtData = this.step5Data.perlim_visit_select_date._i;
-    //let year = dtData.year;
-    //let month = dtData.month;
-    //let date = dtData.date;
-    dtFormat = year + "-" + month + "-" + date;
-    console.log("date format: ", dtFormat, " -- ", dtData);
-    this.step5Data['perlim_visit_date'] = (this.step5Data.perlim_visit_select_date != undefined) ? dtFormat : null;
-    this.step5Data['perlim_visit_time'] = (this.step5Data.perlim_visit_select_time != undefined) ? this.step5Data.perlim_visit_select_time : null;
-
-    this.inspectionBodyForm.step5 = this.step5Data;
-    this.inspectionBodyForm.step5.email = this.userEmail;
-    this.inspectionBodyForm.step5.application_id = this.formApplicationId;
-    this.inspectionBodyForm.step5.userType = this.userType;
-
-    console.log(">>> Step5 data: ", this.inspectionBodyForm);
-
-    if(ngForm5.form.valid && type == undefined) {
-      // this.inspectionBodyForm = {};
-      // this.inspectionBodyForm.step5 = {};
-      // this.step5Data.is_perlim_visit = (this.step5Data.perlim_visit_val) ? true : false;
-      // this.inspectionBodyForm.step5 = this.step5Data;
-      // this.inspectionBodyForm.step5.email = this.userEmail;
-      // this.inspectionBodyForm.step5.userType = this.userType;
-
-      
+    if(ngForm.form.valid && type == undefined) {
       this.inspectionBodyForm.step5.is_draft = false;
+      this.inspectionBodyForm.saved_step = 5;
       //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
       .subscribe(
@@ -1763,31 +2122,82 @@ export class InspectionBodiesFormComponent implements OnInit {
           console.log(res,'res')
           if(res['status'] == true) {
             this.toastr.success(res['msg'], '');
-            this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+            this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
           }
         });
+
     }else if(type != undefined && type == true){
       this.inspectionBodyForm.step5.is_draft = true;
+      this.inspectionBodyForm.saved_step = 5;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
       .subscribe(
-      res => {
-        console.log(res,'res')
-        if(res['status'] == true) {
-          this.toastr.success(res['msg'], '');
-          //this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-          setTimeout(()=> {
-            this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-          },2000) 
-          //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
-        }else{
-          this.toastr.warning(res['msg'], '');
-        }
-      });
-      }else{
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+            setTimeout(()=> {
+              this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+            },2000) 
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+
+    }else{
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
+ }
+
+ onSubmitScopeAccreditations(ngForm: any, type?: boolean){
+
+    //scope accreditation....
+   //this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
+   this.inspectionBodyForm = {};
+   //this.inspectionBodyForm = {};
+   this.inspectionBodyForm.data ={};
+   //this.step5Data.payment_receipt = 'test';
+   this.inspectionBodyForm.voucher_number = this.step5Data.voucher_number;
+   
+   let dtFormat = '';
+   if(this.step5Data.voucher_dates != undefined && this.step5Data.voucher_dates._i != undefined){
+     var dtData = this.step5Data.voucher_dates._i;
+     var year = dtData.year;
+     var month = dtData.month;
+     var date = dtData.date;
+   }
+   dtFormat = year + "-" + month + "-" + date;
+   console.log("date format: ", dtFormat, " -- ", dtData);
+   //this.step5Data['voucher_dates'] = (this.step5Data.voucher_dates != undefined) ? dtFormat : null;
+   this.inspectionBodyForm.voucher_date = dtFormat;
+   console.log(">>>>payment file: ", this.step5Data.payment_receipt_file);
+   //this.inspectionBodyForm.payment_receipt = this.step5DataBodyFormFile;//this.step5Data.payment_receipt_file;
+   let postObject: any = {};
+   postObject['voucher_date'] = dtFormat;
+   postObject['voucher_number'] = this.step5Data.voucher_number;
+   this.step5DataBodyFormFile.append('data',JSON.stringify(postObject));
+   
+   console.log("submit...", " -- ", this.step5DataBodyFormFile);
+    if(ngForm.form.valid && this.paymentReceiptValidation != false){
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.paymentReceipt,this.step5DataBodyFormFile)
+      .subscribe(
+        res => {
+          console.log(res,'res')
+          if(res['status'] == true) {
+            //this.toastr.success(res['msg'], '');
+            //this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+
+   //return false;
  }
 
 onSubmitPaymentInformation(ngForm7: any, type?: boolean){
@@ -1876,7 +2286,7 @@ onSubmit(ngForm){
     //this.scrollToError(ngForm);
     //return false;
 
-    this.inspectionBodyForm.is_bod = !this.is_bod || typeof this.is_bod == 'undefined' ? "0" : ""+this.is_bod+"";
+    this.inspectionBodyForm.is_bod = !this.is_bod_select || typeof this.is_bod_select == 'undefined' ? "0" : ""+this.is_bod_select+"";
     this.inspectionBodyForm.proficiency_testing_val = !this.proficiency_testing_val || typeof this.proficiency_testing_val == 'undefined' ? "0" : ""+this.proficiency_testing_val+"";
     this.inspectionBodyForm.is_hold_other_accreditation = !this.is_hold_other_accreditation_toggle || typeof this.is_hold_other_accreditation_toggle == 'undefined' ? "0" : ""+this.is_hold_other_accreditation_toggle+"";
 

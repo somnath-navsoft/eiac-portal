@@ -1,3 +1,20 @@
+/*
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-operations-accreditation-service-list',
+  templateUrl: './operations-accreditation-service-list.component.html',
+  styleUrls: ['./operations-accreditation-service-list.component.scss']
+})
+export class OperationsAccreditationServiceListComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}
+*/
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
@@ -6,20 +23,20 @@ import { AppService } from '../../../../services/app.service';
 import { TrainerService } from '../../../../services/trainer.service';
 import { Constants } from '../../../../services/constant.service';
 
-import { TrainerState, selectTrainerList} from '../../../../store/trainer.states';
-import { Listing, Delete } from '../../../../store/actions/trainer.actions';
-import { TrainerModel} from '../../../../models/trainer';
+//import { TrainerState, selectTrainerList} from '../../../../store/trainer.states';
+//import { ListingAccredService, Delete } from '../../../../store/actions/trainer.actions';
+//import { TrainerModel} from '../../../../models/trainer';
 
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {CustomModalComponent} from '../../../utility/custom-modal/custom-modal.component';
 
 @Component({
-  selector: 'app-operations-trainer-service-list',
-  templateUrl: './operations-trainer-service-list.component.html',
-  styleUrls: ['./operations-trainer-service-list.component.scss'],
+  selector: 'app-operations-accreditation-service-list',
+  templateUrl: './operations-accreditation-service-list.component.html',
+  styleUrls: ['./operations-accreditation-service-list.component.scss'],
   providers: [CustomModalComponent]
 })
-export class OperationsTrainerServiceListComponent implements OnInit, OnDestroy {
+export class OperationsAccreditationServiceListComponent implements OnInit, OnDestroy {
   getTrainerCourse: Observable<any>; 
   trainerdata: any[] = [];
   trainerTempdata: any;
@@ -55,10 +72,10 @@ export class OperationsTrainerServiceListComponent implements OnInit, OnDestroy 
   selectDeleteID: number = 0;
 
   deleteConfirm: boolean = false;
-
-  constructor(private store: Store<TrainerState>, private _service: AppService, private _constant: Constants,
+  //private store: Store<TrainerState>,
+  constructor( private _service: AppService, private _constant: Constants,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent) { 
-    this.store.dispatch(new Listing({}));
+    //this.store.dispatch(new ListingAccredService({}));
     this.modalOptions = {
       backdrop:'static',
       backdropClass:'customBackdrop'
@@ -78,7 +95,7 @@ export class OperationsTrainerServiceListComponent implements OnInit, OnDestroy 
                   this._service.openFlashMessage(data.msg,'',5000);
                   //this.modalService.dismissAll();
                   this._customModal.closeDialog();
-                  this.store.dispatch(new Listing({}));
+                  //this.store.dispatch(new ListingAccredService({}));
                   this.loadPageData();
                 }
              }
@@ -235,7 +252,7 @@ export class OperationsTrainerServiceListComponent implements OnInit, OnDestroy 
   }
 
   ngOnInit() {
-    this.getTrainerCourse = this.store.select(selectTrainerList);
+    //this.getTrainerCourse = this.store.select(selectTrainerList);
     this.curSortDir['training_course_type']   = false;
     this.curSortDir['course_code']            = false;
     this.curSortDir['agreement_status']       = false;
@@ -393,25 +410,52 @@ export class OperationsTrainerServiceListComponent implements OnInit, OnDestroy 
 
   //Load Record
   loadPageData(){ 
+    let url = this._service.apiServerUrl + "/" + this._constant.API_ENDPOINT.trainerAccredServList; 
     
-    this.getTrainerCourse.subscribe((state) => {
-      //console.log(">>>State subscribed: ", state);      
-      setTimeout(()=>{
+    //let url1 = 'https://dev-service.eiac.gov.ae/webservice/profile-service/?userType=cab_client&email=abhishek@navsoft.in';
+    console.log(">>API: ", url);
+    this._service.getwithoutData(url).subscribe(record => {
+       console.log(">>> ", record);
+    },
+    error =>{
+      console.log("error calling...", error);
+    },
+    ()=>{
+      console.log("complete calling...");
+    }
+    
+    );
+
+    // this.subscriptions.push(this._trainerService.getAccreditationServiceList()
+    //       .subscribe(
+    //         result => {
+    //           let data: any = result;
+    //           console.log(">>>List: ", data);
+
+    //         }
+
+    //   ))
+    
+    // this.getTrainerCourse.subscribe((state) => {
+    //   //console.log(">>>State subscribed: ", state);      
+    //   setTimeout(()=>{
         
-        if(state.trainer != undefined && state.trainer.records != undefined){
-          this.dataLoad = true;
-          let dataRec: any=[];
-          this.trainerdata = state.trainer.records;
-          dataRec = state.trainer.records;
-          console.log(">>>Load Data: ", this.trainerdata, " -- ", dataRec);
-        }
+    //     if(state.trainer != undefined && state.trainer.records != undefined){
+    //       this.dataLoad = true;
+    //       let dataRec: any=[];
+    //       this.trainerdata = state.trainer.records;
+    //       dataRec = state.trainer.records;
+    //       console.log(">>>Load Data: ", this.trainerdata, " -- ", dataRec);
+    //     }
         
-        if(state.trainer != undefined && state.trainer.records != undefined && state.trainer.records.length > 0){
-          this.pageTotal = state.trainer.records.length;
-        }
-      },100)      
-    });
+    //     if(state.trainer != undefined && state.trainer.records != undefined && state.trainer.records.length > 0){
+    //       this.pageTotal = state.trainer.records.length;
+    //     }
+    //   },100)      
+    // });
   }
 }
+
+
 
 
