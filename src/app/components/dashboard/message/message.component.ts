@@ -17,6 +17,7 @@ export class MessageComponent implements OnInit {
   file_validation:boolean = true;
   chatMessageFile:any = new FormData();
   loader:boolean = true;
+  messageList:any;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
@@ -28,6 +29,18 @@ export class MessageComponent implements OnInit {
     //   var landUrl = '/dashboard'+this.userType+'/home'
     //   this.router.navigateByUrl(landUrl);
     // }
+    this.loader = false;
+    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.messageList)
+    .subscribe(
+      res => {
+        this.messageList = res['data'].message_list;
+        this.loader = true;
+        // console.log(res['data'].message_list);
+    });
+  }
+
+  getRouteId(routeId) {
+    sessionStorage.setItem('routeId',routeId);
   }
 
   validateFile(fileEvent: any) {

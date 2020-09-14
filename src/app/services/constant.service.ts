@@ -49,6 +49,8 @@ export class Constants{
 		criteriaScope: this.apiUrl + 'inspection_body_form_management/?scheme=',
 		paymentReceipt: 'payment-details-save/',
 		userPermissionData: this.apiUrl + 'user-permission-data/',
+		messageList: this.apiUrl + 'message-list/',
+		profileApproval: this.apiUrl + 'profile-approval/',
 	}
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."
 	public loggedIn													=	new Subject<any>();

@@ -121,6 +121,11 @@ import { OperationMessageDetailsComponent } from './components/dashboard/operati
 import { OperationsAccreditationServiceListComponent } from './components/dashboard/operations/operations-accreditation-service-list/operations-accreditation-service-list.component';
 import { MessageComponent } from './components/dashboard/message/message.component';
 import { MessageDetailComponent } from './components/dashboard/message/message-detail/message-detail.component';
+import { MessageDetailsComponent } from './components/dashboard/assessors/message-details/message-details.component';
+import { CabMessageDetailsComponent } from './components/dashboard/cab/cab-message-details/cab-message-details.component';
+import { CandidateMessageDetailsComponent } from './components/dashboard/candidate/candidate-message-details/candidate-message-details.component';
+import { OperationsMessageDetailsComponent } from './components/dashboard/operations/operations-message-details/operations-message-details.component';
+import { TrainersMessageDetailsComponent } from './components/dashboard/trainers/trainers-message-details/trainers-message-details.component';
 
 import { ViewerComponentComponent} from './components/utility/viewer-component/viewer-component.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
@@ -156,7 +161,12 @@ export const MY_FORMATS = {
     OperationMessageDetailsComponent,
     OperationsAccreditationServiceListComponent,
     MessageComponent,
-    MessageDetailComponent],
+    MessageDetailComponent,
+    MessageDetailsComponent,
+    CabMessageDetailsComponent,
+    CandidateMessageDetailsComponent,
+    OperationsMessageDetailsComponent,
+    TrainersMessageDetailsComponent],
   imports: [
     CommonModule,
     FormsModule,

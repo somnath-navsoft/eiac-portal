@@ -74,6 +74,11 @@ import { OperationMessageDetailsComponent } from './components/dashboard/operati
 import { OperationsAccreditationServiceListComponent } from './components/dashboard/operations/operations-accreditation-service-list/operations-accreditation-service-list.component';
 import { MessageComponent } from './components/dashboard/message/message.component';
 import { MessageDetailComponent } from './components/dashboard/message/message-detail/message-detail.component';
+import { OperationsMessageDetailsComponent } from './components/dashboard/operations/operations-message-details/operations-message-details.component';
+import { CabMessageDetailsComponent } from './components/dashboard/cab/cab-message-details/cab-message-details.component';
+import { TrainersMessageDetailsComponent } from './components/dashboard/trainers/trainers-message-details/trainers-message-details.component';
+import { MessageDetailsComponent } from './components/dashboard/assessors/message-details/message-details.component';
+import { CandidateMessageDetailsComponent } from './components/dashboard/candidate/candidate-message-details/candidate-message-details.component';
 
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
@@ -99,7 +104,8 @@ const routes: Routes = [
             { path: 'attendane-list', component:TrainersAttendanceListComponent, canActivate: [AuthGuard] },
             { path: 'agenda-list', component:TrainersAgendaListComponent, canActivate: [AuthGuard] },
             //{ path: 'training-apply', component:TrainerServiceComponent, canActivate: [AuthGuard] },
-            //{ path: 'training-service', component:TrainerServiceListComponent, canActivate: [AuthGuard] },            
+            //{ path: 'training-service', component:TrainerServiceListComponent, canActivate: [AuthGuard] },  
+            { path: 'message-detail/:id', component:TrainersMessageDetailsComponent, canActivate: [AuthGuard] },          
           ]
     },
 
@@ -112,7 +118,7 @@ const routes: Routes = [
           { path: 'training-service', component:OperationsTrainerServiceListComponent, canActivate: [AuthGuard] },
           { path: 'accreditation-service-list', component:OperationsAccreditationServiceListComponent, canActivate: [AuthGuard] },
           { path: 'message', component:OperationMessageComponent, canActivate: [AuthGuard] },
-          { path: 'message-detail/:id', component:OperationMessageDetailsComponent, canActivate: [AuthGuard] },
+          { path: 'message-detail/:id', component:OperationsMessageDetailsComponent, canActivate: [AuthGuard] },
         ] 
     }, 
 
@@ -137,6 +143,7 @@ const routes: Routes = [
         { path: 'health-care-form', component:HealthCareFormComponent, canActivate: [AuthGuard] },
         { path: 'halal-conformity-form', component:HalalConformityFormComponent, canActivate: [AuthGuard] },
         { path: 'pt-providers-form', component:PtProvidersFormComponent, canActivate: [AuthGuard] },
+        { path: 'message-detail/:id', component:CabMessageDetailsComponent, canActivate: [AuthGuard] },
       ]
     },
 
@@ -145,6 +152,7 @@ const routes: Routes = [
       children:[
         { path: '', redirectTo:'home', pathMatch:'full'},
         { path: 'home', component:AssessorsDashboardComponent, canActivate: [AuthGuard]},
+        { path: 'message-detail/:id', component:MessageDetailsComponent, canActivate: [AuthGuard] },
       ]
     },
     //Candidate
@@ -160,6 +168,7 @@ const routes: Routes = [
         { path: 'agenda-list', component:CandidateAgendaListComponent, canActivate: [AuthGuard] },
         { path: 'training-public-course', component:CandidateTrainingPublicCourseComponent, canActivate: [AuthGuard]},
         { path: 'training-course', component:CandidateTrainingApplicationComponent, canActivate: [AuthGuard] },
+        { path: 'message-detail/:id', component:CandidateMessageDetailsComponent, canActivate: [AuthGuard] },
       ]
     },
 

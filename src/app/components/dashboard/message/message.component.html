@@ -18,7 +18,7 @@
           <div class="comments-section">
             <div class="row m-0">
                 <div class="col-md-12 p-0">
-                    <div class="ass-name-det">
+                    <!-- <div class="ass-name-det">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="ass-data">
@@ -42,67 +42,45 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="ass-name-det">
+                    </div> -->
+                    
+                    <div class="ass-name-det" *ngFor="let row of messageList; let i = index;">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="ass-data">
-                                    <h3>Brayn Williams</h3>
-                                    <p>Dec 25, 2019 - 07:02 PM</p>
+                                    <h3>{{row.title}}</h3>
+                                    <p>{{row.user.date_joined | date}}</p>
                                 </div>
                                 <hr>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="ass-details">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
-                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-                                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit 
-                                        esse cillum dolore eu fugiat nulla pariatur.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ass-name-det">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="ass-data">
-                                    <h3>Peter Robertson</h3>
-                                    <p>Nov 01, 2019 - 09:56 PM</p>
-                                </div>
-                                <hr>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="ass-details">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
-                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-                                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit 
-                                        esse cillum dolore eu fugiat nulla pariatur.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ass-name-det">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="ass-data">
-                                    <h3>Peter Robertson</h3>
-                                    <p>Nov 01, 2019 - 09:56 PM</p>
-                                </div>
-                                <hr>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="assess-doc">
+                                <div class="assess-doc" *ngIf="row.meta_title == 'user_registration'">
                                     <div class="data-attach">
-                                        <h5>New Registration</h5>
+                                        <h5>{{row.message}}</h5>
                                     </div>
                                     <div class="bttn-details">
-                                        <a class="cancel-bttn">DETAILS</a>
+                                        <a *ngIf="row.user.users_type=='cab_client'" class="cancel-bttn" (click)="getRouteId(row.user.id)" routerLink="/dashboard/cab_client/message-detail/{{row.user.id}}">DETAILS</a>
+
+                                        <a *ngIf="row.user.users_type=='assessors'" class="cancel-bttn" (click)="getRouteId(row.user.id)" routerLink="/dashboard/assessors/message-detail/{{row.user.id}}">DETAILS</a>
+
+                                        <a *ngIf="row.user.users_type=='trainers'" class="cancel-bttn" (click)="getRouteId(row.user.id)" routerLink="/dashboard/trainers/message-detail/{{row.user.id}}">DETAILS</a>
+
+                                        <a *ngIf="row.user.users_type=='candidate'" class="cancel-bttn" (click)="getRouteId(row.user.id)" routerLink="/dashboard/candidate/message-detail/{{row.user.id}}">DETAILS</a>
+
+                                        <a *ngIf="row.user.users_type=='operations'" class="cancel-bttn" (click)="getRouteId(row.user.id)" routerLink="/dashboard/operations/message-detail/{{row.user.id}}">DETAILS</a>
+                                    </div>
+                                </div>
+
+                                <div class="ass-details" *ngIf="row.meta_title != 'user_registration'">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+                                        ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+                                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
+                                        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non 
+                                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
+                                    <div class="attach-cnt">
+                                        <a href="javascript:void(0)" class="attachment-cnt"><span class="icon-attach"></span>Accreditation Application for PTP Provider.xlsx</a>
                                     </div>
                                 </div>
                             </div>
