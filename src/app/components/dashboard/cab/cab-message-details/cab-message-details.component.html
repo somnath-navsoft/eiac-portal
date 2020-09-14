@@ -37,7 +37,7 @@
                             <h5>Date of Birth</h5>
                         </div>
                         <div class="appln-details">
-                            <span>{{cabStep1?.dob}}</span>
+                            <span>{{cabStep1?.dob | date}}</span>
                         </div>
                     </div>
                     <div class="col border-left-dash">
@@ -158,7 +158,7 @@
                             <td>{{cabStep1?.applicant_fax_no}}</td>
                             </tr>
                             <tr>
-                            <td>Official Em ail Address</td>
+                            <td>Official Email Address</td>
                             <td>{{cabStep1?.applicant_email}}</td>
                             </tr>
                             <tr>
@@ -195,7 +195,7 @@
                                 <div class="data-main-attach">
                                     <div class="data-attach">
                                     <h5>
-                                        <a href="javascript:void(0)">tradelicense details.pdf</a>
+                                        <a href="javascript:void(0)">{{tradeLicenseText[4]}}</a>
                                     </h5>
                                     </div>
                                     <div class="icn-appln">

@@ -37,7 +37,7 @@
                             <h5>Date of Birth</h5>
                         </div>
                         <div class="appln-details">
-                            <span>{{cabStep1?.dob}}</span>
+                            <span>{{cabStep1?.dob | date}}</span>
                         </div>
                     </div>
                     <div class="col border-left-dash">
@@ -139,27 +139,27 @@
                         <table>
                             <tr>
                             <td>QUALIFICATION/DEGREE</td>
-                            <td>{{cabStep1['education'][0]?.detail.qualification_degree}}</td>
+                            <td>{{cabStep2['education'][0]?.detail}}</td>
                             </tr>
                             <tr>
                             <td>UNIVERSITY/COLLEGE/SCHOOL</td>
-                            <td>{{cabStep1?.university_college}}</td>
+                            <td>{{cabStep2['education'][0]?.organization}}</td>
                             </tr>
                             <tr>
                             <td>SPECIALIZATION</td>
-                            <td>{{cabStep1?.education_specialization}}</td>
+                            <td>{{cabStep2['education'][0]?.specialization}}</td>
                             </tr>
                             <tr>
                             <td>WHICH</td>
-                            <td>{{cabStep1?.which}}</td>
+                            <td>{{cabStep2['which_forum'][0].organization}}</td>
                             </tr>
                             <tr>
                             <td>FROM</td>
-                            <td>{{cabStep1?.applicant_location}}</td>
+                            <td>{{cabStep2['which_forum'][0].date_from | date}}</td>
                             </tr>
                             <tr>
                             <td>TO</td>
-                            <td>{{cabStep1?.applicant_address}}</td>
+                            <td>{{cabStep2['which_forum'][0].date_to | date}}</td>
                             </tr>
                         </table>
                         </div>
@@ -181,30 +181,47 @@
                     <div class="col-md-12">
                         <div class="table-appln messg-tbl">
                             <table>
-                            <tr>
-                                <td>Legal- professional Commercial/Trade License Number</td>
-                                <td>{{cabStep1?.trade_license_number}}</td>
-                            </tr>
-                            <tr>
-                                <td>Upload Trade License</td>
-                                <td>
-                                <div class="data-main-attach">
-                                    <div class="data-attach">
-                                    <h5>
-                                        <a href="javascript:void(0)">tradelicense details.pdf</a>
-                                    </h5>
+                                <tr>
+                                    <td>Upload Qualification File</td>
+                                    <td>
+                                    <div class="data-main-attach">
+                                        <div class="data-attach">
+                                        <h5>
+                                            <a href="javascript:void(0)">{{qualificationText[4]}}</a>
+                                        </h5>
+                                        </div>
+                                        <div class="icn-appln">
+                                        <!-- <a href="javascript:void(0)">
+                                            <span class="icon-eye"></span>
+                                        </a> -->
+                                        <a target="_blank" [href]="qualificationFile">
+                                            <span class="icon-download"></span>
+                                        </a>
+                                        </div>
                                     </div>
-                                    <div class="icn-appln">
-                                    <!-- <a href="javascript:void(0)">
-                                        <span class="icon-eye"></span>
-                                    </a> -->
-                                    <a target="_blank" [href]="tradeLicenseFile">
-                                        <span class="icon-download"></span>
-                                    </a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Upload Specialization File</td>
+                                    <td>
+                                    <div class="data-main-attach">
+                                        <div class="data-attach">
+                                        <h5>
+                                            <a href="javascript:void(0)">{{specializationText[4]}}</a>
+                                        </h5>
+                                        </div>
+                                        <div class="icn-appln">
+                                        <!-- <a href="javascript:void(0)">
+                                            <span class="icon-eye"></span>
+                                        </a> -->
+                                        <a target="_blank" [href]="specializationFile">
+                                            <span class="icon-download"></span>
+                                        </a>
+                                        </div>
                                     </div>
-                                </div>
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                     </div>

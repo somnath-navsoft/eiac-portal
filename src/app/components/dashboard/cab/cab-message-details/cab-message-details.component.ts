@@ -21,6 +21,7 @@ export class CabMessageDetailsComponent implements OnInit {
   approveRejectStatus:any = '';
   loader:boolean = true;
   tradeLicenseFile:any;
+  tradeLicenseText:any;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public route: ActivatedRoute,public toastr: ToastrService) { }
 
@@ -51,6 +52,7 @@ export class CabMessageDetailsComponent implements OnInit {
         this.cabStep1 = res['data']['step1'][0];
         this.cabStep2 = res['data']['step2'];
         this.tradeLicenseFile = this.constant.mediaPath+this.cabStep1.trade_license
+        this.tradeLicenseText = this.cabStep1.trade_license != null ? this.cabStep1.trade_license.split('/') : '';
     });
   }
 
