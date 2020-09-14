@@ -413,7 +413,7 @@ addMinutesToTime()
       //////console.log('======');
       //////console.log(body)
       ////console.log('======');
-      if(this.getToken() != 'undefined' && this.getToken() != ''){
+      if(this.getToken() != 'undefined' && this.getToken() != '' && this.getToken() != null){
         return this.http.post(url, body, this.getReqHeaders());
       }
       else{
