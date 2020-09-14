@@ -56,6 +56,7 @@ export class AssessorsProfileComponent implements OnInit {
   titleArr:any[] = [];
   titleFind:any;
   loader:boolean = true;
+  searchCountryLists:any[] = [];
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -86,7 +87,7 @@ export class AssessorsProfileComponent implements OnInit {
       title:'applicant_trainer', desc:'5. Applicant <br> Trainer', activeStep:false, stepComp:false, icon:'icon-doc-edit', activeClass:''
       }
     );
-
+    this.titleArr = ['Mr.','Ms.','Dr.','Prof.','Mrs.'];
     this.step3Data.list_auditor = '1' ;
     this.step3Data.attend_accreditation = '1' ;
     this.step3Data.attend_accreditation2 = '1' ;
@@ -94,8 +95,23 @@ export class AssessorsProfileComponent implements OnInit {
 
     // this.loadknowledgeExperience();
     this.loadStepsData();
+    this.stepDefaultValue();
   }
 
+  getPlaceName(data)
+    {
+      if(typeof this.step5Data.place != 'undefined')
+      {
+        this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.step5Data.place+'.json?access_token='+this.Service.mapboxToken+'','')
+          .subscribe(res => {
+              // //console.log(res['features']);
+              this.searchCountryLists = res['features'];
+            },
+            error => {
+            
+        })
+      }
+    }
   stepDefaultValue() {
     this.step1Data.first_name = '';
     this.step1Data.last_name = '';
@@ -120,15 +136,49 @@ export class AssessorsProfileComponent implements OnInit {
     this.step2Data.further_education = '';
     this.step2Data.others_education = '';
 
-    this.english = '';
-    this.arabic = '';
-    this.others = '';
+    this.english = {
+      read:0,
+      write:0,
+      speak:0
+    };
+    this.arabic = {
+      read:0,
+      write:0,
+      speak:0
+    };
+    this.others = {
+      read:0,
+      write:0,
+      speak:0
+    };
 
-    this.list_auditor = [{}];
-    this.attend_accreditation = [{}];
-    this.attend_accreditation2 = [{}];
-    this.practical_assessment_experience = [{}];
+    this.list_auditor = [{
+      detail:'',
+      organization:'',
+      date_to:'',
+    }];
+    this.attend_accreditation = [{
+      detail:'',
+      date_from:'',
+      date_to:'',
+      organization:'',
+    }];
+    this.attend_accreditation2 = [{
+      organization:'',
+      date_from:'',
+      date_to:'',
+    }];
+    this.practical_assessment_experience = [{
+      date_to:'',
+      standard:'',
+      technical:'',
+      role:'',
+      commissioned_by:'',
+      assessment_type:'',
+      accreditation_activity:'',
+    }];
 
+    this.assessorsProfile.step4 = {};
     this.assessorsProfile.step4['technical_experience'] = [];
     this.step5Data.confirm_box = '';
     this.step5Data.place = '';
@@ -155,21 +205,24 @@ export class AssessorsProfileComponent implements OnInit {
   }
 
   loadStepsData() {
+    this.loader = false;
     this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail)
     .subscribe(
       res => {
         // console.log(res['data'],'data');
         if(res['status'] == true) {
-          
+          this.loader = true;
           var first_nameData = res['data']['user_data'][0].first_name.split(' ');
-          this.titleArr.forEach((res,key) => {
-            if(res == first_nameData[0])
-            this.titleFind = first_nameData[0];
+          
+          this.titleArr.forEach((res2,key) => {
+            if(res2 == first_nameData[0]){
+              this.titleFind = first_nameData[0];
+              // this.firstName = first_nameData[1];
+            }
           })
           
           this.step1Data.title = this.titleFind;
-
-          this.step1Data.first_name = res['data']['user_data'][0].first_name;
+          this.step1Data.first_name = this.titleFind != '' && this.titleFind != undefined ? first_nameData[1] : first_nameData[0];
           this.step1Data.last_name = res['data']['user_data'][0].last_name;
           this.step1Data.personal_email = res['data']['user_data'][0].email;
           this.step1Data.phone_with_area = res['data']['user_data'][0].contact;
@@ -177,23 +230,145 @@ export class AssessorsProfileComponent implements OnInit {
           this.technicalFields = res['data'].technical_field;
 
 
-          if(res['data'].step1 && res['data'].step1[0].office_email) {
+          if(res['data'].step1 != '' && res['data'].step1[0] && res['data']['user_data'][0].first_name != "" && res['data'].step1[0].office_email != "" && res['data'].step1[0].dob != null && res['data'].step1[0].mailing_address != "" && res['data'].step1[0].fax_no != "" && res['data'].step1[0].office != "" && res['data'].step1[0].designation != "" && res['data'].step1[0].office_address != "" && res['data'].step1[0].office_tel_no != "" && res['data'].step1[0].nationality != '') {
             this.progressValue = 22;
             this.Service.moveSteps('personal_details','educational_information', this.headerSteps);
-          }if(res['data'].step1 && res['data'].step1[0].office_email && res['data'].step2 && res['data'].step2['education'][0].detail) {
+          }
+          if(res['data'].step2 != '' && res['data'].step2['education'] && res['data'].step2['education'][0].qualification_file != null && res['data'].step2['education'][0].specialization_file != null && res['data'].step2['education'][0].detail && res['data'].step2['education'][0].organization && res['data'].step2['education'][0].specialization && res['data'].step2['which_forum'] && res['data'].step2['which_forum'][0].organization && res['data'].step2['which_forum'][0].date_from && res['data'].step2['which_forum'][0].date_to) {
             this.progressValue = 44;
             this.Service.moveSteps('educational_information','employment', this.headerSteps);
-          }if(res['data'].step1 && res['data'].step1[0].office_email && res['data'].step2 && res['data'].step2['education'][0].detail && res['data'].step3 && res['data'].step3.experience_1) {
-            this.progressValue = 66;
-            this.Service.moveSteps('employment','knowledge_experience', this.headerSteps);
-          }if(res['data'].step1[0].office_email && res['data'].step2 && res['data'].step2['education'][0].detail && res['data'].step3 && res['data'].step3.experience_1 && res['data'].step4 && res['data'].step4['technical_experience']) {
+          }
+          if(res['data'].step3 != '' && res['data'].step3.experience_1 != '' && res['data'].step3.experience_2 != '' && res['data'].step3.experience_3 != '' && res['data'].step3.experience_4 != '') {
+
+            var experience1_detail = 0;var experience1_organization = 0;var experience1_date_to = 0;
+            var experience2_detail = 0;var experience2_date_from = 0;var experience2_date_to = 0;var experience2_organization = 0;
+            var experience3_organization = 0;var experience3_date_from = 0;var experience3_date_to = 0;
+            var experience4_date_to = 0;var experience4_standard = 0;var experience4_technical = 0;var experience4_role = 0;var experience4_commissioned_by = 0;var experience4_assessment_type = 0;var experience4_accreditation_activity = 0;
+
+            var experience_1 = res['data'].step3.experience_1;
+            var experience_2 = res['data'].step3.experience_2;
+            var experience_3 = res['data'].step3.experience_3;
+            var experience_4 = res['data'].step3.experience_4;
+
+            if(experience_1 != '') {
+              for(var key in experience_1) {
+                if(experience_1[key].detail != "") {
+                  experience1_detail = 1;
+                }else{
+                  experience1_detail = 0;
+                }
+                if(experience_1[key].organization != "") {
+                  experience1_organization = 1
+                }else{
+                  experience1_organization = 0;
+                }
+                if(experience_1[key].date_to != null) {
+                  experience1_date_to = 1
+                }else{
+                  experience1_date_to = 0;
+                }
+              }
+            }
+            if(experience_2 != '') {
+              for(var key in experience_2) {
+                if(experience_2[key].detail != "") {
+                  experience2_detail = 1;
+                }else{
+                  experience2_detail = 0;
+                }
+                if(experience_2[key].date_from != "") {
+                  experience2_date_from = 1
+                }else{
+                  experience2_date_from = 0;
+                }
+                if(experience_2[key].date_to != null) {
+                  experience2_date_to = 1
+                }else{
+                  experience2_date_to = 0;
+                }
+                if(experience_2[key].organization != null) {
+                  experience2_organization = 1
+                }else{
+                  experience2_organization = 0;
+                }
+              }
+            }
+            if(experience_3 != '') {
+              for(var key in experience_3) {
+                if(experience_3[key].organization != "") {
+                  experience3_organization = 1;
+                }else{
+                  experience3_organization = 0;
+                }
+                if(experience_3[key].date_from != "") {
+                  experience3_date_from = 1
+                }else{
+                  experience3_date_from = 0;
+                }
+                if(experience_3[key].date_to != null) {
+                  experience3_date_to = 1
+                }else{
+                  experience3_date_to = 0;
+                }
+              }
+            }
+            if(experience_4 != '') {
+              for(var key in experience_4) {
+                if(experience_4[key].date_to != "") {
+                  experience4_date_to = 1;
+                }else{
+                  experience4_date_to = 0;
+                }
+                if(experience_4[key].standard != "") {
+                  experience4_standard = 1
+                }else{
+                  experience4_standard = 0;
+                }
+                if(experience_4[key].technical != null) {
+                  experience4_technical = 1
+                }else{
+                  experience4_technical = 0;
+                }
+                if(experience_4[key].role != null) {
+                  experience4_role = 1
+                }else{
+                  experience4_role = 0;
+                }
+                if(experience_4[key].commissioned_by != null) {
+                  experience4_commissioned_by = 1
+                }else{
+                  experience4_commissioned_by = 0;
+                }
+                if(experience_4[key].assessment_type != null) {
+                  experience4_assessment_type = 1
+                }else{
+                  experience4_assessment_type = 0;
+                }
+                if(experience_4[key].accreditation_activity != null) {
+                  experience4_accreditation_activity = 1
+                }else{
+                  experience4_accreditation_activity = 0;
+                }
+              }
+            }
+
+            if(experience1_detail == 1 && experience1_organization == 1 && experience1_date_to == 1 && experience2_detail == 1 && experience2_date_from == 1 && experience2_date_to == 1 && experience2_organization == 1 && experience3_organization == 1 && experience3_date_from == 1 && experience3_date_to == 1 && experience4_date_to == 1 && experience4_standard == 1 && experience4_technical == 1 && experience4_role == 1 && experience4_commissioned_by == 1 && experience4_assessment_type == 1 && experience4_accreditation_activity == 1){
+              // this.exp1_result = 1;
+              this.progressValue = 66;
+              this.Service.moveSteps('employment','knowledge_experience', this.headerSteps);
+            }
+            
+          }
+          if(res['data'].step4 && res['data'].step4 != '' && res['data'].step4['technical_experience'] && res['data'].step4['technical_experience'] != '') {
             this.progressValue = 88;
             this.Service.moveSteps('knowledge_experience','applicant_trainer', this.headerSteps);
-          }if(res['data'].step1 && res['data'].step1[0].office_email && res['data'].step2 && res['data'].step2['education'][0].detail && res['data'].step3 && res['data'].step3.experience_1 && res['data'].step4 && res['data'].step4['technical_experience'] && res['data'].step5 && res['data'].step5[0].place) {
-            this.progressValue = 100;
           }
+          // if(res['data'].step5 && res['data'].step5 != '' && res['data'].step5[0].place && res['data'].step5[0].place != null && res['data'].step5[0].registration_date != null && res['data'].step5[0].signature != null) {
+          //   this.progressValue = 100;
+          // }
+          
 
-          if(res['data'].step1 != '') {
+          if(res['data'].step1 != '' && res['data'].step1[0]) {
             var step1 = res['data'].step1[0];
             this.step1Data.office_email = step1.office_email;
             this.step1Data.date_of_birth = step1.dob;
@@ -204,41 +379,45 @@ export class AssessorsProfileComponent implements OnInit {
             this.step1Data.designation = step1.designation;
             this.step1Data.office_address = step1.office_address;
             this.step1Data.officephone_with_area = step1.office_tel_no;
-            this.step1Data.officefax_with_area = step1.office_fax_no;
+            // this.step1Data.officefax_with_area = step1.office_fax_no;
             this.step1Data.nationality = step1.nationality;
           }
           if(res['data'].step2 != '') {
             var step2 = res['data'].step2;
 
             var language = step2['language'];
-            for(let key in language)
-            {
-              if(language[key].language == 'arabic')
+            if(language != null) {
+              for(let key in language)
               {
-                this.arabic = language[key];
-              }
-              if(language[key].language == 'english')
-              {
-                this.english = language[key];
-              }
-              if(language[key].language == 'others')
-              {
-                this.others = language[key];
+                if(language[key].language == 'arabic')
+                {
+                  this.arabic = language[key];
+                }
+                if(language[key].language == 'english')
+                {
+                  this.english = language[key];
+                }
+                if(language[key].language == 'others')
+                {
+                  this.others = language[key];
+                }
               }
             }
 
-            this.step2Data.qualification_degree = step2['education'][0].detail;
-            this.step2Data.university_college = step2['education'][0].organization;
-            this.step2Data.education_specialization = step2['education'][0].specialization;
-            this.step2Data.further_education = step2['further_education'][0].detail;
-            this.step2Data.others_education = step2['others_education'] ? step2['others_education'][0].detail : '';
-            this.step2Data.which = step2['which_forum'][0].organization;
-            this.step2Data.completeProfileFrom = new Date(step2['which_forum'][0].date_from);
-            this.step2Data.completeProfileTill = new Date(step2['which_forum'][0].date_to);
+            if(step2['education'] != null && step2['education'][0]) {
+              this.step2Data.qualification_degree = step2['education'] && step2['education'][0].detail ? step2['education'][0].detail : '';
+              this.step2Data.university_college = step2['education'] && step2['education'][0].organization ? step2['education'][0].organization : '';
+              this.step2Data.education_specialization = step2['education'] && step2['education'][0].specialization ? step2['education'][0].specialization : '';
+              this.step2Data.further_education = step2['further_education'] && step2['further_education'][0].detail ? step2['further_education'][0].detail : '';
+              this.step2Data.others_education = step2['others_education'] && step2['others_education'][0].detail ? step2['others_education'][0].detail : '';
+              this.step2Data.which = step2['which_forum'] && step2['which_forum'][0].organization ? step2['which_forum'][0].organization : '';
+              this.step2Data.completeProfileFrom = step2['which_forum'] && step2['which_forum'][0].date_from ? new Date(step2['which_forum'][0].date_from) : '';
+              this.step2Data.completeProfileTill = step2['which_forum'] && step2['which_forum'][0].date_to ? new Date(step2['which_forum'][0].date_to) : '';
 
-            this.tradeLicensedValidation1 = this.constant.mediaPath+step2['education'][0].qualification_file;
-            this.tradeLicensedValidation2 = this.constant.mediaPath+step2['education'][0].specialization_file;
-            this.tradeLicensedValidation3 = this.constant.mediaPath+step2['further_education'][0].qualification_file;
+              this.tradeLicensedValidation1 = step2['education'] && step2['education'][0].qualification_file != null ? this.constant.mediaPath+step2['education'][0].qualification_file : '';
+              this.tradeLicensedValidation2 = step2['education'] && step2['education'][0].specialization_file != null ? this.constant.mediaPath+step2['education'][0].specialization_file : '';
+              this.tradeLicensedValidation3 = step2['further_education'] && step2['further_education'][0].qualification_file != null ? this.constant.mediaPath+step2['further_education'][0].qualification_file : '';
+            }
           }
           if(res['data'].step3 != '') {
             var step3 = res['data'].step3;
@@ -269,7 +448,7 @@ export class AssessorsProfileComponent implements OnInit {
             }
             // console.log(this.technicalFields,'step5');
           }
-          if(res['data'].step5 != '') {
+          if(res['data'].step5 != '' && res['data'].step5[0]) {
             var step5 = res['data'].step5[0];
             this.step5Data.confirm_box = step5.status;
             this.step5Data.place = step5.place;
@@ -382,6 +561,7 @@ export class AssessorsProfileComponent implements OnInit {
       this.assessorsProfile.email = this.userEmail;
       this.assessorsProfile.userType = this.userType;
       this.step1Data.first_name = this.step1Data.title+' '+this.step1Data.first_name;
+      this.step1Data.officefax_with_area = 34352535;
       this.assessorsProfile.step1 = this.step1Data;
       //console.log(this.assessorsProfile);
       this.loader = false;

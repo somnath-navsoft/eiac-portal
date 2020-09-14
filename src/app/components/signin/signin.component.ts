@@ -159,7 +159,7 @@ checkStrongPasswordType(type: string){
 
   isValid(){
     ////console.log(this.signin.get('email').value, " :: ", this.signin.get('userRole').value, " --- ", this.signin.value);
-    if(!this.appService.checkInput('email', this.signin.get('email').value)){
+    if(this.signin.get('email').value == ''){
       this.toastr.error('Email is InValid','Validation Error', {timeOut: 3000});
       ////console.log("email invalid....");
       // this.store.dispatch(new LogInFailure({ error: 'Email is InValid' }));

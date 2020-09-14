@@ -4,6 +4,7 @@ import { TrainerModel } from '../../models/trainer';
 export enum TrainerActionTypes {
   LIST                = '[Trainer] Listing',
   LIST_EVENT          = '[Trainer] Listing Event',
+  LIST_ACCRED_SERV    = '[Trainer] Listing Accreditation Service',
   LIST_ATTEND         = '[Trainer] Listing Attendance',
   LIST_AGENDA         = '[Trainer] Listing Agenda',
   LIST_SUCCESS        = '[Trainer] List Success',
@@ -18,6 +19,12 @@ export class Listing implements Action {
     constructor(public payload: any) {
       ////console.log('@Action Trainer Listing...', payload);
     }
+}
+export class ListingAccredService implements Action {  
+  readonly type = TrainerActionTypes.LIST_ACCRED_SERV;
+  constructor(public payload: any) {
+    console.log('@Action Accreditation List...', payload);
+  }
 }
 export class ListingEvent implements Action {  
   readonly type = TrainerActionTypes.LIST_EVENT;
@@ -77,6 +84,7 @@ export class Edit implements Action {
   export type All =
     | Listing 
     | ListingEvent
+    | ListingAccredService
     | ListingAttendance
     | ListingAgenda
     | ListSuccess    

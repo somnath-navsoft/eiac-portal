@@ -12,7 +12,7 @@ import { Constants} from  '../../services/constant.service';
 import { Store } from '@ngrx/store';
 import { AppState, selectAuthState } from '../../store/app.states';
 import {
-   Listing, ListingEvent, ListingAttendance, ListingAgenda, ListSuccess, SaveNew, Edit, Update, Delete, All, TrainerActionTypes
+   Listing, ListingEvent, ListingAccredService, ListingAttendance, ListingAgenda, ListSuccess, SaveNew, Edit, Update, Delete, All, TrainerActionTypes
   } from '../actions/trainer.actions';
   import {SnackbarService} from 'ngx-snackbar';
 
@@ -127,6 +127,22 @@ export class TrainerEffects {
           }          
       ))        
   }))
+
+  //
+  @Effect({ dispatch: false })
+  ListingAccredService: Observable<any> = this.actions.pipe(
+    ofType(TrainerActionTypes.LIST_ACCRED_SERV),
+      map((action: ListingAccredService) => action),
+      switchMap(payload => {
+        return this._trainerService.getAccreditationServiceList().pipe(
+          map(data => {
+             console.log("@Effect Trainer Accreditation Status list Data: ", data);
+             return;
+             this.store.dispatch(new ListSuccess({record: data}));
+          }          
+      ))        
+  }))
+
   @Effect({ dispatch: false })
   ListingEvent: Observable<any> = this.actions.pipe(
     ofType(TrainerActionTypes.LIST_EVENT),

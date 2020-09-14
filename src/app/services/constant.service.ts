@@ -17,11 +17,12 @@ export class Constants{
 
 		trainerCourse: 'trainer/all-course-list',
 		trainerEventList: 'trainer/event-list/',
+		trainerAccredServList: 'accrediation-service-status/',
 		trainerAttendanceList:'trainer/attendance-list/',
 		trainerAgendaList:'trainer/agenda-list/',
 		trainerCourseByID: 'trainer/custom-course-dtls/',
 		trainerCourseDelete: 'trainer/course-delete/',
-		trainerCourseVoucherSave: 'trainer/course-voucher-save/',
+		trainerCourseVoucherSave: 'webservice/voucher-details-save/',
 		trainerCoursePageDetails : 'trainer/training-page-details/',
 		trainerCourseTypeDetails: 'trainer/training-course-type/',
 
@@ -47,7 +48,10 @@ export class Constants{
 		inspection_form_basic_data: 'inspection_body_form_management/',
 		criteriaIdByScope: this.apiUrl + 'criteria_wise_scope/',
 		criteriaScope: this.apiUrl + 'inspection_body_form_management/?scheme=',
+		paymentReceipt: 'payment-details-save/',
 		userPermissionData: this.apiUrl + 'user-permission-data/',
+		messageList: this.apiUrl + 'message-list/',
+		profileApproval: this.apiUrl + 'profile-approval/',
 	}
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."
 	public loggedIn													=	new Subject<any>();
@@ -248,9 +252,9 @@ export class Constants{
 				{
 					heading: 'Applications', link: '#', sub: true,
 					submenu: [
-						{title: 'Accreditation Service', link: '#'},
+						{title: 'Accreditation Service', link: '/dashboard/operations/accreditation-service-list'},
 						{title: 'Registration Service', link: '#'},
-						{title: 'Training Service', link: '/dashboard/operations/training-service'},
+						{title: 'Training Service', link: ''},
 					]
 				},
 				{
@@ -326,6 +330,7 @@ export class Constants{
 			]
 		},
 	];
+	///dashboard/operations/training-service
 	dashBoardUserType: any[]		= [
 		{name: 'cab'},{name: 'assessors'}, {name: 'candidate'},
 		{name: 'eiac_staff'}, {name: 'trainers'}
