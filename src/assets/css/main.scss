@@ -26,6 +26,11 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 .recommend .mat-checkbox-layout {
   white-space: normal !important;
 }
+
+.authData .mat-checkbox-layout {
+  white-space: normal !important;
+}
+
 //==================DU PORTAL==================//
 
 //==================FOR BEFORE LOGIN==================//
@@ -319,6 +324,7 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 .user-details-pending { font-size: 14px; font-family: 'Dubai Medium'; }
 // color: #B19782;
 .bttn-staff { display: flex; justify-content: space-between; align-content: center; width: 100%; height: 100%; }
+.bttn-review { text-align: right; }
 .agree-condi { padding-top: 20px; color: #7A7A7A; font-family: 'Dubai Regular'; font-size: 18px; }
 .agree-condi .mat-checkbox-frame {
   border-color: #979797;
@@ -447,6 +453,7 @@ a:hover { text-decoration: none; }
 // .createapp-main .mat-tab-label-active { background: #BCAF9D; color: #FFFFFF;  }
 // .createapp-main .mat-tab-label-active:nth-child(2)::before, .createapp-main .mat-tab-label-active:nth-child(3)::before { border: 32px solid #BCAF9D;  }
 .request { padding: 40px 0 30px; font-size: 20px; font-family: "Dubai Regular"; color: #1D1D1D; }
+.tab-data { padding: 0 20px; }
 
 //==================APPLICATION DETAILS==================//
 .main-dashboard-cnt .appl-cnt { margin: 0; margin-top: 10px; margin-bottom: 20px; }
@@ -517,7 +524,7 @@ a:hover { text-decoration: none; }
 .ass-details p { color: #656565; font-size: 16px; font-family: "Dubai Regular"; line-height: 2; }
 .attach-cnt { padding: 10px 0; }
 .cmnt-content { background: #EFEFEF; padding: 50px; margin-bottom: 40px; }
-.bttns-appln { padding-top: 50px; font-family: "Dubai Bold"; font-size: 26px;}
+.bttns-appln { padding-top: 0px; font-family: "Dubai Bold"; font-size: 26px;}
 
 //==================POPUPS==================//
 .main-dil-cnt { padding: 50px; position: relative; }
@@ -718,7 +725,7 @@ a:hover { text-decoration: none; }
 .table-content-health th {padding: 10px; text-align: right; background: #E7E7E7;  border: 1px solid #DCDAD5;}
 .table-content-health td { padding: 25px 10px 20px; background: #F9F9F9; border: 1px solid #DCDAD5;}
 .table-content-health td input:focus { outline: none;}
-.table-content-health td span{ font-size: 22px;}
+.table-content-health td span{ font-size: 18px;}
 .table-content-health .content-icn {text-align: center; color: #B54150;}
 .form-subheader-desc { background: #E7E7E7; text-align: right; margin: 0 -15px;}
 .form-subheader-desc .mat-radio-button { padding: 10px 15px; }
@@ -765,6 +772,20 @@ a:hover { text-decoration: none; }
 }
 .recommend .mat-checkbox-inner-container { height: 20px; width: 20px; margin-top: 7px; }
 .recommend .mat-checkbox-layout .mat-checkbox-label { line-height: 34px; font-family: "Dubai Medium"; font-size: 24px; }
+.modal-dialog {
+  max-width: 500px;
+  max-height: 700px;
+  margin: 1.75rem auto;
+  overflow: scroll;}
+.authData .mat-checkbox-frame {
+  border-color: rgba(153, 153, 153, 1); 
+  border-width: 1px; 
+  border-radius: 0; 
+  width: 20px; 
+  height: 20px;
+}
+.authData .mat-checkbox-inner-container { height: 20px; width: 20px; margin-top: 7px; }
+.authData .mat-checkbox-layout .mat-checkbox-label { line-height: 34px; font-family: "Dubai Medium"; font-size: 24px; }
 .assess-dir { background: #EFEFEF; margin-top: 30px; padding-bottom: 30px; }
 
 

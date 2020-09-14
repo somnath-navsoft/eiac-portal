@@ -29,6 +29,11 @@ export class SignUpComponent implements OnInit {
     this.changePasswordForm.passwordStrength['cpassword'] = {};
     this.getRole();
     ////console.log(this.roleRecord);
+
+    this.userData.name = '';
+    this.userData.mobile = '';
+    this.userData.code = '';
+    this.userData.userType = '';
   }
 
   getRole(){
@@ -90,29 +95,27 @@ export class SignUpComponent implements OnInit {
       this.toastr.error('Email is Invalid','Validation Error', {timeOut: 3000});
       return false;
     }
-    // if(this.userData.cemail  == '' ){
-    //   this.toastr.error("Confirm Email can't be empty","Validation Error", {timeOut: 3000});
-    //   return false;
-    // }
-    // if(!this.Service.checkInput('cemail',this.userData.cemail )){
-    //   this.toastr.error('Confirm Email is Invalid','Validation Error', {timeOut: 3000});
-    //   return false;
-    // }
+    
     if(this.userData.name  == '' ){
       this.toastr.error("Name can't be empty","Validation Error", {timeOut: 3000});
+      return false;
+    }
+    if(this.userData.code  == '' ){
+      this.toastr.error("Please select any area code","Validation Error", {timeOut: 3000});
       return false;
     }
     if(this.userData.mobile  == '' ){
       this.toastr.error("Mobile Number can't be empty","Validation Error", {timeOut: 3000});
       return false;
-    }if(this.userData.code  == '' ){
-      this.toastr.error("Please select any area code","Validation Error", {timeOut: 3000});
+    }
+    if(this.userData.mobile  != '' && this.userData.mobile.length!=10){
+      this.toastr.error("Mobile Number should be 10 digit","Validation Error", {timeOut: 3000});
       return false;
     }
-    if(this.userData.mobile_code  == '' ){
-      this.toastr.error("Mobile Code Number can't be empty","Validation Error", {timeOut: 3000});
-      return false;
-    }
+    // if(this.userData.mobile_code  == '' ){
+    //   this.toastr.error("Mobile Code Number can't be empty","Validation Error", {timeOut: 3000});
+    //   return false;
+    // }
     if(this.changePasswordForm.password  == '' ){
       this.toastr.error("Password can't be empty","Validation Error", {timeOut: 3000});
       return false;
@@ -181,11 +184,10 @@ export class SignUpComponent implements OnInit {
     // //console.log(this.userData.cpassword,'password');
     if(this.isValid()){
       this.userData.password = this.changePasswordForm.password;
-      //console.log(this.userData)
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.signUp,this.userData)
         .subscribe(
           res => {
-            console.log(res,'res')
+            // console.log(res,'res')
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
               this.router.navigateByUrl('/sign-in');

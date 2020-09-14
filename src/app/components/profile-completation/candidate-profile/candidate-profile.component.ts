@@ -31,12 +31,14 @@ export class CandidateProfileComponent implements OnInit {
   nameOftheOwner:any[] = [{}];
   companyBodMembers:any[] = [{}];
   loader:boolean = true;
+  readOnly:boolean = false;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { 
     this.today.setDate(this.today.getDate());
   }
 
   ngOnInit() {
+    this.step1Data.application_info = 0;
     this.stepDefaultValue();
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
@@ -54,15 +56,37 @@ export class CandidateProfileComponent implements OnInit {
 
     this.loadStep1Data();
     this.titleArr = ['Mr.','Ms.','Dr.','Prof.','Mrs.'];
+
+    // console.log(this.step1Data.application_info);
+    
+  }
+
+  applicationInfo(param) {
+    if(param == '1') {
+      this.step1Data.applicant_office_institution = this.step1Data.office_institution;
+      this.step1Data.applicant_phone_with_area = this.step1Data.phone_with_area;
+      this.step1Data.applicant_fax_with_area = this.step1Data.fax_with_area;
+      this.step1Data.applicant_office_address = this.step1Data.office_address;
+      this.step1Data.applicant_officephone_with_area = this.step1Data.officephone_with_area;
+      this.step1Data.applicant_mailing_address = this.step1Data.mailing_address;
+      this.readOnly = true;
+    }else if(param == '0') {
+      this.readOnly = false;
+      this.step1Data.applicant_office_institution = '';
+      this.step1Data.applicant_phone_with_area = '';
+      this.step1Data.applicant_fax_with_area = '';
+      this.step1Data.applicant_office_address = '';
+      this.step1Data.applicant_officephone_with_area = '';
+      this.step1Data.applicant_mailing_address = '';
+      
+    }
   }
 
   stepDefaultValue() {
-    // this.step1Data.title = '';
-    this.step1Data.first_name = '';
-    this.step1Data.last_name = '';
+    this.step1Data.title = '';
     this.step1Data.date_of_birth = '';
+            
     this.step1Data.company_email = '';
-    this.step1Data.personal_email = '';
     this.step1Data.designation = '';
     this.step1Data.nationality = '';
     this.step1Data.mailing_address = '';
@@ -71,14 +95,17 @@ export class CandidateProfileComponent implements OnInit {
     this.step1Data.fax_with_area = '';
     this.step1Data.office_address = '';
     this.step1Data.officephone_with_area = '';
-    this.step1Data.trade_license_number = '';
-    this.step2Data.contact_person_name = '';
-    this.step2Data.contact_person_designation = '';
-    this.step2Data.contact_person_email = '';
-    this.step2Data.contact_person_phone = '';
-    this.step2Data.contact_person_mobile = '';
-    this.step2Data.authorised_contact = '';
-    this.step2Data.date_of_establishment = '';
+    
+    this.step1Data.applicant_office_institution = '';
+    this.step1Data.applicant_phone_with_area = '';
+    this.step1Data.applicant_fax_with_area = '';
+    this.step1Data.applicant_office_address = '';
+    this.step1Data.applicant_officephone_with_area = '';
+    this.step1Data.applicant_mailing_address = '';
+    this.step1Data.applicant_official_email = '';
+    this.step1Data.applicant_official_website = '';
+
+    this.step2Data.date_establishment = '';
     this.step2Data.legal_license = '';
     this.step2Data.certification_main_activity = '';
     this.step2Data.main_activity_describe = '';
@@ -118,62 +145,78 @@ export class CandidateProfileComponent implements OnInit {
   }
   
   loadStep1Data() {
+    this.loader = false;
     this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail)
     .subscribe(
       res => {
+        if(res['status'] == true) {
+          this.loader = true;
 
-        if(res['data'].step1) {
-          this.progressValue = 100;
-        }
+            var first_nameData = res['data']['user_data'][0].first_name.split(' ');
+            
+            this.titleArr.forEach((res2,key) => {
+              if(res2 == first_nameData[0]){
+                this.titleFind = first_nameData[0];
+                // this.firstName = first_nameData[1];
+              }
+            })
+            this.step1Data.title = this.titleFind;
+            this.step1Data.first_name = this.titleFind != '' && this.titleFind != undefined ? first_nameData[1] : first_nameData[0];
+            this.step1Data.last_name = res['data']['user_data'][0].last_name;
+            this.step1Data.personal_email = res['data']['user_data'][0].email;
 
-        if(res['data'].step1 != '') {
-          var first_nameData = res['data']['user_data'][0].first_name.split(' ');
-          this.titleArr.forEach((res,key) => {
-            if(res == first_nameData[0]){
-              this.titleFind = first_nameData[0];
-            }
-          })
-          
-          this.step1Data.title = this.titleFind;
-          this.step1Data.first_name = first_nameData[1];
-          this.step1Data.last_name = res['data']['user_data'][0].last_name;
-          this.step1Data.personal_email = res['data']['user_data'][0].email;
-          
-          if(res['data'].step1 && res['data'].step1[0].designation) {
-            this.progressValue = 50;
-            this.Service.moveSteps('personal_details','application_information', this.headerSteps);
-          }if(res['data'].step1 && res['data'].step1[0].designation && res['data'].step2 && res['data'].step2.cabContactData[0].designation) {
-            this.progressValue = 100;
-          }
-          
           if(res['data'].step1 != '') {
-            var step1 = res['data'].step1[0];
+            
+            if(res['data'].step1 != '' && res['data'].step1[0]) {
+              this.progressValue = 50;
+              this.Service.moveSteps('personal_details','application_information', this.headerSteps);
+            }if(res['data'].step2 != '' && res['data'].step2[0]) {
+              this.progressValue = 100;
+            }
+            
+            if(res['data'].step1 != '') {
+              var step1 = res['data'].step1[0];
 
-            this.step1Data.title = step1.cab_name;
-            this.step1Data.date_of_birth = new Date(step1.dob);
-            // this.fileType = this.constant.mediaPath+step1.trade_license;
-            // this.step1Data.trade_license = this.constant.mediaPath+step1.trade_license;
-            this.tradeLicensedValidation = this.constant.mediaPath+step1.trade_license;
-            this.step1Data.phone_with_area = step1.tel_no;
-            this.step1Data.fax_with_area = step1.fax_no;
-            this.step1Data.office_email = step1.official_email;
-            this.step1Data.registered_address = step1.registered_address;
-            this.step1Data.mailing_address = step1.mailing_address;
-            this.step1Data.zip = step1.po_box;
-            this.step1Data.city = step1.city;
-            this.step1Data.state = step1.state;
-            this.step1Data.country = step1.country;
-            this.step1Data.office_institution = step1.office;
-            this.step1Data.designation = step1.designation;
-            this.step1Data.office_address = step1.office_address;
-            this.step1Data.officephone_with_area = step1.office_tel_no;
-            this.step1Data.officefax_with_area = step1.office_fax_no;
-            this.step1Data.trade_license_number = step1.trade_license_number;
-            this.step1Data.official_website = step1.official_website;
-            this.step1Data.date_issue = new Date(step1.date_of_issue);
-            this.step1Data.date_expire = new Date(step1.date_of_expiry);
-            this.step1Data.date_of_establisment = new Date(step1.date_of_establisment);
-            // this.step1Data.title = step1.is_certification_main_activity;
+              this.step1Data.date_of_birth = new Date(step1.dob);
+              this.step1Data.company_email = step1.office_email;
+              this.step1Data.designation = step1.designation;
+              this.step1Data.nationality = step1.designation;
+              this.step1Data.mailing_address = step1.nationality;
+              this.step1Data.office_institution = step1.office;
+              this.step1Data.phone_with_area = step1.tel_no;
+              this.step1Data.fax_with_area = step1.fax_no;
+              this.step1Data.office_address = step1.office_address;
+              this.step1Data.officephone_with_area = step1.office_tel_no;
+
+              this.step1Data.applicant_office_institution = step1.applicant_office;
+              this.step1Data.applicant_phone_with_area = step1.applicant_tel_no;
+              this.step1Data.applicant_fax_with_area = step1.applicant_fax_no;
+              this.step1Data.applicant_office_address = step1.applicant_office_address;
+              this.step1Data.applicant_officephone_with_area = step1.applicant_office_tel_no;
+              this.step1Data.applicant_mailing_address = step1.applicant_address;
+              
+              // this.step1Data.trade_license_number = step1.trade_license_number;
+              // this.tradeLicensedValidation = step1['further_education'][0].qualification_file != null ? this.constant.mediaPath+step1['further_education'][0].qualification_file : '';
+              // this.step1Data.title = step1.is_certification_main_activity;
+            }
+
+            if(res['data'].step2 != '') {
+              var step1 = res['data'].step1[0];
+              var step2 = res['data'].step2;
+
+              // this.step2Data.date_establishment = '';
+              this.step2Data.is_bod = step2.candidateBodData != '' ? '1' : '0';
+              this.step2Data.legal_license = step1.legal_status;
+              this.step2Data.certification_main_activity = step1.legal_status;
+              this.step2Data.main_activity_describe = step1.is_certification_main_activity;
+              this.nameOftheOwner = step2.candidateOwnerData != '' ? step2.candidateOwnerData : this.nameOftheOwner ;
+              this.companyBodMembers =  step2.candidateBodData != '' ? step2.candidateBodData : this.companyBodMembers ;
+
+              this.step2Data.date_establishment = res['data'].step1[0].date_of_establisment != null ? new Date(res['data'].step1[0].date_of_establisment) : '';
+              // this.step2Data.legal_license = res['data'].step1[0].trade_license_number;
+              this.step2Data.main_activity_describe = res['data'].step1[0].other_description;
+              this.step2Data.certification_main_activity = res['data'].step1[0].is_certification_main_activity == true ? 1 : 0;
+            }
           }
         }
       });
@@ -204,13 +247,14 @@ export class CandidateProfileComponent implements OnInit {
   // }
 
   onSubmitStep1(ngForm1) {
-    //console.log(this.candidateProfile);
-    if(ngForm1.form.valid && this.tradeLicensedValidation != false) {
+    if(ngForm1.form.valid) {
       this.candidateProfile = {};
       this.candidateProfile.step1 = {};
       this.candidateProfile.email = this.userEmail;
       this.candidateProfile.userType = this.userType;
       this.step1Data.first_name = this.step1Data.title+' '+this.step1Data.first_name;
+      this.step1Data.applicant_official_email = "test@test.com";
+      this.step1Data.applicant_official_website = "test";
       this.candidateProfile.step1 = this.step1Data;
       this.step1DataBodyFormFile.append('data',JSON.stringify(this.candidateProfile));
       this.loader = false;
@@ -226,11 +270,7 @@ export class CandidateProfileComponent implements OnInit {
             }
             this.loader = true;
           });
-    }else if(ngForm1.form.valid && this.tradeLicensedValidation == false) {
-      this.file_validation = false;
-      this.toastr.warning('Please Fill required field','');
-    }
-    else {
+    }else {
       this.toastr.warning('Please Fill required field','');
     }
   }

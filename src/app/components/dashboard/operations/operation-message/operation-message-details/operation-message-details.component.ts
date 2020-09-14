@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-operation-message-details',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OperationMessageDetailsComponent implements OnInit {
 
-  constructor() { }
+  userType:any;
+
+  constructor(public router: Router) { }
 
   ngOnInit() {
+    this.userType = sessionStorage.getItem('type');
+    if(this.userType != 'operations')
+    {
+      var landUrl = '/dashboard'+this.userType+'/home'
+      this.router.navigateByUrl(landUrl);
+    }
   }
 
 }

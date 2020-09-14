@@ -119,6 +119,8 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { OperationMessageComponent } from './components/dashboard/operations/operation-message/operation-message.component';
 import { OperationMessageDetailsComponent } from './components/dashboard/operations/operation-message/operation-message-details/operation-message-details.component';
 import { OperationsAccreditationServiceListComponent } from './components/dashboard/operations/operations-accreditation-service-list/operations-accreditation-service-list.component';
+import { MessageComponent } from './components/dashboard/message/message.component';
+import { MessageDetailComponent } from './components/dashboard/message/message-detail/message-detail.component';
 
 import { ViewerComponentComponent} from './components/utility/viewer-component/viewer-component.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
@@ -152,7 +154,9 @@ export const MY_FORMATS = {
     LoaderComponent,
     OperationMessageComponent,
     OperationMessageDetailsComponent,
-    OperationsAccreditationServiceListComponent],
+    OperationsAccreditationServiceListComponent,
+    MessageComponent,
+    MessageDetailComponent],
   imports: [
     CommonModule,
     FormsModule,

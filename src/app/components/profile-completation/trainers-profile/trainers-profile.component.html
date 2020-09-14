@@ -100,7 +100,7 @@
                                                 <div class="col-md-4">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Personal E-mail</mat-label>
-                                                        <input matInput [(ngModel)]="step1Data.personal_email" name="personal_email" placeholder="" required>
+                                                        <input matInput readonly [(ngModel)]="step1Data.personal_email" name="personal_email" placeholder="" required>
                                                     </mat-form-field>
         
                                                     <p class="error" *ngIf="step1Data.personal_email && !Service.checkInput('email',step1Data.personal_email)">Please Enter Correct Email Id</p>
@@ -388,7 +388,7 @@
                                                                 <td>
                                                                     <mat-form-field class="cab-data">
                                                                         <mat-label>Select</mat-label>
-                                                                        <mat-select placeholder="Select" name="arabic_read"  [(ngModel)]="english.read" required>
+                                                                        <mat-select placeholder="Select" name="english_read"  [(ngModel)]="english.read" required>
                                                                             <mat-option [value]="1">Yes</mat-option>
                                                                             <mat-option [value]="0">No</mat-option>
                                                                         </mat-select>
@@ -398,7 +398,7 @@
                                                                 <td>
                                                                     <mat-form-field class="cab-data">
                                                                         <mat-label>Select</mat-label>
-                                                                        <mat-select placeholder="Select" name="arabic_write"  [(ngModel)]="english.write" required>
+                                                                        <mat-select placeholder="Select" name="english_write"  [(ngModel)]="english.write" required>
                                                                             <mat-option [value]="1">Yes</mat-option>
                                                                             <mat-option [value]="0">No</mat-option>
                                                                         </mat-select>
@@ -408,7 +408,7 @@
                                                                 <td>
                                                                     <mat-form-field class="cab-data">
                                                                         <mat-label>Select</mat-label>
-                                                                        <mat-select placeholder="Select" name="arabic_speak"  [(ngModel)]="english.speak" required>
+                                                                        <mat-select placeholder="Select" name="english_speak"  [(ngModel)]="english.speak" required>
                                                                             <mat-option [value]="1">Yes</mat-option>
                                                                             <mat-option [value]="0">No</mat-option>
                                                                         </mat-select>
@@ -504,7 +504,13 @@
                                                 <div class="col-md-4">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Place</mat-label>
-                                                        <input matInput name="place" [(ngModel)]="step3Data.place" placeholder="Place" required>
+                                                        <input matInput autocomplete="off" (keyup)="getPlaceName($event)" [matAutocomplete] = "auto" placeholder="Place" name="place" [(ngModel)]="step3Data.place" required>
+                                                        <mat-autocomplete #auto = "matAutocomplete" >
+                                                            <mat-option *ngFor = "let searchCountryList of searchCountryLists"  [value] = "searchCountryList.place_name">
+                                                            {{searchCountryList.place_name}}
+                                                            </mat-option>
+                                                        </mat-autocomplete>
+                                                        <mat-error></mat-error>
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="col-md-4">

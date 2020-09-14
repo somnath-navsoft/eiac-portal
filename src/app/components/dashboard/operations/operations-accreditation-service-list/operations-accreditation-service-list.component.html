@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col-md-8">                    
                     <div class="dashbrd-hdr">
-                        <h3>Training Service</h3>
+                        <h3>Accreditation Service</h3>
                     </div>
                 </div>
                 <div class="col-md-4"> 
@@ -109,23 +109,30 @@
                     <!-- @{{trainerdata | json}} -->
                     <table>
                         <tr>
-                            <th>Course Type&nbsp;
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'training_course_type', curSortDir.training_course_type)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.training_course_type"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.training_course_type"></span>
+                            <th>Application No&nbsp;
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'id', curSortDir.id)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.id"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.id"></span>
                                 </a>
                             </th>
-                            <th>Course ID&nbsp;
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'course_code', curSortDir.course_code)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.course_code"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.course_code"></span>
+                            <th>Application Date&nbsp;
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'created_date', curSortDir.created_date)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.created_date"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.created_date"></span>
                                 </a>
                             </th>
-                            <th>Agreement
+                            <th>Status
                                 &nbsp;
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'agreement_status', curSortDir.agreement_status)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.agreement_status"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.agreement_status"></span>
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'accr_status', curSortDir.accr_status)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.accr_status"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.accr_status"></span>
+                                </a>
+                            </th>
+                            <th>Accreditation Type
+                                &nbsp;
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'form_meta', curSortDir.form_meta)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.form_meta"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.form_meta"></span>
                                 </a>
                             </th>
                             <th>Payment Status&nbsp;
@@ -139,18 +146,23 @@
                         <!-- trainerdata.records != undefined && -->
                     <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
                         <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }">
-                            <td>{{item.training_course_type}}</td>
-                            <td class="fnt-clr">{{item.course_code}}</td>
                             <td>
-                                <span *ngIf="item.agreement_status === 'pending'">Pending</span>
-                                <span *ngIf="item.agreement_status === 'accepted'">Accepted</span>
+                                <a href="javascript:void(0)" (click)="open(courseVoucher, item.id)" title="View" alt="View">
+                                {{item.id}}</a></td>
+                            <td class="fnt-clr">
+                                {{item.created | date :'dd-MMM-yyyy' }}
+                            </td>
+                            <td class="fnt-clr">{{item.accr_status}}</td>
+                            <td>
+                                <span *ngIf="item.form_meta === 'inspection_body'">Inspection Body</span>
                             </td>
                             <td>
-                                <span *ngIf="item.payment_status === 'voucher_sent'">Voucher Sent</span>
-                                <span *ngIf="item.payment_status === 'pending'">Pending</span>
+                                <span *ngIf="item.payment_status === null">Pending</span>
+                                <span *ngIf="item.payment_status != null">{{item.payment_status}}</span>
                             </td>                            
                             <td class="action fnt-clr">
-                                <ng-container *ngIf="item.training_course_type === 'custom_course'" class="action fnt-clr">
+                                <a href="javascript:void(0)" alt="Delete"><span class="icon-bin"></span></a>
+                                <!-- <ng-container *ngIf="item.training_course_type === 'custom_course'" class="action fnt-clr">
                                     <a href="javascript:void(0)" (click)="openView(courseView, item.id)" title="View" alt="View"><span class="icon-document"></span></a>
                                     <a routerLink="/dashboard/operations/training-apply/{{item.id}}" title="Edit" alt="Edit"><span class="icon-edit"></span></a>
                                     <a href="javascript:void(0)" (click)="openDelete(item.id)" title="Delete" alt="Delete"><span class="icon-bin"></span></a>
@@ -164,7 +176,7 @@
                                     <a href="javascript:void(0)" (click)="open(courseVoucher, item.id)" title="Send Voucher" alt="Send Voucher">
                                         <span class="icon-wallet"></span>
                                     </a>
-                                </ng-container>
+                                </ng-container> -->
                             </td>
                         </tr>
                     </ng-container>
@@ -201,13 +213,12 @@
                 <!-- @{{selectCourseData | json}} -->
                 <!-- @{{selectCourseData.customCourseListDetails.length}} -->
                 <!-- #ngForm="voucherForm" -->
-                <ng-container *ngIf="selectCourseData != undefined">
+                <!-- <ng-container>
                 <div class="row">
                     <div class="col-md-6">
                         <h5>Course Type</h5>
                     </div>
                     <div class="col-md-6">
-                        <!-- <span>{{selectCourseData.training_course_type}}</span> -->
                         <span [innerHTML]="(selectCourseData.training_course_type === 'custom_course') ? 'Custom Course' : ''"></span>
                     </div>
                 </div>
@@ -223,28 +234,57 @@
                         </ng-container>
                     </div>
                 </div>
-                </ng-container>
+                </ng-container> -->
                 <hr>
                 <form #voucherForm="ngForm">
+
                     <div class="row">
                         <div class="col-md-6">
                             <mat-form-field class="cab-data">
-                                <mat-label>Course Duration</mat-label>
+                                <mat-label>Voucher Number</mat-label>
                                 <input type="number" [ngModelOptions]="{standalone: true}" required="true"
-                                matInput placeholder="Course Duration" [(ngModel)]="voucherSentData.courseDuration">
+                                matInput placeholder="Voucher Number" 
+                                [(ngModel)]="voucherSentData.voucher_no">
                             </mat-form-field>
                         </div>
                         <div class="col-md-6">
-                            <mat-form-field class="cab-data">
-                                <mat-label>Course Fees</mat-label>
+                            <!-- <mat-form-field class="cab-data">
+                                <mat-label>Voucher Date</mat-label>
                                 <input type="number" [ngModelOptions]="{standalone: true}" required="true"
-                                matInput placeholder="Course Fees" [(ngModel)]="voucherSentData.courseFees">
-                            </mat-form-field> 
+                                matInput placeholder="Voucher Date" 
+                                [(ngModel)]="voucherSentData.voucher_date">
+                            </mat-form-field>  -->
+                            <mat-form-field class="cab-data">
+                                <mat-label>Voucher Date</mat-label>
+                                <input matInput [matDatepicker]="voucher_date" 
+                                (click)="_service._openCalendar(voucher_date)" 
+                                readonly="true" 
+                                [min]="minDate" name="voucher_date" 
+                                [(ngModel)]="voucherSentData.voucher_date" placeholder="Voucher Date" required>
+                                <mat-datepicker-toggle matSuffix [for]="voucher_date"></mat-datepicker-toggle>
+                                <mat-datepicker #voucher_date disabled="false"></mat-datepicker>
+                            </mat-form-field>
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-md-12">
+                            <!-- <mat-form-field  class="lng-data">
+                                <input matInput readonly="true" 
+                                name="voucher_invoice" 
+                                [(ngModel)]="voucherSentData.voucher_invoice"  
+                                placeholder="Upload Receipt" required>
+                            </mat-form-field> -->
+                            <span class="fileupload">
+                                <input type="file" name="voucher_invoice"                                
+                                (change)="validateFile($event, 'voucher_invoice')" required>
+                                <span class="icon-attach attach-data"></span>
+                            </span>
+                            <p class="error" *ngIf="paymentReceiptValidation == false">Please Upload a valid file (ex: pdf)</p>
+                        </div>
+                    </div>
+                    <div class="row" [ngStyle]="{'margin-top': '10px'}">
                         <div class="col-md-6">
-                            <button type="submit" (click)="voucherSentSubmit()" class="btn btn-outline-dark">SENT</button>
+                            <button type="submit" (click)="voucherSentSubmit(voucherForm)" class="btn btn-outline-dark">SUBMIT</button>
                         </div>
                         <div class="col-md-6">
                             <button type="button" class="btn btn-outline-dark" (click)="modal.close('Cancel click')">CANCEL</button>

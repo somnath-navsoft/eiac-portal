@@ -72,6 +72,8 @@ import { CandidateTrainingPublicCourseComponent } from './components/dashboard/c
 import { OperationMessageComponent } from './components/dashboard/operations/operation-message/operation-message.component';
 import { OperationMessageDetailsComponent } from './components/dashboard/operations/operation-message/operation-message-details/operation-message-details.component';
 import { OperationsAccreditationServiceListComponent } from './components/dashboard/operations/operations-accreditation-service-list/operations-accreditation-service-list.component';
+import { MessageComponent } from './components/dashboard/message/message.component';
+import { MessageDetailComponent } from './components/dashboard/message/message-detail/message-detail.component';
 
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
@@ -80,6 +82,8 @@ const routes: Routes = [
   { path: 'dashboard',canActivate: [AuthGuard], 
     children: [
       //Trainers
+      { path: 'message', component: MessageComponent, canActivate: [AuthGuard] },
+      { path: 'message-detail/:id', component: MessageDetailComponent, canActivate: [AuthGuard] },
       { path: 'trainers', component: TrainersComponent, canActivate: [AuthGuard],
         children: [
             { path: 'home', component:TrainersDashboardComponent, canActivate: [AuthGuard]},

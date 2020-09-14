@@ -5,11 +5,11 @@ import { AppService } from 'src/app/services/app.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-operation-message',
-  templateUrl: './operation-message.component.html',
-  styleUrls: ['./operation-message.component.scss']
+  selector: 'app-message',
+  templateUrl: './message.component.html',
+  styleUrls: ['./message.component.scss']
 })
-export class OperationMessageComponent implements OnInit {
+export class MessageComponent implements OnInit {
 
   userType:any;
   userEmail:any;
@@ -23,11 +23,11 @@ export class OperationMessageComponent implements OnInit {
   ngOnInit() {
     this.userType = sessionStorage.getItem('type');
     this.userEmail = sessionStorage.getItem('email');
-    if(this.userType != 'operations')
-    {
-      var landUrl = '/dashboard'+this.userType+'/home'
-      this.router.navigateByUrl(landUrl);
-    }
+    // if(this.userType != 'operations')
+    // {
+    //   var landUrl = '/dashboard'+this.userType+'/home'
+    //   this.router.navigateByUrl(landUrl);
+    // }
   }
 
   validateFile(fileEvent: any) {
@@ -62,4 +62,5 @@ export class OperationMessageComponent implements OnInit {
         })
     }
   }
+
 }

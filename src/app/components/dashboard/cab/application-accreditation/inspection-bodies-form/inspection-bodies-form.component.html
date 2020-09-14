@@ -117,14 +117,14 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-3 col-sm-6 p-0">                                            
-                                            <div class="form-sub">
+                                        <div class="col-md-3 col-sm-6 ">                                            
+                                            <div class="form-subheader">
                                                 <span>Type of Accreditation Required:</span>
                                             </div>
                                         </div>
                                         <div class="col-md-3 col-sm-6 p-0">
                                             <div class="cab-data">
-                                                @{{step1Data.accredation_criteria}}
+                                                <!-- @{{step1Data.accredation_criteria}} -->
                                                 <mat-radio-group name="accreditation_required" 
                                                 [(ngModel)]="step1Data.accredation_criteria" #selectAccrdCriteria="ngModel" required>
                                                 <div class="row">
@@ -138,7 +138,7 @@
                                                 </mat-radio-group>
                                             </div>
                                         </div>
-                                        {{step1Data.accredation_criteria | json}}
+                                        <!-- {{step1Data.accredation_criteria | json}} -->
                                         
                                         <!-- <div class="col-md-6 col-sm-6 align-self-end"> -->
                                             <!-- <mat-form-field class="cab-data"> -->
@@ -329,12 +329,12 @@
 
                                     <div class="row mb-4 mt-4">
                                         <div class="col-md-6">                                            
-                                            <div class="form-sub">
+                                            <div class="form-subheader">
                                                 <span>*Do you want certificate delivery address to be same ?</span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                                @{{step1Data.certificate_delivery_addr}}
+                                                <!-- @{{step1Data.certificate_delivery_addr}} -->
                                                 <mat-radio-group name="certificate_delivery_addr" 
                                                 [(ngModel)]="step1Data.certificate_delivery_addr" #selectDeliveryAddr="ngModel" required>
                                                 <div class="row">
@@ -448,7 +448,7 @@
                                         </div>
                                         <div class="col-md-6 col-sm-12ssss p-0">
                                             <div class="form-subheader-desc">
-                                                @{{step1Data.is_bod_select}}
+                                                <!-- @{{step1Data.is_bod_select}} -->
                                                 <mat-radio-group name="is_bod" #selectBod="ngModel" 
                                                 [(ngModel)]="step1Data.is_bod_select" required>
                                                     <mat-radio-button value="1">Yes</mat-radio-button>
@@ -697,14 +697,15 @@
                                             </mat-radio-group>
                                         </div>
                                     </div>
-                                    <div class="row col-md-6">
-                                        <p class="error" *ngIf="isApplicationSubmitted == true && selectAccredHold.errors?.required">This is required</p>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="error" *ngIf="isApplicationSubmitted == true && selectAccredHold.errors?.required">This is required</p>
+                                        </div>
                                     </div>
-                                    {{step1Data.is_hold_other_accreditation_select}}
                                     <!-- id="is_hold_other_accreditations" -->
                                     <div class="row"  *ngIf="step1Data.is_hold_other_accreditation_select==1">
                                         <div class="col-md-12">
-                                            <div class="table-content-health">
+                                            <div class="table-content-health m-0">
                                                 <table>
                                                     <thead>
                                                         <tr>
@@ -898,7 +899,7 @@
 
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="bttns-health bttn-staff">
+                                            <div class="bttns-health bttn-review">
                                                 <!--  (click)="onSubmitApplication()" | savedraftStep('step1')-->
                                                 <!-- <button class="cancel-bttn" routerLink="/dashboard/cab_client/application-accreditation">BACK</button>
                                                 <button class="cancel-bttn" type="button" (click)="onSubmitApplication(ngForm1, true)">SAVE AS DRAFT</button> -->
@@ -1473,25 +1474,28 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="authData">
-                                            I confirm that the information provided in this application form is true and correct
+                                            
                                             <mat-checkbox name="undertaking_confirmTop1" 
-                                            [(ngModel)]="authorizationList.undertaking_confirmTop1" required></mat-checkbox>
+                                            [(ngModel)]="authorizationList.undertaking_confirmTop1" required>
+                                            I confirm that the information provided in this application form is true and correct
+                                        </mat-checkbox>
                                         </div>
-                                        <div class="authData">
-                                            I acknowledge I have read and understood and confirm to abide by the 
+                                        <div class="authData">                                            
                                             <!-- (click)="openView(courseView, item.id)" 
                                             uiDialog.openPDFViewer(accredAgreemFile,'')
                                             -->
-                                            <a href="javascript:void(0)" (click)="openView(agreementView, 'agreement')">Accreditation Agreement and request to provide us with a word agreement form for signature</a>
+                                            
                                             <mat-checkbox name="undertaking_confirmTop2" [disableRipple]="true"
                                             (click)="$event.preventDefault()" 
-                                            [(ngModel)]="authorizationList.undertaking_confirmTop2" required></mat-checkbox><br>
+                                            [(ngModel)]="authorizationList.undertaking_confirmTop2" required>I acknowledge I have read and understood and confirm to abide by the 
+                                            <a href="javascript:void(0)" (click)="openView(agreementView, 'agreement')">Accreditation Agreement and request to provide us with a word agreement form for signature</a>
+                                            </mat-checkbox><br>
                                             <p class="error" *ngIf="!readAccredAgreem">Please read agree the agreement</p>
                                         </div>
                                         <div class="authData">
-                                            Do you require ILA MRA Mark Laboratories
+                                            
                                             <mat-checkbox name="undertaking_confirmTop3" 
-                                            [(ngModel)]="authorizationList.undertaking_confirmTop3" required></mat-checkbox>
+                                            [(ngModel)]="authorizationList.undertaking_confirmTop3" required>Do you require ILA MRA Mark Laboratories</mat-checkbox>
                                         </div>
 
                                         <div class="authData">I confirm that the below documents are available and will be furnished once requested by EIAC:</div>
@@ -1537,7 +1541,7 @@
                                         </div>
                                         <div class="recommend">
                                             <span class="confirm">I recommend the visit to be conducted in the</span>
-                                            <mat-radio-group name="recommended" #recommendVisit="ngModel" [(ngModel)]="step7Data.recommended_visit" required>
+                                            <mat-radio-group name="recommended" #recommendVisit="ngModel" [(ngModel)]="step7Data.recommend_visit" required>
                                                 <mat-radio-button name="1st" value="first">1st</mat-radio-button>
                                                 <mat-radio-button name="2nd" value="second">2nd</mat-radio-button>
                                                 <mat-radio-button name="3rd" value="third">3rd</mat-radio-button>
@@ -1865,20 +1869,81 @@
                                         <hr>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="matupload position-relative">
-                                    <mat-form-field  class="lng-data">
-                                        <input matInput readonly="true" name="payment_receipt_name" [(ngModel)]="inspectionBodyForm.payment_receipt_name"  placeholder="Upload valid Legal-Professional / Commercial / Trade license" required>
-                                    </mat-form-field>
-                                    <span class="fileupload">
-                                        <input type="file" name="payment_receipt" 
-                                        [(ngModel)]="inspectionBodyForm.payment_receipt" 
-                                        (change)="validateFile($event, 'payment_receipt')" required>
-                                        <span class="icon-attach attach-data"></span>
-                                    </span>                                               
+                                <!-- <div class="row">
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Voucher Code</mat-label>
+                                            <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                                            matInput placeholder="Voucher Code" 
+                                            [(ngModel)]="voucherSentData.voucher_code">
+                                        </mat-form-field>
                                     </div>
-                                    <p class="error" *ngIf="!file_validation">Please Upload a valid file (ex: pdf)</p>
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Payment Date</mat-label>
+                                            <input matInput [matDatepicker]="payment_date" 
+                                            (click)="_service._openCalendar(payment_date)" 
+                                            readonly="true" 
+                                            [min]="minDate" name="payment_date" 
+                                            [(ngModel)]="voucherSentData.payment_date" placeholder="Payment Date" required>
+                                            <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle>
+                                            <mat-datepicker #payment_date disabled="false"></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Payment Amount</mat-label>
+                                            <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                                            matInput placeholder="Payment Amount" 
+                                            [(ngModel)]="voucherSentData.amount">
+                                        </mat-form-field>
+                                    </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Transaction Number</mat-label>
+                                            <input type="text" [ngModelOptions]="{standalone: true}" required="true"
+                                            matInput placeholder="Transaction Number" 
+                                            [(ngModel)]="voucherSentData.transaction_no">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Payment Method</mat-label>
+                                            <input type="text" [ngModelOptions]="{standalone: true}" required="true"
+                                            matInput placeholder="Payment Method" 
+                                            [(ngModel)]="voucherSentData.payment_method">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Payment Made By</mat-label>
+                                            <input type="text" [ngModelOptions]="{standalone: true}" required="true"
+                                            matInput placeholder="Payment Made By" 
+                                            [(ngModel)]="voucherSentData.payment_made_by">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Mobile Number</mat-label>
+                                            <input type="text" [ngModelOptions]="{standalone: true}" required="true"
+                                            matInput placeholder="Mobile Number" 
+                                            [(ngModel)]="voucherSentData.mobile_no" required>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span class="fileupload">
+                                            <input type="file" name="payment_receipt"                                
+                                            (change)="validateFile($event, 'payment_receipt')" required>
+                                            <span class="icon-attach attach-data"></span>
+                                        </span>
+                                        <p class="error" *ngIf="paymentReceiptValidation == false">Please Upload a valid file (ex: pdf)</p>
+                                    </div>
+
+                                </div> -->
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="bttns-health bttn-staff">

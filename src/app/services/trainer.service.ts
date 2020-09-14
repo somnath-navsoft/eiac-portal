@@ -53,7 +53,7 @@ export class TrainerService {
   //Submit Voucher
   courseVoucherSave(postData: any){
     const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.trainerCourseVoucherSave;
-    return this.http.post(url, postData, this._service.getReqHeaders());
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
 
 
@@ -127,7 +127,7 @@ export class TrainerService {
  }
  //Get Accreditation Service Listing
  getAccreditationServiceList(){
-  let url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.trainerAccredServList; 
+  let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.trainerAccredServList; 
   //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
   //console.log("GET Event URL: ", url, " -- ", this._service.getReqHeaders());
   return this.http.get(url, this._service.getReqHeaders());

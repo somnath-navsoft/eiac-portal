@@ -51,14 +51,12 @@ export class InternalOperationsProfileComponent implements OnInit {
   }
 
   loadStep1Data() {
+    this.loader = false;
     this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail)
     .subscribe(
       res => {
         if(res['status'] == true) {
           // console.log(res['data'].step1[0],'data');
-          if(res['data'].step1) {
-            this.progressValue = 100;
-          }
 
           this.eiacStaff.first_name = res['data']['user_data'][0].first_name;
           this.eiacStaff.last_name = res['data']['user_data'][0].last_name;
@@ -73,8 +71,13 @@ export class InternalOperationsProfileComponent implements OnInit {
             // this.eiacStaff.personal_phone_with_area = step1.personal_phone_with_area;
             this.eiacStaff.pobox_mailing_address = step1.pobox_mailing_address;
             this.eiacStaff.designation = step1.designation;
+            
+            if(res['data']['user_data'][0].first_name != "" && res['data'].step1[0].dob != "null" && res['data'].step1[0].department != "" && res['data'].step1[0].office_email != "" && res['data'].step1[0].office_tel_no != "" && res['data'].step1[0].designation != "") {
+              this.progressValue = 100;
+            }
           }
         }
+        this.loader = true;
       });
   }
 
@@ -108,16 +111,17 @@ export class InternalOperationsProfileComponent implements OnInit {
       this.eiacStaff.email = this.userEmail;
       this.eiacStaff.userType = this.userType;
       this.eiacStaff.isDraft = 1;
+      this.loader = false;
       this.eiacStaffFormFile.append('data',JSON.stringify(this.eiacStaff));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.eiacStaffFormFile)
       .subscribe(
         res => {
-          console.log(res,'res')
           if(res['status'] == true) {
             this.toastr.success(res['msg'], '');
           }else{
             this.toastr.warning(res['msg'], '');
           }
+          this.loader = true;
         });
     }
   }
