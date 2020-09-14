@@ -167,10 +167,10 @@ export class CandidateProfileComponent implements OnInit {
 
           if(res['data'].step1 != '') {
             
-            if(res['data'].step1 != '' && res['data'].step1[0]) {
+            if(res['data'].step1 != '' && res['data'].step1[0] && res['data'].step1[0].dob != null && res['data'].step1[0].office_email != '' && res['data'].step1[0].designation != '' && res['data'].step1[0].nationality != '' && res['data'].step1[0].mailing_address != '' && res['data'].step1[0].office != '' && res['data'].step1[0].tel_no != '' && res['data'].step1[0].fax_no != '' && res['data'].step1[0].office_address != '' && res['data'].step1[0].office_tel_no != '' && res['data'].step1[0].office_tel_no != '' && res['data'].step1[0].applicant_office != '' && res['data'].step1[0].applicant_tel_no != '' && res['data'].step1[0].applicant_fax_no != '' && res['data'].step1[0].applicant_office_address != '' && res['data'].step1[0].applicant_office_tel_no != '' && res['data'].step1[0].applicant_address != '') {
               this.progressValue = 50;
               this.Service.moveSteps('personal_details','application_information', this.headerSteps);
-            }if(res['data'].step2 != '' && res['data'].step2[0]) {
+            }if(res['data'].step2 != '' && res['data'].step2.candidateOwnerData != '' && res['data'].step2.candidateBodData != '' && res['data'].step1[0].legal_status != '' && res['data'].step1[0].date_of_establisment != null) {
               this.progressValue = 100;
             }
             
@@ -180,8 +180,8 @@ export class CandidateProfileComponent implements OnInit {
               this.step1Data.date_of_birth = new Date(step1.dob);
               this.step1Data.company_email = step1.office_email;
               this.step1Data.designation = step1.designation;
-              this.step1Data.nationality = step1.designation;
-              this.step1Data.mailing_address = step1.nationality;
+              this.step1Data.nationality = step1.nationality;
+              this.step1Data.mailing_address = step1.mailing_address;
               this.step1Data.office_institution = step1.office;
               this.step1Data.phone_with_area = step1.tel_no;
               this.step1Data.fax_with_area = step1.fax_no;
@@ -207,8 +207,8 @@ export class CandidateProfileComponent implements OnInit {
               // this.step2Data.date_establishment = '';
               this.step2Data.is_bod = step2.candidateBodData != '' ? '1' : '0';
               this.step2Data.legal_license = step1.legal_status;
-              this.step2Data.certification_main_activity = step1.legal_status;
-              this.step2Data.main_activity_describe = step1.is_certification_main_activity;
+              // this.step2Data.certification_main_activity = step1.legal_status;
+              // this.step2Data.main_activity_describe = step1.is_certification_main_activity;
               this.nameOftheOwner = step2.candidateOwnerData != '' ? step2.candidateOwnerData : this.nameOftheOwner ;
               this.companyBodMembers =  step2.candidateBodData != '' ? step2.candidateBodData : this.companyBodMembers ;
 
