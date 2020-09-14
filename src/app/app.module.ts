@@ -120,6 +120,11 @@ import { OperationMessageComponent } from './components/dashboard/operations/ope
 import { OperationMessageDetailsComponent } from './components/dashboard/operations/operation-message/operation-message-details/operation-message-details.component';
 import { MessageComponent } from './components/dashboard/message/message.component';
 import { MessageDetailComponent } from './components/dashboard/message/message-detail/message-detail.component';
+import { MessageDetailsComponent } from './components/dashboard/assessors/message-details/message-details.component';
+import { CabMessageDetailsComponent } from './components/dashboard/cab/cab-message-details/cab-message-details.component';
+import { CandidateMessageDetailsComponent } from './components/dashboard/candidate/candidate-message-details/candidate-message-details.component';
+import { OperationsMessageDetailsComponent } from './components/dashboard/operations/operations-message-details/operations-message-details.component';
+import { TrainersMessageDetailsComponent } from './components/dashboard/trainers/trainers-message-details/trainers-message-details.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -152,7 +157,12 @@ export const MY_FORMATS = {
     OperationMessageComponent,
     OperationMessageDetailsComponent,
     MessageComponent,
-    MessageDetailComponent],
+    MessageDetailComponent,
+    MessageDetailsComponent,
+    CabMessageDetailsComponent,
+    CandidateMessageDetailsComponent,
+    OperationsMessageDetailsComponent,
+    TrainersMessageDetailsComponent],
   imports: [
     CommonModule,
     FormsModule,

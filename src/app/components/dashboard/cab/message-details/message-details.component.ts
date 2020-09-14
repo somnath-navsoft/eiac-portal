@@ -5,11 +5,11 @@ import { AppService } from 'src/app/services/app.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-message-detail',
-  templateUrl: './message-detail.component.html',
-  styleUrls: ['./message-detail.component.scss']
+  selector: 'app-message-details',
+  templateUrl: './message-details.component.html',
+  styleUrls: ['./message-details.component.scss']
 })
-export class MessageDetailComponent implements OnInit {
+export class MessageDetailsComponent implements OnInit {
 
   userType:any;
   userEmail:any;
