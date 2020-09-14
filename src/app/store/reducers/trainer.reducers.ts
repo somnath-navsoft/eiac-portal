@@ -24,6 +24,15 @@ export function reducer(state = initialState, action: All): State {
           errorMessage: action.payload.errorMessage
         };
       }
+      case TrainerActionTypes.LIST_ACCRED_SERV: {
+        console.log('@Reducer Accreditation status LIST');
+        return {
+          ...state,
+          trainer: action.payload.records,
+          successMessage: action.payload.successMessage,
+          errorMessage: action.payload.errorMessage
+        };
+      }
       case TrainerActionTypes.LIST_EVENT: {
         ////console.log('@Reducer Trainer LIST');
         return {

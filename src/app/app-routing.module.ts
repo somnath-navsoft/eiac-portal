@@ -71,6 +71,7 @@ import { CandidateTrainingApplicationComponent } from './components/dashboard/ca
 import { CandidateTrainingPublicCourseComponent } from './components/dashboard/candidate/candidate-training-public-course/candidate-training-public-course.component';
 import { OperationMessageComponent } from './components/dashboard/operations/operation-message/operation-message.component';
 import { OperationMessageDetailsComponent } from './components/dashboard/operations/operation-message/operation-message-details/operation-message-details.component';
+import { OperationsAccreditationServiceListComponent } from './components/dashboard/operations/operations-accreditation-service-list/operations-accreditation-service-list.component';
 import { MessageComponent } from './components/dashboard/message/message.component';
 import { MessageDetailComponent } from './components/dashboard/message/message-detail/message-detail.component';
 import { OperationsMessageDetailsComponent } from './components/dashboard/operations/operations-message-details/operations-message-details.component';
@@ -115,6 +116,7 @@ const routes: Routes = [
           { path: 'home', component:OperationsDashboardComponent, canActivate: [AuthGuard]},
           { path: 'training-apply/:id', component:OperationsTrainerServiceComponent, canActivate: [AuthGuard] },
           { path: 'training-service', component:OperationsTrainerServiceListComponent, canActivate: [AuthGuard] },
+          { path: 'accreditation-service-list', component:OperationsAccreditationServiceListComponent, canActivate: [AuthGuard] },
           { path: 'message', component:OperationMessageComponent, canActivate: [AuthGuard] },
           { path: 'message-detail/:id', component:OperationsMessageDetailsComponent, canActivate: [AuthGuard] },
         ] 

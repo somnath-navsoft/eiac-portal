@@ -26,6 +26,11 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 .recommend .mat-checkbox-layout {
   white-space: normal !important;
 }
+
+.authData .mat-checkbox-layout {
+  white-space: normal !important;
+}
+
 //==================DU PORTAL==================//
 
 //==================FOR BEFORE LOGIN==================//
@@ -319,6 +324,7 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 .user-details-pending { font-size: 14px; font-family: 'Dubai Medium'; }
 // color: #B19782;
 .bttn-staff { display: flex; justify-content: space-between; align-content: center; width: 100%; height: 100%; }
+.bttn-review { text-align: right; }
 .agree-condi { padding-top: 20px; color: #7A7A7A; font-family: 'Dubai Regular'; font-size: 18px; }
 .agree-condi .mat-checkbox-frame {
   border-color: #979797;
@@ -720,7 +726,7 @@ a:hover { text-decoration: none; }
 .table-content-health th {padding: 10px; text-align: right; background: #E7E7E7;  border: 1px solid #DCDAD5;}
 .table-content-health td { padding: 25px 10px 20px; background: #F9F9F9; border: 1px solid #DCDAD5;}
 .table-content-health td input:focus { outline: none;}
-.table-content-health td span{ font-size: 22px;}
+.table-content-health td span{ font-size: 18px;}
 .table-content-health .content-icn {text-align: center; color: #B54150;}
 .form-subheader-desc { background: #E7E7E7; text-align: right; margin: 0 -15px;}
 .form-subheader-desc .mat-radio-button { padding: 10px 15px; }
@@ -767,6 +773,20 @@ a:hover { text-decoration: none; }
 }
 .recommend .mat-checkbox-inner-container { height: 20px; width: 20px; margin-top: 7px; }
 .recommend .mat-checkbox-layout .mat-checkbox-label { line-height: 34px; font-family: "Dubai Medium"; font-size: 24px; }
+.modal-dialog {
+  max-width: 500px;
+  max-height: 700px;
+  margin: 1.75rem auto;
+  overflow: scroll;}
+.authData .mat-checkbox-frame {
+  border-color: rgba(153, 153, 153, 1); 
+  border-width: 1px; 
+  border-radius: 0; 
+  width: 20px; 
+  height: 20px;
+}
+.authData .mat-checkbox-inner-container { height: 20px; width: 20px; margin-top: 7px; }
+.authData .mat-checkbox-layout .mat-checkbox-label { line-height: 34px; font-family: "Dubai Medium"; font-size: 24px; }
 .assess-dir { background: #EFEFEF; margin-top: 30px; padding-bottom: 30px; }
 
 
@@ -873,3 +893,58 @@ a:hover { text-decoration: none; }
   margin: 15px 10px;
   color: #121212;
 }
+
+//=================HAPPINESS INDIGATOR==============//
+.mat-dialog-container {  padding: 0px!important; border-radius: 5px!important; }
+.happy-dets { width: 100%; margin: 0 auto; padding: 20px 0; padding-top: 0; } 
+.top-bg { background: #B19782; height: 10px; text-align: center; }
+.top-bg img { height: 75px; position: relative; top: 10px; padding-top: 20px; }
+.hpy-faces { text-align: center; margin-top: 30px; padding: 20px;}
+.hpy-faces img{ height: 250px; padding: 30px; }
+.hpy-faces a:focus { outline: none;}
+.hpy-faces img:focus { outline: none; }
+.exp h3 { font-size: 40px; font-family: "Dubai Bold"; text-align: center; letter-spacing: 2px; margin-bottom: 20px; }
+.content-faces { text-align: center; }
+.content-faces img { height: 100px; padding: 10px 20px;}
+.feel { text-align: center; }
+.quest-p { text-align: left; }
+.questions-review p { display: inline-block; font-size: 22px; color: #B19782; text-align: left; margin: 0; padding: 10px; }
+.questions-review img { height: 70px; padding: 5px 10px;}
+.questions-rvw { padding: 20px 50px;}
+.questions-review hr { margin: 0; }
+.quest-img { text-align: right; }
+.bttn-feed { text-align: right; padding: 20px 0; }
+.bttn-feed .tell-us:focus { outline: none; }
+.tell-us { background: #B19782; padding: 5px 15px; border-radius: 20px; color: #ffffff; border: none; }
+.finish { background: #B14A56; }
+.thankyou { text-align: center; }
+.thankyou p { margin: 0; font-size: 40px; color: #B19782; padding: 150px 50px; }
+.comments { width: 100%;  }
+// .comments-num { margin: 0 15px; }
+.comments textarea { width: 100%; padding: 10px;  border: 1px solid #b2bbc7; border-radius: 5px; margin: 20px 0; height: 200px; }
+.comments-num input {  width: 100%; padding: 10px; border: 1px solid #b2bbc7; border-radius: 5px; }
+.comments textarea:focus { outline: none; }
+.comments-num input:focus { outline: none; }
+.happy-review {
+  background-image: url('../images/happymeter.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  position: fixed;
+  right: 30px;
+  z-index: 10;
+  background-color: #B54150;
+  bottom: 12%;
+  padding: 30px;
+  line-height: 1;
+  border-radius: 50%;
+  color: #ffffff;
+  cursor: pointer;
+}
+.happy-review:hover { background-color: #C6B8A4; }
+.open-cls { background: #E7E7E7; margin: 0 -15px; padding: 10px 25px; text-align: right;  }
+.open-cls a { color: #AA9777; }
+.open-cls a:hover { text-decoration: none; }
+.desc-content-prof { display: flex; justify-content: space-around; }
+
+
+.pdf-data { display: flex; justify-content: space-between;}

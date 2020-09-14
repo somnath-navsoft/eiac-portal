@@ -124,10 +124,23 @@ addMinutesToTime()
     }
     return header;
   }
+  //{ "Accept": "application/json" }
+  //        
+
+  getReqHeadersUpload(){
+    let header = {
+      headers: new HttpHeaders()
+        .set('Authorization',  `Bearer ${this.getToken()}`)
+        .set("Accept", "application/json")
+    }
+    return header;
+  }
+
   getReqHeaders(){
     let header = {
       headers: new HttpHeaders()
         .set('Authorization',  `Bearer ${this.getToken()}`)
+        .set('Content-Type',  'application/json')
     }
     return header;
   }

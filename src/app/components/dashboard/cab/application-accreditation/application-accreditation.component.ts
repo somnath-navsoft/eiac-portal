@@ -3,6 +3,7 @@ import { Constants } from 'src/app/services/constant.service';
 import { AppService } from 'src/app/services/app.service';
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
+import { Title, Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-application-accreditation',
@@ -14,10 +15,18 @@ export class ApplicationAccreditationComponent implements OnInit {
   serviceList:any;
   loader:boolean = true; 
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
+  constructor(public Service: AppService, private titleService: Title,
+    private metaTagService: Meta, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
   ngOnInit() {
     // console.log(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService);
+    this.titleService.setTitle("Accreditation Page list");
+    this.metaTagService.updateTag(
+      { name: 'description', content: 'Add song template' },      
+    );
+    this.metaTagService.updateTag(
+      { name: 'keywords', content: 'Eiac, Portal, Test, Rest' },      
+    );
     this.loadService();
   }
 

@@ -1,20 +1,3 @@
-/*
-import { Component, OnInit } from '@angular/core';
-
-@Component({
-  selector: 'app-operations-trainer-service-list',
-  templateUrl: './operations-trainer-service-list.component.html',
-  styleUrls: ['./operations-trainer-service-list.component.scss']
-})
-export class OperationsTrainerServiceListComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-}
-*/
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
