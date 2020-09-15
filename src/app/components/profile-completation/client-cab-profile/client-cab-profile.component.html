@@ -392,7 +392,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="col-md-4 col-sm-12">
                                         <mat-form-field class="cab-data">
                                             <mat-label>Contact Person Name</mat-label>
@@ -443,12 +443,12 @@
                                             <mat-error></mat-error>
                                         </mat-form-field>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="row">
                                     <div class="col-12 p-0">
                                         <div class="form-subheader-data">
-                                            <h5>NAME(S) OF THE OWNER(S)</h5>
+                                            <h5>OWNERSHIP OF THE ORGANIZATION</h5>
                                         </div>
                                     </div>
                                 </div>
@@ -553,33 +553,33 @@
                                                     </mat-form-field>
                                                 </div>
 
-                                                <div class="col-md-4 col-sm-12">
+                                                <div class="col-md-8 col-sm-12">
                                                     <mat-form-field class="cab-data">
-                                                        <mat-label>Company Name of BOD Member is working</mat-label>
-                                                        <input matInput placeholder="Company Name of BOD Member is working"  (keypress)="Service.inputFilter($event, Service.regExName)" name="company_name_bod_{{i}}" [(ngModel)]="companyBodMembers[i].bod_company"  required>
+                                                        <mat-label>List the companies name of BOD members</mat-label>
+                                                        <input matInput placeholder="List the companies name of BOD members"  (keypress)="Service.inputFilter($event, Service.regExName)" name="company_name_bod_{{i}}" [(ngModel)]="companyBodMembers[i].bod_company"  required>
                                                     </mat-form-field>
                                                 </div>
 
-                                                <div class="col-md-4 col-sm-12">
+                                                <!-- <div class="col-md-4 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Managing Director/Chief Executive</mat-label>
                                                         <input matInput placeholder="Managing Director/Chief Executive"  (keypress)="Service.inputFilter($event, Service.regExName)" name="managing_director_ceo_{{i}}" [(ngModel)]="companyBodMembers[i].director"  required>
                                                     </mat-form-field>
-                                                </div>
+                                                </div> -->
                                             </div>
 
                                             <div class="row">
                                                 <div class="col-md-4 col-sm-12">
                                                     <mat-form-field class="cab-data">
-                                                        <mat-label>Designation</mat-label>
-                                                        <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="bod_designation_{{i}}" [(ngModel)]="companyBodMembers[i].designation" required>
+                                                        <mat-label>Authorized Contact Person Name</mat-label>
+                                                        <input matInput placeholder="Authorized Contact Person Name"   name="authorized_contact_person_{{i}}" [(ngModel)]="companyBodMembers[i].authorized_contact_person"  (keypress)="Service.inputFilter($event, Service.regExName)" required>
                                                     </mat-form-field>
                                                 </div>
 
                                                 <div class="col-md-4 col-sm-12">
                                                     <mat-form-field class="cab-data">
-                                                        <mat-label>Authorized Contact Person Name</mat-label>
-                                                        <input matInput placeholder="Authorized Contact Person Name"   name="authorized_contact_person_{{i}}" [(ngModel)]="companyBodMembers[i].authorized_contact_person"  (keypress)="Service.inputFilter($event, Service.regExName)" required>
+                                                        <mat-label>Designation</mat-label>
+                                                        <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="bod_designation_{{i}}" [(ngModel)]="companyBodMembers[i].designation" required>
                                                     </mat-form-field>
                                                 </div>
 
@@ -592,7 +592,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row">
+                                            <!-- <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Land Line Phone No.</mat-label>
@@ -608,7 +608,7 @@
                                                     </mat-form-field>
                                                     <p class="error" *ngIf="companyBodMembers[i].email && !Service.checkInput('email',companyBodMembers[i].email)">Please Enter Correct Email Id</p>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                         
                                     </div>
