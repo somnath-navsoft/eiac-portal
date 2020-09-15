@@ -314,8 +314,8 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 .main-content-portal { width: 100%; }
 .main-content-portal h3 { margin: 0; }
 .main-dashboard-cnt { padding: 20px 0; }
-.main-dashboard-cnt .user-steps { display: flex; justify-content: center; align-items: center; height: 100%; }
-.user-steps .user-next { border: 1px solid #CECECE ; background: #FFF; padding: 20px 18px; color: #1D1D1D; text-align: center; height: 100%; width: 120px; }
+.main-dashboard-cnt .user-steps { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; }
+.user-steps .user-next { border: 1px solid #CECECE ; background: #FFF; padding: 20px 18px; color: #1D1D1D; text-align: center; min-height: 200px; width: 120px; margin-bottom: 20px; }
 .user-steps .user-present { border: 1px solid #B19782; background: #B19782; color: #FFF; }
 .user-steps .user-done { border: 1px solid #B54150; background: #B54150; color: #FFF; }
 .user-steps .user-next .usernext-icon { font-size: 30px; }
@@ -879,6 +879,9 @@ a:hover { text-decoration: none; }
 
 
 //==================RESPONSIVE==================//
+@media(max-width: 1500px) {
+  .main-dashboard-cnt .user-steps { height: 50%; }
+}
 @media(max-width: 1366px) {
   .dash-logo { height: 50px; min-width: 50px; margin-right: 10px; }
   .main-status .head-dash { font-size: 16px; }
