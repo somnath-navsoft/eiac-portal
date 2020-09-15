@@ -146,6 +146,7 @@ export class TrainersProfileComponent implements OnInit {
           this.step1Data.last_name = res['data']['user_data'][0].last_name;
           this.step1Data.personal_email = res['data']['user_data'][0].email;
 
+
           var other_course = res['data'].step2[0].other_course != null ? JSON.parse(res['data'].step2[0].other_course) : '';
           var education = res['data'].step2[0].education != null ? JSON.parse(res['data'].step2[0].education) : '';
 
@@ -209,6 +210,7 @@ export class TrainersProfileComponent implements OnInit {
 
           if(res['data'].step3 && res['data'].step3 != '' && res['data'].step3[0]) {
             var step3 = res['data'].step3[0];
+
             this.step3Data.place = step3.place != null ? step3.place : '' ;
             this.step3Data.date = step3.registration_date != null ? new Date(step3.registration_date) : '';
             this.step3Data.digital_signature = step3.signature != null ? step3.signature : '';

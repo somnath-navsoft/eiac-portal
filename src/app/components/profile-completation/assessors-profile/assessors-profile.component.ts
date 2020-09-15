@@ -457,6 +457,7 @@ export class AssessorsProfileComponent implements OnInit {
             this.step5Data.date = new Date(step5.registration_date);
           }
 
+
         }
       });
   }

@@ -277,6 +277,7 @@ export class ClientCabProfileComponent implements OnInit {
             this.step2Data.certification_main_activity = res['data'].step1[0].is_certification_main_activity == true ? 1 : 0;
           }
 
+
         }
       });
   }
