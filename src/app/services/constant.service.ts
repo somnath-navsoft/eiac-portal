@@ -10,7 +10,7 @@ export class Constants{
 	public apiUrl: string 					= '';
 	public mediaPath: string 				= 'https://uat-service.eiac.gov.ae';
 	//trainerAPI: '/trainer',
-	//all_services: this.apiUrl + 'service_page/',
+	//all_services: this.apiUrl + 'service_page/', 
 	public API_ENDPOINT: any	=	{
 		authToken:  '/api/token/',
 		signUp: 'user-service/',
@@ -25,6 +25,8 @@ export class Constants{
 		trainerCourseVoucherSave: 'webservice/voucher-details-save/',
 		trainerCoursePageDetails : 'trainer/training-page-details/',
 		trainerCourseTypeDetails: 'trainer/training-course-type/',
+
+		paymentDetailsSave: 'webservice/payment-details-save/',
 
 		savePublicTrainingForm:'trainer/training-application-form/',
 

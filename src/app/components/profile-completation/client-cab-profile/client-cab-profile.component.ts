@@ -133,16 +133,19 @@ export class ClientCabProfileComponent implements OnInit {
     this.companyBodMembers = [{
       name:'',
       bod_company:'',
+      director:'',
       designation:'',
       authorized_contact_person:'',
       mobile_no:'',
+      phone_no:'',
+      email:'',
     }];
     this.step2Data.date_of_establishment = '';
     this.step2Data.legal_license = '';
     this.step2Data.certification_main_activity = '';
     this.step2Data.main_activity_describe = '';
   }
-
+ 
   getDutyTimeForm1Index(indexVal){
     //console.log('Get Index: ', indexVal.value, " -- ", indexVal);
       var keyVal;

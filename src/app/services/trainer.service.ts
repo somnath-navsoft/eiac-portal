@@ -55,7 +55,10 @@ export class TrainerService {
     const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.trainerCourseVoucherSave;
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
-
+  paymentVoucherSave(postData: any){
+    const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.paymentDetailsSave;
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
+  }
 
 
   //Apply Trainer Public Course

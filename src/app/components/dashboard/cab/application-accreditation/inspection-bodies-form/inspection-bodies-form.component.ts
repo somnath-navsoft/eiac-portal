@@ -11,6 +11,7 @@ import  { UiDialogService } from  '../../../../../services/uiDialog.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
+import { TrainerService } from '../../../../../services/trainer.service';
 
 declare let paypal: any;
 @Component({
@@ -68,6 +69,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   readAccredAgreem: boolean = false;
   readReviewChecklist: boolean = false;
   readTermsCond: boolean = false;
+  
 
   public isSubmit:boolean = true;
   dutyTime1: boolean = true;
@@ -145,6 +147,11 @@ export class InspectionBodiesFormComponent implements OnInit {
   closeResult: string;
   pathPDF: any;
   voucherFile:any = new FormData();
+  voucherSentData: any = {};
+  selectTradeLicName :string = ''; 
+  selectTradeLicPath :string = ''; 
+  paymentFilePath: string = '';
+  
 
   //dynamicScopeOptions:any[] = [];  
   //dynamicScopeModelValues:any={};
@@ -171,7 +178,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   headerSteps:any[] = [];
 
   constructor(public Service: AppService, public uiDialog: UiDialogService, public sanitizer: DomSanitizer,
-    private modalService: NgbModal,
+    private modalService: NgbModal,private _trainerService: TrainerService,
     public _toaster: ToastrService, public constant:Constants,public router: Router,public toastr: ToastrService) { 
     this.today.setDate(this.today.getDate());
   }
@@ -418,6 +425,7 @@ export class InspectionBodiesFormComponent implements OnInit {
 
   openView(content, type:string) {
     let pathData: any;
+    console.log(">>>pop up...", content);
     if(type != undefined && type == 'agreement'){
       pathData = this.getSantizeUrl(this.accredAgreemFile);
       this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
@@ -463,7 +471,7 @@ export class InspectionBodiesFormComponent implements OnInit {
 
     this.modalOptions = {
       backdrop:'static',
-      backdropClass:'customBackdrop'
+      backdropClass:'customBackdrop',
     }
 
     this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');
@@ -476,7 +484,10 @@ export class InspectionBodiesFormComponent implements OnInit {
     // this.titleService.setTitle('EIAC - Inspection Bodies');
     this.addMinutesToTime = this.Service.addMinutesToTime();
     //this.dynamicScopeModelValues[0] = {};
+
     this.loadData();
+    this.loadAppData();
+    this.loadAppInfo();
     this.loadFormDynamicTable();
     this.loadCountryStateCity();
     this.loader = false;
@@ -504,7 +515,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       title:'undertaking_applicant', desc:'7. Authorization of the Application', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
-        title:'proforma_invoice', desc:'8. Proforma Invoice', activeStep:false, stepComp:true, icon:'icon-google-doc', activeClass:''
+        title:'proforma_invoice', desc:'8. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
         title:'payment_update', desc:'9. Payment Update', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
@@ -550,8 +561,13 @@ export class InspectionBodiesFormComponent implements OnInit {
   loadCountryStateCity = async() => {
     let countryList =  this.Service.getCountry();
     await countryList.subscribe(record => {
-      console.log(record,'contry record');
+      ///console.log(record,'contry record :: ', this.step1Data.country);
       this.getCountryLists = record['countries'];
+      let getC = this.getCountryLists.find(rec => rec.name == this.step1Data.country);
+      //console.log('>>>> country: ', getC);
+      if(getC){
+        //this.step1Data.country = getC.id;
+      }
     });
     
   }
@@ -833,6 +849,128 @@ export class InspectionBodiesFormComponent implements OnInit {
     }
   }
 
+  loadAppData(){
+    let url = this.Service.apiServerUrl+"/"+'accrediation-details-show/0';
+    this.Service.getwithoutData(url)
+    .subscribe(
+      res => {
+        let getData: any = res;
+        let data: any;
+        let pathData: any;
+        let filePath: string;
+        console.log(getData,"get APP Data:");
+        if(!this.Service.isObjectEmpty(getData.data.paymentDetails)){
+          
+          if(getData.data.paymentDetails.voucher_invoice != undefined && getData.data.paymentDetails.voucher_invoice != ''){
+            filePath = this.constant.mediaPath + '/media/' + getData.data.paymentDetails.voucher_invoice;
+            pathData = this.getSantizeUrl(filePath);
+            this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
+          }
+          console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
+        }
+        if(getData.data.saved_step  != null){
+          console.log("@saved step assign....");
+          let saveStep = getData.data.saved_step;
+          //open step
+          this.headerSteps.forEach((item, key) => {
+                console.log(item, " --- ", key);
+                if(key < saveStep){
+                  console.log('moving steps....');
+                  let curStep: any = item;
+                  curStep.stepComp = true;
+                  let nextStep: any = this.headerSteps[key+1];
+                  this.Service.moveSteps(curStep.title, nextStep.title, this.headerSteps);
+                }
+                if(key == saveStep){
+                  
+                  let curStep: any = this.headerSteps[key];
+                  console.log('found steps....',curStep);
+                  curStep.stepComp = true;
+                  this.Service.headerStepMove(item.title, this.headerSteps,'menu')
+                }
+          })
+          console.log("#Step data: ", this.headerSteps);
+        }
+        if(getData.data.country  != null){
+          this.step1Data.country = getData.data.country;
+        }
+        if(getData.data.date_of_issue != ''){
+          this.step1Data.date_of_expiry = getData.data.date_of_expiry;
+          this.step1Data.date_of_establishment = getData.data.date_of_establishment;
+          this.step1Data.date_of_issue = getData.data.date_of_issue;
+
+        }
+      }
+    );
+  }
+
+  loadAppInfo(){
+    //let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
+    let getUserdata = '';
+  let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
+  console.log("app info: ", url);
+  this.Service.getwithoutData(url)
+    .subscribe(
+      res => {
+        let getData: any = res;
+        let data: any;
+        console.log(getData,"get info:", getData.data.step1);
+        if(getData.data.step1.length){
+          data = getData.data['step1'][0];
+          ///console.log('data enter...1', data);
+
+          if(data){
+            console.log('data enter...2');
+
+            var stateList =  this.Service.getState();
+            var cityList =  this.Service.getCity();
+
+            stateList.subscribe( result => {
+              for(let key in result['states']) {
+                if(result['states'][key]['name'] == data.state )
+                {
+                  this.allStateList.push(result['states'][key]);
+                }
+              }
+            });
+
+            cityList.subscribe( result => {
+              for(let key in result['cities']) {
+                if(result['cities'][key]['name'] == data.city )
+                {
+                  this.allCityList.push(result['cities'][key]);
+                }
+              }
+            });
+
+            //this.step1Data.country = data.country;
+            this.step1Data.state = data.state;
+            this.step1Data.city = data.city;
+            //selectTradeLicName
+            if(data.trade_license != ''){
+              let getFile = data.trade_license.toString().split('/');
+              if(getFile.length){
+                this.selectTradeLicName = getFile[4];
+                this.selectTradeLicPath = this.constant.mediaPath +  data.trade_license.toString();
+              }
+            }
+
+            this.step1Data.physical_location_address = data.registered_address;
+            this.step1Data.po_box = data.po_box;
+            this.step1Data.telephone = data.tel_no;
+            this.step1Data.fax_no = data.fax_no;
+            this.step1Data.mailing_address = data.mailing_address;
+            this.step1Data.official_website = data.official_website;
+            // this.step1Data.date_of_expiry = data.date_of_expiry;
+            // this.step1Data.date_of_establishment = data.date_of_establisment;
+            // this.step1Data.date_of_issue = data.date_of_issue; //|
+            this.step1Data.official_email = data.official_email;
+            this.step1Data.official_website = data.official_website;
+          }
+        }
+      })
+  }
+
   loadData(){
   this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data)
     .subscribe(
@@ -853,16 +991,29 @@ export class InspectionBodiesFormComponent implements OnInit {
 
 
   ///get info
-  let getUserdata = '';
-  let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
-  console.log("app info: ", url);
-  this.Service.getwithoutData(url)
-    .subscribe(
-      res => {
-        let getData: any = res;
-        console.log(getData);
+  // let getUserdata = '';
+  // let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
+  // console.log("app info: ", url);
+  // this.Service.getwithoutData(url)
+  //   .subscribe(
+  //     res => {
+  //       let getData: any = res;
+  //       let data: any;
+  //       console.log(getData,"get info:");
+  //       if(getData['step1'] != undefined){
+  //         data = getData['step1'][0];
+  //         console.log('data enter...1', data);
+  //         if(data){
+  //           console.log('data enter...2');
+  //           this.step1Data.physical_location_address = data.registered_address;
+  //           this.step1Data.po_box = data.po_box;
+  //           this.step1Data.telephone = data.tel_no;
+  //           this.step1Data.fax_no = data.fax_no;
+  //         }
+  //       }
+        
 
-      })
+  //     })
 
     if(this.inspectionBodyScopeFields.length<1){
       this.inspectionBodyScopeFields=  [{},{},{},{},{},{}];
@@ -1156,6 +1307,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     // })
     
     //this.Service.moveSteps('undertaking_applicant', 'payment_update', this.headerSteps);
+    //this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
 
     let checkCount = 0;
     for(let key in this.authorizationList) {
@@ -1348,7 +1500,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     //   this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
     //  }else{
     //   this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
-    // }
+    // } 
     
     //console.log("Submit calling: ", ngForm1, " -- ", type); 
     //return;
@@ -1440,23 +1592,23 @@ export class InspectionBodiesFormComponent implements OnInit {
 
 
     this.inspectionBodyForm.step1 = this.step1Data;      
-    this.inspectionBodyForm.step1['ownOrgBasicInfo'] = [];
-    this.inspectionBodyForm.step1['ownOrgMembInfo'] = [];
-    this.inspectionBodyForm.step1['accreditationInfo'] = [];
+    // this.inspectionBodyForm.step1['ownOrgBasicInfo'] = [];
+    // this.inspectionBodyForm.step1['ownOrgMembInfo'] = [];
+    // this.inspectionBodyForm.step1['accreditationInfo'] = [];
     
-    if(this.ownOrgBasicInfo) {
-      this.inspectionBodyForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
-    }
-    if(this.ownOrgMembInfo) {
-      this.inspectionBodyForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
-    }
-    if(this.accreditationInfo) {
-      this.inspectionBodyForm.step1['accreditationInfo'] = this.accreditationInfo;
-    }
+    // if(!this.Service.isObjectEmpty(this.ownOrgBasicInfo[0])) {
+    //   this.inspectionBodyForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
+    // }
+    // if(!this.Service.isObjectEmpty(this.ownOrgMembInfo[0])) {
+    //   this.inspectionBodyForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
+    // }
+    // if(!this.Service.isObjectEmpty(this.accreditationInfo[0])) {
+    //   this.inspectionBodyForm.step1['accreditationInfo'] = this.accreditationInfo;
+    // }
     let scopeValues: any =[];
     let scopeIds:any =[];
     let scopeSelValues:any =[];
-    console.log("dynamic ", this.dynamicScopeModel, " -- ", this.dynamicScopeFieldColumns);
+    //console.log("dynamic ", this.dynamicScopeModel, " -- ", this.dynamicScopeFieldColumns);
     var key = '';
     var key2 = '';
     let resultAr: any={};
@@ -1595,7 +1747,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       }
       
       this.inspectionBodyForm.email = this.userEmail;
-      this.inspectionBodyForm.userType = this.userType;//
+      this.inspectionBodyForm.userType = this.userType;
       this.inspectionBodyForm.saved_step = 1;
       this.inspectionBodyForm.step1 = this.step1Data;      
 
@@ -1603,21 +1755,21 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.inspectionBodyForm.step1['ownOrgMembInfo'] = [];
       this.inspectionBodyForm.step1['accreditationInfo'] = [];
       
-      if(this.ownOrgBasicInfo) {
+      if(!this.Service.isObjectEmpty(this.ownOrgBasicInfo[0])) {
         this.inspectionBodyForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
       }
-      if(this.ownOrgMembInfo) {
+      if(!this.Service.isObjectEmpty(this.ownOrgMembInfo[0])) {
         this.inspectionBodyForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
       }
-      if(this.accreditationInfo) {
+      if(!this.Service.isObjectEmpty(this.accreditationInfo[0])) {
         this.inspectionBodyForm.step1['accreditationInfo'] = this.accreditationInfo;
       }
       
       //return;
       //this.inspectionBodyForm.step1['trade_license'] = this.step1DataBodyFormFile;
       // this.inspectionBodyForm.step1.is_draft = false;
-      // console.log(">>> First Step Data: ", this.inspectionBodyForm);
-      // return;
+      console.log(">>> First Step Data: ", this.inspectionBodyForm);
+      //return;
       //this.step1DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
           // this.toastr.success('Application Successfully Submitted', '');
           // setTimeout(()=> {
@@ -1773,7 +1925,7 @@ export class InspectionBodiesFormComponent implements OnInit {
 
   onSubmitPersonalInformation(ngForm3: any, type?: boolean){
     // console.log("Step PersonalInformation submit...");
-  // this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+      //this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
       this.inspectionBodyForm = {};
       this.inspectionBodyForm.step3 = {};
       //this.inspectionBodyForm.email = this.userEmail;
@@ -2109,13 +2261,13 @@ export class InspectionBodiesFormComponent implements OnInit {
                 }
                 resultAr[key1] = [];
                 
-                for(var k=0; k<scopeIds.length; k++){
-                  let idKey = scopeIds[k].id;
-                  let valueKey = scopeSelValues[k].value;
-                  let tempObj = {};
-                  tempObj[idKey] = valueKey;
-                  resultAr[key1].push({id: idKey, value: valueKey});
-               }
+              //   for(var k=0; k<scopeIds.length; k++){
+              //     let idKey = scopeIds[k].id;
+              //     let valueKey = scopeSelValues[k].value;
+              //     let tempObj = {};
+              //     tempObj[idKey] = valueKey;
+              //     resultAr[key1].push({id: idKey, value: valueKey});
+              //  }
                //resultAr[key1] = tempObj;
                console.log('scope object: ', " -- ", resultAr);
           })
@@ -2165,8 +2317,8 @@ export class InspectionBodiesFormComponent implements OnInit {
     
     console.log(">>> step5 submit...", this.step5Data, " -- ", this.inspectionBodyForm);
     //return;
-
-    if(ngForm.form.valid && type == undefined) {
+    //ngForm.form.valid &&
+    if( type == undefined) {
       this.inspectionBodyForm.step5.is_draft = false;
       this.inspectionBodyForm.saved_step = 5;
       //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
@@ -2259,25 +2411,75 @@ onSubmitPaymentInformation(ngForm7: any, type?: boolean){
     this.inspectionBodyForm = {};
     this.inspectionBodyForm.step9 = {};
 
+          let dtFormat: string = '';
+          if(this.voucherSentData['payment_date'] != undefined && 
+            this.voucherSentData['payment_date']._i != undefined){
+            var dtData = this.voucherSentData['payment_date']._i;
+            var year = dtData.year;
+            var month = dtData.month;
+            var date = dtData.date;
+            dtFormat = year + "-" + month + "-" + date;
+          }
+          //     
 
+        this.voucherFile.append('voucher_code',this.voucherSentData['voucher_code']);
+        this.voucherFile.append('amount',this.voucherSentData['amount']);
+        this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
+        this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
+        this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
+        this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
+        this.voucherFile.append('payment_date',dtFormat);
+        this.voucherFile.append('accreditation',this.formApplicationId);
+        this.voucherFile.append('application_id',this.formApplicationId);
+        
 
+      console.log(this.voucherFile, " -- ", this.voucherFile);
 
 
 
     //!ngForm7.form.valid &&
     if(ngForm7.form.valid && this.paymentReceiptValidation != false) {
-      this.inspectionBodyForm.step7.payment_receipt = this.step7DataBodyFormFile;
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
-      .subscribe(
-      res => {
-        console.log(res,'res')
-        if(res['status'] == true) {
-          this.toastr.success(res['msg'], '');
-          //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
-        }else{
-          this.toastr.warning(res['msg'], '');
-        }
-      });
+      //this.inspectionBodyForm.step7.payment_receipt = this.step7DataBodyFormFile;
+      //this.subscriptions.push(
+        this._trainerService.paymentVoucherSave((this.voucherFile))
+          .subscribe(
+             result => {
+               let data: any = result;
+                console.log("submit voucher: ", data);
+                if(data.status){
+                  //this.voucherFile = new FormData();
+                  //this.voucherSentData = {};
+                  this._toaster.success("Your form has been successfully submitted and it is under review.We will update you shortly.",'THANK YOU');
+                  //this.openView('appComp','');
+                  setTimeout(() => {                    
+                    this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+                  },3500)
+                  
+                }else{
+                  this._toaster.warning(data.msg,'');
+                }
+                // if(data != undefined && typeof data === 'object'){
+                //     //this.pageCurrentNumber = 1;
+                //     this._service.openFlashMessage('Voucher Sent Successfully','',5000);
+                //     this.modalService.dismissAll();
+                //     this.dataLoad = true;
+                //     //this.trainerdata = data.records;
+                //     //this.pageTotal = data.records.length;
+                // }
+             }
+            )
+          //)
+      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.paymentDetailsSave,this.voucherFile)
+      // .subscribe(
+      // res => {
+      //   console.log(res,'res')
+      //   if(res['status'] == true) {
+      //     this.toastr.success(res['msg'], '');
+      //     //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+      //   }else{
+      //     this.toastr.warning(res['msg'], '');
+      //   }
+      // });
     }else if(type != undefined && type == true && this.paymentReceiptValidation != false){
       this.inspectionBodyForm.step7.is_draft = true;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
