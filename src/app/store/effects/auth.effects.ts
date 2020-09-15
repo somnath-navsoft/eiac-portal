@@ -76,6 +76,7 @@ export class AuthEffects {
       sessionStorage.setItem('email', authUserData.email);
       sessionStorage.setItem('isVerified', authUserData.isVerified);
       sessionStorage.setItem('profileComplete', authUserData.isCompleteness);
+      sessionStorage.setItem('userId', authUserData.user_id);
       this._appServ.getUserType();
       sessionStorage.setItem('type', this._constants.logType);
       this.router.navigateByUrl('/profile-completation');
@@ -88,6 +89,7 @@ export class AuthEffects {
       sessionStorage.setItem('email', authUserData.email);
       sessionStorage.setItem('isCompleteness', authUserData.isVerified);
       sessionStorage.setItem('profileComplete', authUserData.isCompleteness);
+      sessionStorage.setItem('userId', authUserData.user_id);
       this._appServ.getUserType();
       sessionStorage.setItem('type', this._constants.logType);
       //this._appServ.updateStoreAuthenticated();

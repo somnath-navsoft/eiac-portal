@@ -58,6 +58,16 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
+                                                <mat-label>Title</mat-label>
+                                                <mat-select placeholder="Select" name="title" [(ngModel)]="eiacStaff.title" required>
+                                                    <mat-option *ngFor="let titleRow of titleArr; let i =index;" value="{{titleRow}}">{{titleRow}}</mat-option>
+                                                </mat-select>
+                                                <mat-error></mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
                                                 <mat-label>First Name</mat-label>
                                                 <input matInput [(ngModel)]="eiacStaff.first_name" (keypress)="Service.inputFilter($event, Service.regExName)" name="first_name" placeholder="" required>
                                             </mat-form-field>
@@ -67,13 +77,6 @@
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Last Name</mat-label>
                                                 <input matInput [(ngModel)]="eiacStaff.last_name" name="last_name" placeholder="" required>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Department</mat-label>
-                                                <input matInput [(ngModel)]="eiacStaff.department" name="department" placeholder="" required>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -119,6 +122,13 @@
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Designation</mat-label>
                                                 <input matInput [(ngModel)]="eiacStaff.designation" name="designation" placeholder="" required>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Department</mat-label>
+                                                <input matInput [(ngModel)]="eiacStaff.department" name="department" placeholder="" required>
                                             </mat-form-field>
                                         </div>
                                     </div>

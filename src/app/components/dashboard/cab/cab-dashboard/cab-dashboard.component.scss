@@ -1,61 +1,61 @@
 .sub-head-dash .status-red {
-    color: #B14A56;
-    font-size: 16px;
-    font-family: 'Dubai Regular';
-    margin-left: 10px;
-  }
-  .sub-head-dash .active-dash { margin-left: 10px; border: 1px solid #E57C0C; font-size: 11px; color: #E57C0C; font-family: 'Dubai Bold'; padding: 0 5px; border-radius: 3px; letter-spacing: .5px; background: #FFF8F1; text-transform: uppercase; }
-  .sub-head-dash .complete-dash { border: 1px solid #53AB05; background: #F6FFEE; color: #53AB05; }
-  .sub-head-dash .expired-dash { border: 1px solid #EE263D; color: #EE263D; background: #FFEEF0; }
-  .sub-head-dash .confirmed-dash { border: 1px solid #2A6CCF; color: #2A6CCF; background: #EBF2FF; }
-  .date-update {  background: #B19681; }
-  .data-bg { padding: 10px; background: rgba(0, 0, 0, 0.1); color: #fff; text-align: center; }
-  .date-update span { margin-right: 10px; }
-  .data-bg h6 { font-size: 15px; font-family: 'Dubai Regular'; margin: 0; }
-  .update2 { background: #BDAB9C; }
-  .update3 { background: #D3BD9E; }
-  .update4 { background: #9B917F; }
-  .dash-main { background: #fff; padding: 20px 25px; display: flex; justify-content: flex-start; align-items: center; height: 100%; }
-  .dash-logo { background: #B19782; color: #fff; font-size: 26px; height: 60px; min-width: 60px; border-radius: 50%; margin-right: 20px; }
-  .dash-logo span { display: flex; align-items: center; justify-content: center; height: 100%; }
-  .main-status .head-dash { font-size: 18px; color: #919191; font-family: 'Dubai Medium'; margin: 0; }
-  .main-status .sub-head-dash { font-size: 36px; font-family: 'Dubai Bold'; color: #363839; margin: 0; }
-  .main-status span { font-size: 15px; font-family: 'Dubai Regular'; color: #B19782; }
-  
-  .filter-dash { padding-top: 40px; position:relative; }
-  .filter-dash .close-bttn { position: absolute; top: 90px; right: 20px; }
-  .sub-msg-dash { font-size: 16px; font-family: 'Dubai Medium'; color: #363839; margin: 0; }
-  .dash-msg { padding: 20px 10px; }
-  .dash-system-table table { width: 100%; border-collapse: collapse; border: 1px solid #B9B9B9; border-right: 0; border-left: 0; }
-  .dash-system-table th { background: #D8D8D8; padding: 8px 15px; border: 1px solid #B9B9B9; font-size: 16px; font-family: "Dubai Medium"; color: #191919; }
-  .dash-system-table td { color: #454545; font-size: 14px; font-family: "Dubai Regular"; padding: 8px 15px; border: 1px solid #B9B9B9; }
-  .dash-system-table tr:nth-child(even) td { background: #F3F4F6; }
-  .dash-system-table td:first-child { border-left: 0; }
-  .dash-system-table td:last-child { border-right: 0; }
-  .dash-system-table th:first-child { border-left: 0; }
-  .dash-system-table th:last-child { border-right: 0; }
-  .event_timings.client_timings { height: 100%; overflow-y: auto; }
-  .service_data { background: #EFEFEF; padding: 20px; text-align: center; }
-  .service_data h3 { font-size: 22px; font-family: 'Dubai Bold'; color: #363839; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
-  .service_data a {
-    display: inline-block;
-    border:  1px solid #B14A56;
-    color: #B14A56;
-    font-size: 18px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    padding: 5px 20px;
-    background: #fff;
-    font-family: 'Dubai Bold';
-  }
-  .service_data a:hover {
-    text-decoration: none;
-  }
-  @media(max-width: 1366px) {
-      .dash-logo { height: 50px; min-width: 50px; margin-right: 10px; }
-      .main-status .head-dash { font-size: 16px; }
-      .sub-msg-dash { font-size: 14px; }
-      .dash-msg { margin: 0 -5px; }
-      .trainer_head { margin: 0 -10px; }
-      .sub-head-dash .status-red { font-size: 12px; }
-  }
+  color: #B14A56;
+  font-size: 16px;
+  font-family: 'Dubai Regular';
+  margin-left: 10px;
+}
+.sub-head-dash .active-dash { margin-left: 10px; border: 1px solid #E57C0C; font-size: 11px; color: #E57C0C; font-family: 'Dubai Bold'; padding: 0 5px; border-radius: 3px; letter-spacing: .5px; background: #FFF8F1; text-transform: uppercase; }
+.sub-head-dash .complete-dash { border: 1px solid #53AB05; background: #F6FFEE; color: #53AB05; }
+.sub-head-dash .expired-dash { border: 1px solid #EE263D; color: #EE263D; background: #FFEEF0; }
+.sub-head-dash .confirmed-dash { border: 1px solid #2A6CCF; color: #2A6CCF; background: #EBF2FF; }
+.date-update {  background: #B19681; }
+.data-bg { padding: 10px; background: rgba(0, 0, 0, 0.1); color: #fff; text-align: center; }
+.date-update span { margin-right: 10px; }
+.data-bg h6 { font-size: 15px; font-family: 'Dubai Regular'; margin: 0; }
+.update2 { background: #BDAB9C; }
+.update3 { background: #D3BD9E; }
+.update4 { background: #9B917F; }
+.dash-main { background: #fff; padding: 20px 25px; display: flex; justify-content: flex-start; align-items: center; height: 100%; }
+.dash-logo { background: #B19782; color: #fff; font-size: 26px; height: 60px; min-width: 60px; border-radius: 50%; margin-right: 20px; }
+.dash-logo span { display: flex; align-items: center; justify-content: center; height: 100%; }
+.main-status .head-dash { font-size: 18px; color: #919191; font-family: 'Dubai Medium'; margin: 0; }
+.main-status .sub-head-dash { font-size: 36px; font-family: 'Dubai Bold'; color: #363839; margin: 0; }
+.main-status span { font-size: 15px; font-family: 'Dubai Regular'; color: #B19782; }
+
+.filter-dash { padding-top: 40px; position:relative; }
+.filter-dash .close-bttn { position: absolute; top: 90px; right: 20px; }
+.sub-msg-dash { font-size: 16px; font-family: 'Dubai Medium'; color: #363839; margin: 0; }
+.dash-msg { padding: 20px 10px; }
+.dash-system-table table { width: 100%; border-collapse: collapse; border: 1px solid #B9B9B9; border-right: 0; border-left: 0; }
+.dash-system-table th { background: #D8D8D8; padding: 8px 15px; border: 1px solid #B9B9B9; font-size: 16px; font-family: "Dubai Medium"; color: #191919; }
+.dash-system-table td { color: #454545; font-size: 14px; font-family: "Dubai Regular"; padding: 8px 15px; border: 1px solid #B9B9B9; }
+.dash-system-table tr:nth-child(even) td { background: #F3F4F6; }
+.dash-system-table td:first-child { border-left: 0; }
+.dash-system-table td:last-child { border-right: 0; }
+.dash-system-table th:first-child { border-left: 0; }
+.dash-system-table th:last-child { border-right: 0; }
+.event_timings.client_timings { height: 100%; overflow-y: auto; }
+.service_data { background: #EFEFEF; padding: 20px; text-align: center; }
+.service_data h3 { font-size: 22px; font-family: 'Dubai Bold'; color: #363839; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
+.service_data a {
+  display: inline-block;
+  border:  1px solid #B14A56;
+  color: #B14A56;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 5px 20px;
+  background: #fff;
+  font-family: 'Dubai Bold';
+}
+.service_data a:hover {
+  text-decoration: none;
+}
+@media(max-width: 1366px) {
+    .dash-logo { height: 50px; min-width: 50px; margin-right: 10px; }
+    .main-status .head-dash { font-size: 16px; }
+    .sub-msg-dash { font-size: 14px; }
+    .dash-msg { margin: 0 -5px; }
+    .trainer_head { margin: 0 -10px; }
+    .sub-head-dash .status-red { font-size: 12px; }
+}

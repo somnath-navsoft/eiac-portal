@@ -57,6 +57,7 @@ export class AssessorsProfileComponent implements OnInit {
   titleFind:any;
   loader:boolean = true;
   searchCountryLists:any[] = [];
+  userId:any;
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -69,6 +70,7 @@ export class AssessorsProfileComponent implements OnInit {
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
     this.profileComplete = sessionStorage.getItem('profileComplete');
+    this.userId = sessionStorage.getItem('userId');
 
     this.headerSteps.push(
       {
@@ -206,7 +208,7 @@ export class AssessorsProfileComponent implements OnInit {
 
   loadStepsData() {
     this.loader = false;
-    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail)
+    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail+'&id='+this.userId)
     .subscribe(
       res => {
         // console.log(res['data'],'data');
@@ -229,7 +231,7 @@ export class AssessorsProfileComponent implements OnInit {
 
           this.technicalFields = res['data'].technical_field;
 
-          if(res['data'].step1 != '' && res['data'].step1[0] && res['data']['user_data'][0].first_name != "" && res['data'].step1[0].office_email != "" && res['data'].step1[0].dob != null && res['data'].step1[0].mailing_address != "" && res['data'].step1[0].fax_no != "" && res['data'].step1[0].office != "" && res['data'].step1[0].designation != "" && res['data'].step1[0].office_address != "" && res['data'].step1[0].office_tel_no != "" && res['data'].step1[0].nationality != '') {
+          if(res['data'].step1 != '' && res['data'].step1[0] && res['data']['user_data'][0].first_name != "" && res['data'].step1[0].office_email != "" && res['data'].step1[0].dob != null && res['data'].step1[0].mailing_address != "" && res['data'].step1[0].fax_no != "" && res['data'].step1[0].office != "" && res['data'].step1[0].designation != "" && res['data'].step1[0].office_address != "" && res['data'].step1[0].office_tel_no != "" && res['data'].step1[0].nationality != null) {
             this.progressValue = 22;
             this.Service.moveSteps('personal_details','educational_information', this.headerSteps);
           }
@@ -779,7 +781,7 @@ export class AssessorsProfileComponent implements OnInit {
       .subscribe(
         res => {
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            this.toastr.success('Save draft successfully', '');
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -803,7 +805,7 @@ export class AssessorsProfileComponent implements OnInit {
       .subscribe(
         res => {
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            this.toastr.success('Save draft successfully', '');
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -840,7 +842,7 @@ export class AssessorsProfileComponent implements OnInit {
       .subscribe(
         res => {
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            this.toastr.success('Save draft successfully', '');
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -873,7 +875,7 @@ export class AssessorsProfileComponent implements OnInit {
       .subscribe(
         res => {
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            this.toastr.success('Save draft successfully', '');
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -891,7 +893,7 @@ export class AssessorsProfileComponent implements OnInit {
       .subscribe(
         res => {
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            this.toastr.success('Save draft successfully', '');
           }else{
             this.toastr.warning(res['msg'], '');
           }
