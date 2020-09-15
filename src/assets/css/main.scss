@@ -763,7 +763,9 @@ a:hover { text-decoration: none; }
 }
 .auth .mat-checkbox-inner-container { height: 20px; width: 20px; margin-top: 7px; }
 .auth .mat-checkbox-layout .mat-checkbox-label { line-height: 34px; font-family: "Dubai Medium"; font-size: 24px; }
-
+.pdf-parent{
+  overflow: auto;
+}
 .recommend .mat-checkbox-frame {
   border-color: rgba(153, 153, 153, 1); 
   border-width: 1px; 
@@ -774,10 +776,10 @@ a:hover { text-decoration: none; }
 .recommend .mat-checkbox-inner-container { height: 20px; width: 20px; margin-top: 7px; }
 .recommend .mat-checkbox-layout .mat-checkbox-label { line-height: 34px; font-family: "Dubai Medium"; font-size: 24px; }
 .modal-dialog {
-  max-width: 500px;
+  max-width: 750px;
   max-height: 700px;
   margin: 1.75rem auto;
-  overflow: scroll;}
+  overflow: auto;}
 .authData .mat-checkbox-frame {
   border-color: rgba(153, 153, 153, 1); 
   border-width: 1px; 
@@ -846,7 +848,7 @@ a:hover { text-decoration: none; }
 .auth ul { margin: 0; padding: 0; list-style-type: none;}
 .auth .mat-checkbox-layout .mat-checkbox-label { font-size: 22px; font-family: "Dubai Medium"; color: #222222; }
 .authData { color: #222222; font-family: "Dubai Medium"; font-size: 22px; padding: 20px 0; }
-
+.authData .error { font-size: 17px; padding-left: 30px; }
 
 // Terms And Conditions
 
