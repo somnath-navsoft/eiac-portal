@@ -291,7 +291,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   validateFile(fileEvent: any, type?: any) {
     var file_name = fileEvent.target.files[0].name;
     var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
-    var ex_type = ['pdf'];
+    var ex_type = ['pdf', 'PDF'];
     var ex_check = this._service.isInArray(file_exe,ex_type);
     if(ex_check){
       this.paymentReceiptValidation = true;
@@ -336,6 +336,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     this.curSortDir['accr_status']       = false;
     this.curSortDir['form_meta']       = false;
     this.curSortDir['payment_status']         = false;
+    this.curSortDir['applicant']         = false;
 
     this.selectCustomCourses.push({title: 'Custom Course', value: 'custom_course'})
     this.selectCustomCourses.push({title: 'Public Course', value: 'public_course'})
@@ -496,7 +497,20 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
               let array = data.slice().sort((a, b) => (a.payment_status < b.payment_status) ? 1 : -1)
               this.trainerdata = array;
             }
-          }          
+          }  
+          if(sortBy == 'applicant'){
+            this.curSortDir.applicant = !sortDir;
+            //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
+            if(this.curSortDir.applicant){
+              let array = data.slice().sort((a, b) => (a.applicant > b.applicant) ? 1 : -1)
+              this.trainerdata = array;
+              //console.log("after:: ", array, " :: ", this.trainerdata);
+            }
+            if(!this.curSortDir.applicant){
+              let array = data.slice().sort((a, b) => (a.applicant < b.applicant) ? 1 : -1)
+              this.trainerdata = array;
+            }
+          }        
       }
   }
 

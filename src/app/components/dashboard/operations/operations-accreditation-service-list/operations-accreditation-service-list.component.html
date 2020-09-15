@@ -141,6 +141,12 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.payment_status"></span>
                                 </a>
                             </th>
+                            <th>Applicant&nbsp;
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'applicant', curSortDir.applicant)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.applicant"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.applicant"></span>
+                                </a>
+                            </th>
                             <th>Action</th>
                         </tr>
                         <!-- trainerdata.records != undefined && -->
@@ -159,7 +165,10 @@
                             <td>
                                 <span *ngIf="item.payment_status === null">Pending</span>
                                 <span *ngIf="item.payment_status != null">{{item.payment_status}}</span>
-                            </td>                            
+                            </td> 
+                            <td>
+                                {{item.applicantName}}
+                            </td>                           
                             <td class="action fnt-clr">
                                 <a href="javascript:void(0)" alt="Delete"><span class="icon-bin"></span></a>
                                 <!-- <ng-container *ngIf="item.training_course_type === 'custom_course'" class="action fnt-clr">
