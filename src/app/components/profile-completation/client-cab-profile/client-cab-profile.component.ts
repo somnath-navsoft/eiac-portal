@@ -133,9 +133,12 @@ export class ClientCabProfileComponent implements OnInit {
     this.companyBodMembers = [{
       name:'',
       bod_company:'',
+      director:'',
       designation:'',
       authorized_contact_person:'',
       mobile_no:'',
+      phone_no:'',
+      email:'',
     }];
     this.step2Data.date_of_establishment = '';
     this.step2Data.legal_license = '';
