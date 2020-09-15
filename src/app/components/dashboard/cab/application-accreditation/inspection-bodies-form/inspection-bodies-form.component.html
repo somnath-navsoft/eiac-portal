@@ -1256,7 +1256,7 @@
                                                                                 <!-- Column...{{p}}  -->
                                                                                 <mat-form-field class="cab-data" *ngIf="p == 0">
                                                                                     <mat-label>Select</mat-label>    
-                                                                                    <mat-select required="" 
+                                                                                    <mat-select 
                                                                                     [matTooltip]="getFieldTooltip(dynamicScopeModel.fieldLines[k][dynamicScopeFieldColumns[i1][p].title], dynamicScopeModel.fieldLines[k].firstFieldValues)" matTooltipPosition='above'
                                                                                     [(ngModel)]="dynamicScopeModel.fieldLines[k][dynamicScopeFieldColumns[i1][p].title]" name="dynamicScopeFieldColumns[i1][p].title" [ngModelOptions]="{standalone: true}" 
                                                                                     (selectionChange)="onChangeScopeOption($event,k,p)">

@@ -2317,8 +2317,8 @@ export class InspectionBodiesFormComponent implements OnInit {
     
     console.log(">>> step5 submit...", this.step5Data, " -- ", this.inspectionBodyForm);
     //return;
-
-    if(ngForm.form.valid && type == undefined) {
+    //ngForm.form.valid &&
+    if( type == undefined) {
       this.inspectionBodyForm.step5.is_draft = false;
       this.inspectionBodyForm.saved_step = 5;
       //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
