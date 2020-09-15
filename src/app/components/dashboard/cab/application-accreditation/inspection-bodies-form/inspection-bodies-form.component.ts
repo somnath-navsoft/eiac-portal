@@ -2261,13 +2261,13 @@ export class InspectionBodiesFormComponent implements OnInit {
                 }
                 resultAr[key1] = [];
                 
-                for(var k=0; k<scopeIds.length; k++){
-                  let idKey = scopeIds[k].id;
-                  let valueKey = scopeSelValues[k].value;
-                  let tempObj = {};
-                  tempObj[idKey] = valueKey;
-                  resultAr[key1].push({id: idKey, value: valueKey});
-               }
+              //   for(var k=0; k<scopeIds.length; k++){
+              //     let idKey = scopeIds[k].id;
+              //     let valueKey = scopeSelValues[k].value;
+              //     let tempObj = {};
+              //     tempObj[idKey] = valueKey;
+              //     resultAr[key1].push({id: idKey, value: valueKey});
+              //  }
                //resultAr[key1] = tempObj;
                console.log('scope object: ', " -- ", resultAr);
           })
