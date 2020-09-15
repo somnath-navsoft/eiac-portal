@@ -48,8 +48,8 @@ export class SidebarComponent implements OnInit {
     }else if(status == 'close'){
       this.isdDynamicsopenClose = '0';
     }
-    console.log(this.isdDynamicsopenClose);
-    console.log(status);
+    // console.log(this.isdDynamicsopenClose);
+    // console.log(status);
   }
 
   accDropDown(itemHeading: string) { 
@@ -69,7 +69,13 @@ export class SidebarComponent implements OnInit {
       }
       return link;
   }
-  goToLink(link: string){
+  goToParentLink(link: any) {
+    if(link!== '#'){
+      this._router.navigateByUrl('dashboard/'+link);
+    }
+  }
+
+  goToLink(link: any){
     if(link !== '#'){
       this._router.navigateByUrl(link);
     }

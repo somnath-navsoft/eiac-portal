@@ -41,6 +41,7 @@ export class TrainersProfileComponent implements OnInit {
   loader:boolean = true;
   firstName:any;
   searchCountryLists:any[] = [];
+  userId:any;
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -54,6 +55,7 @@ export class TrainersProfileComponent implements OnInit {
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
     this.profileComplete = sessionStorage.getItem('profileComplete');
+    this.userId = sessionStorage.getItem('userId');
 
     this.headerSteps.push(
       {
@@ -125,7 +127,7 @@ export class TrainersProfileComponent implements OnInit {
 
   loadStep1Data(){
     this.loader = false;
-    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail)
+    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail+'&id='+this.userId)
     .subscribe(
       res => {
         if(res['status'] == true) {
@@ -143,6 +145,7 @@ export class TrainersProfileComponent implements OnInit {
           this.step1Data.first_name = this.titleFind != '' && this.titleFind != undefined ? first_nameData[1] : first_nameData[0];
           this.step1Data.last_name = res['data']['user_data'][0].last_name;
           this.step1Data.personal_email = res['data']['user_data'][0].email;
+
 
           var other_course = res['data'].step2[0].other_course != null ? JSON.parse(res['data'].step2[0].other_course) : '';
           var education = res['data'].step2[0].education != null ? JSON.parse(res['data'].step2[0].education) : '';
@@ -207,6 +210,7 @@ export class TrainersProfileComponent implements OnInit {
 
           if(res['data'].step3 && res['data'].step3 != '' && res['data'].step3[0]) {
             var step3 = res['data'].step3[0];
+
             this.step3Data.place = step3.place != null ? step3.place : '' ;
             this.step3Data.date = step3.registration_date != null ? new Date(step3.registration_date) : '';
             this.step3Data.digital_signature = step3.signature != null ? step3.signature : '';
@@ -410,7 +414,7 @@ export class TrainersProfileComponent implements OnInit {
         res => {
           this.loader = true;
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            this.toastr.success('Save draft successfully', '');
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -434,7 +438,7 @@ export class TrainersProfileComponent implements OnInit {
         res => {
           this.loader = true;
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            this.toastr.success('Save draft successfully', '');
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -454,7 +458,7 @@ export class TrainersProfileComponent implements OnInit {
         res => {
           this.loader = true;
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            this.toastr.success('Save draft successfully', '');
           }else{
             this.toastr.warning(res['msg'], '');
           }

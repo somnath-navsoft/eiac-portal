@@ -21,6 +21,10 @@ export class MessageDetailsComponent implements OnInit {
   approveRejectStatus:any = '';
   loader:boolean = true;
   tradeLicenseFile:any;
+  qualificationFile:any;
+  qualificationText:any;
+  specializationFile:any;
+  specializationText:any;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public route: ActivatedRoute,public toastr: ToastrService) { }
 
@@ -50,7 +54,10 @@ export class MessageDetailsComponent implements OnInit {
         this.approveRejectStatus = res['data']['user_data'][0].approved;
         this.cabStep1 = res['data']['step1'][0];
         this.cabStep2 = res['data']['step2'];
-        this.tradeLicenseFile = this.constant.mediaPath+this.cabStep1.trade_license
+        this.qualificationFile = this.constant.mediaPath+this.cabStep2['education'][0].qualification_file;
+        this.qualificationText = this.cabStep2['education'][0].qualification_file != null ? this.cabStep2['education'][0].qualification_file.split('/') : '';
+        this.specializationFile = this.constant.mediaPath+this.cabStep2['education'][0].specialization_file;
+        this.specializationText = this.cabStep2['education'][0].specialization_file != null ? this.cabStep2['education'][0].specialization_file.split('/') : '';
     });
   }
 

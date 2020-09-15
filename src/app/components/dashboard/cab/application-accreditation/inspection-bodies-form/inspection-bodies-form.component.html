@@ -911,6 +911,7 @@
                                         <div class="col-md-12">
                                             <div class="bttns-health bttn-review">
                                                 <!--  (click)="onSubmitApplication()" | savedraftStep('step1')-->
+
                                                 <!-- <button class="cancel-bttn" routerLink="/dashboard/cab_client/application-accreditation">BACK</button>
                                                 <button class="cancel-bttn" type="button" (click)="onSubmitApplication(ngForm1, true)">SAVE AS DRAFT</button> -->
                                                 <button class="submit-bttn submit-health">AGREE</button>
@@ -1013,6 +1014,7 @@
                                             <div class="bttns-health bttn-staff">
                                                 <!-- (click)="onSubmitTestingParticipation()" -->
                                                 <button class="cancel-bttn"  type="button" (click)="Service.headerStepMove('application_information',headerSteps,'menu','profciency_testing_participation')">BACK</button> 
+
                                                 <button class="cancel-bttn" type="button" (click)="onSubmitTestingParticipation(ngForm2, true)">SAVE AS DRAFT</button> 
                                                 <button class="submit-bttn submit-health" >CONTINUE</button>
                                             </div>
@@ -1128,6 +1130,7 @@
                                     <div class="col-md-12">
                                         <div class="bttns-health bttn-staff">
                                             <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('profciency_testing_participation',headerSteps,'menu','personal_information')">BACK</button> 
+
                                             <button class="cancel-bttn" type="button" (click)="onSubmitPersonalInformation(ngForm3, true)('step3')">SAVE AS DRAFT</button>
                                             <button class="submit-bttn submit-health" >CONTINUE</button>
                                         </div>
@@ -1177,6 +1180,7 @@
                                             <div class="bttns-health bttn-staff">
                                                 <!-- (click)="onSubmitInformationAuditManagement()" -->
                                                 <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('personal_information',headerSteps,'menu','information_audit_management')">BACK</button> 
+
                                                 <button class="cancel-bttn" type="button" (click)="onSubmitInformationAuditManagement(ngForm4, true)">SAVE AS DRAFT</button>
                                                 <button class="submit-bttn submit-health" >CONTINUE</button>
                                             </div>
@@ -1380,6 +1384,7 @@
                                     <div class="col-md-12">
                                         <div class="bttns-health bttn-staff">
                                             <!--  (click)="onSubmitPerlimVisit()" -->
+
                                             <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','perlim_visit')">BACK</button> 
                                             <button class="cancel-bttn" type="button" (click)="onSubmitPerlimVisit(ngForm6, true)">SAVE AS DRAFT</button>
                                             <button class="submit-bttn submit-health">CONTINUE</button>
@@ -1709,6 +1714,7 @@
                                     <div class="col-md-12">
                                         <div class="bttns-health bttn-staff">
                                             <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('perlim_visit',headerSteps,'menu','undertaking_applicant')">BACK</button> 
+
                                             <button class="cancel-bttn" type="button" (click)="onSubmitUndertakingApplicant(ngForm6, true)">SAVE AS DRAFT</button>
                                             <button class="submit-bttn submit-health"  *ngIf="!transactions.length">PROCEEDS FOR PAYMENT</button>
                                             <ng-container *ngIf="transactions.length">

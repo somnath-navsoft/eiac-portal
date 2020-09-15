@@ -910,7 +910,7 @@ private loadExternalScript(scriptUrl: string) {
 createPaymentButton(itemData: any, formObj?:any, compObj?:any){
   //console.log("creating....buttons...", this.paymentReview, " :: ", this.paymentReview.length, " -- ",this.transactionsItem, " --- ", this.transactions);
  //AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl = das.abhishek77@gmail.com
- //Get transaction ID - https://developer.paypal.com/docs/checkout/reference/server-integration/get-transaction/#on-the-server
+ //Get transaction ID - https://uateloper.paypal.com/docs/checkout/reference/server-integration/get-transaction/#on-the-server
   if(this.transactions.length){
     this.loadExternalScript("https://www.paypalobjects.com/api/checkout.js").then(() => {
     paypal.Button.render({

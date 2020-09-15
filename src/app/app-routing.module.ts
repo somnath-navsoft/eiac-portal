@@ -87,7 +87,7 @@ const routes: Routes = [
   { path: 'dashboard',canActivate: [AuthGuard], 
     children: [
       //Trainers
-      { path: 'message', component: MessageComponent, canActivate: [AuthGuard] },
+      { path: 'onboarding-message-list', component: MessageComponent, canActivate: [AuthGuard] },
       { path: 'message-detail/:id', component: MessageDetailComponent, canActivate: [AuthGuard] },
       { path: 'trainers', component: TrainersComponent, canActivate: [AuthGuard],
         children: [

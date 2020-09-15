@@ -473,7 +473,7 @@
                                     <div class="col-md-4">
                                         <mat-form-field class="cab-data">
                                             <mat-label>Date of establishment of Certification Body</mat-label>
-                                            <input matInput [matDatepicker]="picker2" readonly="true" (click)="Service._openCalendar(picker2)" name="date_establishment" placeholder="Date of establishment of Certification Body" [(ngModel)]="step2Data.date_establishment">
+                                            <input matInput [matDatepicker]="picker2" readonly="true" (click)="Service._openCalendar(picker2)" name="date_establishment" placeholder="Date of establishment of Certification Body" [(ngModel)]="step2Data.date_establishment" required>
                                             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                             <mat-datepicker #picker2 disabled="false"></mat-datepicker>
                                         </mat-form-field>

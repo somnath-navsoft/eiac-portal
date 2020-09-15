@@ -24,11 +24,11 @@ export class MessageComponent implements OnInit {
   ngOnInit() {
     this.userType = sessionStorage.getItem('type');
     this.userEmail = sessionStorage.getItem('email');
-    // if(this.userType != 'operations')
-    // {
-    //   var landUrl = '/dashboard'+this.userType+'/home'
-    //   this.router.navigateByUrl(landUrl);
-    // }
+    if(this.userType != 'operations')
+    {
+      var landUrl = '/dashboard'+this.userType+'/home'
+      this.router.navigateByUrl(landUrl);
+    }
     this.loader = false;
     this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.messageList)
     .subscribe(
