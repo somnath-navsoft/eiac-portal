@@ -314,8 +314,8 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 .main-content-portal { width: 100%; }
 .main-content-portal h3 { margin: 0; }
 .main-dashboard-cnt { padding: 20px 0; }
-.main-dashboard-cnt .user-steps { display: flex; justify-content: center; align-items: center; height: 100%; }
-.user-steps .user-next { border: 1px solid #CECECE ; background: #FFF; padding: 20px 18px; color: #1D1D1D; text-align: center; height: 100%; width: 120px; }
+.main-dashboard-cnt .user-steps { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; }
+.user-steps .user-next { border: 1px solid #CECECE ; background: #FFF; padding: 20px 18px; color: #1D1D1D; text-align: center; min-height: 200px; width: 120px; margin-bottom: 20px; }
 .user-steps .user-present { border: 1px solid #B19782; background: #B19782; color: #FFF; }
 .user-steps .user-done { border: 1px solid #B54150; background: #B54150; color: #FFF; }
 .user-steps .user-next .usernext-icon { font-size: 30px; }
@@ -357,6 +357,8 @@ a:hover { text-decoration: none; }
 .table-dashboard-cont { margin: 0 -15px; }
 .table-dashboard-cont table { width: 100%; border-collapse: collapse; border: 1px solid #e9e9e9; }
 .table-dashboard-cont th { font-size: 16px; font-family: "Dubai Medium"; color: #191919; background: #d8d8d8; padding: 5px 15px; border: 1px solid #e9e9e9; }
+.table-dashboard-cont th a { color: #525252; }
+.table-dashboard-cont th span { font-size: 12px; margin-left: 5px; }
 .table-dashboard-cont tr:nth-child(odd) { background: #f3f4f6; }
 .table-dashboard-cont .fnt-clr { color: #B14A56; }
 .table-dashboard-cont .fnt-clr a { color: #B14A56; }
@@ -367,8 +369,8 @@ a:hover { text-decoration: none; }
 .pending span { background: #B19782; }
 .under-review span { background: #B14A56; }
 .actin { text-align: center; }
-.action span{ padding: 0 10px; }
-.action { text-align: center; }
+.action span{ padding: 0 5px; }
+// .action { text-align: center; }
 .act-td { text-align: center; }
 .record-data { font-family: "Dubai Medium"; font-size: 16px;  }
 .record-data a:hover { text-decoration: none; }
@@ -878,9 +880,12 @@ a:hover { text-decoration: none; }
 
 .assess-doc { padding: 20px 15px; display: flex; justify-content: space-between; }
 .bttn-details .cancel-bttn { display: block; color: #B54150; font-family: 'Dubai Bold'; }
-
+.course-pop button:focus { outline: none; }
 
 //==================RESPONSIVE==================//
+@media(max-width: 1500px) {
+  .main-dashboard-cnt .user-steps { height: 50%; }
+}
 @media(max-width: 1366px) {
   .dash-logo { height: 50px; min-width: 50px; margin-right: 10px; }
   .main-status .head-dash { font-size: 16px; }

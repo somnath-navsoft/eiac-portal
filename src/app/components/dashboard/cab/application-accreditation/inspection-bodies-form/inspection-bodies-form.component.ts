@@ -612,8 +612,9 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.inspectionBodyForm.managementManager        = this.managementManager;
     this.inspectionBodyForm.inspectionBodyInfo           = this.inspectionBodyInfo;
     this.inspectionBodyForm.medicaMainlLabInfo        = this.medicaMainlLabInfo;
-    this.authorizationList = {undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false,authorization_confirm1:false,
-      authorization_confirm2:false, undertaking_confirmTop1: false, undertaking_confirmTop2: false, undertaking_confirmTop3: false};
+    //,authorization_confirm1:false, 
+    this.authorizationList = {undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false,
+      undertaking_confirmTop1: false, undertaking_confirmTop2: false, undertaking_confirmTop3: false};
 
     this.recommend = {first:false,second:false,third:false,fourth:false}
 
@@ -2261,13 +2262,13 @@ export class InspectionBodiesFormComponent implements OnInit {
                 }
                 resultAr[key1] = [];
                 
-              //   for(var k=0; k<scopeIds.length; k++){
-              //     let idKey = scopeIds[k].id;
-              //     let valueKey = scopeSelValues[k].value;
-              //     let tempObj = {};
-              //     tempObj[idKey] = valueKey;
-              //     resultAr[key1].push({id: idKey, value: valueKey});
-              //  }
+                for(var k=0; k<scopeIds.length; k++){
+                  let idKey = scopeIds[k].id;
+                  let valueKey = scopeSelValues[k].value;
+                  let tempObj = {};
+                  tempObj[idKey] = valueKey;
+                  resultAr[key1].push({id: idKey, value: valueKey});
+               }
                //resultAr[key1] = tempObj;
                console.log('scope object: ', " -- ", resultAr);
           })
@@ -2318,7 +2319,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     console.log(">>> step5 submit...", this.step5Data, " -- ", this.inspectionBodyForm);
     //return;
     //ngForm.form.valid &&
-    if( type == undefined) {
+    if(ngForm.form.valid && type == undefined) {
       this.inspectionBodyForm.step5.is_draft = false;
       this.inspectionBodyForm.saved_step = 5;
       //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
