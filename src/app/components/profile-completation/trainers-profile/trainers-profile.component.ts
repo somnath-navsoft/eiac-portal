@@ -150,7 +150,7 @@ export class TrainersProfileComponent implements OnInit {
           var other_course = res['data'].step2[0].other_course != null ? JSON.parse(res['data'].step2[0].other_course) : '';
           var education = res['data'].step2[0].education != null ? JSON.parse(res['data'].step2[0].education) : '';
 
-          if(res['data'].step1 && res['data'].step1 != '' && res['data'].step1[0] && res['data']['user_data'][0].first_name != "" && res['data'].step1[0].office_email != "" && res['data'].step1[0].dob != "null" && res['data'].step1[0].mailing_address != "" && res['data'].step1[0].phone != "" && res['data'].step1[0].fax_no != "" && res['data'].step1[0].office != "" && res['data'].step1[0].designation != "" && res['data'].step1[0].office_address != "" && res['data'].step1[0].office_tel_no != "" && res['data'].step1[0].office_fax_no != "") {
+          if(res['data'].step1 && res['data'].step1 != '' && res['data'].step1[0] && res['data']['user_data'][0].first_name != "" && res['data'].step1[0].office_email != "" && res['data'].step1[0].dob != "null" && res['data'].step1[0].mailing_address != "" && res['data'].step1[0].phone != "" && res['data'].step1[0].office != "" && res['data'].step1[0].designation != "" && res['data'].step1[0].office_address != "" && res['data'].step1[0].office_tel_no != "") {
             this.progressValue = 40;
             this.Service.moveSteps('personal_details','educational_information', this.headerSteps);
             // this.headerSteps[1].stepComp = true;

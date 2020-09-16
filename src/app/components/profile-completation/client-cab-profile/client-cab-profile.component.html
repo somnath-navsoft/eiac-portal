@@ -1,6 +1,6 @@
 <app-loader *ngIf="!loader"></app-loader>
 <section>
-    <div class="form-wrapper-pro">
+    <div class="form_main">
         <div class="container-fluid">
             <div class="main-dashboard-cnt">
                 <div class="form-hdr profile-hdr">
@@ -51,8 +51,9 @@
                             Personal Details
                         </span>
                     </ng-template> -->
-                    <div class="form-bdy cust-stepper" id="personal_details">
-                        <div class="row m-0">
+                <div class="cust-stepper" id="personal_details">
+                    <form #ngForm1="ngForm" (ngSubmit)="onSubmitStep1(ngForm1)" autocomplete="off">
+                        <div class="row m-0 form-bdy">
                             <div class="wrapper">
                                 <div class="col-md-12">
                                     <div class="row">
@@ -62,7 +63,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <form #ngForm1="ngForm" (ngSubmit)="onSubmitStep1(ngForm1)" autocomplete="off">
+                                    
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <mat-form-field class="cab-data">
@@ -160,7 +161,7 @@
                                             <div class="col-md-4">
                                                 <mat-form-field class="cab-data">
                                                     <mat-label>Fax (with Area Code)</mat-label>
-                                                    <input matInput [(ngModel)]="step1Data.fax_with_area" name="fax_with_area" placeholder="" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" required>
+                                                    <input matInput [(ngModel)]="step1Data.fax_with_area" name="fax_with_area" placeholder="" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)">
                                                 </mat-form-field>
                                                 <p class="error" *ngIf="step1Data.fax_with_area && !Service.checkInput('onlyNumberWithPlus',step1Data.fax_with_area)">Please Enter Only Number</p>
                                             </div>
@@ -182,25 +183,25 @@
                                                 <p class="error" *ngIf="step1Data.officephone_with_area && !Service.checkInput('onlyNumberWithPlus',step1Data.officephone_with_area)">Please Enter Only Number</p>
                                             </div>
                                         </div>
-
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="bttns-health bttn-staff">
-                                                    <!-- <button class="cancel-bttn">CANCEL</button> -->
-                                                    <div class="button-content">
-                                                        <a routerLink="/dashboard/cab-client/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
-                                                        <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
-                                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step1')">SAVE AS DRAFT</button>
-                                                    </div>
-                                                    <button class="submit-bttn submit-health">CONTINUE</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
+                                    
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <!-- <button class="cancel-bttn">CANCEL</button> -->
+                                    <div class="button-content">
+                                        <a routerLink="/dashboard/cab-client/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
+                                        <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
+                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step1')">SAVE AS DRAFT</button>
+                                    </div>
+                                    <button class="submit-bttn submit-health">CONTINUE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
                 <!-- </mat-step>  -->
 
                 <!-- <mat-step>
@@ -209,12 +210,11 @@
                             Application Information
                         </span>
                     </ng-template> -->
-                <div class="form-bdy cust-stepper" id="application_information" [ngStyle]="{'display': 'none'}">
-                    <div class="row m-0">
+                <div class="cust-stepper" id="application_information" [ngStyle]="{'display': 'none'}">
+                    <form #ngForm2="ngForm" (ngSubmit)="onSubmitStep2(ngForm2)" autocomplete="off">
+                    <div class="row m-0 form-bdy">
                         <div class="wrapper">
                             <div class="col-12">
-                                
-                            <form #ngForm2="ngForm" (ngSubmit)="onSubmitStep2(ngForm2)" autocomplete="off">
 
                                 <div class="row">
                                     <div class="col-md-12 p-0">
@@ -305,7 +305,7 @@
                                     <div class="col-md-4">
                                         <mat-form-field class="cab-data">
                                             <mat-label>Fax No.</mat-label>
-                                            <input matInput [(ngModel)]="step2Data.applicant_fax_with_area" name="applicant_fax_with_area" placeholder="" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" required>
+                                            <input matInput [(ngModel)]="step2Data.applicant_fax_with_area" name="applicant_fax_with_area" placeholder="" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)">
                                         </mat-form-field>
                                         <p class="error" *ngIf="step2Data.applicant_fax_with_area && !Service.checkInput('onlyNumberWithPlus',step2Data.applicant_fax_with_area)">Please Enter Only Number</p>
                                     </div>
@@ -624,7 +624,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="col-md-4">
                                         <mat-form-field class="cab-data">
                                             <mat-label>Date of establishment of Certification Body</mat-label>
@@ -660,25 +660,26 @@
                                             <input matInput [(ngModel)]="step2Data.main_activity_describe" name="main_activity_describe" (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="">
                                         </mat-form-field>
                                     </div>
-                                </div>
+                                </div> -->
 
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="bttns-health bttn-staff">
-                                            <div class="button-content">
-                                                <a routerLink="/dashboard/cab-client/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
-                                                <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
-                                                <button class="cancel-bttn" type="button" (click)="savedraftStep('step2')">SAVE AS DRAFT</button>
-                                            </div>
-                                            <button *ngIf="profileComplete == '0'" class="submit-bttn submit-health">SUBMIT</button>
-                                            <button *ngIf="profileComplete == '1'" class="submit-bttn submit-health">UPDATE</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                                
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="bttns-health bttn-staff">
+                                <div class="button-content">
+                                    <a routerLink="/dashboard/cab-client/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
+                                    <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
+                                    <button class="cancel-bttn" type="button" (click)="savedraftStep('step2')">SAVE AS DRAFT</button>
+                                </div>
+                                <button *ngIf="profileComplete == '0'" class="submit-bttn submit-health">SUBMIT</button>
+                                <button *ngIf="profileComplete == '1'" class="submit-bttn submit-health">UPDATE</button>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
                 </div>
                 <!-- </mat-step>
             </mat-horizontal-stepper> -->

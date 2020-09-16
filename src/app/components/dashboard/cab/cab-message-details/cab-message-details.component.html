@@ -21,15 +21,15 @@
                     <mat-tab label="First"> Content 1 </mat-tab>
                     <mat-tab label="Second"> Content 2 </mat-tab>
                 </mat-tab-group> -->
-                <ul>
+                <!-- <ul>
                   <li><a href="javascript:void(0)" id="personal_details" (click)="tabClick('personal_details')">PERSONAL DETAILS</a></li>
                   <li><a href="javascript:void(0)" id="application_info" (click)="tabClick('application_info')" class="tab-active">APPLICATION INFO</a></li>
-                </ul>
+                </ul> -->
             </div>
           </div>
         </div>
   
-        <div class="row">
+        <div class="row m-0">
             <div class="col-md-12 message-det">
                 <div class="row appl-cnt">
                     <div class="col">
@@ -76,7 +76,7 @@
             </div>
         </div>
   
-        <div class="row" *ngIf="tabId == 'personal_details'">
+        <div class="row m-0">
             <div class="col-md-6">
                 <div class="row appln-cnt-data ">
                 <div class="col-md-12 p-0">
@@ -119,10 +119,53 @@
                 </div>
                 </div>
             </div>
+
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-12">
+                    <div class="appln-subhdr">
+                        <h5>TRADE LICENSE DETAILS</h5>
+                        <!-- <hr> -->
+                    </div>
+                    </div>
+                </div>
+                <div class="row msg-det">
+                    <div class="col-md-12">
+                        <div class="table-appln messg-tbl">
+                            <table>
+                            <tr>
+                                <td>Legal- professional Commercial/Trade License Number</td>
+                                <td>{{cabStep1?.trade_license_number}}</td>
+                            </tr>
+                            <tr>
+                                <td>Upload Trade License</td>
+                                <td>
+                                <div class="data-main-attach">
+                                    <div class="data-attach">
+                                    <h5>
+                                        <a href="javascript:void(0)">{{tradeLicenseText}}</a>
+                                    </h5>
+                                    </div>
+                                    <div class="icn-appln">
+                                    <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(constant.mediaPath,cabStep1.trade_license)">
+                                        <span class="icon-eye"></span>
+                                    </a>
+                                    <a target="_blank" [href]="tradeLicenseFile">
+                                        <span class="icon-download"></span>
+                                    </a>
+                                    </div>
+                                </div>
+                                </td>
+                            </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
   
-        <div class="row" *ngIf="tabId == 'application_info'">
-            <div class="col-md-6">
+        <div class="row m-0">
+            <div class="col-md-12">
                 <div class="row appln-cnt-data ">
                 <div class="col-md-12 p-0">
                     <div class="row">
@@ -139,7 +182,7 @@
                         <table>
                             <tr>
                             <td>Entity Commercial Name</td>
-                            <td>{{cabStep1?.applicant_commercial_name}}</td>
+                            <td>{{cabStep1?.cab_name}}</td>
                             </tr>
                             <tr>
                             <td>Location</td>
@@ -172,54 +215,100 @@
                 </div>
                 </div>
             </div>
+        </div>
+
+        <div class="row m-0">
             <div class="col-md-6">
-                <div class="row">
+              <div class="row appln-cnt-data" *ngIf="cabStep2?.cabOwnerData != ''">
+                <div class="col-md-12 p-0" *ngFor="let row of cabStep2?.cabOwnerData; let i = index;">
+                  <div class="row">
                     <div class="col-md-12">
-                    <div class="appln-subhdr">
-                        <h5>TRADE LICENSE DETAILS</h5>
+                      <div class="appln-subhdr">
+                        <h5>#{{i+1}}  OWNERSHIP OF THE ORGANIZATION</h5>
                         <!-- <hr> -->
+                      </div>
                     </div>
-                    </div>
-                </div>
-                <div class="row msg-det">
+                  </div>
+                  <div class="row msg-det">
                     <div class="col-md-12">
-                        <div class="table-appln messg-tbl">
-                            <table>
-                            <tr>
-                                <td>Legal- professional Commercial/Trade License Number</td>
-                                <td>{{cabStep1?.trade_license_number}}</td>
-                            </tr>
-                            <tr>
-                                <td>Upload Trade License</td>
-                                <td>
-                                <div class="data-main-attach">
-                                    <div class="data-attach">
-                                    <h5>
-                                        <a href="javascript:void(0)">{{tradeLicenseText[4]}}</a>
-                                    </h5>
-                                    </div>
-                                    <div class="icn-appln">
-                                    <!-- <a href="javascript:void(0)">
-                                        <span class="icon-eye"></span>
-                                    </a> -->
-                                    <a target="_blank" [href]="tradeLicenseFile">
-                                        <span class="icon-download"></span>
-                                    </a>
-                                    </div>
-                                </div>
-                                </td>
-                            </tr>
-                            </table>
-                        </div>
+                      <div class="table-appln">
+                        <table>
+                          <tr>
+                            <td>Name</td>
+                            <td>{{row.name}}</td>
+                          </tr>
+                          <tr>
+                            <td>Designation</td>
+                            <td>{{row.designation}}</td>
+                          </tr>
+                          <tr>
+                            <td>Mobile No.</td>
+                            <td>{{row.mobile_no}}</td>
+                          </tr>
+                          <tr>
+                            <td>Land Line Phone No.</td>
+                            <td>{{row.phone_no}}</td>
+                          </tr>
+                          <tr>
+                            <td>Email Address</td>
+                            <td>{{row.email}}</td>
+                          </tr>
+                        </table>
+                      </div>
                     </div>
+                  </div>
                 </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="row appln-cnt-data" *ngIf="cabStep2?.cabBodData != ''">
+                <div class="col-md-12 p-0" *ngFor="let row2 of cabStep2?.cabBodData; let i2 = index;">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="appln-subhdr">
+                        <h5>#{{i2+1}}  DOES THE COMPANY HAVE BOARD MEMBERS ?</h5>
+                        <!-- <hr> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row msg-det">
+                    <div class="col-md-12">
+                      <div class="table-appln">
+                        <table>
+                          <tr>
+                            <td>Name the members of the board of directors(BOD)</td>
+                            <td>John</td>
+                          </tr>
+                          <tr>
+                            <td>List the company name of BOD members</td>
+                            <td>Doe</td>
+                          </tr>
+                          <tr>
+                            <td>Authorized Contact Person Name</td>
+                            <td>John</td>
+                          </tr>
+                          <tr>
+                            <td>Designation</td>
+                            <td>Developer</td>
+                          </tr>
+                          <tr>
+                            <td>Mobile No.</td>
+                            <td>(485) 587-2351</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12">
                 <div class="bttns-health bttn-review" *ngIf="approveRejectStatus == ''">
-                    <button class="cancel-bttn" type="button" (click)="approveOrReject('reject')">REJECT</button>
+                    <button class="cancel-bttn" type="button" (click)="openRejectedPop()">REJECT</button>
                     <button class="submit-bttn submit-health" type="button" (click)="approveOrReject('approve')">APPROVE</button>
                 </div>
                 <div class="bttns-health bttn-review" *ngIf="approveRejectStatus != ''">
@@ -232,5 +321,5 @@
       </div>
     </div>
   </div>
-  
-  
+
+  <custom-modal *ngIf="rejectedMessageId" (rejectMessageEvent)="getAllData($event)" [parent]="this" [modalType]="'reject'"></custom-modal>

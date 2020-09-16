@@ -41,7 +41,7 @@ export class UiDialogService {
     //Open HappinessDialog
     openPDFViewer(path: any,file: any) {
         var pathFile = path+file;
-        console.log('opening..pdf....', pathFile);
+        // console.log('opening..pdf....', pathFile);
     this.dialog.open(ViewerComponentComponent,{
         data:{
             path: pathFile
