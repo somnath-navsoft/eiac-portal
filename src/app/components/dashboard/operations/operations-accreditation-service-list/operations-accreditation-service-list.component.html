@@ -151,7 +151,7 @@
                     <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
                         <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }">
                             <td class="fnt-clr">
-                                <a href="javascript:void(0)" (click)="open(courseVoucher, item.id)" title="View" alt="View">
+                                <a href="javascript:void(0)" title="View" alt="View">
                                 {{item.id}}</a></td>
                             <td>
                                 {{item.created | date :'dd-MMM-yyyy' }}
@@ -170,7 +170,7 @@
                             </td>                           
                             <td class="action fnt-clr">
                                 <a href="javascript:void(0)" alt="Delete"><span class="icon-bin"></span></a>
-                                <a href="javascript:void(0)" alt="Delete"><span class="icon-document-pen"></span></a>
+                                <a href="javascript:void(0)" (click)="open(courseVoucher, item.id)" alt="Upload Proforma Invoice" title="Upload Proforma Invoice"><span class="icon-document-pen"></span></a>
                                 <!-- <ng-container *ngIf="item.training_course_type === 'custom_course'" class="action fnt-clr">
                                     <a href="javascript:void(0)" (click)="openView(courseView, item.id)" title="View" alt="View"><span class="icon-document"></span></a>
                                     <a routerLink="/dashboard/operations/training-apply/{{item.id}}" title="Edit" alt="Edit"><span class="icon-edit"></span></a>
@@ -213,7 +213,7 @@
         <!-- Modal -->
         <ng-template #courseVoucher let-modal>
             <div class="modal-header course-pop">
-              <h4 class="modal-title" id="modal-basic-title">COURSE VOUCHER</h4>
+              <h4 class="modal-title" id="modal-basic-title">UPLOAD PROFORMA INVOICE</h4>
               <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
                 <span class="icon-close"></span>
               </button>
