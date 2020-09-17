@@ -98,7 +98,7 @@
                   <h5>Date of Establishment</h5>
                 </div>
                 <div class="appln-details">
-                  <span>10-07-2020</span>
+                  <span>{{serviceDetail.date_of_establishment | date}}</span>
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -106,7 +106,7 @@
                   <h5>Location</h5>
                 </div>
                 <div class="appln-details">
-                  <span>Kolkata, India</span>
+                  <span>{{serviceDetail.physical_location_address}}</span>
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -114,7 +114,7 @@
                   <h5>Trade License No.</h5>
                 </div>
                 <div class="appln-details license_no">
-                  <span>TL21546232354</span>
+                  <span>{{serviceDetail.trade_license_number}}</span>
                 </div>
               </div>
             </div>
@@ -180,11 +180,11 @@
         </div>
       </div>
       <div class="row m-0">
-        <div class="col-md-6">
+        <div class="col-md-6" *ngFor="let row of ownershipOfOrg; let i = index;">
           <div class="row">
             <div class="col-md-12">
               <div class="appln-subhdr">
-                <h5>OWNERSHIP OF THE ORGANIZATION</h5>
+                <h5>#{{i+1}}  OWNERSHIP OF THE ORGANIZATION</h5>
               </div>
               <hr>
             </div>
@@ -193,21 +193,21 @@
             <div class="col-md-12">
               <div class="status-main-details">
                 <div class="status-data">
-                  <p>Mr. Robert Williamson, </p>
-                  <span>CEO & Founder</span>
+                  <p>{{row.name}}, </p>
+                  <span>{{row.designation}}</span>
                 </div>
                 <div class="status-subdata">
                   <span class="status_details">
                     <span class="icon-mobile"></span>
-                    (183) 959-1691
+                    {{row.mobile_no}}
                   </span>
                   <span class="status_details">
                     <span class="icon-call-data icon-call-2"></span>
-                    (183) 959-1691
+                    {{row.telephone_no}}
                   </span>
                   <span class="status_details">
                     <span class="icon-email"></span>
-                    manojit.das@navsoft.in
+                    {{row.email}}
                   </span>
                 </div>
               </div>
@@ -257,24 +257,24 @@
               </div>
               <div class="status_main">
                 <div class="row">
-                  <div class="col-md-6 pr-0">
+                  <div class="col-md-6 pr-0" *ngFor="let row2 of bodMember; let i1 = index;">
                     <div class="members_details">
-                      <h4>Mr. Jhon Williams</h4>
-                      <p class="address_details">Al Dahra Agricultural Company, Navigator Software Pvt. Ltd.</p>
-                      <span class="personal_details">Mr. Brad Williams,</span>
-                      <span>Manager, Mobile : (183) 959-1691</span>
+                      <h4>{{row2.name}}</h4>
+                      <p class="address_details">{{row2.company_list}}</p>
+                      <span class="personal_details">{{row2.contact_person}},</span>
+                      <span>{{row2.designation}}, Mobile : {{row2.mobile_no}}</span>
                     </div>
                   </div>
-                  <div class="col-md-6 pl-0">
+                  <!-- <div class="col-md-6 pl-0">
                       <div class="members_details members_last ">
                         <h4>Mr. Jhon Williams</h4>
                         <p class="address_details">Al Dahra Agricultural Company, Navigator Software Pvt. Ltd.</p>
                         <span class="personal_details">Mr. Brad Williams,</span>
                         <span>Manager, Mobile : (183) 959-1691</span>
                       </div>
-                  </div>
+                  </div> -->
                 </div>
-                <div class="row pb-1">
+                <!-- <div class="row pb-1">
                   <div class="col-md-6 pr-0">
                     <div class="members_details">
                       <h4>Mr. Jhon Williams</h4>
@@ -291,7 +291,7 @@
                       <span>Manager, Mobile : (183) 959-1691</span>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -317,10 +317,10 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-subheader-desc form_org_data">
-                    <!-- <mat-radio-group> -->
-                      <mat-radio-button>Yes</mat-radio-button>
-                      <mat-radio-button>No</mat-radio-button>
-                    <!-- </mat-radio-group> -->
+                    <mat-radio-group name="other_accr" [(ngModel)]="other_accr_model">
+                      <mat-radio-button value="1">Yes</mat-radio-button>
+                      <mat-radio-button value="0">No</mat-radio-button>
+                    </mat-radio-group>
                   </div>
                 </div>
               </div>
@@ -334,7 +334,15 @@
                         <th>Scope of Accreditation & Certificate No</th>
                         <th>Expiry Date of Certificate</th>
                       </tr>
-                      <tr>
+                      <ng-container *ngFor="let othr_accr of otherAccr; let i3 = index;">
+                        <tr *ngFor="let item of jsonParse(othr_accr.value);">
+                            <td>{{item.scheme_name}}</td>
+                            <td>{{item.acccreditation_body_name}}</td>
+                            <td>{{item.acccreditation_scope}}</td>
+                            <td>{{item.converted_date | date}}</td>
+                        </tr>
+                      </ng-container>
+                      <!-- <tr>
                         <td>ISO/IEC 17025</td>
                         <td>Chris Estrada</td>
                         <td>Testing Laboratory & 006-1596</td>
@@ -345,13 +353,7 @@
                         <td>Chris Estrada</td>
                         <td>Testing Laboratory & 006-1596</td>
                         <td>21-08-2021</td>
-                      </tr>
-                      <tr>
-                        <td>ISO/IEC 17025</td>
-                        <td>Chris Estrada</td>
-                        <td>Testing Laboratory & 006-1596</td>
-                        <td>21-08-2021</td>
-                      </tr>
+                      </tr> -->
                     </table>
                   </div>
                 </div>
