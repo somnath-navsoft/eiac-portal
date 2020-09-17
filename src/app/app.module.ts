@@ -130,6 +130,7 @@ import { TrainersMessageDetailsComponent } from './components/dashboard/trainers
 
 import { ViewerComponentComponent} from './components/utility/viewer-component/viewer-component.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { OperationsAccreditationServiceDetailsComponent } from './dashboard/operations/operations-accreditation-service-details/operations-accreditation-service-details.component';
 export const MY_FORMATS = {
   parse: {
     dateInput: 'LL',
@@ -167,7 +168,8 @@ export const MY_FORMATS = {
     CabMessageDetailsComponent,
     CandidateMessageDetailsComponent,
     OperationsMessageDetailsComponent,
-    TrainersMessageDetailsComponent],
+    TrainersMessageDetailsComponent,
+    OperationsAccreditationServiceDetailsComponent],
   imports: [
     CommonModule,
     FormsModule,

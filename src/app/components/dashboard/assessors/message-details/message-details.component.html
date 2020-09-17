@@ -229,7 +229,7 @@
                 </div>
             </div>
 
-            <!-- <div class="col-md-6">
+            <div class="col-md-6">
                 <div class="row appln-cnt-data ">
                     <div class="col-md-12 p-0">
                         <div class="row">
@@ -242,7 +242,7 @@
                         <div class="row msg-det">
                             <div class="col-md-12">
                                 <div class="table-appln">
-                                    <table>
+                                    <!-- <table>
                                         <tr>
                                         <td>QUALIFICATION/DEGREE</td>
                                         <td>{{cabStep2['education'][0]?.detail}}</td>
@@ -255,21 +255,133 @@
                                         <td>SPECIALIZATION</td>
                                         <td>{{cabStep2['education'][0]?.specialization}}</td>
                                         </tr>
-                                    </table>
+                                    </table> -->
+                                    <table>
+                                      <tr>
+                                          <th width="20%">Language</th>
+                                          <th>Read</th>
+                                          <th>Write</th>
+                                          <th>Speak</th>
+                                      </tr>
+                                      <tr>
+                                          <td class="lang-name">Arabic</td>
+                                          <td>
+                                              <!-- <mat-form-field class="cab-data">
+                                                  
+                                                  <mat-select  matInput placeholder="">
+                                                      <mat-option>1</mat-option>
+                                                  </mat-select>
+                                              </mat-form-field> -->
+                                              <mat-form-field>
+                                                  <mat-select [disabled]="true" name="arabic_read"  [(ngModel)]="arabic.read">
+                                                      <mat-option [value]="1">Yes</mat-option>
+                                                      <mat-option [value]="0">No</mat-option>
+                                                  </mat-select>
+                                                  <mat-error></mat-error>
+                                              </mat-form-field>
+                                          </td>
+                                          <td>
+                                              <mat-form-field>
+                                                  
+                                                  <mat-select [disabled]="true" name="arabic_write"  [(ngModel)]="arabic.write" >
+                                                      <mat-option [value]="1">Yes</mat-option>
+                                                      <mat-option [value]="0">No</mat-option>
+                                                  </mat-select>
+                                                  <mat-error></mat-error>
+                                              </mat-form-field>
+                                          </td>
+                                          <td>
+                                              <mat-form-field >
+                                                  
+                                                  <mat-select [disabled]="true" name="arabic_speak"  [(ngModel)]="arabic.speak" >
+                                                      <mat-option [value]="1">Yes</mat-option>
+                                                      <mat-option [value]="0">No</mat-option>
+                                                  </mat-select>
+                                                  <mat-error></mat-error>
+                                              </mat-form-field>
+                                          </td>
+                                      </tr>
+                                      <tr>
+                                          <td class="lang-name">English</td>
+                                          <td>
+                                              <mat-form-field >
+                                                  
+                                                  <mat-select [disabled]="true" name="english_read"  [(ngModel)]="english.read" >
+                                                      <mat-option [value]="1">Yes</mat-option>
+                                                      <mat-option [value]="0">No</mat-option>
+                                                  </mat-select>
+                                                  <mat-error></mat-error>
+                                              </mat-form-field>
+                                          </td>
+                                          <td>
+                                              <mat-form-field >
+                                                  
+                                                  <mat-select [disabled]="true" name="english_write"  [(ngModel)]="english.write" >
+                                                      <mat-option [value]="1">Yes</mat-option>
+                                                      <mat-option [value]="0">No</mat-option>
+                                                  </mat-select>
+                                                  <mat-error></mat-error>
+                                              </mat-form-field>
+                                          </td>
+                                          <td>
+                                              <mat-form-field >
+                                                  
+                                                  <mat-select [disabled]="true" name="english_speak"  [(ngModel)]="english.speak" >
+                                                      <mat-option [value]="1">Yes</mat-option>
+                                                      <mat-option [value]="0">No</mat-option>
+                                                  </mat-select>
+                                                  <mat-error></mat-error>
+                                              </mat-form-field>
+                                          </td>
+                                      </tr>
+                                      <tr>
+                                          <td class="lang-name">Others</td>
+                                          <td>
+                                              <mat-form-field >
+                                                  
+                                                  <mat-select [disabled]="true" name="others_read"  [(ngModel)]="others.read" >
+                                                      <mat-option [value]="1">Yes</mat-option>
+                                                      <mat-option [value]="0">No</mat-option>
+                                                  </mat-select>
+                                                  <mat-error></mat-error>
+                                              </mat-form-field>
+                                          </td>
+                                          <td>
+                                              <mat-form-field >
+                                                  
+                                                  <mat-select [disabled]="true" name="others_write"  [(ngModel)]="others.write" >
+                                                      <mat-option [value]="1">Yes</mat-option>
+                                                      <mat-option [value]="0">No</mat-option>
+                                                  </mat-select>
+                                                  <mat-error></mat-error>
+                                              </mat-form-field>
+                                          </td>
+                                          <td>
+                                              <mat-form-field class="cab-data">
+                                                  
+                                                  <mat-select [disabled]="true" name="others_speak"  [(ngModel)]="others.speak" >
+                                                      <mat-option [value]="1">Yes</mat-option>
+                                                      <mat-option [value]="0">No</mat-option>
+                                                  </mat-select>
+                                                  <mat-error></mat-error>
+                                              </mat-form-field>
+                                          </td>
+                                      </tr>
+                                  </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div> -->
+            </div>
         </div>
 
-        <div class="row m-0">
+        <div class="row">
             <div class="col-md-6">
                 <div class="row appln-cnt-data" *ngIf="assessorStep3?.experience_1 != ''">
-                  <div class="col-md-12 p-0" *ngFor="let row of assessorStep3?.experience_1; let i = index;">
+                  <div class="col-md-12" *ngFor="let row of assessorStep3?.experience_1; let i = index;">
                     <div class="row">
-                      <div class="col-md-12">
+                      <div class="col-md-12 p-0">
                         <div class="appln-subhdr">
                           <h5>#{{i+1}}  LIST ANY AUDITOR QUALIFICATION AND TRAINING ATTAINED AND ATTACHED COPIES OF CERTIFICATES AND OTHER EVIDENCE OF ATTACHMENT
                           </h5>
@@ -303,9 +415,9 @@
               
             <div class="col-md-6">
               <div class="row appln-cnt-data" *ngIf="assessorStep3?.experience_2 != ''">
-                <div class="col-md-12 p-0" *ngFor="let row2 of assessorStep3?.experience_2; let i = index;">
+                <div class="col-md-12" *ngFor="let row2 of assessorStep3?.experience_2; let i = index;">
                   <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 p-0">
                       <div class="appln-subhdr">
                         <h5>#{{i+1}}  HAVE YOU ATTENDED ON-THE-JOB TRAINING REGARDING ACCREDITATION?</h5>
                         <!-- <hr> -->
@@ -341,7 +453,7 @@
             </div>
         </div>
 
-        <div class="row m-0">
+        <div class="row">
             <div class="col-md-6">
                 <div class="row appln-cnt-data" *ngIf="assessorStep3?.experience_3 != ''">
                   <div class="col-md-12 p-0" *ngFor="let row3 of assessorStep3?.experience_3; let i = index;">

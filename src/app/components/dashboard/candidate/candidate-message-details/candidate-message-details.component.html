@@ -21,10 +21,10 @@
                     <mat-tab label="First"> Content 1 </mat-tab>
                     <mat-tab label="Second"> Content 2 </mat-tab>
                 </mat-tab-group> -->
-                <ul>
+                <!-- <ul>
                   <li><a href="javascript:void(0)" id="personal_details">PERSONAL DETAILS</a></li>
-                  <!-- <li><a href="javascript:void(0)" id="application_info" (click)="tabClick('application_info')" class="tab-active">APPLICATION INFO</a></li> -->
-                </ul>
+                  <li><a href="javascript:void(0)" id="application_info" (click)="tabClick('application_info')" class="tab-active">APPLICATION INFO</a></li>
+                </ul> -->
             </div>
           </div>
         </div>
@@ -76,7 +76,7 @@
             </div>
         </div>
   
-        <div class="row" *ngIf="tabId == 'personal_details'">
+        <div class="row">
             <div class="col-md-6">
                 <div class="row appln-cnt-data ">
                 <div class="col-md-12 p-0">
@@ -161,6 +161,94 @@
                     </div>
                 </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="row m-0">
+            <div class="col-md-6">
+              <div class="row appln-cnt-data" *ngIf="cabStep2?.candidateOwnerData != ''">
+                <div class="col-md-12 p-0" *ngFor="let row of cabStep2?.candidateOwnerData; let i = index;">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="appln-subhdr">
+                        <h5>#{{i+1}}  OWNERSHIP OF THE ORGANIZATION</h5>
+                        <!-- <hr> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row msg-det">
+                    <div class="col-md-12">
+                      <div class="table-appln">
+                        <table>
+                          <tr>
+                            <td>Name</td>
+                            <td>{{row.name}}</td>
+                          </tr>
+                          <tr>
+                            <td>Designation</td>
+                            <td>{{row.designation}}</td>
+                          </tr>
+                          <tr>
+                            <td>Mobile No.</td>
+                            <td>{{row.mobile_no}}</td>
+                          </tr>
+                          <tr>
+                            <td>Land Line Phone No.</td>
+                            <td>{{row.phone_no}}</td>
+                          </tr>
+                          <tr>
+                            <td>Email Address</td>
+                            <td>{{row.email}}</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="row appln-cnt-data" *ngIf="cabStep2?.candidateBodData != ''">
+                <div class="col-md-12 p-0" *ngFor="let row2 of cabStep2?.candidateBodData; let i2 = index;">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="appln-subhdr">
+                        <h5>#{{i2+1}}  DOES THE COMPANY HAVE BOARD MEMBERS ?</h5>
+                        <!-- <hr> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row msg-det">
+                    <div class="col-md-12">
+                      <div class="table-appln">
+                        <table>
+                          <tr>
+                            <td>Name the members of the board of directors(BOD)</td>
+                            <td>{{row2.name}}</td>
+                          </tr>
+                          <tr>
+                            <td>List the company name of BOD members</td>
+                            <td>{{row2.bod_company}}</td>
+                          </tr>
+                          <tr>
+                            <td>Authorized Contact Person Name</td>
+                            <td>{{row2.authorized_contact_person}}</td>
+                          </tr>
+                          <tr>
+                            <td>Designation</td>
+                            <td>{{row2.designation}}</td>
+                          </tr>
+                          <tr>
+                            <td>Mobile No.</td>
+                            <td>{{row2.mobile_no}}</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
         </div>
   

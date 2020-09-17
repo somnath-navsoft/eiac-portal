@@ -32,6 +32,9 @@ export class MessageDetailsComponent implements OnInit {
   assessorStep3:any;
   assessorStep4:any;
   assessorStep5:any;
+  arabic:any = {};
+  english:any = {};
+  others:any = {};
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public route: ActivatedRoute,public toastr: ToastrService,public uiDialog: UiDialogService) { }
 
@@ -73,6 +76,25 @@ export class MessageDetailsComponent implements OnInit {
 
         this.educationalDoc = this.cabStep2['education'][0];
         this.whichForum = this.cabStep2['which_forum'][0];
+
+        var language = this.cabStep2['language'];
+          if(language != null) {
+            for(let key in language)
+            {
+              if(language[key].language == 'arabic')
+              {
+                this.arabic = language[key];
+              }
+              if(language[key].language == 'english')
+              {
+                this.english = language[key];
+              }
+              if(language[key].language == 'others')
+              {
+                this.others = language[key];
+              }
+            }
+          }
     });
   }
 
