@@ -528,7 +528,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       title:'information_audit_management', desc:'4. Internal Audit & MRM Date', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
-        title:'scope_accreditation', desc:'5. Accreditation Scope - Testing Laboratory', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+        title:'scope_accreditation', desc:'5. Accreditation Scope', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
       title:'perlim_visit', desc:'6. Prelim Visit', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
@@ -732,7 +732,7 @@ export class InspectionBodiesFormComponent implements OnInit {
             let customKey;
             if(dataScope.firstColumnData != undefined && dataScope.firstColumnData.length > 0){
               let firstColumValues = dataScope.firstColumnData[0];
-              //console.log(">>Firstcolumn: ", firstColumValues);
+              console.log(">>Firstcolumn: ", firstColumValues);
               //this.fullScope.push(dataScope.scopeValue);
               let scopeName: string = '';
               let scopeTitle: string ='';
@@ -1118,7 +1118,7 @@ export class InspectionBodiesFormComponent implements OnInit {
          }
 
         }
-        if(getData.data.criteriaList.length){
+        if(getData.data.criteriaList != undefined && getData.data.criteriaList.length){
           console.log(">>>Criteria list: ", getData.data.criteriaList);
           this.criteriaList = getData.data.criteriaList;
         }
@@ -2339,7 +2339,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     console.log("scheme data: ", schemeData);
       if(schemeData){
       this.step5Data.criteria_request = schemeData.title;
-      this.inspectionBodyForm.step5['scheme'] = schemeData.scope_accridiation.id;
+      this.inspectionBodyForm.step5['scheme_id'] = schemeData.scope_accridiation.id;
       }
     }
     let scopeValues: any =[];
