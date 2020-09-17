@@ -8,7 +8,7 @@ import { Subject} from 'rxjs';
 export class Constants{
 
 	public apiUrl: string 					= '';
-	public mediaPath: string 				= 'https://uat-service.eiac.gov.ae';
+	public mediaPath: string 				= 'https://dev-service.eiac.gov.ae';
 	//trainerAPI: '/trainer',
 	//all_services: this.apiUrl + 'service_page/', 
 	public API_ENDPOINT: any	=	{
@@ -72,7 +72,9 @@ export class Constants{
 	public deleteSuccessMessage: string								=	'Record Deleted Successfully';
 	public deleteConfirmText: string								=	'Are you sure to delete?';
 	public deleteConfirmDialogHeader: string						=	'Delete Confirmation';
+	public rejectConfirmDialogHeader: string						=	'Reject Message';
 	public dialogOKButtonText: string								=	'OK';	
+	public dialogSubmitButtonText: string							=	'SUBMIT';	
 	public dialogCancelButtonText: string							=	'CANCEL';
 
 	//Flash message type
@@ -89,7 +91,7 @@ export class Constants{
 				{
 					heading: 'Profile', link: '#', sub: true,
 					submenu: [
-						{title: 'Profile', link: '/profile-completation'},
+						{title: 'Profile', link: '/profile-completion'},
 						{title: 'Certification', link: '#'},
 						{title: 'Agreements', link: '#'},
 						{title: 'Records', link: '#'},
@@ -153,7 +155,7 @@ export class Constants{
 				{
 					heading: 'Profile', link: '#', sub: true,
 					submenu: [
-						{title: 'Update Profile', link: '/profile-completation'},
+						{title: 'Update Profile', link: '/profile-completion'},
 						{title: 'Qualification', link: '#'},
 						{title: 'Expertise', link: '#'},
 						{title: 'Agreements', link: '#'},
@@ -212,7 +214,7 @@ export class Constants{
 				{
 					heading: 'Profile', link: '#', sub: true,
 					submenu: [
-						{title: 'Update Profile', link: '/profile-completation'},
+						{title: 'Update Profile', link: '/profile-completion'},
 						{title: 'Qualifications', link: '#'},
 						{title: 'Expertise', link: '#'},
 						{title: 'Agreements', link: '#'},
@@ -240,7 +242,7 @@ export class Constants{
 			type: 'operations',
 			menu: [
 				{
-					heading: 'Update Profile', link: '/profile-completation',
+					heading: 'Update Profile', link: '/profile-completion',
 					submenu: []
 				},
 				{
@@ -294,7 +296,7 @@ export class Constants{
 				{
 					heading: 'Profile', link: '#', sub: true,
 					submenu: [
-						{title: 'Update Profile', link: '/profile-completation'},
+						{title: 'Update Profile', link: '/profile-completion'},
 						{title: 'Qualifications', link: '/dashboard/trainers/qualifications'},
 						{title: 'Expertise', link: '/dashboard/trainers/expertise'},
 						{title: 'Agreements', link: '/dashboard/trainers/agreements'},

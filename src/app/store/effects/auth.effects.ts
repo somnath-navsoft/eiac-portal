@@ -79,7 +79,7 @@ export class AuthEffects {
       sessionStorage.setItem('userId', authUserData.user_id);
       this._appServ.getUserType();
       sessionStorage.setItem('type', this._constants.logType);
-      this.router.navigateByUrl('/profile-completation');
+      this.router.navigateByUrl('/profile-completion');
 
       // let landURL = '/dashboard/' + this._constants.logType + '/home';
       // this.router.navigateByUrl(landURL);

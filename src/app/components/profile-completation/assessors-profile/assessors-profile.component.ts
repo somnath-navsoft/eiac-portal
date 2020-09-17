@@ -58,6 +58,7 @@ export class AssessorsProfileComponent implements OnInit {
   loader:boolean = true;
   searchCountryLists:any[] = [];
   userId:any;
+  criteriaList:any[] = [];
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -214,6 +215,7 @@ export class AssessorsProfileComponent implements OnInit {
         // console.log(res['data'],'data');
         if(res['status'] == true) {
           this.loader = true;
+          this.criteriaList = res['data']['criteriaList'];
           var first_nameData = res['data']['user_data'][0].first_name.split(' ');
           
           this.titleArr.forEach((res2,key) => {
@@ -231,7 +233,7 @@ export class AssessorsProfileComponent implements OnInit {
 
           this.technicalFields = res['data'].technical_field;
 
-          if(res['data'].step1 != '' && res['data'].step1[0] && res['data']['user_data'][0].first_name != "" && res['data'].step1[0].office_email != "" && res['data'].step1[0].dob != null && res['data'].step1[0].mailing_address != "" && res['data'].step1[0].fax_no != "" && res['data'].step1[0].office != "" && res['data'].step1[0].designation != "" && res['data'].step1[0].office_address != "" && res['data'].step1[0].office_tel_no != "" && res['data'].step1[0].nationality != null) {
+          if(res['data'].step1 != '' && res['data'].step1[0] && res['data']['user_data'][0].first_name != "" && res['data'].step1[0].office_email != "" && res['data'].step1[0].dob != null && res['data'].step1[0].mailing_address != "" && res['data'].step1[0].office != "" && res['data'].step1[0].designation != "" && res['data'].step1[0].office_address != "" && res['data'].step1[0].office_tel_no != "" && res['data'].step1[0].nationality != null) {
             this.progressValue = 22;
             this.Service.moveSteps('personal_details','educational_information', this.headerSteps);
           }
@@ -571,13 +573,11 @@ export class AssessorsProfileComponent implements OnInit {
       .subscribe(
         res => {
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            // this.toastr.success(res['msg'], '');
             this.progressValue == 0 || this.progressValue < 22 ? this.progressValue = 22 : this.progressValue = this.progressValue ;
             // this.Service.headerStepMove('educational_information',this.headerSteps,'personal_details');
             // this.router.navigateByUrl('/sign-in');
             this.Service.moveSteps('personal_details','educational_information', this.headerSteps);
-          }else{
-            this.toastr.warning(res['msg'], '');
           }
           this.loader = true;
         });
@@ -616,13 +616,11 @@ export class AssessorsProfileComponent implements OnInit {
         .subscribe(
           res => {
             if(res['status'] == true) {
-              this.toastr.success(res['msg'], '');
+              // this.toastr.success(res['msg'], '');
               // this.router.navigateByUrl('/sign-in');
               this.progressValue == 22 || this.progressValue < 44 ? this.progressValue = 44 : this.progressValue = this.progressValue ;
               // this.Service.headerStepMove('employment',this.headerSteps,'educational_information');
               this.Service.moveSteps('educational_information','employment', this.headerSteps);
-            }else{
-              this.toastr.warning(res['msg'], '');
             }
             this.loader = true;
           });
@@ -664,13 +662,11 @@ export class AssessorsProfileComponent implements OnInit {
       .subscribe(
         res => {
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            // this.toastr.success(res['msg'], '');
             // this.router.navigateByUrl('/sign-in');
             this.progressValue == 44 || this.progressValue < 66 ? this.progressValue = 66 : this.progressValue = this.progressValue ;
             // this.Service.headerStepMove('knowledge_experience',this.headerSteps,'employment');
             this.Service.moveSteps('employment','knowledge_experience', this.headerSteps);
-          }else{
-            this.toastr.warning(res['msg'], '');
           }
           this.loader = true;
         });
@@ -716,14 +712,11 @@ export class AssessorsProfileComponent implements OnInit {
         .subscribe(
           res => {
             if(res['status'] == true) {
-              this.toastr.success(res['msg'], '');
+              // this.toastr.success(res['msg'], '');
               // this.router.navigateByUrl('/sign-in');
               this.progressValue == 66 || this.progressValue < 88 ? this.progressValue = 88 : this.progressValue = this.progressValue ;
               // this.Service.headerStepMove('applicant_trainer',this.headerSteps,'knowledge_experience');
               this.Service.moveSteps('knowledge_experience','applicant_trainer', this.headerSteps);
-            }else{
-              
-              this.toastr.warning(res['msg'], '');
             }
             this.loader = true;
           });

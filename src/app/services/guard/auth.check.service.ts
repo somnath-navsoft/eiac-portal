@@ -23,7 +23,7 @@ export class AuthCheck implements CanActivate {
         }else if(this.token  !== '' && authUserData.isCompleteness == '0')  {
             // console.log('portal Auth check: 2',this.token);
             // this.router.navigate(['/dashboard']);
-            this.router.navigateByUrl('/profile-completation');
+            this.router.navigateByUrl('/profile-completion');
             return false;           
         }else if(this.token  !== '' && authUserData.isVerified == '1' && authUserData.isCompleteness == '1')  {
             // console.log('portal Auth check: 2',this.token);

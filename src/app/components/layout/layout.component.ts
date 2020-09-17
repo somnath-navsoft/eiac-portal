@@ -68,9 +68,9 @@ export class LayoutComponent implements OnInit {
         {
           this.currentState = 'verify-account';
         }
-        else if(splitUrl[1] == 'profile-completation')
+        else if(splitUrl[1] == 'profile-completion')
         {
-          this.currentState = 'profile-completation';
+          this.currentState = 'profile-completion';
         }else{
           this.currentState = data.urlAfterRedirects;
         }

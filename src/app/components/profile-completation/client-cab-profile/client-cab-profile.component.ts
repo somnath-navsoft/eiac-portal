@@ -83,7 +83,7 @@ export class ClientCabProfileComponent implements OnInit {
       title:'personal_details', desc:'1. Personal <br> Details', activeStep:true, stepComp:false, icon:'icon-user', activeClass:'user-present'
       },
       {
-      title:'application_information', desc:'2. Application <br> Information', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'application_information', desc:'2. Applicant <br> Information', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       }
     );
    this.titleArr = ['Mr.','Ms.','Dr.','Prof.','Mrs.'];
@@ -181,10 +181,10 @@ export class ClientCabProfileComponent implements OnInit {
           this.step1Data.personal_email = res['data']['user_data'][0].email;
           this.personalEmailReadonly = this.step1Data.personal_email != '' ? true : false;
           
-          if(res['data'].step1 !='' && res['data'].step1[0] && res['data'].step1[0].dob != null && res['data'].step1[0].official_email !='' && res['data'].step1[0].office_tel_no !='' && res['data'].step1[0].designation !='' && res['data'].step1[0].nationality != null && res['data'].step1[0].mailing_address !='' && res['data'].step1[0].office !='' && res['data'].step1[0].tel_no !='' && res['data'].step1[0].fax_no !='' && res['data'].step1[0].office_address !='') {
+          if(res['data'].step1 !='' && res['data'].step1[0] && res['data'].step1[0].dob != null && res['data'].step1[0].official_email !='' && res['data'].step1[0].office_tel_no !='' && res['data'].step1[0].designation !='' && res['data'].step1[0].nationality != null && res['data'].step1[0].mailing_address !='' && res['data'].step1[0].office !='' && res['data'].step1[0].tel_no !='' && res['data'].step1[0].office_address !='') {
             this.progressValue = 50;
             this.Service.moveSteps('personal_details','application_information', this.headerSteps);
-          }if(res['data'].step2 !='' && res['data'].step2 && res['data'].step1[0].trade_license_number !='' && res['data'].step1[0].applicant_location !='' && res['data'].step1[0].applicant_address !='' && res['data'].step1[0].applicant_tel_no !='' && res['data'].step1[0].applicant_fax_no !='' && res['data'].step1[0].applicant_email !='' && res['data'].step1[0].applicant_website !='' && res['data'].step1[0].date_of_issue != null && res['data'].step1[0].date_of_expiry != null && res['data'].step1[0].cab_name !='' && res['data'].step1[0].po_box !='' && res['data'].step1[0].country !='' && res['data'].step1[0].state !='' && res['data'].step1[0].city !='' && res['data'].step1[0].date_of_establisment !='' && res['data'].step2.cabOwnerData != '' && res['data'].step2.cabBodData != '' && res['data'].step2.cabContactData[0].name != '' && res['data'].step2.cabContactData[0].designation != '' && res['data'].step2.cabContactData[0].email != '' && res['data'].step2.cabContactData[0].phone_no != '' && res['data'].step2.cabContactData[0].mobile_no != '') {
+          }if(res['data'].step2 !='' && res['data'].step2 && res['data'].step1[0].trade_license_number !='' && res['data'].step1[0].applicant_location !='' && res['data'].step1[0].applicant_address !='' && res['data'].step1[0].applicant_tel_no !='' && res['data'].step1[0].applicant_email !='' && res['data'].step1[0].applicant_website !='' && res['data'].step1[0].date_of_issue != null && res['data'].step1[0].date_of_expiry != null && res['data'].step1[0].cab_name !='' && res['data'].step1[0].po_box !='' && res['data'].step1[0].country !='' && res['data'].step1[0].state !='' && res['data'].step1[0].city !='' && res['data'].step2.cabOwnerData != '' && res['data'].step2.cabBodData != '') {
             this.progressValue = 100;
           }
 
@@ -259,11 +259,11 @@ export class ClientCabProfileComponent implements OnInit {
             
             this.nameOftheOwner = step2.cabOwnerData != '' ? step2.cabOwnerData : this.nameOftheOwner ;
             this.companyBodMembers = step2.cabBodData != '' ? step2.cabBodData : this.companyBodMembers ;
-            this.step2Data.contact_person_name = step2.cabContactData[0].name;
-            this.step2Data.contact_person_designation = step2.cabContactData[0].designation;
-            this.step2Data.contact_person_email = step2.cabContactData[0].email;
-            this.step2Data.contact_person_mobile = step2.cabContactData[0].mobile_no;
-            this.step2Data.contact_person_phone = step2.cabContactData[0].phone_no;
+            // this.step2Data.contact_person_name = step2.cabContactData[0].name;
+            // this.step2Data.contact_person_designation = step2.cabContactData[0].designation;
+            // this.step2Data.contact_person_email = step2.cabContactData[0].email;
+            // this.step2Data.contact_person_mobile = step2.cabContactData[0].mobile_no;
+            // this.step2Data.contact_person_phone = step2.cabContactData[0].phone_no;
             this.step2Data.authorised_contact = step2.cabContactData[0].contacts == true ? 1 : 0 ;
             this.step2Data.is_bod = step2.cabBodData != '' ? '1' : '0' ;
             this.is_bod = step2.cabBodData != '' ? '1' : '0' ;
@@ -274,10 +274,10 @@ export class ClientCabProfileComponent implements OnInit {
             // this.step2Data.main_activity_describe = res['data'].step1[0].other_description;
             // this.step2Data.is_bod = step2.is_bod;
             // this.step2Data.companyBodMembers = step2.companyBodMembers;
-            this.step2Data.date_of_establishment = res['data'].step1[0].date_of_establisment != null ? new Date(res['data'].step1[0].date_of_establisment) : '';
-            this.step2Data.legal_license = res['data'].step1[0].trade_license_number;
-            this.step2Data.main_activity_describe = res['data'].step1[0].other_description;
-            this.step2Data.certification_main_activity = res['data'].step1[0].is_certification_main_activity == true ? 1 : 0;
+            // this.step2Data.date_of_establishment = res['data'].step1[0].date_of_establisment != null ? new Date(res['data'].step1[0].date_of_establisment) : '';
+            // this.step2Data.legal_license = res['data'].step1[0].trade_license_number;
+            // this.step2Data.main_activity_describe = res['data'].step1[0].other_description;
+            // this.step2Data.certification_main_activity = res['data'].step1[0].is_certification_main_activity == true ? 1 : 0;
           }
 
 

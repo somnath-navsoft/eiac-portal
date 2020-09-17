@@ -13,6 +13,7 @@ export class CustomModalComponent implements OnInit {
   modalOptions:NgbModalOptions;
   modalRef: BsModalRef;
   modelObj: TemplateRef<any>;
+  rejectmessage:any;
 
   @Input() modalData: any;
   @Input() modalType: any;
@@ -21,6 +22,8 @@ export class CustomModalComponent implements OnInit {
   @Input() onDeleteMessage: any;
   
   @Output() onDeleteAction : any = new EventEmitter();
+  @Output() rejectMessageEvent:any = new EventEmitter();
+  rejectObj:any = {};
 
   closeResult: string;
   constructor(private _service: AppService, private _constant: Constants, 
@@ -44,7 +47,13 @@ export class CustomModalComponent implements OnInit {
               }
             }, 100)
           break;
-          case 'view':
+          case 'reject':
+            setTimeout(()=>{
+              let elem = document.getElementById('openDialog');
+              if(elem){
+                elem.click();
+              }
+            }, 100)
           break;
       }
     }
@@ -57,18 +66,20 @@ export class CustomModalComponent implements OnInit {
     //Reset delete confirm from parent
     if(this.parent && this.parent.deleteConfirm){
       this.parent.deleteConfirm = false;
+    }else if(this.parent && this.parent.rejectedMessageId){
+      this.parent.rejectedMessageId = false;
     }
     //Reset view confirm from parent
   }
   closeDialog(){
     let elem = document.getElementById('closeDialog');
-    console.log("close mmm: ", elem);    
+    // console.log("close mmm: ", elem);    
     if(elem){
       elem.click();      
     }
   }
   openDialog(hashContent: any){
-    console.log("Open dialog....1");
+    // console.log("Open dialog....1");
     // this.modalRef = this.modalService.show(  
     //   hashContent,  
     //   Object.assign({}, { class: 'gray modal-lg' })  
@@ -84,13 +95,13 @@ export class CustomModalComponent implements OnInit {
 
   getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
-      console.log("Closed with ESC ");
+      // console.log("Closed with ESC ");
       return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      console.log("Closed with CLOSE ICON ");
+      // console.log("Closed with CLOSE ICON ");
       return 'by clicking on a backdrop';
     } else {
-      console.log("Closed ",`with: ${reason}`);
+      // console.log("Closed ",`with: ${reason}`);
       return  `with: ${reason}`;
     }
   }
@@ -98,6 +109,14 @@ export class CustomModalComponent implements OnInit {
   //Delete Action
   deleteAction(){
     this.onDeleteAction.emit();
+  }
+
+  rejectAction(){
+    // console.log(this.rejectmessage);
+    this.rejectObj.message = this.rejectmessage;
+    this.rejectObj.rejectId = 2;
+    this.rejectMessageEvent.emit(this.rejectObj);
+    this.closeDialog()
   }
 
 }

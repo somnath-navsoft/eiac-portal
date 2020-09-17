@@ -23,6 +23,7 @@ import { allTrainer } from './store/reducers/trainer.reducers';
 import { from } from 'rxjs';
 
 import { AuthService } from './services/auth.service';
+import  { UiDialogService } from  './services/uiDialog.service';
 import { AppComponent} from './app.component';
 import {SnackbarModule} from 'ngx-snackbar';
 import {FormsModule, ReactiveFormsModule, FormGroup} from '@angular/forms';
@@ -209,7 +210,7 @@ export const MY_FORMATS = {
   entryComponents: [ViewerComponentComponent],
   exports: [PdfViewerModule],
   //providers: [ AuthEffects, AuthService,AppService,TrainerService,],
-  providers: [ AuthEffects, AuthService,AppService,Constants,TrainerService,ToastrService,
+  providers: [ AuthEffects, AuthService,AppService,UiDialogService,Constants,TrainerService,ToastrService,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},Overlay,OverlayContainer,{
       provide: RECAPTCHA_SETTINGS,
       useValue: {
