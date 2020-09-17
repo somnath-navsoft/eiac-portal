@@ -157,11 +157,15 @@
                                 {{item.created | date :'dd-MMM-yyyy' }}
                             </td>
                             <td  class="complete pending">
-                                <span>{{item.accr_status}}</span></td>
+                                <!-- # {{item.accr_status}} -->
+                                <span *ngIf="item.accr_status === null">Pending</span>
+                                <span *ngIf="item.accr_status != null">{{item.accr_status}}</span>
+                            </td>
                             <td>
                                 <span *ngIf="item.form_meta === 'inspection_body'">Inspection Body</span>
                             </td>
                             <td  class="complete pending">
+                               <!-- @ {{item.payment_status}} -->
                                 <span *ngIf="item.payment_status === null">Pending</span>
                                 <span *ngIf="item.payment_status != null">{{item.payment_status}}</span>
                             </td> 

@@ -487,11 +487,31 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.addMinutesToTime = this.Service.addMinutesToTime();
     //this.dynamicScopeModelValues[0] = {};
 
+
+  
+
+    //return;
+
     this.loadData();
     this.loadAppData();
     this.loadAppInfo();
     this.loadFormDynamicTable();
     this.loadCountryStateCity();
+
+    // let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
+    // console.log("app info: ", url);
+    // this.Service.getwithoutData(url)
+    //   .subscribe(
+    //     res => {
+    //       let getData: any = res;
+    //       let data: any;
+    //       //, getData.data.step1, " -- ", getData.data.step2
+    //       console.log("Profile info >>> ", getData.data);
+  
+    //     }
+    //   )
+    //   return;
+
     this.loader = false;
     //
     this.headerSteps.push(
@@ -978,129 +998,130 @@ export class InspectionBodiesFormComponent implements OnInit {
       res => {
         let getData: any = res;
         let data: any;
-        console.log(getData,"Profile info >>> ", getData.data.step1, " -- ", getData.data.step2);
+        //, getData.data.step1, " -- ", getData.data.step2
+        console.log(getData,"Profile info >>> ");
 
-        // if(getData.data.step1.length){
-        //   data = getData.data['step1'][0];
-        //   ///console.log('data enter...1', data);
+        if(getData.data.step1.length){
+          data = getData.data['step1'][0];
+          ///console.log('data enter...1', data);
 
-        //   if(data){
-        //     console.log('data enter...2');
+          if(data){
+            console.log('data enter...2');
 
-        //     var stateList =  this.Service.getState();
-        //     var cityList =  this.Service.getCity();
+            var stateList =  this.Service.getState();
+            var cityList =  this.Service.getCity();
 
-        //     stateList.subscribe( result => {
-        //       for(let key in result['states']) {
-        //         if(result['states'][key]['name'] == data.state )
-        //         {
-        //           this.allStateList.push(result['states'][key]);
-        //         }
-        //       }
-        //     });
+            stateList.subscribe( result => {
+              for(let key in result['states']) {
+                if(result['states'][key]['name'] == data.state )
+                {
+                  this.allStateList.push(result['states'][key]);
+                }
+              }
+            });
 
-        //     cityList.subscribe( result => {
-        //       for(let key in result['cities']) {
-        //         if(result['cities'][key]['name'] == data.city )
-        //         {
-        //           this.allCityList.push(result['cities'][key]);
-        //         }
-        //       }
-        //     });
+            cityList.subscribe( result => {
+              for(let key in result['cities']) {
+                if(result['cities'][key]['name'] == data.city )
+                {
+                  this.allCityList.push(result['cities'][key]);
+                }
+              }
+            });
 
-        //     this.profileCountrySel = data.country;
-        //     //this.step1Data.country = data.country;
-        //     this.step1Data.state = data.state;
-        //     this.step1Data.city = data.city;
-        //     //selectTradeLicName
-        //     if(data.trade_license != ''){
-        //       let getFile = data.trade_license.toString().split('/');
-        //       if(getFile.length){
-        //         this.selectTradeLicName = getFile[4].split('.').pop();
-        //         this.selectTradeLicPath = this.constant.mediaPath +  data.trade_license.toString();
-        //       }
-        //     }
+            this.profileCountrySel = data.country;
+            //this.step1Data.country = data.country;
+            this.step1Data.state = data.state;
+            this.step1Data.city = data.city;
+            //selectTradeLicName
+            if(data.trade_license != ''){
+              let getFile = data.trade_license.toString().split('/');
+              if(getFile.length){
+                this.selectTradeLicName = getFile[4].split('.').pop();
+                this.selectTradeLicPath = this.constant.mediaPath +  data.trade_license.toString();
+              }
+            }
             
-        //     if(data.cab_name  != ''){
-        //       this.step1Data.official_commercial_name = data.cab_name.toString();
-        //     }
+            if(data.cab_name  != ''){
+              this.step1Data.official_commercial_name = data.cab_name.toString();
+            }
 
-        //     this.step1Data.physical_location_address = data.registered_address;
-        //     this.step1Data.po_box = data.po_box;
-        //     this.step1Data.telephone = data.tel_no;
-        //     this.step1Data.fax_no = data.fax_no;
-        //     this.step1Data.mailing_address = data.mailing_address;
-        //     this.step1Data.official_website = data.official_website;
-        //     // this.step1Data.date_of_expiry = data.date_of_expiry;
-        //     // this.step1Data.date_of_establishment = data.date_of_establisment;
-        //     // this.step1Data.date_of_issue = data.date_of_issue; //|
-        //     this.step1Data.official_email = data.official_email;
-        //     this.step1Data.official_website = data.official_website;
+            this.step1Data.physical_location_address = data.registered_address;
+            this.step1Data.po_box = data.po_box;
+            this.step1Data.telephone = data.tel_no;
+            this.step1Data.fax_no = data.fax_no;
+            this.step1Data.mailing_address = data.mailing_address;
+            this.step1Data.official_website = data.official_website;
+            // this.step1Data.date_of_expiry = data.date_of_expiry;
+            // this.step1Data.date_of_establishment = data.date_of_establisment;
+            // this.step1Data.date_of_issue = data.date_of_issue; //|
+            this.step1Data.official_email = data.official_email;
+            this.step1Data.official_website = data.official_website;
 
-        //     /*
+            /*
 
-        //     this.tradeLicensedValidation = this.constant.mediaPath+step1.trade_license;
-        //     this.step1Data.trade_license_number = step1.office_email;
-        //     this.step1Data.date_of_issue = new Date(step1.dob);
-        //     this.step1Data.date_of_expiry = step1.mailing_address;
-        //     this.step1Data.date_of_establishment = step1.phone;
-        //     this.step1Data.search_location_name = step1.fax_no;
-        //     this.step1Data.official_commercial_name = step1.office;
-        //     this.step1Data.accredation_type_id = step1.designation;
-        //     this.step1Data.criteria_request = step1.office_address;
-        //     this.step1Data.physical_location_address = step1.office_tel_no;
-        //     this.step1Data.po_box = step1.office_fax_no;
-        //     this.step1Data.country = step1.office_fax_no;
-        //     this.step1Data.state = step1.office_fax_no;
-        //     this.step1Data.city = step1.office_fax_no;
-        //     this.step1Data.telephone = step1.office_fax_no;
-        //     this.step1Data.fax_no = step1.office_fax_no;
-        //     this.step1Data.official_email = step1.office_fax_no;
-        //     this.step1Data.official_website = step1.office_fax_no;
+            this.tradeLicensedValidation = this.constant.mediaPath+step1.trade_license;
+            this.step1Data.trade_license_number = step1.office_email;
+            this.step1Data.date_of_issue = new Date(step1.dob);
+            this.step1Data.date_of_expiry = step1.mailing_address;
+            this.step1Data.date_of_establishment = step1.phone;
+            this.step1Data.search_location_name = step1.fax_no;
+            this.step1Data.official_commercial_name = step1.office;
+            this.step1Data.accredation_type_id = step1.designation;
+            this.step1Data.criteria_request = step1.office_address;
+            this.step1Data.physical_location_address = step1.office_tel_no;
+            this.step1Data.po_box = step1.office_fax_no;
+            this.step1Data.country = step1.office_fax_no;
+            this.step1Data.state = step1.office_fax_no;
+            this.step1Data.city = step1.office_fax_no;
+            this.step1Data.telephone = step1.office_fax_no;
+            this.step1Data.fax_no = step1.office_fax_no;
+            this.step1Data.official_email = step1.office_fax_no;
+            this.step1Data.official_website = step1.office_fax_no;
 
-        //     this.ownOrgBasicInfo = step1.cabOwnerData;
-        //     this.step1Data.is_bod = step1.cabOwnerData != '' ? '1' : '0';
-        //     this.ownOrgMembInfo = step1.ownOrgMembInfo;
-        //     this.step1Data.duty_from1 = step1.duty_from1;
-        //     this.step1Data.duty_to1 = step1.duty_to1;
-        //     this.step1Data.duty_from2 = step1.duty_to2;
-        //     this.step1Data.duty_from3 = step1.duty_from3;
-        //     this.step1Data.duty_to3 = step1.duty_to3;
-        //     this.step1Data.indication = step1.indication;
-        //     this.step1Data.is_hold_other_accreditation = step1.is_hold_other_accreditation;
-        //     this.step1Data.accreditationInfo = step1.is_hold_other_accreditation != '' ? '1' : '0';;
-        //     this.step1Data.duty_to3 = step1.duty_to3;
+            this.ownOrgBasicInfo = step1.cabOwnerData;
+            this.step1Data.is_bod = step1.cabOwnerData != '' ? '1' : '0';
+            this.ownOrgMembInfo = step1.ownOrgMembInfo;
+            this.step1Data.duty_from1 = step1.duty_from1;
+            this.step1Data.duty_to1 = step1.duty_to1;
+            this.step1Data.duty_from2 = step1.duty_to2;
+            this.step1Data.duty_from3 = step1.duty_from3;
+            this.step1Data.duty_to3 = step1.duty_to3;
+            this.step1Data.indication = step1.indication;
+            this.step1Data.is_hold_other_accreditation = step1.is_hold_other_accreditation;
+            this.step1Data.accreditationInfo = step1.is_hold_other_accreditation != '' ? '1' : '0';;
+            this.step1Data.duty_to3 = step1.duty_to3;
 
 
-        //     */
-        //   }
-        // }
-        // if(typeof getData.data.step2 === 'object'){
-        //  let data: any = getData.data.step2;
-        //  console.log("step 2>>>", data);
-        //  if(typeof data === 'object'){
-        //       if(data.cabOwnerData != undefined && data.cabOwnerData.length){
-        //         console.log('>>> owner data....');
-        //         this.ownOrgBasicInfo = data.cabOwnerData;
-        //         this.profileAutoData = true;
-        //         console.log('>>> owner data....', this.ownOrgBasicInfo);
-        //       }
-        //       if(data.cabBodData != undefined && data.cabBodData.length){
-        //         console.log('>>> member data....');
-        //         if(data.cabBodData.length > 0){
-        //           this.profileAutoData = true;
-        //           this.ownOrgMembInfo = data.cabBodData;
-        //           this.step1Data.is_bod_select = "1";
-        //         } 
-        //         console.log('>>> member data....', this.ownOrgMembInfo);
-        //       }
-        //  }
+            */
+          }
+        }
+        if(typeof getData.data.step2 === 'object'){
+         let data: any = getData.data.step2;
+         console.log("step 2>>>", data);
+         if(typeof data === 'object'){
+              if(data.cabOwnerData != undefined && data.cabOwnerData.length){
+                console.log('>>> owner data....');
+                this.ownOrgBasicInfo = data.cabOwnerData;
+                this.profileAutoData = true;
+                console.log('>>> owner data....', this.ownOrgBasicInfo);
+              }
+              if(data.cabBodData != undefined && data.cabBodData.length){
+                console.log('>>> member data....');
+                if(data.cabBodData.length > 0){
+                  this.profileAutoData = true;
+                  this.ownOrgMembInfo = data.cabBodData;
+                  this.step1Data.is_bod_select = "1";
+                } 
+                console.log('>>> member data....', this.ownOrgMembInfo);
+              }
+         }
 
-        // }
-        // if(getData.data.criteriaList.length){
-        //   console.log(">>>Criteria list: ", getData.data.criteriaList);
-        //   this.criteriaList = getData.data.criteriaList;
-        // }
+        }
+        if(getData.data.criteriaList.length){
+          console.log(">>>Criteria list: ", getData.data.criteriaList);
+          this.criteriaList = getData.data.criteriaList;
+        }
       })
   }
 
@@ -2663,7 +2684,7 @@ savedraftStep(stepsCount) {
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step1DraftDataBodyFormFile)
     .subscribe(
       res => {
-        console.log(res,'res')
+        console.log(res,'res Load Data')
         if(res['status'] == true) {
           this.toastr.success(res['msg'], '');
           this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
