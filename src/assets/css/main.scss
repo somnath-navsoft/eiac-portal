@@ -784,11 +784,8 @@ a:hover { text-decoration: none; }
 }
 .recommend .mat-checkbox-inner-container { height: 20px; width: 20px; margin-top: 7px; }
 .recommend .mat-checkbox-layout .mat-checkbox-label { line-height: 34px; font-family: "Dubai Medium"; font-size: 24px; }
-.modal-dialog {
-  max-width: 750px;
-  max-height: 700px;
-  margin: 1.75rem auto;
-  overflow: auto;}
+.modal-dialog { max-width: 750px; }
+.modal-content { max-height: 700px; overflow-y: auto; }
 .authData .mat-checkbox-frame {
   border-color: rgba(153, 153, 153, 1); 
   border-width: 1px; 

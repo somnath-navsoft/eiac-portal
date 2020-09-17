@@ -69,17 +69,21 @@
                                                 <span>Type of Accreditation Required:</span>
                                             </div>
                                         </div>
-                                        <div class="col-md-3 col-sm-6 p-0">
+                                        <div class="col-md-3 col-sm-6 p-0 pt-4">
                                             <div class="cab-data">
                                                 <!-- @{{step1Data.accredation_criteria}} -->
                                                 <mat-radio-group name="accreditation_required" 
                                                 [(ngModel)]="step1Data.accredation_criteria" #selectAccrdCriteria="ngModel" required>
                                                 <div class="row">
                                                     <div class="col-md-4">
-                                            <mat-radio-button value="1"  [checked]="accreditationChecked">Initial</mat-radio-button>
+                                                        <div class="initial_data">
+                                                            <mat-radio-button value="1"  [checked]="accreditationChecked">Initial</mat-radio-button>
+                                                        </div>
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <mat-radio-button value="2">Extension</mat-radio-button>
+                                                        <div class="initial_data">
+                                                            <mat-radio-button value="2">Extension</mat-radio-button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 </mat-radio-group>
