@@ -23,6 +23,13 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit {
   otherAccr:any;
   other_accr_model:any;
   Object = Object;
+  ptParticipation:any;
+  technicalManager:any;
+  managementManager:any;
+  paymentDetails:any;
+  applicantInfo:any;
+  scopeDetailsHeading:any;
+  scopeDetailvalues:any;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService) { }
@@ -45,21 +52,43 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit {
     return Array(JSON.parse(obj1));
   }
 
+  jsonParseKeyvalue(data) {
+    var obj1 = data.replace(/'/g, "\"");
+    return JSON.parse(obj1);
+  }
+
+  jsonParsevalue(data) {
+    return JSON.parse(data);
+  }
+
   loadData() {
     this.subscriptions.push(this._trainerService.trainerAccredDetailsServtrainerAccredDetailsServ(this.routeId)
-          .subscribe(
-            result => {
-              // console.log(result);
-              this.serviceDetail = result['data']
-              this.ownershipOfOrg = result['data']['ownershipOfOrg']
-              this.bodMember = result['data']['bodMember'];
-              this.otherAccr = result['data']['otherAccr'];
-              this.other_accr_model = result['data']['otherAccr'] != '' ? '1' : '0' ;
-            },
-            ()=>{
-              console.log('comp...');
-            }
-          )          
+      .subscribe(
+        result => {
+          // console.log(result);
+          this.serviceDetail = result['data']
+          this.ownershipOfOrg = result['data']['ownershipOfOrg']
+          this.bodMember = result['data']['bodMember'];
+          this.otherAccr = result['data']['otherAccr'];
+          this.other_accr_model = result['data']['otherAccr'] != '' ? '1' : '0' ;
+          this.ptParticipation = result['data']['ptParticipation'];
+          this.technicalManager = result['data']['technicalManager'][0];
+          this.managementManager = result['data']['technicalManager'][0];
+          this.paymentDetails = result['data'].paymentDetails;
+          this.scopeDetailsHeading = result['data']['scopeDetails'].heading.column_list;
+          this.scopeDetailvalues = result['data']['scopeDetails']['details'];
+        },
+        ()=>{
+          console.log('comp...');
+        }
+      )     
     )
+
+    this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.profileService+'?id='+this.routeId)
+    .subscribe(
+      res => { 
+        // console.log(res);
+        this.applicantInfo = res['data']['step1'][0];
+      })
   }
 }
