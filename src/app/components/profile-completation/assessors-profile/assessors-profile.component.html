@@ -1,6 +1,6 @@
 <app-loader *ngIf="!loader"></app-loader>
 <section>
-    <div class="form-wrapper-pro">
+    <div class="form_main">
         <div class="container-fluid">
             <div class="main-dashboard-cnt">
                 <div class="form-hdr profile-hdr">
@@ -50,18 +50,19 @@
                                 1. Personal Details
                             </span>
                         </ng-template> -->
-                <div class="form-bdy cust-stepper" id="personal_details">
-                    <div class="row m-0">
-                        <div class="wrapper">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-12 p-0">
-                                        <div class="form-subhdr">
-                                            <h5>PERSONAL DETAILS</h5>
+                <div class="cust-stepper" id="personal_details">
+                    <form #ngForm1="ngForm" (ngSubmit)="onSubmitStep1(ngForm1)" autocomplete="off">
+                        <div class="row m-0 form-bdy">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr">
+                                                <h5>PERSONAL DETAILS</h5>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <form #ngForm1="ngForm" (ngSubmit)="onSubmitStep1(ngForm1)" autocomplete="off">
+                                    
                                     <div class="row">
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
@@ -126,7 +127,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Fax (with Area Code)</mat-label>
-                                                <input matInput [(ngModel)]="step1Data.fax_with_area" name="fax_with_area" placeholder="" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" required>
+                                                <input matInput [(ngModel)]="step1Data.fax_with_area" name="fax_with_area" placeholder="" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)">
                                             </mat-form-field>
                                             <p class="error" *ngIf="step1Data.fax_with_area && !Service.checkInput('onlyNumberWithPlus',step1Data.fax_with_area)">Please Enter Only Number</p>
                                         </div>
@@ -153,8 +154,6 @@
                                                 <input matInput [(ngModel)]="step1Data.nationality" name="nationality" placeholder="" required>
                                             </mat-form-field>
                                         </div>
-
-                                        
                                         
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
@@ -183,22 +182,23 @@
                                         </div>
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="bttns-health bttn-staff">
-                                                <div class="button-content">
-                                                    <a routerLink="/dashboard/assessors/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
-                                                    <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
-                                                    <button class="cancel-bttn" type="button" (click)="savedraftStep('step1')">SAVE AS DRAFT</button>
-                                                </div>
-                                                <button class="submit-bttn submit-health">CONTINUE</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <div class="button-content">
+                                        <a routerLink="/dashboard/assessors/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
+                                        <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
+                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step1')">SAVE AS DRAFT</button>
+                                    </div>
+                                    <button class="submit-bttn submit-health">CONTINUE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <!-- </mat-step>
 
@@ -208,246 +208,248 @@
                             2. EDUCATIONAL INFORMATION
                         </span>
                     </ng-template> -->
-                <div class="form-bdy cust-stepper" id="educational_information" [ngStyle]="{'display': 'none'}">
-                    <div class="row m-0">
-                        <div class="wrapper">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-12 p-0">
-                                        <div class="form-subhdr">
-                                            <h5>EDUCATIONAL INFORMATION</h5>
+                <div class="cust-stepper" id="educational_information" [ngStyle]="{'display': 'none'}">
+                    <form #ngForm2="ngForm" (ngSubmit)="onSubmitStep2(ngForm2)" autocomplete="off">
+                        <div class="row m-0 form-bdy">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr">
+                                                <h5>EDUCATIONAL INFORMATION</h5>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <form #ngForm2="ngForm" (ngSubmit)="onSubmitStep2(ngForm2)" autocomplete="off">
-                                <div class="row">
-                                    <div class="col-md-4"> 
-                                        <mat-form-field class="cab-data">
-                                            <input matInput name="qualification_degree" [(ngModel)]="step2Data.qualification_degree" placeholder="Qualification/Degrees" required>
-                                        </mat-form-field>
-                                        <span class="fileupload">
-                                            <input type="file" name="qualification_degree_file" [(ngModel)]="step2Data.qualification_degree_file" (change)="validateFile($event,'qualification_degree')">
-                                            <span class="icon-attach attach-data"></span>
-                                        </span><a class="image_file_link" *ngIf="tradeLicensedValidation1 != false && tradeLicensedValidation1 != true" target="_blank" [href]="tradeLicensedValidation1">Link</a>
-                                        <p class="error" *ngIf="!file_validation1">Please Upload a valid file (ex: pdf,png,jpg,jpeg)</p>
                                     </div>
                                     
-                                    <div class="col-md-4">
-                                        <mat-form-field class="cab-data">
-                                            <mat-label>University/College/School</mat-label>
-                                            <input matInput name="university_college" [(ngModel)]="step2Data.university_college" placeholder="University/College/School" required>
-                                        </mat-form-field>
-                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4"> 
+                                            <mat-form-field class="cab-data">
+                                                <input matInput name="qualification_degree" [(ngModel)]="step2Data.qualification_degree" placeholder="Qualification/Degrees" required>
+                                            </mat-form-field>
+                                            <span class="fileupload">
+                                                <input type="file" name="qualification_degree_file" [(ngModel)]="step2Data.qualification_degree_file" (change)="validateFile($event,'qualification_degree')">
+                                                <span class="icon-attach attach-data"></span>
+                                            </span><a class="image_file_link" *ngIf="tradeLicensedValidation1 != false && tradeLicensedValidation1 != true" target="_blank" [href]="tradeLicensedValidation1">Link</a>
+                                            <p class="error" *ngIf="!file_validation1">Please Upload a valid file (ex: pdf,png,jpg,jpeg)</p>
+                                        </div>
+                                        
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>University/College/School</mat-label>
+                                                <input matInput name="university_college" [(ngModel)]="step2Data.university_college" placeholder="University/College/School" required>
+                                            </mat-form-field>
+                                        </div>
 
-                                    <div class="col-md-4">
-                                        <mat-form-field class="cab-data">
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
                                                 <input matInput name="education_specialization" [(ngModel)]="step2Data.education_specialization"  placeholder="Specialization" required>
-                                        </mat-form-field>
-                                        <span class="fileupload">
-                                            <input type="file" name="education_specialization_file" [(ngModel)]="step2Data.education_specialization_file" (change)="validateFile($event,'education_specialization')">
-                                            <span class="icon-attach attach-data"></span>
-                                        </span><a class="image_file_link" *ngIf="tradeLicensedValidation2 != false && tradeLicensedValidation2 != true" target="_blank" [href]="tradeLicensedValidation2">Link</a>
-                                        <p class="error" *ngIf="!file_validation2">Please Upload a valid file (ex: pdf,png,jpg,jpeg)</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <mat-form-field  class="cab-data">
-                                            <input matInput name="further_education" [(ngModel)]="step2Data.further_education" placeholder="Further Education (if any)">
-                                        </mat-form-field>
-                                        <span class="fileupload">
-                                            <input type="file" name="further_education_file" [(ngModel)]="step2Data.further_education_file" (change)="validateFile($event,'further_education')">
-                                            <span class="icon-attach attach-data"></span>
-                                        </span><a class="image_file_link" *ngIf="tradeLicensedValidation3" target="_blank" [href]="tradeLicensedValidation3">Link</a>
-                                        <p class="error" *ngIf="!file_validation3">Please Upload a valid file (ex: pdf,png,jpg,jpeg)</p>
-                                    </div>
-
-                                    <div class="col-md-8">
-                                        <mat-form-field class="cab-data">
-                                            <mat-label>Others</mat-label>
-                                            <input matInput [(ngModel)]="step2Data.others_education" name="others_education" placeholder="">
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12 p-0">
-                                        <div class="form-subheader-data">
-                                            <h5>WHICH FORUMS, TECHNICAL AND STANDARDISATION COMMITTEES, WORKING GROUPS OR SIMILAR HAVE YOU WORKED IN?</h5>
+                                            </mat-form-field>
+                                            <span class="fileupload">
+                                                <input type="file" name="education_specialization_file" [(ngModel)]="step2Data.education_specialization_file" (change)="validateFile($event,'education_specialization')">
+                                                <span class="icon-attach attach-data"></span>
+                                            </span><a class="image_file_link" *ngIf="tradeLicensedValidation2 != false && tradeLicensedValidation2 != true" target="_blank" [href]="tradeLicensedValidation2">Link</a>
+                                            <p class="error" *ngIf="!file_validation2">Please Upload a valid file (ex: pdf,png,jpg,jpeg)</p>
                                         </div>
                                     </div>
-                                </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <mat-form-field  class="cab-data">
+                                                <input matInput name="further_education" [(ngModel)]="step2Data.further_education" placeholder="Further Education (if any)">
+                                            </mat-form-field>
+                                            <span class="fileupload">
+                                                <input type="file" name="further_education_file" [(ngModel)]="step2Data.further_education_file" (change)="validateFile($event,'further_education')">
+                                                <span class="icon-attach attach-data"></span>
+                                            </span><a class="image_file_link" *ngIf="tradeLicensedValidation3" target="_blank" [href]="tradeLicensedValidation3">Link</a>
+                                            <p class="error" *ngIf="!file_validation3">Please Upload a valid file (ex: pdf,png,jpg,jpeg)</p>
+                                        </div>
 
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <mat-form-field class="cab-data">
-                                            <mat-label>Which</mat-label>
-                                            <input matInput [(ngModel)]="step2Data.which" name="which" placeholder="Which" required>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <mat-form-field class="cab-data">
-                                            <mat-label>From</mat-label>
-                                            <input matInput [matDatepicker]="from" name="completeProfileFrom" [(ngModel)]="step2Data.completeProfileFrom" [max]="today" readonly="true" (click)="Service._openCalendar(from)" (dateChange)="setexDate(step2Data.completeProfileFrom)" placeholder="From" required>
-                                            <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
-                                            <mat-datepicker #from disabled="false"></mat-datepicker>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <mat-form-field class="cab-data">
-                                            <mat-label>Till</mat-label>
-                                            <input matInput [(ngModel)]="step2Data.completeProfileTill" name="completeProfileTill" [matDatepicker]="till" [min]="minDate" (click)="Service._openCalendar(till)" placeholder="Till" required>
-                                            <mat-datepicker-toggle  matSuffix [for]="till"></mat-datepicker-toggle>
-                                            <mat-datepicker #till disabled="false"></mat-datepicker>
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12 p-0">
-                                        <div class="form-subheader-data">
-                                            <h5>WHICH LANGUAGES DO YOU KNOW?</h5>
+                                        <div class="col-md-8">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Others</mat-label>
+                                                <input matInput [(ngModel)]="step2Data.others_education" name="others_education" placeholder="">
+                                            </mat-form-field>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="table-content-health">
-                                            <table>
-                                                <tr>
-                                                    <th width="20%">Language</th>
-                                                    <th>Read</th>
-                                                    <th>Write</th>
-                                                    <th>Speak</th>
-                                                </tr>
-                                                <tr>
-                                                    <td class="lang-name">Arabic</td>
-                                                    <td>
-                                                        <!-- <mat-form-field class="cab-data">
-                                                            <mat-label>Select</mat-label>
-                                                            <mat-select required matInput placeholder="">
-                                                                <mat-option>1</mat-option>
-                                                            </mat-select>
-                                                        </mat-form-field> -->
-                                                        <mat-form-field class="cab-data">
-                                                            <mat-label>Select</mat-label>
-                                                            <mat-select placeholder="Select" name="arabic_read"  [(ngModel)]="arabic.read" required>
-                                                                <mat-option [value]="1">Yes</mat-option>
-                                                                <mat-option [value]="0">No</mat-option>
-                                                            </mat-select>
-                                                            <mat-error></mat-error>
-                                                        </mat-form-field>
-                                                    </td>
-                                                    <td>
-                                                        <mat-form-field class="cab-data">
-                                                            <mat-label>Select</mat-label>
-                                                            <mat-select placeholder="Select" name="arabic_write"  [(ngModel)]="arabic.write" required>
-                                                                <mat-option [value]="1">Yes</mat-option>
-                                                                <mat-option [value]="0">No</mat-option>
-                                                            </mat-select>
-                                                            <mat-error></mat-error>
-                                                        </mat-form-field>
-                                                    </td>
-                                                    <td>
-                                                        <mat-form-field class="cab-data">
-                                                            <mat-label>Select</mat-label>
-                                                            <mat-select placeholder="Select" name="arabic_speak"  [(ngModel)]="arabic.speak" required>
-                                                                <mat-option [value]="1">Yes</mat-option>
-                                                                <mat-option [value]="0">No</mat-option>
-                                                            </mat-select>
-                                                            <mat-error></mat-error>
-                                                        </mat-form-field>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="lang-name">English</td>
-                                                    <td>
-                                                        <mat-form-field class="cab-data">
-                                                            <mat-label>Select</mat-label>
-                                                            <mat-select placeholder="Select" name="english_read"  [(ngModel)]="english.read" required>
-                                                                <mat-option [value]="1">Yes</mat-option>
-                                                                <mat-option [value]="0">No</mat-option>
-                                                            </mat-select>
-                                                            <mat-error></mat-error>
-                                                        </mat-form-field>
-                                                    </td>
-                                                    <td>
-                                                        <mat-form-field class="cab-data">
-                                                            <mat-label>Select</mat-label>
-                                                            <mat-select placeholder="Select" name="english_write"  [(ngModel)]="english.write" required>
-                                                                <mat-option [value]="1">Yes</mat-option>
-                                                                <mat-option [value]="0">No</mat-option>
-                                                            </mat-select>
-                                                            <mat-error></mat-error>
-                                                        </mat-form-field>
-                                                    </td>
-                                                    <td>
-                                                        <mat-form-field class="cab-data">
-                                                            <mat-label>Select</mat-label>
-                                                            <mat-select placeholder="Select" name="english_speak"  [(ngModel)]="english.speak" required>
-                                                                <mat-option [value]="1">Yes</mat-option>
-                                                                <mat-option [value]="0">No</mat-option>
-                                                            </mat-select>
-                                                            <mat-error></mat-error>
-                                                        </mat-form-field>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="lang-name">Others</td>
-                                                    <td>
-                                                        <mat-form-field class="cab-data">
-                                                            <mat-label>Select</mat-label>
-                                                            <mat-select placeholder="Select" name="others_read"  [(ngModel)]="others.read" required>
-                                                                <mat-option [value]="1">Yes</mat-option>
-                                                                <mat-option [value]="0">No</mat-option>
-                                                            </mat-select>
-                                                            <mat-error></mat-error>
-                                                        </mat-form-field>
-                                                    </td>
-                                                    <td>
-                                                        <mat-form-field class="cab-data">
-                                                            <mat-label>Select</mat-label>
-                                                            <mat-select placeholder="Select" name="others_write"  [(ngModel)]="others.write" required>
-                                                                <mat-option [value]="1">Yes</mat-option>
-                                                                <mat-option [value]="0">No</mat-option>
-                                                            </mat-select>
-                                                            <mat-error></mat-error>
-                                                        </mat-form-field>
-                                                    </td>
-                                                    <td>
-                                                        <mat-form-field class="cab-data">
-                                                            <mat-label>Select</mat-label>
-                                                            <mat-select placeholder="Select" name="others_speak"  [(ngModel)]="others.speak" required>
-                                                                <mat-option [value]="1">Yes</mat-option>
-                                                                <mat-option [value]="0">No</mat-option>
-                                                            </mat-select>
-                                                            <mat-error></mat-error>
-                                                        </mat-form-field>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="bttns-health bttn-staff">
-                                            <div class="button-content">
-                                                <a routerLink="/dashboard/assessors/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
-                                                <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
-                                                <button class="cancel-bttn" type="button" (click)="savedraftStep('step2')">SAVE AS DRAFT</button>
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>WHICH FORUMS, TECHNICAL AND STANDARDISATION COMMITTEES, WORKING GROUPS OR SIMILAR HAVE YOU WORKED IN?</h5>
                                             </div>
-                                            <button class="submit-bttn submit-health">CONTINUE</button>
                                         </div>
                                     </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Which</mat-label>
+                                                <input matInput [(ngModel)]="step2Data.which" name="which" placeholder="Which" required>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>From</mat-label>
+                                                <input matInput [matDatepicker]="from" name="completeProfileFrom" [(ngModel)]="step2Data.completeProfileFrom" [max]="today" readonly="true" (click)="Service._openCalendar(from)" (dateChange)="setexDate(step2Data.completeProfileFrom)" placeholder="From" required>
+                                                <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
+                                                <mat-datepicker #from disabled="false"></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Till</mat-label>
+                                                <input matInput [(ngModel)]="step2Data.completeProfileTill" name="completeProfileTill" [matDatepicker]="till" [min]="minDate" (click)="Service._openCalendar(till)" placeholder="Till" required>
+                                                <mat-datepicker-toggle  matSuffix [for]="till"></mat-datepicker-toggle>
+                                                <mat-datepicker #till disabled="false"></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>WHICH LANGUAGES DO YOU KNOW?</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-content-health">
+                                                <table>
+                                                    <tr>
+                                                        <th width="20%">Language</th>
+                                                        <th>Read</th>
+                                                        <th>Write</th>
+                                                        <th>Speak</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="lang-name">Arabic</td>
+                                                        <td>
+                                                            <!-- <mat-form-field class="cab-data">
+                                                                <mat-label>Select</mat-label>
+                                                                <mat-select required matInput placeholder="">
+                                                                    <mat-option>1</mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field> -->
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Select</mat-label>
+                                                                <mat-select placeholder="Select" name="arabic_read"  [(ngModel)]="arabic.read" required>
+                                                                    <mat-option [value]="1">Yes</mat-option>
+                                                                    <mat-option [value]="0">No</mat-option>
+                                                                </mat-select>
+                                                                <mat-error></mat-error>
+                                                            </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Select</mat-label>
+                                                                <mat-select placeholder="Select" name="arabic_write"  [(ngModel)]="arabic.write" required>
+                                                                    <mat-option [value]="1">Yes</mat-option>
+                                                                    <mat-option [value]="0">No</mat-option>
+                                                                </mat-select>
+                                                                <mat-error></mat-error>
+                                                            </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Select</mat-label>
+                                                                <mat-select placeholder="Select" name="arabic_speak"  [(ngModel)]="arabic.speak" required>
+                                                                    <mat-option [value]="1">Yes</mat-option>
+                                                                    <mat-option [value]="0">No</mat-option>
+                                                                </mat-select>
+                                                                <mat-error></mat-error>
+                                                            </mat-form-field>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="lang-name">English</td>
+                                                        <td>
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Select</mat-label>
+                                                                <mat-select placeholder="Select" name="english_read"  [(ngModel)]="english.read" required>
+                                                                    <mat-option [value]="1">Yes</mat-option>
+                                                                    <mat-option [value]="0">No</mat-option>
+                                                                </mat-select>
+                                                                <mat-error></mat-error>
+                                                            </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Select</mat-label>
+                                                                <mat-select placeholder="Select" name="english_write"  [(ngModel)]="english.write" required>
+                                                                    <mat-option [value]="1">Yes</mat-option>
+                                                                    <mat-option [value]="0">No</mat-option>
+                                                                </mat-select>
+                                                                <mat-error></mat-error>
+                                                            </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Select</mat-label>
+                                                                <mat-select placeholder="Select" name="english_speak"  [(ngModel)]="english.speak" required>
+                                                                    <mat-option [value]="1">Yes</mat-option>
+                                                                    <mat-option [value]="0">No</mat-option>
+                                                                </mat-select>
+                                                                <mat-error></mat-error>
+                                                            </mat-form-field>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="lang-name">Others</td>
+                                                        <td>
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Select</mat-label>
+                                                                <mat-select placeholder="Select" name="others_read"  [(ngModel)]="others.read" required>
+                                                                    <mat-option [value]="1">Yes</mat-option>
+                                                                    <mat-option [value]="0">No</mat-option>
+                                                                </mat-select>
+                                                                <mat-error></mat-error>
+                                                            </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Select</mat-label>
+                                                                <mat-select placeholder="Select" name="others_write"  [(ngModel)]="others.write" required>
+                                                                    <mat-option [value]="1">Yes</mat-option>
+                                                                    <mat-option [value]="0">No</mat-option>
+                                                                </mat-select>
+                                                                <mat-error></mat-error>
+                                                            </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Select</mat-label>
+                                                                <mat-select placeholder="Select" name="others_speak"  [(ngModel)]="others.speak" required>
+                                                                    <mat-option [value]="1">Yes</mat-option>
+                                                                    <mat-option [value]="0">No</mat-option>
+                                                                </mat-select>
+                                                                <mat-error></mat-error>
+                                                            </mat-form-field>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
                                 </div>
-                            </form>
                             </div>
                         </div>
-                    </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <div class="button-content">
+                                        <a routerLink="/dashboard/assessors/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
+                                        <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
+                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step2')">SAVE AS DRAFT</button>
+                                    </div>
+                                    <button class="submit-bttn submit-health">CONTINUE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <!-- </mat-step>
 
@@ -457,8 +459,9 @@
                             3. EMPLOYMENT
                         </span>
                     </ng-template> -->
-                <div class="form-bdy cust-stepper" id="employment" [ngStyle]="{'display': 'none'}">
-                    <div class="row m-0">
+                <div class="cust-stepper" id="employment" [ngStyle]="{'display': 'none'}">
+                    <form #ngForm3="ngForm" (ngSubmit)="onSubmitStep3(ngForm3)" autocomplete="off">
+                    <div class="row m-0 form-bdy">
                         <div class="wrapper">
                             <div class="col-md-12">
                                 <div class="row">
@@ -469,301 +472,314 @@
                                     </div>
                                 </div>
 
-                                <form #ngForm3="ngForm" (ngSubmit)="onSubmitStep3(ngForm3)" autocomplete="off">
-                                    <div class="row mt-3">
-                                        <div class="col-lg-9 col-md-8 p-0">
-                                            <div class="form-subheader-data">
-                                                <h5>LIST ANY AUDITOR QUALIFICATION AND TRAINING ATTAINED AND ATTACHED COPIES OF CERTIFICATES AND OTHER EVIDENCE OF ATTACHMENT</h5>
-                                            </div>
+                                
+                                <div class="row mt-3">
+                                    <div class="col-lg-9 col-md-8 p-0">
+                                        <div class="form-subheader-data">
+                                            <h5>LIST ANY AUDITOR QUALIFICATION AND TRAINING ATTAINED AND ATTACHED COPIES OF CERTIFICATES AND OTHER EVIDENCE OF ATTACHMENT</h5>
                                         </div>
-                                        <div class="col-lg-3 col-md-4">
-                                            <div class="form-subheader-desc qualifi-att">
-                                                <mat-radio-group required name="list_auditor" [(ngModel)]="step3Data.list_auditor">
-                                                    <mat-radio-button value="1" (click)="step3Click('1','list_auditor_click')">Yes</mat-radio-button>
-                                                    <mat-radio-button value="0" (click)="step3Click('0','list_auditor_click')">No</mat-radio-button>
-                                                </mat-radio-group>
-                                            </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-4">
+                                        <div class="form-subheader-desc qualifi-att">
+                                            <mat-radio-group required name="list_auditor" [(ngModel)]="step3Data.list_auditor">
+                                                <mat-radio-button value="1" (click)="step3Click('1','list_auditor_click')">Yes</mat-radio-button>
+                                                <mat-radio-button value="0" (click)="step3Click('0','list_auditor_click')">No</mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-content-health" *ngIf="step3ClickObj.list_auditor == '1' || step3Data.list_auditor == '1'">
+                                            <table>
+                                                <tr>
+                                                    <th>Qualification/Training</th>
+                                                    <th>Institution/OrganiSation</th>
+                                                    <th>Date</th>
+                                                    <th></th>
+                                                </tr>
+                                                <tr *ngFor="let row of list_auditor; let i = index;">
+                                                    <td>
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Type Here</mat-label>
+                                                            <input matInput [(ngModel)]="list_auditor[i].detail" name="qualification_{{i}}" placeholder="Type Here" required>
+                                                        </mat-form-field>
+                                                    </td>
+                                                    <td>
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Type Here</mat-label>
+                                                            <input matInput [(ngModel)]="list_auditor[i].organization" name="institution_{{i}}" placeholder="Type Here" required>
+                                                        </mat-form-field>
+                                                    </td>
+                                                    <td>
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Type Here</mat-label>
+                                                            <input matInput [(ngModel)]="list_auditor[i].date_to" name="date_{{i}}" [matDatepicker]="listAudtrdate" readonly="true" (click)="Service._openCalendar(listAudtrdate)" placeholder="Type Here" required>
+                                                            <mat-datepicker-toggle matSuffix [for]="listAudtrdate"></mat-datepicker-toggle>
+                                                            <mat-datepicker #listAudtrdate disabled="false"></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </td>
+                                                    <td class="content-icn">
+                                                        <span *ngIf="i >= 0" class="icon-add-round" (click)="addRow(list_auditor)"></span>&nbsp;
+                                                        <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(list_auditor,i)"></span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+
+                                <div class="row mt-3">
+                                    <div class="col-lg-9 p-0">
+                                        <div class="form-subheader-data">
+                                            <h5>HAVE YOU ATTENDED ON-THE-JOB TRAINING REGARDING ACCREDITATION?</h5>
                                         </div>
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="table-content-health" *ngIf="step3ClickObj.list_auditor == '1' || step3Data.list_auditor == '1'">
-                                                <table>
-                                                    <tr>
-                                                        <th>Qualification/Training</th>
-                                                        <th>Institution/OrganiSation</th>
-                                                        <th>Date</th>
-                                                        <th></th>
-                                                    </tr>
-                                                    <tr *ngFor="let row of list_auditor; let i = index;">
-                                                        <td>
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Type Here</mat-label>
-                                                                <input matInput [(ngModel)]="list_auditor[i].detail" name="qualification_{{i}}" placeholder="Type Here" required>
-                                                            </mat-form-field>
-                                                        </td>
-                                                        <td>
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Type Here</mat-label>
-                                                                <input matInput [(ngModel)]="list_auditor[i].organization" name="institution_{{i}}" placeholder="Type Here" required>
-                                                            </mat-form-field>
-                                                        </td>
-                                                        <td>
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Type Here</mat-label>
-                                                                <input matInput [(ngModel)]="list_auditor[i].date_to" name="date_{{i}}" [matDatepicker]="listAudtrdate" readonly="true" (click)="Service._openCalendar(listAudtrdate)" placeholder="Type Here" required>
-                                                                <mat-datepicker-toggle matSuffix [for]="listAudtrdate"></mat-datepicker-toggle>
-                                                                <mat-datepicker #listAudtrdate disabled="false"></mat-datepicker>
-                                                            </mat-form-field>
-                                                        </td>
-                                                        <td class="content-icn">
-                                                            <span *ngIf="i >= 0" class="icon-add-round" (click)="addRow(list_auditor)"></span>&nbsp;
-                                                            <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(list_auditor,i)"></span>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
+                                    <div class="col-lg-3 col-md-4">
+                                        <div class="form-subheader-desc">
+                                            <mat-radio-group required name="attend_accreditation" [(ngModel)]="step3Data.attend_accreditation">
+                                                <mat-radio-button value="1" (click)="step3Click('1','attend_accreditation_click')">Yes</mat-radio-button>
+                                                <mat-radio-button value="0" (click)="step3Click('0','attend_accreditation_click')">No</mat-radio-button>
+                                            </mat-radio-group>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-content-health" *ngIf="step3ClickObj.attend_accreditation == '1' || step3Data.attend_accreditation == '1'">
+                                            <table>
+                                                <tr>
+                                                    <th>Course</th>
+                                                    <th>Date From</th>
+                                                    <th>Date To</th>
+                                                    <th>Organized By: Institution/Organisation</th>
+                                                    <th></th>
+                                                </tr>
+                                                <tr *ngFor="let row2 of attend_accreditation; let i = index;">
+                                                    <td>
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Type Here</mat-label>
+                                                            <input matInput [(ngModel)]="attend_accreditation[i].detail" name="attend_accreditation_course_{{i}}" placeholder="Type Here" required>
+                                                        </mat-form-field>
+                                                    </td>
+                                                    <td>
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Select</mat-label>
+                                                            <input matInput [(ngModel)]="attend_accreditation[i].date_from" name="attend_accreditation_date_from_{{i}}" (dateChange)="setexDate(attend_accreditation[i].date_from)" [matDatepicker]="attend_accreditation_date_from" placeholder="Select" (click)="Service._openCalendar(attend_accreditation_date_from)" readonly="true" required>
+                                                            <mat-datepicker-toggle matSuffix [for]="attend_accreditation_date_from"></mat-datepicker-toggle>
+                                                            <mat-datepicker #attend_accreditation_date_from disabled="false" ></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </td>
+                                                    <td>
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Select</mat-label>
+                                                            <input matInput [(ngModel)]="attend_accreditation[i].date_to" name="attend_accreditation_date_to_{{i}}" [max]="minDate" [matDatepicker]="attend_accreditation_date_to" placeholder="Select" (click)="Service._openCalendar(attend_accreditation_date_to)" readonly="true" required>
+                                                            <mat-datepicker-toggle  matSuffix [for]="attend_accreditation_date_to"></mat-datepicker-toggle>
+                                                            <mat-datepicker #attend_accreditation_date_to readonly="false"></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </td>
+                                                    <td>
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Type Here</mat-label>
+                                                            <input matInput [(ngModel)]="attend_accreditation[i].organization" name="attend_accreditation_organized_by_{{i}}" placeholder="Type Here" required>
+                                                        </mat-form-field>
+                                                    </td>
+                                                    <td class="content-icn">
+                                                        <span *ngIf="i >= 0" class="icon-add-round" (click)="addRow(attend_accreditation)"></span>&nbsp;
+                                                        <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(attend_accreditation,i)"></span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-lg-9 p-0">
+                                        <div class="form-subheader-data">
+                                            <h5>HAVE YOU ATTENDED ON-THE-JOB TRAINING REGARDING ACCREDITATION?</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-4">
+                                        <div class="form-subheader-desc">
+                                            <mat-radio-group required name="attend_accreditation2" [(ngModel)]="step3Data.attend_accreditation2">
+                                                <mat-radio-button value="1" (click)="step3Click('1','attend_accreditation2_click')">Yes</mat-radio-button>
+                                                <mat-radio-button value="0" (click)="step3Click('0','attend_accreditation2_click')">No</mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-content-health" *ngIf="step3ClickObj.attend_accreditation2 == '1' || step3Data.attend_accreditation2 == '1'">
+                                            <table>
+                                                <tr>
+                                                    <th width="60%">Accreditation Body</th>
+                                                    <th>Date From</th>
+                                                    <th>Date To</th>
+                                                    <th></th>
+                                                </tr>
+                                                <tr *ngFor="let row3 of attend_accreditation2; let i = index;">
+                                                    <td>
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Type Here</mat-label>
+                                                            <input matInput placeholder="Type Here" [(ngModel)]="attend_accreditation2[i].organization" name="accreditation_by_{{i}}" required>
+                                                        </mat-form-field>
+                                                    </td>
+                                                    <td>
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Select</mat-label>
+                                                            <input matInput [(ngModel)]="attend_accreditation2[i].date_from" name="attend_accreditation2_date_from_{{i}}" (dateChange)="setexDate(attend_accreditation2[i].date_from)" [matDatepicker]="attend_accreditation2_date_from" placeholder="Select" (click)="Service._openCalendar(attend_accreditation2_date_from)" readonly="true" required>
+                                                            <mat-datepicker-toggle matSuffix [for]="attend_accreditation2_date_from"></mat-datepicker-toggle>
+                                                            <mat-datepicker #attend_accreditation2_date_from disabled="false" ></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </td>
+                                                    <td>
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Select</mat-label>
+                                                            <input matInput [(ngModel)]="attend_accreditation2[i].date_to" name="attend_accreditation2_date_to_{{i}}" [matDatepicker]="attend_accreditation2_date_to" placeholder="Select" (click)="Service._openCalendar(attend_accreditation2_date_to)" readonly="true" [max]="minDate" required>
+                                                            <mat-datepicker-toggle  matSuffix [for]="attend_accreditation2_date_to"></mat-datepicker-toggle>
+                                                            <mat-datepicker #attend_accreditation2_date_to readonly="false"></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </td>
+                                                    <td class="content-icn">
+                                                        <span *ngIf="i >= 0" class="icon-add-round" (click)="addRow(attend_accreditation2)"></span>&nbsp;
+                                                        <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(attend_accreditation2,i)"></span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-lg-9 p-0">
+                                        <div class="form-subheader-data">
+                                            <h5>DO YOU HAVE PRACTICAL ASSESSMENT EXPERIENCE?</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-4">
+                                        <div class="form-subheader-desc">
+                                            <mat-radio-group required name="practical_assessment_experience" [(ngModel)]="step3Data.practical_assessment_experience">
+                                                <mat-radio-button value="1" (click)="step3Click('1','practical_assessment_experience')">Yes</mat-radio-button>
+                                                <mat-radio-button value="0" (click)="step3Click('0','practical_assessment_experience')">No</mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-content-health" *ngIf="step3ClickObj.practical_assessment_experience == '1' || step3Data.practical_assessment_experience == '1'">
+                                            <table>
+                                                <tr>
+                                                    <th>From-Till</th>
+                                                    <th>Standard(s) Used...</th>
+                                                    <th>Technical/Quality...</th>
+                                                    <th>Role In Assessment</th>
+                                                    <th>Commissioned By</th>
+                                                    <th>Assessment Type</th>
+                                                    <th>Accreditation Acti...</th>
+                                                    <th></th>
+                                                </tr>
+                                                <tr *ngFor="let row4 of practical_assessment_experience; let i = index;">
+                                                    <td>
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Select</mat-label>
+                                                            <input matInput [(ngModel)]="practical_assessment_experience[i].date_to" name="from_till_{{i}}" [matDatepicker]="from_till" placeholder="Select" (click)="Service._openCalendar(from_till)" readonly="true" required>
+                                                            <mat-datepicker-toggle  matSuffix [for]="from_till"></mat-datepicker-toggle>
+                                                            <mat-datepicker #from_till readonly="false"></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </td>
+
+                                                    <td>
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Select</mat-label>
+                                                            <mat-select placeholder="Select" name="standard_used_{{i}}"  [(ngModel)]="practical_assessment_experience[i].standard" required>
+                                                                <mat-option *ngFor="let row of criteriaList; let i = index;" value="{{row.code}}">{{row.code}}</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </td>
+
+                                                    <td>
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Type</mat-label>
+                                                            <input matInput placeholder="Type" [(ngModel)]="practical_assessment_experience[i].technical" name="technical_{{i}}" required>
+                                                        </mat-form-field>
+                                                    </td>
+
+                                                    <td>
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Select</mat-label>
+                                                            <mat-select placeholder="Select" name="roll_assesment_{{i}}"  [(ngModel)]="practical_assessment_experience[i].role" required>
+                                                                <mat-option value="Expert">Expert Assessor</mat-option>
+                                                                <mat-option value="Lead">Lead Assessor</mat-option>
+                                                                <mat-option value="Quality/Technical">Quality/Technical Assessor</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </td>
+
+                                                    <td>
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Type</mat-label>
+                                                            <input matInput placeholder="Type" [(ngModel)]="practical_assessment_experience[i].commissioned_by" name="accreditation_action_{{i}}" required>
+                                                        </mat-form-field>
+                                                    </td>
+
+                                                    <td>
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Select</mat-label>
+                                                            <mat-select placeholder="Select" name="assesment_type_{{i}}"  [(ngModel)]="practical_assessment_experience[i].assessment_type" required>
+                                                                <mat-option value="I: Initial accreditation">I: Initial accreditation</mat-option>
+                                                                <mat-option value="S: Surveillance">S: Surveillance</mat-option>
+                                                                <mat-option value="R: Re assessment">R: Re assessment</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </td>
+
+                                                    <td>
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Select</mat-label>
+                                                            <mat-select placeholder="Select" name="commissioned_by_{{i}}"  [(ngModel)]="practical_assessment_experience[i].accreditation_activity" required>
+                                                                <mat-option value="Application review">Application review</mat-option>
+                                                                <mat-option value="Document review">Document review</mat-option>
+                                                                <mat-option value="Assessment">Assessment</mat-option>
+                                                                <mat-option value="Reviewing assessment reports and making ac¬creditation decisions">Reviewing assessment reports and making ac¬creditation decisions</mat-option>
+                                                                <mat-option value="Management of accreditation schemes">Management of accreditation schemes</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </td>
+
+                                                    <td class="content-icn">
+                                                        <span *ngIf="i >= 0" class="icon-add-round" (click)="addRow(practical_assessment_experience)"></span>&nbsp;
+                                                        <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(practical_assessment_experience,i)"></span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                                     
-
-                                    <div class="row mt-3">
-                                        <div class="col-lg-9 p-0">
-                                            <div class="form-subheader-data">
-                                                <h5>HAVE YOU ATTENDED ON-THE-JOB TRAINING REGARDING ACCREDITATION?</h5>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-3 col-md-4">
-                                            <div class="form-subheader-desc qualifi-att">
-                                                <mat-radio-group required name="attend_accreditation" [(ngModel)]="step3Data.attend_accreditation">
-                                                    <mat-radio-button value="1" (click)="step3Click('1','attend_accreditation_click')">Yes</mat-radio-button>
-                                                    <mat-radio-button value="0" (click)="step3Click('0','attend_accreditation_click')">No</mat-radio-button>
-                                                </mat-radio-group>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="table-content-health" *ngIf="step3ClickObj.attend_accreditation == '1' || step3Data.attend_accreditation == '1'">
-                                                <table>
-                                                    <tr>
-                                                        <th>Course</th>
-                                                        <th>Date From</th>
-                                                        <th>Date To</th>
-                                                        <th>Organized By: Institution/Organisation</th>
-                                                        <th></th>
-                                                    </tr>
-                                                    <tr *ngFor="let row2 of attend_accreditation; let i = index;">
-                                                        <td>
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Type Here</mat-label>
-                                                                <input matInput [(ngModel)]="attend_accreditation[i].detail" name="attend_accreditation_course_{{i}}" placeholder="Type Here" required>
-                                                            </mat-form-field>
-                                                        </td>
-                                                        <td>
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Select</mat-label>
-                                                                <input matInput [(ngModel)]="attend_accreditation[i].date_from" name="attend_accreditation_date_from_{{i}}" (dateChange)="setexDate(attend_accreditation[i].date_from)" [matDatepicker]="attend_accreditation_date_from" placeholder="Select" (click)="Service._openCalendar(attend_accreditation_date_from)" readonly="true" required>
-                                                                <mat-datepicker-toggle matSuffix [for]="attend_accreditation_date_from"></mat-datepicker-toggle>
-                                                                <mat-datepicker #attend_accreditation_date_from disabled="false" ></mat-datepicker>
-                                                            </mat-form-field>
-                                                        </td>
-                                                        <td>
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Select</mat-label>
-                                                                <input matInput [(ngModel)]="attend_accreditation[i].date_to" name="attend_accreditation_date_to_{{i}}" [max]="minDate" [matDatepicker]="attend_accreditation_date_to" placeholder="Select" (click)="Service._openCalendar(attend_accreditation_date_to)" readonly="true" required>
-                                                                <mat-datepicker-toggle  matSuffix [for]="attend_accreditation_date_to"></mat-datepicker-toggle>
-                                                                <mat-datepicker #attend_accreditation_date_to readonly="false"></mat-datepicker>
-                                                            </mat-form-field>
-                                                        </td>
-                                                        <td>
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Type Here</mat-label>
-                                                                <input matInput [(ngModel)]="attend_accreditation[i].organization" name="attend_accreditation_organized_by_{{i}}" placeholder="Type Here" required>
-                                                            </mat-form-field>
-                                                        </td>
-                                                        <td class="content-icn">
-                                                            <span *ngIf="i >= 0" class="icon-add-round" (click)="addRow(attend_accreditation)"></span>&nbsp;
-                                                            <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(attend_accreditation,i)"></span>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mt-3">
-                                        <div class="col-lg-9 p-0">
-                                            <div class="form-subheader-data">
-                                                <h5>HAVE YOU ATTENDED ON-THE-JOB TRAINING REGARDING ACCREDITATION?</h5>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-md-4">
-                                            <div class="form-subheader-desc qualifi-att">
-                                                <mat-radio-group required name="attend_accreditation2" [(ngModel)]="step3Data.attend_accreditation2">
-                                                    <mat-radio-button value="1" (click)="step3Click('1','attend_accreditation2_click')">Yes</mat-radio-button>
-                                                    <mat-radio-button value="0" (click)="step3Click('0','attend_accreditation2_click')">No</mat-radio-button>
-                                                </mat-radio-group>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="table-content-health" *ngIf="step3ClickObj.attend_accreditation2 == '1' || step3Data.attend_accreditation2 == '1'">
-                                                <table>
-                                                    <tr>
-                                                        <th width="60%">Accreditation Body</th>
-                                                        <th>Date From</th>
-                                                        <th>Date To</th>
-                                                        <th></th>
-                                                    </tr>
-                                                    <tr *ngFor="let row3 of attend_accreditation2; let i = index;">
-                                                        <td>
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Type Here</mat-label>
-                                                                <input matInput placeholder="Type Here" [(ngModel)]="attend_accreditation2[i].organization" name="accreditation_by_{{i}}" required>
-                                                            </mat-form-field>
-                                                        </td>
-                                                        <td>
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Select</mat-label>
-                                                                <input matInput [(ngModel)]="attend_accreditation2[i].date_from" name="attend_accreditation2_date_from_{{i}}" (dateChange)="setexDate(attend_accreditation2[i].date_from)" [matDatepicker]="attend_accreditation2_date_from" placeholder="Select" (click)="Service._openCalendar(attend_accreditation2_date_from)" readonly="true" required>
-                                                                <mat-datepicker-toggle matSuffix [for]="attend_accreditation2_date_from"></mat-datepicker-toggle>
-                                                                <mat-datepicker #attend_accreditation2_date_from disabled="false" ></mat-datepicker>
-                                                            </mat-form-field>
-                                                        </td>
-                                                        <td>
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Select</mat-label>
-                                                                <input matInput [(ngModel)]="attend_accreditation2[i].date_to" name="attend_accreditation2_date_to_{{i}}" [matDatepicker]="attend_accreditation2_date_to" placeholder="Select" (click)="Service._openCalendar(attend_accreditation2_date_to)" readonly="true" [max]="minDate" required>
-                                                                <mat-datepicker-toggle  matSuffix [for]="attend_accreditation2_date_to"></mat-datepicker-toggle>
-                                                                <mat-datepicker #attend_accreditation2_date_to readonly="false"></mat-datepicker>
-                                                            </mat-form-field>
-                                                        </td>
-                                                        <td class="content-icn">
-                                                            <span *ngIf="i >= 0" class="icon-add-round" (click)="addRow(attend_accreditation2)"></span>&nbsp;
-                                                            <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(attend_accreditation2,i)"></span>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mt-3">
-                                        <div class="col-lg-9 p-0">
-                                            <div class="form-subheader-data">
-                                                <h5>DO YOU HAVE PRACTICAL ASSESSMENT EXPERIENCE?</h5>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-md-4">
-                                            <div class="form-subheader-desc qualifi-att">
-                                                <mat-radio-group required name="practical_assessment_experience" [(ngModel)]="step3Data.practical_assessment_experience">
-                                                    <mat-radio-button value="1" (click)="step3Click('1','practical_assessment_experience')">Yes</mat-radio-button>
-                                                    <mat-radio-button value="0" (click)="step3Click('0','practical_assessment_experience')">No</mat-radio-button>
-                                                </mat-radio-group>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="table-content-health" *ngIf="step3ClickObj.practical_assessment_experience == '1' || step3Data.practical_assessment_experience == '1'">
-                                                <table>
-                                                    <tr>
-                                                        <th>From-Till</th>
-                                                        <th>Standard(s) Used...</th>
-                                                        <th>Technical/Quality...</th>
-                                                        <th>Role In Assessment</th>
-                                                        <th>Commissioned By</th>
-                                                        <th>Assessment Type</th>
-                                                        <th>Accreditation Acti...</th>
-                                                        <th></th>
-                                                    </tr>
-                                                    <tr *ngFor="let row4 of practical_assessment_experience; let i = index;">
-                                                        <td>
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Select</mat-label>
-                                                                <input matInput [(ngModel)]="practical_assessment_experience[i].date_to" name="from_till_{{i}}" [matDatepicker]="from_till" placeholder="Select" (click)="Service._openCalendar(from_till)" readonly="true" required>
-                                                                <mat-datepicker-toggle  matSuffix [for]="from_till"></mat-datepicker-toggle>
-                                                                <mat-datepicker #from_till readonly="false"></mat-datepicker>
-                                                            </mat-form-field>
-                                                        </td>
-
-                                                        <td>
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Type</mat-label>
-                                                                <input matInput placeholder="Type" [(ngModel)]="practical_assessment_experience[i].standard" name="standard_used_{{i}}" required>
-                                                            </mat-form-field>
-                                                        </td>
-
-                                                        <td>
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Type</mat-label>
-                                                                <input matInput placeholder="Type" [(ngModel)]="practical_assessment_experience[i].technical" name="technical_{{i}}" required>
-                                                            </mat-form-field>
-                                                        </td>
-
-                                                        <td>
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Type</mat-label>
-                                                                <input matInput placeholder="Type" [(ngModel)]="practical_assessment_experience[i].role" name="roll_assesment_{{i}}" required>
-                                                            </mat-form-field>
-                                                        </td>
-
-                                                        <td>
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Type</mat-label>
-                                                                <input matInput placeholder="Type" [(ngModel)]="practical_assessment_experience[i].commissioned_by" name="accreditation_action_{{i}}" required>
-                                                            </mat-form-field>
-                                                        </td>
-
-                                                        <td>
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Select</mat-label>
-                                                                <mat-select placeholder="Select" name="assesment_type_{{i}}"  [(ngModel)]="practical_assessment_experience[i].assessment_type" required>
-                                                                    <mat-option value="1">Yes</mat-option>
-                                                                    <mat-option value="0">No</mat-option>
-                                                                </mat-select>
-                                                            </mat-form-field>
-                                                        </td>
-
-                                                        
-
-                                                        <td>
-                                                            <mat-form-field class="cab-data">
-                                                                <mat-label>Type</mat-label>
-                                                                <input matInput placeholder="Type" [(ngModel)]="practical_assessment_experience[i].accreditation_activity" name="commissioned_by_{{i}}" required>
-                                                            </mat-form-field>
-                                                        </td>
-
-                                                        <td class="content-icn">
-                                                            <span *ngIf="i >= 0" class="icon-add-round" (click)="addRow(practical_assessment_experience)"></span>&nbsp;
-                                                            <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(practical_assessment_experience,i)"></span>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
                                     
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="bttns-health bttn-staff">
-                                                <div class="button-content">
-                                                    <a routerLink="/dashboard/assessors/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
-                                                    <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
-                                                    <button class="cancel-bttn" type="button" (click)="savedraftStep('step3')">SAVE AS DRAFT</button>
-                                                </div>
-                                                <button class="submit-bttn submit-health">CONTINUE</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
                             </div>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="bttns-health bttn-staff">
+                                <div class="button-content">
+                                    <a routerLink="/dashboard/assessors/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
+                                    <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
+                                    <button class="cancel-bttn" type="button" (click)="savedraftStep('step3')">SAVE AS DRAFT</button>
+                                </div>
+                                <button class="submit-bttn submit-health">CONTINUE</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
                 </div>
                 <!-- </mat-step>
 
@@ -773,19 +789,19 @@
                             4. KNOWLEDGE AND EXPERIENCE
                         </span>
                     </ng-template> -->
-                <div class="form-bdy cust-stepper" id="knowledge_experience" [ngStyle]="{'display': 'none'}">
-                    <div class="row m-0">
-                        <div class="wrapper">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-12 p-0">
-                                        <div class="form-subhdr">
-                                            <h5>KNOWLEDGE AND EXPERIENCE</h5>
+                <div class="cust-stepper" id="knowledge_experience" [ngStyle]="{'display': 'none'}">
+                    <form #ngForm4="ngForm" (ngSubmit)="onSubmitStep4(ngForm4)" autocomplete="off">
+                        <div class="row m-0 form-bdy">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr">
+                                                <h5>KNOWLEDGE AND EXPERIENCE</h5>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <form #ngForm4="ngForm" (ngSubmit)="onSubmitStep4(ngForm4)" autocomplete="off">
+                                    
                                     <ng-container *ngFor="let row of technicalFields; let j = index;">
                                         <div class="row mt-3">
                                             <div class="col-md-11 col-sm-6 p-0">
@@ -837,23 +853,23 @@
                                             </div>
                                         </div>
                                     </ng-container>
-
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="bttns-health bttn-staff">
-                                                <div class="button-content">
-                                                    <a routerLink="/dashboard/assessors/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
-                                                    <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
-                                                    <button class="cancel-bttn" type="button" (click)="savedraftStep('step4')">SAVE AS DRAFT</button>
-                                                </div>
-                                                <button class="submit-bttn submit-health">CONTINUE</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
+                                        
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <div class="button-content">
+                                        <a routerLink="/dashboard/assessors/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
+                                        <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
+                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step4')">SAVE AS DRAFT</button>
+                                    </div>
+                                    <button class="submit-bttn submit-health">CONTINUE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <!-- </mat-step>
 
@@ -863,19 +879,19 @@
                             5. APPLICANT ASSESSOR
                         </span>
                     </ng-template> -->
-                <div class="form-bdy cust-stepper" id="applicant_trainer" [ngStyle]="{'display': 'none'}">
-                    <div class="row m-0">
-                        <div class="wrapper">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-12 p-0">
-                                        <div class="form-subhdr">
-                                            <h5>APPLICANT ASSESSOR</h5>
+                <div class="cust-stepper" id="applicant_trainer" [ngStyle]="{'display': 'none'}">
+                    <form #ngForm5="ngForm" (ngSubmit)="onSubmitStep5(ngForm5)" autocomplete="off">
+                        <div class="row m-0 form-bdy">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr">
+                                                <h5>APPLICANT ASSESSOR</h5>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <form #ngForm5="ngForm" (ngSubmit)="onSubmitStep5(ngForm5)" autocomplete="off">
+                                    
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="signature">
@@ -913,23 +929,22 @@
                                         </div>
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="bttns-health bttn-staff">
-                                                <div class="button-content">
-                                                    <a routerLink="/dashboard/assessors/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
-                                                    <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
-                                                    <button class="cancel-bttn" type="button" (click)="savedraftStep('step5')">SAVE AS DRAFT</button>
-                                                </div>
-                                                <button class="submit-bttn submit-health">SUBMIT</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <div class="button-content">
+                                        <a routerLink="/dashboard/assessors/home" *ngIf="profileComplete == '1'"  class="cancel-bttn">CANCEL</a>
+                                        <a href="javascript:void(0)" *ngIf="profileComplete == '0'" class="cancel-bttn" (click)="Service.logOut()">CANCEL</a>
+                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step5')">SAVE AS DRAFT</button>
+                                    </div>
+                                    <button class="submit-bttn submit-health">SUBMIT</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                     <!-- </mat-step>
                 </mat-horizontal-stepper> -->

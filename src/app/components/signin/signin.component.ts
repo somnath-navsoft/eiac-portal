@@ -165,9 +165,9 @@ checkStrongPasswordType(type: string){
       // this.store.dispatch(new LogInFailure({ error: 'Email is InValid' }));
       return false;
     }
-    if(!this.checkStrongPasswordType('password')){
+    if(this.signin.get('password').value == ''){
       // this.store.dispatch(new LogInFailure({ error: 'Password strength failed' }));
-      this.toastr.error('Password strength failed','Validation Error', {timeOut: 3000});
+      this.toastr.error("Password can't be blank",'Validation Error', {timeOut: 3000});
       return false;
     }
     // if(this.signin.get('userRole').value === ''){

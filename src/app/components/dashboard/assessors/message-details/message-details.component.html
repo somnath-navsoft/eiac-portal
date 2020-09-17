@@ -21,10 +21,10 @@
                     <mat-tab label="First"> Content 1 </mat-tab>
                     <mat-tab label="Second"> Content 2 </mat-tab>
                 </mat-tab-group> -->
-                <ul>
+                <!-- <ul>
                   <li><a href="javascript:void(0)" id="personal_details" (click)="tabClick('personal_details')">PERSONAL DETAILS</a></li>
                   <li><a href="javascript:void(0)" id="application_info" (click)="tabClick('application_info')" class="tab-active">APPLICATION INFO</a></li>
-                </ul>
+                </ul> -->
             </div>
           </div>
         </div>
@@ -76,7 +76,7 @@
             </div>
         </div>
   
-        <div class="row" *ngIf="tabId == 'personal_details'">
+        <div class="row">
             <div class="col-md-6">
                 <div class="row appln-cnt-data ">
                 <div class="col-md-12 p-0">
@@ -102,7 +102,7 @@
                             </tr>
                             <tr>
                             <td>Company Mail</td>
-                            <td>{{cabStep1?.official_email}}</td>
+                            <td>{{cabStep1?.office_email}}</td>
                             </tr>
                             <tr>
                             <td>Office Phone</td>
@@ -119,60 +119,12 @@
                 </div>
                 </div>
             </div>
-        </div>
-  
-        <div class="row" *ngIf="tabId == 'application_info'">
-            <div class="col-md-6">
-                <div class="row appln-cnt-data ">
-                <div class="col-md-12 p-0">
-                    <div class="row">
-                    <div class="col-md-12">
-                        <div class="appln-subhdr">
-                        <h5>APPLICANT INFORMATION</h5>
-                        <!-- <hr> -->
-                        </div>
-                    </div>
-                    </div>
-                    <div class="row msg-det">
-                    <div class="col-md-12">
-                        <div class="table-appln">
-                        <table>
-                            <tr>
-                            <td>QUALIFICATION/DEGREE</td>
-                            <td>{{cabStep2['education'][0]?.detail}}</td>
-                            </tr>
-                            <tr>
-                            <td>UNIVERSITY/COLLEGE/SCHOOL</td>
-                            <td>{{cabStep2['education'][0]?.organization}}</td>
-                            </tr>
-                            <tr>
-                            <td>SPECIALIZATION</td>
-                            <td>{{cabStep2['education'][0]?.specialization}}</td>
-                            </tr>
-                            <tr>
-                            <td>WHICH</td>
-                            <td>{{cabStep2['which_forum'][0].organization}}</td>
-                            </tr>
-                            <tr>
-                            <td>FROM</td>
-                            <td>{{cabStep2['which_forum'][0].date_from | date}}</td>
-                            </tr>
-                            <tr>
-                            <td>TO</td>
-                            <td>{{cabStep2['which_forum'][0].date_to | date}}</td>
-                            </tr>
-                        </table>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                </div>
-            </div>
+
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-12">
                     <div class="appln-subhdr">
-                        <h5>TRADE LICENSE DETAILS</h5>
+                        <h5>EDUCATIONAL INFORMATION FILES</h5>
                         <!-- <hr> -->
                     </div>
                     </div>
@@ -187,13 +139,13 @@
                                     <div class="data-main-attach">
                                         <div class="data-attach">
                                         <h5>
-                                            <a href="javascript:void(0)">{{qualificationText[4]}}</a>
+                                            <a href="javascript:void(0)">{{qualificationText}}</a>
                                         </h5>
                                         </div>
                                         <div class="icn-appln">
-                                        <!-- <a href="javascript:void(0)">
+                                        <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(constant.mediaPath,qualificationText)">
                                             <span class="icon-eye"></span>
-                                        </a> -->
+                                        </a>
                                         <a target="_blank" [href]="qualificationFile">
                                             <span class="icon-download"></span>
                                         </a>
@@ -208,13 +160,13 @@
                                     <div class="data-main-attach">
                                         <div class="data-attach">
                                         <h5>
-                                            <a href="javascript:void(0)">{{specializationText[4]}}</a>
+                                            <a href="javascript:void(0)">{{specializationText}}</a>
                                         </h5>
                                         </div>
                                         <div class="icn-appln">
-                                        <!-- <a href="javascript:void(0)">
+                                        <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(constant.mediaPath,specializationText)">
                                             <span class="icon-eye"></span>
-                                        </a> -->
+                                        </a>
                                         <a target="_blank" [href]="specializationFile">
                                             <span class="icon-download"></span>
                                         </a>
@@ -228,11 +180,259 @@
                 </div>
             </div>
         </div>
+  
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row appln-cnt-data ">
+                    <div class="col-md-12 p-0">
+                        <div class="row">
+                        <div class="col-md-12">
+                            <div class="appln-subhdr">
+                            <h5>EDUCATIONAL INFORMATION</h5>
+                            <!-- <hr> -->
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row msg-det">
+                            <div class="col-md-12">
+                                <div class="table-appln">
+                                    <table>
+                                        <tr>
+                                        <td>QUALIFICATION/DEGREE</td>
+                                        <td>{{educationalDoc?.detail}}</td>
+                                        </tr>
+                                        <tr>
+                                        <td>UNIVERSITY/COLLEGE/SCHOOL</td>
+                                        <td>{{educationalDoc?.organization}}</td>
+                                        </tr>
+                                        <tr>
+                                        <td>SPECIALIZATION</td>
+                                        <td>{{educationalDoc?.specialization}}</td>
+                                        </tr>
+                                        <tr>
+                                        <td>WHICH</td>
+                                        <td>{{whichForum?.organization}}</td>
+                                        </tr>
+                                        <tr>
+                                        <td>FROM</td>
+                                        <td>{{whichForum?.date_from | date}}</td>
+                                        </tr>
+                                        <tr>
+                                        <td>TO</td>
+                                        <td>{{whichForum?.date_to | date}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="col-md-6">
+                <div class="row appln-cnt-data ">
+                    <div class="col-md-12 p-0">
+                        <div class="row">
+                        <div class="col-md-12">
+                            <div class="appln-subhdr">
+                            <h5>LANGUAGE KNOWN</h5>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row msg-det">
+                            <div class="col-md-12">
+                                <div class="table-appln">
+                                    <table>
+                                        <tr>
+                                        <td>QUALIFICATION/DEGREE</td>
+                                        <td>{{cabStep2['education'][0]?.detail}}</td>
+                                        </tr>
+                                        <tr>
+                                        <td>UNIVERSITY/COLLEGE/SCHOOL</td>
+                                        <td>{{cabStep2['education'][0]?.organization}}</td>
+                                        </tr>
+                                        <tr>
+                                        <td>SPECIALIZATION</td>
+                                        <td>{{cabStep2['education'][0]?.specialization}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+
+        <div class="row m-0">
+            <div class="col-md-6">
+                <div class="row appln-cnt-data" *ngIf="assessorStep3?.experience_1 != ''">
+                  <div class="col-md-12 p-0" *ngFor="let row of assessorStep3?.experience_1; let i = index;">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="appln-subhdr">
+                          <h5>#{{i+1}}  LIST ANY AUDITOR QUALIFICATION AND TRAINING ATTAINED AND ATTACHED COPIES OF CERTIFICATES AND OTHER EVIDENCE OF ATTACHMENT
+                          </h5>
+                          <!-- <hr> -->
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row msg-det">
+                      <div class="col-md-12">
+                        <div class="table-appln">
+                          <table>
+                            <tr>
+                              <td>Qualification/Training</td>
+                              <td>{{row.detail}}</td>
+                            </tr>
+                            <tr>
+                              <td>Institution/OrganiSation</td>
+                              <td>{{row.organization}}</td>
+                            </tr>
+                            <tr>
+                              <td>Date</td>
+                              <td>{{row.date_to | date}}</td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+              
+            <div class="col-md-6">
+              <div class="row appln-cnt-data" *ngIf="assessorStep3?.experience_2 != ''">
+                <div class="col-md-12 p-0" *ngFor="let row2 of assessorStep3?.experience_2; let i = index;">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="appln-subhdr">
+                        <h5>#{{i+1}}  HAVE YOU ATTENDED ON-THE-JOB TRAINING REGARDING ACCREDITATION?</h5>
+                        <!-- <hr> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row msg-det">
+                    <div class="col-md-12">
+                      <div class="table-appln">
+                        <table>
+                          <tr>
+                            <td>Course</td>
+                            <td>{{row2.detail}}</td>
+                          </tr>
+                          <tr>
+                            <td>Date From</td>
+                            <td>{{row2.date_from | date}}</td>
+                          </tr>
+                          <tr>
+                            <td>Date To</td>
+                            <td>{{row2.date_to | date}}</td>
+                          </tr>
+                          <tr>
+                            <td>Organized By: Institution/Organisation</td>
+                            <td>{{row2.organization}}</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="row m-0">
+            <div class="col-md-6">
+                <div class="row appln-cnt-data" *ngIf="assessorStep3?.experience_3 != ''">
+                  <div class="col-md-12 p-0" *ngFor="let row3 of assessorStep3?.experience_3; let i = index;">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="appln-subhdr">
+                          <h5>#{{i+1}}  HAVE YOU ATTENDED ON-THE-JOB TRAINING REGARDING ACCREDITATION?</h5>
+                          <!-- <hr> -->
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row msg-det">
+                      <div class="col-md-12">
+                        <div class="table-appln">
+                          <table>
+                            <tr>
+                              <td>Accreditation Body</td>
+                              <td>{{row3.organization}}</td>
+                            </tr>
+                            <tr>
+                              <td>Date From</td>
+                              <td>{{row3.date_from | date}}</td>
+                            </tr>
+                            <tr>
+                              <td>Date To</td>
+                              <td>{{row3.date_to | date}}</td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+              
+            <div class="col-md-6">
+              <div class="row appln-cnt-data" *ngIf="assessorStep3?.experience_4 != ''">
+                <div class="col-md-12 p-0" *ngFor="let row4 of assessorStep3?.experience_4; let i = index;">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="appln-subhdr">
+                        <h5>#{{i+1}}  DO YOU HAVE PRACTICAL ASSESSMENT EXPERIENCE?</h5>
+                        <!-- <hr> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row msg-det">
+                    <div class="col-md-12">
+                      <div class="table-appln">
+                        <table>
+                          <tr>
+                            <td>From-Till</td>
+                            <td>{{row4.date_to}}</td>
+                          </tr>
+                          <tr>
+                            <td>Standard(s) Used</td>
+                            <td>{{row4.standard}}</td>
+                          </tr>
+                          <tr>
+                            <td>Technical/Quality</td>
+                            <td>{{row4.technical}}</td>
+                          </tr>
+                          <tr>
+                            <td>Role In Assessment</td>
+                            <td>{{row4.role}}</td>
+                          </tr>
+                          <tr>
+                            <td>Commissioned By</td>
+                            <td>{{row4.commissioned_by}}</td>
+                          </tr>
+                          <tr>
+                            <td>Assessment Type</td>
+                            <td>{{row4.assessment_type}}</td>
+                          </tr>
+                          <tr>
+                            <td>Accreditation Actition</td>
+                            <td>{{row4.accreditation_activity}}</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-md-12">
                 <div class="bttns-health bttn-review" *ngIf="approveRejectStatus == ''">
-                    <button class="cancel-bttn" type="button" (click)="approveOrReject('reject')">REJECT</button>
+                    <button class="cancel-bttn" type="button" (click)="openRejectedPop()">REJECT</button>
                     <button class="submit-bttn submit-health" type="button" (click)="approveOrReject('approve')">APPROVE</button>
                 </div>
                 <div class="bttns-health bttn-review" *ngIf="approveRejectStatus != ''">
@@ -246,4 +446,4 @@
     </div>
   </div>
   
-  
+  <custom-modal *ngIf="rejectedMessageId" (rejectMessageEvent)="getAllData($event)" [parent]="this" [modalType]="'reject'"></custom-modal>

@@ -3,6 +3,7 @@ import { Router,ActivatedRoute } from '@angular/router';
 import { Constants } from 'src/app/services/constant.service';
 import { AppService } from 'src/app/services/app.service';
 import { ToastrService } from 'ngx-toastr';
+import  { UiDialogService } from  'src/app/services/uiDialog.service';
 
 @Component({
   selector: 'app-message-details',
@@ -25,8 +26,14 @@ export class MessageDetailsComponent implements OnInit {
   qualificationText:any;
   specializationFile:any;
   specializationText:any;
+  educationalDoc:any;
+  whichForum:any;
+  rejectedMessageId:boolean = false;
+  assessorStep3:any;
+  assessorStep4:any;
+  assessorStep5:any;
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public route: ActivatedRoute,public toastr: ToastrService) { }
+  constructor(public Service: AppService, public constant:Constants,public router: Router,public route: ActivatedRoute,public toastr: ToastrService,public uiDialog: UiDialogService) { }
 
   ngOnInit() {
     this.userType = sessionStorage.getItem('type');
@@ -54,10 +61,18 @@ export class MessageDetailsComponent implements OnInit {
         this.approveRejectStatus = res['data']['user_data'][0].approved;
         this.cabStep1 = res['data']['step1'][0];
         this.cabStep2 = res['data']['step2'];
+        this.assessorStep3 = res['data']['step3'];
+        this.assessorStep4 = res['data']['step4'];
+        this.assessorStep5 = res['data']['step5'];
         this.qualificationFile = this.constant.mediaPath+this.cabStep2['education'][0].qualification_file;
-        this.qualificationText = this.cabStep2['education'][0].qualification_file != null ? this.cabStep2['education'][0].qualification_file.split('/') : '';
+        var qualificationPath = this.cabStep2['education'][0].qualification_file != null ? this.cabStep2['education'][0].qualification_file.split('/') : '';
+        this.qualificationText = qualificationPath[4];
         this.specializationFile = this.constant.mediaPath+this.cabStep2['education'][0].specialization_file;
-        this.specializationText = this.cabStep2['education'][0].specialization_file != null ? this.cabStep2['education'][0].specialization_file.split('/') : '';
+        var specializationPath = this.cabStep2['education'][0].specialization_file != null ? this.cabStep2['education'][0].specialization_file.split('/') : '';
+        this.specializationText = specializationPath[4];
+
+        this.educationalDoc = this.cabStep2['education'][0];
+        this.whichForum = this.cabStep2['which_forum'][0];
     });
   }
 
@@ -87,10 +102,19 @@ export class MessageDetailsComponent implements OnInit {
           this.approveRejectStatus = '1';
       });
       
-    }else if(status == 'reject') {
-      this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileApproval+'?id='+this.routeId+'&status=2')
+    }
+  }
+  openRejectedPop() {
+    this.rejectedMessageId = true;
+  }
+
+  getAllData(event) {
+    // console.log(event);
+    if(event.rejectId == 2) {
+      this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileApproval+'?id='+this.routeId+'&status=2'+'&message='+event.message)
       .subscribe(
         res => {
+          this.toastr.success('Message sent successfully', '');
           this.approveRejectStatus = '2';
       });
       

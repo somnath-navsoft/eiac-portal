@@ -19,14 +19,14 @@ export class ViewerComponentComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public sanitizer: DomSanitizer,public dialogRef: MatDialogRef<ViewerComponentComponent>) { 
     //(<any>window).pdfWorkerSrc = '../../../../node_modules/pdfjs-dist/build/pdf.worker.js';
     if(this.data){
-      console.log('dataa...', this.data);
+      // console.log('dataa...', this.data);
       let pathValues : any;
       this.pathURL = this.data.path;// + "&output=embed";
       //let url = 'https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf';
       pathValues = this.getSantizeUrl(this.pathURL);//this.sanitizer.bypassSecurityTrustResourceUrl(this.data.path);
       // = this.sanitizer.bypassSecurityTrustResourceUrl(this.data.path);
       //pathValues.changingThisBreaksApplicationSecurity;
-      console.log('>>>path: ', pathValues);
+      // console.log('>>>path: ', pathValues);
       this.path = pathValues.changingThisBreaksApplicationSecurity;
       //this.path = sanitizer.sanitize(SecurityContext.RESOURCE_URL, this.data.path);
 

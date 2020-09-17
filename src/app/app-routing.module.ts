@@ -178,7 +178,7 @@ const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [AuthCheck] },
   { path: 'reset-password/:id', component: ResetPasswordComponent, canActivate: [AuthCheck] },
   { path: 'verify-account', component: VerifyAccountComponent, canActivate: [AuthCheck] },
-  { path: 'profile-completation', component: ProfileCompletationComponent, canActivate: [AuthGuard] },
+  { path: 'profile-completion', component: ProfileCompletationComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: 'sign-in' }
 ]
 
