@@ -537,13 +537,18 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
             result => {
               let data: any = result;
               let dataRec: any=[];
+              this.dataLoad = true;
+              console.log('loading...', data.records);
               console.log(">>>List: ", data);
               this.trainerdata = data.records;
               dataRec = data.records;
               this.pageTotal = data.records.length;
+            },
+            ()=>{
+              console.log('comp...');
             }
-
-      ))
+          )          
+          )
     
     // this.getTrainerCourse.subscribe((state) => {
     //   //console.log(">>>State subscribed: ", state);      
