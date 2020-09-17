@@ -425,6 +425,10 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
      }     
   }
 
+  getRouteId(routeId) {
+    sessionStorage.setItem('routeId',routeId);
+  }
+
   sortedList(data: any, sortBy: string, sortDir: boolean){
        //true - asc / false - desc
        ////console.log('>>>', data);

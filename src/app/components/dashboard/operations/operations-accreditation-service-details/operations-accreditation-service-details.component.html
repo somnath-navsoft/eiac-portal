@@ -1,1 +1,755 @@
-<p>operations-accreditation-service-details works!</p>
+<app-loader *ngIf="!loader"></app-loader>
+<!-- <app-header-after-login></app-header-after-login>
+<div class="side-data-cont">
+    <app-sidebar-after-login></app-sidebar-after-login>
+</div> -->
+<div class="main-detail">
+  <div class="container-fluid">
+    <div class="main-dashboard-cnt">
+      <div class="row m-0">
+        <div class="col-md-12 message-det">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="main_app_wrap">
+                  <div class="appln-data">
+                    <h3>Application No. 102154789652</h3>
+                  </div>
+                  <div class="appln-details">
+                    <span>
+                      <img class="qr_code" src="../../../../../../assets/images/qr_code.png" />
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="main_app_wrap">
+                  <div class="appln-data status_hdr">
+                    <h5>Application Fees :</h5>
+                  </div>
+                  <div class="appln-details complete">
+                    <span>Paid</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="main_app_wrap">
+                  <div class="appln-data status_hdr">
+                    <h5>Preliminary Visit :</h5>
+                  </div>
+                  <div class="complete pending">
+                    <span>Pending</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="main_app_wrap">
+                  <div class="appln-data status_hdr">
+                    <h5>Document Review :</h5>
+                  </div>
+                  <div class="complete under-review">
+                    <span>Unpaid</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="main_app_wrap">
+                  <div class="appln-data status_hdr">
+                    <h5>Assessment :</h5>
+                  </div>
+                  <div class="complete under-review">
+                    <span>Unpaid</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="main_app_wrap">
+                  <div class="appln-data status_hdr">
+                    <h5>Certification :</h5>
+                  </div>
+                  <div class="complete under-review">
+                    <span>Unpaid</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="row m-0">
+        <div class="col-md-12 message-det">
+            <div class="row appl-cnt">
+              <div class="col">
+                <div class="appln-data">
+                  <h5>Application Type</h5>
+                </div>
+                <div class="appln-details">
+                  <span>Testing Laboratory</span>
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="appln-data">
+                  <h5>Establishment Name</h5>
+                </div>
+                <div class="appln-details">
+                  <span>Al Dahra Agricultural</span>
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="appln-data">
+                  <h5>Date of Establishment</h5>
+                </div>
+                <div class="appln-details">
+                  <span>10-07-2020</span>
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="appln-data">
+                  <h5>Location</h5>
+                </div>
+                <div class="appln-details">
+                  <span>Kolkata, India</span>
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="appln-data">
+                  <h5>Trade License No.</h5>
+                </div>
+                <div class="appln-details license_no">
+                  <span>TL21546232354</span>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="row m-0 appn-cnt-data">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="appln-subhdr">
+                <h5>APPLICANT INFORMATION</h5>
+              </div>
+            </div>
+          </div> 
+          <div class="row status-det">
+              <div class="col-md-12">
+                <div class="table-appln">
+                  <table>
+                    <tr>
+                      <td>Date of Issue</td>
+                      <td>22-08-2020</td>
+                      <td>Date of expiry</td>
+                      <td>21-08-2021</td>
+                    </tr>
+                    <tr>
+                      <td>Type of Accreditation</td>
+                      <td>Initial</td>
+                      <td>Criteria for which Acc. is Requested</td>
+                      <td>ISO/IEC 17025</td>
+                    </tr>
+                    <tr>
+                      <td>Registered Address</td>
+                      <td colspan="3">1002, Eastern Metropolitan Bypass, Mirania Gardens 2, Tosia</td>
+                    </tr>
+                    <tr>
+                      <td>City</td>
+                      <td>Kolkata</td>
+                      <td>Country</td>
+                      <td>India</td>
+                    </tr>
+                    <tr>
+                      <td>Mailing Address</td>
+                      <td>manojit.das@navsoft.in</td>
+                      <td>PO Box No./ZIP Code</td>
+                      <td>700105</td>
+                    </tr>
+                    <tr>
+                      <td>Official E-mail Address</td>
+                      <td>manojit.das@navsoft.in</td>
+                      <td>Official Website</td>
+                      <td>www.eiac.gov.ae</td>
+                    </tr>
+                    <tr>
+                      <td>Telephone Number</td>
+                      <td>(183) 959-1691</td>
+                      <td>Fax Number</td>
+                      <td>(230) 052-4885</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="row m-0">
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="appln-subhdr">
+                <h5>OWNERSHIP OF THE ORGANIZATION</h5>
+              </div>
+              <hr>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="status-main-details">
+                <div class="status-data">
+                  <p>Mr. Robert Williamson, </p>
+                  <span>CEO & Founder</span>
+                </div>
+                <div class="status-subdata">
+                  <span class="status_details">
+                    <span class="icon-mobile"></span>
+                    (183) 959-1691
+                  </span>
+                  <span class="status_details">
+                    <span class="icon-call-data icon-call-2"></span>
+                    (183) 959-1691
+                  </span>
+                  <span class="status_details">
+                    <span class="icon-email"></span>
+                    manojit.das@navsoft.in
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="appln-subhdr">
+                <h5>WORKING TIME</h5>
+              </div>
+              <hr>
+            </div>
+          </div>
+          <div class="row status-det status_sub_table">
+            <div class="col-md-12">
+              <div class="table-appln">
+                <table>
+                  <tr>
+                    <td>Duty Period</td>
+                    <td>One Shift</td>
+                    <td>Duty Time</td>
+                    <td>06:00 PM - 09:00 PM</td>
+                  </tr>
+                  <tr>
+                    <td>Is Testing the main activity of the organization</td>
+                    <td colspan="3">Yes</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row m-0">
+        <div class="col-md-12">
+          <div class="row status-det-wrapper">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="appln-subhdr">
+                    <h5>BOARD MEMBERS OF THE COMPANY</h5>
+                  </div>
+                  <hr>
+                </div>
+              </div>
+              <div class="status_main">
+                <div class="row">
+                  <div class="col-md-6 pr-0">
+                    <div class="members_details">
+                      <h4>Mr. Jhon Williams</h4>
+                      <p class="address_details">Al Dahra Agricultural Company, Navigator Software Pvt. Ltd.</p>
+                      <span class="personal_details">Mr. Brad Williams,</span>
+                      <span>Manager, Mobile : (183) 959-1691</span>
+                    </div>
+                  </div>
+                  <div class="col-md-6 pl-0">
+                      <div class="members_details members_last ">
+                        <h4>Mr. Jhon Williams</h4>
+                        <p class="address_details">Al Dahra Agricultural Company, Navigator Software Pvt. Ltd.</p>
+                        <span class="personal_details">Mr. Brad Williams,</span>
+                        <span>Manager, Mobile : (183) 959-1691</span>
+                      </div>
+                  </div>
+                </div>
+                <div class="row pb-1">
+                  <div class="col-md-6 pr-0">
+                    <div class="members_details">
+                      <h4>Mr. Jhon Williams</h4>
+                      <p class="address_details">Al Dahra Agricultural Company, Navigator Software Pvt. Ltd.</p>
+                      <span class="personal_details">Mr. Brad Williams,</span>
+                      <span>Manager, Mobile : (183) 959-1691</span>
+                    </div>
+                  </div>
+                  <div class="col-md-6 pl-0">
+                    <div class="members_details members_last ">
+                      <h4>Mr. Jhon Williams</h4>
+                      <p class="address_details">Al Dahra Agricultural Company, Navigator Software Pvt. Ltd.</p>
+                      <span class="personal_details">Mr. Brad Williams,</span>
+                      <span>Manager, Mobile : (183) 959-1691</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row m-0">
+        <div class="col-md-12">
+          <div class="row status-det-wrapper">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="appln-subhdr">
+                    <h5>EXISTING ACCREDITATION OR CERTIFICATION GRANTED TO THE ORGANIZATION</h5>
+                  </div>
+                  <hr>
+                </div>
+              </div>
+              <div class="row m-0">
+                <div class="col-md-6">
+                  <div class="org_hdr">
+                    <p>Does the Organization hold any other Accreditation’s?</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-subheader-desc form_org_data">
+                    <!-- <mat-radio-group> -->
+                      <mat-radio-button>Yes</mat-radio-button>
+                      <mat-radio-button>No</mat-radio-button>
+                    <!-- </mat-radio-group> -->
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="table-appln pt-0">
+                    <table>
+                      <tr>
+                        <th>Name of Scheme</th>
+                        <th>Name of Accreditation Body</th>
+                        <th>Scope of Accreditation & Certificate No</th>
+                        <th>Expiry Date of Certificate</th>
+                      </tr>
+                      <tr>
+                        <td>ISO/IEC 17025</td>
+                        <td>Chris Estrada</td>
+                        <td>Testing Laboratory & 006-1596</td>
+                        <td>21-08-2021</td>
+                      </tr>
+                      <tr>
+                        <td>ISO/IEC 17025</td>
+                        <td>Chris Estrada</td>
+                        <td>Testing Laboratory & 006-1596</td>
+                        <td>21-08-2021</td>
+                      </tr>
+                      <tr>
+                        <td>ISO/IEC 17025</td>
+                        <td>Chris Estrada</td>
+                        <td>Testing Laboratory & 006-1596</td>
+                        <td>21-08-2021</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row m-0">
+        <div class="col-md-12">
+          <div class="row status-det-wrapper">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="appln-subhdr">
+                    <h5>INFORMATION ABOUT PROFICIENCY TESTING PARTICIPATION</h5>
+                  </div>
+                  <hr>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="table-appln">
+                    <table>
+                      <tr>
+                        <th>Name of Test</th>
+                        <th>Participation Date</th>
+                        <th>PT Provider</th>
+                        <th>Summary of Results</th>
+                      </tr>
+                      <tr>
+                        <td>ISO/IEC 17025</td>
+                        <td>21-08-2021</td>
+                        <td>Chris Estrada</td>
+                        <td>Lorem Ipsum dolor</td>
+                      </tr>
+                      <tr>
+                        <td>ISO/IEC 17025</td>
+                        <td>21-08-2021</td>
+                        <td>Chris Estrada</td>
+                        <td>Lorem Ipsum dolor</td>
+                      </tr>
+                      <tr>
+                        <td>ISO/IEC 17025</td>
+                        <td>21-08-2021</td>
+                        <td>Chris Estrada</td>
+                        <td>Lorem Ipsum dolor</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row m-0">
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="appln-subhdr">
+                <h5>TECHNICAL MANAGER</h5>
+              </div>
+              <hr>
+            </div>
+          </div>
+          <div class="row status-det">
+            <div class="col-md-12">
+              <div class="status-main-details">
+                <div class="status-data">
+                  <p>Mrs. Larry Pierce, </p>
+                  <span>Administrator</span>
+                </div>
+                <div class="status-subdata">
+                  <span class="status_details">
+                    <span class="icon-mobile"></span>
+                    (183) 959-1691
+                  </span>
+                  <span class="status_details">
+                    <span class="icon-call-data icon-call-2"></span>
+                    manojit.das@navsoft.in
+                  </span>
+                  <span class="status_details">
+                    <span class="icon-email"></span>
+                    10 Yrs.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="appln-subhdr">
+                <h5>MANAGEMENT MANAGER</h5>
+              </div>
+              <hr>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="status-main-details">
+                <div class="status-data">
+                  <p>Mrs. Larry Pierce, </p>
+                  <span>Administrator</span>
+                </div>
+                <div class="status-subdata">
+                  <span class="status_details">
+                    <span class="icon-mobile"></span>
+                    (183) 959-1691
+                  </span>
+                  <span class="status_details">
+                    <span class="icon-email"></span>
+                    manojit.das@navsoft.in
+                  </span>
+                  <span class="status_details">
+                    <span class="icon-google-docs"></span>
+                    10 Yrs.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row m-0">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="appln-subhdr">
+                <h5>INFORMATION ABOUT INTERNAL AUDIT AND MANAGEMENT REVIEW LAST CONDUCTED DATE (FOR INITIAL SUBMISSION)</h5>
+              </div>
+              <hr>
+            </div>
+          </div>
+          <div class="row status-det status_sub_table">
+            <div class="col-md-12">
+              <div class="table-appln">
+                <table>
+                  <tr>
+                    <td>Audit Date</td>
+                    <td>22-08-2020</td>
+                    <td>MRM Date</td>
+                    <td>21-08-2021</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row m-0">
+        <div class="col-md-12">
+          <div class="row status-det-wrapper">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="appln-subhdr">
+                    <h5>ACCREDITATION SCOPE FOR TESTING LABORATORY</h5>
+                  </div>
+                  <hr>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="table-appln">
+                    <table>
+                      <tr>
+                        <th>Type of Activity</th>
+                        <th>Test Materials/Products</th>
+                        <th>Test Name</th>
+                        <th>Test Method</th>
+                      </tr>
+                      <tr>
+                        <td>Mechanical /Physical</td>
+                        <td>Hardened Concrete</td>
+                        <td>Testing concrete. Method for determination of compressive strength of concrete cubes</td>
+                        <td>BS 1881 : 1983 Part 116 AMD 6097-89 & AMD 6720 - 91</td>
+                      </tr>
+                      <tr>
+                        <td>Mechanical /Physical</td>
+                        <td>Hardened Concrete</td>
+                        <td>Testing concrete. Method for determination of compressive strength of concrete cubes</td>
+                        <td>BS 1881 : 1983 Part 116 AMD 6097-89 & AMD 6720 - 91</td>
+                      </tr>
+                      <tr>
+                        <td>Mechanical /Physical</td>
+                        <td>Hardened Concrete</td>
+                        <td>Testing concrete. Method for determination of compressive strength of concrete cubes</td>
+                        <td>BS 1881 : 1983 Part 116 AMD 6097-89 & AMD 6720 - 91</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row m-0">
+        <div class="col-md-12">
+          <div class="row status-det-wrapper">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="appln-subhdr">
+                    <h5>EXISTING ACCREDITATION OR CERTIFICATION GRANTED TO THE ORGANIZATION</h5>
+                  </div>
+                  <hr>
+                </div>
+              </div>
+              <div class="row m-0">
+                <div class="col-md-6">
+                  <div class="org_hdr">
+                    <p>Does the Organization hold any other Accreditation’s?</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-subheader-desc form_org_data">
+                    <!-- <mat-radio-group> -->
+                      <mat-radio-button>Yes</mat-radio-button>
+                      <mat-radio-button>No</mat-radio-button>
+                    <!-- </mat-radio-group> -->
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="table-appln pt-0">
+                    <table>
+                      <tr>
+                        <th>Name of Scheme</th>
+                        <th>Name of Accreditation Body</th>
+                        <th>Scope of Accreditation & Certificate No</th>
+                        <th>Expiry Date of Certificate</th>
+                      </tr>
+                      <tr>
+                        <td>ISO/IEC 17025</td>
+                        <td>Chris Estrada</td>
+                        <td>Testing Laboratory & 006-1596</td>
+                        <td>21-08-2021</td>
+                      </tr>
+                      <tr>
+                        <td>ISO/IEC 17025</td>
+                        <td>Chris Estrada</td>
+                        <td>Testing Laboratory & 006-1596</td>
+                        <td>21-08-2021</td>
+                      </tr>
+                      <tr>
+                        <td>ISO/IEC 17025</td>
+                        <td>Chris Estrada</td>
+                        <td>Testing Laboratory & 006-1596</td>
+                        <td>21-08-2021</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row m-0">
+        <div class="col-md-12">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="appln-subhdr">
+                      <h5>UNDERTAKING</h5>
+                  </div>
+                  <hr>
+              </div>
+          </div>
+          <div class="row status-det-wrapper">
+            <div class="col-md-12">
+              <div class="auth_wrapper">
+                <div class="authData">
+                  I confirm that the information provided in this application form is true and correct
+                </div>
+                <div class="authData">I acknowledge that I have read and understood and confirm to abide by the 
+                    <a href="javascript:void(0)">Accreditation Agreement</a> and request to provide us with a word agreement form for signature
+                </div>
+                <div class="authData">I require ILA MRA "Laboratories" <a href="javascript:void(0)">Agreement</a>.</div>
+
+                <div class="authData">I confirm that the below documents are available and will be furnished once requested by EIAC:</div>
+              </div>
+              <div class="auth-details">
+                  <table>
+                      <tr>
+                          <td width="1%"><span class="icon-correct"></span></td>
+                          <td>Quality Manual</td>
+                      </tr>
+                      <tr>
+                          <td><span class="icon-correct"></span></td>
+                          <td>
+                            <a href="javascript:void(0)">Filled In Document Review Checklist based on the related standard </a>(for 1st submission only)
+                          </td>
+                      </tr>
+                      <tr>
+                          <td><span class="icon-correct"></span></td>
+                          <td>Internal Procedures (as per the accreditation criteria)</td>
+                      </tr>
+                      <tr>
+                          <td><span class="icon-correct"></span></td>
+                          <td>Minutes/Report of last Management Review</td>
+                      </tr>
+                      <tr>
+                          <td><span class="icon-correct"></span></td>
+                          <td>Report of last Internal Audit</td>
+                      </tr>
+                      <tr>
+                          <td><span class="icon-correct"></span></td>
+                          <td>Participation in PT/ILC/Measurement Audit</td>
+                      </tr>
+                      <tr>
+                          <td><span class="icon-correct"></span></td>
+                          <td>List of key staff and Organizational Structure if not mentioned in the QM</td>
+                      </tr>
+                      <tr>
+                        <td><span class="icon-correct"></span></td>
+                        <td>CMC calculations (for calibration laboratory)</td>
+                      </tr>
+                  </table>
+              </div>
+              <div class="undertaking-last">
+                <div class="under_wrapper">
+                  <div class="recommend">
+                    <span class="confirm">I recommend the visit to be conducted in the <a href="javascript:void(0)">1st</a> quarter of the year.</span>
+                  </div>
+                  <div class="date_undertake">
+                      <span>Date : 22/006/2020</span>
+                  </div>
+                </div>
+                <div class="under_wrapper wrapper_name">
+                  <div class="signature_under">
+                    <img src="../../../../../../assets/images/g10.svg" alt="">
+                  </div>
+                  <div class="sign_name">
+                    <h5>Bob Williams</h5>
+                    <p>Technical Manager</p>
+                  </div>
+                </div>
+              </div>
+              <div class="undertaking-last">
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row m-0 appn-cnt-data">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="appln-subhdr">
+                <h5>PAYMENT INFORMATION</h5>
+              </div>
+            </div>
+          </div>
+          <div class="row status-det">
+              <div class="col-md-12">
+                <div class="table-appln">
+                  <table>
+                    <tr>
+                      <td>Voucher Code</td>
+                      <td>VC323656464</td>
+                      <td>Payment Date</td>
+                      <td>21-08-2021</td>
+                    </tr>
+                    <tr>
+                      <td>Payment Amount</td>
+                      <td>AED 500.00</td>
+                      <td>Transaction No</td>
+                      <td>TN56464664646464</td>
+                    </tr>
+                    <tr>
+                      <td>Payment Method</td>
+                      <td>Cash</td>
+                      <td>Payment Made By</td>
+                      <td>Tom Burly</td>
+                    </tr>
+                    <tr>
+                      <td>City</td>
+                      <td colspan="3">+91 9876543210</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="row m-0">
+        <div class="col-md-12">
+          <div class="details status_bttn">
+            <a href="javascript:void(0)">Download Application</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
