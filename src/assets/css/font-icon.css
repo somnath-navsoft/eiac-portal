@@ -250,3 +250,12 @@
 .icon-up-arrow:before {
   content: "\e94b";
 }
+.icon-call-2:before {
+  content: "\e94c";
+}
+.icon-mobile:before {
+  content: "\e94d";
+}
+.icon-email:before {
+  content: "\e94e";
+}

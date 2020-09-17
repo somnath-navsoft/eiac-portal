@@ -31,6 +31,9 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
   white-space: normal !important;
 }
 
+.auth-details .mat-checkbox-layout {
+  white-space: normal !important;
+}
 //==================DU PORTAL==================//
 
 //==================FOR BEFORE LOGIN==================//
@@ -322,7 +325,7 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 .user-steps .user-done { border: 1px solid #B54150; background: #B54150; color: #FFF; }
 .user-steps .user-next .usernext-icon { font-size: 30px; }
 .user-steps .user-next .user-details-pendin { font-size: 14px; }
-.user-steps .next-step { padding: 0 5px; display: flex; justify-content: center; align-items: center; height: 100%; color: black; } 
+.user-steps .next-step { padding: 0 5px; display: flex; justify-content: center; align-items: center; height: 100%; color: #c5c5c5; } 
 .user-details-pending { font-size: 14px; font-family: 'Dubai Medium'; }
 // color: #B19782;
 .bttn-staff { display: flex; justify-content: space-between; align-content: center; width: 100%; height: 100%; }
@@ -599,7 +602,7 @@ a:hover { text-decoration: none; }
   background: #E7E7E7;
   color: #B54150;
   font-family: "Dubai Bold";
-  font-size: 22px;
+  font-size: 18px;
   letter-spacing: 2px;
   padding: 15px 30px;
   text-transform: uppercase;
@@ -613,20 +616,22 @@ a:hover { text-decoration: none; }
 .submit-bttn { color: #ffffff; background: #B54150; border: 1px solid #B54150; padding: 10px 53px; }
 .submit-bttn:focus { outline: none; }
 .submit-health { color: #ffffff; background: #B54150; border: 1px solid #B54150; padding: 10px 53px; }
-.form-subheader-data h5 { background: #E7E7E7; color: #AA9777; font-size: 22px; font-family: "Dubai Bold"; padding: 10px 25px; margin: 0; }
+.form-subheader-data h5 { background: #E7E7E7; color: #AA9777; font-size: 20px; font-family: "Dubai Bold"; padding: 10px 25px; margin: 0; }
 .ownr-details { background: #F9F9F9; padding: 20px; margin-top: 20px; }
 .remove-clss { text-align: right; color: #B54150; }
-.add-new a { font-size: 24px; color: #B54150; letter-spacing: 3px; font-family: "Dubai Regular"; padding: 15px 0; display: block; }
+.add-new a { font-size: 22px; color: #B54150; letter-spacing: 3px; font-family: "Dubai Regular"; padding: 15px 0; display: block; }
 .add-new a:hover { color: #B54150; text-decoration: none; }
 .form-subhdr { margin: 0 -15px; }
 .form-subheader-data { margin: 0 -15px;}
 .add-new span { margin-right: 15px; }
-.form-sub { margin-bottom: 20px; color: #222222; font-family: "Dubai Medium"; font-size: 22px; margin: 15px 0; }
-.check-rdo { padding: 20px 0; }
+.form-sub { display: flex; color: #222222; font-family: "Dubai Medium"; font-size: 18px; align-items: center; height: 100%; }
+.check-rdo { margin: 0; }
+.check-rdo label { margin: 0; }
 .form-subheader-desc {   background: #E7E7E7; text-align: right; margin: 0 -15px;}
 .form-subheader-desc .mat-radio-button { padding: 10px 15px; }
 .form-subheader-desc .mat-radio-label { margin: 0; }
-.bttns-health { padding: 40px 0; font-family: "Dubai Bold"; font-size: 26px; }
+.bttns-health { padding: 40px 0; font-family: "Dubai Bold"; font-size: 20px; }
+.form-subheader { display: flex; align-items: center; height: 100%; }
 
 //==================TRAINERS DASHBOARD==================//
 .main-dashboard { padding: 20px; background: #EEF3F5; }
@@ -725,20 +730,20 @@ a:hover { text-decoration: none; }
 
 // ================FORMS================== //
 .table-content-health table { width: 100%; border-collapse: collapse; margin-top: 25px;}
-.table-content-health { margin: 30px 0; overflow: scroll; }
+.table-content-health { margin: 30px 0; overflow-y: scroll; }
 .table-content-health table { width: 100%; border-collapse: collapse; margin-top: 30px;}
-.table-content-health th {padding: 10px; text-align: right; background: #E7E7E7;  border: 1px solid #DCDAD5;}
+.table-content-health th {padding: 10px; background: #E7E7E7;  border: 1px solid #DCDAD5;}
 .table-content-health td { padding: 25px 10px 20px; background: #F9F9F9; border: 1px solid #DCDAD5;}
 .table-content-health td input:focus { outline: none;}
 .table-content-health td span{ font-size: 18px;}
 .table-content-health .content-icn {text-align: center; color: #B54150;}
-.form-subheader-desc { background: #E7E7E7; text-align: right; margin: 0 -15px;}
+.form-subheader-desc { background: #E7E7E7; margin: 0 -15px; height: 100%; display: flex; align-items: center; justify-content: flex-end; }
 .form-subheader-desc .mat-radio-button { padding: 10px 15px; }
 .form-subheader-desc .mat-radio-label { margin: 0; }
 .qualifi-att { padding: 12px; }
 
 
-// MAT
+// MAT-FORM
 .confirm .mat-checkbox-frame {
   border-color: rgba(153, 153, 153, 1); 
   border-width: 1px; 
@@ -792,8 +797,23 @@ a:hover { text-decoration: none; }
   height: 20px;
 }
 .authData .mat-checkbox-inner-container { height: 20px; width: 20px; margin-top: 7px; }
-.authData .mat-checkbox-layout .mat-checkbox-label { line-height: 34px; font-family: "Dubai Medium"; font-size: 24px; }
+.authData .mat-checkbox-layout .mat-checkbox-label { line-height: 34px; font-family: "Dubai Medium"; font-size: 18px; }
+.auth-details .mat-checkbox-frame {
+  border-color: rgba(153, 153, 153, 1); 
+  border-width: 1px; 
+  border-radius: 0; 
+  width: 20px; 
+  height: 20px;
+}
+.auth-details .mat-checkbox-inner-container { height: 20px; width: 20px; margin-top: 7px; }
+.auth-details .mat-checkbox-layout .mat-checkbox-label { line-height: 34px; font-family: "Dubai Medium"; font-size: 18px; }
+
+
+.authData a { color: #AA9777; text-decoration: underline; }
 .assess-dir { background: #EFEFEF; margin-top: 30px; padding-bottom: 30px; }
+span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
+
+
 
 
 .train-bdy { background: #EFEFEF; margin-top: 30px; padding-bottom: 25px; }
@@ -842,33 +862,35 @@ a:hover { text-decoration: none; }
 .request_frm { margin: 0 -15px; }
 
 .auth-details table { width: 100%; background: #F9F9F9; font-family: "Dubai Regular"; }
-.auth-details td{ padding: 10px 25px; border: 1px solid #DCDAD5; font-family: "Dubai Regular"; font-size: 22px; }
+.auth-details td{ padding: 10px 25px; border: 1px solid #DCDAD5; font-family: "Dubai Regular"; font-size: 18px; }
 .auth-details td span { color: #AA9777; text-decoration: underline;}
-.auth { padding: 15px; line-height: 35px; }
+.auth-details a { color: #AA9777; text-decoration: underline; }
+.auth { line-height: 35px; }
 .auth .mat-checkbox-layout .mat-checkbox-label { font-size: 24px; font-family: "Dubai Medium"; color: #222222; }
 .auth .acc-auth { color: #AA9777; text-decoration: underline; }
 
 .auth .acc-auth { color: #AA9777; }
 .auth ul { margin: 0; padding: 0; list-style-type: none;}
-.auth .mat-checkbox-layout .mat-checkbox-label { font-size: 22px; font-family: "Dubai Medium"; color: #222222; }
-.authData { color: #222222; font-family: "Dubai Medium"; font-size: 22px; padding: 20px 0; }
+.auth .mat-checkbox-layout .mat-checkbox-label { font-size: 18px; font-family: "Dubai Medium"; color: #222222; }
+.authData { color: #222222; font-family: "Dubai Medium"; font-size: 18px; padding: 10px 0; }
 .authData .error { font-size: 17px; padding-left: 30px; }
 
 // Terms And Conditions
 
-.terms-condition { height: 480px; margin: 20px; overflow-y: scroll; background: #ffffff; font-family: "Dubai Regular"; }
+.terms-condition { height: 480px; margin: 20px 0; overflow-y: scroll; background: #ffffff; font-family: "Dubai Regular"; }
 .tnc { padding: 20px; }
 .tnc p { padding: 0 10px; margin-bottom: 5px; }
-.tnc .tnc-sub h5 { color: #B54150;  margin-bottom: 10px; display: inline-block; }
+.tnc .tnc-sub h5 { color: #B54150;  margin-bottom: 10px; display: inline-block; font-size: 17px; }
 .tnc h3 {
   color: #B54150;
-  margin-bottom: 15px;
+  margin-bottom: 0;
+  font-size: 20px;
 }
 .tnc ol { padding-left: 40px; }
 .tnc ol { counter-reset: item; list-style-type: none; }
-.tnc ol li{ display: block; font-size: 20px; }
-.tnc ol li:before { content: counters(item, ".") "."; counter-increment: item; margin-right: 10px; color: #B54150; font-size: 22px; }
-.tnc li li:before { content: counters(item, ".") " "; counter-increment: item; color: #444444; font-size: 20px; }
+.tnc ol li{ display: block; font-size: 16px; }
+.tnc ol li:before { content: counters(item, ".") "."; counter-increment: item; margin-right: 10px; color: #B54150; font-size: 17px; }
+.tnc li li:before { content: counters(item, ".") " "; counter-increment: item; color: #444444; font-size: 16px; }
 .tnc ul { list-style: disc; padding: 0 45px; }
 .tnc ul li:before { content: none;}
 .tnc ul li { display: list-item; }
@@ -883,6 +905,8 @@ a:hover { text-decoration: none; }
 .assess-doc { padding: 20px 15px; display: flex; justify-content: space-between; }
 .bttn-details .cancel-bttn { display: block; color: #B54150; font-family: 'Dubai Bold'; }
 .course-pop button:focus { outline: none; }
+.course-pop button span { color: #999999; }
+
 
 //==================RESPONSIVE==================//
 @media(max-width: 1500px) {
