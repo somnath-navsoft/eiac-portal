@@ -48,7 +48,7 @@
                                 <div class="row">
                                     <div class="col-md-12 p-0">
                                         <div class="form-subhdr">
-                                            <h5>1. APPLICANT INFORMATION</h5><br>
+                                            <h5>1. APPLICANT INFORMATION</h5>
                                         </div>
                                         <hr>
                                     </div>
@@ -116,7 +116,7 @@
                                             </mat-form-field>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row pb-3">
                                         <div class="col-md-3 col-sm-6 ">                                            
                                             <div class="form-subheader">
                                                 <span>Type of Accreditation Required:</span>
@@ -287,8 +287,8 @@
                                                 <mat-label>Legal-Professional/Commercial/Trade License</mat-label>
                                                 <input matInput readonly="true" name="tradelic" [(ngModel)]="selectTradeLicName"
                                                 autocomplete="off"  placeholder="Legal-Professional/Commercial/Trade License"  >
-                                                <a href="{{selectTradeLicPath}}" target="_blank" [ngStyle]="{'color':'#000', 'text-align':'right'}">
-                                                    <span class="icon-eye"></span>
+                                                <a href="{{selectTradeLicPath}}" target="_blank">
+                                                    <span class="icon-eye visible-pwd"></span>
                                                     </a>
                                             </mat-form-field>
                                             
@@ -1013,9 +1013,10 @@
                                         <div class="col-md-12">
                                             <div class="bttns-health bttn-staff">
                                                 <!-- (click)="onSubmitTestingParticipation()" -->
-                                                <button class="cancel-bttn"  type="button" (click)="Service.headerStepMove('application_information',headerSteps,'menu','profciency_testing_participation')">BACK</button> 
-
-                                                <button class="cancel-bttn" type="button" (click)="onSubmitTestingParticipation(ngForm2, true)">SAVE AS DRAFT</button> 
+                                                <div class="button-content">
+                                                    <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="Service.headerStepMove('application_information',headerSteps,'menu','profciency_testing_participation')">BACK</a> 
+                                                    <button class="cancel-bttn" type="button" (click)="onSubmitTestingParticipation(ngForm2, true)">SAVE AS DRAFT</button>
+                                                </div>
                                                 <button class="submit-bttn submit-health" >CONTINUE</button>
                                             </div>
                                         </div>
@@ -1129,9 +1130,11 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="bttns-health bttn-staff">
-                                            <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('profciency_testing_participation',headerSteps,'menu','personal_information')">BACK</button> 
+                                            <div class="button-content">
+                                                <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('profciency_testing_participation',headerSteps,'menu','personal_information')">BACK</a> 
 
-                                            <button class="cancel-bttn" type="button" (click)="onSubmitPersonalInformation(ngForm3, true)('step3')">SAVE AS DRAFT</button>
+                                                <button class="cancel-bttn" type="button" (click)="onSubmitPersonalInformation(ngForm3, true)('step3')">SAVE AS DRAFT</button>
+                                            </div>
                                             <button class="submit-bttn submit-health" >CONTINUE</button>
                                         </div>
                                     </div>
@@ -1179,9 +1182,11 @@
                                         <div class="col-md-12">
                                             <div class="bttns-health bttn-staff">
                                                 <!-- (click)="onSubmitInformationAuditManagement()" -->
-                                                <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('personal_information',headerSteps,'menu','information_audit_management')">BACK</button> 
+                                                <div class="button-content">
+                                                    <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('personal_information',headerSteps,'menu','information_audit_management')">BACK</a> 
 
-                                                <button class="cancel-bttn" type="button" (click)="onSubmitInformationAuditManagement(ngForm4, true)">SAVE AS DRAFT</button>
+                                                    <button class="cancel-bttn" type="button" (click)="onSubmitInformationAuditManagement(ngForm4, true)">SAVE AS DRAFT</button>
+                                                </div>
                                                 <button class="submit-bttn submit-health" >CONTINUE</button>
                                             </div>
                                         </div>
@@ -1303,8 +1308,10 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="bttns-health bttn-staff">
-                                                <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','scope_accreditation')">BACK</button> 
-                                                <button class="cancel-bttn" type="button" (click)="onSubmitScopeAccreditation(ngForm5, true)">SAVE AS DRAFT</button>
+                                                <div class="button-content">
+                                                    <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','scope_accreditation')">BACK</a> 
+                                                    <button class="cancel-bttn" type="button" (click)="onSubmitScopeAccreditation(ngForm5, true)">SAVE AS DRAFT</button>
+                                                </div>
                                                 <button class="submit-bttn submit-health" >CONTINUE</button>
                                             </div>
                                         </div>
@@ -1384,9 +1391,10 @@
                                     <div class="col-md-12">
                                         <div class="bttns-health bttn-staff">
                                             <!--  (click)="onSubmitPerlimVisit()" -->
-
-                                            <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','perlim_visit')">BACK</button> 
-                                            <button class="cancel-bttn" type="button" (click)="onSubmitPerlimVisit(ngForm6, true)">SAVE AS DRAFT</button>
+                                            <div class="button-content">
+                                                <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','perlim_visit')">BACK</a> 
+                                                <button class="cancel-bttn" type="button" (click)="onSubmitPerlimVisit(ngForm6, true)">SAVE AS DRAFT</button>
+                                            </div>
                                             <button class="submit-bttn submit-health">CONTINUE</button>
                                         </div>
                                     </div>
@@ -1713,9 +1721,11 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="bttns-health bttn-staff">
-                                            <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('perlim_visit',headerSteps,'menu','undertaking_applicant')">BACK</button> 
+                                            <div class="button-content">
+                                                <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('perlim_visit',headerSteps,'menu','undertaking_applicant')">BACK</a> 
 
-                                            <button class="cancel-bttn" type="button" (click)="onSubmitUndertakingApplicant(ngForm6, true)">SAVE AS DRAFT</button>
+                                                <button class="cancel-bttn" type="button" (click)="onSubmitUndertakingApplicant(ngForm6, true)">SAVE AS DRAFT</button>
+                                            </div>
                                             <button class="submit-bttn submit-health"  *ngIf="!transactions.length">PROCEEDS FOR PAYMENT</button>
                                             <ng-container *ngIf="transactions.length">
                                                 <div id="paypalPayment"></div>
