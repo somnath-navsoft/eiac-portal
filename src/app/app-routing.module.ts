@@ -79,6 +79,7 @@ import { CabMessageDetailsComponent } from './components/dashboard/cab/cab-messa
 import { TrainersMessageDetailsComponent } from './components/dashboard/trainers/trainers-message-details/trainers-message-details.component';
 import { MessageDetailsComponent } from './components/dashboard/assessors/message-details/message-details.component';
 import { CandidateMessageDetailsComponent } from './components/dashboard/candidate/candidate-message-details/candidate-message-details.component';
+import { OperationsAccreditationServiceDetailsComponent } from './components/dashboard/operations/operations-accreditation-service-details/operations-accreditation-service-details.component';
 
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
@@ -117,6 +118,7 @@ const routes: Routes = [
           { path: 'training-apply/:id', component:OperationsTrainerServiceComponent, canActivate: [AuthGuard] },
           { path: 'training-service', component:OperationsTrainerServiceListComponent, canActivate: [AuthGuard] },
           { path: 'accreditation-service-list', component:OperationsAccreditationServiceListComponent, canActivate: [AuthGuard] },
+          { path: 'accreditation-service-details/:id', component:OperationsAccreditationServiceDetailsComponent, canActivate: [AuthGuard] },
           { path: 'message', component:OperationMessageComponent, canActivate: [AuthGuard] },
           { path: 'message-detail/:id', component:OperationsMessageDetailsComponent, canActivate: [AuthGuard] },
         ] 

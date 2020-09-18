@@ -20,6 +20,7 @@ export class CandidateMessageDetailsComponent implements OnInit {
   tabId:any = 'personal_details';
   approveRejectStatus:any = '';
   loader:boolean = true;
+  rejectedMessageId:boolean = false;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public route: ActivatedRoute,public toastr: ToastrService) { }
 
@@ -78,14 +79,32 @@ export class CandidateMessageDetailsComponent implements OnInit {
           this.approveRejectStatus = '1';
       });
       
-    }else if(status == 'reject') {
-      this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileApproval+'?id='+this.routeId+'&status=2')
+    }
+    // else if(status == 'reject') {
+    //   this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileApproval+'?id='+this.routeId+'&status=2')
+    //   .subscribe(
+    //     res => {
+    //       this.approveRejectStatus = '2';
+    //   });
+      
+    // }
+  }
+
+  getAllData(event) {
+    // console.log(event);
+    if(event.rejectId == 2) {
+      this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileApproval+'?id='+this.routeId+'&status=2'+'&message='+event.message)
       .subscribe(
         res => {
+          this.toastr.success('Message sent successfully', '');
           this.approveRejectStatus = '2';
       });
       
     }
+  }
+
+  openRejectedPop() {
+    this.rejectedMessageId = true;
   }
 
 }

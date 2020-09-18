@@ -1,6 +1,6 @@
 <app-loader *ngIf="!loader"></app-loader>
 <section>
-    <div class="form_main">
+    <div class="form-wrapper-pro">
         <div class="container-fluid">
             <div class="main-dashboard-cnt">
                 <div class="form-hdr profile-hdr">
@@ -22,7 +22,7 @@
                 <ng-container>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="user-steps">
+                            <div class="user-steps user-small">
                                 <ng-container *ngFor="let item of headerSteps; let k=index;">
                                     <div class="user-next" [ngClass]="(item.activeClass != '') ? item.activeClass : ''">
                                         <div class="usernext-icon">
@@ -52,7 +52,7 @@
                         </ng-template> -->
                 <div class="cust-stepper" id="personal_details">
                     <form #ngForm1="ngForm" (ngSubmit)="onSubmitStep1(ngForm1)" autocomplete="off">
-                        <div class="row m-0 form-bdy">
+                        <div class="row m-0 form-bdy mt-3">
                             <div class="wrapper">
                                 <div class="col-md-12">
                                     <div class="row">
@@ -210,7 +210,7 @@
                     </ng-template> -->
                 <div class="cust-stepper" id="educational_information" [ngStyle]="{'display': 'none'}">
                     <form #ngForm2="ngForm" (ngSubmit)="onSubmitStep2(ngForm2)" autocomplete="off">
-                        <div class="row m-0 form-bdy">
+                        <div class="row m-0 form-bdy mt-3">
                             <div class="wrapper">
                                 <div class="col-md-12">
                                     <div class="row">
@@ -242,7 +242,7 @@
 
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
-                                                <input matInput name="education_specialization" [(ngModel)]="step2Data.education_specialization"  placeholder="Specialization" required>
+                                                <input matInput name="education_specialization" [(ngModel)]="step2Data.education_specialization" placeholder="Specialization" required>
                                             </mat-form-field>
                                             <span class="fileupload">
                                                 <input type="file" name="education_specialization_file" [(ngModel)]="step2Data.education_specialization_file" (change)="validateFile($event,'education_specialization')">
@@ -461,7 +461,7 @@
                     </ng-template> -->
                 <div class="cust-stepper" id="employment" [ngStyle]="{'display': 'none'}">
                     <form #ngForm3="ngForm" (ngSubmit)="onSubmitStep3(ngForm3)" autocomplete="off">
-                    <div class="row m-0 form-bdy">
+                    <div class="row m-0 form-bdy mt-3">
                         <div class="wrapper">
                             <div class="col-md-12">
                                 <div class="row">
@@ -520,6 +520,7 @@
                                                             <mat-datepicker #listAudtrdate disabled="false"></mat-datepicker>
                                                         </mat-form-field>
                                                     </td>
+                                                    
                                                     <td class="content-icn">
                                                         <span *ngIf="i >= 0" class="icon-add-round" (click)="addRow(list_auditor)"></span>&nbsp;
                                                         <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(list_auditor,i)"></span>
@@ -791,7 +792,7 @@
                     </ng-template> -->
                 <div class="cust-stepper" id="knowledge_experience" [ngStyle]="{'display': 'none'}">
                     <form #ngForm4="ngForm" (ngSubmit)="onSubmitStep4(ngForm4)" autocomplete="off">
-                        <div class="row m-0 form-bdy">
+                        <div class="row m-0 form-bdy mt-3">
                             <div class="wrapper">
                                 <div class="col-md-12">
                                     <div class="row">
@@ -881,7 +882,7 @@
                     </ng-template> -->
                 <div class="cust-stepper" id="applicant_trainer" [ngStyle]="{'display': 'none'}">
                     <form #ngForm5="ngForm" (ngSubmit)="onSubmitStep5(ngForm5)" autocomplete="off">
-                        <div class="row m-0 form-bdy">
+                        <div class="row m-0 form-bdy mt-3">
                             <div class="wrapper">
                                 <div class="col-md-12">
                                     <div class="row">

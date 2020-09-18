@@ -69,17 +69,21 @@
                                                 <span>Type of Accreditation Required:</span>
                                             </div>
                                         </div>
-                                        <div class="col-md-3 col-sm-6 p-0">
+                                        <div class="col-md-3 col-sm-6 p-0 pt-4">
                                             <div class="cab-data">
                                                 <!-- @{{step1Data.accredation_criteria}} -->
                                                 <mat-radio-group name="accreditation_required" 
                                                 [(ngModel)]="step1Data.accredation_criteria" #selectAccrdCriteria="ngModel" required>
                                                 <div class="row">
                                                     <div class="col-md-4">
-                                            <mat-radio-button value="1"  [checked]="accreditationChecked">Initial</mat-radio-button>
+                                                        <div class="initial_data">
+                                                            <mat-radio-button value="1"  [checked]="accreditationChecked">Initial</mat-radio-button>
+                                                        </div>
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <mat-radio-button value="2">Extension</mat-radio-button>
+                                                        <div class="initial_data">
+                                                            <mat-radio-button value="2">Extension</mat-radio-button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 </mat-radio-group>
@@ -1281,7 +1285,7 @@
                                     </div>
                                 </div>
                                 <div class="row mt-3">                                         
-                                    <div class="col-md-12 p-0">
+                                    <div class="col-md-12">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="request-subhdr">
@@ -1294,8 +1298,10 @@
                                                 <div class="request_frm">
                                                     <mat-radio-group name="perlim_visit_val" 
                                                     [(ngModel)]="step6Data.prelim_visit_val" #selectPrelim="ngModel" required>
-                                                        <mat-radio-button value="1">Yes </mat-radio-button>
-                                                        <mat-radio-button value="0">No </mat-radio-button>
+                                                        <div class="rad-space">
+                                                            <mat-radio-button value="1">Yes </mat-radio-button>
+                                                            <mat-radio-button value="0">No </mat-radio-button>
+                                                        </div>
                                                     </mat-radio-group>
                                                 </div>
                                             </div>
@@ -1572,7 +1578,9 @@
                                             </table>
                                         </div>
                                         <div class="row">
-                                            <p class="error" *ngIf="!authorizationStatus">All check are required.</p>
+                                            <div class="col-md-12">
+                                                <p class="error" *ngIf="!authorizationStatus">All check are required.</p>
+                                            </div>
                                         </div>
                                         <div class="recommend">
                                             <span class="confirm">I recommend the visit to be conducted in the</span>
@@ -1590,7 +1598,9 @@
                                             <mat-radio name="4th" [(ngModel)]="recommend.fourth">4th quarter of the year</mat-radio> -->
                                         </div>
                                         <div class="row">
-                                            <p class="error" *ngIf="recommendVisit.errors?.required">This is required</p>
+                                            <div class="col-md-12">
+                                                <p class="error" *ngIf="recommendVisit.errors?.required">This is required</p>
+                                            </div>
                                         </div>
                                         <!-- <div class="auth">
                                             <ul>
@@ -1731,68 +1741,66 @@
                                         </div> -->
                                     </div>
                                 </div>
-                                <div class="row m-0">
-                                    <div class="wrapper">
-                                        <div class="col-12">
-                                            <div class="row">
-                                                <div class="col-md-12 p-0">
-                                                    <div class="form-subhdr">
-                                                        <h5>ON THE BEHALF OF THE APPLICANT COMPANY</h5>
-                                                    </div>
-                                                    <hr>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-md-12 p-0">
+                                                <div class="form-subhdr">
+                                                    <h5>ON THE BEHALF OF THE APPLICANT COMPANY</h5>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-12 p-0">
+                                                <div class="form-subheader-data subhead-dt">
+                                                    <h5>SIGNED FOR AND ON BEHALF OF APPLICANT</h5>
                                                 </div>
                                             </div>
-                                            <div class="row mt-3">
-                                                <div class="col-12 p-0">
-                                                    <div class="form-subheader-data subhead-dt">
-                                                        <h5>SIGNED FOR AND ON BEHALF OF APPLICANT</h5>
-                                                    </div>
-                                                </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 col-sm-12">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Organization Name</mat-label>
+                                                    <input onpaste="return false" 
+                                                    (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                    matInput placeholder="Organization Name" name="onbehalf_company_name" 
+                                                    [(ngModel)]="step7Data.organization_name" required>
+                                                </mat-form-field>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-4 col-sm-12">
-                                                    <mat-form-field class="cab-data">
-                                                        <mat-label>Organization Name</mat-label>
-                                                        <input onpaste="return false" 
-                                                        (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                        matInput placeholder="Organization Name" name="onbehalf_company_name" 
-                                                        [(ngModel)]="step7Data.organization_name" required>
-                                                    </mat-form-field>
-                                                </div>
-                                                <div class="col-md-4 col-sm-12">
-                                                    <mat-form-field class="cab-data">
-                                                        <mat-label>Full Name of Authorized Representative</mat-label>
-                                                        <input onpaste="return false" 
-                                                        (keypress)="Service.inputFilter($event, Service.regExName)" matInput 
-                                                        placeholder="Full Name of Authorized Representative" name="onbehalf_representative_name" 
-                                                        [(ngModel)]="step7Data.representative_name" required>
-                                                    </mat-form-field>
-                                                </div>
-                                                <div class="col-md-4 col-sm-12">
-                                                    <mat-form-field class="cab-data">
-                                                        <mat-label>Designation</mat-label>
-                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                        matInput placeholder="Designation" name="designation" [(ngModel)]="step7Data.designation" required>
-                                                    </mat-form-field>
-                                                </div>
+                                            <div class="col-md-4 col-sm-12">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Full Name of Authorized Representative</mat-label>
+                                                    <input onpaste="return false" 
+                                                    (keypress)="Service.inputFilter($event, Service.regExName)" matInput 
+                                                    placeholder="Full Name of Authorized Representative" name="onbehalf_representative_name" 
+                                                    [(ngModel)]="step7Data.representative_name" required>
+                                                </mat-form-field>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-6 col-sm-12">
-                                                    <mat-form-field class="cab-data">
-                                                        <mat-label>Digital Signature</mat-label>
-                                                        <input onpaste="return false" 
-                                                        (keypress)="Service.inputFilter($event, Service.regExName)" matInput 
-                                                        placeholder="Digital Signature" name="digi_sign" [(ngModel)]="step7Data.digital_signature" required>
-                                                    </mat-form-field>
-                                                </div>
-                                                <div class="col-md-6 col-sm-12">
-                                                    <mat-form-field class="cab-data">
-                                                        <mat-label>Date</mat-label>
-                                                        <input matInput [matDatepicker]="onbehalf_representative_date" 
-                                                        readonly="true" placeholder="Date" name="onbehalf_representative_date" 
-                                                        [(ngModel)]="step7Data.application_date" [value]="Service.returnCurrentDate()">
-                                                    </mat-form-field>
-                                                </div>
+                                            <div class="col-md-4 col-sm-12">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Designation</mat-label>
+                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                    matInput placeholder="Designation" name="designation" [(ngModel)]="step7Data.designation" required>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Digital Signature</mat-label>
+                                                    <input onpaste="return false" 
+                                                    (keypress)="Service.inputFilter($event, Service.regExName)" matInput 
+                                                    placeholder="Digital Signature" name="digi_sign" [(ngModel)]="step7Data.digital_signature" required>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Date</mat-label>
+                                                    <input matInput [matDatepicker]="onbehalf_representative_date" 
+                                                    readonly="true" placeholder="Date" name="onbehalf_representative_date" 
+                                                    [(ngModel)]="step7Data.application_date" [value]="Service.returnCurrentDate()">
+                                                </mat-form-field>
                                             </div>
                                         </div>
                                     </div>

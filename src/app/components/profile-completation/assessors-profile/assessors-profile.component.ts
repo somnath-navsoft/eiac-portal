@@ -537,6 +537,17 @@ export class AssessorsProfileComponent implements OnInit {
     
   }
 
+  validateFileDynamics(fileEvent: any,key:any) {
+    var file_name = fileEvent.target.files[0].name;
+    var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
+    var ex_type = ['pdf','png','jpg','jpeg','JPEG'];
+    var ex_check = this.Service.isInArray(file_exe,ex_type);
+    if(ex_check) {
+      this.list_auditor[key].upload_file = fileEvent.target.files[0].name;
+      this.step2DataBodyFormFile.append('qualification_file_'+key,fileEvent.target.files[0]);
+    }
+  }
+
   step3Click(val:any,type:any){
     if(type == "list_auditor_click" && val == 1){
       this.step3ClickObj.list_auditor = 1 ;
