@@ -93,7 +93,7 @@
                                         
                                         <div class="col-md-6 col-sm-6 align-self-end">
                                             <mat-form-field class="cab-data">
-                                                <!-- @{{step1Data.accredation_criteria}} -->
+                                                <!-- @{{step1Data.criteria_request}} -->
                                             <mat-label>Criteria to which accreditation is seeking (international standard)</mat-label>
                                                 <mat-select placeholder="Select" name="criteria_request_accre"  
                                                 [(ngModel)]="step1Data.criteria_request">
@@ -493,7 +493,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-9">
-                                            @{{step1Data.duty_shift}}
+                                            <!-- @{{step1Data.duty_shift}} -->
                                         <mat-radio-group name="duty_shift" required [(ngModel)]="step1Data.duty_shift">
                                             <div class="row">
                                                 <div class="col-md-4">
@@ -525,17 +525,17 @@
                                         <div class="col-md-3">
                                                 <!-- <mat-radio-button></mat-radio-button> -->
                                             <mat-form-field class="frm-data">
-                                                @{{step1Data.duty_from1}}
+                                                <!-- @{{step1Data.duty_from1}} -->
                                                 <mat-label>From</mat-label>
                                                 <!-- <input matInput  type='time' placeholder="" name="duty_from1" [(ngModel)]="inspectionBodyForm.duty_from1"> -->
 
                                                 <mat-select placeholder="Select" name="duty_from1" (selectionChange)="getDutyTimeForm1Index($event)" [(ngModel)]="step1Data.duty_from1">
-                                                    <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.val">{{item.val}}</mat-option>
+                                                    <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                 </mat-select>
 
                                             </mat-form-field>
                                             <mat-form-field class="frm-data">
-                                                @{{step1Data.duty_from2}}
+                                                
                                                 <!-- inspectionBodyForm.duty_from1 >= item.key -->
                                                 <mat-label>To</mat-label>
                                                 <!-- <input matInput type='time' placeholder="" name="duty_to1"  [(ngModel)]="inspectionBodyForm.duty_to1"> -->
@@ -549,13 +549,15 @@
                                                 <!-- <mat-radio-button></mat-radio-button> -->
                                             <mat-form-field class="frm-data">
                                                 <mat-label>From</mat-label>
+                                                <!-- @{{step1Data.duty_from2}} -->
                                                 <!-- <input matInput type='time' placeholder="" name="duty_from2"  [(ngModel)]="inspectionBodyForm.duty_from2"> -->
                                                 <mat-select placeholder="Select" name="duty_from2" [(ngModel)]="step1Data.duty_from2">
-                                                    <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.val">{{item.val}}</mat-option>
+                                                    <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
                                             <mat-form-field class="frm-data">
                                                 <mat-label>To</mat-label>
+                                                <!-- @{{step1Data.duty_to2}} -->
                                                 <!-- <input matInput type='time' placeholder="" name="duty_to2"  [(ngModel)]="inspectionBodyForm.duty_to2"> -->
                                                 <mat-select placeholder="Select" (selectionChange)="dayTimeChange($event,2)" name="duty_to2" [(ngModel)]="step1Data.duty_to2">
                                                     <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
@@ -569,7 +571,7 @@
                                                 <mat-label>From</mat-label>
                                                 <!-- <input matInput type='time' placeholder="" name="duty_from3"  [(ngModel)]="inspectionBodyForm.duty_from3"> -->
                                                 <mat-select placeholder="Select"  name="duty_from3" [(ngModel)]="step1Data.duty_from3">
-                                                    <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.val">{{item.val}}</mat-option>
+                                                    <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
                                             <mat-form-field class="frm-data">
@@ -678,13 +680,13 @@
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <!-- [required]="inspectionBodyForm.is_hold_other_accreditation !='true' ? false : true" -->
-                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="scheme_name_{{i}}" [(ngModel)]="accreditationInfo[i].scheme_name" required>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExCont)" matInput placeholder="" name="scheme_name_{{i}}" [(ngModel)]="accreditationInfo[i].scheme_name" required>
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="acccreditation_body_name_{{i}}" [(ngModel)]="accreditationInfo[i].acccreditation_body_name" required>
+                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExCont)" matInput placeholder="" name="acccreditation_body_name_{{i}}" [(ngModel)]="accreditationInfo[i].acccreditation_body_name" required>
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
@@ -981,7 +983,7 @@
                                 <div class="row">
                                     <div class="col-md-12 p-0">
                                         <div class="form-subhdr">
-                                            <h5>3. PERSONNEL INFORMATION</h5>
+                                            <h5>3. PERSONAL INFORMATION</h5>
                                         </div>
                                         <hr>
                                     </div>
@@ -1162,8 +1164,8 @@
                                             <mat-form-field class="cab-data">
                                                 <!-- <mat-label>Criteria for which Accreditation is Requested</mat-label> -->
                                                 <mat-label>Scheme</mat-label>
-                                                <mat-select (selectionChange)="getCriteria(step5Data.criteria_request)" placeholder="Select" name="criteria_request"  
-                                                [(ngModel)]="step5Data.criteria_request" required>
+                                                <mat-select (selectionChange)="getCriteria(step5Data.scheme_id)" placeholder="Select" name="scheme_id"  
+                                                [(ngModel)]="step5Data.scheme_id" required>
                                                     <mat-option [value]="item.scope_accridiation.id" *ngFor="let item of criteriaMaster; let k=index;">{{item.title}}</mat-option>
                                                 </mat-select>
                                                 <mat-error></mat-error> 
@@ -1865,6 +1867,7 @@
                                 (after-load-complete)="completeLoadPDF($event)"
                                 [render-text]="true">
                             </pdf-viewer>
+                            <button class="submit-bttn submit-health" (click)="closeChecklistDialog()">AGREE</button>
                         </div>
                         <div class="modal-footer">
                         </div>

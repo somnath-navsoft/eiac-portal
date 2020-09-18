@@ -32,6 +32,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   public ownOrgMembInfo: Array<any> = [{}];
   public proficiencyTesting: Array<any> = [];
   public accreditationInfo: Array<any> = [{}];
+  //public accreditationInfo: any;
   public technicalManager: any = {};
   public managementManager: any = {}
   public inspectionBodyInfo:Array<any>=[];
@@ -482,7 +483,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     //this.step1Data.accredation_criteria = 1;//
     //this.step1Data.certificate_delivery_addr = true;
     
-    this.inspectionBodyForm.criteria_request = 'ISO/IEC17020';
+    //this.inspectionBodyForm.criteria_request = 'ISO/IEC17020';
     // this.titleService.setTitle('EIAC - Inspection Bodies');
     this.addMinutesToTime = this.Service.addMinutesToTime();
     //this.dynamicScopeModelValues[0] = {};
@@ -585,11 +586,11 @@ export class InspectionBodiesFormComponent implements OnInit {
     await countryList.subscribe(record => {
       ///console.log(record,'contry record :: ', this.step1Data.country);
       this.getCountryLists = record['countries'];
-      let getC = this.getCountryLists.find(rec => rec.name == this.profileCountrySel);
-      console.log('>>>> country: ', getC);
-      if(getC){
-        this.step1Data.country = getC.id;
-      }
+      // //let getC = this.getCountryLists.find(rec => rec.name == this.profileCountrySel);
+      // console.log('>>>> country: ', getC);
+      // if(getC){
+      //   //this.step1Data.country = getC.id;
+      // }
     });
     
   }
@@ -924,6 +925,13 @@ export class InspectionBodiesFormComponent implements OnInit {
         if(getData.data.accredation_criteria  != ''){
           this.step1Data.accredation_criteria = getData.data.accredation_criteria.toString();
         }
+        if(getData.data.criteria_request  != ''){
+          this.step1Data.criteria_request = getData.data.criteria_request;
+        }
+        if(getData.data.ptParticipation  != null){
+          this.proficiencyTesting = getData.data.ptParticipation;
+        }
+
         // if(getData.data.official_commercial_name  != ''){
         //   this.step1Data.official_commercial_name = getData.data.official_commercial_name.toString();
         // }
@@ -935,21 +943,21 @@ export class InspectionBodiesFormComponent implements OnInit {
           this.step1Data.date_of_establishment = getData.data.date_of_establishment;
           this.step1Data.date_of_issue = getData.data.date_of_issue;
         }
-        if(getData.data.duty_from1 != null && getData.data.duty_shift != ''){
+        if(getData.data.duty_from1 != null && getData.data.duty_shift != '' && getData.data.duty_shift == 1){
           
           this.step1Data.duty_shift = getData.data.duty_shift.toString();
           this.step1Data.duty_from1 = getData.data.duty_from1.toString();
           this.step1Data.duty_to1   = getData.data.duty_to1.toString();
           console.log(">>>Working time: 1 ", this.step1Data.duty_shift);
         }
-        if(getData.data.duty_from2 != null && getData.data.duty_shift != ''){
+        if(getData.data.duty_from2 != null && getData.data.duty_shift != ''  && getData.data.duty_shift == 2){
           
           this.step1Data.duty_shift = getData.data.duty_shift.toString();
           this.step1Data.duty_from2 = getData.data.duty_from2.toString();
           this.step1Data.duty_to2   = getData.data.duty_to2.toString();
           console.log(">>>Working time: 2 ", this.step1Data.duty_shift);
         }
-        if(getData.data.duty_from3 != null && getData.data.duty_shift != ''){
+        if(getData.data.duty_from3 != null && getData.data.duty_shift != ''  && getData.data.duty_shift == 3){
           
           this.step1Data.duty_shift = getData.data.duty_shift.toString();
           this.step1Data.duty_from3 = getData.data.duty_from3.toString();
@@ -964,11 +972,57 @@ export class InspectionBodiesFormComponent implements OnInit {
               this.step1Data.is_main_activity_note = getData.data.is_main_activity_note.toString();
             }
         }
+        if(getData.data.country != undefined && getData.data.country > 0){
+          this.step1Data.country = getData.data.country;
+        }
+
+        //Accreditation Info
+        //this.accreditationInfo
+        if(getData.data.otherAccr != undefined && getData.data.otherAccr.length > 0){
+          console.log('>>>Accr infor: ', getData.data.otherAccr);
+          this.accreditationInfo = [];
+          this.step1Data.is_hold_other_accreditation_select = "1";
+          //this.accreditationInfo = '';
+          let temp: any[];
+          getData.data.otherAccr.forEach((item, key) => {
+               //console.log('>> ', item, " :: ", key);
+               let data: any;
+               data = item['value'];
+               var obj1 = data.replace(/'/g, "\"");
+               let jparse = JSON.parse(obj1);
+               this.accreditationInfo.push(jparse);
+               console.log('>> parse: ', jparse);
+          })
+          console.log('>>>Info: ', this.accreditationInfo);
+           
+        }else{
+          //this.accreditationInfo = [{}];
+          this.step1Data.is_hold_other_accreditation_select = "0";
+        }
+
+
 
         //Step 2
-
+        
 
         //Step 3
+
+        if(getData.data.technicalManager != undefined && getData.data.technicalManager.length > 0){
+          let getTechData: any = getData.data.technicalManager[0];
+          this.step3Data.name_technical = getTechData.name;
+          this.step3Data.designation_technical = getTechData.designation;
+          this.step3Data.mobile_no_technical = getTechData.mobile_no;
+          this.step3Data.tech_email_technical = getTechData.email;
+          this.step3Data.relevent_experience_technical = getTechData.relevent_experience;
+        }
+        if(getData.data.managementManager != undefined && getData.data.managementManager.length > 0){
+          let getMangData: any = getData.data.managementManager[0];
+          this.step3Data.management_name = getMangData.name;
+          this.step3Data.management_designation = getMangData.designation;
+          this.step3Data.management_mobile_no = getMangData.mobile_no;
+          this.step3Data.management_email = getMangData.email;
+          this.step3Data.management_relevent_experience = getMangData.relevent_experience;
+        }
 
         //Step 4
         if(getData.data.audit_date != null){
@@ -982,7 +1036,11 @@ export class InspectionBodiesFormComponent implements OnInit {
         //pending
 
         //Step 6
-
+        if(getData.data.is_prelim_visit != null){
+          this.step6Data.prelim_visit_val = (getData.data.is_prelim_visit) ? "1" : "0";
+        }
+        this.step1Data.prelim_visit_select_date = getData.data.prelim_visit_date;
+        this.step1Data.prelim_visit_select_time = getData.data.prelim_visit_time;
 
       }
     );
@@ -1029,7 +1087,7 @@ export class InspectionBodiesFormComponent implements OnInit {
               }
             });
 
-            this.profileCountrySel = data.country;
+            //this.profileCountrySel = data.country;
             //this.step1Data.country = data.country;
             this.step1Data.state = data.state;
             this.step1Data.city = data.city;
@@ -1583,8 +1641,6 @@ export class InspectionBodiesFormComponent implements OnInit {
                     
                   }
                 }, 100)
-
-
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -1711,14 +1767,14 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.inspectionBodyForm = {};
     this.inspectionBodyForm.step1 = {};
     //
-    if(this.step1Data.criteria_request != undefined){
-      let schemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id);
-      console.log("scheme data: ", schemeData);
-      if(schemeData){
-        this.step1Data.criteria_request = schemeData.title;
-        this.inspectionBodyForm.step1['scheme'] = schemeData.scope_accridiation.id;
-      }
-    }
+    // if(this.step1Data.criteria_request != undefined){
+    //   let schemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id);
+    //   console.log("scheme data: ", schemeData);
+    //   if(schemeData){
+    //     this.step1Data.criteria_request = schemeData.title;
+    //     this.inspectionBodyForm.step1['scheme'] = schemeData.scope_accridiation.id;
+    //   }
+    // }
     // if(this.step1Data.is_bod != undefined && this.step1Data.is_bod == 1){
     //   this.step1Data.is_bod = "true";
     // }
@@ -1751,24 +1807,25 @@ export class InspectionBodiesFormComponent implements OnInit {
     // this.inspectionBodyForm.step1['accreditationInfo'] = [];
     
     // if(!this.Service.isObjectEmpty(this.ownOrgBasicInfo[0])) {
-    //   this.inspectionBodyForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
+    //   //this.inspectionBodyForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
     // }
     // if(!this.Service.isObjectEmpty(this.ownOrgMembInfo[0])) {
-    //   this.inspectionBodyForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
+    //   //this.inspectionBodyForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
     // }
     // if(!this.Service.isObjectEmpty(this.accreditationInfo[0])) {
     //   this.inspectionBodyForm.step1['accreditationInfo'] = this.accreditationInfo;
     // }
-    let scopeValues: any =[];
-    let scopeIds:any =[];
-    let scopeSelValues:any =[];
-    //console.log("dynamic ", this.dynamicScopeModel, " -- ", this.dynamicScopeFieldColumns);
-    var key = '';
-    var key2 = '';
-    let resultAr: any={};
-    let scopeCollections: any={};
-    scopeCollections['scope_heading'] = {};
-    scopeCollections['scope_value'] = [];
+
+    // let scopeValues: any =[];
+    // let scopeIds:any =[];
+    // let scopeSelValues:any =[];
+    // //console.log("dynamic ", this.dynamicScopeModel, " -- ", this.dynamicScopeFieldColumns);
+    // var key = '';
+    // var key2 = '';
+    // let resultAr: any={};
+    // let scopeCollections: any={};
+    // scopeCollections['scope_heading'] = {};
+    // scopeCollections['scope_value'] = [];
 
     // this.dynamicScopeFieldColumns.forEach((item,key) => {
     //     //console.log(item);
@@ -1884,20 +1941,20 @@ export class InspectionBodiesFormComponent implements OnInit {
     //return;    
     //this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
     //&& this.tradeLicensedValidation != false
-    if(ngForm1.form.valid ) {
+    if(ngForm1.form.valid && type == undefined) {
 
       if(this.step1Data.is_bod_select != undefined && this.step1Data.is_bod_select == 1){
-        this.step1Data.is_bod = "true";
+        this.step1Data.is_bod = true;
       }
       if(this.step1Data.is_bod_select != undefined && this.step1Data.is_bod_select == 0){
-        this.step1Data.is_bod = "false";
+        this.step1Data.is_bod = false;
       }//
   
       if(this.step1Data.is_hold_other_accreditation_select != undefined && this.step1Data.is_hold_other_accreditation_select == 1){
-        this.step1Data.is_hold_other_accreditation = "true";
+        this.step1Data.is_hold_other_accreditation = true;
       }
       if(this.step1Data.is_hold_other_accreditation_select != undefined && this.step1Data.is_hold_other_accreditation_select == 0){
-        this.step1Data.is_hold_other_accreditation = "false";
+        this.step1Data.is_hold_other_accreditation = false;
       }
       
       this.inspectionBodyForm.email = this.userEmail;
@@ -1909,12 +1966,13 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.inspectionBodyForm.step1['ownOrgMembInfo'] = [];
       this.inspectionBodyForm.step1['accreditationInfo'] = [];
       
-      // if(!this.Service.isObjectEmpty(this.ownOrgBasicInfo[0])) {
-      //   //this.inspectionBodyForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
-      // }
-      // if(!this.Service.isObjectEmpty(this.ownOrgMembInfo[0])) {
-      //   //this.inspectionBodyForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
-      // }
+      if(!this.Service.isObjectEmpty(this.ownOrgBasicInfo[0])) {
+
+        this.inspectionBodyForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
+      }
+      if(!this.Service.isObjectEmpty(this.ownOrgMembInfo[0])) {
+        this.inspectionBodyForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
+      }
       if(!this.Service.isObjectEmpty(this.accreditationInfo[0])) {
         this.inspectionBodyForm.step1['accreditationInfo'] = this.accreditationInfo;
       }
@@ -1942,7 +2000,7 @@ export class InspectionBodiesFormComponent implements OnInit {
               this.formApplicationId = data.application_id;
               console.log(this.formApplicationId,'App id assigned')
             }
-            this.toastr.success(res['msg'],);
+            //this.toastr.success(res['msg'],);
             this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
@@ -1979,7 +2037,7 @@ export class InspectionBodiesFormComponent implements OnInit {
           res => {
             console.log(res,'res')
             if(res['status'] == true) {
-              this.toastr.success(res['msg'],);
+              //this.toastr.success(res['msg'],);
               //this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
               this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
             }else{
@@ -2009,6 +2067,21 @@ export class InspectionBodiesFormComponent implements OnInit {
     if(this.proficiencyTesting.length > 0 && this.step2Data.proficiency_testing_val > 0) {
       this.inspectionBodyForm.step2['proficiencyTesting'] = this.proficiencyTesting;
     }
+        
+        this.proficiencyTesting.forEach((rec,key) => {
+              let dtFormat = '';
+             if(rec.participation_date != undefined && rec.participation_date._i != undefined){
+              var dtData = rec.participation_date._i;
+              var year = dtData.year;
+              var month = dtData.month;
+              var date = dtData.date;
+            }
+            dtFormat = year + "-" + month + "-" + date;
+            console.log(">>DT: ", dtFormat);
+            this.proficiencyTesting[key].date = dtFormat;
+        })
+        console.log(">> Data: ", this.proficiencyTesting);
+
 
     //console.log("@Step2 submit...", this.inspectionBodyForm, " --- ", this.formApplicationId);
     //return;
@@ -2042,7 +2115,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         res => {
           console.log(res,'res...')
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            //this.toastr.success(res['msg'], '');
             this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
@@ -2061,7 +2134,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         res => {
           console.log(res,'res')
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            //this.toastr.success(res['msg'], '');
             console.log('save draft....2');
             setTimeout(()=> {
               this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
@@ -2149,7 +2222,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         res => {
           console.log(res,'res')
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            //this.toastr.success(res['msg'], '');
             this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
@@ -2168,7 +2241,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       res => {
         console.log(res,'res')
         if(res['status'] == true) {
-          this.toastr.success(res['msg'], '');
+          //this.toastr.success(res['msg'], '');
           setTimeout(()=> {
             this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
           },2000)          
@@ -2215,7 +2288,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         res => {
           console.log(res,'res')
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            //this.toastr.success(res['msg'], '');
             this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
@@ -2229,7 +2302,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       res => {
         console.log(res,'res')
         if(res['status'] == true) {
-          this.toastr.success(res['msg'], '');
+          //this.toastr.success(res['msg'], '');
           setTimeout(()=> {
             this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
           },2000) 
@@ -2297,7 +2370,7 @@ export class InspectionBodiesFormComponent implements OnInit {
           console.log(res,'res')
           this.isPrelimSubmitted = false;
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            //this.toastr.success(res['msg'], '');
             this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
@@ -2311,7 +2384,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       res => {
         console.log(res,'res')
         if(res['status'] == true) {
-          this.toastr.success(res['msg'], '');
+          //this.toastr.success(res['msg'], '');
           //this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
           setTimeout(()=> {
             this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
@@ -2481,7 +2554,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         res => {
           console.log(res,'res')
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            //this.toastr.success(res['msg'], '');
             this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');

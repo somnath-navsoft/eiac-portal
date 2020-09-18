@@ -107,14 +107,14 @@ export class ClientCabProfileComponent implements OnInit {
     this.step1Data.fax_with_area = '';
     this.step1Data.office_address = '';
     this.step1Data.officephone_with_area = '';
-    this.step1Data.trade_license_number = '';
-    this.step1Data.applicant_commercial_name = '';
-    this.step1Data.applicant_location = '';
-    this.step1Data.applicant_mailing_address = '';
-    this.step1Data.applicant_phone_with_area = '';
-    this.step1Data.applicant_fax_with_area = '';
+    this.step2Data.trade_license_number = '';
+    this.step2Data.applicant_commercial_name = '';
+    this.step2Data.applicant_location = '';
+    this.step2Data.applicant_mailing_address = '';
+    this.step2Data.applicant_phone_with_area = '';
+    this.step2Data.applicant_fax_with_area = '';
     this.step1Data.applicant_official_email = '';
-    this.step1Data.applicant_official_website = '';
+    this.step2Data.applicant_official_website = '';
 
     this.step2Data.contact_person_name = '';
     this.step2Data.contact_person_designation = '';
