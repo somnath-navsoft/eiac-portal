@@ -809,8 +809,10 @@ a:hover { text-decoration: none; }
 .authData a { color: #AA9777; text-decoration: underline; }
 .assess-dir { background: #EFEFEF; margin-top: 30px; padding-bottom: 30px; }
 span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
-
-
+.recommend  .mat-radio-button { padding: 0 10px; }
+.recommend  .mat-radio-label { font-size: 18px; font-family: 'Dubai Medium'; }
+.confirm { font-size: 18px; font-family: 'Dubai Medium'; }
+.rad-space { display: flex; justify-content: space-around; }
 
 
 .train-bdy { background: #EFEFEF; margin-top: 30px; padding-bottom: 25px; }
