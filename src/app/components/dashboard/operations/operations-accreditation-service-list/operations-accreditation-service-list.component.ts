@@ -522,7 +522,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   loadPageData(){ 
     //let url = this._service.apiServerUrl + "/" + this._constant.API_ENDPOINT.trainerAccredServList; 
     
-    //let url1 = 'https://dev-service.eiac.gov.ae/webservice/profile-service/?userType=cab_client&email=abhishek@navsoft.in';
+    //let url1 = 'https://uat-service.eiac.gov.ae/webservice/profile-service/?userType=cab_client&email=abhishek@navsoft.in';
     // console.log(">>API: ", url);
     // this._service.getwithoutData(url).subscribe(record => {
     //    console.log(">>> ", record);
