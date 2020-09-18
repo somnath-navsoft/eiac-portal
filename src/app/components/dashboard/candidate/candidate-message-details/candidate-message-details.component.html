@@ -307,7 +307,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="bttns-health bttn-review" *ngIf="approveRejectStatus == ''">
-                    <button class="cancel-bttn" type="button" (click)="approveOrReject('reject')">REJECT</button>
+                    <button class="cancel-bttn" type="button" (click)="openRejectedPop()">REJECT</button>
                     <button class="submit-bttn submit-health" type="button" (click)="approveOrReject('approve')">APPROVE</button>
                 </div>
                 <div class="bttns-health bttn-review" *ngIf="approveRejectStatus != ''">
@@ -320,3 +320,5 @@
       </div>
     </div>
   </div>
+
+  <custom-modal *ngIf="rejectedMessageId" (rejectMessageEvent)="getAllData($event)" [parent]="this" [modalType]="'reject'"></custom-modal>

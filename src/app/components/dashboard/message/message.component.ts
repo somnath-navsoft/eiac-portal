@@ -18,19 +18,21 @@ export class MessageComponent implements OnInit {
   chatMessageFile:any = new FormData();
   loader:boolean = true;
   messageList:any;
+  userId:any;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
   ngOnInit() {
     this.userType = sessionStorage.getItem('type');
     this.userEmail = sessionStorage.getItem('email');
+    this.userId = sessionStorage.getItem('userId');
     if(this.userType != 'operations')
     {
       var landUrl = '/dashboard'+this.userType+'/home'
       this.router.navigateByUrl(landUrl);
     }
     this.loader = false;
-    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.messageList+'&email='+this.userEmail)
+    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.messageList+'?id='+this.userId)
     .subscribe(
       res => {
         this.messageList = res['data'].message_list;

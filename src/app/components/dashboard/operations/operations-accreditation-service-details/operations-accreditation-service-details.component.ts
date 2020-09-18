@@ -45,20 +45,26 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit {
     // console.log(JSON.parse(data.toString()));
     // return JSON.parse(data.toString());
     // var obj = "{'include':true,'fn':'1-12'}"; //Assuming double quotes outside
-    var obj1 = data.replace(/'/g, "\""); //Replace single quotes with double quotes
-    // console.log(typeof obj1); // string
+    if(data) {
+      var obj1 = data.replace(/'/g, "\""); //Replace single quotes with double quotes
+      // console.log(typeof obj1); // string
 
-    // var myjsonobj = JSON.parse(obj1); //convert to JSON
-    return Array(JSON.parse(obj1));
+      // var myjsonobj = JSON.parse(obj1); //convert to JSON
+      return Array(JSON.parse(obj1));
+    }
   }
 
   jsonParseKeyvalue(data) {
-    var obj1 = data.replace(/'/g, "\"");
-    return JSON.parse(obj1);
+    if(data) {
+      var obj1 = data.replace(/'/g, "\"");
+      return JSON.parse(obj1);
+    }
   }
 
   jsonParsevalue(data) {
-    return JSON.parse(data);
+    if(data) {
+      return JSON.parse(data);
+    }
   }
 
   loadData() {

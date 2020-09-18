@@ -3,6 +3,7 @@ import { Router,ActivatedRoute } from '@angular/router';
 import { Constants } from 'src/app/services/constant.service';
 import { AppService } from 'src/app/services/app.service';
 import { ToastrService } from 'ngx-toastr';
+import  { UiDialogService } from  'src/app/services/uiDialog.service';
 
 @Component({
   selector: 'app-trainers-message-details',
@@ -27,8 +28,9 @@ export class TrainersMessageDetailsComponent implements OnInit {
   specializationText:any;
   education:any;
   other_course:any;
+  rejectedMessageId:boolean = false;;
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public route: ActivatedRoute,public toastr: ToastrService) { }
+  constructor(public Service: AppService, public constant:Constants,public router: Router,public route: ActivatedRoute,public toastr: ToastrService,public uiDialog: UiDialogService) { }
 
   ngOnInit() {
     this.userType = sessionStorage.getItem('type');
@@ -61,10 +63,16 @@ export class TrainersMessageDetailsComponent implements OnInit {
         this.education = res['data'].step2[0].education != null ? JSON.parse(res['data'].step2[0].education) : '';
 
         this.qualificationFile = this.constant.mediaPath+this.cabStep2.qualification_file;
-        this.qualificationText = this.cabStep2.qualification_file != null ? this.cabStep2.qualification_file.split('/') : '';
+        var qualification = this.cabStep2.qualification_file != null ? this.cabStep2.qualification_file.split('/') : '';
+        this.qualificationText = qualification[4];
         this.specializationFile = this.constant.mediaPath+this.cabStep2.specialization_file;
-        this.specializationText = this.cabStep2.specialization_file != null ? this.cabStep2.specialization_file.split('/') : '';
+        var specialization = this.cabStep2.specialization_file != null ? this.cabStep2.specialization_file.split('/') : '';
+        this.specializationText = specialization[4];
     });
+  }
+
+  openRejectedPop() {
+    this.rejectedMessageId = true;
   }
 
   tabClick(id) {
@@ -93,10 +101,24 @@ export class TrainersMessageDetailsComponent implements OnInit {
           this.approveRejectStatus = '1';
       });
       
-    }else if(status == 'reject') {
-      this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileApproval+'?id='+this.routeId+'&status=2')
+    }
+    // else if(status == 'reject') {
+    //   this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileApproval+'?id='+this.routeId+'&status=2')
+    //   .subscribe(
+    //     res => {
+    //       this.approveRejectStatus = '2';
+    //   });
+      
+    // }
+  }
+
+  getAllData(event) {
+    // console.log(event);
+    if(event.rejectId == 2) {
+      this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileApproval+'?id='+this.routeId+'&status=2'+'&message='+event.message)
       .subscribe(
         res => {
+          this.toastr.success('Message sent successfully', '');
           this.approveRejectStatus = '2';
       });
       
