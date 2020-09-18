@@ -30,7 +30,7 @@ export class MessageComponent implements OnInit {
       this.router.navigateByUrl(landUrl);
     }
     this.loader = false;
-    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.messageList)
+    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.messageList+'&email='+this.userEmail)
     .subscribe(
       res => {
         this.messageList = res['data'].message_list;
