@@ -12,6 +12,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
 import { TrainerService } from '../../../../../services/trainer.service';
+import { typeWithParameters } from '@angular/compiler/src/render3/util';
 
 declare let paypal: any;
 @Component({
@@ -928,9 +929,9 @@ export class InspectionBodiesFormComponent implements OnInit {
         if(getData.data.criteria_request  != ''){
           this.step1Data.criteria_request = getData.data.criteria_request;
         }
-        if(getData.data.ptParticipation  != null){
-          this.proficiencyTesting = getData.data.ptParticipation;
-        }
+        // if(getData.data.ptParticipation  != null){
+        //   this.proficiencyTesting = getData.data.ptParticipation;
+        // }
 
         // if(getData.data.official_commercial_name  != ''){
         //   this.step1Data.official_commercial_name = getData.data.official_commercial_name.toString();
@@ -1003,7 +1004,13 @@ export class InspectionBodiesFormComponent implements OnInit {
 
 
         //Step 2
-        
+        if(getData.data.ptParticipation != undefined && getData.data.ptParticipation.length > 0){
+          this.step2Data.proficiency_testing_val = "1";
+          this.proficiencyTesting = getData.data.ptParticipation;
+
+        }else{
+          this.step2Data.proficiency_testing_val = "0";
+        }
 
         //Step 3
 
@@ -1038,10 +1045,20 @@ export class InspectionBodiesFormComponent implements OnInit {
         //Step 6
         if(getData.data.is_prelim_visit != null){
           this.step6Data.prelim_visit_val = (getData.data.is_prelim_visit) ? "1" : "0";
+          this.step6Data.prelim_visit_select_date = getData.data.prelim_visit_date;
+        this.step6Data.prelim_visit_select_time = getData.data.prelim_visit_time;
         }
-        this.step1Data.prelim_visit_select_date = getData.data.prelim_visit_date;
-        this.step1Data.prelim_visit_select_time = getData.data.prelim_visit_time;
-
+        //Step 7
+        if(getData.data.onBehalfApplicantDetails != null && getData.data.onBehalfApplicantDetails != undefined){
+          let getAuthData = getData.data.onBehalfApplicantDetails[0];
+          console.log(">>> Auth data: ", getAuthData);
+          this.step7Data.organization_name        = getAuthData.organization_name;
+          this.step7Data.representative_name      = getAuthData.representative_name;
+          this.step7Data.designation              = getAuthData.designation;
+          this.step7Data.digital_signature        = getAuthData.digital_signature;
+          this.step7Data.application_date         = getAuthData.application_date;
+        }
+        
       }
     );
   }
@@ -1095,7 +1112,7 @@ export class InspectionBodiesFormComponent implements OnInit {
             if(data.trade_license != ''){
               let getFile = data.trade_license.toString().split('/');
               if(getFile.length){
-                this.selectTradeLicName = getFile[4].split('.').pop();
+                this.selectTradeLicName = getFile[4].toString().split('.')[0];
                 this.selectTradeLicPath = this.constant.mediaPath +  data.trade_license.toString();
               }
             }
