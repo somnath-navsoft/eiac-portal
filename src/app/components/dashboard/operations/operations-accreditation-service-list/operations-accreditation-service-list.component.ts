@@ -161,7 +161,8 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
 
   // Modal Actions
   open(content, id: number) {
-    
+    this.voucherSentData = {};
+    this.paymentReceiptValidation = null;
     this.modalService.open(content, this.modalOptions).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -182,7 +183,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
      console.log("Valid/Invalid: ", theForm.form, " -- ", this.voucherSentData);
      let postObject: any = {};
 
-     if(theForm.form.valid){
+     if(theForm.form.valid && this.paymentReceiptValidation === true){
           let dtFormat: string = '';;
           if(this.voucherSentData['voucher_date'] != undefined && 
           this.voucherSentData['voucher_date']._i != undefined){
@@ -213,8 +214,11 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
             )
           )
 
-     }else{
-      this._toaster.warning('Please Fill required field','Validation Error',{timeOut:5000});
+     }else if(theForm.form.valid && (this.paymentReceiptValidation == false || this.paymentReceiptValidation == null)){
+      this._toaster.warning('Please Upload Valid Files','Upload Error',{timeOut:5000});
+     }
+     else{
+      this._toaster.warning('Please Fill required fields','Validation Error',{timeOut:5000});
      }
   }
 
