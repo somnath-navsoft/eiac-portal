@@ -883,7 +883,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         let data: any;
         let pathData: any;
         let filePath: string;
-        //console.log(getData,"get APP Data:");
+        console.log(getData,"get APP Data:");
 
         if(getData.data.id != undefined && getData.data.id > 0){
           this.formApplicationId = getData.data.id;
@@ -1089,7 +1089,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     //let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
     let getUserdata = '';
   let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
-  //console.log("app info: ", url);
+  console.log("app info: ", url);
   this.Service.getwithoutData(url)
     .subscribe(
       res => {

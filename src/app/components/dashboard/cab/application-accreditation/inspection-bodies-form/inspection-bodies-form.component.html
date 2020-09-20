@@ -698,9 +698,12 @@
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input matInput onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" (click)="Service._openCalendar(certificate_expiry_date)" [matDatepicker]="certificate_expiry_date" (dateChange)="Service.inputEvent($event,i,accreditationInfo)" readonly="true" placeholder="Date of Issue" name="certificate_expiry_date_{{i}}" [(ngModel)]="accreditationInfo[i].certificate_expiry_date" required>
+                                                                    <!-- <input matInput onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" (click)="Service._openCalendar(certificate_expiry_date)" [matDatepicker]="certificate_expiry_date" (dateChange)="Service.inputEvent($event,i,accreditationInfo)" readonly="true" placeholder="Date of Issue" name="certificate_expiry_date_{{i}}" [(ngModel)]="accreditationInfo[i].certificate_expiry_date" required>
                                                                     <mat-datepicker-toggle matSuffix [for]="certificate_expiry_date"></mat-datepicker-toggle>
-                                                                    <mat-datepicker #certificate_expiry_date disabled="false"></mat-datepicker>
+                                                                    <mat-datepicker #certificate_expiry_date disabled="false"></mat-datepicker> -->
+                                                                    <input matInput onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" (click)="Service._openCalendar(converted_date)" [matDatepicker]="converted_date" (dateChange)="Service.inputEvent($event,i,accreditationInfo)" readonly="true" placeholder="Date of Issue" name="converted_date_{{i}}" [(ngModel)]="accreditationInfo[i].converted_date" required>
+                                                                    <mat-datepicker-toggle matSuffix [for]="converted_date"></mat-datepicker-toggle>
+                                                                    <mat-datepicker #converted_date disabled="false"></mat-datepicker>
                                                                 </mat-form-field>
                                                                 </td>
                                                             <td class="content-icn">
@@ -1528,7 +1531,7 @@
 
                                                 <button class="cancel-bttn" type="button" (click)="onSubmitUndertakingApplicant(ngForm6, true)">SAVE AS DRAFT</button>
                                             </div>
-                                            <button class="submit-bttn submit-health"  *ngIf="!transactions.length">PROCEEDS FOR PAYMENT</button>
+                                            <button class="submit-bttn submit-health"  *ngIf="!transactions.length">PROCEED FOR PAYMENT</button>
                                             <ng-container *ngIf="transactions.length">
                                                 <div id="paypalPayment"></div>
                                             </ng-container>                                                 
@@ -1547,8 +1550,7 @@
                             <span aria-hidden="true">&times;</span>
                           </button> -->
                         </div>
-                        <div class="modal-body"> 
-                            <button class="submit-bttn submit-health" (click)="agreeView()">AGREE</button>
+                        <div class="modal-body">                            
                             <app-loader *ngIf="loaderPdf"></app-loader>
                             <p *ngIf="errorLoader">Error Loading PDF</p>
                             <div class="pdf-parent">
@@ -1558,6 +1560,7 @@
                                 (after-load-complete)="completeLoadPDF($event)"
                                 [render-text]="true">
                             </pdf-viewer>
+                            <button class="submit-bttn submit-health" (click)="agreeView()">AGREE</button>
                             </div>
                             <!-- openModal() {
                                 this.bsModalRef = this.modalService.show(modalComponent, {class: 'modal-lg'});
