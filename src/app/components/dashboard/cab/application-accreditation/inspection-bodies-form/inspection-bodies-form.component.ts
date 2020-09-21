@@ -157,6 +157,9 @@ export class InspectionBodiesFormComponent implements OnInit {
   profileAutoData: boolean = false;
   criteriaList: any = [];
 
+  formDraftsaved: any;
+  formAccrStatus: any;
+
   //dynamicScopeOptions:any[] = [];  
   //dynamicScopeModelValues:any={};
   //dynamicFirstFieldValues:any;
@@ -887,6 +890,8 @@ export class InspectionBodiesFormComponent implements OnInit {
 
         if(getData.data.id != undefined && getData.data.id > 0){
           this.formApplicationId = getData.data.id;
+          this.formDraftsaved = getData.data.is_draft;
+          this.formAccrStatus = getData.data.accr_status;
         }
 
         if(!this.Service.isObjectEmpty(getData.data.paymentDetails)){
@@ -930,9 +935,9 @@ export class InspectionBodiesFormComponent implements OnInit {
           this.step1Data.criteria_request = getData.data.criteria_request;
         }
 
-        // if(getData.data.ptParticipation  != null){
-        //   this.proficiencyTesting = getData.data.ptParticipation;
-        // }
+        if(getData.data.ptParticipation  != null){
+          this.proficiencyTesting = getData.data.ptParticipation;
+        }
 
         // if(getData.data.official_commercial_name  != ''){
         //   this.step1Data.official_commercial_name = getData.data.official_commercial_name.toString();
@@ -1059,7 +1064,30 @@ export class InspectionBodiesFormComponent implements OnInit {
               this.getCriteria(this.step5Data.scheme_id);
 
               console.log("@ Scope Model: ", this.dynamicScopeModel, " -- ", this.dynamicScopeFieldColumns, " -- ", rowDetails, " -- ", rowLines);
+              //onChangeScopeOption(getValues: any, lineIndex: number, columnIndex: number, type?:string) {
+                let tempModel = [this.dynamicScopeModel];
+                console.log('model type: ', typeof this.dynamicScopeModel, " -- ", tempModel);
+                // tempModel.forEach((rec, key) =>{
+                //   console.log("scope key: ", key, " -- ",rec, " -- ", tempModel[0].fieldLines);
+                //   if(typeof rec === 'object'){
+                //      console.log('get fieldlines...');
+                //      for(var p in rec){
+                //       console.log("1 scope key: ", p, " -- ", rec[p]);
+                //      }
+                //   }
+                // })
+              // for(var k in this.dynamicScopeModel){
+              //   console.log("scope key: ", k);
+              // }
 
+              // if(this.dynamicScopeModel['fieldLines'].length){
+              //   this.dynamicScopeModel['fieldLines'].forEach((rec, key) => {
+              //          console.log("scope key: ", key, " -- ",);
+              //          let findSel = this.dynamicScopeFieldColumns.find(item => item[0].InspectionCategoryValues == key);
+              //          console.log(findSel);
+
+              //   })
+              // }
             }
         }
 
@@ -1751,6 +1779,12 @@ export class InspectionBodiesFormComponent implements OnInit {
     //  }else{
     //   this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     // } 
+    //&& this.formAccrStatus ==
+    if(this.formApplicationId > 0 ){
+        console.log(">>>find ID");
+        this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+      return;
+    }
     
     ////console.log("Submit calling: ", this.step1Data);
     //return;
@@ -1838,7 +1872,37 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.step1Data.official_email = " ";
     }
 
-    
+    if(this.step1Data.duty_shift == '1'){
+      this.step1Data.duty_from2 = '00:00:00'
+      this.step1Data.duty_to2 = '00:00:00';
+      this.step1Data.duty_from3 = '00:00:00'
+      this.step1Data.duty_to3 = '00:00:00';
+    }
+    if(this.step1Data.duty_shift == '2'){
+      this.step1Data.duty_from1 = '00:00:00'
+      this.step1Data.duty_to1 = '00:00:00';
+      this.step1Data.duty_from3 = '00:00:00';
+      this.step1Data.duty_to3 = '00:00:00';
+    }
+    if(this.step1Data.duty_shift == '3'){
+      this.step1Data.duty_from2 = '00:00:00'
+      this.step1Data.duty_to2 = '00:00:00';
+      this.step1Data.duty_from1 = '00:00:00'
+      this.step1Data.duty_to1 = '00:00:00';
+    }
+
+    if(this.step1Data.duty_from1 == undefined){
+      this.step1Data.duty_from1 = ''
+      this.step1Data.duty_to1 = '';
+    }
+    if(this.step1Data.duty_from2 == undefined){
+      this.step1Data.duty_from2 = ''
+      this.step1Data.duty_to2 = '';
+    }
+    if(this.step1Data.duty_from3 == undefined){
+      this.step1Data.duty_from3 = ''
+      this.step1Data.duty_to3 = '';
+    }
 
 
     this.inspectionBodyForm.step1 = this.step1Data;      
@@ -2016,12 +2080,14 @@ export class InspectionBodiesFormComponent implements OnInit {
       if(!this.Service.isObjectEmpty(this.accreditationInfo[0])) {
         this.inspectionBodyForm.step1['accreditationInfo'] = this.accreditationInfo;
       }
+
+      this.inspectionBodyForm.step1.application_id = this.formApplicationId;
       
       //return;
       //this.inspectionBodyForm.step1['trade_license'] = this.step1DataBodyFormFile;
       // this.inspectionBodyForm.step1.is_draft = false;
-      //console.log(">>> First Step Data: ", this.inspectionBodyForm);
-      //return;
+      console.log(">>> First Step Data: ", this.inspectionBodyForm);
+     //return;
       //this.step1DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
           // this.toastr.success('Application Successfully Submitted', '');
           // setTimeout(()=> {
@@ -2062,6 +2128,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     }else if(!ngForm1.form.valid && type != undefined && type == true){
         //console.log("save a draft...");
         this.inspectionBodyForm.step1.is_draft = true;
+        this.inspectionBodyForm.step2.application_id = this.formApplicationId;
         this.inspectionBodyForm.saved_step = 1;
         if(this.step1DataBodyFormFile != undefined){
           //this.inspectionBodyForm.step1['trade_license'] = this.step1DataBodyFormFile;

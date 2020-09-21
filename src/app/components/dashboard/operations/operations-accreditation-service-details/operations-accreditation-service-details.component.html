@@ -4,7 +4,7 @@
     <app-sidebar-after-login></app-sidebar-after-login>
 </div> -->
 <div class="main-detail">
-  <div class="container-fluid">
+  <div class="container-fluid p-0">
     <div class="main-dashboard-cnt">
       <div class="row m-0">
         <div class="col-md-12 message-det">
@@ -190,7 +190,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 mb-4">
               <div class="status-main-details">
                 <div class="status-data">
                   <p>{{row.name}}, </p>
@@ -274,8 +274,8 @@
                 </div>
               </div>
               <div class="status_main">
-                <div class="row">
-                  <div class="col-md-6 pr-0" *ngFor="let row2 of bodMember; let i1 = index;">
+                <div class="row m-0">
+                  <div class="col-md-6 p-0" *ngFor="let row2 of bodMember; let i1 = index;">
                     <div class="members_details">
                       <h4>{{row2.name}}</h4>
                       <p class="address_details">{{row2.company_list}}</p>
@@ -730,7 +730,7 @@
               <div class="auth-details">
                   <table>
                       <tr>
-                          <td width="1%"><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
+                          <td width="1%"><span class="icon-tick"></span></td>
                           <td>Quality Manual</td>
                       </tr>
                       <tr>
@@ -738,6 +738,22 @@
                           <td>
                             <a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled In Document Review Checklist based on the related standard </a>(for 1st submission only)
                           </td>
+                      </tr>
+                      <tr>
+                          <td><span class="icon-tick"></span></td>
+                          <td>Minutes/Report of last Management Review</td>
+                      </tr>
+                      <tr>
+                          <td><span class="icon-tick"></span></td>
+                          <td>Report of last Internal Audit</td>
+                      </tr>
+                      <tr>
+                          <td><span class="icon-tick"></span></td>
+                          <td>Participation in PT/ILC/Measurement Audit</td>
+                      </tr>
+                      <tr>
+                          <td><span class="icon-tick"></span></td>
+                          <td>List of key staff and Organizational Structure if not mentioned in the QM</td>
                       </tr>
                       <tr>
                           <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>

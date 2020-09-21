@@ -42,7 +42,26 @@
 .sign_name h5 { color: #222222; font-size: 20px; font-family: 'Dubai Regular'; margin-top: 10px; margin-bottom: 0; }
 .sign_name p { font-size: 16px; font-family: 'Dubai Regular'; color: #717171; }
 .wrapper_name { display: flex; flex-flow: column; align-items: center; }
-.status_bttn a { width: inherit; display: inline-block; padding: 10px 40px; line-height: inherit; text-transform: uppercase; font-size: 18px; display: flex; align-items: center; margin: 0; margin-top: 50px; }
+.status_bttn a {
+  width: inherit;
+  display: inline-block;
+  padding: 10px 40px;
+  line-height: inherit;
+  text-transform: uppercase;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  margin-top: 50px;
+  background: #B14A56;
+  border-radius: 5px;
+  color: #fff;
+}
+.status_bttn a:hover {
+  background: #AA9777;
+  text-decoration: none;
+  color: #fff;
+}
 .status_bttn { display: flex; justify-content: flex-start; }
 .main_app_wrap { display: flex; justify-content: space-between; height: 100%; align-items: center; }
 .main_app_wrap .appln-data { text-align: left; }
@@ -56,4 +75,8 @@
   // .main_app_wrap { flex-direction: column; }
   .appln-data h3 { font-size: 22px; }
   .appln-details span { font-size: 13px; }
+  .status_details { padding-right: 10px; }
+  .status_details span { margin-right: 5px; }
+  .main_app_wrap { margin: 0 -5px; }
+  .complete span { padding: 0 5px; }
 }

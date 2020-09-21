@@ -84,6 +84,13 @@ export class TrainerService {
     return this.http.put(url, postData, this._service.getReqHeaders());
   }
 
+  updateStatus(postId: number){  
+    var postData = ''
+    const url = `${this._service.apiServerUrl}`+"/"+this._constants.API_ENDPOINT.accrStatus + postId;
+    //console.log("Update URL: ", url);
+    return this.http.put(url, postData, this._service.getReqHeaders());
+  }
+
   /******************************
   * Search Section
   * Start
