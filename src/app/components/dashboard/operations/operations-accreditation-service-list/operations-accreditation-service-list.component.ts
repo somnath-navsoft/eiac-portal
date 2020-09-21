@@ -73,6 +73,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   selectDeleteID: number = 0;
   voucherFile:any = new FormData();
   paymentReceiptValidation: boolean = true;
+  loader:boolean = true;
 
   deleteConfirm: boolean = false;
   private store: Store<TrainerState>;
@@ -122,6 +123,26 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     // }, (reason) => {
     //   this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     // });
+  }
+
+  serviceStatus(index,id){
+    this.loader = false;
+
+    this.subscriptions.push(this._trainerService.updateStatus(id)
+      .subscribe(
+        result => {
+          this.loader = true;
+          console.log(result,'result');
+          this.trainerdata[index].accr_status = 'Complete';
+      })
+    );
+    
+    // this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.accrStatus+id)
+    // .subscribe(
+    //   res => {
+    //     this.trainerdata[index].accr_status = 'Complete';
+    //   });
+
   }
 
   //Open View Action

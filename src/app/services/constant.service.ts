@@ -8,7 +8,7 @@ import { Subject} from 'rxjs';
 export class Constants{
 
 	public apiUrl: string 					= '';
-	public mediaPath: string 				= 'https://dev-service.eiac.gov.ae';
+	public mediaPath: string 				= 'https://uat-service.eiac.gov.ae';
 	//trainerAPI: '/trainer',
 	//all_services: this.apiUrl + 'service_page/', 
 	public API_ENDPOINT: any	=	{
@@ -55,6 +55,7 @@ export class Constants{
 		userPermissionData: this.apiUrl + 'user-permission-data/',
 		messageList: this.apiUrl + 'message-list/',
 		profileApproval: this.apiUrl + 'profile-approval/',
+		accrStatus: this.apiUrl + 'accr_status/',
 	}
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."
 	public loggedIn													=	new Subject<any>();

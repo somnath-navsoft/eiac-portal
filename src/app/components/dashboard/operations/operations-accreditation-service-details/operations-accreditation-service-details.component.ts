@@ -71,7 +71,7 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit {
     this.subscriptions.push(this._trainerService.trainerAccredDetailsServtrainerAccredDetailsServ(this.routeId)
       .subscribe(
         result => {
-          // console.log(result);
+          console.log(result,'result');
           this.serviceDetail = result['data']
           this.ownershipOfOrg = result['data']['ownershipOfOrg']
           this.bodMember = result['data']['bodMember'];
