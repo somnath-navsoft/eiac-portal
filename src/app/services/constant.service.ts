@@ -55,6 +55,7 @@ export class Constants{
 		userPermissionData: this.apiUrl + 'user-permission-data/',
 		messageList: this.apiUrl + 'message-list/',
 		profileApproval: this.apiUrl + 'profile-approval/',
+		accrStatus: this.apiUrl + 'accr_status/',
 	}
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."
 	public loggedIn													=	new Subject<any>();

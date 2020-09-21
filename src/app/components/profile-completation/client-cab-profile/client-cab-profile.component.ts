@@ -113,7 +113,7 @@ export class ClientCabProfileComponent implements OnInit {
     this.step2Data.applicant_mailing_address = '';
     this.step2Data.applicant_phone_with_area = '';
     this.step2Data.applicant_fax_with_area = '';
-    this.step1Data.applicant_official_email = '';
+    this.step2Data.applicant_official_email = '';
     this.step2Data.applicant_official_website = '';
 
     this.step2Data.contact_person_name = '';
@@ -122,6 +122,13 @@ export class ClientCabProfileComponent implements OnInit {
     this.step2Data.contact_person_phone = '';
     this.step2Data.contact_person_mobile = '';
     this.step2Data.authorised_contact = '';
+    this.step2Data.trade_license_name = '';
+    this.step2Data.date_issue = new Date();
+    this.step2Data.date_expire = new Date();
+    this.step2Data.date_establishment = new Date();
+    this.step2Data.zip = '';
+    this.step2Data.country = '';
+    this.step2Data.state = '';
     this.nameOftheOwner = [{
       name:'',
       designation:'',
