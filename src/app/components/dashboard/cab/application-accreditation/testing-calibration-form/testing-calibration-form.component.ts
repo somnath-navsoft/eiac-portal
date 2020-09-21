@@ -105,6 +105,9 @@ export class TestingCalibrationFormComponent implements OnInit {
   step5Data:any = {};
   step6Data:any = {};
   step7Data:any = {};
+  step8Data:any = {};
+  step9Data:any = {};
+  step10Data:any = {};
   fileAny:any;
   tradeLicensedValidation:any = false;
   step1DataBodyFormFile:any = new FormData();
@@ -114,6 +117,9 @@ export class TestingCalibrationFormComponent implements OnInit {
   step5DataBodyFormFile:any = new FormData();
   step6DataBodyFormFile:any = new FormData();
   step7DataBodyFormFile:any = new FormData();
+  step8DataBodyFormFile:any = new FormData();
+  step9DataBodyFormFile:any = new FormData();
+  step10DataBodyFormFile:any = new FormData();
   userEmail:any;
   userType:any;
   isCompleteness:any;
@@ -125,6 +131,8 @@ export class TestingCalibrationFormComponent implements OnInit {
   getDutyTimeForm1IndexValue:number;
   recommendStatus:boolean = false
   total: any = 0;
+  criteriaList:any[] = [];
+  userId:any;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
@@ -257,9 +265,14 @@ export class TestingCalibrationFormComponent implements OnInit {
 
   ngOnInit() { 
     
+    this.userEmail = sessionStorage.getItem('email');
+    this.userType = sessionStorage.getItem('type');
+    this.isCompleteness = sessionStorage.getItem('isCompleteness');
+    this.profileComplete = sessionStorage.getItem('profileComplete');
+    this.userId = sessionStorage.getItem('userId');
     // this.titleService.setTitle('EIAC - Testing and Calibration Laboratories');
     this.addMinutesToTime = this.Service.addMinutesToTime();
-    this.loadData();
+    this.loadAppInfo();
     this.loadFormDynamicTable();
     this.loadCountryStateCity();
     // this.loadCountryStateCity();
@@ -359,47 +372,6 @@ export class TestingCalibrationFormComponent implements OnInit {
   setexDate(date){
     let cdate = date;
     this.minDate = new Date(cdate  + (60*60*24*1000));
-  }
-  loadData(){
-    this.Service.get(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testing_cal_form_basic_data,'')
-    .subscribe(
-      res => {
-        this.testingLabScopeFields = res['testLabScopeFields'];
-        this.calLabScopeFields = res['calLabScopeFields'];
-        this.countryList = res['allCountry'];
-        this.labTypeList = res['allLabtype'];
-        //Testing Scope
-        Object.keys(res['scopeValueTl']).forEach(key => {
-          
-          this.testingLabData['part1'][this.testingLabRowCount1] = {}
-          this.testingLabData['part2'][this.testingLabRowCount2] = {}
-          this.testingLabData['part1'][this.testingLabRowCount1].field1 = res['scopeValueTl'][key].values;
-          this.testingLabData['part2'][this.testingLabRowCount2].field1 = res['scopeValueTl'][key].values;
-          this.testingLabFirstData = res['scopeValueTl'][key].values;
-
-        });
-
-        //Calibration Scope
-
-        Object.keys(res['scopeValueCl']).forEach(key => {
-          
-          this.calLabData['part1'][this.calLabRowCount1] = {}
-          this.calLabData['part2'][this.calLabRowCount2] = {}
-          this.calLabData['part1'][this.calLabRowCount1].field1 = res['scopeValueCl'][key].values;
-          this.calLabData['part2'][this.calLabRowCount2].field1 = res['scopeValueCl'][key].values;
-          this.calLabFirstData = res['scopeValueCl'][key].values;
-        });
-        //console.log("========>");
-        //console.log(this.testingLabData);
-
-      },
-      error => {
-      
-  })
-
-    if(this.testingLabScopeFields.length<1){
-      this.testingLabScopeFields=  [{},{},{},{},{},{}];
-    }
   }
   
   validateFile(fileEvent: any) {
@@ -612,7 +584,86 @@ export class TestingCalibrationFormComponent implements OnInit {
      }
   }
 
-  onSubmitApplication(ngForm1: any){
+  stepDefaultValue() {
+    this.step1Data.accredation_criteria = ''
+    this.step1Data.accreditationInfo =  [{
+      scheme_name: "", 
+      acccreditation_body_name: "", 
+      acccreditation_scope: "",
+      certificate_expiry_date:"",
+    }];
+    this.step1Data.city =  "";
+    this.step1Data.country = "";
+    this.step1Data.criteria_request = "";
+    this.step1Data.date_of_establishment = "";
+    this.step1Data.date_of_expiry = "";
+    this.step1Data.date_of_issue = "";
+    this.step1Data.duty_from1 = "";
+    this.step1Data.duty_from2 = "";
+    this.step1Data.duty_from3 = "";
+    this.step1Data.duty_shift = "";
+    this.step1Data.duty_to1 = "";
+    this.step1Data.duty_to2 = "";
+    this.step1Data.duty_to3 = "";
+    this.step1Data.fax_no = "";
+    this.step1Data.is_bod = "";
+    this.step1Data.is_bod_select = "";
+    this.step1Data.is_hold_other_accreditation = "";
+    this.step1Data.is_hold_other_accreditation_select = "";
+    this.step1Data.is_main_activity = "";
+    this.step1Data.is_main_activity_note = "";
+    this.step1Data.mailing_address = "";
+    this.step1Data.official_commercial_name = "";
+    this.step1Data.official_email = "";
+    this.step1Data.official_website = "";
+    this.step1Data.ownOrgBasicInfo = [{
+      name: "", 
+      designation: "", 
+      email: "",
+      phone_no: "",
+      mobile_no: "",
+    }];
+    this.step1Data.ownOrgMembInfo = [{
+      name: "", 
+      list_comp: "", 
+      contact_person: "",
+      designation: "",
+      mobile_no: "",
+    }]
+    this.step1Data.physical_location_address = ""
+    this.step1Data.po_box = "";
+    this.step1Data.state = "";
+    this.step1Data.telephone = "";
+  }
+
+  loadAppInfo(){
+    //let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
+    let getUserdata = '';
+    let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
+    this.Service.getwithoutData(url)
+    .subscribe(
+      res => {
+        let getData: any = res;
+        let data: any;
+        //, getData.data.step1, " -- ", getData.data.step2
+        console.log(getData,"Profile info >>> ");
+
+        if(getData.data.step1.length){
+            data = getData.data['step1'][0];
+            /////console.log('data enter...1', data);
+
+            if(data){
+              //console.log('data enter...2');
+            if(getData.data.criteriaList != undefined && getData.data.criteriaList.length){
+              //console.log(">>>Criteria list: ", getData.data.criteriaList);
+              this.criteriaList = getData.data.criteriaList;
+            }
+          }
+        }
+      })
+  }
+
+  onSubmitStep1(ngForm1: any){
     if(this.step1Data.duty_shift == '1' && typeof this.step1Data.duty_from1 == 'undefined' && typeof this.step1Data.duty_to1 == 'undefined')
     {
       this.dutyTime1 = false;
@@ -661,11 +712,13 @@ export class TestingCalibrationFormComponent implements OnInit {
     }
     this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
 
-    if(ngForm1.form.valid && this.tradeLicensedValidation != false) {
+    if(ngForm1.form.valid) {
       this.testingCalForm = {};
       this.testingCalForm.step1 = {};
       this.testingCalForm.email = this.userEmail;
       this.testingCalForm.userType = this.userType;
+      this.testingCalForm.saved_step = '1';
+      this.testingCalForm.step1.is_draft = false;
       this.testingCalForm.step1 = this.step1Data;
 
       this.testingCalForm.step1['ownOrgBasicInfo'] = [];
@@ -683,8 +736,8 @@ export class TestingCalibrationFormComponent implements OnInit {
       }
       
 
-      this.step1DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step1DataBodyFormFile)
+      // this.step1DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
           console.log(res,'res')
@@ -695,12 +748,32 @@ export class TestingCalibrationFormComponent implements OnInit {
             this.toastr.warning(res['msg'], '');
           }
         });
-    }else if(ngForm1.form.valid && this.tradeLicensedValidation == false) {
-      this.file_validation = false;
+    }else {
       this.toastr.warning('Please Fill required field','');
     }
-    else {
-      this.toastr.warning('Please Fill required field','');
+  }
+
+  savedraftStep(stepCount) {
+    if(stepCount == 'step1') {
+      this.testingCalForm.step1 = {};
+      this.testingCalForm.email = this.userEmail;
+      this.testingCalForm.userType = this.userType;
+      this.testingCalForm.userType = this.userType;
+      this.testingCalForm.isDraft = 1;
+      this.step1Data.first_name = this.step1Data.title+' '+this.step1Data.first_name;
+      this.testingCalForm.step1 = this.step1Data;
+      // this.step1DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.loader = false;
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.testingCalForm)
+      .subscribe(
+        res => {
+          if(res['status'] == true) {
+            this.toastr.success('Save draft successfully', '');
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+          this.loader = true;
+        });
     }
   }
 

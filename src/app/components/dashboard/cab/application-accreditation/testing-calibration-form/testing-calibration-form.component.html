@@ -50,129 +50,79 @@
                                     </div>
                                 </div>
 
-                                <form #ngForm1="ngForm" (ngSubmit)="onSubmitApplication(ngForm1)" autocomplete="off">
-                                    <div class="row">
-                                        <div class="col-md-6 col-sm-12">
-                                            <mat-form-field  class="cab-data">
-                                                <mat-label>Trade License Number</mat-label>
-                                                <input matInput name="trade_license_number" [(ngModel)]="step1Data.trade_license_number" placeholder="Trade License Number" required>
-                                            </mat-form-field>
-                                            <span class="fileupload">
-                                                <input type="file" name="trade_license" [(ngModel)]="fileAny" (change)="validateFile($event)">
-                                                <span class="icon-attach attach-data"></span>
-                                            </span>
-                                            <p class="error" *ngIf="file_validation == false">Please Upload a valid file (ex: pdf,png,jpg,jpeg)</p>
-                                        </div>
-
-                                        <div class="col-md-3 col-sm-12">
+                                <form #ngForm1="ngForm" (ngSubmit)="onSubmitStep1(ngForm1)" autocomplete="off">
+                                    <div class="row mt-3">
+                                        <div class="col-md-12 col-sm-12">
                                             <mat-form-field class="cab-data">
-                                                <mat-label>Date of Issue</mat-label>
-                                                <input matInput  readonly="true" (click)="Service._openCalendar(issue_data)"  [matDatepicker]="issue_data"  placeholder="Date of Issue" name="date_of_issue" [(ngModel)]="step1Data.date_of_issue" (dateChange)="setexDate(step1Data.date_of_issue)" required>
-                                                <mat-datepicker-toggle matSuffix [for]="issue_data"></mat-datepicker-toggle>
-                                                <mat-datepicker #issue_data  disabled="false" ></mat-datepicker>
-                                            </mat-form-field>
-                                        </div>
-                                        
-                                        <div class="col-md-3 col-sm-12">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Date of Expiry</mat-label>
-                                                <input matInput [matDatepicker]="expiry_data" (click)="Service._openCalendar(expiry_data)" readonly="true" [min]="minDate" name="date_of_expiry" [(ngModel)]="step1Data.date_of_expiry" placeholder="Date of Expiry" required>
-                                                <mat-datepicker-toggle matSuffix [for]="expiry_data"></mat-datepicker-toggle>
-                                                <mat-datepicker #expiry_data disabled="false"></mat-datepicker>
-                                                <mat-error></mat-error>
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6 col-sm-12">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Date of Establishment</mat-label>
-                                                <input matInput [matDatepicker]="picker"   readonly="true" placeholder="Date Of Establishment" name="date_of_establishment" (click)="Service._openCalendar(picker)" [(ngModel)]="step1Data.date_of_establishment" required>
-                                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                                <mat-datepicker #picker  disabled="false"></mat-datepicker>
-                                                <mat-error></mat-error>
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-md-6 col-sm-12">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Location Latitude/Longitude</mat-label>
-                                                <input matInput onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" autocomplete="off" (keyup)="getPlaceName($event)" [matAutocomplete] = "auto" placeholder="Location Latitude/Longitude" name="location_latitude" [(ngModel)]="step1Data.search_location_name" required>
-                                                <mat-autocomplete #auto = "matAutocomplete" >
-                                                    <mat-option *ngFor = "let searchCountryList of searchCountryLists" (click)="getLatitudelongitude(searchCountryList.geometry.coordinates[0],searchCountryList.geometry.coordinates[1])" [value] = "searchCountryList.place_name">
-                                                    {{searchCountryList.place_name}}
-                                                    </mat-option>
-                                                </mat-autocomplete>
-                                                <mat-error></mat-error>
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6 col-sm-12 align-self-end">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Laboratory Type</mat-label>
-                                                <mat-select  placeholder="Select"  name="laboratory_type" [(ngModel)]="step1Data.laboratory_type" required>
-                                                    <!-- <mat-option value="1">Medical laboratory</mat-option> -->
-                                                    <mat-option (click)="accreditationType(item.id)" [value]="item.title" *ngFor="let item of labTypeList; let i = index;">{{item.title}}</mat-option>
-                                                    <!-- <mat-option value="2">Sample Collection Center</mat-option>
-                                                    <mat-option value="3">Point of Care Testing (POCT)</mat-option> -->
-                                                    <!-- <mat-option value="4">Others</mat-option> -->
-                                                </mat-select>
-                                                <mat-error></mat-error>
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-md-6 col-sm-12">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Laboratory Name Official and Commercial Name</mat-label>
-                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Laboratory Name Official and commercial Name" name="official_commercial_name" [(ngModel)]="step1Data.official_commercial_name"  required>
+                                                <mat-label>CAB Name official and Commercial Name</mat-label>
+                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="CAB Name official and Commercial Name" name="official_commercial_name" [(ngModel)]="step1Data.official_commercial_name"  required>
                                                 <mat-error></mat-error>      
                                             </mat-form-field>
                                         </div>
                                     </div>
-
-                                    <div class="row">
-                                        <div class="col-md-4 col-sm-12 align-self-end">
+                                    <div class="row pb-3">
+                                        <div class="col-md-3 col-sm-6 ">                                            
+                                            <div class="form-subheader">
+                                                <span>Type of Accreditation Required:</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 p-0 pt-4">
+                                            <div class="cab-data">
+                                                <!-- @{{step1Data.accredation_criteria}} -->
+                                                <mat-radio-group name="accreditation_required" 
+                                                [(ngModel)]="step1Data.accredation_criteria" #selectAccrdCriteria="ngModel" required>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="initial_data">
+                                                            <mat-radio-button value="1"  [checked]="accreditationChecked">Initial</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="initial_data">
+                                                            <mat-radio-button value="2">Extension</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6 col-sm-6 align-self-end">
                                             <mat-form-field class="cab-data">
-                                                <mat-label>Type of Accreditation Required</mat-label>
-                                                <mat-select placeholder="Select" name="accredation_type_id"  [(ngModel)]="step1Data.accredation_type_id" required>
-                                                    <mat-option (click)="accreditationRequired('Initial')" [value]="1">Initial</mat-option>
-                                                    <mat-option (click)="accreditationRequired('Extenstion')" [value]="2">Extension</mat-option>
+                                            <mat-label>Criteria to which accreditation is seeking (international standard)</mat-label>
+                                                <mat-select placeholder="Select" name="criteria_request_accre"  
+                                                [(ngModel)]="step1Data.criteria_request" required>
+                                                <mat-option [value]="item.code" *ngFor="let item of criteriaList; let k=index;">{{item.code}}</mat-option>
                                                 </mat-select>
                                                 <mat-error></mat-error>
                                             </mat-form-field>
                                         </div>
-                                        <div class="col-md-4 col-sm-12">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Criteria for which Accreditation is Requested</mat-label>
-                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Criteria to which Accredation is seeking" name="criteria_request" [(ngModel)]="step1Data.criteria_request"  required>
-                                                <mat-error></mat-error> 
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-md-4 col-sm-12">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Mailing Address</mat-label>
-                                                <input type="text" matInput autocomplete="off" onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Mailing Address" name="mailing_address" [(ngModel)]="step1Data.mailing_address"  required>
-                                                <mat-error></mat-error> 
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Registered Physical Location Address</mat-label>
-                                                <textarea onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off"  placeholder="Registered Physical Location Address" name="physical_location_address" [(ngModel)]="step1Data.physical_location_address"  required></textarea>
-                                                <mat-error></mat-error> 
-                                            </mat-form-field>
-                                        </div>
                                     </div>
 
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Registered Physical Location Address</mat-label>
+                                                <input matInput onpaste="return false"  autocomplete="off"   
+                                                placeholder="Registered Physical Location Address" name="physical_location_address" 
+                                                [(ngModel)]="step1Data.physical_location_address" required>
+                                            </mat-form-field>
+                                        </div> 
+
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Mailing Address</mat-label>
+                                                <input type="email" onpaste="return false" matInput autocomplete="off"  placeholder="Mailing Address"   name="mailing_address" [(ngModel)]="step1Data.mailing_address"  required>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>PO Box No./ZIP Code</mat-label>
-                                                <input onpaste="return false" (keypress)="Service.IsNumeric($event)"  matInput autocomplete="off" placeholder="PO BOX NO./Zip Code" name="po_box" [(ngModel)]="step1Data.po_box"  required>
+                                                <input onpaste="return false" (keypress)="Service.IsNumeric($event)" 
+                                                matInput autocomplete="off"  placeholder="PO BOX NO./Zip Code" name="po_box" 
+                                                [(ngModel)]="step1Data.po_box" required>
                                                 <mat-error></mat-error> 
                                             </mat-form-field>
                                             <p class="error" *ngIf="step1Data.po_box && !Service.checkInput('onlyNumberWithPlus',step1Data.po_box)">Please Enter Correct Zip Code</p> 
@@ -182,7 +132,7 @@
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Country</mat-label>
                                                 <mat-select placeholder="Select" name="country" [(ngModel)]="step1Data.country" required>
-                                                    <mat-option [value]="item.name" (click)="statelistById(item.id)" *ngFor="let item of getCountryLists; let i = index;">{{item.name}}</mat-option>
+                                                    <mat-option [value]="item.id" (click)="statelistById(item.id)" *ngFor="let item of getCountryLists; let i = index;">{{item.name}}</mat-option>
                                                 </mat-select> 
                                             </mat-form-field>
                                         </div>
@@ -190,7 +140,7 @@
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>State</mat-label>
-                                                <mat-select placeholder="Select" name="state" [(ngModel)]="step1Data.state" required>
+                                                <mat-select placeholder="Select" name="state" [(ngModel)]="step1Data.state"  required>
                                                     <mat-option [value]="item.name" (click)="citylistById(item.id)" *ngFor="let item of allStateList; let i = index;">{{item.name}}</mat-option>
                                                 </mat-select>    
                                             </mat-form-field>
@@ -199,9 +149,48 @@
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>City</mat-label>
-                                                <mat-select placeholder="Select" required name="city" [(ngModel)]="step1Data.city">
+                                                <mat-select placeholder="Select" name="city" [(ngModel)]="step1Data.city"  required>
                                                     <mat-option [value]="item.name" *ngFor="let item of allCityList; let i = index;">{{item.name}}</mat-option>
                                                 </mat-select>      
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" id="2ndStep">
+                                        <div class="col-md-3">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Telephone Number</mat-label>
+                                                <input type="text" onpaste="return false" (keypress)="Service.IsNumeric($event)" 
+                                                matInput autocomplete="off"  placeholder="Telephone No" name="telephone" 
+                                                [(ngModel)]="step1Data.telephone" maxlength="15" minlength="10"  required>
+                                                <mat-error></mat-error>                                            
+                                            </mat-form-field>
+                                            <p class="error" *ngIf="step1Data.telephone && !Service.checkInput('onlyNumberWithPlus',step1Data.telephone)">Please Enter Correct Telephone Number</p> 
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Fax Number</mat-label>
+                                                <input matInput (keypress)="Service.IsNumeric($event)" autocomplete="off"  
+                                                placeholder="Fax No"  name="fax_no" [(ngModel)]="step1Data.fax_no">
+                                                <mat-error></mat-error> 
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Official E-mail Address</mat-label>
+                                                <input onpaste="return false" matInput autocomplete="off"  placeholder="Official Email Address"  name="official_email"  [(ngModel)]="step1Data.official_email"  required>
+                                                <mat-error></mat-error> 
+                                            </mat-form-field>
+                                            <p class="error" *ngIf="step1Data.official_email && !Service.checkInput('email',step1Data.official_email)">Please Enter Correct Email Id</p>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Official Website</mat-label>
+                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off"  placeholder="Official Website"  name="official_website" [(ngModel)]="step1Data.official_website">
+                                                <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -209,32 +198,40 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">
-                                                <mat-label>Telephone Number</mat-label>
-                                                <input type="text" (keypress)="Service.IsNumeric($event)" maxlength="15" minlength="10" onpaste="return false" matInput autocomplete="off"  placeholder="Telephone No" name="telephone" [(ngModel)]="step1Data.telephone"  required>
-                                                <mat-error></mat-error> 
+                                                <mat-label>Date of Establishment</mat-label>
+                                                <input matInput [matDatepicker]="picker" [max]="today" (click)="Service._openCalendar(picker)"  placeholder="Date Of Establishment" name="date_of_establishment"  [(ngModel)]="step1Data.date_of_establishment" required>
+                                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                <mat-datepicker #picker disabled="false"></mat-datepicker>
                                             </mat-form-field>
                                         </div>
-                                        <div class="col-md-3">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Fax Number</mat-label>
-                                                <input onpaste="return false" matInput (keypress)="Service.IsNumeric($event)" autocomplete="off" placeholder="Fax No"  name="fax_no" [(ngModel)]="step1Data.fax_no" required>
-                                                <mat-error></mat-error> 
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Official E-mail Address</mat-label>
-                                                <input onpaste="return false" matInput autocomplete="off" placeholder="Official Email Address" name="official_email" [(ngModel)]="step1Data.official_email"  required>
-                                                <mat-error></mat-error> 
-                                            </mat-form-field>
-                                            <p class="error" *ngIf="step1Data.official_email && !Service.checkInput('email',step1Data.official_email)">Please Enter Correct Email Id</p>
 
-                                        </div>
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">
-                                                <mat-label>Official Website</mat-label>
-                                                <input  matInput autocomplete="off" onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Official Website"  name="official_website" [(ngModel)]="step1Data.official_website"  required>
-                                                <mat-error></mat-error>  
+                                                <mat-label>Legal-Professional/Commercial/Trade License</mat-label>
+                                                <input matInput  name="tradelic" [(ngModel)]="selectTradeLicName"
+                                                autocomplete="off"  placeholder="Legal-Professional/Commercial/Trade License"  >
+                                                <a href="{{selectTradeLicPath}}" target="_blank">
+                                                    <span class="icon-eye visible-pwd"></span>
+                                                    </a>
+                                            </mat-form-field>
+                                        </div>                                                                              
+
+                                        <div class="col-md-3">
+                                            <mat-form-field class="cab-data">  
+                                                <mat-label>Trade License Date of Issue</mat-label>
+                                                <input matInput   (click)="Service._openCalendar(issue_data)"  [matDatepicker]="issue_data"  placeholder="Date of Issue" name="date_of_issue" [(ngModel)]="step1Data.date_of_issue" (dateChange)="setexDate(step1Data.date_of_issue)" required>
+                                                <mat-datepicker-toggle matSuffix [for]="issue_data"></mat-datepicker-toggle>
+                                                <mat-datepicker #issue_data  disabled="false" ></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Trade License Date of Expiry</mat-label>
+                                                <input matInput [matDatepicker]="expiry_data" (click)="Service._openCalendar(expiry_data)" [min]="minDate" name="date_of_expiry" [(ngModel)]="step1Data.date_of_expiry" placeholder="Date of Expiry" required>
+                                                <mat-datepicker-toggle matSuffix [for]="expiry_data"></mat-datepicker-toggle>
+                                                <mat-datepicker #expiry_data disabled="false"></mat-datepicker>
+                                                <mat-error></mat-error>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -276,10 +273,10 @@
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Mobile Phone No.</mat-label>
-                                                            <input type="text" (keypress)="Service.IsNumeric($event)" maxlength="15" minlength="10" matInput autocomplete="off"  placeholder="Mobile No." name="ownership_telephone_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].telephone_no" onpaste="return false" required>
+                                                            <input type="text" (keypress)="Service.IsNumeric($event)" maxlength="15" minlength="10" matInput autocomplete="off"  placeholder="Mobile No." name="ownership_phone_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].phone_no" onpaste="return false" required>
                                                             <mat-error></mat-error>
                                                         </mat-form-field>
-                                                        <p class="error" *ngIf="ownOrgBasicInfo[i].telephone_no && !Service.checkInput('onlyNumberWithPlus',ownOrgBasicInfo[i].telephone_no)">Please Enter Correct Telephone Number</p> 
+                                                        <p class="error" *ngIf="ownOrgBasicInfo[i].phone_no && !Service.checkInput('onlyNumberWithPlus',ownOrgBasicInfo[i].phone_no)">Please Enter Correct Telephone Number</p> 
                                                     </div>
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
@@ -603,83 +600,10 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-md-12 p-0">
-                                            <div class="form-subhdr">
-                                                <h5 >5. ACCREDITATION SCOPE FOR INSPECTION BODY</h5><br>
-                                                <hr>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row" *ngIf="fullScope && fullScope.length === 0">
-                                        <h5>No Records</h5>
-                                    </div>
-                                    <div class="row" *ngIf="fullScope && fullScope.length > 0">
-                                        <div class="col-12" *ngFor="let scope of fullScope; let i1 = index;">
-                                            <div class="row">
-                                                <div class="col-md-12 p-0">
-                                                    <div class="form-subhdr">
-                                                        <h5>{{scope.accr_title[0]}}</h5>
-                                                    </div> 
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="table-content-health">
-                                                        <table>
-                                                            <thead>
-                                                                <tr>
-                                                                    <th># </th>
-                                                                    <th *ngFor="let fields of scope['fields']; let i2 = index;">{{fields.title}}</th>
-                                                                    <th>
-                                                                    </th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody >
-                                                                <tr *ngFor="let item of dynamicScopeModel[scope.accr_title[0]].fieldLines; let k = index;">
-                                                                    <td>{{("0" + (k+1)).slice(-2)}}</td>
-                                                                    <td *ngFor="let fieldsColumn of scope['fields']; let p = index;">
-                                                                    <mat-form-field class="cab-data" *ngIf="p == 0">
-                                                                        <mat-label>Select</mat-label>
-
-                                                                        <mat-select required="" 
-                                                                        [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.accr_title[0]].fieldLines[k][dynamicScopeFieldColumns[i1][p].title], dynamicScopeModel[scope.accr_title[0]].fieldLines[k].firstFieldValues)" matTooltipPosition='above'
-                                                                        [(ngModel)]="dynamicScopeModel[scope.accr_title[0]].fieldLines[k][dynamicScopeFieldColumns[i1][p].title]" name="dynamicScopeFieldColumns[i1][p].title" [ngModelOptions]="{standalone: true}" 
-                                                                        (selectionChange)="onChangeScopeOption($event,i1,k,p,scope.accr_title[0])">
-                                                                            <mat-option *ngFor="let j1 of dynamicScopeModel[scope.accr_title[0]].fieldLines[k].firstFieldValues" [value]='j1.field_value'>
-                                                                            {{j1.value}}
-                                                                            </mat-option>
-                                                                        </mat-select>
-                                                                    </mat-form-field>
-                                                                    <mat-form-field class="cab-data" *ngIf="p > 0 && p <= scope['fields'].length">
-                                                                        <mat-label>Select</mat-label>
-                                                                        <mat-select required="" 
-                                                                        [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.accr_title[0]].fieldLines[k][dynamicScopeFieldColumns[i1][p].title], dynamicScopeModel[scope.accr_title[0]].fieldLines[k][dynamicScopeFieldColumns[i1][p].values])" matTooltipPosition='above'
-                                                                        [(ngModel)]="dynamicScopeModel[scope.accr_title[0]].fieldLines[k][dynamicScopeFieldColumns[i1][p].title]" name="dynamicScopeFieldColumns[i1][p].title" [ngModelOptions]="{standalone: true}" 
-                                                                        (selectionChange)="onChangeScopeOption($event,i1,k,p,scope.accr_title[0])">
-                                                                            <mat-option *ngFor="let j2 of dynamicScopeModel[scope.accr_title[0]].fieldLines[k][dynamicScopeFieldColumns[i1][p].values]" [value]='j2.field_value'>
-                                                                            {{j2.value}}
-                                                                            </mat-option>
-                                                                        </mat-select>
-                                                                    </mat-form-field>
-                                                                    <td>                                                            
-                                                                    <td class="content-icn">
-                                                                        <span *ngIf="k >= 0" class="icon-add-round" (click)="addScopeLine(scope.accr_title[0], i1, k, dynamicScopeModel[scope.accr_title[0]].fieldLines)"></span>&nbsp;
-                                                                        <span *ngIf="k >= 1" class="icon-close-round" (click)="removeScopeLine(scope.accr_title[0], k)"></span>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
                                         <div class="col-md-12">
                                             <div class="bttns-health bttn-staff">
-                                                <button class="cancel-bttn" routerLink="/dashboard/cab_client/application-accreditation">BACK</button>
-                                                <button class="submit-bttn submit-health">CONTINUE</button>
+                                                <button class="cancel-bttn" type="button" (click)="savedraftStep('step1')">SAVE AS DRAFT</button>
+                                                <button class="submit-bttn submit-health">AGREE</button>
                                             </div>
                                         </div>
                                     </div>
