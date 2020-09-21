@@ -944,11 +944,11 @@ export class InspectionBodiesFormComponent implements OnInit {
         // if(getData.data.country  != null){
         //   this.step1Data.country = getData.data.country;
         // }
-        if(getData.data.date_of_issue != ''){
-          this.step1Data.date_of_expiry = getData.data.date_of_expiry;
-          this.step1Data.date_of_establishment = getData.data.date_of_establishment;
-          this.step1Data.date_of_issue = getData.data.date_of_issue;
-        }
+        // if(getData.data.date_of_issue != ''){
+        //   this.step1Data.date_of_expiry = getData.data.date_of_expiry;
+        //   this.step1Data.date_of_establishment = getData.data.date_of_establishment;
+        //   this.step1Data.date_of_issue = getData.data.date_of_issue;
+        // }
         if(getData.data.duty_from1 != null && getData.data.duty_shift != '' && getData.data.duty_shift == 1){
           
           this.step1Data.duty_shift = getData.data.duty_shift.toString();
@@ -1124,7 +1124,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         let getData: any = res;
         let data: any;
         //, getData.data.step1, " -- ", getData.data.step2
-        //console.log(getData,"Profile info >>> ");
+        console.log(getData,"Profile info >>> ");
 
         if(getData.data.step1.length){
           data = getData.data['step1'][0];
@@ -1171,17 +1171,23 @@ export class InspectionBodiesFormComponent implements OnInit {
               this.step1Data.official_commercial_name = data.cab_name.toString();
             }
 
-            this.step1Data.physical_location_address = data.registered_address;
+            if(data.date_of_issue != ''){
+              this.step1Data.date_of_expiry = data.date_of_expiry;
+              this.step1Data.date_of_establishment = data.date_of_establisment;//
+              this.step1Data.date_of_issue = data.date_of_issue;
+            }
+
+            this.step1Data.physical_location_address = data.applicant_address;
             this.step1Data.po_box = data.po_box;
             this.step1Data.telephone = data.tel_no;
             this.step1Data.fax_no = data.fax_no;
             this.step1Data.mailing_address = data.mailing_address;
-            this.step1Data.official_website = data.official_website;
+            this.step1Data.official_website = data.applicant_website;
             // this.step1Data.date_of_expiry = data.date_of_expiry;
             // this.step1Data.date_of_establishment = data.date_of_establisment;
             // this.step1Data.date_of_issue = data.date_of_issue; //|
             this.step1Data.official_email = data.official_email;
-            this.step1Data.official_website = data.official_website;
+            this.step1Data.official_website = data.applicant_website;
 
             /*
 
@@ -2079,8 +2085,9 @@ export class InspectionBodiesFormComponent implements OnInit {
       if(!this.Service.isObjectEmpty(this.accreditationInfo[0])) {
         this.inspectionBodyForm.step1['accreditationInfo'] = this.accreditationInfo;
       }
-
-      this.inspectionBodyForm.step1.application_id = this.formApplicationId;
+      if(this.formApplicationId > 0){
+        this.inspectionBodyForm.step1.application_id = this.formApplicationId;
+      }
       
       //return;
       //this.inspectionBodyForm.step1['trade_license'] = this.step1DataBodyFormFile;
