@@ -157,6 +157,9 @@ export class InspectionBodiesFormComponent implements OnInit {
   profileAutoData: boolean = false;
   criteriaList: any = [];
 
+  formDraftsaved: any;
+  formAccrStatus: any;
+
   //dynamicScopeOptions:any[] = [];  
   //dynamicScopeModelValues:any={};
   //dynamicFirstFieldValues:any;
@@ -887,6 +890,8 @@ export class InspectionBodiesFormComponent implements OnInit {
 
         if(getData.data.id != undefined && getData.data.id > 0){
           this.formApplicationId = getData.data.id;
+          this.formDraftsaved = getData.data.is_draft;
+          this.formAccrStatus = getData.data.accr_status;
         }
 
         if(!this.Service.isObjectEmpty(getData.data.paymentDetails)){
@@ -929,9 +934,9 @@ export class InspectionBodiesFormComponent implements OnInit {
         if(getData.data.criteria_request  != ''){
           this.step1Data.criteria_request = getData.data.criteria_request;
         }
-        // if(getData.data.ptParticipation  != null){
-        //   this.proficiencyTesting = getData.data.ptParticipation;
-        // }
+        if(getData.data.ptParticipation  != null){
+          this.proficiencyTesting = getData.data.ptParticipation;
+        }
 
         // if(getData.data.official_commercial_name  != ''){
         //   this.step1Data.official_commercial_name = getData.data.official_commercial_name.toString();
@@ -1773,6 +1778,12 @@ export class InspectionBodiesFormComponent implements OnInit {
     //  }else{
     //   this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     // } 
+    //&& this.formAccrStatus ==
+    if(this.formApplicationId > 0 ){
+        console.log(">>>find ID");
+        this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+      return;
+    }
     
     ////console.log("Submit calling: ", this.step1Data);
     //return;
@@ -1861,22 +1872,22 @@ export class InspectionBodiesFormComponent implements OnInit {
     }
 
     if(this.step1Data.duty_shift == '1'){
-      this.step1Data.duty_from2 = ''
-      this.step1Data.duty_to2 = '';
-      this.step1Data.duty_from3 = ''
-      this.step1Data.duty_to3 = '';
+      this.step1Data.duty_from2 = '00:00:00'
+      this.step1Data.duty_to2 = '00:00:00';
+      this.step1Data.duty_from3 = '00:00:00'
+      this.step1Data.duty_to3 = '00:00:00';
     }
     if(this.step1Data.duty_shift == '2'){
-      this.step1Data.duty_from1 = ''
-      this.step1Data.duty_to1 = '';
-      this.step1Data.duty_from3 = ''
-      this.step1Data.duty_to3 = '';
+      this.step1Data.duty_from1 = '00:00:00'
+      this.step1Data.duty_to1 = '00:00:00';
+      this.step1Data.duty_from3 = '00:00:00';
+      this.step1Data.duty_to3 = '00:00:00';
     }
     if(this.step1Data.duty_shift == '3'){
-      this.step1Data.duty_from2 = ''
-      this.step1Data.duty_to2 = '';
-      this.step1Data.duty_from1 = ''
-      this.step1Data.duty_to1 = '';
+      this.step1Data.duty_from2 = '00:00:00'
+      this.step1Data.duty_to2 = '00:00:00';
+      this.step1Data.duty_from1 = '00:00:00'
+      this.step1Data.duty_to1 = '00:00:00';
     }
 
     if(this.step1Data.duty_from1 == undefined){
@@ -2068,11 +2079,13 @@ export class InspectionBodiesFormComponent implements OnInit {
       if(!this.Service.isObjectEmpty(this.accreditationInfo[0])) {
         this.inspectionBodyForm.step1['accreditationInfo'] = this.accreditationInfo;
       }
+
+      this.inspectionBodyForm.step1.application_id = this.formApplicationId;
       
       //return;
       //this.inspectionBodyForm.step1['trade_license'] = this.step1DataBodyFormFile;
       // this.inspectionBodyForm.step1.is_draft = false;
-      //console.log(">>> First Step Data: ", this.inspectionBodyForm);
+      console.log(">>> First Step Data: ", this.inspectionBodyForm);
      //return;
       //this.step1DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
           // this.toastr.success('Application Successfully Submitted', '');

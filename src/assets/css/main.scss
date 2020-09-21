@@ -318,7 +318,7 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 .main-content-portal h3 { margin: 0; }
 .main-dashboard-cnt { padding: 20px 0; }
 .main-dashboard-cnt .user-steps { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; }
-.user-steps .user-next { border: 1px solid #CECECE ; background: #FFF; padding: 20px 18px; color: #1D1D1D; text-align: center; min-height: 200px; width: 120px; margin-bottom: 20px; }
+.user-steps .user-next { border: 1px solid #CECECE ; background: #FFF; padding: 15px 0; color: #1D1D1D; text-align: center; min-height: 123px; width: 123px; margin-bottom: 20px; }
 .main-dashboard-cnt .user-steps.user-small { height: 100%; }
 .user-steps.user-small .user-next { height: 100%; min-height: inherit; }
 .user-steps .user-present { border: 1px solid #B19782; background: #B19782; color: #FFF; }
