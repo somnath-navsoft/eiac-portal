@@ -1057,7 +1057,30 @@ export class InspectionBodiesFormComponent implements OnInit {
               this.getCriteria(this.step5Data.scheme_id);
 
               console.log("@ Scope Model: ", this.dynamicScopeModel, " -- ", this.dynamicScopeFieldColumns, " -- ", rowDetails, " -- ", rowLines);
+              //onChangeScopeOption(getValues: any, lineIndex: number, columnIndex: number, type?:string) {
+                let tempModel = [this.dynamicScopeModel];
+                console.log('model type: ', typeof this.dynamicScopeModel, " -- ", tempModel);
+                // tempModel.forEach((rec, key) =>{
+                //   console.log("scope key: ", key, " -- ",rec, " -- ", tempModel[0].fieldLines);
+                //   if(typeof rec === 'object'){
+                //      console.log('get fieldlines...');
+                //      for(var p in rec){
+                //       console.log("1 scope key: ", p, " -- ", rec[p]);
+                //      }
+                //   }
+                // })
+              // for(var k in this.dynamicScopeModel){
+              //   console.log("scope key: ", k);
+              // }
 
+              // if(this.dynamicScopeModel['fieldLines'].length){
+              //   this.dynamicScopeModel['fieldLines'].forEach((rec, key) => {
+              //          console.log("scope key: ", key, " -- ",);
+              //          let findSel = this.dynamicScopeFieldColumns.find(item => item[0].InspectionCategoryValues == key);
+              //          console.log(findSel);
+
+              //   })
+              // }
             }
         }
 
@@ -1837,7 +1860,37 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.step1Data.official_email = " ";
     }
 
-    
+    if(this.step1Data.duty_shift == '1'){
+      this.step1Data.duty_from2 = ''
+      this.step1Data.duty_to2 = '';
+      this.step1Data.duty_from3 = ''
+      this.step1Data.duty_to3 = '';
+    }
+    if(this.step1Data.duty_shift == '2'){
+      this.step1Data.duty_from1 = ''
+      this.step1Data.duty_to1 = '';
+      this.step1Data.duty_from3 = ''
+      this.step1Data.duty_to3 = '';
+    }
+    if(this.step1Data.duty_shift == '3'){
+      this.step1Data.duty_from2 = ''
+      this.step1Data.duty_to2 = '';
+      this.step1Data.duty_from1 = ''
+      this.step1Data.duty_to1 = '';
+    }
+
+    if(this.step1Data.duty_from1 == undefined){
+      this.step1Data.duty_from1 = ''
+      this.step1Data.duty_to1 = '';
+    }
+    if(this.step1Data.duty_from2 == undefined){
+      this.step1Data.duty_from2 = ''
+      this.step1Data.duty_to2 = '';
+    }
+    if(this.step1Data.duty_from3 == undefined){
+      this.step1Data.duty_from3 = ''
+      this.step1Data.duty_to3 = '';
+    }
 
 
     this.inspectionBodyForm.step1 = this.step1Data;      
@@ -2020,7 +2073,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       //this.inspectionBodyForm.step1['trade_license'] = this.step1DataBodyFormFile;
       // this.inspectionBodyForm.step1.is_draft = false;
       //console.log(">>> First Step Data: ", this.inspectionBodyForm);
-      //return;
+     //return;
       //this.step1DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
           // this.toastr.success('Application Successfully Submitted', '');
           // setTimeout(()=> {
@@ -2061,6 +2114,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     }else if(!ngForm1.form.valid && type != undefined && type == true){
         //console.log("save a draft...");
         this.inspectionBodyForm.step1.is_draft = true;
+        this.inspectionBodyForm.step2.application_id = this.formApplicationId;
         this.inspectionBodyForm.saved_step = 1;
         if(this.step1DataBodyFormFile != undefined){
           //this.inspectionBodyForm.step1['trade_license'] = this.step1DataBodyFormFile;
