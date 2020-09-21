@@ -163,20 +163,20 @@
                             <td>
                                 {{item.created | date :'dd-MMM-yyyy' }}
                             </td>
-                            <td  class="complete pending">
-                                <span *ngIf="item.accr_status === null">Pending</span>
-                                <span *ngIf="item.accr_status != null">{{item.accr_status}}</span>
+                            <td [ngClass]="{'pending': item.accr_status === 'pending', 'under-review':item.accr_status === null }">
+                                <span *ngIf="item.accr_status == 'pending'">Pending</span>
+                                <span *ngIf="item.accr_status == null">Under Review</span>
                             </td>
-                            <td  class="complete pending">
+                            <td [ngClass]="{'complete': item.is_prelim_visit == true, 'under-review':item.is_prelim_visit == false }">
                                 <span *ngIf="item.is_prelim_visit == true">Yes</span>
                                 <span *ngIf="item.is_prelim_visit == false">No</span>
                             </td>
                             <td>
                                 <span *ngIf="item.form_meta === 'inspection_body'">Inspection Body</span>
                             </td>
-                            <td  class="complete pending">
-                                <span *ngIf="item.payment_status === null">Pending</span>
-                                <span *ngIf="item.payment_status != null">{{item.payment_status}}</span>
+                            <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review':item.payment_status === null }">
+                                <span *ngIf="item.payment_status == 'paid'">Paid</span>
+                                <span *ngIf="item.payment_status == null">Unpaid</span>
                             </td> 
                             <td>
                                 {{item.applicantName}}

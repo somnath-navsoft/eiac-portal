@@ -12,7 +12,7 @@
               <div class="col-md-3">
                 <div class="main_app_wrap">
                   <div class="appln-data">
-                    <h3>Application No. 102154789652</h3>
+                    <h3>Application No. {{routeId}}</h3>
                   </div>
                   <div class="appln-details">
                     <span>
@@ -26,8 +26,8 @@
                   <div class="appln-data status_hdr">
                     <h5>Application Fees :</h5>
                   </div>
-                  <div class="appln-details complete">
-                    <span>Paid</span>
+                  <div [ngClass]="{'complete': serviceDetail?.is_prelim_visit == true, 'under-review':serviceDetail?.is_prelim_visit == false }">
+                    <span>{{(serviceDetail?.paymentDetails.amount > 0) ? 'Paid' : 'Unpaid'}}</span>
                   </div>
                 </div>
               </div>
@@ -36,8 +36,8 @@
                   <div class="appln-data status_hdr">
                     <h5>Preliminary Visit :</h5>
                   </div>
-                  <div class="complete pending">
-                    <span>Pending</span>
+                  <div [ngClass]="{'complete': serviceDetail?.is_prelim_visit == true, 'under-review':serviceDetail?.is_prelim_visit == false }">
+                    <span>{{(serviceDetail?.is_prelim_visit == true) ? 'Yes' : 'No'}}</span>
                   </div>
                 </div>
               </div>
@@ -82,7 +82,7 @@
                   <h5>Application Type</h5>
                 </div>
                 <div class="appln-details">
-                  <span>Testing Laboratory</span>
+                  <span>{{(serviceDetail?.form_meta == 'inspection_body') ? 'Inspection Body' : ''}}</span>
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -90,7 +90,7 @@
                   <h5>Establishment Name</h5>
                 </div>
                 <div class="appln-details">
-                  <span>Al Dahra Agricultural</span>
+                  <span>None</span>
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -98,7 +98,7 @@
                   <h5>Date of Establishment</h5>
                 </div>
                 <div class="appln-details">
-                  <span *ngIf="serviceDetail?.date_of_establishment">{{serviceDetail?.date_of_establishment | date}}</span>
+                  <span *ngIf="serviceDetail?.date_of_establishment">{{serviceDetail?.date_of_establishment | date:'dd-MM-yyyy'}}</span>
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -114,7 +114,7 @@
                   <h5>Trade License No.</h5>
                 </div>
                 <div class="appln-details license_no">
-                  <span *ngIf="serviceDetail?.trade_license_number">{{serviceDetail?.trade_license_number}}</span>
+                  <span *ngIf="applicantInfo?.trade_license_number">{{applicantInfo?.trade_license_number}}</span>
                 </div>
               </div>
             </div>
@@ -135,43 +135,43 @@
                   <table>
                     <tr>
                       <td>Date of Issue</td>
-                      <td *ngIf="applicantInfo?.date_of_issue">{{applicantInfo?.date_of_issue | date}}</td>
+                      <td *ngIf="serviceDetail?.date_of_issue">{{serviceDetail?.date_of_issue | date: 'dd-MM-yyyy'}}</td>
                       <td>Date of expiry</td>
-                      <td *ngIf="applicantInfo?.date_of_expiry">{{applicantInfo?.date_of_expiry | date}}</td>
+                      <td *ngIf="serviceDetail?.date_of_expiry">{{serviceDetail?.date_of_expiry | date: 'dd-MM-yyyy'}}</td>
                     </tr>
                     <tr>
                       <td>Type of Accreditation</td>
-                      <td>Initial</td>
+                      <td>{{(serviceDetail?.accredation_criteria == 1) ? 'Initial' : 'Extension' }}</td>
                       <td>Criteria for which Acc. is Requested</td>
-                      <td>ISO/IEC 17025</td>
+                      <td>{{serviceDetail?.criteria_request}}</td>
                     </tr>
                     <tr>
                       <td>Registered Address</td>
-                      <td colspan="3" *ngIf="applicantInfo?.applicant_location">{{applicantInfo?.applicant_location}}</td>
+                      <td colspan="3" *ngIf="serviceDetail?.physical_location_address">{{serviceDetail?.physical_location_address}}</td>
                     </tr>
                     <tr>
                       <td>City</td>
-                      <td *ngIf="applicantInfo?.city">{{applicantInfo?.city}}</td>
+                      <td *ngIf="serviceDetail?.city">{{serviceDetail?.city}}</td>
                       <td>Country</td>
-                      <td *ngIf="applicantInfo?.country">{{applicantInfo?.country}}</td>
+                      <td *ngIf="appCountry">{{appCountry}}</td>
                     </tr>
                     <tr>
                       <td>Mailing Address</td>
-                      <td *ngIf="applicantInfo?.applicant_address">{{applicantInfo?.applicant_address}}</td>
+                      <td *ngIf="serviceDetail?.mailing_address">{{serviceDetail?.mailing_address}}</td>
                       <td>PO Box No./ZIP Code</td>
-                      <td *ngIf="applicantInfo?.po_box">{{applicantInfo?.po_box}}</td>
+                      <td *ngIf="serviceDetail?.po_box">{{serviceDetail?.po_box}}</td>
                     </tr>
                     <tr>
                       <td>Official E-mail Address</td>
-                      <td *ngIf="applicantInfo?.applicant_email">{{applicantInfo?.applicant_email}}</td>
+                      <td *ngIf="serviceDetail?.official_email">{{serviceDetail?.official_email}}</td>
                       <td>Official Website</td>
-                      <td *ngIf="applicantInfo?.applicant_website">{{applicantInfo?.applicant_website}}</td>
+                      <td *ngIf="serviceDetail?.official_website">{{serviceDetail?.official_website}}</td>
                     </tr>
                     <tr>
                       <td>Telephone Number</td>
-                      <td *ngIf="applicantInfo?.applicant_tel_no">{{applicantInfo?.applicant_tel_no}}</td>
+                      <td *ngIf="serviceDetail?.telephone">{{serviceDetail?.telephone}}</td>
                       <td>Fax Number</td>
-                      <td *ngIf="applicantInfo?.applicant_fax_no">{{applicantInfo?.applicant_fax_no}}</td>
+                      <td *ngIf="serviceDetail?.fax_no">{{serviceDetail?.fax_no}}</td>
                     </tr>
                   </table>
                 </div>
@@ -228,16 +228,32 @@
               <div class="table-appln">
                 <table>
                   <tr>
-                    <td>Duty Period</td>
+                    <td>Duty Period </td>
+                    <ng-container *ngIf="serviceDetail?.duty_shift != undefined">
                     <td *ngIf="serviceDetail.duty_shift == '1'">One Shift</td>
                     <td *ngIf="serviceDetail.duty_shift == '2'">Two Shift</td>
                     <td *ngIf="serviceDetail.duty_shift == '3'">Three Shift</td>
+                    </ng-container>
                     <td>Duty Time</td>
-                    <td>{{serviceDetail.duty_to1}} - {{serviceDetail.duty_from1}}</td>
+                    <td>
+                      <ng-container *ngIf="serviceDetail?.duty_shift != undefined">
+                      <ng-container *ngIf="serviceDetail.duty_shift == '1'">
+                        {{serviceDetail.duty_to1}} - {{serviceDetail.duty_from1}}
+                      </ng-container>
+                      <ng-container *ngIf="serviceDetail.duty_shift == '2'">
+                        {{serviceDetail.duty_to2}} - {{serviceDetail.duty_from2}}
+                      </ng-container>
+                      <ng-container *ngIf="serviceDetail.duty_shift == '3'">
+                        {{serviceDetail.duty_to3}} - {{serviceDetail.duty_from3}}
+                      </ng-container>  
+                    </ng-container>                    
+                    </td>
                   </tr>
                   <tr>
                     <td>Is Testing the main activity of the organization</td>
-                    <td colspan="3">Yes</td>
+                    <td colspan="3">
+                      {{ (serviceDetail?.is_main_activity != undefined && serviceDetail?.is_main_activity == true) ? 'Yes' : 'No' }}
+                    </td>
                   </tr>
                 </table>
               </div>
@@ -321,7 +337,7 @@
                 <div class="col-md-6">
                   <div class="form-subheader-desc form_org_data">
                     <mat-radio-group name="other_accr" [(ngModel)]="other_accr_model">
-                      <mat-radio-button value="1">Yes</mat-radio-button>
+                      <mat-radio-button value="1" >Yes</mat-radio-button>
                       <mat-radio-button value="0">No</mat-radio-button>
                     </mat-radio-group>
                   </div>
@@ -342,7 +358,7 @@
                             <td>{{item.scheme_name}}</td>
                             <td>{{item.acccreditation_body_name}}</td>
                             <td>{{item.acccreditation_scope}}</td>
-                            <td>{{item.converted_date | date}}</td>
+                            <td>{{item.converted_date | date:'dd-MM-yyyy'}}</td>
                         </tr>
                       </ng-container>
                       <!-- <tr>
@@ -388,12 +404,13 @@
                         <th>PT Provider</th>
                         <th>Summary of Results</th>
                       </tr>
-                      <ng-container *ngFor="let item2 of ptParticipation; let i4 = index;">
-                        <tr *ngFor="let item3 of jsonParse(item2.value);">
-                            <td>{{item3.test_name}}</td>
-                            <td>{{item3.converted_date | date}}</td>
-                            <td>{{item3.pt_provider}}</td>
-                            <td>{{item3.result_summery}}</td>
+                      <ng-container *ngFor="let item of ptParticipation; let i4 = index;">
+                        <!-- *ngFor="let item3 of jsonParse(item2.value);" -->
+                        <tr >
+                            <td>{{item.test_name}}</td>
+                            <td>{{item.participation_date | date:'dd-MM-yyyy'}}</td>
+                            <td>{{item.pt_provider}}</td>
+                            <td>{{item.result}}</td>
                         </tr>
                       </ng-container>
                       <!-- <tr>
@@ -505,9 +522,9 @@
                 <table>
                   <tr>
                     <td>Audit Date</td>
-                    <td>{{serviceDetail?.audit_date}}</td>
+                    <td>{{serviceDetail?.audit_date | date:'dd-MM-yyyy'}}</td>
                     <td>MRM Date</td>
-                    <td>{{serviceDetail?.mrm_date}}</td>
+                    <td>{{serviceDetail?.mrm_date | date:'dd-MM-yyyy'}}</td>
                   </tr>
                 </table>
               </div>
@@ -561,6 +578,69 @@
           </div>
         </div>
       </div>
+
+      <ng-template #ILAView let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">ILA MRA Laboratories</h4>
+          <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body"> 
+            <app-loader *ngIf="loaderPdf"></app-loader>
+            <p *ngIf="errorLoader">Error Loading PDF</p>
+            <pdf-viewer [src]="(pathPDF)" [show-all]="true" [stick-to-page]="true"
+                [zoom]="1.0" [original-size]="false" [autoresize]="true"
+                [show-borders]="true" (error)="onError($event)" (on-progress)="onProgress($event)"
+                (after-load-complete)="completeLoadPDF($event)"
+                [render-text]="true">
+            </pdf-viewer>
+        </div>
+        <div class="modal-footer">
+        </div>
+        </ng-template>
+
+      <ng-template #agreementView let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">AGREEMENT</h4>
+          <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body"> 
+            <app-loader *ngIf="loaderPdf"></app-loader>
+            <p *ngIf="errorLoader">Error Loading PDF</p>
+            <pdf-viewer [src]="(pathPDF)" [show-all]="true" [stick-to-page]="true"
+                [zoom]="1.0" [original-size]="false" [autoresize]="true"
+                [show-borders]="true" (error)="onError($event)" (on-progress)="onProgress($event)"
+                (after-load-complete)="completeLoadPDF($event)"
+                [render-text]="true">
+            </pdf-viewer>
+        </div>
+        <div class="modal-footer">
+        </div>
+        </ng-template>
+
+      <ng-template #checklistView let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">CHECKLIST</h4>
+          <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body"> 
+            <app-loader *ngIf="loaderPdf"></app-loader>
+            <p *ngIf="errorLoader">Error Loading PDF</p>
+            <pdf-viewer [src]="(pathPDF)" [show-all]="true" [stick-to-page]="true"
+                [zoom]="1.0" [original-size]="false" [autoresize]="true"
+                [show-borders]="true" (error)="onError($event)" (on-progress)="onProgress($event)"
+                (after-load-complete)="completeLoadPDF($event)"
+                [render-text]="true">
+            </pdf-viewer>
+        </div>
+        <div class="modal-footer">
+        </div>
+        </ng-template>
 
       <!-- <div class="row m-0">
         <div class="col-md-12">
@@ -641,9 +721,9 @@
                   I confirm that the information provided in this application form is true and correct
                 </div>
                 <div class="authData">I acknowledge that I have read and understood and confirm to abide by the 
-                    <a href="javascript:void(0)">Accreditation Agreement</a> and request to provide us with a word agreement form for signature
+                  <a href="javascript:void(0)"  (click)="openView(agreementView, 'agreement')">Accreditation Agreement</a> and request to provide us with a word agreement form for signature
                 </div>
-                <div class="authData">I require ILA MRA "Laboratories" <a href="javascript:void(0)">Agreement</a>.</div>
+                <div class="authData">I require ILA MRA "Laboratories" <a href="javascript:void(0)"  (click)="openView(ILAView, 'ILA')">Agreement</a>.</div>
 
                 <div class="authData">I confirm that the below documents are available and will be furnished once requested by EIAC:</div>
               </div>
@@ -655,8 +735,13 @@
                       </tr>
                       <tr>
                           <td><span class="icon-tick"></span></td>
+                          <td width="1%"><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
+                          <td>Quality Manual</td>
+                      </tr>
+                      <tr>
+                          <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
                           <td>
-                            <a href="javascript:void(0)">Filled In Document Review Checklist based on the related standard </a>(for 1st submission only)
+                            <a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled In Document Review Checklist based on the related standard </a>(for 1st submission only)
                           </td>
                       </tr>
                       <tr>
@@ -681,6 +766,28 @@
                       </tr>
                       <tr>
                         <td><span class="icon-tick"></span></td>
+                          <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
+                          <td>Internal Procedures (as per the accreditation criteria)</td>
+                      </tr>
+                      <tr>
+                          <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
+                          <td>Minutes/Report of last Management Review</td>
+                      </tr>
+                      <tr>
+                          <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
+                          <td>Report of last Internal Audit</td>
+                      </tr>
+                      <tr>
+                          <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
+                          <td>Participation in PT/ILC/Measurement Audit</td>
+                      </tr>
+                      <tr>
+                          <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
+                          <td>List of key staff and Organizational Structure if not mentioned in the QM</td>
+                      </tr>
+                      <tr>
+                        <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
+>>>>>>> 54c8412fd6f12de79c2de6a3506e010637d0880e
                         <td>CMC calculations (for calibration laboratory)</td>
                       </tr>
                   </table>
@@ -688,10 +795,13 @@
               <div class="undertaking-last">
                 <div class="under_wrapper">
                   <div class="recommend">
-                    <span class="confirm">I recommend the visit to be conducted in the <a href="javascript:void(0)">1st</a> quarter of the year.</span>
+                    <span class="confirm">I recommend the visit to be conducted in the 
+                      <a href="javascript:void(0)" [ngStyle]="{'cursor':'none'}">
+                        {{recommVisit}}
+                      </a> quarter of the year.</span>
                   </div>
-                  <div class="date_undertake">
-                      <span>Date : 22/006/2020</span>
+                  <div class="date_undertake" *ngIf="applicantDetails != undefined && applicantDetails.application_date != undefined">
+                      <span>Date : {{applicantDetails.application_date | date:'dd-MM-yyyy'}}</span>
                   </div>
                 </div>
                 <div class="under_wrapper wrapper_name">
@@ -699,7 +809,7 @@
                     <img src="../../../../../../assets/images/g10.svg" alt="">
                   </div>
                   <div class="sign_name">
-                    <h5>Bob Williams</h5>
+                    <h5>{{technicalManager?.name}}</h5>
                     <p>Technical Manager</p>
                   </div>
                 </div>
@@ -728,7 +838,7 @@
                       <td>Voucher Code</td>
                       <td>{{paymentDetails?.voucher_code}}</td>
                       <td>Payment Date</td>
-                      <td>{{paymentDetails?.voucher_date | date}}</td>
+                      <td>{{paymentDetails?.voucher_date | date:'dd-MM-yyyy'}}</td>
                     </tr>
                     <tr>
                       <td>Payment Amount</td>
@@ -738,13 +848,13 @@
                     </tr>
                     <tr>
                       <td>Payment Method</td>
-                      <td>Cash</td>
+                      <td>{{paymentDetails?.payment_method}}</td>
                       <td>Payment Made By</td>
-                      <td>Tom Burly</td>
+                      <td>{{paymentDetails?.payment_method}}</td>
                     </tr>
                     <tr>
-                      <td>City</td>
-                      <td colspan="3">+91 9876543210</td>
+                      <td>Mobile Number</td>
+                      <td colspan="3">+{{paymentDetails?.mobile_no}}</td>
                     </tr>
                   </table>
                 </div>
@@ -754,9 +864,10 @@
       </div>
       <div class="row m-0">
         <div class="col-md-12">
-          <div class="details status_bttn">
+          <button class="submit-bttn submit-health" [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button>
+          <!-- <div class="details status_bttn">
             <a href="javascript:void(0)">Download Application</a>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
