@@ -324,9 +324,9 @@ export class ClientCabProfileComponent implements OnInit {
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step1DataBodyFormFile)
         .subscribe(
           res => {
-            console.log(">>>> prof...", res);
+            // console.log(">>>> prof...", res);
             if(res['status'] == true) {
-              this.toastr.success(res['msg'], '');
+              // this.toastr.success(res['msg'], '');
               this.progressValue == 0 || this.progressValue < 50 ? this.progressValue = 50 : this.progressValue = this.progressValue ;
               this.Service.moveSteps('personal_details','application_information', this.headerSteps);
             }else{

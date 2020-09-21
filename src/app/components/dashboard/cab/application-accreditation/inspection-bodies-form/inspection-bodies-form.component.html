@@ -96,7 +96,7 @@
                                                 <!-- @{{step1Data.criteria_request}} -->
                                             <mat-label>Criteria to which accreditation is seeking (international standard)</mat-label>
                                                 <mat-select placeholder="Select" name="criteria_request_accre"  
-                                                [(ngModel)]="step1Data.criteria_request">
+                                                [(ngModel)]="step1Data.criteria_request" required>
                                                 <mat-option [value]="item.code" *ngFor="let item of criteriaList; let k=index;">{{item.code}}</mat-option>
                                                 </mat-select>
                                                 <mat-error></mat-error>
@@ -698,9 +698,12 @@
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input matInput onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" (click)="Service._openCalendar(certificate_expiry_date)" [matDatepicker]="certificate_expiry_date" (dateChange)="Service.inputEvent($event,i,accreditationInfo)" readonly="true" placeholder="Date of Issue" name="certificate_expiry_date_{{i}}" [(ngModel)]="accreditationInfo[i].certificate_expiry_date" required>
+                                                                    <!-- <input matInput onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" (click)="Service._openCalendar(certificate_expiry_date)" [matDatepicker]="certificate_expiry_date" (dateChange)="Service.inputEvent($event,i,accreditationInfo)" readonly="true" placeholder="Date of Issue" name="certificate_expiry_date_{{i}}" [(ngModel)]="accreditationInfo[i].certificate_expiry_date" required>
                                                                     <mat-datepicker-toggle matSuffix [for]="certificate_expiry_date"></mat-datepicker-toggle>
-                                                                    <mat-datepicker #certificate_expiry_date disabled="false"></mat-datepicker>
+                                                                    <mat-datepicker #certificate_expiry_date disabled="false"></mat-datepicker> -->
+                                                                    <input matInput onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" (click)="Service._openCalendar(converted_date)" [matDatepicker]="converted_date" (dateChange)="Service.inputEvent($event,i,accreditationInfo)" readonly="true" placeholder="Date of Issue" name="converted_date_{{i}}" [(ngModel)]="accreditationInfo[i].converted_date" required>
+                                                                    <mat-datepicker-toggle matSuffix [for]="converted_date"></mat-datepicker-toggle>
+                                                                    <mat-datepicker #converted_date disabled="false"></mat-datepicker>
                                                                 </mat-form-field>
                                                                 </td>
                                                             <td class="content-icn">
@@ -714,154 +717,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- <div class="row">
-                                        <div class="col-md-12 p-0">
-                                            <div class="form-subhdr">
-                                                <h5 >2. ACCREDITATION SCOPE FOR INSPECTION BODY</h5><br>
-                                                <hr>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row" *ngIf="fullScope.length === 0">
-                                        <h5>No Records</h5>
-                                    </div> -->
-                                    <!-- @{{fullScope | json}} ||  -->
-                                    <!-- #{{dynamicScopeModel | json}} -->
-
-                                    <!-- <div class="row" *ngIf="fullScope.length > 0">
-                                        <div class="col-12" *ngFor="let scope of fullScope; let i1 = index;">
-                                            <div class="row">
-                                                <div class="col-md-12 p-0">
-                                                    <div class="form-subhdr">
-                                                        <h5>{{scope.name}}</h5>
-                                                    </div> 
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="table-content-health">
-                                                        <table>
-                                                            <thead>
-                                                                <tr>
-                                                                    <th># </th>
-                                                                    <th *ngFor="let fields of dynamicScopeFieldColumns; let i2 = index;">{{fields[0].name}}</th>
-                                                                    <th>
-                                                                    </th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr *ngFor="let item of dynamicScopeModel.fieldLines; let k = index;">
-                                                                    <td>{{("0" + (k+1)).slice(-2)}} -- {{dynamicScopeModel.fieldLines[k][dynamicScopeFieldColumns[1][0].title]}}</td>
-                                                                    <td *ngFor="let fieldsColumn of dynamicScopeFieldColumns; let p = index;">
-                                                                        <mat-form-field class="cab-data" *ngIf="p == 0">
-                                                                            <mat-label>Select</mat-label>    
-                                                                            <mat-select required="" 
-                                                                            [matTooltip]="getFieldTooltip(dynamicScopeModel.fieldLines[k][dynamicScopeFieldColumns[i1][p].title], dynamicScopeModel.fieldLines[k].firstFieldValues)" matTooltipPosition='above'
-                                                                            [(ngModel)]="dynamicScopeModel.fieldLines[k][dynamicScopeFieldColumns[i1][p].title]" name="dynamicScopeFieldColumns[i1][p].title" [ngModelOptions]="{standalone: true}" 
-                                                                            (selectionChange)="onChangeScopeOption($event,k,p)">
-                                                                                <mat-option *ngFor="let j1 of dynamicScopeModel.fieldLines[k].firstFieldValues" [value]='j1.field_value'>
-                                                                                {{j1.value}}
-                                                                                </mat-option>
-                                                                            </mat-select>
-                                                                        </mat-form-field>
-                                                                        <mat-form-field class="cab-data" *ngIf="p > 0 && p <= dynamicScopeFieldColumns.length">
-                                                                            <mat-label>Select</mat-label>
-                                                                             
-                                                                            <mat-select  
-                                                                            [matTooltip]="getFieldTooltip(dynamicScopeModel.fieldLines[k][dynamicScopeFieldColumns[p][i1].title], dynamicScopeModel.fieldLines[k][dynamicScopeFieldColumns[p][i1].values])" 
-                                                                            matTooltipPosition='above' [(ngModel)]="dynamicScopeModel.fieldLines[k][dynamicScopeFieldColumns[p][i1].title]"
-                                                                             name="dynamicScopeFieldColumns[p][i1].title" 
-                                                                            (selectionChange)="onChangeScopeOption($event,k,p)" [ngModelOptions]="{standalone: true}">
-                                                                                <mat-option *ngFor="let j2 of dynamicScopeModel.fieldLines[k][dynamicScopeFieldColumns[p][i1].values]" [value]='j2.field_value'>
-                                                                                {{j2.value}}
-                                                                                </mat-option>
-                                                                            </mat-select>
-                                                                        </mat-form-field>
-                                                                        
-                                                                    </td>
-                                                                    <td class="content-icn">
-                                                                        <span *ngIf="k >= 0" class="icon-add-round" (click)="addScopeLine(k, dynamicScopeModel.fieldLines)"></span>&nbsp;
-                                                                        <span *ngIf="k >= 1" class="icon-close-round" (click)="removeScopeLine(k)"></span>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
-
-
-                                    <!-- <div class="row" *ngIf="fullScope.length > 0">
-                                        <div class="col-12" *ngFor="let scope of fullScope; let i1 = index;">
-                                            <div class="row">
-                                                <div class="col-md-12 p-0">
-                                                    <div class="form-subhdr">
-                                                        <h5>{{scope.title}}</h5>
-                                                    </div> 
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="table-content-health">
-                                                        <table>
-                                                            <thead>
-                                                                <tr>
-                                                                    <th># </th>
-                                                                    <th *ngFor="let fields of scope['fields']; let i2 = index;">{{fields.title}}</th>
-                                                                    <th>
-                                                                    </th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody >
-                                                                <tr *ngFor="let item of dynamicScopeModel[scope.accr_title[0]].fieldLines; let k = index;">
-                                                                    <td>{{("0" + (k+1)).slice(-2)}}</td>
-                                                                    <td *ngFor="let fieldsColumn of scope['fields']; let p = index;">
-                                                                    <mat-form-field class="cab-data" *ngIf="p == 0">
-                                                                        <mat-label>Select</mat-label>
-
-                                                                        <mat-select required="" 
-                                                                        [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.accr_title[0]].fieldLines[k][dynamicScopeFieldColumns[i1][p].title], dynamicScopeModel[scope.accr_title[0]].fieldLines[k].firstFieldValues)" matTooltipPosition='above'
-                                                                        [(ngModel)]="dynamicScopeModel[scope.accr_title[0]].fieldLines[k][dynamicScopeFieldColumns[i1][p].title]" name="dynamicScopeFieldColumns[i1][p].title" [ngModelOptions]="{standalone: true}" 
-                                                                        (selectionChange)="onChangeScopeOption($event,i1,k,p,scope.accr_title[0])">
-                                                                            <mat-option *ngFor="let j1 of dynamicScopeModel[scope.accr_title[0]].fieldLines[k].firstFieldValues" [value]='j1.field_value'>
-                                                                            {{j1.value}}
-                                                                            </mat-option>
-                                                                        </mat-select>
-                                                                    </mat-form-field>
-                                                                    <mat-form-field class="cab-data" *ngIf="p > 0 && p <= scope['fields'].length">
-                                                                        <mat-label>Select</mat-label>
-                                                                        <mat-select required="" 
-                                                                        [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.accr_title[0]].fieldLines[k][dynamicScopeFieldColumns[i1][p].title], dynamicScopeModel[scope.accr_title[0]].fieldLines[k][dynamicScopeFieldColumns[i1][p].values])" matTooltipPosition='above'
-                                                                        [(ngModel)]="dynamicScopeModel[scope.accr_title[0]].fieldLines[k][dynamicScopeFieldColumns[i1][p].title]" name="dynamicScopeFieldColumns[i1][p].title" [ngModelOptions]="{standalone: true}" 
-                                                                        (selectionChange)="onChangeScopeOption($event,i1,k,p,scope.accr_title[0])">
-                                                                            <mat-option *ngFor="let j2 of dynamicScopeModel[scope.accr_title[0]].fieldLines[k][dynamicScopeFieldColumns[i1][p].values]" [value]='j2.field_value'>
-                                                                            {{j2.value}}
-                                                                            </mat-option>
-                                                                        </mat-select>
-                                                                    </mat-form-field>
-                                                                    <td>                                                            
-                                                                    <td class="content-icn">
-                                                                        <span *ngIf="k >= 0" class="icon-add-round" (click)="addScopeLine(scope.accr_title[0], i1, k, dynamicScopeModel[scope.accr_title[0]].fieldLines)"></span>&nbsp;
-                                                                        <span *ngIf="k >= 1" class="icon-close-round" (click)="removeScopeLine(scope.accr_title[0], k)"></span>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
+                                    
 
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="bttns-health bttn-review">
-                                                <!--  (click)="onSubmitApplication()" | savedraftStep('step1')-->
-
-                                                <!-- <button class="cancel-bttn" routerLink="/dashboard/cab_client/application-accreditation">BACK</button>
-                                                <button class="cancel-bttn" type="button" (click)="onSubmitApplication(ngForm1, true)">SAVE AS DRAFT</button> -->
                                                 <button class="submit-bttn submit-health">AGREE</button>
                                             </div>
                                         </div>
@@ -882,24 +742,25 @@
                                             <div class="row tog-content m-0">
                                                 <div class="col-md-6 col-sm-12 p-0">
                                                     <div class="form-subhdr">
-                                                        <h5>2. INFORMATION ABOUT PROFICIENCY TESTING PARTICIPATION *</h5>
+                                                        <h5>2. INFORMATION ABOUT PROFICIENCY TESTING PARTICIPATION </h5>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6 col-sm-12ssss p-0">
+                                                <!-- <div class="col-md-6 col-sm-12ssss p-0">
                                                     <div class="form-subheader-desc">
                                                         <mat-radio-group name="proficiency_testing_val" [(ngModel)]="step2Data.proficiency_testing_val" required>
                                                             <mat-radio-button value="1" (click)='proficiency_testing(1)'>Yes </mat-radio-button>
                                                             <mat-radio-button value="0" (click)='proficiency_testing(0)'>No </mat-radio-button>
                                                         </mat-radio-group>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                             
                                             <hr>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12" *ngIf="proficiency_testing_val">
+                                        <!-- *ngIf="step2Data.proficiency_testing_val == 1" -->
+                                        <div class="col-md-12" >
                                             <div class="table-content-health">
                                                 <table>
                                                     <thead>
@@ -1287,14 +1148,14 @@
                                 <div class="row mt-3">                                         
                                     <div class="col-md-12">
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-3">
                                                 <div class="request-subhdr">
                                                     <span>Request for prelim visit *</span>
                                                 </div>
                                             </div>
                                             <!-- @@{{inspectionBodyForm.perlim_visit_val |  json}} -->
                                             <!-- (click)='proficiency_testing(1)' -->
-                                            <div class="col-md-6">
+                                            <div class="col-md-2">
                                                 <div class="request_frm">
                                                     <mat-radio-group name="perlim_visit_val" 
                                                     [(ngModel)]="step6Data.prelim_visit_val" #selectPrelim="ngModel" required>
@@ -1331,7 +1192,7 @@
                                                     (selectionChange)="getDutyTimeForm1Index($event)" 
                                                     [(ngModel)]="step6Data.prelim_visit_select_time" required>
                                                         <mat-option *ngFor="let item of addMinutesToTime; let i = index;" 
-                                                        [value]="item.val">{{item.val}}</mat-option>
+                                                        [value]="item.key">{{item.val}}</mat-option>
                                                     </mat-select>
                                                 </mat-form-field>
                                             </div>
@@ -1384,7 +1245,7 @@
                                                     <mat-checkbox name="authorization_confirm1" [(ngModel)]="authorizationList.authorization_confirm1" >I confirm that the information provided in this application form is true and correct.</mat-checkbox>
                                                 </li>
                                                 
-                                                <li class="terms-condition" (scroll)="scrollHandler($event)" #mydiv style="height:500px;overflow:auto">
+                                                <li class="terms-condition"  (scroll)="scrollHandler($event)" #mydiv style="height:500px;overflow:auto">
                                                     <div class="tnc">
                                                         <h3>Terms & Conditions</h3>
                                                         <ol>
@@ -1588,157 +1449,14 @@
                                                 <mat-radio-button name="1st" value="first">1st</mat-radio-button>
                                                 <mat-radio-button name="2nd" value="second">2nd</mat-radio-button>
                                                 <mat-radio-button name="3rd" value="third">3rd</mat-radio-button>
-                                                <mat-radio-button name="4th" value="fourth">4th</mat-radio-button>
-                                                <!-- <mat-radio-button value="1">Yes</mat-radio-button>
-                                                <mat-radio-button value="0">No</mat-radio-button> -->
+                                                <mat-radio-button name="4th" value="fourth">4th quarter of the year</mat-radio-button>
                                             </mat-radio-group>
-                                            <!-- <mat-radio-button name="1st" [(ngModel)]="recommend.first">1st</mat-radio-button>
-                                            <mat-radio name="2nd" [(ngModel)]="recommend.second">2nd</mat-radio>
-                                            <mat-radio name="3rd" [(ngModel)]="recommend.third">3rd</mat-radio>
-                                            <mat-radio name="4th" [(ngModel)]="recommend.fourth">4th quarter of the year</mat-radio> -->
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <p class="error" *ngIf="recommendVisit.errors?.required">This is required</p>
                                             </div>
                                         </div>
-                                        <!-- <div class="auth">
-                                            <ul>
-                                                <li>
-                                                    <mat-checkbox name="authorization_confirm1" [(ngModel)]="authorizationList.authorization_confirm1" >I confirm that the information provided in this application form is true and correct.</mat-checkbox>
-                                                </li>
-                                                
-                                                <li class="terms-condition" (scroll)="scrollHandler($event)" #mydiv style="height:500px;overflow:auto">
-                                                    <div class="tnc">
-                                                        <h3>Terms & Conditions</h3>
-                                                        <ol>
-                                                            <li class="tnc-sub"><h5>FIRST PARTY OBLIGATION</h5>
-                                                                <ol>
-                                                                    <li>CAB hereby confirms that the information provided in this agreement is valid true and correct .</li>
-                                                                    <li>CAB acknowledges and agrees to abide and sustain full compliance at all times with the following 
-                                                                        documents relevant to the accredited work scope under this agreement and stated within the accreditation 
-                                                                        application:
-                                                                        <ol>
-                                                                            <li>Relevant accreditation criteria, Accreditation requirements and Guidelines issued by EIAC
-                                                                                and any Relevant Mandatory and Guidance Documents issued by the international Recognition Bodies. 
-                                                                                CAB is required to frequently visit the EIAC’s website www.eiac.gov.ae for the latest updates, </li>
-                                                                            <li>committed to fulfill continually the requirements of accreditation scope for which 
-                                                                                accreditation is sought or granted and to commit to provide evidence of fulfillment . 
-                                                                                This includes agreement to adapt to changes in the requirements for accreditation,</li>
-                                                                            <li>To provide EIAC with all needed documentation information as listed in the accreditation application</li>
-                                                                        </ol>
-                                                                    </li>
-                                                                    <li>To provide EIAC with clear and valid reasons for the objection to any member of the Assessment 
-                                                                        Personnel in writing within 5 (five) working days of receipt of the notification of Assessment .</li>
-                                                                    <li>To arrange the witnessing of conformity assessment services when requested by EI AC,</li>
-                                                                    <li>To have, where applicable, legally enforceable arrangements with their clients that committ he 
-                                                                        clients to provide, on request , access to EIAC’s assessment teams to assesst he CAB’s performance 
-                                                                        carrying out conformity assessment activities at the client’s site, </li>
-                                                                    <li>To claim accreditation only with respect to the scope for which it has been granted accreditation,</li>
-                                                                    <li>To commit to follow EIAC’s policy for the use of the accreditation symbol ,</li>
-                                                                    <li>Not to use its accreditation in such a manner as to bring the EIAC into dispute,</li>
-                                                                    <li>To assist in the investigation and resolution of any complaints made by third parties about the CAB’s 
-                                                                        accredited activities, and </li>
-                                                                    <li>To inform EIAC, without delay, of significant changes relevant to its accreditation, in any aspect of 
-                                                                        its status or operation relating to : 
-                                                                        <ol type="a">
-                                                                            <li>its legal , commercial , ownership or organizational status,</li>
-                                                                            <li>the organization, top management and key per sonnel ,</li>
-                                                                            <li>resources, premises and methods,</li>
-                                                                            <li>scope of accreditation, and</li>
-                                                                            <li>Other such matters that may affect the ability of the CAB to fulfill requirements for accreditation.</li>
-                                                                        </ol>
-                                                                    </li>
-                                                                    <li>The CAB is obliged to comply with EIAC Fees requirement available at website, knowing that all fees 
-                                                                        are non- refundable.</li>
-                                                                    <li>In case EIAC could not provide the service after the fees being paid, or if there is change in 
-                                                                        the CAB’s circumstances after paying the fees; the CAB can request a refund of these fees in writing 
-                                                                        with a justification, accordingly the authority of EIAC will decide upon the refund of the transferred 
-                                                                        fees.</li>
-                                                                    <li>In case t he CAB del ays to conf or m t he assessment plan on defined time; all expenses, 
-                                                                        such as, but not limited to , travel tickets, accommodations and accreditation fees of the visit 
-                                                                        shall be paid in full .</li>
-                                                                    <li>The CAB may withdraw from the present contractual agreement at any moment , by means of an of 
-                                                                        ficialletter sent to EIAC.</li>
-                                                                    <li>Upon suspension or reduction of its accreditation (however determined) , 
-                                                                        CAB shall discontinue immediately with no delay the use of all presentations and advertising 
-                                                                        that contains any reference to that terminated scope of accreditation</li>
-                                                                    <li>The CAB shall not cede, assign or in any way transfer its accreditation to another party and such 
-                                                                        status shall not extend to the franchisee or franchisor of the CAB</li>
-                                                                </ol>
-                                                            </li>
-                                                            <li class="tnc-sub"><h5>EIAC OBLIGATION & RESPONSIBILITIES</h5>
-                                                                <ol>
-                                                                    <li>EIAC shall publish all updated documents on its website: www.eiac.gov.ae and will notify the First 
-                                                                        Party of any changes to those documents.</li>
-                                                                    <li>EIAC shall carry out accreditation services consistently in accordance with the relevant 
-                                                                        International / National standards and Regulations, Guidelines, Requirements of (ARAC, PAC, IAF and ILAC) , 
-                                                                        EIAC Requirements and avail suitable Personnel to its accreditation service.</li>
-                                                                    <li>EIAC shall only consider objections in writing by CAB to any member of assessment Personnel due 
-                                                                        to conflict of interest in respect of such member with a clear and valid reasons for the objection within 
-                                                                        five working days.</li>
-                                                                    <li>In case of unoreseen reasons/ circumstances affecting maintenance of CAB's accreditation; EIAC may 
-                                                                        but without prejudice to its right to suspend or terminate this Agreement .  The suspension will be 
-                                                                        released once the maintenance of EIAC requirements for Accreditation had been assured.</li>
-                                                                    <li>In the event that accreditation has been granted, accreditation Certificate including the 
-                                                                        scope shall be issued to the CAB.</li>
-                                                                    <li>EIAC shall publish on its website (www.eiac.gov.ae) , on a regular basis, the status of accredited 
-                                                                        CABs.</li>
-                                                                    <li>EIAC shall notify the Customer how continuing conformity with the requirements for Accreditation 
-                                                                        will be monitored in order that it may maintain Accreditation. The frequency of monitoring will 
-                                                                        be determined by EIAC in accordance with EIAC published documents and will depend on the scope 
-                                                                        and scale of the Accreditation. In addition to the planned assessment program, EIAC reserves 
-                                                                        the right to carry out extraordinary visits at any time during the accreditation cycle other 
-                                                                        than those predeter mined as it may require.</li>
-                                                                    <li>EIAC shall give the CAB Notice immediately upon imposing any kind of sanctions related to the 
-                                                                        accreditation status of the CAB .</li>
-                                                                </ol>
-                                                            </li>
-                                                            <li class="tnc-sub"><h5>TERMS AND CONDITIONS OF THE AGREEMENT</h5>
-                                                                <ol>
-                                                                    <li>The agreement shall continue in force unless and until terminated by either party by giving 3 
-                                                                        months written notification or if the accreditation is withdrawn.</li>
-                                                                    <li>At the date of termination of this agreement , any certificate of accreditation granted 
-                                                                        hereunder shall immediately deemed to be invalid. </li>
-                                                                    <li>All out standing charges pursuant to this agreement shall be settled before the termination of this agreement . </li>
-                                                                    <li>In cases of a change in the name of the CAB only, EIAC shall carry out the necessary verifications and 
-                                                                        subsequent issue of a new accreditation certificate as well as the relative annexes with updated data without 
-                                                                        there being the need to sign a new agreement .</li>
-                                                                    <li>If the change involves any legal modifications on the status of CAB such as transfer of 
-                                                                        ownership of CAB; the CAB shall sign a new accreditation agreement .</li>
-                                                                </ol>
-                                                            </li>
-                                                            <li class="tnc-sub"><h5>LAW AND JURISDICTION</h5>
-                                                                <p>This agreement shall be governed and construed in accordance with UAE law. The parties hereby submit 
-                                                                        to the exclusive jurisdiction of the Dubai courts.</p>
-                                                            </li>
-                                                            <li class="tnc-sub"><h5>DECLARATION BY THE FIRST PARTY</h5>
-                                                                <p>By signing this agreement , I am asa First Party declares that :</p>
-                                                                <ul>
-                                                                    <li>I have viewed the rights and obligations of the present agreement and other relevant documents, 
-                                                                        I shall respect all related obligations.</li>
-                                                                    <li>I guarantee that I take all responsibilities, that all communications I make to the Second Party, 
-                                                                        both written and during the assessment visits, correspond to the truth.</li>
-                                                                    <li>I guarantee that I take all responsibilities, that all the data carried in the documents that I 
-                                                                        present to the Second Party, during the assessment visit and at all other times, correspond to the truth.</li>
-                                                                    <li>I acknowledge that I am aware with EIAC General Accreditation Requirement no. EIAC-RQ-GNL-001 and 
-                                                                        will fully comply with it at all times </li>
-                                                                    <li>If I am providing the service to the Emirates of Dubai ; I acknowledge that I agree to abide and sustain 
-                                                                        full compliance at all times with the regulation no. 2</li>
-                                                                </ul>
-                                                            </li>
-                                                        </ol>
-                                                    </div>
-                                                </li>
-                                            
-                                                <li>
-                                                    <mat-checkbox name="authorization_confirm2" [disableRipple]="true"
-                                                    (click)="$event.preventDefault()" [(ngModel)]="authorizationList.authorization_confirm2" >I acknowledge that I have read and understood and confirm to abide by the Accreditation 
-                                                    Agreement and request to provide us with a word agreement form for signature.</mat-checkbox>
-                                                </li>
-                                            </ul>
-                                            <p class="error" *ngIf="!readTermsCond">Read the Terms and Conditions</p>
-                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="row">
@@ -1813,7 +1531,7 @@
 
                                                 <button class="cancel-bttn" type="button" (click)="onSubmitUndertakingApplicant(ngForm6, true)">SAVE AS DRAFT</button>
                                             </div>
-                                            <button class="submit-bttn submit-health"  *ngIf="!transactions.length">PROCEEDS FOR PAYMENT</button>
+                                            <button class="submit-bttn submit-health"  *ngIf="!transactions.length">PROCEED FOR PAYMENT</button>
                                             <ng-container *ngIf="transactions.length">
                                                 <div id="paypalPayment"></div>
                                             </ng-container>                                                 
@@ -1832,8 +1550,7 @@
                             <span aria-hidden="true">&times;</span>
                           </button> -->
                         </div>
-                        <div class="modal-body"> 
-                            <button class="submit-bttn submit-health" (click)="agreeView()">AGREE</button>
+                        <div class="modal-body">                            
                             <app-loader *ngIf="loaderPdf"></app-loader>
                             <p *ngIf="errorLoader">Error Loading PDF</p>
                             <div class="pdf-parent">
@@ -1843,6 +1560,7 @@
                                 (after-load-complete)="completeLoadPDF($event)"
                                 [render-text]="true">
                             </pdf-viewer>
+                            <button class="submit-bttn submit-health" (click)="agreeView()">AGREE</button>
                             </div>
                             <!-- openModal() {
                                 this.bsModalRef = this.modalService.show(modalComponent, {class: 'modal-lg'});
