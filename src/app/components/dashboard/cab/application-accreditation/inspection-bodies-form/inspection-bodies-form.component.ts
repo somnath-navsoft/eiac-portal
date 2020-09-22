@@ -159,6 +159,7 @@ export class InspectionBodiesFormComponent implements OnInit {
 
   formDraftsaved: any;
   formAccrStatus: any;
+  viewData: any;
 
   //dynamicScopeOptions:any[] = [];  
   //dynamicScopeModelValues:any={};
@@ -524,7 +525,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-user', activeClass:'user-present'
       },
       {
-      title:'profciency_testing_participation', desc:'2. Profciency Testing Participation', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'profciency_testing_participation', desc:'2. Proficiency Testing Participation', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
       title:'personal_information', desc:'3. Personal Information', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
@@ -590,11 +591,12 @@ export class InspectionBodiesFormComponent implements OnInit {
     await countryList.subscribe(record => {
       /////console.log(record,'contry record :: ', this.step1Data.country);
       this.getCountryLists = record['countries'];
-      // //let getC = this.getCountryLists.find(rec => rec.name == this.profileCountrySel);
-      // //console.log('>>>> country: ', getC);
-      // if(getC){
-      //   //this.step1Data.country = getC.id;
-      // }
+      console.log(">>>Country List: ", this.getCountryLists);
+      let getC = this.getCountryLists.find(rec => rec.name == this.profileCountrySel);
+      console.log('>>>> country: ', getC);
+      if(getC){
+        this.step1Data.country = getC.id;
+      }
     });
     
   }
@@ -877,7 +879,21 @@ export class InspectionBodiesFormComponent implements OnInit {
     }
   }
 
+  jsonParseKeyvalue(data) {
+    if(data) {
+      var obj1 = data.replace(/'/g, "\"");
+      return JSON.parse(obj1);
+    }
+  }
+
+  jsonParsevalue(data) {
+    if(data) {
+      return JSON.parse(data);
+    }
+  }
+
   loadAppData(){
+    //897
     let url = this.Service.apiServerUrl+"/"+'accrediation-details-show/0';
     this.Service.getwithoutData(url)
     .subscribe(
@@ -887,6 +903,8 @@ export class InspectionBodiesFormComponent implements OnInit {
         let pathData: any;
         let filePath: string;
         console.log(getData,"get APP Data:");
+
+        this.viewData = getData;
 
         if(getData.data.id != undefined && getData.data.id > 0){
           this.formApplicationId = getData.data.id;
@@ -928,6 +946,7 @@ export class InspectionBodiesFormComponent implements OnInit {
 
         //Step 1
         //
+        console.log('>>>', getData.data.accredation_criteria);
         if(getData.data.accredation_criteria  != ''){
           this.step1Data.accredation_criteria = getData.data.accredation_criteria.toString();
         }
@@ -979,7 +998,7 @@ export class InspectionBodiesFormComponent implements OnInit {
             }
         }
         if(getData.data.country != undefined && getData.data.country > 0){
-          this.step1Data.country = getData.data.country;
+          //this.step1Data.country = getData.data.country;
         }
 
         //Accreditation Info
@@ -1154,8 +1173,8 @@ export class InspectionBodiesFormComponent implements OnInit {
               }
             });
 
-            //this.profileCountrySel = data.country;
-            //this.step1Data.country = data.country;
+            this.profileCountrySel = data.country;
+            //this.step1Data.country = data.country; 
             this.step1Data.state = data.state;
             this.step1Data.city = data.city;
             //selectTradeLicName
@@ -1166,6 +1185,7 @@ export class InspectionBodiesFormComponent implements OnInit {
                 this.selectTradeLicPath = this.constant.mediaPath +  data.trade_license.toString();
               }
             }
+            this.step1Data.trade_license_number = data.trade_license_number;
             
             if(data.cab_name  != ''){
               this.step1Data.official_commercial_name = data.cab_name.toString();
@@ -1244,7 +1264,7 @@ export class InspectionBodiesFormComponent implements OnInit {
                   this.ownOrgMembInfo = data.cabBodData;
                   this.step1Data.is_bod_select = "1";
                 } 
-                //console.log('>>> member data....', this.ownOrgMembInfo);
+                console.log('>>> profile member data....', this.ownOrgMembInfo);
               }
          }
 
@@ -1594,6 +1614,14 @@ export class InspectionBodiesFormComponent implements OnInit {
     //this.Service.moveSteps('undertaking_applicant', 'payment_update', this.headerSteps);
     //this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
 
+    if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.onBehalfApplicantDetails.length > 0){
+      console.log(">>>find ID");
+      this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
+      return;
+    }
+
+
+
     let checkCount = 0;
     for(let key in this.authorizationList) {
       //console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
@@ -1785,7 +1813,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     //   this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     // } 
     //&& this.formAccrStatus ==
-    if(this.formApplicationId > 0 ){
+    if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.accredation_criteria  == ''){
         console.log(">>>find ID");
         this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
       return;
@@ -2057,13 +2085,20 @@ export class InspectionBodiesFormComponent implements OnInit {
       }
       if(this.step1Data.is_bod_select != undefined && this.step1Data.is_bod_select == 0){
         this.step1Data.is_bod = false;
-      }//
+      }
+      //is_main_activity
   
       if(this.step1Data.is_hold_other_accreditation_select != undefined && this.step1Data.is_hold_other_accreditation_select == 1){
         this.step1Data.is_hold_other_accreditation = true;
       }
       if(this.step1Data.is_hold_other_accreditation_select != undefined && this.step1Data.is_hold_other_accreditation_select == 0){
         this.step1Data.is_hold_other_accreditation = false;
+      }
+      if(this.step1Data.is_main_activity == "true"){
+        this.step1Data.is_main_activity = true;
+      }
+      if(this.step1Data.is_main_activity == "false"){
+        this.step1Data.is_main_activity = false;
       }
       
       this.inspectionBodyForm.email = this.userEmail;
@@ -2085,15 +2120,22 @@ export class InspectionBodiesFormComponent implements OnInit {
       if(!this.Service.isObjectEmpty(this.accreditationInfo[0])) {
         this.inspectionBodyForm.step1['accreditationInfo'] = this.accreditationInfo;
       }
+
+      // if(this.step1Data.date_of_issue != undefined){
+      //   console.log(">>> date");
+      //   this.step1Data.date_of_issue = new Date(this.step1Data.date_of_issue).toLocaleTimeString();
+      // }
+      // console.log(">>> Date of issue: ", this.step1Data.date_of_issue);
+
       if(this.formApplicationId > 0){
         this.inspectionBodyForm.step1.application_id = this.formApplicationId;
       }
       
       //return;
       //this.inspectionBodyForm.step1['trade_license'] = this.step1DataBodyFormFile;
-      // this.inspectionBodyForm.step1.is_draft = false;
+      this.inspectionBodyForm.step1.is_draft = false;
       console.log(">>> First Step Data: ", this.inspectionBodyForm);
-     //return;
+      //return;
       //this.step1DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
           // this.toastr.success('Application Successfully Submitted', '');
           // setTimeout(()=> {
@@ -2165,6 +2207,14 @@ export class InspectionBodiesFormComponent implements OnInit {
 
   onSubmitTestingParticipation(ngForm2: any, type?:boolean){
     //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+
+    if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.ptParticipation  == null){
+      console.log(">>>find ID");
+      this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+    return;
+  }
+
+
     this.inspectionBodyForm = {};
     this.inspectionBodyForm.step2 = {};
     //this.inspectionBodyForm.email = this.userEmail;
@@ -2177,9 +2227,10 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.inspectionBodyForm.step2.is_draft = false;
     this.inspectionBodyForm.saved_step = 2;
 
-    if(this.proficiencyTesting.length > 0 && this.step2Data.proficiency_testing_val > 0) {
+    //if(this.proficiencyTesting.length > 0 && this.step2Data.proficiency_testing_val > 0) {
+      this.step2Data.proficiency_testing_val = 1;
       this.inspectionBodyForm.step2['proficiencyTesting'] = this.proficiencyTesting;
-    }
+    //}
         
         this.proficiencyTesting.forEach((rec,key) => {
               let dtFormat = '';
@@ -2196,33 +2247,11 @@ export class InspectionBodiesFormComponent implements OnInit {
         //console.log(">> Data: ", this.proficiencyTesting);
 
 
-    ////console.log("@Step2 submit...", this.inspectionBodyForm, " --- ", this.formApplicationId);
+    console.log("@Step2 submit...", this.inspectionBodyForm, " --- ", this.formApplicationId);
     //return;
 
     if(ngForm2.form.valid && type == undefined) {
-      // this.inspectionBodyForm = {};
-      // this.inspectionBodyForm.step2 = {};
-      // //this.inspectionBodyForm.email = this.userEmail;
-      // //this.inspectionBodyForm.userType = this.userType;
-      // this.inspectionBodyForm.step2 = this.step2Data;
-      // this.inspectionBodyForm.step2.email = this.userEmail;
-      // this.inspectionBodyForm.step2.userType = this.userType;
-      // this.inspectionBodyForm.step2['proficiencyTesting'] = [];
-      
-      // if(this.ownOrgBasicInfo) {
-      //   this.inspectionBodyForm.step2['proficiencyTesting'] = this.proficiencyTesting;
-      // }
-      
-      //return;
-      //this.inspectionBodyForm.step2.is_draft = false;
-      //this.inspectionBodyForm.saved_step = 2;
-      //console.log(">>>step2 submit data: ", this.inspectionBodyForm, " --- ", this.formApplicationId);
-      //return;
-      //this.step2DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
-          // this.toastr.success('Application Successfully Submitted', '');
-          // setTimeout(()=> {
-          //   this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
-          // }, 1000)
+      console.log('>>>>fffff: ', this.inspectionBodyForm);
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
       .subscribe(
         res => {
@@ -2265,7 +2294,15 @@ export class InspectionBodiesFormComponent implements OnInit {
 
   onSubmitPersonalInformation(ngForm3: any, type?: boolean){
     // //console.log("Step PersonalInformation submit...");
-      //this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+      //
+
+      if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.technicalManager.length > 0){
+        console.log(">>>find ID");
+        //this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+      //return;
+    }
+
+
       this.inspectionBodyForm = {};
       this.inspectionBodyForm.step3 = {};
       //this.inspectionBodyForm.email = this.userEmail;
@@ -2283,7 +2320,7 @@ export class InspectionBodiesFormComponent implements OnInit {
           this.inspectionBodyForm.step3.technicalManager['mobile_no'] = (this.step3Data.mobile_no_technical != '' && this.step3Data.mobile_no_technical != undefined) ? this.step3Data.mobile_no_technical : '';
           this.inspectionBodyForm.step3.technicalManager['email'] = (this.step3Data.tech_email_technical != '' && this.step3Data.tech_email_technical != undefined) ? this.step3Data.tech_email_technical : '';
           this.inspectionBodyForm.step3.technicalManager['relevent_experience'] = (this.step3Data.relevent_experience_technical != '' && this.step3Data.mobile_no_technical != undefined) ? this.step3Data.relevent_experience_technical : '';
-      //}     
+      //}     relevent_experience
 
       this.inspectionBodyForm.step3.managementManager = {};
       //if(this.step3Data.management_name != '' && this.step3Data.management_designation != '' && this.step3Data.management_mobile_no != ''
@@ -2324,7 +2361,7 @@ export class InspectionBodiesFormComponent implements OnInit {
 
       this.inspectionBodyForm.step3.is_draft = false;
       this.inspectionBodyForm.saved_step = 3;
-      //console.log(">>> Step3 submit: ", this.inspectionBodyForm);
+      console.log(">>> Step3 submit: ", this.inspectionBodyForm);
       // this.step3DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
       // this.toastr.success('Application Successfully Submitted', '');
       //     setTimeout(()=> {
@@ -2371,6 +2408,13 @@ export class InspectionBodiesFormComponent implements OnInit {
   onSubmitInformationAuditManagement(ngForm4: any, type?:boolean){
     //  //console.log("Step InformationAuditManagement submit...");   
     //this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
+
+    if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.audit_date  != ''){
+      console.log(">>>find ID");
+      this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
+      return;
+    }
+
     this.inspectionBodyForm = {};
       this.inspectionBodyForm.step4 = {};
       //console.log(">>> step4 data: ", this.step4Data);
@@ -2432,6 +2476,13 @@ export class InspectionBodiesFormComponent implements OnInit {
   onSubmitPerlimVisit(ngForm: any, type?:boolean){
     // //console.log("Step PerlimVisit submit...", ngForm.form);    
     //this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+
+    // if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.audit_date  != ''){
+    //   console.log(">>>find ID");
+    //   this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+    //   return;
+    // }
+
     this.inspectionBodyForm = {};
     this.inspectionBodyForm.step6 = {};
     this.isPrelimSubmitted = true;
@@ -2462,7 +2513,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.inspectionBodyForm.saved_step = 6;
     
 
-    ////console.log(">>> Step6 data: ", this.inspectionBodyForm);
+    console.log(">>> Step6 data: ", this.inspectionBodyForm);
     //return;
 
     if(ngForm.form.valid && type == undefined) {
@@ -2515,6 +2566,12 @@ export class InspectionBodiesFormComponent implements OnInit {
 
  onSubmitScopeAccreditation(ngForm: any, type?: boolean){
   //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+//scopeDetails.details
+  if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.scopeDetails.details.length > 0){
+    console.log(">>>find ID");
+    this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+    return;
+  }
 
   this.inspectionBodyForm = {};
   this.inspectionBodyForm.step5 = {};
@@ -2678,7 +2735,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     // this.step5Data['perlim_visit_date'] = dtFormat ;
     // this.step5Data['perlim_visit_time'] = "01:30AM";
     
-    ////console.log(">>> step5 submit...", this.step5Data, " -- ", this.inspectionBodyForm);
+    console.log(">>> step5 submit...", this.step5Data, " -- ", this.inspectionBodyForm);
     //return;
     //ngForm.form.valid &&
     if(ngForm.form.valid && type == undefined) {
