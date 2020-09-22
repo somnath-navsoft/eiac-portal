@@ -8,6 +8,7 @@ import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material';
 import { RecaptchaComponent } from 'ng-recaptcha';
 declare let paypal: any;
+import { TrainerService } from '../../../../../services/trainer.service';
 
 @Component({
   selector: 'app-testing-calibration-form',
@@ -72,6 +73,7 @@ export class TestingCalibrationFormComponent implements OnInit {
   onbehalf_representative_date:boolean = false;
 
   afterSubmit:boolean = false;
+  paymentReceiptValidation:boolean
 
   foods = [
     {value: 'steak-0', viewValue: 'Steak'},
@@ -133,8 +135,15 @@ export class TestingCalibrationFormComponent implements OnInit {
   total: any = 0;
   criteriaList:any[] = [];
   userId:any;
+  selectTradeLicName :string = ''; 
+  selectTradeLicPath :string = ''; 
+  formApplicationId:any;
+  formDraftsaved:any;
+  formAccrStatus:any;
+  voucherFile:any = new FormData();
+  voucherSentData: any = {};
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
+  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,public _trainerService:TrainerService) { }
 
   getData(getVal){
     //  console.log(">>>>Get MapBox Value: ", getVal);
@@ -293,15 +302,33 @@ export class TestingCalibrationFormComponent implements OnInit {
       {
       title:'information_audit_management', desc:'4. Internal Audit & Management', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
+      // {
+      // title:'perlim_visit', desc:'5. Perlim Visit', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      // },
+      // {
+      // title:'undertaking_applicant', desc:'6. Undertaking & Applicant Company', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      // },
+      // {
+      // title:'payment', desc:'7. Payment Information', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
+      // },
       {
-      title:'perlim_visit', desc:'5. Perlim Visit', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+        title:'scope_accreditation', desc:'5. Accreditation Scope', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
-      title:'undertaking_applicant', desc:'6. Undertaking & Applicant Company', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'perlim_visit', desc:'6. Prelim Visit', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
-      title:'payment', desc:'7. Payment Information', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
-      }
+      title:'undertaking_applicant', desc:'7. Authorization of the Application', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      },
+      {
+        title:'proforma_invoice', desc:'8. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      },
+      {
+        title:'payment_update', desc:'9. Payment Update', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      },
+      {
+        title:'application_complete', desc:'10. Application Complete', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      },
     );
   }
   
@@ -602,7 +629,7 @@ export class TestingCalibrationFormComponent implements OnInit {
     // this.step1Data.duty_from1 = "";
     // this.step1Data.duty_from2 = "";
     // this.step1Data.duty_from3 = "";
-    this.step1Data.duty_shift = "";
+    // this.step1Data.duty_shift = "";
     // this.step1Data.duty_to1 = "";
     // this.step1Data.duty_to2 = "";
     // this.step1Data.duty_to3 = "";
@@ -691,8 +718,16 @@ export class TestingCalibrationFormComponent implements OnInit {
           //   acccreditation_scope: "",
           //   certificate_expiry_date: "",
           // }];
-          // this.step1Data.city =  "";
-          // this.step1Data.country = "";
+          if(data.trade_license != ''){
+            let getFile = data.trade_license.toString().split('/');
+            if(getFile.length){
+              this.selectTradeLicName = getFile[4].toString().split('.')[0];
+              this.selectTradeLicPath = this.constant.mediaPath +  data.trade_license.toString();
+            }
+          }
+          this.step1Data.city =  data.city;
+          this.step1Data.country = data.country;
+          this.step1Data.state = data.state;
           this.step1Data.criteria_request = "";
           this.step1Data.date_of_establishment = new Date(data.date_of_establisment);
           this.step1Data.date_of_expiry = new Date(data.date_of_expiry);
@@ -710,10 +745,109 @@ export class TestingCalibrationFormComponent implements OnInit {
           this.ownOrgMembInfo = step2['cabBodData'];
           this.step1Data.physical_location_address = data.applicant_location;
           this.step1Data.po_box = data.po_box;
-          // this.step1Data.state = "";
+          
           this.step1Data.telephone = data.applicant_tel_no;
         }
       })
+
+      let url2 = this.Service.apiServerUrl+"/"+'accrediation-details-show/0';
+      this.Service.getwithoutData(url2)
+      .subscribe(
+        res => {
+          // console.log(res,'res')
+
+          if(res['data'].id != undefined && res['data'].id > 0){
+            this.formApplicationId = res['data'].id;
+            this.formDraftsaved = res['data'].is_draft;
+            this.formAccrStatus = res['data'].accr_status;
+          }
+
+          //step1
+
+          if(res['data'].accredation_criteria  != ''){
+            this.step1Data.accredation_criteria = res['data'].accredation_criteria.toString();
+          }
+          if(res['data'].criteria_request  != ''){
+            this.step1Data.criteria_request = res['data'].criteria_request;
+          }
+
+          if(res['data'].duty_from1 != null && res['data'].duty_shift != '' && res['data'].duty_shift == 1){
+          
+            this.step1Data.duty_shift = res['data'].duty_shift.toString();
+            this.step1Data.duty_from1 = res['data'].duty_from1.toString();
+            this.step1Data.duty_to1   = res['data'].duty_to1.toString();
+            //console.log(">>>Working time: 1 ", this.step1Data.duty_shift);
+          }
+          if(res['data'].duty_from2 != null && res['data'].duty_shift != ''  && res['data'].duty_shift == 2){
+            
+            this.step1Data.duty_shift = res['data'].duty_shift.toString();
+            this.step1Data.duty_from2 = res['data'].duty_from2.toString();
+            this.step1Data.duty_to2   = res['data'].duty_to2.toString();
+            //console.log(">>>Working time: 2 ", this.step1Data.duty_shift);
+          }
+          if(res['data'].duty_from3 != null && res['data'].duty_shift != ''  && res['data'].duty_shift == 3){
+            
+            this.step1Data.duty_shift = res['data'].duty_shift.toString();
+            this.step1Data.duty_from3 = res['data'].duty_from3.toString();
+            this.step1Data.duty_to3   = res['data'].duty_to3.toString();
+            //console.log(">>>Working time: 3 ", this.step1Data.duty_shift);
+          }
+          if(res['data'].is_main_activity != undefined){
+              this.step1Data.is_main_activity = res['data'].is_main_activity.toString();
+              if(!res['data'].is_main_activity){
+                this.step1Data.is_main_activity_note = res['data'].is_main_activity_note.toString();
+              }
+          }
+
+          if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
+            //console.log('>>>Accr infor: ', getData.data.otherAccr);
+            this.accreditationInfo = [];
+            this.step1Data.is_hold_other_accreditation_select = "1";
+            //this.accreditationInfo = '';
+            res['data'].otherAccr.forEach((item, key) => {
+                 ////console.log('>> ', item, " :: ", key);
+                 let data: any;
+                 data = item['value'];
+                 var obj1 = data.replace(/'/g, "\"");
+                 let jparse = JSON.parse(obj1);
+                 this.accreditationInfo.push(jparse);
+            })
+          }else{
+            //this.accreditationInfo = [{}];
+            this.step1Data.is_hold_other_accreditation_select = "0";
+          }
+
+
+          //step2
+          var ptProvider = res['data']['ptParticipation'];
+          this.proficiencyTesting = ptProvider && ptProvider != '' ? ptProvider : [{}];
+
+          //step3
+          if(res['data'].technicalManager != undefined && res['data'].technicalManager.length > 0){
+            let getTechData: any = res['data'].technicalManager[0];
+            this.step3Data.name = getTechData.name;
+            this.step3Data.designation = getTechData.designation;
+            this.step3Data.mobile_no = getTechData.mobile_no;
+            this.step3Data.email = getTechData.email;
+            this.step3Data.relevent_experience = getTechData.relevent_experience;
+          }
+          if(res['data'].managementManager != undefined && res['data'].managementManager.length > 0){
+            let getMangData: any = res['data'].managementManager[0];
+            this.step3Data.management_name = getMangData.name;
+            this.step3Data.management_designation = getMangData.designation;
+            this.step3Data.management_mobile_no = getMangData.mobile_no;
+            this.step3Data.management_email = getMangData.email;
+            this.step3Data.management_relevent_experience = getMangData.relevent_experience;
+          }
+
+          //step4
+          if(res['data'].audit_date != null){
+            this.step4Data.audit_date = new Date(res['data'].audit_date);
+          }
+          if(res['data'].mrm_date != null){
+            this.step4Data.mrm_date = new Date(res['data'].mrm_date);
+          }
+        });
   }
 
   onSubmitStep1(ngForm1: any){
@@ -771,6 +905,9 @@ export class TestingCalibrationFormComponent implements OnInit {
       this.testingCalForm.email = this.userEmail;
       this.testingCalForm.userType = this.userType;
       this.testingCalForm.saved_step = '1';
+      if(this.formApplicationId > 0){
+        this.step1Data.application_id = this.formApplicationId;
+      }
       this.testingCalForm.step1.is_draft = false;
       this.testingCalForm.step1.is_bod = this.step1Data.is_bod == '0' ? false : true;
       this.testingCalForm.step1.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
@@ -789,16 +926,15 @@ export class TestingCalibrationFormComponent implements OnInit {
       if(this.accreditationInfo) {
         this.testingCalForm.step1['accreditationInfo'] = this.accreditationInfo;
       }
-      
-      console.log(this.testingCalForm,'testingCalForm');
 
       // this.step1DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
-          console.log(res,'res')
+          // console.log(res,'res')
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            // this.toastr.success(res['msg'], '');
+            this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
             this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
@@ -820,7 +956,7 @@ export class TestingCalibrationFormComponent implements OnInit {
       this.testingCalForm.step1 = this.step1Data;
       // this.step1DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
       this.loader = false;
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.testingCalForm)
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
           if(res['status'] == true) {
@@ -833,14 +969,20 @@ export class TestingCalibrationFormComponent implements OnInit {
     }
   }
 
-  onSubmitTestingParticipation(ngForm2: any){
-    this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+  onSubmitStep2(ngForm2: any){
+    // this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
 
     if(ngForm2.form.valid) {
       this.testingCalForm = {};
       this.testingCalForm.step2 = {};
       this.testingCalForm.email = this.userEmail;
       this.testingCalForm.userType = this.userType;
+      this.testingCalForm.saved_step = '2';
+      var applicationId = sessionStorage.getItem('applicationId');
+      // this.step2Data.application_id = applicationId;
+      this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+      
+      this.step2Data.is_draft = false;
       this.testingCalForm.step2 = this.step2Data;
 
       this.testingCalForm.step2['proficiencyTesting'] = [];
@@ -849,13 +991,13 @@ export class TestingCalibrationFormComponent implements OnInit {
         this.testingCalForm.step2['proficiencyTesting'] = this.proficiencyTesting;
       }
 
-      this.step2DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step2DataBodyFormFile)
+      // this.step2DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
           console.log(res,'res')
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            // this.toastr.success(res['msg'], '');
             this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
@@ -866,22 +1008,27 @@ export class TestingCalibrationFormComponent implements OnInit {
     }
   }
 
-  onSubmitPersonalInformation(ngForm3: any){
-    this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+  onSubmitStep3(ngForm3: any){
+    // this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
     if(ngForm3.form.valid) {
       this.testingCalForm = {};
       this.testingCalForm.step3 = {};
+      var applicationId = sessionStorage.getItem('applicationId');
+      // this.step3Data.application_id = applicationId;
+      this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+      this.step3Data.is_draft = false;
+      this.testingCalForm.saved_step = '3';
       this.testingCalForm.email = this.userEmail;
       this.testingCalForm.userType = this.userType;
       this.testingCalForm.step3 = this.step3Data;
 
-      this.step3DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step3DataBodyFormFile)
+      // this.step3DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
           console.log(res,'res')
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            // this.toastr.success(res['msg'], '');
             this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
@@ -892,23 +1039,27 @@ export class TestingCalibrationFormComponent implements OnInit {
     }
   }
 
-  onSubmitInformationAuditManagement(ngForm4: any){
-  this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
+  onSubmitStep4(ngForm4: any){
+  // this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
     if(ngForm4.form.valid) {
       this.testingCalForm = {};
       this.testingCalForm.step4 = {};
+      var applicationId = sessionStorage.getItem('applicationId');
+      this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+      this.step4Data.is_draft = false;
+      this.testingCalForm.saved_step = '4';
       this.testingCalForm.email = this.userEmail;
       this.testingCalForm.userType = this.userType;
       this.testingCalForm.step4 = this.step4Data;
 
-      this.step4DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step4DataBodyFormFile)
+      // this.step4DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
           console.log(res,'res')
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
-            this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
+            // this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -918,17 +1069,21 @@ export class TestingCalibrationFormComponent implements OnInit {
     }
   }
   
-  onSubmitPerlimVisit(ngForm5: any){
+  onSubmitStep5(ngForm5: any) {
+    this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+  }
+
+  onSubmitStep6(ngForm6: any){
     this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
-    if(ngForm5.form.valid) {
+    if(ngForm6.form.valid) {
       this.testingCalForm = {};
       this.testingCalForm.step5 = {};
       this.testingCalForm.email = this.userEmail;
       this.testingCalForm.userType = this.userType;
       this.testingCalForm.step5 = this.step5Data;
 
-      this.step5DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step5DataBodyFormFile)
+      // this.step5DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.testingCalForm)
       .subscribe(
         res => {
           console.log(res,'res')
@@ -1031,6 +1186,88 @@ export class TestingCalibrationFormComponent implements OnInit {
   }else{
   this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
   }    
+}
+
+validateFileVoucher(fileEvent: any, type?: any) {
+  var file_name = fileEvent.target.files[0].name;
+  var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
+  var ex_type = ['pdf'];
+  var ex_check = this.Service.isInArray(file_exe,ex_type);
+  if(ex_check){
+    this.paymentReceiptValidation = true;
+    //if(type == undefined){
+      this.voucherFile.append('payment_receipt',fileEvent.target.files[0]);
+    //}
+  }else{
+      this.paymentReceiptValidation = false;
+      
+  }
+}
+
+onSubmitPaymentInformation(ngForm7: any, type?: boolean){
+  //console.log("payment submitting.....");
+  this.testingCalForm = {};
+  this.testingCalForm.step9 = {};
+
+        let dtFormat: string = '';
+        if(this.voucherSentData['payment_date'] != undefined && 
+          this.voucherSentData['payment_date']._i != undefined){
+          var dtData = this.voucherSentData['payment_date']._i;
+          var year = dtData.year;
+          var month = dtData.month;
+          var date = dtData.date;
+          dtFormat = year + "-" + month + "-" + date;
+        }
+        //     
+
+      this.voucherFile.append('voucher_code',this.voucherSentData['voucher_code']);
+      this.voucherFile.append('amount',this.voucherSentData['amount']);
+      this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
+      this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
+      this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
+      this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
+      this.voucherFile.append('payment_date',dtFormat);
+      this.voucherFile.append('accreditation',this.formApplicationId);
+      this.voucherFile.append('application_id',this.formApplicationId);
+      
+  if(ngForm7.form.valid && this.paymentReceiptValidation != false) {
+      this._trainerService.paymentVoucherSave((this.voucherFile))
+      .subscribe(
+          result => {
+            let data: any = result;
+            //console.log("submit voucher: ", data);
+            if(data.status){
+              //this.voucherFile = new FormData();
+              //this.voucherSentData = {};
+              this.toastr.success("Your form has been successfully submitted and it is under review.We will update you shortly.",'THANK YOU');
+              //this.openView('appComp','');
+              setTimeout(() => {                    
+                this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+              },3500)
+              
+            }else{
+              this.toastr.warning(data.msg,'');
+            }
+          }
+        )
+  }else if(type != undefined && type == true && this.paymentReceiptValidation != false){
+    this.testingCalForm.step7.is_draft = true;
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.testingCalForm)
+    .subscribe(
+    res => {
+      //console.log(res,'res')
+      if(res['status'] == true) {
+        this.toastr.success(res['msg'], '');
+        //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+      }else{
+        this.toastr.warning(res['msg'], '');
+      }
+    });
+  }
+  else{
+    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+  }
+
 }
 
   dayTimeChange(event,dayTime)
