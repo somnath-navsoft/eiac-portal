@@ -1614,11 +1614,11 @@ export class InspectionBodiesFormComponent implements OnInit {
     //this.Service.moveSteps('undertaking_applicant', 'payment_update', this.headerSteps);
     //this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
 
-    if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.onBehalfApplicantDetails.length > 0){
-      console.log(">>>find ID");
-      this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
-      return;
-    }
+    // if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.onBehalfApplicantDetails.length > 0){
+    //   console.log(">>>find ID");
+    //   this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
+    //   return;
+    // }
 
 
 
@@ -2208,11 +2208,11 @@ export class InspectionBodiesFormComponent implements OnInit {
   onSubmitTestingParticipation(ngForm2: any, type?:boolean){
     //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
 
-    if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.ptParticipation  == null){
-      console.log(">>>find ID");
-      this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
-    return;
-  }
+  //   if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.ptParticipation  != null){
+  //     console.log(">>>find ID");
+  //     this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+  //   return;
+  // }
 
 
     this.inspectionBodyForm = {};
@@ -2296,11 +2296,11 @@ export class InspectionBodiesFormComponent implements OnInit {
     // //console.log("Step PersonalInformation submit...");
       //
 
-      if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.technicalManager.length > 0){
-        console.log(">>>find ID");
-        //this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
-      //return;
-    }
+    //   if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.technicalManager.length > 0){
+    //     console.log(">>>find ID");
+    //     //this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+    //   //return;
+    // }
 
 
       this.inspectionBodyForm = {};
@@ -2409,11 +2409,11 @@ export class InspectionBodiesFormComponent implements OnInit {
     //  //console.log("Step InformationAuditManagement submit...");   
     //this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
 
-    if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.audit_date  != ''){
-      console.log(">>>find ID");
-      this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
-      return;
-    }
+    // if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.audit_date  != ''){
+    //   console.log(">>>find ID");
+    //   this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
+    //   //return;
+    // }
 
     this.inspectionBodyForm = {};
       this.inspectionBodyForm.step4 = {};
@@ -2567,11 +2567,13 @@ export class InspectionBodiesFormComponent implements OnInit {
  onSubmitScopeAccreditation(ngForm: any, type?: boolean){
   //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
 //scopeDetails.details
-  if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.scopeDetails.details.length > 0){
-    console.log(">>>find ID");
-    this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
-    return;
-  }
+  // if(this.viewData != undefined && this.viewData.data.id > 0 && 
+  //   this.viewData.data.scopeDetails != undefined && typeof this.viewData.data.scopeDetails == 'object' &&
+  //   this.viewData.data.scopeDetails.details.length > 0){
+  //   console.log(">>>find ID");
+  //   this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+  //   return;
+  // }
 
   this.inspectionBodyForm = {};
   this.inspectionBodyForm.step5 = {};

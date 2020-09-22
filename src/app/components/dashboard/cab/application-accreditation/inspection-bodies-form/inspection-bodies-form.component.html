@@ -964,12 +964,11 @@
                                             <hr>
                                         </div>
                                     </div>
-                            <ng-container *ngIf="viewData != undefined && viewData.data.id > 0 && viewData.data.scopeDetails != null">
+                            <!-- <ng-container *ngIf="viewData != undefined && viewData.data.id > 0 && viewData.data.scopeDetails != null">
                                 <div class="row">
                                     <div class="col-md-12">
                                       <div class="table-appln">
                                         <table>
-                                            <!-- {{jsonParseKeyvalue(scopeDetailsHeading) | json}} -->
                                           <tr>
                                             <th *ngFor="let item5 of jsonParseKeyvalue(viewData.data.scopeDetails.heading.column_list) | keyvalue;">{{item5.value}}</th>
                                           </tr>
@@ -982,8 +981,8 @@
                                       </div>
                                     </div>
                                   </div>
-                            </ng-container>
-                            <ng-container *ngIf="viewData != undefined && viewData.data.id > 0 && viewData.data.scopeDetails === null">
+                            </ng-container> -->
+                            <!-- <ng-container *ngIf="viewData != undefined && viewData.data.id > 0 && viewData.data.scopeDetails === null"> -->
                                     <div class="row">
                                         
                                         <div class="col-md-12 col-sm-12">
@@ -1081,7 +1080,7 @@
 
                                         </div>
                                     </div>
-                            </ng-container>
+                            <!-- </ng-container> -->
 
                                 </div>
                             </div>
