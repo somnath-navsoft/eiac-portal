@@ -22,6 +22,7 @@ export class AppService {
   
 
   public apiServerUrl         =   'https://dev-service.eiac.gov.ae/webservice';
+  //public apiServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
   public apiRequestUrl        =   'https://dev-service.eiac.gov.ae/';
   public countryURL           =   "https://raw.githubusercontent.com/sagarshirbhate/Country-State-City-Database/master/Contries.json";
   public assetsBasePath       =   "https://dev-portal.eiac.gov.ae/assets/csc-json/";
