@@ -553,6 +553,21 @@ addMinutesToTime()
       return obj;
     }
 
+    changeDateFormat(event,prev,steps){
+      var dateString = event.value._d;
+      var d = new Date(dateString);
+      var mm = d.getMonth() + 1;
+      var dd = d.getDate();
+      var yy = d.getFullYear();
+      var convertedDate = yy + '-' + mm + '-' + dd;
+
+      // var step1Data = {};
+      //var convertedDate = dateString.toLocaleDateString();
+      delete prev.date_of_establishment;
+      steps = convertedDate;
+      return steps ;
+    }
+
     inputEventForSecond(event,key,obj,inpuyBoxName = ''){
       var dateString = event.value._d;
       var d = new Date(dateString);

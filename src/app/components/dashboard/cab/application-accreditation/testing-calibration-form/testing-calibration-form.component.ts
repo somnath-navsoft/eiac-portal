@@ -275,6 +275,7 @@ export class TestingCalibrationFormComponent implements OnInit {
     this.loadAppInfo();
     this.loadFormDynamicTable();
     this.loadCountryStateCity();
+    this.stepDefaultValue();
     // this.loadCountryStateCity();
     //this.checkCaptchaValidation = true;
     
@@ -371,7 +372,7 @@ export class TestingCalibrationFormComponent implements OnInit {
 
   setexDate(date){
     let cdate = date;
-    this.minDate = new Date(cdate  + (60*60*24*1000));
+    this.minDate = new Date(cdate);
   }
   
   validateFile(fileEvent: any) {
@@ -585,12 +586,12 @@ export class TestingCalibrationFormComponent implements OnInit {
   }
 
   stepDefaultValue() {
-    this.step1Data.accredation_criteria = ''
+    this.step1Data.accredation_criteria = '';
     this.step1Data.accreditationInfo =  [{
       scheme_name: "", 
       acccreditation_body_name: "", 
       acccreditation_scope: "",
-      certificate_expiry_date:"",
+      certificate_expiry_date: "",
     }];
     this.step1Data.city =  "";
     this.step1Data.country = "";
@@ -598,39 +599,40 @@ export class TestingCalibrationFormComponent implements OnInit {
     this.step1Data.date_of_establishment = "";
     this.step1Data.date_of_expiry = "";
     this.step1Data.date_of_issue = "";
-    this.step1Data.duty_from1 = "";
-    this.step1Data.duty_from2 = "";
-    this.step1Data.duty_from3 = "";
+    // this.step1Data.duty_from1 = "";
+    // this.step1Data.duty_from2 = "";
+    // this.step1Data.duty_from3 = "";
     this.step1Data.duty_shift = "";
-    this.step1Data.duty_to1 = "";
-    this.step1Data.duty_to2 = "";
-    this.step1Data.duty_to3 = "";
+    // this.step1Data.duty_to1 = "";
+    // this.step1Data.duty_to2 = "";
+    // this.step1Data.duty_to3 = "";
     this.step1Data.fax_no = "";
-    this.step1Data.is_bod = "";
-    this.step1Data.is_bod_select = "";
-    this.step1Data.is_hold_other_accreditation = "";
-    this.step1Data.is_hold_other_accreditation_select = "";
+    this.step1Data.is_bod = "1";
+    this.step1Data.is_hold_other_accreditation = "1";
     this.step1Data.is_main_activity = "";
     this.step1Data.is_main_activity_note = "";
     this.step1Data.mailing_address = "";
     this.step1Data.official_commercial_name = "";
     this.step1Data.official_email = "";
     this.step1Data.official_website = "";
-    this.step1Data.ownOrgBasicInfo = [{
+    this.ownOrgBasicInfo = [{
       name: "", 
       designation: "", 
       email: "",
       phone_no: "",
       mobile_no: "",
     }];
-    this.step1Data.ownOrgMembInfo = [{
-      name: "", 
-      list_comp: "", 
-      contact_person: "",
-      designation: "",
-      mobile_no: "",
+    this.ownOrgMembInfo = [{
+      name:'',
+      bod_company:'',
+      director:'',
+      designation:'',
+      authorized_contact_person:'',
+      mobile_no:'',
+      phone_no:'',
+      email:'',
     }]
-    this.step1Data.physical_location_address = ""
+    this.step1Data.physical_location_address = "";
     this.step1Data.po_box = "";
     this.step1Data.state = "";
     this.step1Data.telephone = "";
@@ -659,11 +661,63 @@ export class TestingCalibrationFormComponent implements OnInit {
               this.criteriaList = getData.data.criteriaList;
             }
           }
+
+          var step2 = getData.data['step2'];
+
+          var stateList =  this.Service.getState();
+          var cityList =  this.Service.getCity();
+          stateList.subscribe( result => {
+            for(let key in result['states']) {
+              if(result['states'][key]['name'] == data.state )
+              {
+                this.allStateList.push(result['states'][key]);
+              }
+            }
+          });
+
+          cityList.subscribe( result => {
+            for(let key in result['cities']) {
+              if(result['cities'][key]['name'] == data.city )
+              {
+                this.allCityList.push(result['cities'][key]);
+              }
+            }
+          });
+          
+          // this.step1Data.accredation_criteria = '';
+          // this.step1Data.accreditationInfo =  [{
+          //   scheme_name: "", 
+          //   acccreditation_body_name: "", 
+          //   acccreditation_scope: "",
+          //   certificate_expiry_date: "",
+          // }];
+          // this.step1Data.city =  "";
+          // this.step1Data.country = "";
+          this.step1Data.criteria_request = "";
+          this.step1Data.date_of_establishment = new Date(data.date_of_establisment);
+          this.step1Data.date_of_expiry = new Date(data.date_of_expiry);
+          this.step1Data.date_of_issue = new Date(data.date_of_issue);
+          this.step1Data.fax_no = data.applicant_fax_no;
+          this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
+          this.step1Data.is_hold_other_accreditation = "1";
+          this.step1Data.is_main_activity = "";
+          this.step1Data.is_main_activity_note = "";
+          this.step1Data.mailing_address = data.applicant_address;
+          this.step1Data.official_commercial_name = data.cab_name;
+          this.step1Data.official_email = data.applicant_email;
+          this.step1Data.official_website = data.applicant_website;
+          this.ownOrgBasicInfo = step2['cabOwnerData'];
+          this.ownOrgMembInfo = step2['cabBodData'];
+          this.step1Data.physical_location_address = data.applicant_location;
+          this.step1Data.po_box = data.po_box;
+          // this.step1Data.state = "";
+          this.step1Data.telephone = data.applicant_tel_no;
         }
       })
   }
 
   onSubmitStep1(ngForm1: any){
+    // this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
     if(this.step1Data.duty_shift == '1' && typeof this.step1Data.duty_from1 == 'undefined' && typeof this.step1Data.duty_to1 == 'undefined')
     {
       this.dutyTime1 = false;
@@ -710,15 +764,16 @@ export class TestingCalibrationFormComponent implements OnInit {
     }else{
       this.dutyTime1 = true;
     }
-    this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
 
-    if(ngForm1.form.valid) {
+    // if(ngForm1.form.valid) {
       this.testingCalForm = {};
       this.testingCalForm.step1 = {};
       this.testingCalForm.email = this.userEmail;
       this.testingCalForm.userType = this.userType;
       this.testingCalForm.saved_step = '1';
       this.testingCalForm.step1.is_draft = false;
+      this.testingCalForm.step1.is_bod = this.step1Data.is_bod == '0' ? false : true;
+      this.testingCalForm.step1.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
       this.testingCalForm.step1 = this.step1Data;
 
       this.testingCalForm.step1['ownOrgBasicInfo'] = [];
@@ -735,6 +790,7 @@ export class TestingCalibrationFormComponent implements OnInit {
         this.testingCalForm.step1['accreditationInfo'] = this.accreditationInfo;
       }
       
+      console.log(this.testingCalForm,'testingCalForm');
 
       // this.step1DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
@@ -748,9 +804,9 @@ export class TestingCalibrationFormComponent implements OnInit {
             this.toastr.warning(res['msg'], '');
           }
         });
-    }else {
-      this.toastr.warning('Please Fill required field','');
-    }
+    // }else {
+    //   this.toastr.warning('Please Fill required field','');
+    // }
   }
 
   savedraftStep(stepCount) {
@@ -759,7 +815,7 @@ export class TestingCalibrationFormComponent implements OnInit {
       this.testingCalForm.email = this.userEmail;
       this.testingCalForm.userType = this.userType;
       this.testingCalForm.userType = this.userType;
-      this.testingCalForm.isDraft = 1;
+      this.testingCalForm.step1.is_draft = true;
       this.step1Data.first_name = this.step1Data.title+' '+this.step1Data.first_name;
       this.testingCalForm.step1 = this.step1Data;
       // this.step1DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
