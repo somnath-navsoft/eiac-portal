@@ -1614,11 +1614,11 @@ export class InspectionBodiesFormComponent implements OnInit {
     //this.Service.moveSteps('undertaking_applicant', 'payment_update', this.headerSteps);
     //this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
 
-    if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.onBehalfApplicantDetails.length > 0){
-      console.log(">>>find ID");
-      this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
-      return;
-    }
+    // if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.onBehalfApplicantDetails.length > 0){
+    //   console.log(">>>find ID");
+    //   this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
+    //   return;
+    // }
 
 
 

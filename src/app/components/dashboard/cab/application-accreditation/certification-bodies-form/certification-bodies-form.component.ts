@@ -72,6 +72,41 @@ export class CertificationBodiesFormComponent implements OnInit {
 
   //step wizard declaration
   headerSteps: any[] =[];
+  allStateList: Array<any> = [];
+  allCityList: Array<any> = [];
+  step1Data:any = {};
+  step2Data:any = {};
+  step3Data:any = {};
+  step4Data:any = {};
+  step5Data:any = {};
+  step6Data:any = {};
+  step7Data:any = {};
+  step8Data:any = {};
+  step9Data:any = {};
+  step10Data:any = {};
+  fileAny:any;
+  tradeLicensedValidation:any = false;
+  userEmail:any;
+  userType:any;
+  isCompleteness:any;
+  profileComplete:any;
+  transactions: any[] =[];
+  transactionsItem: any={};
+  is_hold_other_accreditation_toggle: any = 0;
+  getDutyTimeForm1IndexValue:number;
+  recommendStatus:boolean = false
+  total: any = 0;
+  criteriaList:any[] = [];
+  userId:any;
+  selectTradeLicName :string = ''; 
+  selectTradeLicPath :string = ''; 
+  formApplicationId:any;
+  formDraftsaved:any;
+  formAccrStatus:any;
+  voucherFile:any = new FormData();
+  voucherSentData: any = {};
+  ownOrgBasicInfo:any[] = [{}];
+  ownOrgMembInfo:any[] = [{}];
 
   @ViewChild('mydiv', null) mydiv: ElementRef;
   @ViewChild('captchaRef',{static:true}) captchaRef: RecaptchaComponent;
@@ -95,38 +130,138 @@ export class CertificationBodiesFormComponent implements OnInit {
     // this.Service.mapboxToken = getVal;
  }
 ngOnInit() {
-  // this.titleService.setTitle('EIAC - Certification Bodies');
-  //this.checkCaptchaValidation = true;
-
-
-  //Step wizard declaration
   this.headerSteps.push(
     {
-    title:'application_information', desc:'1. Applicant Information', activeStep:true, stepComp:false, icon:'icon-user', activeClass:'user-present'
+    title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-user', activeClass:'user-present'
     },
     {
-    title:'personal_information', desc:'2. Personnel Information', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    title:'personal_information', desc:'2. Personal Information', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
     },
     {
-    title:'information_audit_managemen  t', desc:'3. Scope of Accreditation', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    title:'summary_number_ofpersonnel', desc:'3. Summary Of The Number Of Personnel', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
     },
     {
-    title:'perlim_visit', desc:'4. QMS ISO 9001 Certification', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    title:'information_audit_management', desc:'4. Internal Audit & Management', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
     },
     {
-    title:'undertaking_applicant', desc:'5. EMS ISO 14001 Certification', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'scope_accreditation', desc:'5. Accreditation Scope', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
     },
     {
-      title:'undertaking_applicant', desc:'5. EMS ISO 14001 Certification', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
-      },
+      title:'cbs_other_location', desc:'6. Cb’s Other Activity Location', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    },
     {
-    title:'payment', desc:'7. Payment Information', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
-    }
+    title:'perlim_visit', desc:'7. Prelim Visit', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    },
+    {
+    title:'undertaking_applicant', desc:'8. Authorization of the Application', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    },
+    {
+      title:'proforma_invoice', desc:'9. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    },
+    {
+      title:'payment_update', desc:'10. Payment Update', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    },
+    {
+      title:'application_complete', desc:'11. Application Complete', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    },
   );
 
-
-
   this.loadFormDynamicTable();
+}
+
+onSubmitStep1(ngForm1: any){
+  // this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+  if(this.step1Data.duty_shift == '1' && typeof this.step1Data.duty_from1 == 'undefined' && typeof this.step1Data.duty_to1 == 'undefined')
+  {
+    this.dutyTime1 = false;
+    this.isSubmit = false;
+  }else{
+    this.dutyTime1 = true;
+  }
+  if(this.step1Data.duty_shift == '2' && typeof this.step1Data.duty_from2 == 'undefined' && typeof this.step1Data.duty_to2 == 'undefined')
+  {
+    if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+    {
+      this.dutyTime1 = false;
+    }else{
+      this.dutyTime1 = true;
+    }
+    this.dutyTime2 = false;
+    this.isSubmit = false;
+  }else{
+    this.dutyTime2 = true;
+  }
+  if(this.step1Data.duty_shift == '3' && typeof this.step1Data.duty_from3 == 'undefined' && typeof this.step1Data.duty_to3 == 'undefined')
+  {
+    if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+    {
+      this.dutyTime1 = false;
+    }else{
+      this.dutyTime1 = true;
+    }
+    if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
+    {
+      this.dutyTime2 = false;
+    }else{
+      this.dutyTime2 = true;
+    }
+    this.dutyTime3 = false;
+    this.isSubmit = false;
+  }else{
+    this.dutyTime3 = true;
+  }
+
+  if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
+    this.dutyTime1 = false;
+    this.isSubmit = false;
+  }else{
+    this.dutyTime1 = true;
+  }
+
+  if(ngForm1.form.valid) {
+    this.certificationBodiesForm = {};
+    this.certificationBodiesForm.step1 = {};
+    this.certificationBodiesForm.email = this.userEmail;
+    this.certificationBodiesForm.userType = this.userType;
+    this.certificationBodiesForm.saved_step = '1';
+    if(this.formApplicationId > 0){
+      this.step1Data.application_id = this.formApplicationId;
+    }
+    this.certificationBodiesForm.step1.is_draft = false;
+    this.certificationBodiesForm.step1.is_bod = this.step1Data.is_bod == '0' ? false : true;
+    this.certificationBodiesForm.step1.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
+    this.certificationBodiesForm.step1 = this.step1Data;
+
+    this.certificationBodiesForm.step1['ownOrgBasicInfo'] = [];
+    this.certificationBodiesForm.step1['ownOrgMembInfo'] = [];
+    this.certificationBodiesForm.step1['accreditationInfo'] = [];
+    
+    if(this.ownOrgBasicInfo) {
+      this.certificationBodiesForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
+    }
+    if(this.ownOrgMembInfo) {
+      this.certificationBodiesForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
+    }
+    if(this.accreditationInfo) {
+      this.certificationBodiesForm.step1['accreditationInfo'] = this.accreditationInfo;
+    }
+
+    // this.step1DataBodyFormFile.append('data',JSON.stringify(this.certificationBodiesForm));
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.certificationBodiesForm)
+    .subscribe(
+      res => {
+        // console.log(res,'res')
+        if(res['status'] == true) {
+          // this.toastr.success(res['msg'], '');
+          this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
+          this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+        }else{
+          this.toastr.warning(res['msg'], '');
+        }
+      });
+  }else {
+    this.toastr.warning('Please Fill required field','');
+  }
 }
 
 is_toggle(type,value){

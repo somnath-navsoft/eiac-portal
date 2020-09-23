@@ -23,7 +23,7 @@ export class Constants{
 		trainerAgendaList:'trainer/agenda-list/',
 		trainerCourseByID: 'trainer/custom-course-dtls/',
 		trainerCourseDelete: 'trainer/course-delete/',
-		trainerCourseVoucherSave: 'webservice/voucher-details-save/',
+		trainerCourseVoucherSave: 'webservice/proforma-details-save/',
 		trainerCoursePageDetails : 'trainer/training-page-details/',
 		trainerCourseTypeDetails: 'trainer/training-course-type/',
 

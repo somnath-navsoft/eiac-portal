@@ -60,6 +60,33 @@
                                             </mat-form-field>
                                         </div>
                                     </div>
+                                    <!-- <div class="row pb-3">
+                                        <div class="col-md-3 col-sm-6 ">                                            
+                                            <div class="form-subheader">
+                                                <span>CAB Type:</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 p-0 pt-4">
+                                            <div class="cab-data">
+                                                <mat-radio-group name="accreditation_required" 
+                                                [(ngModel)]="step1Data.accredation_criteria" #selectAccrdCriteria="ngModel" required>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="initial_data">
+                                                            <mat-radio-button value="1"  [checked]="accreditationChecked">Testing Laboratory</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="initial_data">
+                                                            <mat-radio-button value="2">Calibration Laboratory</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                    </div> -->
+
                                     <div class="row pb-3">
                                         <div class="col-md-3 col-sm-6 ">                                            
                                             <div class="form-subheader">
@@ -493,12 +520,12 @@
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <label class="check-rdo">
-                                                                <mat-radio-button value="true">Yes </mat-radio-button>
+                                                                <mat-radio-button value=true>Yes </mat-radio-button>
                                                         </label>
                                                     </div>  
                                                     <div class="col-md-4">
                                                         <label class="check-rdo">
-                                                                <mat-radio-button value="false">No </mat-radio-button>
+                                                                <mat-radio-button value=false>No </mat-radio-button>
                                                         </label>
                                                     </div>  
                                             
@@ -865,11 +892,11 @@
                     <div class="row m-0">
                         <div class="wrapper">
                             <div class="col-12">
-                                <form #ngForm4="ngForm" (ngSubmit)="onSubmitStep5(ngForm5)" autocomplete="off">
+                                <form #ngForm5="ngForm" (ngSubmit)="onSubmitStep5(ngForm5)" autocomplete="off">
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr">
-                                                <h5>4. INFORMATION ABOUT INTERNAL AUDIT AND MANAGEMENT REVIEW LAST CONDUCTED DATE (FOR INITIAL SUBMISSION)</h5>
+                                                <h5>5. Accreditation Scope</h5>
                                             </div>
                                             <hr>
                                         </div>
@@ -918,7 +945,7 @@
                 <div class="form-bdy cust-stepper" id="perlim_visit"  [ngStyle]="{'display':'none'}">
                     <div class="row m-0">
                         <div class="wrapper">
-                            <form #ngForm5="ngForm" (ngSubmit)="onSubmitStep6(ngForm6)" autocomplete="off">  
+                            <form #ngForm6="ngForm" (ngSubmit)="onSubmitStep6(ngForm6)" autocomplete="off">  
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-md-12 p-0">
@@ -940,8 +967,8 @@
                                                 <!-- (click)='proficiency_testing(1)' -->
                                                 <div class="col-md-6">
                                                     <div class="request_frm">
-                                                        <mat-radio-group name="perlim_visit_val" 
-                                                        [(ngModel)]="testingCalForm.perlim_visit_val" required>
+                                                        <mat-radio-group name="is_prelim_visit" 
+                                                        [(ngModel)]="step6Data.is_prelim_visit" required>
                                                             <mat-radio-button value="1">Yes </mat-radio-button>
                                                             <mat-radio-button value="0">No </mat-radio-button>
                                                         </mat-radio-group>
@@ -951,24 +978,24 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12" *ngIf="testingCalForm.perlim_visit_val === '1'">
+                                        <div class="col-md-12" *ngIf="step6Data.is_prelim_visit === '1'">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Select Date</mat-label>
-                                                        <input matInput  readonly="true" (click)="Service._openCalendar(perlim_visit_select_date)"  
-                                                        [matDatepicker]="perlim_visit_select_date"  placeholder="Select Date" name="perlim_visit_select_date" 
-                                                        [(ngModel)]="step6Data.perlim_visit_select_date" (dateChange)="setexDate()" required>
-                                                        <mat-datepicker-toggle matSuffix [for]="perlim_visit_select_date"></mat-datepicker-toggle>
-                                                        <mat-datepicker #perlim_visit_select_date  disabled="false" ></mat-datepicker>
+                                                        <input matInput  readonly="true" (click)="Service._openCalendar(prelim_visit_date)"  
+                                                        [matDatepicker]="prelim_visit_date"  placeholder="Select Date" name="prelim_visit_date" 
+                                                        [(ngModel)]="step6Data.prelim_visit_date" (dateChange)="setexDate()" required>
+                                                        <mat-datepicker-toggle matSuffix [for]="prelim_visit_date"></mat-datepicker-toggle>
+                                                        <mat-datepicker #prelim_visit_date  disabled="false" ></mat-datepicker>
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <mat-form-field class="frm-data">
                                                         <mat-label>Select Time</mat-label>
-                                                        <mat-select placeholder="Select" name="perlim_visit_select_time" 
+                                                        <mat-select placeholder="Select" name="prelim_visit_time" 
                                                         (selectionChange)="getDutyTimeForm1Index($event)" 
-                                                        [(ngModel)]="step6Data.perlim_visit_select_time">
+                                                        [(ngModel)]="step6Data.prelim_visit_time">
                                                             <mat-option *ngFor="let item of addMinutesToTime; let i = index;" 
                                                             [value]="item.val">{{item.val}}</mat-option>
                                                         </mat-select>
@@ -1307,12 +1334,12 @@
                                     <div class="button-content">
                                         <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('perlim_visit',headerSteps,'menu','undertaking_applicant')">BACK</a> 
 
-                                        <button class="cancel-bttn" type="button" (click)="onSubmitUndertakingApplicant(ngForm6, true)">SAVE AS DRAFT</button>
+                                        <button class="cancel-bttn" type="button" (click)="onSubmitUndertakingApplicant(ngForm7, true)">SAVE AS DRAFT</button>
                                     </div>
-                                    <button class="submit-bttn submit-health"  *ngIf="!transactions.length">PROCEED FOR PAYMENT</button>
-                                    <ng-container *ngIf="transactions.length">
+                                    <button class="submit-bttn submit-health" >SUBMIT APPLICATION</button>
+                                    <!-- <ng-container *ngIf="transactions.length">
                                         <div id="paypalPayment"></div>
-                                    </ng-container>                                                 
+                                    </ng-container>                                                  -->
                                 </div>
                             </div>
                         </div>
@@ -1368,7 +1395,7 @@
                 </div>
                 
                 <div class="cust-stepper" id="proforma_invoice" [ngStyle]="{'display':'none'}">
-                    <form #ngForm8="ngForm" autocomplete="off">
+                    <form #ngForm8="ngForm" (ngSubmit)="onSubmitStep8(ngForm8)" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <!--  (ngSubmit)="onSubmitPaymentInformation(ngForm8)" -->
@@ -1400,7 +1427,11 @@
                                 <div class="bttns-health bttn-staff">
                                     <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice')">BACK</button> 
                                     <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice(ngForm8, true)">SAVE AS DRAFT</button> -->
-                                    <button class="submit-bttn submit-health" (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)">CONTINUE</button>
+                                    <!-- <button class="submit-bttn submit-health" (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)">CONTINUE</button> -->
+                                    <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button>
+                                    <ng-container *ngIf="transactions.length">
+                                        <div id="paypalPayment"></div>
+                                    </ng-container>
                                 </div>
                             </div>
                         </div>
