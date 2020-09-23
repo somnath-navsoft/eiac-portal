@@ -33,6 +33,11 @@ export class InspectionBodiesFormComponent implements OnInit {
   public ownOrgMembInfo: Array<any> = [{}];
   public proficiencyTesting: Array<any> = [];
   public accreditationInfo: Array<any> = [{}];
+
+
+  public schemeRows: Array<any> = [{}];
+
+
   //public accreditationInfo: any;
   public technicalManager: any = {};
   public managementManager: any = {}
@@ -71,7 +76,8 @@ export class InspectionBodiesFormComponent implements OnInit {
   readAccredAgreem: boolean = false;
   readReviewChecklist: boolean = false;
   readTermsCond: boolean = false;
-  
+
+  routeId: string = '';  
 
   public isSubmit:boolean = true;
   dutyTime1: boolean = true;
@@ -105,6 +111,8 @@ export class InspectionBodiesFormComponent implements OnInit {
   total: any = 0;
   allStateList: Array<any> = [];
   allCityList: Array<any> = [];
+  allCountryList: Array<any> = [];
+
   step1Data:any = {};
   step2Data:any = {};
   step3Data:any = {};
@@ -115,6 +123,8 @@ export class InspectionBodiesFormComponent implements OnInit {
   fileAny:any;
   tradeLicensedValidation:any = false;
   paymentReceiptValidation: boolean = false;
+
+  
 
   step1DataBodyFormFile:any = new FormData();
   step2DataBodyFormFile:any = new FormData();
@@ -178,8 +188,8 @@ export class InspectionBodiesFormComponent implements OnInit {
          this.authorizationList.authorization_confirm2 = true;
          this.readTermsCond = true;
       }else{
-        this.authorizationList.authorization_confirm2 = false;
-        this.readTermsCond = false;
+        //this.authorizationList.authorization_confirm2 = false;
+        //this.readTermsCond = false;
       } 
     }        
   }
@@ -275,6 +285,11 @@ export class InspectionBodiesFormComponent implements OnInit {
       }, '#paypalPayment');
     });
     }
+  }
+
+  backApp(){
+    this.router.navigateByUrl('/dashboard/cab_client/application-accreditation')
+    this.modalService.dismissAll();
   }
 
     //Paypal Button creation
@@ -409,6 +424,10 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.authorizationList.undertaking_confirm2 = true;
     this.readReviewChecklist= true;
   }
+
+  closeDialog(){
+    this.modalService.dismissAll();
+  }
   
   onError(error: any) {
     // do anything
@@ -431,7 +450,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url); 
   }
 
-  openView(content, type:string) {
+  openView(content, type?:string) {
     let pathData: any;
     //console.log(">>>pop up...", content);
     if(type != undefined && type == 'agreement'){
@@ -477,6 +496,11 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
     this.profileComplete = sessionStorage.getItem('profileComplete');
 
+    this.routeId = sessionStorage.getItem('routerId');
+
+    this.step5Data.scheme_ids = [];
+
+
     this.modalOptions = {
       backdrop:'static',
       backdropClass:'customBackdrop',
@@ -502,7 +526,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.loadAppData();
     this.loadAppInfo();
     this.loadFormDynamicTable();
-    this.loadCountryStateCity();
+    //this.loadCountryStateCity();
 
     // let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
     // //console.log("app info: ", url);
@@ -528,7 +552,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       title:'profciency_testing_participation', desc:'2. Proficiency Testing Participation', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
-      title:'personal_information', desc:'3. Personal Information', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'personal_information', desc:'3. Personnel Information', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
       title:'information_audit_management', desc:'4. Internal Audit & MRM Date', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
@@ -561,7 +585,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         for(let key in result['states']) {
           if(result['states'][key]['country_id'] == country_id )
           {
-            this.allStateList.push(result['states'][key]);
+            //this.allStateList.push(result['states'][key]);
           }
         }
     });
@@ -575,7 +599,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         for(let key in result['cities']) {
           if(result['cities'][key]['state_id'] == state_id )
           {
-            this.allCityList.push(result['cities'][key]);
+            //this.allCityList.push(result['cities'][key]);
           }
         }
     },
@@ -588,16 +612,16 @@ export class InspectionBodiesFormComponent implements OnInit {
   
   loadCountryStateCity = async() => {
     let countryList =  this.Service.getCountry();
-    await countryList.subscribe(record => {
-      /////console.log(record,'contry record :: ', this.step1Data.country);
-      this.getCountryLists = record['countries'];
-      console.log(">>>Country List: ", this.getCountryLists);
-      let getC = this.getCountryLists.find(rec => rec.name == this.profileCountrySel);
-      console.log('>>>> country: ', getC);
-      if(getC){
-        this.step1Data.country = getC.id;
-      }
-    });
+    // await countryList.subscribe(record => {
+    //   /////console.log(record,'contry record :: ', this.step1Data.country);
+    //   //this.getCountryLists = record['countries'];
+    //   // console.log(">>>Country List: ", this.getCountryLists);
+    //   // let getC = this.getCountryLists.find(rec => rec.name == this.profileCountrySel);
+    //   // console.log('>>>> country: ', getC);
+    //   // if(getC){
+    //   //   this.step1Data.country = getC.id;
+    //   // }
+    // });
     
   }
 
@@ -661,7 +685,7 @@ export class InspectionBodiesFormComponent implements OnInit {
               for(let key in result['states']) {
                 if(result['states'][key]['name'] == step1.state )
                 {
-                  this.allStateList.push(result['states'][key]);
+                  //this.allStateList.push(result['states'][key]);
                 }
               }
             });
@@ -670,7 +694,7 @@ export class InspectionBodiesFormComponent implements OnInit {
               for(let key in result['cities']) {
                 if(result['cities'][key]['name'] == step1.city )
                 {
-                  this.allCityList.push(result['cities'][key]);
+                  //this.allCityList.push(result['cities'][key]);
                 }
               }
             });
@@ -715,7 +739,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   }
 
   getCriteria(value){
-    //console.log("select Criteris: ", value);
+    console.log("select Criteris: ", value);
     this.scopeDataLoad = true;
     if(value != undefined && value > 0){
        //Get fullscope
@@ -731,7 +755,7 @@ export class InspectionBodiesFormComponent implements OnInit {
        this.dynamicScopeFieldColumns = [];
 
        this.Service.getwithoutData(apiURL).subscribe(record => {
-            //console.log('Fullscope: ', record);
+            console.log('Fullscope: ', record);
             let dataScope:any = [];
             let fieldTitleValue: any = [];
             dataScope = record['data'];
@@ -748,22 +772,25 @@ export class InspectionBodiesFormComponent implements OnInit {
               if(getData){
                 scopeName = getData.title;
                 scopeTitle = getData.title.toString().toLowerCase().split(" ").join('_');
+                this.fullScope.push({
+                    title: scopeTitle, id:1, name:scopeName
+                  });
               }
               //title: "lifting_equipment", id:1, name:"Lifting Equipment"
-              this.fullScope = [{
-                title: scopeTitle, id:1, name:scopeName
-              }];//dataScope.schemes;
-              //console.log(">>> Fined Scope Section: ", this.fullScope);
+              // this.fullScope = [{
+              //   title: scopeTitle, id:1, name:scopeName
+              // }];//dataScope.schemes;
+              console.log(">>> Fined Scope Section: ", this.fullScope, " -- ", this.step5Data.scheme_ids);
             }
 
             if(dataScope.scopeValue.length){
               var counter = 0;let defLine = {};
               dataScope.scopeValue.forEach((rec, key) => {
-                ////console.log("-- ", rec, " :: ", key, " --- ", counter++);
+                console.log("-- ", rec, " :: ", key, " --- ", counter++);
                 
                 
-
-                 customKey = this.fullScope[0].title;//rec.title.toString().toLowerCase().split(' ').join('_');//rec.accr_title[0];
+                //this.fullScope[0].title
+                 customKey = rec.title.toString().toLowerCase().split(' ').join('_');//rec.accr_title[0];
                 //this.dynamicScopeModel[customKey] = [];
                 this.dynamicScopeFieldColumns[key] = [];
 
@@ -894,9 +921,13 @@ export class InspectionBodiesFormComponent implements OnInit {
 
   loadAppData(){
     //897
-    let url = this.Service.apiServerUrl+"/"+'accrediation-details-show/0';
-    this.Service.getwithoutData(url)
-    .subscribe(
+    console.log(">> >route id:  ", parseInt(this.routeId), " -- ", this.routeId);
+    let url = '';
+    if(this.routeId != '' && parseInt(this.routeId) > 0){
+      let getId= parseInt(this.routeId);
+      url = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+getId;
+      this.Service.getwithoutData(url)
+      .subscribe(
       res => {
         let getData: any = res;
         let data: any;
@@ -1126,10 +1157,43 @@ export class InspectionBodiesFormComponent implements OnInit {
           this.step7Data.designation              = getAuthData.designation;
           this.step7Data.digital_signature        = getAuthData.digital_signature;
           this.step7Data.application_date         = getAuthData.application_date;
+          //check checkboxes
+          this.authorizationList.authorization_confirm1 = true;
+          this.authorizationList.authorization_confirm2 = true;
+          this.readTermsCond       = true;
+          this.authorizationList.undertaking_confirmTop3 = true;
+          this.authorizationList.undertaking_confirm1 = true;
+          this.authorizationList.undertaking_confirm2 = true;
+          this.readReviewChecklist = true;
+          this.authorizationList.undertaking_confirm3 = true;
+          this.authorizationList.undertaking_confirm4 = true;
+          this.authorizationList.undertaking_confirm5 = true;
+          this.authorizationList.undertaking_confirm6 = true;
+          this.authorizationList.undertaking_confirm7 = true;
+          this.authorizationStatus = true;
+          let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
+          console.log(">>>recommm", visitRecomm);
+          this.step7Data.recommend_visit = visitRecomm;
+          
+        }
+
+        //step 9
+        if(getData.data.paymentDetails != null && typeof getData.data.paymentDetails === 'object'){
+          console.log(">>>payment details...show");
+            this.voucherSentData.voucher_code     = getData.data.paymentDetails.voucher_code;
+            this.voucherSentData.payment_date     = getData.data.paymentDetails.payment_date;
+            this.voucherSentData.amount           = getData.data.paymentDetails.amount;
+            this.voucherSentData.transaction_no   = getData.data.paymentDetails.transaction_no;
+            this.voucherSentData.payment_method   = getData.data.paymentDetails.payment_method;
+            this.voucherSentData.payment_made_by  = getData.data.paymentDetails.payment_made_by;
+            this.voucherSentData.mobile_no        = getData.data.paymentDetails.mobile_no;
         }
         
       }
     );
+    }
+    //let url = this.Service.apiServerUrl+"/"+'accrediation-details-show/0';
+    
   }
 
   loadAppInfo(){
@@ -1173,8 +1237,31 @@ export class InspectionBodiesFormComponent implements OnInit {
               }
             });
 
-            this.profileCountrySel = data.country;
-            //this.step1Data.country = data.country; 
+
+            let countryList =  this.Service.getCountry();
+            countryList.subscribe( result => {
+              for(let key in result['countries']) {
+                //console.log("cc: ", result['countries'][key]['name']);
+                if(result['countries'][key]['name'] == data.country )
+                {
+                  this.allCountryList.push(result['countries'][key]);
+                }
+              }
+            });
+    // await countryList.subscribe(record => {
+    //   /////console.log(record,'contry record :: ', this.step1Data.country);
+    //   this.getCountryLists = record['countries'];
+    //   console.log(">>>Country List: ", this.getCountryLists);
+    //   let getC = this.getCountryLists.find(rec => rec.name == this.profileCountrySel);
+    //   console.log('>>>> country: ', getC);
+    //   if(getC){
+    //     this.step1Data.country = getC.id;
+    //   }
+    // });
+
+
+            //this.profileCountrySel = data.country;
+            this.step1Data.country = data.country; 
             this.step1Data.state = data.state;
             this.step1Data.city = data.city;
             //selectTradeLicName
@@ -1282,7 +1369,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       res => {
         //console.log("@Load scope....", res);
         this.inspectionBodyScopeFields = res['medicalLabScopeFields'];
-        this.countryList = res['allCountry'];
+        //this.countryList = res['allCountry'];
         this.labTypeList = res['allLabtype'];
         //this.fullScope   = res['fullScope'];
         //this.criteriaMaster = res['criteriaMaster'];
@@ -1551,14 +1638,18 @@ export class InspectionBodiesFormComponent implements OnInit {
    validateFileVoucher(fileEvent: any, type?: any) {
     var file_name = fileEvent.target.files[0].name;
     var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
-    var ex_type = ['pdf'];
+    //var ex_type = ['pdf, PDF'];
+    var ex_type = ['pdf', 'PDF'];
     var ex_check = this.Service.isInArray(file_exe,ex_type);
+    console.log("...voucher file...1: ", ex_check, " -- ext ",file_exe, " -- ", ex_type, " -- ", file_name,  " -- ", fileEvent );
     if(ex_check){
       this.paymentReceiptValidation = true;
+      console.log("...voucher file...2: ", ex_check);
       //if(type == undefined){
         this.voucherFile.append('payment_receipt',fileEvent.target.files[0]);
       //}
     }else{
+      console.log("...voucher file...3: ", ex_check);
         this.paymentReceiptValidation = false;
         
     }
@@ -1813,11 +1904,11 @@ export class InspectionBodiesFormComponent implements OnInit {
     //   this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     // } 
     //&& this.formAccrStatus ==
-    if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.accredation_criteria  == ''){
-        console.log(">>>find ID");
-        this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
-      return;
-    }
+    // if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.accredation_criteria  == ''){
+    //     console.log(">>>find ID");
+    //     this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+    //   return;
+    // }
     
     ////console.log("Submit calling: ", this.step1Data);
     //return;
@@ -2121,10 +2212,18 @@ export class InspectionBodiesFormComponent implements OnInit {
         this.inspectionBodyForm.step1['accreditationInfo'] = this.accreditationInfo;
       }
 
-      // if(this.step1Data.date_of_issue != undefined){
-      //   console.log(">>> date");
-      //   this.step1Data.date_of_issue = new Date(this.step1Data.date_of_issue).toLocaleTimeString();
-      // }
+      if(this.step1Data.date_of_issue != undefined){
+        console.log(">>> date");
+        this.step1Data.date_of_issue = new Date(this.step1Data.date_of_issue);
+      }
+      if(this.step1Data.date_of_expiry != undefined){
+        console.log(">>> date");
+        this.step1Data.date_of_expiry = new Date(this.step1Data.date_of_expiry);
+      }
+      if(this.step1Data.date_of_establishment != undefined){
+        console.log(">>> date");
+        this.step1Data.date_of_establishment = new Date(this.step1Data.date_of_establishment);
+      }
       // console.log(">>> Date of issue: ", this.step1Data.date_of_issue);
 
       if(this.formApplicationId > 0){
@@ -2208,11 +2307,11 @@ export class InspectionBodiesFormComponent implements OnInit {
   onSubmitTestingParticipation(ngForm2: any, type?:boolean){
     //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
 
-    if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.ptParticipation  == null){
-      console.log(">>>find ID");
-      this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
-    return;
-  }
+  //   if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.ptParticipation  != null){
+  //     console.log(">>>find ID");
+  //     this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+  //   return;
+  // }
 
 
     this.inspectionBodyForm = {};
@@ -2296,11 +2395,11 @@ export class InspectionBodiesFormComponent implements OnInit {
     // //console.log("Step PersonalInformation submit...");
       //
 
-      if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.technicalManager.length > 0){
-        console.log(">>>find ID");
-        //this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
-      //return;
-    }
+    //   if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.technicalManager.length > 0){
+    //     console.log(">>>find ID");
+    //     //this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+    //   //return;
+    // }
 
 
       this.inspectionBodyForm = {};
@@ -2409,11 +2508,11 @@ export class InspectionBodiesFormComponent implements OnInit {
     //  //console.log("Step InformationAuditManagement submit...");   
     //this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
 
-    if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.audit_date  != ''){
-      console.log(">>>find ID");
-      this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
-      return;
-    }
+    // if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.audit_date  != ''){
+    //   console.log(">>>find ID");
+    //   this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
+    //   //return;
+    // }
 
     this.inspectionBodyForm = {};
       this.inspectionBodyForm.step4 = {};
@@ -2567,11 +2666,13 @@ export class InspectionBodiesFormComponent implements OnInit {
  onSubmitScopeAccreditation(ngForm: any, type?: boolean){
   //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
 //scopeDetails.details
-  if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.scopeDetails.details.length > 0){
-    console.log(">>>find ID");
-    this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
-    return;
-  }
+  // if(this.viewData != undefined && this.viewData.data.id > 0 && 
+  //   this.viewData.data.scopeDetails != undefined && typeof this.viewData.data.scopeDetails == 'object' &&
+  //   this.viewData.data.scopeDetails.details.length > 0){
+  //   console.log(">>>find ID");
+  //   this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+  //   return;
+  // }
 
   this.inspectionBodyForm = {};
   this.inspectionBodyForm.step5 = {};
@@ -2867,16 +2968,22 @@ onSubmitPaymentInformation(ngForm7: any, type?: boolean){
                let data: any = result;
                 //console.log("submit voucher: ", data);
                 if(data.status){
-                  //this.voucherFile = new FormData();
-                  //this.voucherSentData = {};
-                  this._toaster.success("Your form has been successfully submitted and it is under review.We will update you shortly.",'THANK YOU');
-                  //this.openView('appComp','');
-                  setTimeout(() => {                    
-                    this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-                  },3500)
+                  //this.openView('appComp');
+                  setTimeout(()=>{
+                    let elem = document.getElementById('openAppDialog');
+                    console.log("App dialog hash....", elem);
+                    if(elem){
+                      elem.click();
+                    }
+                  }, 100)
+                  // this._toaster.success("Your form has been successfully submitted and it is under review.We will update you shortly.",'THANK YOU');
+                  // setTimeout(() => {                    
+                  //   this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+                  // },3500)
                   
                 }else{
                   this._toaster.warning(data.msg,'');
+
                 }
                 // if(data != undefined && typeof data === 'object'){
                 //     //this.pageCurrentNumber = 1;
