@@ -7,6 +7,8 @@ import { LogOut, LogInSuccess, LogInState } from '../../store/actions/auth.actio
 import { filter} from 'rxjs/operators';
 
 import { AppService } from '../../services/app.service'; 
+import { toInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
+//import { type } from 'os';
 
 @Component({
   selector: 'portal-layout',
@@ -48,7 +50,16 @@ export class LayoutComponent implements OnInit {
       filter(event => event instanceof NavigationEnd)
     ).subscribe(event => {
         let data: any = event;
-        //console.log('>>> router...', event);
+        console.log('>>> router...', event);
+        //console.log(this.href.substring(this.href.lastIndexOf('/') + 1));
+        if(data && typeof data == 'object' && data.url != ''){
+          let getLastPart: any = data.url.substring(data.url.lastIndexOf('/') + 1)
+          console.log('lst part: ', getLastPart, " -- ", Number.isInteger(parseInt(getLastPart)), " :: ", typeof (parseInt(getLastPart)));
+          if(getLastPart != null && getLastPart != undefined && Number.isInteger(parseInt(getLastPart)) === true){
+              console.log('aaaa');
+              sessionStorage.setItem('routerId', getLastPart);
+          }
+        }
 
         var wholeUrl = data.urlAfterRedirects;
         
