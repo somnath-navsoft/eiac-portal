@@ -609,7 +609,7 @@ a:hover { text-decoration: none; }
 .desc-content-prof { display: flex; justify-content: space-around; }
 .icon-add{ cursor: pointer; }
 .icon-cancel{ cursor: pointer; }
-.error{ color: #ff0000 }
+.error{ color: #ff0000; margin: 0; margin-top: -20px; font-size: 14px; }
 .form-wrapper { padding: 50px; }
 .form-main { margin-bottom: 30px; }
 .form-main h1 { font-size: 75px; color: #C6B8A4; font-family: "Dubai Regular"; letter-spacing: 10px; text-align: left; }
