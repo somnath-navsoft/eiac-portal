@@ -1,5 +1,5 @@
 
-  <!-- <app-loader *ngIf="loader"></app-loader> -->
+<app-loader *ngIf="!loader"></app-loader>
 <div class="main-content">
     <section>
         <div class="form_main">
@@ -96,6 +96,35 @@
                                         <div class="col-md-3 col-sm-6 p-0 pt-4">
                                             <div class="cab-data">
                                                 <!-- @{{step1Data.accredation_criteria}} -->
+                                                <mat-radio-group name="cab_type" 
+                                                [(ngModel)]="step1Data.cab_type" #selectAccrdCriteria="ngModel" required>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="initial_data">
+                                                            <mat-radio-button value="testing_laboratory">Testing Laboratory</mat-radio-button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="initial_data">
+                                                            <mat-radio-button value="calibration_laboratories">Calibration Laboratory</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row pb-3">
+                                        <div class="col-md-3 col-sm-6 ">                                            
+                                            <div class="form-subheader">
+                                                <span>Type of Accreditation Required:</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6 p-0 pt-4">
+                                            <div class="cab-data">
+                                                <!-- @{{step1Data.accredation_criteria}} -->
                                                 <mat-radio-group name="accreditation_required" 
                                                 [(ngModel)]="step1Data.accredation_criteria" #selectAccrdCriteria="ngModel" required>
                                                 <div class="row">
@@ -104,9 +133,16 @@
                                                             <mat-radio-button value="1"  [checked]="accreditationChecked">Initial</mat-radio-button>
                                                         </div>
                                                     </div>
+
                                                     <div class="col-md-4">
                                                         <div class="initial_data">
                                                             <mat-radio-button value="2">Extension</mat-radio-button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="initial_data">
+                                                            <mat-radio-button value="3">Renewal</mat-radio-button>
                                                         </div>
                                                     </div>
                                                 </div>
