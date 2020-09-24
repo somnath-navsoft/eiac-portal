@@ -333,7 +333,7 @@
                                             <div class="col-12"> 
                                                 <div class="add-new">
                                                     <a  href="javascript:void(0)" (click)="addRow(ownOrgBasicInfo)">
-                                                        <span class="icon-add-round"></span>
+                                                        <span class="icon-add"></span>
                                                         <span>ADD NEW</span>
                                                     </a>
                                                 </div>
@@ -417,7 +417,7 @@
                                             <div class="col-12">
                                                 <div class="add-new">
                                                     <a  href="javascript:void(0)" (click)="addRow(ownOrgMembInfo)">
-                                                        <span class="icon-add-round"></span>
+                                                        <span class="icon-add"></span>
                                                         <span>ADD NEW</span>
                                                     </a>
                                                 </div>
@@ -654,7 +654,7 @@
                                                                     </mat-form-field>
                                                                     </td>
                                                                 <td class="content-icn">
-                                                                    <span *ngIf="i >= 0" class="icon-add-round" (click)="addRow(accreditationInfo)"></span>&nbsp;
+                                                                    <span *ngIf="i >= 0" class="icon-add" (click)="addRow(accreditationInfo)"></span>&nbsp;
                                                                     <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(accreditationInfo,i)"></span>
                                                                 </td>
                                                             </tr>
@@ -757,7 +757,7 @@
                                                                 </mat-form-field>
                                                                 </td>
                                                             <td class="content-icn">
-                                                                <span *ngIf="i >= 0" class="icon-add-round" (click)="addRow(proficiencyTesting)"></span>&nbsp;
+                                                                <span *ngIf="i >= 0" class="icon-add" (click)="addRow(proficiencyTesting)"></span>&nbsp;
                                                                 <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(proficiencyTesting,i)"></span>
                                                             </td>
                                                         </tr>
@@ -988,7 +988,7 @@
                             </ng-container> -->
                             <!-- <ng-container *ngIf="viewData != undefined && viewData.data.id > 0 && viewData.data.scopeDetails === null"> <tr  *ngFor="let item of accreditationInfo; let i = index;"> -->
                             <ng-container *ngFor="let item of schemeRows; let i = index;">
-                                    <div class="row">
+                                    <div class="row mt-3">
                                         <div class="col-md-9 col-sm-9">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Scheme</mat-label>
@@ -1001,7 +1001,7 @@
                                         </div>
                                         <div class="col-md-3 col-sm-3">
                                             <div class="add-content">
-                                                <span *ngIf="i >= 0" class="icon-add-round" (click)="addRow(schemeRows)"></span>&nbsp;
+                                                <span *ngIf="i >= 0" class="icon-add" (click)="addRow(schemeRows)"></span>&nbsp;
                                                 <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(schemeRows,i)"></span>
                                             </div>
                                         </div>                                                                      
@@ -1072,7 +1072,7 @@
                                                                                 
                                                                             </td>
                                                                             <td class="content-icn">
-                                                                                <span *ngIf="k >= 0" class="icon-add-round" (click)="addScopeLine(k, dynamicScopeModel.fieldLines)"></span>&nbsp;
+                                                                                <span *ngIf="k >= 0" class="icon-add" (click)="addScopeLine(k, dynamicScopeModel.fieldLines)"></span>&nbsp;
                                                                                 <span *ngIf="k >= 1" class="icon-close-round" (click)="removeScopeLine(k)"></span>
                                                                             </td>
                                                                         </tr>
@@ -1129,7 +1129,7 @@
                                                 </div>
                                                 <!-- @@{{inspectionBodyForm.perlim_visit_val |  json}} -->
                                                 <!-- (click)='proficiency_testing(1)' -->
-                                                <div class="col-md-2">
+                                                <div class="col-md-6">
                                                     <div class="request_frm">
                                                         <mat-radio-group name="perlim_visit_val" 
                                                         [(ngModel)]="step6Data.prelim_visit_val" #selectPrelim="ngModel" required>

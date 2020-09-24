@@ -546,34 +546,34 @@ export class InspectionBodiesFormComponent implements OnInit {
     //
     this.headerSteps.push(
       {
-      title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-user', activeClass:'user-present'
+      title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
       },
       {
       title:'profciency_testing_participation', desc:'2. Proficiency Testing Participation', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
-      title:'personal_information', desc:'3. Personnel Information', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'personal_information', desc:'3. Personnel Information', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
       },
       {
-      title:'information_audit_management', desc:'4. Internal Audit & MRM Date', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'information_audit_management', desc:'4. Internal Audit & MRM Date', activeStep:false, stepComp:false, icon:'icon-task', activeClass:''
       },
       {
-        title:'scope_accreditation', desc:'5. Accreditation Scope', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+        title:'scope_accreditation', desc:'5. Accreditation Scope', activeStep:false, stepComp:false, icon:'icon-sheet', activeClass:''
       },
       {
-      title:'perlim_visit', desc:'6. Prelim Visit', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'perlim_visit', desc:'6. Prelim Visit', activeStep:false, stepComp:false, icon:'icon-paper', activeClass:''
       },
       {
-      title:'undertaking_applicant', desc:'7. Authorization of the Application', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'undertaking_applicant', desc:'7. Authorization of the Application', activeStep:false, stepComp:false, icon:'icon-work', activeClass:''
       },
       {
-        title:'proforma_invoice', desc:'8. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+        title:'proforma_invoice', desc:'8. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-file_invoice', activeClass:''
       },
       {
-        title:'payment_update', desc:'9. Payment Update', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+        title:'payment_update', desc:'9. Payment Update', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
       },
       {
-        title:'application_complete', desc:'10. Application Complete', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+        title:'application_complete', desc:'10. Application Complete', activeStep:false, stepComp:false, icon:'icon-document-pen', activeClass:''
       },
     );
   }

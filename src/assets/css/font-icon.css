@@ -259,3 +259,9 @@
 .icon-email:before {
   content: "\e94e";
 }
+.icon-add:before {
+  content: "\e94f";
+}
+.icon-file_invoice:before {
+  content: "\e950";
+}
