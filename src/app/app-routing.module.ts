@@ -80,6 +80,7 @@ import { TrainersMessageDetailsComponent } from './components/dashboard/trainers
 import { MessageDetailsComponent } from './components/dashboard/assessors/message-details/message-details.component';
 import { CandidateMessageDetailsComponent } from './components/dashboard/candidate/candidate-message-details/candidate-message-details.component';
 import { OperationsAccreditationServiceDetailsComponent } from './components/dashboard/operations/operations-accreditation-service-details/operations-accreditation-service-details.component';
+import { StatusComponent } from './components/dashboard/status/status.component';
 
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
@@ -88,6 +89,8 @@ const routes: Routes = [
   { path: 'dashboard',canActivate: [AuthGuard], 
     children: [
       //Trainers
+      { path: 'onboarding-message-list', component: MessageComponent, canActivate: [AuthGuard] },
+      { path: 'status/:id', component: StatusComponent, canActivate: [AuthGuard] },
       { path: 'onboarding-message-list', component: MessageComponent, canActivate: [AuthGuard] },
       { path: 'message-detail/:id', component: MessageDetailComponent, canActivate: [AuthGuard] },
       { path: 'trainers', component: TrainersComponent, canActivate: [AuthGuard],

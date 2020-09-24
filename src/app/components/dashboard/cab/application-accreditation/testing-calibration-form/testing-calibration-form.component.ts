@@ -306,7 +306,7 @@ export class TestingCalibrationFormComponent implements OnInit {
     this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');
     this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Document%20review%20Checklist-%20ISO%2017020-%202012_Inspection%20Bodies.pdf');
     
-    this.loader = false;
+    // this.loader = false;
     this.headerSteps.push(
       {
       title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-user', activeClass:'user-present'
@@ -1039,7 +1039,7 @@ export class TestingCalibrationFormComponent implements OnInit {
       if(this.formApplicationId > 0){
         this.step1Data.application_id = this.formApplicationId;
       }
-      this.testingCalForm.step1.is_draft = true;
+      this.step1Data.is_draft = true;
       this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
       this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
       this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
@@ -1058,12 +1058,13 @@ export class TestingCalibrationFormComponent implements OnInit {
       if(this.accreditationInfo) {
         this.testingCalForm.step1['accreditationInfo'] = this.accreditationInfo;
       }
-
+      this.loader = false;
       // this.step1DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
           // console.log(res,'res')
+          this.loader = true;
           if(res['status'] == true) {
             this.toastr.success('Save Draft Successfully', '');
           }else{
@@ -1090,10 +1091,12 @@ export class TestingCalibrationFormComponent implements OnInit {
         this.testingCalForm.step2['proficiencyTesting'] = this.proficiencyTesting;
       }
 
+      this.loader = false;
       // this.step2DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
+          this.loader = true;
           if(res['status'] == true) {
             // this.toastr.success(res['msg'], '');
             this.toastr.success('Save Draft Successfully', '');
@@ -1129,12 +1132,14 @@ export class TestingCalibrationFormComponent implements OnInit {
       this.step3Data.managementManager['relevent_experience'] = (this.step3Data.management_relevent_experience != '' && this.step3Data.management_relevent_experience != undefined) ? this.step3Data.management_relevent_experience : '';
 
       this.testingCalForm.step3 = this.step3Data;
+      this.loader = false;
       // this.step3DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
           console.log(res,'res')
           if(res['status'] == true) {
+            this.loader = true;
             // this.toastr.success(res['msg'], '');
             this.toastr.success('Save Draft Successfully', '');
           }else{
@@ -1152,12 +1157,14 @@ export class TestingCalibrationFormComponent implements OnInit {
       this.testingCalForm.email = this.userEmail;
       this.testingCalForm.userType = this.userType;
       this.testingCalForm.step4 = this.step4Data;
+      this.loader = false;
       // this.step4DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
           if(res['status'] == true) {
             // this.toastr.success(res['msg'], '');
+            this.loader = true;
             this.toastr.success('Save Draft Successfully', '');
           }else{
             this.toastr.warning(res['msg'], '');
@@ -1179,12 +1186,14 @@ export class TestingCalibrationFormComponent implements OnInit {
       this.step6Data.is_draft = true;
       this.testingCalForm.step6 = this.step6Data;
 
-      console.log(this.testingCalForm);
+      // console.log(this.testingCalForm);
+      this.loader = false;
       // this.step5DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.testingCalForm)
       .subscribe(
         res => {
-          console.log(res,'res')
+          // console.log(res,'res')
+          this.loader = true;
           if(res['status'] == true) {
             this.toastr.success(res['msg'], '');
             this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
@@ -1204,12 +1213,13 @@ export class TestingCalibrationFormComponent implements OnInit {
 
       this.testingCalForm.step7 = this.step7Data;
       // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
-
+      this.loader = false;
       // this.step6DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.testingCalForm)
       .subscribe(
         res => {
-          console.log(res,'res')
+          // console.log(res,'res')
+          this.loader = true;
           if(res['status'] == true) {
           }else{
             this.toastr.warning(res['msg'], '');

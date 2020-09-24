@@ -131,6 +131,7 @@ import { TrainersMessageDetailsComponent } from './components/dashboard/trainers
 import { ViewerComponentComponent} from './components/utility/viewer-component/viewer-component.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { OperationsAccreditationServiceDetailsComponent } from './components/dashboard/operations/operations-accreditation-service-details/operations-accreditation-service-details.component';
+import { StatusComponent } from './components/dashboard/status/status.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -170,7 +171,8 @@ export const MY_FORMATS = {
     CandidateMessageDetailsComponent,
     OperationsMessageDetailsComponent,
     TrainersMessageDetailsComponent,
-    OperationsAccreditationServiceDetailsComponent],
+    OperationsAccreditationServiceDetailsComponent,
+    StatusComponent],
   imports: [
     CommonModule,
     FormsModule,
