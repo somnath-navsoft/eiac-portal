@@ -54,10 +54,12 @@ export class LayoutComponent implements OnInit {
         //console.log(this.href.substring(this.href.lastIndexOf('/') + 1));
         if(data && typeof data == 'object' && data.url != ''){
           let getLastPart: any = data.url.substring(data.url.lastIndexOf('/') + 1)
-          console.log('lst part: ', getLastPart, " -- ", Number.isInteger(parseInt(getLastPart)), " :: ", typeof (parseInt(getLastPart)));
-          if(getLastPart != null && getLastPart != undefined && Number.isInteger(parseInt(getLastPart)) === true){
-              console.log('aaaa');
-              sessionStorage.setItem('routerId', getLastPart);
+          // console.log('lst part: ', getLastPart, " -- ", Number.isInteger(parseInt(getLastPart)), " :: ", typeof (parseInt(getLastPart)));
+          // //&& Number.isInteger(parseInt(getLastPart)) === true
+          if(getLastPart != null && getLastPart != undefined ){
+              let getDecID = window.atob(getLastPart);
+              console.log('Routr param: ', getLastPart, " :: ", getDecID);
+              sessionStorage.setItem('routerId', getDecID);
           }
         }
 
