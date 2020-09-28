@@ -37,11 +37,15 @@ export class AppService {
   public regExEmail: any;
   user = null;
   public mapboxToken = 'pk.eyJ1IjoicHJpbmF2IiwiYSI6ImNrNmh4YXVpcTJwbnMzbm4zYTc1ZG5kbHIifQ.lEliOwWLfcau6c0McnkGUA';
+  // private node:Subject<Node> = new BehaviorSubject();
+  // dynamicVal:any;
+  // dynamicVal: Subject<any> = new Subject<any>();
+  public setValue: any;
 
   constructor(public http: HttpClient, private _constant: Constants,
     private _flashMessage: FlashMessagesService,
     public dialog: MatDialog,public snackBar: MatSnackBar, private store: Store<AppState>) { 
-
+      // this.dynamicVal = new Subject<any>();
       //initilize input type regex
       this.regExName = /^[a-zA-Z\s]*$/;
       this.regExEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -50,7 +54,7 @@ export class AppService {
       this.regExUrl = '/(\w*\W*)?\w*(\.(\w)+)+(\W\d+)?(\/\w*(\W*\w)*)*/';
 
       //check token
-      
+      this.setValue = 0;
     }
 
 /*
@@ -72,6 +76,22 @@ function getFeesPerTrainee(training_days){
 }
 
 */
+setValueUrl(value) {
+  this.setValue =  value;
+}
+getValue(){
+  return this.setValue;
+}
+
+// getDynamic(): Observable<any> {
+//   return this.dynamicVal.asObservable();
+// }
+// addDynamicsVal(data) {
+ 
+//   this.dynamicVal.next({value: 2});
+//   console.log(data,'segsrgtd',this.dynamicVal);
+// }
+
 addMinutesToTime()
 {
   var x = 30; //minutes interval

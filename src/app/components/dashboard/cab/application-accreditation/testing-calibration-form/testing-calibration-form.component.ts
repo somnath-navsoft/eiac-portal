@@ -157,6 +157,7 @@ export class TestingCalibrationFormComponent implements OnInit {
   modalOptions:NgbModalOptions;
   accredAgreemFile: any;
   checklistDocFile: any;
+  urlVal: any;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,public _trainerService:TrainerService,private modalService: NgbModal,public sanitizer: DomSanitizer) { }
 
@@ -288,7 +289,12 @@ export class TestingCalibrationFormComponent implements OnInit {
   }
 
   ngOnInit() { 
-    
+    // console.log(this.Service.getValue(),'ngOnInit')
+    // this.Service.getDynamic().subscribe( res => {
+    //   console.log(res,'sdsgdsg');
+    // });
+    this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
+    console.log(this.urlVal,'valofurl');
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
@@ -607,12 +613,12 @@ export class TestingCalibrationFormComponent implements OnInit {
     if(ngForm.form.valid && this.checkCaptchaValidation == true){
       this.testingCalForm.is_bod = this.is_bod;
       this.testingCalFormFile.append('data',JSON.stringify(this.testingCalForm));
-      this.loader = true;
+      this.loader = false;
        this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testing_cal_form_basic_data,this.testingCalFormFile)
        .subscribe(
          res => {
            if(res['status']==true){
-            this.loader = false;
+            this.loader = true;
             this.captchaRef.reset();
             this.checkCaptchaValidation = false;
             this.afterSubmit = false;
@@ -748,7 +754,7 @@ export class TestingCalibrationFormComponent implements OnInit {
           this.step1Data.city =  data.city;
           this.step1Data.country = data.country;
           this.step1Data.state = data.state;
-          this.step1Data.criteria_request = "";
+          // this.step1Data.criteria_request = "";
           this.step1Data.date_of_establishment = new Date(data.date_of_establisment);
           this.step1Data.date_of_expiry = new Date(data.date_of_expiry);
           this.step1Data.date_of_issue = new Date(data.date_of_issue);
@@ -770,224 +776,247 @@ export class TestingCalibrationFormComponent implements OnInit {
         }
       })
 
-      let url2 = this.Service.apiServerUrl+"/"+'accrediation-details-show/0';
+      this.loader = false;
+      let url2 = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+this.urlVal;
       this.Service.getwithoutData(url2)
       .subscribe(
         res => {
-          // console.log(res,'res')
-          let pathData: any;
-          let filePath: string;
+          // console.log(res,'urlVal')
+          this.loader = true;
+          if(res['data'].id && res['data'].id != '') {
+              let pathData: any;
+              let filePath: string;
 
-          if(!this.Service.isObjectEmpty(res['data'].paymentDetails)){
-          
-            if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''){
-              filePath = this.constant.mediaPath + '/media/' + res['data'].paymentDetails.voucher_invoice;
-              pathData = this.getSantizeUrl(filePath);
-              this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
-            }
-            ////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
-          }
-          
-          if(res['data'].saved_step  != null){
-            /////console.log("@saved step assign....");
-            let saveStep = res['data'].saved_step;
-            //open step
-            this.headerSteps.forEach((item, key) => {
-                  /////console.log(item, " --- ", key);
-                  if(key < saveStep){
-                    ////console.log('moving steps....');
-                    let curStep: any = item;
-                    curStep.stepComp = true;
-                    let nextStep: any = this.headerSteps[key+1];
-                    this.Service.moveSteps(curStep.title, nextStep.title, this.headerSteps);
-                  }
-                  if(key == saveStep){
-                    let curStep: any = this.headerSteps[key];
-                    /////console.log('found steps....',curStep);
-                    curStep.stepComp = true;
-                    this.Service.headerStepMove(item.title, this.headerSteps,'menu')
-                  }
-            })
-            ////console.log("#Step data: ", this.headerSteps);
-          }
-
-          if(res['data'].id != undefined && res['data'].id > 0){
-            this.formApplicationId = res['data'].id;
-            this.formDraftsaved = res['data'].is_draft;
-            this.formAccrStatus = res['data'].accr_status;
-          }
-
-          //step1
-
-          if(res['data'].accredation_criteria  != ''){
-            this.step1Data.accredation_criteria = res['data'].accredation_criteria.toString();
-          }
-          if(res['data'].criteria_request  != ''){
-            this.step1Data.criteria_request = res['data'].criteria_request;
-          }
-
-          if(res['data'].duty_from1 != null && res['data'].duty_shift != '' && res['data'].duty_shift == 1){
-          
-            this.step1Data.duty_shift = res['data'].duty_shift.toString();
-            this.step1Data.duty_from1 = res['data'].duty_from1.toString();
-            this.step1Data.duty_to1   = res['data'].duty_to1.toString();
-            //console.log(">>>Working time: 1 ", this.step1Data.duty_shift);
-          }
-          if(res['data'].duty_from2 != null && res['data'].duty_shift != ''  && res['data'].duty_shift == 2){
-            
-            this.step1Data.duty_shift = res['data'].duty_shift.toString();
-            this.step1Data.duty_from2 = res['data'].duty_from2.toString();
-            this.step1Data.duty_to2   = res['data'].duty_to2.toString();
-            //console.log(">>>Working time: 2 ", this.step1Data.duty_shift);
-          }
-          if(res['data'].duty_from3 != null && res['data'].duty_shift != ''  && res['data'].duty_shift == 3){
-            
-            this.step1Data.duty_shift = res['data'].duty_shift.toString();
-            this.step1Data.duty_from3 = res['data'].duty_from3.toString();
-            this.step1Data.duty_to3   = res['data'].duty_to3.toString();
-            //console.log(">>>Working time: 3 ", this.step1Data.duty_shift);
-          }
-          if(res['data'].is_main_activity != undefined){
-              this.step1Data.is_main_activity = res['data'].is_main_activity.toString();
-              if(!res['data'].is_main_activity){
-                this.step1Data.is_main_activity_note = res['data'].is_main_activity_note.toString();
+              if(!this.Service.isObjectEmpty(res['data'].paymentDetails)){
+              
+                if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''){
+                  filePath = this.constant.mediaPath + '/media/' + res['data'].paymentDetails.voucher_invoice;
+                  pathData = this.getSantizeUrl(filePath);
+                  this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
+                }
+                ////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
               }
-          }
+              
+              if(res['data'].saved_step  != null){
+                /////console.log("@saved step assign....");
+                let saveStep = res['data'].saved_step;
+                //open step
+                this.headerSteps.forEach((item, key) => {
+                      /////console.log(item, " --- ", key);
+                      if(key < saveStep){
+                        ////console.log('moving steps....');
+                        let curStep: any = item;
+                        curStep.stepComp = true;
+                        let nextStep: any = this.headerSteps[key+1];
+                        this.Service.moveSteps(curStep.title, nextStep.title, this.headerSteps);
+                      }
+                      if(key == saveStep){
+                        let curStep: any = this.headerSteps[key];
+                        /////console.log('found steps....',curStep);
+                        curStep.stepComp = true;
+                        this.Service.headerStepMove(item.title, this.headerSteps,'menu')
+                      }
+                })
+                ////console.log("#Step data: ", this.headerSteps);
+              }
 
-          if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
-            //console.log('>>>Accr infor: ', getData.data.otherAccr);
-            this.accreditationInfo = [];
-            this.step1Data.is_hold_other_accreditation_select = "1";
-            //this.accreditationInfo = '';
-            res['data'].otherAccr.forEach((item, key) => {
-                 ////console.log('>> ', item, " :: ", key);
-                 let data: any;
-                 data = item['value'];
-                 var obj1 = data.replace(/'/g, "\"");
-                 let jparse = JSON.parse(obj1);
-                 this.accreditationInfo.push(jparse);
-            })
-          }else{
-            //this.accreditationInfo = [{}];
-            this.step1Data.is_hold_other_accreditation_select = "0";
-          }
+              if(res['data'].id != undefined && res['data'].id > 0){
+                this.formApplicationId = res['data'].id;
+                this.formDraftsaved = res['data'].is_draft;
+                this.formAccrStatus = res['data'].accr_status;
+              }
+              // console.log(this.formApplicationId);
+              //step1
 
+              // if(res['data'].cab_type == 'calibration_laboratories') {
+              //   this.step1Data.cab_type = 
+              // }else if(res['data'].cab_type == 'calibration_laboratories') {
+              //   this.step1Data.cab_type = 
+              // }
+              this.step1Data.cab_type = res['data'].cab_type != '' ? res['data'].cab_type : '';
+              
+              if(res['data'].accredation_criteria  != ''){
+                this.step1Data.accredation_criteria = res['data'].accredation_criteria.toString();
+              }
+              if(res['data'].criteria_request  != ''){
+                this.step1Data.criteria_request = res['data'].criteria_request;
+              }
 
-          //step2
-          var ptProvider = res['data']['ptParticipation'];
-          this.proficiencyTesting = ptProvider && ptProvider != '' ? ptProvider : [{}];
+              this.step1Data.duty_shift = res['data'].duty_shift != '' || res['data'].duty_shift != null ? res['data'].duty_shift.toString() : '';
 
-          //step3
-          if(res['data'].technicalManager != undefined && res['data'].technicalManager.length > 0){
-            let getTechData: any = res['data'].technicalManager[0];
-            this.step3Data.name = getTechData.name;
-            this.step3Data.designation = getTechData.designation;
-            this.step3Data.mobile_no = getTechData.mobile_no;
-            this.step3Data.email = getTechData.email;
-            this.step3Data.relevent_experience = getTechData.relevent_experience;
-          }
-          if(res['data'].managementManager != undefined && res['data'].managementManager.length > 0){
-            let getMangData: any = res['data'].managementManager[0];
-            this.step3Data.management_name = getMangData.name;
-            this.step3Data.management_designation = getMangData.designation;
-            this.step3Data.management_mobile_no = getMangData.mobile_no;
-            this.step3Data.management_email = getMangData.email;
-            this.step3Data.management_relevent_experience = getMangData.relevent_experience;
-          }
+              if(res['data'].duty_from1 != null && res['data'].duty_to1 != null && res['data'].duty_shift != ''){
+              
+                // this.step1Data.duty_shift = res['data'].duty_shift == 1 ? res['data'].duty_shift.toString() : '';
+                this.step1Data.duty_from1 = res['data'].duty_from1.toString();
+                this.step1Data.duty_to1   = res['data'].duty_to1.toString();
+                console.log("duty_from1", res['data'].duty_from1);
+                console.log("duty_to1", res['data'].duty_to1);
+              }
+              if(res['data'].duty_from2 != null && res['data'].duty_to2 != null && res['data'].duty_shift != ''){
+                
+                // this.step1Data.duty_shift = res['data'].duty_shift.toString();
+                this.step1Data.duty_from2 = res['data'].duty_from2.toString();
+                this.step1Data.duty_to2   = res['data'].duty_to2.toString();
+                //console.log(">>>Working time: 2 ", this.step1Data.duty_shift);
+              }
+              if(res['data'].duty_from3 != null && res['data'].duty_to3 != null && res['data'].duty_shift != ''){
+                
+                // this.step1Data.duty_shift = res['data'].duty_shift.toString();
+                this.step1Data.duty_from3 = res['data'].duty_from3.toString();
+                this.step1Data.duty_to3   = res['data'].duty_to3.toString();
+                //console.log(">>>Working time: 3 ", this.step1Data.duty_shift);
+              }
+              if(res['data'].is_main_activity != undefined){
+                  this.step1Data.is_main_activity = res['data'].is_main_activity.toString();
+                  if(!res['data'].is_main_activity){
+                    this.step1Data.is_main_activity_note = res['data'].is_main_activity_note.toString();
+                  }
+              }
 
-          //step4
-          if(res['data'].audit_date != null){
-            this.step4Data.audit_date = new Date(res['data'].audit_date);
-          }
-          if(res['data'].mrm_date != null){
-            this.step4Data.mrm_date = new Date(res['data'].mrm_date);
-          }
+              if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
+                //console.log('>>>Accr infor: ', getData.data.otherAccr);
+                this.accreditationInfo = [];
+                this.step1Data.is_hold_other_accreditation_select = "1";
+                //this.accreditationInfo = '';
+                res['data'].otherAccr.forEach((item, key) => {
+                    ////console.log('>> ', item, " :: ", key);
+                    let data: any;
+                    data = item['value'];
+                    var obj1 = data.replace(/'/g, "\"");
+                    let jparse = JSON.parse(obj1);
+                    this.accreditationInfo.push(jparse);
+                })
+              }else{
+                //this.accreditationInfo = [{}];
+                this.step1Data.is_hold_other_accreditation_select = "0";
+              }
 
-          //Step 6
-          if(res['data'].is_prelim_visit != null){
-            this.step6Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
-            this.step6Data.prelim_visit_date = res['data'].prelim_visit_date;
-          this.step6Data.prelim_visit_time = res['data'].prelim_visit_time;
-          }
-          //Step 7
-          if(res['data'].onBehalfApplicantDetails != null && res['data'].onBehalfApplicantDetails != undefined){
-            let getAuthData = res['data'].onBehalfApplicantDetails[0];
-            //console.log(">>> Auth data: ", getAuthData);
-            this.step7Data.organization_name        = getAuthData.organization_name;
-            this.step7Data.representative_name      = getAuthData.representative_name;
-            this.step7Data.designation              = getAuthData.designation;
-            this.step7Data.digital_signature        = getAuthData.digital_signature;
-            this.step7Data.application_date         = getAuthData.application_date;
-          }
+              //step2
+              var ptProvider = res['data']['ptParticipation'];
+              this.proficiencyTesting = ptProvider && ptProvider != '' ? ptProvider : [{}];
 
-          //Step 9
-          if(res['data'].onBehalfApplicantDetails != null && res['data'].onBehalfApplicantDetails != undefined){
-            let getAuthData = res['data'].onBehalfApplicantDetails[0];
-            //console.log(">>> Auth data: ", getAuthData);
-            this.step7Data.organization_name        = getAuthData.organization_name;
-            this.step7Data.representative_name      = getAuthData.representative_name;
-            this.step7Data.designation              = getAuthData.designation;
-            this.step7Data.digital_signature        = getAuthData.digital_signature;
-            this.step7Data.application_date         = getAuthData.application_date;
-          }
+              //step3
+              if(res['data'].technicalManager != undefined && res['data'].technicalManager.length > 0){
+                let getTechData: any = res['data'].technicalManager[0];
+                this.step3Data.name = getTechData.name;
+                this.step3Data.designation = getTechData.designation;
+                this.step3Data.mobile_no = getTechData.mobile_no;
+                this.step3Data.email = getTechData.email;
+                this.step3Data.relevent_experience = getTechData.relevent_experience;
+              }
+              if(res['data'].managementManager != undefined && res['data'].managementManager.length > 0){
+                let getMangData: any = res['data'].managementManager[0];
+                this.step3Data.management_name = getMangData.name;
+                this.step3Data.management_designation = getMangData.designation;
+                this.step3Data.management_mobile_no = getMangData.mobile_no;
+                this.step3Data.management_email = getMangData.email;
+                this.step3Data.management_relevent_experience = getMangData.relevent_experience;
+              }
+
+              //step4
+              if(res['data'].audit_date != null){
+                this.step4Data.audit_date = new Date(res['data'].audit_date);
+              }
+              if(res['data'].mrm_date != null){
+                this.step4Data.mrm_date = new Date(res['data'].mrm_date);
+              }
+
+              //Step 6
+              if(res['data'].is_prelim_visit != null){
+                this.step6Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
+                this.step6Data.prelim_visit_date = res['data'].prelim_visit_date;
+              this.step6Data.prelim_visit_time = res['data'].prelim_visit_time;
+              }
+              //Step 7
+              if(res['data'].onBehalfApplicantDetails && res['data'].onBehalfApplicantDetails != null && res['data'].onBehalfApplicantDetails != undefined){
+                let getAuthData = res['data'].onBehalfApplicantDetails;
+                //console.log(">>> Auth data: ", getAuthData);
+                this.step7Data.organization_name        = getAuthData.organization_name;
+                this.step7Data.representative_name      = getAuthData.representative_name;
+                this.step7Data.designation              = getAuthData.designation;
+                this.step7Data.digital_signature        = getAuthData.digital_signature;
+                this.step7Data.application_date         = getAuthData.application_date;
+              }
+
+              //Step 9
+              if(res['data'].paymentDetails != null && typeof res['data'].paymentDetails === 'object'){
+                // console.log(">>>payment details...show");
+                  this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_code;
+                  this.voucherSentData.payment_date     = res['data'].paymentDetails.payment_date;
+                  this.voucherSentData.amount           = res['data'].paymentDetails.amount;
+                  this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
+                  this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
+                  this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
+                  this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+              }
+            }
         });
   }
 
   onSubmitStep1(ngForm1: any){
     // this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
-    if(this.step1Data.duty_shift == '1' && typeof this.step1Data.duty_from1 == 'undefined' && typeof this.step1Data.duty_to1 == 'undefined')
+    if(this.step1Data.duty_shift == '1')
     {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+      }else{
+        this.dutyTime1 = true;
+        this.isSubmit = true;
+      }
       this.dutyTime1 = false;
       this.isSubmit = false;
-    }else{
-      this.dutyTime1 = true;
-    }
-    if(this.step1Data.duty_shift == '2' && typeof this.step1Data.duty_from2 == 'undefined' && typeof this.step1Data.duty_to2 == 'undefined')
+      
+    }else if(this.step1Data.duty_shift == '2')
     {
       if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
       {
         this.dutyTime1 = false;
-      }else{
-        this.dutyTime1 = true;
+      }else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined') {
+        this.dutyTime2 = false;
+      }else if(typeof this.step1Data.duty_from2 != 'undefined' || typeof this.step1Data.duty_to2 != 'undefined'){
+        this.dutyTime2 = true;
+        this.isSubmit = true;
       }
-      this.dutyTime2 = false;
-      this.isSubmit = false;
-    }else{
-      this.dutyTime2 = true;
-    }
-    if(this.step1Data.duty_shift == '3' && typeof this.step1Data.duty_from3 == 'undefined' && typeof this.step1Data.duty_to3 == 'undefined')
+      // this.dutyTime2 = false;
+      // this.isSubmit = false;
+    }else if(this.step1Data.duty_shift == '3')
     {
       if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
       {
         this.dutyTime1 = false;
-      }else{
-        this.dutyTime1 = true;
       }
-      if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
+      else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
       {
         this.dutyTime2 = false;
-      }else{
-        this.dutyTime2 = true;
       }
-      this.dutyTime3 = false;
-      this.isSubmit = false;
-    }else{
-      this.dutyTime3 = true;
-    }
-
-    if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
+      else if(typeof typeof this.step1Data.duty_from3 == 'undefined' || typeof this.step1Data.duty_to3 == 'undefined') {
+        this.dutyTime3 = false;
+      }else if(typeof this.step1Data.duty_from3 != 'undefined' || typeof this.step1Data.duty_to3 != 'undefined') {
+        this.dutyTime3 = true;
+        this.isSubmit = true;
+      }
+      // this.dutyTime3 = false;
+      // this.isSubmit = false;
+    }else if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
       this.dutyTime1 = false;
       this.isSubmit = false;
     }else{
       this.dutyTime1 = true;
+      this.dutyTime2 = true;
+      this.dutyTime3 = true;
+      this.isSubmit = true;
     }
-
-    if(ngForm1.form.valid) {
+    // console.log(this.dutyTime2,'dutyTime2');
+    // console.log(this.dutyTime3,'dutyTime3');
+    
+    if(ngForm1.form.valid && this.isSubmit == true) {
       this.testingCalForm = {};
       this.testingCalForm.step1 = {};
       this.testingCalForm.email = this.userEmail;
       this.testingCalForm.userType = this.userType;
       this.testingCalForm.saved_step = '1';
+      this.step1Data.is_draft = false;
       if(this.formApplicationId > 0){
         this.step1Data.application_id = this.formApplicationId;
       }
@@ -1011,10 +1040,12 @@ export class TestingCalibrationFormComponent implements OnInit {
         this.testingCalForm.step1['accreditationInfo'] = this.accreditationInfo;
       }
 
+      this.loader = false;
       // this.step1DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
+          this.loader = true;
           // console.log(res,'res')
           if(res['status'] == true) {
             // this.toastr.success(res['msg'], '');
@@ -1189,7 +1220,7 @@ export class TestingCalibrationFormComponent implements OnInit {
       // console.log(this.testingCalForm);
       this.loader = false;
       // this.step5DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.testingCalForm)
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
           // console.log(res,'res')
@@ -1215,7 +1246,7 @@ export class TestingCalibrationFormComponent implements OnInit {
       // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
       this.loader = false;
       // this.step6DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.testingCalForm)
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
           // console.log(res,'res')
@@ -1255,10 +1286,12 @@ export class TestingCalibrationFormComponent implements OnInit {
       }
 
       // this.step2DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.loader = false;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
-          console.log(res,'res')
+          // console.log(res,'res')
+          this.loader = true;
           if(res['status'] == true) {
             // this.toastr.success(res['msg'], '');
             this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
@@ -1305,10 +1338,12 @@ export class TestingCalibrationFormComponent implements OnInit {
 
       this.testingCalForm.step3 = this.step3Data;
       // this.step3DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.loader = false;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
-          console.log(res,'res')
+          // console.log(res,'res')
+          this.loader = true;
           if(res['status'] == true) {
             // this.toastr.success(res['msg'], '');
             this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
@@ -1334,9 +1369,11 @@ export class TestingCalibrationFormComponent implements OnInit {
       this.testingCalForm.userType = this.userType;
       this.testingCalForm.step4 = this.step4Data;
       // this.step4DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.loader = false;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
+          this.loader = true;
           if(res['status'] == true) {
             // this.toastr.success(res['msg'], '');
             this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
@@ -1358,6 +1395,7 @@ export class TestingCalibrationFormComponent implements OnInit {
     if(ngForm6.form.valid) {
       this.testingCalForm = {};
       this.testingCalForm.step6 = {};
+      this.testingCalForm.saved_step = '6';
       this.testingCalForm.email = this.userEmail;
       this.testingCalForm.userType = this.userType;
       var applicationId = sessionStorage.getItem('applicationId');
@@ -1366,14 +1404,16 @@ export class TestingCalibrationFormComponent implements OnInit {
       this.step6Data.is_draft = false;
       this.testingCalForm.step6 = this.step6Data;
 
-      console.log(this.testingCalForm);
+      // console.log(this.testingCalForm);
       // this.step5DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.testingCalForm)
+      this.loader = false;
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
-          console.log(res,'res')
+          // console.log(res,'res')
+          this.loader = true;
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            // this.toastr.success(res['msg'], '');
             this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
@@ -1386,7 +1426,6 @@ export class TestingCalibrationFormComponent implements OnInit {
 
  onSubmitUndertakingApplicant(ngForm7: any){
   // this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
- 
   for(let key in this.authorizationList) {
     if(this.authorizationList[key] == false) {
       this.authorizationStatus = false;
@@ -1403,7 +1442,7 @@ export class TestingCalibrationFormComponent implements OnInit {
   if(this.authorizationStatus == false){
     this.isSubmit = false;
     this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
-  }else if(this.step7Data.recommend_visit != ''){
+  }else if(this.step7Data.recommend_visit == ''){
     this.isSubmit = false;
     this.toastr.error('Please Check any recommend the visit ', '');
   }
@@ -1413,21 +1452,34 @@ export class TestingCalibrationFormComponent implements OnInit {
     this.testingCalForm.step7 = {};
     this.testingCalForm.email = this.userEmail;
     this.testingCalForm.userType = this.userType;
+    var applicationId = sessionStorage.getItem('applicationId');
+    this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+    this.testingCalForm.saved_step = '7';
     this.step7Data.authorizationList = this.authorizationList;
     this.step7Data.recommend = this.recommend;
     this.step7Data.is_draft = false;
+    this.step7Data.application_date = new Date();
 
     this.testingCalForm.step7 = this.step7Data;
     // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
 
     // this.step6DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.testingCalForm)
+    // console.log(this.testingCalForm,'testingCalForm');
+    this.loader = false;
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
     .subscribe(
       res => {
-        console.log(res,'res')
+        // console.log(res,'res')
+        this.loader = true;
         if(res['status'] == true) {
-          this.toastr.success(res['msg'], '');
-          this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+          // this.toastr.success(res['msg'], '');
+          if(this.paymentFilePath != ''){
+            this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+          }
+          else{
+            // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+            this.router.navigateByUrl('/dashboard/status/all');
+          }
         }else{
           this.toastr.warning(res['msg'], '');
         }
@@ -1438,71 +1490,6 @@ export class TestingCalibrationFormComponent implements OnInit {
   }    
 }
 
-onSubmitPaymentInformation(ngForm9: any, type?: boolean){
-  //console.log("payment submitting.....");
-  this.testingCalForm = {};
-  this.testingCalForm.step9 = {};
-
-    let dtFormat: string = '';
-    if(this.voucherSentData['payment_date'] != undefined && 
-      this.voucherSentData['payment_date']._i != undefined){
-      var dtData = this.voucherSentData['payment_date']._i;
-      var year = dtData.year;
-      var month = dtData.month;
-      var date = dtData.date;
-      dtFormat = year + "-" + month + "-" + date;
-    }
-    //     
-
-  this.voucherFile.append('voucher_code',this.voucherSentData['voucher_code']);
-  this.voucherFile.append('amount',this.voucherSentData['amount']);
-  this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
-  this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
-  this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
-  this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
-  this.voucherFile.append('payment_date',dtFormat);
-  this.voucherFile.append('accreditation',this.formApplicationId);
-  this.voucherFile.append('application_id',this.formApplicationId);
-      
-  if(ngForm9.form.valid && this.paymentReceiptValidation != false) {
-      this._trainerService.paymentVoucherSave((this.voucherFile))
-      .subscribe(
-          result => {
-            let data: any = result;
-            //console.log("submit voucher: ", data);
-            if(data.status){
-              //this.voucherFile = new FormData();
-              //this.voucherSentData = {};
-              this.toastr.success("Your form has been successfully submitted and it is under review.We will update you shortly.",'THANK YOU');
-              //this.openView('appComp','');
-              setTimeout(() => {                    
-                this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-              },3500)
-              
-            }else{
-              this.toastr.warning(data.msg,'');
-            }
-          }
-        )
-  }else if(type != undefined && type == true && this.paymentReceiptValidation != false){
-    this.testingCalForm.step7.is_draft = true;
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.testingCalForm)
-    .subscribe(
-    res => {
-      //console.log(res,'res')
-      if(res['status'] == true) {
-        this.toastr.success(res['msg'], '');
-        //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
-      }else{
-        this.toastr.warning(res['msg'], '');
-      }
-    });
-  }
-  else{
-    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
-  }
-
-}
 
 onSubmitStep8(ngForm8: any) {
   //Paypal config data
@@ -1535,6 +1522,76 @@ onSubmitStep8(ngForm8: any) {
         console.log("Loding button...");
       }
     }, 100)
+}
+
+onSubmitPaymentInformation(ngForm9: any, type?: boolean){
+  //console.log("payment submitting.....");
+  this.testingCalForm = {};
+  this.testingCalForm.step9 = {};
+
+    let dtFormat: string = '';
+    if(this.voucherSentData['payment_date'] != undefined && 
+      this.voucherSentData['payment_date']._i != undefined){
+      var dtData = this.voucherSentData['payment_date']._i;
+      var year = dtData.year;
+      var month = dtData.month;
+      var date = dtData.date;
+      dtFormat = year + "-" + month + "-" + date;
+    }
+    //     
+
+  this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
+  this.voucherFile.append('amount',this.voucherSentData['amount']);
+  this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
+  this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
+  this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
+  this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
+  this.voucherFile.append('voucher_date',dtFormat);
+  this.voucherFile.append('accreditation',this.formApplicationId);
+  // this.voucherFile.append('application_id',this.formApplicationId);
+      
+  this.loader = false;
+  if(ngForm9.form.valid && this.paymentReceiptValidation != false) {
+    // console.log(this.voucherFile);
+      this._trainerService.paymentVoucherSave((this.voucherFile))
+      .subscribe(
+          result => {
+            this.loader = true;
+            let data: any = result;
+            //console.log("submit voucher: ", data);
+            if(data.status){
+              //this.voucherFile = new FormData();
+              //this.voucherSentData = {};
+              this.toastr.success("Your form has been successfully submitted and it is under review.We will update you shortly.",'THANK YOU');
+              //this.openView('appComp','');
+              setTimeout(() => {                    
+                // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+                this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+              },3500)
+              
+            }else{
+              this.toastr.warning(data.msg,'');
+            }
+          }
+        )
+  }else if(type != undefined && type == true && this.paymentReceiptValidation != false){
+    this.testingCalForm.step9.is_draft = true;
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.testingCalForm)
+    .subscribe(
+    res => {
+      //console.log(res,'res')
+      if(res['status'] == true) {
+        this.toastr.success(res['msg'], '');
+        //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+      }else{
+        this.toastr.warning(res['msg'], '');
+      }
+    });
+  }
+  else{
+    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+  }
+
 }
 
 agreeView(){

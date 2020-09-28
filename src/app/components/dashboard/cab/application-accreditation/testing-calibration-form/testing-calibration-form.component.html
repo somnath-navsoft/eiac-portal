@@ -510,7 +510,7 @@
                                                     <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
-                                            <p class="error" *ngIf="!dutyTime1">Please enter from and to duty time</p>
+                                            <p class="error" *ngIf="dutyTime1 == false">Please enter from and to duty time</p>
                                         </div>
                                         <div class="col-md-3">
                                                 
@@ -522,11 +522,11 @@
                                             </mat-form-field>
                                             <mat-form-field class="frm-data">
                                                 <mat-label>To</mat-label>
-                                                <mat-select placeholder="Select" (selectionChange)="dayTimeChange($event,2)" name="duty_to2" [(ngModel)]="testingCalForm.duty_to2" >
+                                                <mat-select placeholder="Select" (selectionChange)="dayTimeChange($event,2)" name="duty_to2" [(ngModel)]="step1Data.duty_to2" >
                                                     <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
-                                            <p class="error" *ngIf="!dutyTime2">Please enter from and to duty time</p>
+                                            <p class="error" *ngIf="dutyTime2 == false">Please enter from and to duty time</p>
                                         </div>
                                         <div class="col-md-3">
                                             <mat-form-field class="frm-data">
@@ -541,7 +541,7 @@
                                                     <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
-                                            <p class="error" *ngIf="!dutyTime3">Please enter from and to duty time</p>
+                                            <p class="error" *ngIf="dutyTime3 == false">Please enter from and to duty time</p>
                                         </div>
                                     </div>
                                 
@@ -748,7 +748,7 @@
                                             <div class="bttns-health bttn-staff">
                                                 <!-- (click)="onSubmitTestingParticipation()" -->
                                                 <button class="cancel-bttn"  type="button" (click)="Service.headerStepMove('application_information',headerSteps,'menu','profciency_testing_participation')">BACK</button> 
-                                                <button class="cancel-bttn" type="button">SAVE AS DRAFT</button> 
+                                                <button class="cancel-bttn" type="button" (click)="savedraftStep('step2')">SAVE AS DRAFT</button> 
                                                 <button class="submit-bttn submit-health" >CONTINUE</button>
                                             </div>
                                         </div>
@@ -865,7 +865,8 @@
                                         <div class="col-md-12">
                                             <div class="bttns-health bttn-staff">
                                                 <!-- (click)="onSubmitPersonalInformation()" -->
-                                                <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('profciency_testing_participation',headerSteps,'menu','personal_information')">BACK</button> 
+                                                <button class="cancel-bttn"  type="button" (click)="Service.headerStepMove('profciency_testing_participation',headerSteps,'menu','personal_information')">BACK</button> 
+                                                <button class="cancel-bttn" type="button" (click)="savedraftStep('step3')">SAVE AS DRAFT</button> 
                                                 <button class="submit-bttn submit-health" >CONTINUE</button>
                                             </div>
                                         </div>
@@ -913,7 +914,8 @@
                                         <div class="col-md-12">
                                             <div class="bttns-health bttn-staff">
                                                 <!-- (click)="onSubmitInformationAuditManagement()" -->
-                                                <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('personal_information',headerSteps,'menu','information_audit_management')">BACK</button> 
+                                                <button class="cancel-bttn"  type="button" (click)="Service.headerStepMove('profciency_testing_participation',headerSteps,'menu','personal_information')">BACK</button> 
+                                                <button class="cancel-bttn" type="button" (click)="savedraftStep('step4')">SAVE AS DRAFT</button> 
                                                 <button class="submit-bttn submit-health" >CONTINUE</button>
                                             </div>
                                         </div>
@@ -968,6 +970,7 @@
                                             <div class="bttns-health bttn-staff">
                                                 <!-- (click)="onSubmitInformationAuditManagement()" -->
                                                 <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','scope_accreditation')">BACK</button> 
+                                                <button class="cancel-bttn" type="button" (click)="savedraftStep('step5')">SAVE AS DRAFT</button> 
                                                 <button class="submit-bttn submit-health" >CONTINUE</button>
                                             </div>
                                         </div>
@@ -1044,7 +1047,8 @@
                                         <div class="col-md-12">
                                             <div class="bttns-health bttn-staff">
                                                 <!--  (click)="onSubmitPerlimVisit()" -->
-                                                <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','perlim_visit')">BACK</button> 
+                                                <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','perlim_visit')">BACK</button>
+                                                <button class="cancel-bttn" type="button" (click)="savedraftStep('step6')">SAVE AS DRAFT</button> 
                                                 <button class="submit-bttn submit-health">CONTINUE</button>
                                             </div>
                                         </div>
@@ -1368,9 +1372,8 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('perlim_visit',headerSteps,'menu','undertaking_applicant')">BACK</a> 
-
-                                        <button class="cancel-bttn" type="button" (click)="onSubmitUndertakingApplicant(ngForm7, true)">SAVE AS DRAFT</button>
+                                        <button class="cancel-bttn"  type="button" (click)="Service.headerStepMove('perlim_visit',headerSteps,'menu','undertaking_applicant')">BACK</button> 
+                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step7')">SAVE AS DRAFT</button> 
                                     </div>
                                     <button class="submit-bttn submit-health" >SUBMIT APPLICATION</button>
                                     <!-- <ng-container *ngIf="transactions.length">
@@ -1590,6 +1593,10 @@
                             </div>
                         </div>
                     </form>
+                </div>
+
+                <div class="cust-stepper" id="payment_update" [ngStyle]="{'display':'none'}">
+
                 </div>
                 
             </div>

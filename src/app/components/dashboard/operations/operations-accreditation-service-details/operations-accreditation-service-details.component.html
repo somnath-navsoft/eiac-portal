@@ -26,8 +26,8 @@
                   <div class="appln-data status_hdr">
                     <h5>Application Fees :</h5>
                   </div>
-                  <div [ngClass]="{'complete': serviceDetail?.is_prelim_visit == true, 'under-review':serviceDetail?.is_prelim_visit == false }">
-                    <span>{{(serviceDetail?.paymentDetails.amount > 0) ? 'Paid' : 'Unpaid'}}</span>
+                  <div [ngClass]="{'complete': serviceDetail?.payment_status == 'paid', 'under-review':serviceDetail?.payment_status == 'unpaid' }">
+                    <span>{{(serviceDetail?.payment_status == "paid") ? 'Paid' : 'Unpaid'}}</span>
                   </div>
                 </div>
               </div>
@@ -46,8 +46,8 @@
                   <div class="appln-data status_hdr">
                     <h5>Document Review :</h5>
                   </div>
-                  <div class="complete under-review">
-                    <span>Unpaid</span>
+                  <div [ngClass]="{'complete': serviceDetail?.paymentDetails.doc_review_payment_status != null, 'under-review':serviceDetail?.paymentDetails.doc_review_payment_status == null }">
+                    <span>{{(serviceDetail?.paymentDetails.doc_review_payment_status == null) ? 'Unpaid' : 'Paid'}}</span>
                   </div>
                 </div>
               </div>
@@ -56,8 +56,8 @@
                   <div class="appln-data status_hdr">
                     <h5>Assessment :</h5>
                   </div>
-                  <div class="complete under-review">
-                    <span>Unpaid</span>
+                  <div [ngClass]="{'complete': serviceDetail?.paymentDetails.doc_review_payment_status != null, 'under-review':serviceDetail?.paymentDetails.doc_review_payment_status == null }">
+                    <span>{{(serviceDetail?.paymentDetails.assessment_payment_status == null) ? 'Unpaid' : 'Paid'}}</span>
                   </div>
                 </div>
               </div>
@@ -66,8 +66,8 @@
                   <div class="appln-data status_hdr">
                     <h5>Certification :</h5>
                   </div>
-                  <div class="complete under-review">
-                    <span>Unpaid</span>
+                  <div [ngClass]="{'complete': serviceDetail?.paymentDetails.certification_payment_status != null, 'under-review':serviceDetail?.paymentDetails.certification_payment_status == null }">
+                    <span>{{(serviceDetail?.paymentDetails.certification_payment_status == null) ? 'Unpaid' : 'Paid'}}</span>
                   </div>
                 </div>
               </div>
@@ -82,7 +82,8 @@
                   <h5>Application Type</h5>
                 </div>
                 <div class="appln-details">
-                  <span>{{(serviceDetail?.form_meta == 'inspection_body') ? 'Inspection Body' : ''}}</span>
+                  <span *ngIf="serviceDetail?.form_meta == 'inspection_body'">Inspection Body</span>
+                  <span *ngIf="serviceDetail?.form_meta == 'testing_calibration'">Testing Calibration</span>
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -810,7 +811,7 @@
           </div>
         </div>
       </div>
-      <div class="row m-0 appn-cnt-data">
+      <div class="row m-0 appn-cnt-data" *ngIf="paymentDetails && paymentDetails!= ''">
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-12">
