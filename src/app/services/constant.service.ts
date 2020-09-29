@@ -57,6 +57,7 @@ export class Constants{
 		profileApproval: this.apiUrl + 'profile-approval/',
 		accrStatus: this.apiUrl + 'accr_status/',
 		testingCalibration: this.apiUrl + 'testing_calibration_form_management/',
+		healthcareForm: this.apiUrl + 'healthcare_form/',
 		trainerAccredStaList: this.apiUrl + 'accrediation-service-status/',
 	}
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."

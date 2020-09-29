@@ -165,7 +165,7 @@
                             </td>
                             <td [ngClass]="{'pending': item.accr_status === 'pending', 'under-review':item.accr_status === null, 'complete': item.accr_status === 'complete', 'draft': item.accr_status === 'draft'}">
                                 <span *ngIf="item.accr_status == 'pending'">Payment Pending</span>
-                                <span *ngIf="item.accr_status == null">Under Review</span>
+                                <span *ngIf="item.accr_status == null || item.accr_status == under_review">Under Review</span>
                                 <span *ngIf="item.accr_status == 'complete'">Complete</span>
                                 <span *ngIf="item.accr_status == 'draft'">Draft</span>
                             </td>
@@ -178,6 +178,7 @@
                             <td>
                                 <span *ngIf="item.form_meta == 'testing_calibration'">Testing Calibration</span>
                                 <span *ngIf="item.form_meta == 'inspection_body'">Inspection Bodies</span>
+                                <span *ngIf="item.form_meta == 'health_care'">Health Care</span>
                             </td> 
                             <td>
                                 {{item.location}}
@@ -185,6 +186,7 @@
                             <td class="action fnt-clr">
                                 <a href="javascript:void(0)" *ngIf="item.form_meta == 'testing_calibration'" alt="Edit" routerLink="/dashboard/cab_client/testing-calibration-form/{{item.id}}"><span class="icon-edit"></span></a>
                                 <a href="javascript:void(0)" *ngIf="item.form_meta == 'inspection_body'" alt="Edit" routerLink="/dashboard/cab_client/inspection-bodies-form/{{item.id}}"><span class="icon-edit"></span></a>
+                                <a href="javascript:void(0)" *ngIf="item.form_meta == 'health_care'" alt="Edit" routerLink="/dashboard/cab_client/health-care-form/{{item.id}}"><span class="icon-edit"></span></a>
                                 <!-- <a href="javascript:void(0)" (click)="open(courseVoucher, item.id)" alt="Upload Proforma Invoice" title="Upload Proforma Invoice"><span class="icon-document-pen"></span></a> -->
                                 <!-- <ng-container *ngIf="item.training_course_type === 'custom_course'" class="action fnt-clr">
                                     <a href="javascript:void(0)" (click)="openView(courseView, item.id)" title="View" alt="View"><span class="icon-document"></span></a>

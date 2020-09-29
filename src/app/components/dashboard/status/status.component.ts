@@ -63,21 +63,23 @@ export class StatusComponent implements OnInit {
   }
 
   loadPageData() {
+    this.loader = false;
     var id = 'all';
     this.subscriptions.push(this._trainerService.getAccreditationStatusList(id)
       .subscribe(
         result => {
+          this.loader = true;
           let data: any = result;
           let dataRec: any=[];
           this.dataLoad = true;
-          console.log('loading...', data.records);
+          // console.log('loading...', data.records);
           
           this.trainerdata = data.records;
           dataRec = data.records;
           this.pageTotal = data.records.length;
         },
         ()=>{
-          console.log('comp...');
+          // console.log('comp...');
         }
       )          
     )

@@ -148,6 +148,7 @@ const routes: Routes = [
         { path: 'testing-calibration-form/:id', component:TestingCalibrationFormComponent, canActivate: [AuthGuard] },
         { path: 'certification-bodies-form', component:CertificationBodiesFormComponent, canActivate: [AuthGuard] },
         { path: 'health-care-form', component:HealthCareFormComponent, canActivate: [AuthGuard] },
+        { path: 'health-care-form/:id', component:HealthCareFormComponent, canActivate: [AuthGuard] },
         { path: 'halal-conformity-form', component:HalalConformityFormComponent, canActivate: [AuthGuard] },
         { path: 'pt-providers-form', component:PtProvidersFormComponent, canActivate: [AuthGuard] },
         { path: 'message-detail/:id', component:CabMessageDetailsComponent, canActivate: [AuthGuard] },

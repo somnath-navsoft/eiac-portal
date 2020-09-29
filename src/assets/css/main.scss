@@ -1090,6 +1090,14 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .course-pop button span { color: #999999; }
 
 
+// MODAL
+.main_pop { text-align: center; position: relative; padding: 75px 60px; }
+.main_pop .pop_close { position: absolute; right: 30px; top: 35px; font-size: 26px; cursor: pointer; }
+.main_pop .pop_thanks h5 { font-size: 36px; font-family: 'Dubai Regular'; text-transform: uppercase; margin-bottom: 20px; color: #C6B8A4; }
+.main_pop .pop_thanks p { font-size: 22px; font-family: 'Dubai Regular'; margin-bottom: 50px; }
+
+
+
 //==================RESPONSIVE==================//
 @media(max-width: 1500px) {
   // .main-dashboard-cnt .user-steps { height: 50%; }
