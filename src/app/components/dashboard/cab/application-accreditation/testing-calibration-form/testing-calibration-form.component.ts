@@ -728,7 +728,7 @@ getCriteria(value, secInd: any){
     //   console.log(res,'sdsgdsg');
     // });
     this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
-    console.log(this.urlVal,'valofurl');
+    // console.log(this.urlVal,'valofurl');
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
@@ -791,7 +791,7 @@ getCriteria(value, secInd: any){
         title:'application_complete', desc:'10. Application Complete', activeStep:false, stepComp:false, icon:'icon-document-pen', activeClass:''
       },
     );
-    
+
   }
   
   getPlaceName()
@@ -1214,7 +1214,7 @@ getCriteria(value, secInd: any){
         }
       })
 
-      if(this.urlVal != 'all') {
+      if(this.urlVal && this.urlVal != '') {
 
         this.loader = false;
         let url2 = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+this.urlVal;
