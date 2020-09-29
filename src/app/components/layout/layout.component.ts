@@ -26,6 +26,7 @@ export class LayoutComponent implements OnInit {
   isCompleteness:any;
   pageId:any;
   verifyId:any;
+  dynamicsVar:any;
 
   constructor(private store: Store<AppState>, private router: Router,
     public route: ActivatedRoute, private _service: AppService) { 
@@ -50,25 +51,34 @@ export class LayoutComponent implements OnInit {
       filter(event => event instanceof NavigationEnd)
     ).subscribe(event => {
         let data: any = event;
-        console.log('>>> router...', event);
         //console.log(this.href.substring(this.href.lastIndexOf('/') + 1));
-        if(data && typeof data == 'object' && data.url != ''){
-          let getLastPart: any = data.url.substring(data.url.lastIndexOf('/') + 1)
-          console.log(">>>part: ", getLastPart);
-          sessionStorage.setItem('routerId', getLastPart);
-          // console.log('lst part: ', getLastPart, " -- ", Number.isInteger(parseInt(getLastPart)), " :: ", typeof (parseInt(getLastPart)));
-          // //&& Number.isInteger(parseInt(getLastPart)) === true
-          // if(getLastPart != null && getLastPart != undefined ){
-          //     let getDecID = window.atob(getLastPart);
-          //     console.log('Routr param: ', getLastPart, " :: ", getDecID);
-          //     sessionStorage.setItem('routerId', getDecID);
-          // }
-        }
+        // if(data && typeof data == 'object' && data.url != ''){
+        //   let getLastPart: any = data.url.substring(data.url.lastIndexOf('/') + 1)
+        //   console.log(">>>part: ", getLastPart);
+        //   sessionStorage.setItem('routerId', getLastPart);
+        //   // console.log('lst part: ', getLastPart, " -- ", Number.isInteger(parseInt(getLastPart)), " :: ", typeof (parseInt(getLastPart)));
+        //   // //&& Number.isInteger(parseInt(getLastPart)) === true
+        //   // if(getLastPart != null && getLastPart != undefined ){
+        //   //     let getDecID = window.atob(getLastPart);
+        //   //     console.log('Routr param: ', getLastPart, " :: ", getDecID);
+        //   //     sessionStorage.setItem('routerId', getDecID);
+        //   // }
+        // }
 
         var wholeUrl = data.urlAfterRedirects;
         
         var splitUrl = wholeUrl.split('/');
         var splitForverifyAccount = wholeUrl.split('?');
+
+        // this.dynamicsVar = '4';
+        // this._service.addDynamicsVal(this.dynamicsVar);
+        // console.log(splitUrl,'splitUrl')
+        
+        if(splitUrl[3] == 'testing-calibration-form') {
+          this._service.setValueUrl(splitUrl[4]);
+        }else if(splitUrl[3] == 'inspection-bodies-form') {
+          this._service.setValueUrl(splitUrl[4]);
+        }
 
         if(splitUrl[1] == 'reset-password')
         {
