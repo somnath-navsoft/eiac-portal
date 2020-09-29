@@ -65,7 +65,6 @@ export class LayoutComponent implements OnInit {
         
         var splitUrl = wholeUrl.split('/');
         var splitForverifyAccount = wholeUrl.split('?');
-
         // this.dynamicsVar = '4';
         // this._service.addDynamicsVal(this.dynamicsVar);
         // console.log(splitUrl,'splitUrl')
