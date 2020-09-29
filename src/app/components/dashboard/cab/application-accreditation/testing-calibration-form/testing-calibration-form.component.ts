@@ -295,7 +295,7 @@ export class TestingCalibrationFormComponent implements OnInit {
     //   console.log(res,'sdsgdsg');
     // });
     this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
-    console.log(this.urlVal,'valofurl');
+    // console.log(this.urlVal,'valofurl');
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
@@ -355,7 +355,7 @@ export class TestingCalibrationFormComponent implements OnInit {
         title:'application_complete', desc:'10. Application Complete', activeStep:false, stepComp:false, icon:'icon-document-pen', activeClass:''
       },
     );
-    
+
   }
   
   getPlaceName()
@@ -778,7 +778,7 @@ export class TestingCalibrationFormComponent implements OnInit {
         }
       })
 
-      if(this.urlVal != 'all') {
+      if(this.urlVal && this.urlVal != '') {
 
         this.loader = false;
         let url2 = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+this.urlVal;
