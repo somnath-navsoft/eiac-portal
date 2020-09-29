@@ -158,7 +158,8 @@ export class TestingCalibrationFormComponent implements OnInit {
   accredAgreemFile: any;
   checklistDocFile: any;
   urlVal: any;
-
+  paymentFile:any = false;
+  
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,public _trainerService:TrainerService,private modalService: NgbModal,public sanitizer: DomSanitizer) { }
 
   getData(getVal){
@@ -776,181 +777,191 @@ export class TestingCalibrationFormComponent implements OnInit {
         }
       })
 
-      this.loader = false;
-      let url2 = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+this.urlVal;
-      this.Service.getwithoutData(url2)
-      .subscribe(
-        res => {
-          // console.log(res,'urlVal')
-          this.loader = true;
-          if(res['data'].id && res['data'].id != '') {
-              let pathData: any;
-              let filePath: string;
+      if(this.urlVal != 'all') {
 
-              if(!this.Service.isObjectEmpty(res['data'].paymentDetails)){
-              
-                if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''){
-                  filePath = this.constant.mediaPath + '/media/' + res['data'].paymentDetails.voucher_invoice;
-                  pathData = this.getSantizeUrl(filePath);
-                  this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
-                }
-                ////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
-              }
-              
-              if(res['data'].saved_step  != null){
-                /////console.log("@saved step assign....");
-                let saveStep = res['data'].saved_step;
-                //open step
-                this.headerSteps.forEach((item, key) => {
-                      /////console.log(item, " --- ", key);
-                      if(key < saveStep){
-                        ////console.log('moving steps....');
-                        let curStep: any = item;
-                        curStep.stepComp = true;
-                        let nextStep: any = this.headerSteps[key+1];
-                        this.Service.moveSteps(curStep.title, nextStep.title, this.headerSteps);
-                      }
-                      if(key == saveStep){
-                        let curStep: any = this.headerSteps[key];
-                        /////console.log('found steps....',curStep);
-                        curStep.stepComp = true;
-                        this.Service.headerStepMove(item.title, this.headerSteps,'menu')
-                      }
-                })
-                ////console.log("#Step data: ", this.headerSteps);
-              }
+        this.loader = false;
+        let url2 = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+this.urlVal;
+        this.Service.getwithoutData(url2)
+        .subscribe(
+          res => {
+            // console.log(res,'urlVal')
+            this.loader = true;
+            if(res['data'].id && res['data'].id != '') {
+                let pathData: any;
+                let filePath: string;
 
-              if(res['data'].id != undefined && res['data'].id > 0){
-                this.formApplicationId = res['data'].id;
-                this.formDraftsaved = res['data'].is_draft;
-                this.formAccrStatus = res['data'].accr_status;
-              }
-              // console.log(this.formApplicationId);
-              //step1
-
-              // if(res['data'].cab_type == 'calibration_laboratories') {
-              //   this.step1Data.cab_type = 
-              // }else if(res['data'].cab_type == 'calibration_laboratories') {
-              //   this.step1Data.cab_type = 
-              // }
-              this.step1Data.cab_type = res['data'].cab_type != '' ? res['data'].cab_type : '';
-              
-              if(res['data'].accredation_criteria  != ''){
-                this.step1Data.accredation_criteria = res['data'].accredation_criteria.toString();
-              }
-              if(res['data'].criteria_request  != ''){
-                this.step1Data.criteria_request = res['data'].criteria_request;
-              }
-
-              this.step1Data.duty_shift = res['data'].duty_shift != '' || res['data'].duty_shift != null ? res['data'].duty_shift.toString() : '';
-
-              if(res['data'].duty_from1 != null && res['data'].duty_to1 != null && res['data'].duty_shift != ''){
-              
-                // this.step1Data.duty_shift = res['data'].duty_shift == 1 ? res['data'].duty_shift.toString() : '';
-                this.step1Data.duty_from1 = res['data'].duty_from1.toString();
-                this.step1Data.duty_to1   = res['data'].duty_to1.toString();
-                console.log("duty_from1", res['data'].duty_from1);
-                console.log("duty_to1", res['data'].duty_to1);
-              }
-              if(res['data'].duty_from2 != null && res['data'].duty_to2 != null && res['data'].duty_shift != ''){
+                if(!this.Service.isObjectEmpty(res['data'].paymentDetails)){
                 
-                // this.step1Data.duty_shift = res['data'].duty_shift.toString();
-                this.step1Data.duty_from2 = res['data'].duty_from2.toString();
-                this.step1Data.duty_to2   = res['data'].duty_to2.toString();
-                //console.log(">>>Working time: 2 ", this.step1Data.duty_shift);
-              }
-              if(res['data'].duty_from3 != null && res['data'].duty_to3 != null && res['data'].duty_shift != ''){
-                
-                // this.step1Data.duty_shift = res['data'].duty_shift.toString();
-                this.step1Data.duty_from3 = res['data'].duty_from3.toString();
-                this.step1Data.duty_to3   = res['data'].duty_to3.toString();
-                //console.log(">>>Working time: 3 ", this.step1Data.duty_shift);
-              }
-              if(res['data'].is_main_activity != undefined){
-                  this.step1Data.is_main_activity = res['data'].is_main_activity.toString();
-                  if(!res['data'].is_main_activity){
-                    this.step1Data.is_main_activity_note = res['data'].is_main_activity_note.toString();
+                  if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''){
+                    filePath = this.constant.mediaPath + '/media/' + res['data'].paymentDetails.voucher_invoice;
+                    pathData = this.getSantizeUrl(filePath);
+                    this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
                   }
-              }
+                  ////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
+                }
+                
+                if(res['data'].saved_step  != null){
+                  /////console.log("@saved step assign....");
+                  let saveStep = res['data'].saved_step;
+                  //open step
+                  this.headerSteps.forEach((item, key) => {
+                        /////console.log(item, " --- ", key);
+                        if(key < saveStep){
+                          ////console.log('moving steps....');
+                          let curStep: any = item;
+                          curStep.stepComp = true;
+                          let nextStep: any = this.headerSteps[key+1];
+                          this.Service.moveSteps(curStep.title, nextStep.title, this.headerSteps);
+                        }
+                        if(key == saveStep){
+                          let curStep: any = this.headerSteps[key];
+                          /////console.log('found steps....',curStep);
+                          curStep.stepComp = true;
+                          this.Service.headerStepMove(item.title, this.headerSteps,'menu')
+                        }
+                  })
+                  ////console.log("#Step data: ", this.headerSteps);
+                }
 
-              if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
-                //console.log('>>>Accr infor: ', getData.data.otherAccr);
-                this.accreditationInfo = [];
-                this.step1Data.is_hold_other_accreditation_select = "1";
-                //this.accreditationInfo = '';
-                res['data'].otherAccr.forEach((item, key) => {
-                    ////console.log('>> ', item, " :: ", key);
-                    let data: any;
-                    data = item['value'];
-                    var obj1 = data.replace(/'/g, "\"");
-                    let jparse = JSON.parse(obj1);
-                    this.accreditationInfo.push(jparse);
-                })
-              }else{
-                //this.accreditationInfo = [{}];
-                this.step1Data.is_hold_other_accreditation_select = "0";
-              }
+                if(res['data'].id != undefined && res['data'].id > 0){
+                  this.formApplicationId = res['data'].id;
+                  this.formDraftsaved = res['data'].is_draft;
+                  this.formAccrStatus = res['data'].accr_status;
+                }
+                // console.log(this.formApplicationId);
+                //step1
 
-              //step2
-              var ptProvider = res['data']['ptParticipation'];
-              this.proficiencyTesting = ptProvider && ptProvider != '' ? ptProvider : [{}];
+                // if(res['data'].cab_type == 'calibration_laboratories') {
+                //   this.step1Data.cab_type = 
+                // }else if(res['data'].cab_type == 'calibration_laboratories') {
+                //   this.step1Data.cab_type = 
+                // }
+                this.step1Data.cab_type = res['data'].cab_type != '' ? res['data'].cab_type : '';
+                
+                if(res['data'].accredation_criteria  != ''){
+                  this.step1Data.accredation_criteria = res['data'].accredation_criteria.toString();
+                }
+                if(res['data'].criteria_request  != ''){
+                  this.step1Data.criteria_request = res['data'].criteria_request;
+                }
 
-              //step3
-              if(res['data'].technicalManager != undefined && res['data'].technicalManager.length > 0){
-                let getTechData: any = res['data'].technicalManager[0];
-                this.step3Data.name = getTechData.name;
-                this.step3Data.designation = getTechData.designation;
-                this.step3Data.mobile_no = getTechData.mobile_no;
-                this.step3Data.email = getTechData.email;
-                this.step3Data.relevent_experience = getTechData.relevent_experience;
-              }
-              if(res['data'].managementManager != undefined && res['data'].managementManager.length > 0){
-                let getMangData: any = res['data'].managementManager[0];
-                this.step3Data.management_name = getMangData.name;
-                this.step3Data.management_designation = getMangData.designation;
-                this.step3Data.management_mobile_no = getMangData.mobile_no;
-                this.step3Data.management_email = getMangData.email;
-                this.step3Data.management_relevent_experience = getMangData.relevent_experience;
-              }
+                this.step1Data.duty_shift = res['data'].duty_shift != '' || res['data'].duty_shift != null ? res['data'].duty_shift.toString() : '';
 
-              //step4
-              if(res['data'].audit_date != null){
-                this.step4Data.audit_date = new Date(res['data'].audit_date);
-              }
-              if(res['data'].mrm_date != null){
-                this.step4Data.mrm_date = new Date(res['data'].mrm_date);
-              }
+                if(res['data'].duty_from1 != null && res['data'].duty_to1 != null && res['data'].duty_shift != ''){
+                
+                  // this.step1Data.duty_shift = res['data'].duty_shift == 1 ? res['data'].duty_shift.toString() : '';
+                  this.step1Data.duty_from1 = res['data'].duty_from1.toString();
+                  this.step1Data.duty_to1   = res['data'].duty_to1.toString();
+                }
+                if(res['data'].duty_from2 != null && res['data'].duty_to2 != null && res['data'].duty_shift != ''){
+                  
+                  // this.step1Data.duty_shift = res['data'].duty_shift.toString();
+                  this.step1Data.duty_from2 = res['data'].duty_from2.toString();
+                  this.step1Data.duty_to2   = res['data'].duty_to2.toString();
+                  //console.log(">>>Working time: 2 ", this.step1Data.duty_shift);
+                }
+                if(res['data'].duty_from3 != null && res['data'].duty_to3 != null && res['data'].duty_shift != ''){
+                  
+                  // this.step1Data.duty_shift = res['data'].duty_shift.toString();
+                  this.step1Data.duty_from3 = res['data'].duty_from3.toString();
+                  this.step1Data.duty_to3   = res['data'].duty_to3.toString();
+                  //console.log(">>>Working time: 3 ", this.step1Data.duty_shift);
+                }
+                if(res['data'].is_main_activity != undefined){
+                    this.step1Data.is_main_activity = res['data'].is_main_activity.toString();
+                    if(!res['data'].is_main_activity){
+                      this.step1Data.is_main_activity_note = res['data'].is_main_activity_note.toString();
+                    }
+                }
 
-              //Step 6
-              if(res['data'].is_prelim_visit != null){
-                this.step6Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
-                this.step6Data.prelim_visit_date = res['data'].prelim_visit_date;
-              this.step6Data.prelim_visit_time = res['data'].prelim_visit_time;
-              }
-              //Step 7
-              if(res['data'].onBehalfApplicantDetails && res['data'].onBehalfApplicantDetails != null && res['data'].onBehalfApplicantDetails != undefined){
-                let getAuthData = res['data'].onBehalfApplicantDetails;
-                //console.log(">>> Auth data: ", getAuthData);
-                this.step7Data.organization_name        = getAuthData.organization_name;
-                this.step7Data.representative_name      = getAuthData.representative_name;
-                this.step7Data.designation              = getAuthData.designation;
-                this.step7Data.digital_signature        = getAuthData.digital_signature;
-                this.step7Data.application_date         = getAuthData.application_date;
-              }
+                if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
+                  //console.log('>>>Accr infor: ', getData.data.otherAccr);
+                  this.accreditationInfo = [];
+                  this.step1Data.is_hold_other_accreditation_select = "1";
+                  //this.accreditationInfo = '';
+                  res['data'].otherAccr.forEach((item, key) => {
+                      ////console.log('>> ', item, " :: ", key);
+                      let data: any;
+                      data = item['value'];
+                      var obj1 = data.replace(/'/g, "\"");
+                      let jparse = JSON.parse(obj1);
+                      this.accreditationInfo.push(jparse);
+                  })
+                }else{
+                  //this.accreditationInfo = [{}];
+                  this.step1Data.is_hold_other_accreditation_select = "0";
+                }
 
-              //Step 9
-              if(res['data'].paymentDetails != null && typeof res['data'].paymentDetails === 'object'){
-                // console.log(">>>payment details...show");
-                  this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_code;
-                  this.voucherSentData.payment_date     = res['data'].paymentDetails.payment_date;
-                  this.voucherSentData.amount           = res['data'].paymentDetails.amount;
-                  this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
-                  this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
-                  this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
-                  this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+                //step2
+                var ptProvider = res['data']['ptParticipation'];
+                this.proficiencyTesting = ptProvider && ptProvider != '' ? ptProvider : [{}];
+
+                //step3
+                if(res['data'].technicalManager != undefined && res['data'].technicalManager.length > 0){
+                  let getTechData: any = res['data'].technicalManager[0];
+                  this.step3Data.name = getTechData.name;
+                  this.step3Data.designation = getTechData.designation;
+                  this.step3Data.mobile_no = getTechData.mobile_no;
+                  this.step3Data.email = getTechData.email;
+                  this.step3Data.relevent_experience = getTechData.relevent_experience;
+                }
+                if(res['data'].managementManager != undefined && res['data'].managementManager.length > 0){
+                  let getMangData: any = res['data'].managementManager[0];
+                  this.step3Data.management_name = getMangData.name;
+                  this.step3Data.management_designation = getMangData.designation;
+                  this.step3Data.management_mobile_no = getMangData.mobile_no;
+                  this.step3Data.management_email = getMangData.email;
+                  this.step3Data.management_relevent_experience = getMangData.relevent_experience;
+                }
+
+                //step4
+                if(res['data'].audit_date != null){
+                  this.step4Data.audit_date = new Date(res['data'].audit_date);
+                }
+                if(res['data'].mrm_date != null){
+                  this.step4Data.mrm_date = new Date(res['data'].mrm_date);
+                }
+
+                //Step 6
+                if(res['data'].is_prelim_visit != null){
+                  this.step6Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
+                  this.step6Data.prelim_visit_date = res['data'].prelim_visit_date;
+                  this.step6Data.prelim_visit_time = res['data'].prelim_visit_time;
+                }
+                //Step 7
+                if(res['data'].onBehalfApplicantDetails && res['data'].onBehalfApplicantDetails != null && res['data'].onBehalfApplicantDetails != undefined){
+                  let getAuthData = res['data'].onBehalfApplicantDetails;
+                  //console.log(">>> Auth data: ", getAuthData);
+                  this.step7Data.organization_name        = getAuthData.organization_name;
+                  this.step7Data.representative_name      = getAuthData.representative_name;
+                  this.step7Data.designation              = getAuthData.designation;
+                  this.step7Data.digital_signature        = getAuthData.digital_signature;
+                  this.step7Data.application_date         = getAuthData.application_date;
+
+                  Object.keys(this.authorizationList).forEach( key => { 
+                    this.authorizationList[key] = true;
+                  })
+                  this.authorizationStatus = true;
+                  this.step7Data.recommend_visit = 'second';
+                }
+
+                //Step 9
+                if(res['data'].paymentDetails != null && typeof res['data'].paymentDetails === 'object'){
+                  // console.log(">>>payment details...show");
+                    this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
+                    this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
+                    this.voucherSentData.amount           = res['data'].paymentDetails.amount;
+                    this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
+                    this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
+                    this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
+                    this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+
+                    this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
+                    this.paymentReceiptValidation = true;
+                }
               }
-            }
-        });
+          });
+      }
   }
 
   onSubmitStep1(ngForm1: any){
@@ -1215,6 +1226,7 @@ export class TestingCalibrationFormComponent implements OnInit {
       this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step6Data.is_prelim_visit = this.step6Data.is_prelim_visit == 0 ? false : true;
       this.step6Data.is_draft = true;
+      this.testingCalForm.saved_step = '6';
       this.testingCalForm.step6 = this.step6Data;
 
       // console.log(this.testingCalForm);
@@ -1241,6 +1253,7 @@ export class TestingCalibrationFormComponent implements OnInit {
       this.step7Data.authorizationList = this.authorizationList;
       this.step7Data.recommend = this.recommend;
       this.step7Data.is_draft = true;
+      this.testingCalForm.saved_step = '7';
 
       this.testingCalForm.step7 = this.step7Data;
       // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
@@ -1474,7 +1487,7 @@ export class TestingCalibrationFormComponent implements OnInit {
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
           if(this.paymentFilePath != ''){
-            this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+            this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
           }
           else{
             // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);

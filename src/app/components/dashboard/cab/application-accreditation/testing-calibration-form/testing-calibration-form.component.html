@@ -87,12 +87,12 @@
                                     </div> -->
 
                                     <div class="row pb-3">
-                                        <div class="col-md-3 col-sm-6 ">                                            
+                                        <div class="col-md-6 col-sm-6 ">                                            
                                             <div class="form-subheader">
-                                                <span>Type of Accreditation Required:</span>
+                                                <span>Cab Type:</span>
                                             </div>
                                         </div>
-                                        <div class="col-md-3 col-sm-6 p-0 pt-4">
+                                        <div class="col-md-6 col-sm-6 p-0 pt-4">
                                             <div class="cab-data">
                                                 <!-- @{{step1Data.accredation_criteria}} -->
                                                 <mat-radio-group name="cab_type" 
@@ -121,7 +121,7 @@
                                                 <span>Type of Accreditation Required:</span>
                                             </div>
                                         </div>
-                                        <div class="col-md-3 col-sm-6 p-0 pt-4">
+                                        <div class="col-md-4 col-sm-6 p-0 pt-4">
                                             <div class="cab-data">
                                                 <!-- @{{step1Data.accredation_criteria}} -->
                                                 <mat-radio-group name="accreditation_required" 
@@ -149,7 +149,7 @@
                                             </div>
                                         </div>
                                         
-                                        <div class="col-md-6 col-sm-6 align-self-end">
+                                        <div class="col-md-5 col-sm-6 align-self-end">
                                             <mat-form-field class="cab-data">
                                             <mat-label>Criteria to which accreditation is seeking (international standard)</mat-label>
                                                 <mat-select placeholder="Select" name="criteria_request_accre"  
@@ -746,15 +746,15 @@
                                         </div>
                                     </div>
 
-                                    <div class="row">
+                                    <!-- <div class="row">
                                         <div class="col-md-12">
                                             <div class="bttns-health bttn-staff">
-                                                <!-- (click)="onSubmitTestingParticipation()" -->
                                                 <button class="cancel-bttn"  type="button" (click)="Service.headerStepMove('application_information',headerSteps,'menu','profciency_testing_participation')">BACK</button> 
                                                 <button class="cancel-bttn" type="button" (click)="savedraftStep('step2')">SAVE AS DRAFT</button> 
                                                 <button class="submit-bttn submit-health" >CONTINUE</button>
                                             </div>
                                         </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -764,7 +764,7 @@
                                     <!-- (click)="onSubmitTestingParticipation()" -->
                                     <div class="button-content">
                                         <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="Service.headerStepMove('application_information',headerSteps,'menu','profciency_testing_participation')">BACK</a> 
-                                        <button class="cancel-bttn" type="button">SAVE AS DRAFT</button>
+                                        <button class="cancel-bttn" (click)="savedraftStep('step2')" type="button">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >CONTINUE</button>
                                 </div>
@@ -884,9 +884,10 @@
                                     <!-- <div class="button-content">
                                         <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('profciency_testing_participation',headerSteps,'menu','personal_information')">BACK</button> 
                                     </div> -->
-                                    <button class="cancel-bttn"  type="button" (click)="Service.headerStepMove('profciency_testing_participation',headerSteps,'menu','personal_information')">BACK</button> 
-                                    <button class="cancel-bttn" type="button" (click)="savedraftStep('step3')">SAVE AS DRAFT</button> 
-                                    <button class="submit-bttn submit-health" >CONTINUE</button>
+                                    <div class="button-content">
+                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('profciency_testing_participation',headerSteps,'menu','personal_information')">BACK</a> 
+                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step3')">SAVE AS DRAFT</button>
+                                    </div>
                                     <button class="submit-bttn submit-health" >CONTINUE</button>
                                 </div>
                             </div>
@@ -935,7 +936,7 @@
                                 <div class="bttns-health bttn-staff">
                                     <!-- (click)="onSubmitInformationAuditManagement()" -->
                                     <div class="button-content">
-                                        <button class="cancel-bttn"  type="button" (click)="Service.headerStepMove('profciency_testing_participation',headerSteps,'menu','personal_information')">BACK</button> 
+                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('personal_information',headerSteps,'menu','information_audit_management')">BACK</a> 
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step4')">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >CONTINUE</button>
@@ -992,7 +993,7 @@
                                 <div class="bttns-health bttn-staff">
                                     <!-- (click)="onSubmitInformationAuditManagement()" -->
                                     <div class="button-content">
-                                        <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','scope_accreditation')">BACK</button> 
+                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','scope_accreditation')">BACK</a> 
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step5')">SAVE AS DRAFT</button> 
                                     </div>
                                     <button class="submit-bttn submit-health" >CONTINUE</button>
@@ -1057,7 +1058,7 @@
                                                         (selectionChange)="getDutyTimeForm1Index($event)" 
                                                         [(ngModel)]="step6Data.prelim_visit_time">
                                                             <mat-option *ngFor="let item of addMinutesToTime; let i = index;" 
-                                                            [value]="item.val">{{item.val}}</mat-option>
+                                                            [value]="item.key">{{item.val}}</mat-option>
                                                         </mat-select>
                                                     </mat-form-field>
                                                 </div>
@@ -1073,7 +1074,7 @@
                                 <div class="bttns-health bttn-staff">
                                     <!--  (click)="onSubmitPerlimVisit()" -->
                                     <div class="button-content">
-                                        <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','perlim_visit')">BACK</button>
+                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','perlim_visit')">BACK</a>
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step6')">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health">CONTINUE</button>
@@ -1396,7 +1397,7 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <button class="cancel-bttn"  type="button" (click)="Service.headerStepMove('perlim_visit',headerSteps,'menu','undertaking_applicant')">BACK</button> 
+                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('perlim_visit',headerSteps,'menu','undertaking_applicant')">BACK</a> 
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step7')">SAVE AS DRAFT</button> 
                                     </div>
                                     <button class="submit-bttn submit-health" >SUBMIT APPLICATION</button>
@@ -1589,6 +1590,7 @@
                                                 (change)="validateFileVoucher($event, 'payment_receipt')" required>
                                                 <span class="icon-attach attach-data"></span>
                                             </span>
+                                            <a class="image_file_link" *ngIf="paymentFile != false && paymentFile != true" target="_blank" [href]="paymentFile">Link</a>
                                             <p class="error" *ngIf="paymentReceiptValidation == false">Please Upload a valid file (ex: pdf)</p>
                                         </div>
 
@@ -1614,6 +1616,7 @@
                                     <!-- (click)="onSubmitPaymentInformation()" -->
                                     <!-- <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</button> -->
                                     <div class="button-content">
+                                        <a class="cancel-bttn" type="button" (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</a>
                                         <button class="cancel-bttn" type="button" (click)="onSubmitPaymentInformation(ngForm9, true)">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >SUBMIT</button>
