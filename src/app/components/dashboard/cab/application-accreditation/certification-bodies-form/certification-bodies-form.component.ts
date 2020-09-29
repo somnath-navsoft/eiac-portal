@@ -132,37 +132,37 @@ export class CertificationBodiesFormComponent implements OnInit {
 ngOnInit() {
   this.headerSteps.push(
     {
-    title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-user', activeClass:'user-present'
+    title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
     },
     {
-    title:'personal_information', desc:'2. Personal Information', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    title:'personal_information', desc:'2. Personal Information', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
     },
     {
     title:'summary_number_ofpersonnel', desc:'3. Summary Of The Number Of Personnel', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
     },
     {
-    title:'information_audit_management', desc:'4. Internal Audit & Management', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    title:'information_audit_management', desc:'4. Internal Audit & Management', activeStep:false, stepComp:false, icon:'icon-task', activeClass:''
     },
     {
-      title:'scope_accreditation', desc:'5. Accreditation Scope', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'scope_accreditation', desc:'5. Accreditation Scope', activeStep:false, stepComp:false, icon:'icon-sheet', activeClass:''
     },
     {
       title:'cbs_other_location', desc:'6. Cb’s Other Activity Location', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
     },
     {
-    title:'perlim_visit', desc:'7. Prelim Visit', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    title:'perlim_visit', desc:'7. Prelim Visit', activeStep:false, stepComp:false, icon:'icon-paper', activeClass:''
     },
     {
-    title:'undertaking_applicant', desc:'8. Authorization of the Application', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    title:'undertaking_applicant', desc:'8. Authorization of the Application', activeStep:false, stepComp:false, icon:'icon-work', activeClass:''
     },
     {
-      title:'proforma_invoice', desc:'9. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'proforma_invoice', desc:'9. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-file_invoice', activeClass:''
     },
     {
-      title:'payment_update', desc:'10. Payment Update', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'payment_update', desc:'10. Payment Update', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
     },
     {
-      title:'application_complete', desc:'11. Application Complete', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'application_complete', desc:'11. Application Complete', activeStep:false, stepComp:false, icon:'icon-document-pen', activeClass:''
     },
   );
 

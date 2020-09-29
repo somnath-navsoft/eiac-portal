@@ -609,7 +609,7 @@ a:hover { text-decoration: none; }
 .desc-content-prof { display: flex; justify-content: space-around; }
 .icon-add{ cursor: pointer; }
 .icon-cancel{ cursor: pointer; }
-.error{ color: #ff0000 }
+.error{ color: #ff0000; margin: 0; font-size: 14px; } // margin-top: -20px;
 .form-wrapper { padding: 50px; }
 .form-main { margin-bottom: 30px; }
 .form-main h1 { font-size: 75px; color: #C6B8A4; font-family: "Dubai Regular"; letter-spacing: 10px; text-align: left; }
@@ -639,6 +639,7 @@ a:hover { text-decoration: none; }
 .form-subhdr { margin: 0 -15px; }
 .form-subheader-data { margin: 0 -15px;}
 .add-new span { margin-right: 15px; }
+.add-content { display: flex; height: 100%; align-items: center; }
 .form-sub { display: flex; color: #222222; font-family: "Dubai Medium"; font-size: 18px; align-items: center; height: 100%; }
 .check-rdo { margin: 0; }
 .check-rdo label { margin: 0; }
@@ -824,7 +825,7 @@ ul.bill-details li span { font-size: 16px; font-family: 'Dubai Regular'; color: 
 ul.bill-details li:first-child { border-right: 1px solid #C9C9C9; }
 
 // ================ACCREDITATION================== //
-.accreditation-container { border-radius: 5px; border: 1px solid #DFDFDF; background: #F9F9F9; text-align: center; font-size: 24px; font-family: 'Dubai Medium'; color: #3A3A3A; margin-bottom: 25px; }
+.accreditation-container { border-radius: 5px; border: 1px solid #DFDFDF; background: #F9F9F9; text-align: center; font-size: 20px; font-family: 'Dubai Medium'; color: #3A3A3A; margin-bottom: 25px; }
 .accreditation-desc p { margin: 0; padding: 20px; }
 .acc-hov { display: none; }
 .accreditation-img { position: relative; border-bottom: 1px solid  #DFDFDF; height: 330px; overflow: hidden;}
@@ -841,10 +842,11 @@ ul.bill-details li:first-child { border-right: 1px solid #C9C9C9; }
   align-items: center;
   justify-content: center;
   height: 100%;
+  flex-direction: column;
 }
-.acc-apply a { color: #fff; font-size: 18px; font-family: 'Dubai Bold'; background: rgba(181, 65, 80, 1); padding: 10px 25px; letter-spacing: 1px; border-radius: 5px; }
+.acc-apply a { width: 200px; color: #fff; font-size: 18px; font-family: 'Dubai Bold'; background: rgba(181, 65, 80, 1); padding: 10px 25px; letter-spacing: 1px; border-radius: 5px; }
 .acc-apply a:hover { text-decoration: none; color: #fff; background: #AA9777; }
-
+.save_draft { margin-top: 15px; }
 
 // ================FORMS================== //
 .table-content-health table { width: 100%; border-collapse: collapse;}
@@ -980,7 +982,7 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .bttns { text-align: right; padding: 40px 0; font-family: 'Dubai Bold'; font-size: 26px;}
 .cancel-bttn { border: 1px solid #B54150; background: transparent; color: #B54150; margin-right: 30px; padding: 10px 52px; border-radius: 5px; }
 .cancel-bttn:focus {outline: none;}
-.submit-bttn { color: #ffffff; background: #B54150; border: none; font-size: 20px; letter-spacing: 1px; padding: 10px 53px; border-radius: 5px; margin-top: 20px; }
+.submit-bttn { color: #ffffff; background: #B54150; border: none; font-size: 20px; letter-spacing: 1px; padding: 10px 53px; border-radius: 5px; }
 .submit-bttn:focus {outline: none;}
 .submit-bttn:hover { background: #AA9777; }
 .frm-data { width: 45%; margin-right: 10px; }
@@ -1105,6 +1107,7 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
   .main-status .sub-head-dash  { font-size: 22px; }
   ul.bill-details li:first-child { padding-left: 0; }
   .dash-main { padding: 11px 15px; }
+  .accreditation-container { font-size: 18px; }
 }
 
 
