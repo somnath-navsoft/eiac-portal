@@ -76,6 +76,7 @@ function getFeesPerTrainee(training_days){
 }
 
 */
+
 setValueUrl(value) {
   this.setValue =  value;
 }

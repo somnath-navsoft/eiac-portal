@@ -355,6 +355,7 @@ export class TestingCalibrationFormComponent implements OnInit {
         title:'application_complete', desc:'10. Application Complete', activeStep:false, stepComp:false, icon:'icon-document-pen', activeClass:''
       },
     );
+    
   }
   
   getPlaceName()
