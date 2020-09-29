@@ -14,7 +14,7 @@ import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-testing-calibration-form',
+  selector: 'app-testing-calibration-form', 
   templateUrl: './testing-calibration-form.component.html',
   styleUrls: ['./testing-calibration-form.component.scss']
 })
@@ -934,7 +934,7 @@ export class TestingCalibrationFormComponent implements OnInit {
   }
 
   onSubmitStep1(ngForm1: any){
-    // this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+    this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
     if(this.step1Data.duty_shift == '1' && typeof this.step1Data.duty_from1 == 'undefined' && typeof this.step1Data.duty_to1 == 'undefined')
     {
       this.dutyTime1 = false;
