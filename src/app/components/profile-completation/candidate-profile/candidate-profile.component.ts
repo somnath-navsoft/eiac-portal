@@ -52,7 +52,7 @@ export class CandidateProfileComponent implements OnInit {
       title:'personal_details', desc:'1. Personal <br> Details', activeStep:true, stepComp:false, icon:'icon-user', activeClass:'user-present'
       },
       {
-      title:'application_information', desc:'2. Application <br> Information', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'application_information', desc:'2. Application <br> Information', activeStep:false, stepComp:false, icon:'icon-doc-edit', activeClass:''
       }
     );
 

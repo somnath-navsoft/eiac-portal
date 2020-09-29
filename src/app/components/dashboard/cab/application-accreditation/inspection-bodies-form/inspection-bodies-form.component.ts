@@ -377,7 +377,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     onChangeScopeOption(getValues: any,secIndex: number, lineIndex: number, columnIndex: number, type?:string) {
       //console.log('@GET Options: ', getValues, " :: ",  lineIndex, " -- ", type, " -- ", columnIndex, " --sec--  ", secIndex);
 
-      let selectValue: number;
+      let selectValue: any;
       if(type === undefined){
         selectValue = getValues.value;
       }
@@ -392,6 +392,12 @@ export class InspectionBodiesFormComponent implements OnInit {
         jsonReq['value_id'] = [selectValue];
       }
       if(typeof selectValue === 'object'){
+        for(var k in selectValue){
+            console.log(">>Loop value: ", selectValue[k], " :: ", k);
+            if(typeof selectValue[k] === 'string'){
+              return;
+            }
+        }
         jsonReq['value_id'] = selectValue;
       }
       this.Service.put(url,jsonReq)
@@ -406,12 +412,26 @@ export class InspectionBodiesFormComponent implements OnInit {
             let nextColumnIndex = theColumnIndex + 1;
             let totSecColumn    = this.dynamicScopeFieldColumns[secIndex].length;//this.dynamicScopeFieldColumns[secIndex].length;
             //console.log(">>>Column Data: ", theColumnIndex, " -- ", nextColumnIndex, " -- ", totSecColumn, " -- ", );
-            console.log("select scope values: ", record['scopeValue'], " :: ", this.dynamicScopeFieldType[secIndex]);
+            console.log("select scope values: ", record['scopeValue'], " :: ", this.dynamicScopeFieldType[secIndex], " len: ", record['scopeValue'].length);
 
-            if(this.dynamicScopeFieldType[secIndex].length && typeof this.dynamicScopeFieldType[secIndex][theColumnIndex] === 'object'){
-                  let colDef: string = this.dynamicScopeFieldType[secIndex][nextColumnIndex].defValue
-                  console.log("column values: ",theColumnIndex, " :: ",  colDef);
-            } 
+            // if(this.dynamicScopeFieldType[secIndex].length && typeof this.dynamicScopeFieldType[secIndex][theColumnIndex] === 'object'){
+            //       let colDef: string = this.dynamicScopeFieldType[secIndex][nextColumnIndex].defValue
+            //       console.log("column values: ",theColumnIndex, " :: ",  colDef);
+            // } 
+
+            //Auto selected for one item dropdown
+            if(record['scopeValue'].length > 0 && record['scopeValue'].length == 1){
+                console.log(">>>dep scope data: ", record['scopeValue']);
+                let getSelValue = 0;
+                if(typeof record['scopeValue'][0] === 'object'){                  
+                  getSelValue = record['scopeValue'][0].field_value.id;
+                  console.log(">>assigning scope default value: ", getSelValue);
+                  this.dynamicScopeModel[secIndex].fieldLines[lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].title] = getSelValue;
+                  this.onChangeScopeOption(getSelValue,secIndex,lineIndex,nextColumnIndex,'initLoad');
+                }
+            }
+
+            //
             //unique value set
             // let tempFilter = record['scopeValue'];
             // let uniqueSet: any = [...new Set(tempFilter.map(item => (item.value != '') ? item.value : ''))];
@@ -420,24 +440,24 @@ export class InspectionBodiesFormComponent implements OnInit {
             if(nextColumnIndex > 0 && nextColumnIndex < totSecColumn){
                 //Get ridge of the values
                 //console.log("field columns: ", this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][0].values] , " :: ");
-                let colDef: string = this.dynamicScopeFieldType[secIndex][nextColumnIndex].defValue
+                let colDef: string = this.dynamicScopeFieldType[secIndex][nextColumnIndex].defValue                                                       
 
                 if(colDef === "None" || colDef === null){
                   this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].values] = record['scopeValue'];
                 }
                 if(colDef != "None" && colDef != null){
-                  let colValAr: any;
+                  let colValAr: any;                                                                                                                                                                                                                                    
                   let colTempAr: any = [];
-                  colValAr = colDef.toString().split(',');
+                  colValAr = colDef.toString().split(',');                                                                                                                                                
                   colValAr.forEach((item,key1) => {
                     let tempObj: any = {};
                     tempObj['field_value'] = {};
-                    tempObj['field_value']['id'] = (key1+1);
+                    tempObj['field_value']['id'] = item;//(key1+1);
                     tempObj['value'] = item;
                     console.log("value obj: ", tempObj);
                     colTempAr.push(tempObj);
                   });
-                this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].values] = colTempAr;
+                  this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].values] = colTempAr;
                 }
                 //this.dynamicScopeModel[secName]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex].values] = record['scopeValue'];
                 //this.dynamicScopeModel[secName]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex].values] = record['scopeValue'];
@@ -1636,8 +1656,13 @@ export class InspectionBodiesFormComponent implements OnInit {
       console.log("removing ...fieldType....1", index, " :: ", this.dynamicScopeFieldType);
       //this.dynamicScopeFieldType.splice(index, 1);
       delete this.dynamicScopeFieldType[index];
-      console.log("removing ...fieldType....2", this.schemeRows,  " --",this.fullScope, " :: ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
+      //console.log("removing ...fieldType....2", this.schemeRows,  " --",this.fullScope, " :: ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
     }
+    if(this.dynamicScopeModel[index] != undefined && !this.Service.isObjectEmpty(this.dynamicScopeModel[index])){
+      delete this.dynamicScopeModel[index];
+    }
+
+    console.log(">>>After delete scheme: ", "Full Scope: ", this.fullScope, " :FieldType: ", this.dynamicScopeFieldType, " :Model: ", this.dynamicScopeModel);
 
   }
 
@@ -2804,7 +2829,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     let scopeValues: any =[];
     let scopeIds:any =[];
     let scopeSelValues:any =[];
-    ////console.log("dynamic ", this.dynamicScopeModel, " -- ", this.dynamicScopeFieldColumns);
+    console.log("dynamic ", this.dynamicScopeModel, " -- ", this.dynamicScopeFieldColumns, " -- ", this.schemeRows, " -- ", this.formApplicationId);
     var key = '';
     var key2 = '';
     let resultAr: any={};
@@ -2812,35 +2837,52 @@ export class InspectionBodiesFormComponent implements OnInit {
     scopeCollections['scope_heading'] = {};
     scopeCollections['scope_value'] = [];
 
-    this.dynamicScopeFieldColumns.forEach((item,key) => {
-        //////console.log(item);
-        let keyIds = item[0].idVal;
-        let name = item[0].name;
-        //////console.log("...", name);
-        let tempObj = {};
-       tempObj[keyIds] = name;
-        //////console.log("...", tempObj);
-        //scopeCollections['scope_heading'][key] = {};  
-        //scopeCollections['scope_heading'][key] = tempObj; 
-        //scopeCollections['scope_heading'] = tempObj; 
-        scopeCollections['scope_heading'][keyIds] = name;
-        //scopeCollections['scope_heading'][0].push( tempObj); 
-        //let custKey = ids.toString();
-        //this.dynamicScopeModel.fieldLines[key][this.dynamicScopeFieldColumns[key][0].title] = getValue;
-        //scopeCollections['scope_heading'][key][custKey] = 'test';
-        //scopeCollections['scope_heading'].push(tempObj);
-        // scopeCollections['scope_heading'][key] = {
-        //   tempObj
-        // }
-    });
-    ////console.log(">>> build scope: ", scopeCollections);
+    //let scopeSaveData: any = {};
+    // scopeSaveData['scheme'] = {};
+    // scopeSaveData['scheme']['heading'] = {};
+    // scopeSaveData['scheme']['details'] = {};
+
+    // console.log(">>>>> scope Data: ", scopeSaveData);
+    // this.schemeRows.forEach((rec,row) => {
+    //     console.log('>>> scheme row...', rec, " -- ", row);
+    // })
+          
+    
+      for(var key in this.dynamicScopeFieldColumns){
+            console.log(">>> ", key, " :: ", this.dynamicScopeFieldColumns[key], " -- ", typeof this.dynamicScopeFieldColumns[key]);
+            let tempData: any = this.dynamicScopeFieldColumns[key] ;
+            if(typeof tempData === 'object'){
+              tempData.forEach((item,key) => {
+                    console.log(item);
+                    let keyIds = item[0].idVal;
+                    let name = item[0].name;
+                    console.log("...", name);
+                    let tempObj = {};
+                    tempObj[keyIds] = name;
+                    console.log("...", tempObj);
+                    scopeCollections['scope_heading'][keyIds] = name;
+                });
+            }
+      }
+    
+          // this.dynamicScopeFieldColumns.forEach((item,key) => {
+          //     //////console.log(item);
+          //     let keyIds = item[0].idVal;
+          //     let name = item[0].name;
+          //     //////console.log("...", name);
+          //     let tempObj = {};
+          //     tempObj[keyIds] = name;
+          //     //////console.log("...", tempObj);
+          //     scopeCollections['scope_heading'][keyIds] = name;
+          // });
+    console.log(">>> build scope: ", scopeCollections);
     //return;
 
-
-    for(key in this.dynamicScopeModel){
+    let secInd: number = 0;
+    for(key in this.dynamicScopeModel[secInd]){
         if(key == 'fieldLines'){
-          this.dynamicScopeModel.fieldLines.forEach((rec,key1) => {
-                ////console.log(rec, " -- ", key);
+          this.dynamicScopeModel[secInd].fieldLines.forEach((rec,key1) => {
+                console.log("browse Model: ",rec, " -- ", key);
                 //resultAr[key1] = [];
                 scopeIds = [];
                 scopeSelValues = [];
@@ -2849,27 +2891,30 @@ export class InspectionBodiesFormComponent implements OnInit {
                       
                       let selectVal;
                       let selectId;
-                      
-                      let getDataValues = this.dynamicScopeFieldColumns.find(item => item[0].values == key2)
-                      let getSelectValues = this.dynamicScopeFieldColumns.find(item => item[0].title == key2)
-                      ////console.log("scope : ", key2, " -- ", getDataValues, " -- ", getSelectValues);
-                      if(getDataValues){
-                        let fdata: any = getDataValues[0];                        
-                        if(fdata.values == key2){
-                          selectId = fdata.idVal;//rec[key2][0].id;
-                          scopeIds.push({id: selectId, rowValues:fdata.values})
-                        }
-                      }
-                      if(getSelectValues){
-                        let fdata: any = getSelectValues[0];
-                        if(fdata.title == key2){
-                          selectVal = rec[key2];
-                          scopeSelValues.push({value: selectVal})
-                        }
-                      }
+                      console.log("@rows key: ", key2);
+                      let getDataValues = this.dynamicScopeFieldColumns[secInd].find(item => item[0].values == key2)
+                      let getSelectValues = this.dynamicScopeFieldColumns[secInd].find(item => item[0].title == key2)
+
+                      console.log("scope : ", key2, " -- ", getDataValues, " -- ", getSelectValues);
+                      // if(getDataValues){
+                      //   let fdata: any = getDataValues[0];
+                      //   console.log("#Data Values: ",getDataValues, " -- ", fdata)                      
+                      //   if(fdata.values == key2){
+                      //     selectId = fdata.idVal;//rec[key2][0].id;
+                      //     scopeIds.push({id: selectId, rowValues:fdata.values})
+                      //   }
+                      // }
+                      // if(getSelectValues){
+                      //   let fdata: any = getSelectValues[0];
+                      //   console.log("#Select Data Values: ",getDataValues, " -- ", fdata)                      
+                      //   if(fdata.title == key2){
+                      //     selectVal = rec[key2];
+                      //     scopeSelValues.push({value: selectVal})
+                      //   }
+                      // }
                       //scopeValues.push({id:selectId , value: selectVal});
 
-                      ////console.log("scope aa: ", key2, " -- ", selectVal, " -- ", selectId);
+                      //console.log("scope aa: ", key2, " -- ", selectVal, " -- ", selectId);
 
                   }
                 }
@@ -2884,10 +2929,12 @@ export class InspectionBodiesFormComponent implements OnInit {
                   resultAr[key1].push({id: idKey, value: valueKey, valueSrc: keyValues});
                }
                //resultAr[key1] = tempObj;
-               /////console.log('scope object: ', " -- ", resultAr);
+               //console.log('scope object: ', " -- ", resultAr);
           })
         }
     }
+
+    return;
     
     if(scopeCollections){
       let resultTempAr: any ={};
@@ -2896,27 +2943,28 @@ export class InspectionBodiesFormComponent implements OnInit {
       var p;
       let scopeRows: any;
       //this.dynamicScopeModel
-      if(this.dynamicScopeModel.fieldLines != undefined && this.dynamicScopeModel.fieldLines.length > 0){
-        scopeRows = this.dynamicScopeModel.fieldLines;
+      if(this.dynamicScopeModel[secInd].fieldLines != undefined && this.dynamicScopeModel[secInd].fieldLines.length > 0){
+        scopeRows = this.dynamicScopeModel[secInd].fieldLines;
       }
       for(p in resultAr){
-        ////console.log(p, " -- ", resultAr[p])
+        console.log("@resultAr ",p, " -- ", resultAr[p])
         //resultTempAr[p] = [];
         if(resultAr[p].length){
           resultAr[p].forEach(item =>{
             tempObj = {};
             let optionName = '';
               //tempObj[item.id] = item.value;
+              console.log("@Values: ", scopeRows[p]);
               if(typeof scopeRows[p] === 'object'){
                  for(var k in scopeRows[p]){
-                   ////console.log('>>>> ', k, " -- ", item.valueSrc);
+                   console.log('>>>> ', k, " -- ", item.valueSrc);
                    if(k === item.valueSrc){
                      let tempAr = scopeRows[p][k];
                      let findVal = tempAr.find(itemF => itemF.field_value == item.value);
                      if(findVal){
                       optionName = findVal.value;
                      }
-                     ////console.log("found...", k," :: ", scopeRows[p][k], " -- ",optionName, " --- ", findVal);
+                     console.log("found...", k," :: ", scopeRows[p][k], " -- ",optionName, " --- ", findVal);
                    }
                  }
               }
@@ -2927,7 +2975,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         }
         rstAr.push(resultTempAr);
       }
-      ////console.log('<<>>>> ', resultTempAr, " -- ", rstAr);
+      console.log('<<>>>> ', resultTempAr, " -- ", rstAr);
       scopeCollections['scope_value'] = rstAr;
     }
 
@@ -2951,8 +2999,8 @@ export class InspectionBodiesFormComponent implements OnInit {
     // this.step5Data['perlim_visit_date'] = dtFormat ;
     // this.step5Data['perlim_visit_time'] = "01:30AM";
     
-    //console.log(">>> step5 submit...", this.step5Data, " -- ", this.inspectionBodyForm);
-    //return;
+    console.log(">>> step5 submit...", this.step5Data, " -- ", this.inspectionBodyForm);
+    return;
     //ngForm.form.valid &&
     if(ngForm.form.valid && type == undefined) {
       this.inspectionBodyForm.step5.is_draft = false;

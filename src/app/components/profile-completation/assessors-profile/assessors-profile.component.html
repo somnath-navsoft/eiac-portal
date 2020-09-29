@@ -522,7 +522,7 @@
                                                     </td>
                                                     
                                                     <td class="content-icn">
-                                                        <span *ngIf="i >= 0" class="icon-add-round" (click)="addRow(list_auditor)"></span>&nbsp;
+                                                        <span *ngIf="i >= 0" class="icon-add" (click)="addRow(list_auditor)"></span>&nbsp;
                                                         <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(list_auditor,i)"></span>
                                                     </td>
                                                 </tr>
@@ -589,7 +589,7 @@
                                                         </mat-form-field>
                                                     </td>
                                                     <td class="content-icn">
-                                                        <span *ngIf="i >= 0" class="icon-add-round" (click)="addRow(attend_accreditation)"></span>&nbsp;
+                                                        <span *ngIf="i >= 0" class="icon-add" (click)="addRow(attend_accreditation)"></span>&nbsp;
                                                         <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(attend_accreditation,i)"></span>
                                                     </td>
                                                 </tr>
@@ -647,7 +647,7 @@
                                                         </mat-form-field>
                                                     </td>
                                                     <td class="content-icn">
-                                                        <span *ngIf="i >= 0" class="icon-add-round" (click)="addRow(attend_accreditation2)"></span>&nbsp;
+                                                        <span *ngIf="i >= 0" class="icon-add" (click)="addRow(attend_accreditation2)"></span>&nbsp;
                                                         <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(attend_accreditation2,i)"></span>
                                                     </td>
                                                 </tr>
@@ -754,7 +754,7 @@
                                                     </td>
 
                                                     <td class="content-icn">
-                                                        <span *ngIf="i >= 0" class="icon-add-round" (click)="addRow(practical_assessment_experience)"></span>&nbsp;
+                                                        <span *ngIf="i >= 0" class="icon-add" (click)="addRow(practical_assessment_experience)"></span>&nbsp;
                                                         <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(practical_assessment_experience,i)"></span>
                                                     </td>
                                                 </tr>
@@ -812,13 +812,13 @@
                                             </div>
                                             <div class="col-md-1 col-sm-6 p-0">
                                                 <div class="open-cls">
-                                                    <!-- <a href="javascript:void(0)"><span class="icon-add-round"></span></a> -->
+                                                    <!-- <a href="javascript:void(0)"><span class="icon-add"></span></a> -->
                                                     
                                                     <tr>
                                                         <th class="manage-first" colspan="8" *ngIf="row['technical_fields']" >
                                                             <a *ngIf="isdDynamicsopenClose == row.id" href="javascript:void(0)" (click)="dynamicsopenClose(row.id,'close')"><span class="icon-minus"></span></a>
                                                             
-                                                            <a (click)="dynamicsopenClose(row.id,'open')" *ngIf="isdDynamicsopenClose != row.id" href="javascript:void(0)" ><span class="icon-add-round"></span></a>
+                                                            <a (click)="dynamicsopenClose(row.id,'open')" *ngIf="isdDynamicsopenClose != row.id" href="javascript:void(0)" ><span class="icon-add"></span></a>
                                                         </th>
                                                         <th class="manage-first" colspan="8"></th>
                                                     </tr>

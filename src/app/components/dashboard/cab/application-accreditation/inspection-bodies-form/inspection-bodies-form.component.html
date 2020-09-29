@@ -1000,10 +1000,10 @@
                                                 <mat-error></mat-error> 
                                             </mat-form-field>
                                         </div>
-                                        <div class="col-md-3 col-sm-3">
+                                        <!-- <div class="col-md-3 col-sm-3">
                                         <span *ngIf="i >= 0" class="icon-add-round" (click)="addSchemeRow(schemeRows,i)"></span>&nbsp;
                                         <span *ngIf="i >= 1" class="icon-cross" (click)="removeSchemeRow(schemeRows,i)"></span>
-                                        </div>                                                                      
+                                        </div> -->
                                     </div> 
                                 </ng-container>
 
@@ -1034,8 +1034,7 @@
                                                                     <thead>
                                                                         <tr>
                                                                             <th># </th>
-                                                                            <th *ngFor="let fields of dynamicScopeFieldColumns[i1]; let i2 = index;">....
-                                                                                {{fields[0].name}}
+                                                                            <th *ngFor="let fields of dynamicScopeFieldColumns[i1]; let i2 = index;">{{fields[0].name}}
                                                                             </th>
                                                                             <th>
                                                                             </th>
@@ -1046,6 +1045,16 @@
                                                                         <tr *ngFor="let item of dynamicScopeModel[i1]['fieldLines']; let k = index;">
                                                                             <td>{{("0" + (k+1)).slice(-2)}}</td>
                                                                             <td *ngFor="let fieldsColumn of dynamicScopeFieldColumns[i1]; let p = index;">
+
+                                                                                <ng-container *ngIf="dynamicScopeFieldType[i1][p].inputType == 'text'">
+                                                                                    <mat-form-field class="cab-data" *ngIf="p == 0">
+                                                                                        <mat-label></mat-label>
+                                                                                        <input matInput onpaste="return false" 
+                                                                                        placeholder="" name="dynamicScopeFieldColumns[i1][p][0].title" 
+                                                                                        [(ngModel)]="dynamicScopeModel[i1].fieldLines[k][dynamicScopeFieldColumns[i1][p][0].title]" required>
+                                                                                    </mat-form-field>
+                                                                                </ng-container>
+
                                                                                 <ng-container *ngIf="dynamicScopeFieldType[i1][p].inputType == 'select'">
                                                                                 <mat-form-field class="cab-data" *ngIf="p == 0">
                                                                                     
@@ -1075,20 +1084,30 @@
                                                                                             {{j1.value}}
                                                                                             </mat-option>
                                                                                         </mat-select>
-                                                                                        
+                                                                                          
                                                                                     </mat-form-field>
                                                                                     </ng-container>
                                                                                 @{{dynamicScopeFieldType[i1][p].inputType | json}}<br>
 
-
+                                                                                <ng-container *ngIf="dynamicScopeFieldType[i1][p].inputType == 'text'">
+                                                                                    <mat-form-field class="cab-data" *ngIf="p > 0 && p <= dynamicScopeFieldColumns[i1].length">
+                                                                                        <mat-label></mat-label>
+                                                                                        <input matInput onpaste="return false" 
+                                                                                        [ngModelOptions]="{standalone: true}"
+                                                                                        placeholder="" name="dynamicScopeFieldColumns[i1][p][0].title" 
+                                                                                        [(ngModel)]="dynamicScopeModel[i1].fieldLines[k][dynamicScopeFieldColumns[i1][p][0].title]" required>
+                                                                                    </mat-form-field>
+                                                                                </ng-container>
 
                                                                                 <ng-container *ngIf="dynamicScopeFieldType[i1][p].inputType == 'select'">
                                                                                 <mat-form-field class="cab-data" *ngIf="p > 0 && p <= dynamicScopeFieldColumns[i1].length">
                                                                                     
                                                                                     <mat-label>Select</mat-label>
-                                                                                    <mat-select                                                                                      
+                                                                                    <mat-select  
+                                                                                    
                                                                                     [matTooltip]="getFieldTooltip(dynamicScopeModel[i1].fieldLines[k][dynamicScopeFieldColumns[i1][p][0].title], dynamicScopeModel[i1].fieldLines[k][dynamicScopeFieldColumns[i1][p][0].values])" 
-                                                                                    matTooltipPosition='above' [(ngModel)]="dynamicScopeModel[i1].fieldLines[k][dynamicScopeFieldColumns[i1][p][0].title]"
+                                                                                    matTooltipPosition='above' 
+                                                                                    [(ngModel)]="dynamicScopeModel[i1].fieldLines[k][dynamicScopeFieldColumns[i1][p][0].title]"
                                                                                     name="dynamicScopeFieldColumns[i1][p][0].title" 
                                                                                     (selectionChange)="onChangeScopeOption($event,i1,k,p)" [ngModelOptions]="{standalone: true}" >
                                                                                         <mat-option *ngFor="let j2 of dynamicScopeModel[i1].fieldLines[k][dynamicScopeFieldColumns[i1][p][0].values]" [value]='j2.field_value.id'>

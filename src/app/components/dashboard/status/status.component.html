@@ -115,7 +115,7 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.id"></span>
                                 </a>
                             </th>
-                            <th>Application Date
+                            <th>Date Submitted
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'created_date', curSortDir.created_date)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.created_date"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.created_date"></span>
@@ -127,10 +127,16 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.accr_status"></span>
                                 </a>
                             </th>
-                            <th>Prelim Visit
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'prelim_visit', curSortDir.prelim_visit)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.prelim_visit"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.prelim_visit"></span>
+                            <th>CAB Name/CAB Code
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'applicantName', curSortDir.applicantName)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.applicantName"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.applicantName"></span>
+                                </a>
+                            </th>
+                            <th>Scope/Scheme
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'criteria_request', curSortDir.criteria_request)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.criteria_request"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.criteria_request"></span>
                                 </a>
                             </th>
                             <th>Accreditation Type
@@ -139,19 +145,13 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.form_meta"></span>
                                 </a>
                             </th>
-                            <th>Payment Status
+                            <th>Location
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'payment_status', curSortDir.payment_status)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.payment_status"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.payment_status"></span>
                                 </a>
                             </th>
                             
-                            <th>Applicant
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'applicant', curSortDir.applicant)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.applicant"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.applicant"></span>
-                                </a>
-                            </th>
                             <th>Action</th>
                         </tr>
                         <!-- trainerdata.records != undefined && -->
@@ -163,29 +163,29 @@
                             <td>
                                 {{item.created | date :'dd-MMM-yyyy' }}
                             </td>
-                            <td [ngClass]="{'pending': item.accr_status === 'pending', 'under-review':item.accr_status === null, 'complete': item.accr_status === 'complete'}">
-                                <span *ngIf="item.accr_status == 'pending'">Pending</span>
+                            <td [ngClass]="{'pending': item.accr_status === 'pending', 'under-review':item.accr_status === null, 'complete': item.accr_status === 'complete', 'draft': item.accr_status === 'draft'}">
+                                <span *ngIf="item.accr_status == 'pending'">Payment Pending</span>
                                 <span *ngIf="item.accr_status == null">Under Review</span>
                                 <span *ngIf="item.accr_status == 'complete'">Complete</span>
+                                <span *ngIf="item.accr_status == 'draft'">Draft</span>
                             </td>
-                            <td [ngClass]="{'complete': item.is_prelim_visit == true, 'under-review':item.is_prelim_visit == false }">
-                                <span *ngIf="item.is_prelim_visit == true">Yes</span>
-                                <span *ngIf="item.is_prelim_visit == false">No</span>
-                            </td>
-                            <td>
-                                <span *ngIf="item.form_meta === 'inspection_body'">Inspection Body</span>
-                            </td>
-                            <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review':item.payment_status === null }">
-                                <span *ngIf="item.payment_status == 'paid'">Paid</span>
-                                <span *ngIf="item.payment_status == null">Unpaid</span>
-                            </td> 
                             <td>
                                 {{item.applicantName}}
+                            </td>
+                            <td>
+                                {{item.criteria_request}}
+                            </td>
+                            <td>
+                                <span *ngIf="item.form_meta == 'testing_calibration'">Testing Calibration</span>
+                                <span *ngIf="item.form_meta == 'inspection_body'">Inspection Bodies</span>
+                            </td> 
+                            <td>
+                                {{item.location}}
                             </td>                           
                             <td class="action fnt-clr">
-                                <a href="javascript:void(0)" *ngIf="item.accr_status != 'complete'" (click)="serviceStatus(i2,item.id)" alt="Delete"><span class="icon-tick"></span></a>
-                                <a href="javascript:void(0)" *ngIf="item.accr_status == 'complete'" alt="Delete"><span class="icon-tick"></span></a>
-                                <a href="javascript:void(0)" (click)="open(courseVoucher, item.id)" alt="Upload Proforma Invoice" title="Upload Proforma Invoice"><span class="icon-document-pen"></span></a>
+                                <a href="javascript:void(0)" *ngIf="item.form_meta == 'testing_calibration'" alt="Edit" routerLink="/dashboard/cab_client/testing-calibration-form"><span class="icon-edit"></span></a>
+                                <a href="javascript:void(0)" *ngIf="item.form_meta == 'inspection_body'" alt="Edit" routerLink="/dashboard/cab_client/inspection-bodies-form"><span class="icon-edit"></span></a>
+                                <!-- <a href="javascript:void(0)" (click)="open(courseVoucher, item.id)" alt="Upload Proforma Invoice" title="Upload Proforma Invoice"><span class="icon-document-pen"></span></a> -->
                                 <!-- <ng-container *ngIf="item.training_course_type === 'custom_course'" class="action fnt-clr">
                                     <a href="javascript:void(0)" (click)="openView(courseView, item.id)" title="View" alt="View"><span class="icon-document"></span></a>
                                     <a routerLink="/dashboard/operations/training-apply/{{item.id}}" title="Edit" alt="Edit"><span class="icon-edit"></span></a>
