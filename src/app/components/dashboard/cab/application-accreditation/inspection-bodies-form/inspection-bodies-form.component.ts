@@ -374,7 +374,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   }
 
   //onChangeScopeOption(getValues: any, secIndex: number, lineIndex: number, columnIndex: number, secName: string, type?:string) {
-    onChangeScopeOption(getValues: any,secIndex: number, lineIndex: number, columnIndex: number, type?:string) {
+  onChangeScopeOption(getValues: any,secIndex: number, lineIndex: number, columnIndex: number, type?:string) {
       //console.log('@GET Options: ', getValues, " :: ",  lineIndex, " -- ", type, " -- ", columnIndex, " --sec--  ", secIndex);
 
       let selectValue: any;
@@ -1476,7 +1476,7 @@ export class InspectionBodiesFormComponent implements OnInit {
 
   loadData(){
   this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data)
-    .subscribe(
+    .subscribe( 
       res => {
         ////console.log("@Load scope....", res);
         this.inspectionBodyScopeFields = res['medicalLabScopeFields'];
