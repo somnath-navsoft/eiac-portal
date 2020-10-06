@@ -184,7 +184,7 @@
                                                     <mat-label>Telephone Number</mat-label>
                                                     <input type="text" onpaste="return false" (keypress)="Service.IsNumeric($event)" 
                                                     matInput autocomplete="off"  placeholder="Telephone No" name="telephone" 
-                                                    [(ngModel)]="step1Data.telephone" maxlength="15" minlength="10"  required>
+                                                    [(ngModel)]="step1Data.telephone" maxlength="15"   required>
                                                     <mat-error></mat-error>                                            
                                                 </mat-form-field>
                                                 <p class="error" *ngIf="step1Data.telephone && !Service.checkInput('onlyNumberWithPlus',step1Data.telephone)">Please Enter Correct Telephone Number</p> 
@@ -311,7 +311,7 @@
                                                         <div class="col-md-4 col-sm-12">
                                                             <mat-form-field class="cab-data">
                                                                 <mat-label>Mobile Phone No.</mat-label>
-                                                                <input type="text" onpaste="return false" (keypress)="Service.IsNumeric($event)" maxlength="15" minlength="10" matInput autocomplete="off"  placeholder="Mobile No." name="org_telephone_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].mobile_no" required>
+                                                                <input type="text" onpaste="return false" (keypress)="Service.IsNumeric($event)" maxlength="15"  matInput autocomplete="off"  placeholder="Mobile No." name="org_telephone_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].mobile_no" required>
                                                                 <mat-error></mat-error>
                                                             </mat-form-field>
                                                             <p class="error" *ngIf="ownOrgBasicInfo[i].mobile_no && !Service.checkInput('onlyNumberWithPlus',ownOrgBasicInfo[i].mobile_no)">Please Enter Correct Mobile Phone No</p> 
@@ -319,7 +319,7 @@
                                                         <div class="col-md-4 col-sm-12">
                                                             <mat-form-field class="cab-data">
                                                                 <mat-label>Land Line Phone No.</mat-label>
-                                                                <input onpaste="return false" matInput autocomplete="off"  placeholder="Landline No."  name="org_mobile_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].phone_no" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" required >
+                                                                <input onpaste="return false" matInput autocomplete="off"  placeholder="Landline No."  name="org_mobile_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].phone_no" maxlength="15"  (keypress)="Service.IsNumeric($event)" required >
                                                             </mat-form-field>
                                                             <p class="error" *ngIf="ownOrgBasicInfo[i].phone_no && !Service.checkInput('onlyNumberWithPlus',ownOrgBasicInfo[i].phone_no)">Please Enter Correct Land Line Phone No.</p> 
                                                         </div>
@@ -409,7 +409,7 @@
                                                             <div class="col-md-6 col-sm-12">
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Mobile Phone No.</mat-label>
-                                                                    <input onpaste="return false" type="text" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="mobile_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].mobile_no" required>
+                                                                    <input onpaste="return false" type="text" maxlength="15"  (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="mobile_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].mobile_no" required>
                                                                 </mat-form-field>
                                                                 <p class="error" *ngIf="ownOrgMembInfo[i].mobile_no && !Service.checkInput('onlyNumberWithPlus',ownOrgMembInfo[i].mobile_no)">Please Enter Correct Telephone Number</p> 
                                                             </div>
@@ -549,7 +549,7 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <mat-radio-group name="is_main_activity" #selectInspecActivity="ngModel" 
-                                                [(ngModel)]="step1Data.is_main_activity">
+                                                [(ngModel)]="step1Data.is_main_activity" required>
                                                     <div class="row">
                                                         <div class="col-md-4">
                                                             <label class="check-rdo">
@@ -833,7 +833,7 @@
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mobile Phone No.</mat-label>
-                                                <input type="text" onpaste="return false" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="mobile_no_technical" [(ngModel)]="step3Data.mobile_no_technical"  required>
+                                                <input type="text" onpaste="return false" maxlength="15"  (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="mobile_no_technical" [(ngModel)]="step3Data.mobile_no_technical"  required>
                                             </mat-form-field>
                                             <p class="error" *ngIf="step3Data.mobile_no_technical && !Service.checkInput('onlyNumberWithPlus',step3Data.mobile_no_technical)">Please Enter Correct Mobile Phone No</p> 
                                         </div>
@@ -877,7 +877,7 @@
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mobile Phone No.</mat-label>
-                                                <input type="text" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" onpaste="return false" matInput placeholder="Mobile Phone No." name="management_mobile_no" [(ngModel)]="step3Data.management_mobile_no" required>
+                                                <input type="text" maxlength="15"  (keypress)="Service.IsNumeric($event)" onpaste="return false" matInput placeholder="Mobile Phone No." name="management_mobile_no" [(ngModel)]="step3Data.management_mobile_no" required>
                                             </mat-form-field>
                                             <p class="error" *ngIf="step3Data.management_mobile_no && !Service.checkInput('onlyNumberWithPlus',step3Data.management_mobile_no)">Please Enter Correct Mobile Phone No</p>
                                         </div>
@@ -980,7 +980,53 @@
                                     </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        
+                                        <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                                        <ng-container *ngIf="editScopeData != undefined && editScopeData != null">
+                                            <div class="row">
+                                                <div class="col-md-12 p-0">
+                                                    <div class="form-subheader-data">
+                                                        <h5>SCOPE DATA</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteIndex)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                                            <ng-container *ngFor="let item of editScopeData | keyvalue">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="table-appln scope-data">
+                                                              <!-- @{{item.value.scope_heading | json}} || {{item.key}} || {{item.value.scope_heading.length}} -->
+                                                            <div class="sub-header">
+                                                                <h5 [innerHTML]="getSchme(item.key)"></h5>
+                                                            </div>
+                                                            <table>
+                                                                <tr>
+                                                                    <th *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                                <ng-container *ngIf="item.value.scope_value.length > 0">
+                                                                    <tr *ngFor="let item2 of (item.value.scope_value) | keyvalue; let i4 = index;">
+                                                                        <td *ngFor="let item3 of item2.value | keyvalue;">
+                                                                            <span [innerHTML]="(item3.value)"></span>
+                                                                        </td>
+                                                                        <td>
+                                                                        <!-- deleteScopeData(item.key, i4) -->
+                                                                        <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item.key)"></span>
+                                                                        </td>                                                                
+                                                                    </tr>
+                                                                </ng-container>
+                                                                <ng-container *ngIf="item.value.scope_value.length == 0">
+                                                                    <tr>
+                                                                        <td [attr.colspan]="Service.getObjectLength(item.value.scope_heading)+1">
+                                                                            No Data
+                                                                        </td>
+                                                                    </tr>
+                                                                </ng-container>
+                                                            </table>  
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>    
                                 <!-- step5Data.scheme_ids[i] -->
                                 <ng-container *ngFor="let item of schemeRows; let i = index;">
                                         <div class="row mt-3">
@@ -1001,25 +1047,12 @@
                                                 </div>
                                             </div>
                                         </div> 
-                                    </ng-container>
-                                    
-                                            <!-- <table>
-                                            <tr>
-                                                <th *ngFor="let item5 of jsonParseKeyvalue(editScopeData.data.scopeDetails.heading.column_list) | keyvalue;">{{item5.value}}</th>
-                                            </tr>
-                                            <tr>
-                                                <ng-container *ngFor="let item6 of viewData.data.scopeDetails.details; let i4 = index;">
-                                                    <td *ngFor="let item7 of jsonParseKeyvalue(item6.value) | keyvalue;">{{item7.value}}</td>
-                                                </ng-container>
-                                            </tr>
-                                            </table> -->
+                                    </ng-container>                                    
                                     </div>
                                   </div>
                             
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
-                                            
-        
                                             <div class="row" *ngIf="fullScope.length > 0">
                                                 <div class="col-12" *ngFor="let scope of fullScope; let i1 = index;">
                                                     <div class="row">
@@ -1138,9 +1171,10 @@
                                                                                     </ng-container>
                                                                                 <!-- @{{dynamicScopeFieldType[i1][p].inputType | json}}<br>                                                                               -->
                                                                             </td>
+                                                                            <!-- removeScopeLine(k, scope.title) -->
                                                                             <td class="content-icn">
                                                                                 <span *ngIf="k >= 0" class="icon-add" (click)="addScopeLine(k,scope.title, dynamicScopeModel[scope.title].fieldLines)"></span>&nbsp;
-                                                                                <span *ngIf="k >= 1" class="icon-close-round" (click)="removeScopeLine(k, scope.title)"></span>
+                                                                                <span *ngIf="k >= 1" class="icon-close-round" (click)="openDeleteScopeConfirm(k, scope.title)"></span>
                                                                             </td>
                                                                         </tr>
                                                                         <!-- OLD Versioon -->
@@ -1155,52 +1189,7 @@
 
                                         </div>
                                     </div>
-                            <!-- </ng-container> -->
-                            <ng-container *ngIf="editScopeData != undefined && editScopeData != null">
-                                <div class="row">
-                                    <div class="col-md-12 p-0">
-                                        <div class="form-subheader-data">
-                                            <h5>SCOPE DATA</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                  
-                                <ng-container *ngFor="let item of editScopeData | keyvalue">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="table-appln scope-data">
-                                                  <!-- @{{item.value.scope_heading | json}} || {{item.key}} || {{item.value.scope_heading.length}} -->
-                                                <div class="sub-header">
-                                                    <h5 [innerHTML]="getSchme(item.key)"></h5>
-                                                </div>
-                                                <table>
-                                                    <tr>
-                                                        <th *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                    <ng-container *ngIf="item.value.scope_value.length > 0">
-                                                        <tr *ngFor="let item2 of (item.value.scope_value) | keyvalue; let i4 = index;">
-                                                            <td *ngFor="let item3 of item2.value | keyvalue;">
-                                                                <span [innerHTML]="(item3.value)"></span>
-                                                            </td>
-                                                            <td>
-                                                            <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="deleteScopeData(item.key, i4)"></span>
-                                                            </td>                                                                
-                                                        </tr>
-                                                    </ng-container>
-                                                    <ng-container *ngIf="item.value.scope_value.length == 0">
-                                                        <tr>
-                                                            <td [attr.colspan]="Service.getObjectLength(item.value.scope_heading)+1">
-                                                                No Data
-                                                            </td>
-                                                        </tr>
-                                                    </ng-container>
-                                                </table>  
-                                            </div>
-                                        </div>
-                                    </div>
-                                </ng-container>
-                            </ng-container>
+                            
                                 </div>
                             </div>
                         </div>
@@ -1805,7 +1794,7 @@
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mobile Number</mat-label>
                                                 <input type="text" [ngModelOptions]="{standalone: true}" required="true"
-                                                matInput placeholder="Mobile Number" 
+                                                matInput placeholder="Mobile Number" maxlength="15" 
                                                 [(ngModel)]="voucherSentData.mobile_no" required>
                                             </mat-form-field>
                                         </div>

@@ -31,7 +31,7 @@ export class CustomModalComponent implements OnInit {
     this.modalOptions = {
       backdrop:'static',
       backdropClass:'customBackdrop',
-      keyboard: true
+      keyboard: false
     }
   }
 
@@ -49,7 +49,7 @@ export class CustomModalComponent implements OnInit {
           break;
           case 'reject':
             setTimeout(()=>{
-              let elem = document.getElementById('openDialog');
+              let elem = document.getElementById('openDialog'); 
               if(elem){
                 elem.click();
               }
@@ -64,8 +64,13 @@ export class CustomModalComponent implements OnInit {
     //this.modalRef.hide();
     this._modalService.dismissAll();
     //Reset delete confirm from parent
+    //
     if(this.parent && this.parent.deleteConfirm){
       this.parent.deleteConfirm = false;
+    }else if(this.parent && this.parent.deleteEditScopeConfirm){
+      this.parent.deleteEditScopeConfirm = false;
+    }else if(this.parent && this.parent.deleteScopeConfirm){
+      this.parent.deleteScopeConfirm = false;
     }else if(this.parent && this.parent.rejectedMessageId){
       this.parent.rejectedMessageId = false;
     }

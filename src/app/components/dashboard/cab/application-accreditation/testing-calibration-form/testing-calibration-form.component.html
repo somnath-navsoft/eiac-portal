@@ -1,4 +1,3 @@
-
 <app-loader *ngIf="!loader"></app-loader>
 <div class="main-content">
     <section>
@@ -13,6 +12,7 @@
                         </div>
                     </div>
                 </div>
+                
                 <ng-container>
                     <div class="row">
                         <div class="col-md-12">
@@ -1607,7 +1607,7 @@
                                         </div>
                                     </div>
                                     <!-- paymentFilePath -->
-                                    <div class="row">
+                                    <div class="row my-5">
                                         <app-loader *ngIf="loaderPdf"></app-loader>
                                         <p *ngIf="errorLoader">Error Loading PDF</p>
                                         <pdf-viewer [src]="paymentFilePath" [show-all]="true" [stick-to-page]="true"
@@ -1733,20 +1733,15 @@
 
                                 <span id="openAppDialog" (click)="openView(appComp)"></span>
                                 <ng-template #appComp let-modal>
-                                    <div class="modal-header">
-                                        <h4 class="modal-title" id="modal-basic-title">THANK YOU</h4>
-                                        <button type="button" class="close" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                        </button>
-                                      </div>                                    
-                                    <div class="modal-body"> 
-                                        <!-- routerLink="/dashboard/cab_client/application-accreditation" -->
-                                        <p [ngStyle]="{'font-size': '22px'}">Your form has been successfully submitted and it is under review.</p>
-                                        <p [ngStyle]="{'font-size': '22px'}">We will update you shortly.</p>
-                                        <button class="submit-bttn submit-health" (click)="backApp()"
-                                        >BACK</button>
-                                    </div>
-                                    <div class="modal-footer">
+                                    <div class="main_pop">
+                                        <div class="pop_close" (click)="closeChecklistDialog()">
+                                            <span class="icon-close"></span>
+                                        </div>
+                                        <div class="pop_thanks">
+                                            <h5>Thank you</h5>
+                                            <p>Your form has been successfully submitted and it is under review. We will update you shortly.</p>
+                                            <button class="submit-bttn" (click)="closeChecklistDialog()" routerLink="/dashboard/cab_client/application-accreditation">Back to Application</button>
+                                        </div>
                                     </div>
                                 </ng-template>
 
@@ -1763,7 +1758,7 @@
                                 </ng-template> -->
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
@@ -1771,7 +1766,7 @@
                                     <!-- <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</button> -->
                                     <div class="button-content">
                                         <a class="cancel-bttn" type="button" (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</a>
-                                        <button class="cancel-bttn" type="button" (click)="onSubmitPaymentInformation(ngForm9, true)">SAVE AS DRAFT</button>
+                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step9')">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >SUBMIT</button>
                                 </div>
