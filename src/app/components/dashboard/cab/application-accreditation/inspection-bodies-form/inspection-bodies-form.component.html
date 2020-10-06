@@ -340,7 +340,7 @@
                                             <div class="col-12"> 
                                                 <div class="add-new">
                                                     <a  href="javascript:void(0)" (click)="addRow(ownOrgBasicInfo)">
-                                                        <span class="icon-add-round"></span>
+                                                        <span class="icon-add"></span>
                                                         <span>ADD NEW</span>
                                                     </a>
                                                 </div>
@@ -424,7 +424,7 @@
                                             <div class="col-12">
                                                 <div class="add-new">
                                                     <a  href="javascript:void(0)" (click)="addRow(ownOrgMembInfo)">
-                                                        <span class="icon-add-round"></span>
+                                                        <span class="icon-add"></span>
                                                         <span>ADD NEW</span>
                                                     </a>
                                                 </div>
@@ -664,7 +664,7 @@
                                                                     </mat-form-field>
                                                                     </td>
                                                                 <td class="content-icn">
-                                                                    <span *ngIf="i >= 0" class="icon-add-round" (click)="addRow(accreditationInfo)"></span>&nbsp;
+                                                                    <span *ngIf="i >= 0" class="icon-add" (click)="addRow(accreditationInfo)"></span>&nbsp;
                                                                     <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(accreditationInfo,i)"></span>
                                                                 </td>
                                                             </tr>
@@ -767,7 +767,7 @@
                                                                 </mat-form-field>
                                                                 </td>
                                                             <td class="content-icn">
-                                                                <span *ngIf="i >= 0" class="icon-add-round" (click)="addRow(proficiencyTesting)"></span>&nbsp;
+                                                                <span *ngIf="i >= 0" class="icon-add" (click)="addRow(proficiencyTesting)"></span>&nbsp;
                                                                 <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(proficiencyTesting,i)"></span>
                                                             </td>
                                                         </tr>
@@ -981,35 +981,61 @@
                             <ng-container *ngIf="editScopeData != undefined && editScopeData != null">
                                 <div class="row">
                                     <div class="col-md-12">
-                                      <div class="table-appln">
+                                        
+                                <!-- step5Data.scheme_ids[i] -->
+                                <ng-container *ngFor="let item of schemeRows; let i = index;">
+                                        <div class="row mt-3">
+                                            <div class="col-md-9 col-sm-9">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Scheme -- {{step5Data.scheme_ids[i]}}</mat-label>
+                                                    <mat-select (selectionChange)="getCriteria(schemeRows[i].id, i)" placeholder="Select" name="scheme_id_{{i}}"  
+                                                    [(ngModel)]="schemeRows[i].id" required>
+                                                        <mat-option [value]="item.scope_accridiation.id" *ngFor="let item of criteriaMaster; let k=index;">{{item.title}}</mat-option>
+                                                    </mat-select>
+                                                    <mat-error></mat-error> 
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3">
+                                                <div class="add-content">
+                                                    <span *ngIf="i >= 0" class="icon-add" (click)="addSchemeRow(schemeRows,i)"></span>&nbsp;
+                                                    <span *ngIf="i >= 1" class="icon-cross" (click)="removeSchemeRow(schemeRows,i)"></span>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </ng-container>
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>SCOPE DATA</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                      
                                           <!-- {{editScopeData | json}}<br> -->
-                                          <h5>Scope Data</h5>
+                                          
+                                          
                                         <ng-container *ngFor="let item of editScopeData | keyvalue">
-                                              <table>
-                                                  <tr>
-                                                      <td>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="table-appln scope-data">
                                                           <!-- @{{item.value.scope_heading | json}} || {{item.key}} || {{item.value.scope_heading.length}} -->
-                                                        <h5><b><p [innerHTML]="getSchme(item.key)"></p></b></h5>
-                                                        </td>
-                                                  </tr>
-                                                  <tr>
-                                                      <td>
+                                                        <div class="sub-header">
+                                                            <h5 [innerHTML]="getSchme(item.key)"></h5>
+                                                        </div>
                                                         <table>
                                                             <tr>
                                                                 <th *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
                                                                 <th>Action</th>
                                                             </tr>
                                                             <ng-container *ngIf="item.value.scope_value.length > 0">
-                                                            <tr *ngFor="let item2 of (item.value.scope_value) | keyvalue; let i4 = index;">
-                                                                
+                                                                <tr *ngFor="let item2 of (item.value.scope_value) | keyvalue; let i4 = index;">
                                                                     <td *ngFor="let item3 of item2.value | keyvalue;">
-                                                                        
-                                                                        <p [innerHTML]="(item3.value)"></p>
+                                                                        <span [innerHTML]="(item3.value)"></span>
                                                                     </td>
                                                                     <td>
                                                                     <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="deleteScopeData(item.key, i4)"></span>
                                                                     </td>                                                                
-                                                            </tr>
+                                                                </tr>
                                                             </ng-container>
                                                             <ng-container *ngIf="item.value.scope_value.length == 0">
                                                                 <tr>
@@ -1018,10 +1044,10 @@
                                                                     </td>
                                                                 </tr>
                                                             </ng-container>
-                                                            </table>
-                                                      </td>
-                                                  </tr>
-                                              </table>
+                                                        </table>  
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </ng-container>
                                             <!-- <table>
                                             <tr>
@@ -1033,30 +1059,9 @@
                                                 </ng-container>
                                             </tr>
                                             </table> -->
-                                      </div>
                                     </div>
                                   </div>
                             </ng-container>
-                                <!-- step5Data.scheme_ids[i] -->
-                            <ng-container *ngFor="let item of schemeRows; let i = index;">
-                                    <div class="row">
-                                        <div class="col-md-9 col-sm-9">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Scheme -- {{step5Data.scheme_ids[i]}}</mat-label>
-                                <mat-select (selectionChange)="getCriteria(schemeRows[i].id, i)" placeholder="Select" name="scheme_id_{{i}}"  
-                                                [(ngModel)]="schemeRows[i].id" required>
-                                                    <mat-option [value]="item.scope_accridiation.id" *ngFor="let item of criteriaMaster; let k=index;">{{item.title}}</mat-option>
-                                                </mat-select>
-                                                <mat-error></mat-error> 
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-md-3 col-sm-3">
-                                        <span *ngIf="i >= 0" class="icon-add-round" (click)="addSchemeRow(schemeRows,i)"></span>&nbsp;
-                                        <span *ngIf="i >= 1" class="icon-cross" (click)="removeSchemeRow(schemeRows,i)"></span>
-                                        </div>
-                                    </div> 
-                                </ng-container>
-
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
                                             
@@ -1180,7 +1185,7 @@
                                                                                 <!-- @{{dynamicScopeFieldType[i1][p].inputType | json}}<br>                                                                               -->
                                                                             </td>
                                                                             <td class="content-icn">
-                                                                                <span *ngIf="k >= 0" class="icon-add-round" (click)="addScopeLine(k,scope.title, dynamicScopeModel[scope.title].fieldLines)"></span>&nbsp;
+                                                                                <span *ngIf="k >= 0" class="icon-add" (click)="addScopeLine(k,scope.title, dynamicScopeModel[scope.title].fieldLines)"></span>&nbsp;
                                                                                 <span *ngIf="k >= 1" class="icon-close-round" (click)="removeScopeLine(k, scope.title)"></span>
                                                                             </td>
                                                                         </tr>
