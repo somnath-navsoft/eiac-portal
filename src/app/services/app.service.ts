@@ -41,6 +41,7 @@ export class AppService {
   // dynamicVal:any;
   // dynamicVal: Subject<any> = new Subject<any>();
   public setValue: any;
+  public oldScopeData: any;
 
   constructor(public http: HttpClient, private _constant: Constants,
     private _flashMessage: FlashMessagesService,
@@ -77,11 +78,33 @@ function getFeesPerTrainee(training_days){
 
 */
 
+getObjectLength(obj: any){
+  let count: number =0;
+  for(var key in obj){
+    if(obj.hasOwnProperty(key)){
+      count++;
+    }
+  }
+  return count;
+} 
+
 setValueUrl(value) {
+  console.log(">>assign value: ", value);
   this.setValue =  value;
 }
 getValue(){
+  console.log(">>get value: ", this.setValue);
   return this.setValue;
+}
+
+jsonToArray(data: any){
+  var result = [];
+  console.log("get convert: ", data);
+    for(var i in data){
+      result.push([i,data[i]]);
+    }
+    console.log("convert: ", result);
+  return result;    
 }
 
 // getDynamic(): Observable<any> {

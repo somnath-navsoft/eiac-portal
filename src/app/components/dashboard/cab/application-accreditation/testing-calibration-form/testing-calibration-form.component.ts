@@ -170,6 +170,9 @@ export class TestingCalibrationFormComponent implements OnInit {
   dynamicScopeFieldColumns:any  = {};  
   dynamicScopeFieldType:any     = {};
   fullScope:any[]=[];
+  scopeDataLoad: boolean = false;
+  scopeDataError: boolean = false
+  scopeDataset: any =[];
   
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,public _trainerService:TrainerService,private modalService: NgbModal,public sanitizer: DomSanitizer) { }
 
@@ -180,12 +183,12 @@ export class TestingCalibrationFormComponent implements OnInit {
    * 
    */
   getFieldTooltip(modelValue, modelObj){
-    console.log("Tooltip data value: ", modelValue, " :: ", modelObj);
+    //console.log("Tooltip data value: ", modelValue, " :: ", modelObj);
     if(modelValue != undefined && modelObj.length > 0){
         let findText = modelObj.find(rec => rec.field_value.id === modelValue);
-        console.log('Text value: ', findText);
+        //console.log('Text value: ', findText);
         if(typeof findText === 'object' && findText.value != ''){
-            console.log('Value find: ', findText.value);
+            //console.log('Value find: ', findText.value);
             return findText.value;
         }
     }
@@ -334,7 +337,8 @@ export class TestingCalibrationFormComponent implements OnInit {
 
 getCriteria(value, secInd: any){
   //console.log("select Criteris: ", value, " -- ", secInd);
-  //this.scopeDataLoad = true;
+  this.scopeDataLoad = true;
+  this.scopeDataError = false;
   if(value != undefined && value > 0){
      //Get fullscope
      //let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.criteriaIdByScope + value;
@@ -356,7 +360,8 @@ getCriteria(value, secInd: any){
           let dataScope:any = [];
           let fieldTitleValue: any = [];
           dataScope = record['data'];
-          //this.scopeDataLoad = false;
+          this.scopeDataset= dataScope;
+          this.scopeDataLoad = false;
           let customKey;
           if(dataScope.firstColumnData != undefined && dataScope.firstColumnData.length > 0){
             let firstColumValues = dataScope.firstColumnData[0];
@@ -439,7 +444,7 @@ getCriteria(value, secInd: any){
               //this.dynamicScopeFieldColumns[secInd][key].push({title: fieldTitle, values:fieldValues, name: rec.title, idVal: filedId});
               defLine[fieldValues] = [];
 
-              ////console.log(">>> Field values: ", fieldValues, " -- ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeModel.fieldLines);
+              console.log(">>> Field values: ", fieldValues, " -- ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeModel[secInd]);
 
               if(defLine['firstFieldValues'].length > 0  && key == 0){
                 //////console.log("calling.....default...1");
@@ -448,7 +453,7 @@ getCriteria(value, secInd: any){
                 //console.log("calling.....default...1: ", getValue, " -- ", defLine['firstFieldValues']);
                 if(key === 0){
                   //console.log("calling.....default...1.1 GEt Value:  ", getValue);
-                  //this.dynamicScopeModel['fieldLines'][0][this.dynamicScopeFieldColumns[0][0].values] = [defLine['firstFieldValues'][0]];
+                  //this.dynamicScopeModel['fieldLines'][0][this.dynamicScopeFieldColumns[secInd][0][0].values] = [defLine['firstFieldValues'][0]];
                   fieldTitleValue[key].push({title: fieldTitle, defValue: getValue, secName: customKey});
                 }
                 //////console.log("calling.....default...1.2");
@@ -460,7 +465,7 @@ getCriteria(value, secInd: any){
                   if(getValue != undefined && getValue > 0){  
                     let fSelValues: any = {};
                     //fSelValues[]                    
-                    this.dynamicScopeModel[secInd]['fieldLines'][0][this.dynamicScopeFieldColumns[0][0].values] = [defLine['firstFieldValues'][0]];
+                    this.dynamicScopeModel[secInd]['fieldLines'][0][this.dynamicScopeFieldColumns[secInd][0][0].values] = [defLine['firstFieldValues'][0]];
                     this.dynamicScopeModel[secInd].fieldLines[key][this.dynamicScopeFieldColumns[secInd][key][0].title] = getValue;
                   }
                 },0)                                
@@ -545,7 +550,12 @@ getCriteria(value, secInd: any){
       }
       */
       ////console.log(">>>> ", this.dynamicScopeModel, " --- ", this.dynamicScopeFieldColumns, " ::-> ",this.fullScope);
-     })
+     },
+     error => {
+         console.log('no data..error....');
+         this.scopeDataError = true;
+     }
+     )
   }
 }
 
@@ -553,7 +563,7 @@ getCriteria(value, secInd: any){
    * Scope Functions
    * 
    * 
-   */
+   */ 
 
 
 
@@ -1843,9 +1853,310 @@ getCriteria(value, secInd: any){
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
   }
+
+
+  saveScope(){
+    
+    let scopeValues: any =[];
+    let scopeIds:any =[];
+    let scopeSelValues:any =[];
+    console.log("dynamic ", this.dynamicScopeModel, " -- ", this.dynamicScopeFieldColumns, " -- ", this.schemeRows, " -- ", this.formApplicationId);
+    var key = '';
+    var key2 = '';
+    let resultAr: any={};
+    let scopeCollections: any={};
+    scopeCollections['scope_heading'] = {};
+    scopeCollections['scope_value'] = [];
+
+
+    let selectScheme = this.schemeRows[0].id;
+    this.step5Data.scheme_id = selectScheme;
+
+    //let scopeSaveData: any = {};
+    // scopeSaveData['scheme'] = {};
+    // scopeSaveData['scheme']['heading'] = {};
+    // scopeSaveData['scheme']['details'] = {};
+
+    // console.log(">>>>> scope Data: ", scopeSaveData);
+    // this.schemeRows.forEach((rec,row) => {
+    //     console.log('>>> scheme row...', rec, " -- ", row);
+    // })
+          
+    
+      for(var key in this.dynamicScopeFieldColumns){
+            console.log(">>> ", key, " :: ", this.dynamicScopeFieldColumns[key], " -- ", typeof this.dynamicScopeFieldColumns[key]);
+            let tempData: any = this.dynamicScopeFieldColumns[key] ;
+            if(typeof tempData === 'object'){
+              tempData.forEach((item,key) => {
+                    console.log(item);
+                    let keyIds = item[0].idVal;
+                    let name = item[0].name;
+                    console.log("...", name);
+                    let tempObj = {};
+                    tempObj[keyIds] = name;
+                    console.log("...", tempObj);
+                    scopeCollections['scope_heading'][keyIds] = name;
+                });
+            }
+      }
+    
+          // this.dynamicScopeFieldColumns.forEach((item,key) => {
+          //     //////console.log(item);
+          //     let keyIds = item[0].idVal;
+          //     let name = item[0].name;
+          //     //////console.log("...", name);
+          //     let tempObj = {};
+          //     tempObj[keyIds] = name;
+          //     //////console.log("...", tempObj);
+          //     scopeCollections['scope_heading'][keyIds] = name;
+          // });
+    console.log(">>> build scope: ", scopeCollections);
+    //return;
+
+    let secInd: number = 0;
+    for(key in this.dynamicScopeModel[secInd]){
+        if(key == 'fieldLines'){
+          this.dynamicScopeModel[secInd].fieldLines.forEach((rec,key1) => {
+                console.log("browse Model: ",rec, " -- ", key1);
+                //resultAr[key1] = [];
+                scopeIds = [];
+                scopeSelValues = [];
+                let columnObject: any = this.dynamicScopeFieldColumns[secInd];
+                let getDataValues: any;
+                let getSelectValues: any;
+                for(key2 in rec){
+                  let selectVal;
+                  let selectId;
+                  
+                  let findValues: any = key2.toString().search('Values');
+                  //console.log("@key: ", key2, " Find: ", findValues);
+                  if(findValues >= 0){ 
+                    getDataValues = this.dynamicScopeFieldColumns[secInd].find(item => item[0].values == key2)
+                    //console.log("@find values: ", key2, "--", getDataValues, " #Values: ", rec[key2]);
+                    if(getDataValues){
+                        let fdata: any = getDataValues[0];
+                        //console.log("#Data Values: ",getDataValues, " -- ", fdata)                      
+                        if(fdata.values == key2){
+                          selectId = fdata.idVal;//rec[key2][0].id;
+                          scopeIds.push({id: selectId, rowValues:fdata.values})
+                        }
+                      }
+
+                  }else{
+                    getSelectValues = this.dynamicScopeFieldColumns[secInd].find(item => item[0].title == key2)
+                    //console.log("#find select values: ", key2, "--", getSelectValues);
+                    if(getSelectValues){
+                        let fdata: any = getSelectValues[0];
+                        //console.log("#Select Data Values: ",getDataValues, " -- ", fdata)                      
+                        if(fdata.title == key2){
+                          selectVal = rec[key2];
+                          scopeSelValues.push({value: selectVal})
+                        }
+                      }                      
+                  }
+                  scopeValues.push({id:selectId , value: selectVal});
+                }
+
+
+                /*
+                if(typeof rec === 'object'){
+                  for(key2 in rec){
+                      
+                      let selectVal;
+                      let selectId;
+                      console.log("@rows key: ", key2);
+                      let getDataValues = this.dynamicScopeFieldColumns[secInd].find(item => item[0].values == key2)
+                      let getSelectValues = this.dynamicScopeFieldColumns[secInd].find(item => item[0].title == key2)
+
+                      console.log("scope : ", key2, " -- ", getDataValues, " -- ", getSelectValues);
+                      // if(getDataValues){
+                      //   let fdata: any = getDataValues[0];
+                      //   console.log("#Data Values: ",getDataValues, " -- ", fdata)                      
+                      //   if(fdata.values == key2){
+                      //     selectId = fdata.idVal;//rec[key2][0].id;
+                      //     scopeIds.push({id: selectId, rowValues:fdata.values})
+                      //   }
+                      // }
+                      // if(getSelectValues){
+                      //   let fdata: any = getSelectValues[0];
+                      //   console.log("#Select Data Values: ",getDataValues, " -- ", fdata)                      
+                      //   if(fdata.title == key2){
+                      //     selectVal = rec[key2];
+                      //     scopeSelValues.push({value: selectVal})
+                      //   }
+                      // }
+                      //scopeValues.push({id:selectId , value: selectVal});
+
+                      //console.log("scope aa: ", key2, " -- ", selectVal, " -- ", selectId);
+
+                  }
+                }*/
+
+                console.log("@###Scope Values: ", scopeValues, " -- ", scopeIds, " :: ", scopeSelValues, ": Kye: ", key1);
+                resultAr[key1] = [];
+                
+                for(var k=0; k<scopeIds.length; k++){
+                  let idKey = scopeIds[k].id;
+                  let keyValues = scopeIds[k].rowValues;
+                  let valueKey = scopeSelValues[k].value;
+                  let tempObj = {};
+                  tempObj[idKey] = valueKey;
+                  resultAr[key1].push({id: idKey, value: valueKey, valueSrc: keyValues});
+               }
+               //resultAr[key1] = tempObj;
+               console.log('scope object: ', " -- ", resultAr);
+          })
+        }
+    }
+
+    //return;
+    
+    if(scopeCollections){
+      let resultTempAr: any =[];
+      let tempObj: any = {};
+      let rstAr: any=[];
+      //var p;
+      let scopeRows: any = {};
+      //this.dynamicScopeModel
+      if(this.dynamicScopeModel[secInd].fieldLines != undefined && this.dynamicScopeModel[secInd].fieldLines.length > 0){
+        scopeRows = this.dynamicScopeModel[secInd].fieldLines;
+      }
+      console.log("@Total rows: ", scopeRows);
+      for(var p in resultAr){
+        //resultTempAr[p] = [];
+        console.log("@resultAr ",p, " -- ", resultAr[p], " --- ", scopeRows[p])
+        if(resultAr[p].length){
+          tempObj = {};
+          resultAr[p].forEach(item =>{
+            console.log(">>>Loop: ", p, " :: ", item," -- ", typeof scopeRows[p]);
+            var optionName = '';
+            //tempObj[item.id] = item.value;
+            //console.log("@Values: ", scopeRows[p]);
+            if(typeof scopeRows[p] === 'object'){
+               //console.log("Enter: ", p);
+               for(var k1 in scopeRows[p]){
+                 //console.log('Enter >>>> ', k1, " -- ", item.valueSrc);
+                 //var optionName = '';
+                 if(k1 === item.valueSrc){
+                   let tempAr = scopeRows[p][k1];
+                   let findVal = tempAr.find(itemF => itemF.field_value.id == item.value);
+                    if(findVal == undefined){
+                      findVal = item.value;
+                      optionName = findVal;
+                    }
+                   if(findVal != undefined && typeof findVal == 'object'){
+                    optionName = findVal.value;
+                   }
+
+                   console.log("found...", k1," :: ", scopeRows[p][k1], " -- ",optionName, " --- ", findVal);
+                 }
+               }
+               //resultTempAr[item.id] = optionName;
+            }
+            tempObj[item.id] = optionName;
+            //resultTempAr[item.id] = optionName;
+          })
+          resultTempAr.push(tempObj);
+          //resultTempAr[p] = tempObj;
+          //resultTempAr[p].push(tempObj);
+        }
+        //rstAr.push(resultTempAr);
+      }
+
+
+      /*
+      for(var p in resultAr){
+        //console.log("@resultAr ",p, " -- ", resultAr[p], " --- ", scopeRows[p])
+        //resultTempAr[p] = [];
+        if(resultAr[p].length){
+          resultAr[p].forEach(item =>{
+            //console.log(">>>Loop: ", p, " :: ", item," -- ", typeof scopeRows[p]);
+            tempObj = {};
+            var optionName = '';
+              //tempObj[item.id] = item.value;
+              //console.log("@Values: ", scopeRows[p]);
+              if(typeof scopeRows[p] === 'object'){
+                 //console.log("Enter: ", p);
+                 for(var k1 in scopeRows[p]){
+                   //console.log('Enter >>>> ', k1, " -- ", item.valueSrc);
+                   //var optionName = '';
+                   if(k1 === item.valueSrc){
+                     let tempAr = scopeRows[p][k1];
+                     let findVal = tempAr.find(itemF => itemF.field_value.id == item.value);
+
+                     if(findVal){
+                      optionName = findVal.value;
+                     }
+
+                     console.log("found...", k1," :: ", scopeRows[p][k1], " -- ",optionName, " --- ", findVal);
+                   }
+                 }
+                 //resultTempAr[item.id] = optionName;
+              }
+              resultTempAr[item.id] = optionName;
+              //resultTempAr[item.id] = item.value;
+              //resultTempAr[p].push(tempObj);
+          })
+        }
+        rstAr.push(resultTempAr);
+      }*/
+      console.log('<<>>>> ', resultTempAr, " -- ", rstAr);
+      scopeCollections['scope_value'] = resultTempAr;
+    }
+    //return;
+
+    // }
+    /////console.log("@selected scope values: ", scopeCollections);
+    //return;
+    ////console.log("#Scope result: ", resultAr, " -- ", scopeCollections);
+    // this.dynamicScopeModel.forEach(rec => {
+    //      if(rec.fieldLines){
+    //       ////console.log("field rows: ", rec.fieldLines);
+    //      }
+    // })
+    if(scopeCollections != undefined){
+      //this.inspectionBodyForm.step5['scope_heading'] = scopeCollections['scope_heading'];
+      //this.inspectionBodyForm.step5['scope_value'] = scopeCollections['scope_value'];
+      this.step5Data['scope_heading']   = scopeCollections['scope_heading'];
+      this.step5Data['scope_value']     = scopeCollections['scope_value'];
+      
+    }
+    console.log("@step5 Data: ", this.step5Data);
+  }
   
   onSubmitStep5(ngForm5: any) {
-    this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+    //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+    this.saveScope();
+    this.testingCalForm = {};
+    this.testingCalForm.step5 = {};
+    this.testingCalForm.saved_step  = '5';
+    this.testingCalForm.email       = this.userEmail;
+    this.testingCalForm.userType    = this.userType;
+    var applicationId = sessionStorage.getItem('applicationId');
+    this.step5Data.application_id   = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+    this.step5Data.is_draft         = false;
+    this.testingCalForm.step5       = this.step5Data;
+
+    console.log("@####step5 submit Data: ", this.step5Data, " :: ", this.testingCalForm);
+    if(ngForm5.form.valid) {
+      this.loader = false;
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
+      .subscribe(
+        res => {
+          // console.log(res,'res')
+          this.loader = true;
+          if(res['status'] == true) {
+            // this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+
+
   }
 
   onSubmitStep6(ngForm6: any){

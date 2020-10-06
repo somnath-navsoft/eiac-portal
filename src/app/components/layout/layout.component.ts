@@ -71,12 +71,12 @@ export class LayoutComponent implements OnInit {
         var splitForverifyAccount = wholeUrl.split('?');
         // this.dynamicsVar = '4';
         // this._service.addDynamicsVal(this.dynamicsVar);
-        // console.log(splitUrl,'splitUrl')
+        console.log(splitUrl,'splitUrl')
         
         if(splitUrl[3] == 'testing-calibration-form') {
           this._service.setValueUrl(splitUrl[4]);
         }else if(splitUrl[3] == 'inspection-bodies-form') {
-          this._service.setValueUrl(splitUrl[4]);
+          this._service.setValueUrl(parseInt(splitUrl[4]));
         }
 
         if(splitUrl[1] == 'reset-password')
