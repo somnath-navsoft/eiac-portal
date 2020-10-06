@@ -71,7 +71,6 @@ export class LayoutComponent implements OnInit {
         var splitForverifyAccount = wholeUrl.split('?');
         // this.dynamicsVar = '4';
         // this._service.addDynamicsVal(this.dynamicsVar);
-        // console.log(splitUrl,'splitUrl')
         
         if(splitUrl[3] == 'testing-calibration-form') {
           this._service.setValueUrl(splitUrl[4]);

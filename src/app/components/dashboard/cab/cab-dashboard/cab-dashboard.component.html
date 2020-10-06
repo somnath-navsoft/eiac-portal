@@ -7,6 +7,10 @@
                     <div class="trainer-details">
                         <div class="trainer-name">
                             <h4>{{userDetails?.first_name}} {{userDetails?.last_name}}</h4>
+                            <div class="acc_verified">
+                                <span class="icon-check-circle"></span>
+                                <span class="tooltip_data">Account Verified</span>
+                            </div>
                         </div>
                         <div class="trainer-detail">
                             <!-- <span class="trainer-data"><span class="icon-company"></span>Navigators Software Pvt. Ltd.</span> -->
@@ -21,7 +25,7 @@
                             <span>Code</span>
                         </div>
                         <div class="trainer-type-data">
-                            <span>{{step1Data?.cab_code}}<span class="icon-checkmark"></span></span>
+                            <span>{{step1Data?.cab_code}}</span>
                         </div>
                     </div>
                 </div>
@@ -535,7 +539,7 @@
                                         </mat-form-field>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row mt-4">
                                     <div class="col-md-12">
                                         <div class="bttns-appln mb-0">
                                             <button class="submit-bttn">SEND MESSAGE</button>
