@@ -14,7 +14,7 @@ import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-testing-calibration-form',
+  selector: 'app-testing-calibration-form', 
   templateUrl: './testing-calibration-form.component.html',
   styleUrls: ['./testing-calibration-form.component.scss']
 })
@@ -157,8 +157,418 @@ export class TestingCalibrationFormComponent implements OnInit {
   modalOptions:NgbModalOptions;
   accredAgreemFile: any;
   checklistDocFile: any;
+  urlVal: any;
+  paymentFile:any = false;
 
+  schemeMaster: any;
+  criteriaMaster: any[] =[];
+
+
+  //declare scope type
+  public schemeRows: Array<any> = [{}];
+  dynamicScopeModel:any         = {};   //Master form data object
+  dynamicScopeFieldColumns:any  = {};  
+  dynamicScopeFieldType:any     = {};
+  fullScope:any[]=[];
+  scopeDataLoad: boolean = false;
+  scopeDataError: boolean = false
+  scopeDataset: any =[];
+  
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,public _trainerService:TrainerService,private modalService: NgbModal,public sanitizer: DomSanitizer) { }
+
+
+  /**********************
+   * Scope Functions
+   * 
+   * 
+   */
+  getFieldTooltip(modelValue, modelObj){
+    //console.log("Tooltip data value: ", modelValue, " :: ", modelObj);
+    if(modelValue != undefined && modelObj.length > 0){
+        let findText = modelObj.find(rec => rec.field_value.id === modelValue);
+        //console.log('Text value: ', findText);
+        if(typeof findText === 'object' && findText.value != ''){
+            //console.log('Value find: ', findText.value);
+            return findText.value;
+        }
+    }
+  }
+  removeScopeLine(lineIndex: number, secIndex: number){
+    //console.log("deleting rows....1: ", this.dynamicScopeModel, " -- ", lineIndex, " :: ", secIndex);
+    if(this.dynamicScopeModel[secIndex].fieldLines != undefined && this.dynamicScopeModel[secIndex].fieldLines.length > 0){
+      //console.log("deleting rows....2");
+      this.dynamicScopeModel[secIndex].fieldLines.splice(lineIndex, 1);
+    }
+}
+
+//addScopeLine(secName:any, secIndex: number, lineIndex: number, lineData: any){
+  addScopeLine(lineIndex: number,secIndex: number, lineData: any){
+  let line     =   {};    
+  //console.log("@ADD ROW - Total line: ", lineData, " - ", lineIndex, " == ", lineData.length, " --Model: ", this.dynamicScopeModel);
+  if(lineData != undefined && lineData.length > 0){
+    lineIndex  = lineData.length;
+  }
+  for(var key in this.dynamicScopeModel[secIndex]){
+      //console.log("Key: ", key , " :: ", this.dynamicScopeModel[secIndex][key]);
+      let getValue: any = 0;
+      //if( key === secName ){
+        if(this.dynamicScopeModel[secIndex].fieldLines != undefined){
+          let fieldValues = this.dynamicScopeModel[secIndex].fieldLines[0].firstFieldValues;
+          
+          //console.log("@ADD ROW - Fieldvalues:: ", fieldValues);
+          line['firstFieldValues'] = fieldValues;
+          this.dynamicScopeModel[secIndex].fieldLines.push(line);
+          if(fieldValues.length > 0 && typeof fieldValues[0] === "object" && fieldValues[0].field_value != undefined){
+            getValue = fieldValues[0].field_value.id;
+          }
+          //console.log('@ADD ROW - Calling on change...', getValue, " -- ", secIndex, " Lineindex: ", lineIndex);
+          
+          this.dynamicScopeFieldColumns[secIndex].forEach((recCol, keyCol) => {
+            ////////console.log(" > >>   ", keyCol)
+            if(keyCol === 0){
+              let getModelKey = recCol[0].title;
+              //console.log(" >>>>>ModelKey ",getModelKey, " --- FindValue:  ", getValue, " --- ");
+              this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][0][0].values] = fieldValues;
+              if(getValue != undefined && getValue > 0){
+                this.dynamicScopeModel[secIndex].fieldLines[lineIndex][getModelKey] = getValue;
+              }
+              //this.onChangeScopeOption(getValue,secIndex,lineIndex,0,secName,'initLoad');
+              this.onChangeScopeOption(getValue,secIndex,lineIndex,0,'initLoad');
+            }
+          });
+        }
+      //}
+  }    
+  ////console.log("Add Line status: ", this.dynamicScopeModel);
+}
+  onChangeScopeOption(getValues: any,secIndex: number, lineIndex: number, columnIndex: number, type?:string) {
+    //console.log('@GET Options: ', getValues, " :: ",  lineIndex, " -- ", type, " -- ", columnIndex, " --sec--  ", secIndex);
+
+    let selectValue: any;
+    if(type === undefined){
+      selectValue = getValues.value;
+    }
+    if(type !== undefined && type === 'initLoad'){
+      selectValue = getValues;
+    }
+    let url = this.Service.apiUatServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data;
+    console.log("option change value: ", url, " :: ", getValues, " -- ", selectValue, " -- Type: ", typeof selectValue);
+    //this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,
+    let jsonReq: any = {};
+    if(typeof selectValue === 'number'){
+      jsonReq['value_id'] = [selectValue];
+    }
+    if(typeof selectValue === 'object'){
+      for(var k in selectValue){
+          console.log(">>Loop value: ", selectValue[k], " :: ", k);
+          if(typeof selectValue[k] === 'string'){
+            return;
+          }
+      }
+      jsonReq['value_id'] = selectValue;
+    }
+    this.Service.put(url,jsonReq)
+    .subscribe(
+      record => {
+          //console.log("Load scope SErvice Data: ", record, " -- ", this.dynamicScopeFieldColumns[secIndex],  " - ", this.dynamicScopeModel);
+          //get through array find key column
+          if(record['scopeValue'].length == undefined){
+            record['scopeValue'] = [];
+          }
+          let theColumnIndex  = columnIndex;
+          let nextColumnIndex = theColumnIndex + 1;
+          let totSecColumn    = this.dynamicScopeFieldColumns[secIndex].length;//this.dynamicScopeFieldColumns[secIndex].length;
+          //console.log(">>>Column Data: ", theColumnIndex, " -- ", nextColumnIndex, " -- ", totSecColumn, " -- ", );
+          console.log("select scope values: ", record['scopeValue'], " :: ", this.dynamicScopeFieldType[secIndex], " len: ", record['scopeValue'].length);
+
+          // if(this.dynamicScopeFieldType[secIndex].length && typeof this.dynamicScopeFieldType[secIndex][theColumnIndex] === 'object'){
+          //       let colDef: string = this.dynamicScopeFieldType[secIndex][nextColumnIndex].defValue
+          //       console.log("column values: ",theColumnIndex, " :: ",  colDef);
+          // } 
+
+          //Auto selected for one item dropdown
+          if(record['scopeValue'].length > 0 && record['scopeValue'].length == 1){
+              console.log(">>>dep scope data: ", record['scopeValue']);
+              let getSelValue = 0;
+              if(typeof record['scopeValue'][0] === 'object'){                  
+                getSelValue = record['scopeValue'][0].field_value.id;
+                console.log(">>assigning scope default value: ", getSelValue);
+                this.dynamicScopeModel[secIndex].fieldLines[lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].title] = getSelValue;
+                this.onChangeScopeOption(getSelValue,secIndex,lineIndex,nextColumnIndex,'initLoad');
+              }
+          }
+
+          //
+          //unique value set
+          // let tempFilter = record['scopeValue'];
+          // let uniqueSet: any = [...new Set(tempFilter.map(item => (item.value != '') ? item.value : ''))];
+          // uniqueSet.sort((a, b) => (a > b) ? 1 : -1);
+          // record['scopeValue'] = uniqueSet;
+          if(nextColumnIndex > 0 && nextColumnIndex < totSecColumn){
+              //Get ridge of the values
+              //console.log("field columns: ", this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][0].values] , " :: ");
+              let colDef: string = this.dynamicScopeFieldType[secIndex][nextColumnIndex].defValue                                                       
+
+              if(colDef === "None" || colDef === null){
+                this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].values] = record['scopeValue'];
+              }
+              if(colDef != "None" && colDef != null){
+                let colValAr: any;                                                                                                                                                                                                                                    
+                let colTempAr: any = [];
+                colValAr = colDef.toString().split(',');                                                                                                                                                
+                colValAr.forEach((item,key1) => {
+                  let tempObj: any = {};
+                  tempObj['field_value'] = {};
+                  tempObj['field_value']['id'] = item;//(key1+1);
+                  tempObj['value'] = item;
+                  console.log("value obj: ", tempObj);
+                  colTempAr.push(tempObj);
+                });
+                this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].values] = colTempAr;
+              }
+              //this.dynamicScopeModel[secName]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex].values] = record['scopeValue'];
+              //this.dynamicScopeModel[secName]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex].values] = record['scopeValue'];
+              //this.dynamicScopeModel[secName].fieldLines[lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex].values] = record['scopeValue'];
+              ////console.log(">>>>Model column: ", this.dynamicScopeModel);
+          }
+        console.log("@@@Updated Model Values: ", this.dynamicScopeModel);
+      });
+}
+
+getCriteria(value, secInd: any){
+  //console.log("select Criteris: ", value, " -- ", secInd);
+  this.scopeDataLoad = true;
+  this.scopeDataError = false;
+  if(value != undefined && value > 0){
+     //Get fullscope
+     //let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.criteriaIdByScope + value;
+     //this.Service.apiServerUrl+"/"
+     //value =18;
+     let apiURL = this.Service.apiUatServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data+"?scheme="+value;
+     //this.constant.API_ENDPOINT.criteriaScope + value;
+     ////console.log("API: ", apiURL);
+
+     //this.fullScope = [];
+     //this.dynamicScopeModel = [];
+     //this.dynamicScopeFieldColumns = [];
+     this.dynamicScopeFieldColumns[secInd] = [];
+     this.dynamicScopeFieldType[secInd] = [];
+     this.dynamicScopeModel[secInd] = {};
+
+     this.Service.getwithoutData(apiURL).subscribe(record => {
+          //console.log('Fullscope: ', record);
+          let dataScope:any = [];
+          let fieldTitleValue: any = [];
+          dataScope = record['data'];
+          this.scopeDataset= dataScope;
+          this.scopeDataLoad = false;
+          let customKey;
+          if(dataScope.firstColumnData != undefined && dataScope.firstColumnData.length > 0){
+            let firstColumValues = dataScope.firstColumnData[0];
+            ////console.log(">>Firstcolumn: ", firstColumValues);
+            //this.fullScope.push(dataScope.scopeValue);              
+            //title: "lifting_equipment", id:1, name:"Lifting Equipment"
+            // this.fullScope = [{
+            //   title: scopeTitle, id:1, name:scopeName
+            // }];//dataScope.schemes;
+            //console.log(">>> Fined Scope Section: ", this.fullScope, " -- ", this.step5Data.scheme_ids);
+          }
+          let scopeName: string = '';
+            let scopeTitle: string ='';
+            let getData = this.criteriaMaster.find(rec => rec.scope_accridiation.id == value);
+            //console.log(">>> Fined Scheme: ", getData);
+            if(getData){
+              scopeName = getData.title;
+              scopeTitle = getData.title.toString().toLowerCase().split(" ").join('_');
+
+              if(this.fullScope.length){
+                  //console.log("@Existing scheme....1");
+                  //let findSchme = this.fullScope.find(item => item.id == value);
+                  ////console.log("@Existing scheme....2", findSchme);
+                  let pushObj: any = {
+                    title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
+                  }
+                  if(this.fullScope[secInd] != undefined && !this.Service.isObjectEmpty(this.fullScope[secInd])){
+                    //console.log("@Existing scheme...found", this.fullScope[secInd]);
+                    this.fullScope[secInd] = pushObj;
+                  }else{
+                      this.fullScope.push({
+                        title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
+                      });
+                  }
+              }else{
+              this.fullScope.push({
+                  title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
+                });
+              }
+            }
+
+          if(dataScope.scopeValue.length){
+            var counter = 0;let defLine = {};
+            dataScope.scopeValue.forEach((rec, key) => {
+              console.log("--Scope ", rec, " :: ", key);
+
+              if(rec.scope != undefined && typeof rec.scope === 'object' && !this.Service.isObjectEmpty(rec.scope)){
+                  let fieldType: any = {
+                     id: rec.scope.id,
+                     title: rec.title,
+                     inputType: rec.scope.input_type,
+                     defValue: rec.scope.default_value
+                  }
+                  this.dynamicScopeFieldType[secInd].push(fieldType);
+              }
+
+              
+              //this.fullScope[0].title
+               customKey = rec.title.toString().toLowerCase().split(' ').join('_');//rec.accr_title[0];
+              //this.dynamicScopeModel[customKey] = [];
+              this.dynamicScopeFieldColumns[secInd][key] = [];
+              //this.dynamicScopeFieldColumns[key] = [];
+
+              fieldTitleValue[key] = [];
+              //this.dynamicScopeModel[customKey].fieldLines = [];
+              this.dynamicScopeModel[secInd]['fieldLines'] = [];
+
+              if(dataScope.firstColumnData != undefined && dataScope.firstColumnData.length > 0){
+                ////////console.log("first value length: ", rec.firstFieldValues.length);
+                defLine['firstFieldValues'] = dataScope.firstColumnData;
+              }
+              let fieldValues = rec.title.split(" ").join("")+"Values";
+              let fieldTitle = rec.title.split(" ").join("_");
+              let filedId = rec.id;
+
+              let colObj: any ={};
+              colObj = {title: fieldTitle, values:fieldValues, name: rec.title, idVal: filedId};
+              //console.log(">>col: ",colObj);
+              this.dynamicScopeFieldColumns[secInd][key].push(colObj);
+              //this.dynamicScopeFieldColumns[secInd][key].push({title: fieldTitle, values:fieldValues, name: rec.title, idVal: filedId});
+              defLine[fieldValues] = [];
+
+              console.log(">>> Field values: ", fieldValues, " -- ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeModel[secInd]);
+
+              if(defLine['firstFieldValues'].length > 0  && key == 0){
+                //////console.log("calling.....default...1");
+                let getValue = defLine['firstFieldValues'][0].field_value.id;
+                
+                //console.log("calling.....default...1: ", getValue, " -- ", defLine['firstFieldValues']);
+                if(key === 0){
+                  //console.log("calling.....default...1.1 GEt Value:  ", getValue);
+                  //this.dynamicScopeModel['fieldLines'][0][this.dynamicScopeFieldColumns[secInd][0][0].values] = [defLine['firstFieldValues'][0]];
+                  fieldTitleValue[key].push({title: fieldTitle, defValue: getValue, secName: customKey});
+                }
+                //////console.log("calling.....default...1.2");
+                //Default load next column 
+                if(key == 0){
+                  this.onChangeScopeOption(getValue,secInd,key,key,'initLoad');
+                } 
+                setTimeout(()=>{
+                  if(getValue != undefined && getValue > 0){  
+                    let fSelValues: any = {};
+                    //fSelValues[]                    
+                    this.dynamicScopeModel[secInd]['fieldLines'][0][this.dynamicScopeFieldColumns[secInd][0][0].values] = [defLine['firstFieldValues'][0]];
+                    this.dynamicScopeModel[secInd].fieldLines[key][this.dynamicScopeFieldColumns[secInd][key][0].title] = getValue;
+                  }
+                },0)                                
+                
+              }
+              // let arr = [];  
+              // let columnsDyna: any= {};
+              // columnsDyna = this.dynamicScopeFieldColumns;
+              // Object.keys(columnsDyna).map(function(key){  
+              //     arr.push({[key]:columnsDyna[key]})  
+              //     return arr;  
+              // });  
+
+
+              
+              //Load first field value default by selecting first item
+              this.dynamicScopeModel[secInd].fieldLines.push(defLine);
+              //this.dynamicScopeModel[customKey].fieldLines.push(defLine);
+            });
+
+            console.log("@@@@Update Model: ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
+
+          }
+          //Load first field value default by selecting first item
+          //////console.log("calling.....default...1.4", this.dynamicScopeModel[customKey].fieldLines);
+          ////console.log("@Loading Model.........", this.dynamicScopeModel);
+          //this.loadDefaultColumnValues(this.dynamicScopeModel);
+
+        /*
+          //this.fullScope   = dataScope.fullScope;
+          dataScope.fullScope.forEach(dataRec => {
+            if(dataRec.firstFieldValues != undefined){
+              this.fullScope.push(dataRec);
+            }
+          })
+
+          //////console.log("full scope: ", this.fullScope);
+          //return;
+          if(dataScope.fullScope.length > 0){
+            var counter = 0;
+            dataScope.fullScope.forEach((rec, key) => {
+              //////console.log("-- ", rec, " :: ", key, " --- ", counter++);
+              if(rec.firstFieldValues != undefined){
+                ////console.log('>>> firstFieldValues null bababab');
+                let defLine = {};
+                  let customKey = rec.accr_title[0];
+                  this.dynamicScopeModel[customKey] = [];
+                  this.dynamicScopeFieldColumns[key] = [];
+                  fieldTitleValue[key] = [];
+                  this.dynamicScopeModel[customKey].fieldLines = [];
+                  //Initialize fields values
+                  if(rec.firstFieldValues != undefined){
+                    ////////console.log("first value length: ", rec.firstFieldValues.length);
+                    defLine['firstFieldValues'] = rec.firstFieldValues;
+                  }
+                  if(rec.fields.length > 0){
+                    rec.fields.forEach((data,key1) =>{
+                        let fieldValues = data.title.split(" ").join("")+"Values";
+                        let fieldTitle = data.title.split(" ").join("_");
+                        this.dynamicScopeFieldColumns[key].push({title: fieldTitle, values:fieldValues});
+                        defLine[fieldValues] = [];
+
+                        if(defLine['firstFieldValues'].length > 0){
+                          ////////console.log("calling.....default...");
+                          let getValue = defLine['firstFieldValues'][0].field_value;
+                          if(key1 === 0){
+                            fieldTitleValue[key].push({title: fieldTitle, defValue: getValue, secName: customKey});
+                          }
+                          //Default load next column                  
+                          this.onChangeScopeOption(getValue,key,0,0,customKey,'initLoad');
+                        }
+                    })
+                  }
+                  //Load first field value default by selecting first item
+                  this.dynamicScopeModel[customKey].fieldLines.push(defLine);
+              }
+        })
+        //set default value
+        //Load first field value default by selecting first item
+        this.loadDefaultColumnValues(this.dynamicScopeModel);
+
+      }
+      */
+      ////console.log(">>>> ", this.dynamicScopeModel, " --- ", this.dynamicScopeFieldColumns, " ::-> ",this.fullScope);
+     },
+     error => {
+         console.log('no data..error....');
+         this.scopeDataError = true;
+     }
+     )
+  }
+}
+
+  /**********************
+   * Scope Functions
+   * 
+   * 
+   */ 
+
+
+
+
+
 
   getData(getVal){
     //  console.log(">>>>Get MapBox Value: ", getVal);
@@ -287,8 +697,48 @@ export class TestingCalibrationFormComponent implements OnInit {
     })
   }
 
+
+  loadSchemeMaster(){
+    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration)
+    .subscribe(
+      res => {
+        //console.log("@Load scheme....", res);
+        //console.log(">>sele schme Type: ", this.step1Data.cab_type);
+
+        let schemeData: any = res['data']['schemes']
+        if(typeof schemeData === 'object'){
+            this.schemeMaster = schemeData;
+            //console.log(">>>schemee ", this.schemeMaster);
+            if(this.step1Data.cab_type != undefined && this.step1Data.cab_type === 'testing_laboratory'){
+              this.criteriaMaster = this.schemeMaster['testing_laboratory'];
+            }
+            if(this.step1Data.cab_type != undefined && this.step1Data.cab_type === 'calibration_laboratories'){
+              this.criteriaMaster = this.schemeMaster['calibration_laboratory'];
+            }
+        }
+        console.log(">>>schcriteria master ", this.criteriaMaster);
+
+        // this.inspectionBodyScopeFields = res['medicalLabScopeFields'];
+        // //this.countryList = res['allCountry'];
+        // this.labTypeList = res['allLabtype'];
+        //this.fullScope   = res['fullScope'];
+        //this.criteriaMaster = res['criteriaMaster'];
+        //this.criteriaMaster = res['data']['schemes'];
+        ////console.log("#Get criteria: ", this.criteriaMaster);
+
+      },
+      error => {
+      
+  })
+  }
+
   ngOnInit() { 
-    
+    // console.log(this.Service.getValue(),'ngOnInit')
+    // this.Service.getDynamic().subscribe( res => {
+    //   console.log(res,'sdsgdsg');
+    // });
+    this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
+    // console.log(this.urlVal,'valofurl');
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
@@ -296,10 +746,13 @@ export class TestingCalibrationFormComponent implements OnInit {
     this.userId = sessionStorage.getItem('userId');
     // this.titleService.setTitle('EIAC - Testing and Calibration Laboratories');
     this.addMinutesToTime = this.Service.addMinutesToTime();
+
+    
     this.loadAppInfo();
     this.loadFormDynamicTable();
     this.loadCountryStateCity();
     this.stepDefaultValue();
+    this.loadSchemeMaster();
     // this.loadCountryStateCity();
     //this.checkCaptchaValidation = true;
 
@@ -348,6 +801,7 @@ export class TestingCalibrationFormComponent implements OnInit {
         title:'application_complete', desc:'10. Application Complete', activeStep:false, stepComp:false, icon:'icon-document-pen', activeClass:''
       },
     );
+
   }
   
   getPlaceName()
@@ -607,12 +1061,12 @@ export class TestingCalibrationFormComponent implements OnInit {
     if(ngForm.form.valid && this.checkCaptchaValidation == true){
       this.testingCalForm.is_bod = this.is_bod;
       this.testingCalFormFile.append('data',JSON.stringify(this.testingCalForm));
-      this.loader = true;
+      this.loader = false;
        this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testing_cal_form_basic_data,this.testingCalFormFile)
        .subscribe(
          res => {
            if(res['status']==true){
-            this.loader = false;
+            this.loader = true;
             this.captchaRef.reset();
             this.checkCaptchaValidation = false;
             this.afterSubmit = false;
@@ -748,7 +1202,7 @@ export class TestingCalibrationFormComponent implements OnInit {
           this.step1Data.city =  data.city;
           this.step1Data.country = data.country;
           this.step1Data.state = data.state;
-          this.step1Data.criteria_request = "";
+          // this.step1Data.criteria_request = "";
           this.step1Data.date_of_establishment = new Date(data.date_of_establisment);
           this.step1Data.date_of_expiry = new Date(data.date_of_expiry);
           this.step1Data.date_of_issue = new Date(data.date_of_issue);
@@ -770,224 +1224,265 @@ export class TestingCalibrationFormComponent implements OnInit {
         }
       })
 
-      let url2 = this.Service.apiServerUrl+"/"+'accrediation-details-show/0';
-      this.Service.getwithoutData(url2)
-      .subscribe(
-        res => {
-          // console.log(res,'res')
-          let pathData: any;
-          let filePath: string;
+      if(this.urlVal && this.urlVal != '') {
 
-          if(!this.Service.isObjectEmpty(res['data'].paymentDetails)){
-          
-            if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''){
-              filePath = this.constant.mediaPath + '/media/' + res['data'].paymentDetails.voucher_invoice;
-              pathData = this.getSantizeUrl(filePath);
-              this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
-            }
-            ////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
-          }
-          
-          if(res['data'].saved_step  != null){
-            /////console.log("@saved step assign....");
-            let saveStep = res['data'].saved_step;
-            //open step
-            this.headerSteps.forEach((item, key) => {
-                  /////console.log(item, " --- ", key);
-                  if(key < saveStep){
-                    ////console.log('moving steps....');
-                    let curStep: any = item;
-                    curStep.stepComp = true;
-                    let nextStep: any = this.headerSteps[key+1];
-                    this.Service.moveSteps(curStep.title, nextStep.title, this.headerSteps);
+        this.loader = false;
+        let url2 = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+this.urlVal;
+        this.Service.getwithoutData(url2)
+        .subscribe(
+          res => {
+            console.log(res,'urlVal')
+            this.loader = true;
+            if(res['data'].id && res['data'].id != '') {
+                let pathData: any;
+                let filePath: string;
+
+                if(!this.Service.isObjectEmpty(res['data'].paymentDetails)){
+                
+                  if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''){
+                    filePath = this.constant.mediaPath + '/media/' + res['data'].paymentDetails.voucher_invoice;
+                    pathData = this.getSantizeUrl(filePath);
+                    this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
                   }
-                  if(key == saveStep){
-                    let curStep: any = this.headerSteps[key];
-                    /////console.log('found steps....',curStep);
-                    curStep.stepComp = true;
-                    this.Service.headerStepMove(item.title, this.headerSteps,'menu')
-                  }
-            })
-            ////console.log("#Step data: ", this.headerSteps);
-          }
+                  ////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
+                }
+                
+                if(res['data'].saved_step  != null){
+                  /////console.log("@saved step assign....");
+                  let saveStep = res['data'].saved_step;
+                  //open step
+                  this.headerSteps.forEach((item, key) => {
+                        /////console.log(item, " --- ", key);
+                        if(key < saveStep){
+                          ////console.log('moving steps....');
+                          let curStep: any = item;
+                          curStep.stepComp = true;
+                          let nextStep: any = this.headerSteps[key+1];
+                          this.Service.moveSteps(curStep.title, nextStep.title, this.headerSteps);
+                        }
+                        if(key == saveStep){
+                          let curStep: any = this.headerSteps[key];
+                          /////console.log('found steps....',curStep);
+                          curStep.stepComp = true;
+                          this.Service.headerStepMove(item.title, this.headerSteps,'menu')
+                        }
+                  })
+                  ////console.log("#Step data: ", this.headerSteps);
+                }
 
-          if(res['data'].id != undefined && res['data'].id > 0){
-            this.formApplicationId = res['data'].id;
-            this.formDraftsaved = res['data'].is_draft;
-            this.formAccrStatus = res['data'].accr_status;
-          }
+                if(res['data'].id != undefined && res['data'].id > 0){
+                  this.formApplicationId = res['data'].id;
+                  this.formDraftsaved = res['data'].is_draft;
+                  this.formAccrStatus = res['data'].accr_status;
+                }
+                // console.log(this.formApplicationId);
+                //step1
 
-          //step1
+                // if(res['data'].cab_type == 'calibration_laboratories') {
+                //   this.step1Data.cab_type = 
+                // }else if(res['data'].cab_type == 'calibration_laboratories') {
+                //   this.step1Data.cab_type = 
+                // }
+                this.step1Data.cab_type = res['data'].cab_type != '' ? res['data'].cab_type : '';
+                console.log("@cab type: ", this.step1Data.cab_type);
+                
+                if(res['data'].accredation_criteria  != ''){
+                  this.step1Data.accredation_criteria = res['data'].accredation_criteria.toString();
+                }
+                if(res['data'].criteria_request  != ''){
+                  this.step1Data.criteria_request = res['data'].criteria_request;
+                }
 
-          if(res['data'].accredation_criteria  != ''){
-            this.step1Data.accredation_criteria = res['data'].accredation_criteria.toString();
-          }
-          if(res['data'].criteria_request  != ''){
-            this.step1Data.criteria_request = res['data'].criteria_request;
-          }
+                this.step1Data.duty_shift = res['data'].duty_shift != '' || res['data'].duty_shift != null ? res['data'].duty_shift.toString() : '';
 
-          if(res['data'].duty_from1 != null && res['data'].duty_shift != '' && res['data'].duty_shift == 1){
-          
-            this.step1Data.duty_shift = res['data'].duty_shift.toString();
-            this.step1Data.duty_from1 = res['data'].duty_from1.toString();
-            this.step1Data.duty_to1   = res['data'].duty_to1.toString();
-            //console.log(">>>Working time: 1 ", this.step1Data.duty_shift);
-          }
-          if(res['data'].duty_from2 != null && res['data'].duty_shift != ''  && res['data'].duty_shift == 2){
-            
-            this.step1Data.duty_shift = res['data'].duty_shift.toString();
-            this.step1Data.duty_from2 = res['data'].duty_from2.toString();
-            this.step1Data.duty_to2   = res['data'].duty_to2.toString();
-            //console.log(">>>Working time: 2 ", this.step1Data.duty_shift);
-          }
-          if(res['data'].duty_from3 != null && res['data'].duty_shift != ''  && res['data'].duty_shift == 3){
-            
-            this.step1Data.duty_shift = res['data'].duty_shift.toString();
-            this.step1Data.duty_from3 = res['data'].duty_from3.toString();
-            this.step1Data.duty_to3   = res['data'].duty_to3.toString();
-            //console.log(">>>Working time: 3 ", this.step1Data.duty_shift);
-          }
-          if(res['data'].is_main_activity != undefined){
-              this.step1Data.is_main_activity = res['data'].is_main_activity.toString();
-              if(!res['data'].is_main_activity){
-                this.step1Data.is_main_activity_note = res['data'].is_main_activity_note.toString();
+                if(res['data'].duty_from1 != null && res['data'].duty_to1 != null && res['data'].duty_shift != ''){
+                
+                  // this.step1Data.duty_shift = res['data'].duty_shift == 1 ? res['data'].duty_shift.toString() : '';
+                  this.step1Data.duty_from1 = res['data'].duty_from1.toString();
+                  this.step1Data.duty_to1   = res['data'].duty_to1.toString();
+                }
+                if(res['data'].duty_from2 != null && res['data'].duty_to2 != null && res['data'].duty_shift != ''){
+                  
+                  // this.step1Data.duty_shift = res['data'].duty_shift.toString();
+                  this.step1Data.duty_from2 = res['data'].duty_from2.toString();
+                  this.step1Data.duty_to2   = res['data'].duty_to2.toString();
+                  //console.log(">>>Working time: 2 ", this.step1Data.duty_shift);
+                }
+                if(res['data'].duty_from3 != null && res['data'].duty_to3 != null && res['data'].duty_shift != ''){
+                  
+                  // this.step1Data.duty_shift = res['data'].duty_shift.toString();
+                  this.step1Data.duty_from3 = res['data'].duty_from3.toString();
+                  this.step1Data.duty_to3   = res['data'].duty_to3.toString();
+                  //console.log(">>>Working time: 3 ", this.step1Data.duty_shift);
+                }
+                if(res['data'].is_main_activity != undefined){
+                    this.step1Data.is_main_activity = res['data'].is_main_activity.toString();
+                    if(!res['data'].is_main_activity){
+                      this.step1Data.is_main_activity_note = res['data'].is_main_activity_note.toString();
+                    }
+                }
+
+                if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
+                  //console.log('>>>Accr infor: ', getData.data.otherAccr);
+                  this.accreditationInfo = [];
+                  this.step1Data.is_hold_other_accreditation_select = "1";
+                  //this.accreditationInfo = '';
+                  res['data'].otherAccr.forEach((item, key) => {
+                      ////console.log('>> ', item, " :: ", key);
+                      let data: any;
+                      data = item['value'];
+                      var obj1 = data.replace(/'/g, "\"");
+                      let jparse = JSON.parse(obj1);
+                      this.accreditationInfo.push(jparse);
+                  })
+                }else{
+                  //this.accreditationInfo = [{}];
+                  this.step1Data.is_hold_other_accreditation_select = "0";
+                }
+
+                //step2
+                var ptProvider = res['data']['ptParticipation'];
+                this.proficiencyTesting = ptProvider && ptProvider != '' ? ptProvider : [{}];
+
+                //step3
+                if(res['data'].technicalManager != undefined && res['data'].technicalManager.length > 0){
+                  let getTechData: any = res['data'].technicalManager[0];
+                  this.step3Data.name = getTechData.name;
+                  this.step3Data.designation = getTechData.designation;
+                  this.step3Data.mobile_no = getTechData.mobile_no;
+                  this.step3Data.email = getTechData.email;
+                  this.step3Data.relevent_experience = getTechData.relevent_experience;
+                }
+                if(res['data'].managementManager != undefined && res['data'].managementManager.length > 0){
+                  let getMangData: any = res['data'].managementManager[0];
+                  this.step3Data.management_name = getMangData.name;
+                  this.step3Data.management_designation = getMangData.designation;
+                  this.step3Data.management_mobile_no = getMangData.mobile_no;
+                  this.step3Data.management_email = getMangData.email;
+                  this.step3Data.management_relevent_experience = getMangData.relevent_experience;
+                }
+
+                //step4
+                if(res['data'].audit_date != null){
+                  this.step4Data.audit_date = new Date(res['data'].audit_date);
+                }
+                if(res['data'].mrm_date != null){
+                  this.step4Data.mrm_date = new Date(res['data'].mrm_date);
+                }
+
+                //Step 6
+                if(res['data'].is_prelim_visit != null){
+                  this.step6Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
+                  this.step6Data.prelim_visit_date = res['data'].prelim_visit_date;
+                  this.step6Data.prelim_visit_time = res['data'].prelim_visit_time;
+                }
+                //Step 7
+                if(res['data'].onBehalfApplicantDetails && res['data'].onBehalfApplicantDetails != null && res['data'].onBehalfApplicantDetails != undefined){
+                  let getAuthData = res['data'].onBehalfApplicantDetails;
+                  //console.log(">>> Auth data: ", getAuthData);
+                  this.step7Data.organization_name        = getAuthData.organization_name;
+                  this.step7Data.representative_name      = getAuthData.representative_name;
+                  this.step7Data.designation              = getAuthData.designation;
+                  this.step7Data.digital_signature        = getAuthData.digital_signature;
+                  this.step7Data.application_date         = getAuthData.application_date;
+
+                  Object.keys(this.authorizationList).forEach( key => { 
+                    this.authorizationList[key] = true;
+                  })
+                  this.authorizationStatus = true;
+                  this.step7Data.recommend_visit = 'second';
+                }
+
+                //Step 9
+                if(res['data'].paymentDetails != null && typeof res['data'].paymentDetails === 'object'){
+                  // console.log(">>>payment details...show");
+                    this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
+                    this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
+                    this.voucherSentData.amount           = res['data'].paymentDetails.amount;
+                    this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
+                    this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
+                    this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
+                    this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+
+                    this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
+                    this.paymentReceiptValidation = true;
+                }
               }
-          }
-
-          if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
-            //console.log('>>>Accr infor: ', getData.data.otherAccr);
-            this.accreditationInfo = [];
-            this.step1Data.is_hold_other_accreditation_select = "1";
-            //this.accreditationInfo = '';
-            res['data'].otherAccr.forEach((item, key) => {
-                 ////console.log('>> ', item, " :: ", key);
-                 let data: any;
-                 data = item['value'];
-                 var obj1 = data.replace(/'/g, "\"");
-                 let jparse = JSON.parse(obj1);
-                 this.accreditationInfo.push(jparse);
-            })
-          }else{
-            //this.accreditationInfo = [{}];
-            this.step1Data.is_hold_other_accreditation_select = "0";
-          }
-
-
-          //step2
-          var ptProvider = res['data']['ptParticipation'];
-          this.proficiencyTesting = ptProvider && ptProvider != '' ? ptProvider : [{}];
-
-          //step3
-          if(res['data'].technicalManager != undefined && res['data'].technicalManager.length > 0){
-            let getTechData: any = res['data'].technicalManager[0];
-            this.step3Data.name = getTechData.name;
-            this.step3Data.designation = getTechData.designation;
-            this.step3Data.mobile_no = getTechData.mobile_no;
-            this.step3Data.email = getTechData.email;
-            this.step3Data.relevent_experience = getTechData.relevent_experience;
-          }
-          if(res['data'].managementManager != undefined && res['data'].managementManager.length > 0){
-            let getMangData: any = res['data'].managementManager[0];
-            this.step3Data.management_name = getMangData.name;
-            this.step3Data.management_designation = getMangData.designation;
-            this.step3Data.management_mobile_no = getMangData.mobile_no;
-            this.step3Data.management_email = getMangData.email;
-            this.step3Data.management_relevent_experience = getMangData.relevent_experience;
-          }
-
-          //step4
-          if(res['data'].audit_date != null){
-            this.step4Data.audit_date = new Date(res['data'].audit_date);
-          }
-          if(res['data'].mrm_date != null){
-            this.step4Data.mrm_date = new Date(res['data'].mrm_date);
-          }
-
-          //Step 6
-          if(res['data'].is_prelim_visit != null){
-            this.step6Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
-            this.step6Data.prelim_visit_date = res['data'].prelim_visit_date;
-          this.step6Data.prelim_visit_time = res['data'].prelim_visit_time;
-          }
-          //Step 7
-          if(res['data'].onBehalfApplicantDetails != null && res['data'].onBehalfApplicantDetails != undefined){
-            let getAuthData = res['data'].onBehalfApplicantDetails[0];
-            //console.log(">>> Auth data: ", getAuthData);
-            this.step7Data.organization_name        = getAuthData.organization_name;
-            this.step7Data.representative_name      = getAuthData.representative_name;
-            this.step7Data.designation              = getAuthData.designation;
-            this.step7Data.digital_signature        = getAuthData.digital_signature;
-            this.step7Data.application_date         = getAuthData.application_date;
-          }
-
-          //Step 9
-          if(res['data'].onBehalfApplicantDetails != null && res['data'].onBehalfApplicantDetails != undefined){
-            let getAuthData = res['data'].onBehalfApplicantDetails[0];
-            //console.log(">>> Auth data: ", getAuthData);
-            this.step7Data.organization_name        = getAuthData.organization_name;
-            this.step7Data.representative_name      = getAuthData.representative_name;
-            this.step7Data.designation              = getAuthData.designation;
-            this.step7Data.digital_signature        = getAuthData.digital_signature;
-            this.step7Data.application_date         = getAuthData.application_date;
-          }
-        });
+          });
+      }
   }
 
   onSubmitStep1(ngForm1: any){
     // this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
-    if(this.step1Data.duty_shift == '1' && typeof this.step1Data.duty_from1 == 'undefined' && typeof this.step1Data.duty_to1 == 'undefined')
+    setTimeout(() => {
+      this.loadSchemeMaster();
+    },1)
+    
+    //console.log(">>>schcriteria master ", this.criteriaMaster);
+
+
+    if(this.step1Data.duty_shift == '1')
     {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+      }else{
+        this.dutyTime1 = true;
+        this.isSubmit = true;
+      }
       this.dutyTime1 = false;
       this.isSubmit = false;
-    }else{
-      this.dutyTime1 = true;
-    }
-    if(this.step1Data.duty_shift == '2' && typeof this.step1Data.duty_from2 == 'undefined' && typeof this.step1Data.duty_to2 == 'undefined')
+      
+    }else if(this.step1Data.duty_shift == '2')
     {
       if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
       {
         this.dutyTime1 = false;
-      }else{
-        this.dutyTime1 = true;
+      }else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined') {
+        this.dutyTime2 = false;
+      }else if(typeof this.step1Data.duty_from2 != 'undefined' || typeof this.step1Data.duty_to2 != 'undefined'){
+        this.dutyTime2 = true;
+        this.isSubmit = true;
       }
-      this.dutyTime2 = false;
-      this.isSubmit = false;
-    }else{
-      this.dutyTime2 = true;
-    }
-    if(this.step1Data.duty_shift == '3' && typeof this.step1Data.duty_from3 == 'undefined' && typeof this.step1Data.duty_to3 == 'undefined')
+      // this.dutyTime2 = false;
+      // this.isSubmit = false;
+    }else if(this.step1Data.duty_shift == '3')
     {
       if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
       {
         this.dutyTime1 = false;
-      }else{
-        this.dutyTime1 = true;
       }
-      if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
+      else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
       {
         this.dutyTime2 = false;
-      }else{
-        this.dutyTime2 = true;
       }
-      this.dutyTime3 = false;
-      this.isSubmit = false;
-    }else{
-      this.dutyTime3 = true;
-    }
-
-    if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
+      else if(typeof typeof this.step1Data.duty_from3 == 'undefined' || typeof this.step1Data.duty_to3 == 'undefined') {
+        this.dutyTime3 = false;
+      }else if(typeof this.step1Data.duty_from3 != 'undefined' || typeof this.step1Data.duty_to3 != 'undefined') {
+        this.dutyTime3 = true;
+        this.isSubmit = true;
+      }
+      // this.dutyTime3 = false;
+      // this.isSubmit = false;
+    }else if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
       this.dutyTime1 = false;
       this.isSubmit = false;
     }else{
       this.dutyTime1 = true;
+      this.dutyTime2 = true;
+      this.dutyTime3 = true;
+      this.isSubmit = true;
     }
-
-    if(ngForm1.form.valid) {
+    // console.log(this.dutyTime2,'dutyTime2');
+    // console.log(this.dutyTime3,'dutyTime3');
+    
+    if(ngForm1.form.valid && this.isSubmit == true) {
       this.testingCalForm = {};
       this.testingCalForm.step1 = {};
       this.testingCalForm.email = this.userEmail;
       this.testingCalForm.userType = this.userType;
       this.testingCalForm.saved_step = '1';
+      this.step1Data.is_draft = false;
       if(this.formApplicationId > 0){
         this.step1Data.application_id = this.formApplicationId;
       }
@@ -1011,10 +1506,12 @@ export class TestingCalibrationFormComponent implements OnInit {
         this.testingCalForm.step1['accreditationInfo'] = this.accreditationInfo;
       }
 
+      this.loader = false;
       // this.step1DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
+          this.loader = true;
           // console.log(res,'res')
           if(res['status'] == true) {
             // this.toastr.success(res['msg'], '');
@@ -1184,12 +1681,13 @@ export class TestingCalibrationFormComponent implements OnInit {
       this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step6Data.is_prelim_visit = this.step6Data.is_prelim_visit == 0 ? false : true;
       this.step6Data.is_draft = true;
+      this.testingCalForm.saved_step = '6';
       this.testingCalForm.step6 = this.step6Data;
 
       // console.log(this.testingCalForm);
       this.loader = false;
       // this.step5DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.testingCalForm)
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
           // console.log(res,'res')
@@ -1210,12 +1708,13 @@ export class TestingCalibrationFormComponent implements OnInit {
       this.step7Data.authorizationList = this.authorizationList;
       this.step7Data.recommend = this.recommend;
       this.step7Data.is_draft = true;
+      this.testingCalForm.saved_step = '7';
 
       this.testingCalForm.step7 = this.step7Data;
       // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
       this.loader = false;
       // this.step6DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.testingCalForm)
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
           // console.log(res,'res')
@@ -1255,10 +1754,12 @@ export class TestingCalibrationFormComponent implements OnInit {
       }
 
       // this.step2DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.loader = false;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
-          console.log(res,'res')
+          // console.log(res,'res')
+          this.loader = true;
           if(res['status'] == true) {
             // this.toastr.success(res['msg'], '');
             this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
@@ -1305,10 +1806,12 @@ export class TestingCalibrationFormComponent implements OnInit {
 
       this.testingCalForm.step3 = this.step3Data;
       // this.step3DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.loader = false;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
-          console.log(res,'res')
+          // console.log(res,'res')
+          this.loader = true;
           if(res['status'] == true) {
             // this.toastr.success(res['msg'], '');
             this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
@@ -1334,9 +1837,11 @@ export class TestingCalibrationFormComponent implements OnInit {
       this.testingCalForm.userType = this.userType;
       this.testingCalForm.step4 = this.step4Data;
       // this.step4DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      this.loader = false;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
+          this.loader = true;
           if(res['status'] == true) {
             // this.toastr.success(res['msg'], '');
             this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
@@ -1348,9 +1853,310 @@ export class TestingCalibrationFormComponent implements OnInit {
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
   }
+
+
+  saveScope(){
+    
+    let scopeValues: any =[];
+    let scopeIds:any =[];
+    let scopeSelValues:any =[];
+    console.log("dynamic ", this.dynamicScopeModel, " -- ", this.dynamicScopeFieldColumns, " -- ", this.schemeRows, " -- ", this.formApplicationId);
+    var key = '';
+    var key2 = '';
+    let resultAr: any={};
+    let scopeCollections: any={};
+    scopeCollections['scope_heading'] = {};
+    scopeCollections['scope_value'] = [];
+
+
+    let selectScheme = this.schemeRows[0].id;
+    this.step5Data.scheme_id = selectScheme;
+
+    //let scopeSaveData: any = {};
+    // scopeSaveData['scheme'] = {};
+    // scopeSaveData['scheme']['heading'] = {};
+    // scopeSaveData['scheme']['details'] = {};
+
+    // console.log(">>>>> scope Data: ", scopeSaveData);
+    // this.schemeRows.forEach((rec,row) => {
+    //     console.log('>>> scheme row...', rec, " -- ", row);
+    // })
+          
+    
+      for(var key in this.dynamicScopeFieldColumns){
+            console.log(">>> ", key, " :: ", this.dynamicScopeFieldColumns[key], " -- ", typeof this.dynamicScopeFieldColumns[key]);
+            let tempData: any = this.dynamicScopeFieldColumns[key] ;
+            if(typeof tempData === 'object'){
+              tempData.forEach((item,key) => {
+                    console.log(item);
+                    let keyIds = item[0].idVal;
+                    let name = item[0].name;
+                    console.log("...", name);
+                    let tempObj = {};
+                    tempObj[keyIds] = name;
+                    console.log("...", tempObj);
+                    scopeCollections['scope_heading'][keyIds] = name;
+                });
+            }
+      }
+    
+          // this.dynamicScopeFieldColumns.forEach((item,key) => {
+          //     //////console.log(item);
+          //     let keyIds = item[0].idVal;
+          //     let name = item[0].name;
+          //     //////console.log("...", name);
+          //     let tempObj = {};
+          //     tempObj[keyIds] = name;
+          //     //////console.log("...", tempObj);
+          //     scopeCollections['scope_heading'][keyIds] = name;
+          // });
+    console.log(">>> build scope: ", scopeCollections);
+    //return;
+
+    let secInd: number = 0;
+    for(key in this.dynamicScopeModel[secInd]){
+        if(key == 'fieldLines'){
+          this.dynamicScopeModel[secInd].fieldLines.forEach((rec,key1) => {
+                console.log("browse Model: ",rec, " -- ", key1);
+                //resultAr[key1] = [];
+                scopeIds = [];
+                scopeSelValues = [];
+                let columnObject: any = this.dynamicScopeFieldColumns[secInd];
+                let getDataValues: any;
+                let getSelectValues: any;
+                for(key2 in rec){
+                  let selectVal;
+                  let selectId;
+                  
+                  let findValues: any = key2.toString().search('Values');
+                  //console.log("@key: ", key2, " Find: ", findValues);
+                  if(findValues >= 0){ 
+                    getDataValues = this.dynamicScopeFieldColumns[secInd].find(item => item[0].values == key2)
+                    //console.log("@find values: ", key2, "--", getDataValues, " #Values: ", rec[key2]);
+                    if(getDataValues){
+                        let fdata: any = getDataValues[0];
+                        //console.log("#Data Values: ",getDataValues, " -- ", fdata)                      
+                        if(fdata.values == key2){
+                          selectId = fdata.idVal;//rec[key2][0].id;
+                          scopeIds.push({id: selectId, rowValues:fdata.values})
+                        }
+                      }
+
+                  }else{
+                    getSelectValues = this.dynamicScopeFieldColumns[secInd].find(item => item[0].title == key2)
+                    //console.log("#find select values: ", key2, "--", getSelectValues);
+                    if(getSelectValues){
+                        let fdata: any = getSelectValues[0];
+                        //console.log("#Select Data Values: ",getDataValues, " -- ", fdata)                      
+                        if(fdata.title == key2){
+                          selectVal = rec[key2];
+                          scopeSelValues.push({value: selectVal})
+                        }
+                      }                      
+                  }
+                  scopeValues.push({id:selectId , value: selectVal});
+                }
+
+
+                /*
+                if(typeof rec === 'object'){
+                  for(key2 in rec){
+                      
+                      let selectVal;
+                      let selectId;
+                      console.log("@rows key: ", key2);
+                      let getDataValues = this.dynamicScopeFieldColumns[secInd].find(item => item[0].values == key2)
+                      let getSelectValues = this.dynamicScopeFieldColumns[secInd].find(item => item[0].title == key2)
+
+                      console.log("scope : ", key2, " -- ", getDataValues, " -- ", getSelectValues);
+                      // if(getDataValues){
+                      //   let fdata: any = getDataValues[0];
+                      //   console.log("#Data Values: ",getDataValues, " -- ", fdata)                      
+                      //   if(fdata.values == key2){
+                      //     selectId = fdata.idVal;//rec[key2][0].id;
+                      //     scopeIds.push({id: selectId, rowValues:fdata.values})
+                      //   }
+                      // }
+                      // if(getSelectValues){
+                      //   let fdata: any = getSelectValues[0];
+                      //   console.log("#Select Data Values: ",getDataValues, " -- ", fdata)                      
+                      //   if(fdata.title == key2){
+                      //     selectVal = rec[key2];
+                      //     scopeSelValues.push({value: selectVal})
+                      //   }
+                      // }
+                      //scopeValues.push({id:selectId , value: selectVal});
+
+                      //console.log("scope aa: ", key2, " -- ", selectVal, " -- ", selectId);
+
+                  }
+                }*/
+
+                console.log("@###Scope Values: ", scopeValues, " -- ", scopeIds, " :: ", scopeSelValues, ": Kye: ", key1);
+                resultAr[key1] = [];
+                
+                for(var k=0; k<scopeIds.length; k++){
+                  let idKey = scopeIds[k].id;
+                  let keyValues = scopeIds[k].rowValues;
+                  let valueKey = scopeSelValues[k].value;
+                  let tempObj = {};
+                  tempObj[idKey] = valueKey;
+                  resultAr[key1].push({id: idKey, value: valueKey, valueSrc: keyValues});
+               }
+               //resultAr[key1] = tempObj;
+               console.log('scope object: ', " -- ", resultAr);
+          })
+        }
+    }
+
+    //return;
+    
+    if(scopeCollections){
+      let resultTempAr: any =[];
+      let tempObj: any = {};
+      let rstAr: any=[];
+      //var p;
+      let scopeRows: any = {};
+      //this.dynamicScopeModel
+      if(this.dynamicScopeModel[secInd].fieldLines != undefined && this.dynamicScopeModel[secInd].fieldLines.length > 0){
+        scopeRows = this.dynamicScopeModel[secInd].fieldLines;
+      }
+      console.log("@Total rows: ", scopeRows);
+      for(var p in resultAr){
+        //resultTempAr[p] = [];
+        console.log("@resultAr ",p, " -- ", resultAr[p], " --- ", scopeRows[p])
+        if(resultAr[p].length){
+          tempObj = {};
+          resultAr[p].forEach(item =>{
+            console.log(">>>Loop: ", p, " :: ", item," -- ", typeof scopeRows[p]);
+            var optionName = '';
+            //tempObj[item.id] = item.value;
+            //console.log("@Values: ", scopeRows[p]);
+            if(typeof scopeRows[p] === 'object'){
+               //console.log("Enter: ", p);
+               for(var k1 in scopeRows[p]){
+                 //console.log('Enter >>>> ', k1, " -- ", item.valueSrc);
+                 //var optionName = '';
+                 if(k1 === item.valueSrc){
+                   let tempAr = scopeRows[p][k1];
+                   let findVal = tempAr.find(itemF => itemF.field_value.id == item.value);
+                    if(findVal == undefined){
+                      findVal = item.value;
+                      optionName = findVal;
+                    }
+                   if(findVal != undefined && typeof findVal == 'object'){
+                    optionName = findVal.value;
+                   }
+
+                   console.log("found...", k1," :: ", scopeRows[p][k1], " -- ",optionName, " --- ", findVal);
+                 }
+               }
+               //resultTempAr[item.id] = optionName;
+            }
+            tempObj[item.id] = optionName;
+            //resultTempAr[item.id] = optionName;
+          })
+          resultTempAr.push(tempObj);
+          //resultTempAr[p] = tempObj;
+          //resultTempAr[p].push(tempObj);
+        }
+        //rstAr.push(resultTempAr);
+      }
+
+
+      /*
+      for(var p in resultAr){
+        //console.log("@resultAr ",p, " -- ", resultAr[p], " --- ", scopeRows[p])
+        //resultTempAr[p] = [];
+        if(resultAr[p].length){
+          resultAr[p].forEach(item =>{
+            //console.log(">>>Loop: ", p, " :: ", item," -- ", typeof scopeRows[p]);
+            tempObj = {};
+            var optionName = '';
+              //tempObj[item.id] = item.value;
+              //console.log("@Values: ", scopeRows[p]);
+              if(typeof scopeRows[p] === 'object'){
+                 //console.log("Enter: ", p);
+                 for(var k1 in scopeRows[p]){
+                   //console.log('Enter >>>> ', k1, " -- ", item.valueSrc);
+                   //var optionName = '';
+                   if(k1 === item.valueSrc){
+                     let tempAr = scopeRows[p][k1];
+                     let findVal = tempAr.find(itemF => itemF.field_value.id == item.value);
+
+                     if(findVal){
+                      optionName = findVal.value;
+                     }
+
+                     console.log("found...", k1," :: ", scopeRows[p][k1], " -- ",optionName, " --- ", findVal);
+                   }
+                 }
+                 //resultTempAr[item.id] = optionName;
+              }
+              resultTempAr[item.id] = optionName;
+              //resultTempAr[item.id] = item.value;
+              //resultTempAr[p].push(tempObj);
+          })
+        }
+        rstAr.push(resultTempAr);
+      }*/
+      console.log('<<>>>> ', resultTempAr, " -- ", rstAr);
+      scopeCollections['scope_value'] = resultTempAr;
+    }
+    //return;
+
+    // }
+    /////console.log("@selected scope values: ", scopeCollections);
+    //return;
+    ////console.log("#Scope result: ", resultAr, " -- ", scopeCollections);
+    // this.dynamicScopeModel.forEach(rec => {
+    //      if(rec.fieldLines){
+    //       ////console.log("field rows: ", rec.fieldLines);
+    //      }
+    // })
+    if(scopeCollections != undefined){
+      //this.inspectionBodyForm.step5['scope_heading'] = scopeCollections['scope_heading'];
+      //this.inspectionBodyForm.step5['scope_value'] = scopeCollections['scope_value'];
+      this.step5Data['scope_heading']   = scopeCollections['scope_heading'];
+      this.step5Data['scope_value']     = scopeCollections['scope_value'];
+      
+    }
+    console.log("@step5 Data: ", this.step5Data);
+  }
   
   onSubmitStep5(ngForm5: any) {
-    this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+    //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+    this.saveScope();
+    this.testingCalForm = {};
+    this.testingCalForm.step5 = {};
+    this.testingCalForm.saved_step  = '5';
+    this.testingCalForm.email       = this.userEmail;
+    this.testingCalForm.userType    = this.userType;
+    var applicationId = sessionStorage.getItem('applicationId');
+    this.step5Data.application_id   = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+    this.step5Data.is_draft         = false;
+    this.testingCalForm.step5       = this.step5Data;
+
+    console.log("@####step5 submit Data: ", this.step5Data, " :: ", this.testingCalForm);
+    if(ngForm5.form.valid) {
+      this.loader = false;
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
+      .subscribe(
+        res => {
+          // console.log(res,'res')
+          this.loader = true;
+          if(res['status'] == true) {
+            // this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+
+
   }
 
   onSubmitStep6(ngForm6: any){
@@ -1358,6 +2164,7 @@ export class TestingCalibrationFormComponent implements OnInit {
     if(ngForm6.form.valid) {
       this.testingCalForm = {};
       this.testingCalForm.step6 = {};
+      this.testingCalForm.saved_step = '6';
       this.testingCalForm.email = this.userEmail;
       this.testingCalForm.userType = this.userType;
       var applicationId = sessionStorage.getItem('applicationId');
@@ -1366,14 +2173,16 @@ export class TestingCalibrationFormComponent implements OnInit {
       this.step6Data.is_draft = false;
       this.testingCalForm.step6 = this.step6Data;
 
-      console.log(this.testingCalForm);
+      // console.log(this.testingCalForm);
       // this.step5DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.testingCalForm)
+      this.loader = false;
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
-          console.log(res,'res')
+          // console.log(res,'res')
+          this.loader = true;
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            // this.toastr.success(res['msg'], '');
             this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
@@ -1386,7 +2195,6 @@ export class TestingCalibrationFormComponent implements OnInit {
 
  onSubmitUndertakingApplicant(ngForm7: any){
   // this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
- 
   for(let key in this.authorizationList) {
     if(this.authorizationList[key] == false) {
       this.authorizationStatus = false;
@@ -1403,7 +2211,7 @@ export class TestingCalibrationFormComponent implements OnInit {
   if(this.authorizationStatus == false){
     this.isSubmit = false;
     this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
-  }else if(this.step7Data.recommend_visit != ''){
+  }else if(this.step7Data.recommend_visit == ''){
     this.isSubmit = false;
     this.toastr.error('Please Check any recommend the visit ', '');
   }
@@ -1413,21 +2221,34 @@ export class TestingCalibrationFormComponent implements OnInit {
     this.testingCalForm.step7 = {};
     this.testingCalForm.email = this.userEmail;
     this.testingCalForm.userType = this.userType;
+    var applicationId = sessionStorage.getItem('applicationId');
+    this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+    this.testingCalForm.saved_step = '7';
     this.step7Data.authorizationList = this.authorizationList;
     this.step7Data.recommend = this.recommend;
     this.step7Data.is_draft = false;
+    this.step7Data.application_date = new Date();
 
     this.testingCalForm.step7 = this.step7Data;
     // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
 
     // this.step6DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.testingCalForm)
+    // console.log(this.testingCalForm,'testingCalForm');
+    this.loader = false;
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
     .subscribe(
       res => {
-        console.log(res,'res')
+        // console.log(res,'res')
+        this.loader = true;
         if(res['status'] == true) {
-          this.toastr.success(res['msg'], '');
-          this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+          // this.toastr.success(res['msg'], '');
+          if(this.paymentFilePath != ''){
+            this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
+          }
+          else{
+            // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+            this.router.navigateByUrl('/dashboard/status/all');
+          }
         }else{
           this.toastr.warning(res['msg'], '');
         }
@@ -1438,71 +2259,6 @@ export class TestingCalibrationFormComponent implements OnInit {
   }    
 }
 
-onSubmitPaymentInformation(ngForm9: any, type?: boolean){
-  //console.log("payment submitting.....");
-  this.testingCalForm = {};
-  this.testingCalForm.step9 = {};
-
-    let dtFormat: string = '';
-    if(this.voucherSentData['payment_date'] != undefined && 
-      this.voucherSentData['payment_date']._i != undefined){
-      var dtData = this.voucherSentData['payment_date']._i;
-      var year = dtData.year;
-      var month = dtData.month;
-      var date = dtData.date;
-      dtFormat = year + "-" + month + "-" + date;
-    }
-    //     
-
-  this.voucherFile.append('voucher_code',this.voucherSentData['voucher_code']);
-  this.voucherFile.append('amount',this.voucherSentData['amount']);
-  this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
-  this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
-  this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
-  this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
-  this.voucherFile.append('payment_date',dtFormat);
-  this.voucherFile.append('accreditation',this.formApplicationId);
-  this.voucherFile.append('application_id',this.formApplicationId);
-      
-  if(ngForm9.form.valid && this.paymentReceiptValidation != false) {
-      this._trainerService.paymentVoucherSave((this.voucherFile))
-      .subscribe(
-          result => {
-            let data: any = result;
-            //console.log("submit voucher: ", data);
-            if(data.status){
-              //this.voucherFile = new FormData();
-              //this.voucherSentData = {};
-              this.toastr.success("Your form has been successfully submitted and it is under review.We will update you shortly.",'THANK YOU');
-              //this.openView('appComp','');
-              setTimeout(() => {                    
-                this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-              },3500)
-              
-            }else{
-              this.toastr.warning(data.msg,'');
-            }
-          }
-        )
-  }else if(type != undefined && type == true && this.paymentReceiptValidation != false){
-    this.testingCalForm.step7.is_draft = true;
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.testingCalForm)
-    .subscribe(
-    res => {
-      //console.log(res,'res')
-      if(res['status'] == true) {
-        this.toastr.success(res['msg'], '');
-        //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
-      }else{
-        this.toastr.warning(res['msg'], '');
-      }
-    });
-  }
-  else{
-    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
-  }
-
-}
 
 onSubmitStep8(ngForm8: any) {
   //Paypal config data
@@ -1535,6 +2291,83 @@ onSubmitStep8(ngForm8: any) {
         console.log("Loding button...");
       }
     }, 100)
+}
+
+onSubmitPaymentInformation(ngForm9: any, type?: boolean){
+  //console.log("payment submitting.....");
+  this.testingCalForm = {};
+  this.testingCalForm.step9 = {};
+
+    let dtFormat: string = '';
+    if(this.voucherSentData['payment_date'] != undefined && 
+      this.voucherSentData['payment_date']._i != undefined){
+      var dtData = this.voucherSentData['payment_date']._i;
+      var year = dtData.year;
+      var month = dtData.month;
+      var date = dtData.date;
+      dtFormat = year + "-" + month + "-" + date;
+    }
+    //     
+
+  this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
+  this.voucherFile.append('amount',this.voucherSentData['amount']);
+  this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
+  this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
+  this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
+  this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
+  this.voucherFile.append('voucher_date',dtFormat);
+  this.voucherFile.append('accreditation',this.formApplicationId);
+  // this.voucherFile.append('application_id',this.formApplicationId);
+      
+  this.loader = false;
+  if(ngForm9.form.valid && this.paymentReceiptValidation != false) {
+    // console.log(this.voucherFile);
+      this._trainerService.paymentVoucherSave((this.voucherFile))
+      .subscribe(
+          result => {
+            this.loader = true;
+            let data: any = result;
+            //console.log("submit voucher: ", data);
+            if(data.status){
+              //this.voucherFile = new FormData();
+              //this.voucherSentData = {};
+              //this.toastr.success("Your form has been successfully submitted and it is under review.We will update you shortly.",'THANK YOU');
+              setTimeout(()=>{
+                let elem = document.getElementById('openAppDialog');
+                console.log("App dialog hash....", elem);
+                if(elem){
+                  elem.click();
+                }
+              }, 100)
+              //this.openView('appComp','');
+              setTimeout(() => {                    
+                // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+                this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+              },3500)
+              
+            }else{
+              this.toastr.warning(data.msg,'');
+            }
+          }
+        )
+  }else if(type != undefined && type == true && this.paymentReceiptValidation != false){
+    this.testingCalForm.step9.is_draft = true;
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.testingCalForm)
+    .subscribe(
+    res => {
+      //console.log(res,'res')
+      if(res['status'] == true) {
+        this.toastr.success(res['msg'], '');
+        //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+      }else{
+        this.toastr.warning(res['msg'], '');
+      }
+    });
+  }
+  else{
+    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+  }
+
 }
 
 agreeView(){

@@ -21,11 +21,11 @@ export class AppService {
   currentlatitude: any;
   
 
-  // public apiServerUrl         =   'https://dev-service.eiac.gov.ae/webservice';
-  // public apiRequestUrl        =   'https://dev-service.eiac.gov.ae/';
-
   public apiServerUrl         =   'https://dev-service.eiac.gov.ae/webservice';
   public apiRequestUrl        =   'https://dev-service.eiac.gov.ae/';
+
+  public apiUatServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
+  // public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
 
   public countryURL           =   "https://raw.githubusercontent.com/sagarshirbhate/Country-State-City-Database/master/Contries.json";
   public assetsBasePath       =   "https://dev-portal.eiac.gov.ae/assets/csc-json/";
@@ -37,11 +37,16 @@ export class AppService {
   public regExEmail: any;
   user = null;
   public mapboxToken = 'pk.eyJ1IjoicHJpbmF2IiwiYSI6ImNrNmh4YXVpcTJwbnMzbm4zYTc1ZG5kbHIifQ.lEliOwWLfcau6c0McnkGUA';
+  // private node:Subject<Node> = new BehaviorSubject();
+  // dynamicVal:any;
+  // dynamicVal: Subject<any> = new Subject<any>();
+  public setValue: any;
+  public oldScopeData: any;
 
   constructor(public http: HttpClient, private _constant: Constants,
     private _flashMessage: FlashMessagesService,
     public dialog: MatDialog,public snackBar: MatSnackBar, private store: Store<AppState>) { 
-
+      // this.dynamicVal = new Subject<any>();
       //initilize input type regex
       this.regExName = /^[a-zA-Z\s]*$/;
       this.regExEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -50,7 +55,7 @@ export class AppService {
       this.regExUrl = '/(\w*\W*)?\w*(\.(\w)+)+(\W\d+)?(\/\w*(\W*\w)*)*/';
 
       //check token
-      
+      this.setValue = 0;
     }
 
 /*
@@ -72,6 +77,45 @@ function getFeesPerTrainee(training_days){
 }
 
 */
+
+getObjectLength(obj: any){
+  let count: number =0;
+  for(var key in obj){
+    if(obj.hasOwnProperty(key)){
+      count++;
+    }
+  }
+  return count;
+} 
+
+setValueUrl(value) {
+  console.log(">>assign value: ", value);
+  this.setValue =  value;
+}
+getValue(){
+  console.log(">>get value: ", this.setValue);
+  return this.setValue;
+}
+
+jsonToArray(data: any){
+  var result = [];
+  console.log("get convert: ", data);
+    for(var i in data){
+      result.push([i,data[i]]);
+    }
+    console.log("convert: ", result);
+  return result;    
+}
+
+// getDynamic(): Observable<any> {
+//   return this.dynamicVal.asObservable();
+// }
+// addDynamicsVal(data) {
+ 
+//   this.dynamicVal.next({value: 2});
+//   console.log(data,'segsrgtd',this.dynamicVal);
+// }
+
 addMinutesToTime()
 {
   var x = 30; //minutes interval
