@@ -158,7 +158,7 @@
                     <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
                         <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
                             <td class="fnt-clr">
-                                <a href="javascript:void(0)" (click)="getRouteId(item.id)" routerLink="/dashboard/operations/accreditation-service-details/{{item.id}}" title="View" alt="View">
+                                <a href="javascript:void(0)" (click)="getRouteId(item.id)" title="View" alt="View">
                                 {{item.id}}</a></td>
                             <td>
                                 {{item.created | date :'dd-MMM-yyyy' }}
@@ -179,6 +179,7 @@
                                 <span *ngIf="item.form_meta == 'testing_calibration'">Testing Calibration</span>
                                 <span *ngIf="item.form_meta == 'inspection_body'">Inspection Bodies</span>
                                 <span *ngIf="item.form_meta == 'health_care'">Health Care</span>
+                                <span *ngIf="item.form_meta == 'certification_bodies'">Certification Bodies</span>
                             </td> 
                             <td>
                                 {{item.location}}
@@ -187,6 +188,7 @@
                                 <a href="javascript:void(0)" *ngIf="item.form_meta == 'testing_calibration'" alt="Edit" routerLink="/dashboard/cab_client/testing-calibration-form/{{item.id}}"><span class="icon-edit"></span></a>
                                 <a href="javascript:void(0)" *ngIf="item.form_meta == 'inspection_body'" alt="Edit" routerLink="/dashboard/cab_client/inspection-bodies-form/{{item.id}}"><span class="icon-edit"></span></a>
                                 <a href="javascript:void(0)" *ngIf="item.form_meta == 'health_care'" alt="Edit" routerLink="/dashboard/cab_client/health-care-form/{{item.id}}"><span class="icon-edit"></span></a>
+                                <a href="javascript:void(0)" *ngIf="item.form_meta == 'certification_bodies'" alt="Edit" routerLink="/dashboard/cab_client/certification-bodies-form/{{item.id}}"><span class="icon-edit"></span></a>
                                 <!-- <a href="javascript:void(0)" (click)="open(courseVoucher, item.id)" alt="Upload Proforma Invoice" title="Upload Proforma Invoice"><span class="icon-document-pen"></span></a> -->
                                 <!-- <ng-container *ngIf="item.training_course_type === 'custom_course'" class="action fnt-clr">
                                     <a href="javascript:void(0)" (click)="openView(courseView, item.id)" title="View" alt="View"><span class="icon-document"></span></a>

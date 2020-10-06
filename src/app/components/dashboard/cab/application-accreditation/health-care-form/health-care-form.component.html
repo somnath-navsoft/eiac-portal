@@ -1,4 +1,4 @@
-<!-- <app-loader *ngIf="loader"></app-loader> -->
+<app-loader *ngIf="loader"></app-loader>
 <div class="main-content">
        
     <section>
@@ -570,7 +570,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-sub">
-                                                    <span>Is Testing/Calibration the main activity of the organization :*</span>
+                                                    <span>Is Healthcare the main activity of the organization :*</span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -692,7 +692,7 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <button class="cancel-bttn" type="button">SAVE AS DRAFT</button>
+                                        <button class="cancel-bttn" (click)="savedraftStep('step1')" type="button">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health">AGREE</button>
                                 </div>

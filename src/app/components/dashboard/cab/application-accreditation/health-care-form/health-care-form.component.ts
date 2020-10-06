@@ -702,7 +702,7 @@ validateFile(fileEvent: any) {
 
 
 onSubmitStep1(ngForm1: any){
-  this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+  // this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
   if(this.step1Data.duty_shift == '1')
   {
     if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
@@ -1052,7 +1052,7 @@ savedraftStep(stepCount) {
 }
 
 onSubmitStep2(ngForm2: any){
-  this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+  // this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
 
   if(ngForm2.form.valid) {
     this.healthCareForm = {};
@@ -1093,7 +1093,7 @@ onSubmitStep2(ngForm2: any){
 }
 
 onSubmitStep3(ngForm3: any){
-  this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+  // this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
   if(ngForm3.form.valid) {
     this.healthCareForm = {};
     // this.step3Data = {};
@@ -1145,7 +1145,7 @@ onSubmitStep3(ngForm3: any){
 }
 
 onSubmitStep4(ngForm4: any){
-this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
+// this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
   if(ngForm4.form.valid) {
     this.healthCareForm = {};
     this.healthCareForm.step4 = {};
@@ -1179,7 +1179,7 @@ onSubmitStep5(ngForm5: any) {
 }
 
 onSubmitStep6(ngForm6: any){
-  this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+  // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
   if(ngForm6.form.valid) {
     this.healthCareForm = {};
     this.healthCareForm.step6 = {};

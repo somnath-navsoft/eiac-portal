@@ -79,6 +79,10 @@ export class LayoutComponent implements OnInit {
           this._service.setValueUrl(splitUrl[4]);
         }else if(splitUrl[3] == 'health-care-form') {
           this._service.setValueUrl(splitUrl[4]);
+        }else if(splitUrl[3] == 'certification-bodies-form') {
+          this._service.setValueUrl(splitUrl[4]);
+        }else{
+          this._service.setValueUrl('');
         }
 
         if(splitUrl[1] == 'reset-password')
