@@ -2,7 +2,7 @@ import { Injectable, EventEmitter, Output } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { HttpClient, HttpHeaders  } from "@angular/common/http";
 import {Http, Headers, RequestOptions} from '@angular/http';
-import { from, Subject } from 'rxjs';
+import { from, Subject, Subscription } from 'rxjs';
 import {BehaviorSubject}  from "rxjs";
 import { VERSION, MatDialogRef, MatDialog, MatDatepicker, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 //import {HappinessMeterComponent} from '../pages/common-all/happiness-meter/happiness-meter.component';
@@ -41,7 +41,12 @@ export class AppService {
   // dynamicVal:any;
   // dynamicVal: Subject<any> = new Subject<any>();
   public setValue: any;
+  public setIBValue: any;
   public oldScopeData: any;
+  userDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  userData: any;
+  public urlData = new Subject<any>();
+  urlSubscription: Subscription;
 
   constructor(public http: HttpClient, private _constant: Constants,
     private _flashMessage: FlashMessagesService,
@@ -56,6 +61,7 @@ export class AppService {
 
       //check token
       this.setValue = 0;
+      this.userData = this.userDataSource.asObservable();
     }
 
 /*
@@ -87,6 +93,15 @@ getObjectLength(obj: any){
   }
   return count;
 } 
+setValueUrlIB(value: any) {
+  console.log(">>assign IB value: ", value);
+  //this.userDataSource.next(value);
+  //this.setIBValue =  value;
+  // const currentValue = this.userDataSource.value;
+  // const updatedValue = [...currentValue, value];
+  // this.userDataSource.next(updatedValue);
+  this.urlData.next(value); 
+}
 
 setValueUrl(value) {
   console.log(">>assign value: ", value);
@@ -95,6 +110,19 @@ setValueUrl(value) {
 getValue(){
   console.log(">>get value: ", this.setValue);
   return this.setValue;
+}
+getValueIB(){
+  console.log(">>get value IB: ", this.setIBValue);
+  this.urlSubscription = this.urlData.subscribe(
+    (message) => {
+      //this.message = message;
+      console.log("@value: ", message);
+    }
+  );
+  // this.userData.subscribe(rec => {
+  //     console.log("<><><> Get Value: ", rec);
+  // })
+  //return this.setIBValue;
 }
 
 jsonToArray(data: any){

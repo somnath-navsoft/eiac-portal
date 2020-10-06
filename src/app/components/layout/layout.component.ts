@@ -76,7 +76,8 @@ export class LayoutComponent implements OnInit {
         if(splitUrl[3] == 'testing-calibration-form') {
           this._service.setValueUrl(splitUrl[4]);
         }else if(splitUrl[3] == 'inspection-bodies-form') {
-          this._service.setValueUrl(parseInt(splitUrl[4]));
+          //alert('IB found...' + splitUrl[4]);
+          this._service.setValueUrlIB(splitUrl[3]);
         }
 
         if(splitUrl[1] == 'reset-password')

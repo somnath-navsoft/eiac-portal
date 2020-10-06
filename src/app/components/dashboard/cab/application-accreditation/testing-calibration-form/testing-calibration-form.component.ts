@@ -738,7 +738,7 @@ getCriteria(value, secInd: any){
     //   console.log(res,'sdsgdsg');
     // });
     this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
-    // console.log(this.urlVal,'valofurl');
+    console.log(this.urlVal,'valofurl');
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');

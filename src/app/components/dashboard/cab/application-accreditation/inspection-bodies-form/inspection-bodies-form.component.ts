@@ -587,8 +587,8 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.profileComplete = sessionStorage.getItem('profileComplete');
 
     //this.routeId = sessionStorage.getItem('routerId');
-    this.routeId = this.urlVal;//this.Service.getValue() != '' ? this.Service.getValue() : '';
-    console.log("@@router: ", this.routeId, " -- ", this.Service.setValue);
+    //this.routeId = this.urlVal;//this.Service.getValue() != '' ? this.Service.getValue() : '';
+    //console.log("@@router: ", this.routeId, " -- ", this.Service.setValue);
     this.step5Data.scheme_ids = [];
 
 
@@ -1082,9 +1082,9 @@ export class InspectionBodiesFormComponent implements OnInit {
   }
 
   loadAppData(){
-    console.log(">> >route id:  ", " -- ", this.routeId, " -- ", this.urlVal, " -- ", );
+    console.log(">> >route URL id:  ", this.urlVal, " -- ", );
     let url = '';
-    this.routeId = 961;//954;//931;
+    this.routeId = this.urlVal;//961;//954;//931;
   // return;
     if(this.routeId != ''){
       let getId= (this.routeId);
@@ -1326,9 +1326,9 @@ export class InspectionBodiesFormComponent implements OnInit {
         }
         //Step 7
         if(getData.data.onBehalfApplicantDetails != null && getData.data.onBehalfApplicantDetails != undefined){
-          let getAuthData = getData.data.onBehalfApplicantDetails[0];
-          ////console.log(">>> Auth data: ", getAuthData);
-          this.step7Data.organization_name        = getAuthData.organization_name;
+          let getAuthData = getData.data.onBehalfApplicantDetails;
+          console.log(">>> Auth data: ", getAuthData);
+          this.step7Data.organization_name        = (getAuthData.organization_name != undefined) ? getAuthData.organization_name : '';
           this.step7Data.representative_name      = getAuthData.representative_name;
           this.step7Data.designation              = getAuthData.designation;
           this.step7Data.digital_signature        = getAuthData.digital_signature;
@@ -1975,10 +1975,10 @@ export class InspectionBodiesFormComponent implements OnInit {
     //     this.recommendStatus = true;
     //   }
     // }
-    if(!this.authorizationStatus && type == undefined){
-      //this.isSubmit = false;
-      this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
-    }
+    // if(!this.authorizationStatus && type == undefined){
+    //   //this.isSubmit = false;
+    //   this.toastr.warning('Please Fill required field','Validation Error','');
+    // }
     // else if(this.recommendStatus != true){
     //   this.isSubmit = false;
     //   this.toastr.error('Please Check any recommend the visit ', '');
@@ -2116,7 +2116,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         }
       });
       }else{
-    this.toastr.warning('@Please Fill required field','Validation Error',{timeOut:5000});
+    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }    
   }
 
