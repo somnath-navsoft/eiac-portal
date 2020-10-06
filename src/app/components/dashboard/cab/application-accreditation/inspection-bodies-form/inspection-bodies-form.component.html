@@ -258,11 +258,18 @@
                                             <div class="col-md-3">
                                                 <mat-form-field class="cab-data">
                                                     <mat-label>Trade License Date of Expiry</mat-label>
-                                                    <input matInput [matDatepicker]="expiry_data" (click)="Service._openCalendar(expiry_data)" [min]="minDate" name="date_of_expiry" [(ngModel)]="step1Data.date_of_expiry" placeholder="Date of Expiry" required>
+                                                    <input matInput [matDatepicker]="expiry_data" (click)="Service._openCalendar(expiry_data)" name="date_of_expiry" [(ngModel)]="step1Data.date_of_expiry" placeholder="Date of Expiry">
                                                     <mat-datepicker-toggle matSuffix [for]="expiry_data"></mat-datepicker-toggle>
                                                     <mat-datepicker #expiry_data disabled="false"></mat-datepicker>
                                                     <mat-error></mat-error>
                                                 </mat-form-field>
+                                                <!-- <mat-form-field class="cab-data">
+                                                    <mat-label>Trade License Date of Expiry</mat-label>
+                                                    <input matInput [matDatepicker]="expiry_data" (click)="Service._openCalendar(expiry_data)" [min]="minDate" name="date_of_expiry" [(ngModel)]="step1Data.date_of_expiry" placeholder="Date of Expiry" required>
+                                                    <mat-datepicker-toggle matSuffix [for]="expiry_data"></mat-datepicker-toggle>
+                                                    <mat-datepicker #expiry_data disabled="false"></mat-datepicker>
+                                                    <mat-error></mat-error>
+                                                </mat-form-field> -->
                                             </div>
                                         </div>
 
@@ -488,7 +495,8 @@
                                                         <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                     </mat-select>
                                                 </mat-form-field>
-                                                <p class="error" *ngIf="dutyTime1 == false">This is required</p>
+                                                <!-- <p class="error" *ngIf="dutyTime1 == false">This is required</p> -->
+                                                <p class="error" *ngIf="dutyTime1 == false">Please enter from and to duty time</p>
                                             </div>
                                             <div class="col-md-3">
                                                     <!-- <mat-radio-button></mat-radio-button> -->
@@ -508,7 +516,8 @@
                                                         <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                     </mat-select>
                                                 </mat-form-field>
-                                                <p class="error" *ngIf="!dutyTime2">Please enter from and to duty time</p>
+                                                <!-- <p class="error" *ngIf="!dutyTime2">Please enter from and to duty time</p> -->
+                                                <p class="error" *ngIf="dutyTime2 == false">Please enter from and to duty time</p>
                                             </div>
                                             <div class="col-md-3">
                                                     <!-- <mat-radio-button></mat-radio-button> -->
@@ -526,7 +535,8 @@
                                                         <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                     </mat-select>
                                                 </mat-form-field>
-                                                <p class="error" *ngIf="!dutyTime3">Please enter from and to duty time</p>
+                                                <!-- <p class="error" *ngIf="!dutyTime3">Please enter from and to duty time</p> -->
+                                                <p class="error" *ngIf="dutyTime3 == false">Please enter from and to duty time</p>
                                             </div>
                                         </div>
                                         

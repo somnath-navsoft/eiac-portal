@@ -80,7 +80,7 @@ export class InspectionBodiesFormComponent implements OnInit {
 
   routeId: any;  
 
-  public isSubmit:boolean = true;
+  public isSubmit:boolean = false;
   dutyTime1: boolean = true;
   dutyTime2: boolean = true;
   dutyTime3: boolean = true;
@@ -1082,13 +1082,12 @@ export class InspectionBodiesFormComponent implements OnInit {
   }
 
   loadAppData(){
-    //897
     console.log(">> >route id:  ", " -- ", this.routeId, " -- ", this.urlVal, " -- ", );
     let url = '';
     this.routeId = 961;//954;//931;
   // return;
-    if(this.routeId != '' && (this.routeId) > 0){
-      let getId= parseInt(this.routeId);
+    if(this.routeId != ''){
+      let getId= (this.routeId);
       url = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+getId;
       console.log(">>>Get url and ID: ", url, " :: ", getId);
       this.Service.getwithoutData(url)
@@ -1942,11 +1941,11 @@ export class InspectionBodiesFormComponent implements OnInit {
     //   return;
     // }
 
-
+    
 
     let checkCount = 0;
     for(let key in this.authorizationList) {
-      ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
+      console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
       if(this.authorizationList[key]) {  
         this.authorizationStatus = true;      
         checkCount++;
@@ -1961,6 +1960,8 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.authorizationStatus = false;
     }
 
+    console.log(">>> Check status count: ", checkCount);
+
     ////console.log("authorize checklist count: ",checkCount)
     // for(let key in this.authorizationList) {
     //   ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
@@ -1974,7 +1975,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     //     this.recommendStatus = true;
     //   }
     // }
-    if(!this.authorizationStatus){
+    if(!this.authorizationStatus && type == undefined){
       //this.isSubmit = false;
       this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
     }
@@ -2000,6 +2001,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       console.log(">>>Step7 submit Data: ", this.inspectionBodyForm, " -- ", this.inspectionBodyForm.step7);
 
      // return;
+     console.log(">>> Enter....1 ", type, " -- ", ngForm7.form.valid, " -- ", this.authorizationStatus)
 
     if(ngForm7.form.valid && type == undefined && this.authorizationStatus == true){
       
@@ -2092,7 +2094,8 @@ export class InspectionBodiesFormComponent implements OnInit {
 
       //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
     }else if(type != undefined && type == true){
-      this.inspectionBodyForm.step6.is_draft = true;
+      console.log(">>> Enter....2 ", type, " -- ", ngForm7.form.valid, " -- ", this.authorizationStatus)
+      this.inspectionBodyForm.step7.is_draft = true;
       this.inspectionBodyForm.saved_step     = 7; 
       // this.toastr.success('Application Successfully Submitted', '');
       //     setTimeout(()=> {
@@ -2113,7 +2116,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         }
       });
       }else{
-    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    this.toastr.warning('@Please Fill required field','Validation Error',{timeOut:5000});
     }    
   }
 
@@ -2136,52 +2139,104 @@ export class InspectionBodiesFormComponent implements OnInit {
     //return;
     //this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
     this.isApplicationSubmitted = true;
-    if(this.step1Data.duty_shift == '1' && typeof this.step1Data.duty_from1 == 'undefined' && typeof this.step1Data.duty_to1 == 'undefined')
+    if(this.step1Data.duty_shift == '1')
     {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+      }else{
+        this.dutyTime1 = true;
+        this.isSubmit = true;
+      }
       this.dutyTime1 = false;
       this.isSubmit = false;
-    }else{
-      this.dutyTime1 = true;
-    }
-    if(this.step1Data.duty_shift == '2' && typeof this.step1Data.duty_from2 == 'undefined' && typeof this.step1Data.duty_to2 == 'undefined')
+      
+    }else if(this.step1Data.duty_shift == '2')
     {
       if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
       {
         this.dutyTime1 = false;
-      }else{
-        this.dutyTime1 = true;
+      }else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined') {
+        this.dutyTime2 = false;
+      }else if(typeof this.step1Data.duty_from2 != 'undefined' || typeof this.step1Data.duty_to2 != 'undefined'){
+        this.dutyTime2 = true;
+        this.isSubmit = true;
       }
-      this.dutyTime2 = false;
-      this.isSubmit = false;
-    }else{
-      this.dutyTime2 = true;
-    }
-    if(this.step1Data.duty_shift == '3' && typeof this.step1Data.duty_from3 == 'undefined' && typeof this.step1Data.duty_to3 == 'undefined')
+      // this.dutyTime2 = false;
+      // this.isSubmit = false;
+    }else if(this.step1Data.duty_shift == '3')
     {
       if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
       {
         this.dutyTime1 = false;
-      }else{
-        this.dutyTime1 = true;
       }
-      if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
+      else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
       {
         this.dutyTime2 = false;
-      }else{
-        this.dutyTime2 = true;
       }
-      this.dutyTime3 = false;
-      this.isSubmit = false;
-    }else{
-      this.dutyTime3 = true;
-    }
-
-    if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
+      else if(typeof typeof this.step1Data.duty_from3 == 'undefined' || typeof this.step1Data.duty_to3 == 'undefined') {
+        this.dutyTime3 = false;
+      }else if(typeof this.step1Data.duty_from3 != 'undefined' || typeof this.step1Data.duty_to3 != 'undefined') {
+        this.dutyTime3 = true;
+        this.isSubmit = true;
+      }
+      // this.dutyTime3 = false;
+      // this.isSubmit = false;
+    }else if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
       this.dutyTime1 = false;
       this.isSubmit = false;
     }else{
       this.dutyTime1 = true;
+      this.dutyTime2 = true;
+      this.dutyTime3 = true;
+      this.isSubmit = true;
     }
+    // if(this.step1Data.duty_shift == '1' && typeof this.step1Data.duty_from1 == 'undefined' && typeof this.step1Data.duty_to1 == 'undefined')
+    // {
+    //   this.dutyTime1 = false;
+    //   this.isSubmit = false;
+    // }else{
+    //   this.dutyTime1 = true;
+    // }
+    // if(this.step1Data.duty_shift == '2' && typeof this.step1Data.duty_from2 == 'undefined' && typeof this.step1Data.duty_to2 == 'undefined')
+    // {
+    //   if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+    //   {
+    //     this.dutyTime1 = false;
+    //   }else{
+    //     this.dutyTime1 = true;
+    //   }
+    //   this.dutyTime2 = false;
+    //   this.isSubmit = false;
+    // }else{
+    //   this.dutyTime2 = true;
+    // }
+    // if(this.step1Data.duty_shift == '3' && typeof this.step1Data.duty_from3 == 'undefined' && typeof this.step1Data.duty_to3 == 'undefined')
+    // {
+    //   if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+    //   {
+    //     this.dutyTime1 = false;
+    //   }else{
+    //     this.dutyTime1 = true;
+    //   }
+    //   if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
+    //   {
+    //     this.dutyTime2 = false;
+    //   }else{
+    //     this.dutyTime2 = true;
+    //   }
+    //   this.dutyTime3 = false;
+    //   this.isSubmit = false;
+    // }else{
+    //   this.dutyTime3 = true;
+    // }
+
+    // if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
+    //   this.dutyTime1 = false;
+    //   this.isSubmit = false;
+    // }else{
+    //   this.dutyTime1 = true;
+    // }
     //this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
 
     this.inspectionBodyForm = {};
@@ -2218,180 +2273,41 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.step1Data.official_email = " ";
     }
 
-    if(this.step1Data.duty_shift == '1'){
-      this.step1Data.duty_from2 = '00:00:00'
-      this.step1Data.duty_to2 = '00:00:00';
-      this.step1Data.duty_from3 = '00:00:00'
-      this.step1Data.duty_to3 = '00:00:00';
-    }
-    if(this.step1Data.duty_shift == '2'){
-      this.step1Data.duty_from1 = '00:00:00'
-      this.step1Data.duty_to1 = '00:00:00';
-      this.step1Data.duty_from3 = '00:00:00';
-      this.step1Data.duty_to3 = '00:00:00';
-    }
-    if(this.step1Data.duty_shift == '3'){
-      this.step1Data.duty_from2 = '00:00:00'
-      this.step1Data.duty_to2 = '00:00:00';
-      this.step1Data.duty_from1 = '00:00:00'
-      this.step1Data.duty_to1 = '00:00:00';
-    }
-
-    if(this.step1Data.duty_from1 == undefined){
-      this.step1Data.duty_from1 = ''
-      this.step1Data.duty_to1 = '';
-    }
-    if(this.step1Data.duty_from2 == undefined){
-      this.step1Data.duty_from2 = ''
-      this.step1Data.duty_to2 = '';
-    }
-    if(this.step1Data.duty_from3 == undefined){
-      this.step1Data.duty_from3 = ''
-      this.step1Data.duty_to3 = '';
-    }
-
-
-    this.inspectionBodyForm.step1 = this.step1Data;      
-    // this.inspectionBodyForm.step1['ownOrgBasicInfo'] = [];
-    // this.inspectionBodyForm.step1['ownOrgMembInfo'] = [];
-    // this.inspectionBodyForm.step1['accreditationInfo'] = [];
-    
-    // if(!this.Service.isObjectEmpty(this.ownOrgBasicInfo[0])) {
-    //   //this.inspectionBodyForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
+    // if(this.step1Data.duty_shift == '1'){
+    //   this.step1Data.duty_from2 = '00:00:00'
+    //   this.step1Data.duty_to2 = '00:00:00';
+    //   this.step1Data.duty_from3 = '00:00:00'
+    //   this.step1Data.duty_to3 = '00:00:00';
     // }
-    // if(!this.Service.isObjectEmpty(this.ownOrgMembInfo[0])) {
-    //   //this.inspectionBodyForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
+    // if(this.step1Data.duty_shift == '2'){
+    //   this.step1Data.duty_from1 = '00:00:00'
+    //   this.step1Data.duty_to1 = '00:00:00';
+    //   this.step1Data.duty_from3 = '00:00:00';
+    //   this.step1Data.duty_to3 = '00:00:00';
     // }
-    // if(!this.Service.isObjectEmpty(this.accreditationInfo[0])) {
-    //   this.inspectionBodyForm.step1['accreditationInfo'] = this.accreditationInfo;
+    // if(this.step1Data.duty_shift == '3'){
+    //   this.step1Data.duty_from2 = '00:00:00'
+    //   this.step1Data.duty_to2 = '00:00:00';
+    //   this.step1Data.duty_from1 = '00:00:00'
+    //   this.step1Data.duty_to1 = '00:00:00';
     // }
 
-    // let scopeValues: any =[];
-    // let scopeIds:any =[];
-    // let scopeSelValues:any =[];
-    // //////console.log("dynamic ", this.dynamicScopeModel, " -- ", this.dynamicScopeFieldColumns);
-    // var key = '';
-    // var key2 = '';
-    // let resultAr: any={};
-    // let scopeCollections: any={};
-    // scopeCollections['scope_heading'] = {};
-    // scopeCollections['scope_value'] = [];
-
-    // this.dynamicScopeFieldColumns.forEach((item,key) => {
-    //     //////console.log(item);
-    //     let keyIds = item[0].idVal;
-    //     let name = item[0].name;
-    //     //////console.log("...", name);
-    //     let tempObj = {};
-    //    tempObj[keyIds] = name;
-    //     //////console.log("...", tempObj);
-    //     //scopeCollections['scope_heading'][key] = {};  
-    //     //scopeCollections['scope_heading'][key] = tempObj; 
-    //     //scopeCollections['scope_heading'] = tempObj; 
-    //     scopeCollections['scope_heading'][keyIds] = name;
-    //     //scopeCollections['scope_heading'][0].push( tempObj); 
-    //     //let custKey = ids.toString();
-    //     //this.dynamicScopeModel.fieldLines[key][this.dynamicScopeFieldColumns[key][0].title] = getValue;
-    //     //scopeCollections['scope_heading'][key][custKey] = 'test';
-    //     //scopeCollections['scope_heading'].push(tempObj);
-    //     // scopeCollections['scope_heading'][key] = {
-    //     //   tempObj
-    //     // }
-    // });
-    // ////console.log(">>> build scope: ", scopeCollections);
-    // //return;
-
-
-    // for(key in this.dynamicScopeModel){
-    //     if(key == 'fieldLines'){
-    //       this.dynamicScopeModel.fieldLines.forEach((rec,key1) => {
-    //             ////console.log(rec, " -- ", key);
-    //             //resultAr[key1] = [];
-    //             scopeIds = [];
-    //             scopeSelValues = [];
-    //             if(typeof rec === 'object'){
-    //               for(key2 in rec){
-                      
-    //                   let selectVal;
-    //                   let selectId;
-                      
-    //                   let getDataValues = this.dynamicScopeFieldColumns.find(item => item[0].values == key2)
-    //                   let getSelectValues = this.dynamicScopeFieldColumns.find(item => item[0].title == key2)
-    //                   if(getDataValues){
-    //                     let fdata: any = getDataValues[0];                        
-    //                     if(fdata.values == key2){
-    //                       selectId = fdata.idVal;//rec[key2][0].id;
-    //                       scopeIds.push({id: selectId})
-    //                     }
-    //                   }
-    //                   if(getSelectValues){
-    //                     let fdata: any = getSelectValues[0];
-    //                     if(fdata.title == key2){
-    //                       selectVal = rec[key2];
-    //                       scopeSelValues.push({value: selectVal})
-    //                     }
-    //                   }
-    //                   //scopeValues.push({id:selectId , value: selectVal});
-
-    //                   ////console.log("scope aa: ", key2, " -- ", selectVal, " -- ", selectId);
-
-    //               }
-    //             }
-    //             resultAr[key1] = [];
-                
-    //             for(var k=0; k<scopeIds.length; k++){
-    //               let idKey = scopeIds[k].id;
-    //               let valueKey = scopeSelValues[k].value;
-    //               let tempObj = {};
-    //               tempObj[idKey] = valueKey;
-    //               resultAr[key1].push({id: idKey, value: valueKey});
-    //            }
-    //            //resultAr[key1] = tempObj;
-    //            ////console.log('scope object: ', " -- ", resultAr);
-    //       })
-    //     }
+    // if(this.step1Data.duty_from1 == undefined){
+    //   this.step1Data.duty_from1 = ''
+    //   this.step1Data.duty_to1 = '';
     // }
-    
-    // if(scopeCollections){
-    //   let resultTempAr: any ={};
-    //   let tempObj: any = {};
-    //   let rstAr: any=[];
-    //   var p;
-    //   for(p in resultAr){
-    //     ////console.log(p, " -- ", resultAr[p])
-    //     //resultTempAr[p] = [];
-    //     if(resultAr[p].length){
-    //       resultAr[p].forEach(item =>{
-    //         tempObj = {};
-    //           //tempObj[item.id] = item.value;
-    //           resultTempAr[item.id] = item.value;
-    //           //resultTempAr[p].push(tempObj);
-    //       })
-    //     }
-    //     rstAr.push(resultTempAr);
-    //   }
-    //   ////console.log('<<>>>> ', resultTempAr, " -- ", rstAr);
-    //   scopeCollections['scope_value'] = rstAr;
+    // if(this.step1Data.duty_from2 == undefined){
+    //   this.step1Data.duty_from2 = ''
+    //   this.step1Data.duty_to2 = '';
+    // }
+    // if(this.step1Data.duty_from3 == undefined){
+    //   this.step1Data.duty_from3 = ''
+    //   this.step1Data.duty_to3 = '';
     // }
 
 
-    // }
-    // ////console.log("@selected scope values: ", scopeIds, " =-- ", scopeSelValues);
-    // ////console.log("#Scope result: ", resultAr, " -- ", scopeCollections);
-    // // this.dynamicScopeModel.forEach(rec => {
-    // //      if(rec.fieldLines){
-    // //       ////console.log("field rows: ", rec.fieldLines);
-    // //      }
-    // // })
-    // if(scopeCollections != undefined){
-    //   this.inspectionBodyForm.step1['scope_heading'] = scopeCollections['scope_heading'];
-    //   this.inspectionBodyForm.step1['scope_value'] = scopeCollections['scope_value'];
-    // }
-    //////console.log(">> submit: ", this.inspectionBodyForm);
-    //return;    
-    //this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
-    //&& this.tradeLicensedValidation != false
-    if(ngForm1.form.valid && type == undefined) {
+    this.inspectionBodyForm.step1 = this.step1Data;  
+    if(ngForm1.form.valid && type == undefined && this.isSubmit == true) {
 
       if(this.step1Data.is_bod_select != undefined && this.step1Data.is_bod_select == 1){
         this.step1Data.is_bod = true;
@@ -2550,8 +2466,8 @@ export class InspectionBodiesFormComponent implements OnInit {
 
     //if(this.proficiencyTesting.length > 0 && this.step2Data.proficiency_testing_val > 0) {
       this.step2Data.proficiency_testing_val = 1;
+      if(type == undefined){
       this.inspectionBodyForm.step2['proficiencyTesting'] = this.proficiencyTesting;
-    //}
         
         this.proficiencyTesting.forEach((rec,key) => {
               let dtFormat = '';
@@ -2565,11 +2481,12 @@ export class InspectionBodiesFormComponent implements OnInit {
             ////console.log(">>DT: ", dtFormat);
             this.proficiencyTesting[key].date = dtFormat;
         })
+      }
         ////console.log(">> Data: ", this.proficiencyTesting);
 
 
-    //console.log("@Step2 submit...", this.inspectionBodyForm, " --- ", this.formApplicationId);
-    //return;
+    console.log("@Step2 submit...", this.inspectionBodyForm, " --- ", this.formApplicationId);
+   // return;
 
     if(ngForm2.form.valid && type == undefined) {
       //console.log('>>>>fffff: ', this.inspectionBodyForm);
@@ -3041,6 +2958,9 @@ findObjectKeyValues(object: any, value: string){
                       }else if(typeof fvalue === 'string'){
                         optionName = fvalue;
                       }
+                      else if(fvalue == undefined){
+                        optionName = '';
+                      }
                       else{
                         let getVal: any         = selTitleValues.find(data => data.field_value.id == fvalue)
                         if(getVal){                  
@@ -3126,6 +3046,7 @@ getMatchScheme(scId: any, scopeData: any){
   // }
 
   //this.saveScope();
+  console.log(">>>Enter....1:  ", type)
   this.inspectionBodyForm = {};
   this.inspectionBodyForm.step5 = {};
   this.inspectionBodyForm.step5 = this.step5Data;
@@ -3174,7 +3095,7 @@ getMatchScheme(scId: any, scopeData: any){
             }
       }
   }
-  if(errorScope){
+  if(errorScope && type === undefined){
     this.toastr.warning('Please Fill required field','Validation Error');
     return false;    
   }
@@ -3189,7 +3110,7 @@ getMatchScheme(scId: any, scopeData: any){
     //ngForm.form.valid &&
     if(!ngForm.form.valid && type == undefined && this.schemeRows.length == 1 && this.schemeRows[0].id === undefined) {
       console.log(">>>Bypass saving...");
-
+      console.log(">>>Enter....2")
       this.saveScope();
       console.log(">>> step5 submit...", this.step5Data, " -- ", this.inspectionBodyForm);
       this.inspectionBodyForm.step5.is_draft = false;
@@ -3228,6 +3149,7 @@ getMatchScheme(scId: any, scopeData: any){
     }
     else if(ngForm.form.valid && type == undefined) {
       console.log(">>>Scope saving...");
+      console.log(">>>Enter....3")
       this.saveScope();
       console.log(">>> step5 submit...", this.step5Data, " -- ", this.inspectionBodyForm);
       this.inspectionBodyForm.step5.is_draft = false;
@@ -3245,9 +3167,11 @@ getMatchScheme(scId: any, scopeData: any){
           }
         });
 
-    }else if(type != undefined && type == true){
+    }else if( type != undefined && type == true){
+      console.log(">>>Enter....4")
       this.inspectionBodyForm.step5.is_draft = true;
       this.inspectionBodyForm.saved_step = 5;
+      this.saveScope();
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
       .subscribe(
         res => {
@@ -3264,6 +3188,7 @@ getMatchScheme(scId: any, scopeData: any){
         });
 
     }else{
+      console.log(">>>...");
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
  }
