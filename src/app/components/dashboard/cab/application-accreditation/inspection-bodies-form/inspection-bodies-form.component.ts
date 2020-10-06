@@ -1082,9 +1082,9 @@ export class InspectionBodiesFormComponent implements OnInit {
   }
 
   loadAppData(){
-    console.log(">> >route URL id:  ", this.urlVal, " -- ", );
+    console.log(">> >route id:  ", " -- ", this.routeId, " -- ", this.urlVal, " -- ", );
     let url = '';
-    this.routeId = this.urlVal;//961;//954;//931;
+    this.routeId = 0;//954;//931;
   // return;
     if(this.routeId != ''){
       let getId= (this.routeId);

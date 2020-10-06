@@ -11,6 +11,7 @@ export class Constants{
 	public mediaPath: string 				= 'https://dev-service.eiac.gov.ae';
 	//trainerAPI: '/trainer',
 	//all_services: this.apiUrl + 'service_page/', 
+	public myvalue: any;
 	public API_ENDPOINT: any	=	{
 		authToken:  '/api/token/',
 		signUp: 'user-service/',

@@ -44,7 +44,7 @@ export class AppService {
   public setIBValue: any;
   public oldScopeData: any;
   userDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
-  userData: any;
+  publicuserData: any[] =[];
   public urlData = new Subject<any>();
   urlSubscription: Subscription;
 
@@ -60,8 +60,8 @@ export class AppService {
       this.regExUrl = '/(\w*\W*)?\w*(\.(\w)+)+(\W\d+)?(\/\w*(\W*\w)*)*/';
 
       //check token
-      this.setValue = 0;
-      this.userData = this.userDataSource.asObservable();
+      //this.setValue = 0;
+      //this.userData = this.userDataSource.asObservable();
     }
 
 /*
@@ -103,7 +103,7 @@ setValueUrlIB(value: any) {
   this.urlData.next(value); 
 }
 
-setValueUrl(value) {
+setValueUrl(value?:any) {
   console.log(">>assign value: ", value);
   this.setValue =  value;
 }
@@ -112,13 +112,11 @@ getValue(){
   return this.setValue;
 }
 getValueIB(){
-  console.log(">>get value IB: ", this.setIBValue);
-  this.urlSubscription = this.urlData.subscribe(
-    (message) => {
-      //this.message = message;
-      console.log("@value: ", message);
-    }
-  );
+  setTimeout(() => {
+    console.log(">>>getting val...",);
+    return this.setValue;
+  },100)
+  
   // this.userData.subscribe(rec => {
   //     console.log("<><><> Get Value: ", rec);
   // })
