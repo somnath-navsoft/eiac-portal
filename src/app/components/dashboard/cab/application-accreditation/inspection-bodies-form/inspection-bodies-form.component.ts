@@ -2164,26 +2164,30 @@ export class InspectionBodiesFormComponent implements OnInit {
     //////console.log("Submit calling: ", this.step1Data);
     //return;
     //this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+    
     this.isApplicationSubmitted = true;
     if(this.step1Data.duty_shift == '1')
     {
       if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
       {
         this.dutyTime1 = false;
+        this.isSubmit = false;
       }else{
         this.dutyTime1 = true;
         this.isSubmit = true;
       }
-      this.dutyTime1 = false;
-      this.isSubmit = false;
+      // this.dutyTime1 = false;
+      // this.isSubmit = false;
       
     }else if(this.step1Data.duty_shift == '2')
     {
       if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
       {
         this.dutyTime1 = false;
+        this.isSubmit = false;
       }else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined') {
         this.dutyTime2 = false;
+        this.isSubmit = false;
       }else if(typeof this.step1Data.duty_from2 != 'undefined' || typeof this.step1Data.duty_to2 != 'undefined'){
         this.dutyTime2 = true;
         this.isSubmit = true;
@@ -2195,13 +2199,16 @@ export class InspectionBodiesFormComponent implements OnInit {
       if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
       {
         this.dutyTime1 = false;
+        this.isSubmit = false;
       }
       else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
       {
         this.dutyTime2 = false;
+        this.isSubmit = false;
       }
       else if(typeof typeof this.step1Data.duty_from3 == 'undefined' || typeof this.step1Data.duty_to3 == 'undefined') {
         this.dutyTime3 = false;
+        this.isSubmit = false;
       }else if(typeof this.step1Data.duty_from3 != 'undefined' || typeof this.step1Data.duty_to3 != 'undefined') {
         this.dutyTime3 = true;
         this.isSubmit = true;
