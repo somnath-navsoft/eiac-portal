@@ -226,23 +226,23 @@ export class ClientCabProfileComponent implements OnInit {
             var stateList =  this.Service.getState();
             var cityList =  this.Service.getCity();
 
-            // stateList.subscribe( result => {
-            //   for(let key in result['states']) {
-            //     if(result['states'][key]['name'] == step1.state )
-            //     {
-            //       this.allStateList.push(result['states'][key]);
-            //     }
-            //   }
-            // });
+            stateList.subscribe( result => {
+              for(let key in result['states']) {
+                if(result['states'][key]['name'] == step1.state )
+                {
+                  this.allStateList.push(result['states'][key]);
+                }
+              }
+            });
 
-            // cityList.subscribe( result => {
-            //   for(let key in result['cities']) {
-            //     if(result['cities'][key]['name'] == step1.city )
-            //     {
-            //       this.allCityList.push(result['cities'][key]);
-            //     }
-            //   }
-            // });
+            cityList.subscribe( result => {
+              for(let key in result['cities']) {
+                if(result['cities'][key]['name'] == step1.city )
+                {
+                  this.allCityList.push(result['cities'][key]);
+                }
+              }
+            });
 
             this.step2Data.trade_license_number = step1.trade_license_number;
             this.step2Data.trade_license_name = trade_license_split[4];

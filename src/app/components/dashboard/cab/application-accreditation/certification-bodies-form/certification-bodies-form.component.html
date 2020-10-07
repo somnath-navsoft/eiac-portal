@@ -862,21 +862,21 @@
                 </div>
 
                 <div class="cust-stepper" id="perlim_visit"  [ngStyle]="{'display':'none'}">
-                    <form #ngForm6="ngForm" (ngSubmit)="onSubmitStep6(ngForm6)" autocomplete="off">
+                    <form #ngForm6="ngForm" (ngSubmit)="onSubmitStep6(ngForm6)" autocomplete="off">  
                         <div class="row form-bdy m-0">
-                            <div class="wrapper">  
+                            <div class="wrapper">
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr">
-                                                <h5>6. PERLIM VISIT</h5>
+                                                <h5>PERLIM VISIT</h5>
                                             </div>
                                             <hr>
                                         </div>
                                     </div>
                                     <div class="row mt-3">                                         
                                         <div class="col-md-12 p-0">
-                                            <div class="row">
+                                            <div class="row m-0">
                                                 <div class="col-md-6">
                                                     <div class="request-subhdr">
                                                         <h5>Request for perlim visit</h5>
@@ -886,8 +886,8 @@
                                                 <!-- (click)='proficiency_testing(1)' -->
                                                 <div class="col-md-6">
                                                     <div class="request_frm">
-                                                        <mat-radio-group name="perlim_visit_val" 
-                                                        [(ngModel)]="certificationBodiesForm.perlim_visit_val" required>
+                                                        <mat-radio-group name="is_prelim_visit" 
+                                                        [(ngModel)]="step6Data.is_prelim_visit" required>
                                                             <mat-radio-button value="1">Yes </mat-radio-button>
                                                             <mat-radio-button value="0">No </mat-radio-button>
                                                         </mat-radio-group>
@@ -897,45 +897,45 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12" *ngIf="certificationBodiesForm.perlim_visit_val === '1'">
+                                        <div class="col-md-12" *ngIf="step6Data.is_prelim_visit === '1'">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Select Date</mat-label>
-                                                        <input matInput  readonly="true" (click)="Service._openCalendar(perlim_visit_select_date)"  
-                                                        [matDatepicker]="perlim_visit_select_date"  placeholder="Select Date" name="perlim_visit_select_date" 
-                                                        [(ngModel)]="step7Data.perlim_visit_select_date" (dateChange)="setexDate()" required>
-                                                        <mat-datepicker-toggle matSuffix [for]="perlim_visit_select_date"></mat-datepicker-toggle>
-                                                        <mat-datepicker #perlim_visit_select_date  disabled="false" ></mat-datepicker>
+                                                        <input matInput  readonly="true" (click)="Service._openCalendar(prelim_visit_date)"  
+                                                        [matDatepicker]="prelim_visit_date"  placeholder="Select Date" name="prelim_visit_date" 
+                                                        [(ngModel)]="step6Data.prelim_visit_date" (dateChange)="setexDate()" required>
+                                                        <mat-datepicker-toggle matSuffix [for]="prelim_visit_date"></mat-datepicker-toggle>
+                                                        <mat-datepicker #prelim_visit_date  disabled="false" ></mat-datepicker>
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <mat-form-field class="frm-data">
                                                         <mat-label>Select Time</mat-label>
-                                                        <mat-select placeholder="Select" name="perlim_visit_select_time" 
+                                                        <mat-select placeholder="Select" name="prelim_visit_time" 
                                                         (selectionChange)="getDutyTimeForm1Index($event)" 
-                                                        [(ngModel)]="step7Data.perlim_visit_select_time">
+                                                        [(ngModel)]="step6Data.prelim_visit_time">
                                                             <mat-option *ngFor="let item of addMinutesToTime; let i = index;" 
-                                                            [value]="item.val">{{item.val}}</mat-option>
+                                                            [value]="item.key">{{item.val}}</mat-option>
                                                         </mat-select>
                                                     </mat-form-field>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
-                                    <!-- (click)="onSubmitInformationAuditManagement()" -->
+                                    <!--  (click)="onSubmitPerlimVisit()" -->
                                     <div class="button-content">
-                                        <a class="cancel-bttn" href="javascript:void(0)" type="button"(click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','perlim_visit')">BACK</a> 
-                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step6')">SAVE AS DRAFT</button> 
+                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','perlim_visit')">BACK</a>
+                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step6')">SAVE AS DRAFT</button>
                                     </div>
-                                    <button class="submit-bttn submit-health" >CONTINUE</button>
+                                    <button class="submit-bttn submit-health">CONTINUE</button>
                                 </div>
                             </div>
                         </div>
@@ -1193,7 +1193,7 @@
                                                         <input onpaste="return false" 
                                                         (keypress)="Service.inputFilter($event, Service.regExName)" 
                                                         matInput placeholder="Organization Name" name="onbehalf_company_name" 
-                                                        [(ngModel)]="step8Data.organization_name" required>
+                                                        [(ngModel)]="step7Data.organization_name" required>
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="col-md-4 col-sm-12">
@@ -1202,14 +1202,14 @@
                                                         <input onpaste="return false" 
                                                         (keypress)="Service.inputFilter($event, Service.regExName)" matInput 
                                                         placeholder="Full Name of Authorized Representative" name="onbehalf_representative_name" 
-                                                        [(ngModel)]="step8Data.representative_name" required>
+                                                        [(ngModel)]="step7Data.representative_name" required>
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="col-md-4 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Designation</mat-label>
                                                         <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                        matInput placeholder="Designation" name="designation" [(ngModel)]="step8Data.designation" required>
+                                                        matInput placeholder="Designation" name="designation" [(ngModel)]="step7Data.designation" required>
                                                     </mat-form-field>
                                                 </div>
                                             </div>
@@ -1219,14 +1219,14 @@
                                                         <mat-label>Digital Signature</mat-label>
                                                         <input onpaste="return false" 
                                                         (keypress)="Service.inputFilter($event, Service.regExName)" matInput 
-                                                        placeholder="Digital Signature" name="digi_sign" [(ngModel)]="step8Data.digital_signature" required>
+                                                        placeholder="Digital Signature" name="digi_sign" [(ngModel)]="step7Data.digital_signature" required>
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Date</mat-label>
                                                         <input matInput placeholder="Date" name="onbehalf_representative_date" 
-                                                        [(ngModel)]="step8Data.application_date" [value]="Service.returnCurrentDate()">
+                                                        [(ngModel)]="step7Data.application_date" [value]="Service.returnCurrentDate()">
                                                     </mat-form-field>
                                                 </div>
                                             </div>
