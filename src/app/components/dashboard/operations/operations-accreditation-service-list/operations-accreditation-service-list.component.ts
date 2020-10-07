@@ -183,7 +183,11 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
 
   // Modal Actions
   open(content, id: number) {
-    this.voucherSentData = {};
+    //this.voucherSentData = {};
+    if(id){
+      console.log(">>ID: ", id);
+      this.voucherSentData['accreditation'] = id;
+    }
     this.paymentReceiptValidation = null;
     this.modalService.open(content, this.modalOptions).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -215,7 +219,9 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
             var date = dtData.date;
             dtFormat = year + "-" + month + "-" + date;
           }
+          console.log("@accred ID: ", this.voucherSentData['accreditation'])
           this.voucherFile.append('voucher_no',this.voucherSentData['voucher_no']);
+          this.voucherFile.append('amount',this.voucherSentData['amount']);
           this.voucherFile.append('voucher_date',dtFormat);
           this.voucherFile.append('accreditation',this.voucherSentData['accreditation']);
 
@@ -223,7 +229,6 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
           .subscribe(
              result => {
                let data: any = result;
-                console.log("submit voucher: ", data);
                 if(data.status){
                   this.voucherFile = new FormData();
                   this.voucherSentData = {};

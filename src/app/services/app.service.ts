@@ -2,7 +2,7 @@ import { Injectable, EventEmitter, Output } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { HttpClient, HttpHeaders  } from "@angular/common/http";
 import {Http, Headers, RequestOptions} from '@angular/http';
-import { from, Subject } from 'rxjs';
+import { from, Subject, Subscription } from 'rxjs';
 import {BehaviorSubject}  from "rxjs";
 import { VERSION, MatDialogRef, MatDialog, MatDatepicker, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 //import {HappinessMeterComponent} from '../pages/common-all/happiness-meter/happiness-meter.component';
@@ -24,6 +24,9 @@ export class AppService {
   public apiServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
   public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
 
+  public apiUatServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
+  // public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
+
   public countryURL           =   "https://raw.githubusercontent.com/sagarshirbhate/Country-State-City-Database/master/Contries.json";
   public assetsBasePath       =   "https://uat-portal.eiac.gov.ae/assets/csc-json/";
 
@@ -34,11 +37,21 @@ export class AppService {
   public regExEmail: any;
   user = null;
   public mapboxToken = 'pk.eyJ1IjoicHJpbmF2IiwiYSI6ImNrNmh4YXVpcTJwbnMzbm4zYTc1ZG5kbHIifQ.lEliOwWLfcau6c0McnkGUA';
+  // private node:Subject<Node> = new BehaviorSubject();
+  // dynamicVal:any;
+  // dynamicVal: Subject<any> = new Subject<any>();
+  public setValue: any;
+  public setIBValue: any;
+  public oldScopeData: any;
+  userDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  publicuserData: any[] =[];
+  public urlData = new Subject<any>();
+  urlSubscription: Subscription;
 
   constructor(public http: HttpClient, private _constant: Constants,
     private _flashMessage: FlashMessagesService,
     public dialog: MatDialog,public snackBar: MatSnackBar, private store: Store<AppState>) { 
-
+      // this.dynamicVal = new Subject<any>();
       //initilize input type regex
       this.regExName = /^[a-zA-Z\s]*$/;
       this.regExEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -47,7 +60,8 @@ export class AppService {
       this.regExUrl = '/(\w*\W*)?\w*(\.(\w)+)+(\W\d+)?(\/\w*(\W*\w)*)*/';
 
       //check token
-      
+      //this.setValue = 0;
+      //this.userData = this.userDataSource.asObservable();
     }
 
 /*
@@ -69,6 +83,65 @@ function getFeesPerTrainee(training_days){
 }
 
 */
+
+getObjectLength(obj: any){
+  let count: number =0;
+  for(var key in obj){
+    if(obj.hasOwnProperty(key)){
+      count++;
+    }
+  }
+  return count;
+} 
+setValueUrlIB(value: any) {
+  console.log(">>assign IB value: ", value);
+  //this.userDataSource.next(value);
+  //this.setIBValue =  value;
+  // const currentValue = this.userDataSource.value;
+  // const updatedValue = [...currentValue, value];
+  // this.userDataSource.next(updatedValue);
+  this.urlData.next(value); 
+}
+
+setValueUrl(value?:any) {
+  console.log(">>assign value: ", value);
+  this.setValue =  value;
+}
+getValue(){
+  console.log(">>get value: ", this.setValue);
+  return this.setValue;
+}
+getValueIB(){
+  setTimeout(() => {
+    console.log(">>>getting val...",);
+    return this.setValue;
+  },100)
+  
+  // this.userData.subscribe(rec => {
+  //     console.log("<><><> Get Value: ", rec);
+  // })
+  //return this.setIBValue;
+}
+
+jsonToArray(data: any){
+  var result = [];
+  console.log("get convert: ", data);
+    for(var i in data){
+      result.push([i,data[i]]);
+    }
+    console.log("convert: ", result);
+  return result;    
+}
+
+// getDynamic(): Observable<any> {
+//   return this.dynamicVal.asObservable();
+// }
+// addDynamicsVal(data) {
+ 
+//   this.dynamicVal.next({value: 2});
+//   console.log(data,'segsrgtd',this.dynamicVal);
+// }
+
 addMinutesToTime()
 {
   var x = 30; //minutes interval
@@ -552,6 +625,21 @@ addMinutesToTime()
       delete obj[key]['certificate_expiry_date'];
       obj[key]['converted_date'] = convertedDate;
       return obj;
+    }
+
+    changeDateFormat(event,prev,steps){
+      var dateString = event.value._d;
+      var d = new Date(dateString);
+      var mm = d.getMonth() + 1;
+      var dd = d.getDate();
+      var yy = d.getFullYear();
+      var convertedDate = yy + '-' + mm + '-' + dd;
+
+      // var step1Data = {};
+      //var convertedDate = dateString.toLocaleDateString();
+      delete prev.date_of_establishment;
+      steps = convertedDate;
+      return steps ;
     }
 
     inputEventForSecond(event,key,obj,inpuyBoxName = ''){

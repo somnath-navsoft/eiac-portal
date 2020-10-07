@@ -80,6 +80,7 @@ import { TrainersMessageDetailsComponent } from './components/dashboard/trainers
 import { MessageDetailsComponent } from './components/dashboard/assessors/message-details/message-details.component';
 import { CandidateMessageDetailsComponent } from './components/dashboard/candidate/candidate-message-details/candidate-message-details.component';
 import { OperationsAccreditationServiceDetailsComponent } from './components/dashboard/operations/operations-accreditation-service-details/operations-accreditation-service-details.component';
+import { StatusComponent } from './components/dashboard/status/status.component';
 
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
@@ -88,6 +89,8 @@ const routes: Routes = [
   { path: 'dashboard',canActivate: [AuthGuard], 
     children: [
       //Trainers
+      { path: 'onboarding-message-list', component: MessageComponent, canActivate: [AuthGuard] },
+      { path: 'status/:id', component: StatusComponent, canActivate: [AuthGuard] },
       { path: 'onboarding-message-list', component: MessageComponent, canActivate: [AuthGuard] },
       { path: 'message-detail/:id', component: MessageDetailComponent, canActivate: [AuthGuard] },
       { path: 'trainers', component: TrainersComponent, canActivate: [AuthGuard],
@@ -140,9 +143,13 @@ const routes: Routes = [
         { path: 'application-accreditation', component:ApplicationAccreditationComponent, canActivate: [AuthGuard] },
         { path: 'work-permit-form', component:NoObjectionFormComponent, canActivate: [AuthGuard] },
         { path: 'inspection-bodies-form', component:InspectionBodiesFormComponent, canActivate: [AuthGuard] },
+        { path: 'inspection-bodies-form/:id', component:InspectionBodiesFormComponent, canActivate: [AuthGuard] },
         { path: 'testing-calibration-form', component:TestingCalibrationFormComponent, canActivate: [AuthGuard] },
+        { path: 'testing-calibration-form/:id', component:TestingCalibrationFormComponent, canActivate: [AuthGuard] },
         { path: 'certification-bodies-form', component:CertificationBodiesFormComponent, canActivate: [AuthGuard] },
+        { path: 'certification-bodies-form/:id', component:CertificationBodiesFormComponent, canActivate: [AuthGuard] },
         { path: 'health-care-form', component:HealthCareFormComponent, canActivate: [AuthGuard] },
+        { path: 'health-care-form/:id', component:HealthCareFormComponent, canActivate: [AuthGuard] },
         { path: 'halal-conformity-form', component:HalalConformityFormComponent, canActivate: [AuthGuard] },
         { path: 'pt-providers-form', component:PtProvidersFormComponent, canActivate: [AuthGuard] },
         { path: 'message-detail/:id', component:CabMessageDetailsComponent, canActivate: [AuthGuard] },

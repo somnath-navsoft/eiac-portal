@@ -137,7 +137,14 @@ export class TrainerService {
  }
  //Get Accreditation Service Listing
  getAccreditationServiceList(){
-  let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.trainerAccredServList; 
+  let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.trainerAccredServList+"all"; 
+  //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
+  //console.log("GET Event URL: ", url, " -- ", this._service.getReqHeaders());
+  return this.http.get(url, this._service.getReqHeaders());
+}
+
+getAccreditationStatusList(id) {
+  let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.trainerAccredStaList+id; 
   //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
   //console.log("GET Event URL: ", url, " -- ", this._service.getReqHeaders());
   return this.http.get(url, this._service.getReqHeaders());

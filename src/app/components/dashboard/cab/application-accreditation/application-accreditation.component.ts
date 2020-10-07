@@ -13,7 +13,7 @@ import { Title, Meta } from '@angular/platform-browser';
 export class ApplicationAccreditationComponent implements OnInit {
 
   serviceList:any;
-  loader:boolean = true; 
+  loader:boolean = true;  
 
   constructor(public Service: AppService, private titleService: Title,
     private metaTagService: Meta, public constant:Constants,public router: Router,public toastr: ToastrService) { }
@@ -28,6 +28,15 @@ export class ApplicationAccreditationComponent implements OnInit {
       { name: 'keywords', content: 'Eiac, Portal, Test, Rest' },      
     );
     this.loadService();
+  }
+
+  checkIBId(id: any){
+    console.log("resetting...id...1");
+    let getId = sessionStorage.getItem('ibUrlId');
+    if(getId != undefined && getId != ''){
+      console.log("resetting...id...2");
+      sessionStorage.setItem('ibUrlId', '');
+    }
   }
 
   loadService() {

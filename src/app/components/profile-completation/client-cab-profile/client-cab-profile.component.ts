@@ -83,7 +83,7 @@ export class ClientCabProfileComponent implements OnInit {
       title:'personal_details', desc:'1. Personal <br> Details', activeStep:true, stepComp:false, icon:'icon-user', activeClass:'user-present'
       },
       {
-      title:'application_information', desc:'2. Applicant <br> Information', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'application_information', desc:'2. Applicant <br> Information', activeStep:false, stepComp:false, icon:'icon-doc-edit', activeClass:''
       }
     );
    this.titleArr = ['Mr.','Ms.','Dr.','Prof.','Mrs.'];
@@ -140,12 +140,9 @@ export class ClientCabProfileComponent implements OnInit {
     this.companyBodMembers = [{
       name:'',
       bod_company:'',
-      director:'',
       designation:'',
       authorized_contact_person:'',
       mobile_no:'',
-      phone_no:'',
-      email:'',
     }];
     this.step2Data.date_of_establishment = '';
     this.step2Data.legal_license = '';
@@ -229,23 +226,23 @@ export class ClientCabProfileComponent implements OnInit {
             var stateList =  this.Service.getState();
             var cityList =  this.Service.getCity();
 
-            stateList.subscribe( result => {
-              for(let key in result['states']) {
-                if(result['states'][key]['name'] == step1.state )
-                {
-                  this.allStateList.push(result['states'][key]);
-                }
-              }
-            });
+            // stateList.subscribe( result => {
+            //   for(let key in result['states']) {
+            //     if(result['states'][key]['name'] == step1.state )
+            //     {
+            //       this.allStateList.push(result['states'][key]);
+            //     }
+            //   }
+            // });
 
-            cityList.subscribe( result => {
-              for(let key in result['cities']) {
-                if(result['cities'][key]['name'] == step1.city )
-                {
-                  this.allCityList.push(result['cities'][key]);
-                }
-              }
-            });
+            // cityList.subscribe( result => {
+            //   for(let key in result['cities']) {
+            //     if(result['cities'][key]['name'] == step1.city )
+            //     {
+            //       this.allCityList.push(result['cities'][key]);
+            //     }
+            //   }
+            // });
 
             this.step2Data.trade_license_number = step1.trade_license_number;
             this.step2Data.trade_license_name = trade_license_split[4];

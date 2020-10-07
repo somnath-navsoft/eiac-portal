@@ -7,11 +7,13 @@ import { LogOut, LogInSuccess, LogInState } from '../../store/actions/auth.actio
 import { filter} from 'rxjs/operators';
 
 import { AppService } from '../../services/app.service'; 
+import { toInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
+//import { type } from 'os';
 
 @Component({
   selector: 'portal-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss']
+  styleUrls: ['./layout.component.scss'],
 })
 export class LayoutComponent implements OnInit {
   getState: Observable<any>; 
@@ -24,6 +26,7 @@ export class LayoutComponent implements OnInit {
   isCompleteness:any;
   pageId:any;
   verifyId:any;
+  dynamicsVar:any;
 
   constructor(private store: Store<AppState>, private router: Router,
     public route: ActivatedRoute, private _service: AppService) { 
@@ -48,12 +51,41 @@ export class LayoutComponent implements OnInit {
       filter(event => event instanceof NavigationEnd)
     ).subscribe(event => {
         let data: any = event;
-        //console.log('>>> router...', event);
+        //console.log(this.href.substring(this.href.lastIndexOf('/') + 1));
+        // if(data && typeof data == 'object' && data.url != ''){
+        //   let getLastPart: any = data.url.substring(data.url.lastIndexOf('/') + 1)
+        //   console.log(">>>part: ", getLastPart);
+        //   sessionStorage.setItem('routerId', getLastPart);
+        //   // console.log('lst part: ', getLastPart, " -- ", Number.isInteger(parseInt(getLastPart)), " :: ", typeof (parseInt(getLastPart)));
+        //   // //&& Number.isInteger(parseInt(getLastPart)) === true
+        //   // if(getLastPart != null && getLastPart != undefined ){
+        //   //     let getDecID = window.atob(getLastPart);
+        //   //     console.log('Routr param: ', getLastPart, " :: ", getDecID);
+        //   //     sessionStorage.setItem('routerId', getDecID);
+        //   // }
+        // }
 
         var wholeUrl = data.urlAfterRedirects;
         
         var splitUrl = wholeUrl.split('/');
         var splitForverifyAccount = wholeUrl.split('?');
+        // this.dynamicsVar = '4';
+        // this._service.addDynamicsVal(this.dynamicsVar);
+        
+        if(splitUrl[3] == 'testing-calibration-form') {
+          this._service.setValueUrl(splitUrl[4]);
+        }else if(splitUrl[3] == 'inspection-bodies-form') {
+          let id = splitUrl[4];
+          console.log(">>>@LAYOUT url id set...", id);
+          sessionStorage.setItem('ibUrlId', id);
+          //this._service.setValueUrl(splitUrl[4]);
+        }else if(splitUrl[3] == 'health-care-form') {
+          this._service.setValueUrl(splitUrl[4]);
+        }else if(splitUrl[3] == 'certification-bodies-form') {
+          this._service.setValueUrl(splitUrl[4]);
+        }else{
+          this._service.setValueUrl('');
+        }
 
         if(splitUrl[1] == 'reset-password')
         {
@@ -83,6 +115,8 @@ export class LayoutComponent implements OnInit {
   }
 
   ngOnInit() {
+
+
     setTimeout(()=>{
       this.getState = this.store.select(selectAuthState);
       this.getState.subscribe((state) => {
