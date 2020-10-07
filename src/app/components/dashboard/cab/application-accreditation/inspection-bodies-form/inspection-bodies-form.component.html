@@ -15,7 +15,7 @@
                         </div>
                     </div>
                 </div>
-
+                <!-- (click)="Service.headerStepMove(item.title, headerSteps,'menu')"  -->
                 <ng-container>
                     <div class="row">
                         <div class="col-md-12">
@@ -27,7 +27,7 @@
                                         </div>
 
                                         <div class="user-details-pending" 
-                                        id="course_header" (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}">
+                                        id="course_header" [ngStyle]="{'cursor':'pointer'}">
                                             <span [innerHTML]="item.desc"></span>
                                         </div>
                                     </div>
