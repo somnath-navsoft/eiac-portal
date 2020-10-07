@@ -1325,7 +1325,7 @@ getCriteria(value, secInd: any){
                 if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
                   //console.log('>>>Accr infor: ', getData.data.otherAccr);
                   this.accreditationInfo = [];
-                  this.step1Data.is_hold_other_accreditation_select = "1";
+                  this.step1Data.is_hold_other_accreditation = "1";
                   //this.accreditationInfo = '';
                   res['data'].otherAccr.forEach((item, key) => {
                       ////console.log('>> ', item, " :: ", key);
@@ -1337,7 +1337,7 @@ getCriteria(value, secInd: any){
                   })
                 }else{
                   //this.accreditationInfo = [{}];
-                  this.step1Data.is_hold_other_accreditation_select = "0";
+                  this.step1Data.is_hold_other_accreditation = "0";
                 }
 
                 //step2
