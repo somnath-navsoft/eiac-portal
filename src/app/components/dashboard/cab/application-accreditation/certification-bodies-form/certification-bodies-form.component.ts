@@ -426,6 +426,7 @@ loadAppInfo(){
                 this.step3Data.mobile_no = getTechData.mobile_no;
                 this.step3Data.email = getTechData.email;
                 this.step3Data.relevent_experience = getTechData.relevent_experience;
+                this.step3Data.duration_at_current_post = getTechData.duration_at_current_post;
               }
               if(res['data'].managementManager != undefined && res['data'].managementManager.length > 0){
                 let getMangData: any = res['data'].managementManager[0];
@@ -434,6 +435,7 @@ loadAppInfo(){
                 this.step3Data.management_mobile_no = getMangData.mobile_no;
                 this.step3Data.management_email = getMangData.email;
                 this.step3Data.management_relevent_experience = getMangData.relevent_experience;
+                this.step3Data.duration_at_current_post_manager = getMangData.duration_at_current_post;
               }
 
               //step4
@@ -823,34 +825,40 @@ onSubmitStep2(ngForm2:any) {
 onSubmitStep3(ngForm3: any){
   this.Service.moveSteps('personal_information', 'summary_number_ofpersonnel', this.headerSteps);
   if(ngForm3.form.valid) {
-    this.certificationBodiesForm = {};
-    // this.step3Data = {};
     var applicationId = sessionStorage.getItem('applicationId');
     // this.step3Data.application_id = applicationId;
-    this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step3Data.is_draft = false;
-    this.certificationBodiesForm.saved_step = '3';
-    this.certificationBodiesForm.email = this.userEmail;
-    this.certificationBodiesForm.userType = this.userType;
+    
+    this.certificationBodiesForm = {};
+    this.certificationBodiesForm.step3 = {};
+    //this.certificationBodiesForm.email = this.userEmail;
+    //this.certificationBodiesForm.userType = this.userType;
+    this.certificationBodiesForm.step3.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+    this.certificationBodiesForm.step3.email = this.userEmail;
+    this.certificationBodiesForm.step3.userType = this.userType;
+    this.certificationBodiesForm.step3.application_id = this.formApplicationId;
+    //this.certificationBodiesForm.step3 = this.step3Data;
 
-    this.step3Data.technicalManager = {};
-    this.step3Data.technicalManager['name'] = (this.step3Data.name != '' && this.step3Data.name != undefined) ? this.step3Data.name : '';
-    this.step3Data.technicalManager['designation'] = (this.step3Data.designation != '' && this.step3Data.designation != undefined) ? this.step3Data.designation : '';
-    this.step3Data.technicalManager['mobile_no'] = (this.step3Data.mobile_no != '' && this.step3Data.mobile_no != undefined) ? this.step3Data.mobile_no : '';
-    this.step3Data.technicalManager['email'] = (this.step3Data.email != '' && this.step3Data.email != undefined) ? this.step3Data.email : '';
-    this.step3Data.technicalManager['relevent_experience'] = (this.step3Data.relevent_experience != '' && this.step3Data.relevent_experience != undefined) ? this.step3Data.relevent_experience : '';
-    this.step3Data.technicalManager['duration_at_current_post'] = (this.step3Data.duration_at_current_post != '' && this.step3Data.duration_at_current_post != undefined) ? this.step3Data.duration_at_current_post : '';
+    this.certificationBodiesForm.step3.technicalManager = {};
 
-    this.step3Data.managementManager = {};
+    this.certificationBodiesForm.step3.technicalManager['name'] = (this.step3Data.name != '' && this.step3Data.name != undefined) ? this.step3Data.name : '';
+    this.certificationBodiesForm.step3.technicalManager['designation'] = (this.step3Data.designation != '' && this.step3Data.designation != undefined) ? this.step3Data.designation : '';
+    this.certificationBodiesForm.step3.technicalManager['mobile_no'] = (this.step3Data.mobile_no != '' && this.step3Data.mobile_no != undefined) ? this.step3Data.mobile_no : '';
+    this.certificationBodiesForm.step3.technicalManager['email'] = (this.step3Data.email != '' && this.step3Data.email != undefined) ? this.step3Data.email : '';
+    this.certificationBodiesForm.step3.technicalManager['relevent_experience'] = (this.step3Data.relevent_experience != '' && this.certificationBodiesForm.step3.relevent_experience != undefined) ? this.step3Data.relevent_experience : '';
+    this.certificationBodiesForm.step3.technicalManager['duration_at_current_post'] = (this.step3Data.duration_at_current_post != '' && this.step3Data.duration_at_current_post != undefined) ? this.step3Data.duration_at_current_post : '';
 
-    this.step3Data.managementManager['name'] = (this.step3Data.management_name != '' && this.step3Data.management_name != undefined) ? this.step3Data.management_name : '';
-    this.step3Data.managementManager['designation'] = (this.step3Data.management_designation != '' && this.step3Data.management_designation != undefined) ? this.step3Data.management_designation : '' ;
-    this.step3Data.managementManager['mobile_no'] = (this.step3Data.management_mobile_no != '' && this.step3Data.management_mobile_no != undefined) ? this.step3Data.management_mobile_no : '';
-    this.step3Data.managementManager['email'] = (this.step3Data.management_email != '' && this.step3Data.management_email != undefined) ? this.step3Data.management_email : '';
-    this.step3Data.managementManager['relevent_experience'] = (this.step3Data.management_relevent_experience != '' && this.step3Data.management_relevent_experience != undefined) ? this.step3Data.management_relevent_experience : '';
-    this.step3Data.managementManager['duration_at_current_post'] = (this.step3Data.duration_at_current_post_manager != '' && this.step3Data.duration_at_current_post_manager != undefined) ? this.step3Data.duration_at_current_post_manager : '';
+    this.certificationBodiesForm.step3.managementManager = {};
 
-    this.certificationBodiesForm.step3 = this.step3Data;
+    this.certificationBodiesForm.step3.managementManager['name'] = (this.step3Data.management_name != '' && this.step3Data.management_name != undefined) ? this.step3Data.management_name : '';
+    this.certificationBodiesForm.step3.managementManager['designation'] = (this.step3Data.management_designation != '' && this.step3Data.management_designation != undefined) ? this.step3Data.management_designation : '' ;
+    this.certificationBodiesForm.step3.managementManager['mobile_no'] = (this.step3Data.management_mobile_no != '' && this.step3Data.management_mobile_no != undefined) ? this.step3Data.management_mobile_no : '';
+    this.certificationBodiesForm.step3.managementManager['email'] = (this.step3Data.management_email != '' && this.step3Data.management_email != undefined) ? this.step3Data.management_email : '';
+    this.certificationBodiesForm.step3.managementManager['relevent_experience'] = (this.step3Data.management_relevent_experience != '' && this.step3Data.management_relevent_experience != undefined) ? this.step3Data.management_relevent_experience : '';
+    this.certificationBodiesForm.step3.managementManager['duration_at_current_post'] = (this.step3Data.duration_at_current_post_manager != '' && this.step3Data.duration_at_current_post_manager != undefined) ? this.step3Data.duration_at_current_post_manager : '';
+
+    this.certificationBodiesForm.step3.is_draft = false;
+    this.certificationBodiesForm.saved_step = 3;
+    // this.certificationBodiesForm.step3 = this.step3Data;
     this.loader = false;
     console.log(this.certificationBodiesForm,'certificationBodiesForm');
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.certificationBodies,this.certificationBodiesForm)
