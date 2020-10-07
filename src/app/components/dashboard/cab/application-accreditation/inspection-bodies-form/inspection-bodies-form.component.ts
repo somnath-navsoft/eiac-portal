@@ -82,6 +82,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   routeId: any;  
 
   public isSubmit:boolean = false;
+  public isNoteSubmit:boolean = false;
   dutyTime1: boolean = true;
   dutyTime2: boolean = true;
   dutyTime3: boolean = true;
@@ -183,6 +184,8 @@ export class InspectionBodiesFormComponent implements OnInit {
   selectDeleteIndex: any;
   deleteEditScopeConfirm: boolean = false;
   deleteScopeConfirm: boolean = false;
+
+  is_main_activity_note_entry: boolean = false;
 
 
   //dynamicScopeOptions:any[] = [];  
@@ -1212,7 +1215,7 @@ export class InspectionBodiesFormComponent implements OnInit {
             ////console.log(">>>main sctivuty: 1", getData.data.is_main_activity);
             this.step1Data.is_main_activity = getData.data.is_main_activity.toString();
             if(!getData.data.is_main_activity){
-              ////console.log(">>>main sctivuty: 2", getData.data.is_main_activity);
+              console.log(">>>main sctivuty: 2", getData.data.is_main_activity);
               this.step1Data.is_main_activity_note = getData.data.is_main_activity_note.toString();
             }
         }
@@ -1633,6 +1636,30 @@ export class InspectionBodiesFormComponent implements OnInit {
         lineCount++;
       }
       //////console.log("@Final Model column: ", model);
+  }
+
+  moveShift(theVal: any){
+    let val;
+    console.log(">>>change shift: ", theVal, " -- ",val);
+    
+    if(theVal == 1){
+      if(this.step1Data.duty_from2 != undefined || this.step1Data.duty_to3 != undefined){
+        this.step1Data.duty_from2 = val;
+        this.step1Data.duty_to2 = val;
+      }
+      if(this.step1Data.duty_from3 != undefined || this.step1Data.duty_to3 != undefined){
+        this.step1Data.duty_from3 = val;
+        this.step1Data.duty_to3 = val;
+      }
+      console.log(">>> shift 1 ", this.step1Data.duty_from2, " -- ",this.step1Data.duty_to2)
+    }
+    if(theVal == 2){      
+      if(this.step1Data.duty_from3 != undefined || this.step1Data.duty_to3 != undefined){
+        this.step1Data.duty_from3 = val;
+        this.step1Data.duty_to3 = val;
+      }
+      console.log(">>> shift 1 ", this.step1Data.duty_from2, " -- ",this.step1Data.duty_to2)
+    }
   }
 
   getDutyTimeForm1Index(indexVal){
@@ -2166,6 +2193,9 @@ export class InspectionBodiesFormComponent implements OnInit {
     //this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
     
     this.isApplicationSubmitted = true;
+
+    
+
     if(this.step1Data.duty_shift == '1')
     {
       if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
@@ -2224,81 +2254,45 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.dutyTime3 = true;
       this.isSubmit = true;
     }
-    // if(this.step1Data.duty_shift == '1' && typeof this.step1Data.duty_from1 == 'undefined' && typeof this.step1Data.duty_to1 == 'undefined')
-    // {
-    //   this.dutyTime1 = false;
-    //   this.isSubmit = false;
-    // }else{
-    //   this.dutyTime1 = true;
-    // }
-    // if(this.step1Data.duty_shift == '2' && typeof this.step1Data.duty_from2 == 'undefined' && typeof this.step1Data.duty_to2 == 'undefined')
-    // {
-    //   if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
-    //   {
-    //     this.dutyTime1 = false;
-    //   }else{
-    //     this.dutyTime1 = true;
-    //   }
-    //   this.dutyTime2 = false;
-    //   this.isSubmit = false;
-    // }else{
-    //   this.dutyTime2 = true;
-    // }
-    // if(this.step1Data.duty_shift == '3' && typeof this.step1Data.duty_from3 == 'undefined' && typeof this.step1Data.duty_to3 == 'undefined')
-    // {
-    //   if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
-    //   {
-    //     this.dutyTime1 = false;
-    //   }else{
-    //     this.dutyTime1 = true;
-    //   }
-    //   if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
-    //   {
-    //     this.dutyTime2 = false;
-    //   }else{
-    //     this.dutyTime2 = true;
-    //   }
-    //   this.dutyTime3 = false;
-    //   this.isSubmit = false;
-    // }else{
-    //   this.dutyTime3 = true;
-    // }
 
-    // if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
-    //   this.dutyTime1 = false;
-    //   this.isSubmit = false;
-    // }else{
-    //   this.dutyTime1 = true;
-    // }
-    //this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+    if(this.step1Data.duty_shift == '1' && !this.dutyTime2){
+      this.dutyTime2 = true;
+    }if(this.step1Data.duty_shift == '2' && !this.dutyTime3){
+      this.dutyTime3 = true;
+    }
 
     this.inspectionBodyForm = {};
     this.inspectionBodyForm.step1 = {};
-    //
-    // if(this.step1Data.criteria_request != undefined){
-    //   let schemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id);
-    //   ////console.log("scheme data: ", schemeData);
-    //   if(schemeData){
-    //     this.step1Data.criteria_request = schemeData.title;
-    //     this.inspectionBodyForm.step1['scheme'] = schemeData.scope_accridiation.id;
-    //   }
+    // if(this.step1Data.is_main_activity_note == undefined){
+    //   this.step1Data.is_main_activity_note = " ";
     // }
-    // if(this.step1Data.is_bod != undefined && this.step1Data.is_bod == 1){
-    //   this.step1Data.is_bod = "true";
-    // }
-    // if(this.step1Data.is_bod != undefined && this.step1Data.is_bod == 0){
-    //   this.step1Data.is_bod = "false";
-    // }//
-
-    // if(this.step1Data.is_hold_other_accreditation != undefined && this.step1Data.is_hold_other_accreditation == 1){
-    //   this.step1Data.is_hold_other_accreditation = "true";
-    // }
-    // if(this.step1Data.is_hold_other_accreditation != undefined && this.step1Data.is_hold_other_accreditation == 0){
-    //   this.step1Data.is_hold_other_accreditation = "false";
-    // }
+    
     if(this.step1Data.is_main_activity_note == undefined){
-      this.step1Data.is_main_activity_note = " ";
+      this.step1Data.is_main_activity_note = '';
     }
+    
+    let str = this.step1Data.is_main_activity_note; 
+
+    console.log("nite enen: ", this.step1Data.is_main_activity_note, " -- ", this.step1Data.is_main_activity, " :: ", (!str || 0 === str.length));
+    
+    if(this.step1Data.is_main_activity == 'true' && this.step1Data.is_main_activity_note != ''){
+      this.step1Data.is_main_activity_note = '';
+    }
+    if(this.step1Data.is_main_activity == 'true'){
+      this.isNoteSubmit = true;
+    }
+
+    if((!str || 0 === str.length) && this.step1Data.is_main_activity == 'false'){
+      console.log(">>> Note is required...");
+      this.is_main_activity_note_entry = true;
+      this.isNoteSubmit = false;
+    }
+    if(this.step1Data.is_main_activity == 'false' && this.step1Data.is_main_activity_note != ''){
+      console.log(">>> Note is ebnterd.....");
+      this.is_main_activity_note_entry = false;
+      this.isNoteSubmit = true;
+    }
+
     if(this.step1Data.fax_no == undefined || this.step1Data.fax_no === ''){
       this.step1Data.fax_no = " ";
     }
@@ -2306,41 +2300,9 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.step1Data.official_email = " ";
     }
 
-    // if(this.step1Data.duty_shift == '1'){
-    //   this.step1Data.duty_from2 = '00:00:00'
-    //   this.step1Data.duty_to2 = '00:00:00';
-    //   this.step1Data.duty_from3 = '00:00:00'
-    //   this.step1Data.duty_to3 = '00:00:00';
-    // }
-    // if(this.step1Data.duty_shift == '2'){
-    //   this.step1Data.duty_from1 = '00:00:00'
-    //   this.step1Data.duty_to1 = '00:00:00';
-    //   this.step1Data.duty_from3 = '00:00:00';
-    //   this.step1Data.duty_to3 = '00:00:00';
-    // }
-    // if(this.step1Data.duty_shift == '3'){
-    //   this.step1Data.duty_from2 = '00:00:00'
-    //   this.step1Data.duty_to2 = '00:00:00';
-    //   this.step1Data.duty_from1 = '00:00:00'
-    //   this.step1Data.duty_to1 = '00:00:00';
-    // }
-
-    // if(this.step1Data.duty_from1 == undefined){
-    //   this.step1Data.duty_from1 = ''
-    //   this.step1Data.duty_to1 = '';
-    // }
-    // if(this.step1Data.duty_from2 == undefined){
-    //   this.step1Data.duty_from2 = ''
-    //   this.step1Data.duty_to2 = '';
-    // }
-    // if(this.step1Data.duty_from3 == undefined){
-    //   this.step1Data.duty_from3 = ''
-    //   this.step1Data.duty_to3 = '';
-    // }
-
 
     this.inspectionBodyForm.step1 = this.step1Data;  
-    if(ngForm1.form.valid && type == undefined && this.isSubmit == true) {
+    if(ngForm1.form.valid && type == undefined && this.isSubmit == true && this.isNoteSubmit == true) {
 
       if(this.step1Data.is_bod_select != undefined && this.step1Data.is_bod_select == 1){
         this.step1Data.is_bod = true;
@@ -2348,7 +2310,6 @@ export class InspectionBodiesFormComponent implements OnInit {
       if(this.step1Data.is_bod_select != undefined && this.step1Data.is_bod_select == 0){
         this.step1Data.is_bod = false;
       }
-      //is_main_activity
   
       if(this.step1Data.is_hold_other_accreditation_select != undefined && this.step1Data.is_hold_other_accreditation_select == 1){
         this.step1Data.is_hold_other_accreditation = true;
@@ -2356,13 +2317,6 @@ export class InspectionBodiesFormComponent implements OnInit {
       if(this.step1Data.is_hold_other_accreditation_select != undefined && this.step1Data.is_hold_other_accreditation_select == 0){
         this.step1Data.is_hold_other_accreditation = false;
       }
-      // if(this.step1Data.is_main_activity == "true"){
-      //   this.step1Data.is_main_activity = true;
-      // }
-      // if(this.step1Data.is_main_activity == "false"){
-      //   this.step1Data.is_main_activity = false;
-      // }
-      
       this.inspectionBodyForm.email = this.userEmail;
       this.inspectionBodyForm.userType = this.userType;
       this.inspectionBodyForm.saved_step = 1;

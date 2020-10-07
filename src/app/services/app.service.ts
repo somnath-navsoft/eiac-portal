@@ -21,6 +21,9 @@ export class AppService {
   currentlatitude: any;
   
 
+  // public apiServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
+  // public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
+
   public apiServerUrl         =   'https://dev-service.eiac.gov.ae/webservice';
   public apiRequestUrl        =   'https://dev-service.eiac.gov.ae/';
 
