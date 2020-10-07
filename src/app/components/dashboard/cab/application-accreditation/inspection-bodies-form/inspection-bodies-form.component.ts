@@ -3194,7 +3194,7 @@ getMatchScheme(scId: any, scopeData: any){
         res => {
           ////console.log(res,'res')
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            //this.toastr.success(res['msg'], '');
             this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
@@ -3400,7 +3400,8 @@ onSubmitPaymentInformation(ngForm7: any, type?: boolean){
       res => {
         ////console.log(res,'res')
         if(res['status'] == true) {
-          this.toastr.success(res['msg'], '');
+          //this.toastr.success(res['msg'], '');
+          this.toastr.success('Save Draft Successfully', '');
           //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
@@ -3445,7 +3446,7 @@ savedraftStep(stepsCount) {
       res => {
         ////console.log(res,'res Load Data')
         if(res['status'] == true) {
-          this.toastr.success(res['msg'], '');
+          //this.toastr.success(res['msg'], '');
           this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
