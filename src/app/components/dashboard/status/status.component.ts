@@ -11,7 +11,7 @@ import {CustomModalComponent} from 'src/app/components/utility/custom-modal/cust
 @Component({
   selector: 'app-status',
   templateUrl: './status.component.html',
-  styleUrls: ['./status.component.scss'],
+  styleUrls: ['./status.component.scss'], 
   providers: [CustomModalComponent],
 })
 export class StatusComponent implements OnInit {
@@ -60,6 +60,11 @@ export class StatusComponent implements OnInit {
 
   ngOnInit() {
     this.loadPageData();
+  }
+
+  setIB(id: any){
+    console.log(">>>url id set...", id);
+    sessionStorage.setItem('ibUrlId', id);
   }
 
   loadPageData() {

@@ -738,7 +738,7 @@ getCriteria(value, secInd: any){
     //   console.log(res,'sdsgdsg');
     // });
     this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
-    // console.log(this.urlVal,'valofurl');
+    console.log(this.urlVal,'valofurl');
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
@@ -1761,7 +1761,7 @@ getCriteria(value, secInd: any){
             let data: any = result;
             //console.log("submit voucher: ", data);
             if(data.status){
-              this.toastr.success('Save Draft Successfully', '');
+              this.toastr.success('Save Draft Successfully', ''); 
             }else{
               this.toastr.warning(data.msg,'');
             }

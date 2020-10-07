@@ -13,7 +13,7 @@ import { toInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 @Component({
   selector: 'portal-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss']
+  styleUrls: ['./layout.component.scss'],
 })
 export class LayoutComponent implements OnInit {
   getState: Observable<any>; 
@@ -75,7 +75,10 @@ export class LayoutComponent implements OnInit {
         if(splitUrl[3] == 'testing-calibration-form') {
           this._service.setValueUrl(splitUrl[4]);
         }else if(splitUrl[3] == 'inspection-bodies-form') {
-          this._service.setValueUrl(splitUrl[4]);
+          let id = splitUrl[4];
+          console.log(">>>@LAYOUT url id set...", id);
+          sessionStorage.setItem('ibUrlId', id);
+          //this._service.setValueUrl(splitUrl[4]);
         }else if(splitUrl[3] == 'health-care-form') {
           this._service.setValueUrl(splitUrl[4]);
         }else if(splitUrl[3] == 'certification-bodies-form') {
@@ -112,6 +115,8 @@ export class LayoutComponent implements OnInit {
   }
 
   ngOnInit() {
+
+
     setTimeout(()=>{
       this.getState = this.store.select(selectAuthState);
       this.getState.subscribe((state) => {
