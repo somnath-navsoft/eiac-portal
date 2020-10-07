@@ -11,6 +11,7 @@ export class Constants{
 	public mediaPath: string 				= 'https://dev-service.eiac.gov.ae';
 	//trainerAPI: '/trainer',
 	//all_services: this.apiUrl + 'service_page/', 
+	public myvalue: any;
 	public API_ENDPOINT: any	=	{
 		authToken:  '/api/token/',
 		signUp: 'user-service/',
@@ -57,6 +58,9 @@ export class Constants{
 		profileApproval: this.apiUrl + 'profile-approval/',
 		accrStatus: this.apiUrl + 'accr_status/',
 		testingCalibration: this.apiUrl + 'testing_calibration_form_management/',
+		certificationBodies: this.apiUrl + 'certification_bodies/',
+		healthcareForm: this.apiUrl + 'healthcare_form/',
+		ptProviderForm: this.apiUrl + 'pt-provider-form/',
 		trainerAccredStaList: this.apiUrl + 'accrediation-service-status/',
 	}
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."

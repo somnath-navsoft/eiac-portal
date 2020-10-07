@@ -84,6 +84,7 @@
                 <div class="appln-details">
                   <span *ngIf="serviceDetail?.form_meta == 'inspection_body'">Inspection Body</span>
                   <span *ngIf="serviceDetail?.form_meta == 'testing_calibration'">Testing Calibration</span>
+                  <span *ngIf="serviceDetail?.form_meta == 'health_care'">Health Care</span>
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -854,7 +855,7 @@
       </div>
       <div class="row m-0">
         <div class="col-md-12">
-          <button class="submit-bttn submit-health" [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button>
+          <!-- <button class="submit-bttn submit-health" [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button> -->
           <!-- <div class="details status_bttn">
             <a href="javascript:void(0)">Download Application</a>
           </div> -->

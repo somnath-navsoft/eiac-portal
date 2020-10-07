@@ -14,13 +14,14 @@ import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
 import { TrainerService } from '../../../../../services/trainer.service';
 import { typeWithParameters } from '@angular/compiler/src/render3/util';
 import { AnyFn } from '@ngrx/store/src/selector';
+import {CustomModalComponent} from '../../../../utility/custom-modal/custom-modal.component';
 
 declare let paypal: any;
 @Component({
   selector: 'app-inspection-bodies-form',
   templateUrl: './inspection-bodies-form.component.html',
   styleUrls: ['./inspection-bodies-form.component.scss'],
-  providers: [Constants, AppService, ToastrService, Overlay, OverlayContainer, UiDialogService]
+  providers: [Constants, AppService, CustomModalComponent, ToastrService, Overlay, OverlayContainer, UiDialogService]
 })
 export class InspectionBodiesFormComponent implements OnInit {
 
@@ -177,6 +178,13 @@ export class InspectionBodiesFormComponent implements OnInit {
   editScopeData: any;
   getScopeData: any;
 
+  selectDeleteID: number =0;
+  selectDeleteKey: any;
+  selectDeleteIndex: any;
+  deleteEditScopeConfirm: boolean = false;
+  deleteScopeConfirm: boolean = false;
+
+
   //dynamicScopeOptions:any[] = [];  
   //dynamicScopeModelValues:any={};
   //dynamicFirstFieldValues:any;
@@ -202,16 +210,30 @@ export class InspectionBodiesFormComponent implements OnInit {
   headerSteps:any[] = [];
 
   constructor(public Service: AppService, public uiDialog: UiDialogService, public sanitizer: DomSanitizer,
-    private modalService: NgbModal,private _trainerService: TrainerService,
+    private modalService: NgbModal,private _trainerService: TrainerService, private _customModal: CustomModalComponent,
     public _toaster: ToastrService, public constant:Constants,public router: Router,public toastr: ToastrService) { 
     this.today.setDate(this.today.getDate());
   }
 
-  checkAction(objKey: string, type: string){
+  openDeleteScopeConfirm(delIndex: any, delKey: any){
+    console.log(">>>delete ", delKey, " -- ", delIndex);
+    if(delKey){
+      console.log("assign delete id: ", delIndex, " -- ", delKey);
+      this.selectDeleteIndex = delIndex;
+      this.selectDeleteKey = delKey;
+      this.deleteScopeConfirm = true;
+    } 
+  }
 
-
-  }  
-
+  openDeleteEditScopeConfirm(delIndex: number, delKey: any){
+    console.log(">>>delete ", delKey);
+    if(delKey){
+      console.log("assign delete id: ", delIndex, " -- ", delIndex);
+      this.selectDeleteIndex = delIndex;
+      this.selectDeleteKey = delKey;
+      this.deleteEditScopeConfirm = true;
+    } 
+  }
   getData(getVal){
     //  ////console.log(">>>>Get MapBox Value: ", getVal);
      this.Service.mapboxToken = getVal;
@@ -573,13 +595,14 @@ export class InspectionBodiesFormComponent implements OnInit {
             }
           }
       }
-
+      this._customModal.closeDialog();
       console.log(">>>Final Data: ", this.editScopeData);
   }
 
   ngOnInit() { 
 
-    this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
+    //this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
+    this.urlVal = sessionStorage.getItem('ibUrlId');;
     console.log(">>>Get URL value: ", this.urlVal);
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
@@ -587,8 +610,8 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.profileComplete = sessionStorage.getItem('profileComplete');
 
     //this.routeId = sessionStorage.getItem('routerId');
-    this.routeId = this.urlVal;//this.Service.getValue() != '' ? this.Service.getValue() : '';
-    console.log("@@router: ", this.routeId, " -- ", this.Service.setValue);
+    //this.routeId = this.urlVal;//this.Service.getValue() != '' ? this.Service.getValue() : '';
+    //console.log("@@router: ", this.routeId, " -- ", this.Service.setValue);
     this.step5Data.scheme_ids = [];
 
 
@@ -1084,10 +1107,11 @@ export class InspectionBodiesFormComponent implements OnInit {
   loadAppData(){
     console.log(">> >route id:  ", " -- ", this.routeId, " -- ", this.urlVal, " -- ", );
     let url = '';
-    this.routeId = 961;//954;//931;
+    this.routeId = 0;//954;//931;
   // return;
-    if(this.routeId != ''){
-      let getId= (this.routeId);
+    if(this.urlVal != '' && this.urlVal != undefined){
+      console.log(">>> get URL Id: ", this.urlVal);
+      let getId= (this.urlVal);
       url = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+getId;
       console.log(">>>Get url and ID: ", url, " :: ", getId);
       this.Service.getwithoutData(url)
@@ -1326,9 +1350,9 @@ export class InspectionBodiesFormComponent implements OnInit {
         }
         //Step 7
         if(getData.data.onBehalfApplicantDetails != null && getData.data.onBehalfApplicantDetails != undefined){
-          let getAuthData = getData.data.onBehalfApplicantDetails[0];
-          ////console.log(">>> Auth data: ", getAuthData);
-          this.step7Data.organization_name        = getAuthData.organization_name;
+          let getAuthData = getData.data.onBehalfApplicantDetails;
+          console.log(">>> Auth data: ", getAuthData);
+          this.step7Data.organization_name        = (getAuthData.organization_name != undefined) ? getAuthData.organization_name : '';
           this.step7Data.representative_name      = getAuthData.representative_name;
           this.step7Data.designation              = getAuthData.designation;
           this.step7Data.digital_signature        = getAuthData.digital_signature;
@@ -1677,6 +1701,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         //console.log("deleting rows....2");
         this.dynamicScopeModel[secIndex].fieldLines.splice(lineIndex, 1);
       }
+      this._customModal.closeDialog();
   }
   
   //addScopeLine(secName:any, secIndex: number, lineIndex: number, lineData: any){
@@ -1975,10 +2000,10 @@ export class InspectionBodiesFormComponent implements OnInit {
     //     this.recommendStatus = true;
     //   }
     // }
-    if(!this.authorizationStatus && type == undefined){
-      //this.isSubmit = false;
-      this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
-    }
+    // if(!this.authorizationStatus && type == undefined){
+    //   //this.isSubmit = false;
+    //   this.toastr.warning('Please Fill required field','Validation Error','');
+    // }
     // else if(this.recommendStatus != true){
     //   this.isSubmit = false;
     //   this.toastr.error('Please Check any recommend the visit ', '');
@@ -2106,17 +2131,18 @@ export class InspectionBodiesFormComponent implements OnInit {
       res => {
         ////console.log(res,'res')
         if(res['status'] == true) {
-          this.toastr.success(res['msg'], '');
-          setTimeout(()=> {
-            //this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-          }, 2000)
+          //this.toastr.success(res['msg'], '');
+          this.toastr.success('Save Draft Successfully', '');
+          // setTimeout(()=> {
+          //   //this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+          // }, 2000)
           //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
         }
       });
       }else{
-    this.toastr.warning('@Please Fill required field','Validation Error',{timeOut:5000});
+    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }    
   }
 
@@ -2516,9 +2542,10 @@ export class InspectionBodiesFormComponent implements OnInit {
           if(res['status'] == true) {
             //this.toastr.success(res['msg'], '');
             ////console.log('save draft....2');
-            setTimeout(()=> {
-              this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-            },2000) 
+            this.toastr.success('Save Draft Successfully', '');
+            // setTimeout(()=> {
+            //   this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+            // },2000) 
             //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
@@ -2557,7 +2584,7 @@ export class InspectionBodiesFormComponent implements OnInit {
           this.inspectionBodyForm.step3.technicalManager['designation'] = (this.step3Data.designation_technical != '' && this.step3Data.designation_technical != undefined) ? this.step3Data.designation_technical : '';
           this.inspectionBodyForm.step3.technicalManager['mobile_no'] = (this.step3Data.mobile_no_technical != '' && this.step3Data.mobile_no_technical != undefined) ? this.step3Data.mobile_no_technical : '';
           this.inspectionBodyForm.step3.technicalManager['email'] = (this.step3Data.tech_email_technical != '' && this.step3Data.tech_email_technical != undefined) ? this.step3Data.tech_email_technical : '';
-          this.inspectionBodyForm.step3.technicalManager['relevent_experience'] = (this.step3Data.relevent_experience_technical != '' && this.step3Data.mobile_no_technical != undefined) ? this.step3Data.relevent_experience_technical : '';
+          this.inspectionBodyForm.step3.technicalManager['relevent_experience'] = (this.step3Data.relevent_experience_technical != '' && this.step3Data.relevent_experience_technical != undefined) ? this.step3Data.relevent_experience_technical : '';
       //}     relevent_experience
 
       this.inspectionBodyForm.step3.managementManager = {};
@@ -2629,10 +2656,10 @@ export class InspectionBodiesFormComponent implements OnInit {
       res => {
         ////console.log(res,'res')
         if(res['status'] == true) {
-          //this.toastr.success(res['msg'], '');
-          setTimeout(()=> {
-            this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-          },2000)          
+          this.toastr.success('Save Draft Successfully', '');
+          // setTimeout(()=> {
+          //   this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+          // },2000)          
           //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
@@ -2656,8 +2683,14 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.inspectionBodyForm = {};
       this.inspectionBodyForm.step4 = {};
       ////console.log(">>> step4 data: ", this.step4Data);
-      this.step4Data['audit_date'] = (this.step4Data.audit_date != '') ? this.step4Data.audit_date : null;
-      this.step4Data['mrm_date'] = (this.step4Data.mrm_date != undefined) ? this.step4Data.mrm_date : null;
+      console.log(">>>> ", this.step4Data);
+      if(type != undefined){
+        console.log("ssss...");
+        this.step4Data['audit_date'] = (this.step4Data.audit_date != undefined) ? this.step4Data.audit_date : null;
+        this.step4Data['mrm_date'] = (this.step4Data.mrm_date != undefined) ? this.step4Data.mrm_date : null;
+      }
+      //this.step4Data['audit_date'] = (this.step4Data.audit_date != '') ? this.step4Data.audit_date : null;
+      //this.step4Data['mrm_date'] = (this.step4Data.mrm_date != undefined) ? this.step4Data.mrm_date : null;
 
       this.inspectionBodyForm.step4 = this.step4Data; 
       this.inspectionBodyForm.step4.email = this.userEmail;
@@ -2697,10 +2730,10 @@ export class InspectionBodiesFormComponent implements OnInit {
       res => {
         ////console.log(res,'res')
         if(res['status'] == true) {
-          //this.toastr.success(res['msg'], '');
-          setTimeout(()=> {
-            this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-          },2000) 
+          this.toastr.success('Save Draft Successfully', '');
+          // setTimeout(()=> {
+          //   this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+          // },2000) 
           //this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
@@ -2786,11 +2819,11 @@ export class InspectionBodiesFormComponent implements OnInit {
       res => {
         ////console.log(res,'res')
         if(res['status'] == true) {
-          //this.toastr.success(res['msg'], '');
+          this.toastr.success('Save Draft Successfully', '');
           //this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-          setTimeout(()=> {
-            this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-          },2000) 
+          // setTimeout(()=> {
+          //   this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+          // },2000) 
           //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
@@ -3108,7 +3141,8 @@ getMatchScheme(scId: any, scopeData: any){
    
    //return;
     //ngForm.form.valid &&
-    if(!ngForm.form.valid && type == undefined && this.schemeRows.length == 1 && this.schemeRows[0].id === undefined) {
+    if(!ngForm.form.valid && type == undefined && this.schemeRows.length == 1 
+        && this.schemeRows[0].id === undefined && this.editScopeData != undefined && this.editScopeData != null) {
       console.log(">>>Bypass saving...");
       console.log(">>>Enter....2")
       this.saveScope();
@@ -3160,14 +3194,15 @@ getMatchScheme(scId: any, scopeData: any){
         res => {
           ////console.log(res,'res')
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
+            //this.toastr.success(res['msg'], '');
             this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
           }
         });
 
-    }else if( type != undefined && type == true){
+    }
+    else if( type != undefined && type == true){
       console.log(">>>Enter....4")
       this.inspectionBodyForm.step5.is_draft = true;
       this.inspectionBodyForm.saved_step = 5;
@@ -3178,10 +3213,11 @@ getMatchScheme(scId: any, scopeData: any){
           ////console.log(res,'res')
           if(res['status'] == true) {
             //this.toastr.success(res['msg'], '');
+            this.toastr.success('Save Draft Successfully', '');
             //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
-            setTimeout(()=> {
-              this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-            },2000) 
+            // setTimeout(()=> {
+            //   this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+            // },2000) 
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -3364,7 +3400,8 @@ onSubmitPaymentInformation(ngForm7: any, type?: boolean){
       res => {
         ////console.log(res,'res')
         if(res['status'] == true) {
-          this.toastr.success(res['msg'], '');
+          //this.toastr.success(res['msg'], '');
+          this.toastr.success('Save Draft Successfully', '');
           //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
@@ -3409,7 +3446,7 @@ savedraftStep(stepsCount) {
       res => {
         ////console.log(res,'res Load Data')
         if(res['status'] == true) {
-          this.toastr.success(res['msg'], '');
+          //this.toastr.success(res['msg'], '');
           this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');

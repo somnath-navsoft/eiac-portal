@@ -199,6 +199,8 @@ scrollForm(data?:any){
  ngOnInit() { 
    ////console.log(this.Service.dutyTime());
   //  this.titleService.setTitle('EIAC - Healthcare Laboratories');
+  this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');
+  this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Document%20review%20Checklist-%20ISO%2017020-%202012_Inspection%20Bodies.pdf');
   this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
   this.userEmail = sessionStorage.getItem('email');
   this.userType = sessionStorage.getItem('type');
@@ -700,7 +702,7 @@ validateFile(fileEvent: any) {
 
 
 onSubmitStep1(ngForm1: any){
-  this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+  // this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
   if(this.step1Data.duty_shift == '1')
   {
     if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
@@ -788,7 +790,7 @@ onSubmitStep1(ngForm1: any){
 
     this.loader = false;
     // this.step1DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.healthCareForm)
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
     .subscribe(
       res => {
         this.loader = true;
@@ -837,7 +839,7 @@ savedraftStep(stepCount) {
     }
     this.loader = false;
     // this.step1DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.healthCareForm)
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
     .subscribe(
       res => {
         // console.log(res,'res')
@@ -870,7 +872,7 @@ savedraftStep(stepCount) {
 
     this.loader = false;
     // this.step2DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.healthCareForm)
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
     .subscribe(
       res => {
         this.loader = true;
@@ -911,7 +913,7 @@ savedraftStep(stepCount) {
     this.healthCareForm.step3 = this.step3Data;
     this.loader = false;
     // this.step3DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.healthCareForm)
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
     .subscribe(
       res => {
         console.log(res,'res')
@@ -936,7 +938,7 @@ savedraftStep(stepCount) {
     this.healthCareForm.step4 = this.step4Data;
     this.loader = false;
     // this.step4DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.healthCareForm)
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
     .subscribe(
       res => {
         if(res['status'] == true) {
@@ -967,7 +969,7 @@ savedraftStep(stepCount) {
     // console.log(this.healthCareForm);
     this.loader = false;
     // this.step5DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.healthCareForm)
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
     .subscribe(
       res => {
         // console.log(res,'res')
@@ -994,7 +996,7 @@ savedraftStep(stepCount) {
     // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
     this.loader = false;
     // this.step6DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.healthCareForm)
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
     .subscribe(
       res => {
         // console.log(res,'res')
@@ -1007,12 +1009,50 @@ savedraftStep(stepCount) {
   }
 
   if(stepCount == 'step9') {
+    this.healthCareForm = {};
+    this.healthCareForm.step9 = {};
 
+    let dtFormat: string = '';
+    if(this.voucherSentData['payment_date'] != undefined && 
+        this.voucherSentData['payment_date']._i != undefined){
+        var dtData = this.voucherSentData['payment_date']._i;
+        var year = dtData.year;
+      var month = dtData.month;
+      var date = dtData.date;
+      dtFormat = year + "-" + month + "-" + date;
+    }
+    //     
+
+    this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
+    this.voucherFile.append('amount',this.voucherSentData['amount']);
+    this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
+    this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
+    this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
+    this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
+    this.voucherFile.append('voucher_date',dtFormat);
+    this.voucherFile.append('accreditation',this.formApplicationId);
+    // this.voucherFile.append('application_id',this.formApplicationId);
+        
+    this.loader = false;
+    // console.log(this.voucherFile);
+    this._trainerService.paymentVoucherSave((this.voucherFile))
+    .subscribe(
+        result => {
+          this.loader = true;
+          let data: any = result;
+          //console.log("submit voucher: ", data);
+          if(data.status){
+            this.toastr.success('Save Draft Successfully', '');
+          }else{
+            this.toastr.warning(data.msg,'');
+          }
+        }
+      )
   }
 }
 
 onSubmitStep2(ngForm2: any){
-  this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+  // this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
 
   if(ngForm2.form.valid) {
     this.healthCareForm = {};
@@ -1035,7 +1075,7 @@ onSubmitStep2(ngForm2: any){
 
     // this.step2DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
     this.loader = false;
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.healthCareForm)
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
     .subscribe(
       res => {
         // console.log(res,'res')
@@ -1053,7 +1093,7 @@ onSubmitStep2(ngForm2: any){
 }
 
 onSubmitStep3(ngForm3: any){
-  this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+  // this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
   if(ngForm3.form.valid) {
     this.healthCareForm = {};
     // this.step3Data = {};
@@ -1087,7 +1127,7 @@ onSubmitStep3(ngForm3: any){
     this.healthCareForm.step3 = this.step3Data;
     // this.step3DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
     this.loader = false;
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.healthCareForm)
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
     .subscribe(
       res => {
         // console.log(res,'res')
@@ -1105,7 +1145,7 @@ onSubmitStep3(ngForm3: any){
 }
 
 onSubmitStep4(ngForm4: any){
-this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
+// this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
   if(ngForm4.form.valid) {
     this.healthCareForm = {};
     this.healthCareForm.step4 = {};
@@ -1118,7 +1158,7 @@ this.Service.moveSteps('information_audit_management', 'scope_accreditation', th
     this.healthCareForm.step4 = this.step4Data;
     // this.step4DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
     this.loader = false;
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.healthCareForm)
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
     .subscribe(
       res => {
         this.loader = true;
@@ -1139,7 +1179,7 @@ onSubmitStep5(ngForm5: any) {
 }
 
 onSubmitStep6(ngForm6: any){
-  this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+  // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
   if(ngForm6.form.valid) {
     this.healthCareForm = {};
     this.healthCareForm.step6 = {};
@@ -1155,7 +1195,7 @@ onSubmitStep6(ngForm6: any){
     // console.log(this.healthCareForm);
     // this.step5DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
     this.loader = false;
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.healthCareForm)
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
     .subscribe(
       res => {
         // console.log(res,'res')
@@ -1214,7 +1254,7 @@ if(ngForm7.form.valid){
   // this.step6DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
   // console.log(this.healthCareForm,'healthCareForm');
   this.loader = false;
-  this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.healthCareForm)
+  this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
   .subscribe(
     res => {
       // console.log(res,'res')
@@ -1308,9 +1348,13 @@ if(ngForm9.form.valid && this.paymentReceiptValidation != false) {
           let data: any = result;
           //console.log("submit voucher: ", data);
           if(data.status){
-            //this.voucherFile = new FormData();
-            //this.voucherSentData = {};
-            this.toastr.success("Your form has been successfully submitted and it is under review.We will update you shortly.",'THANK YOU');
+            setTimeout(()=>{
+              let elem = document.getElementById('openAppDialog');
+              // console.log("App dialog hash....", elem);
+              if(elem){
+                elem.click();
+              }
+            }, 100)
             //this.openView('appComp','');
             setTimeout(() => {                    
               // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');

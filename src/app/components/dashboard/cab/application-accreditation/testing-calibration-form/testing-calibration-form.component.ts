@@ -738,7 +738,7 @@ getCriteria(value, secInd: any){
     //   console.log(res,'sdsgdsg');
     // });
     this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
-    // console.log(this.urlVal,'valofurl');
+    console.log(this.urlVal,'valofurl');
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
@@ -1693,8 +1693,8 @@ getCriteria(value, secInd: any){
           // console.log(res,'res')
           this.loader = true;
           if(res['status'] == true) {
-            this.toastr.success(res['msg'], '');
-            this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+            this.toastr.success('Save Draft Successfully', '');
+            // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -1720,6 +1720,7 @@ getCriteria(value, secInd: any){
           // console.log(res,'res')
           this.loader = true;
           if(res['status'] == true) {
+            this.toastr.success('Save Draft Successfully', '');
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -1727,7 +1728,45 @@ getCriteria(value, secInd: any){
     }
 
     if(stepCount == 'step9') {
+      this.testingCalForm = {};
+      this.testingCalForm.step9 = {};
 
+      let dtFormat: string = '';
+      if(this.voucherSentData['payment_date'] != undefined && 
+          this.voucherSentData['payment_date']._i != undefined){
+          var dtData = this.voucherSentData['payment_date']._i;
+          var year = dtData.year;
+        var month = dtData.month;
+        var date = dtData.date;
+        dtFormat = year + "-" + month + "-" + date;
+      }
+      //     
+
+      this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
+      this.voucherFile.append('amount',this.voucherSentData['amount']);
+      this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
+      this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
+      this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
+      this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
+      this.voucherFile.append('voucher_date',dtFormat);
+      this.voucherFile.append('accreditation',this.formApplicationId);
+      // this.voucherFile.append('application_id',this.formApplicationId);
+          
+      this.loader = false;
+      // console.log(this.voucherFile);
+      this._trainerService.paymentVoucherSave((this.voucherFile))
+      .subscribe(
+          result => {
+            this.loader = true;
+            let data: any = result;
+            //console.log("submit voucher: ", data);
+            if(data.status){
+              this.toastr.success('Save Draft Successfully', ''); 
+            }else{
+              this.toastr.warning(data.msg,'');
+            }
+          }
+        )
     }
   }
 
