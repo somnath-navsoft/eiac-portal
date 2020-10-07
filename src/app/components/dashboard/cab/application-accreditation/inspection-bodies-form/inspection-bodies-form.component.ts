@@ -1407,7 +1407,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         let getData: any = res;
         let data: any;
         //, getData.data.step1, " -- ", getData.data.step2
-        //console.log(getData,"Profile info >>> ");
+        console.log(getData,"Profile info >>> ");
 
         if(getData.data.step1.length){
           data = getData.data['step1'][0];
@@ -2349,12 +2349,12 @@ export class InspectionBodiesFormComponent implements OnInit {
       if(this.step1Data.is_hold_other_accreditation_select != undefined && this.step1Data.is_hold_other_accreditation_select == 0){
         this.step1Data.is_hold_other_accreditation = false;
       }
-      if(this.step1Data.is_main_activity == "true"){
-        this.step1Data.is_main_activity = true;
-      }
-      if(this.step1Data.is_main_activity == "false"){
-        this.step1Data.is_main_activity = false;
-      }
+      // if(this.step1Data.is_main_activity == "true"){
+      //   this.step1Data.is_main_activity = true;
+      // }
+      // if(this.step1Data.is_main_activity == "false"){
+      //   this.step1Data.is_main_activity = false;
+      // }
       
       this.inspectionBodyForm.email = this.userEmail;
       this.inspectionBodyForm.userType = this.userType;
@@ -3049,6 +3049,18 @@ findObjectKeyValues(object: any, value: string){
             }
       }      
   }
+  //filter scope collections
+  //console.log(">> Fileter collection...", scopeCollections);
+  for(var p in scopeCollections){
+    if(scopeCollections[p]){
+        let getDetails: any = scopeCollections[p]['scope_value'];
+        //console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
+        if(getDetails.length == 0){
+          //console.log(">>>Empty values: ", p, " deleting");
+          delete scopeCollections[p];
+        }
+    }
+  }
   console.log("#Updated Scope after edit: ", scopeCollections, " -- ", this.editScopeData);
   this.step5Data['scopeDetails']    = scopeCollections;
 }
@@ -3401,7 +3413,7 @@ onSubmitPaymentInformation(ngForm7: any, type?: boolean){
         ////console.log(res,'res')
         if(res['status'] == true) {
           //this.toastr.success(res['msg'], '');
-          this.toastr.success('Save Draft Successfully', '');
+          this.toastr.success("Saved Draft Successfully", '');
           //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
