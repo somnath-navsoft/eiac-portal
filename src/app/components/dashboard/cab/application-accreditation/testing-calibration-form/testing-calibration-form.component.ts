@@ -1430,8 +1430,8 @@ getCriteria(value, secInd: any){
         this.dutyTime1 = true;
         this.isSubmit = true;
       }
-      this.dutyTime1 = false;
-      this.isSubmit = false;
+      // this.dutyTime1 = false;
+      // this.isSubmit = false;
       
     }else if(this.step1Data.duty_shift == '2')
     {
