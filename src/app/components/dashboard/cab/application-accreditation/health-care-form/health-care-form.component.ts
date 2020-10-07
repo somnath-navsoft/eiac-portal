@@ -426,6 +426,19 @@ validateFile(fileEvent: any) {
    this.orgMembToggle  = data.checked;
  }
 
+ getDutyTimeForm1Index(indexVal){
+  //console.log('Get Index: ', indexVal.value, " -- ", indexVal);
+    var keyVal;
+    for(keyVal in this.addMinutesToTime){
+        //console.log(keyVal);
+        if(indexVal.value === this.addMinutesToTime[keyVal].val){
+          //console.log("match ", this.addMinutesToTime[keyVal].val);
+          this.getDutyTimeForm1IndexValue = keyVal;
+          return;
+        }
+    }
+}
+
  loadAppInfo(){
   //let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
   let getUserdata = '';
@@ -611,7 +624,7 @@ validateFile(fileEvent: any) {
               if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
                 //console.log('>>>Accr infor: ', getData.data.otherAccr);
                 this.accreditationInfo = [];
-                this.step1Data.is_hold_other_accreditation_select = "1";
+                this.step1Data.is_hold_other_accreditation = "1";
                 //this.accreditationInfo = '';
                 res['data'].otherAccr.forEach((item, key) => {
                     ////console.log('>> ', item, " :: ", key);
@@ -623,7 +636,7 @@ validateFile(fileEvent: any) {
                 })
               }else{
                 //this.accreditationInfo = [{}];
-                this.step1Data.is_hold_other_accreditation_select = "0";
+                this.step1Data.is_hold_other_accreditation = "0";
               }
 
               //step2
