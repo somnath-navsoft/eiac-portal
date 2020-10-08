@@ -23,7 +23,7 @@ export class CertificationBodiesFormComponent implements OnInit {
   public certificationBodiesForm: any = {};
   public organizationBasicInfo: Array<any> = [];
   public organizationMemberInfo: Array<any> = [];
-  public summaryDetails: Array<any> = [];
+  public summaryDetails: Array<any> = [{}];
   public auditorsExaminersFulltime: Array<any> = [{}];
   public auditorsExaminersParttime: Array<any> = [{}];
   public accreditationCriteria: Array<any> = [];
@@ -128,6 +128,8 @@ export class CertificationBodiesFormComponent implements OnInit {
   auditorsExaminerJson:any = {};
   auditorsExaminerJsonParttime:any = {};
   staticPosition:any = {};
+  summaryDetailsArr:any = {};
+  addMinutesToTime:any;
 
   @ViewChild('mydiv', null) mydiv: ElementRef;
   @ViewChild('captchaRef',{static:true}) captchaRef: RecaptchaComponent;
@@ -151,6 +153,20 @@ export class CertificationBodiesFormComponent implements OnInit {
     // this.Service.mapboxToken = getVal;
  }
 ngOnInit() {
+  this.ownOrgMembInfo = [
+    {
+      name:'',
+      bod_company:'',
+      md_or_chief_executive:'',
+      authorized_contact_person:'',
+      designation:'',
+      mobile_no:'',
+      land_no:'',
+      email_address:'',
+    }
+  ]
+
+  this.addMinutesToTime = this.Service.addMinutesToTime();
 
   this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');
   this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Document%20review%20Checklist-%20ISO%2017020-%202012_Inspection%20Bodies.pdf');
@@ -199,6 +215,19 @@ ngOnInit() {
   this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false};
   this.loadAppInfo()
   this.loadCountryStateCity();
+}
+
+getDutyTimeForm1Index(indexVal){
+  //console.log('Get Index: ', indexVal.value, " -- ", indexVal);
+    var keyVal;
+    for(keyVal in this.addMinutesToTime){
+        //console.log(keyVal);
+        if(indexVal.value === this.addMinutesToTime[keyVal].val){
+          //console.log("match ", this.addMinutesToTime[keyVal].val);
+          this.getDutyTimeForm1IndexValue = keyVal;
+          return;
+        }
+    }
 }
 
 statelistById = async(country_id) => {
@@ -406,7 +435,7 @@ loadAppInfo(){
               //step2
               if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
                 this.accreditationInfo = [];
-                this.step1Data.is_hold_other_accreditation_select = "1";
+                this.step2Data.is_hold_other_accreditation = "1";
                 res['data'].otherAccr.forEach((item, key) => {
                     let data: any;
                     data = item['value'];
@@ -415,7 +444,7 @@ loadAppInfo(){
                     this.accreditationInfo.push(jparse);
                 })
               }else{
-                this.step1Data.is_hold_other_accreditation_select = "0";
+                this.step2Data.is_hold_other_accreditation = "0";
               }
 
               //step3
@@ -439,6 +468,60 @@ loadAppInfo(){
               }
 
               //step4
+              if(res['data'].summaryOfPersonnel != undefined && res['data'].summaryOfPersonnel.length > 0) {
+                this.summaryDetails = [];
+                // var summaryDetailsArr = {};
+                // res['data'].summaryOfPersonnel.forEach((res,key) => {
+                //   if(res['position'] == 'Managerial/Professional' || res['position'] == 'Administrative' || res['position'] == 'Marketing/Sales') {
+                //     // this.summaryDetails.position
+                //     this.summaryDetailsArr.position = res['position'];
+                //     this.summaryDetailsArr.fulltime_emp_name = res['fulltime_emp_name'];
+                //     this.summaryDetailsArr.parttime_emp_name = res['parttime_emp_name'];
+                //   }
+                  
+                // })
+
+                res['data'].summaryOfPersonnel.find((res,key) => {
+                  if(res['position'] == 'Managerial/Professional'){
+                    var obj = {};
+                    obj['position'] = res['position'];
+                    obj['fulltime_emp_name'] = res['fulltime_emp_name'];
+                    obj['parttime_emp_name'] = res['parttime_emp_name'];
+                    this.summaryDetails.push(obj);
+                  }else if(res['position'] == 'Administrative'){
+                    var obj = {};
+                    obj['position'] = res['position'];
+                    obj['fulltime_emp_name'] = res['fulltime_emp_name'];
+                    obj['parttime_emp_name'] = res['parttime_emp_name'];
+                    this.summaryDetails.push(obj);
+                  }else if(res['position'] == 'Marketing/Sales'){
+                    var obj = {};
+                    obj['position'] = res['position'];
+                    obj['fulltime_emp_name'] = res['fulltime_emp_name'];
+                    obj['parttime_emp_name'] = res['parttime_emp_name'];
+                    this.summaryDetails.push(obj);
+                  }else if(res['position'] == 'Auditors/Examiners for Each Standard'){
+                    // var obj = {};
+                    // var auditorsExaminersFulltimeArr = [];
+                    // var auditorsExaminersParttimeArr = [];
+
+                    // obj['position'] = res['position'];
+                    
+                    var obj1 = res['fulltime_emp_name'].replace(/'/g, "\"");
+                    var obj2 = JSON.parse(obj1);
+
+                    var obj3 = res['parttime_emp_name'].replace(/'/g, "\"");
+                    var obj4 = JSON.parse(obj3);
+
+                    this.auditorsExaminersFulltime = obj2;
+                    this.auditorsExaminersParttime = obj4;
+                  }
+                });
+                
+                // console.log(this.summaryDetails,'summaryDetails');
+                // console.log(this.auditorsExaminersFulltime,'auditorsExaminersFulltime');
+                // console.log(this.auditorsExaminersParttime,'auditorsExaminersParttime');
+              }
               // if(res['data'].audit_date != null){
               //   this.step4Data.audit_date = new Date(res['data'].audit_date);
               // }
@@ -747,8 +830,8 @@ onSubmitStep1(ngForm1: any){
       this.step1Data.application_id = this.formApplicationId;
     }
     // this.certificationBodiesForm.step1.is_draft = false;
-    this.certificationBodiesForm.step1.is_bod = this.step1Data.is_bod == '0' ? false : true;
-    this.certificationBodiesForm.step1.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
+    this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
+    // this.certificationBodiesForm.step1.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
     this.certificationBodiesForm.step1 = this.step1Data;
 
     this.certificationBodiesForm.step1['ownOrgBasicInfo'] = [];
@@ -796,6 +879,7 @@ onSubmitStep2(ngForm2:any) {
       // this.step2Data.application_id = applicationId;
     this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step2Data.is_draft = false;
+    this.step2Data.is_hold_other_accreditation = this.step2Data.is_hold_other_accreditation == '0' ? false : true;
     this.certificationBodiesForm.step2 = this.step2Data;
 
     this.certificationBodiesForm.step2['accreditationInfo'] = [];
@@ -812,7 +896,7 @@ onSubmitStep2(ngForm2:any) {
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
           this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
-          this.Service.moveSteps('application_information', 'other_accreditation', this.headerSteps);
+          this.Service.moveSteps('other_accreditation', 'personal_information', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
         }
@@ -844,7 +928,7 @@ onSubmitStep3(ngForm3: any){
     this.certificationBodiesForm.step3.technicalManager['designation'] = (this.step3Data.designation != '' && this.step3Data.designation != undefined) ? this.step3Data.designation : '';
     this.certificationBodiesForm.step3.technicalManager['mobile_no'] = (this.step3Data.mobile_no != '' && this.step3Data.mobile_no != undefined) ? this.step3Data.mobile_no : '';
     this.certificationBodiesForm.step3.technicalManager['email'] = (this.step3Data.email != '' && this.step3Data.email != undefined) ? this.step3Data.email : '';
-    this.certificationBodiesForm.step3.technicalManager['relevent_experience'] = (this.step3Data.relevent_experience != '' && this.certificationBodiesForm.step3.relevent_experience != undefined) ? this.step3Data.relevent_experience : '';
+    this.certificationBodiesForm.step3.technicalManager['relevent_experience'] = (this.step3Data.relevent_experience != '' && this.step3Data.relevent_experience != undefined) ? this.step3Data.relevent_experience : '';
     this.certificationBodiesForm.step3.technicalManager['duration_at_current_post'] = (this.step3Data.duration_at_current_post != '' && this.step3Data.duration_at_current_post != undefined) ? this.step3Data.duration_at_current_post : '';
 
     this.certificationBodiesForm.step3.managementManager = {};
