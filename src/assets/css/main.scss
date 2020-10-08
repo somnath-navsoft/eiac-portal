@@ -235,6 +235,9 @@ input { font-family: 'Dubai Regular'; }
 .service_desc .service-data {color: #77777B; font-family: 'Dubai Regular'; font-size: 18px; margin: 0; }
 .service_desc a{color: #B54150; font-size: 20px; font-family: 'Dubai Bold';}
 
+.ngx-pagination { text-align: right; margin: 30px; }
+.ngx-pagination .current { background: #B14A56!important; }
+
 //==================SUCCESS==================//
 .form-success { background: #EFEFEF; padding: 50px; margin: 50px; margin-top: 120px; text-align: center; }
 .user-id h3 { color: #444444; font-size: 30px; font-family: "Dubai Medium"; padding-top: 30px; }
