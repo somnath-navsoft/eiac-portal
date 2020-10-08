@@ -188,6 +188,12 @@ export class InspectionBodiesFormComponent implements OnInit {
   is_main_activity_note_entry: boolean = false;
 
 
+  shift2_from: boolean = false;
+  shift2_to: boolean = false;
+  shift3_from: boolean = false;
+  shift3_to: boolean = false;
+
+
   //dynamicScopeOptions:any[] = [];  
   //dynamicScopeModelValues:any={};
   //dynamicFirstFieldValues:any;
@@ -1646,19 +1652,43 @@ export class InspectionBodiesFormComponent implements OnInit {
       if(this.step1Data.duty_from2 != undefined || this.step1Data.duty_to3 != undefined){
         this.step1Data.duty_from2 = val;
         this.step1Data.duty_to2 = val;
+        
       }
       if(this.step1Data.duty_from3 != undefined || this.step1Data.duty_to3 != undefined){
         this.step1Data.duty_from3 = val;
         this.step1Data.duty_to3 = val;
+        
       }
+      this.shift2_from = true;
+        this.shift2_to = true;
+        this.shift3_from = true;
+        this.shift3_to = true;
+
+        this.dutyTime2 = true;
+        this.dutyTime3 = true;
       console.log(">>> shift 1 ", this.step1Data.duty_from2, " -- ",this.step1Data.duty_to2)
     }
     if(theVal == 2){      
       if(this.step1Data.duty_from3 != undefined || this.step1Data.duty_to3 != undefined){
         this.step1Data.duty_from3 = val;
-        this.step1Data.duty_to3 = val;
+        this.step1Data.duty_to3 = val;        
       }
-      console.log(">>> shift 1 ", this.step1Data.duty_from2, " -- ",this.step1Data.duty_to2)
+      this.shift3_from = true;
+      this.shift3_to = true;
+      this.shift2_from = false;
+      this.shift2_to = false;
+
+        this.dutyTime3 = true;
+        this.dutyTime1 = true;
+      console.log(">>> shift 2 ", this.step1Data.duty_from2, " -- ",this.step1Data.duty_to2)
+    }
+    if(theVal == 3){     
+      
+      this.shift3_from = false;
+      this.shift3_to = false;
+      this.shift2_from = false;
+      this.shift2_to = false;
+      console.log(">>> shift 3 ", this.step1Data.duty_from2, " -- ",this.step1Data.duty_to2)
     }
   }
 

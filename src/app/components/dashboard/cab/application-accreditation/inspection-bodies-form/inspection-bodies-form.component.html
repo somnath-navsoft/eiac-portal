@@ -460,7 +460,7 @@
                                                     </div>  
                                                     <div class="col-md-4">
                                                         <label class="check-rdo">
-                                                                <mat-radio-button value="3" required>Three Shift </mat-radio-button>
+                                                                <mat-radio-button value="3"  (click)="moveShift(3)" required>Three Shift </mat-radio-button>
                                                         </label>
                                                     </div>  
                                                 
@@ -497,7 +497,7 @@
                                                     </mat-select>
                                                 </mat-form-field>
                                                 <!-- <p class="error" *ngIf="dutyTime1 == false">This is required</p> -->
-                                                <p class="error" *ngIf="dutyTime1 == false">Please enter from and to duty time</p>
+                                                <p class="error" *ngIf="dutyTime1 == false">Please enter From & To duty time</p>
                                             </div>
                                             <div class="col-md-3">
                                                     <!-- <mat-radio-button></mat-radio-button> -->
@@ -505,7 +505,7 @@
                                                     <mat-label>From</mat-label>
                                                     <!-- @{{step1Data.duty_from2}} -->
                                                     <!-- <input matInput type='time' placeholder="" name="duty_from2"  [(ngModel)]="inspectionBodyForm.duty_from2"> -->
-                                                    <mat-select placeholder="Select" name="duty_from2" [(ngModel)]="step1Data.duty_from2">
+                                                    <mat-select placeholder="Select" name="duty_from2" [(ngModel)]="step1Data.duty_from2" [disabled]="shift2_from">
                                                         <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                     </mat-select>
                                                 </mat-form-field>
@@ -513,31 +513,31 @@
                                                     <mat-label>To</mat-label>
                                                     <!-- @{{step1Data.duty_to2}} -->
                                                     <!-- <input matInput type='time' placeholder="" name="duty_to2"  [(ngModel)]="inspectionBodyForm.duty_to2"> -->
-                                                    <mat-select placeholder="Select" (selectionChange)="dayTimeChange($event,2)" name="duty_to2" [(ngModel)]="step1Data.duty_to2">
+                                                    <mat-select placeholder="Select"  [disabled]="shift2_to" (selectionChange)="dayTimeChange($event,2)" name="duty_to2" [(ngModel)]="step1Data.duty_to2">
                                                         <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                     </mat-select>
                                                 </mat-form-field>
                                                 <!-- <p class="error" *ngIf="!dutyTime2">Please enter from and to duty time</p> -->
-                                                <p class="error" *ngIf="dutyTime2 == false">Please enter from and to duty time</p>
+                                                <p class="error" *ngIf="dutyTime2 == false">Please nter From & To duty time</p>
                                             </div>
                                             <div class="col-md-3">
                                                     <!-- <mat-radio-button></mat-radio-button> -->
                                                 <mat-form-field class="frm-data">
                                                     <mat-label>From</mat-label>
                                                     <!-- <input matInput type='time' placeholder="" name="duty_from3"  [(ngModel)]="inspectionBodyForm.duty_from3"> -->
-                                                    <mat-select placeholder="Select"  name="duty_from3" [(ngModel)]="step1Data.duty_from3">
+                                                    <mat-select placeholder="Select" [disabled]="shift3_from"  name="duty_from3" [(ngModel)]="step1Data.duty_from3">
                                                         <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                     </mat-select>
                                                 </mat-form-field>
                                                 <mat-form-field class="frm-data">
                                                     <mat-label>To</mat-label>
                                                     <!-- <input matInput type='time' placeholder="" name="duty_to3"  [(ngModel)]="inspectionBodyForm.duty_to3"> -->
-                                                    <mat-select placeholder="Select" (selectionChange)="dayTimeChange($event,3)" name="duty_to3" [(ngModel)]="step1Data.duty_to3">
+                                                    <mat-select placeholder="Select" [disabled]="shift3_to" (selectionChange)="dayTimeChange($event,3)" name="duty_to3" [(ngModel)]="step1Data.duty_to3">
                                                         <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                     </mat-select>
                                                 </mat-form-field>
                                                 <!-- <p class="error" *ngIf="!dutyTime3">Please enter from and to duty time</p> -->
-                                                <p class="error" *ngIf="dutyTime3 == false">Please enter from and to duty time</p>
+                                                <p class="error" *ngIf="dutyTime3 == false">Please enter From & To duty time</p>
                                             </div>
                                         </div>
                                         
