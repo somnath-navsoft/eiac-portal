@@ -650,12 +650,22 @@ export class InspectionBodiesFormComponent implements OnInit {
   
 
     //return;
+    
+      this.loadData();
+   
 
-    this.loadData();
+    if(this.urlVal != 'undefined'){
+      console.log(">>>> enter...");
     this.loadAppData();
     this.loadAppInfo();
+    }
+
+    if(this.urlVal == 'undefined'){
+      console.log(">>>> enter...1");
+      this.loadAppInfo();
+    }
     this.loadFormDynamicTable();
-    //this.loadCountryStateCity();
+    this.loadCountryStateCity();
 
     // let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
     // ////console.log("app info: ", url);
@@ -710,11 +720,15 @@ export class InspectionBodiesFormComponent implements OnInit {
   statelistById = async(country_id) => {
     this.allStateList = [];
     let stateList =  this.Service.getState();
+    ///console.log("enter state...");
+    this.step1Data.state = '';
+    this.step1Data.city = '';
     await stateList.subscribe( result => {
         for(let key in result['states']) {
+          ///console.log("state: ", result['states'][key], " -- ", country_id);
           if(result['states'][key]['country_id'] == country_id )
           {
-            //this.allStateList.push(result['states'][key]);
+            this.allStateList.push(result['states'][key]);
           }
         }
     });
@@ -724,11 +738,14 @@ export class InspectionBodiesFormComponent implements OnInit {
   citylistById = async(state_id) => {
     this.allCityList = [];
     let cityList =  this.Service.getCity();
+    this.step1Data.city = '';
+    ///console.log("enter city...");
     await cityList.subscribe( result => {
         for(let key in result['cities']) {
+          ///console.log("city: ", result['cities'][key], " -- ", state_id);
           if(result['cities'][key]['state_id'] == state_id )
           {
-            //this.allCityList.push(result['cities'][key]);
+            this.allCityList.push(result['cities'][key]);
           }
         }
     },
@@ -741,6 +758,10 @@ export class InspectionBodiesFormComponent implements OnInit {
   
   loadCountryStateCity = async() => {
     let countryList =  this.Service.getCountry();
+    await countryList.subscribe(record => {
+      // console.log(record,'record');
+      this.getCountryLists = record['countries'];
+    });
     // await countryList.subscribe(record => {
     //   ///////console.log(record,'contry record :: ', this.step1Data.country);
     //   //this.getCountryLists = record['countries'];
@@ -794,9 +815,9 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.inspectionBodyForm.managementManager        = this.managementManager;
     this.inspectionBodyForm.inspectionBodyInfo           = this.inspectionBodyInfo;
     this.inspectionBodyForm.medicaMainlLabInfo        = this.medicaMainlLabInfo;
-    //, undertaking_confirmTop1: false,undertaking_confirmTop2: false,
+    //, undertaking_confirmTop1: false,undertaking_confirmTop2: false,,  undertaking_confirmTop3: false
     this.authorizationList = {undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,
-      undertaking_confirm7:false,authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false};
+      undertaking_confirm7:false,authorization_confirm1:false,authorization_confirm2:false};
 
     this.recommend = {first:false,second:false,third:false,fourth:false}
 
@@ -1130,9 +1151,33 @@ export class InspectionBodiesFormComponent implements OnInit {
         let data: any;
         let pathData: any;
         let filePath: string;
-        //console.log(getData,"get APP Data:");
+        console.log(getData,"get APP Data:");
 
         this.viewData = getData;
+
+
+            var stateList =  this.Service.getState();
+            var cityList =  this.Service.getCity();
+
+            stateList.subscribe( result => {
+              for(let key in result['states']) {
+                // if(result['states'][key]['name'] == data.state )
+                // {
+                  this.allStateList.push(result['states'][key]);
+                //}
+              }
+            });
+
+            cityList.subscribe( result => {
+              for(let key in result['cities']) {
+                // if(result['cities'][key]['name'] == data.city )
+                // {
+                  this.allCityList.push(result['cities'][key]);
+                //}
+              }
+            });
+
+
 
         if(getData.data.id != undefined && getData.data.id > 0){
           this.formApplicationId = getData.data.id;
@@ -1151,7 +1196,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         }
         if(getData.data.saved_step  != null){
           ///////console.log("@saved step assign....");
-          let saveStep = getData.data.saved_step;
+          let saveStep: number = parseInt(getData.data.saved_step) - 1;
           //open step
           this.headerSteps.forEach((item, key) => {
                 ///////console.log(item, " --- ", key);
@@ -1174,6 +1219,56 @@ export class InspectionBodiesFormComponent implements OnInit {
 
         //Step 1
         //
+
+        if(getData.data.trade_license != ''){
+          // let getFile = getData.data.trade_license.toString().split('/');
+          // if(getFile.length){
+          // this.selectTradeLicName = getFile[4].toString().split('.')[0];
+          // this.selectTradeLicPath = this.constant.mediaPath +  data.trade_license.toString();
+          // }
+          }
+          this.step1Data.trade_license_number = getData.data.trade_license_number;
+          
+          // if(getData.data.cab_name  != ''){
+          // this.step1Data.official_commercial_name = getData.data.cab_name.toString();
+          // }
+          
+          // if(getData.data.date_of_issue != ''){
+          // this.step1Data.date_of_expiry = getData.data.date_of_expiry;
+          // this.step1Data.date_of_establishment = getData.data.date_of_establishment;//
+          // this.step1Data.date_of_issue = getData.data.date_of_issue;
+          // }
+          
+          this.step1Data.physical_location_address = getData.data.physical_location_address;
+          this.step1Data.po_box = getData.data.po_box;
+          this.step1Data.telephone = getData.data.telephone;
+          this.step1Data.fax_no = getData.data.fax_no;
+          this.step1Data.mailing_address = getData.data.mailing_address;
+          //this.step1Data.official_website = data.applicant_website;
+          // this.step1Data.date_of_expiry = data.date_of_expiry;
+          // this.step1Data.date_of_establishment = data.date_of_establisment;
+          // this.step1Data.date_of_issue = data.date_of_issue; //|
+          this.step1Data.official_email = getData.data.official_email;
+          this.step1Data.official_website = getData.data.official_website;
+          
+          if(getData.data.ownershipOfOrg != undefined && getData.data.ownershipOfOrg.length){
+          console.log('>>> owner data....');
+          this.ownOrgBasicInfo = getData.data.cabOwnerData;
+          //this.profileAutoData = true;
+          ////console.log('>>> owner data....', this.ownOrgBasicInfo);
+          }
+          if(getData.data.bodMember != undefined && getData.data.bodMember.length){
+          ////console.log('>>> member data....');
+          if(getData.data.bodMember.length > 0){
+          //this.profileAutoData = true;
+          this.ownOrgMembInfo = getData.data.bodMember;
+          //this.step1Data.is_bod_select = "1";
+          } 
+          //console.log('>>> profile member data....', this.ownOrgMembInfo);
+          }
+
+
+
         //console.log('>>>', getData.data.accredation_criteria);
         if(getData.data.accredation_criteria  != ''){
           this.step1Data.accredation_criteria = getData.data.accredation_criteria.toString();
@@ -1196,27 +1291,57 @@ export class InspectionBodiesFormComponent implements OnInit {
         //   this.step1Data.date_of_establishment = getData.data.date_of_establishment;
         //   this.step1Data.date_of_issue = getData.data.date_of_issue;
         // }
-        if(getData.data.duty_from1 != null && getData.data.duty_shift != '' && getData.data.duty_shift == 1){
-          
+        this.step1Data.duty_shift = getData.data.duty_shift.toString();
+        //if(getData.data.duty_from1 != null && getData.data.duty_shift != '' && getData.data.duty_shift == 1){
+          //console.log(">>>duty shift...0 ", getData.data.duty_shift, " :: ", getData.data.duty_shift.toString());
+        if(getData.data.duty_shift != ''){
+          console.log(">>>duty shift...1");
           this.step1Data.duty_shift = getData.data.duty_shift.toString();
-          this.step1Data.duty_from1 = getData.data.duty_from1.toString();
-          this.step1Data.duty_to1   = getData.data.duty_to1.toString();
-          ////console.log(">>>Working time: 1 ", this.step1Data.duty_shift);
-        }
-        if(getData.data.duty_from2 != null && getData.data.duty_shift != ''  && getData.data.duty_shift == 2){
+
+          if(this.step1Data.duty_shift == 1){
+            console.log(".....1");
+            this.step1Data.duty_from1 = (getData.data.duty_from1 != null) ? getData.data.duty_from1.toString() : undefined;
+            this.step1Data.duty_to1   = (getData.data.duty_to1 != null) ? getData.data.duty_to1.toString() : undefined;
+            this.step1Data.duty_from2 = undefined;
+            this.step1Data.duty_to2   = undefined;
+            this.step1Data.duty_from3 = undefined;
+            this.step1Data.duty_to3   = undefined;
+          }
+          else if(this.step1Data.duty_shift == 2){
+            console.log(".....2");
+            this.step1Data.duty_from1 = (getData.data.duty_from1 != null) ? getData.data.duty_from1.toString() : undefined;
+            this.step1Data.duty_to1   = (getData.data.duty_to1 != null) ? getData.data.duty_to1.toString() : undefined;
+            this.step1Data.duty_from2 = (getData.data.duty_from2 != null) ? getData.data.duty_from2.toString() : undefined;
+            this.step1Data.duty_to2   = (getData.data.duty_to2 != null) ? getData.data.duty_to2.toString() : undefined;
+            this.step1Data.duty_from3 = undefined;
+            this.step1Data.duty_to3   = undefined;
+          }
+          else if(this.step1Data.duty_shift == 3){
+            console.log(".....3");
+            this.step1Data.duty_from1 = (getData.data.duty_from1 != null) ? getData.data.duty_from1.toString() : undefined;
+            this.step1Data.duty_to1   = (getData.data.duty_to1 != null) ? getData.data.duty_to1.toString() : undefined;
+            this.step1Data.duty_from2 = (getData.data.duty_from2 != null) ? getData.data.duty_from2.toString() : undefined;
+            this.step1Data.duty_to2   = (getData.data.duty_to2 != null) ? getData.data.duty_to2.toString() : undefined;
+            this.step1Data.duty_from3 = (getData.data.duty_from3 != null) ? getData.data.duty_from3.toString() : undefined;
+            this.step1Data.duty_to3   = (getData.data.duty_to3 != null) ? getData.data.duty_to3.toString() : undefined;
+          }
           
-          this.step1Data.duty_shift = getData.data.duty_shift.toString();
-          this.step1Data.duty_from2 = getData.data.duty_from2.toString();
-          this.step1Data.duty_to2   = getData.data.duty_to2.toString();
-          ////console.log(">>>Working time: 2 ", this.step1Data.duty_shift);
+          console.log(">>>Working time: 1 ", this.step1Data.duty_shift);
         }
-        if(getData.data.duty_from3 != null && getData.data.duty_shift != ''  && getData.data.duty_shift == 3){
+        // if(getData.data.duty_from2 != null && getData.data.duty_shift != ''  && getData.data.duty_shift == 2){
           
-          this.step1Data.duty_shift = getData.data.duty_shift.toString();
-          this.step1Data.duty_from3 = getData.data.duty_from3.toString();
-          this.step1Data.duty_to3   = getData.data.duty_to3.toString();
-          ////console.log(">>>Working time: 3 ", this.step1Data.duty_shift);
-        }
+        //   this.step1Data.duty_shift = getData.data.duty_shift.toString();
+        //   this.step1Data.duty_from2 = getData.data.duty_from2.toString();
+        //   this.step1Data.duty_to2   = getData.data.duty_to2.toString();
+        //   console.log(">>>Working time: 2 ", this.step1Data.duty_shift);
+        // }
+        // if(getData.data.duty_from3 != null && getData.data.duty_shift != ''  && getData.data.duty_shift == 3){
+          
+        //   this.step1Data.duty_shift = getData.data.duty_shift.toString();
+        //   this.step1Data.duty_from3 = getData.data.duty_from3.toString();
+        //   this.step1Data.duty_to3   = getData.data.duty_to3.toString();
+        //   console.log(">>>Working time: 3 ", this.step1Data.duty_shift);
+        // }
         if(getData.data.is_main_activity != undefined){
             ////console.log(">>>main sctivuty: 1", getData.data.is_main_activity);
             this.step1Data.is_main_activity = getData.data.is_main_activity.toString();
@@ -1225,9 +1350,12 @@ export class InspectionBodiesFormComponent implements OnInit {
               this.step1Data.is_main_activity_note = getData.data.is_main_activity_note.toString();
             }
         }
-        if(getData.data.country != undefined && getData.data.country > 0){
-          //this.step1Data.country = getData.data.country;
-        }
+        // if(getData.data.country != undefined && getData.data.country > 0){
+        //   //this.step1Data.country = getData.data.country;
+        // }
+        this.step1Data.country = getData.data.country; 
+        this.step1Data.state = getData.data.state;
+        this.step1Data.city = getData.data.city;
 
         //Accreditation Info
         //this.accreditationInfo
@@ -1370,7 +1498,7 @@ export class InspectionBodiesFormComponent implements OnInit {
           this.authorizationList.authorization_confirm1 = true;
           this.authorizationList.authorization_confirm2 = true;
           this.readTermsCond       = true;
-          this.authorizationList.undertaking_confirmTop3 = true;
+          //this.authorizationList.undertaking_confirmTop3 = true;
           this.authorizationList.undertaking_confirm1 = true;
           this.authorizationList.undertaking_confirm2 = true;
           this.readReviewChecklist = true;
@@ -1423,40 +1551,42 @@ export class InspectionBodiesFormComponent implements OnInit {
           ///////console.log('data enter...1', data);
 
           if(data){
-            ////console.log('data enter...2');
+            console.log('data enter...2');
 
             var stateList =  this.Service.getState();
             var cityList =  this.Service.getCity();
 
             stateList.subscribe( result => {
               for(let key in result['states']) {
-                if(result['states'][key]['name'] == data.state )
-                {
+                // if(result['states'][key]['name'] == data.state )
+                // {
                   this.allStateList.push(result['states'][key]);
-                }
+                //}
               }
             });
 
             cityList.subscribe( result => {
               for(let key in result['cities']) {
-                if(result['cities'][key]['name'] == data.city )
-                {
+                // if(result['cities'][key]['name'] == data.city )
+                // {
                   this.allCityList.push(result['cities'][key]);
-                }
+                //}
               }
             });
 
+            console.log(">>> list: ", this.allStateList, " -- ", this.allCityList);
 
-            let countryList =  this.Service.getCountry();
-            countryList.subscribe( result => {
-              for(let key in result['countries']) {
-                ////console.log("cc: ", result['countries'][key]['name']);
-                if(result['countries'][key]['name'] == data.country )
-                {
-                  this.allCountryList.push(result['countries'][key]);
-                }
-              }
-            });
+
+            // let countryList =  this.Service.getCountry();
+            // countryList.subscribe( result => {
+            //   for(let key in result['countries']) {
+            //     ////console.log("cc: ", result['countries'][key]['name']);
+            //     if(result['countries'][key]['name'] == data.country )
+            //     {
+            //       this.allCountryList.push(result['countries'][key]);
+            //     }
+            //   }
+            // });
     // await countryList.subscribe(record => {
     //   ///////console.log(record,'contry record :: ', this.step1Data.country);
     //   this.getCountryLists = record['countries'];
@@ -1469,10 +1599,12 @@ export class InspectionBodiesFormComponent implements OnInit {
     // });
 
 
-            //this.profileCountrySel = data.country;
+            //this.profileCountrySel = data.country;\
+            if(this.urlVal == 'undefined'){
             this.step1Data.country = data.country; 
             this.step1Data.state = data.state;
             this.step1Data.city = data.city;
+            }
             //selectTradeLicName
             if(data.trade_license != ''){
               let getFile = data.trade_license.toString().split('/');
@@ -1482,9 +1614,10 @@ export class InspectionBodiesFormComponent implements OnInit {
               }
             }
             this.step1Data.trade_license_number = data.trade_license_number;
-            
-            if(data.cab_name  != ''){
-              this.step1Data.official_commercial_name = data.cab_name.toString();
+            if(this.urlVal == 'undefined'){
+                if(data.cab_name  != ''){
+                  this.step1Data.official_commercial_name = data.cab_name.toString();
+                }
             }
 
             if(data.date_of_issue != ''){
@@ -1492,82 +1625,47 @@ export class InspectionBodiesFormComponent implements OnInit {
               this.step1Data.date_of_establishment = data.date_of_establisment;//
               this.step1Data.date_of_issue = data.date_of_issue;
             }
-
-            this.step1Data.physical_location_address = data.applicant_address;
-            this.step1Data.po_box = data.po_box;
-            this.step1Data.telephone = data.tel_no;
-            this.step1Data.fax_no = data.fax_no;
-            this.step1Data.mailing_address = data.mailing_address;
-            this.step1Data.official_website = data.applicant_website;
-            // this.step1Data.date_of_expiry = data.date_of_expiry;
-            // this.step1Data.date_of_establishment = data.date_of_establisment;
-            // this.step1Data.date_of_issue = data.date_of_issue; //|
-            this.step1Data.official_email = data.official_email;
-            this.step1Data.official_website = data.applicant_website;
-
-            /*
-
-            this.tradeLicensedValidation = this.constant.mediaPath+step1.trade_license;
-            this.step1Data.trade_license_number = step1.office_email;
-            this.step1Data.date_of_issue = new Date(step1.dob);
-            this.step1Data.date_of_expiry = step1.mailing_address;
-            this.step1Data.date_of_establishment = step1.phone;
-            this.step1Data.search_location_name = step1.fax_no;
-            this.step1Data.official_commercial_name = step1.office;
-            this.step1Data.accredation_type_id = step1.designation;
-            this.step1Data.criteria_request = step1.office_address;
-            this.step1Data.physical_location_address = step1.office_tel_no;
-            this.step1Data.po_box = step1.office_fax_no;
-            this.step1Data.country = step1.office_fax_no;
-            this.step1Data.state = step1.office_fax_no;
-            this.step1Data.city = step1.office_fax_no;
-            this.step1Data.telephone = step1.office_fax_no;
-            this.step1Data.fax_no = step1.office_fax_no;
-            this.step1Data.official_email = step1.office_fax_no;
-            this.step1Data.official_website = step1.office_fax_no;
-
-            this.ownOrgBasicInfo = step1.cabOwnerData;
-            this.step1Data.is_bod = step1.cabOwnerData != '' ? '1' : '0';
-            this.ownOrgMembInfo = step1.ownOrgMembInfo;
-            this.step1Data.duty_from1 = step1.duty_from1;
-            this.step1Data.duty_to1 = step1.duty_to1;
-            this.step1Data.duty_from2 = step1.duty_to2;
-            this.step1Data.duty_from3 = step1.duty_from3;
-            this.step1Data.duty_to3 = step1.duty_to3;
-            this.step1Data.indication = step1.indication;
-            this.step1Data.is_hold_other_accreditation = step1.is_hold_other_accreditation;
-            this.step1Data.accreditationInfo = step1.is_hold_other_accreditation != '' ? '1' : '0';;
-            this.step1Data.duty_to3 = step1.duty_to3;
-
-
-            */
+            if(this.urlVal == 'undefined'){
+                this.step1Data.physical_location_address = data.applicant_address;
+                this.step1Data.po_box = data.po_box;
+                this.step1Data.telephone = data.tel_no;
+                this.step1Data.fax_no = data.fax_no;
+                this.step1Data.mailing_address = data.mailing_address;
+                this.step1Data.official_website = data.applicant_website;
+                // this.step1Data.date_of_expiry = data.date_of_expiry;
+                // this.step1Data.date_of_establishment = data.date_of_establisment;
+                // this.step1Data.date_of_issue = data.date_of_issue; //|
+                this.step1Data.official_email = data.official_email;
+                this.step1Data.official_website = data.applicant_website;
+            }
           }
         }
-        if(typeof getData.data.step2 === 'object'){
-         let data: any = getData.data.step2;
-         ////console.log("step 2>>>", data);
-         if(typeof data === 'object'){
-              if(data.cabOwnerData != undefined && data.cabOwnerData.length){
-                ////console.log('>>> owner data....');
-                this.ownOrgBasicInfo = data.cabOwnerData;
-                this.profileAutoData = true;
-                ////console.log('>>> owner data....', this.ownOrgBasicInfo);
-              }
-              if(data.cabBodData != undefined && data.cabBodData.length){
-                ////console.log('>>> member data....');
-                if(data.cabBodData.length > 0){
-                  this.profileAutoData = true;
-                  this.ownOrgMembInfo = data.cabBodData;
-                  this.step1Data.is_bod_select = "1";
-                } 
-                //console.log('>>> profile member data....', this.ownOrgMembInfo);
-              }
-         }
 
-        }
+            if(typeof getData.data.step2 === 'object'){
+            let data: any = getData.data.step2;
+            ////console.log("step 2>>>", data);
+            if(typeof data === 'object'){
+                  if(data.cabOwnerData != undefined && data.cabOwnerData.length){
+                    ////console.log('>>> owner data....');
+                    this.ownOrgBasicInfo = data.cabOwnerData;
+                    this.profileAutoData = true;
+                    ////console.log('>>> owner data....', this.ownOrgBasicInfo);
+                  }
+                  if(data.cabBodData != undefined && data.cabBodData.length){
+                    ////console.log('>>> member data....');
+                    if(data.cabBodData.length > 0){
+                      this.profileAutoData = true;
+                      this.ownOrgMembInfo = data.cabBodData;
+                      this.step1Data.is_bod_select = "1";
+                    } 
+                    //console.log('>>> profile member data....', this.ownOrgMembInfo);
+                  }
+            }
+
+            }
         if(getData.data.criteriaList != undefined && getData.data.criteriaList.length){
           ////console.log(">>>Criteria list: ", getData.data.criteriaList);
-          this.criteriaList = getData.data.criteriaList;
+          //this.criteriaList = getData.data.criteriaList;
         }
       })
   }
@@ -1576,12 +1674,12 @@ export class InspectionBodiesFormComponent implements OnInit {
   this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data)
     .subscribe( 
       res => {
-        ////console.log("@Load scope....", res);
+        console.log("@Load scope....", res);
         this.inspectionBodyScopeFields = res['medicalLabScopeFields'];
         //this.countryList = res['allCountry'];
         this.labTypeList = res['allLabtype'];
         //this.fullScope   = res['fullScope'];
-        //this.criteriaMaster = res['criteriaMaster'];
+        this.criteriaList = res['data']['criteriaList'];
         this.criteriaMaster = res['data']['schemes'];
         ////console.log("#Get criteria: ", this.criteriaMaster);
 
@@ -1666,23 +1764,52 @@ export class InspectionBodiesFormComponent implements OnInit {
 
         this.dutyTime2 = true;
         this.dutyTime3 = true;
+        //check from to input
+        this.dutyTime1 = false;
       console.log(">>> shift 1 ", this.step1Data.duty_from2, " -- ",this.step1Data.duty_to2)
     }
     if(theVal == 2){      
       if(this.step1Data.duty_from3 != undefined || this.step1Data.duty_to3 != undefined){
         this.step1Data.duty_from3 = val;
-        this.step1Data.duty_to3 = val;        
+        this.step1Data.duty_to3 = val;
+        this.dutyTime3 = true;        
+      }
+      if(this.step1Data.duty_from1 != undefined || this.step1Data.duty_to1 != undefined){
+        this.dutyTime1 = true;        
+      }
+      if(this.step1Data.duty_from1 == undefined || this.step1Data.duty_to1 == undefined){
+        this.dutyTime1 = false;        
+      }
+      if(this.step1Data.duty_from2 == undefined || this.step1Data.duty_to2 == undefined){
+        this.dutyTime2 = false;        
       }
       this.shift3_from = true;
       this.shift3_to = true;
       this.shift2_from = false;
       this.shift2_to = false;
 
-        this.dutyTime3 = true;
-        this.dutyTime1 = true;
+        //this.dutyTime3 = true;
+        //this.dutyTime1 = true;
+
       console.log(">>> shift 2 ", this.step1Data.duty_from2, " -- ",this.step1Data.duty_to2)
     }
-    if(theVal == 3){     
+    if(theVal == 3){   
+      
+      if(this.step1Data.duty_from1 != undefined || this.step1Data.duty_to1 != undefined){
+        this.dutyTime1 = true;        
+      }
+      if(this.step1Data.duty_from2 != undefined || this.step1Data.duty_to2 != undefined){
+        this.dutyTime1 = true;        
+      }
+      if(this.step1Data.duty_from1 == undefined || this.step1Data.duty_to1 == undefined){
+        this.dutyTime1 = false;        
+      }
+      if(this.step1Data.duty_from2 == undefined || this.step1Data.duty_to2 == undefined){
+        this.dutyTime2 = false;        
+      }
+      if(this.step1Data.duty_from3 == undefined || this.step1Data.duty_to3 == undefined){
+        this.dutyTime3 = false;        
+      }
       
       this.shift3_from = false;
       this.shift3_to = false;
@@ -2036,7 +2163,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       //   this.authorizationStatus = true;
       // }     
     }
-    if(this.authorizationStatus && checkCount == 10){
+    if(this.authorizationStatus && checkCount == 9){
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;
@@ -2330,6 +2457,24 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.step1Data.official_email = " ";
     }
 
+    // this.inspectionBodyForm.step1['ownOrgBasicInfo'] = (this.ownOrgBasicInfo.length> 0) ? this.ownOrgBasicInfo :  [];
+    //   this.inspectionBodyForm.step1['ownOrgMembInfo'] = [];
+    //   this.inspectionBodyForm.step1['accreditationInfo'] = [];
+      
+      // if(!this.Service.isObjectEmpty(this.ownOrgBasicInfo[0])) {
+
+      //   this.inspectionBodyForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
+      // }
+      // if(!this.Service.isObjectEmpty(this.ownOrgMembInfo[0])) {
+      //   this.inspectionBodyForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
+      // }
+      // if(!this.Service.isObjectEmpty(this.accreditationInfo[0])) {
+      //   this.inspectionBodyForm.step1['accreditationInfo'] = this.accreditationInfo;
+      // }
+      this.inspectionBodyForm.step1 = this.step1Data;
+
+      console.log(">>>2. First Step Data: ", this.inspectionBodyForm.step1, " -- org ", this.ownOrgBasicInfo);
+
 
     this.inspectionBodyForm.step1 = this.step1Data;  
     if(ngForm1.form.valid && type == undefined && this.isSubmit == true && this.isNoteSubmit == true) {
@@ -2388,7 +2533,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       //return;
       //this.inspectionBodyForm.step1['trade_license'] = this.step1DataBodyFormFile;
       this.inspectionBodyForm.step1.is_draft = false;
-      //console.log(">>> First Step Data: ", this.inspectionBodyForm);
+      console.log(">>> First Step Data: ", this.inspectionBodyForm);
       //return;
       //this.step1DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
           // this.toastr.success('Application Successfully Submitted', '');
@@ -2427,28 +2572,63 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.toastr.warning('Please Fill required field','');
     }
      */
-    }else if(!ngForm1.form.valid && type != undefined && type == true){
-        ////console.log("save a draft...");
-        this.inspectionBodyForm.step1.is_draft = true;
-        this.inspectionBodyForm.step2.application_id = this.formApplicationId;
+    }else if(type != undefined && type == true){
+        console.log("save a draft...");
+        console.log(">>>1. First Step Data: ", this.inspectionBodyForm);
+        if(this.step1Data.is_bod_select != undefined && this.step1Data.is_bod_select == 1){
+          this.step1Data.is_bod = true;
+        }
+        if(this.step1Data.is_bod_select != undefined && this.step1Data.is_bod_select == 0){
+          this.step1Data.is_bod = false;
+        }
+    
+        if(this.step1Data.is_hold_other_accreditation_select != undefined && this.step1Data.is_hold_other_accreditation_select == 1){
+          this.step1Data.is_hold_other_accreditation = true;
+        }
+        if(this.step1Data.is_hold_other_accreditation_select != undefined && this.step1Data.is_hold_other_accreditation_select == 0){
+          this.step1Data.is_hold_other_accreditation = false;
+        }
+        this.inspectionBodyForm.email = this.userEmail;
+        this.inspectionBodyForm.userType = this.userType;
         this.inspectionBodyForm.saved_step = 1;
-        if(this.step1DataBodyFormFile != undefined){
-          //this.inspectionBodyForm.step1['trade_license'] = this.step1DataBodyFormFile;
-        }        
-        // ////console.log(">>> Save a draft First Step Data: ", this.inspectionBodyForm);
-        // this.toastr.success("Record saved successfully");
-        // setTimeout(()=> {
-        //this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-        // },2000) 
-        //this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+        this.inspectionBodyForm.step1 = this.step1Data;      
+  
+        this.inspectionBodyForm.step1['ownOrgBasicInfo'] = [];
+        this.inspectionBodyForm.step1['ownOrgMembInfo'] = [];
+        this.inspectionBodyForm.step1['accreditationInfo'] = [];
+        
+        if(!this.Service.isObjectEmpty(this.ownOrgBasicInfo[0])) {
+  
+          this.inspectionBodyForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
+        }
+        if(!this.Service.isObjectEmpty(this.ownOrgMembInfo[0])) {
+          this.inspectionBodyForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
+        }
+        if(!this.Service.isObjectEmpty(this.accreditationInfo[0])) {
+          this.inspectionBodyForm.step1['accreditationInfo'] = this.accreditationInfo;
+        }
+  
+        if(this.step1Data.date_of_issue != undefined){
+          //console.log(">>> date");
+          this.step1Data.date_of_issue = new Date(this.step1Data.date_of_issue);
+        }
+        if(this.step1Data.date_of_expiry != undefined){
+          //console.log(">>> date");
+          this.step1Data.date_of_expiry = new Date(this.step1Data.date_of_expiry);
+        }
+        if(this.step1Data.date_of_establishment != undefined){
+          //console.log(">>> date");
+          this.step1Data.date_of_establishment = new Date(this.step1Data.date_of_establishment);
+        }
+        this.inspectionBodyForm.step1.is_draft = true;
+        //this.inspectionBodyForm.step1.application_id = this.formApplicationId;
+        this.inspectionBodyForm.saved_step = 1;
         this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
         .subscribe(
           res => {
-            ////console.log(res,'res')
+            console.log(res,'res')
             if(res['status'] == true) {
-              //this.toastr.success(res['msg'],);
-              //this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
-              this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+              this.toastr.success('Save Draft Successfully', '');
             }else{
               this.toastr.warning(res['msg'], '');
             }
@@ -2458,6 +2638,154 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.toastr.warning('Please Fill required field','');
     }
   }
+
+
+  step1SaveADraft(){
+    console.log("save a draft saving")
+    this.inspectionBodyForm = {};
+    this.inspectionBodyForm.step1 = {};
+
+    // if(this.step1Data.is_bod_select != undefined && this.step1Data.is_bod_select == 1){
+    //   this.step1Data.is_bod = true;
+    // }
+    // if(this.step1Data.is_bod_select != undefined && this.step1Data.is_bod_select == 0){
+    //   this.step1Data.is_bod = false;
+    // }
+    this.step1Data.is_bod = true;
+    
+    if(this.step1Data.duty_shift == '1')
+    {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+        this.isSubmit = false;
+      }else{
+        this.dutyTime1 = true;
+        this.isSubmit = true;
+      }
+      // this.dutyTime1 = false;
+      // this.isSubmit = false;
+      
+    }else if(this.step1Data.duty_shift == '2')
+    {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+        this.isSubmit = false;
+      }else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined') {
+        this.dutyTime2 = false;
+        this.isSubmit = false;
+      }else if(typeof this.step1Data.duty_from2 != 'undefined' || typeof this.step1Data.duty_to2 != 'undefined'){
+        this.dutyTime2 = true;
+        this.isSubmit = true;
+      }
+      // this.dutyTime2 = false;
+      // this.isSubmit = false;
+    }else if(this.step1Data.duty_shift == '3')
+    {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+        this.isSubmit = false;
+      }
+      else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
+      {
+        this.dutyTime2 = false;
+        this.isSubmit = false;
+      }
+      else if(typeof typeof this.step1Data.duty_from3 == 'undefined' || typeof this.step1Data.duty_to3 == 'undefined') {
+        this.dutyTime3 = false;
+        this.isSubmit = false;
+      }else if(typeof this.step1Data.duty_from3 != 'undefined' || typeof this.step1Data.duty_to3 != 'undefined') {
+        this.dutyTime3 = true;
+        this.isSubmit = true;
+      }
+      // this.dutyTime3 = false;
+      // this.isSubmit = false;
+    }else if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
+      this.dutyTime1 = false;
+      this.isSubmit = false;
+    }else{
+      this.dutyTime1 = true;
+      this.dutyTime2 = true;
+      this.dutyTime3 = true;
+      this.isSubmit = true;
+    }
+
+    if(this.step1Data.duty_shift == '1' && !this.dutyTime2){
+      this.dutyTime2 = true;
+    }if(this.step1Data.duty_shift == '2' && !this.dutyTime3){
+      this.dutyTime3 = true;
+    }
+
+      
+        // if(this.step1Data.is_bod_select != undefined && this.step1Data.is_bod_select == 1){
+        //   this.step1Data.is_bod = true;
+        // }
+        // if(this.step1Data.is_bod_select != undefined && this.step1Data.is_bod_select == 0){
+        //   this.step1Data.is_bod = false;
+        // }
+    
+        if(this.step1Data.is_hold_other_accreditation_select != undefined && this.step1Data.is_hold_other_accreditation_select == 1){
+          this.step1Data.is_hold_other_accreditation = true;
+        }
+        else if(this.step1Data.is_hold_other_accreditation_select != undefined && this.step1Data.is_hold_other_accreditation_select == 0){
+          this.step1Data.is_hold_other_accreditation = false;
+        }else{
+          this.step1Data.is_hold_other_accreditation = false;
+        }
+        this.inspectionBodyForm.email = this.userEmail;
+        this.inspectionBodyForm.userType = this.userType;
+        this.inspectionBodyForm.saved_step = 1;
+        this.inspectionBodyForm.step1 = this.step1Data;      
+  
+        this.inspectionBodyForm.step1['ownOrgBasicInfo'] = [];
+        this.inspectionBodyForm.step1['ownOrgMembInfo'] = [];
+        this.inspectionBodyForm.step1['accreditationInfo'] = [];
+        
+        if(!this.Service.isObjectEmpty(this.ownOrgBasicInfo[0])) {
+  
+          this.inspectionBodyForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
+        }
+        if(!this.Service.isObjectEmpty(this.ownOrgMembInfo[0])) {
+          this.inspectionBodyForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
+        }
+        if(!this.Service.isObjectEmpty(this.accreditationInfo[0])) {
+          this.inspectionBodyForm.step1['accreditationInfo'] = this.accreditationInfo;
+        }
+  
+        if(this.step1Data.date_of_issue != undefined){
+          //console.log(">>> date");
+          this.step1Data.date_of_issue = new Date(this.step1Data.date_of_issue);
+        }
+        if(this.step1Data.date_of_expiry != undefined){
+          //console.log(">>> date");
+          this.step1Data.date_of_expiry = new Date(this.step1Data.date_of_expiry);
+        }
+        if(this.step1Data.date_of_establishment != undefined){
+          //console.log(">>> date");
+          this.step1Data.date_of_establishment = new Date(this.step1Data.date_of_establishment);
+        }
+        this.inspectionBodyForm.step1.is_draft = true;
+        this.inspectionBodyForm.saved_step = 1;
+
+        console.log("save a draft...");
+        console.log(">>>1. First Step Data: ", this.inspectionBodyForm);
+
+
+        this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
+        .subscribe(
+          res => {
+            console.log(res,'res')
+            if(res['status'] == true) {
+              this.toastr.success('Save Draft Successfully', '');
+            }else{
+              this.toastr.warning(res['msg'], '');
+            }
+          });
+
+  }
+
 
   onSubmitTestingParticipation(ngForm2: any, type?:boolean){
     //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
@@ -2483,9 +2811,10 @@ export class InspectionBodiesFormComponent implements OnInit {
 
     //if(this.proficiencyTesting.length > 0 && this.step2Data.proficiency_testing_val > 0) {
       this.step2Data.proficiency_testing_val = 1;
-      if(type == undefined){
-      this.inspectionBodyForm.step2['proficiencyTesting'] = this.proficiencyTesting;
+      //if(type == undefined){
         
+      this.inspectionBodyForm.step2['proficiencyTesting'] = this.proficiencyTesting;
+      console.log('ssssave a draft....save PT', this.proficiencyTesting)
         this.proficiencyTesting.forEach((rec,key) => {
               let dtFormat = '';
              if(rec.participation_date != undefined && rec.participation_date._i != undefined){
@@ -2498,7 +2827,8 @@ export class InspectionBodiesFormComponent implements OnInit {
             ////console.log(">>DT: ", dtFormat);
             this.proficiencyTesting[key].date = dtFormat;
         })
-      }
+        console.log('ssssave a draft....save PT ', this.proficiencyTesting)
+      //}
         ////console.log(">> Data: ", this.proficiencyTesting);
 
 
