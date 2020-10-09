@@ -680,6 +680,12 @@ addMinutesToTime()
       // return this.http.get(cityURL, {observe: 'response'});
     }
 
+    getLanguages(){
+      var cityURL = this.assetsBasePath + 'languages.json';
+      return this.http.get(cityURL);
+      // return this.http.get(cityURL, {observe: 'response'});
+    }
+
 }
 
 
