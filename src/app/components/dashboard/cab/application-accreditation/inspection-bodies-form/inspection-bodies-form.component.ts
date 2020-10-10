@@ -1757,6 +1757,9 @@ export class InspectionBodiesFormComponent implements OnInit {
         this.step1Data.duty_to3 = val;
         
       }
+      if(this.step1Data.duty_from1 == undefined || this.step1Data.duty_to1 == undefined){
+        this.dutyTime1 = false;        
+      }
       this.shift2_from = true;
         this.shift2_to = true;
         this.shift3_from = true;
@@ -1765,7 +1768,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         this.dutyTime2 = true;
         this.dutyTime3 = true;
         //check from to input
-        this.dutyTime1 = false;
+        //this.dutyTime1 = false;
       console.log(">>> shift 1 ", this.step1Data.duty_from2, " -- ",this.step1Data.duty_to2)
     }
     if(theVal == 2){      
