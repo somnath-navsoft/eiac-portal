@@ -65,7 +65,7 @@
                                             <div class="col-md-12 col-sm-12">
                                                 <mat-form-field class="cab-data">
                                                     <mat-label>CAB Name official and Commercial Name</mat-label>
-                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="CAB Name official and Commercial Name" name="official_commercial_name" [(ngModel)]="step1Data.official_commercial_name"  required>
+                                                    <input readonly="true" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="CAB Name official and Commercial Name" name="official_commercial_name" [(ngModel)]="step1Data.official_commercial_name"  required>
                                                     <mat-error></mat-error>      
                                                 </mat-form-field>
                                             </div>
@@ -222,7 +222,7 @@
                                                     <mat-label>Date of Establishment</mat-label>
                                                     <!--  (click)="Service._openCalendar(picker)" -->
                                                     <input readonly="true" matInput [matDatepicker]="picker" [max]="today"  placeholder="Date Of Establishment" name="date_of_establishment"  [(ngModel)]="step1Data.date_of_establishment" required>
-                                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                    <!-- <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle> -->
                                                     <mat-datepicker #picker disabled="false"></mat-datepicker>
                                                 </mat-form-field>
                                             </div>
@@ -250,7 +250,7 @@
                                                     <mat-label>Trade License Date of Issue</mat-label>
                                                     <!-- (click)="Service._openCalendar(issue_data)"  -->
                                                     <input matInput readonly="true"  [matDatepicker]="issue_data"  placeholder="Date of Issue" name="date_of_issue" [(ngModel)]="step1Data.date_of_issue" (dateChange)="setexDate()" required>
-                                                    <mat-datepicker-toggle matSuffix [for]="issue_data"></mat-datepicker-toggle>
+                                                    <!-- <mat-datepicker-toggle matSuffix [for]="issue_data"></mat-datepicker-toggle> -->
                                                     <mat-datepicker #issue_data  disabled="false" ></mat-datepicker>
                                                 </mat-form-field>
                                             </div>
@@ -259,7 +259,7 @@
                                                     <mat-label>Trade License Date of Expiry</mat-label>
                                                     <!--  (click)="Service._openCalendar(expiry_data)" -->
                                                     <input  readonly="true" matInput [matDatepicker]="expiry_data" name="date_of_expiry" [(ngModel)]="step1Data.date_of_expiry" placeholder="Date of Expiry">
-                                                    <mat-datepicker-toggle matSuffix [for]="expiry_data"></mat-datepicker-toggle>
+                                                    <!-- <mat-datepicker-toggle matSuffix [for]="expiry_data"></mat-datepicker-toggle> -->
                                                     <mat-datepicker #expiry_data disabled="false"></mat-datepicker>
                                                     <mat-error></mat-error>
                                                 </mat-form-field>
@@ -485,7 +485,7 @@
                                                     <!-- @{{step1Data.duty_from1}} -->
                                                     <mat-label>From</mat-label>
                                                     <!-- <input matInput  type='time' placeholder="" name="duty_from1" [(ngModel)]="inspectionBodyForm.duty_from1"> -->
-
+                                                    
                                                     <mat-select placeholder="Select" name="duty_from1" [required]="!dutyTime1"
                                                     (selectionChange)="getDutyTimeForm1Index($event)" [(ngModel)]="step1Data.duty_from1">
                                                         <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>

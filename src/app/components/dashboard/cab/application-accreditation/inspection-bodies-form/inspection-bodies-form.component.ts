@@ -16,7 +16,7 @@ import { typeWithParameters } from '@angular/compiler/src/render3/util';
 import { AnyFn } from '@ngrx/store/src/selector';
 import {CustomModalComponent} from '../../../../utility/custom-modal/custom-modal.component';
 
-declare let paypal: any;
+declare let paypal: any; 
 @Component({
   selector: 'app-inspection-bodies-form',
   templateUrl: './inspection-bodies-form.component.html',
@@ -1614,11 +1614,11 @@ export class InspectionBodiesFormComponent implements OnInit {
               }
             }
             this.step1Data.trade_license_number = data.trade_license_number;
-            if(this.urlVal == 'undefined'){
+            //if(this.urlVal == 'undefined'){
                 if(data.cab_name  != ''){
                   this.step1Data.official_commercial_name = data.cab_name.toString();
                 }
-            }
+            //}
 
             if(data.date_of_issue != ''){
               this.step1Data.date_of_expiry = data.date_of_expiry;
@@ -1787,6 +1787,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.shift3_to = true;
       this.shift2_from = false;
       this.shift2_to = false;
+     // this.dutyTime2 = false; 
 
         //this.dutyTime3 = true;
         //this.dutyTime1 = true;
