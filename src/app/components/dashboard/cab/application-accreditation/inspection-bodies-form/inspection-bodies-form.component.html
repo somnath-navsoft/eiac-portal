@@ -27,7 +27,7 @@
                                         </div>
 
                                         <div class="user-details-pending" 
-                                        id="course_header" [ngStyle]="{'cursor':'pointer'}">
+                                        id="course_header">
                                             <span [innerHTML]="item.desc"></span>
                                         </div>
                                     </div>
@@ -481,6 +481,7 @@
                                             </div>
                                             <div class="col-md-3">
                                                     <!-- <mat-radio-button></mat-radio-button> -->
+                                                    <!-- {{dutyTime1}} -->
                                                 <mat-form-field class="frm-data">
                                                     <!-- @{{step1Data.duty_from1}} -->
                                                     <mat-label>From</mat-label>
@@ -1856,7 +1857,7 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <!-- (click)="onSubmitPaymentInformation()" -->
-                                    <!-- <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</button> -->
+                                    <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</button>
                                     <button class="cancel-bttn" type="button" (click)="onSubmitPaymentInformation(ngForm9, true)">SAVE AS DRAFT</button>
                                     <button class="submit-bttn submit-health" >SUBMIT</button>
                                 </div>

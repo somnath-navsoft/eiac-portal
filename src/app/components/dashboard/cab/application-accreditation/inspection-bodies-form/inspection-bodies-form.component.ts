@@ -101,7 +101,7 @@ export class InspectionBodiesFormComponent implements OnInit {
 
   getDutyTimeForm1IndexValue:number;// = 2;
   allCityByCountry: any = [];
-  getCountryLists:any;
+  getCountryLists:any = [];
 
   //Dynamic scope forms model object declaration
   //dynamicScopeModel:any[]         = [];   //Master form data object
@@ -114,9 +114,9 @@ export class InspectionBodiesFormComponent implements OnInit {
   transactions: any[] =[];
   transactionsItem: any={};
   total: any = 0;
-  allStateList: Array<any> = [];
-  allCityList: Array<any> = [];
-  allCountryList: Array<any> = [];
+  allStateList: any[] = [];
+  allCityList: any[] = [];
+  allCountryList: any[] = [];
 
   step1Data:any = {};
   step2Data:any = {};
@@ -653,7 +653,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     
       this.loadData();
    
-
+      this.loadCountryStateCity();
     if(this.urlVal != 'undefined'){
       console.log(">>>> enter...");
     this.loadAppData();
@@ -665,7 +665,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.loadAppInfo();
     }
     this.loadFormDynamicTable();
-    this.loadCountryStateCity();
+    
 
     // let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
     // ////console.log("app info: ", url);
@@ -720,7 +720,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   statelistById = async(country_id) => {
     this.allStateList = [];
     let stateList =  this.Service.getState();
-    ///console.log("enter state...");
+    console.log("enter state...", country_id);
     this.step1Data.state = '';
     this.step1Data.city = '';
     await stateList.subscribe( result => {
@@ -732,7 +732,7 @@ export class InspectionBodiesFormComponent implements OnInit {
           }
         }
     });
-    // ////console.log(this.allStateList);
+    console.log(this.allStateList);
   }
 
   citylistById = async(state_id) => {
@@ -1159,23 +1159,23 @@ export class InspectionBodiesFormComponent implements OnInit {
             var stateList =  this.Service.getState();
             var cityList =  this.Service.getCity();
 
-            stateList.subscribe( result => {
-              for(let key in result['states']) {
-                // if(result['states'][key]['name'] == data.state )
-                // {
-                  this.allStateList.push(result['states'][key]);
-                //}
-              }
-            });
+            // stateList.subscribe( result => {
+            //   for(let key in result['states']) {
+            //     // if(result['states'][key]['name'] == data.state )
+            //     // {
+            //       this.allStateList.push(result['states'][key]);
+            //     //}
+            //   }
+            // });
 
-            cityList.subscribe( result => {
-              for(let key in result['cities']) {
-                // if(result['cities'][key]['name'] == data.city )
-                // {
-                  this.allCityList.push(result['cities'][key]);
-                //}
-              }
-            });
+            // cityList.subscribe( result => {
+            //   for(let key in result['cities']) {
+            //     // if(result['cities'][key]['name'] == data.city )
+            //     // {
+            //       this.allCityList.push(result['cities'][key]);
+            //     //}
+            //   }
+            // });
 
 
 
@@ -1353,10 +1353,42 @@ export class InspectionBodiesFormComponent implements OnInit {
         // if(getData.data.country != undefined && getData.data.country > 0){
         //   //this.step1Data.country = getData.data.country;
         // }
-        this.step1Data.country = getData.data.country; 
-        this.step1Data.state = getData.data.state;
-        this.step1Data.city = getData.data.city;
+        this.step1Data.country = getData.data.country;
+        //console.log(">>> country data: ", this.getCountryLists);
+        if(this.getCountryLists.length){
+          //console.log(">>> 11c country data: ", this.getCountryLists);
+          let cdata: any = this.getCountryLists.find(rec => rec.name == getData.data.country)
+            //console.log("Fnd country: ", cdata);  
+            if(cdata){
+              let cid = cdata.id;
+              this.statelistById(cid) 
+            }
+        }
+        
+            getData.data.state = 'West Bengal';
+            //console.log(">>> 1 state find...", this.allStateList);  
+            //console.log(">>> 2 state find..."); 
 
+            cityList.subscribe( result => {
+              for(let key in result['cities']) {
+                //console.log(">> cities: ", result['cities'][key]);
+                 ////if(result['cities'][key]['state_id'] == data.city )
+                 //{
+                  this.allCityList.push(result['cities'][key]);
+                //}
+              }
+            });
+
+            // let sdata: any = this.allStateList.find(rec => rec.name == getData.data.state)
+            // console.log("Fnd state: ", sdata);  
+            // if(sdata){
+            //   let sid = sdata.id;
+            //   console.log(">>> 3 state find...");  
+            //   this.citylistById(sid)
+            // }
+        this.step1Data.state = getData.data.state;  
+      
+        this.step1Data.city = getData.data.city;
         //Accreditation Info
         //this.accreditationInfo
         if(getData.data.otherAccr != undefined && getData.data.otherAccr.length > 0){
@@ -1552,7 +1584,7 @@ export class InspectionBodiesFormComponent implements OnInit {
 
           if(data){
             console.log('data enter...2');
-
+            if(this.urlVal == 'undefined'){
             var stateList =  this.Service.getState();
             var cityList =  this.Service.getCity();
 
@@ -1573,6 +1605,7 @@ export class InspectionBodiesFormComponent implements OnInit {
                 //}
               }
             });
+          }
 
             console.log(">>> list: ", this.allStateList, " -- ", this.allCityList);
 
@@ -1601,7 +1634,8 @@ export class InspectionBodiesFormComponent implements OnInit {
 
             //this.profileCountrySel = data.country;\
             if(this.urlVal == 'undefined'){
-            this.step1Data.country = data.country; 
+            this.step1Data.country = data.country;
+            
             this.step1Data.state = data.state;
             this.step1Data.city = data.city;
             }
