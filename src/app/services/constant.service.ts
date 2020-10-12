@@ -64,6 +64,8 @@ export class Constants{
 		healthcareForm: this.apiUrl + 'healthcare_form/',
 		ptProviderForm: this.apiUrl + 'pt-provider-form/',
 		trainerAccredStaList: this.apiUrl + 'accrediation-service-status/',
+		forgetPassword: this.apiUrl + 'user-password-reset-request/',
+		userPasswordReset: this.apiUrl + 'user-password-reset/',
 	}
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."
 	public loggedIn													=	new Subject<any>();
