@@ -163,8 +163,8 @@
                             <td>
                                 {{item.created | date :'dd-MMM-yyyy' }}
                             </td>
-                            <td [ngClass]="{'pending': item.accr_status === 'pending', 'under-review':item.accr_status === null, 'complete': item.accr_status === 'complete'}">
-                                <span *ngIf="item.accr_status == 'pending'">Pending</span>
+                            <td [ngClass]="{'pending': (item.accr_status === 'pending' || item.accr_status == 'draft'), 'under-review':item.accr_status === null, 'complete': item.accr_status === 'complete'}">
+                                <span *ngIf="item.accr_status == 'pending' || item.accr_status == 'draft'">Pending</span>
                                 <span *ngIf="item.accr_status == null">Under Review</span>
                                 <span *ngIf="item.accr_status == 'complete'">Complete</span>
                             </td>
@@ -183,8 +183,9 @@
                                 {{item.applicantName}}
                             </td>                           
                             <td class="action fnt-clr">
-                                <a href="javascript:void(0)" *ngIf="item.accr_status != 'complete'" (click)="serviceStatus(i2,item.id)" alt="Delete"><span class="icon-tick"></span></a>
-                                <a href="javascript:void(0)" *ngIf="item.accr_status == 'complete'" alt="Delete"><span class="icon-tick"></span></a>
+                                <!--  -->
+                                <a href="javascript:void(0)" *ngIf="(item.payment_status == 'paid' && item.accr_status != 'complete')" (click)="serviceStatus(i2,item.id)" alt="Delete"><span class="icon-tick"></span></a>
+                                <!-- <a href="javascript:void(0)" *ngIf="item.accr_status == 'complete'" alt="Delete"><span class="icon-tick"></span></a> -->
                                 <a href="javascript:void(0)" (click)="open(courseVoucher, item.id)" alt="Upload Proforma Invoice" title="Upload Proforma Invoice"><span class="icon-document-pen"></span></a>
                                 <!-- <ng-container *ngIf="item.training_course_type === 'custom_course'" class="action fnt-clr">
                                     <a href="javascript:void(0)" (click)="openView(courseView, item.id)" title="View" alt="View"><span class="icon-document"></span></a>

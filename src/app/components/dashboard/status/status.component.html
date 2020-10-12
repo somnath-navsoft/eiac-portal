@@ -7,7 +7,7 @@
             <div class="row mb-4">
                 <div class="col-md-8">                    
                     <div class="dashbrd-hdr">
-                        <h3>Accreditation Service</h3> 
+                        <h3>Status</h3> 
                     </div>
                 </div>
                 <div class="col-md-4"> 
@@ -223,7 +223,7 @@
                         </tr>
                     </ng-container>
                     </table>
-                    <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
+                    <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0" >
                         <pagination-controls (pageChange)="pageCurrentNumber = $event"></pagination-controls>
                     </ng-container>
                 </div>
