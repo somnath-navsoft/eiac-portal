@@ -304,7 +304,7 @@
                                                 </div>
                                             </div>
             
-                                            <div class="row">
+                                            <!-- <div class="row">
                                                 <div class="col-md-4">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Which</mat-label>
@@ -327,6 +327,50 @@
                                                         <mat-datepicker #till disabled="false"></mat-datepicker>
                                                     </mat-form-field>
                                                 </div>
+                                            </div> -->
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="table-content-health">
+                                                        <table>
+                                                            <tr>
+                                                                <th>Which</th>
+                                                                <th>From</th>
+                                                                <th>Till</th>
+                                                                <th></th>
+                                                            </tr>
+                                                            <tr *ngFor="let row of whichForum; let i = index;">
+                                                                <td>
+                                                                    <mat-form-field class="cab-data">
+                                                                        <mat-label>Type Here</mat-label>
+                                                                        <input matInput [(ngModel)]="whichForum[i].organization" name="which_{{i}}" placeholder="Type Here" required>
+                                                                    </mat-form-field>
+                                                                </td>
+                                                                <td>
+                                                                    <mat-form-field class="cab-data">
+                                                                        <mat-label>Select</mat-label>
+                                                                        <input matInput [(ngModel)]="whichForum[i].date_from" name="datefrom_{{i}}" (dateChange)="setexDate(whichForum[i].date_from)" [matDatepicker]="FromDate" readonly="true" (click)="Service._openCalendar(FromDate)" placeholder="Type Here" required>
+                                                                        <mat-datepicker-toggle matSuffix [for]="FromDate"></mat-datepicker-toggle>
+                                                                        <mat-datepicker #FromDate disabled="false"></mat-datepicker>
+                                                                    </mat-form-field>
+                                                                </td>
+                                                                <td>
+                                                                    <mat-form-field class="cab-data">
+                                                                        <mat-label>Select</mat-label>
+                                                                        <input matInput [(ngModel)]="whichForum[i].date_to" name="dateto_{{i}}" [matDatepicker]="toDate" [min]="minDate" readonly="true" (click)="Service._openCalendar(toDate)" placeholder="Type Here" required>
+                                                                        <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+                                                                        <mat-datepicker #toDate disabled="false"></mat-datepicker>
+                                                                    </mat-form-field>
+                                                                </td>
+                                                                
+                                                                <td class="content-icn">
+                                                                    <span *ngIf="i >= 0" class="icon-add" (click)="addRow(whichForum)"></span>&nbsp;
+                                                                    <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(whichForum,i)"></span>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
                                             </div>
             
                                             <div class="row">
@@ -342,114 +386,61 @@
                                                     <div class="table-content-health">
                                                         <table>
                                                             <tr>
-                                                                <th width="20%">Language</th>
+                                                                <th>Language</th>
                                                                 <th>Read</th>
                                                                 <th>Write</th>
                                                                 <th>Speak</th>
+                                                                <th></th>
                                                             </tr>
-                                                            <tr>
-                                                                <td class="lang-name">Arabic</td>
+                                                            <tr *ngFor="let row of whichLanguage; let i = index;">
                                                                 <td>
-                                                                    <!-- <mat-form-field class="cab-data">
-                                                                        <mat-label>Select</mat-label>
-                                                                        <mat-select required matInput placeholder="">
-                                                                            <mat-option>1</mat-option>
-                                                                        </mat-select>
-                                                                    </mat-form-field> -->
                                                                     <mat-form-field class="cab-data">
                                                                         <mat-label>Select</mat-label>
-                                                                        <mat-select placeholder="Select" name="arabic_read"  [(ngModel)]="arabic.read" required>
+                                                                        <mat-select placeholder="Select" name="language_{{i}}" [(ngModel)]="whichLanguage[i].language" required>
+                                                                            <mat-option *ngFor="let lanRow of languageArr" [value]="lanRow.name">{{lanRow.name}}</mat-option>
+                                                                            <!-- <mat-option [value]="1">English</mat-option>
+                                                                            <mat-option [value]="2">Others</mat-option> -->
+                                                                        </mat-select>
+                                                                        <mat-error></mat-error>
+                                                                    </mat-form-field>
+                                                                </td>
+        
+                                                                <td>
+                                                                    <mat-form-field class="cab-data">
+                                                                        <mat-label>Select</mat-label>
+                                                                        <mat-select placeholder="Select" name="read_{{i}}" [(ngModel)]="whichLanguage[i].read" required>
                                                                             <mat-option [value]="1">Yes</mat-option>
                                                                             <mat-option [value]="0">No</mat-option>
                                                                         </mat-select>
                                                                         <mat-error></mat-error>
                                                                     </mat-form-field>
                                                                 </td>
+        
                                                                 <td>
                                                                     <mat-form-field class="cab-data">
                                                                         <mat-label>Select</mat-label>
-                                                                        <mat-select placeholder="Select" name="arabic_write"  [(ngModel)]="arabic.write" required>
+                                                                        <mat-select placeholder="Select" name="write_{{i}}" [(ngModel)]="whichLanguage[i].write" required>
                                                                             <mat-option [value]="1">Yes</mat-option>
                                                                             <mat-option [value]="0">No</mat-option>
                                                                         </mat-select>
                                                                         <mat-error></mat-error>
                                                                     </mat-form-field>
                                                                 </td>
+        
                                                                 <td>
                                                                     <mat-form-field class="cab-data">
                                                                         <mat-label>Select</mat-label>
-                                                                        <mat-select placeholder="Select" name="arabic_speak"  [(ngModel)]="arabic.speak" required>
+                                                                        <mat-select placeholder="Select" name="speak_{{i}}" [(ngModel)]="whichLanguage[i].speak" required>
                                                                             <mat-option [value]="1">Yes</mat-option>
                                                                             <mat-option [value]="0">No</mat-option>
                                                                         </mat-select>
                                                                         <mat-error></mat-error>
                                                                     </mat-form-field>
                                                                 </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="lang-name">English</td>
-                                                                <td>
-                                                                    <mat-form-field class="cab-data">
-                                                                        <mat-label>Select</mat-label>
-                                                                        <mat-select placeholder="Select" name="english_read"  [(ngModel)]="english.read" required>
-                                                                            <mat-option [value]="1">Yes</mat-option>
-                                                                            <mat-option [value]="0">No</mat-option>
-                                                                        </mat-select>
-                                                                        <mat-error></mat-error>
-                                                                    </mat-form-field>
-                                                                </td>
-                                                                <td>
-                                                                    <mat-form-field class="cab-data">
-                                                                        <mat-label>Select</mat-label>
-                                                                        <mat-select placeholder="Select" name="english_write"  [(ngModel)]="english.write" required>
-                                                                            <mat-option [value]="1">Yes</mat-option>
-                                                                            <mat-option [value]="0">No</mat-option>
-                                                                        </mat-select>
-                                                                        <mat-error></mat-error>
-                                                                    </mat-form-field>
-                                                                </td>
-                                                                <td>
-                                                                    <mat-form-field class="cab-data">
-                                                                        <mat-label>Select</mat-label>
-                                                                        <mat-select placeholder="Select" name="english_speak"  [(ngModel)]="english.speak" required>
-                                                                            <mat-option [value]="1">Yes</mat-option>
-                                                                            <mat-option [value]="0">No</mat-option>
-                                                                        </mat-select>
-                                                                        <mat-error></mat-error>
-                                                                    </mat-form-field>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="lang-name">Others</td>
-                                                                <td>
-                                                                    <mat-form-field class="cab-data">
-                                                                        <mat-label>Select</mat-label>
-                                                                        <mat-select placeholder="Select" name="others_read"  [(ngModel)]="others.read" required>
-                                                                            <mat-option [value]="1">Yes</mat-option>
-                                                                            <mat-option [value]="0">No</mat-option>
-                                                                        </mat-select>
-                                                                        <mat-error></mat-error>
-                                                                    </mat-form-field>
-                                                                </td>
-                                                                <td>
-                                                                    <mat-form-field class="cab-data">
-                                                                        <mat-label>Select</mat-label>
-                                                                        <mat-select placeholder="Select" name="others_write"  [(ngModel)]="others.write" required>
-                                                                            <mat-option [value]="1">Yes</mat-option>
-                                                                            <mat-option [value]="0">No</mat-option>
-                                                                        </mat-select>
-                                                                        <mat-error></mat-error>
-                                                                    </mat-form-field>
-                                                                </td>
-                                                                <td>
-                                                                    <mat-form-field class="cab-data">
-                                                                        <mat-label>Select</mat-label>
-                                                                        <mat-select placeholder="Select" name="others_speak"  [(ngModel)]="others.speak" required>
-                                                                            <mat-option [value]="1">Yes</mat-option>
-                                                                            <mat-option [value]="0">No</mat-option>
-                                                                        </mat-select>
-                                                                        <mat-error></mat-error>
-                                                                    </mat-form-field>
+                                                                
+                                                                <td class="content-icn">
+                                                                    <span *ngIf="i >= 0" class="icon-add" (click)="addRow(whichLanguage)"></span>&nbsp;
+                                                                    <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(whichLanguage,i)"></span>
                                                                 </td>
                                                             </tr>
                                                         </table>
