@@ -163,9 +163,9 @@
                             <td>
                                 {{item.created | date :'dd-MMM-yyyy' }}
                             </td>
-                            <td [ngClass]="{'pending': item.accr_status === 'pending', 'under-review':item.accr_status === null, 'complete': item.accr_status === 'complete', 'draft': item.accr_status === 'draft'}">
+                            <td [ngClass]="{'pending': item.accr_status === 'pending', 'under-review':item.accr_status === null || item.accr_status === 'under_review', 'complete': item.accr_status === 'complete', 'draft': item.accr_status === 'draft' }">
                                 <span *ngIf="item.accr_status == 'pending'">Payment Pending</span>
-                                <span *ngIf="item.accr_status == null || item.accr_status == under_review">Under Review</span>
+                                <span *ngIf="item.accr_status == null || item.accr_status == 'under_review'">Under Review</span>
                                 <span *ngIf="item.accr_status == 'complete'">Complete</span>
                                 <span *ngIf="item.accr_status == 'draft'">Draft</span>
                             </td>

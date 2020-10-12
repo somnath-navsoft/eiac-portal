@@ -8,6 +8,7 @@ import { Observable, Subscription } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
+import  { UiDialogService } from  'src/app/services/uiDialog.service';
 
 @Component({
   selector: 'app-operations-accreditation-service-details',
@@ -52,7 +53,7 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   appCountry: string = '';
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
-    private _trainerService: TrainerService, public sanitizer: DomSanitizer,private modalService: NgbModal,) { }
+    private _trainerService: TrainerService, public sanitizer: DomSanitizer,private modalService: NgbModal,public uiDialog: UiDialogService) { }
 
   ngOnInit() {
     this.loader = true;
@@ -88,48 +89,57 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   closeDialog(){
     this.modalService.dismissAll();
   }
-    openView(content, type:string) {
-        let pathData: any;
-        //console.log(">>>pop up...", content);
-        if(type != undefined && type == 'agreement'){
-          pathData = this.getSantizeUrl(this.accredAgreemFile);
-          this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
-        }
-        if(type != undefined && type == 'checklist'){
-          pathData = this.getSantizeUrl(this.checklistDocFile);
-          this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
-        }
-        if(type != undefined && type == 'ILA'){
-          pathData = this.getSantizeUrl(this.ILAAgreement);
-          this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
-        }
-    
-        //console.log(">>> open view", this.pathPDF, " -- ",  this.pathPDF);
-    
-        this.modalService.open(content, this.modalOptions).result.then((result) => {
-          this.closeResult = `Closed with: ${result}`;
-          ////console.log("Closed: ", this.closeResult);
-          //this.courseViewData['courseDuration'] = '';
-          //this.courseViewData['courseFees'] = '';
-        }, (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        });
+  openView(content, type:string) {
+      let pathData: any;
+      //console.log(">>>pop up...", content);
+      if(type != undefined && type == 'agreement'){
+        pathData = this.getSantizeUrl(this.accredAgreemFile);
+        this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
       }
-      private getDismissReason(reason: any): string {
-        if (reason === ModalDismissReasons.ESC) {
-          ////console.log("Closed with ESC ");
-          
-          return 'by pressing ESC';
-        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-          ////console.log("Closed with CLOSE ICON ");
-         
-          return 'by clicking on a backdrop';
-        } else {
-          ////console.log("Closed ",`with: ${reason}`);
-          
-          return  `with: ${reason}`;
-        }
+      if(type != undefined && type == 'checklist'){
+        pathData = this.getSantizeUrl(this.checklistDocFile);
+        this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
       }
+      if(type != undefined && type == 'ILA'){
+        pathData = this.getSantizeUrl(this.ILAAgreement);
+        this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
+      }
+  
+      //console.log(">>> open view", this.pathPDF, " -- ",  this.pathPDF);
+  
+      this.modalService.open(content, this.modalOptions).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+        ////console.log("Closed: ", this.closeResult);
+        //this.courseViewData['courseDuration'] = '';
+        //this.courseViewData['courseFees'] = '';
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      });
+  }
+
+  downloadApplication(file:any) {
+    var fullPAth = this._constant.mediaPath+file;
+    let pathData: any;
+
+    pathData = this.getSantizeUrl(fullPAth);
+    this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
+  }
+  
+  private getDismissReason(reason: any): string {
+      if (reason === ModalDismissReasons.ESC) {
+        ////console.log("Closed with ESC ");
+        
+        return 'by pressing ESC';
+      } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+        ////console.log("Closed with CLOSE ICON ");
+        
+        return 'by clicking on a backdrop';
+      } else {
+        ////console.log("Closed ",`with: ${reason}`);
+        
+        return  `with: ${reason}`;
+      }
+  }
 
   jsonParse(data) {
     // console.log(data);
@@ -203,8 +213,14 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
           this.technicalManager = result['data']['technicalManager'][0];
           this.managementManager = result['data']['technicalManager'][0];
           this.paymentDetails = result['data'].paymentDetails;
-          this.scopeDetailsHeading = result['data']['scopeDetails'].heading.column_list;
-          this.scopeDetailvalues = result['data']['scopeDetails']['details'];
+          // this.scopeDetailsHeading = result['data']['scopeDetails'].heading.column_list;
+          Object.keys(result['data']['scopeDetails']).forEach((res,key) => {
+            // this.scopeDetailsHeading = res['scope_heading'];
+            // this.scopeDetailvalues = res['scope_value']
+          });
+          // console.log(this.scopeDetailsHeading,'scopeDetailsHeading');
+          // console.log(this.scopeDetailvalues,'scopeDetailvalues');
+          // this.scopeDetailvalues = result['data']['scopeDetails']['details'];
           //console.log("@@@",result['data']['recommend_visit'])
           let visit = result['data']['recommend_visit'].replace(/["']/g, "");
           //let visit1 = visit.toString().replace("\"",' ');

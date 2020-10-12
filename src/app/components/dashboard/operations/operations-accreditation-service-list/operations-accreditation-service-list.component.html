@@ -121,7 +121,7 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.created_date"></span>
                                 </a>
                             </th>
-                            <th>Status
+                            <th width="15%">Status
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'accr_status', curSortDir.accr_status)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.accr_status"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.accr_status"></span>
@@ -163,9 +163,9 @@
                             <td>
                                 {{item.created | date :'dd-MMM-yyyy' }}
                             </td>
-                            <td [ngClass]="{'pending': (item.accr_status === 'pending' || item.accr_status == 'draft'), 'under-review':item.accr_status === null, 'complete': item.accr_status === 'complete'}">
+                            <td [ngClass]="{'pending': (item.accr_status === 'pending' || item.accr_status == 'draft'), 'under-review':item.accr_status === null || item.accr_status === 'under_review', 'complete': item.accr_status === 'complete'}">
                                 <span *ngIf="item.accr_status == 'pending' || item.accr_status == 'draft'">Pending</span>
-                                <span *ngIf="item.accr_status == null">Under Review</span>
+                                <span *ngIf="item.accr_status == null || item.accr_status === 'under_review'">Under Review</span>
                                 <span *ngIf="item.accr_status == 'complete'">Complete</span>
                             </td>
                             <td [ngClass]="{'complete': item.is_prelim_visit == true, 'under-review':item.is_prelim_visit == false }">
