@@ -1272,65 +1272,77 @@ onSubmitStep1(ngForm1: any){
   // this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
   this.isApplicationSubmitted = true;
   if(this.step1Data.duty_shift == '1')
-  {
-    if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
     {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+        this.isSubmit = false;
+      }else{
+        this.dutyTime1 = true;
+        this.isSubmit = true;
+      }
+      // this.dutyTime1 = false;
+      // this.isSubmit = false;
+      
+    }else if(this.step1Data.duty_shift == '2')
+    {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+        this.isSubmit = false;
+      }else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined') {
+        this.dutyTime2 = false;
+        this.isSubmit = false;
+      }else if(typeof this.step1Data.duty_from2 != 'undefined' || typeof this.step1Data.duty_to2 != 'undefined'){
+        this.dutyTime2 = true;
+        this.isSubmit = true;
+      }
+      // this.dutyTime2 = false;
+      // this.isSubmit = false;
+    }else if(this.step1Data.duty_shift == '3')
+    {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+        this.isSubmit = false;
+      }
+      else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
+      {
+        this.dutyTime2 = false;
+        this.isSubmit = false;
+      }
+      else if(typeof typeof this.step1Data.duty_from3 == 'undefined' || typeof this.step1Data.duty_to3 == 'undefined') {
+        this.dutyTime3 = false;
+        this.isSubmit = false;
+      }else if(typeof this.step1Data.duty_from3 != 'undefined' || typeof this.step1Data.duty_to3 != 'undefined') {
+        this.dutyTime3 = true;
+        this.isSubmit = true;
+      }
+      // this.dutyTime3 = false;
+      // this.isSubmit = false;
+    }else if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
       this.dutyTime1 = false;
+      this.isSubmit = false;
     }else{
       this.dutyTime1 = true;
-      this.isSubmit = true;
-    }
-    this.dutyTime1 = false;
-    this.isSubmit = false;
-    
-  }else if(this.step1Data.duty_shift == '2')
-  {
-    if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
-    {
-      this.dutyTime1 = false;
-    }else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined') {
-      this.dutyTime2 = false;
-    }else if(typeof this.step1Data.duty_from2 != 'undefined' || typeof this.step1Data.duty_to2 != 'undefined'){
       this.dutyTime2 = true;
-      this.isSubmit = true;
-    }
-    // this.dutyTime2 = false;
-    // this.isSubmit = false;
-  }else if(this.step1Data.duty_shift == '3')
-  {
-    if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
-    {
-      this.dutyTime1 = false;
-    }
-    else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
-    {
-      this.dutyTime2 = false;
-    }
-    else if(typeof typeof this.step1Data.duty_from3 == 'undefined' || typeof this.step1Data.duty_to3 == 'undefined') {
-      this.dutyTime3 = false;
-    }else if(typeof this.step1Data.duty_from3 != 'undefined' || typeof this.step1Data.duty_to3 != 'undefined') {
       this.dutyTime3 = true;
       this.isSubmit = true;
     }
-    // this.dutyTime3 = false;
-    // this.isSubmit = false;
-  }else if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
-    this.dutyTime1 = false;
-    this.isSubmit = false;
-  }else{
-    this.dutyTime1 = true;
-    this.dutyTime2 = true;
-    this.dutyTime3 = true;
-    this.isSubmit = true;
-  }
 
+    if(this.step1Data.duty_shift == '1' && !this.dutyTime2){
+      this.dutyTime2 = true;
+    }if(this.step1Data.duty_shift == '2' && !this.dutyTime3){
+      this.dutyTime3 = true;
+    }
+    
   if(this.step1Data.is_main_activity_note == undefined){
     this.step1Data.is_main_activity_note = '';
   }
   
   let str = this.step1Data.is_main_activity_note; 
 
-  console.log("nite enen: ", this.step1Data.is_main_activity_note, " -- ", this.step1Data.is_main_activity, " :: ", (!str || 0 === str.length));
+  // console.log("nite enen: ", this.step1Data.is_main_activity_note, " -- ", this.step1Data.is_main_activity, " :: ", (!str || 0 === str.length));
   
   if(this.step1Data.is_main_activity == 'true' && this.step1Data.is_main_activity_note != ''){
     this.step1Data.is_main_activity_note = '';
@@ -1340,12 +1352,12 @@ onSubmitStep1(ngForm1: any){
   }
 
   if((!str || 0 === str.length) && this.step1Data.is_main_activity == 'false'){
-    console.log(">>> Note is required...");
+    // console.log(">>> Note is required...");
     this.is_main_activity_note_entry = true;
     this.isNoteSubmit = false;
   }
   if(this.step1Data.is_main_activity == 'false' && this.step1Data.is_main_activity_note != ''){
-    console.log(">>> Note is ebnterd.....");
+    // console.log(">>> Note is ebnterd.....");
     this.is_main_activity_note_entry = false;
     this.isNoteSubmit = true;
   }
