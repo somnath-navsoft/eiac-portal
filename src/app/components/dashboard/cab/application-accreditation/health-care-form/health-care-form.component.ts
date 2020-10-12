@@ -375,7 +375,7 @@ export class HealthCareFormComponent implements OnInit {
         //Auto selected for one item dropdown
         if(record['scopeValue'].length > 0 && record['scopeValue'].length == 1){
             console.log(">>>dep scope data: ", record['scopeValue']);
-            let getSelValue = 0;
+            let getSelValue = 0; 
             if(typeof record['scopeValue'][0] === 'object'){                  
               getSelValue = record['scopeValue'][0].field_value.id;
               console.log(">>assigning scope default value: ", getSelValue);
