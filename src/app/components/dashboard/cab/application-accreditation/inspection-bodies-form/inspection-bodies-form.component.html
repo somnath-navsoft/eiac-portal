@@ -117,9 +117,14 @@
                                             <div class="col-md-8">
                                                 <mat-form-field class="cab-data">
                                                     <mat-label>Registered Physical Location Address</mat-label>
-                                                    <input matInput   autocomplete="off"   
+                                                    <input matInput   (keyup)="getPlaceName($event)" [matAutocomplete] = "auto"   
                                                     placeholder="Registered Physical Location Address" name="physical_location_address" 
                                                     [(ngModel)]="step1Data.physical_location_address" required>
+                                                    <mat-autocomplete #auto = "matAutocomplete" >
+                                                        <mat-option *ngFor = "let searchCountryList of searchCountryLists" [value] = "searchCountryList.place_name">
+                                                        {{searchCountryList.place_name}}
+                                                        </mat-option>
+                                                    </mat-autocomplete>
                                                 </mat-form-field>
                                             </div> 
 

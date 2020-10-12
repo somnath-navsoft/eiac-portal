@@ -4030,11 +4030,13 @@ onSubmit(ngForm){
     }
     getPlaceName(data)
     {
-      if(typeof this.step1Data.search_location_name != 'undefined')
+      console.log(">>> calling...1");
+      if(typeof this.step1Data.physical_location_address != 'undefined')
       {
-        this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.step1Data.search_location_name+'.json?access_token='+this.Service.mapboxToken+'','')
+        console.log(">>> calling...2");
+        this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.step1Data.physical_location_address+'.json?access_token='+this.Service.mapboxToken+'','')
           .subscribe(res => {
-              // //////console.log(res['features']);
+              console.log(res['features']);
               this.searchCountryLists = res['features'];
             },
             error => {
