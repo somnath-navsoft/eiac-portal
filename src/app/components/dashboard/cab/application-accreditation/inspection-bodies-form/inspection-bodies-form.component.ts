@@ -1365,7 +1365,7 @@ export class InspectionBodiesFormComponent implements OnInit {
             }
         }
         
-            getData.data.state = 'West Bengal';
+            //getData.data.state = 'West Bengal';
             //console.log(">>> 1 state find...", this.allStateList);  
             //console.log(">>> 2 state find..."); 
 
