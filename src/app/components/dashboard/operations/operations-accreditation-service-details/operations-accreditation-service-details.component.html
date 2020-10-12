@@ -552,14 +552,14 @@
                   <div class="table-appln">
                     <table>
                         <!-- {{jsonParseKeyvalue(scopeDetailsHeading) | json}} -->
-                      <tr>
+                      <!-- <tr>
                         <th *ngFor="let item5 of jsonParseKeyvalue(scopeDetailsHeading) | keyvalue;">{{item5.value}}</th>
                       </tr>
                       <tr>
                         <ng-container *ngFor="let item6 of scopeDetailvalues; let i4 = index;">
                             <td *ngFor="let item7 of jsonParseKeyvalue(item6.value) | keyvalue;">{{item7.value}}</td>
                         </ng-container>
-                      </tr>
+                      </tr> -->
                       <!-- <tr>
                         <td>Mechanical /Physical</td>
                         <td>Hardened Concrete</td>
@@ -855,7 +855,7 @@
       </div>
       <div class="row m-0">
         <div class="col-md-12">
-          <!-- <button class="submit-bttn submit-health" [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button> -->
+          <button class="submit-bttn submit-health" (click)="uiDialog.openPDFViewer(_constant.mediaPath,serviceDetail.form_pdf)"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button>
           <!-- <div class="details status_bttn">
             <a href="javascript:void(0)">Download Application</a>
           </div> -->

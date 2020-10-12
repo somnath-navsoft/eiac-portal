@@ -280,7 +280,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row">
+                                    <!-- <div class="row">
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Which</mat-label>
@@ -303,6 +303,50 @@
                                                 <mat-datepicker #till disabled="false"></mat-datepicker>
                                             </mat-form-field>
                                         </div>
+                                    </div> -->
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-content-health">
+                                                <table>
+                                                    <tr>
+                                                        <th>Which</th>
+                                                        <th>From</th>
+                                                        <th>Till</th>
+                                                        <th></th>
+                                                    </tr>
+                                                    <tr *ngFor="let row of whichForum; let i = index;">
+                                                        <td>
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Type Here</mat-label>
+                                                                <input matInput [(ngModel)]="whichForum[i].organization" name="which_{{i}}" placeholder="Type Here" required>
+                                                            </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Select</mat-label>
+                                                                <input matInput [(ngModel)]="whichForum[i].date_from" name="datefrom_{{i}}" (dateChange)="setexDate(whichForum[i].date_from)" [matDatepicker]="FromDate" readonly="true" (click)="Service._openCalendar(FromDate)" placeholder="Type Here" required>
+                                                                <mat-datepicker-toggle matSuffix [for]="FromDate"></mat-datepicker-toggle>
+                                                                <mat-datepicker #FromDate disabled="false"></mat-datepicker>
+                                                            </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Select</mat-label>
+                                                                <input matInput [(ngModel)]="whichForum[i].date_to" name="dateto_{{i}}" [matDatepicker]="toDate" [min]="minDate" readonly="true" (click)="Service._openCalendar(toDate)" placeholder="Type Here" required>
+                                                                <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+                                                                <mat-datepicker #toDate disabled="false"></mat-datepicker>
+                                                            </mat-form-field>
+                                                        </td>
+                                                        
+                                                        <td class="content-icn">
+                                                            <span *ngIf="i >= 0" class="icon-add" (click)="addRow(whichForum)"></span>&nbsp;
+                                                            <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(whichForum,i)"></span>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="row">
@@ -318,6 +362,72 @@
                                             <div class="table-content-health">
                                                 <table>
                                                     <tr>
+                                                        <th>Language</th>
+                                                        <th>Read</th>
+                                                        <th>Write</th>
+                                                        <th>Speak</th>
+                                                        <th></th>
+                                                    </tr>
+                                                    <tr *ngFor="let row of whichLanguage; let i = index;">
+                                                        <td>
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Select</mat-label>
+                                                                <mat-select placeholder="Select" name="language_{{i}}" [(ngModel)]="whichLanguage[i].language" required>
+                                                                    <mat-option *ngFor="let lanRow of languageArr" [value]="lanRow.name">{{lanRow.name}}</mat-option>
+                                                                    <!-- <mat-option [value]="1">English</mat-option>
+                                                                    <mat-option [value]="2">Others</mat-option> -->
+                                                                </mat-select>
+                                                                <mat-error></mat-error>
+                                                            </mat-form-field>
+                                                        </td>
+
+                                                        <td>
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Select</mat-label>
+                                                                <mat-select placeholder="Select" name="read_{{i}}" [(ngModel)]="whichLanguage[i].read" required>
+                                                                    <mat-option [value]="1">Yes</mat-option>
+                                                                    <mat-option [value]="0">No</mat-option>
+                                                                </mat-select>
+                                                                <mat-error></mat-error>
+                                                            </mat-form-field>
+                                                        </td>
+
+                                                        <td>
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Select</mat-label>
+                                                                <mat-select placeholder="Select" name="write_{{i}}" [(ngModel)]="whichLanguage[i].write" required>
+                                                                    <mat-option [value]="1">Yes</mat-option>
+                                                                    <mat-option [value]="0">No</mat-option>
+                                                                </mat-select>
+                                                                <mat-error></mat-error>
+                                                            </mat-form-field>
+                                                        </td>
+
+                                                        <td>
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Select</mat-label>
+                                                                <mat-select placeholder="Select" name="speak_{{i}}" [(ngModel)]="whichLanguage[i].speak" required>
+                                                                    <mat-option [value]="1">Yes</mat-option>
+                                                                    <mat-option [value]="0">No</mat-option>
+                                                                </mat-select>
+                                                                <mat-error></mat-error>
+                                                            </mat-form-field>
+                                                        </td>
+                                                        
+                                                        <td class="content-icn">
+                                                            <span *ngIf="i >= 0" class="icon-add" (click)="addRow(whichLanguage)"></span>&nbsp;
+                                                            <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(whichLanguage,i)"></span>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-content-health">
+                                                <table>
+                                                    <tr>
                                                         <th width="20%">Language</th>
                                                         <th>Read</th>
                                                         <th>Write</th>
@@ -326,12 +436,6 @@
                                                     <tr>
                                                         <td class="lang-name">Arabic</td>
                                                         <td>
-                                                            <!-- <mat-form-field class="cab-data">
-                                                                <mat-label>Select</mat-label>
-                                                                <mat-select required matInput placeholder="">
-                                                                    <mat-option>1</mat-option>
-                                                                </mat-select>
-                                                            </mat-form-field> -->
                                                             <mat-form-field class="cab-data">
                                                                 <mat-label>Select</mat-label>
                                                                 <mat-select placeholder="Select" name="arabic_read"  [(ngModel)]="arabic.read" required>
@@ -431,7 +535,7 @@
                                                 </table>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                     
                                 </div>
@@ -497,6 +601,7 @@
                                                     <th>Qualification/Training</th>
                                                     <th>Institution/OrganiSation</th>
                                                     <th>Date</th>
+                                                    <th>Upload File</th>
                                                     <th></th>
                                                 </tr>
                                                 <tr *ngFor="let row of list_auditor; let i = index;">
@@ -506,12 +611,14 @@
                                                             <input matInput [(ngModel)]="list_auditor[i].detail" name="qualification_{{i}}" placeholder="Type Here" required>
                                                         </mat-form-field>
                                                     </td>
+
                                                     <td>
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Type Here</mat-label>
                                                             <input matInput [(ngModel)]="list_auditor[i].organization" name="institution_{{i}}" placeholder="Type Here" required>
                                                         </mat-form-field>
                                                     </td>
+                                                    
                                                     <td>
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Type Here</mat-label>
@@ -519,6 +626,28 @@
                                                             <mat-datepicker-toggle matSuffix [for]="listAudtrdate"></mat-datepicker-toggle>
                                                             <mat-datepicker #listAudtrdate disabled="false"></mat-datepicker>
                                                         </mat-form-field>
+                                                    </td>
+
+                                                    <td>
+                                                        <mat-form-field  class="lng-data">
+                                                            <input matInput readonly="true" name="trade_license_name_{{i}}" [(ngModel)]="list_auditor[i].list_auditor_upload"  placeholder="Upload Document">
+
+                                                            <a *ngIf="list_auditor[i].qualification_file != null" href="{{filePathVreateDynamics(list_auditor[i].qualification_file)}}" target="_blank">
+                                                                <span class="icon-eye visible-pwd"></span>
+                                                            </a>
+                                                        </mat-form-field>
+                                                    
+                                                        <span class="fileupload" *ngIf="list_auditor[i].id && list_auditor[i].id != ''">
+                                                            <input type="file" name="trade_license_{{i}}" [(ngModel)]="list_auditor[i].fileAny" (change)="listAuditorFile($event,i,list_auditor[i].id)">
+                                                            <span class="icon-attach attach-data"></span>
+                                                        </span>
+
+                                                        <span class="fileupload" *ngIf="!list_auditor[i].id">
+                                                            <input type="file" name="trade_license_{{i}}" [(ngModel)]="list_auditor[i].fileAny" (change)="listAuditorFile($event,i)">
+                                                            <span class="icon-attach attach-data"></span>
+                                                        </span>
+                                                        <p class="error" *ngIf="!file_validation_listAuditor">Please Upload a valid file (ex: pdf)</p>
+                                                        <!-- </div> -->
                                                     </td>
                                                     
                                                     <td class="content-icn">
@@ -535,7 +664,7 @@
                                 <div class="row mt-3">
                                     <div class="col-lg-9 p-0">
                                         <div class="form-subheader-data">
-                                            <h5>HAVE YOU ATTENDED ON-THE-JOB TRAINING REGARDING ACCREDITATION?</h5>
+                                            <h5>HAVE YOU BEEN APPOINTED AS ASSESSOR BY OTHER ACCREDITATION BODIES?</h5>
                                         </div>
                                     </div>
 
@@ -577,7 +706,7 @@
                                                     <td>
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Select</mat-label>
-                                                            <input matInput [(ngModel)]="attend_accreditation[i].date_to" name="attend_accreditation_date_to_{{i}}" [max]="minDate" [matDatepicker]="attend_accreditation_date_to" placeholder="Select" (click)="Service._openCalendar(attend_accreditation_date_to)" readonly="true" required>
+                                                            <input matInput [(ngModel)]="attend_accreditation[i].date_to" name="attend_accreditation_date_to_{{i}}" [min]="minDate" [matDatepicker]="attend_accreditation_date_to" placeholder="Select" (click)="Service._openCalendar(attend_accreditation_date_to)" readonly="true" required>
                                                             <mat-datepicker-toggle  matSuffix [for]="attend_accreditation_date_to"></mat-datepicker-toggle>
                                                             <mat-datepicker #attend_accreditation_date_to readonly="false"></mat-datepicker>
                                                         </mat-form-field>
@@ -641,7 +770,7 @@
                                                     <td>
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Select</mat-label>
-                                                            <input matInput [(ngModel)]="attend_accreditation2[i].date_to" name="attend_accreditation2_date_to_{{i}}" [matDatepicker]="attend_accreditation2_date_to" placeholder="Select" (click)="Service._openCalendar(attend_accreditation2_date_to)" readonly="true" [max]="minDate" required>
+                                                            <input matInput [(ngModel)]="attend_accreditation2[i].date_to" name="attend_accreditation2_date_to_{{i}}" [matDatepicker]="attend_accreditation2_date_to" placeholder="Select" (click)="Service._openCalendar(attend_accreditation2_date_to)" readonly="true" [min]="minDate" required>
                                                             <mat-datepicker-toggle  matSuffix [for]="attend_accreditation2_date_to"></mat-datepicker-toggle>
                                                             <mat-datepicker #attend_accreditation2_date_to readonly="false"></mat-datepicker>
                                                         </mat-form-field>

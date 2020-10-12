@@ -31,6 +31,7 @@ export class ResetPasswordComponent implements OnInit {
       confirmPassword:    new FormControl('', 
       [Validators.required]),
     });
+
   }
 
   passwordDisplay(type: string){
@@ -139,11 +140,25 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   resetPassword() {
+    
+    var splitId = this.resetId.split('=');
+    var splitEmail = splitId[1].split('&');
+    
+    var email = splitEmail[0];
+    var hash = splitId[2];
+
     if(this.isValid()){
       this.changePasswordForm.resetId = this.resetId;
       // //console.log(this.forgotPassword.value,'forgotPassword');
-      //console.log(this.changePasswordForm,'changePasswordForm');
-      this.toastr.success('Password change successfully','', {timeOut: 3000});
+      var passwordHash = btoa(this.changePasswordForm.confirmPassword);
+      this.appService.getwithoutData(this.appService.apiServerUrl+"/"+this.constant.API_ENDPOINT.userPasswordReset+'?email='+email+'&hash='+hash+'&password='+passwordHash)
+      .subscribe(
+        res => {
+          if(res['status'] != true) {
+            this.toastr.success('Password change successfully','', {timeOut: 3000});
+            this.router.navigateByUrl('/sign-in');
+          }
+        });
     }
   }
 

@@ -60,9 +60,12 @@ export class Constants{
 		accrStatus: this.apiUrl + 'accr_status/',
 		testingCalibration: this.apiUrl + 'testing_calibration_form_management/',
 		certificationBodies: this.apiUrl + 'certification_bodies/',
+		certificationBodiesForm: this.apiUrl + 'certification_bodies/',
 		healthcareForm: this.apiUrl + 'healthcare_form/',
 		ptProviderForm: this.apiUrl + 'pt-provider-form/',
 		trainerAccredStaList: this.apiUrl + 'accrediation-service-status/',
+		forgetPassword: this.apiUrl + 'user-password-reset-request/',
+		userPasswordReset: this.apiUrl + 'user-password-reset/',
 	}
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."
 	public loggedIn													=	new Subject<any>();

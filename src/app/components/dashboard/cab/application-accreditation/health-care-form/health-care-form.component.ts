@@ -95,6 +95,10 @@ export class HealthCareFormComponent implements OnInit {
   dutyTime1: boolean = true;
   dutyTime2: boolean = true;
   dutyTime3: boolean = true;
+  shift2_from: boolean = false;
+  shift2_to: boolean = false;
+  shift3_from: boolean = false;
+  shift3_to: boolean = false;
   convertedDate:any;
   half_representative_date:boolean = false;
 
@@ -164,6 +168,9 @@ export class HealthCareFormComponent implements OnInit {
   checklistDocFile: any;
   urlVal: any;
   paymentFile:any = false;
+  isApplicationSubmitted:any = false;
+  public isNoteSubmit:boolean = false;
+  
 
   //Master scope form data declaration
   dynamicScopeModel:any         = {};   
@@ -182,6 +189,7 @@ export class HealthCareFormComponent implements OnInit {
   inspectionBodyForm: any = {};
   schemeRows: Array<any> = [{}];
   //Master scope form data declaration
+  is_main_activity_note_entry: boolean = false;
 
   @ViewChild('mydiv', null) mydiv: ElementRef;
   @HostListener('scroll', ['$event.target'])
@@ -375,7 +383,7 @@ export class HealthCareFormComponent implements OnInit {
         //Auto selected for one item dropdown
         if(record['scopeValue'].length > 0 && record['scopeValue'].length == 1){
             console.log(">>>dep scope data: ", record['scopeValue']);
-            let getSelValue = 0;
+            let getSelValue = 0; 
             if(typeof record['scopeValue'][0] === 'object'){                  
               getSelValue = record['scopeValue'][0].field_value.id;
               console.log(">>assigning scope default value: ", getSelValue);
@@ -778,6 +786,87 @@ loadCountryStateCity = async() => {
 //    this.healthCareForm.neurophysiologyAccreditation         = this.neurophysiologyAccreditation;
 
 //  }
+
+moveShift(theVal: any){
+  let val;
+  console.log(">>>change shift: ", theVal, " -- ",val);
+  
+  if(theVal == 1){
+    if(this.step1Data.duty_from2 != undefined || this.step1Data.duty_to3 != undefined){
+      this.step1Data.duty_from2 = val;
+      this.step1Data.duty_to2 = val;
+      
+    }
+    if(this.step1Data.duty_from3 != undefined || this.step1Data.duty_to3 != undefined){
+      this.step1Data.duty_from3 = val;
+      this.step1Data.duty_to3 = val;
+      
+    }
+    if(this.step1Data.duty_from1 == undefined || this.step1Data.duty_to1 == undefined){
+      this.dutyTime1 = false;        
+    }
+    this.shift2_from = true;
+      this.shift2_to = true;
+      this.shift3_from = true;
+      this.shift3_to = true;
+
+      this.dutyTime2 = true;
+      this.dutyTime3 = true;
+      //check from to input
+      //this.dutyTime1 = false;
+    console.log(">>> shift 1 ", this.step1Data.duty_from2, " -- ",this.step1Data.duty_to2)
+  }
+  if(theVal == 2){      
+    if(this.step1Data.duty_from3 != undefined || this.step1Data.duty_to3 != undefined){
+      this.step1Data.duty_from3 = val;
+      this.step1Data.duty_to3 = val;
+      this.dutyTime3 = true;        
+    }
+    if(this.step1Data.duty_from1 != undefined || this.step1Data.duty_to1 != undefined){
+      this.dutyTime1 = true;        
+    }
+    if(this.step1Data.duty_from1 == undefined || this.step1Data.duty_to1 == undefined){
+      this.dutyTime1 = false;        
+    }
+    if(this.step1Data.duty_from2 == undefined || this.step1Data.duty_to2 == undefined){
+      this.dutyTime2 = false;        
+    }
+    this.shift3_from = true;
+    this.shift3_to = true;
+    this.shift2_from = false;
+    this.shift2_to = false;
+   // this.dutyTime2 = false; 
+
+      //this.dutyTime3 = true;
+      //this.dutyTime1 = true;
+
+    console.log(">>> shift 2 ", this.step1Data.duty_from2, " -- ",this.step1Data.duty_to2)
+  }
+  if(theVal == 3){   
+    
+    if(this.step1Data.duty_from1 != undefined || this.step1Data.duty_to1 != undefined){
+      this.dutyTime1 = true;        
+    }
+    if(this.step1Data.duty_from2 != undefined || this.step1Data.duty_to2 != undefined){
+      this.dutyTime1 = true;        
+    }
+    if(this.step1Data.duty_from1 == undefined || this.step1Data.duty_to1 == undefined){
+      this.dutyTime1 = false;        
+    }
+    if(this.step1Data.duty_from2 == undefined || this.step1Data.duty_to2 == undefined){
+      this.dutyTime2 = false;        
+    }
+    if(this.step1Data.duty_from3 == undefined || this.step1Data.duty_to3 == undefined){
+      this.dutyTime3 = false;        
+    }
+    
+    this.shift3_from = false;
+    this.shift3_to = false;
+    this.shift2_from = false;
+    this.shift2_to = false;
+    console.log(">>> shift 3 ", this.step1Data.duty_from2, " -- ",this.step1Data.duty_to2)
+  }
+}
  
  setexDate(date){
   let cdate = date;
@@ -788,9 +877,10 @@ loadCountryStateCity = async() => {
 
  getPlaceName()
  {
-   if(typeof this.step1Data.search_location_name != 'undefined')
+   console.log(">>>callibng place...", this.step1Data.physical_location_address);
+   if(typeof this.step1Data.physical_location_address != 'undefined')
    {
-     this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.step1Data.search_location_name+'.json?access_token='+this.Service.mapboxToken+'','')
+     this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.step1Data.physical_location_address+'.json?access_token='+this.Service.mapboxToken+'','')
        .subscribe(res => {
            ////console.log(res['features']);
            this.searchCountryLists = res['features'];
@@ -960,7 +1050,7 @@ validateFile(fileEvent: any) {
           if(res['data'].id && res['data'].id != '') {
               let pathData: any;
               let filePath: string;
-
+              let getData: any = res;
               if(!this.Service.isObjectEmpty(res['data'].paymentDetails)){
               
                 if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''){
@@ -970,6 +1060,31 @@ validateFile(fileEvent: any) {
                 }
                 ////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
               }
+              var cityList =  this.Service.getCity();
+
+              this.step1Data.country = getData.data.country;
+              //console.log(">>> country data: ", this.getCountryLists);
+              if(this.getCountryLists.length){
+                //console.log(">>> 11c country data: ", this.getCountryLists);
+                let cdata: any = this.getCountryLists.find(rec => rec.name == getData.data.country)
+                  //console.log("Fnd country: ", cdata);  
+                  if(cdata){
+                    let cid = cdata.id;
+                    this.statelistById(cid) 
+                  }
+              }
+              cityList.subscribe( result => {
+                for(let key in result['cities']) {
+                  //console.log(">> cities: ", result['cities'][key]);
+                   ////if(result['cities'][key]['state_id'] == data.city )
+                   //{
+                    this.allCityList.push(result['cities'][key]);
+                  //}
+                }
+              });
+              this.step1Data.state = getData.data.state;  
+      
+              this.step1Data.city = getData.data.city;
               
               if(res['data'].saved_step  != null){
                 /////console.log("@saved step assign....");
@@ -1155,62 +1270,101 @@ validateFile(fileEvent: any) {
 
 onSubmitStep1(ngForm1: any){
   // this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+  this.isApplicationSubmitted = true;
   if(this.step1Data.duty_shift == '1')
-  {
-    if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
     {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+        this.isSubmit = false;
+      }else{
+        this.dutyTime1 = true;
+        this.isSubmit = true;
+      }
+      // this.dutyTime1 = false;
+      // this.isSubmit = false;
+      
+    }else if(this.step1Data.duty_shift == '2')
+    {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+        this.isSubmit = false;
+      }else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined') {
+        this.dutyTime2 = false;
+        this.isSubmit = false;
+      }else if(typeof this.step1Data.duty_from2 != 'undefined' || typeof this.step1Data.duty_to2 != 'undefined'){
+        this.dutyTime2 = true;
+        this.isSubmit = true;
+      }
+      // this.dutyTime2 = false;
+      // this.isSubmit = false;
+    }else if(this.step1Data.duty_shift == '3')
+    {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+        this.isSubmit = false;
+      }
+      else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
+      {
+        this.dutyTime2 = false;
+        this.isSubmit = false;
+      }
+      else if(typeof typeof this.step1Data.duty_from3 == 'undefined' || typeof this.step1Data.duty_to3 == 'undefined') {
+        this.dutyTime3 = false;
+        this.isSubmit = false;
+      }else if(typeof this.step1Data.duty_from3 != 'undefined' || typeof this.step1Data.duty_to3 != 'undefined') {
+        this.dutyTime3 = true;
+        this.isSubmit = true;
+      }
+      // this.dutyTime3 = false;
+      // this.isSubmit = false;
+    }else if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
       this.dutyTime1 = false;
+      this.isSubmit = false;
     }else{
       this.dutyTime1 = true;
-      this.isSubmit = true;
-    }
-    this.dutyTime1 = false;
-    this.isSubmit = false;
-    
-  }else if(this.step1Data.duty_shift == '2')
-  {
-    if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
-    {
-      this.dutyTime1 = false;
-    }else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined') {
-      this.dutyTime2 = false;
-    }else if(typeof this.step1Data.duty_from2 != 'undefined' || typeof this.step1Data.duty_to2 != 'undefined'){
       this.dutyTime2 = true;
-      this.isSubmit = true;
-    }
-    // this.dutyTime2 = false;
-    // this.isSubmit = false;
-  }else if(this.step1Data.duty_shift == '3')
-  {
-    if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
-    {
-      this.dutyTime1 = false;
-    }
-    else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
-    {
-      this.dutyTime2 = false;
-    }
-    else if(typeof typeof this.step1Data.duty_from3 == 'undefined' || typeof this.step1Data.duty_to3 == 'undefined') {
-      this.dutyTime3 = false;
-    }else if(typeof this.step1Data.duty_from3 != 'undefined' || typeof this.step1Data.duty_to3 != 'undefined') {
       this.dutyTime3 = true;
       this.isSubmit = true;
     }
-    // this.dutyTime3 = false;
-    // this.isSubmit = false;
-  }else if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
-    this.dutyTime1 = false;
-    this.isSubmit = false;
-  }else{
-    this.dutyTime1 = true;
-    this.dutyTime2 = true;
-    this.dutyTime3 = true;
-    this.isSubmit = true;
+
+    if(this.step1Data.duty_shift == '1' && !this.dutyTime2){
+      this.dutyTime2 = true;
+    }if(this.step1Data.duty_shift == '2' && !this.dutyTime3){
+      this.dutyTime3 = true;
+    }
+    
+  if(this.step1Data.is_main_activity_note == undefined){
+    this.step1Data.is_main_activity_note = '';
+  }
+  
+  let str = this.step1Data.is_main_activity_note; 
+
+  // console.log("nite enen: ", this.step1Data.is_main_activity_note, " -- ", this.step1Data.is_main_activity, " :: ", (!str || 0 === str.length));
+  
+  if(this.step1Data.is_main_activity == 'true' && this.step1Data.is_main_activity_note != ''){
+    this.step1Data.is_main_activity_note = '';
+  }
+  if(this.step1Data.is_main_activity == 'true'){
+    this.isNoteSubmit = true;
+  }
+
+  if((!str || 0 === str.length) && this.step1Data.is_main_activity == 'false'){
+    // console.log(">>> Note is required...");
+    this.is_main_activity_note_entry = true;
+    this.isNoteSubmit = false;
+  }
+  if(this.step1Data.is_main_activity == 'false' && this.step1Data.is_main_activity_note != ''){
+    // console.log(">>> Note is ebnterd.....");
+    this.is_main_activity_note_entry = false;
+    this.isNoteSubmit = true;
   }
   // console.log(this.dutyTime2,'dutyTime2');
   // console.log(this.dutyTime3,'dutyTime3');
   
-  if(ngForm1.form.valid && this.isSubmit == true) {
+  if(ngForm1.form.valid && this.isSubmit == true  && this.isNoteSubmit == true) {
     this.healthCareForm = {};
     this.healthCareForm.step1 = {};
     this.healthCareForm.email = this.userEmail;
@@ -1247,6 +1401,7 @@ onSubmitStep1(ngForm1: any){
       res => {
         this.loader = true;
         // console.log(res,'res')
+        this.isApplicationSubmitted = false;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
           this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
@@ -1909,7 +2064,7 @@ onSubmitStep5(ngForm: any, type?:any) {
     this.toastr.warning('Please Fill required field','Validation Error');
     return false;    
   }
-  //Check dynamic model column fields validation
+  //Check dynamic model column fields validation 
 
 
     console.log("scheme Rows: ", this.schemeRows,  " -- ", this.schemeRows.length, " :: ", this.editScopeData, " :: ", this.getScopeData);

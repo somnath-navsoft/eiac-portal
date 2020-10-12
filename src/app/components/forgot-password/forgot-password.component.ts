@@ -38,8 +38,17 @@ export class ForgotPasswordComponent implements OnInit {
 
   onSubmit() {
     if(this.isValid()){
-      //console.log(this.forgotPassword.value);
-      this.toastr.success('Email link is sent to your account','', {timeOut: 3000});
+      var emailForget = this.forgotPassword.value;
+      // console.log(this.forgotPassword.value);
+      this.appService.getwithoutData(this.appService.apiServerUrl+"/"+this.constant.API_ENDPOINT.forgetPassword+'?email='+emailForget.email)
+      .subscribe(
+        res => {
+          if(res['status'] != true) {
+            // this.router.navigateByUrl('/sign-in');
+            this.toastr.success('A Reset Link sent to your mail id', '');
+          }
+        });
+      // this.toastr.success('Email link is sent to your account','', {timeOut: 3000});
     }
   }
 
