@@ -1,7 +1,7 @@
 <app-loader *ngIf="!loader"></app-loader>
 <section>
     <div class="form-wrapper-pro">
-        <div class="container-fluid">
+        <div class="container-fluid p-0">
             <div class="main-dashboard-cnt">
                 <div class="form-hdr profile-hdr">
                     <div class="row">
@@ -213,7 +213,7 @@
                         <div class="row m-0 form-bdy mt-3">
                             <div class="wrapper">
                                 <div class="col-md-12">
-                                    <div class="row">
+                                    <div class="row mb-4">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr">
                                                 <h5>EDUCATIONAL INFORMATION</h5>
@@ -222,14 +222,17 @@
                                     </div>
                                     
                                     <div class="row">
-                                        <div class="col-md-4"> 
+                                        <div class="col-md-4">
+                                            <div class="matupload position-relative">
                                             <mat-form-field class="cab-data">
                                                 <input matInput name="qualification_degree" [(ngModel)]="step2Data.qualification_degree" placeholder="Qualification/Degrees" required>
                                             </mat-form-field>
                                             <span class="fileupload">
                                                 <input type="file" name="qualification_degree_file" [(ngModel)]="step2Data.qualification_degree_file" (change)="validateFile($event,'qualification_degree')">
                                                 <span class="icon-attach attach-data"></span>
-                                            </span><a class="image_file_link" *ngIf="tradeLicensedValidation1 != false && tradeLicensedValidation1 != true" target="_blank" [href]="tradeLicensedValidation1">Link</a>
+                                            </span>
+                                            </div>
+                                            <a class="image_file_link" *ngIf="tradeLicensedValidation1 != false && tradeLicensedValidation1 != true" target="_blank" [href]="tradeLicensedValidation1">Link</a>
                                             <p class="error" *ngIf="!file_validation1">Please Upload a valid file (ex: pdf,png,jpg,jpeg)</p>
                                         </div>
                                         
@@ -241,26 +244,32 @@
                                         </div>
 
                                         <div class="col-md-4">
+                                            <div class="matupload position-relative">
                                             <mat-form-field class="cab-data">
                                                 <input matInput name="education_specialization" [(ngModel)]="step2Data.education_specialization" placeholder="Specialization" required>
                                             </mat-form-field>
                                             <span class="fileupload">
                                                 <input type="file" name="education_specialization_file" [(ngModel)]="step2Data.education_specialization_file" (change)="validateFile($event,'education_specialization')">
                                                 <span class="icon-attach attach-data"></span>
-                                            </span><a class="image_file_link" *ngIf="tradeLicensedValidation2 != false && tradeLicensedValidation2 != true" target="_blank" [href]="tradeLicensedValidation2">Link</a>
+                                            </span>
+                                            </div>
+                                            <a class="image_file_link" *ngIf="tradeLicensedValidation2 != false && tradeLicensedValidation2 != true" target="_blank" [href]="tradeLicensedValidation2">Link</a>
                                             <p class="error" *ngIf="!file_validation2">Please Upload a valid file (ex: pdf,png,jpg,jpeg)</p>
                                         </div>
                                     </div>
                                     
                                     <div class="row">
                                         <div class="col-md-4">
+                                            <div class="matupload position-relative">
                                             <mat-form-field  class="cab-data">
                                                 <input matInput name="further_education" [(ngModel)]="step2Data.further_education" placeholder="Further Education (if any)">
                                             </mat-form-field>
                                             <span class="fileupload">
                                                 <input type="file" name="further_education_file" [(ngModel)]="step2Data.further_education_file" (change)="validateFile($event,'further_education')">
                                                 <span class="icon-attach attach-data"></span>
-                                            </span><a class="image_file_link" *ngIf="tradeLicensedValidation3" target="_blank" [href]="tradeLicensedValidation3">Link</a>
+                                            </span>
+                                            </div>
+                                            <a class="image_file_link" *ngIf="tradeLicensedValidation3" target="_blank" [href]="tradeLicensedValidation3">Link</a>
                                             <p class="error" *ngIf="!file_validation3">Please Upload a valid file (ex: pdf,png,jpg,jpeg)</p>
                                         </div>
 
@@ -583,8 +592,8 @@
                                             <h5>LIST ANY AUDITOR QUALIFICATION AND TRAINING ATTAINED AND ATTACHED COPIES OF CERTIFICATES AND OTHER EVIDENCE OF ATTACHMENT</h5>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3 col-md-4">
-                                        <div class="form-subheader-desc qualifi-att">
+                                    <div class="col-lg-3 col-md-4 p-0">
+                                        <div class="form-subheader-desc">
                                             <mat-radio-group required name="list_auditor" [(ngModel)]="step3Data.list_auditor">
                                                 <mat-radio-button value="1" (click)="step3Click('1','list_auditor_click')">Yes</mat-radio-button>
                                                 <mat-radio-button value="0" (click)="step3Click('0','list_auditor_click')">No</mat-radio-button>
@@ -629,6 +638,7 @@
                                                     </td>
 
                                                     <td>
+                                                        <div class="matupload position-relative view_file">
                                                         <mat-form-field  class="lng-data">
                                                             <input matInput readonly="true" name="trade_license_name_{{i}}" [(ngModel)]="list_auditor[i].list_auditor_upload"  placeholder="Upload Document">
 
@@ -646,6 +656,7 @@
                                                             <input type="file" name="trade_license_{{i}}" [(ngModel)]="list_auditor[i].fileAny" (change)="listAuditorFile($event,i)">
                                                             <span class="icon-attach attach-data"></span>
                                                         </span>
+                                                        </div>
                                                         <p class="error" *ngIf="!file_validation_listAuditor">Please Upload a valid file (ex: pdf)</p>
                                                         <!-- </div> -->
                                                     </td>
