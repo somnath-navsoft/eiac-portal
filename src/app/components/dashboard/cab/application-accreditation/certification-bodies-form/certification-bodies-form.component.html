@@ -941,18 +941,20 @@
                                                         </div> 
                                                     </ng-container>                                    
                                                 <div class="row">
+                                                    <!-- *ngIf="fullScope.length > 0" -->
+                                                    <!-- *ngFor="let scope of fullScope; let i1 = index;" -->
                                                     <div class="col-md-12 col-sm-12">
-                                                        <div class="row" *ngIf="fullScope.length > 0">
-                                                            <div class="col-12" *ngFor="let scope of fullScope; let i1 = index;">
+                                                        <div class="row" *ngIf="typeScope.scopeRows.length > 0">
+                                                            <div class="col-12" *ngFor="let scope of typeScope.scopeRows; let i1 = index;">
                                                                 <div class="row">
                                                                     <div class="col-md-12 p-0">
                                                                         <div class="form-subhdr">
-                                                                            <h5>Accreditation Scope for {{scope.name}}</h5>
+                                                                            <h5>Accreditation Scope for {{scope.name}} -- {{typeScope.title}}</h5>
                                                                         </div> 
                                                                     </div>
                                                                 </div>
                                                                 <!-- Make Table -->
-                                                                <div class="row">
+                                                                <!-- <div class="row">
                                                                     <div class="col-md-12">
                                                                         <div class="table-content-health">
                                                                             <table>
@@ -1066,7 +1068,7 @@
                                                                             </table>
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                                </div> -->
                                                             
                                                             </div>
                                                         </div>

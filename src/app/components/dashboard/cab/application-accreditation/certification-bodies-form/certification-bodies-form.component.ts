@@ -324,7 +324,11 @@ console.log(">>>steps: ", this.headerSteps);
           if(dataScope.firstColumnData != undefined && dataScope.firstColumnData.length > 0){
             let firstColumValues = dataScope.firstColumnData[0];
           }
-          let scopeName: string = '';
+
+          let findType: any = this.fullTypeScope.find(item => item.title == typeTitle);
+          console.log("find Type: ", findType);
+
+            let scopeName: string = '';
             let scopeTitle: string ='';
             let getData = this.criteriaMaster.find(rec => rec.scope_accridiation.id == value);
             //console.log(">>> Fined Scheme: ", getData);
@@ -345,37 +349,61 @@ console.log(">>>steps: ", this.headerSteps);
               // this.dynamicScopeFieldType[scopeTitle] = [];
               // this.dynamicScopeModel[scopeTitle] = {};
 
-              this.dynamicScopeFieldColumns[scopeTitle] = [];
-              this.dynamicScopeFieldType[scopeTitle] = [];
-              this.dynamicScopeModel[scopeTitle] = {};
+              this.dynamicScopeFieldColumns[findType.title] = [];
+              this.dynamicScopeFieldColumns[findType.title][scopeTitle] = [];
+              this.dynamicScopeFieldType[findType.title] = [];
+              this.dynamicScopeFieldType[findType.title][scopeTitle] = [];
+              this.dynamicScopeModel[findType.title] = {};
+              this.dynamicScopeModel[findType.title][scopeTitle] = {};
 
               console.log("@Model struct: ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
               //return;
-              if(this.fullScope.length){
+
+              if(findType.scopeRows.length){
                   console.log("@Existing scheme....1");
                   let pushObj: any = {
                     title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
                   }
                   
-                  if(this.fullScope[secInd] != undefined && !this.Service.isObjectEmpty(this.fullScope[secInd])){
-                    //console.log("@Existing scheme...found", this.fullScope[secInd]);
-                    this.fullScope[secInd] = pushObj;
+                  if(findType.scopeRows[secInd] != undefined && !this.Service.isObjectEmpty(findType.scopeRows[secInd])){
+                    console.log("@Existing scheme...found", findType.scopeRows[secInd]);
+                    findType.scopeRows[secInd] = pushObj;
                   }else{
-                      this.fullScope.push({
+                    findType.scopeRows.push({
                         title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
                       });
                   }
               }else{
-              this.fullScope.push({
+                findType.scopeRows.push({
                   title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
                 });
               }
+
+              // if(this.fullScope.length){
+              //     console.log("@Existing scheme....1");
+              //     let pushObj: any = {
+              //       title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
+              //     }
+                  
+              //     if(this.fullScope[secInd] != undefined && !this.Service.isObjectEmpty(this.fullScope[secInd])){
+              //       //console.log("@Existing scheme...found", this.fullScope[secInd]);
+              //       this.fullScope[secInd] = pushObj;
+              //     }else{
+              //         this.fullScope.push({
+              //           title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
+              //         });
+              //     }
+              // }else{
+              // this.fullScope.push({
+              //     title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
+              //   });
+              // }
             }
 
           if(dataScope.scopeValue.length){
             var counter = 0;let defLine = {};
             dataScope.scopeValue.forEach((rec, key) => {
-              console.log("--Scope ", rec, " :: ", key);
+              ///console.log("--Scope ", rec, " :: ", key);
 
               if(rec.scope != undefined && typeof rec.scope === 'object' && !this.Service.isObjectEmpty(rec.scope)){
                   let fieldType: any = {
@@ -384,14 +412,14 @@ console.log(">>>steps: ", this.headerSteps);
                      inputType: rec.scope.input_type,
                      defValue: rec.scope.default_value
                   }
-                  this.dynamicScopeFieldType[scopeTitle].push(fieldType);
+                  this.dynamicScopeFieldType[findType.title][scopeTitle].push(fieldType);
               }
               
               customKey = rec.title.toString().toLowerCase().split(' ').join('_');
-              this.dynamicScopeFieldColumns[scopeTitle][key] = [];
+              this.dynamicScopeFieldColumns[findType.title][scopeTitle][key] = [];
 
               fieldTitleValue[key] = [];
-              this.dynamicScopeModel[scopeTitle]['fieldLines'] = [];
+              this.dynamicScopeModel[findType.title][scopeTitle]['fieldLines'] = [];
 
               if(dataScope.firstColumnData != undefined && dataScope.firstColumnData.length > 0){
                 defLine['firstFieldValues'] = dataScope.firstColumnData;
@@ -402,9 +430,9 @@ console.log(">>>steps: ", this.headerSteps);
 
               let colObj: any ={};
               colObj = {title: fieldTitle, values:fieldValues, name: rec.title, idVal: filedId};
-              this.dynamicScopeFieldColumns[scopeTitle][key].push(colObj);
+              this.dynamicScopeFieldColumns[findType.title][scopeTitle][key].push(colObj);
               defLine[fieldValues] = [];
-              console.log(">>> Field values: ", fieldValues, " -- ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeModel.fieldLines);
+              //console.log(">>> Field values: ", fieldValues, " -- ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeModel.fieldLines);
               if(defLine['firstFieldValues'].length > 0  && key == 0){
                 let getValue = defLine['firstFieldValues'][0].field_value.id;
                 
@@ -413,20 +441,20 @@ console.log(">>>steps: ", this.headerSteps);
                 }
                 //Default load next column 
                 if(key == 0){
-                  this.onChangeScopeOption(getValue,scopeTitle,key,key,'initLoad');
+                  this.onChangeScopeOption(getValue,scopeTitle,findType.title,key,key,'initLoad');
                 } 
                 setTimeout(()=>{
                   if(getValue != undefined && getValue > 0){  
                     let fSelValues: any = {};
                     //fSelValues[]                    
-                    this.dynamicScopeModel[scopeTitle]['fieldLines'][0][this.dynamicScopeFieldColumns[scopeTitle][0][0].values] = [defLine['firstFieldValues'][0]];
-                    this.dynamicScopeModel[scopeTitle].fieldLines[key][this.dynamicScopeFieldColumns[scopeTitle][key][0].title] = getValue;
+                    this.dynamicScopeModel[findType.title][scopeTitle]['fieldLines'][0][this.dynamicScopeFieldColumns[findType.title][scopeTitle][0][0].values] = [defLine['firstFieldValues'][0]];
+                    this.dynamicScopeModel[findType.title][scopeTitle].fieldLines[key][this.dynamicScopeFieldColumns[findType.title][scopeTitle][key][0].title] = getValue;
                   }
                 },0)                                
                 
               }              
               //Load first field value default by selecting first item
-              this.dynamicScopeModel[scopeTitle].fieldLines.push(defLine);
+              this.dynamicScopeModel[findType.title][scopeTitle].fieldLines.push(defLine);
             });
 
             console.log("@@@@Update Model: ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
@@ -437,7 +465,7 @@ console.log(">>>steps: ", this.headerSteps);
   }
  }
 
- onChangeScopeOption(getValues: any,secIndex: any, lineIndex: number, columnIndex: number, type?:string) {
+ onChangeScopeOption(getValues: any,secIndex: any,typeTitle: any, lineIndex: number, columnIndex: number, type?:string) {
   //console.log('@GET Options: ', getValues, " :: ",  lineIndex, " -- ", type, " -- ", columnIndex, " --sec--  ", secIndex);
 
   let selectValue: any;
@@ -465,7 +493,7 @@ console.log(">>>steps: ", this.headerSteps);
   this.Service.put(url,jsonReq)
   .subscribe(
     record => {
-        console.log("Load scope SErvice Data: ", record, " -- ", this.dynamicScopeFieldType, " ::", this.dynamicScopeFieldColumns[secIndex],  " - ", this.dynamicScopeModel);
+        console.log("Load scope SErvice Data: ", record, " -- ", this.dynamicScopeFieldType, " ::", this.dynamicScopeFieldColumns[typeTitle][secIndex],  " - ", this.dynamicScopeModel);
         //get through array find key column
         if(typeof record['scopeValue'] === 'object' && record['scopeValue'].length == 0){
           console.log(">>>emepty scope values.....1");
@@ -477,9 +505,9 @@ console.log(">>>steps: ", this.headerSteps);
         }
         let theColumnIndex  = columnIndex;
         let nextColumnIndex = theColumnIndex + 1;
-        let totSecColumn    = this.dynamicScopeFieldColumns[secIndex].length;//this.dynamicScopeFieldColumns[secIndex].length;
+        let totSecColumn    = this.dynamicScopeFieldColumns[typeTitle][secIndex].length;//this.dynamicScopeFieldColumns[secIndex].length;
         //console.log(">>>Column Data: ", theColumnIndex, " -- ", nextColumnIndex, " -- ", totSecColumn, " -- ", );
-        console.log("select scope values: ", record['scopeValue'], " :: ", this.dynamicScopeFieldType[secIndex], " len: ", record['scopeValue'].length);
+        console.log("select scope values: ", record['scopeValue'], " :: ", this.dynamicScopeFieldType[typeTitle][secIndex], " len: ", record['scopeValue'].length);
         //Auto selected for one item dropdown
         if(record['scopeValue'].length > 0 && record['scopeValue'].length == 1){
             console.log(">>>dep scope data: ", record['scopeValue']);
@@ -487,18 +515,18 @@ console.log(">>>steps: ", this.headerSteps);
             if(typeof record['scopeValue'][0] === 'object'){                  
               getSelValue = record['scopeValue'][0].field_value.id;
               console.log(">>assigning scope default value: ", getSelValue);
-              this.dynamicScopeModel[secIndex].fieldLines[lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].title] = getSelValue;
-              this.onChangeScopeOption(getSelValue,secIndex,lineIndex,nextColumnIndex,'initLoad');
+              this.dynamicScopeModel[typeTitle][secIndex].fieldLines[lineIndex][this.dynamicScopeFieldColumns[typeTitle][secIndex][nextColumnIndex][0].title] = getSelValue;
+              this.onChangeScopeOption(getSelValue,secIndex,typeTitle,lineIndex,nextColumnIndex,'initLoad');
             }
         }
         if(nextColumnIndex > 0 && nextColumnIndex < totSecColumn){
             //Get ridge of the values
             //console.log("field columns: ", this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][0].values] , " :: ");
-            let colDef: string = this.dynamicScopeFieldType[secIndex][nextColumnIndex].defValue                                                       
+            let colDef: string = this.dynamicScopeFieldType[typeTitle][secIndex][nextColumnIndex].defValue                                                       
             console.log(">>> scope field def: ", colDef);
             if(colDef === "None" || colDef === null){
               console.log("Def enter...1");
-              this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].values] = record['scopeValue'];
+              this.dynamicScopeModel[typeTitle][secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[typeTitle][secIndex][nextColumnIndex][0].values] = record['scopeValue'];
             }
             else if(colDef != "None" && colDef != null && colDef != ""){
               console.log("Def enter...2");
@@ -514,13 +542,13 @@ console.log(">>>steps: ", this.headerSteps);
                 colTempAr.push(tempObj);
               });
               console.log("Def enter...3");
-              this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].values] = colTempAr;
+              this.dynamicScopeModel[typeTitle][secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[typeTitle][secIndex][nextColumnIndex][0].values] = colTempAr;
             }else{
               console.log("Def enter...4");
-              this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].values] = record['scopeValue'];
+              this.dynamicScopeModel[typeTitle][secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[typeTitle][secIndex][nextColumnIndex][0].values] = record['scopeValue'];
             }
         }
-      console.log("@@@Updated Model Values: ", this.dynamicScopeModel);
+      console.log("@@@Updated Model Values: ", this.dynamicScopeModel, " -- ",this.dynamicScopeFieldColumns ," -- ",this.dynamicScopeFieldType);
     });
  }
 
@@ -548,7 +576,7 @@ console.log(">>>steps: ", this.headerSteps);
             // }
 
             let pushObj: any = {
-              title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list
+              title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: []
             }
             
             if(this.fullTypeScope[secInd] != undefined && !this.Service.isObjectEmpty(this.fullTypeScope[secInd])){
@@ -556,12 +584,12 @@ console.log(">>>steps: ", this.headerSteps);
               this.fullTypeScope[secInd] = pushObj;
             }else{
                 this.fullTypeScope.push({
-                  title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list
+                  title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: []
                 });
             }
         }else{
         this.fullTypeScope.push({
-            title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list
+            title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: []
           });
         }
 
