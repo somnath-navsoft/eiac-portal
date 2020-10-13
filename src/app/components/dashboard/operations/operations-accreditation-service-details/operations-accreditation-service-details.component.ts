@@ -185,16 +185,18 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
     //   })
     this._service.getCountry().subscribe(rec => {
         this.countryList = rec;
-        console.log(">>>cccc ", this.countryList);
+        // console.log(">>>cccc ", this.countryList);
     })
  }
 
   loadData() {
+    this.loader = false;
     this.subscriptions.push(this._trainerService.trainerAccredDetailsServtrainerAccredDetailsServ(this.routeId)
       .subscribe(
         result => {
           // console.log(result, " -- ", this.countryList);
           //return;
+          this.loader = true;
           this.serviceDetail = result['data'];
           // let getC: any = this.countryList.countries.find(item => item.id == this.serviceDetail.country)
           // console.log("cc>> ", getC);
@@ -219,8 +221,8 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
             this.scopeDetailsHeading = result['data']['scopeDetails'][key].scope_heading;
             this.scopeDetailvalues = result['data']['scopeDetails'][key].scope_value;
           }
-          console.log(this.scopeDetailsHeading,'scopeDetailsHeading');
-          console.log(this.scopeDetailvalues,'scopeDetailvalues');
+          // console.log(this.scopeDetailsHeading,'scopeDetailsHeading');
+          // console.log(this.scopeDetailvalues,'scopeDetailvalues');
           // this.scopeDetailvalues = result['data']['scopeDetails']['details'];
           //console.log("@@@",result['data']['recommend_visit'])
           let visit = result['data']['recommend_visit'].replace(/["']/g, "");
@@ -240,19 +242,19 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
           }
         },
         ()=>{
-          console.log('comp...');
+          // console.log('comp...');
         }
       )     
     )
     // this.userEmail = sessionStorage.getItem('email');
     // this.userType = sessionStorage.getItem('type');
-    let url = this._service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
+    // let url = this._service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
 
-    this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.profileService+'?id='+this.routeId)
-    .subscribe(
-      res => { 
-        console.log(res, "@@@applicant Info: ");
-        this.applicantInfo = res['data']['step1'][0];
-      })
+    // this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.profileService+'?id='+this.routeId)
+    // .subscribe(
+    //   res => { 
+    //     // console.log(res, "@@@applicant Info: ");
+    //     this.applicantInfo = res['data']['step1'][0];
+    //   })
   }
 }
