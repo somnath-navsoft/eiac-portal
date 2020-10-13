@@ -73,7 +73,7 @@
                                         <div class="row pb-3">
                                             <div class="col-md-3 col-sm-6 ">                                            
                                                 <div class="form-subheader">
-                                                    <span>Type of Accreditation Required:</span>
+                                                    <span>Type of Accreditation Required:*</span> 
                                                 </div>
                                             </div>
                                             <div class="col-md-3 col-sm-6 p-0 pt-4">
@@ -161,7 +161,7 @@
                                             <div class="col-md-3">
                                                 <!-- @{{step1Data.state}} -->
                                                 <mat-form-field class="cab-data">
-                                                    <mat-label>State</mat-label>
+                                                    <mat-label>State</mat-label>  
                                                     <!--  -->
                                                     <mat-select placeholder="Select" name="state" [(ngModel)]="step1Data.state"   required="true">
                                                         <mat-option [value]="item.name" (click)="citylistById(item.id)" *ngFor="let item of allStateList; let i = index;">{{item.name}}</mat-option>
@@ -341,36 +341,16 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- <div class="row">
-                                            <div class="col-12"> 
-                                                <div class="add-new">
-                                                    <a  href="javascript:void(0)" (click)="addRow(ownOrgBasicInfo)">
-                                                        <span class="icon-add"></span>
-                                                        <span>ADD NEW</span>
-                                                    </a>
+                                        <ng-container *ngIf="step1Data.is_bod_select==1">
+                                            <div class="row"  id="ownOrgBasicInfos">
+                                                <div class="col-12 p-0">
+                                                    <div class="form-subheader-data">
+                                                        <h5>BOARD MEMBERS</h5>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div> -->
-                                        <div class="row tog-content">
-                                            <div class="col-md-6 col-sm-12 p-0">
-                                                <div class="form-subheader-data">
-                                                    <h5>BOARD MEMBERS</h5>
-                                                </div>
-                                            </div>
-                                            <!-- <div class="col-md-6 col-sm-12ssss p-0">
-                                                <div class="form-subheader-desc">
-                                                    <mat-radio-group name="is_bod" #selectBod="ngModel" 
-                                                    [(ngModel)]="step1Data.is_bod_select" required>
-                                                        <mat-radio-button value="1">Yes</mat-radio-button>
-                                                        <mat-radio-button value="0">No</mat-radio-button>
-                                                    </mat-radio-group>
-                                                </div>
-                                            </div> -->
-                                        </div>
-                                        <!-- <div class="row col-md-6">
-                                            <p class="error" *ngIf="isApplicationSubmitted == true && selectBod.errors?.required">This is required</p>
-                                        </div> -->
-                                        <div  *ngIf="step1Data.is_bod_select==1">
+                                       
+                                        <div>
                                             <div class="row" *ngFor="let item of ownOrgMembInfo; let i = index;">
                                                 <div class="col-12" *ngIf="step1Data.is_bod_select==1">
                                                     <div class="ownr-details">
@@ -425,6 +405,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </ng-container>
                                         <!-- <div class="row" *ngIf="step1Data.is_bod_select==1">
                                             <div class="col-12">
                                                 <div class="add-new">
