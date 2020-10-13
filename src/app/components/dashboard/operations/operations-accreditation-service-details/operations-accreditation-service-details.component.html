@@ -552,14 +552,14 @@
                   <div class="table-appln">
                     <table>
                         <!-- {{jsonParseKeyvalue(scopeDetailsHeading) | json}} -->
-                      <!-- <tr>
-                        <th *ngFor="let item5 of jsonParseKeyvalue(scopeDetailsHeading) | keyvalue;">{{item5.value}}</th>
+                      <tr>
+                        <th *ngFor="let item5 of scopeDetailsHeading | keyvalue;">{{item5.value}}</th>
                       </tr>
                       <tr>
-                        <ng-container *ngFor="let item6 of scopeDetailvalues; let i4 = index;">
-                            <td *ngFor="let item7 of jsonParseKeyvalue(item6.value) | keyvalue;">{{item7.value}}</td>
-                        </ng-container>
-                      </tr> -->
+                        <!-- <ng-container *ngFor="let item6 of scopeDetailvalues; let i4 = index;">
+                            <td *ngFor="let item7 of item6.value | keyvalue;">{{item7}}</td>
+                        </ng-container> -->
+                      </tr>
                       <!-- <tr>
                         <td>Mechanical /Physical</td>
                         <td>Hardened Concrete</td>

@@ -193,14 +193,14 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
     this.subscriptions.push(this._trainerService.trainerAccredDetailsServtrainerAccredDetailsServ(this.routeId)
       .subscribe(
         result => {
-          console.log(result, " -- ", this.countryList);
+          // console.log(result, " -- ", this.countryList);
           //return;
           this.serviceDetail = result['data'];
-          let getC: any = this.countryList.countries.find(item => item.id == this.serviceDetail.country)
-          console.log("cc>> ", getC);
-          if(getC){
-            this.appCountry = getC.name;
-          }
+          // let getC: any = this.countryList.countries.find(item => item.id == this.serviceDetail.country)
+          // console.log("cc>> ", getC);
+          // if(getC){
+          //   this.appCountry = getC.name;
+          // }
           //
           if(this.serviceDetail.onBehalfApplicantDetails != undefined && this.serviceDetail.onBehalfApplicantDetails.length >0 ){
             this.applicantDetails = this.serviceDetail.onBehalfApplicantDetails[0]
@@ -214,12 +214,13 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
           this.managementManager = result['data']['technicalManager'][0];
           this.paymentDetails = result['data'].paymentDetails;
           // this.scopeDetailsHeading = result['data']['scopeDetails'].heading.column_list;
-          Object.keys(result['data']['scopeDetails']).forEach((res,key) => {
-            // this.scopeDetailsHeading = res['scope_heading'];
-            // this.scopeDetailvalues = res['scope_value']
-          });
-          // console.log(this.scopeDetailsHeading,'scopeDetailsHeading');
-          // console.log(this.scopeDetailvalues,'scopeDetailvalues');
+          for(let key in result['data']['scopeDetails']) {
+            // console.log(key,'key');
+            this.scopeDetailsHeading = result['data']['scopeDetails'][key].scope_heading;
+            this.scopeDetailvalues = result['data']['scopeDetails'][key].scope_value;
+          }
+          console.log(this.scopeDetailsHeading,'scopeDetailsHeading');
+          console.log(this.scopeDetailvalues,'scopeDetailvalues');
           // this.scopeDetailvalues = result['data']['scopeDetails']['details'];
           //console.log("@@@",result['data']['recommend_visit'])
           let visit = result['data']['recommend_visit'].replace(/["']/g, "");

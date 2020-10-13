@@ -173,7 +173,10 @@
                                 <span *ngIf="item.is_prelim_visit == false">No</span>
                             </td>
                             <td>
-                                <span *ngIf="item.form_meta === 'inspection_body'">Inspection Body</span>
+                                <span *ngIf="item.form_meta == 'testing_calibration'">Testing Calibration</span>
+                                <span *ngIf="item.form_meta == 'inspection_body'">Inspection Bodies</span>
+                                <span *ngIf="item.form_meta == 'health_care'">Health Care</span>
+                                <span *ngIf="item.form_meta == 'certification_bodies'">Certification Bodies</span>
                             </td>
                             <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review':item.payment_status === null }">
                                 <span *ngIf="item.payment_status == 'paid'">Paid</span>
