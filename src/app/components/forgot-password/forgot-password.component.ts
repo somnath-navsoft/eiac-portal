@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import { AppService } from 'src/app/services/app.service';
 import { ToastrService } from 'ngx-toastr';
 import { Constants } from 'src/app/services/constant.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-forgot-password',
@@ -13,7 +14,7 @@ import { Constants } from 'src/app/services/constant.service';
 export class ForgotPasswordComponent implements OnInit {
 
   forgotPassword: FormGroup;
-  constructor(public appService: AppService, public constant:Constants,public toastr: ToastrService,public signinBuild: FormBuilder) {
+  constructor(public appService: AppService, public constant:Constants,public toastr: ToastrService,public signinBuild: FormBuilder, public router: Router) {
     // this.forgotPassword = signinBuild.group({
     //   email: ["",[Validators.required,Validators.pattern("^[_a-z0-9-\\+]+(\\.[_a-z0-9-]+)*@" + "[a-z0-9-]+(\\.[a-z0-9]+)*(\\.[a-z]{2,})$")]],
     // });
@@ -38,8 +39,18 @@ export class ForgotPasswordComponent implements OnInit {
 
   onSubmit() {
     if(this.isValid()){
-      //console.log(this.forgotPassword.value);
-      this.toastr.success('Email link is sent to your account','', {timeOut: 3000});
+      var emailForget = this.forgotPassword.value;
+      // console.log(this.forgotPassword.value);
+      this.appService.getwithoutData(this.appService.apiServerUrl+"/"+this.constant.API_ENDPOINT.forgetPassword+'?email='+emailForget.email)
+      .subscribe(
+        res => {
+          if(res['status'] == true) {
+            // this.router.navigateByUrl('/sign-in');
+            this.toastr.success('A Reset Link sent to your mail id', '');
+            this.router.navigateByUrl('/sign-in');
+          }
+        });
+      // this.toastr.success('Email link is sent to your account','', {timeOut: 3000});
     }
   }
 

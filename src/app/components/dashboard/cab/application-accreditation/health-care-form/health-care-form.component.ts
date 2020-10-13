@@ -12,11 +12,13 @@ import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
 declare let paypal: any;
 import { DomSanitizer } from '@angular/platform-browser';
 import { TrainerService } from '../../../../../services/trainer.service';
+import {CustomModalComponent} from '../../../../utility/custom-modal/custom-modal.component';
 
 @Component({
   selector: 'app-health-care-form',
   templateUrl: './health-care-form.component.html',
-  styleUrls: ['./health-care-form.component.scss']
+  styleUrls: ['./health-care-form.component.scss'],
+  providers: [CustomModalComponent]
 })
 export class HealthCareFormComponent implements OnInit {
 
@@ -93,6 +95,10 @@ export class HealthCareFormComponent implements OnInit {
   dutyTime1: boolean = true;
   dutyTime2: boolean = true;
   dutyTime3: boolean = true;
+  shift2_from: boolean = false;
+  shift2_to: boolean = false;
+  shift3_from: boolean = false;
+  shift3_to: boolean = false;
   convertedDate:any;
   half_representative_date:boolean = false;
 
@@ -162,6 +168,28 @@ export class HealthCareFormComponent implements OnInit {
   checklistDocFile: any;
   urlVal: any;
   paymentFile:any = false;
+  isApplicationSubmitted:any = false;
+  public isNoteSubmit:boolean = false;
+  
+
+  //Master scope form data declaration
+  dynamicScopeModel:any         = {};   
+  dynamicScopeFieldColumns:any  = {};  
+  dynamicScopeFieldType:any  = {}; 
+  criteriaMaster: any[] = [];
+  fullScope:any[]=[];
+  scopeDataLoad: boolean = false;
+  editScopeData: any;
+  getScopeData: any;
+  selectDeleteID: number =0;
+  selectDeleteKey: any;
+  selectDeleteIndex: any;
+  deleteEditScopeConfirm: boolean = false;
+  deleteScopeConfirm: boolean = false;
+  inspectionBodyForm: any = {};
+  schemeRows: Array<any> = [{}];
+  //Master scope form data declaration
+  is_main_activity_note_entry: boolean = false;
 
   @ViewChild('mydiv', null) mydiv: ElementRef;
   @HostListener('scroll', ['$event.target'])
@@ -176,16 +204,401 @@ export class HealthCareFormComponent implements OnInit {
     }        
   }
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,private modalService: NgbModal,public sanitizer:DomSanitizer,public _trainerService:TrainerService) { }
+  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,
+    private _customModal: CustomModalComponent,
+    private modalService: NgbModal,public sanitizer:DomSanitizer,public _trainerService:TrainerService) { }
 
-  getFieldTooltip(){
-    let getval = this.healthCareForm.official_website;
-    let urlReg = new RegExp('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?');
-    console.log('>>> ', getval, " --- ", urlReg.test(getval));
-    if(!urlReg.test(getval)){
-      return 'Enter URL properly';
+
+  /*******************************
+  * Scope Funtions
+  * @Abhishek
+  ********************************/
+ getCriteria(value, secInd: any){
+  //console.log("select Criteris: ", value, " -- ", secInd);
+  this.scopeDataLoad = true;
+  if(value != undefined && value > 0){
+     
+     let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcare_form_basic_data+"?scheme="+value;
+     this.Service.getwithoutData(apiURL).subscribe(record => {
+      console.log('@Fullscope: ', record);
+          let dataScope:any = [];
+          let fieldTitleValue: any = [];
+          dataScope = record['data'];
+          this.scopeDataLoad = false;
+          let customKey;
+          console.log('Fullscope: ', dataScope);
+          if(dataScope.firstColumnData != undefined && dataScope.firstColumnData.length > 0){
+            let firstColumValues = dataScope.firstColumnData[0];
+          }
+          let scopeName: string = '';
+            let scopeTitle: string ='';
+            let getData = this.criteriaMaster.find(rec => rec.scope_accridiation.id == value);
+            //console.log(">>> Fined Scheme: ", getData);
+            if(getData){
+              scopeName   = getData.title;
+              scopeTitle  = getData.title.toString().toLowerCase().split(" ").join('_');
+
+              //check already existing scheme...
+              for(var m in this.dynamicScopeModel){
+                  console.log("mkey: ", m, " -- ", scopeTitle);
+                  if(m === scopeTitle){
+                    this.fullScope.splice(secInd, 1);
+                    this.toastr.error("Scheme should be unique, Please check.","Validation")
+                    return;
+                  }
+              }
+              this.dynamicScopeFieldColumns[scopeTitle] = [];
+              this.dynamicScopeFieldType[scopeTitle] = [];
+              this.dynamicScopeModel[scopeTitle] = {};
+
+              if(this.fullScope.length){
+                  console.log("@Existing scheme....1");
+                  let pushObj: any = {
+                    title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
+                  }
+                  
+                  if(this.fullScope[secInd] != undefined && !this.Service.isObjectEmpty(this.fullScope[secInd])){
+                    //console.log("@Existing scheme...found", this.fullScope[secInd]);
+                    this.fullScope[secInd] = pushObj;
+                  }else{
+                      this.fullScope.push({
+                        title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
+                      });
+                  }
+              }else{
+              this.fullScope.push({
+                  title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
+                });
+              }
+            }
+
+          if(dataScope.scopeValue.length){
+            var counter = 0;let defLine = {};
+            dataScope.scopeValue.forEach((rec, key) => {
+              console.log("--Scope ", rec, " :: ", key);
+
+              if(rec.scope != undefined && typeof rec.scope === 'object' && !this.Service.isObjectEmpty(rec.scope)){
+                  let fieldType: any = {
+                     id: rec.scope.id,
+                     title: rec.title,
+                     inputType: rec.scope.input_type,
+                     defValue: rec.scope.default_value
+                  }
+                  this.dynamicScopeFieldType[scopeTitle].push(fieldType);
+              }
+              
+              customKey = rec.title.toString().toLowerCase().split(' ').join('_');
+              this.dynamicScopeFieldColumns[scopeTitle][key] = [];
+
+              fieldTitleValue[key] = [];
+              this.dynamicScopeModel[scopeTitle]['fieldLines'] = [];
+
+              if(dataScope.firstColumnData != undefined && dataScope.firstColumnData.length > 0){
+                defLine['firstFieldValues'] = dataScope.firstColumnData;
+              }
+              let fieldValues = rec.title.split(" ").join("")+"Values";
+              let fieldTitle = rec.title.split(" ").join("_");
+              let filedId = rec.id;
+
+              let colObj: any ={};
+              colObj = {title: fieldTitle, values:fieldValues, name: rec.title, idVal: filedId};
+              this.dynamicScopeFieldColumns[scopeTitle][key].push(colObj);
+              defLine[fieldValues] = [];
+              console.log(">>> Field values: ", fieldValues, " -- ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeModel.fieldLines);
+              if(defLine['firstFieldValues'].length > 0  && key == 0){
+                let getValue = defLine['firstFieldValues'][0].field_value.id;
+                
+                if(key === 0){
+                  fieldTitleValue[key].push({title: fieldTitle, defValue: getValue, secName: customKey});
+                }
+                //Default load next column 
+                if(key == 0){
+                  this.onChangeScopeOption(getValue,scopeTitle,key,key,'initLoad');
+                } 
+                setTimeout(()=>{
+                  if(getValue != undefined && getValue > 0){  
+                    let fSelValues: any = {};
+                    //fSelValues[]                    
+                    this.dynamicScopeModel[scopeTitle]['fieldLines'][0][this.dynamicScopeFieldColumns[scopeTitle][0][0].values] = [defLine['firstFieldValues'][0]];
+                    this.dynamicScopeModel[scopeTitle].fieldLines[key][this.dynamicScopeFieldColumns[scopeTitle][key][0].title] = getValue;
+                  }
+                },0)                                
+                
+              }              
+              //Load first field value default by selecting first item
+              this.dynamicScopeModel[scopeTitle].fieldLines.push(defLine);
+            });
+
+            console.log("@@@@Update Model: ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
+
+          }
+          ////console.log(">>>> ", this.dynamicScopeModel, " --- ", this.dynamicScopeFieldColumns, " ::-> ",this.fullScope);
+     })
+  }
+ }
+
+ onChangeScopeOption(getValues: any,secIndex: any, lineIndex: number, columnIndex: number, type?:string) {
+  //console.log('@GET Options: ', getValues, " :: ",  lineIndex, " -- ", type, " -- ", columnIndex, " --sec--  ", secIndex);
+
+  let selectValue: any;
+  if(type === undefined){
+    selectValue = getValues.value;
+  }
+  if(type !== undefined && type === 'initLoad'){
+    selectValue = getValues;
+  }
+  let url = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data;
+  console.log("option change value: ", url, " :: ", getValues, " -- ", selectValue, " -- Type: ", typeof selectValue);
+  let jsonReq: any = {};
+  if(typeof selectValue === 'number'){
+    jsonReq['value_id'] = [selectValue];
+  }
+  if(typeof selectValue === 'object'){
+    for(var k in selectValue){
+        console.log(">>Loop value: ", selectValue[k], " :: ", k);
+        if(typeof selectValue[k] === 'string'){
+          return;
+        }
+    }
+    jsonReq['value_id'] = selectValue;
+  }
+  this.Service.put(url,jsonReq)
+  .subscribe(
+    record => {
+        console.log("Load scope SErvice Data: ", record, " -- ", this.dynamicScopeFieldType, " ::", this.dynamicScopeFieldColumns[secIndex],  " - ", this.dynamicScopeModel);
+        //get through array find key column
+        if(typeof record['scopeValue'] === 'object' && record['scopeValue'].length == 0){
+          console.log(">>>emepty scope values.....1");
+          record['scopeValue'] = [];
+        }
+        if(typeof record['scopeValue'] === 'object' && this.Service.isObjectEmpty(record['scopeValue']) == true){
+          console.log(">>>emepty scope values.....2");
+          record['scopeValue'] = [];
+        }
+        let theColumnIndex  = columnIndex;
+        let nextColumnIndex = theColumnIndex + 1;
+        let totSecColumn    = this.dynamicScopeFieldColumns[secIndex].length;//this.dynamicScopeFieldColumns[secIndex].length;
+        //console.log(">>>Column Data: ", theColumnIndex, " -- ", nextColumnIndex, " -- ", totSecColumn, " -- ", );
+        console.log("select scope values: ", record['scopeValue'], " :: ", this.dynamicScopeFieldType[secIndex], " len: ", record['scopeValue'].length);
+        //Auto selected for one item dropdown
+        if(record['scopeValue'].length > 0 && record['scopeValue'].length == 1){
+            console.log(">>>dep scope data: ", record['scopeValue']);
+            let getSelValue = 0; 
+            if(typeof record['scopeValue'][0] === 'object'){                  
+              getSelValue = record['scopeValue'][0].field_value.id;
+              console.log(">>assigning scope default value: ", getSelValue);
+              this.dynamicScopeModel[secIndex].fieldLines[lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].title] = getSelValue;
+              this.onChangeScopeOption(getSelValue,secIndex,lineIndex,nextColumnIndex,'initLoad');
+            }
+        }
+        if(nextColumnIndex > 0 && nextColumnIndex < totSecColumn){
+            //Get ridge of the values
+            //console.log("field columns: ", this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][0].values] , " :: ");
+            let colDef: string = this.dynamicScopeFieldType[secIndex][nextColumnIndex].defValue                                                       
+            console.log(">>> scope field def: ", colDef);
+            if(colDef === "None" || colDef === null){
+              console.log("Def enter...1");
+              this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].values] = record['scopeValue'];
+            }
+            else if(colDef != "None" && colDef != null && colDef != ""){
+              console.log("Def enter...2");
+              let colValAr: any;                                                                                                                                                                                                                                    
+              let colTempAr: any = [];
+              colValAr = colDef.toString().split(',');                                                                                                                                                
+              colValAr.forEach((item,key1) => {
+                let tempObj: any = {};
+                tempObj['field_value'] = {};
+                tempObj['field_value']['id'] = item;//(key1+1);
+                tempObj['value'] = item;
+                console.log("value obj: ", tempObj);
+                colTempAr.push(tempObj);
+              });
+              console.log("Def enter...3");
+              this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].values] = colTempAr;
+            }else{
+              console.log("Def enter...4");
+              this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].values] = record['scopeValue'];
+            }
+        }
+      console.log("@@@Updated Model Values: ", this.dynamicScopeModel);
+    });
+ }
+
+ addSchemeRow(obj: any = [],index: number){
+  console.log(">>> ", obj);
+  this.newRow     =   {};
+  obj.push(this.newRow);
+  //this.getCriteria(this.step5Data.scheme_ids[index], index);
+  }
+  removeSchemeRow(obj: any = [],index: number){
+  obj.splice(index, 1);  //not deleting...
+  //console.log("compare object: 1 ", this.schemeRows, " ::: ",  this.step5Data.scheme_ids);
+  //this.schemeRows.splice(index, 1);
+  //console.log("compare object: 2 ", this.schemeRows, " ::: ", this.fullScope, " -- index: ", index);
+  let sectionTitle: string = '';
+  let fullscopeData: any = this.fullScope[index];
+  if(fullscopeData){
+    sectionTitle = fullscopeData.title;
+  }
+  console.log("find section...", sectionTitle);
+
+  if(this.fullScope[index] != undefined && !this.Service.isObjectEmpty(this.fullScope[index])){
+    //console.log("removing ...fullscope....", index, " :: ", this.fullScope[index]);
+    this.fullScope.splice(index, 1)
+  }
+  if(this.dynamicScopeFieldType[sectionTitle] != undefined && !this.Service.isObjectEmpty(this.dynamicScopeFieldType[sectionTitle])){
+    console.log("removing ...fieldType....1", index, " :: ", this.dynamicScopeFieldType);
+    //this.dynamicScopeFieldType.splice(index, 1);
+    delete this.dynamicScopeFieldType[sectionTitle];
+    //console.log("removing ...fieldType....2", this.schemeRows,  " --",this.fullScope, " :: ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
+  }
+  if(this.dynamicScopeModel[sectionTitle] != undefined && !this.Service.isObjectEmpty(this.dynamicScopeModel[sectionTitle])){
+    delete this.dynamicScopeModel[sectionTitle];
+  }
+
+  console.log(">>>After delete scheme: ", "Full Scope: ", this.fullScope, " :FieldType: ", this.dynamicScopeFieldType, " :Model: ", this.dynamicScopeModel);
+
+  }
+
+  getFieldTooltip(modelValue, modelObj){
+    //console.log("Tooltip data value: ", modelValue, " :: ", modelObj);
+    if(modelValue != undefined && modelObj.length > 0){
+        let tnameAr = [];
+        let findText: any;
+        if(typeof modelValue === 'object'){
+            if(modelValue.length){
+              modelValue.forEach(item => {
+                  let fval: any  = modelObj.find(rec => rec.field_value.id === item);
+                  if(fval){
+                    tnameAr.push(fval.value);
+                  }
+              })
+            }
+            if(tnameAr.length){
+               findText = tnameAr.join(',');
+               return findText;
+            }
+        }else{
+           findText = modelObj.find(rec => rec.field_value.id === modelValue);
+        }        
+        ////////console.log('Text value: ', findText);
+        if(typeof findText === 'object' && findText.value != ''){
+          ////////console.log('Value find: ', findText.value);
+            return findText.value;
+        }
     }
   }
+
+  removeScopeLine(lineIndex: number, secIndex: any){
+      //console.log("deleting rows....1: ", this.dynamicScopeModel, " -- ", lineIndex, " :: ", secIndex);
+      if(this.dynamicScopeModel[secIndex].fieldLines != undefined && this.dynamicScopeModel[secIndex].fieldLines.length > 0){
+        //console.log("deleting rows....2");
+        this.dynamicScopeModel[secIndex].fieldLines.splice(lineIndex, 1);
+      }
+      this._customModal.closeDialog();
+  }
+  getSchme(sid: number){
+    let getSchemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id == sid);
+    //console.log("data: ", getSchemeData);
+    if(getSchemeData){
+      return 'Accreditation Scope for ' + getSchemeData.title;
+    }
+  }
+  deleteScopeData(schemId: any, deleteIndex: number){
+      console.log("deleting...", schemId, " -- ", deleteIndex);
+      let savedData: any = this.editScopeData;
+      console.log("saveData: ", savedData);
+
+      for(var key in savedData){
+          console.log(">>> ", key, " :: ", savedData[key]);
+          if(key === schemId){
+            let getvalues: any =  savedData[key].scope_value;
+            console.log("<<< Found: ", getvalues);
+            if(typeof getvalues === 'object'){
+              console.log("deleting...");
+              getvalues.splice(deleteIndex, 1);
+            }
+          }
+      }
+      this._customModal.closeDialog();
+      console.log(">>>Final Data: ", this.editScopeData);
+  }
+  openDeleteScopeConfirm(delIndex: any, delKey: any){
+    console.log(">>>delete ", delKey, " -- ", delIndex);
+    if(delKey){
+      console.log("assign delete id: ", delIndex, " -- ", delKey);
+      this.selectDeleteIndex = delIndex;
+      this.selectDeleteKey = delKey;
+      this.deleteScopeConfirm = true;
+    } 
+  }
+
+  openDeleteEditScopeConfirm(delIndex: number, delKey: any){
+    console.log(">>>delete ", delKey);
+    if(delKey){
+      console.log("assign delete id: ", delIndex, " -- ", delIndex);
+      this.selectDeleteIndex = delIndex;
+      this.selectDeleteKey = delKey;
+      this.deleteEditScopeConfirm = true;
+    } 
+  }
+  
+  //addScopeLine(secName:any, secIndex: number, lineIndex: number, lineData: any){
+  addScopeLine(lineIndex: number,secIndex: any, lineData: any){
+    let line     =   {};    
+    //console.log("@ADD ROW - Total line: ", lineData, " - ", lineIndex, " == ", lineData.length, " --Model: ", this.dynamicScopeModel);
+    if(lineData != undefined && lineData.length > 0){
+      lineIndex  = lineData.length;
+    }
+    for(var key in this.dynamicScopeModel[secIndex]){
+        //console.log("Key: ", key , " :: ", this.dynamicScopeModel[secIndex][key]);
+        let getValue: any = 0;
+        //if( key === secName ){
+          if(this.dynamicScopeModel[secIndex].fieldLines != undefined){
+            let fieldValues = this.dynamicScopeModel[secIndex].fieldLines[0].firstFieldValues;
+            
+            //console.log("@ADD ROW - Fieldvalues:: ", fieldValues);
+            line['firstFieldValues'] = fieldValues;
+            this.dynamicScopeModel[secIndex].fieldLines.push(line);
+            if(fieldValues.length > 0 && typeof fieldValues[0] === "object" && fieldValues[0].field_value != undefined){
+              getValue = fieldValues[0].field_value.id;
+            }
+            //console.log('@ADD ROW - Calling on change...', getValue, " -- ", secIndex, " Lineindex: ", lineIndex);
+            
+            this.dynamicScopeFieldColumns[secIndex].forEach((recCol, keyCol) => {
+              ////////console.log(" > >>   ", keyCol)
+              if(keyCol === 0){
+                let getModelKey = recCol[0].title;
+                //console.log(" >>>>>ModelKey ",getModelKey, " --- FindValue:  ", getValue, " --- ");
+                this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][0][0].values] = fieldValues;
+                if(getValue != undefined && getValue > 0){
+                  this.dynamicScopeModel[secIndex].fieldLines[lineIndex][getModelKey] = getValue;
+                }
+                //this.onChangeScopeOption(getValue,secIndex,lineIndex,0,secName,'initLoad');
+                this.onChangeScopeOption(getValue,secIndex,lineIndex,0,'initLoad');
+              }
+            });
+          }
+        //}
+    }    
+    ////console.log("Add Line status: ", this.dynamicScopeModel);
+  }
+
+
+
+  /*******************************
+  * Scope Funtions
+  * @Abhishek
+  ********************************/
+
+  // getFieldTooltip(){
+  //   let getval = this.healthCareForm.official_website;
+  //   let urlReg = new RegExp('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?');
+  //   console.log('>>> ', getval, " --- ", urlReg.test(getval));
+  //   if(!urlReg.test(getval)){
+  //     return 'Enter URL properly';
+  //   }
+  // }
 
 scrollForm(data?:any){
  
@@ -210,7 +623,7 @@ scrollForm(data?:any){
   // this.titleService.setTitle('EIAC - Testing and Calibration Laboratories');
   this.addMinutesToTime = this.Service.addMinutesToTime();
    //console.log( this.addMinutesToTime);
-  //  this.loadData();
+  this.loadSchemeData();
   //  this.loadFormDynamicTable();
    this.loadCountryStateCity();
    this.loadAppInfo();
@@ -260,6 +673,25 @@ scrollForm(data?:any){
       title:'application_complete', desc:'10. Application Complete', activeStep:false, stepComp:false, icon:'icon-document-pen', activeClass:''
     },
   );
+ }
+
+
+ loadSchemeData(){
+  this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcare_form_basic_data)
+  .subscribe( 
+    res => {
+      console.log("@Load scope....", res);
+      //this.inspectionBodyScopeFields = res['medicalLabScopeFields'];
+      //this.countryList = res['allCountry'];
+      //this.labTypeList = res['allLabtype'];
+      //this.fullScope   = res['fullScope'];
+      //this.criteriaMaster = res['criteriaMaster'];
+      this.criteriaMaster = res['data']['schemes'];
+      ////console.log("#Get criteria: ", this.criteriaMaster);
+
+    },
+    error => {
+    })
  }
 
  statelistById = async(country_id) => {
@@ -354,6 +786,87 @@ loadCountryStateCity = async() => {
 //    this.healthCareForm.neurophysiologyAccreditation         = this.neurophysiologyAccreditation;
 
 //  }
+
+moveShift(theVal: any){
+  let val;
+  console.log(">>>change shift: ", theVal, " -- ",val);
+  
+  if(theVal == 1){
+    if(this.step1Data.duty_from2 != undefined || this.step1Data.duty_to3 != undefined){
+      this.step1Data.duty_from2 = val;
+      this.step1Data.duty_to2 = val;
+      
+    }
+    if(this.step1Data.duty_from3 != undefined || this.step1Data.duty_to3 != undefined){
+      this.step1Data.duty_from3 = val;
+      this.step1Data.duty_to3 = val;
+      
+    }
+    if(this.step1Data.duty_from1 == undefined || this.step1Data.duty_to1 == undefined){
+      this.dutyTime1 = false;        
+    }
+    this.shift2_from = true;
+      this.shift2_to = true;
+      this.shift3_from = true;
+      this.shift3_to = true;
+
+      this.dutyTime2 = true;
+      this.dutyTime3 = true;
+      //check from to input
+      //this.dutyTime1 = false;
+    console.log(">>> shift 1 ", this.step1Data.duty_from2, " -- ",this.step1Data.duty_to2)
+  }
+  if(theVal == 2){      
+    if(this.step1Data.duty_from3 != undefined || this.step1Data.duty_to3 != undefined){
+      this.step1Data.duty_from3 = val;
+      this.step1Data.duty_to3 = val;
+      this.dutyTime3 = true;        
+    }
+    if(this.step1Data.duty_from1 != undefined || this.step1Data.duty_to1 != undefined){
+      this.dutyTime1 = true;        
+    }
+    if(this.step1Data.duty_from1 == undefined || this.step1Data.duty_to1 == undefined){
+      this.dutyTime1 = false;        
+    }
+    if(this.step1Data.duty_from2 == undefined || this.step1Data.duty_to2 == undefined){
+      this.dutyTime2 = false;        
+    }
+    this.shift3_from = true;
+    this.shift3_to = true;
+    this.shift2_from = false;
+    this.shift2_to = false;
+   // this.dutyTime2 = false; 
+
+      //this.dutyTime3 = true;
+      //this.dutyTime1 = true;
+
+    console.log(">>> shift 2 ", this.step1Data.duty_from2, " -- ",this.step1Data.duty_to2)
+  }
+  if(theVal == 3){   
+    
+    if(this.step1Data.duty_from1 != undefined || this.step1Data.duty_to1 != undefined){
+      this.dutyTime1 = true;        
+    }
+    if(this.step1Data.duty_from2 != undefined || this.step1Data.duty_to2 != undefined){
+      this.dutyTime1 = true;        
+    }
+    if(this.step1Data.duty_from1 == undefined || this.step1Data.duty_to1 == undefined){
+      this.dutyTime1 = false;        
+    }
+    if(this.step1Data.duty_from2 == undefined || this.step1Data.duty_to2 == undefined){
+      this.dutyTime2 = false;        
+    }
+    if(this.step1Data.duty_from3 == undefined || this.step1Data.duty_to3 == undefined){
+      this.dutyTime3 = false;        
+    }
+    
+    this.shift3_from = false;
+    this.shift3_to = false;
+    this.shift2_from = false;
+    this.shift2_to = false;
+    console.log(">>> shift 3 ", this.step1Data.duty_from2, " -- ",this.step1Data.duty_to2)
+  }
+}
  
  setexDate(date){
   let cdate = date;
@@ -364,9 +877,10 @@ loadCountryStateCity = async() => {
 
  getPlaceName()
  {
-   if(typeof this.step1Data.search_location_name != 'undefined')
+   console.log(">>>callibng place...", this.step1Data.physical_location_address);
+   if(typeof this.step1Data.physical_location_address != 'undefined')
    {
-     this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.step1Data.search_location_name+'.json?access_token='+this.Service.mapboxToken+'','')
+     this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.step1Data.physical_location_address+'.json?access_token='+this.Service.mapboxToken+'','')
        .subscribe(res => {
            ////console.log(res['features']);
            this.searchCountryLists = res['features'];
@@ -536,7 +1050,7 @@ validateFile(fileEvent: any) {
           if(res['data'].id && res['data'].id != '') {
               let pathData: any;
               let filePath: string;
-
+              let getData: any = res;
               if(!this.Service.isObjectEmpty(res['data'].paymentDetails)){
               
                 if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''){
@@ -546,6 +1060,31 @@ validateFile(fileEvent: any) {
                 }
                 ////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
               }
+              var cityList =  this.Service.getCity();
+
+              this.step1Data.country = getData.data.country;
+              //console.log(">>> country data: ", this.getCountryLists);
+              if(this.getCountryLists.length){
+                //console.log(">>> 11c country data: ", this.getCountryLists);
+                let cdata: any = this.getCountryLists.find(rec => rec.name == getData.data.country)
+                  //console.log("Fnd country: ", cdata);  
+                  if(cdata){
+                    let cid = cdata.id;
+                    this.statelistById(cid) 
+                  }
+              }
+              cityList.subscribe( result => {
+                for(let key in result['cities']) {
+                  //console.log(">> cities: ", result['cities'][key]);
+                   ////if(result['cities'][key]['state_id'] == data.city )
+                   //{
+                    this.allCityList.push(result['cities'][key]);
+                  //}
+                }
+              });
+              this.step1Data.state = getData.data.state;  
+      
+              this.step1Data.city = getData.data.city;
               
               if(res['data'].saved_step  != null){
                 /////console.log("@saved step assign....");
@@ -669,6 +1208,21 @@ validateFile(fileEvent: any) {
                 this.step4Data.mrm_date = new Date(res['data'].mrm_date);
               }
 
+              //step 5
+              if(res['data'].scopeDetails != undefined && !this.Service.isObjectEmpty(res['data'].scopeDetails)){
+                console.log(">>> ", res['data'].scopeDetails);
+                //let jsonStrting = '{"18":{"scope_heading":{"43":"Inspection Category","45":"Inspection field","47":"Range of inspection","49":"Stage of the inspection","51":"Inspection criteria","53":"Inspection Activity Type"},"scope_value":[{"43":"Product","45":"Mechanical Engineering of Lifting Equipment","47":"Lever hoist","49":"In-service","51":"BS EN 13157","53":"A"},{"43":"Product","45":"Mechanical, Electrical and Structural Engineering of Lifting Equipment","47":"Mobile crane","49":"In-service","51":"BS 7121-2-1,BS 7121-2-3","53":"B,C"},{"43":"Product","45":"Mechanical Engineering of Lifting Equipment – Earth Moving","47":"Backhoe Loader","49":"In-service","51":"BS EN 474-4","53":"A,B"}]},"105":{"scope_heading":{"55":"Inspection Category","57":"Inspection field","59":"Range of inspection","61":"Stage of the inspection","63":"Inspection criteria","65":"Inspection Activity Type"},"scope_value":[{"55":"Product","57":"Mechanical Engineering of Lifting Accessories","59":"Hook","61":"In-service","63":"Welcome","65":"Hello"},{"55":"Product","57":"Mechanical Engineering of Lifting Accessories","59":"Chain sling","61":"In-service","63":"bbb","65":"aaa"}]}}';
+                //let jsonStrting = getData.data.scopeDetails.toString();
+                let jsonObject = res['data'].scopeDetails;//JSON.parse(jsonStrting);
+                this.Service.oldScopeData = jsonObject;
+                this.editScopeData = jsonObject; 
+                this.getScopeData = jsonObject;
+                
+                // this.Service.jsonToArray(jsonObject);
+                console.log(">>>Saved details: ", jsonObject, " -- ", this.editScopeData);
+
+              }
+
               //Step 6
               if(res['data'].is_prelim_visit != null){
                 this.step6Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
@@ -716,62 +1270,101 @@ validateFile(fileEvent: any) {
 
 onSubmitStep1(ngForm1: any){
   // this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+  this.isApplicationSubmitted = true;
   if(this.step1Data.duty_shift == '1')
-  {
-    if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
     {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+        this.isSubmit = false;
+      }else{
+        this.dutyTime1 = true;
+        this.isSubmit = true;
+      }
+      // this.dutyTime1 = false;
+      // this.isSubmit = false;
+      
+    }else if(this.step1Data.duty_shift == '2')
+    {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+        this.isSubmit = false;
+      }else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined') {
+        this.dutyTime2 = false;
+        this.isSubmit = false;
+      }else if(typeof this.step1Data.duty_from2 != 'undefined' || typeof this.step1Data.duty_to2 != 'undefined'){
+        this.dutyTime2 = true;
+        this.isSubmit = true;
+      }
+      // this.dutyTime2 = false;
+      // this.isSubmit = false;
+    }else if(this.step1Data.duty_shift == '3')
+    {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+        this.isSubmit = false;
+      }
+      else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
+      {
+        this.dutyTime2 = false;
+        this.isSubmit = false;
+      }
+      else if(typeof typeof this.step1Data.duty_from3 == 'undefined' || typeof this.step1Data.duty_to3 == 'undefined') {
+        this.dutyTime3 = false;
+        this.isSubmit = false;
+      }else if(typeof this.step1Data.duty_from3 != 'undefined' || typeof this.step1Data.duty_to3 != 'undefined') {
+        this.dutyTime3 = true;
+        this.isSubmit = true;
+      }
+      // this.dutyTime3 = false;
+      // this.isSubmit = false;
+    }else if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
       this.dutyTime1 = false;
+      this.isSubmit = false;
     }else{
       this.dutyTime1 = true;
-      this.isSubmit = true;
-    }
-    this.dutyTime1 = false;
-    this.isSubmit = false;
-    
-  }else if(this.step1Data.duty_shift == '2')
-  {
-    if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
-    {
-      this.dutyTime1 = false;
-    }else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined') {
-      this.dutyTime2 = false;
-    }else if(typeof this.step1Data.duty_from2 != 'undefined' || typeof this.step1Data.duty_to2 != 'undefined'){
       this.dutyTime2 = true;
-      this.isSubmit = true;
-    }
-    // this.dutyTime2 = false;
-    // this.isSubmit = false;
-  }else if(this.step1Data.duty_shift == '3')
-  {
-    if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
-    {
-      this.dutyTime1 = false;
-    }
-    else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
-    {
-      this.dutyTime2 = false;
-    }
-    else if(typeof typeof this.step1Data.duty_from3 == 'undefined' || typeof this.step1Data.duty_to3 == 'undefined') {
-      this.dutyTime3 = false;
-    }else if(typeof this.step1Data.duty_from3 != 'undefined' || typeof this.step1Data.duty_to3 != 'undefined') {
       this.dutyTime3 = true;
       this.isSubmit = true;
     }
-    // this.dutyTime3 = false;
-    // this.isSubmit = false;
-  }else if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
-    this.dutyTime1 = false;
-    this.isSubmit = false;
-  }else{
-    this.dutyTime1 = true;
-    this.dutyTime2 = true;
-    this.dutyTime3 = true;
-    this.isSubmit = true;
+
+    if(this.step1Data.duty_shift == '1' && !this.dutyTime2){
+      this.dutyTime2 = true;
+    }if(this.step1Data.duty_shift == '2' && !this.dutyTime3){
+      this.dutyTime3 = true;
+    }
+    
+  if(this.step1Data.is_main_activity_note == undefined){
+    this.step1Data.is_main_activity_note = '';
+  }
+  
+  let str = this.step1Data.is_main_activity_note; 
+
+  // console.log("nite enen: ", this.step1Data.is_main_activity_note, " -- ", this.step1Data.is_main_activity, " :: ", (!str || 0 === str.length));
+  
+  if(this.step1Data.is_main_activity == 'true' && this.step1Data.is_main_activity_note != ''){
+    this.step1Data.is_main_activity_note = '';
+  }
+  if(this.step1Data.is_main_activity == 'true'){
+    this.isNoteSubmit = true;
+  }
+
+  if((!str || 0 === str.length) && this.step1Data.is_main_activity == 'false'){
+    // console.log(">>> Note is required...");
+    this.is_main_activity_note_entry = true;
+    this.isNoteSubmit = false;
+  }
+  if(this.step1Data.is_main_activity == 'false' && this.step1Data.is_main_activity_note != ''){
+    // console.log(">>> Note is ebnterd.....");
+    this.is_main_activity_note_entry = false;
+    this.isNoteSubmit = true;
   }
   // console.log(this.dutyTime2,'dutyTime2');
   // console.log(this.dutyTime3,'dutyTime3');
   
-  if(ngForm1.form.valid && this.isSubmit == true) {
+  if(ngForm1.form.valid && this.isSubmit == true  && this.isNoteSubmit == true) {
     this.healthCareForm = {};
     this.healthCareForm.step1 = {};
     this.healthCareForm.email = this.userEmail;
@@ -808,6 +1401,7 @@ onSubmitStep1(ngForm1: any){
       res => {
         this.loader = true;
         // console.log(res,'res')
+        this.isApplicationSubmitted = false;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
           this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
@@ -1187,8 +1781,367 @@ onSubmitStep4(ngForm4: any){
   }
 }
 
-onSubmitStep5(ngForm5: any) {
-  this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+//Scope Save functions
+saveScope(){
+    
+  let scopeValues: any =[];
+  let scopeIds:any =[];
+  let scopeSelValues:any =[];
+  console.log("dynamic ", this.dynamicScopeModel, " -- ", this.dynamicScopeFieldColumns, " -- ", this.schemeRows, " -- ", this.formApplicationId);
+  var key = '';
+  var key2 = '';
+  let resultAr: any={};
+  let scopeCollections: any={};
+  let selectScheme          = '';//this.schemeRows[0].id;
+  
+  for(var t=0;t<this.schemeRows.length; t++){
+
+    console.log("Scheme Sec: ", t," -- ", scopeCollections);
+    selectScheme = this.schemeRows[t].id;
+    if(selectScheme == undefined){
+      console.log(">>Heading scheme notfff....exit", selectScheme);
+      break;
+    }
+    let getData = this.criteriaMaster.find(rec => rec.scope_accridiation.id == selectScheme);
+    console.log("@Scheme Data: ", getData);
+    let scopeTitle: string ='';
+    //scopeTitle  = getData.title.toString().toLowerCase().split(" ").join('_');
+    if(getData){
+      scopeTitle = getData.title.toString().toLowerCase().split(" ").join('_');
+    }
+
+    scopeCollections[selectScheme] = {};
+    scopeCollections[selectScheme]['scope_heading'] = {};
+          for(var key in this.dynamicScopeFieldColumns[scopeTitle]){
+                //console.log(">>> ", key, " :: ", this.dynamicScopeFieldColumns[key], " -- ", typeof this.dynamicScopeFieldColumns[key]);
+                let tempData: any = this.dynamicScopeFieldColumns[scopeTitle];
+                if(typeof tempData === 'object'){
+                  tempData.forEach((item,key) => {
+                        //console.log(item);
+                        let keyIds = item[0].idVal;
+                        let name = item[0].name;
+                        let tempObj = {};
+                        tempObj[keyIds] = name;
+                        scopeCollections[selectScheme]['scope_heading'][keyIds] = name;
+                    });
+                }
+          }
+  }
+  console.log(">>> build scope: ", scopeCollections, " -- ", this.dynamicScopeModel, " -> Scheme: ", this.schemeRows);
+  //return;
+
+  let secInd: number = 0;
+  let resultTempAr: any = [];
+  let tempDataObj: any = {};
+  let tempDataRow: any = {};
+  if(this.schemeRows.length){
+      for(var t=0;t<this.schemeRows.length; t++){
+
+          console.log("Scheme Sec: ", t);
+          secInd = t;
+          selectScheme = this.schemeRows[t].id;
+          let getData = this.criteriaMaster.find(rec => rec.scope_accridiation.id == selectScheme);
+          console.log("@Scheme Data: ", getData);
+          if(getData == undefined){
+            console.log("scheme not selecting...exit...", selectScheme, " -- ", getData);
+            break;
+          }
+          let scopeTitle: string ='';
+          if(getData){
+            scopeTitle = getData.title.toString().toLowerCase().split(" ").join('_');
+          }
+          scopeCollections[selectScheme]['scope_value']   = [];
+          tempDataObj[selectScheme] = [];
+          tempDataRow = {};
+
+          //Scope data population
+          for(var key in this.dynamicScopeModel[scopeTitle]){
+            if(key == 'fieldLines'){
+              let rowLen = this.dynamicScopeModel[scopeTitle][key].length;
+              // Browse rows
+              let getDataValues: any;
+              let getSelectValues: any;
+              console.log("Section: ", scopeTitle, " -- ", rowLen)
+              
+              //let tempObj: any = {};
+              //let tempData: any = {};
+              let rstAr: any=[];
+              for(var k=0; k<rowLen; k++){
+                scopeIds = [];
+                scopeSelValues = [];
+                
+                //resultTempAr[k] = [];
+                let scopeRows: any = {};
+                //tempObj[selectScheme] = [];
+                //tempDataRow[k] = {};
+                tempDataRow = {};
+                //resultTempAr[k] = {};
+
+                this.dynamicScopeFieldColumns[scopeTitle].forEach((colItem,colIndex) => {
+                    console.log("...Col>>> ",colIndex, " :: ", colItem[0], " -- ", this.dynamicScopeModel[scopeTitle][key][k])
+                    let colData: any = colItem[0];
+                    let optionNameAr: any = [];
+                    let optionName: any;
+                    if(colIndex == 0){
+                      //first coloumn row values - firstFieldValues
+                      console.log(">>>> First column: ");
+                      let selTitle: any       = colItem[0].title;
+                      let selTitleValues: any = this.dynamicScopeModel[scopeTitle][key][k]['firstFieldValues'];
+                      let fvalue: any         = this.dynamicScopeModel[scopeTitle][key][k][selTitle];
+                      let getVal: any         = selTitleValues.find(data => data.field_value.id == fvalue)
+                      console.log("<><><><> ", getVal);
+                      if(getVal){                  
+                        getVal = getVal.value;
+                      }
+                      console.log("First field data: ", selTitleValues, " -- ", fvalue, " -- ", getVal);
+                      //tempObj[selectScheme][colData.idVal] = getVal;
+                      tempDataRow[colData.idVal] = getVal;
+                      
+                    }else{
+                        //Map column key to row key values
+                        
+                      let selTitle: any       = colItem[0].title;
+                      let selTitleVal: any    = colItem[0].values;
+                      let selTitleValues: any = this.dynamicScopeModel[scopeTitle][key][k][selTitleVal];
+                      console.log("@fetching col index Data: ", colIndex, " -- ", selTitle, " -- ", selTitleVal, " -- ", selTitleValues);
+                      let fvalue: any         = this.dynamicScopeModel[scopeTitle][key][k][selTitle];
+                      console.log(">>>Type of FVAL: ", typeof fvalue);
+                      if(typeof fvalue === 'object'){
+                        if(fvalue.length){
+                          fvalue.forEach(dataRec => {
+                              let fval = selTitleValues.find(itemF => itemF.field_value.id == dataRec);
+                              if(fval){
+                                optionNameAr.push(fval.value);
+                              }
+                          })
+                        }
+                        optionName = optionNameAr.join(',');
+                      }else if(typeof fvalue === 'string'){
+                        optionName = fvalue;
+                      }
+                      else if(fvalue == undefined){
+                        optionName = '';
+                      }
+                      else{
+                        let getVal: any         = selTitleValues.find(data => data.field_value.id == fvalue)
+                        if(getVal){                  
+                          optionName = getVal.value;
+                        }
+                      }
+                      console.log("Column field data: ",colIndex, " -- ", selTitleValues, " -- ", fvalue, " -- ", optionName);
+                      //let tempData: any = {};
+                      tempDataRow[colData.idVal] = optionName;
+                      //tempObj[selectScheme].push(tempData);
+                      //tempObj[selectScheme][colData.idVal] = optionName;                      
+                    }                    
+                })
+                //
+                tempDataObj[selectScheme].push(tempDataRow);
+              } 
+              console.log("@updated Temp object: ", tempDataObj); 
+              // for(var p in tempDataObj){
+              //     console.log(tempDataObj[p], " -- ", p);
+              //     resultTempAr.push(tempDataObj[p]);
+              // }
+              scopeCollections[selectScheme]['scope_value'] =  tempDataObj[selectScheme];//resultTempAr[0];
+              console.log(">>>> Result Ar: ", resultTempAr, " -- ", " -- ", tempDataObj, " -- ", scopeCollections);
+            }
+          }
+      }
+  }
+
+  //Update scope data
+  if(this.editScopeData != undefined && this.editScopeData != null){
+      console.log("update scope: ", this.editScopeData, " -- ", scopeCollections)
+      let tempScopeDetails: any={};
+      let checkMatch: boolean = false;
+      for(var key in this.editScopeData){
+        tempScopeDetails[key] = {};
+        tempScopeDetails[key]['scope_value'] = [];
+        console.log(">>> ", key, " :: ", this.editScopeData[key]);
+        checkMatch = this.getMatchScheme(key, scopeCollections);
+        console.log("@@@ Finding schme status...", key);
+            if(checkMatch){
+              console.log("#>>> Find scheme in edit scope and update/marge...");
+              this.editScopeData[key]['scope_value'].forEach((item, p) => {
+                scopeCollections[key]['scope_value'].push(this.editScopeData[key]['scope_value'][p])
+              })
+              //scopeCollections[key]['scope_value'].push(this.editScopeData[key]['scope_value']);
+            }else{
+              console.log("@>>> Not Found scheme in edit scope and update and marge...");
+              scopeCollections[key] = {};
+              scopeCollections[key]['scope_heading']  = {};
+              scopeCollections[key]['scope_heading']  = this.editScopeData[key]['scope_heading'];
+              scopeCollections[key]['scope_value']    = [];
+              scopeCollections[key]['scope_value']    = this.editScopeData[key]['scope_value']
+            }
+      }      
+  }
+
+  //filter scope collections
+  console.log(">> Fileter collection...", scopeCollections);
+  for(var p in scopeCollections){
+    if(scopeCollections[p]){
+        let getDetails: any = scopeCollections[p]['scope_value'];
+        console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
+        if(getDetails.length == 0){
+          console.log(">>>Empty values: ", p, " deleting");
+          delete scopeCollections[p];
+        }
+    }
+  }
+
+
+  console.log("#Updated Scope after edit: ", scopeCollections, " -- ", this.editScopeData);
+  this.step5Data['scopeDetails']    = scopeCollections;
+}
+//scopeCollections[selectScheme]['scope_heading'][keyIds]  //assign scope heading
+//scopeCollections[selectScheme]['scope_value'] //assign unmatch scope value
+
+getMatchScheme(scId: any, scopeData: any){
+  console.log("@@@ Finding schme...");
+  for(var key in scopeData){
+    console.log("# Finding schme...", key, " -- ", scId);
+      if(key == scId){
+        return true;
+      }
+  }
+  return false;
+}
+
+
+//Scope Save functions
+
+onSubmitStep5(ngForm: any, type?:any) {
+  //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+
+  
+  //this.saveScope();
+  console.log(">>>Enter....1:  ", type)
+  this.healthCareForm = {};
+  this.healthCareForm.step5 = {};  
+  var applicationId = sessionStorage.getItem('applicationId');
+  this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+  //this.healthCareForm.step5.application_id = this.formApplicationId;
+  this.healthCareForm.step5 = this.step5Data;
+  this.healthCareForm.step5['scheme_id'] = 1;//this.schemeRows[0].id;
+  
+  //Check dynamic model column fields validation
+  let secInd: number;
+  let selectScheme: any;
+  let errorScope: boolean = false;
+  if(this.schemeRows.length){
+    for(var t=0;t<this.schemeRows.length; t++){
+        secInd = t;
+        selectScheme = this.schemeRows[t].id;
+        let getData = this.criteriaMaster.find(rec => rec.scope_accridiation.id == selectScheme);
+        //console.log("@Scheme Data: ", getData);
+        let scopeTitle: string ='';
+        if(getData){
+          scopeTitle = getData.title.toString().toLowerCase().split(" ").join('_');
+        }
+            for(var key in this.dynamicScopeModel[scopeTitle]){
+              if(key == 'fieldLines'){
+                let rowLen = this.dynamicScopeModel[scopeTitle][key].length;
+                // Browse rows
+                //console.log("Section: ", scopeTitle, " -- ", rowLen)                
+                for(var k=0; k<rowLen; k++){
+                    this.dynamicScopeFieldColumns[scopeTitle].forEach((colItem,colIndex) => {
+                          let fieldSelValue: any;
+                          let selTitle: any       = colItem[0].title;
+                          fieldSelValue         = this.dynamicScopeModel[scopeTitle][key][k][selTitle];
+                          //console.log(">>> ", scopeTitle, " :: ", selTitle, " -- ", fieldSelValue);
+                          if(fieldSelValue === undefined){
+                            errorScope = true;
+                          }
+                    })
+                }
+              }
+            }
+      }
+  }
+  if(errorScope && type === undefined){
+    this.toastr.warning('Please Fill required field','Validation Error');
+    return false;    
+  }
+  //Check dynamic model column fields validation 
+
+
+    console.log("scheme Rows: ", this.schemeRows,  " -- ", this.schemeRows.length, " :: ", this.editScopeData, " :: ", this.getScopeData);
+
+    //console.log(">>>Form Submit: ", ngForm, " -- ",ngForm.form, " -- ", this.schemeRows); 
+   
+   //return;
+    //ngForm.form.valid &&
+    if(!ngForm.form.valid && type == undefined && this.schemeRows.length == 1 
+        && this.schemeRows[0].id === undefined && this.editScopeData != undefined && this.editScopeData != null) {
+      console.log(">>>Bypass saving...");
+      console.log(">>>Enter....2")
+      this.saveScope();
+      console.log(">>> step5 submit...", this.step5Data, " -- ", this.healthCareForm);
+      this.healthCareForm.step5.is_draft = false;
+      this.healthCareForm.saved_step = 5;
+      //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
+      .subscribe(
+        res => {
+          ////console.log(res,'res')
+          if(res['status'] == true) {
+            //this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+
+    }
+    else if(ngForm.form.valid && type == undefined) {
+      console.log(">>>Scope saving...");
+      console.log(">>>Enter....3")
+      this.saveScope();
+      console.log(">>> step5 submit...", this.step5Data, " -- ", this.healthCareForm);
+      this.healthCareForm.step5.is_draft = false;
+      this.healthCareForm.saved_step = 5;
+      //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
+      .subscribe(
+        res => {
+          ////console.log(res,'res')
+          if(res['status'] == true) {
+            //this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+
+    }
+    else if( type != undefined && type == true){
+      console.log(">>>Enter....4")
+      this.healthCareForm.step5.is_draft = true;
+      this.healthCareForm.saved_step = 5;
+      this.saveScope();
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
+      .subscribe(
+        res => {
+          ////console.log(res,'res')
+          if(res['status'] == true) {
+            //this.toastr.success(res['msg'], '');
+            this.toastr.success('Save Draft Successfully', '');
+            //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+            // setTimeout(()=> {
+            //   this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+            // },2000) 
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+
+    }else{
+      console.log(">>>...");
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+
 }
 
 onSubmitStep6(ngForm6: any){

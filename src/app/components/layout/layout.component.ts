@@ -87,10 +87,10 @@ export class LayoutComponent implements OnInit {
           this._service.setValueUrl('');
         }
 
-        if(splitUrl[1] == 'reset-password')
+        if(splitForverifyAccount[0] == '/reset-password')
         {
           this.currentState = 'reset-password';
-          this.pageId = splitUrl[2];
+          this.pageId = splitForverifyAccount[1];
         }else if(splitForverifyAccount[0] == '/verify-account')
         {
           this.currentState = 'verify-account';

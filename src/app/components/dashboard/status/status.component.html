@@ -7,7 +7,7 @@
             <div class="row mb-4">
                 <div class="col-md-8">                    
                     <div class="dashbrd-hdr">
-                        <h3>Accreditation Service</h3> 
+                        <h3>Status</h3> 
                     </div>
                 </div>
                 <div class="col-md-4"> 
@@ -121,7 +121,7 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.created_date"></span>
                                 </a>
                             </th>
-                            <th>Status
+                            <th width="15%">Status
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'accr_status', curSortDir.accr_status)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.accr_status"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.accr_status"></span>
@@ -163,9 +163,9 @@
                             <td>
                                 {{item.created | date :'dd-MMM-yyyy' }}
                             </td>
-                            <td [ngClass]="{'pending': item.accr_status === 'pending', 'under-review':item.accr_status === null, 'complete': item.accr_status === 'complete', 'draft': item.accr_status === 'draft'}">
+                            <td [ngClass]="{'pending': item.accr_status === 'pending', 'under-review':item.accr_status === null || item.accr_status === 'under_review', 'complete': item.accr_status === 'complete', 'draft': item.accr_status === 'draft' }">
                                 <span *ngIf="item.accr_status == 'pending'">Payment Pending</span>
-                                <span *ngIf="item.accr_status == null || item.accr_status == under_review">Under Review</span>
+                                <span *ngIf="item.accr_status == null || item.accr_status == 'under_review'">Under Review</span>
                                 <span *ngIf="item.accr_status == 'complete'">Complete</span>
                                 <span *ngIf="item.accr_status == 'draft'">Draft</span>
                             </td>
@@ -223,7 +223,7 @@
                         </tr>
                     </ng-container>
                     </table>
-                    <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
+                    <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0" >
                         <pagination-controls (pageChange)="pageCurrentNumber = $event"></pagination-controls>
                     </ng-container>
                 </div>

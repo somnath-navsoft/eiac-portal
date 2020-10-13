@@ -21,6 +21,9 @@ export class AppService {
   currentlatitude: any;
   
 
+  // public apiServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
+  // public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
+
   public apiServerUrl         =   'https://dev-service.eiac.gov.ae/webservice';
   public apiRequestUrl        =   'https://dev-service.eiac.gov.ae/';
 
@@ -676,6 +679,12 @@ addMinutesToTime()
   
     getCity(){
       var cityURL = this.assetsBasePath + 'cities.json';
+      return this.http.get(cityURL);
+      // return this.http.get(cityURL, {observe: 'response'});
+    }
+
+    getLanguages(){
+      var cityURL = this.assetsBasePath + 'languages.json';
       return this.http.get(cityURL);
       // return this.http.get(cityURL, {observe: 'response'});
     }
