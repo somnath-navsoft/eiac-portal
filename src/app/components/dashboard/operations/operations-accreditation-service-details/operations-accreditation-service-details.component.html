@@ -26,7 +26,7 @@
                   <div class="appln-data status_hdr">
                     <h5>Application Fees :</h5>
                   </div>
-                  <div [ngClass]="{'complete': serviceDetail?.payment_status == 'paid', 'under-review':serviceDetail?.payment_status == 'unpaid' }">
+                  <div [ngClass]="{'complete': serviceDetail?.payment_status == 'paid', 'under-review':serviceDetail?.payment_status == 'unpaid', 'under-review':serviceDetail?.payment_status == null }">
                     <span>{{(serviceDetail?.payment_status == "paid") ? 'Paid' : 'Unpaid'}}</span>
                   </div>
                 </div>
@@ -46,8 +46,9 @@
                   <div class="appln-data status_hdr">
                     <h5>Document Review :</h5>
                   </div>
-                  <div [ngClass]="{'complete': serviceDetail?.paymentDetails.doc_review_payment_status != null, 'under-review':serviceDetail?.paymentDetails.doc_review_payment_status == null }">
-                    <span>{{(serviceDetail?.paymentDetails.doc_review_payment_status == null) ? 'Unpaid' : 'Paid'}}</span>
+                  <div [ngClass]="{'complete': serviceDetail?.paymentDetails?.doc_review_payment_status != null, 'under-review':serviceDetail?.paymentDetails?.doc_review_payment_status == null,'under-review': !serviceDetail?.paymentDetails?.doc_review_payment_status }">
+                    <span *ngIf="serviceDetail?.paymentDetails?.doc_review_payment_status == null || !serviceDetail?.paymentDetails?.doc_review_payment_status">Unpaid</span>
+                    <span *ngIf="serviceDetail?.paymentDetails?.doc_review_payment_status != null">Paid</span>
                   </div>
                 </div>
               </div>
@@ -56,8 +57,8 @@
                   <div class="appln-data status_hdr">
                     <h5>Assessment :</h5>
                   </div>
-                  <div [ngClass]="{'complete': serviceDetail?.paymentDetails.doc_review_payment_status != null, 'under-review':serviceDetail?.paymentDetails.doc_review_payment_status == null }">
-                    <span>{{(serviceDetail?.paymentDetails.assessment_payment_status == null) ? 'Unpaid' : 'Paid'}}</span>
+                  <div [ngClass]="{'complete': serviceDetail?.paymentDetails?.doc_review_payment_status != null, 'under-review':serviceDetail?.paymentDetails?.doc_review_payment_status == null }">
+                    <span>{{(serviceDetail?.paymentDetails?.assessment_payment_status == null) ? 'Unpaid' : 'Paid'}}</span>
                   </div>
                 </div>
               </div>
@@ -66,8 +67,8 @@
                   <div class="appln-data status_hdr">
                     <h5>Certification :</h5>
                   </div>
-                  <div [ngClass]="{'complete': serviceDetail?.paymentDetails.certification_payment_status != null, 'under-review':serviceDetail?.paymentDetails.certification_payment_status == null }">
-                    <span>{{(serviceDetail?.paymentDetails.certification_payment_status == null) ? 'Unpaid' : 'Paid'}}</span>
+                  <div [ngClass]="{'complete': serviceDetail?.paymentDetails?.certification_payment_status != null, 'under-review':serviceDetail?.paymentDetails?.certification_payment_status == null }">
+                    <span>{{(serviceDetail?.paymentDetails?.certification_payment_status == null) ? 'Unpaid' : 'Paid'}}</span>
                   </div>
                 </div>
               </div>
@@ -116,7 +117,7 @@
                   <h5>Trade License No.</h5>
                 </div>
                 <div class="appln-details license_no">
-                  <span *ngIf="applicantInfo?.trade_license_number">{{applicantInfo?.trade_license_number}}</span>
+                  <span *ngIf="serviceDetail?.trade_license_number">{{serviceDetail?.trade_license_number}}</span>
                 </div>
               </div>
             </div>
@@ -217,7 +218,7 @@
           </div>
         </div>
         <div class="col-md-6">
-          <div class="row">
+          <div class="row" *ngIf="serviceDetail?.duty_shift != undefined">
             <div class="col-md-12">
               <div class="appln-subhdr">
                 <h5>WORKING TIME</h5>
@@ -282,7 +283,8 @@
                       <h4>{{row2.name}}</h4>
                       <p class="address_details">{{row2.company_list}}</p>
                       <span class="personal_details">{{row2.contact_person}},</span>
-                      <span>{{row2.designation}}, Mobile : {{row2.mobile_no}}</span>
+                      <span *ngIf="row2.designation">{{row2.designation}},</span>
+                      <span *ngIf="row2.mobile_no">Mobile : {{row2.mobile_no}}</span>
                     </div>
                   </div>
                   <!-- <div class="col-md-6 pl-0">
@@ -345,7 +347,7 @@
                   </div>
                 </div>
               </div>
-              <div class="row">
+              <div class="row" *ngIf="other_accr_model == '1'">
                 <div class="col-md-12">
                   <div class="table-appln pt-0">
                     <table>
@@ -384,7 +386,7 @@
         </div>
       </div>
 
-      <div class="row m-0" *ngIf="ptParticipation != ''">
+      <div class="row m-0" *ngIf="ptParticipation != '' && ptParticipation != null">
         <div class="col-md-12">
           <div class="row status-det-wrapper">
             <div class="col-md-12 p-0">
@@ -508,7 +510,7 @@
         </div>
       </div>
 
-      <div class="row m-0">
+      <div class="row m-0" *ngIf="serviceDetail?.audit_date != '' && serviceDetail?.audit_date != null">
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-12">
@@ -541,8 +543,14 @@
             <div class="col-md-12 p-0">
               <div class="row">
                 <div class="col-md-12">
-                  <div class="appln-subhdr">
+                  <div class="appln-subhdr" *ngIf="serviceDetail?.form_meta == 'inspection_body'">
                     <h5>ACCREDITATION SCOPE FOR INSPECTION BODIES</h5>
+                  </div>
+                  <div class="appln-subhdr" *ngIf="serviceDetail?.form_meta == 'testing_calibration'">
+                    <h5>ACCREDITATION SCOPE FOR TESTING CALIBRATION</h5>
+                  </div>
+                  <div class="appln-subhdr" *ngIf="serviceDetail?.form_meta == 'health_care'">
+                    <h5>ACCREDITATION SCOPE FOR HEALTH CARE</h5>
                   </div>
                   <hr>
                 </div>
@@ -856,11 +864,78 @@
       <div class="row m-0">
         <div class="col-md-12">
           <button class="submit-bttn submit-health" (click)="uiDialog.openPDFViewer(_constant.mediaPath,serviceDetail.form_pdf)"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button>
-          <!-- <div class="details status_bttn">
-            <a href="javascript:void(0)">Download Application</a>
-          </div> -->
+          <div class="details status_bttn">
+            <a href="javascript:void(0)" (click)="open(courseVoucher, routeId)">Peforma Upload</a>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Modal -->
+<ng-template #courseVoucher let-modal>
+  <div class="modal-header course-pop">
+    <h4 class="modal-title" id="modal-basic-title">UPLOAD PROFORMA INVOICE</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span class="icon-close"></span>
+    </button>
+  </div>
+  <div class="modal-body">                 
+      <form #voucherForm="ngForm">
+
+          <div class="row">
+              <div class="col-md-6">
+                  <mat-form-field class="cab-data">
+                      <mat-label>Voucher Number</mat-label>
+                      <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                      matInput placeholder="Voucher Number" 
+                      [(ngModel)]="voucherSentData.voucher_no">
+                  </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                  <mat-form-field class="cab-data">
+                      <mat-label>Voucher Date</mat-label>
+                      <input matInput [matDatepicker]="voucher_date" 
+                      (click)="_service._openCalendar(voucher_date)" 
+                      readonly="true" 
+                      [min]="minDate" name="voucher_date" 
+                      [(ngModel)]="voucherSentData.voucher_date" placeholder="Voucher Date" required>
+                      <mat-datepicker-toggle matSuffix [for]="voucher_date"></mat-datepicker-toggle>
+                      <mat-datepicker #voucher_date disabled="false"></mat-datepicker>
+                  </mat-form-field>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-6">
+                  <mat-form-field class="cab-data">
+                      <mat-label>Amount</mat-label>
+                      <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                      matInput placeholder="Voucher Number" 
+                      [(ngModel)]="voucherSentData.amount">
+                  </mat-form-field>
+              </div>
+
+              <div class="col-md-6">
+                  <span class="fileupload">
+                      <input type="file" name="voucher_invoice"                                
+                      (change)="validateFile($event, 'voucher_invoice')" required>
+                      <span class="icon-attach attach-data"></span>
+                  </span>
+                  <p class="error" *ngIf="paymentReceiptValidation == false">Please Upload a valid file (ex: pdf)</p>
+              </div>
+          </div>
+          <div class="row" [ngStyle]="{'margin-top': '10px'}">
+              <div class="col-md-12">
+                  <div class="bttns-health">
+                      <button type="submit" (click)="voucherSentSubmit(voucherForm)" class="cancel-bttn">SUBMIT</button>
+                      <button type="button" class="submit-bttn submit-health" (click)="modal.close('Cancel click')">CANCEL</button>
+                  </div>
+                  
+              </div>
+          </div>                    
+      </form>
+  </div>
+  <!-- <div class="modal-footer">
+  </div> -->
+</ng-template>
