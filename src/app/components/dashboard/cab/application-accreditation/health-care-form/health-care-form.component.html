@@ -195,7 +195,7 @@
                                         <div class="col-md-8">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Registered Physical Location Address</mat-label>
-                                                <input matInput (keyup)="getPlaceName($event)"  autocomplete="off"   
+                                                <input matInput (keyup)="getPlaceName($event)" [matAutocomplete] = "auto"   
                                                 placeholder="Registered Physical Location Address" name="physical_location_address" 
                                                 [(ngModel)]="step1Data.physical_location_address" required>
                                                 <mat-autocomplete #auto = "matAutocomplete" >
@@ -716,7 +716,7 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <button class="cancel-bttn" routerLink="/dashboard/cab_client/application-accreditation" type="button">CANCEL</button>
+                                        <a class="cancel-bttn" routerLink="/dashboard/cab_client/application-accreditation" type="button">CANCEL</a>
                                         <button class="cancel-bttn" (click)="savedraftStep('step1')" type="button">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health">CONTINUE</button>

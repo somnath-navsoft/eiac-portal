@@ -220,7 +220,7 @@ ngOnInit() {
       title:'other_accreditation', desc:'2. Other Accreditation', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
     },
     {
-    title:'personal_information', desc:'3. Personal Information', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
+    title:'personal_information', desc:'3. Personnel Information', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
     },
     {
     title:'summary_number_ofpersonnel', desc:'4. Summary Of The Number Of Personnel', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''

@@ -212,8 +212,8 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
           this.otherAccr = result['data']['otherAccr'];
           this.other_accr_model = result['data']['otherAccr'] != '' ? '1' : '0' ;
           this.ptParticipation = result['data']['ptParticipation'];
-          this.technicalManager = result['data']['technicalManager'][0];
-          this.managementManager = result['data']['technicalManager'][0];
+          this.technicalManager = result['data']['technicalManager'] ? result['data']['technicalManager'][0] : '';
+          this.managementManager = result['data']['technicalManager'] ? result['data']['technicalManager'][0] : '';
           this.paymentDetails = result['data'].paymentDetails;
           // this.scopeDetailsHeading = result['data']['scopeDetails'].heading.column_list;
           for(let key in result['data']['scopeDetails']) {
