@@ -907,16 +907,27 @@
                                                 </div> 
                                             </ng-container>
                                             <hr>
-
                                             
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="row" *ngIf="fullTypeScope.length > 0">
+                                                        <div class="col-12" *ngFor="let typeScope of fullTypeScope; let t1 = index;">
+                                                            <div class="row">
+                                                                <div class="col-md-12 p-0">
+                                                                    <div class="form-subhdr">
+                                                                        <h5>Sub Type for {{typeScope.name}}</h5>
+                                                                    </div> 
+                                                                </div>
+                                                            </div>
                                                     <ng-container *ngFor="let item of schemeRows; let i = index;">
                                                         <div class="row mt-3">
                                                             <div class="col-md-9 col-sm-9">
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Scheme</mat-label>
-                                                                    <mat-select (selectionChange)="getCriteria(schemeRows[i].id, i)" placeholder="Select" name="scheme_id_{{i}}"  
+                                                                    <!-- criteriaMaster -->
+                                                                    <mat-select (selectionChange)="getCriteria(schemeRows[i].id, i, typeScope.title)" placeholder="Select" name="scheme_id_{{i}}"  
                                                                     [(ngModel)]="schemeRows[i].id" required>
-                                                                        <mat-option [value]="item.scope_accridiation.id" *ngFor="let item of criteriaMaster; let k=index;">{{item.title}}</mat-option>
+                                                                        <mat-option [value]="item.scope_accridiation.id" *ngFor="let item of typeScope.schemeData; let k=index;">{{item.title}}</mat-option>
                                                                     </mat-select>
                                                                     <mat-error></mat-error> 
                                                                 </mat-form-field>
@@ -929,8 +940,6 @@
                                                             </div>
                                                         </div> 
                                                     </ng-container>                                    
-                                                    </div>
-                                                </div>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="row" *ngIf="fullScope.length > 0">
@@ -1002,7 +1011,6 @@
                                                                                                     
                                                                                                 </mat-form-field>
                                                                                                 </ng-container>
-                                                                                            <!-- @{{dynamicScopeFieldType[i1][p].inputType | json}}<br> -->
 
                                                                                             <ng-container *ngIf="dynamicScopeFieldType[scope.title][p].inputType == 'text'">
                                                                                                 <mat-form-field class="cab-data" *ngIf="p > 0 && p <= dynamicScopeFieldColumns[scope.title].length">
@@ -1048,9 +1056,7 @@
                                                                                                     </mat-select>
                                                                                                 </mat-form-field>  
                                                                                                 </ng-container>
-                                                                                            <!-- @{{dynamicScopeFieldType[i1][p].inputType | json}}<br>                                                                               -->
                                                                                         </td>
-                                                                                        <!-- removeScopeLine(k, scope.title) -->
                                                                                         <td class="content-icn">
                                                                                             <span *ngIf="k >= 0" class="icon-add" (click)="addScopeLine(k,scope.title, dynamicScopeModel[scope.title].fieldLines)"></span>&nbsp;
                                                                                             <span *ngIf="k >= 1" class="icon-close-round" (click)="openDeleteScopeConfirm(k, scope.title)"></span>
@@ -1061,13 +1067,17 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                            
                                                             </div>
                                                         </div>
 
 
                                                     </div>
                                                 </div>
-
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                                     <!-- SCOPE SECTION END -->
                                     
@@ -1086,6 +1096,8 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
                     </form>
                 </div>
 

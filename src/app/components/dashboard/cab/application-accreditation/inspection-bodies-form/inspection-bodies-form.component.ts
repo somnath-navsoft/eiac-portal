@@ -738,7 +738,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   citylistById = async(state_id) => {
     this.allCityList = [];
     let cityList =  this.Service.getCity();
-    this.step1Data.city = '';
+    //this.step1Data.city = '';
     ///console.log("enter city...");
     await cityList.subscribe( result => {
         for(let key in result['cities']) {
@@ -1714,6 +1714,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         this.labTypeList = res['allLabtype'];
         //this.fullScope   = res['fullScope'];
         this.criteriaList = res['data']['criteriaList'];
+        this.step1Data.criteria_request = this.criteriaList[0].code;
         this.criteriaMaster = res['data']['schemes'];
         ////console.log("#Get criteria: ", this.criteriaMaster);
 
@@ -2852,29 +2853,37 @@ export class InspectionBodiesFormComponent implements OnInit {
       //if(type == undefined){
         
       this.inspectionBodyForm.step2['proficiencyTesting'] = this.proficiencyTesting;
-      console.log('ssssave a draft....save PT', this.proficiencyTesting)
-        this.proficiencyTesting.forEach((rec,key) => {
-              let dtFormat = '';
-             if(rec.participation_date != undefined && rec.participation_date._i != undefined){
-              var dtData = rec.participation_date._i;
-              var year = dtData.year;
-              var month = dtData.month;
-              var date = dtData.date;
-            }
-            dtFormat = year + "-" + month + "-" + date;
-            ////console.log(">>DT: ", dtFormat);
-            this.proficiencyTesting[key].date = dtFormat;
-        })
-        console.log('ssssave a draft....save PT ', this.proficiencyTesting)
+     
       //}
         ////console.log(">> Data: ", this.proficiencyTesting);
 
-
+        this.proficiencyTesting.forEach((rec,key) => {
+          let dtFormat = '';
+         if(rec.participation_date != undefined && rec.participation_date._i != undefined){
+          var dtData = rec.participation_date._i;
+          var year = dtData.year;
+          var month = dtData.month;
+          var date = dtData.date;
+        }
+        dtFormat = year + "-" + month + "-" + date;
+        ////console.log(">>DT: ", dtFormat);
+        this.proficiencyTesting[key].date = dtFormat;
+  
+        this.proficiencyTesting[key].test_name = (rec.test_name == undefined) ? "" : rec.test_name;
+        var yyyy = new Date().getFullYear().toString();
+        var mm = (new Date().getMonth()+1).toString();
+        var dd  = new Date().getDate().toString();
+        let dformat = yyyy + "-" + mm +"-"+dd;
+        this.proficiencyTesting[key].participation_date = (rec.participation_date == undefined) ? dformat : rec.participation_date;
+        this.proficiencyTesting[key].result = (rec.result == undefined) ? "" : rec.result;
+        this.proficiencyTesting[key].pt_provider = (rec.pt_provider == undefined) ? "" : rec.pt_provider;
+    })
     console.log("@Step2 submit...", this.inspectionBodyForm, " --- ", this.formApplicationId);
    // return;
 
     if(ngForm2.form.valid && type == undefined) {
       //console.log('>>>>fffff: ', this.inspectionBodyForm);
+      
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
       .subscribe(
         res => {
@@ -2889,6 +2898,8 @@ export class InspectionBodiesFormComponent implements OnInit {
     }else if(type != undefined && type == true){
       this.inspectionBodyForm.step2.is_draft = true;
       this.inspectionBodyForm.saved_step = 2;
+      console.log('ssssave a draft....save PT', this.proficiencyTesting)
+        
       ////console.log('save draft....2');
           // this.toastr.success('Application Successfully Submitted', '');
           // setTimeout(()=> {

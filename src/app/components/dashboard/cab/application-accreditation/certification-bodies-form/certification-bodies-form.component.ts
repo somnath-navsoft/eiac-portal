@@ -136,7 +136,9 @@ export class CertificationBodiesFormComponent implements OnInit {
    //Master scope form data declaration
    dynamicScopeModel:any         = {};   
    dynamicScopeFieldColumns:any  = {};  
-   dynamicScopeFieldType:any  = {}; 
+   dynamicScopeFieldType:any     = {}; 
+   
+
    criteriaMaster: any[] = [];
    fullScope:any[]=[];
 
@@ -297,12 +299,20 @@ console.log(">>>steps: ", this.headerSteps);
       
   })
 }
- getCriteria(value, secInd: any){
+ getCriteria(value, secInd: any, typeTitle: any){
   //console.log("select Criteris: ", value, " -- ", secInd);
   this.scopeDataLoad = true;
+
+  // this.dynamicScopeFieldColumns[typeIndex] = {};
+  // this.dynamicScopeFieldType[typeIndex] = {};
+  // this.dynamicScopeModel[typeIndex] = {};
+  // this.fullScope[typeIndex] = [];
+
   if(value != undefined && value > 0){
+
+    //get type title
      
-     let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcare_form_basic_data+"?scheme="+value;
+     let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.certificationBodies+"?scheme="+value;
      this.Service.getwithoutData(apiURL).subscribe(record => {
       console.log('@Fullscope: ', record);
           let dataScope:any = [];
@@ -323,18 +333,24 @@ console.log(">>>steps: ", this.headerSteps);
               scopeTitle  = getData.title.toString().toLowerCase().split(" ").join('_');
 
               //check already existing scheme...
-              for(var m in this.dynamicScopeModel){
-                  console.log("mkey: ", m, " -- ", scopeTitle);
-                  if(m === scopeTitle){
-                    this.fullScope.splice(secInd, 1);
-                    this.toastr.error("Scheme should be unique, Please check.","Validation")
-                    return;
-                  }
-              }
+              // for(var m in this.dynamicScopeModel){
+              //     console.log("mkey: ", m, " -- ", scopeTitle);
+              //     if(m === scopeTitle){
+              //       this.fullScope.splice(secInd, 1);
+              //       this.toastr.error("Scheme should be unique, Please check.","Validation")
+              //       return;
+              //     }
+              // }
+              // this.dynamicScopeFieldColumns[scopeTitle] = [];
+              // this.dynamicScopeFieldType[scopeTitle] = [];
+              // this.dynamicScopeModel[scopeTitle] = {};
+
               this.dynamicScopeFieldColumns[scopeTitle] = [];
               this.dynamicScopeFieldType[scopeTitle] = [];
               this.dynamicScopeModel[scopeTitle] = {};
 
+              console.log("@Model struct: ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
+              //return;
               if(this.fullScope.length){
                   console.log("@Existing scheme....1");
                   let pushObj: any = {
@@ -520,18 +536,19 @@ console.log(">>>steps: ", this.headerSteps);
           let typeName =  findType.title.toString();
           //this.fullTypeScope[typeTitle] = {};
           this.criteriaMaster = findType.scheme_list;
+          //schme rows depends on type selected
 
           if(this.fullTypeScope.length){
             console.log("@Existing scheme....1");
             let dupdata: any = this.fullTypeScope.find(item => item.title == typeTitle);
             console.log(">>Dup found...", dupdata);
-            if(dupdata != undefined){
-              this.toastr.error("Type should be unique, Please check.","Validation")
-              return;
-            }
+            // if(dupdata != undefined){
+            //   this.toastr.error("Type should be unique, Please check.","Validation")
+            //   return;
+            // }
 
             let pushObj: any = {
-              title: typeTitle, id:findType.service_page.id, name:typeName
+              title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list
             }
             
             if(this.fullTypeScope[secInd] != undefined && !this.Service.isObjectEmpty(this.fullTypeScope[secInd])){
@@ -539,18 +556,18 @@ console.log(">>>steps: ", this.headerSteps);
               this.fullTypeScope[secInd] = pushObj;
             }else{
                 this.fullTypeScope.push({
-                  title: typeTitle, id:findType.service_page.id, name:typeName
+                  title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list
                 });
             }
         }else{
         this.fullTypeScope.push({
-            title: typeTitle, id:findType.service_page.id, name:typeName
+            title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list
           });
         }
 
 
 
-          console.log(">>>> typte schme ...",  this.fullTypeScope, " -- ", findType.scheme_list.length);
+          console.log(">>>> typte schme ...",  this.fullTypeScope, " -- ",);
       }
    }
     
@@ -562,7 +579,8 @@ console.log(">>>steps: ", this.headerSteps);
   obj.push(this.newRow);
   }
   removeSubTypeRow(obj: any = [],index: number){
-
+    obj.splice(index, 1);
+    this.fullTypeScope.splice(index, 1);
   }
 
  addSchemeRow(obj: any = [],index: number){
