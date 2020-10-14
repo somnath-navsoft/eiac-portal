@@ -44,6 +44,9 @@ export class CertificationBodiesFormComponent implements OnInit {
     accreditation_criteria:'',
     accreditation_criteria_name:'',
   };
+
+  is_main_activity_note_entry: boolean = false;
+  public isNoteSubmit:boolean = false;
   
   public technicalManager: any = {};
   public managementSystemManager: any = {};
@@ -158,6 +161,7 @@ export class CertificationBodiesFormComponent implements OnInit {
    schemeRows: Array<any> = [{}];
    subTypeMaster: any[] = [];
    subTypeRows: Array<any> = [{}];
+   isApplicationSubmitted: boolean = false;
    //Master scope form data declaration
 
   @ViewChild('mydiv', null) mydiv: ElementRef;
@@ -249,23 +253,23 @@ ngOnInit() {
   );
 
 
-  this.headerSteps.forEach((item, key) => {
-    ///////console.log(item, " --- ", key);
-    if(key < saveStep){
-      //console.log('moving steps....', key);
-      let curStep: any = item;
-      curStep.stepComp = true;
-      let nextStep: any = this.headerSteps[key+1];
-      this.Service.moveSteps(curStep.title, nextStep.title, this.headerSteps);
-    }
-    if(key == saveStep){
-      let curStep: any = this.headerSteps[key];
-      //console.log('found steps....',curStep);
-      curStep.stepComp = true;
-      this.Service.headerStepMove(item.title, this.headerSteps,'menu')
-    }
-})
-console.log(">>>steps: ", this.headerSteps);
+//   this.headerSteps.forEach((item, key) => {
+//     ///////console.log(item, " --- ", key);
+//     if(key < saveStep){
+//       //console.log('moving steps....', key);
+//       let curStep: any = item;
+//       curStep.stepComp = true;
+//       let nextStep: any = this.headerSteps[key+1];
+//       this.Service.moveSteps(curStep.title, nextStep.title, this.headerSteps);
+//     }
+//     if(key == saveStep){
+//       let curStep: any = this.headerSteps[key];
+//       //console.log('found steps....',curStep);
+//       curStep.stepComp = true;
+//       this.Service.headerStepMove(item.title, this.headerSteps,'menu')
+//     }
+// })
+// console.log(">>>steps: ", this.headerSteps);
 
   this.summaryDetails = [{"position":'Managerial/Professional'},{'position':'Administrative'},{'position':'Marketing/Sales'}];
   
@@ -1382,7 +1386,39 @@ savedraftStep(stepCount) {
 onSubmitStep1(ngForm1: any){
   // this.Service.moveSteps('application_information', 'other_accreditation', this.headerSteps);
   console.log(this.ownOrgMembInfo,'ownOrgMembInfo');
-  if(ngForm1.form.valid) {
+
+  this.isApplicationSubmitted = true;
+
+  //Activity note check
+  if(this.step1Data.is_main_activity_note == undefined){
+    this.step1Data.is_main_activity_note = '';
+  }
+  
+  let str = this.step1Data.is_main_activity_note; 
+
+  //console.log("nite enen: ", this.step1Data.is_main_activity_note, " -- ", this.step1Data.is_main_activity, " :: ", (!str || 0 === str.length));
+  
+  if(this.step1Data.is_main_activity == 'true' && this.step1Data.is_main_activity_note != ''){
+    this.step1Data.is_main_activity_note = '';
+  }
+  if(this.step1Data.is_main_activity == 'true'){
+    this.isNoteSubmit = true;
+  }
+
+  if((!str || 0 === str.length) && this.step1Data.is_main_activity == 'false'){
+    //console.log(">>> Note is required...");
+    this.is_main_activity_note_entry = true;
+    this.isNoteSubmit = false;
+  }
+  if(this.step1Data.is_main_activity == 'false' && this.step1Data.is_main_activity_note != ''){
+    //console.log(">>> Note is ebnterd.....");
+    this.is_main_activity_note_entry = false;
+    this.isNoteSubmit = true;
+  }
+
+
+
+  if(ngForm1.form.valid  && this.isNoteSubmit == true) {
     this.certificationBodiesForm = {};
     this.certificationBodiesForm.step1 = {};
     this.certificationBodiesForm.email = this.userEmail;
@@ -1407,6 +1443,11 @@ onSubmitStep1(ngForm1: any){
     if(this.ownOrgMembInfo) {
       this.certificationBodiesForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
     }
+
+
+
+
+
     // if(this.accreditationInfo) {
     //   this.certificationBodiesForm.step1['accreditationInfo'] = this.accreditationInfo;
     // }
@@ -2430,9 +2471,9 @@ resolvedSecurity(captchaResponse: string) {
 
 getPlaceName()
 {
-  if(typeof this.certificationBodiesForm.search_location_name != 'undefined')
+  if(typeof this.step1Data.physical_location_address != 'undefined')
   {
-    this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.certificationBodiesForm.search_location_name+'.json?access_token='+this.Service.mapboxToken+'','')
+    this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.step1Data.physical_location_address+'.json?access_token='+this.Service.mapboxToken+'','')
       .subscribe(res => {
           // //console.log(res['features']);
           this.searchCountryLists = res['features'];

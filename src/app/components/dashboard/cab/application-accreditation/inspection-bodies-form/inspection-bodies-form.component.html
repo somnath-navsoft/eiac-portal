@@ -571,7 +571,8 @@
                                                     <mat-label>(If No, indicate what are other activities related to the organization)</mat-label>
                                                     <input matInput  
                                                     (keypress)="Service.inputFilter($event, Service.regExName)" #enterOtherActivity="ngModel" 
-                                                    placeholder="" name="indication" [required]="isApplicationSubmitted == true && is_main_activity_note_entry == true && step1Data.is_main_activity == 'false'" 
+                                                    placeholder="" name="indication" 
+                                                    [required]="isApplicationSubmitted == true && is_main_activity_note_entry == true && step1Data.is_main_activity == 'false'" 
                                                     [(ngModel)]="step1Data.is_main_activity_note">
                                                 </mat-form-field>
                                                 <!-- <div class="row col-md-6">
