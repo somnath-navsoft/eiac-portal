@@ -604,8 +604,22 @@ export class InspectionBodiesFormComponent implements OnInit {
             }
           }
       }
+      // console.log(">>>Final Data: ", this.editScopeData);
+      // if(typeof this.editScopeData === 'object'){
+      //   for(var key in this.editScopeData){
+      //     if(this.editScopeData[key]['scope_value'] != undefined){
+      //         if(this.editScopeData[key]['scope_value'].length == 0){
+      //             console.log("no data...");
+      //             delete this.editScopeData[key];
+      //         }
+      //     }
+      //     console.log(">> ", key, " :: ", this.editScopeData);
+      // }
+      // }
+      
+
       this._customModal.closeDialog();
-      //console.log(">>>Final Data: ", this.editScopeData);
+      //
   }
 
   ngOnInit() { 
@@ -685,34 +699,34 @@ export class InspectionBodiesFormComponent implements OnInit {
     //
     this.headerSteps.push(
       {
-      title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-user', activeClass:'user-present'
+      title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
       },
       {
       title:'profciency_testing_participation', desc:'2. Proficiency Testing Participation', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
-      title:'personal_information', desc:'3. Personnel Information', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'personal_information', desc:'3. Personnel Information', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
       },
       {
-      title:'information_audit_management', desc:'4. Internal Audit & MRM Date', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'information_audit_management', desc:'4. Internal Audit & MRM Date', activeStep:false, stepComp:false, icon:'icon-task', activeClass:''
       },
       {
-        title:'scope_accreditation', desc:'5. Accreditation Scope', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+        title:'scope_accreditation', desc:'5. Accreditation Scope', activeStep:false, stepComp:false, icon:'icon-sheet', activeClass:''
       },
       {
-      title:'perlim_visit', desc:'6. Prelim Visit', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'perlim_visit', desc:'6. Prelim Visit', activeStep:false, stepComp:false, icon:'icon-paper', activeClass:''
       },
       {
-      title:'undertaking_applicant', desc:'7. Authorization of the Application', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'undertaking_applicant', desc:'7. Authorization of the Application', activeStep:false, stepComp:false, icon:'icon-work', activeClass:''
       },
       {
-        title:'proforma_invoice', desc:'8. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+        title:'proforma_invoice', desc:'8. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-file_invoice', activeClass:''
       },
       {
-        title:'payment_update', desc:'9. Payment Update', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+        title:'payment_update', desc:'9. Payment Update', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
       },
       {
-        title:'application_complete', desc:'10. Application Complete', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+        title:'application_complete', desc:'10. Application Complete', activeStep:false, stepComp:false, icon:'icon-document-pen', activeClass:''
       },
     );
   }
@@ -1151,6 +1165,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         let data: any;
         let pathData: any;
         let filePath: string;
+        let saveStep: number;
         //console.log(getData,"get APP Data:");
 
         this.viewData = getData;
@@ -1191,12 +1206,21 @@ export class InspectionBodiesFormComponent implements OnInit {
             filePath = this.constant.mediaPath + '/media/' + getData.data.paymentDetails.voucher_invoice;
             pathData = this.getSantizeUrl(filePath);
             this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
+            saveStep = 8;//parseInt(getData.data.saved_step)
+
+            console.log(">>> payment details...", getData.data.paymentDetails);
+            this.voucherSentData.voucher_code = getData.data.paymentDetails.voucher_no;
+            this.voucherSentData.amount = getData.data.paymentDetails.amount;
+            this.voucherSentData.payment_date = getData.data.paymentDetails.voucher_date;
           }
           ////////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
+        }else{
+          saveStep = parseInt(getData.data.saved_step) - 1;
         }
+
         if(getData.data.saved_step  != null){
           /////////console.log("@saved step assign....");
-          let saveStep: number = parseInt(getData.data.saved_step) - 1;
+          //saveStep = parseInt(getData.data.saved_step) - 1;
           //open step
           this.headerSteps.forEach((item, key) => {
                 /////////console.log(item, " --- ", key);
@@ -1568,10 +1592,10 @@ export class InspectionBodiesFormComponent implements OnInit {
 
         //step 9
         if(getData.data.paymentDetails != null && typeof getData.data.paymentDetails === 'object'){
-          ////console.log(">>>payment details...show");
-            this.voucherSentData.voucher_code     = getData.data.paymentDetails.voucher_code;
-            this.voucherSentData.payment_date     = getData.data.paymentDetails.payment_date;
-            this.voucherSentData.amount           = getData.data.paymentDetails.amount;
+          console.log(">>>payment details...show");
+            //this.voucherSentData.voucher_code     = getData.data.paymentDetails.voucher_code;
+            //this.voucherSentData.payment_date     = getData.data.paymentDetails.payment_date;
+            //this.voucherSentData.amount           = getData.data.paymentDetails.amount;
             this.voucherSentData.transaction_no   = getData.data.paymentDetails.transaction_no;
             this.voucherSentData.payment_method   = getData.data.paymentDetails.payment_method;
             this.voucherSentData.payment_made_by  = getData.data.paymentDetails.payment_made_by;
