@@ -154,8 +154,8 @@ export class ResetPasswordComponent implements OnInit {
       this.appService.getwithoutData(this.appService.apiServerUrl+"/"+this.constant.API_ENDPOINT.userPasswordReset+'?email='+email+'&hash='+hash+'&password='+passwordHash)
       .subscribe(
         res => {
-          if(res['status'] != true) {
-            this.toastr.success('Password change successfully','', {timeOut: 3000});
+          if(res['status'] == true) {
+            this.toastr.success('Password reset successfully','', {timeOut: 3000});
             this.router.navigateByUrl('/sign-in');
           }
         });

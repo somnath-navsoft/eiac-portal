@@ -738,7 +738,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   citylistById = async(state_id) => {
     this.allCityList = [];
     let cityList =  this.Service.getCity();
-    this.step1Data.city = '';
+    //this.step1Data.city = '';
     ///console.log("enter city...");
     await cityList.subscribe( result => {
         for(let key in result['cities']) {
@@ -1365,19 +1365,39 @@ export class InspectionBodiesFormComponent implements OnInit {
             }
         }
         
+        // var stateList =  this.Service.getState();
+        //   var cityList =  this.Service.getCity();
+        //   stateList.subscribe( result => {
+        //     for(let key in result['states']) {
+        //       if(result['states'][key]['name'] == data.state )
+        //       {
+        //         this.allStateList.push(result['states'][key]);
+        //       }
+        //     }
+        //   });
+
+          cityList.subscribe( result => {
+            for(let key in result['cities']) {
+              //console.log("ccc: ", result['cities'][key]);
+              if(result['cities'][key]['name'] == getData.data.city )
+              {
+                this.allCityList.push(result['cities'][key]);
+              }
+            }
+          });
             //getData.data.state = 'West Bengal';
             //console.log(">>> 1 state find...", this.allStateList);  
             //console.log(">>> 2 state find..."); 
 
-            cityList.subscribe( result => {
-              for(let key in result['cities']) {
-                //console.log(">> cities: ", result['cities'][key]);
-                 ////if(result['cities'][key]['state_id'] == data.city )
-                 //{
-                  this.allCityList.push(result['cities'][key]);
-                //}
-              }
-            });
+            // cityList.subscribe( result => {
+            //   for(let key in result['cities']) {
+            //     //console.log(">> cities: ", result['cities'][key]);
+            //      ////if(result['cities'][key]['state_id'] == data.city )
+            //      //{
+            //       this.allCityList.push(result['cities'][key]);
+            //     //}
+            //   }
+            // });
 
             // let sdata: any = this.allStateList.find(rec => rec.name == getData.data.state)
             // console.log("Fnd state: ", sdata);  
@@ -1585,26 +1605,45 @@ export class InspectionBodiesFormComponent implements OnInit {
           if(data){
             console.log('data enter...2');
             if(this.urlVal == 'undefined'){
-            var stateList =  this.Service.getState();
-            var cityList =  this.Service.getCity();
-
-            stateList.subscribe( result => {
-              for(let key in result['states']) {
-                // if(result['states'][key]['name'] == data.state )
-                // {
-                  this.allStateList.push(result['states'][key]);
-                //}
+              var stateList =  this.Service.getState();
+          var cityList =  this.Service.getCity();
+          stateList.subscribe( result => {
+            for(let key in result['states']) {
+              if(result['states'][key]['name'] == data.state )
+              {
+                this.allStateList.push(result['states'][key]);
               }
-            });
+            }
+          });
 
-            cityList.subscribe( result => {
-              for(let key in result['cities']) {
-                // if(result['cities'][key]['name'] == data.city )
-                // {
-                  this.allCityList.push(result['cities'][key]);
-                //}
+          cityList.subscribe( result => {
+            for(let key in result['cities']) {
+              if(result['cities'][key]['name'] == data.city )
+              {
+                this.allCityList.push(result['cities'][key]);
               }
-            });
+            }
+          });
+            // var stateList =  this.Service.getState();
+            // var cityList =  this.Service.getCity();
+
+            // stateList.subscribe( result => {
+            //   for(let key in result['states']) {
+            //     // if(result['states'][key]['name'] == data.state )
+            //     // {
+            //       this.allStateList.push(result['states'][key]);
+            //     //}
+            //   }
+            // });
+
+            // cityList.subscribe( result => {
+            //   for(let key in result['cities']) {
+            //     // if(result['cities'][key]['name'] == data.city )
+            //     // {
+            //       this.allCityList.push(result['cities'][key]);
+            //     //}
+            //   }
+            // });
           }
 
             console.log(">>> list: ", this.allStateList, " -- ", this.allCityList);
@@ -1714,6 +1753,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         this.labTypeList = res['allLabtype'];
         //this.fullScope   = res['fullScope'];
         this.criteriaList = res['data']['criteriaList'];
+        this.step1Data.criteria_request = this.criteriaList[0].code;
         this.criteriaMaster = res['data']['schemes'];
         ////console.log("#Get criteria: ", this.criteriaMaster);
 
@@ -2852,29 +2892,37 @@ export class InspectionBodiesFormComponent implements OnInit {
       //if(type == undefined){
         
       this.inspectionBodyForm.step2['proficiencyTesting'] = this.proficiencyTesting;
-      console.log('ssssave a draft....save PT', this.proficiencyTesting)
-        this.proficiencyTesting.forEach((rec,key) => {
-              let dtFormat = '';
-             if(rec.participation_date != undefined && rec.participation_date._i != undefined){
-              var dtData = rec.participation_date._i;
-              var year = dtData.year;
-              var month = dtData.month;
-              var date = dtData.date;
-            }
-            dtFormat = year + "-" + month + "-" + date;
-            ////console.log(">>DT: ", dtFormat);
-            this.proficiencyTesting[key].date = dtFormat;
-        })
-        console.log('ssssave a draft....save PT ', this.proficiencyTesting)
+     
       //}
         ////console.log(">> Data: ", this.proficiencyTesting);
 
-
+        this.proficiencyTesting.forEach((rec,key) => {
+          let dtFormat = '';
+         if(rec.participation_date != undefined && rec.participation_date._i != undefined){
+          var dtData = rec.participation_date._i;
+          var year = dtData.year;
+          var month = dtData.month;
+          var date = dtData.date;
+        }
+        dtFormat = year + "-" + month + "-" + date;
+        ////console.log(">>DT: ", dtFormat);
+        this.proficiencyTesting[key].date = dtFormat;
+  
+        this.proficiencyTesting[key].test_name = (rec.test_name == undefined) ? "" : rec.test_name;
+        var yyyy = new Date().getFullYear().toString();
+        var mm = (new Date().getMonth()+1).toString();
+        var dd  = new Date().getDate().toString();
+        let dformat = yyyy + "-" + mm +"-"+dd;
+        this.proficiencyTesting[key].participation_date = (rec.participation_date == undefined) ? dformat : rec.participation_date;
+        this.proficiencyTesting[key].result = (rec.result == undefined) ? "" : rec.result;
+        this.proficiencyTesting[key].pt_provider = (rec.pt_provider == undefined) ? "" : rec.pt_provider;
+    })
     console.log("@Step2 submit...", this.inspectionBodyForm, " --- ", this.formApplicationId);
    // return;
 
     if(ngForm2.form.valid && type == undefined) {
       //console.log('>>>>fffff: ', this.inspectionBodyForm);
+      
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
       .subscribe(
         res => {
@@ -2889,6 +2937,8 @@ export class InspectionBodiesFormComponent implements OnInit {
     }else if(type != undefined && type == true){
       this.inspectionBodyForm.step2.is_draft = true;
       this.inspectionBodyForm.saved_step = 2;
+      console.log('ssssave a draft....save PT', this.proficiencyTesting)
+        
       ////console.log('save draft....2');
           // this.toastr.success('Application Successfully Submitted', '');
           // setTimeout(()=> {
