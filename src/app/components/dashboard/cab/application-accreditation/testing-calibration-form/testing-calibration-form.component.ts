@@ -1149,7 +1149,6 @@ getCriteria(value, secInd: any){
         let getData: any = res;
         let data: any;
         //, getData.data.step1, " -- ", getData.data.step2
-        console.log(getData,"Profile info >>> ");
 
         if(getData.data.step1.length){
             data = getData.data['step1'][0];
@@ -1199,6 +1198,7 @@ getCriteria(value, secInd: any){
               this.selectTradeLicPath = this.constant.mediaPath +  data.trade_license.toString();
             }
           }
+          this.step1Data.trade_license_number = data.trade_license_number;
           this.step1Data.city =  data.city;
           this.step1Data.country = data.country;
           this.step1Data.state = data.state;
