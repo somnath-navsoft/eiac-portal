@@ -158,6 +158,8 @@ export class CertificationBodiesFormComponent implements OnInit {
    schemeRows: Array<any> = [{}];
    subTypeMaster: any[] = [];
    subTypeRows: Array<any> = [{}];
+   cbsOtherActivity: any[] = [{}];
+   nameOfCountry: any[] = [{}];
    //Master scope form data declaration
 
   @ViewChild('mydiv', null) mydiv: ElementRef;
@@ -1092,6 +1094,10 @@ loadAppInfo(){
               //   this.step4Data.mrm_date = new Date(res['data'].mrm_date);
               // }
 
+              //step5
+              this.cbsOtherActivity = res['data'].otherActivityLocations;
+              this.nameOfCountry = res['data'].nameOfCountry;
+
               //Step 6
               if(res['data'].is_prelim_visit != null){
                 this.step6Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
@@ -1856,6 +1862,16 @@ onSubmitStep5(ngForm: any, type?:any) {
   this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
   //this.certificationBodiesForm.step5.application_id = this.formApplicationId;
   this.certificationBodiesForm.step5 = this.step5Data;
+  this.certificationBodiesForm.step5['cbsOtherActivity'] = [];
+  this.certificationBodiesForm.step5['nameOfCountry'] = [];
+  
+  if(this.cbsOtherActivity) {
+    this.certificationBodiesForm.step5['cbsOtherActivity'] = this.cbsOtherActivity;
+  }
+  if(this.nameOfCountry) {
+    this.certificationBodiesForm.step5['nameOfCountry'] = this.nameOfCountry;
+  }
+
   this.certificationBodiesForm.step5['scheme_id'] = 1;//this.schemeRows[0].id;
   
   //Check dynamic model column fields validation

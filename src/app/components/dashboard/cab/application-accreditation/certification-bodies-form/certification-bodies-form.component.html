@@ -827,13 +827,109 @@
                     <form #ngForm5="ngForm" (ngSubmit)="onSubmitStep5(ngForm5)" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
-                                <div class="col-12"> 
+                                <div class="col-md-12"> 
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr">
                                                 <h5>5. Accreditation Scope</h5>
                                             </div>
                                             <hr>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-md-12 p-0">
+                                                    <div class="form-subheader-data">
+                                                        <h5>CB'S OTHER ACTIVITY LOCATIONS</h5>
+                                                    </div>
+                                                    <hr>
+                                                </div>
+                                            </div>
+                                            <div class="row" >
+                                                <div class="col-md-12">
+                                                    <div class="table-content-health">
+                                                        <table>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Location Type(such as Regional office,Branch)</th>
+                                                                    <th>City & Countries</th>
+                                                                    <th>Activities carried out at this Location</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr  *ngFor="let item of cbsOtherActivity; let i = index;">
+                                                                    <td>
+                                                                        <mat-form-field class="cab-data">
+                                                                            <mat-label>Type Here</mat-label>
+                                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="location_type_{{i}}" [(ngModel)]="cbsOtherActivity[i].location_type" required> 
+                                                                        </mat-form-field>
+                                                                    </td>
+                                                                    <td>
+                                                                        <mat-form-field class="cab-data">
+                                                                            <mat-label>Type Here</mat-label>
+                                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="city_country_{{i}}" [(ngModel)]="cbsOtherActivity[i].city_country" required> 
+                                                                        </mat-form-field>
+                                                                    </td>
+                                                                    <td>
+                                                                        <mat-form-field class="cab-data">
+                                                                            <mat-label>Type Here</mat-label>
+                                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="activity_carried_out_{{i}}" [(ngModel)]="cbsOtherActivity[i].activity_carried_out" required> 
+                                                                        </mat-form-field>
+                                                                        </td>
+                                                                    <td class="content-icn">
+                                                                        <span *ngIf="i >= 0" class="icon-add" (click)="addRow(cbsOtherActivity)"></span> &nbsp;
+                                                                        <span *ngIf="i >= 1" class="icon-cross" (click)="openDialog(cbsOtherActivity,i)"></span>
+                                                                    </td>
+                                                                </tr>
+                                                            
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-md-12 p-0">
+                                                    <div class="form-subheader-data">
+                                                        <h5>PLEASE LIST DOWN THE NAME(S) OF COUNTRIES WHERE CERTIFICATION BODY INTENDS TO PROVIDE EIAC ACCREDITED CERTIFICATIONS</h5>
+                                                    </div>
+                                                    <hr>
+                                                </div>
+                                            </div>
+                                            <div class="row" >
+                                                <div class="col-md-12">
+                                                    <div class="table-content-health">
+                                                        <table>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Name of Country</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr  *ngFor="let item of nameOfCountry; let i = index;">
+                                                                    <td>
+                                                                        <mat-form-field class="cab-data">
+                                                                            <mat-label>Type Here</mat-label>
+                                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="country_name_{{i}}" [(ngModel)]="nameOfCountry[i].country" required> 
+                                                                        </mat-form-field>
+                                                                    </td>
+                                                                    <td class="content-icn" width="10%">
+                                                                        <span *ngIf="i >= 0" class="icon-add" (click)="addRow(nameOfCountry)"></span> &nbsp;
+                                                                        <span *ngIf="i >= 1" class="icon-cross" (click)="openDialog(nameOfCountry,i)"></span>
+                                                                    </td>
+                                                                </tr>
+                                                            
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     
@@ -1086,6 +1182,9 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
@@ -1098,8 +1197,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
                     </form>
                 </div>
 
