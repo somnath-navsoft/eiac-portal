@@ -350,12 +350,12 @@ console.log(">>>steps: ", this.headerSteps);
               // this.dynamicScopeFieldType[scopeTitle] = [];
               // this.dynamicScopeModel[scopeTitle] = {};
 
-              this.dynamicScopeFieldColumns[findType.title] = [];
-              this.dynamicScopeFieldColumns[findType.title][scopeTitle] = [];
-              this.dynamicScopeFieldType[findType.title] = [];
-              this.dynamicScopeFieldType[findType.title][scopeTitle] = [];
-              this.dynamicScopeModel[findType.title] = {};
-              this.dynamicScopeModel[findType.title][scopeTitle] = {};
+              this.dynamicScopeFieldColumns[findType.id] = [];
+              this.dynamicScopeFieldColumns[findType.id][scopeTitle] = [];
+              this.dynamicScopeFieldType[findType.id] = [];
+              this.dynamicScopeFieldType[findType.id][scopeTitle] = [];
+              this.dynamicScopeModel[findType.id] = {};
+              this.dynamicScopeModel[findType.id][scopeTitle] = {};
 
               console.log("@Model struct: ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
               //return;
@@ -404,7 +404,7 @@ console.log(">>>steps: ", this.headerSteps);
           if(dataScope.scopeValue.length){
             var counter = 0;let defLine = {};
             dataScope.scopeValue.forEach((rec, key) => {
-              console.log("--Scope ", rec, " :: ", key, " -- ", this.dynamicScopeFieldType[findType.title]);
+              console.log("--Scope ", rec, " :: ", key, " -- ", this.dynamicScopeFieldType[findType.id]);
 
               if(rec.scope != undefined && typeof rec.scope === 'object' && !this.Service.isObjectEmpty(rec.scope)){
                   let fieldType: any = {
@@ -413,14 +413,14 @@ console.log(">>>steps: ", this.headerSteps);
                      inputType: rec.scope.input_type,
                      defValue: rec.scope.default_value
                   }
-                  this.dynamicScopeFieldType[findType.title][scopeTitle].push(fieldType);
+                  this.dynamicScopeFieldType[findType.id][scopeTitle].push(fieldType);
               }
               
               customKey = rec.title.toString().toLowerCase().split(' ').join('_');
-              this.dynamicScopeFieldColumns[findType.title][scopeTitle][key] = [];
+              this.dynamicScopeFieldColumns[findType.id][scopeTitle][key] = [];
 
               fieldTitleValue[key] = [];
-              this.dynamicScopeModel[findType.title][scopeTitle]['fieldLines'] = [];
+              this.dynamicScopeModel[findType.id][scopeTitle]['fieldLines'] = [];
 
               if(dataScope.firstColumnData != undefined && dataScope.firstColumnData.length > 0){
                 defLine['firstFieldValues'] = dataScope.firstColumnData;
@@ -431,7 +431,7 @@ console.log(">>>steps: ", this.headerSteps);
 
               let colObj: any ={};
               colObj = {title: fieldTitle, values:fieldValues, name: rec.title, idVal: filedId};
-              this.dynamicScopeFieldColumns[findType.title][scopeTitle][key].push(colObj);
+              this.dynamicScopeFieldColumns[findType.id][scopeTitle][key].push(colObj);
               defLine[fieldValues] = [];
               //console.log(">>> Field values: ", fieldValues, " -- ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeModel.fieldLines);
               if(defLine['firstFieldValues'].length > 0  && key == 0){
@@ -442,20 +442,20 @@ console.log(">>>steps: ", this.headerSteps);
                 }
                 //Default load next column 
                 if(key == 0){
-                  this.onChangeScopeOption(getValue,scopeTitle,findType.title,key,key,'initLoad');
+                  this.onChangeScopeOption(getValue,scopeTitle,findType.id,key,key,'initLoad');
                 } 
                 setTimeout(()=>{
                   if(getValue != undefined && getValue > 0){  
                     let fSelValues: any = {};
                     //fSelValues[]                    
-                    this.dynamicScopeModel[findType.title][scopeTitle]['fieldLines'][0][this.dynamicScopeFieldColumns[findType.title][scopeTitle][0][0].values] = [defLine['firstFieldValues'][0]];
-                    this.dynamicScopeModel[findType.title][scopeTitle].fieldLines[key][this.dynamicScopeFieldColumns[findType.title][scopeTitle][key][0].title] = getValue;
+                    this.dynamicScopeModel[findType.id][scopeTitle]['fieldLines'][0][this.dynamicScopeFieldColumns[findType.id][scopeTitle][0][0].values] = [defLine['firstFieldValues'][0]];
+                    this.dynamicScopeModel[findType.id][scopeTitle].fieldLines[key][this.dynamicScopeFieldColumns[findType.id][scopeTitle][key][0].title] = getValue;
                   }
                 },0)                                
                 
               }              
               //Load first field value default by selecting first item
-              this.dynamicScopeModel[findType.title][scopeTitle].fieldLines.push(defLine);
+              this.dynamicScopeModel[findType.id][scopeTitle].fieldLines.push(defLine);
             });
 
             console.log("@@@@Update Model: ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
@@ -1628,12 +1628,12 @@ saveScope(){
           if(getData){
             scopeTitle = getData.title.toString().toLowerCase().split(" ").join('_');
           }
-          scopeCollections[typeScope.title] = {};
-          scopeCollections[typeScope.title][selectScheme] = {};
-          scopeCollections[typeScope.title][selectScheme]['scope_heading'] = {};
-                for(var key in this.dynamicScopeFieldColumns[typeScope.title][scopeTitle]){
+          scopeCollections[typeScope.id] = {};
+          scopeCollections[typeScope.id][selectScheme] = {};
+          scopeCollections[typeScope.id][selectScheme]['scope_heading'] = {};
+                for(var key in this.dynamicScopeFieldColumns[typeScope.id][scopeTitle]){
                       //console.log(">>> ", key, " :: ", this.dynamicScopeFieldColumns[key]);
-                      let tempData: any = this.dynamicScopeFieldColumns[typeScope.title][scopeTitle];
+                      let tempData: any = this.dynamicScopeFieldColumns[typeScope.id][scopeTitle];
                       if(typeof tempData === 'object'){
                         tempData.forEach((item,key) => {
                               //console.log(">>>> Col items: ",item);
@@ -1641,7 +1641,7 @@ saveScope(){
                               let name = item[0].name;
                               let tempObj = {};
                               tempObj[keyIds] = name;
-                              scopeCollections[typeScope.title][selectScheme]['scope_heading'][keyIds] = name;
+                              scopeCollections[typeScope.id][selectScheme]['scope_heading'][keyIds] = name;
                           });
                       }
                 }
@@ -1678,16 +1678,16 @@ saveScope(){
               if(getData){
                 scopeTitle = getData.title.toString().toLowerCase().split(" ").join('_');
               }
-              //scopeCollections[typeScope.title][selectScheme]   = {};
-              scopeCollections[typeScope.title][selectScheme]['scope_value']     = [];
-              tempDataObj[typeScope.title] = {};
-              tempDataObj[typeScope.title][selectScheme] = [];
+              //scopeCollections[typeScope.id][selectScheme]   = {};
+              scopeCollections[typeScope.id][selectScheme]['scope_value']     = [];
+              tempDataObj[typeScope.id] = {};
+              tempDataObj[typeScope.id][selectScheme] = [];
               tempDataRow = {};
 
               //Scope data population
-              for(var key in this.dynamicScopeModel[typeScope.title][scopeTitle]){
+              for(var key in this.dynamicScopeModel[typeScope.id][scopeTitle]){
                 if(key == 'fieldLines'){
-                  let rowLen = this.dynamicScopeModel[typeScope.title][scopeTitle][key].length;
+                  let rowLen = this.dynamicScopeModel[typeScope.id][scopeTitle][key].length;
                   // Browse rows
                   let getDataValues: any;
                   let getSelectValues: any;
@@ -1707,8 +1707,8 @@ saveScope(){
                     tempDataRow = {};
                     //resultTempAr[k] = {};
 
-                    this.dynamicScopeFieldColumns[typeScope.title][scopeTitle].forEach((colItem,colIndex) => {
-                        console.log("...Col>>> ",colIndex, " :: ", colItem[0], " -- ", this.dynamicScopeModel[typeScope.title][scopeTitle][key][k])
+                    this.dynamicScopeFieldColumns[typeScope.id][scopeTitle].forEach((colItem,colIndex) => {
+                        console.log("...Col>>> ",colIndex, " :: ", colItem[0], " -- ", this.dynamicScopeModel[typeScope.id][scopeTitle][key][k])
                         let colData: any = colItem[0];
                         let optionNameAr: any = [];
                         let optionName: any;
@@ -1716,8 +1716,8 @@ saveScope(){
                           //first coloumn row values - firstFieldValues
                           console.log(">>>> First column: ");
                           let selTitle: any       = colItem[0].title;
-                          let selTitleValues: any = this.dynamicScopeModel[typeScope.title][scopeTitle][key][k]['firstFieldValues'];
-                          let fvalue: any         = this.dynamicScopeModel[typeScope.title][scopeTitle][key][k][selTitle];
+                          let selTitleValues: any = this.dynamicScopeModel[typeScope.id][scopeTitle][key][k]['firstFieldValues'];
+                          let fvalue: any         = this.dynamicScopeModel[typeScope.id][scopeTitle][key][k][selTitle];
                           let getVal: any         = selTitleValues.find(data => data.field_value.id == fvalue)
                           console.log("<><><><> ", getVal);
                           if(getVal){                  
@@ -1732,9 +1732,9 @@ saveScope(){
                             
                           let selTitle: any       = colItem[0].title;
                           let selTitleVal: any    = colItem[0].values;
-                          let selTitleValues: any = this.dynamicScopeModel[typeScope.title][scopeTitle][key][k][selTitleVal];
+                          let selTitleValues: any = this.dynamicScopeModel[typeScope.id][scopeTitle][key][k][selTitleVal];
                           console.log("@fetching col index Data: ", colIndex, " -- ", selTitle, " -- ", selTitleVal, " -- ", selTitleValues);
-                          let fvalue: any         = this.dynamicScopeModel[typeScope.title][scopeTitle][key][k][selTitle];
+                          let fvalue: any         = this.dynamicScopeModel[typeScope.id][scopeTitle][key][k][selTitle];
                           console.log(">>>Type of FVAL: ", typeof fvalue);
                           if(typeof fvalue === 'object'){
                             if(fvalue.length){
@@ -1766,14 +1766,14 @@ saveScope(){
                         }                    
                     })
                     //
-                    tempDataObj[typeScope.title][selectScheme].push(tempDataRow);
+                    tempDataObj[typeScope.id][selectScheme].push(tempDataRow);
                   } 
                   console.log("@updated Temp object: ", tempDataObj); 
                   // for(var p in tempDataObj){
                   //     console.log(tempDataObj[p], " -- ", p);
                   //     resultTempAr.push(tempDataObj[p]);
                   // }
-                  scopeCollections[typeScope.title][selectScheme]['scope_value'] =  tempDataObj[typeScope.title][selectScheme];//resultTempAr[0];
+                  scopeCollections[typeScope.id][selectScheme]['scope_value'] =  tempDataObj[typeScope.id][selectScheme];//resultTempAr[0];
                   console.log(">>>> Result Ar: ", scopeCollections);
                 }
               }
