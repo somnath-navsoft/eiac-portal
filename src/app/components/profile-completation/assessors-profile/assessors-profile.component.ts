@@ -736,8 +736,6 @@ export class AssessorsProfileComponent implements OnInit {
             // this.toastr.success(res['msg'], '');
             // this.router.navigateByUrl('/sign-in');
             this.progressValue == 44 || this.progressValue < 66 ? this.progressValue = 66 : this.progressValue = this.progressValue ;
-            var technicalFields = this.technicalFields;
-            this.technicalFields = technicalFields;
             // this.Service.headerStepMove('knowledge_experience',this.headerSteps,'employment');
             this.Service.moveSteps('employment','knowledge_experience', this.headerSteps);
           }
