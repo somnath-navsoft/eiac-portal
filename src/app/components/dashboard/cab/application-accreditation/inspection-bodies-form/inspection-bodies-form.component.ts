@@ -1365,19 +1365,39 @@ export class InspectionBodiesFormComponent implements OnInit {
             }
         }
         
+        // var stateList =  this.Service.getState();
+        //   var cityList =  this.Service.getCity();
+        //   stateList.subscribe( result => {
+        //     for(let key in result['states']) {
+        //       if(result['states'][key]['name'] == data.state )
+        //       {
+        //         this.allStateList.push(result['states'][key]);
+        //       }
+        //     }
+        //   });
+
+          cityList.subscribe( result => {
+            for(let key in result['cities']) {
+              //console.log("ccc: ", result['cities'][key]);
+              if(result['cities'][key]['name'] == getData.data.city )
+              {
+                this.allCityList.push(result['cities'][key]);
+              }
+            }
+          });
             //getData.data.state = 'West Bengal';
             //console.log(">>> 1 state find...", this.allStateList);  
             //console.log(">>> 2 state find..."); 
 
-            cityList.subscribe( result => {
-              for(let key in result['cities']) {
-                //console.log(">> cities: ", result['cities'][key]);
-                 ////if(result['cities'][key]['state_id'] == data.city )
-                 //{
-                  this.allCityList.push(result['cities'][key]);
-                //}
-              }
-            });
+            // cityList.subscribe( result => {
+            //   for(let key in result['cities']) {
+            //     //console.log(">> cities: ", result['cities'][key]);
+            //      ////if(result['cities'][key]['state_id'] == data.city )
+            //      //{
+            //       this.allCityList.push(result['cities'][key]);
+            //     //}
+            //   }
+            // });
 
             // let sdata: any = this.allStateList.find(rec => rec.name == getData.data.state)
             // console.log("Fnd state: ", sdata);  
@@ -1585,26 +1605,45 @@ export class InspectionBodiesFormComponent implements OnInit {
           if(data){
             console.log('data enter...2');
             if(this.urlVal == 'undefined'){
-            var stateList =  this.Service.getState();
-            var cityList =  this.Service.getCity();
-
-            stateList.subscribe( result => {
-              for(let key in result['states']) {
-                // if(result['states'][key]['name'] == data.state )
-                // {
-                  this.allStateList.push(result['states'][key]);
-                //}
+              var stateList =  this.Service.getState();
+          var cityList =  this.Service.getCity();
+          stateList.subscribe( result => {
+            for(let key in result['states']) {
+              if(result['states'][key]['name'] == data.state )
+              {
+                this.allStateList.push(result['states'][key]);
               }
-            });
+            }
+          });
 
-            cityList.subscribe( result => {
-              for(let key in result['cities']) {
-                // if(result['cities'][key]['name'] == data.city )
-                // {
-                  this.allCityList.push(result['cities'][key]);
-                //}
+          cityList.subscribe( result => {
+            for(let key in result['cities']) {
+              if(result['cities'][key]['name'] == data.city )
+              {
+                this.allCityList.push(result['cities'][key]);
               }
-            });
+            }
+          });
+            // var stateList =  this.Service.getState();
+            // var cityList =  this.Service.getCity();
+
+            // stateList.subscribe( result => {
+            //   for(let key in result['states']) {
+            //     // if(result['states'][key]['name'] == data.state )
+            //     // {
+            //       this.allStateList.push(result['states'][key]);
+            //     //}
+            //   }
+            // });
+
+            // cityList.subscribe( result => {
+            //   for(let key in result['cities']) {
+            //     // if(result['cities'][key]['name'] == data.city )
+            //     // {
+            //       this.allCityList.push(result['cities'][key]);
+            //     //}
+            //   }
+            // });
           }
 
             console.log(">>> list: ", this.allStateList, " -- ", this.allCityList);
