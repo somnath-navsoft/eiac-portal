@@ -46,7 +46,7 @@ export class ForgotPasswordComponent implements OnInit {
         res => {
           if(res['status'] == true) {
             // this.router.navigateByUrl('/sign-in');
-            this.toastr.success('A Reset Link sent to your mail id', '');
+            this.toastr.success('A Reset Link hasbeen sent to your mail id', '');
             this.router.navigateByUrl('/sign-in');
           }
         });
