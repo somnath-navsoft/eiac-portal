@@ -1211,7 +1211,7 @@ export class InspectionBodiesFormComponent implements OnInit {
             console.log(">>> payment details...", getData.data.paymentDetails);
             this.voucherSentData.voucher_code = getData.data.paymentDetails.voucher_no;
             this.voucherSentData.amount = getData.data.paymentDetails.amount;
-            this.voucherSentData.payment_date = getData.data.paymentDetails.voucher_date;
+            this.voucherSentData.payment_date = (getData.data.paymentDetails.voucher_date);
           }
           ////////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
         }else{
@@ -1409,27 +1409,6 @@ export class InspectionBodiesFormComponent implements OnInit {
               }
             }
           });
-            //getData.data.state = 'West Bengal';
-            ////console.log(">>> 1 state find...", this.allStateList);  
-            ////console.log(">>> 2 state find..."); 
-
-            // cityList.subscribe( result => {
-            //   for(let key in result['cities']) {
-            //     ////console.log(">> cities: ", result['cities'][key]);
-            //      ////if(result['cities'][key]['state_id'] == data.city )
-            //      //{
-            //       this.allCityList.push(result['cities'][key]);
-            //     //}
-            //   }
-            // });
-
-            // let sdata: any = this.allStateList.find(rec => rec.name == getData.data.state)
-            // //console.log("Fnd state: ", sdata);  
-            // if(sdata){
-            //   let sid = sdata.id;
-            //   //console.log(">>> 3 state find...");  
-            //   this.citylistById(sid)
-            // }
         this.step1Data.state = getData.data.state;  
       
         this.step1Data.city = getData.data.city;
@@ -3780,7 +3759,7 @@ onSubmitPaymentInformation(ngForm7: any, type?: boolean){
         this.voucherFile.append('application_id',this.formApplicationId);
         
 
-      //////console.log(this.voucherFile, " -- ", this.voucherFile);
+      console.log(this.voucherFile, " -- ", this.voucherFile);
 
 
 

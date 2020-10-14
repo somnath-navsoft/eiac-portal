@@ -1013,7 +1013,6 @@ validateFile(fileEvent: any) {
             this.selectTradeLicPath = this.constant.mediaPath +  data.trade_license.toString();
           }
         }
-        this.step1Data.trade_license_number = data.trade_license_number;
         this.step1Data.city =  data.city;
         this.step1Data.country = data.country;
         this.step1Data.state = data.state;
@@ -1023,7 +1022,7 @@ validateFile(fileEvent: any) {
         this.step1Data.date_of_issue = new Date(data.date_of_issue);
         this.step1Data.fax_no = data.applicant_fax_no;
         this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
-        this.step1Data.is_hold_other_accreditation = "1";
+        // this.step1Data.is_hold_other_accreditation = "1";
         this.step1Data.is_main_activity = "";
         this.step1Data.is_main_activity_note = "";
         this.step1Data.mailing_address = data.applicant_address;
