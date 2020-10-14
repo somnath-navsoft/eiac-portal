@@ -162,6 +162,8 @@ export class CertificationBodiesFormComponent implements OnInit {
    subTypeMaster: any[] = [];
    subTypeRows: Array<any> = [{}];
    isApplicationSubmitted: boolean = false;
+   cbsOtherActivity: any[] = [{}];
+   nameOfCountry: any[] = [{}];
    //Master scope form data declaration
 
   @ViewChild('mydiv', null) mydiv: ElementRef;
@@ -199,12 +201,12 @@ ngOnInit() {
     {
       name:'',
       bod_company:'',
-      md_or_chief_executive:'',
+      md_or_chief_executive:'None',
       authorized_contact_person:'',
       designation:'',
       mobile_no:'',
-      land_no:'',
-      email_address:'',
+      land_no:'None',
+      email_address:'None',
     }
   ]
 
@@ -915,6 +917,17 @@ loadAppInfo(){
         this.step1Data.official_email = data.applicant_email;
         this.step1Data.official_website = data.applicant_website;
         this.ownOrgBasicInfo = step2['cabOwnerData'];
+        step2['cabBodData'].forEach((res,key) => {
+          // console.log(res," -- ",key);
+          step2['cabBodData'][key].name = res.name;
+          step2['cabBodData'][key].bod_company = res.bod_company,
+          step2['cabBodData'][key].md_or_chief_executive = res.md_or_chief_executive != '' && res.md_or_chief_executive != undefined ? res.md_or_chief_executive : 'None';
+          step2['cabBodData'][key].authorized_contact_person = res.authorized_contact_person;
+          step2['cabBodData'][key].designation = res.designation;
+          step2['cabBodData'][key].mobile_no = res.mobile_no;
+          step2['cabBodData'][key].land_no = res.land_no != '' && res.land_no != undefined ? res.land_no : 'None';
+          step2['cabBodData'][key].email_address = res.email_address != '' && res.email_address != undefined ?  res.email_address : 'None';
+        });
         this.ownOrgMembInfo = step2['cabBodData'];
         this.step1Data.physical_location_address = data.applicant_location;
         this.step1Data.po_box = data.po_box;
@@ -1095,6 +1108,10 @@ loadAppInfo(){
               // if(res['data'].mrm_date != null){
               //   this.step4Data.mrm_date = new Date(res['data'].mrm_date);
               // }
+
+              //step5
+              // this.cbsOtherActivity = res['data'].otherActivityLocations;
+              // this.nameOfCountry = res['data'].nameOfCountry;
 
               //Step 6
               if(res['data'].is_prelim_visit != null){
@@ -1897,6 +1914,16 @@ onSubmitStep5(ngForm: any, type?:any) {
   this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
   //this.certificationBodiesForm.step5.application_id = this.formApplicationId;
   this.certificationBodiesForm.step5 = this.step5Data;
+  this.certificationBodiesForm.step5['cbsOtherActivity'] = [];
+  this.certificationBodiesForm.step5['nameOfCountry'] = [];
+  
+  if(this.cbsOtherActivity) {
+    this.certificationBodiesForm.step5['cbsOtherActivity'] = this.cbsOtherActivity;
+  }
+  if(this.nameOfCountry) {
+    this.certificationBodiesForm.step5['nameOfCountry'] = this.nameOfCountry;
+  }
+
   this.certificationBodiesForm.step5['scheme_id'] = 1;//this.schemeRows[0].id;
   
   //Check dynamic model column fields validation

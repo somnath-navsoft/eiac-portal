@@ -247,6 +247,7 @@ export class AssessorsProfileComponent implements OnInit {
           this.step1Data.phone_with_area = res['data']['user_data'][0].contact;
 
           this.technicalFields = res['data'].technical_field;
+          // console.log(this.technicalFields,'technicalFields');
 
           if(res['data'].step1 != '' && res['data'].step1[0] && res['data']['user_data'][0].first_name != "" && res['data'].step1[0].office_email != "" && res['data'].step1[0].dob != null && res['data'].step1[0].mailing_address != "" && res['data'].step1[0].office != "" && res['data'].step1[0].designation != "" && res['data'].step1[0].office_address != "" && res['data'].step1[0].office_tel_no != "" && res['data'].step1[0].nationality != null) {
             this.progressValue = 22;
@@ -445,7 +446,7 @@ export class AssessorsProfileComponent implements OnInit {
             var step3 = res['data'].step3;
             this.step3Data.list_auditor = step3.experience_1 != '' ? '1' : '0';
             this.list_auditor = step3.experience_1;
-            console.log(step3.experience_1,'experience_1');
+            // console.log(step3.experience_1,'experience_1');
 
             this.step3Data.attend_accreditation = step3.experience_2 != '' ? '1' : '0';
             this.attend_accreditation = step3.experience_2;

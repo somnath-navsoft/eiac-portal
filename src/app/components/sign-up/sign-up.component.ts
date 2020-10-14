@@ -18,6 +18,7 @@ export class SignUpComponent implements OnInit {
   public checkSecurity:boolean = false;
   public passblock: boolean = false;
   public passConfBlock: boolean = false;
+  loader:boolean = true;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
@@ -183,11 +184,13 @@ export class SignUpComponent implements OnInit {
   onSubmit(ngForm:any) {
     // //console.log(this.userData.cpassword,'password');
     if(this.isValid()){
+      this.loader = false;
       this.userData.password = this.changePasswordForm.password;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.signUp,this.userData)
         .subscribe(
           res => {
             // console.log(res,'res')
+            this.loader = true;
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
               this.router.navigateByUrl('/sign-in');
