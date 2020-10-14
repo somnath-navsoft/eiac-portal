@@ -398,7 +398,15 @@ export class HealthCareFormComponent implements OnInit {
             console.log(">>> scope field def: ", colDef);
             if(colDef === "None" || colDef === null){
               console.log("Def enter...1");
-              this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].values] = record['scopeValue'];
+                  let scopValues: any = record['scopeValue'];
+                  var resultUniq = scopValues.reduce((unique, o) => {
+                      if(!unique.some(obj => obj.value === o.value)) {
+                        unique.push(o);
+                      }
+                      return unique;
+                  },[]);
+                  console.log(">>> Filter results:1 ",resultUniq);
+              this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].values] = resultUniq;//record['scopeValue'];
             }
             else if(colDef != "None" && colDef != null && colDef != ""){
               console.log("Def enter...2");

@@ -418,7 +418,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       if(type !== undefined && type === 'initLoad'){
         selectValue = getValues;
       }
-      let url = this.Service.apiUatServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data;
+      let url = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data;
       //console.log("option change value: ", url, " :: ", getValues, " -- ", selectValue, " -- Type: ", typeof selectValue);
       //this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,
       let jsonReq: any = {};
@@ -477,7 +477,17 @@ export class InspectionBodiesFormComponent implements OnInit {
                 let colDef: string = this.dynamicScopeFieldType[secIndex][nextColumnIndex].defValue                                                       
 
                 if(colDef === "None" || colDef === null){
-                  this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].values] = record['scopeValue'];
+                  //console.log("#Get value....1: ", record['scopeValue'])
+                  //check duplicate scope values
+                  let scopValues: any = record['scopeValue'];
+                  var resultUniq = scopValues.reduce((unique, o) => {
+                    if(!unique.some(obj => obj.value === o.value)) {
+                      unique.push(o);
+                    }
+                    return unique;
+                },[]);
+                  console.log(">>> Filter results:1 ",resultUniq);
+                  this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].values] = resultUniq;//record['scopeValue'];
                 }
                 if(colDef != "None" && colDef != null){
                   let colValAr: any;                                                                                                                                                                                                                                    
@@ -488,9 +498,10 @@ export class InspectionBodiesFormComponent implements OnInit {
                     tempObj['field_value'] = {};
                     tempObj['field_value']['id'] = item;//(key1+1);
                     tempObj['value'] = item;
-                    //console.log("value obj: ", tempObj);
+                    console.log("value obj: ", tempObj);
                     colTempAr.push(tempObj);
                   });
+                  console.log("@get value: ", colTempAr);
                   this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].values] = colTempAr;
                 }
                 //this.dynamicScopeModel[secName]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex].values] = record['scopeValue'];
@@ -498,7 +509,7 @@ export class InspectionBodiesFormComponent implements OnInit {
                 //this.dynamicScopeModel[secName].fieldLines[lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex].values] = record['scopeValue'];
                 //////console.log(">>>>Model column: ", this.dynamicScopeModel);
             }
-          //console.log("@@@Updated Model Values: ", this.dynamicScopeModel);
+          console.log("@@@Updated Model Values: ", this.dynamicScopeModel);
         });
   }
 
