@@ -1217,7 +1217,7 @@ export class InspectionBodiesFormComponent implements OnInit {
             filePath = this.constant.mediaPath + '/media/' + getData.data.paymentDetails.voucher_invoice;
             pathData = this.getSantizeUrl(filePath);
             this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
-            saveStep = 8;//parseInt(getData.data.saved_step)
+            saveStep = 7;//parseInt(getData.data.saved_step)
 
             console.log(">>> payment details...", getData.data.paymentDetails);
             this.voucherSentData.voucher_code = getData.data.paymentDetails.voucher_no;

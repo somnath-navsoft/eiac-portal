@@ -1088,7 +1088,7 @@ loadData(){
                   filePath = this.constant.mediaPath + '/media/' + res['data'].paymentDetails.voucher_invoice;
                   pathData = this.getSantizeUrl(filePath);
                   this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
-                  saveStep = 8;
+                  saveStep = 7;
                 }
                 ////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
               }else{
