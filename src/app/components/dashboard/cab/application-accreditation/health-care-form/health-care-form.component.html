@@ -1765,7 +1765,7 @@
                                                 <input matInput [matDatepicker]="payment_date" 
                                                 (click)="Service._openCalendar(payment_date)" 
                                                 readonly="true" 
-                                                [min]="minDate" name="payment_date" 
+                                                name="payment_date" 
                                                 [(ngModel)]="voucherSentData.payment_date" placeholder="Payment Date" required>
                                                 <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle>
                                                 <mat-datepicker #payment_date disabled="false"></mat-datepicker>

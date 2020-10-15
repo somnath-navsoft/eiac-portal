@@ -1059,15 +1059,20 @@ validateFile(fileEvent: any) {
               let pathData: any;
               let filePath: string;
               let getData: any = res;
+              let saveStep: number;
               if(!this.Service.isObjectEmpty(res['data'].paymentDetails)){
               
                 if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''){
                   filePath = this.constant.mediaPath + '/media/' + res['data'].paymentDetails.voucher_invoice;
                   pathData = this.getSantizeUrl(filePath);
                   this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
+                  saveStep = 8;
                 }
                 ////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
+              }else{
+                saveStep = parseInt(getData.data.saved_step) - 1;
               }
+
               var cityList =  this.Service.getCity();
 
               this.step1Data.country = getData.data.country;
@@ -1096,7 +1101,7 @@ validateFile(fileEvent: any) {
               
               if(res['data'].saved_step  != null){
                 /////console.log("@saved step assign....");
-                let saveStep = res['data'].saved_step;
+                //let saveStep = res['data'].saved_step;
                 //open step
                 this.headerSteps.forEach((item, key) => {
                       /////console.log(item, " --- ", key);
