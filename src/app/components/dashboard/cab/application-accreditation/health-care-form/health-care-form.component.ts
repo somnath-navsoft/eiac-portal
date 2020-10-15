@@ -648,7 +648,7 @@ scrollForm(data?:any){
     title:'profciency_testing_participation', desc:'2. Profciency Testing Participation', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
     },
     {
-    title:'personal_information', desc:'3. Personal Information', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
+    title:'personal_information', desc:'3. Personnel Information', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
     },
     {
     title:'information_audit_management', desc:'4. Internal Audit & Management', activeStep:false, stepComp:false, icon:'icon-task', activeClass:''
@@ -1238,7 +1238,7 @@ validateFile(fileEvent: any) {
 
               //Step 6
               if(res['data'].is_prelim_visit != null){
-                this.step6Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
+                this.step6Data.prelim_visit_val = (res['data'].is_prelim_visit) ? "1" : "0";
                 this.step6Data.prelim_visit_date = res['data'].prelim_visit_date;
                 this.step6Data.prelim_visit_time = res['data'].prelim_visit_time;
               }
@@ -1581,7 +1581,7 @@ savedraftStep(stepCount) {
     this.healthCareForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
     this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step6Data.is_prelim_visit = this.step6Data.is_prelim_visit == 0 ? false : true;
+    this.step6Data.prelim_visit_val = this.step6Data.prelim_visit_val == 0 ? false : true;
     this.step6Data.is_draft = true;
     this.healthCareForm.saved_step = '6';
     this.healthCareForm.step6 = this.step6Data;
@@ -2167,7 +2167,7 @@ onSubmitStep6(ngForm6: any){
     this.healthCareForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
     this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step6Data.is_prelim_visit = this.step6Data.is_prelim_visit == 0 ? false : true;
+    this.step6Data.prelim_visit_val = this.step6Data.prelim_visit_val == 0 ? false : true;
     this.step6Data.is_draft = false;
     this.healthCareForm.step6 = this.step6Data;
 
