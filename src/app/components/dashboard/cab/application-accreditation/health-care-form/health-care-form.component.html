@@ -1772,7 +1772,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Voucher Code</mat-label>
-                                                <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                                                <input type="number" readonly="true" [ngModelOptions]="{standalone: true}" required="true"
                                                 matInput placeholder="Voucher Code" 
                                                 [(ngModel)]="voucherSentData.voucher_code">
                                             </mat-form-field>
@@ -1785,14 +1785,14 @@
                                                 readonly="true" 
                                                 name="payment_date" 
                                                 [(ngModel)]="voucherSentData.payment_date" placeholder="Payment Date" required>
-                                                <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle>
+                                                <!-- <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle> -->
                                                 <mat-datepicker #payment_date disabled="false"></mat-datepicker>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Payment Amount</mat-label>
-                                                <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                                                <input type="number" readonly="true" [ngModelOptions]="{standalone: true}" required="true"
                                                 matInput placeholder="Payment Amount" 
                                                 [(ngModel)]="voucherSentData.amount">
                                             </mat-form-field>
