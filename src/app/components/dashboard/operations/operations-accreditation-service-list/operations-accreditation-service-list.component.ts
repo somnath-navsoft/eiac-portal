@@ -134,7 +134,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
           this.loader = true;
           // console.log(result,'result');
           this.trainerdata[index].accr_status = 'complete';
-          this._toaster.success("Status Change Successfully",'');
+          this._toaster.success("Payment Completed Successfully",'');
       })
     );
     

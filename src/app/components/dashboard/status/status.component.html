@@ -186,7 +186,7 @@
                             </td>                           
                             <td class="action fnt-clr">
                                 <a href="javascript:void(0)" *ngIf="item.form_meta == 'testing_calibration'" alt="Edit" routerLink="/dashboard/cab_client/testing-calibration-form/{{item.id}}"><span class="icon-edit"></span></a>
-                                <a href="javascript:void(0)" *ngIf="item.form_meta == 'inspection_body'" alt="Edit" routerLink="/dashboard/cab_client/inspection-bodies-form/{{item.id}}" (click)="setIB(item.id)"><span class="icon-edit"></span></a>
+                                <a href="javascript:void(0)" *ngIf="item.form_meta == 'inspection_body' && item.accr_status != 'complete'" alt="Edit" routerLink="/dashboard/cab_client/inspection-bodies-form/{{item.id}}" (click)="setIB(item.id)"><span class="icon-edit"></span></a>
                                 <a href="javascript:void(0)" *ngIf="item.form_meta == 'health_care'" alt="Edit" routerLink="/dashboard/cab_client/health-care-form/{{item.id}}"><span class="icon-edit"></span></a>
                                 <a href="javascript:void(0)" *ngIf="item.form_meta == 'certification_bodies'" alt="Edit" routerLink="/dashboard/cab_client/certification-bodies-form/{{item.id}}"><span class="icon-edit"></span></a>
                                 <!-- <a href="javascript:void(0)" (click)="open(courseVoucher, item.id)" alt="Upload Proforma Invoice" title="Upload Proforma Invoice"><span class="icon-document-pen"></span></a> -->

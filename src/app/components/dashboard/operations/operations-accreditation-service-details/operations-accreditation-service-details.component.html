@@ -86,6 +86,7 @@
                   <span *ngIf="serviceDetail?.form_meta == 'inspection_body'">Inspection Body</span>
                   <span *ngIf="serviceDetail?.form_meta == 'testing_calibration'">Testing Calibration</span>
                   <span *ngIf="serviceDetail?.form_meta == 'health_care'">Health Care</span>
+                  <span *ngIf="serviceDetail?.form_meta == 'certification_bodies'">Certification Bodies</span>
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -853,7 +854,7 @@
                     </tr>
                     <tr>
                       <td>Mobile Number</td>
-                      <td colspan="3">+{{paymentDetails?.mobile_no}}</td>
+                      <td *ngIf="paymentDetails?.mobile_no != null" colspan="3">+{{paymentDetails?.mobile_no}}</td>
                     </tr>
                   </table>
                 </div>
@@ -867,7 +868,7 @@
             <div class="button-content">
               <button class="submit-bttn submit-health" (click)="uiDialog.openPDFViewer(_constant.mediaPath,serviceDetail.form_pdf)"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button>
             </div>
-            <a class="submit-bttn submit-health" href="javascript:void(0)" (click)="open(courseVoucher, routeId)">Peforma Upload</a>
+            <a *ngIf="!paymentDetails" class="submit-bttn submit-health" href="javascript:void(0)" (click)="open(courseVoucher, routeId)">PROFORMA UPLOAD</a>
           </div>
           
         </div>
