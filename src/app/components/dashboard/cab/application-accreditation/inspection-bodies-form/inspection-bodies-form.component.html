@@ -1716,7 +1716,7 @@
                                         (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice')">BACK</a> 
                                         <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice()">SAVE AS DRAFT</button>
                                     </div>
-                                    <button class="submit-bttn submit-health" >CONTINUE</button>
+                                    <button class="submit-bttn submit-health" *ngIf="!transactions.length" >CONTINUE</button>
                                     <ng-container *ngIf="transactions.length">
                                         <div id="paypalPayment"></div>
                                     </ng-container>
@@ -1765,8 +1765,9 @@
                                         <div class="col-md-4  mt-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Payment Date</mat-label>
+                                                
                                                 <!-- (click)="Service._openCalendar(payment_date)" -->
-                                                <input matInput [matDatepicker]="payment_date" readonly="true"
+                                                <input matInput [matDatepicker]="payment_date" 
                                                   name="payment_date"   readonly="true"
                                                 [(ngModel)]="voucherSentData.payment_date" placeholder="Payment Date" required>
                                                 <!-- <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle> -->
