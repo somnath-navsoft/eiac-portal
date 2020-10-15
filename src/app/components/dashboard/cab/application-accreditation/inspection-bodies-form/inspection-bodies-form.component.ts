@@ -179,6 +179,8 @@ export class InspectionBodiesFormComponent implements OnInit {
   editScopeData: any;
   getScopeData: any;
 
+  payment_date: string;
+
   selectDeleteID: number =0;
   selectDeleteKey: any;
   selectDeleteIndex: any;
@@ -1177,7 +1179,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         let pathData: any;
         let filePath: string;
         let saveStep: number;
-        //console.log(getData,"get APP Data:");
+        console.log(getData,"get APP Data:");
 
         this.viewData = getData;
 
@@ -1217,16 +1219,14 @@ export class InspectionBodiesFormComponent implements OnInit {
             filePath = this.constant.mediaPath + '/media/' + getData.data.paymentDetails.voucher_invoice;
             pathData = this.getSantizeUrl(filePath);
             this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
-            saveStep = 7;//parseInt(getData.data.saved_step)
-
-            console.log(">>> payment details...", getData.data.paymentDetails);
-            this.voucherSentData.voucher_code = getData.data.paymentDetails.voucher_no;
-            this.voucherSentData.amount = getData.data.paymentDetails.amount;
-            this.voucherSentData.payment_date = (getData.data.paymentDetails.voucher_date);
+            saveStep = parseInt(getData.data.saved_step);
             
+          }else{
+            saveStep = parseInt(getData.data.saved_step) - 1;
           }
           ////////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
-        }else{
+        }
+        else{
           saveStep = parseInt(getData.data.saved_step) - 1;
         }
 
@@ -1583,10 +1583,10 @@ export class InspectionBodiesFormComponent implements OnInit {
 
         //step 9
         if(getData.data.paymentDetails != null && typeof getData.data.paymentDetails === 'object'){
-          console.log(">>>payment details...show");
-            //this.voucherSentData.voucher_code     = getData.data.paymentDetails.voucher_code;
-            //this.voucherSentData.payment_date     = getData.data.paymentDetails.payment_date;
-            //this.voucherSentData.amount           = getData.data.paymentDetails.amount;
+          //console.log(">>>payment details...show; ", getData.data.paymentDetails);
+            this.voucherSentData.voucher_code     = getData.data.paymentDetails.voucher_no;
+            this.voucherSentData.payment_date     = getData.data.paymentDetails.voucher_date;
+            this.voucherSentData.amount           = getData.data.paymentDetails.amount;
             this.voucherSentData.transaction_no   = getData.data.paymentDetails.transaction_no;
             this.voucherSentData.payment_method   = getData.data.paymentDetails.payment_method;
             this.voucherSentData.payment_made_by  = getData.data.paymentDetails.payment_made_by;
@@ -3751,18 +3751,19 @@ onSubmitPaymentInformation(ngForm7: any, type?: boolean){
     //////console.log("payment submitting.....");
     this.inspectionBodyForm = {};
     this.inspectionBodyForm.step9 = {};
-    
+    //this.inspectionBodyForm.saved_step = 9;
 
-          let dtFormat: string = '';
-          if(this.voucherSentData['payment_date'] != undefined && 
-            this.voucherSentData['payment_date']._i != undefined){
-            var dtData = this.voucherSentData['payment_date']._i;
-            var year = dtData.year;
-            var month = dtData.month;
-            var date = dtData.date;
-            dtFormat = year + "-" + month + "-" + date;
-          }
-          //     
+          // let dtFormat: string = '';
+          // if(this.voucherSentData['payment_date'] != undefined && 
+          //   this.voucherSentData['payment_date']._i != undefined){
+          //   var dtData = this.voucherSentData['payment_date']._i;
+          //   var year = dtData.year;
+          //   var month = dtData.month;
+          //   var date = dtData.date;
+          //   dtFormat = year + "-" + month + "-" + date;
+          // }
+
+          //console.log("payment date: ", " -- ",this.voucherSentData, " -- ", dtFormat);
 
         this.voucherFile.append('voucher_code',this.voucherSentData['voucher_code']);
         this.voucherFile.append('amount',this.voucherSentData['amount']);
@@ -3770,9 +3771,10 @@ onSubmitPaymentInformation(ngForm7: any, type?: boolean){
         this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
         this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
         this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
-        this.voucherFile.append('payment_date',dtFormat);
+        this.voucherFile.append('payment_date',this.voucherSentData['payment_date']);
         this.voucherFile.append('accreditation',this.formApplicationId);
         this.voucherFile.append('application_id',this.formApplicationId);
+        this.voucherFile.append('saved_step', 9);
         
 
       console.log(this.voucherFile, " -- ", this.voucherFile);

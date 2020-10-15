@@ -1088,11 +1088,13 @@ loadData(){
                   filePath = this.constant.mediaPath + '/media/' + res['data'].paymentDetails.voucher_invoice;
                   pathData = this.getSantizeUrl(filePath);
                   this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
-                  saveStep = 7;
+                  saveStep = parseInt(getData.data.saved_step);
                 }
-                ////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
+                else{
+                  saveStep = parseInt(getData.data.saved_step) - 1;
+                }
               }else{
-                saveStep = parseInt(getData.data.saved_step) - 1;
+                  saveStep = parseInt(getData.data.saved_step) - 1;
               }
 
               var cityList =  this.Service.getCity();
