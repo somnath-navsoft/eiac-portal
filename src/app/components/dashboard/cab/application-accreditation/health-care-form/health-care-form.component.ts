@@ -1607,6 +1607,8 @@ savedraftStep(stepCount) {
     this.healthCareForm.step7 = {};
     this.healthCareForm.email = this.userEmail;
     this.healthCareForm.userType = this.userType;
+    var applicationId = sessionStorage.getItem('applicationId');
+    this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step7Data.authorizationList = this.authorizationList;
     this.step7Data.recommend = this.recommend;
     this.step7Data.is_draft = true;
@@ -1616,6 +1618,7 @@ savedraftStep(stepCount) {
     // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
     this.loader = false;
     // this.step6DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
+    console.log(this.healthCareForm,'healthCareForm');
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
     .subscribe(
       res => {
@@ -1633,6 +1636,10 @@ savedraftStep(stepCount) {
   if(stepCount == 'step9') {
     this.healthCareForm = {};
     this.healthCareForm.step9 = {};
+    this.healthCareForm.email = this.userEmail;
+    this.healthCareForm.userType = this.userType;
+    var applicationId = sessionStorage.getItem('applicationId');
+    this.step9Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
 
     let dtFormat: string = '';
     if(this.voucherSentData['payment_date'] != undefined && 
