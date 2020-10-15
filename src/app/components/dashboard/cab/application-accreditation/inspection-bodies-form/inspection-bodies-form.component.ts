@@ -3265,6 +3265,10 @@ export class InspectionBodiesFormComponent implements OnInit {
 
 };
 
+onSubmitProformaInvoice() {
+  this.toastr.success('Save Draft Successfully', '');
+}
+
 findObjectKeyValues(object: any, value: string){
   //console.log(">>get column: ", value);
     for(var k in object){

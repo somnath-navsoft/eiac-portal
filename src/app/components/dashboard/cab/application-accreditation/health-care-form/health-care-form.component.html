@@ -1274,7 +1274,7 @@
                                                 <div class="col-md-2">
                                                     <div class="request_frm">
                                                         <mat-radio-group name="perlim_visit_val" 
-                                                        [(ngModel)]="step6Data.prelim_visit_val" #selectPrelim="ngModel" required>
+                                                        [(ngModel)]="step6Data.is_prelim_visit" #selectPrelim="ngModel" required>
                                                             <div class="rad-space">
                                                                 <mat-radio-button value="1">Yes </mat-radio-button>
                                                                 <mat-radio-button value="0">No </mat-radio-button>
@@ -1740,7 +1740,7 @@
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
                                         <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice')">BACK</a> 
-                                        <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice(ngForm8, true)">SAVE AS DRAFT</button> -->
+                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step8')">SAVE AS DRAFT</button>
                                         <!-- <button class="submit-bttn submit-health" (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)">CONTINUE</button> -->
                                     </div>
                                     <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button>
