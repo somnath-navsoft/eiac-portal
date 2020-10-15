@@ -164,6 +164,10 @@ export class CertificationBodiesFormComponent implements OnInit {
    isApplicationSubmitted: boolean = false;
    cbsOtherActivity: any[] = [{}];
    nameOfCountry: any[] = [{}];
+
+   //Other scope fixed table
+   otherStandards: any[] = [{}];
+
    //Master scope form data declaration
 
   @ViewChild('mydiv', null) mydiv: ElementRef;

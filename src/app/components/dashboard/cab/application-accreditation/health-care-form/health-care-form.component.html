@@ -1352,7 +1352,7 @@
                                     <div class="auth">
                                         <ul>
                                             <li>
-                                                <mat-checkbox name="authorization_confirm1" [(ngModel)]="authorizationList.authorization_confirm1" >I confirm that the information provided in this application form is true and correct.</mat-checkbox>
+                                                <mat-checkbox  (change)="authorizeCheckCount($event)" name="authorization_confirm1" [(ngModel)]="authorizationList.authorization_confirm1" >I confirm that the information provided in this application form is true and correct.</mat-checkbox>
                                             </li>
                                             
                                             <li class="terms-condition"  (scroll)="scrollHandler($event)" #mydiv style="height:500px;overflow:auto">
@@ -1484,7 +1484,7 @@
                                                 Agreement and request to provide us with a word agreement form for signature.</mat-checkbox>
                                             </li>
                                         </ul>
-                                        <p class="error" *ngIf="!readTermsCond">Read the Terms and Conditions</p>
+                                        <p class="error" *ngIf="!readTermsCond  && isApplicationSubmitted == true">Read the Terms and Conditions</p>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
@@ -1506,7 +1506,7 @@
                                             </div> -->
                                             <div class="authData">
                                                 
-                                                <mat-checkbox name="undertaking_confirmTop3" 
+                                                <mat-checkbox name="undertaking_confirmTop3" (change)="authorizeCheckCount($event)"
                                                 [(ngModel)]="authorizationList.undertaking_confirmTop3" required>Do you require ILA MRA Mark Laboratories</mat-checkbox>
                                             </div>
 
@@ -1515,7 +1515,7 @@
                                                 <table>
                                                     <tr>
                                                         <td width="1%">
-                                                            <mat-checkbox name="undertaking_confirm1" 
+                                                            <mat-checkbox name="undertaking_confirm1"  (change)="authorizeCheckCount($event)"
                                                             [(ngModel)]="authorizationList.undertaking_confirm1"></mat-checkbox></td>
                                                         <td>Management System Manual</td>
                                                     </tr>
@@ -1523,34 +1523,34 @@
                                                         <td><mat-checkbox name="undertaking_confirm2" [disableRipple]="true"
                                                             (click)="$event.preventDefault()" [(ngModel)]="authorizationList.undertaking_confirm2"></mat-checkbox></td>
                                                         <td><span><a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled Up Document Review Checklist</a></span> (Related to applied accreditation standard and for initial accreditation & Scope Extensions only)<br/>
-                                                            <p class="error" *ngIf="!readReviewChecklist">Please review the checklist</p>                                                            
+                                                            <p class="error" *ngIf="!readReviewChecklist  && isApplicationSubmitted == true">Please review the checklist</p>                                                            
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td><mat-checkbox name="undertaking_confirm3" [(ngModel)]="authorizationList.undertaking_confirm3"></mat-checkbox></td>
+                                                        <td><mat-checkbox name="undertaking_confirm3"   (change)="authorizeCheckCount($event)" [(ngModel)]="authorizationList.undertaking_confirm3"></mat-checkbox></td>
                                                         <td>Internal Procedures (as per the accreditation criteria)</td>
                                                     </tr>
                                                     <tr>
-                                                        <td><mat-checkbox name="undertaking_confirm4" [(ngModel)]="authorizationList.undertaking_confirm4"></mat-checkbox></td>
+                                                        <td><mat-checkbox name="undertaking_confirm4"   (change)="authorizeCheckCount($event)" [(ngModel)]="authorizationList.undertaking_confirm4"></mat-checkbox></td>
                                                         <td>Minutes/Report of last Management Review</td>
                                                     </tr>
                                                     <tr>
-                                                        <td><mat-checkbox name="undertaking_confirm5" [(ngModel)]="authorizationList.undertaking_confirm5"></mat-checkbox></td>
+                                                        <td><mat-checkbox name="undertaking_confirm5"   (change)="authorizeCheckCount($event)" [(ngModel)]="authorizationList.undertaking_confirm5"></mat-checkbox></td>
                                                         <td>Report of last Internal Audit</td>
                                                     </tr>
                                                     <tr>
-                                                        <td><mat-checkbox name="undertaking_confirm6" [(ngModel)]="authorizationList.undertaking_confirm6"></mat-checkbox></td>
+                                                        <td><mat-checkbox name="undertaking_confirm6" (change)="authorizeCheckCount($event)"  [(ngModel)]="authorizationList.undertaking_confirm6"></mat-checkbox></td>
                                                         <td>Participation in PT/ILC/Measurement Audit</td>
                                                     </tr>
                                                     <tr>
-                                                        <td><mat-checkbox name="undertaking_confirm7" [(ngModel)]="authorizationList.undertaking_confirm7"></mat-checkbox></td>
+                                                        <td><mat-checkbox name="undertaking_confirm7"  (change)="authorizeCheckCount($event)" [(ngModel)]="authorizationList.undertaking_confirm7"></mat-checkbox></td>
                                                         <td>List of key staff and Organizational Structure if not mentioned in the Management System Manual</td>
                                                     </tr>
                                                 </table>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p class="error" *ngIf="!authorizationStatus">All check are required.</p>
+                                                    <p class="error" *ngIf="!authorizationStatus  && isApplicationSubmitted == true">All check are required.</p>
                                                 </div>
                                             </div>
                                             <div class="recommend">
@@ -1564,7 +1564,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p class="error" *ngIf="recommendVisit.errors?.required">Please select anyone option</p>
+                                                    <p class="error" *ngIf="recommendVisit.errors?.required && isApplicationSubmitted == true">Please select anyone option</p>
                                                 </div>
                                             </div>
                                         </div>

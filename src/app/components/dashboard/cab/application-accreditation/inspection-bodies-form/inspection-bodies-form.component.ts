@@ -212,7 +212,9 @@ export class InspectionBodiesFormComponent implements OnInit {
          //////////console.log("Yo have reached!");
          this.authorizationList.authorization_confirm2 = true;
          this.readTermsCond = true;
+         this.authorizeCheckCount(elem, 'read')
       }else{
+        this.authorizeCheckCount(elem, 'read')
         //this.authorizationList.authorization_confirm2 = false;
         //this.readTermsCond = false;
       } 
@@ -519,10 +521,11 @@ export class InspectionBodiesFormComponent implements OnInit {
     
 
   }
-  agreeView(){
+  agreeView(event){
     this.modalService.dismissAll();
     this.authorizationList.undertaking_confirmTop2 = true;
     this.readAccredAgreem = true;
+    this.authorizeCheckCount(event, 'read');
   }
   closeChecklistDialog(){
     this.modalService.dismissAll();
@@ -843,7 +846,8 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.inspectionBodyForm.inspectionBodyInfo           = this.inspectionBodyInfo;
     this.inspectionBodyForm.medicaMainlLabInfo        = this.medicaMainlLabInfo;
     //, undertaking_confirmTop1: false,undertaking_confirmTop2: false,,  undertaking_confirmTop3: false
-    this.authorizationList = {undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,
+    this.authorizationList = {undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,
+      undertaking_confirm6:false,
       undertaking_confirm7:false,authorization_confirm1:false,authorization_confirm2:false};
 
     this.recommend = {first:false,second:false,third:false,fourth:false}
@@ -2227,6 +2231,35 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.minDate = new Date(cdate  + (60*60*24*1000));
   }
 
+  authorizeCheckCount(theEvent: any, type?:any){
+    console.log(theEvent);
+    let checkCount = 0;
+    let readChecked = false;
+
+    if(type != undefined && type == 'read'){
+      console.log(">>> readd...");
+      readChecked = true;
+    }
+
+    if(theEvent.checked || readChecked == true){
+      for(let key in this.authorizationList) {
+        //console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
+        if(this.authorizationList[key]) {  
+          this.authorizationStatus = true;       
+          checkCount++;
+        }    
+      }
+    }
+        
+
+    if(this.authorizationStatus && checkCount == 9){
+      this.authorizationStatus = true;
+    }else{
+      this.authorizationStatus = false;
+    }
+    console.log(">>> Check status count: ", checkCount);
+  }
+
   onSubmitUndertakingApplicant(ngForm7: any, type?: boolean){
     // Object.keys(this.authorizationList).forEach(key => {
     //   if(this.authorizationList[key]==false){
@@ -2244,12 +2277,12 @@ export class InspectionBodiesFormComponent implements OnInit {
     // }
 
     
-
+    this.isApplicationSubmitted = true;
     let checkCount = 0;
     for(let key in this.authorizationList) {
       //console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
       if(this.authorizationList[key]) {  
-        this.authorizationStatus = true;      
+        this.authorizationStatus = true;       
         checkCount++;
       } 
       // if(this.authorizationList[key]) {
@@ -2262,7 +2295,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.authorizationStatus = false;
     }
 
-    //console.log(">>> Check status count: ", checkCount);
+    console.log(">>> Check status count: ", checkCount);
 
     //////console.log("authorize checklist count: ",checkCount)
     // for(let key in this.authorizationList) {
@@ -2298,9 +2331,16 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.inspectionBodyForm.step7.userType = this.userType;
       this.inspectionBodyForm.step7.application_id = this.formApplicationId;
 
+      console.log(">>>Def Data: ", this.step7Data);
+
+      // this.step7Data.organization_name = (this.step7Data.organization_name != '') ? this.step7Data.organization_name : '';
+      // this.step7Data.representative_name = (this.step7Data.representative_name != '') ? this.step7Data.representative_name : '';
+      // this.step7Data.organization_name = (this.step7Data.designation != '' && this.step7Data.designation != 'undefined') ? this.step7Data.designation : '';
+      // this.step7Data.organization_name = (this.step7Data.digital_signature != '' && this.step7Data.digital_signature != 'undefined') ? this.step7Data.digital_signature : '';
+
       this.inspectionBodyForm.step7.application_date = new Date().toISOString().slice(0, 10);//'2020-09-14';
 
-      //console.log(">>>Step7 submit Data: ", this.inspectionBodyForm, " -- ", this.inspectionBodyForm.step7);
+      console.log(">>>Step7 submit Data: ", this.inspectionBodyForm, " -- ", this.inspectionBodyForm.step7);
 
      // return;
      //console.log(">>> Enter....1 ", type, " -- ", ngForm7.form.valid, " -- ", this.authorizationStatus)
@@ -2320,6 +2360,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         res => {
           //////console.log(res,'step 7 submit...')
           if(res['status'] == true) {
+            this.isApplicationSubmitted = false;
 
             if(this.paymentFilePath != ''){
               this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
@@ -2327,75 +2368,13 @@ export class InspectionBodiesFormComponent implements OnInit {
             else{
               this.router.navigateByUrl('/dashboard/status/all');
             }
-
-
-            //this.toastr.success(res['msg'], '');
-            //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
-            /*this.transactionsItem['amount']               = {};
-            this.transactionsItem['amount']['total']      = 0.00;
-            this.transactionsItem['amount']['currency']   = 'USD';
-            this.transactionsItem['amount']['details']    = {};
-            this.transactionsItem['amount']['details']['subtotal'] = 0.00;
-            //declare Items data
-            this.transactionsItem['item_list']            = {};
-            this.transactionsItem['item_list']['items']   = [];
-            let custPrice: any = 520;
-            this.total = 520;
-              this.transactionsItem['item_list']['items'].push({name: 'Inspection Body Application', quantity: 1, price: custPrice, currency: 'USD'});
-                if(this.total > 0){
-                  ////////console.log("Calculate price: ", calcPrice);
-                  this.transactionsItem['amount']['total'] = custPrice.toFixed(2);
-                  this.transactionsItem['amount']['details']['subtotal'] = custPrice.toFixed(2);
-                  this.transactions.push(this.transactionsItem);
-                  ////////console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
-                }
-                setTimeout(() => {
-                  this.createPaymentButton(this.transactionsItem, this.inspectionBodyForm, this);
-                  let elem = document.getElementsByClassName('paypal-button-logo');
-                  //////console.log("button creting...");
-                  if(elem){
-                    //////console.log("button creted...");
-                    
-                  }
-                }, 100)*/
-
           }else{
             this.toastr.warning(res['msg'], '');
           }
         });
 
-      //Paypal config data
-      //applyTrainerPublicCourse
-      // this.transactionsItem['amount']               = {};
-      // this.transactionsItem['amount']['total']      = 0.00;
-      // this.transactionsItem['amount']['currency']   = 'USD';
-      // this.transactionsItem['amount']['details']    = {};
-      // this.transactionsItem['amount']['details']['subtotal'] = 0.00;
-      // //declare Items data
-      // this.transactionsItem['item_list']            = {};
-      // this.transactionsItem['item_list']['items']   = [];
-      // let custPrice: any = 520;
-      // this.total = 520;
-      //   this.transactionsItem['item_list']['items'].push({name: 'Inspection Body Application', quantity: 1, price: custPrice, currency: 'USD'});
-      //     if(this.total > 0){
-      //       ////////console.log("Calculate price: ", calcPrice);
-      //       this.transactionsItem['amount']['total'] = custPrice.toFixed(2);
-      //       this.transactionsItem['amount']['details']['subtotal'] = custPrice.toFixed(2);
-      //       this.transactions.push(this.transactionsItem);
-      //       ////////console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
-      //     }
-      //     setTimeout(() => {
-      //       this.createPaymentButton(this.transactionsItem, this.inspectionBodyForm, this);
-      //       let elem = document.getElementsByClassName('paypal-button-logo');
-      //       //////console.log("button creting...");
-      //       if(elem){
-      //         //////console.log("button creted...");
-              
-      //       }
-      //     }, 100)
-
       //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
-    }else if(type != undefined && type == true){
+    }else if(type != undefined && type == true && this.authorizationStatus == true){
       //console.log(">>> Enter....2 ", type, " -- ", ngForm7.form.valid, " -- ", this.authorizationStatus)
       this.inspectionBodyForm.step7.is_draft = true;
       this.inspectionBodyForm.saved_step     = 7; 

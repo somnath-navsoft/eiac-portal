@@ -200,6 +200,10 @@ export class HealthCareFormComponent implements OnInit {
       if(( elem.srcElement.offsetHeight + elem.srcElement.scrollTop) >=  elem.srcElement.scrollHeight) {
          ////console.log("Yo have reached!");
          this.authorizationList.authorization_confirm2 = true;
+         this.readTermsCond = true;
+         this.authorizeCheckCount(elem, 'read')
+      }else{
+        this.authorizeCheckCount(elem, 'read')
       }
     }        
   }
@@ -1301,7 +1305,9 @@ loadData(){
         });
     }
 
-    this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false};
+    this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,
+                              undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,
+                              undertaking_confirm6:false,undertaking_confirm7:false};
 } 
 
 
@@ -2224,15 +2230,64 @@ onSubmitStep6(ngForm6: any){
   }
 }
 
+authorizeCheckCount(theEvent: any, type?:any){
+  console.log(theEvent);
+  let checkCount = 0;
+  let readChecked = false;
+
+  if(type != undefined && type == 'read'){
+    console.log(">>> readd...");
+    readChecked = true;
+  }
+
+  if(theEvent.checked || readChecked == true){
+    for(let key in this.authorizationList) {
+      //console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
+      if(this.authorizationList[key]) {  
+        this.authorizationStatus = true;       
+        checkCount++;
+      }    
+    }
+  }
+      
+
+  if(this.authorizationStatus && checkCount == 10){
+    this.authorizationStatus = true;
+  }else{
+    this.authorizationStatus = false;
+  }
+  console.log(">>> Check status count: ", checkCount);
+}
+
 onSubmitUndertakingApplicant(ngForm7: any){
 // this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
-for(let key in this.authorizationList) {
-  if(this.authorizationList[key] == false) {
-    this.authorizationStatus = false;
-  }else {
-    this.authorizationStatus = true;
-  }
-}
+// for(let key in this.authorizationList) {
+//   if(this.authorizationList[key] == false) {
+//     this.authorizationStatus = false;
+//   }else {
+//     this.authorizationStatus = true;
+//   }
+// }
+
+    this.isApplicationSubmitted = true;
+    let checkCount = 0;
+    for(let key in this.authorizationList) {
+      //console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
+      if(this.authorizationList[key]) {  
+        this.authorizationStatus = true;       
+        checkCount++;
+      } 
+      // if(this.authorizationList[key]) {
+      //   this.authorizationStatus = true;
+      // }     
+    }  
+    if(this.authorizationStatus && checkCount == 10){  
+      this.authorizationStatus = true;
+    }else{
+      this.authorizationStatus = false;
+    }
+
+    console.log(">>> Check status count: ", checkCount);
 
 // for(let key in this.recommend) {
 //   if(this.recommend[key] == true) {
@@ -2271,6 +2326,7 @@ if(ngForm7.form.valid){
     res => {
       // console.log(res,'res')
       this.loader = true;
+      this.isApplicationSubmitted = false;
       if(res['status'] == true) {
         // this.toastr.success(res['msg'], '');
         if(this.paymentFilePath != ''){
@@ -2398,10 +2454,11 @@ else{
 
 }
 
-agreeView(){
+agreeView(event){
 this.modalService.dismissAll();
 this.authorizationList.undertaking_confirmTop2 = true;
 this.readAccredAgreem = true;
+this.authorizeCheckCount(event, 'read');
 }
 closeChecklistDialog(){
 this.modalService.dismissAll();
