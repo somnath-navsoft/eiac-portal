@@ -1063,7 +1063,7 @@
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Scheme</mat-label>
                                                         <mat-select (selectionChange)="getCriteria(schemeRows[i].id, i)" placeholder="Select" name="scheme_id_{{i}}"  
-                                                        [(ngModel)]="schemeRows[i].id" required>
+                                                        [(ngModel)]="schemeRows[i].id" [required] = "editScopeData == undefined || editScopeData == null">
                                                             <mat-option [value]="item.scope_accridiation.id" *ngFor="let item of criteriaMaster; let k=index;">{{item.title}}</mat-option>
                                                         </mat-select>
                                                         <mat-error></mat-error> 
