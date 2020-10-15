@@ -429,7 +429,6 @@
                                                             <mat-label>Mobile Phone No.</mat-label>
                                                             <input  type="text" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="bod_mobile_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].mobile_no" required>
                                                         </mat-form-field>
-                                                        <!-- <p class="error" *ngIf="ownOrgMembInfo[i].mobile_no && !Service.checkInput('onlyNumberWithPlus',ownOrgMembInfo[i].mobile_no)">Please Enter Correct Mobile Number</p>  -->
                                                     </div>
                                                 </div>
 
@@ -439,7 +438,6 @@
                                                             <mat-label>Land Line Phone No.</mat-label>
                                                             <input matInput (keypress)="Service.IsNumeric($event)" placeholder="Land Line Phone No." name="land_line_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].land_no">
                                                         </mat-form-field>
-                                                        <!-- <p class="error" *ngIf="ownOrgMembInfo[i].land_no && !Service.checkInput('onlyNumberWithPlus',ownOrgMembInfo[i].land_no)">Please Enter Correct Land Line Number</p> -->
                                                     </div>
 
                                                     <div class="col-md-6 col-sm-12">
@@ -448,7 +446,6 @@
                                                             <input  type="email" matInput autocomplete="off" placeholder="Email Address" name="ownership_member_email_{{i}}" [(ngModel)]="ownOrgMembInfo[i].email_address" >
                                                             <mat-error></mat-error>
                                                         </mat-form-field>
-                                                        <!-- <p class="error" *ngIf="ownOrgMembInfo[i].email_address && !Service.checkInput('email',ownOrgMembInfo[i].email_address)">Please Enter Correct Email Id</p> -->
                                                     </div>
                                                 </div>
 
@@ -470,6 +467,96 @@
                         </div>
 
                         <div class="row">
+                            <div class="col-12 p-0">
+                                <div class="form-subheader-data">
+                                    <h5>EXISTING ACCREDITATION OR CERTIFICATION GRANTED TO THE ORGANIZATION</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-sub">
+                                        <span>Does the Organization hold any other Accreditation's?<span class="required_input">*</span></span>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <mat-radio-group name="is_hold_other_accreditation" [(ngModel)]="step1Data.is_hold_other_accreditation" 
+                                #selectAccredHold="ngModel" required>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="check-rdo">
+                                                <mat-radio-button value="1">Yes </mat-radio-button>
+                                            </label>
+                                        </div>  
+                                        <div class="col-md-4">
+                                            <label class="check-rdo">
+                                                <mat-radio-button value="0">No </mat-radio-button>
+                                            </label>
+                                        </div>  
+                                
+                                    </div>
+                                </mat-radio-group>
+                                <div class="col-md-6" [ngStyle]="{'margin-top':'5px'}">
+                                    <p class="error" *ngIf="isApplicationSubmitted == true && selectAccredHold.errors?.required">Please select anyone option</p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row" id="is_hold_other_accreditations" *ngIf="step1Data.is_hold_other_accreditation == '1'">
+                            <div class="col-md-12">
+                                <div class="table-content-health">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Name of Scheme</th>
+                                                <th>Name of Accreditation Body</th>
+                                                <th>Scope of Accreditation & Certificate No</th>
+                                                <th>Expiry Date of Certificate</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr  *ngFor="let item of accreditationInfo; let i = index;">
+                                                <td>
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Type Here</mat-label>
+                                                        <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="scheme_name_{{i}}" [(ngModel)]="accreditationInfo[i].scheme_name" required>
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Type Here</mat-label>
+                                                        <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="acccreditation_body_name_{{i}}" [(ngModel)]="accreditationInfo[i].acccreditation_body_name" required>
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Type Here</mat-label>
+                                                        <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="acccreditation_scope_{{i}}" [(ngModel)]="accreditationInfo[i].acccreditation_scope" required>
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field class="cab-data">
+                                                        <input readonly="true"  (keypress)="Service.inputFilter($event, Service.regExName)" matInput [matDatepicker]="converted_date" readonly="true" placeholder="Date of Certificate" name="converted_date_{{i}}" (click)="Service._openCalendar(converted_date)" [(ngModel)]="accreditationInfo[i].converted_date" required>
+                                                        <mat-datepicker-toggle matSuffix [for]="converted_date"></mat-datepicker-toggle>
+                                                        <mat-datepicker #converted_date  disabled="false"></mat-datepicker>
+                                                    </mat-form-field>
+
+                                                    </td>
+                                                <td class="content-icn">
+                                                    <span *ngIf="i >= 0" class="icon-add" (click)="addRow(accreditationInfo)"></span>&nbsp;
+                                                    <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(accreditationInfo,i)"></span>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
@@ -484,7 +571,7 @@
                 </div>
 
 
-                <div class="cust-stepper" id="other_accreditation"  [ngStyle]="{'display':'none'}">
+                <!-- <div class="cust-stepper" id="other_accreditation"  [ngStyle]="{'display':'none'}">
                     <form #ngForm2="ngForm" (ngSubmit)="onSubmitStep2(ngForm2)" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
@@ -574,7 +661,6 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
-                                    <!-- (click)="onSubmitTestingParticipation()" -->
                                     <div class="button-content">
                                         <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="Service.headerStepMove('application_information',headerSteps,'menu','other_accreditation')">BACK</a> 
                                         <button class="cancel-bttn" (click)="savedraftStep('step2')" type="button">SAVE AS DRAFT</button>
@@ -584,7 +670,7 @@
                             </div>
                         </div>
                     </form>
-                </div>
+                </div> -->
 
                 <div class="cust-stepper" id="personal_information" [ngStyle]="{'display':'none'}">
                     <form #ngForm3="ngForm" (ngSubmit)="onSubmitStep3(ngForm3)" autocomplete="off">
@@ -595,7 +681,7 @@
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr">
-                                                <h5>3. PERSONNEL INFORMATION</h5>
+                                                <h5>2. PERSONNEL INFORMATION</h5>
                                             </div>
                                             <hr>
                                         </div>
@@ -698,35 +784,11 @@
                                         </div>
                                     </div>
 
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="bttns-health bttn-staff">
-                                    <!-- (click)="onSubmitTestingParticipation()" -->
-                                    <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="Service.headerStepMove('other_accreditation',headerSteps,'menu','personal_information')">BACK</a> 
-                                        <button class="cancel-bttn" (click)="savedraftStep('step3')" type="button">SAVE AS DRAFT</button>
-                                    </div>
-                                    <button class="submit-bttn submit-health" >CONTINUE</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="cust-stepper" id="summary_number_ofpersonnel" [ngStyle]="{'display':'none'}">
-                    <form #ngForm4="ngForm" (ngSubmit)="onSubmitStep4(ngForm4)" autocomplete="off">
-                        <div class="row form-bdy m-0">
-                            <div class="wrapper">
-                                <div class="col-12">
-                                    
                                     <div class="row">
                                         <div class="col-md-12 p-0">
-                                            <div class="form-subhdr">
-                                                <h5>4. SUMMARY OF THE NUMBER OF PERSONNEL</h5>
+                                            <div class="form-subheader-data">
+                                                <h5>SUMMARY OF THE NUMBER OF PERSONNEL</h5>
                                             </div>
                                             <hr>
                                         </div>
@@ -834,6 +896,32 @@
                                 <div class="bttns-health bttn-staff">
                                     <!-- (click)="onSubmitTestingParticipation()" -->
                                     <div class="button-content">
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="Service.headerStepMove('other_accreditation',headerSteps,'menu','personal_information')">BACK</a> 
+                                        <button class="cancel-bttn" (click)="savedraftStep('step3')" type="button">SAVE AS DRAFT</button>
+                                    </div>
+                                    <button class="submit-bttn submit-health" >CONTINUE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- <div class="cust-stepper" id="summary_number_ofpersonnel" [ngStyle]="{'display':'none'}">
+                    <form #ngForm4="ngForm" (ngSubmit)="onSubmitStep4(ngForm4)" autocomplete="off">
+                        <div class="row form-bdy m-0">
+                            <div class="wrapper">
+                                <div class="col-12">
+                                    
+                                    
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <div class="button-content">
                                         <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="Service.headerStepMove('personal_information',headerSteps,'menu','summary_number_ofpersonnel')">BACK</a> 
                                         <button class="cancel-bttn" (click)="savedraftStep('step4')" type="button">SAVE AS DRAFT</button>
                                     </div>
@@ -842,7 +930,7 @@
                             </div>
                         </div>
                     </form>
-                </div>
+                </div> -->
 
                 <div class="cust-stepper" id="scope_accreditation"  [ngStyle]="{'display':'none'}">
                     <form #ngForm5="ngForm" (ngSubmit)="onSubmitStep5(ngForm5)" autocomplete="off">

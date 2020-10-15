@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AppService } from 'src/app/services/app.service';
+import { Constants } from 'src/app/services/constant.service';
 
 @Component({
   selector: 'app-accounts',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _service:AppService,private _constants:Constants) { }
 
   ngOnInit() {
   }
