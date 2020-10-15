@@ -1223,6 +1223,7 @@ export class InspectionBodiesFormComponent implements OnInit {
             this.voucherSentData.voucher_code = getData.data.paymentDetails.voucher_no;
             this.voucherSentData.amount = getData.data.paymentDetails.amount;
             this.voucherSentData.payment_date = (getData.data.paymentDetails.voucher_date);
+            
           }
           ////////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
         }else{

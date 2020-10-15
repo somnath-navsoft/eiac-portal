@@ -635,6 +635,8 @@ scrollForm(data?:any){
   //  this.loadFormDynamicTable();
    this.loadCountryStateCity();
    this.loadAppInfo();
+
+   this.loadData();
    //console.log('ddd');
    //this.getPlaceName();
    //this.checkCaptchaValidation = true;
@@ -959,6 +961,26 @@ validateFile(fileEvent: any) {
           return;
         }
     }
+}
+
+loadData(){
+  this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcare_form_basic_data)
+    .subscribe( 
+      res => {
+        console.log("@Load scope....", res);
+        //this.inspectionBodyScopeFields = res['medicalLabScopeFields'];
+        //this.countryList = res['allCountry'];
+        // this.labTypeList = res['allLabtype'];
+        // //this.fullScope   = res['fullScope'];
+        this.criteriaList = res['data']['criteriaList'];
+        // this.step1Data.criteria_request = this.criteriaList[0].code; 
+        // this.criteriaMaster = res['data']['schemes'];
+        //////console.log("#Get criteria: ", this.criteriaMaster);
+
+      },
+      error => {
+      
+  })
 }
 
  loadAppInfo(){
@@ -1607,6 +1629,8 @@ savedraftStep(stepCount) {
     this.healthCareForm.step7 = {};
     this.healthCareForm.email = this.userEmail;
     this.healthCareForm.userType = this.userType;
+    var applicationId = sessionStorage.getItem('applicationId');
+    this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step7Data.authorizationList = this.authorizationList;
     this.step7Data.recommend = this.recommend;
     this.step7Data.is_draft = true;
@@ -1616,6 +1640,7 @@ savedraftStep(stepCount) {
     // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
     this.loader = false;
     // this.step6DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
+    console.log(this.healthCareForm,'healthCareForm');
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
     .subscribe(
       res => {
@@ -1633,6 +1658,10 @@ savedraftStep(stepCount) {
   if(stepCount == 'step9') {
     this.healthCareForm = {};
     this.healthCareForm.step9 = {};
+    this.healthCareForm.email = this.userEmail;
+    this.healthCareForm.userType = this.userType;
+    var applicationId = sessionStorage.getItem('applicationId');
+    this.step9Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
 
     let dtFormat: string = '';
     if(this.voucherSentData['payment_date'] != undefined && 

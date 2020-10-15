@@ -1916,14 +1916,15 @@ onSubmitStep5(ngForm: any, type?:any) {
   this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
   //this.certificationBodiesForm.step5.application_id = this.formApplicationId;
   this.certificationBodiesForm.step5 = this.step5Data;
-  this.certificationBodiesForm.step5['cbsOtherActivity'] = [];
-  this.certificationBodiesForm.step5['nameOfCountry'] = [];
+  //this.certificationBodiesForm.step5['cbsOtherActivity'] = [];
+  this.certificationBodiesForm.step5['otherActivityLocations'] = [];
+  this.certificationBodiesForm.step5['countriesForCertification'] = [];
   
   if(this.cbsOtherActivity) {
-    this.certificationBodiesForm.step5['cbsOtherActivity'] = this.cbsOtherActivity;
+    this.certificationBodiesForm.step5['otherActivityLocations'] = this.cbsOtherActivity;
   }
   if(this.nameOfCountry) {
-    this.certificationBodiesForm.step5['nameOfCountry'] = this.nameOfCountry;
+    this.certificationBodiesForm.step5['countriesForCertification'] = this.nameOfCountry;
   }
 
   this.certificationBodiesForm.step5['scheme_id'] = 1;//this.schemeRows[0].id;
