@@ -410,21 +410,14 @@
                                         </div>
                                     </div> -->
 
-                                    <!-- <div class="row tog-content">
-                                        <div class="col-md-6 col-sm-12 p-0">
+                                    <div class="row"  id="ownOrgBasicInfos">
+                                        <div class="col-12 p-0">
                                             <div class="form-subheader-data">
-                                                <h5>DOES THE COMPANY HAVE BOARD MEMBERS ?</h5>
+                                                <h5>BOARD MEMBERS</h5>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 col-sm-12 p-0">
-                                            <div class="form-subheader-desc">
-                                                <mat-radio-group name="is_bod" [(ngModel)]="step1Data.is_bod">
-                                                    <mat-radio-button value="1">Yes</mat-radio-button>
-                                                    <mat-radio-button value="0">No</mat-radio-button>
-                                                </mat-radio-group>
-                                            </div>
-                                        </div>
-                                    </div> -->
+                                    </div>
+                                    
                                     <div class="row" *ngFor="let item of ownOrgMembInfo; let i = index;">
                                         <div class="col-12"  *ngIf="step1Data.is_bod == '1'" >
                                             <div class="ownr-details">
