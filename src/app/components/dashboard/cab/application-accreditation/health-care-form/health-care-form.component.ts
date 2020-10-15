@@ -635,6 +635,8 @@ scrollForm(data?:any){
   //  this.loadFormDynamicTable();
    this.loadCountryStateCity();
    this.loadAppInfo();
+
+   this.loadData();
    //console.log('ddd');
    //this.getPlaceName();
    //this.checkCaptchaValidation = true;
@@ -959,6 +961,26 @@ validateFile(fileEvent: any) {
           return;
         }
     }
+}
+
+loadData(){
+  this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcare_form_basic_data)
+    .subscribe( 
+      res => {
+        console.log("@Load scope....", res);
+        //this.inspectionBodyScopeFields = res['medicalLabScopeFields'];
+        //this.countryList = res['allCountry'];
+        // this.labTypeList = res['allLabtype'];
+        // //this.fullScope   = res['fullScope'];
+        this.criteriaList = res['data']['criteriaList'];
+        // this.step1Data.criteria_request = this.criteriaList[0].code; 
+        // this.criteriaMaster = res['data']['schemes'];
+        //////console.log("#Get criteria: ", this.criteriaMaster);
+
+      },
+      error => {
+      
+  })
 }
 
  loadAppInfo(){

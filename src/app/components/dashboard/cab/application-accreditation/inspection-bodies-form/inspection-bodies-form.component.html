@@ -97,7 +97,7 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <p class="error" *ngIf="isApplicationSubmitted == true && selectAccrdCriteria.errors?.required">This is required</p>
+                                                        <p class="error" *ngIf="isApplicationSubmitted == true && selectAccrdCriteria.errors?.required">Please select anyone option</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -939,7 +939,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6 col-sm-12">
+                                        <div class="col-md-6 col-sm-12 mt-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Audit Date</mat-label>
                                                 <input matInput   readonly="true" [matDatepicker]="audit_date" id="audit_date"  (click)="Service._openCalendar(audit_date)"   placeholder="Audit Date" name="audit_date" [(ngModel)]="step4Data.audit_date" required>
@@ -948,7 +948,7 @@
                                             </mat-form-field>
 
                                         </div>
-                                        <div class="col-md-6 col-sm-12">
+                                        <div class="col-md-6 col-sm-12  mt-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>MRM Date</mat-label>
                                                 <input matInput   readonly="true" [matDatepicker]="mrm_date" (click)="Service._openCalendar(mrm_date)"   placeholder="MRM Date" name="mrm_date" [(ngModel)]="step4Data.mrm_date" required>
@@ -1707,19 +1707,34 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
-                                    <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice')">BACK</button> 
-                                    <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice()">SAVE AS DRAFT</button>
-                                    <!-- (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)" -->
-                                    <button class="submit-bttn submit-health" *ngIf="!transactions.length" >CONTINUE</button>
+                                    <div class="button-content">
+                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" 
+                                        (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice')">BACK</a> 
+                                        <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice()">SAVE AS DRAFT</button>
+                                    </div>
+                                    <button class="submit-bttn submit-health" >CONTINUE</button>
                                     <ng-container *ngIf="transactions.length">
                                         <div id="paypalPayment"></div>
                                     </ng-container>
                                 </div>
                             </div>
                         </div>
+                        <!-- <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice')">BACK</button> 
+                                    <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice()">SAVE AS DRAFT</button>
+                                    <button class="submit-bttn submit-health" *ngIf="!transactions.length" >CONTINUE</button>
+                                    <ng-container *ngIf="transactions.length">
+                                        <div id="paypalPayment"></div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div> -->
                     </form>
                 </div>
 
@@ -1739,28 +1754,29 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 mt-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Voucher Code</mat-label>
-                                                <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                                                <input type="number" readonly="true" [ngModelOptions]="{standalone: true}" required="true"
                                                 matInput placeholder="Voucher Code" 
                                                 [(ngModel)]="voucherSentData.voucher_code">
                                             </mat-form-field>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-4  mt-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Payment Date</mat-label>
-                                                <input matInput [matDatepicker]="payment_date" 
-                                                (click)="Service._openCalendar(payment_date)"  name="payment_date"   readonly="true"
+                                                <!-- (click)="Service._openCalendar(payment_date)" -->
+                                                <input matInput [matDatepicker]="payment_date" readonly="true"
+                                                  name="payment_date"   readonly="true"
                                                 [(ngModel)]="voucherSentData.payment_date" placeholder="Payment Date" required>
-                                                <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle>
+                                                <!-- <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle> -->
                                                 <mat-datepicker #payment_date disabled="false"></mat-datepicker>
                                             </mat-form-field>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-4  mt-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Payment Amount</mat-label>
-                                                <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                                                <input type="number" readonly="true" [ngModelOptions]="{standalone: true}" required="true"
                                                 matInput placeholder="Payment Amount" 
                                                 [(ngModel)]="voucherSentData.amount">
                                             </mat-form-field>
