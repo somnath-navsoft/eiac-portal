@@ -859,7 +859,7 @@
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mobile Phone No.</mat-label>
-                                                <input  type="text" (keypress)="Service.IsNumeric($event)" maxlength="15" minlength="10" matInput placeholder="Mobile Phone No." name="mobile_no_technical" [(ngModel)]="step3Data.mobile_no"required>
+                                                <input  type="text" (keypress)="Service.IsNumeric($event)" maxlength="13"  matInput placeholder="Mobile Phone No." name="mobile_no_technical" [(ngModel)]="step3Data.mobile_no"required>
                                             </mat-form-field>
                                             <p class="error" *ngIf="step3Data.mobile_no && !Service.checkInput('onlyNumberWithPlus',step3Data.mobile_no)">Please Enter Correct Telephone Number</p> 
                                         </div>
@@ -1242,21 +1242,19 @@
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr">
-                                                <h5>PERLIM VISIT</h5>
+                                                <h5>PRELIM VISIT</h5>
                                             </div>
                                             <hr>
                                         </div>
                                     </div>
                                     <div class="row mt-3">                                         
-                                        <div class="col-md-12 p-0">
-                                            <div class="row m-0">
+                                        <div class="col-md-12">
+                                            <!-- <div class="row m-0">
                                                 <div class="col-md-6">
                                                     <div class="request-subhdr">
-                                                        <h5>Request for perlim visit</h5>
+                                                        <h5>Request for perlim visit *</h5>
                                                     </div>
                                                 </div>
-                                                <!-- @@{{inspectionBodyForm.perlim_visit_val |  json}} -->
-                                                <!-- (click)='proficiency_testing(1)' -->
                                                 <div class="col-md-6">
                                                     <div class="request_frm">
                                                         <mat-radio-group name="is_prelim_visit" 
@@ -1266,7 +1264,28 @@
                                                         </mat-radio-group>
                                                     </div>
                                                 </div>
-                                            </div>                                                    
+                                            </div>-->
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="request-subhdr">
+                                                        <span>Request for prelim visit *</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="request_frm">
+                                                        <mat-radio-group name="perlim_visit_val" 
+                                                        [(ngModel)]="step6Data.prelim_visit_val" #selectPrelim="ngModel" required>
+                                                            <div class="rad-space">
+                                                                <mat-radio-button value="1">Yes </mat-radio-button>
+                                                                <mat-radio-button value="0">No </mat-radio-button>
+                                                            </div>
+                                                        </mat-radio-group>
+                                                        <div class="col-md-6 p-0"  [ngStyle]="{'margin-top':'5px','margin-left' : '40px'}">
+                                                            <p class="error" *ngIf="isPrelimSubmitted == true && selectPrelim.errors?.required">Please select anyone option</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -1578,8 +1597,7 @@
                                                 <div class="col-md-4 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Organization Name</mat-label>
-                                                        <input  
-                                                        (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                        <input 
                                                         matInput placeholder="Organization Name" name="onbehalf_company_name" 
                                                         [(ngModel)]="step7Data.organization_name" required>
                                                     </mat-form-field>
@@ -1631,7 +1649,7 @@
                                         <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('perlim_visit',headerSteps,'menu','undertaking_applicant')">BACK</a> 
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step7')">SAVE AS DRAFT</button> 
                                     </div>
-                                    <button class="submit-bttn submit-health" >SUBMIT APPLICATION</button>
+                                    <button class="submit-bttn submit-health" >SUBMIT</button>
                                     <!-- <ng-container *ngIf="transactions.length">
                                         <div id="paypalPayment"></div>
                                     </ng-container>                                                  -->
@@ -1811,7 +1829,7 @@
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mobile Number</mat-label>
                                                 <input type="text" [ngModelOptions]="{standalone: true}" required="true"
-                                                matInput placeholder="Mobile Number" 
+                                                matInput placeholder="Mobile Number" maxlength="13" 
                                                 [(ngModel)]="voucherSentData.mobile_no" required>
                                             </mat-form-field>
                                         </div>

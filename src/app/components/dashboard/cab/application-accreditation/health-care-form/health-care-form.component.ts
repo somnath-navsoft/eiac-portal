@@ -1233,7 +1233,7 @@ validateFile(fileEvent: any) {
 
               //Step 6
               if(res['data'].is_prelim_visit != null){
-                this.step6Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
+                this.step6Data.prelim_visit_val = (res['data'].is_prelim_visit) ? "1" : "0";
                 this.step6Data.prelim_visit_date = res['data'].prelim_visit_date;
                 this.step6Data.prelim_visit_time = res['data'].prelim_visit_time;
               }
@@ -1576,7 +1576,7 @@ savedraftStep(stepCount) {
     this.healthCareForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
     this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step6Data.is_prelim_visit = this.step6Data.is_prelim_visit == 0 ? false : true;
+    this.step6Data.prelim_visit_val = this.step6Data.prelim_visit_val == 0 ? false : true;
     this.step6Data.is_draft = true;
     this.healthCareForm.saved_step = '6';
     this.healthCareForm.step6 = this.step6Data;
@@ -2162,7 +2162,7 @@ onSubmitStep6(ngForm6: any){
     this.healthCareForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
     this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step6Data.is_prelim_visit = this.step6Data.is_prelim_visit == 0 ? false : true;
+    this.step6Data.prelim_visit_val = this.step6Data.prelim_visit_val == 0 ? false : true;
     this.step6Data.is_draft = false;
     this.healthCareForm.step6 = this.step6Data;
 
