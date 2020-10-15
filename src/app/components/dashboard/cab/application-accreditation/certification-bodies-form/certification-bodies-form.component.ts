@@ -229,32 +229,32 @@ ngOnInit() {
     {
     title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
     },
+    // {
+    //   title:'other_accreditation', desc:'2. Other Accreditation', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    // },
     {
-      title:'other_accreditation', desc:'2. Other Accreditation', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    title:'personal_information', desc:'2. Personnel Information', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
+    },
+    // {
+    // title:'summary_number_ofpersonnel', desc:'4. Summary Of The Number Of Personnel', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    // },
+    {
+      title:'scope_accreditation', desc:'3. Accreditation Scope', activeStep:false, stepComp:false, icon:'icon-sheet', activeClass:''
     },
     {
-    title:'personal_information', desc:'3. Personnel Information', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
+    title:'perlim_visit', desc:'4. Prelim Visit', activeStep:false, stepComp:false, icon:'icon-paper', activeClass:''
     },
     {
-    title:'summary_number_ofpersonnel', desc:'4. Summary Of The Number Of Personnel', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+    title:'undertaking_applicant', desc:'5. Authorization of the Application', activeStep:false, stepComp:false, icon:'icon-work', activeClass:''
     },
     {
-      title:'scope_accreditation', desc:'5. Accreditation Scope', activeStep:false, stepComp:false, icon:'icon-sheet', activeClass:''
+      title:'proforma_invoice', desc:'6. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-file_invoice', activeClass:''
     },
     {
-    title:'perlim_visit', desc:'6. Prelim Visit', activeStep:false, stepComp:false, icon:'icon-paper', activeClass:''
+      title:'payment_update', desc:'7. Payment Update', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
     },
     {
-    title:'undertaking_applicant', desc:'7. Authorization of the Application', activeStep:false, stepComp:false, icon:'icon-work', activeClass:''
-    },
-    {
-      title:'proforma_invoice', desc:'8. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-file_invoice', activeClass:''
-    },
-    {
-      title:'payment_update', desc:'9. Payment Update', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
-    },
-    {
-      title:'application_complete', desc:'10. Application Complete', activeStep:false, stepComp:false, icon:'icon-document-pen', activeClass:''
+      title:'application_complete', desc:'8. Application Complete', activeStep:false, stepComp:false, icon:'icon-document-pen', activeClass:''
     },
   );
 
@@ -1458,7 +1458,7 @@ onSubmitStep1(ngForm1: any){
 
     this.certificationBodiesForm.step1['ownOrgBasicInfo'] = [];
     this.certificationBodiesForm.step1['ownOrgMembInfo'] = [];
-    // this.certificationBodiesForm.step1['accreditationInfo'] = [];
+    this.certificationBodiesForm.step1['accreditationInfo'] = [];
     
     if(this.ownOrgBasicInfo) {
       this.certificationBodiesForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
@@ -1466,17 +1466,12 @@ onSubmitStep1(ngForm1: any){
     if(this.ownOrgMembInfo) {
       this.certificationBodiesForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
     }
-
-
-
-
-
-    // if(this.accreditationInfo) {
-    //   this.certificationBodiesForm.step1['accreditationInfo'] = this.accreditationInfo;
-    // }
+    if(this.accreditationInfo) {
+      this.certificationBodiesForm.step1['accreditationInfo'] = this.accreditationInfo;
+    }
 
     // this.step1DataBodyFormFile.append('data',JSON.stringify(this.certificationBodiesForm));
-    console.log(this.certificationBodiesForm,'certificationBodiesForm');
+    // console.log(this.certificationBodiesForm,'certificationBodiesForm');
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.certificationBodies,this.certificationBodiesForm)
     .subscribe(
       res => {
