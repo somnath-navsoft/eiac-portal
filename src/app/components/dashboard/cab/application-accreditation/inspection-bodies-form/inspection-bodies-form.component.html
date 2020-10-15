@@ -1716,7 +1716,7 @@
                                         (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice')">BACK</a> 
                                         <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice()">SAVE AS DRAFT</button>
                                     </div>
-                                    <button class="submit-bttn submit-health" >CONTINUE</button>
+                                    <button class="submit-bttn submit-health" *ngIf="!transactions.length" >CONTINUE</button>
                                     <ng-container *ngIf="transactions.length">
                                         <div id="paypalPayment"></div>
                                     </ng-container>
