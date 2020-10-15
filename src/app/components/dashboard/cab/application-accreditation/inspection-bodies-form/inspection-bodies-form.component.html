@@ -1711,7 +1711,7 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice')">BACK</button> 
-                                    <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice(ngForm8, true)">SAVE AS DRAFT</button> -->
+                                    <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice()">SAVE AS DRAFT</button>
                                     <!-- (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)" -->
                                     <button class="submit-bttn submit-health" *ngIf="!transactions.length" >CONTINUE</button>
                                     <ng-container *ngIf="transactions.length">

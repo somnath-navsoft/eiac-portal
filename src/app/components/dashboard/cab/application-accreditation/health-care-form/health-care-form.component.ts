@@ -1233,7 +1233,7 @@ validateFile(fileEvent: any) {
 
               //Step 6
               if(res['data'].is_prelim_visit != null){
-                this.step6Data.prelim_visit_val = (res['data'].is_prelim_visit) ? "1" : "0";
+                this.step6Data.perlim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
                 this.step6Data.prelim_visit_date = res['data'].prelim_visit_date;
                 this.step6Data.prelim_visit_time = res['data'].prelim_visit_time;
               }
@@ -1576,7 +1576,7 @@ savedraftStep(stepCount) {
     this.healthCareForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
     this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step6Data.prelim_visit_val = this.step6Data.prelim_visit_val == 0 ? false : true;
+    this.step6Data.prelim_visit = this.step6Data.perlim_visit == 0 ? false : true;
     this.step6Data.is_draft = true;
     this.healthCareForm.saved_step = '6';
     this.healthCareForm.step6 = this.step6Data;
@@ -1622,7 +1622,9 @@ savedraftStep(stepCount) {
         }
       });
   }
-
+  if(stepCount == 'step8') {
+    this.toastr.success('Save Draft Successfully', '');
+  }
   if(stepCount == 'step9') {
     this.healthCareForm = {};
     this.healthCareForm.step9 = {};
@@ -2162,11 +2164,11 @@ onSubmitStep6(ngForm6: any){
     this.healthCareForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
     this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step6Data.prelim_visit_val = this.step6Data.prelim_visit_val == 0 ? false : true;
+    this.step6Data.prelim_visit = this.step6Data.perlim_visit == 0 ? false : true;
     this.step6Data.is_draft = false;
     this.healthCareForm.step6 = this.step6Data;
 
-    // console.log(this.healthCareForm);
+    console.log(this.healthCareForm);
     // this.step5DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
     this.loader = false;
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
