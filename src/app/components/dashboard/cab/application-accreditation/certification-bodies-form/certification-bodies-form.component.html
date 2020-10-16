@@ -673,7 +673,7 @@
                 </div> -->
 
                 <div class="cust-stepper" id="personal_information" [ngStyle]="{'display':'none'}">
-                    <form #ngForm3="ngForm" (ngSubmit)="onSubmitStep3(ngForm3)" autocomplete="off">
+                    <form #ngForm2="ngForm" (ngSubmit)="onSubmitStep2(ngForm2)" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-12">
@@ -897,7 +897,7 @@
                                     <!-- (click)="onSubmitTestingParticipation()" -->
                                     <div class="button-content">
                                         <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="Service.headerStepMove('other_accreditation',headerSteps,'menu','personal_information')">BACK</a> 
-                                        <button class="cancel-bttn" (click)="savedraftStep('step3')" type="button">SAVE AS DRAFT</button>
+                                        <button class="cancel-bttn" (click)="savedraftStep('step2')" type="button">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >CONTINUE</button>
                                 </div>
@@ -933,14 +933,14 @@
                 </div> -->
 
                 <div class="cust-stepper" id="scope_accreditation"  [ngStyle]="{'display':'none'}">
-                    <form #ngForm5="ngForm" (ngSubmit)="onSubmitStep5(ngForm5)" autocomplete="off">
+                    <form #ngForm3="ngForm" (ngSubmit)="onSubmitStep3(ngForm3)" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-md-12"> 
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr">
-                                                <h5>5. Accreditation Scope</h5>
+                                                <h5>3. Accreditation Scope</h5>
                                             </div>
                                             <hr>
                                         </div>
@@ -1303,7 +1303,7 @@
                                     <!-- (click)="onSubmitInformationAuditManagement()" -->
                                     <div class="button-content">
                                         <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('summary_number_ofpersonnel',headerSteps,'menu','scope_accreditation')">BACK</a> 
-                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step5')">SAVE AS DRAFT</button> 
+                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step3')">SAVE AS DRAFT</button> 
                                     </div>
                                     <button class="submit-bttn submit-health" >CONTINUE</button>
                                 </div>
@@ -1313,7 +1313,7 @@
                 </div>
 
                 <div class="cust-stepper" id="perlim_visit"  [ngStyle]="{'display':'none'}">
-                    <form #ngForm6="ngForm" (ngSubmit)="onSubmitStep6(ngForm6)" autocomplete="off">  
+                    <form #ngForm4="ngForm" (ngSubmit)="onSubmitStep4(ngForm4)" autocomplete="off">  
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-12">
@@ -1338,7 +1338,7 @@
                                                 <div class="col-md-6">
                                                     <div class="request_frm">
                                                         <mat-radio-group name="is_prelim_visit" 
-                                                        [(ngModel)]="step6Data.is_prelim_visit" required>
+                                                        [(ngModel)]="step4Data.is_prelim_visit" required>
                                                             <mat-radio-button value="1">Yes </mat-radio-button>
                                                             <mat-radio-button value="0">No </mat-radio-button>
                                                         </mat-radio-group>
@@ -1348,14 +1348,14 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12" *ngIf="step6Data.is_prelim_visit === '1'">
+                                        <div class="col-md-12" *ngIf="step4Data.is_prelim_visit === '1'">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Select Date</mat-label>
                                                         <input matInput  readonly="true" (click)="Service._openCalendar(prelim_visit_date)"  
                                                         [matDatepicker]="prelim_visit_date"  placeholder="Select Date" name="prelim_visit_date" 
-                                                        [(ngModel)]="step6Data.prelim_visit_date" (dateChange)="setexDate()" required>
+                                                        [(ngModel)]="step4Data.prelim_visit_date" (dateChange)="setexDate()" required>
                                                         <mat-datepicker-toggle matSuffix [for]="prelim_visit_date"></mat-datepicker-toggle>
                                                         <mat-datepicker #prelim_visit_date  disabled="false" ></mat-datepicker>
                                                     </mat-form-field>
@@ -1365,7 +1365,7 @@
                                                         <mat-label>Select Time</mat-label>
                                                         <mat-select placeholder="Select" name="prelim_visit_time" 
                                                         (selectionChange)="getDutyTimeForm1Index($event)" 
-                                                        [(ngModel)]="step6Data.prelim_visit_time">
+                                                        [(ngModel)]="step4Data.prelim_visit_time">
                                                             <mat-option *ngFor="let item of addMinutesToTime; let i = index;" 
                                                             [value]="item.key">{{item.val}}</mat-option>
                                                         </mat-select>
@@ -1384,7 +1384,7 @@
                                     <!--  (click)="onSubmitPerlimVisit()" -->
                                     <div class="button-content">
                                         <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','perlim_visit')">BACK</a>
-                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step6')">SAVE AS DRAFT</button>
+                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step4')">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health">CONTINUE</button>
                                 </div>
@@ -1395,7 +1395,7 @@
                 
 
                 <div class="cust-stepper" id="undertaking_applicant"  [ngStyle]="{'display':'none'}">
-                    <form #ngForm7="ngForm" (ngSubmit)="onSubmitUndertakingApplicant(ngForm7)" autocomplete="off">
+                    <form #ngForm5="ngForm" (ngSubmit)="onSubmitUndertakingApplicant(ngForm5)" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-12">
@@ -1606,7 +1606,7 @@
                                             </div>
                                             <div class="recommend">
                                                 <span class="confirm">I recommend the visit to be conducted in the</span>
-                                                <mat-radio-group name="recommended" #recommendVisit="ngModel" [(ngModel)]="step7Data.recommend_visit" required>
+                                                <mat-radio-group name="recommended" #recommendVisit="ngModel" [(ngModel)]="step5Data.recommend_visit" required>
                                                     <mat-radio-button name="1st" value="first">1st</mat-radio-button>
                                                     <mat-radio-button name="2nd" value="second">2nd</mat-radio-button>
                                                     <mat-radio-button name="3rd" value="third">3rd</mat-radio-button>
@@ -1644,7 +1644,7 @@
                                                         <input  
                                                         (keypress)="Service.inputFilter($event, Service.regExName)" 
                                                         matInput placeholder="Organization Name" name="onbehalf_company_name" 
-                                                        [(ngModel)]="step7Data.organization_name" required>
+                                                        [(ngModel)]="step5Data.organization_name" required>
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="col-md-4 col-sm-12">
@@ -1653,14 +1653,14 @@
                                                         <input  
                                                         (keypress)="Service.inputFilter($event, Service.regExName)" matInput 
                                                         placeholder="Full Name of Authorized Representative" name="onbehalf_representative_name" 
-                                                        [(ngModel)]="step7Data.representative_name" required>
+                                                        [(ngModel)]="step5Data.representative_name" required>
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="col-md-4 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Designation</mat-label>
                                                         <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                        matInput placeholder="Designation" name="designation" [(ngModel)]="step7Data.designation" required>
+                                                        matInput placeholder="Designation" name="designation" [(ngModel)]="step5Data.designation" required>
                                                     </mat-form-field>
                                                 </div>
                                             </div>
@@ -1670,14 +1670,14 @@
                                                         <mat-label>Digital Signature</mat-label>
                                                         <input  
                                                         (keypress)="Service.inputFilter($event, Service.regExName)" matInput 
-                                                        placeholder="Digital Signature" name="digi_sign" [(ngModel)]="step7Data.digital_signature" required>
+                                                        placeholder="Digital Signature" name="digi_sign" [(ngModel)]="step5Data.digital_signature" required>
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Date</mat-label>
                                                         <input matInput placeholder="Date" name="onbehalf_representative_date" 
-                                                        [(ngModel)]="step7Data.application_date" [value]="Service.returnCurrentDate()">
+                                                        [(ngModel)]="step5Data.application_date" [value]="Service.returnCurrentDate()">
                                                     </mat-form-field>
                                                 </div>
                                             </div>
@@ -1692,7 +1692,7 @@
                                     <div class="button-content">
                                         <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('perlim_visit',headerSteps,'menu','undertaking_applicant')">BACK</a> 
 
-                                        <button class="cancel-bttn" type="button" (click)="onSubmitUndertakingApplicant(ngForm6, true)">SAVE AS DRAFT</button>
+                                        <button class="cancel-bttn" type="button" (click)="onSubmitUndertakingApplicant(ngForm5, true)">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >SUBMIT APPLICATION</button>
                                     <!-- <ng-container *ngIf="transactions.length">
@@ -1752,7 +1752,7 @@
                 </div>
 
                 <div class="cust-stepper" id="proforma_invoice" [ngStyle]="{'display':'none'}">
-                    <form #ngForm8="ngForm" (ngSubmit)="onSubmitStep8(ngForm8)" autocomplete="off">
+                    <form #ngForm8="ngForm" (ngSubmit)="onSubmitStep6(ngForm6)" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <!--  (ngSubmit)="onSubmitPaymentInformation(ngForm8)" -->
@@ -1798,7 +1798,7 @@
                 </div>
 
                 <div class="cust-stepper" id="payment_update" [ngStyle]="{'display':'none'}">
-                    <form #ngForm9="ngForm" (ngSubmit)="onSubmitPaymentInformation(ngForm9)" autocomplete="off">
+                    <form #ngForm9="ngForm" (ngSubmit)="onSubmitPaymentInformation(ngForm7)" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <!--  (ngSubmit)="onSubmitPaymentInformation(ngForm8)" -->
