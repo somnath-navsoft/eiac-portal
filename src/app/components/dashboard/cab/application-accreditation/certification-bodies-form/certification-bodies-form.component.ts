@@ -917,6 +917,7 @@ loadAppInfo(){
         this.step1Data.official_email = data.applicant_email;
         this.step1Data.official_website = data.applicant_website;
         this.ownOrgBasicInfo = step2['cabOwnerData'];
+        console.log(this.ownOrgBasicInfo,'ownOrgBasicInfo');
         step2['cabBodData'].forEach((res,key) => {
           // console.log(res," -- ",key);
           step2['cabBodData'][key].name = res.name;
@@ -926,7 +927,7 @@ loadAppInfo(){
           step2['cabBodData'][key].designation = res.designation;
           step2['cabBodData'][key].mobile_no = res.mobile_no;
           step2['cabBodData'][key].land_no = res.land_no != '' && res.land_no != undefined ? res.land_no : 'None';
-          step2['cabBodData'][key].email_address = res.email_address != '' && res.email_address != undefined ?  res.email_address : 'None';
+          step2['cabBodData'][key].email_address = res.email != '' && res.email != undefined ?  res.email : 'None';
         });
         this.ownOrgMembInfo = step2['cabBodData'];
         this.step1Data.physical_location_address = data.applicant_location;
@@ -1030,21 +1031,21 @@ loadAppInfo(){
               //step3
               if(res['data'].technicalManager != undefined && res['data'].technicalManager.length > 0){
                 let getTechData: any = res['data'].technicalManager[0];
-                this.step3Data.name = getTechData.name;
-                this.step3Data.designation = getTechData.designation;
-                this.step3Data.mobile_no = getTechData.mobile_no;
-                this.step3Data.email = getTechData.email;
-                this.step3Data.relevent_experience = getTechData.relevent_experience;
-                this.step3Data.duration_at_current_post = getTechData.duration_at_current_post;
+                this.step2Data.name = getTechData.name;
+                this.step2Data.designation = getTechData.designation;
+                this.step2Data.mobile_no = getTechData.mobile_no;
+                this.step2Data.email = getTechData.email;
+                this.step2Data.relevent_experience = getTechData.relevent_experience;
+                this.step2Data.duration_at_current_post = getTechData.duration_at_current_post;
               }
               if(res['data'].managementManager != undefined && res['data'].managementManager.length > 0){
                 let getMangData: any = res['data'].managementManager[0];
-                this.step3Data.management_name = getMangData.name;
-                this.step3Data.management_designation = getMangData.designation;
-                this.step3Data.management_mobile_no = getMangData.mobile_no;
-                this.step3Data.management_email = getMangData.email;
-                this.step3Data.management_relevent_experience = getMangData.relevent_experience;
-                this.step3Data.duration_at_current_post_manager = getMangData.duration_at_current_post;
+                this.step2Data.management_name = getMangData.name;
+                this.step2Data.management_designation = getMangData.designation;
+                this.step2Data.management_mobile_no = getMangData.mobile_no;
+                this.step2Data.management_email = getMangData.email;
+                this.step2Data.management_relevent_experience = getMangData.relevent_experience;
+                this.step2Data.duration_at_current_post_manager = getMangData.duration_at_current_post;
               }
 
               //step4
@@ -1490,34 +1491,34 @@ onSubmitStep2(ngForm2: any){
     // this.step3Data.application_id = applicationId;
     
     this.certificationBodiesForm = {};
-    this.certificationBodiesForm.step3 = {};
+    this.certificationBodiesForm.step2 = {};
     //this.certificationBodiesForm.email = this.userEmail;
     //this.certificationBodiesForm.userType = this.userType;
-    this.certificationBodiesForm.step3.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.certificationBodiesForm.step3.email = this.userEmail;
-    this.certificationBodiesForm.step3.userType = this.userType;
-    this.certificationBodiesForm.step3.application_id = this.formApplicationId;
+    this.certificationBodiesForm.step2.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+    this.certificationBodiesForm.step2.email = this.userEmail;
+    this.certificationBodiesForm.step2.userType = this.userType;
+    this.certificationBodiesForm.step2.application_id = this.formApplicationId;
     //this.certificationBodiesForm.step3 = this.step3Data;
 
-    this.certificationBodiesForm.step3.technicalManager = {};
+    this.certificationBodiesForm.step2.technicalManager = {};
 
-    this.certificationBodiesForm.step3.technicalManager['name'] = (this.step3Data.name != '' && this.step3Data.name != undefined) ? this.step3Data.name : '';
-    this.certificationBodiesForm.step3.technicalManager['designation'] = (this.step3Data.designation != '' && this.step3Data.designation != undefined) ? this.step3Data.designation : '';
-    this.certificationBodiesForm.step3.technicalManager['mobile_no'] = (this.step3Data.mobile_no != '' && this.step3Data.mobile_no != undefined) ? this.step3Data.mobile_no : '';
-    this.certificationBodiesForm.step3.technicalManager['email'] = (this.step3Data.email != '' && this.step3Data.email != undefined) ? this.step3Data.email : '';
-    this.certificationBodiesForm.step3.technicalManager['relevent_experience'] = (this.step3Data.relevent_experience != '' && this.step3Data.relevent_experience != undefined) ? this.step3Data.relevent_experience : '';
-    this.certificationBodiesForm.step3.technicalManager['duration_at_current_post'] = (this.step3Data.duration_at_current_post != '' && this.step3Data.duration_at_current_post != undefined) ? this.step3Data.duration_at_current_post : '';
+    this.certificationBodiesForm.step2.technicalManager['name'] = (this.step2Data.name != '' && this.step2Data.name != undefined) ? this.step2Data.name : '';
+    this.certificationBodiesForm.step2.technicalManager['designation'] = (this.step2Data.designation != '' && this.step2Data.designation != undefined) ? this.step2Data.designation : '';
+    this.certificationBodiesForm.step2.technicalManager['mobile_no'] = (this.step2Data.mobile_no != '' && this.step2Data.mobile_no != undefined) ? this.step2Data.mobile_no : '';
+    this.certificationBodiesForm.step2.technicalManager['email'] = (this.step2Data.email != '' && this.step2Data.email != undefined) ? this.step2Data.email : '';
+    this.certificationBodiesForm.step2.technicalManager['relevent_experience'] = (this.step2Data.relevent_experience != '' && this.step2Data.relevent_experience != undefined) ? this.step2Data.relevent_experience : '';
+    this.certificationBodiesForm.step2.technicalManager['duration_at_current_post'] = (this.step2Data.duration_at_current_post != '' && this.step2Data.duration_at_current_post != undefined) ? this.step2Data.duration_at_current_post : '';
 
-    this.certificationBodiesForm.step3.managementManager = {};
+    this.certificationBodiesForm.step2.managementManager = {};
 
-    this.certificationBodiesForm.step3.managementManager['name'] = (this.step3Data.management_name != '' && this.step3Data.management_name != undefined) ? this.step3Data.management_name : '';
-    this.certificationBodiesForm.step3.managementManager['designation'] = (this.step3Data.management_designation != '' && this.step3Data.management_designation != undefined) ? this.step3Data.management_designation : '' ;
-    this.certificationBodiesForm.step3.managementManager['mobile_no'] = (this.step3Data.management_mobile_no != '' && this.step3Data.management_mobile_no != undefined) ? this.step3Data.management_mobile_no : '';
-    this.certificationBodiesForm.step3.managementManager['email'] = (this.step3Data.management_email != '' && this.step3Data.management_email != undefined) ? this.step3Data.management_email : '';
-    this.certificationBodiesForm.step3.managementManager['relevent_experience'] = (this.step3Data.management_relevent_experience != '' && this.step3Data.management_relevent_experience != undefined) ? this.step3Data.management_relevent_experience : '';
-    this.certificationBodiesForm.step3.managementManager['duration_at_current_post'] = (this.step3Data.duration_at_current_post_manager != '' && this.step3Data.duration_at_current_post_manager != undefined) ? this.step3Data.duration_at_current_post_manager : '';
+    this.certificationBodiesForm.step2.managementManager['name'] = (this.step2Data.management_name != '' && this.step2Data.management_name != undefined) ? this.step2Data.management_name : '';
+    this.certificationBodiesForm.step2.managementManager['designation'] = (this.step2Data.management_designation != '' && this.step2Data.management_designation != undefined) ? this.step2Data.management_designation : '' ;
+    this.certificationBodiesForm.step2.managementManager['mobile_no'] = (this.step2Data.management_mobile_no != '' && this.step2Data.management_mobile_no != undefined) ? this.step2Data.management_mobile_no : '';
+    this.certificationBodiesForm.step2.managementManager['email'] = (this.step2Data.management_email != '' && this.step2Data.management_email != undefined) ? this.step2Data.management_email : '';
+    this.certificationBodiesForm.step2.managementManager['relevent_experience'] = (this.step2Data.management_relevent_experience != '' && this.step2Data.management_relevent_experience != undefined) ? this.step2Data.management_relevent_experience : '';
+    this.certificationBodiesForm.step2.managementManager['duration_at_current_post'] = (this.step2Data.duration_at_current_post_manager != '' && this.step2Data.duration_at_current_post_manager != undefined) ? this.step2Data.duration_at_current_post_manager : '';
 
-    this.certificationBodiesForm.step3['summaryDetail'] = [];
+    this.certificationBodiesForm.step2['summaryDetail'] = [];
     // this.certificationBodiesForm.step4['auditorsExaminersFulltime'] = [];
     // this.certificationBodiesForm.step4['auditorsExaminersParttime'] = [];
 
@@ -1528,7 +1529,7 @@ onSubmitStep2(ngForm2: any){
         // this.staticPosition.fulltime_emp_name = res['fulltime_emp_name'];
         // this.staticPosition.parttime_emp_name = res['parttime_emp_name'];
 
-        this.certificationBodiesForm.step3['summaryDetail'].push(this.summaryDetails[key]);
+        this.certificationBodiesForm.step2['summaryDetail'].push(this.summaryDetails[key]);
       })
       
     }
@@ -1549,11 +1550,11 @@ onSubmitStep2(ngForm2: any){
         this.auditorsExaminerJson.parttime_emp_name.push(this.auditorsExaminersParttime[key]);
       }
 
-      this.certificationBodiesForm.step3['summaryDetail'].push(this.auditorsExaminerJson);
+      this.certificationBodiesForm.step2['summaryDetail'].push(this.auditorsExaminerJson);
       // this.certificationBodiesForm.step4['auditorsExaminersFulltime'] = this.auditorsExaminersFulltime;
     }
 
-    this.certificationBodiesForm.step3.is_draft = false;
+    this.certificationBodiesForm.step2.is_draft = false;
     this.certificationBodiesForm.saved_step = 2;
     // this.certificationBodiesForm.step3 = this.step3Data;
     this.loader = false;
@@ -1966,7 +1967,7 @@ onSubmitStep3(ngForm: any, type?:any) {
 }
 
 onSubmitStep4(ngForm4: any){
-  // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+  this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
   if(ngForm4.form.valid) {
     this.certificationBodiesForm = {};
     this.certificationBodiesForm.step4 = {};
@@ -2000,7 +2001,7 @@ onSubmitStep4(ngForm4: any){
 }
 
 onSubmitUndertakingApplicant(ngForm5: any){
-// this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
+this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
 for(let key in this.authorizationList) {
   if(this.authorizationList[key] == false) {
     this.authorizationStatus = false;
@@ -2102,7 +2103,7 @@ this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity:
 onSubmitPaymentInformation(ngForm7: any, type?: boolean){
 //console.log("payment submitting.....");
 this.certificationBodiesForm = {};
-this.certificationBodiesForm.step9 = {};
+this.certificationBodiesForm.step7 = {};
 
   let dtFormat: string = '';
   if(this.voucherSentData['payment_date'] != undefined && 
