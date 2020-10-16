@@ -1088,14 +1088,15 @@ loadData(){
               let saveStep: number;
               if(!this.Service.isObjectEmpty(res['data'].paymentDetails)){
               
-                if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''){
+                if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''
+                    && (res['data'].paymentDetails.payment_receipt == null || res['data'].paymentDetails.payment_receipt == '')){
                   filePath = this.constant.mediaPath + '/media/' + res['data'].paymentDetails.voucher_invoice;
                   pathData = this.getSantizeUrl(filePath);
                   this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
                   saveStep = parseInt(getData.data.saved_step);
                 }
-                else{
-                  saveStep = parseInt(getData.data.saved_step) - 1;
+                else if(res['data'].paymentDetails.payment_receipt != null && res['data'].paymentDetails.payment_receipt != ''){
+                  saveStep = 8;
                 }
               }else{
                   saveStep = parseInt(getData.data.saved_step) - 1;

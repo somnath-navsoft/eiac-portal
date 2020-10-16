@@ -1219,14 +1219,15 @@ export class InspectionBodiesFormComponent implements OnInit {
 
         if(!this.Service.isObjectEmpty(getData.data.paymentDetails)){
           
-          if(getData.data.paymentDetails.voucher_invoice != undefined && getData.data.paymentDetails.voucher_invoice != ''){
+          if(getData.data.paymentDetails.voucher_invoice != undefined && getData.data.paymentDetails.voucher_invoice != '' && 
+              (getData.data.paymentDetails.payment_receipt == null || getData.data.paymentDetails.payment_receipt == '')){
             filePath = this.constant.mediaPath + '/media/' + getData.data.paymentDetails.voucher_invoice;
             pathData = this.getSantizeUrl(filePath);
             this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
             saveStep = parseInt(getData.data.saved_step);
             
-          }else{
-            saveStep = parseInt(getData.data.saved_step) - 1;
+          }else if(getData.data.paymentDetails.payment_receipt != null && getData.data.paymentDetails.payment_receipt != ''){
+            saveStep = 8;//parseInt(getData.data.saved_step) - 1;
           }
           ////////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
         }
