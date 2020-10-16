@@ -1851,8 +1851,10 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" 
-                                        (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</a> 
+                                        <ng-container *ngIf="voucherSentData.transaction_no == '' || voucherSentData.transaction_no == null || voucherSentData.transaction_no == 'undefined'">
+                                            <a href="javascript:void(0)" class="cancel-bttn" type="button" 
+                                            (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</a>
+                                        </ng-container>
                                         <button class="cancel-bttn" type="button" (click)="onSubmitPaymentInformation(ngForm9, true)">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >SUBMIT</button>

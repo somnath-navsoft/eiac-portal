@@ -1227,7 +1227,9 @@ export class InspectionBodiesFormComponent implements OnInit {
             saveStep = parseInt(getData.data.saved_step);
             
           }else if(getData.data.paymentDetails.payment_receipt != null && getData.data.paymentDetails.payment_receipt != ''){
-            saveStep = 8;//parseInt(getData.data.saved_step) - 1;
+            saveStep = 8;
+          }else{
+            saveStep = parseInt(getData.data.saved_step) - 1;
           }
           ////////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
         }
