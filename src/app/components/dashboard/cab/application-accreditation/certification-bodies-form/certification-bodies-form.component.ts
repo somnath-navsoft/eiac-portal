@@ -1402,7 +1402,7 @@ savedraftStep(stepCount) {
 
 onSubmitStep1(ngForm1: any){
   // this.Service.moveSteps('application_information', 'other_accreditation', this.headerSteps);
-  console.log(this.ownOrgMembInfo,'ownOrgMembInfo');
+  // console.log(this.ownOrgMembInfo,'ownOrgMembInfo');
 
   this.isApplicationSubmitted = true;
 
@@ -1447,7 +1447,7 @@ onSubmitStep1(ngForm1: any){
     }
     // this.certificationBodiesForm.step1.is_draft = false;
     this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
-    // this.certificationBodiesForm.step1.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
+    this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
     this.certificationBodiesForm.step1 = this.step1Data;
 
     this.certificationBodiesForm.step1['ownOrgBasicInfo'] = [];
@@ -1465,7 +1465,7 @@ onSubmitStep1(ngForm1: any){
     }
 
     // this.step1DataBodyFormFile.append('data',JSON.stringify(this.certificationBodiesForm));
-    // console.log(this.certificationBodiesForm,'certificationBodiesForm');
+    console.log(this.certificationBodiesForm,'certificationBodiesForm');
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.certificationBodies,this.certificationBodiesForm)
     .subscribe(
       res => {
@@ -1483,47 +1483,8 @@ onSubmitStep1(ngForm1: any){
   }
 }
 
-// onSubmitStep2(ngForm2:any) {
-//   this.Service.moveSteps('personal_information', 'scope_accreditation', this.headerSteps);
-//   if(ngForm2.form.valid) {
-//     this.certificationBodiesForm = {};
-//     this.certificationBodiesForm.step2 = {};
-//     this.certificationBodiesForm.email = this.userEmail;
-//     this.certificationBodiesForm.userType = this.userType;
-//     this.certificationBodiesForm.saved_step = '2';
-//     var applicationId = sessionStorage.getItem('applicationId');
-//       // this.step2Data.application_id = applicationId;
-//     this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-//     this.step2Data.is_draft = false;
-//     this.step2Data.is_hold_other_accreditation = this.step2Data.is_hold_other_accreditation == '0' ? false : true;
-//     this.certificationBodiesForm.step2 = this.step2Data;
-
-//     this.certificationBodiesForm.step2['accreditationInfo'] = [];
-//     if(this.accreditationInfo) {
-//       this.certificationBodiesForm.step2['accreditationInfo'] = this.accreditationInfo;
-//     }
-
-//     console.log(this.certificationBodiesForm,'certificationBodiesForm');
-//     // this.step1DataBodyFormFile.append('data',JSON.stringify(this.certificationBodiesForm));
-//     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.certificationBodies,this.certificationBodiesForm)
-//     .subscribe(
-//       res => {
-//         // console.log(res,'res')
-//         if(res['status'] == true) {
-//           // this.toastr.success(res['msg'], '');
-//           this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
-//           this.Service.moveSteps('personal_information', 'scope_accreditation', this.headerSteps);
-//         }else{
-//           this.toastr.warning(res['msg'], '');
-//         }
-//       });
-//   }else {
-//     this.toastr.warning('Please Fill required field','');
-//   }
-// }
-
 onSubmitStep2(ngForm2: any){
-  this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+  // this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
   if(ngForm2.form.valid) {
     var applicationId = sessionStorage.getItem('applicationId');
     // this.step3Data.application_id = applicationId;
@@ -1593,7 +1554,7 @@ onSubmitStep2(ngForm2: any){
     }
 
     this.certificationBodiesForm.step3.is_draft = false;
-    this.certificationBodiesForm.saved_step = 3;
+    this.certificationBodiesForm.saved_step = 2;
     // this.certificationBodiesForm.step3 = this.step3Data;
     this.loader = false;
     console.log(this.certificationBodiesForm,'certificationBodiesForm');
@@ -1862,29 +1823,29 @@ getMatchScheme(scId: any, scopeData: any){
 //Scope Save functions
 
 onSubmitStep3(ngForm: any, type?:any) {
-  //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+  this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
 
   
   //this.saveScope();
   console.log(">>>Enter....1:  ", type)
   this.certificationBodiesForm = {};
-  this.certificationBodiesForm.step5 = {};  
+  this.certificationBodiesForm.step3 = {};  
   var applicationId = sessionStorage.getItem('applicationId');
-  this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+  this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
   //this.certificationBodiesForm.step5.application_id = this.formApplicationId;
-  this.certificationBodiesForm.step5 = this.step5Data;
+  this.certificationBodiesForm.step3 = this.step3Data;
   //this.certificationBodiesForm.step5['cbsOtherActivity'] = [];
-  this.certificationBodiesForm.step5['otherActivityLocations'] = [];
-  this.certificationBodiesForm.step5['countriesForCertification'] = [];
+  this.certificationBodiesForm.step3['otherActivityLocations'] = [];
+  this.certificationBodiesForm.step3['countriesForCertification'] = [];
   
   if(this.cbsOtherActivity) {
-    this.certificationBodiesForm.step5['otherActivityLocations'] = this.cbsOtherActivity;
+    this.certificationBodiesForm.step3['otherActivityLocations'] = this.cbsOtherActivity;
   }
   if(this.nameOfCountry) {
-    this.certificationBodiesForm.step5['countriesForCertification'] = this.nameOfCountry;
+    this.certificationBodiesForm.step3['countriesForCertification'] = this.nameOfCountry;
   }
 
-  this.certificationBodiesForm.step5['scheme_id'] = 1;//this.schemeRows[0].id;
+  this.certificationBodiesForm.step3['scheme_id'] = 1;//this.schemeRows[0].id;
   
   //Check dynamic model column fields validation
   let secInd: number;
@@ -1938,8 +1899,8 @@ onSubmitStep3(ngForm: any, type?:any) {
       console.log(">>>Bypass saving...");
       console.log(">>>Enter....2")
       this.saveScope();
-      console.log(">>> step5 submit...", this.step5Data, " -- ", this.certificationBodiesForm);
-      this.certificationBodiesForm.step5.is_draft = false;
+      console.log(">>> step5 submit...", this.step3Data, " -- ", this.certificationBodiesForm);
+      this.certificationBodiesForm.step3.is_draft = false;
       this.certificationBodiesForm.saved_step = 5;
       //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.certificationBodiesForm,this.certificationBodiesForm)
@@ -1959,9 +1920,9 @@ onSubmitStep3(ngForm: any, type?:any) {
       console.log(">>>Scope saving...");
       console.log(">>>Enter....3")
       this.saveScope();
-      console.log(">>> step5 submit...", this.step5Data, " -- ", this.certificationBodiesForm);
-      this.certificationBodiesForm.step5.is_draft = false;
-      this.certificationBodiesForm.saved_step = 5;
+      console.log(">>> step5 submit...", this.step3Data, " -- ", this.certificationBodiesForm);
+      this.certificationBodiesForm.step3.is_draft = false;
+      this.certificationBodiesForm.saved_step = 3;
       //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.certificationBodiesForm,this.certificationBodiesForm)
       .subscribe(
@@ -1978,7 +1939,7 @@ onSubmitStep3(ngForm: any, type?:any) {
     }
     else if( type != undefined && type == true){
       console.log(">>>Enter....4")
-      this.certificationBodiesForm.step5.is_draft = true;
+      this.certificationBodiesForm.step3.is_draft = true;
       this.certificationBodiesForm.saved_step = 5;
       this.saveScope();
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.certificationBodiesForm,this.certificationBodiesForm)
@@ -2004,12 +1965,12 @@ onSubmitStep3(ngForm: any, type?:any) {
 
 }
 
-onSubmitStep4(ngForm: any){
-  this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
-  if(ngForm.form.valid) {
+onSubmitStep4(ngForm4: any){
+  // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+  if(ngForm4.form.valid) {
     this.certificationBodiesForm = {};
     this.certificationBodiesForm.step4 = {};
-    this.certificationBodiesForm.saved_step = '6';
+    this.certificationBodiesForm.saved_step = '4';
     this.certificationBodiesForm.email = this.userEmail;
     this.certificationBodiesForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
@@ -2018,7 +1979,7 @@ onSubmitStep4(ngForm: any){
     this.step4Data.is_draft = false;
     this.certificationBodiesForm.step4 = this.step4Data;
 
-    // console.log(this.certificationBodiesForm);
+    console.log(this.certificationBodiesForm);
     // this.step5DataBodyFormFile.append('data',JSON.stringify(this.certificationBodiesForm));
     this.loader = false;
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.certificationBodies,this.certificationBodiesForm)
