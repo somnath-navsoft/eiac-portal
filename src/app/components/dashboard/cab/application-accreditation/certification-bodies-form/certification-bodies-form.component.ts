@@ -960,8 +960,8 @@ loadAppInfo(){
                 ////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
               }
               
+              // console.log(res['data'].saved_step,"@saved step assign....");
               if(res['data'].saved_step  != null){
-                console.log("@saved step assign....");
                 let saveStep = res['data'].saved_step;
                 //open step
                 this.headerSteps.forEach((item, key) => {
@@ -997,9 +997,9 @@ loadAppInfo(){
               //   this.step1Data.cab_type = 
               // }
               this.step1Data.cab_type = res['data'].cab_type != '' ? res['data'].cab_type : '';
-              console.log("@cab type: ", this.step1Data.cab_type);
+              console.log("@cab type: ", res['data'].accredation_criteria);
               
-              if(res['data'].accredation_criteria  != ''){
+              if(res['data'].accredation_criteria  != '' && res['data'].accredation_criteria  != null){
                 this.step1Data.accredation_criteria = res['data'].accredation_criteria.toString();
               }
               if(res['data'].criteria_request  != ''){
@@ -1202,67 +1202,60 @@ savedraftStep(stepCount) {
   if(stepCount == 'step2') {
     this.certificationBodiesForm = {};
     this.certificationBodiesForm.step2 = {};
-    this.certificationBodiesForm.email = this.userEmail;
-    this.certificationBodiesForm.userType = this.userType;
-    this.certificationBodiesForm.saved_step = '2';
-    var applicationId = sessionStorage.getItem('applicationId');
-    // this.step2Data.application_id = applicationId;
-    this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    
-    this.step2Data.is_draft = true;
-    this.certificationBodiesForm.step2 = this.step2Data;
-
-    this.certificationBodiesForm.step2['proficiencyTesting'] = [];
-    
-    // if(this.ownOrgBasicInfo) {
-    //   this.certificationBodiesForm.step2['proficiencyTesting'] = this.proficiencyTesting;
-    // }
-
-    this.loader = false;
-    // this.step2DataBodyFormFile.append('data',JSON.stringify(this.certificationBodiesForm));
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.certificationBodiesForm,this.certificationBodiesForm)
-    .subscribe(
-      res => {
-        this.loader = true;
-        if(res['status'] == true) {
-          // this.toastr.success(res['msg'], '');
-          this.toastr.success('Save Draft Successfully', '');
-        }else{
-          this.toastr.warning(res['msg'], '');
-        }
-      });
-  }
-  if(stepCount == 'step3') {
-    this.certificationBodiesForm = {};
     // this.step3Data = {};
     var applicationId = sessionStorage.getItem('applicationId');
     // this.step3Data.application_id = applicationId;
-    this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step3Data.is_draft = true;
-    this.certificationBodiesForm.saved_step = '3';
+    this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+    this.step2Data.is_draft = true;
+    this.certificationBodiesForm.saved_step = '2';
     this.certificationBodiesForm.email = this.userEmail;
     this.certificationBodiesForm.userType = this.userType;
+    this.certificationBodiesForm.step2 = this.step2Data;
 
-    this.step3Data.technicalManager = {};
-    this.step3Data.technicalManager['name'] = (this.step3Data.name != '' && this.step3Data.name != undefined) ? this.step3Data.name : '';
-    this.step3Data.technicalManager['designation'] = (this.step3Data.designation != '' && this.step3Data.designation != undefined) ? this.step3Data.designation : '';
-    this.step3Data.technicalManager['mobile_no'] = (this.step3Data.mobile_no != '' && this.step3Data.mobile_no != undefined) ? this.step3Data.mobile_no : '';
-    this.step3Data.technicalManager['email'] = (this.step3Data.email != '' && this.step3Data.email != undefined) ? this.step3Data.email : '';
-    this.step3Data.technicalManager['relevent_experience'] = (this.step3Data.relevent_experience != '' && this.step3Data.relevent_experience != undefined) ? this.step3Data.relevent_experience : '';
-    this.step3Data.technicalManager['duration_at_current_post'] = (this.step3Data.duration_at_current_post != '' && this.step3Data.duration_at_current_post != undefined) ? this.step3Data.duration_at_current_post : '';
-    //}     relevent_experience
+    this.certificationBodiesForm.step2.technicalManager = {};
 
-    this.step3Data.managementManager = {};
-    this.step3Data.managementManager['name'] = (this.step3Data.management_name != '' && this.step3Data.management_name != undefined) ? this.step3Data.management_name : '';
-    this.step3Data.managementManager['designation'] = (this.step3Data.management_designation != '' && this.step3Data.management_designation != undefined) ? this.step3Data.management_designation : '' ;
-    this.step3Data.managementManager['mobile_no'] = (this.step3Data.management_mobile_no != '' && this.step3Data.management_mobile_no != undefined) ? this.step3Data.management_mobile_no : '';
-    this.step3Data.managementManager['email'] = (this.step3Data.management_email != '' && this.step3Data.management_email != undefined) ? this.step3Data.management_email : '';
-    this.step3Data.managementManager['relevent_experience'] = (this.step3Data.management_relevent_experience != '' && this.step3Data.management_relevent_experience != undefined) ? this.step3Data.management_relevent_experience : '';
-    this.step3Data.managementManager['duration_at_current_post'] = (this.step3Data.duration_at_current_post_manager != '' && this.step3Data.duration_at_current_post_manager != undefined) ? this.step3Data.duration_at_current_post_manager : '';
+    this.certificationBodiesForm.step2.technicalManager['name'] = (this.step2Data.name != '' && this.step2Data.name != undefined) ? this.step2Data.name : '';
+    this.certificationBodiesForm.step2.technicalManager['designation'] = (this.step2Data.designation != '' && this.step2Data.designation != undefined) ? this.step2Data.designation : '';
+    this.certificationBodiesForm.step2.technicalManager['mobile_no'] = (this.step2Data.mobile_no != '' && this.step2Data.mobile_no != undefined) ? this.step2Data.mobile_no : '';
+    this.certificationBodiesForm.step2.technicalManager['email'] = (this.step2Data.email != '' && this.step2Data.email != undefined) ? this.step2Data.email : '';
+    this.certificationBodiesForm.step2.technicalManager['relevent_experience'] = (this.step2Data.relevent_experience != '' && this.step2Data.relevent_experience != undefined) ? this.step2Data.relevent_experience : '';
+    this.certificationBodiesForm.step2.technicalManager['duration_at_current_post'] = (this.step2Data.duration_at_current_post != '' && this.step2Data.duration_at_current_post != undefined) ? this.step2Data.duration_at_current_post : '';
 
-    this.certificationBodiesForm.step3 = this.step3Data;
+    this.certificationBodiesForm.step2.managementManager = {};
+
+    this.certificationBodiesForm.step2.managementManager['name'] = (this.step2Data.management_name != '' && this.step2Data.management_name != undefined) ? this.step2Data.management_name : '';
+    this.certificationBodiesForm.step2.managementManager['designation'] = (this.step2Data.management_designation != '' && this.step2Data.management_designation != undefined) ? this.step2Data.management_designation : '' ;
+    this.certificationBodiesForm.step2.managementManager['mobile_no'] = (this.step2Data.management_mobile_no != '' && this.step2Data.management_mobile_no != undefined) ? this.step2Data.management_mobile_no : '';
+    this.certificationBodiesForm.step2.managementManager['email'] = (this.step2Data.management_email != '' && this.step2Data.management_email != undefined) ? this.step2Data.management_email : '';
+    this.certificationBodiesForm.step2.managementManager['relevent_experience'] = (this.step2Data.management_relevent_experience != '' && this.step2Data.management_relevent_experience != undefined) ? this.step2Data.management_relevent_experience : '';
+    this.certificationBodiesForm.step2.managementManager['duration_at_current_post'] = (this.step2Data.duration_at_current_post_manager != '' && this.step2Data.duration_at_current_post_manager != undefined) ? this.step2Data.duration_at_current_post_manager : '';
+
+    this.certificationBodiesForm.step2['summaryDetail'] = [];
+    if(this.summaryDetails) {
+      this.summaryDetails.forEach((res,key) => {
+
+        this.certificationBodiesForm.step2['summaryDetail'].push(this.summaryDetails[key]);
+      })
+      
+    }
+    if(this.auditorsExaminersFulltime && this.auditorsExaminersParttime) {
+      this.auditorsExaminerJson.fulltime_emp_name = [];
+      for(let key in this.auditorsExaminersFulltime) {
+        
+        this.auditorsExaminerJson.position = 'Auditors/Examiners for Each Standard';
+        this.auditorsExaminerJson.fulltime_emp_name.push(this.auditorsExaminersFulltime[key]);
+      }
+
+      this.auditorsExaminerJson.parttime_emp_name = [];
+      for(let key in this.auditorsExaminersParttime) {
+        this.auditorsExaminerJson.parttime_emp_name.push(this.auditorsExaminersParttime[key]);
+      }
+      this.certificationBodiesForm.step2['summaryDetail'].push(this.auditorsExaminerJson);
+    }
+
+    console.log(this.certificationBodiesForm,'certificationBodiesForm');
+    // this.certificationBodiesForm.step2 = this.step2Data;
     this.loader = false;
-    // this.step3DataBodyFormFile.append('data',JSON.stringify(this.certificationBodiesForm));
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.certificationBodiesForm,this.certificationBodiesForm)
     .subscribe(
       res => {
@@ -1326,7 +1319,7 @@ savedraftStep(stepCount) {
         this.loader = true;
         if(res['status'] == true) {
           this.toastr.success(res['msg'], '');
-          this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+          // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
         }
@@ -1337,10 +1330,12 @@ savedraftStep(stepCount) {
     this.certificationBodiesForm.step5 = {};
     this.certificationBodiesForm.email = this.userEmail;
     this.certificationBodiesForm.userType = this.userType;
+    var applicationId = sessionStorage.getItem('applicationId');
+    this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step5Data.authorizationList = this.authorizationList;
     this.step5Data.recommend = this.recommend;
     this.step5Data.is_draft = true;
-    this.certificationBodiesForm.saved_step = '7';
+    this.certificationBodiesForm.saved_step = '5';
 
     this.certificationBodiesForm.step5 = this.step5Data;
     // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
@@ -1358,9 +1353,9 @@ savedraftStep(stepCount) {
       });
   }
 
-  if(stepCount == 'step9') {
+  if(stepCount == 'step7') {
     this.certificationBodiesForm = {};
-    this.certificationBodiesForm.step9 = {};
+    this.certificationBodiesForm.step7 = {};
 
     let dtFormat: string = '';
     if(this.voucherSentData['payment_date'] != undefined && 
