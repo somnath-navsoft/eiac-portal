@@ -877,7 +877,10 @@ ul.bill-details li:first-child { border-right: 1px solid #C9C9C9; }
 // ================FORMS================== //
 .table-content-health { margin-bottom: 30px; overflow: auto; }
 .table-content-health table { width: 100%; border-collapse: collapse; margin-top: 30px; }
-.table-content-health th { padding: 10px; background: #E7E7E7;  border: 1px solid #DCDAD5; font-size: 16px; }
+.table-content-health th {padding: 10px; text-align: center; background: #E7E7E7;  border: 1px solid #DCDAD5; font-size: 16px;}
+.table-content-health td { padding: 25px 10px 20px; background: #F9F9F9; border: 1px solid #DCDAD5;}
+.table-content-health td input:focus { outline: none;}
+.table-content-health td span{ font-size: 22px;}
 .form-subheader-desc { background: #E7E7E7; margin: 0 -15px; height: 100%; display: flex; align-items: center; justify-content: flex-end; }
 .form-subheader-desc .mat-radio-button { padding: 0 15px; }
 .form-subheader-desc .mat-radio-label { margin: 0; }
@@ -961,6 +964,7 @@ ul.bill-details li:first-child { border-right: 1px solid #C9C9C9; }
 .authData a { color: #AA9777; text-decoration: underline; }
 .assess-dir { background: #EFEFEF; margin-top: 30px; padding-bottom: 30px; border-radius: 5px; }
 span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
+.required_input { color: #B54150; }
 .recommend  .mat-radio-button { padding: 0 10px; }
 .recommend  .mat-radio-label { font-size: 18px; font-family: 'Dubai Medium'; }
 .confirm { font-size: 18px; font-family: 'Dubai Medium'; }
@@ -1005,7 +1009,7 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .cancel-bttn:focus {outline: none;}
 .submit-bttn { color: #ffffff; background: #B54150; border: none; font-size: 20px; letter-spacing: 1px; padding: 10px 53px; border-radius: 5px; }
 .submit-bttn:focus {outline: none;}
-.submit-bttn:hover { background: #AA9777; }
+.submit-bttn:hover { background: #AA9777; color: #ffffff;}
 .frm-data { width: 45%; margin-right: 10px; }
 .frm-data .mat-form-field-label { color: #3F3F3F; font-family: 'Dubai Regular';}
 .request_frm { margin: 0 -15px; }

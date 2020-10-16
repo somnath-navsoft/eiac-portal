@@ -51,6 +51,12 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   applicantDetails: any;
   countryList: any;
   appCountry: string = '';
+  voucherSentData: any = {};
+  selectCourseData: any = [];
+  courseViewData: any = {};
+  selectDeleteID: number = 0;
+  voucherFile:any = new FormData();
+  paymentReceiptValidation: boolean = true;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, public sanitizer: DomSanitizer,private modalService: NgbModal,public uiDialog: UiDialogService) { }
@@ -185,16 +191,18 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
     //   })
     this._service.getCountry().subscribe(rec => {
         this.countryList = rec;
-        console.log(">>>cccc ", this.countryList);
+        // console.log(">>>cccc ", this.countryList);
     })
  }
 
   loadData() {
+    this.loader = false;
     this.subscriptions.push(this._trainerService.trainerAccredDetailsServtrainerAccredDetailsServ(this.routeId)
       .subscribe(
         result => {
           // console.log(result, " -- ", this.countryList);
           //return;
+          this.loader = true;
           this.serviceDetail = result['data'];
           // let getC: any = this.countryList.countries.find(item => item.id == this.serviceDetail.country)
           // console.log("cc>> ", getC);
@@ -208,10 +216,10 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
           this.ownershipOfOrg = result['data']['ownershipOfOrg']
           this.bodMember = result['data']['bodMember'];
           this.otherAccr = result['data']['otherAccr'];
-          this.other_accr_model = result['data']['otherAccr'] != '' ? '1' : '0' ;
+          this.other_accr_model = result['data']['otherAccr'] != '' && result['data']['otherAccr'] != null ? '1' : '0' ;
           this.ptParticipation = result['data']['ptParticipation'];
-          this.technicalManager = result['data']['technicalManager'][0];
-          this.managementManager = result['data']['technicalManager'][0];
+          this.technicalManager = result['data']['technicalManager'] ? result['data']['technicalManager'][0] : '';
+          this.managementManager = result['data']['technicalManager'] ? result['data']['technicalManager'][0] : '';
           this.paymentDetails = result['data'].paymentDetails;
           // this.scopeDetailsHeading = result['data']['scopeDetails'].heading.column_list;
           for(let key in result['data']['scopeDetails']) {
@@ -219,11 +227,11 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
             this.scopeDetailsHeading = result['data']['scopeDetails'][key].scope_heading;
             this.scopeDetailvalues = result['data']['scopeDetails'][key].scope_value;
           }
-          console.log(this.scopeDetailsHeading,'scopeDetailsHeading');
-          console.log(this.scopeDetailvalues,'scopeDetailvalues');
+          // console.log(this.scopeDetailsHeading,'scopeDetailsHeading');
+          // console.log(this.scopeDetailvalues,'scopeDetailvalues');
           // this.scopeDetailvalues = result['data']['scopeDetails']['details'];
           //console.log("@@@",result['data']['recommend_visit'])
-          let visit = result['data']['recommend_visit'].replace(/["']/g, "");
+          let visit = result['data']['recommend_visit'] || result['data']['recommend_visit'] != null ? result['data']['recommend_visit'].replace(/["']/g, "") : '';
           //let visit1 = visit.toString().replace("\"",' ');
           //console.log(">>>", visit);
           if(visit === "second"){
@@ -237,22 +245,108 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
           }
           if(visit === "fourth"){
             this.recommVisit = '4th';
+          }else{
+            this.recommVisit = '1st';
           }
         },
         ()=>{
-          console.log('comp...');
+          // console.log('comp...');
         }
       )     
     )
     // this.userEmail = sessionStorage.getItem('email');
     // this.userType = sessionStorage.getItem('type');
-    let url = this._service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
+    // let url = this._service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
 
-    this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.profileService+'?id='+this.routeId)
-    .subscribe(
-      res => { 
-        console.log(res, "@@@applicant Info: ");
-        this.applicantInfo = res['data']['step1'][0];
-      })
+    // this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.profileService+'?id='+this.routeId)
+    // .subscribe(
+    //   res => { 
+    //     // console.log(res, "@@@applicant Info: ");
+    //     this.applicantInfo = res['data']['step1'][0];
+    //   })
+  }
+
+  // Modal Actions
+  open(content, id: number) {
+    //this.voucherSentData = {};
+    if(id){
+      console.log(">>ID: ", id);
+      this.voucherSentData['accreditation'] = id;
+    }
+    this.paymentReceiptValidation = null;
+    this.modalService.open(content, this.modalOptions).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReasonOther(reason)}`;
+    });
+  }
+  private getDismissReasonOther(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
+  }
+
+  validateFile(fileEvent: any, type?: any) {
+    var file_name = fileEvent.target.files[0].name;
+    var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
+    var ex_type = ['pdf', 'PDF'];
+    var ex_check = this._service.isInArray(file_exe,ex_type);
+    if(ex_check){
+      this.paymentReceiptValidation = true;
+      //if(type == undefined){
+        this.voucherFile.append('voucher_invoice',fileEvent.target.files[0]);
+      //}
+    }else{
+        this.paymentReceiptValidation = false;
+        
+    }
+  }
+
+  voucherSentSubmit(theForm){
+     console.log("Valid/Invalid: ", theForm.form, " -- ", this.voucherSentData);
+     let postObject: any = {};
+
+     if(theForm.form.valid && this.paymentReceiptValidation === true){
+          let dtFormat: string = '';;
+          if(this.voucherSentData['voucher_date'] != undefined && 
+          this.voucherSentData['voucher_date']._i != undefined){
+            var dtData = this.voucherSentData['voucher_date']._i;
+            var year = dtData.year;
+            var month = dtData.month;
+            var date = dtData.date;
+            dtFormat = year + "-" + month + "-" + date;
+          }
+          console.log("@accred ID: ", this.voucherSentData['accreditation'])
+          this.voucherFile.append('voucher_no',this.voucherSentData['voucher_no']);
+          this.voucherFile.append('amount',this.voucherSentData['amount']);
+          this.voucherFile.append('voucher_date',dtFormat);
+          this.voucherFile.append('accreditation',this.voucherSentData['accreditation']);
+
+          this.subscriptions.push(this._trainerService.courseVoucherSave((this.voucherFile))
+          .subscribe(
+             result => {
+               let data: any = result;
+                if(data.status){
+                  this.voucherFile = new FormData();
+                  this.voucherSentData = {};
+                  this.modalService.dismissAll();
+                  this._toaster.success("Invoice Uploaded Successfully",'Upload');
+                }else{
+                  this._toaster.warning(data.msg,'');
+                }
+             }
+            )
+          )
+
+     }else if(theForm.form.valid && (this.paymentReceiptValidation == false || this.paymentReceiptValidation == null)){
+      this._toaster.warning('Please Upload Valid Files','Upload Error',{timeOut:5000});
+     }
+     else{
+      this._toaster.warning('Please Fill required fields','Validation Error',{timeOut:5000});
+     }
   }
 }

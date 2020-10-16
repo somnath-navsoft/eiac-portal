@@ -81,6 +81,8 @@ import { MessageDetailsComponent } from './components/dashboard/assessors/messag
 import { CandidateMessageDetailsComponent } from './components/dashboard/candidate/candidate-message-details/candidate-message-details.component';
 import { OperationsAccreditationServiceDetailsComponent } from './components/dashboard/operations/operations-accreditation-service-details/operations-accreditation-service-details.component';
 import { StatusComponent } from './components/dashboard/status/status.component';
+import { AccountsComponent } from './components/dashboard/accounts/accounts.component';
+import { AccountDetailsComponent } from './components/dashboard/accounts/account-details/account-details.component';
 
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
@@ -91,6 +93,8 @@ const routes: Routes = [
       //Trainers
       { path: 'onboarding-message-list', component: MessageComponent, canActivate: [AuthGuard] },
       { path: 'status/:id', component: StatusComponent, canActivate: [AuthGuard] },
+      { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard] },
+      { path: 'account-details/:id', component: AccountDetailsComponent, canActivate: [AuthGuard] },
       { path: 'onboarding-message-list', component: MessageComponent, canActivate: [AuthGuard] },
       { path: 'message-detail/:id', component: MessageDetailComponent, canActivate: [AuthGuard] },
       { path: 'trainers', component: TrainersComponent, canActivate: [AuthGuard],

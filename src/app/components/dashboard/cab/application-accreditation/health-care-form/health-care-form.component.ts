@@ -200,6 +200,10 @@ export class HealthCareFormComponent implements OnInit {
       if(( elem.srcElement.offsetHeight + elem.srcElement.scrollTop) >=  elem.srcElement.scrollHeight) {
          ////console.log("Yo have reached!");
          this.authorizationList.authorization_confirm2 = true;
+         this.readTermsCond = true;
+         this.authorizeCheckCount(elem, 'read')
+      }else{
+        this.authorizeCheckCount(elem, 'read')
       }
     }        
   }
@@ -398,7 +402,15 @@ export class HealthCareFormComponent implements OnInit {
             console.log(">>> scope field def: ", colDef);
             if(colDef === "None" || colDef === null){
               console.log("Def enter...1");
-              this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].values] = record['scopeValue'];
+                  let scopValues: any = record['scopeValue'];
+                  var resultUniq = scopValues.reduce((unique, o) => {
+                      if(!unique.some(obj => obj.value === o.value)) {
+                        unique.push(o);
+                      }
+                      return unique;
+                  },[]);
+                  console.log(">>> Filter results:1 ",resultUniq);
+              this.dynamicScopeModel[secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[secIndex][nextColumnIndex][0].values] = resultUniq;//record['scopeValue'];
             }
             else if(colDef != "None" && colDef != null && colDef != ""){
               console.log("Def enter...2");
@@ -627,6 +639,8 @@ scrollForm(data?:any){
   //  this.loadFormDynamicTable();
    this.loadCountryStateCity();
    this.loadAppInfo();
+
+   this.loadData();
    //console.log('ddd');
    //this.getPlaceName();
    //this.checkCaptchaValidation = true;
@@ -640,7 +654,7 @@ scrollForm(data?:any){
     title:'profciency_testing_participation', desc:'2. Profciency Testing Participation', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
     },
     {
-    title:'personal_information', desc:'3. Personal Information', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
+    title:'personal_information', desc:'3. Personnel Information', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
     },
     {
     title:'information_audit_management', desc:'4. Internal Audit & Management', activeStep:false, stepComp:false, icon:'icon-task', activeClass:''
@@ -953,6 +967,26 @@ validateFile(fileEvent: any) {
     }
 }
 
+loadData(){
+  this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcare_form_basic_data)
+    .subscribe( 
+      res => {
+        console.log("@Load scope....", res);
+        //this.inspectionBodyScopeFields = res['medicalLabScopeFields'];
+        //this.countryList = res['allCountry'];
+        // this.labTypeList = res['allLabtype'];
+        // //this.fullScope   = res['fullScope'];
+        this.criteriaList = res['data']['criteriaList'];
+        // this.step1Data.criteria_request = this.criteriaList[0].code; 
+        // this.criteriaMaster = res['data']['schemes'];
+        //////console.log("#Get criteria: ", this.criteriaMaster);
+
+      },
+      error => {
+      
+  })
+}
+
  loadAppInfo(){
   //let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
   let getUserdata = '';
@@ -1022,7 +1056,7 @@ validateFile(fileEvent: any) {
         this.step1Data.date_of_issue = new Date(data.date_of_issue);
         this.step1Data.fax_no = data.applicant_fax_no;
         this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
-        this.step1Data.is_hold_other_accreditation = "1";
+        // this.step1Data.is_hold_other_accreditation = "1";
         this.step1Data.is_main_activity = "";
         this.step1Data.is_main_activity_note = "";
         this.step1Data.mailing_address = data.applicant_address;
@@ -1051,15 +1085,25 @@ validateFile(fileEvent: any) {
               let pathData: any;
               let filePath: string;
               let getData: any = res;
+              let saveStep: number;
               if(!this.Service.isObjectEmpty(res['data'].paymentDetails)){
               
-                if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''){
+                if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''
+                    && (res['data'].paymentDetails.payment_receipt == null || res['data'].paymentDetails.payment_receipt == '')){
                   filePath = this.constant.mediaPath + '/media/' + res['data'].paymentDetails.voucher_invoice;
                   pathData = this.getSantizeUrl(filePath);
                   this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
+                  saveStep = parseInt(getData.data.saved_step);
                 }
-                ////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
+                else if(res['data'].paymentDetails.payment_receipt != null && res['data'].paymentDetails.payment_receipt != ''){
+                  saveStep = 8;
+                }else{
+                  saveStep = parseInt(getData.data.saved_step) - 1;
+                }
+              }else{
+                  saveStep = parseInt(getData.data.saved_step) - 1;
               }
+
               var cityList =  this.Service.getCity();
 
               this.step1Data.country = getData.data.country;
@@ -1088,7 +1132,7 @@ validateFile(fileEvent: any) {
               
               if(res['data'].saved_step  != null){
                 /////console.log("@saved step assign....");
-                let saveStep = res['data'].saved_step;
+                //let saveStep = res['data'].saved_step;
                 //open step
                 this.headerSteps.forEach((item, key) => {
                       /////console.log(item, " --- ", key);
@@ -1264,7 +1308,9 @@ validateFile(fileEvent: any) {
         });
     }
 
-    this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false};
+    this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,
+                              undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,
+                              undertaking_confirm6:false,undertaking_confirm7:false};
 } 
 
 
@@ -1594,6 +1640,8 @@ savedraftStep(stepCount) {
     this.healthCareForm.step7 = {};
     this.healthCareForm.email = this.userEmail;
     this.healthCareForm.userType = this.userType;
+    var applicationId = sessionStorage.getItem('applicationId');
+    this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step7Data.authorizationList = this.authorizationList;
     this.step7Data.recommend = this.recommend;
     this.step7Data.is_draft = true;
@@ -1603,6 +1651,7 @@ savedraftStep(stepCount) {
     // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
     this.loader = false;
     // this.step6DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
+    console.log(this.healthCareForm,'healthCareForm');
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
     .subscribe(
       res => {
@@ -1614,10 +1663,16 @@ savedraftStep(stepCount) {
         }
       });
   }
-
+  if(stepCount == 'step8') {
+    this.toastr.success('Save Draft Successfully', '');
+  }
   if(stepCount == 'step9') {
     this.healthCareForm = {};
     this.healthCareForm.step9 = {};
+    this.healthCareForm.email = this.userEmail;
+    this.healthCareForm.userType = this.userType;
+    var applicationId = sessionStorage.getItem('applicationId');
+    this.step9Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
 
     let dtFormat: string = '';
     if(this.voucherSentData['payment_date'] != undefined && 
@@ -2158,7 +2213,7 @@ onSubmitStep6(ngForm6: any){
     this.step6Data.is_draft = false;
     this.healthCareForm.step6 = this.step6Data;
 
-    // console.log(this.healthCareForm);
+    console.log(this.healthCareForm);
     // this.step5DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
     this.loader = false;
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
@@ -2178,15 +2233,64 @@ onSubmitStep6(ngForm6: any){
   }
 }
 
+authorizeCheckCount(theEvent: any, type?:any){
+  console.log(theEvent);
+  let checkCount = 0;
+  let readChecked = false;
+
+  if(type != undefined && type == 'read'){
+    console.log(">>> readd...");
+    readChecked = true;
+  }
+
+  if(theEvent.checked || readChecked == true){
+    for(let key in this.authorizationList) {
+      //console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
+      if(this.authorizationList[key]) {  
+        this.authorizationStatus = true;       
+        checkCount++;
+      }    
+    }
+  }
+      
+
+  if(this.authorizationStatus && checkCount == 10){
+    this.authorizationStatus = true;
+  }else{
+    this.authorizationStatus = false;
+  }
+  console.log(">>> Check status count: ", checkCount);
+}
+
 onSubmitUndertakingApplicant(ngForm7: any){
 // this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
-for(let key in this.authorizationList) {
-  if(this.authorizationList[key] == false) {
-    this.authorizationStatus = false;
-  }else {
-    this.authorizationStatus = true;
-  }
-}
+// for(let key in this.authorizationList) {
+//   if(this.authorizationList[key] == false) {
+//     this.authorizationStatus = false;
+//   }else {
+//     this.authorizationStatus = true;
+//   }
+// }
+
+    this.isApplicationSubmitted = true;
+    let checkCount = 0;
+    for(let key in this.authorizationList) {
+      //console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
+      if(this.authorizationList[key]) {  
+        this.authorizationStatus = true;       
+        checkCount++;
+      } 
+      // if(this.authorizationList[key]) {
+      //   this.authorizationStatus = true;
+      // }     
+    }  
+    if(this.authorizationStatus && checkCount == 10){  
+      this.authorizationStatus = true;
+    }else{
+      this.authorizationStatus = false;
+    }
+
+    console.log(">>> Check status count: ", checkCount);
 
 // for(let key in this.recommend) {
 //   if(this.recommend[key] == true) {
@@ -2225,6 +2329,7 @@ if(ngForm7.form.valid){
     res => {
       // console.log(res,'res')
       this.loader = true;
+      this.isApplicationSubmitted = false;
       if(res['status'] == true) {
         // this.toastr.success(res['msg'], '');
         if(this.paymentFilePath != ''){
@@ -2352,10 +2457,11 @@ else{
 
 }
 
-agreeView(){
+agreeView(event){
 this.modalService.dismissAll();
 this.authorizationList.undertaking_confirmTop2 = true;
 this.readAccredAgreem = true;
+this.authorizeCheckCount(event, 'read');
 }
 closeChecklistDialog(){
 this.modalService.dismissAll();

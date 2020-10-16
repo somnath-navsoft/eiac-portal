@@ -11,9 +11,17 @@ import { LogOut, LogInSuccess } from '../../../store/actions/auth.actions';
 })
 export class HeaderComponent implements OnInit {
   user = null;
+  firstName:any;
   constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
+    var first_name = sessionStorage.getItem('first_name');
+    if(first_name && first_name != '') {
+      var firstNameval = first_name.split(' ');
+      this.firstName = firstNameval[1] && firstNameval[1] != '' ? firstNameval[1] : first_name;
+    }else{
+      this.firstName = '';
+    }
   }
   logOut(): void {
     this.store.dispatch(new LogOut(this.user));

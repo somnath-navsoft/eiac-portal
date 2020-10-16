@@ -155,7 +155,7 @@ export class ResetPasswordComponent implements OnInit {
       .subscribe(
         res => {
           if(res['status'] == true) {
-            this.toastr.success('Password change successfully','', {timeOut: 3000});
+            this.toastr.success('Password reset successfully','', {timeOut: 3000});
             this.router.navigateByUrl('/sign-in');
           }
         });

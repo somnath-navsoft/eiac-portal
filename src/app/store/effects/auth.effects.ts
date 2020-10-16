@@ -74,6 +74,7 @@ export class AuthEffects {
     {
       sessionStorage.setItem('token', user.payload.token);
       sessionStorage.setItem('email', authUserData.email);
+      sessionStorage.setItem('first_name', authUserData.first_name);
       sessionStorage.setItem('isVerified', authUserData.isVerified);
       sessionStorage.setItem('profileComplete', authUserData.isCompleteness);
       sessionStorage.setItem('userId', authUserData.user_id);
@@ -87,6 +88,7 @@ export class AuthEffects {
     }else{
       sessionStorage.setItem('token', user.payload.token);
       sessionStorage.setItem('email', authUserData.email);
+      sessionStorage.setItem('first_name', authUserData.first_name);
       sessionStorage.setItem('isCompleteness', authUserData.isVerified);
       sessionStorage.setItem('profileComplete', authUserData.isCompleteness);
       sessionStorage.setItem('userId', authUserData.user_id);

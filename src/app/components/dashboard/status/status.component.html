@@ -145,12 +145,12 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.form_meta"></span>
                                 </a>
                             </th>
-                            <th>Location
+                            <!-- <th>Location
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'payment_status', curSortDir.payment_status)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.payment_status"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.payment_status"></span>
                                 </a>
-                            </th>
+                            </th> -->
                             
                             <th>Action</th>
                         </tr>
@@ -181,12 +181,12 @@
                                 <span *ngIf="item.form_meta == 'health_care'">Health Care</span>
                                 <span *ngIf="item.form_meta == 'certification_bodies'">Certification Bodies</span>
                             </td> 
-                            <td>
+                            <!-- <td>
                                 {{item.location}}
-                            </td>                           
+                            </td>                            -->
                             <td class="action fnt-clr">
                                 <a href="javascript:void(0)" *ngIf="item.form_meta == 'testing_calibration'" alt="Edit" routerLink="/dashboard/cab_client/testing-calibration-form/{{item.id}}"><span class="icon-edit"></span></a>
-                                <a href="javascript:void(0)" *ngIf="item.form_meta == 'inspection_body'" alt="Edit" routerLink="/dashboard/cab_client/inspection-bodies-form/{{item.id}}" (click)="setIB(item.id)"><span class="icon-edit"></span></a>
+                                <a href="javascript:void(0)" *ngIf="item.form_meta == 'inspection_body' && item.accr_status != 'complete'" alt="Edit" routerLink="/dashboard/cab_client/inspection-bodies-form/{{item.id}}" (click)="setIB(item.id)"><span class="icon-edit"></span></a>
                                 <a href="javascript:void(0)" *ngIf="item.form_meta == 'health_care'" alt="Edit" routerLink="/dashboard/cab_client/health-care-form/{{item.id}}"><span class="icon-edit"></span></a>
                                 <a href="javascript:void(0)" *ngIf="item.form_meta == 'certification_bodies'" alt="Edit" routerLink="/dashboard/cab_client/certification-bodies-form/{{item.id}}"><span class="icon-edit"></span></a>
                                 <!-- <a href="javascript:void(0)" (click)="open(courseVoucher, item.id)" alt="Upload Proforma Invoice" title="Upload Proforma Invoice"><span class="icon-document-pen"></span></a> -->

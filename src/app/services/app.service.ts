@@ -97,7 +97,7 @@ getObjectLength(obj: any){
   return count;
 } 
 setValueUrlIB(value: any) {
-  console.log(">>assign IB value: ", value);
+  // console.log(">>assign IB value: ", value);
   //this.userDataSource.next(value);
   //this.setIBValue =  value;
   // const currentValue = this.userDataSource.value;
@@ -107,16 +107,16 @@ setValueUrlIB(value: any) {
 }
 
 setValueUrl(value?:any) {
-  console.log(">>assign value: ", value);
+  // console.log(">>assign value: ", value);
   this.setValue =  value;
 }
 getValue(){
-  console.log(">>get value: ", this.setValue);
+  // console.log(">>get value: ", this.setValue);
   return this.setValue;
 }
 getValueIB(){
   setTimeout(() => {
-    console.log(">>>getting val...",);
+    // console.log(">>>getting val...",);
     return this.setValue;
   },100)
   
