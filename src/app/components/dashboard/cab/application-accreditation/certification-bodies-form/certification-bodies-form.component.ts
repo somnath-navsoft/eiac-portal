@@ -1626,6 +1626,7 @@ saveScope(){
   let scopeCollections: any={};
   let selectScheme          = '';//this.schemeRows[0].id;
   
+  //Create Heading
   if(this.fullTypeScope.length){
     this.fullTypeScope.forEach(typeScope => {
         console.log(">>>>Type scope: ", typeScope);
@@ -1803,7 +1804,7 @@ saveScope(){
 
   //Update scope data
   if(this.editScopeData != undefined && this.editScopeData != null){
-      console.log("update scope: ", this.editScopeData, " -- ", scopeCollections)
+      console.log("update edit scope: ", this.editScopeData, " -- ", scopeCollections)
       let tempScopeDetails: any={};
       let checkMatch: boolean = false;
       for(var key in this.editScopeData){
