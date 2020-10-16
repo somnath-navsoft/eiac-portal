@@ -1097,6 +1097,8 @@ loadData(){
                 }
                 else if(res['data'].paymentDetails.payment_receipt != null && res['data'].paymentDetails.payment_receipt != ''){
                   saveStep = 8;
+                }else{
+                  saveStep = parseInt(getData.data.saved_step) - 1;
                 }
               }else{
                   saveStep = parseInt(getData.data.saved_step) - 1;
