@@ -153,10 +153,13 @@ export class CertificationBodiesFormComponent implements OnInit {
    getScopeData: any;
    selectDeleteID: number =0;
    selectDeleteKey: any;
+   selectDeleteTypeKey: any;
    selectDeleteIndex: any;
    selectDeleteTypeTitle: any;
+   selectRowObj: any;
    deleteEditScopeConfirm: boolean = false;
    deleteScopeConfirm: boolean = false;
+   deleteOthersConfirm: boolean = false;
    inspectionBodyForm: any = {};
    schemeRows: Array<any> = [{}];
    subTypeMaster: any[] = [];
@@ -689,32 +692,70 @@ ngOnInit() {
       }
       this._customModal.closeDialog();
   }
-  getSchme(sid: number){
-    let getSchemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id == sid);
-    //console.log("data: ", getSchemeData);
+  getSubType(typeId: number){
+      if(typeId){
+        let typeData: any = this.subTypeMaster.find(rec => rec.service_page.id == typeId);
+        if(typeData){
+          return 'Accreditation SubType For: ' + typeData.title;
+        }
+      }
+  }
+  getSchme(sid: number, typeId: number){
+    let typeData: any;
+    let getSchemeData: any;
+    if(typeId){
+       typeData = this.subTypeMaster.find(rec => rec.service_page.id == typeId);
+    }
+    //console.log(">>> Type data: ", typeData, " -- ", this.subTypeMaster);
+    if(typeData && typeData.scheme_list != undefined){
+      getSchemeData = typeData.scheme_list.find(item => item.scope_accridiation.id == sid);
+    }
+    //getSchemeData = this.criteriaMaster.find(item => item.scope_accridiation.id == sid);
+    //console.log("data: schem get ", getSchemeData);
+    //return;
     if(getSchemeData){
       return 'Accreditation Scope for ' + getSchemeData.title;
     }
   }
-  deleteScopeData(schemId: any, deleteIndex: number){
-      console.log("deleting...", schemId, " -- ", deleteIndex);
+  deleteScopeData(typeId: any, schemId: any, deleteIndex: number){
+      console.log("deleting...", schemId, " -- ", deleteIndex, " -- ", typeId);
       let savedData: any = this.editScopeData;
+      let typeData: any;
       console.log("saveData: ", savedData);
 
       for(var key in savedData){
           console.log(">>> ", key, " :: ", savedData[key]);
-          if(key === schemId){
-            let getvalues: any =  savedData[key].scope_value;
-            console.log("<<< Found: ", getvalues);
-            if(typeof getvalues === 'object'){
-              console.log("deleting...");
-              getvalues.splice(deleteIndex, 1);
+          if(key == typeId){
+            
+            typeData = savedData[key];
+            console.log(">>> Type data found... ", typeData);
+            if(typeData != undefined && typeof typeData == 'object'){
+                  for(var type in typeData){
+                    if(type === schemId){
+                      let getvalues: any =  typeData[type].scope_value;
+                      console.log("<<< scheme Found: ", getvalues);
+                      if(typeof getvalues === 'object'){
+                        console.log("deleting...");
+                        getvalues.splice(deleteIndex, 1);
+                      }
+                    }
+                  }
             }
-          }
+          }          
       }
       this._customModal.closeDialog();
       console.log(">>>Final Data: ", this.editScopeData);
   }
+  openDeleteRowConfirm(delObj: any, delIndex: any){
+    console.log(">>>delete ", delObj, " -- ", delIndex);
+    if(delObj){
+      console.log("assign delete id: ", delIndex, " -- ", delObj);
+      this.selectDeleteIndex = delIndex;
+      this.selectRowObj = delObj;
+      this.deleteOthersConfirm = true;
+    } 
+  }
+
   openDeleteScopeConfirm(delIndex: any, delKey: any, typeTitle: any){
     console.log(">>>delete ", delKey, " -- ", delIndex);
     if(delKey){
@@ -726,12 +767,13 @@ ngOnInit() {
     } 
   }
 
-  openDeleteEditScopeConfirm(delIndex: number, delKey: any){
-    console.log(">>>delete ", delKey);
+  openDeleteEditScopeConfirm(delIndex: number, delTypeKey: any, delKey: any){
+    console.log(">>>delete ", delKey, " -- ", delTypeKey);
     if(delKey){
       console.log("assign delete id: ", delIndex, " -- ", delIndex);
       this.selectDeleteIndex = delIndex;
       this.selectDeleteKey = delKey;
+      this.selectDeleteTypeKey = delTypeKey;
       this.deleteEditScopeConfirm = true;
     } 
   }
@@ -945,6 +987,7 @@ loadAppInfo(){
         res => {
           console.log(res,'urlVal')
           this.loader = true;
+          let getData: any = res;
           if(res['data'].id && res['data'].id != '') {
               let pathData: any;
               let filePath: string;
@@ -1110,8 +1153,33 @@ loadAppInfo(){
               // }
 
               //step5
-              // this.cbsOtherActivity = res['data'].otherActivityLocations;
-              // this.nameOfCountry = res['data'].nameOfCountry;
+              //
+              let getActivity: any = res['data'].otherActivityLocations;
+              //console.log(">>> other activity: ", getActivity);
+              let tempAct: any =[];
+              for(var k in getActivity){
+                let tempObj: any = JSON.parse(getActivity[k]['value']);
+                tempAct.push(tempObj);
+                //console.log(">>> ", k , " :: ", tempAct);
+              }
+              this.cbsOtherActivity = tempAct;
+
+              let getNameCountry: any = res['data'].nameOfCountry;
+              //console.log(">>> other name country: ", getNameCountry);
+              let tempNameCountry: any =[];
+              for(var k in getNameCountry){
+                let tempObj: any = JSON.parse(getNameCountry[k]['value']);
+                tempNameCountry.push(tempObj);
+                //console.log(">>> ", k , " :: ", tempNameCountry);
+              }
+              this.nameOfCountry = tempNameCountry;
+
+              if(getData.data.scopeDetails != undefined && !this.Service.isObjectEmpty(getData.data.scopeDetails)){
+                
+                let jsonObject = getData.data.scopeDetails;//JSON.parse(jsonStrting);
+                this.editScopeData = jsonObject; 
+                console.log(">>> scope entry: ", this.editScopeData);
+              }
 
               //Step 6
               if(res['data'].is_prelim_visit != null){
@@ -1493,10 +1561,10 @@ onSubmitStep2(ngForm2: any){
     this.certificationBodiesForm.step3 = {};
     //this.certificationBodiesForm.email = this.userEmail;
     //this.certificationBodiesForm.userType = this.userType;
-    this.certificationBodiesForm.step3.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+   // this.certificationBodiesForm.step3.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.certificationBodiesForm.step3.email = this.userEmail;
     this.certificationBodiesForm.step3.userType = this.userType;
-    this.certificationBodiesForm.step3.application_id = this.formApplicationId;
+    this.certificationBodiesForm.step3.application_id = applicationId;//this.formApplicationId;
     //this.certificationBodiesForm.step3 = this.step3Data;
 
     this.certificationBodiesForm.step3.technicalManager = {};
@@ -1580,6 +1648,7 @@ saveScope(){
   let scopeValues: any =[];
   let scopeIds:any =[];
   let scopeSelValues:any =[];
+  let OtherHeaders: any[] = ['category', 'standard', 'scopeScheme'];
   console.log("dynamic ", this.dynamicScopeModel, " -- ", this.dynamicScopeFieldColumns, " -- ", this.schemeRows, " -- ", this.formApplicationId);
   var key = '';
   var key2 = '';
@@ -1588,6 +1657,13 @@ saveScope(){
   let selectScheme          = '';//this.schemeRows[0].id;
   
   //Create Heading
+  //check other certifications
+  if(this.otherStandards.length > 0){
+    scopeCollections[0] = {};
+    scopeCollections[0][0] = {};
+    scopeCollections[0][0]['scope_heading'] = {};
+    scopeCollections[0][0]['scope_value'] = [];
+  }
   if(this.fullTypeScope.length){
     this.fullTypeScope.forEach(typeScope => {
         console.log(">>>>Type scope: ", typeScope);
@@ -1608,6 +1684,7 @@ saveScope(){
             scopeTitle = getData.title.toString().toLowerCase().split(" ").join('_');
           }
           scopeCollections[typeScope.id] = {};
+          
           scopeCollections[typeScope.id][selectScheme] = {};
           scopeCollections[typeScope.id][selectScheme]['scope_heading'] = {};
                 for(var key in this.dynamicScopeFieldColumns[typeScope.id][scopeTitle]){
@@ -1625,8 +1702,9 @@ saveScope(){
                       }
                 }
         }
-
     })
+    
+
   }
   console.log(">>> build scope: ", scopeCollections, " -- ", this.dynamicScopeModel, " -> Scheme: ", this.schemeRows);
   //return;
@@ -1760,7 +1838,33 @@ saveScope(){
       }
     })
 
+    
+
   }
+
+  //MAnage Others
+  //Assign Others Values
+  if(this.otherStandards.length){
+    // scopeCollections[0][0] = {};
+    // scopeCollections[0][0]['scope_heading'] = {};
+    // scopeCollections[0][0]['scope_value'] = [];
+    //Assign others heading
+    for(var k=0; k<OtherHeaders.length; k++){
+      let keyIds = k;
+      let headName = OtherHeaders[k];
+      scopeCollections[0][0]['scope_heading'][keyIds] = headName;
+    }
+    //Assign values
+    this.otherStandards.forEach((rec,key) => {
+      console.log('@ val: ', rec);
+      let tempObj: any = {};
+          for(var p=0; p < OtherHeaders.length; p++){
+            let headkey = OtherHeaders[p];
+            tempObj[p] = rec[headkey]
+          }
+          scopeCollections[0][0]['scope_value'].push(tempObj); 
+    })
+}
         
 
   //Update scope data
@@ -1768,46 +1872,104 @@ saveScope(){
       console.log("update edit scope: ", this.editScopeData, " -- ", scopeCollections)
       let tempScopeDetails: any={};
       let checkMatch: boolean = false;
-      for(var key in this.editScopeData){
-        tempScopeDetails[key] = {};
-        tempScopeDetails[key]['scope_value'] = [];
-        console.log(">>> ", key, " :: ", this.editScopeData[key]);
-        checkMatch = this.getMatchScheme(key, scopeCollections);
-        console.log("@@@ Finding schme status...", key);
-            if(checkMatch){
-              console.log("#>>> Find scheme in edit scope and update/marge...");
-              this.editScopeData[key]['scope_value'].forEach((item, p) => {
-                scopeCollections[key]['scope_value'].push(this.editScopeData[key]['scope_value'][p])
-              })
-              //scopeCollections[key]['scope_value'].push(this.editScopeData[key]['scope_value']);
-            }else{
-              console.log("@>>> Not Found scheme in edit scope and update and marge...");
-              scopeCollections[key] = {};
-              scopeCollections[key]['scope_heading']  = {};
-              scopeCollections[key]['scope_heading']  = this.editScopeData[key]['scope_heading'];
-              scopeCollections[key]['scope_value']    = [];
-              scopeCollections[key]['scope_value']    = this.editScopeData[key]['scope_value']
+      let checkTypeMatch: boolean = false;
+
+            for(var key in this.editScopeData){
+              console.log(">>> ", key, " :: ", this.editScopeData[key]);
+
+              checkTypeMatch = this.getMatchSubType(key, scopeCollections);
+              console.log("@@@ Finding sub type status...", key, " -- ", checkTypeMatch, " -- ", scopeCollections[key], " -- ", this.editScopeData[key]);
+              if(checkTypeMatch){
+                //Match Type
+                if(this.editScopeData[key] != undefined &&  typeof this.editScopeData[key] == 'object'){
+                      //Loop through scheme data
+                      for(var keySchme in this.editScopeData[key]){
+                        checkMatch = this.getMatchScheme(keySchme, scopeCollections[key]);    //Scheme Mathch
+                        console.log("@@@ Finding schme status...", keySchme, " :: ", checkMatch);
+                        if(checkMatch){
+                          console.log("#>>> Find scheme in edit scope and update/marge...");
+                          this.editScopeData[key][keySchme]['scope_value'].forEach((item, p) => {
+                            scopeCollections[key][keySchme]['scope_value'].push(this.editScopeData[key][keySchme]['scope_value'][p])
+                          })
+                          //scopeCollections[key]['scope_value'].push(this.editScopeData[key]['scope_value']);
+                        }else{
+                          console.log("@>>> Not Found scheme in edit scope and update and marge...");
+                          scopeCollections[key][keySchme] = {};
+                          scopeCollections[key][keySchme]['scope_heading']  = {};
+                          scopeCollections[key][keySchme]['scope_heading']  = this.editScopeData[key][keySchme]['scope_heading'];
+                          scopeCollections[key][keySchme]['scope_value']    = [];
+                          scopeCollections[key][keySchme]['scope_value']    = this.editScopeData[key][keySchme]['scope_value']
+                        }
+                      }
+                }
+              }else{
+                //New Type added
+                console.log("<><><>>>>>> not match adding: ", this.editScopeData[key]);
+                if(key != null && key != 'null' && key != undefined){
+                  console.log(">>>>> Enetr cond..............");
+                  scopeCollections[key] = {};
+               scopeCollections[key] = this.editScopeData[key];
+                }
+                
+              }
+
+
+              // tempScopeDetails[key] = {};
+              // tempScopeDetails[key]['scope_value'] = [];
+              // console.log(">>> ", key, " :: ", this.editScopeData[key]);
+              // checkMatch = this.getMatchScheme(key, scopeCollections);
+              // console.log("@@@ Finding schme status...", key);
+              //     if(checkMatch){
+              //       console.log("#>>> Find scheme in edit scope and update/marge...");
+              //       this.editScopeData[key]['scope_value'].forEach((item, p) => {
+              //         scopeCollections[key]['scope_value'].push(this.editScopeData[key]['scope_value'][p])
+              //       })
+              //       //scopeCollections[key]['scope_value'].push(this.editScopeData[key]['scope_value']);
+              //     }else{
+              //       console.log("@>>> Not Found scheme in edit scope and update and marge...");
+              //       scopeCollections[key] = {};
+              //       scopeCollections[key]['scope_heading']  = {};
+              //       scopeCollections[key]['scope_heading']  = this.editScopeData[key]['scope_heading'];
+              //       scopeCollections[key]['scope_value']    = [];
+              //       scopeCollections[key]['scope_value']    = this.editScopeData[key]['scope_value']
+              //     }
             }
-      }
       //filter scope collections
       console.log(">> Fileter collection...", scopeCollections);
-      for(var p in scopeCollections){
-        if(scopeCollections[p]){
-            let getDetails: any = scopeCollections[p]['scope_value'];
-            console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
-            if(getDetails.length == 0){
-              console.log(">>>Empty values: ", p, " deleting");
-              delete scopeCollections[p];
+      var type: any;
+      for(type in scopeCollections){
+        console.log(">>> browse Type: ", type, " :: ", scopeCollections[type]);
+          if(type > 0){
+            for(var p in scopeCollections[type]){
+              if(scopeCollections[type][p]){
+                  let getDetails: any = scopeCollections[type][p]['scope_value'];
+                  console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
+                  if(getDetails.length == 0){
+                    console.log(">>>Empty values: ", p, " deleting");
+                    delete scopeCollections[type][p];
+                  }
+              }
             }
-        }
-      }    
+          }
+      }                
   }
 
   console.log("#Updated Scope after edit: ", scopeCollections, " -- ", this.editScopeData);
   this.step5Data['scopeDetails']    = scopeCollections;
+  //return;
 }
 //scopeCollections[selectScheme]['scope_heading'][keyIds]  //assign scope heading
 //scopeCollections[selectScheme]['scope_value'] //assign unmatch scope value
+getMatchSubType(typeId: any, scopeData: any){
+  console.log("@@@ Finding sub type...");
+  for(var key in scopeData){
+    console.log("# Finding type...", key, " -- ", typeId);
+      if(key == typeId){
+        return true;
+      }
+  }
+  return false;
+}
 
 getMatchScheme(scId: any, scopeData: any){
   console.log("@@@ Finding schme...");
@@ -1832,9 +1994,9 @@ onSubmitStep3(ngForm: any, type?:any) {
   this.certificationBodiesForm = {};
   this.certificationBodiesForm.step3 = {};  
   var applicationId = sessionStorage.getItem('applicationId');
-  this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+  this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
   //this.certificationBodiesForm.step5.application_id = this.formApplicationId;
-  this.certificationBodiesForm.step3 = this.step3Data;
+  this.certificationBodiesForm.step3 = this.step5Data;
   //this.certificationBodiesForm.step5['cbsOtherActivity'] = [];
   this.certificationBodiesForm.step3['otherActivityLocations'] = [];
   this.certificationBodiesForm.step3['countriesForCertification'] = [];
@@ -1889,20 +2051,20 @@ onSubmitStep3(ngForm: any, type?:any) {
   //Check dynamic model column fields validation
 
 
-    console.log("scheme Rows: ", this.schemeRows,  " -- ", this.schemeRows.length, " :: ", this.editScopeData, " :: ", this.getScopeData);
+    //console.log("scheme Rows: ", this.schemeRows,  " -- ", this.schemeRows.length, " :: ", this.editScopeData, " :: ", this.getScopeData);
 
     //console.log(">>>Form Submit: ", ngForm, " -- ",ngForm.form, " -- ", this.schemeRows); 
-   
+    console.log(">>> step5 submit...", this.step5Data, " -- ", this.certificationBodiesForm);
    //return;
     //ngForm.form.valid &&
-    if(!ngForm.form.valid && type == undefined && this.schemeRows.length == 1 
-        && this.schemeRows[0].id === undefined && this.editScopeData != undefined && this.editScopeData != null) {
+    //&& this.schemeRows.length == 1   && this.schemeRows[0].id === undefined
+    if(!ngForm.form.valid && type == undefined  && this.editScopeData != undefined && this.editScopeData != null) {
       console.log(">>>Bypass saving...");
       console.log(">>>Enter....2")
       this.saveScope();
       console.log(">>> step5 submit...", this.step3Data, " -- ", this.certificationBodiesForm);
       this.certificationBodiesForm.step3.is_draft = false;
-      this.certificationBodiesForm.saved_step = 5;
+      this.certificationBodiesForm.saved_step = 3;
       //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.certificationBodiesForm,this.certificationBodiesForm)
       .subscribe(
@@ -2401,11 +2563,17 @@ addRow(obj: any = [],type?: string){
   return true;
 }
 
+addRowLine(obj: any){
+  let newRow     =   {};
+  obj.push(newRow);
+}
+
 removeRow(obj: any, index: number, type?:string){
 
   if(type === '' || type == undefined){
     obj.splice(index, 1);
   }    
+  this._customModal.closeDialog();
   return true;
 }
 

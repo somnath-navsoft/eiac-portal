@@ -71,6 +71,8 @@ export class CustomModalComponent implements OnInit {
       this.parent.deleteEditScopeConfirm = false;
     }else if(this.parent && this.parent.deleteScopeConfirm){
       this.parent.deleteScopeConfirm = false;
+    }else if(this.parent && this.parent.deleteOthersConfirm){
+      this.parent.deleteOthersConfirm = false;
     }else if(this.parent && this.parent.rejectedMessageId){
       this.parent.rejectedMessageId = false;
     }

@@ -949,6 +949,7 @@
                                     
                                     <!-- SCOPE SECTION START -->
                                     <div class="row  mt-3">
+                                        @{{editScopeData | json}}
                                         <div class="col-md-12">
                                             <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey, selectDeleteTypeTitle)" [parent]="this" [modalType]="'delete'"></custom-modal>
                                             <ng-container *ngIf="editScopeData != undefined && editScopeData != null">
@@ -959,12 +960,54 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteIndex)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                                                <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteTypeKey,selectDeleteIndex)" [parent]="this" [modalType]="'delete'"></custom-modal>
                                                 <ng-container *ngFor="let item of editScopeData | keyvalue">
-                                                    <div class="row">
+                                                    <div class="row"> 
+                                                        <div class="col-md-12">
+                                                            <div class="sub-header">
+                                                                <h5 [innerHTML]="getSubType(item.key)">{{item.key}} - {{item.value | json}}</h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <ng-container *ngIf="item.value != null && item.value != undefined">
+                                                        <ng-container *ngFor="let item5 of (item.value) | keyvalue;">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="table-appln scope-data">
+                                                                        <div class="sub-header">
+                                                                            <h5 [innerHTML]="getSchme(item5.key, item.key)"></h5>
+                                                                        </div>
+                                                                        <table>
+                                                                            <tr>
+                                                                                <th *ngFor="let item1 of (item5.value.scope_heading) | keyvalue;">{{item1.value}}</th>
+                                                                                <th>Action</th>
+                                                                            </tr>
+                                                                            <ng-container *ngIf="item5.value.scope_value.length > 0">
+                                                                                <tr *ngFor="let item2 of (item5.value.scope_value) | keyvalue; let i4 = index;">
+                                                                                    <td *ngFor="let item3 of item2.value | keyvalue;">
+                                                                                        <span [innerHTML]="(item3.value)"></span>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                    <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item5.key, item.key)"></span>
+                                                                                    </td>                                                                
+                                                                                </tr>
+                                                                            </ng-container>
+                                                                            <ng-container *ngIf="item5.value.scope_value.length == 0">
+                                                                                <tr>
+                                                                                    <td [attr.colspan]="Service.getObjectLength(item5.value.scope_heading)+1">
+                                                                                        No Data
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </ng-container>
+                                                                        </table>  
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                    <!-- <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="table-appln scope-data">
-                                                                  <!-- @{{item.value.scope_heading | json}} || {{item.key}} || {{item.value.scope_heading.length}} -->
                                                                 <div class="sub-header">
                                                                     <h5 [innerHTML]="getSchme(item.key)"></h5>
                                                                 </div>
@@ -979,7 +1022,6 @@
                                                                                 <span [innerHTML]="(item3.value)"></span>
                                                                             </td>
                                                                             <td>
-                                                                            <!-- deleteScopeData(item.key, i4) -->
                                                                             <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item.key)"></span>
                                                                             </td>                                                                
                                                                         </tr>
@@ -994,9 +1036,9 @@
                                                                 </table>  
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                 </ng-container>
-                                            </ng-container>   
+                                            </ng-container>
                                             <ng-container *ngFor="let item of subTypeRows; let i = index;">
                                                 <div class="row mt-3">
                                                     <div class="col-md-9 col-sm-9">
@@ -1198,6 +1240,7 @@
 
                                     <!-- Other Sections -->
                                     <!-- Other Certification standaurds -->
+                                    <custom-modal *ngIf="deleteOthersConfirm" (onDeleteAction)="removeRow(selectRowObj, selectDeleteIndex)" [parent]="this" [modalType]="'delete'"></custom-modal>
                                     <div class="row mt-3">
                                         <div class="col-12">
                                             <div class="row">
@@ -1225,24 +1268,32 @@
                                                                     <td>
                                                                         <mat-form-field class="cab-data">
                                                                             <mat-label>Type Here</mat-label>
-                                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExCont)" matInput placeholder="" name="location_type_{{i}}" [(ngModel)]="cbsOtherActivity[i].location_type" required> 
+                                                                            <input onpaste="return false" 
+                                                                            (keypress)="Service.inputFilter($event, Service.regExCont)"
+                                                                             matInput placeholder="" name="category_{{i}}"
+                                                                              [(ngModel)]="otherStandards[i].category" required> 
                                                                         </mat-form-field>
                                                                     </td>
                                                                     <td>
                                                                         <mat-form-field class="cab-data">
                                                                             <mat-label>Type Here</mat-label>
-                                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExCont)" matInput placeholder="" name="city_country_{{i}}" [(ngModel)]="cbsOtherActivity[i].city_country" required> 
+                                                                            <input onpaste="return false" 
+                                                                            (keypress)="Service.inputFilter($event, Service.regExCont)"
+                                                                             matInput placeholder="" name="standard_{{i}}" 
+                                                                             [(ngModel)]="otherStandards[i].standard" required> 
                                                                         </mat-form-field>
                                                                     </td>
                                                                     <td>
                                                                         <mat-form-field class="cab-data">
                                                                             <mat-label>Type Here</mat-label>
-                                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExCont)" matInput placeholder="" name="activity_carried_out_{{i}}" [(ngModel)]="cbsOtherActivity[i].activity_carried_out" required> 
+                                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExCont)" 
+                                                                            matInput placeholder="" name="scopeScheme_{{i}}" 
+                                                                            [(ngModel)]="otherStandards[i].scopeScheme" required> 
                                                                         </mat-form-field>
                                                                         </td>
                                                                     <td class="content-icn">
-                                                                        <span *ngIf="i >= 0" class="icon-add" (click)="addRow(otherStandards)"></span> &nbsp;
-                                                                        <span *ngIf="i >= 1" class="icon-cross" (click)="openDialog(otherStandards,i)"></span>
+                                                                        <span *ngIf="i >= 0" class="icon-add" (click)="addRowLine(otherStandards)"></span> &nbsp;
+                                                                        <span *ngIf="i >= 1" class="icon-cross" (click)="openDeleteRowConfirm(otherStandards,i)"></span>
                                                                     </td>
                                                                 </tr>
                                                             
@@ -1276,13 +1327,16 @@
                                                                     <th>Activities carried out at this Location</th>
                                                                     <th></th>
                                                                 </tr>
-                                                            </thead>
+                                                            </thead>  
                                                             <tbody>
                                                                 <tr  *ngFor="let item of cbsOtherActivity; let i = index;">
                                                                     <td>
                                                                         <mat-form-field class="cab-data">
                                                                             <mat-label>Type Here</mat-label>
-                                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="location_type_{{i}}" [(ngModel)]="cbsOtherActivity[i].location_type" required> 
+                                                                            <input onpaste="return false" 
+                                                                            (keypress)="Service.inputFilter($event, Service.regExName)"
+                                                                             matInput placeholder="" name="location_type_{{i}}"
+                                                                              [(ngModel)]="cbsOtherActivity[i].location_type" required> 
                                                                         </mat-form-field>
                                                                     </td>
                                                                     <td>
@@ -1299,7 +1353,7 @@
                                                                         </td>
                                                                     <td class="content-icn">
                                                                         <span *ngIf="i >= 0" class="icon-add" (click)="addRow(cbsOtherActivity)"></span> &nbsp;
-                                                                        <span *ngIf="i >= 1" class="icon-cross" (click)="openDialog(cbsOtherActivity,i)"></span>
+                                                                        <span *ngIf="i >= 1" class="icon-cross" (click)="openDeleteRowConfirm(cbsOtherActivity,i)"></span>
                                                                     </td>
                                                                 </tr>
                                                             
@@ -1340,7 +1394,7 @@
                                                                     </td>
                                                                     <td class="content-icn" width="10%">
                                                                         <span *ngIf="i >= 0" class="icon-add" (click)="addRow(nameOfCountry)"></span> &nbsp;
-                                                                        <span *ngIf="i >= 1" class="icon-cross" (click)="openDialog(nameOfCountry,i)"></span>
+                                                                        <span *ngIf="i >= 1" class="icon-cross" (click)="openDeleteRowConfirm(nameOfCountry,i)"></span>
                                                                     </td>
                                                                 </tr>
                                                             
