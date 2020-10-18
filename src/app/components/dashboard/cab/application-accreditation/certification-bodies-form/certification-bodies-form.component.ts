@@ -179,9 +179,15 @@ export class CertificationBodiesFormComponent implements OnInit {
   scrollHandler(elem) {
     if(elem != undefined){
       //console.debug("Scroll Event: ", elem.srcElement.scrollHeight, " == [ ",elem.srcElement.offsetHeight, " - ",elem.srcElement.scrollTop," ]"  );
-      if(( elem.srcElement.offsetHeight + elem.srcElement.scrollTop) >=  elem.srcElement.scrollHeight) {
-         ////console.log("Yo have reached!");
+      if((elem.srcElement.offsetHeight + elem.srcElement.scrollTop) >=  elem.srcElement.scrollHeight) {
+         console.log("Yo have reached!");
          this.authorizationList.authorization_confirm2 = true;
+         this.readTermsCond = true;
+         this.authorizeCheckCount(elem, 'read')
+      }else{
+        this.authorizeCheckCount(elem, 'read')
+        //this.authorizationList.authorization_confirm2 = false;
+        //this.readTermsCond = false;
       }
     }        
   }
@@ -276,7 +282,9 @@ ngOnInit() {
 
   this.summaryDetails = [{"position":'Managerial/Professional'},{'position':'Administrative'},{'position':'Marketing/Sales'}];
   
-  this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false};
+  this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,
+    undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,
+    undertaking_confirm7:false};
   this.loadAppInfo()
   this.loadCountryStateCity();
 
@@ -2019,7 +2027,7 @@ getMatchScheme(scId: any, scopeData: any){
 //Scope Save functions
 
 onSubmitStep3(ngForm: any, type?:any) {
-  this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+  //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
 
   
   //this.saveScope();
@@ -2070,7 +2078,7 @@ onSubmitStep3(ngForm: any, type?:any) {
                           let selTitle: any       = colItem[0].title;
                           fieldSelValue         = this.dynamicScopeModel[scopeTitle][key][k][selTitle];
                           //console.log(">>> ", scopeTitle, " :: ", selTitle, " -- ", fieldSelValue);
-                          if(fieldSelValue === undefined){
+                          if(fieldSelValue === undefined || fieldSelValue == ''){
                             errorScope = true;
                           }
                     })
@@ -2093,7 +2101,8 @@ onSubmitStep3(ngForm: any, type?:any) {
    //return;
     //ngForm.form.valid &&
     //&& this.schemeRows.length == 1   && this.schemeRows[0].id === undefined
-    if(!ngForm.form.valid && type == undefined  && this.editScopeData != undefined && this.editScopeData != null) {
+    if(!ngForm.form.valid && type == undefined  && this.subTypeRows.length == 1   && this.subTypeRows[0].id === undefined
+        && this.editScopeData != undefined && this.editScopeData != null) {
       console.log(">>>Bypass saving...");
       console.log(">>>Enter....2")
       this.saveScope();
@@ -2164,7 +2173,7 @@ onSubmitStep3(ngForm: any, type?:any) {
 }
 
 onSubmitStep4(ngForm4: any){
-  this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+  //this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
   if(ngForm4.form.valid) {
     this.certificationBodiesForm = {};
     this.certificationBodiesForm.step4 = {};
@@ -2197,29 +2206,75 @@ onSubmitStep4(ngForm4: any){
   }
 }
 
-onSubmitUndertakingApplicant(ngForm5: any){
-this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
-for(let key in this.authorizationList) {
-  if(this.authorizationList[key] == false) {
-    this.authorizationStatus = false;
-  }else {
-    this.authorizationStatus = true;
+authorizeCheckCount(theEvent: any, type?:any){
+  console.log(theEvent);
+  let checkCount = 0;
+  let readChecked = false;
+
+  if(type != undefined && type == 'read'){
+    console.log(">>> readd...");
+    readChecked = true;
   }
+
+  if(theEvent.checked || readChecked == true){
+    for(let key in this.authorizationList) {
+      //console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
+      if(this.authorizationList[key]) {  
+        this.authorizationStatus = true;       
+        checkCount++;
+      }    
+    }
+  }
+      
+
+  if(this.authorizationStatus && checkCount == 10){
+    this.authorizationStatus = true;
+  }else{
+    this.authorizationStatus = false;
+  }
+  console.log(">>> Check status count: ", checkCount);
 }
 
+onSubmitUndertakingApplicant(ngForm5: any){
+//this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
+// for(let key in this.authorizationList) {
+//   if(this.authorizationList[key] == false) {
+//     this.authorizationStatus = false;
+//   }else {
+//     this.authorizationStatus = true;
+//   }
+// }
+
+this.isApplicationSubmitted = true;
 // for(let key in this.recommend) {
 //   if(this.recommend[key] == true) {
 //     this.recommendStatus = true;
 //   }
 // }
-if(this.authorizationStatus == false){
-  this.isSubmit = false;
-  this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
-}else if(this.step5Data.recommend_visit == ''){
-  this.isSubmit = false;
-  this.toastr.error('Please Check any recommend the visit ', '');
-}
-if(ngForm5.form.valid){
+// if(this.authorizationStatus == false){
+//   this.isSubmit = false;
+//   this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
+// }else if(this.step5Data.recommend_visit == ''){
+//   this.isSubmit = false;
+//   this.toastr.error('Please Check any recommend the visit ', '');
+// }
+let checkCount = 0;
+    for(let key in this.authorizationList) {
+      //console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
+      if(this.authorizationList[key]) {  
+        this.authorizationStatus = true;       
+        checkCount++;
+      }    
+    }
+    if(this.authorizationStatus && checkCount == 10){
+      this.authorizationStatus = true;
+    }else{
+      this.authorizationStatus = false;
+    }
+
+    console.log(">>> Check status count: ", checkCount);
+
+if(ngForm5.form.valid && this.authorizationStatus == true){
 
   this.certificationBodiesForm = {};
   this.certificationBodiesForm.step5 = {};
@@ -2378,6 +2433,8 @@ agreeView(){
   this.modalService.dismissAll();
   this.authorizationList.undertaking_confirmTop2 = true;
   this.readAccredAgreem = true;
+  this.authorizeCheckCount(event, 'read');
+
 }
 closeChecklistDialog(){
   this.modalService.dismissAll();

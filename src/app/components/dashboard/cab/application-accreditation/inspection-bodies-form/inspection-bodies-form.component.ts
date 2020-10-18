@@ -3541,7 +3541,7 @@ getMatchScheme(scId: any, scopeData: any){
                           let selTitle: any       = colItem[0].title;
                           fieldSelValue         = this.dynamicScopeModel[scopeTitle][key][k][selTitle];
                           ////console.log(">>> ", scopeTitle, " :: ", selTitle, " -- ", fieldSelValue);
-                          if(fieldSelValue === undefined){
+                          if(fieldSelValue === undefined || fieldSelValue == ''){
                             errorScope = true;
                           }
                     })

@@ -24,10 +24,10 @@
                                         <div class="usernext-icon">
                                             <span [ngClass]="(item.activeClass === 'user-done') ? 'icon-tick' : item.icon"></span>
                                         </div>
-
+                                        <!-- (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}" -->
                                         <div class="user-details-pending" 
                                         id="course_header" >
-                                            <span [innerHTML]="item.desc" (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}"></span>
+                                            <span [innerHTML]="item.desc"></span>
                                         </div>
                                     </div>
                                     <div class="next-step" *ngIf="k < headerSteps.length-1">
@@ -188,7 +188,7 @@
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Official E-mail Address</mat-label>
-                                                <input  matInput autocomplete="off"  placeholder="Official Email Address"  name="official_email"  [(ngModel)]="step1Data.official_email"  required>
+                                                <input  matInput autocomplete="off"  readonly="true" placeholder="Official Email Address"  name="official_email"  [(ngModel)]="step1Data.official_email"  required>
                                                 <mat-error></mat-error> 
                                             </mat-form-field>
                                             <p class="error" *ngIf="step1Data.official_email && !Service.checkInput('email',step1Data.official_email)">Please Enter Correct Email Id</p>
@@ -258,25 +258,25 @@
                                     <div class="row" *ngFor="let item of ownOrgBasicInfo; let i = index;">
                                         <div class="col-12">
                                             <div class="ownr-details">
-                                                <div class="row" *ngIf="i >= 1">
+                                                <!-- <div class="row" *ngIf="i >= 1">
                                                     <div class="col-12">
                                                         <div class="remove-clss">
                                                             <span class="icon-close-round" (click)="removeRow(ownOrgBasicInfo, i)"></span>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Name</mat-label>
-                                                            <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off"  placeholder="Name"  maxlength="20" name="ownership_name_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].name" required>
+                                                            <input  readonly="true" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off"  placeholder="Name"  maxlength="20" name="ownership_name_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].name" required>
                                                             <mat-error></mat-error>    
                                                         </mat-form-field>
                                                     </div>
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Designation</mat-label>
-                                                            <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" required placeholder="Designation" name="ownership_designation_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].designation" required>
+                                                            <input  readonly="true" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" required placeholder="Designation" name="ownership_designation_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].designation" required>
                                                             <mat-error></mat-error> 
                                                         </mat-form-field>
                                                     </div>
@@ -285,7 +285,7 @@
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Mobile Phone No.</mat-label>
-                                                            <input type="text" (keypress)="Service.IsNumeric($event)" maxlength="15" minlength="10" matInput autocomplete="off"  placeholder="Mobile No." name="ownership_phone_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].phone_no"  required>
+                                                            <input type="text" readonly="true" (keypress)="Service.IsNumeric($event)" maxlength="15" minlength="10" matInput autocomplete="off"  placeholder="Mobile No." name="ownership_phone_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].phone_no"  required>
                                                             <mat-error></mat-error>
                                                         </mat-form-field>
                                                         <p class="error" *ngIf="ownOrgBasicInfo[i].phone_no && !Service.checkInput('onlyNumberWithPlus',ownOrgBasicInfo[i].phone_no)">Please Enter Correct Telephone Number</p> 
@@ -293,7 +293,7 @@
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Land Line Phone No.</mat-label>
-                                                            <input  matInput maxlength="15" minlength="10" autocomplete="off"  placeholder="Landline No."  name="ownership_mobile_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].mobile_no" required >
+                                                            <input  matInput readonly="true" maxlength="15" minlength="10" autocomplete="off"  placeholder="Landline No."  name="ownership_mobile_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].mobile_no" required >
                                                             <mat-error></mat-error>      
                                                         </mat-form-field>
                                                         <p class="error" *ngIf="ownOrgBasicInfo[i].mobile_no && !Service.checkInput('onlyNumberWithPlus',ownOrgBasicInfo[i].mobile_no)">Please Enter Correct Telephone Number</p> 
@@ -301,7 +301,7 @@
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Email Address</mat-label>
-                                                            <input  type="email" matInput autocomplete="off"  placeholder="Email Address" name="ownership_email_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].email" required >
+                                                            <input  type="email" readonly="true" matInput autocomplete="off"  placeholder="Email Address" name="ownership_email_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].email" required >
                                                             <mat-error></mat-error>
                                                         </mat-form-field>
                                                         <p class="error" *ngIf="ownOrgBasicInfo[i].email && !Service.checkInput('email',ownOrgBasicInfo[i].email)">Please Enter Correct Email Id</p>
@@ -312,7 +312,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <!-- <div class="row">
                                         <div class="col-12"> 
                                             <div class="add-new">
                                                 <a  href="javascript:void(0)" (click)="addRow(ownOrgBasicInfo)">
@@ -321,7 +321,7 @@
                                                 </a>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                     <div class="row">
                                         <div class="col-md-3">
@@ -377,25 +377,25 @@
                                     <div class="row" *ngFor="let item of ownOrgMembInfo; let i = index;">
                                         <div class="col-12"  *ngIf="step1Data.is_bod == '1'" >
                                             <div class="ownr-details">
-                                                <div class="row" *ngIf="i >= 1">
+                                                <!-- <div class="row" *ngIf="i >= 1">
                                                     <div class="col-12">
                                                         <div class="remove-clss">
                                                             <span class="icon-close-round" (click)="removeRow(ownOrgMembInfo, i)"></span>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Name the members of Board of Directors (BOD) (if any)</mat-label>
-                                                            <input matInput  (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name the members of Board of Directors (BOD)"  name="bod_directors_name_{{i}}" [(ngModel)]="ownOrgMembInfo[i].name"  required>
+                                                            <input matInput  readonly="true" (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name the members of Board of Directors (BOD)"  name="bod_directors_name_{{i}}" [(ngModel)]="ownOrgMembInfo[i].name"  required>
                                                         </mat-form-field>
                                                     </div>
 
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>List the companies name of BOD members</mat-label>
-                                                            <input matInput placeholder="List the companies name of BOD members"  (keypress)="Service.inputFilter($event, Service.regExName)" name="company_name_bod_{{i}}" [(ngModel)]="ownOrgMembInfo[i].bod_company"  required>
+                                                            <input matInput  readonly="true" placeholder="List the companies name of BOD members"  (keypress)="Service.inputFilter($event, Service.regExName)" name="company_name_bod_{{i}}" [(ngModel)]="ownOrgMembInfo[i].bod_company"  required>
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
@@ -404,14 +404,14 @@
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Managing Director/Chief Executive</mat-label>
-                                                            <input matInput placeholder="Authorized Contact Person Name"   name="md_or_chief_executive_{{i}}" [(ngModel)]="ownOrgMembInfo[i].md_or_chief_executive" (keypress)="Service.inputFilter($event, Service.regExName)">
+                                                            <input matInput readonly="true" placeholder="Authorized Contact Person Name"   name="md_or_chief_executive_{{i}}" [(ngModel)]="ownOrgMembInfo[i].md_or_chief_executive" (keypress)="Service.inputFilter($event, Service.regExName)">
                                                         </mat-form-field>
                                                     </div>
 
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Authorized Contact Person Name</mat-label>
-                                                            <input matInput placeholder="Authorized Contact Person Name"   name="authorized_contact_person_{{i}}" [(ngModel)]="ownOrgMembInfo[i].authorized_contact_person"  (keypress)="Service.inputFilter($event, Service.regExName)" required>
+                                                            <input matInput readonly="true" placeholder="Authorized Contact Person Name"   name="authorized_contact_person_{{i}}" [(ngModel)]="ownOrgMembInfo[i].authorized_contact_person"  (keypress)="Service.inputFilter($event, Service.regExName)" required>
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
@@ -420,14 +420,14 @@
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Designation</mat-label>
-                                                            <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="bod_designation_{{i}}" [(ngModel)]="ownOrgMembInfo[i].designation" required>
+                                                            <input  readonly="true" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="bod_designation_{{i}}" [(ngModel)]="ownOrgMembInfo[i].designation" required>
                                                         </mat-form-field>
                                                     </div>
 
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Mobile Phone No.</mat-label>
-                                                            <input  type="text" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="bod_mobile_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].mobile_no" required>
+                                                            <input  readonly="true" type="text" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="bod_mobile_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].mobile_no" required>
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
@@ -436,14 +436,14 @@
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Land Line Phone No.</mat-label>
-                                                            <input matInput (keypress)="Service.IsNumeric($event)" placeholder="Land Line Phone No." name="land_line_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].land_no">
+                                                            <input matInput readonly="true" (keypress)="Service.IsNumeric($event)" placeholder="Land Line Phone No." name="land_line_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].land_no">
                                                         </mat-form-field>
                                                     </div>
 
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Email Address</mat-label>
-                                                            <input  type="email" matInput autocomplete="off" placeholder="Email Address" name="ownership_member_email_{{i}}" [(ngModel)]="ownOrgMembInfo[i].email_address" >
+                                                            <input  readonly="true" type="email" matInput autocomplete="off" placeholder="Email Address" name="ownership_member_email_{{i}}" [(ngModel)]="ownOrgMembInfo[i].email_address" >
                                                             <mat-error></mat-error>
                                                         </mat-form-field>
                                                     </div>
@@ -452,7 +452,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row" *ngIf="step1Data.is_bod == '1'">
+                                    <!-- <div class="row" *ngIf="step1Data.is_bod == '1'">
                                         <div class="col-12">
                                             <div class="add-new">
                                                 <a  href="javascript:void(0)" (click)="addRow(ownOrgMembInfo)">
@@ -461,7 +461,7 @@
                                                 </a>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -847,7 +847,7 @@
                                     
                                     <!-- SCOPE SECTION START -->
                                     <div class="row  mt-3">
-                                        <!-- @{{editScopeData | json}} -->
+                                        <!-- @{{editScopeData | json}} Chaitali!1991-->
                                         <div class="col-md-12">
                                             <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey, selectDeleteTypeTitle)" [parent]="this" [modalType]="'delete'"></custom-modal>
                                             <ng-container *ngIf="editScopeData != undefined && editScopeData != null">
@@ -943,7 +943,7 @@
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Sub Type</mat-label>
                                                             <mat-select (selectionChange)="getTypeScheme(subTypeRows[i].id, i)" placeholder="Select" name="subtype_id_{{i}}"  
-                                                            [(ngModel)]="subTypeRows[i].id" required>
+                                                            [(ngModel)]="subTypeRows[i].id"  [required] = "editScopeData == undefined || editScopeData == null">
                                                                 <mat-option [value]="item.service_page.id" *ngFor="let item of subTypeMaster; let k=index;">{{item.title}}</mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
@@ -976,7 +976,7 @@
                                                                     <mat-label>Scheme</mat-label>
                                                                     <!-- criteriaMaster -->
                                                                     <mat-select (selectionChange)="getCriteria(schemeRows[i].id, i, typeScope.title)" placeholder="Select" name="scheme_id_{{i}}"  
-                                                                    [(ngModel)]="schemeRows[i].id" required>
+                                                                    [(ngModel)]="schemeRows[i].id"  [required] = "editScopeData == undefined || editScopeData == null">
                                                                         <mat-option [value]="item.scope_accridiation.id" *ngFor="let item of typeScope.schemeData; let k=index;">{{item.title}}</mat-option>
                                                                     </mat-select>
                                                                     <mat-error></mat-error> 
@@ -999,7 +999,7 @@
                                                                 <div class="row">
                                                                     <div class="col-md-12 p-0">
                                                                         <div class="form-subhdr">
-                                                                            <h5>Accreditation Scope for {{scope.name}} -- {{typeScope.title}}</h5>
+                                                                            <h5>Accreditation Scope for {{scope.name}}</h5>
                                                                         </div> 
                                                                     </div>
                                                                 </div>
@@ -1429,7 +1429,7 @@
                                     <div class="auth">
                                         <ul>
                                             <li>
-                                                <mat-checkbox name="authorization_confirm1" [(ngModel)]="authorizationList.authorization_confirm1" >I confirm that the information provided in this application form is true and correct.</mat-checkbox>
+                                                <mat-checkbox  (change)="authorizeCheckCount($event)" name="authorization_confirm1" [(ngModel)]="authorizationList.authorization_confirm1" >I confirm that the information provided in this application form is true and correct.</mat-checkbox>
                                             </li>
                                             
                                             <li class="terms-condition"  (scroll)="scrollHandler($event)" #mydiv style="height:500px;overflow:auto">
@@ -1561,13 +1561,13 @@
                                                 Agreement and request to provide us with a word agreement form for signature.</mat-checkbox>
                                             </li>
                                         </ul>
-                                        <p class="error" *ngIf="!readTermsCond">Read the Terms and Conditions</p>
+                                        <p class="error" *ngIf="!readTermsCond  && isApplicationSubmitted == true">Read the Terms and Conditions</p>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="authData">
                                                 
-                                                <mat-checkbox name="undertaking_confirmTop3" 
+                                                <mat-checkbox name="undertaking_confirmTop3"  (change)="authorizeCheckCount($event)"
                                                 [(ngModel)]="authorizationList.undertaking_confirmTop3" required>Do you require ILA MRA Mark Laboratories</mat-checkbox>
                                             </div>
 
@@ -1576,7 +1576,7 @@
                                                 <table>
                                                     <tr>
                                                         <td width="1%">
-                                                            <mat-checkbox name="undertaking_confirm1" 
+                                                            <mat-checkbox name="undertaking_confirm1"  (change)="authorizeCheckCount($event)"
                                                             [(ngModel)]="authorizationList.undertaking_confirm1"></mat-checkbox></td>
                                                         <td>Management System Manual</td>
                                                     </tr>
@@ -1584,34 +1584,34 @@
                                                         <td><mat-checkbox name="undertaking_confirm2" [disableRipple]="true"
                                                             (click)="$event.preventDefault()" [(ngModel)]="authorizationList.undertaking_confirm2"></mat-checkbox></td>
                                                         <td><span><a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled Up Document Review Checklist</a></span> (Related to applied accreditation standard and for initial accreditation & Scope Extensions only)<br/>
-                                                            <p class="error" *ngIf="!readReviewChecklist">Please review the checklist</p>                                                            
+                                                            <p class="error" *ngIf="!readReviewChecklist  && isApplicationSubmitted == true">Please review the checklist</p>                                                            
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td><mat-checkbox name="undertaking_confirm3" [(ngModel)]="authorizationList.undertaking_confirm3"></mat-checkbox></td>
+                                                        <td><mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm3" [(ngModel)]="authorizationList.undertaking_confirm3"></mat-checkbox></td>
                                                         <td>Internal Procedures (as per the accreditation criteria)</td>
                                                     </tr>
                                                     <tr>
-                                                        <td><mat-checkbox name="undertaking_confirm4" [(ngModel)]="authorizationList.undertaking_confirm4"></mat-checkbox></td>
+                                                        <td><mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm4" [(ngModel)]="authorizationList.undertaking_confirm4"></mat-checkbox></td>
                                                         <td>Minutes/Report of last Management Review</td>
                                                     </tr>
                                                     <tr>
-                                                        <td><mat-checkbox name="undertaking_confirm5" [(ngModel)]="authorizationList.undertaking_confirm5"></mat-checkbox></td>
+                                                        <td><mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm5" [(ngModel)]="authorizationList.undertaking_confirm5"></mat-checkbox></td>
                                                         <td>Report of last Internal Audit</td>
                                                     </tr>
                                                     <tr>
-                                                        <td><mat-checkbox name="undertaking_confirm6" [(ngModel)]="authorizationList.undertaking_confirm6"></mat-checkbox></td>
+                                                        <td><mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm6" [(ngModel)]="authorizationList.undertaking_confirm6"></mat-checkbox></td>
                                                         <td>Participation in PT/ILC/Measurement Audit</td>
                                                     </tr>
                                                     <tr>
-                                                        <td><mat-checkbox name="undertaking_confirm7" [(ngModel)]="authorizationList.undertaking_confirm7"></mat-checkbox></td>
+                                                        <td><mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm7" [(ngModel)]="authorizationList.undertaking_confirm7"></mat-checkbox></td>
                                                         <td>List of key staff and Organizational Structure if not mentioned in the Management System Manual</td>
                                                     </tr>
                                                 </table>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p class="error" *ngIf="!authorizationStatus">All check are required.</p>
+                                                    <p class="error" *ngIf="!authorizationStatus  && isApplicationSubmitted == true">All check are required.</p>
                                                 </div>
                                             </div>
                                             <div class="recommend">
@@ -1625,7 +1625,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p class="error" *ngIf="recommendVisit.errors?.required">Please select anyone option</p>
+                                                    <p class="error" *ngIf="recommendVisit.errors?.required  && isApplicationSubmitted == true">Please select anyone option</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -1827,26 +1827,26 @@
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Voucher Code</mat-label>
                                                 <input type="number" [ngModelOptions]="{standalone: true}" required="true"
-                                                matInput placeholder="Voucher Code" 
+                                                matInput placeholder="Voucher Code" readonly="true"
                                                 [(ngModel)]="voucherSentData.voucher_code">
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
+                                                <!-- (click)="Service._openCalendar(payment_date)"  [min]="minDate"-->
                                                 <mat-label>Payment Date</mat-label>
                                                 <input matInput [matDatepicker]="payment_date" 
-                                                (click)="Service._openCalendar(payment_date)" 
-                                                
-                                                [min]="minDate" name="payment_date" 
+                                                readonly="true"
+                                                 name="payment_date" 
                                                 [(ngModel)]="voucherSentData.payment_date" placeholder="Payment Date" required>
-                                                <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle>
+                                                <!-- <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle> -->
                                                 <mat-datepicker #payment_date disabled="false"></mat-datepicker>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Payment Amount</mat-label>
-                                                <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                                                <input type="number"  readonly="true" [ngModelOptions]="{standalone: true}" required="true"
                                                 matInput placeholder="Payment Amount" 
                                                 [(ngModel)]="voucherSentData.amount">
                                             </mat-form-field>
@@ -1917,6 +1917,10 @@
                                 <div class="bttns-health bttn-staff">
                                     <!-- (click)="onSubmitPaymentInformation()" -->
                                     <!-- <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</button> -->
+                                    <ng-container *ngIf="voucherSentData.transaction_no == '' || voucherSentData.transaction_no == null || voucherSentData.transaction_no == 'undefined'">
+                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" 
+                                        (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</a>
+                                    </ng-container>
                                     <button class="cancel-bttn" type="button" (click)="onSubmitPaymentInformation(ngForm9, true)">SAVE AS DRAFT</button>
                                     <button class="submit-bttn submit-health" >SUBMIT</button>
                                 </div>
