@@ -1139,14 +1139,17 @@ loadAppInfo(){
 
                     // obj['position'] = res['position'];
                     
-                    var obj1 = res['fulltime_emp_name'].replace(/'/g, "\"");
-                    var obj2 = JSON.parse(obj1);
+                    if(res['fulltime_emp_name'] != '') {
+                      var obj1 = res['fulltime_emp_name'].replace(/'/g, "\"");
+                      var obj2 = JSON.parse(obj1);
+                      this.auditorsExaminersFulltime = obj2;
+                    }
 
-                    var obj3 = res['parttime_emp_name'].replace(/'/g, "\"");
-                    var obj4 = JSON.parse(obj3);
-
-                    this.auditorsExaminersFulltime = obj2;
-                    this.auditorsExaminersParttime = obj4;
+                    if(res['parttime_emp_name'] != '') {
+                      var obj3 = res['parttime_emp_name'].replace(/'/g, "\"");
+                      var obj4 = JSON.parse(obj3);
+                      this.auditorsExaminersParttime = obj4;
+                    }
                   }
                 });
                 
@@ -1377,41 +1380,13 @@ savedraftStep(stepCount) {
   if(stepCount == 'step4') {
     this.certificationBodiesForm = {};
     this.certificationBodiesForm.step4 = {};
-    var applicationId = sessionStorage.getItem('applicationId');
-    this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step4Data.is_draft = true;
-    this.certificationBodiesForm.saved_step = '4';
-    this.certificationBodiesForm.email = this.userEmail;
-    this.certificationBodiesForm.userType = this.userType;
-    this.certificationBodiesForm.step4 = this.step4Data;
-    this.loader = false;
-    // this.step4DataBodyFormFile.append('data',JSON.stringify(this.certificationBodiesForm));
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.certificationBodiesForm,this.certificationBodiesForm)
-    .subscribe(
-      res => {
-        if(res['status'] == true) {
-          // this.toastr.success(res['msg'], '');
-          this.loader = true;
-          this.toastr.success('Save Draft Successfully', '');
-        }else{
-          this.toastr.warning(res['msg'], '');
-        }
-      });
-  }
-
-  if(stepCount == 'step5') {
-    
-  }
-  if(stepCount == 'step4') {
-    this.certificationBodiesForm = {};
-    this.certificationBodiesForm.step4 = {};
     this.certificationBodiesForm.email = this.userEmail;
     this.certificationBodiesForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
     this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step4Data.is_prelim_visit = this.step4Data.is_prelim_visit == 0 ? false : true;
     this.step4Data.is_draft = true;
-    this.certificationBodiesForm.saved_step = '6';
+    this.certificationBodiesForm.saved_step = '4';
     this.certificationBodiesForm.step4 = this.step4Data;
 
     // console.log(this.certificationBodiesForm);
@@ -1436,7 +1411,7 @@ savedraftStep(stepCount) {
     this.certificationBodiesForm.email = this.userEmail;
     this.certificationBodiesForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
-    this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+    this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step5Data.authorizationList = this.authorizationList;
     this.step5Data.recommend = this.recommend;
     this.step5Data.is_draft = true;
@@ -1452,6 +1427,7 @@ savedraftStep(stepCount) {
         // console.log(res,'res')
         this.loader = true;
         if(res['status'] == true) {
+          this.toastr.success(res['msg'], '');
         }else{
           this.toastr.warning(res['msg'], '');
         }
