@@ -1802,10 +1802,14 @@
                                         </div>
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
-                                                <mat-label>Payment Method</mat-label>
+                                                <!-- <mat-label>Payment Method</mat-label>
                                                 <input type="text" [ngModelOptions]="{standalone: true}" required="true"
                                                 matInput placeholder="Payment Method" 
-                                                [(ngModel)]="voucherSentData.payment_method">
+                                                [(ngModel)]="voucherSentData.payment_method"> -->
+                                                <mat-select placeholder="Select" name="payment_method" [(ngModel)]="voucherSentData.payment_method" required="true">
+                                                    <mat-option value="Cash">Cash</mat-option>
+                                                    <mat-option value="Online">Online</mat-option>
+                                                </mat-select>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-4">
