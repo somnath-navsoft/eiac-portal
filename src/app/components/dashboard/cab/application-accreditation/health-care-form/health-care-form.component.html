@@ -1733,7 +1733,7 @@
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
                                         <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice')">BACK</a> 
-                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step8')">SAVE AS DRAFT</button>
+                                        <!-- <button class="cancel-bttn" type="button" (click)="savedraftStep('step8')">SAVE AS DRAFT</button> -->
                                         <!-- <button class="submit-bttn submit-health" (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)">CONTINUE</button> -->
                                     </div>
                                     <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button>
@@ -1861,7 +1861,7 @@
                                     <!-- (click)="onSubmitPaymentInformation()" -->
                                     <!-- <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</button> -->
                                     <div class="button-content">
-                                        <ng-container *ngIf="voucherSentData.transaction_no == '' || voucherSentData.transaction_no == null || voucherSentData.transaction_no == 'undefined'">
+                                        <ng-container *ngIf="!paymentStepComp">
                                         <a class="cancel-bttn" type="button" (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</a>
                                         </ng-container>
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step9')">SAVE AS DRAFT</button>

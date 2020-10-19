@@ -15,6 +15,7 @@ import { TrainerService } from '../../../../../services/trainer.service';
 import { typeWithParameters } from '@angular/compiler/src/render3/util';
 import { AnyFn } from '@ngrx/store/src/selector';
 import {CustomModalComponent} from '../../../../utility/custom-modal/custom-modal.component';
+import { iif } from 'rxjs';
 
 declare let paypal: any; 
 @Component({
@@ -172,6 +173,8 @@ export class InspectionBodiesFormComponent implements OnInit {
   profileCountrySel: string = '';
   profileAutoData: boolean = false;
   criteriaList: any = [];
+
+  paymentStepComp: boolean = false;
 
   formDraftsaved: any;
   formAccrStatus: any;
@@ -1594,10 +1597,17 @@ export class InspectionBodiesFormComponent implements OnInit {
             this.voucherSentData.voucher_code     = getData.data.paymentDetails.voucher_no;
             this.voucherSentData.payment_date     = getData.data.paymentDetails.voucher_date;
             this.voucherSentData.amount           = getData.data.paymentDetails.amount;
+
             this.voucherSentData.transaction_no   = getData.data.paymentDetails.transaction_no;
             this.voucherSentData.payment_method   = getData.data.paymentDetails.payment_method;
             this.voucherSentData.payment_made_by  = getData.data.paymentDetails.payment_made_by;
             this.voucherSentData.mobile_no        = getData.data.paymentDetails.mobile_no;
+
+            //
+            if(getData.data.paymentDetails.transaction_no != null && getData.data.paymentDetails.payment_method != null &&
+              getData.data.paymentDetails.payment_made_by !+ null && getData.data.paymentDetails.mobile_no != null && getData.data.paymentDetails.payment_receipt != ''){
+                  this.paymentStepComp = true;
+            }
         }
         
       }

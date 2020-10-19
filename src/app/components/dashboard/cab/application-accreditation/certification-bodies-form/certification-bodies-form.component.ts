@@ -73,6 +73,8 @@ export class CertificationBodiesFormComponent implements OnInit {
   onbehalf_representative_date:boolean = true;
   getCountryLists:any;
 
+  paymentStepComp: boolean = false;
+
   afterSubmit:boolean = false;
   today = new Date();
 
@@ -1258,6 +1260,11 @@ loadAppInfo(){
 
                   this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
                   this.paymentReceiptValidation = true;
+
+                  if(res['data'].paymentDetails.transaction_no != null && res['data'].paymentDetails.payment_method != null &&
+                    res['data'].paymentDetails.payment_made_by !+ null && res['data'].paymentDetails.mobile_no != null && res['data'].paymentDetails.payment_receipt != ''){
+                        this.paymentStepComp = true;
+                  }
               }
             }
         });
