@@ -36,6 +36,7 @@ export class AppService {
   public regExName: any;
   public regExUrl: any;
   public regExCont: any;
+  public regExAlphaNum: any;
   public regExNumb: any;
   public regExEmail: any;
   user = null;
@@ -59,6 +60,7 @@ export class AppService {
       this.regExName = /^[a-zA-Z\s]*$/;
       this.regExEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
       this.regExCont = /^[a-zA-Z0-9,.:@#$%^&*!\s]*$/;
+      this.regExAlphaNum = /^[a-zA-Z0-9,.:@#$&\s]*$/;
       this.regExNumb = /^[0-9]*$/;
       this.regExUrl = '/(\w*\W*)?\w*(\.(\w)+)+(\W\d+)?(\/\w*(\W*\w)*)*/';
 

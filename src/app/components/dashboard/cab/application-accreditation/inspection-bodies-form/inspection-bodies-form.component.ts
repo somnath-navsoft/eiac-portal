@@ -848,8 +848,8 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.inspectionBodyForm.managementManager        = this.managementManager;
     this.inspectionBodyForm.inspectionBodyInfo           = this.inspectionBodyInfo;
     this.inspectionBodyForm.medicaMainlLabInfo        = this.medicaMainlLabInfo;
-    //, undertaking_confirmTop1: false,undertaking_confirmTop2: false,,  undertaking_confirmTop3: false
-    this.authorizationList = {undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,
+    //, undertaking_confirmTop1: false,undertaking_confirmTop2: false,, 
+    this.authorizationList = {undertaking_confirm1:false, undertaking_confirmTop3: false, undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,
       undertaking_confirm6:false,
       undertaking_confirm7:false,authorization_confirm1:false,authorization_confirm2:false};
 
@@ -2265,7 +2265,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     }
         
 
-    if(this.authorizationStatus && checkCount == 9){
+    if(this.authorizationStatus && checkCount == 10){
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;
@@ -2302,7 +2302,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       //   this.authorizationStatus = true;
       // }     
     }
-    if(this.authorizationStatus && checkCount == 9){
+    if(this.authorizationStatus && checkCount == 10){
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;
@@ -3054,7 +3054,21 @@ export class InspectionBodiesFormComponent implements OnInit {
           ////////console.log(res,'res')
           if(res['status'] == true) {
             //this.toastr.success(res['msg'], '');
-            this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+            if(this.step1Data.accredation_criteria == 1){
+              //Intial
+              this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+            }
+            if(this.step1Data.accredation_criteria == 2){
+              //Extension
+              let stepData: any = this.headerSteps.find(item => item.title == 'information_audit_management');
+              console.log(">>step select: 1 ", stepData);
+              if(stepData){
+                stepData.activeClass = '';
+                stepData.stepComp = true;
+              }
+              console.log(">>step select: 2 ", this.headerSteps);
+              this.Service.moveSteps('personal_information', 'scope_accreditation', this.headerSteps);
+            }
           }else{
             this.toastr.warning(res['msg'], '');
           }
