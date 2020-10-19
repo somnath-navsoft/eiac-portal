@@ -7,11 +7,16 @@ import { HostListener, ElementRef } from '@angular/core';
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material';
 import { RecaptchaComponent } from 'ng-recaptcha';
+import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {CustomModalComponent} from '../../../../utility/custom-modal/custom-modal.component';
+import { DomSanitizer } from '@angular/platform-browser';
+import { TrainerService } from '../../../../../services/trainer.service';
 
 @Component({
   selector: 'app-halal-conformity-form',
   templateUrl: './halal-conformity-form.component.html',
-  styleUrls: ['./halal-conformity-form.component.scss']
+  styleUrls: ['./halal-conformity-form.component.scss'],
+  providers: [CustomModalComponent]
 })
 export class HalalConformityFormComponent implements OnInit {
 
@@ -61,6 +66,82 @@ export class HalalConformityFormComponent implements OnInit {
   afterSubmit: boolean = false;
 
 
+  headerSteps:any[] = [];
+  public recommend:any;
+  allStateList: Array<any> = [];
+  allCityList: Array<any> = [];
+  step1Data:any = {};
+  step2Data:any = {};
+  step3Data:any = {};
+  step4Data:any = {};
+  step5Data:any = {};
+  step6Data:any = {};
+  step7Data:any = {};
+  step8Data:any = {};
+  step9Data:any = {};
+  step10Data:any = {};
+  fileAny:any;
+  tradeLicensedValidation:any = false;
+  step1DataBodyFormFile:any = new FormData();
+  step2DataBodyFormFile:any = new FormData();
+  step3DataBodyFormFile:any = new FormData();
+  step4DataBodyFormFile:any = new FormData();
+  step5DataBodyFormFile:any = new FormData();
+  step6DataBodyFormFile:any = new FormData();
+  step7DataBodyFormFile:any = new FormData();
+  step8DataBodyFormFile:any = new FormData();
+  step9DataBodyFormFile:any = new FormData();
+  step10DataBodyFormFile:any = new FormData();
+  userEmail:any;
+  userType:any;
+  isCompleteness:any;
+  profileComplete:any;
+  today = new Date();
+  transactions: any[] =[];
+  transactionsItem: any={};
+  is_hold_other_accreditation_toggle: any = 0;
+  getDutyTimeForm1IndexValue:number;
+  recommendStatus:boolean = false
+  total: any = 0;
+  criteriaList:any[] = [];
+  userId:any;
+  selectTradeLicName :string = ''; 
+  selectTradeLicPath :string = ''; 
+  formApplicationId:any;
+  formDraftsaved:any;
+  formAccrStatus:any;
+  voucherFile:any = new FormData();
+  voucherSentData: any = {};
+  pathPDF: any;
+  closeResult: string;
+  modalOptions:NgbModalOptions;
+  accredAgreemFile: any;
+  checklistDocFile: any;
+  urlVal: any;
+  paymentFile:any = false;
+  isApplicationSubmitted:any = false;
+  public isNoteSubmit:boolean = false;
+  
+
+  //Master scope form data declaration
+  dynamicScopeModel:any         = {};   
+  dynamicScopeFieldColumns:any  = {};  
+  dynamicScopeFieldType:any  = {}; 
+  criteriaMaster: any[] = [];
+  fullScope:any[]=[];
+  scopeDataLoad: boolean = false;
+  editScopeData: any;
+  getScopeData: any;
+  selectDeleteID: number =0;
+  selectDeleteKey: any;
+  selectDeleteIndex: any;
+  deleteEditScopeConfirm: boolean = false;
+  deleteScopeConfirm: boolean = false;
+  inspectionBodyForm: any = {};
+  schemeRows: Array<any> = [{}];
+  //Master scope form data declaration
+  is_main_activity_note_entry: boolean = false;
+
   bannerURL: any = '';
   bannerImageTitle: string = '';
   bannerLinkTarget: string = '';
@@ -68,7 +149,8 @@ export class HalalConformityFormComponent implements OnInit {
   onbehalf_representative_date:boolean = false;
   @ViewChild('captchaRef',{static:true}) captchaRef: RecaptchaComponent;
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
+  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,private _customModal: CustomModalComponent,
+    private modalService: NgbModal,public sanitizer:DomSanitizer,public _trainerService:TrainerService) { }
 
   getData(getVal){
     this.Service.mapboxToken = getVal;
