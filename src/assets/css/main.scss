@@ -330,9 +330,10 @@ input { font-family: 'Dubai Regular'; }
 .main-dashboard-cnt .user_main .col-md-12 { overflow: auto; }
 .main-dashboard-cnt .user-steps { display: flex; justify-content: center; align-items: center; width: 1525px; margin: 0 auto; }
 .user-steps .user-next { display: inline-block; vertical-align: middle; border-radius: 5px; border: 1px solid #CECECE ; background: #FFF; padding: 15px 0; color: #1D1D1D; text-align: center; min-height: 123px; width: 123px; margin-bottom: 20px; }
-.main-dashboard-cnt .user-steps.user-small { height: 100%; }
-.user-steps.user-small .user-next { height: 100%; min-height: inherit; }
+.main-dashboard-cnt .user-steps.user-small { width: 100%; }
+// .user-steps.user-small .user-next { height: 100%; min-height: inherit; }
 .user-steps .user-present { border: 1px solid #B19782; background: #B19782; color: #FFF; }
+.user-steps .user-skip { border: 1px solid #B19782; background: #574f46; color: #FFF; }
 .user-steps .user-done { border: 1px solid #B54150; background: #B54150; color: #FFF; }
 .user-steps .user-next .usernext-icon { font-size: 30px; }
 .user-steps .user-next .user-details-pendin { font-size: 14px; }

@@ -749,14 +749,14 @@
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)"
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExAlphaNum)"
                                                                     matInput placeholder="" name="test_name_{{i}}" [(ngModel)]="proficiencyTesting[i].test_name" required> 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                                    <input 
                                                                     matInput [matDatepicker]="participate_date"    readonly="true"
                                                                     (click)="Service._openCalendar(participate_date)" 
                                                                     (dateChange)="Service.inputEvent($event,i,proficiencyTesting)"   placeholder="Date of Issue" name="participate_date_{{i}}" [(ngModel)]="proficiencyTesting[i].participation_date" required>
@@ -767,14 +767,14 @@
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExAlphaNum)" 
                                                                     matInput placeholder="" name="pt_provider_{{i}}" [(ngModel)]="proficiencyTesting[i].pt_provider" required> 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="result_summery_{{i}}" 
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExAlphaNum)" matInput placeholder="" name="result_summery_{{i}}" 
                                                                     [(ngModel)]="proficiencyTesting[i].result" required> 
                                                                 </mat-form-field>
                                                                 </td>
@@ -1209,7 +1209,12 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
+                                        <ng-container *ngIf="step1Data.accredation_criteria == 1">
                                         <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','scope_accreditation')">BACK</a> 
+                                        </ng-container>
+                                        <ng-container *ngIf="step1Data.accredation_criteria == 2">
+                                            <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('personal_information',headerSteps,'menu','scope_accreditation')">BACK</a> 
+                                        </ng-container>
                                         <button class="cancel-bttn" type="button" (click)="onSubmitScopeAccreditation(ngForm5, true)">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >CONTINUE</button>
@@ -1487,11 +1492,11 @@
                                                 </mat-checkbox><br>
                                                 <p class="error" *ngIf="!readAccredAgreem">Please read agree the agreement</p>
                                             </div> -->
-                                            <!-- <div class="authData">
+                                            <div class="authData">
                                                 
-                                                <mat-checkbox name="undertaking_confirmTop3" 
+                                                <mat-checkbox name="undertaking_confirmTop3" (change)="authorizeCheckCount($event)"
                                                 [(ngModel)]="authorizationList.undertaking_confirmTop3" required>Do you require ILA MRA Mark Laboratories</mat-checkbox>
-                                            </div> -->
+                                            </div>
 
                                             <div class="authData">I confirm that the below documents are available and will be furnished once requested by EIAC:</div>
                                             <div class="auth-details">
@@ -1500,7 +1505,7 @@
                                                         <td width="1%">
                                                             <mat-checkbox name="undertaking_confirm1"  (change)="authorizeCheckCount($event)"
                                                             [(ngModel)]="authorizationList.undertaking_confirm1"></mat-checkbox></td>
-                                                        <td>Management System Manual</td>
+                                                        <td>Quality manual</td>
                                                     </tr>
                                                     <tr>
                                                         <td><mat-checkbox name="undertaking_confirm2" [disableRipple]="true"
@@ -1719,7 +1724,7 @@
                                     <div class="button-content">
                                         <a href="javascript:void(0)" class="cancel-bttn" type="button" 
                                         (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice')">BACK</a> 
-                                        <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice()">SAVE AS DRAFT</button>
+                                        <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice()">SAVE AS DRAFT</button> -->
                                     </div>
                                     <button class="submit-bttn submit-health" *ngIf="!transactions.length" >CONTINUE</button>
                                     <ng-container *ngIf="transactions.length">
@@ -1860,7 +1865,7 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <ng-container *ngIf="voucherSentData.transaction_no == '' || voucherSentData.transaction_no == null || voucherSentData.transaction_no == 'undefined'">
+                                        <ng-container *ngIf="!paymentStepComp">
                                             <a href="javascript:void(0)" class="cancel-bttn" type="button" 
                                             (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</a>
                                         </ng-container>

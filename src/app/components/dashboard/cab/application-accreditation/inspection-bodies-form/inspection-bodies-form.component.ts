@@ -15,6 +15,7 @@ import { TrainerService } from '../../../../../services/trainer.service';
 import { typeWithParameters } from '@angular/compiler/src/render3/util';
 import { AnyFn } from '@ngrx/store/src/selector';
 import {CustomModalComponent} from '../../../../utility/custom-modal/custom-modal.component';
+import { iif } from 'rxjs';
 
 declare let paypal: any; 
 @Component({
@@ -172,6 +173,8 @@ export class InspectionBodiesFormComponent implements OnInit {
   profileCountrySel: string = '';
   profileAutoData: boolean = false;
   criteriaList: any = [];
+
+  paymentStepComp: boolean = false;
 
   formDraftsaved: any;
   formAccrStatus: any;
@@ -845,8 +848,8 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.inspectionBodyForm.managementManager        = this.managementManager;
     this.inspectionBodyForm.inspectionBodyInfo           = this.inspectionBodyInfo;
     this.inspectionBodyForm.medicaMainlLabInfo        = this.medicaMainlLabInfo;
-    //, undertaking_confirmTop1: false,undertaking_confirmTop2: false,,  undertaking_confirmTop3: false
-    this.authorizationList = {undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,
+    //, undertaking_confirmTop1: false,undertaking_confirmTop2: false,, 
+    this.authorizationList = {undertaking_confirm1:false, undertaking_confirmTop3: false, undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,
       undertaking_confirm6:false,
       undertaking_confirm7:false,authorization_confirm1:false,authorization_confirm2:false};
 
@@ -1594,10 +1597,17 @@ export class InspectionBodiesFormComponent implements OnInit {
             this.voucherSentData.voucher_code     = getData.data.paymentDetails.voucher_no;
             this.voucherSentData.payment_date     = getData.data.paymentDetails.voucher_date;
             this.voucherSentData.amount           = getData.data.paymentDetails.amount;
+
             this.voucherSentData.transaction_no   = getData.data.paymentDetails.transaction_no;
             this.voucherSentData.payment_method   = getData.data.paymentDetails.payment_method;
             this.voucherSentData.payment_made_by  = getData.data.paymentDetails.payment_made_by;
             this.voucherSentData.mobile_no        = getData.data.paymentDetails.mobile_no;
+
+            //
+            if(getData.data.paymentDetails.transaction_no != null && getData.data.paymentDetails.payment_method != null &&
+              getData.data.paymentDetails.payment_made_by !+ null && getData.data.paymentDetails.mobile_no != null && getData.data.paymentDetails.payment_receipt != ''){
+                  this.paymentStepComp = true;
+            }
         }
         
       }
@@ -2255,7 +2265,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     }
         
 
-    if(this.authorizationStatus && checkCount == 9){
+    if(this.authorizationStatus && checkCount == 10){
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;
@@ -2292,7 +2302,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       //   this.authorizationStatus = true;
       // }     
     }
-    if(this.authorizationStatus && checkCount == 9){
+    if(this.authorizationStatus && checkCount == 10){
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;
@@ -3044,7 +3054,21 @@ export class InspectionBodiesFormComponent implements OnInit {
           ////////console.log(res,'res')
           if(res['status'] == true) {
             //this.toastr.success(res['msg'], '');
-            this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+            if(this.step1Data.accredation_criteria == 1){
+              //Intial
+              this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+            }
+            if(this.step1Data.accredation_criteria == 2){
+              //Extension
+              let stepData: any = this.headerSteps.find(item => item.title == 'information_audit_management');
+              console.log(">>step select: 1 ", stepData);
+              if(stepData){
+                stepData.activeClass = '';
+                stepData.stepComp = true;
+              }
+              console.log(">>step select: 2 ", this.headerSteps);
+              this.Service.moveSteps('personal_information', 'scope_accreditation', this.headerSteps);
+            }
           }else{
             this.toastr.warning(res['msg'], '');
           }

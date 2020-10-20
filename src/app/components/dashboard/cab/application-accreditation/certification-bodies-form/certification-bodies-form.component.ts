@@ -73,6 +73,8 @@ export class CertificationBodiesFormComponent implements OnInit {
   onbehalf_representative_date:boolean = true;
   getCountryLists:any;
 
+  paymentStepComp: boolean = false;
+
   afterSubmit:boolean = false;
   today = new Date();
 
@@ -1258,6 +1260,11 @@ loadAppInfo(){
 
                   this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
                   this.paymentReceiptValidation = true;
+
+                  if(res['data'].paymentDetails.transaction_no != null && res['data'].paymentDetails.payment_method != null &&
+                    res['data'].paymentDetails.payment_made_by !+ null && res['data'].paymentDetails.mobile_no != null && res['data'].paymentDetails.payment_receipt != ''){
+                        this.paymentStepComp = true;
+                  }
               }
             }
         });
@@ -2073,7 +2080,7 @@ onSubmitStep3(ngForm: any, type?:any) {
     ////console.log("scheme Rows: ", this.schemeRows,  " -- ", this.schemeRows.length, " :: ", this.editScopeData, " :: ", this.getScopeData);
 
     ////console.log(">>>Form Submit: ", ngForm, " -- ",ngForm.form, " -- ", this.schemeRows); 
-    //console.log(">>> step5 submit...", this.step5Data, " -- ", this.certificationBodiesForm);
+    console.log(">>> step3 submit...", this.step5Data, " -- ", this.certificationBodiesForm);
    //return;
     //ngForm.form.valid &&
     //&& this.schemeRows.length == 1   && this.schemeRows[0].id === undefined
@@ -2085,6 +2092,7 @@ onSubmitStep3(ngForm: any, type?:any) {
       //console.log(">>> step5 submit...", this.step3Data, " -- ", this.certificationBodiesForm);
       this.certificationBodiesForm.step3.is_draft = false;
       this.certificationBodiesForm.saved_step = 3;
+      this.step5Data = {};
       //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.certificationBodiesForm,this.certificationBodiesForm)
       .subscribe(
@@ -2106,6 +2114,7 @@ onSubmitStep3(ngForm: any, type?:any) {
       //console.log(">>> step5 submit...", this.step3Data, " -- ", this.certificationBodiesForm);
       this.certificationBodiesForm.step3.is_draft = false;
       this.certificationBodiesForm.saved_step = 3;
+      this.step5Data = {};
       //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.certificationBodiesForm,this.certificationBodiesForm)
       .subscribe(
@@ -2129,6 +2138,7 @@ onSubmitStep3(ngForm: any, type?:any) {
       .subscribe(
         res => {
           //////console.log(res,'res')
+          this.step5Data = {};
           if(res['status'] == true) {
             //this.toastr.success(res['msg'], '');
             this.toastr.success('Save Draft Successfully', '');

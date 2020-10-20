@@ -76,6 +76,7 @@ export class HealthCareFormComponent implements OnInit {
   allCityByCountry: any = [];
   getCountryLists:any;
   onbehalf_representative_date:boolean = false;
+  paymentStepComp: boolean = false;
 
   afterSubmit:boolean = false;
   paymentReceiptValidation:boolean
@@ -153,6 +154,7 @@ export class HealthCareFormComponent implements OnInit {
   recommendStatus:boolean = false
   total: any = 0;
   criteriaList:any[] = [];
+  schemes: any[] = [];
   userId:any;
   selectTradeLicName :string = ''; 
   selectTradeLicPath :string = ''; 
@@ -971,12 +973,13 @@ loadData(){
   this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcare_form_basic_data)
     .subscribe( 
       res => {
-        //console.log("@Load scope....", res);
+        console.log("@Load scope....", res);
         //this.inspectionBodyScopeFields = res['medicalLabScopeFields'];
         //this.countryList = res['allCountry'];
         // this.labTypeList = res['allLabtype'];
         // //this.fullScope   = res['fullScope'];
         this.criteriaList = res['data']['criteriaList'];
+        this.schemes = res['data']['schemes'];
         // this.step1Data.criteria_request = this.criteriaList[0].code; 
         // this.criteriaMaster = res['data']['schemes'];
         ////////console.log("#Get criteria: ", this.criteriaMaster);
@@ -1303,6 +1306,11 @@ loadData(){
 
                   this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
                   this.paymentReceiptValidation = true;
+
+                  if(res['data'].paymentDetails.transaction_no != null && res['data'].paymentDetails.payment_method != null &&
+                    res['data'].paymentDetails.payment_made_by !+ null && res['data'].paymentDetails.mobile_no != null && res['data'].paymentDetails.payment_receipt != ''){
+                        this.paymentStepComp = true;
+                  }
               }
             }
         });
@@ -1313,6 +1321,12 @@ loadData(){
                               undertaking_confirm6:false,undertaking_confirm7:false};
 } 
 
+getType(thevalue: any){
+  console.log(">> get Type: ", thevalue);
+  let scdata: any = this.schemes.find(item => item.title == thevalue);
+  console.log(">>> get data: ", scdata);
+  this.step1Data.scheme = scdata.scope_accridiation.id;
+}
 
 onSubmitStep1(ngForm1: any){
   // this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
@@ -1441,6 +1455,9 @@ onSubmitStep1(ngForm1: any){
     }
 
     this.loader = false;
+
+    console.log(">>>Sumbit step: ", this.healthCareForm);
+
     // this.step1DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
     .subscribe(
