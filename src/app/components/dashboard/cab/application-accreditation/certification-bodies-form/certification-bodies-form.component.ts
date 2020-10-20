@@ -1169,26 +1169,27 @@ loadAppInfo(){
               //step5
               //
               let getActivity: any = res['data'].otherActivityLocations;
-              //console.log(">>> other activity: ", getActivity);
+              console.log(">>> other activity: ", getActivity);
               if(getActivity != null){
                 let tempAct: any =[];
               for(var k in getActivity){
-                let tempObj: any = JSON.parse(getActivity[k]['value']);
+                console.log(">>>> ", getActivity[k]['value'], " -- ", typeof getActivity[k]['value']);
+                let tempObj: any = (getActivity[k]['value']);
                 tempAct.push(tempObj);
-                ////console.log(">>> ", k , " :: ", tempAct);
+                console.log(">>> ", k , " :: ", tempAct);
               }
               this.cbsOtherActivity = tempAct;
               }
               
 
               let getNameCountry: any = res['data'].nameOfCountry;
-              //console.log(">>> other name country: ", getNameCountry);
+              console.log(">>> other name country: ", getNameCountry);
               if(getNameCountry != null){
               let tempNameCountry: any =[];
               for(var k in getNameCountry){
-                let tempObj: any = JSON.parse(getNameCountry[k]['value']);
+                let tempObj: any = (getNameCountry[k]['value']);
                 tempNameCountry.push(tempObj);
-                ////console.log(">>> ", k , " :: ", tempNameCountry);
+                console.log(">>> ", k , " :: ", tempNameCountry);
               }
               this.nameOfCountry = tempNameCountry;
               }

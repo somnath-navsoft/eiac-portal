@@ -43,6 +43,7 @@ export class HealthCareFormComponent implements OnInit {
   public countryList:Array<any>=[];
   public labTypeList:Array<any>=[];
 
+
   public orgMembToggle: boolean = false;
   public is_bod: boolean = false;
   public checkSecurity:boolean = false;
@@ -758,6 +759,9 @@ scrollForm(data?:any){
   this.userId = sessionStorage.getItem('userId');
   // this.titleService.setTitle('EIAC - Testing and Calibration Laboratories');
   this.addMinutesToTime = this.Service.addMinutesToTime();
+  this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,
+    undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,
+    undertaking_confirm6:false,undertaking_confirm7:false};
    ////console.log( this.addMinutesToTime);
   this.loadSchemeData();
   //  this.loadFormDynamicTable();
@@ -768,6 +772,7 @@ scrollForm(data?:any){
    ////console.log('ddd');
    //this.getPlaceName();
    //this.checkCaptchaValidation = true;
+   
 
    //this.customUrlPattern = { '0' : {pattern: new RegExp('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?') }};
    this.headerSteps.push(
@@ -1182,8 +1187,8 @@ loadData(){
         this.step1Data.fax_no = data.applicant_fax_no;
         this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
         // this.step1Data.is_hold_other_accreditation = "1";
-        this.step1Data.is_main_activity = "";
-        this.step1Data.is_main_activity_note = "";
+        //this.step1Data.is_main_activity = "";
+        //this.step1Data.is_main_activity_note = "";
         this.step1Data.mailing_address = data.applicant_address;
         this.step1Data.official_commercial_name = data.cab_name;
         this.step1Data.official_email = data.applicant_email;
@@ -1332,7 +1337,7 @@ loadData(){
               if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
                 ////console.log('>>>Accr infor: ', getData.data.otherAccr);
                 this.accreditationInfo = [];
-                this.step1Data.is_hold_other_accreditation = "1";
+                this.step1Data.is_hold_other_accreditation_select = "1";
                 //this.accreditationInfo = '';
                 res['data'].otherAccr.forEach((item, key) => {
                     //////console.log('>> ', item, " :: ", key);
@@ -1344,7 +1349,7 @@ loadData(){
                 })
               }else{
                 //this.accreditationInfo = [{}];
-                this.step1Data.is_hold_other_accreditation = "0";
+                this.step1Data.is_hold_other_accreditation_select = "0";
               }
 
               //step2
@@ -1417,6 +1422,18 @@ loadData(){
                 })
                 this.authorizationStatus = true;
                 this.step7Data.recommend_visit = 'second';
+                this.authorizationList.authorization_confirm1 = true;
+                this.authorizationList.authorization_confirm2 = true;
+                this.readTermsCond       = true;
+                this.authorizationList.undertaking_confirmTop3 = true;
+                this.authorizationList.undertaking_confirm1 = true;
+                this.authorizationList.undertaking_confirm2 = true;
+                this.readReviewChecklist = true;
+                this.authorizationList.undertaking_confirm3 = true;
+                this.authorizationList.undertaking_confirm4 = true;
+                this.authorizationList.undertaking_confirm5 = true;
+                this.authorizationList.undertaking_confirm6 = true;
+                this.authorizationList.undertaking_confirm7 = true;
               }
 
               //Step 9
@@ -1442,16 +1459,22 @@ loadData(){
         });
     }
 
-    this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,
-                              undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,
-                              undertaking_confirm6:false,undertaking_confirm7:false};
+    // this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,
+    //                           undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,
+    //                           undertaking_confirm6:false,undertaking_confirm7:false};
 } 
 
 getType(thevalue: any){
   console.log(">> get Type: ", thevalue);
-  let scdata: any = this.schemes.find(item => item.title == thevalue);
-  console.log(">>> get data: ", scdata);
-  this.step1Data.scheme = scdata.scope_accridiation.id;
+  if(thevalue != 'others'){
+    let scdata: any = this.schemes.find(item => item.title == thevalue);
+    console.log(">>> get data: ", scdata);
+    this.step1Data.scheme = scdata.scope_accridiation.id;
+  }
+  if(thevalue === 'others'){
+    console.log(">>> Other type schemes empty: ");
+    this.step1Data.scheme = "";
+  }
 }
 
 loadScopeFamily(appId: number){
@@ -1590,8 +1613,19 @@ onSubmitStep1(ngForm1: any){
     }
     this.healthCareForm.step1.is_draft = false;
     this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
-    this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
-    this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
+    //this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
+    if(this.step1Data.is_hold_other_accreditation_select != undefined && this.step1Data.is_hold_other_accreditation_select == 1){
+      this.step1Data.is_hold_other_accreditation = true;
+    }
+    if(this.step1Data.is_hold_other_accreditation_select != undefined && this.step1Data.is_hold_other_accreditation_select == 0){
+      this.step1Data.is_hold_other_accreditation = false;
+    }
+
+    if(this.step1Data.other_cab_type != undefined && this.step1Data.other_cab_type != ''){
+      this.step1Data.cab_type = this.step1Data.other_cab_type;
+    }
+
+    //this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
     this.healthCareForm.step1 = this.step1Data;
 
     this.healthCareForm.step1['ownOrgBasicInfo'] = [];
@@ -1630,7 +1664,9 @@ onSubmitStep1(ngForm1: any){
             console.log(">>> APP Id generate: ", getData);
             let appId: number = getData.application_id;
             this.formApplicationId = getData.application_id;
-            this.loadScopeFamily(appId)
+            if(this.step1Data.cab_type != 'others'){
+              this.loadScopeFamily(appId)
+            }            
           }
           this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
         }else{
@@ -1654,7 +1690,13 @@ savedraftStep(stepCount) {
     }
     this.step1Data.is_draft = true;
     this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
-    this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
+    //this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
+    if(this.step1Data.is_hold_other_accreditation_select != undefined && this.step1Data.is_hold_other_accreditation_select == 1){
+      this.step1Data.is_hold_other_accreditation = true;
+    }
+    if(this.step1Data.is_hold_other_accreditation_select != undefined && this.step1Data.is_hold_other_accreditation_select == 0){
+      this.step1Data.is_hold_other_accreditation = false;
+    }
     this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
     this.healthCareForm.step1 = this.step1Data;
 
@@ -2000,6 +2042,8 @@ onSubmitStep4(ngForm4: any){
     this.healthCareForm.userType = this.userType;
     this.healthCareForm.step4 = this.step4Data;
     // this.step4DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
+
+    console.log(">>> Step submit: ", this.healthCareForm);
     this.loader = false;
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
     .subscribe(

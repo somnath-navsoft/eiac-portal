@@ -129,7 +129,7 @@
 
                                                     <div class="col-md-12">
                                                         <div class="initial_data">
-                                                            <mat-radio-button value="Others">Others</mat-radio-button>
+                                                            <mat-radio-button value="others" (change)="getType('others')">Others</mat-radio-button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -142,7 +142,7 @@
                                         </div>
                                     </div>
                                     @{{step1Data.cab_type}}
-                                    <div class="row pb-3" *ngIf="step1Data.cab_type == 'Others'">
+                                    <div class="row pb-3" *ngIf="step1Data.cab_type == 'others'">
                                         <div class="col-md-3 col-sm-3 ">                                            
                                             <div class="form-subheader">
                                                 <span>Other Type:<span class="required_input">*</span></span>
@@ -150,10 +150,11 @@
                                         </div>
                                         <div class="col-md-9 col-sm-9">
                                             <mat-form-field class="cab-data">
-                                                <mat-label>CAB Name official and Commercial Name</mat-label>
+                                                <mat-label>Other Type</mat-label>
                                                 <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
                                                 matInput autocomplete="off" placeholder="Other Type" 
-                                                name="other_type" [(ngModel)]="step1Data.scheme"  required>
+                                                [required]="step1Data.cab_type == 'others'"
+                                                name="other_type" [(ngModel)]="step1Data.other_cab_type"  required>
                                                 <mat-error></mat-error>      
                                             </mat-form-field>
                                         </div>
@@ -653,7 +654,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-9">
-                                            <mat-radio-group name="is_hold_other_accreditation" [(ngModel)]="step1Data.is_hold_other_accreditation" 
+                                            <mat-radio-group name="is_hold_other_accreditation_select" [(ngModel)]="step1Data.is_hold_other_accreditation_select" 
                                             #selectAccredHold="ngModel" required>
                                                 <div class="row">
                                                     <div class="col-md-4">
