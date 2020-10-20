@@ -1100,15 +1100,15 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 }
 .tnc ol { padding-left: 40px; }
 .tnc ol { counter-reset: item; list-style-type: none; }
-.tnc ol li{ display: block; font-size: 16px; }
-.tnc ol li:before { content: counters(item, ".") "."; counter-increment: item; margin-right: 10px; color: #B54150; font-size: 17px; }
-.tnc li li:before { content: counters(item, ".") " "; counter-increment: item; color: #444444; font-size: 16px; }
+.tnc ol li{ display: block; font-size: 16px; counter-increment: item; }
+.tnc ol li:before { content: counters(item, ".") "."; margin-right: 10px; color: #B54150; font-size: 17px; }
+.tnc li li:before { content: counters(item, ".") " ";  color: #444444; font-size: 16px; }
 .tnc ul { list-style: disc; padding: 0 45px; }
 .tnc ul li:before { content: none;}
 .tnc ul li { display: list-item; }
-.tnc ol ol ol { counter-reset: list; margin: 0; }
-.tnc ol ol ol > li { list-style: none; position: relative; }
-.tnc ol ol ol > li:before { counter-increment: list; content: "("counter(list, lower-alpha)")"; position: absolute; left: -1.4em; }
+.tnc ol ol ol { counter-reset: item; margin: 0; padding-left: 60px; }
+.tnc ol ol ol > li { list-style: none; position: relative; counter-increment: item; }
+.tnc ol ol ol > li:before {  content: counters(item, ".") " "; position: absolute; left: -2.8em; }
 
 .button-content a { color: #a56069; }
 .button-content button { background: #AA9777; border: 1px solid #AA9777; color: #fff; }
