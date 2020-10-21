@@ -849,7 +849,8 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.inspectionBodyForm.inspectionBodyInfo           = this.inspectionBodyInfo;
     this.inspectionBodyForm.medicaMainlLabInfo        = this.medicaMainlLabInfo;
     //, undertaking_confirmTop1: false,undertaking_confirmTop2: false,, 
-    this.authorizationList = {undertaking_confirm1:false, undertaking_confirmTop3: false, undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,
+    this.authorizationList = {undertaking_confirm1:false, undertaking_confirmTop3: false, undertaking_confirm2:false,undertaking_confirm3:false,
+      undertaking_confirm4:false,undertaking_confirm5:false,
       undertaking_confirm6:false,
       undertaking_confirm7:false,authorization_confirm1:false,authorization_confirm2:false};
 
@@ -1575,7 +1576,7 @@ export class InspectionBodiesFormComponent implements OnInit {
           this.authorizationList.authorization_confirm1 = true;
           this.authorizationList.authorization_confirm2 = true;
           this.readTermsCond       = true;
-          //this.authorizationList.undertaking_confirmTop3 = true;
+          this.authorizationList.undertaking_confirmTop3 = true;
           this.authorizationList.undertaking_confirm1 = true;
           this.authorizationList.undertaking_confirm2 = true;
           this.readReviewChecklist = true;
@@ -1584,6 +1585,7 @@ export class InspectionBodiesFormComponent implements OnInit {
           this.authorizationList.undertaking_confirm5 = true;
           this.authorizationList.undertaking_confirm6 = true;
           this.authorizationList.undertaking_confirm7 = true;
+          
           this.authorizationStatus = true;
           let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
           //////console.log(">>>recommm", visitRecomm);
@@ -2245,7 +2247,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   }
 
   authorizeCheckCount(theEvent: any, type?:any){
-    //console.log(theEvent);
+    console.log(theEvent);
     let checkCount = 0;
     let readChecked = false;
 
@@ -2256,7 +2258,7 @@ export class InspectionBodiesFormComponent implements OnInit {
 
     if(theEvent.checked || readChecked == true){
       for(let key in this.authorizationList) {
-        ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
+        console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
         if(this.authorizationList[key]) {  
           this.authorizationStatus = true;       
           checkCount++;
@@ -2265,12 +2267,12 @@ export class InspectionBodiesFormComponent implements OnInit {
     }
         
 
-    if(this.authorizationStatus && checkCount == 10){
+    if(this.authorizationStatus && checkCount == 10){ 
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;
     }
-    //console.log(">>> Check status count: ", checkCount);
+    console.log(">>> Check status count: ", checkCount);
   }
 
   onSubmitUndertakingApplicant(ngForm7: any, type?: boolean){
