@@ -1143,7 +1143,7 @@ loadData(){
 
         var step2 = getData.data['step2'];
 
-        var stateList =  this.Service.getState();
+        //var stateList =  this.Service.getState();
         var cityList =  this.Service.getCity();
         // stateList.subscribe( result => {
         //   for(let key in result['states']) {
@@ -1177,6 +1177,26 @@ loadData(){
             this.selectTradeLicPath = this.constant.mediaPath +  data.trade_license.toString();
           }
         }
+        this.step1Data.country = data.country;
+              ////console.log(">>> country data: ", this.getCountryLists);
+              if(this.getCountryLists.length){
+                ////console.log(">>> 11c country data: ", this.getCountryLists);
+                let cdata: any = this.getCountryLists.find(rec => rec.name == data.country)
+                  console.log("Fnd country: ", cdata);  
+                  if(cdata){
+                    let cid = cdata.id;
+                    this.statelistById(cid) 
+                  }
+              }
+              cityList.subscribe( result => {
+                for(let key in result['cities']) {
+                  ////console.log(">> cities: ", result['cities'][key]);
+                  if(result['cities'][key]['name'] == data.city )
+                   {
+                    this.allCityList.push(result['cities'][key]);
+                  }
+                }
+              });
         this.step1Data.city =  data.city;
         this.step1Data.country = data.country;
         this.step1Data.state = data.state;
@@ -1241,7 +1261,7 @@ loadData(){
               if(this.getCountryLists.length){
                 ////console.log(">>> 11c country data: ", this.getCountryLists);
                 let cdata: any = this.getCountryLists.find(rec => rec.name == getData.data.country)
-                  ////console.log("Fnd country: ", cdata);  
+                  console.log("Fnd country: ", cdata);  
                   if(cdata){
                     let cid = cdata.id;
                     this.statelistById(cid) 
@@ -1250,10 +1270,10 @@ loadData(){
               cityList.subscribe( result => {
                 for(let key in result['cities']) {
                   ////console.log(">> cities: ", result['cities'][key]);
-                   ////if(result['cities'][key]['state_id'] == data.city )
-                   //{
+                  if(result['cities'][key]['name'] == getData.data.city )
+                   {
                     this.allCityList.push(result['cities'][key]);
-                  //}
+                  }
                 }
               });
               this.step1Data.state = getData.data.state;  
@@ -1664,7 +1684,7 @@ onSubmitStep1(ngForm1: any){
             console.log(">>> APP Id generate: ", getData);
             let appId: number = getData.application_id;
             this.formApplicationId = getData.application_id;
-            if(this.step1Data.cab_type != 'others'){
+            if(this.step1Data.other_cab_type === undefined || this.step1Data.other_cab_type === ''){
               this.loadScopeFamily(appId)
             }            
           }
@@ -2051,7 +2071,24 @@ onSubmitStep4(ngForm4: any){
         this.loader = true;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
-          this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
+          //this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
+
+          if(this.step1Data.other_cab_type == undefined || this.step1Data.other_cab_type == ''){
+            //Cab type not other
+            this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
+          }
+          if(this.step1Data.other_cab_type != undefined && this.step1Data.other_cab_type != ''){
+            //Cab type other
+            let stepData: any = this.headerSteps.find(item => item.title == 'scope_accreditation');
+            console.log(">>step select: 1 ", stepData);
+            if(stepData){
+              stepData.activeClass = '';
+              stepData.stepComp = true;
+            }
+            console.log(">>step select: 2 ", this.headerSteps);
+            this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
+          }
+
         }else{
           this.toastr.warning(res['msg'], '');
         }
@@ -2123,7 +2160,7 @@ saveScope(){
           let getData = this.criteriaMaster.find(rec => rec.scope_family == selectScheme);
           //console.log("@Scheme Data: ", getData);
           if(getData == undefined){
-            //console.log("scheme not selecting...exit...", selectScheme, " -- ", getData);
+            console.log("scheme not selecting...exit...", selectScheme, " -- ", getData);
             break;
           }
           let scopeTitle: string ='';
@@ -2379,7 +2416,7 @@ onSubmitStep5(ngForm: any, type?:any) {
       //console.log(">>>Scope saving...");
       //console.log(">>>Enter....3")
       this.saveScope();
-      //console.log(">>> step5 submit...", this.step5Data, " -- ", this.healthCareForm);
+      console.log(">>> step5 submit...", this.step5Data, " -- ", this.healthCareForm);
       this.healthCareForm.step5.is_draft = false;
       this.healthCareForm.saved_step = 5;
       //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
@@ -2401,6 +2438,7 @@ onSubmitStep5(ngForm: any, type?:any) {
       this.healthCareForm.step5.is_draft = true;
       this.healthCareForm.saved_step = 5;
       this.saveScope();
+      console.log(">>> step5 submit...", this.step5Data, " -- ", this.healthCareForm);
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
       .subscribe(
         res => {

@@ -1465,8 +1465,9 @@
                                                 
                                                     <li>
                                                         <mat-checkbox name="authorization_confirm2" [disableRipple]="true"
-                                                        (click)="$event.preventDefault()" [(ngModel)]="authorizationList.authorization_confirm2" >I acknowledge that I have read and understood and confirm to abide by the Accreditation 
-                                                        Agreement and request to provide us with a word agreement form for signature.</mat-checkbox>
+                                                        (click)="$event.preventDefault()" [(ngModel)]="authorizationList.authorization_confirm2" >
+                                                        Entering the authorised name will serve as an acceptance and digital binding signature for this agreement
+                                                        </mat-checkbox>
                                                     </li>
                                                 </ul>
                                                 <p class="error" *ngIf="!readTermsCond && isApplicationSubmitted == true">Read the Terms and Conditions</p>
@@ -1549,6 +1550,9 @@
                                                     <mat-radio-button name="3rd" value="third">3rd</mat-radio-button>
                                                     <mat-radio-button name="4th" value="fourth">4th quarter of the year</mat-radio-button>
                                                 </mat-radio-group>
+                                                <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step7Data.recommend_year" required>
+                                                    <mat-option [value]="item.value" *ngFor="let item of recommendYearValues; let k=index;">{{item.title}}</mat-option>
+                                                </mat-select>
                                                 <div class="col-md-6 p-0" [ngStyle]="{'margin-top':'5px'}">
                                                     <p class="error" *ngIf="recommendVisit.errors?.required && isApplicationSubmitted == true">Please select anyone option</p>
                                                 </div>                                                
