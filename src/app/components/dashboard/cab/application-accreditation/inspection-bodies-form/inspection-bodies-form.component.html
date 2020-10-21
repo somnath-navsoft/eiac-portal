@@ -1684,8 +1684,9 @@
                             </a> 
                             
                             <p *ngIf="errorLoader">Error Loading PDF</p>
-                            <pdf-viewer [src]="(pathPDF)" [show-all]="true" [stick-to-page]="true"
-                                [zoom]="1.0" [original-size]="false" [autoresize]="true"
+                            <pdf-viewer [src]="(pathPDF)" [show-all]="true" [stick-to-page]="false"
+                                 [zoom]="1.0"
+                                 [original-size]="true" [autoresize]="false"
                                 [show-borders]="true" (error)="onError($event)" (on-progress)="onProgress($event)"
                                 (after-load-complete)="completeLoadPDF($event)"
                                 [render-text]="true">
