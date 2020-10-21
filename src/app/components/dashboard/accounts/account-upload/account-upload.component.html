@@ -1,0 +1,126 @@
+<div class="main-detail">
+    <div class="container-fluid p-0">
+        <div class="main-dashboard-table">
+            <flash-messages></flash-messages>
+            <div class="row mb-4">
+                <div class="col-md-8">                    
+                    <div class="dashbrd-hdr">
+                        <h3>Pay For Assessment</h3> 
+                    </div>
+                </div>
+            </div>
+
+
+            <form #ngForm7="ngForm" (ngSubmit)="onSubmitPaymentInformation(ngForm7)" autocomplete="off">
+                <div class="row form-bdy m-0">
+                    <div class="wrapper">
+                        <!--  (ngSubmit)="onSubmitPaymentInformation(ngForm8)" -->
+                        
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-md-12 p-0">
+                                    <div class="form-subhdr">
+                                        <h5>PAYMENT INFORMATION</h5>
+                                    </div>
+                                    <hr>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <mat-form-field class="cab-data">
+                                        <mat-label>Voucher Code</mat-label>
+                                        <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                                        matInput placeholder="Voucher Code"
+                                        [(ngModel)]="voucherSentData.voucher_code">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+
+                                    <mat-form-field class="cab-data">
+                                        <input (keypress)="_service.inputFilter($event, _service.regExName)" matInput [matDatepicker]="payment_date" readonly="true" placeholder="Payment Date" name="payment_date" (click)="_service._openCalendar(payment_date)" [(ngModel)]="voucherSentData.payment_date" required>
+                                        <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle>
+                                        <mat-datepicker #payment_date  disabled="false"></mat-datepicker>
+                                    </mat-form-field>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field class="cab-data">
+                                        <mat-label>Payment Amount</mat-label>
+                                        <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                                        matInput placeholder="Payment Amount" 
+                                        [(ngModel)]="voucherSentData.amount">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <mat-form-field class="cab-data">
+                                        <mat-label>Transaction Number</mat-label>
+                                        <input type="text" [ngModelOptions]="{standalone: true}" required="true"
+                                        matInput placeholder="Transaction Number" 
+                                        [(ngModel)]="voucherSentData.transaction_no">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field class="cab-data">
+                                        <!-- <mat-label>Payment Method</mat-label> -->
+                                        <!-- <input type="text" [ngModelOptions]="{standalone: true}" required="true"
+                                        matInput placeholder="Payment Method" 
+                                        [(ngModel)]="voucherSentData.payment_method"> -->
+                                        <mat-select placeholder="Payment Method" name="payment_method" [(ngModel)]="voucherSentData.payment_method" required="true">
+                                            <mat-option value="Cash">Cash</mat-option>
+                                            <mat-option value="Online">Online</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field class="cab-data">
+                                        <mat-label>Payment Made By</mat-label>
+                                        <input type="text" [ngModelOptions]="{standalone: true}" required="true"
+                                        matInput placeholder="Payment Made By" 
+                                        [(ngModel)]="voucherSentData.payment_made_by">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <mat-form-field class="cab-data">
+                                        <mat-label>Mobile Number</mat-label>
+                                        <input type="text" [ngModelOptions]="{standalone: true}" required="true"
+                                        matInput placeholder="Mobile Number" 
+                                        [(ngModel)]="voucherSentData.mobile_no" required>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="fileupload">
+                                        <input type="file" name="payment_receipt"                                
+                                        (change)="validateFileVoucher($event, 'payment_receipt')" required>
+                                        <span class="icon-attach attach-data"></span>
+                                    </span>
+                                    <p class="error" *ngIf="paymentReceiptValidation == false">Please Upload a valid file (ex: pdf)</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="bttns-health bttn-staff">
+                            <div class="button-content">
+                                <ng-container *ngIf="!paymentStepComp">
+                                <a href="javascript:void(0)" class="cancel-bttn" routerLink="/dashboard/accounts">BACK
+                                </a>
+                                </ng-container>
+                            </div>
+                            <button class="submit-bttn submit-health" >SUBMIT</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+</div>
