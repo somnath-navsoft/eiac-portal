@@ -367,14 +367,14 @@
                                                             <div class="col-md-6 col-sm-12">
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Name the members of Board of Directors (BOD) (if any)</mat-label>
-                                                                    <input matInput readonly="true" (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name the members of Board of Directors (BOD)"  name="name_{{i}}" [(ngModel)]="ownOrgMembInfo[i].name"  required>
+                                                                    <input matInput readonly="true" (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name the members of Board of Directors (BOD)"  name="name_{{i}}" [(ngModel)]="ownOrgMembInfo[i].name">
                                                                 </mat-form-field>
                                                             </div>
                                                             <div class="col-md-6 col-sm-12">
                                                                 <!--  -->
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>List the Companies name of BOD members</mat-label>
-                                                                    <input matInput readonly="true" placeholder="List the Companies name of BOD members"  (keypress)="Service.inputFilter($event, Service.regExName)" name="list_comp_{{i}}" [(ngModel)]="ownOrgMembInfo[i].bod_company"  required>
+                                                                    <input matInput readonly="true" placeholder="List the Companies name of BOD members"  (keypress)="Service.inputFilter($event, Service.regExName)" name="list_comp_{{i}}" [(ngModel)]="ownOrgMembInfo[i].bod_company">
                                                                 </mat-form-field>
                                                             </div>
                                                         </div>
@@ -382,7 +382,7 @@
                                                             <div class="col-md-12 col-sm-12">
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Authorized Contact Person Name</mat-label>
-                                                                    <input readonly="true" matInput placeholder="Authorized Contact Person Name"   name="contact_person_{{i}}" [(ngModel)]="ownOrgMembInfo[i].authorized_contact_person"  (keypress)="Service.inputFilter($event, Service.regExName)" required>
+                                                                    <input readonly="true" matInput placeholder="Authorized Contact Person Name"   name="contact_person_{{i}}" [(ngModel)]="ownOrgMembInfo[i].authorized_contact_person"  (keypress)="Service.inputFilter($event, Service.regExName)">
                                                                 </mat-form-field>
                                                             </div>
                                                         </div>
@@ -390,13 +390,13 @@
                                                             <div class="col-md-6 col-sm-12">
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Designation</mat-label>
-                                                                    <input readonly="true" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="designation_{{i}}" [(ngModel)]="ownOrgMembInfo[i].designation" required>
+                                                                    <input readonly="true" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="designation_{{i}}" [(ngModel)]="ownOrgMembInfo[i].designation">
                                                                 </mat-form-field>
                                                             </div>
                                                             <div class="col-md-6 col-sm-12">
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Mobile Phone No.</mat-label>
-                                                                    <input readonly="true" type="text"maxlength="13"  (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="mobile_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].mobile_no" required>
+                                                                    <input readonly="true" type="text"maxlength="13"  (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="mobile_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].mobile_no">
                                                                 </mat-form-field>
                                                                 <p class="error" *ngIf="ownOrgMembInfo[i].mobile_no && !Service.checkInput('onlyNumberWithPlus',ownOrgMembInfo[i].mobile_no)">Please Enter Correct Telephone Number</p> 
                                                             </div>
@@ -1670,14 +1670,19 @@
                         </div>
                       </ng-template>
                       <ng-template #checklistView let-modal>
+                        <app-loader *ngIf="loaderPdf"></app-loader>
                         <div class="modal-header">
-                          <h4 class="modal-title" id="modal-basic-title">CHECKLIST</h4>
-                          <button type="button" class="close" aria-label="Close" (click)="closeChecklistDialog()">
+                          <h4 class="modal-title" id="modal-basic-title">CHECKLIST </h4>
+                          <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
                             <span aria-hidden="true">&times;</span>
                           </button>
+                          
                         </div>
-                        <div class="modal-body"> 
-                            <app-loader *ngIf="loaderPdf"></app-loader>
+                        <div class="modal-body">
+                            <a [href]="pathPDF" target="_blank" [ngStyle]="{'color': '#000'}">
+                            <span class="icon-download"></span>
+                            </a> 
+                            
                             <p *ngIf="errorLoader">Error Loading PDF</p>
                             <pdf-viewer [src]="(pathPDF)" [show-all]="true" [stick-to-page]="true"
                                 [zoom]="1.0" [original-size]="false" [autoresize]="true"
@@ -1689,6 +1694,7 @@
                         </div>
                         <div class="modal-footer">
                         </div>
+                        
                       </ng-template>
                     
                 </div>

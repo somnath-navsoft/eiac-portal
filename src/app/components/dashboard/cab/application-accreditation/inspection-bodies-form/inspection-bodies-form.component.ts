@@ -573,6 +573,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     if(type != undefined && type == 'checklist'){
       pathData = this.getSantizeUrl(this.checklistDocFile);
       this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
+      console.log(">>> PDF Path: ", this.pathPDF);
     }
 
     ////////console.log(">>> open view", this.pathPDF, " -- ",  this.pathPDF);
@@ -1617,7 +1618,7 @@ export class InspectionBodiesFormComponent implements OnInit {
           let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
           //////console.log(">>>recommm", visitRecomm);
           this.step7Data.recommend_visit = visitRecomm;
-          
+          this.step7Data.recommend_year = parseInt(getData.data.recommend_year);
         }
 
         //step 9
@@ -2382,7 +2383,7 @@ export class InspectionBodiesFormComponent implements OnInit {
 
       this.inspectionBodyForm.step7.application_date = new Date().toISOString().slice(0, 10);//'2020-09-14';
 
-      //console.log(">>>Step7 submit Data: ", this.inspectionBodyForm, " -- ", this.inspectionBodyForm.step7);
+      console.log(">>>Step7 submit Data: ", this.inspectionBodyForm, " -- ", this.inspectionBodyForm.step7);
 
      // return;
      ////console.log(">>> Enter....1 ", type, " -- ", ngForm7.form.valid, " -- ", this.authorizationStatus)
