@@ -79,6 +79,8 @@ export class HealthCareFormComponent implements OnInit {
   onbehalf_representative_date:boolean = false;
   paymentStepComp: boolean = false;
 
+  recommendYearValues: any[] = [];
+
   afterSubmit:boolean = false;
   paymentReceiptValidation:boolean
   readAccredAgreem: boolean = false;
@@ -173,6 +175,8 @@ export class HealthCareFormComponent implements OnInit {
   paymentFile:any = false;
   isApplicationSubmitted:any = false;
   public isNoteSubmit:boolean = false;
+
+  
   
 
   //Master scope form data declaration
@@ -772,6 +776,13 @@ scrollForm(data?:any){
    ////console.log('ddd');
    //this.getPlaceName();
    //this.checkCaptchaValidation = true;
+
+   var d = new Date();
+    var yr = d.getFullYear();
+    for(var k=2010; k<2030; k++){
+      this.recommendYearValues.push({title: k.toString(), value: k});
+    }
+    this.step7Data.recommend_year = yr;
    
 
    //this.customUrlPattern = { '0' : {pattern: new RegExp('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?') }};
@@ -1236,22 +1247,40 @@ loadData(){
               let filePath: string;
               let getData: any = res;
               let saveStep: number;
-              if(!this.Service.isObjectEmpty(res['data'].paymentDetails)){
+              // if(!this.Service.isObjectEmpty(res['data'].paymentDetails)){
               
-                if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''
-                    && (res['data'].paymentDetails.payment_receipt == null || res['data'].paymentDetails.payment_receipt == '')){
-                  filePath = this.constant.mediaPath + '/media/' + res['data'].paymentDetails.voucher_invoice;
+              //   if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''
+              //       && (res['data'].paymentDetails.payment_receipt == null || res['data'].paymentDetails.payment_receipt == '')){
+              //     filePath = this.constant.mediaPath + '/media/' + res['data'].paymentDetails.voucher_invoice;
+              //     pathData = this.getSantizeUrl(filePath);
+              //     this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
+              //     saveStep = parseInt(getData.data.saved_step);
+              //   }
+              //   else if(res['data'].paymentDetails.payment_receipt != null && res['data'].paymentDetails.payment_receipt != ''){
+              //     saveStep = 8;
+              //   }else{
+              //     saveStep = parseInt(getData.data.saved_step) - 1;
+              //   }
+              // }else{
+              //     saveStep = parseInt(getData.data.saved_step) - 1;
+              // }
+              if(!this.Service.isObjectEmpty(getData.data.paymentDetails)){
+                if(getData.data.paymentDetails.voucher_invoice != undefined && getData.data.paymentDetails.voucher_invoice != ''){
+                  filePath = this.constant.mediaPath + '/media/' + getData.data.paymentDetails.voucher_invoice;
                   pathData = this.getSantizeUrl(filePath);
                   this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
-                  saveStep = parseInt(getData.data.saved_step);
                 }
-                else if(res['data'].paymentDetails.payment_receipt != null && res['data'].paymentDetails.payment_receipt != ''){
-                  saveStep = 8;
-                }else{
-                  saveStep = parseInt(getData.data.saved_step) - 1;
-                }
+              }
+      
+              //check steps
+              if(getData.data.is_draft){
+                saveStep = parseInt(getData.data.saved_step) - 1;
               }else{
+                if(parseInt(getData.data.saved_step) == 9){
                   saveStep = parseInt(getData.data.saved_step) - 1;
+                }else{
+                saveStep = parseInt(getData.data.saved_step);
+                }
               }
 
               var cityList =  this.Service.getCity();
@@ -1441,7 +1470,9 @@ loadData(){
                   this.authorizationList[key] = true;
                 })
                 this.authorizationStatus = true;
-                this.step7Data.recommend_visit = 'second';
+                let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
+                this.step7Data.recommend_visit = visitRecomm;//'second';
+                 this.step7Data.recommend_year = parseInt(getData.data.recommend_year);
                 this.authorizationList.authorization_confirm1 = true;
                 this.authorizationList.authorization_confirm2 = true;
                 this.readTermsCond       = true;
@@ -2730,6 +2761,9 @@ closeChecklistDialog(){
 this.modalService.dismissAll();
 this.authorizationList.undertaking_confirm2 = true;
 this.readReviewChecklist= true;
+}
+closeDialog(){
+  this.modalService.dismissAll();
 }
 
 onError(error: any) {
