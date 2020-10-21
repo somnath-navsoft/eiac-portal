@@ -1543,16 +1543,22 @@
                                                 </div>
                                             </div>
                                             <div class="recommend my-3">
-                                                <span class="confirm">I recommend the visit to be conducted in the</span>
-                                                <mat-radio-group name="recommended" #recommendVisit="ngModel" [(ngModel)]="step7Data.recommend_visit" required>
-                                                    <mat-radio-button name="1st" value="first">1st</mat-radio-button>
-                                                    <mat-radio-button name="2nd" value="second">2nd</mat-radio-button>
-                                                    <mat-radio-button name="3rd" value="third">3rd</mat-radio-button>
-                                                    <mat-radio-button name="4th" value="fourth">4th quarter of the year</mat-radio-button>
-                                                </mat-radio-group>
-                                                <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step7Data.recommend_year" required>
-                                                    <mat-option [value]="item.value" *ngFor="let item of recommendYearValues; let k=index;">{{item.title}}</mat-option>
-                                                </mat-select>
+                                                <div class="recommend-main">
+                                                <div class="recommend-quarter">
+                                                    <span class="confirm">I recommend the visit to be conducted in the</span>
+                                                    <mat-radio-group name="recommended" #recommendVisit="ngModel" [(ngModel)]="step7Data.recommend_visit" required>
+                                                        <mat-radio-button name="1st" value="first">1st</mat-radio-button>
+                                                        <mat-radio-button name="2nd" value="second">2nd</mat-radio-button>
+                                                        <mat-radio-button name="3rd" value="third">3rd</mat-radio-button>
+                                                        <mat-radio-button name="4th" value="fourth">4th quarter of the year</mat-radio-button>
+                                                    </mat-radio-group>
+                                                </div>
+                                                <div class="recommend-year">
+                                                    <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step7Data.recommend_year" required>
+                                                        <mat-option [value]="item.value" *ngFor="let item of recommendYearValues; let k=index;">{{item.title}}</mat-option>
+                                                    </mat-select>
+                                                </div>
+                                            </div>
                                                 <div class="col-md-6 p-0" [ngStyle]="{'margin-top':'5px'}">
                                                     <p class="error" *ngIf="recommendVisit.errors?.required && isApplicationSubmitted == true">Please select anyone option</p>
                                                 </div>                                                
@@ -1679,7 +1685,7 @@
                         <div class="modal-body"> 
                             <app-loader *ngIf="loaderPdf"></app-loader>
                             <p *ngIf="errorLoader">Error Loading PDF</p>
-                            <pdf-viewer [src]="(pathPDF)" [show-all]="true" [stick-to-page]="true"
+                            <pdf-viewer [src]="(pathPDF)" [show-all]="true" [stick-to-page]="false"
                                 [zoom]="1.0" [original-size]="false" [autoresize]="true"
                                 [show-borders]="true" (error)="onError($event)" (on-progress)="onProgress($event)"
                                 (after-load-complete)="completeLoadPDF($event)"
