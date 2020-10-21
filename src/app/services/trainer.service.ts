@@ -60,6 +60,11 @@ export class TrainerService {
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
 
+  accountPaymentSave(postData: any){
+    const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.accountPaymentSave;
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
+  }
+
 
   //Apply Trainer Public Course
   applyTrainerPublicCourse(postData: any){
@@ -147,6 +152,18 @@ getAccreditationStatusList(id) {
   let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.trainerAccredStaList+id; 
   //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
   //console.log("GET Event URL: ", url, " -- ", this._service.getReqHeaders());
+  return this.http.get(url, this._service.getReqHeaders());
+}
+
+getAccountLists() {
+  let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.accountLists; 
+  //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
+  //console.log("GET Event URL: ", url, " -- ", this._service.getReqHeaders());
+  return this.http.get(url, this._service.getReqHeaders());
+}
+
+getAccountDetails(id) {
+  let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.accountDetails+id;
   return this.http.get(url, this._service.getReqHeaders());
 }
 

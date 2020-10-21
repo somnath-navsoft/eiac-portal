@@ -141,7 +141,6 @@
 
                                         </div>
                                     </div>
-                                    @{{step1Data.cab_type}}
                                     <div class="row pb-3" *ngIf="step1Data.cab_type == 'others'">
                                         <div class="col-md-3 col-sm-3 ">                                            
                                             <div class="form-subheader">
@@ -165,7 +164,7 @@
                                         <div class="col-md-12 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>CAB Name official and Commercial Name</mat-label>
-                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="CAB Name official and Commercial Name" name="official_commercial_name" [(ngModel)]="step1Data.official_commercial_name"  required>
+                                                <input readonly="true" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="CAB Name official and Commercial Name" name="official_commercial_name" [(ngModel)]="step1Data.official_commercial_name"  required>
                                                 <mat-error></mat-error>      
                                             </mat-form-field>
                                         </div>
@@ -461,14 +460,14 @@
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Name the members of Board of Directors (BOD) (if any)</mat-label>
-                                                            <input matInput readonly="true"  (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name the members of Board of Directors (BOD)"  name="bod_directors_name_{{i}}" [(ngModel)]="ownOrgMembInfo[i].name"  required>
+                                                            <input matInput readonly="true"  (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name the members of Board of Directors (BOD)"  name="bod_directors_name_{{i}}" [(ngModel)]="ownOrgMembInfo[i].name"  >
                                                         </mat-form-field>
                                                     </div>
     
                                                     <div class="col-md-8 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>List the companies name of BOD members</mat-label>
-                                                            <input matInput readonly="true" placeholder="List the companies name of BOD members"  (keypress)="Service.inputFilter($event, Service.regExName)" name="company_name_bod_{{i}}" [(ngModel)]="ownOrgMembInfo[i].bod_company"  required>
+                                                            <input matInput readonly="true" placeholder="List the companies name of BOD members"  (keypress)="Service.inputFilter($event, Service.regExName)" name="company_name_bod_{{i}}" [(ngModel)]="ownOrgMembInfo[i].bod_company"  >
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
@@ -477,21 +476,21 @@
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Authorized Contact Person Name</mat-label>
-                                                            <input matInput readonly="true" placeholder="Authorized Contact Person Name"   name="authorized_contact_person_{{i}}" [(ngModel)]="ownOrgMembInfo[i].authorized_contact_person"  (keypress)="Service.inputFilter($event, Service.regExName)" required>
+                                                            <input matInput readonly="true" placeholder="Authorized Contact Person Name"   name="authorized_contact_person_{{i}}" [(ngModel)]="ownOrgMembInfo[i].authorized_contact_person"  (keypress)="Service.inputFilter($event, Service.regExName)" >
                                                         </mat-form-field>
                                                     </div>
     
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Designation</mat-label>
-                                                            <input  readonly="true" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="bod_designation_{{i}}" [(ngModel)]="ownOrgMembInfo[i].designation" required>
+                                                            <input  readonly="true" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="bod_designation_{{i}}" [(ngModel)]="ownOrgMembInfo[i].designation" >
                                                         </mat-form-field>
                                                     </div>
     
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Mobile Phone No.</mat-label>
-                                                            <input  readonly="true" type="text" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="bod_mobile_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].mobile_no" required>
+                                                            <input  readonly="true" type="text" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="bod_mobile_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].mobile_no" >
                                                         </mat-form-field>
                                                         <p class="error" *ngIf="ownOrgMembInfo[i].mobile_no && !Service.checkInput('onlyNumberWithPlus',ownOrgMembInfo[i].mobile_no)">Please Enter Correct Telephone Number</p> 
                                                     </div>
@@ -677,7 +676,7 @@
                                     </div>
 
 
-                                    <div class="row" id="is_hold_other_accreditations" *ngIf="step1Data.is_hold_other_accreditation == '1'">
+                                    <div class="row" id="is_hold_other_accreditations" *ngIf="step1Data.is_hold_other_accreditation_select == '1'">
                                         <div class="col-md-12">
                                             <div class="table-content-health">
                                                 <table>
@@ -1350,7 +1349,18 @@
                                 <div class="bttns-health bttn-staff">
                                     <!--  (click)="onSubmitPerlimVisit()" -->
                                     <div class="button-content">
-                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','perlim_visit')">BACK</a>
+                                        <!-- <a class="cancel-bttn" href="javascript:void(0)" type="button" 
+                                        (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','perlim_visit')">BACK</a> -->
+
+                                        <ng-container *ngIf="step1Data.other_cab_type == undefined">
+                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" 
+                                        (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','prelim_visit')">BACK</a> 
+                                        </ng-container>
+                                        <ng-container *ngIf="step1Data.other_cab_type != undefined && step1Data.other_cab_type != ''">
+                                            <a href="javascript:void(0)" class="cancel-bttn" type="button" 
+                                            (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','prelim_visit')">BACK</a> 
+                                        </ng-container>
+                                        
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step6')">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health">CONTINUE</button>
@@ -1513,8 +1523,9 @@
                                         
                                             <li>
                                                 <mat-checkbox name="authorization_confirm2" [disableRipple]="true"
-                                                (click)="$event.preventDefault()" [(ngModel)]="authorizationList.authorization_confirm2" >I acknowledge that I have read and understood and confirm to abide by the Accreditation 
-                                                Agreement and request to provide us with a word agreement form for signature.</mat-checkbox>
+                                                (click)="$event.preventDefault()" [(ngModel)]="authorizationList.authorization_confirm2" >
+                                                Entering the authorised name will serve as an acceptance and digital binding signature for this agreement
+                                                </mat-checkbox>
                                             </li>
                                         </ul>
                                         <p class="error" *ngIf="!readTermsCond  && isApplicationSubmitted == true">Read the Terms and Conditions</p>
@@ -1594,6 +1605,9 @@
                                                     <mat-radio-button name="3rd" value="third">3rd</mat-radio-button>
                                                     <mat-radio-button name="4th" value="fourth">4th quarter of the year</mat-radio-button>
                                                 </mat-radio-group>
+                                                <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step7Data.recommend_year" required>
+                                                    <mat-option [value]="item.value" *ngFor="let item of recommendYearValues; let k=index;">{{item.title}}</mat-option>
+                                                </mat-select>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -1712,12 +1726,15 @@
                       <ng-template #checklistView let-modal>
                         <div class="modal-header">
                           <h4 class="modal-title" id="modal-basic-title">CHECKLIST</h4>
-                          <button type="button" class="close" aria-label="Close" (click)="closeChecklistDialog()">
+                          <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
                         <div class="modal-body"> 
                             <app-loader *ngIf="loaderPdf"></app-loader>
+                            <a [href]="pathPDF" target="_blank" [ngStyle]="{'color': '#000'}">
+                                <span class="icon-download"></span>
+                                </a> 
                             <p *ngIf="errorLoader">Error Loading PDF</p>
                             <pdf-viewer [src]="(pathPDF)" [show-all]="true" [stick-to-page]="true"
                                 [zoom]="1.0" [original-size]="false" [autoresize]="true"

@@ -104,6 +104,8 @@ export class InspectionBodiesFormComponent implements OnInit {
   allCityByCountry: any = [];
   getCountryLists:any = [];
 
+  recommendYearValues: any[] = [];
+
   //Dynamic scope forms model object declaration
   //dynamicScopeModel:any[]         = [];   //Master form data object
   dynamicScopeModel:any         = {};   //Master form data object
@@ -571,6 +573,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     if(type != undefined && type == 'checklist'){
       pathData = this.getSantizeUrl(this.checklistDocFile);
       this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
+      console.log(">>> PDF Path: ", this.pathPDF);
     }
 
     ////////console.log(">>> open view", this.pathPDF, " -- ",  this.pathPDF);
@@ -655,6 +658,13 @@ export class InspectionBodiesFormComponent implements OnInit {
     //this.routeId = this.urlVal;//this.Service.getValue() != '' ? this.Service.getValue() : '';
     //////console.log("@@router: ", this.routeId, " -- ", this.Service.setValue);
     this.step5Data.scheme_ids = [];
+
+    var d = new Date();
+    var yr = d.getFullYear();
+    for(var k=2010; k<2030; k++){
+      this.recommendYearValues.push({title: k.toString(), value: k});
+    }
+    this.step7Data.recommend_year = yr;
 
 
     // let jsonStrting = '{"18":{"scope_heading":{"43":"Inspection Category","45":"Inspection field","47":"Range of inspection","49":"Stage of the inspection","51":"Inspection criteria","53":"Inspection Activity Type"},"scope_value":[{"43":"Product","45":"Mechanical Engineering of Lifting Equipment","47":"Lever hoist","49":"In-service","51":"BS EN 13157","53":"A"},{"43":"Product","45":"Mechanical, Electrical and Structural Engineering of Lifting Equipment","47":"Mobile crane","49":"In-service","51":"BS 7121-2-1,BS 7121-2-3","53":"B,C"},{"43":"Product","45":"Mechanical Engineering of Lifting Equipment – Earth Moving","47":"Backhoe Loader","49":"In-service","51":"BS EN 474-4","53":"A,B"}]},"105":{"scope_heading":{"55":"Inspection Category","57":"Inspection field","59":"Range of inspection","61":"Stage of the inspection","63":"Inspection criteria","65":"Inspection Activity Type"},"scope_value":[{"55":"Product","57":"Mechanical Engineering of Lifting Accessories","59":"Hook","61":"In-service","63":"Welcome","65":"Hello"},{"55":"Product","57":"Mechanical Engineering of Lifting Accessories","59":"Chain sling","61":"In-service","63":"bbb","65":"aaa"}]}}';
@@ -1221,7 +1231,7 @@ export class InspectionBodiesFormComponent implements OnInit {
           this.formAccrStatus = getData.data.accr_status;
         }
 
-        if(!this.Service.isObjectEmpty(getData.data.paymentDetails)){
+        /*if(!this.Service.isObjectEmpty(getData.data.paymentDetails)){
           
           if(getData.data.paymentDetails.voucher_invoice != undefined && getData.data.paymentDetails.voucher_invoice != '' && 
               (getData.data.paymentDetails.payment_receipt == null || getData.data.paymentDetails.payment_receipt == '')){
@@ -1238,7 +1248,25 @@ export class InspectionBodiesFormComponent implements OnInit {
           //////////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
         }
         else{
+          saveStep = parseInt(getData.data.saved_step) - 1; 
+        }*/
+        if(!this.Service.isObjectEmpty(getData.data.paymentDetails)){
+          if(getData.data.paymentDetails.voucher_invoice != undefined && getData.data.paymentDetails.voucher_invoice != ''){
+            filePath = this.constant.mediaPath + '/media/' + getData.data.paymentDetails.voucher_invoice;
+            pathData = this.getSantizeUrl(filePath);
+            this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
+          }
+        }
+
+        //check steps
+        if(getData.data.is_draft){
           saveStep = parseInt(getData.data.saved_step) - 1;
+        }else{
+          if(parseInt(getData.data.saved_step) == 9){
+            saveStep = parseInt(getData.data.saved_step) - 1;
+          }else{
+          saveStep = parseInt(getData.data.saved_step);
+          }
         }
 
         if(getData.data.saved_step  != null){
@@ -1590,7 +1618,7 @@ export class InspectionBodiesFormComponent implements OnInit {
           let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
           //////console.log(">>>recommm", visitRecomm);
           this.step7Data.recommend_visit = visitRecomm;
-          
+          this.step7Data.recommend_year = parseInt(getData.data.recommend_year);
         }
 
         //step 9
@@ -2355,7 +2383,7 @@ export class InspectionBodiesFormComponent implements OnInit {
 
       this.inspectionBodyForm.step7.application_date = new Date().toISOString().slice(0, 10);//'2020-09-14';
 
-      //console.log(">>>Step7 submit Data: ", this.inspectionBodyForm, " -- ", this.inspectionBodyForm.step7);
+      console.log(">>>Step7 submit Data: ", this.inspectionBodyForm, " -- ", this.inspectionBodyForm.step7);
 
      // return;
      ////console.log(">>> Enter....1 ", type, " -- ", ngForm7.form.valid, " -- ", this.authorizationStatus)
@@ -2976,16 +3004,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   }
 
   onSubmitPersonalInformation(ngForm3: any, type?: boolean){
-    // ////////console.log("Step PersonalInformation submit...");
-      //
-
-    //   if(this.viewData != undefined && this.viewData.data.id > 0 && this.viewData.data.technicalManager.length > 0){
-    //     //////console.log(">>>find ID");
-    //     //this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
-    //   //return;
-    // }
-
-
+   
       this.inspectionBodyForm = {};
       this.inspectionBodyForm.step3 = {};
       //this.inspectionBodyForm.email = this.userEmail;

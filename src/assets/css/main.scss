@@ -961,14 +961,16 @@ ul.bill-details li:first-child { border-right: 1px solid #C9C9C9; }
 // .mat-form-field { width: auto !important; }
 .mat-select-value { max-width: 100%; width: auto; }  
 
-
-
+.modal-header button:focus { outline: none; }
+.modal_head { display: flex; justify-content: space-between; }
 .authData a { color: #AA9777; text-decoration: underline; }
 .assess-dir { background: #EFEFEF; margin-top: 30px; padding-bottom: 30px; border-radius: 5px; }
 span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .required_input { color: #B54150; }
 .recommend  .mat-radio-button { padding: 0 10px; }
 .recommend  .mat-radio-label { font-size: 18px; font-family: 'Dubai Medium'; }
+.recommend .recommend-main { display: flex; justify-content: space-between; width: 100%; }
+.recommend .recommend-year { width: 15%; }
 .confirm { font-size: 18px; font-family: 'Dubai Medium'; }
 .rad-space { display: flex; justify-content: space-around; }
 .train-bdy { background: #EFEFEF; margin-top: 30px; padding-bottom: 25px; }
@@ -1150,6 +1152,7 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
   .table-content-health td span { font-size: 15px; }
   .table-content-health td { font-size: 15px; }
   .main-dashboard-cnt .user-steps { width: 1300px; }
+  .main-content .mat-radio-label-content { font-size: 15px; }
 }
 
 

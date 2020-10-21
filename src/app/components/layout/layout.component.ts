@@ -76,6 +76,10 @@ export class LayoutComponent implements OnInit {
           // this._service.setValueUrl(splitUrl[3]);
           sessionStorage.setItem('accountDetailId', splitUrl[3]);
         }
+        if(splitUrl[2] == 'account-upload') {
+          // this._service.setValueUrl(splitUrl[3]);
+          sessionStorage.setItem('accountUploadId', splitUrl[3]);
+        }
         
         if(splitUrl[3] == 'testing-calibration-form') {
           this._service.setValueUrl(splitUrl[4]);
