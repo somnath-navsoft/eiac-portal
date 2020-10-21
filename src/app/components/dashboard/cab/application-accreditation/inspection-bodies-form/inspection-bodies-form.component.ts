@@ -162,6 +162,9 @@ export class InspectionBodiesFormComponent implements OnInit {
   isApplicationSubmitted: boolean = false;
   isPrelimSubmitted: boolean = false;
 
+  termsGeneral: any;
+  termsILA: any;
+
   accredAgreemFile: any;
   checklistDocFile: any;
   modalOptions:NgbModalOptions;
@@ -644,6 +647,25 @@ export class InspectionBodiesFormComponent implements OnInit {
       //
   }
 
+
+  loadTermsConditions(){
+    let post: any = {};
+    post['service_page_id'] = 2; // IB
+    this.Service.post(this.Service.apiServerUrl+"/" + 'terms-and-conditions/', post)
+      .subscribe(
+        res => {
+          console.log(res,'Terms data');
+          let getData: any = res;
+          if(getData){
+            this.termsGeneral = getData.data[0];
+            this.termsILA     = getData.data[1];
+
+            //console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
+          }
+          
+        });
+  }
+
   ngOnInit() { 
 
     //this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
@@ -654,6 +676,8 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
     this.profileComplete = sessionStorage.getItem('profileComplete');
 
+    this.loadTermsConditions();
+
     //this.routeId = sessionStorage.getItem('routerId');
     //this.routeId = this.urlVal;//this.Service.getValue() != '' ? this.Service.getValue() : '';
     //////console.log("@@router: ", this.routeId, " -- ", this.Service.setValue);
@@ -661,7 +685,7 @@ export class InspectionBodiesFormComponent implements OnInit {
 
     var d = new Date();
     var yr = d.getFullYear();
-    for(var k=2010; k<2030; k++){
+    for(var k=2010; k<=2030; k++){
       this.recommendYearValues.push({title: k.toString(), value: k});
     }
     this.step7Data.recommend_year = yr;

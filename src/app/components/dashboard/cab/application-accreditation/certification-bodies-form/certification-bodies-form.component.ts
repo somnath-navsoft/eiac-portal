@@ -119,6 +119,9 @@ export class CertificationBodiesFormComponent implements OnInit {
   urlVal:any;
   accredAgreemFile:any;
   checklistDocFile:any;
+
+  termsGeneral: any;
+
   pathPDF: any;
   closeResult: string;
   modalOptions:NgbModalOptions;
@@ -206,16 +209,33 @@ export class CertificationBodiesFormComponent implements OnInit {
     // //console.log(">>>>Get MapBox Value: ", getVal);
     // this.Service.mapboxToken = getVal;
  }
+
+ loadTermsConditions(){
+  let post: any = {};
+  post['service_page_id'] = 4; // CertificationsBodies
+  this.Service.post(this.Service.apiServerUrl+"/" + 'terms-and-conditions/', post)
+    .subscribe(
+      res => {
+        console.log(res,'Terms data');
+        let getData: any = res;
+        if(getData){
+          this.termsGeneral = getData.data[0];
+
+          //console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
+        }
+        
+      });
+}
 ngOnInit() {
 
   //console.log(">>step change....");
   let saveStep = 5-1;
   //open step
   
-
+  this.loadTermsConditions();
   var d = new Date();
     var yr = d.getFullYear();
-    for(var k=2010; k<2030; k++){
+    for(var k=2010; k<=2030; k++){
       this.recommendYearValues.push({title: k.toString(), value: k});
     }
     this.step5Data.recommend_year = yr;
