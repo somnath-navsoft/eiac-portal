@@ -134,6 +134,7 @@ import { OperationsAccreditationServiceDetailsComponent } from './components/das
 import { StatusComponent } from './components/dashboard/status/status.component';
 import { AccountsComponent } from './components/dashboard/accounts/accounts.component';
 import { AccountDetailsComponent } from './components/dashboard/accounts/account-details/account-details.component';
+import { AccountUploadComponent } from './components/dashboard/accounts/account-upload/account-upload.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -176,7 +177,8 @@ export const MY_FORMATS = {
     OperationsAccreditationServiceDetailsComponent,
     StatusComponent,
     AccountsComponent,
-    AccountDetailsComponent],
+    AccountDetailsComponent,
+    AccountUploadComponent],
   imports: [
     CommonModule,
     FormsModule,

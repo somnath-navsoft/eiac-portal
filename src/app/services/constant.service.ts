@@ -29,6 +29,7 @@ export class Constants{
 		trainerCourseTypeDetails: 'trainer/training-course-type/',
 
 		paymentDetailsSave: 'webservice/payment-details-save/',
+		accountPaymentSave: 'webservice/account-payment-save/',
 
 		savePublicTrainingForm:'trainer/training-application-form/',
 
@@ -66,6 +67,8 @@ export class Constants{
 		trainerAccredStaList: this.apiUrl + 'accrediation-service-status/',
 		forgetPassword: this.apiUrl + 'user-password-reset-request/',
 		userPasswordReset: this.apiUrl + 'user-password-reset/',
+		accountLists: this.apiUrl + 'accounts/',
+		accountDetails: this.apiUrl + 'account-details-show/',
 	}
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."
 	public loggedIn													=	new Subject<any>();

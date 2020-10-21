@@ -24,4 +24,5 @@
   .accounts_inner_tab .main_acc_tab .main_tab_head { background: #fff; border: 1px solid #fff; }
   .accounts_inner_tab .main_acc_tab .main_tab_head.main_hd { border-right: 1px solid #B9B9B9; }
   .accounts_inner_tab .main_acc_tab th { background: #f7f4f2 ; color: #B19782; border: 1px solid #B9B9B9; text-align: center; padding: 5px; font-size: 16px; }
-  .accounts { margin: 0 -15px; }
+  .accounts { margin: 0 -15px; overflow: auto; }
+  .accounts_inner_tab .fnt-clr { color: #B14A56; }

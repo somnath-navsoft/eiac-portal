@@ -168,6 +168,11 @@ export class HalalConformityFormComponent implements OnInit {
   managingDirector:any[] = [{}];
   hcabOtherLocation:any[] = [{}];
   summaryDetails:any[] = [{}];
+  scopeofHalalConformity:any[] = [{}];
+  authorizedPersonforSigning:any[] = [{}];
+  hcabLogo1:any = {};
+  hcabLogo2:any = {};
+  hcabLogo3:any = {};
   
   @ViewChild('captchaRef',{static:true}) captchaRef: RecaptchaComponent;
 
@@ -220,19 +225,22 @@ export class HalalConformityFormComponent implements OnInit {
         title:'scope_accreditation', desc:'3. Accreditation Scope', activeStep:false, stepComp:false, icon:'icon-sheet', activeClass:''
       },
       {
-      title:'perlim_visit', desc:'4. Prelim Visit', activeStep:false, stepComp:false, icon:'icon-paper', activeClass:''
+      title:'other_hcab_details', desc:'4. Other HCAB Details', activeStep:false, stepComp:false, icon:'icon-paper', activeClass:''
       },
       {
-      title:'undertaking_applicant', desc:'5. Authorization of the Application', activeStep:false, stepComp:false, icon:'icon-work', activeClass:''
+        title:'perlim_visit', desc:'5. Prelim Visit', activeStep:false, stepComp:false, icon:'icon-paper', activeClass:''
       },
       {
-        title:'proforma_invoice', desc:'6. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-file_invoice', activeClass:''
+      title:'undertaking_applicant', desc:'6. Authorization of the Application', activeStep:false, stepComp:false, icon:'icon-work', activeClass:''
       },
       {
-        title:'payment_update', desc:'7. Payment Update', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
+        title:'proforma_invoice', desc:'7. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-file_invoice', activeClass:''
       },
       {
-        title:'application_complete', desc:'8. Application Complete', activeStep:false, stepComp:false, icon:'icon-document-pen', activeClass:''
+        title:'payment_update', desc:'8. Payment Update', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
+      },
+      {
+        title:'application_complete', desc:'9. Application Complete', activeStep:false, stepComp:false, icon:'icon-document-pen', activeClass:''
       },
     );
 
@@ -967,7 +975,7 @@ export class HalalConformityFormComponent implements OnInit {
   }
   
   onSubmitStep2(ngForm2: any){
-    // this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+    this.Service.moveSteps('personal_information','scope_accreditation',  this.headerSteps);
     if(ngForm2.form.valid) {
       var applicationId = sessionStorage.getItem('applicationId');
       // this.step3Data.application_id = applicationId;
@@ -1028,7 +1036,222 @@ export class HalalConformityFormComponent implements OnInit {
   }
 
   onSubmitStep3(ngForm: any, type?:any) {
+    
+    this.Service.moveSteps('scope_accreditation','other_hcab_details',  this.headerSteps);
+  }
 
+  onSubmitStep4(ngForm4: any, type?:any) {
+    
+    this.Service.moveSteps('other_hcab_details','perlim_visit',  this.headerSteps);
+  }
+
+  onSubmitStep5(ngForm5: any){
+    this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+    if(ngForm5.form.valid) {
+      this.publicHalalConformityForm = {};
+      this.publicHalalConformityForm.step4 = {};
+      this.publicHalalConformityForm.saved_step = '4';
+      this.publicHalalConformityForm.email = this.userEmail;
+      this.publicHalalConformityForm.userType = this.userType;
+      var applicationId = sessionStorage.getItem('applicationId');
+      this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+      this.step5Data.is_prelim_visit = this.step5Data.is_prelim_visit == 0 ? false : true;
+      this.step5Data.is_draft = false;
+      this.publicHalalConformityForm.step4 = this.step5Data;
+  
+      //console.log(this.publicHalalConformityForm);
+      // this.step5DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
+      this.loader = false;
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.certificationBodies,this.publicHalalConformityForm)
+      .subscribe(
+        res => {
+          // //console.log(res,'res')
+          this.loader = true;
+          if(res['status'] == true) {
+            // this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+  }
+  
+  onSubmitUndertakingApplicant(ngForm6: any){
+    this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
+    this.isApplicationSubmitted = true;
+    let checkCount = 0;
+      for(let key in this.authorizationList) {
+        ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
+        if(this.authorizationList[key]) {  
+          this.authorizationStatus = true;       
+          checkCount++;
+        }    
+      }
+      if(this.authorizationStatus && checkCount == 10){
+        this.authorizationStatus = true;
+      }else{
+        this.authorizationStatus = false;
+      }
+  
+      //console.log(">>> Check status count: ", checkCount);
+  
+  if(ngForm6.form.valid && this.authorizationStatus == true){
+  
+    this.publicHalalConformityForm = {};
+    this.publicHalalConformityForm.step5 = {};
+    this.publicHalalConformityForm.email = this.userEmail;
+    this.publicHalalConformityForm.userType = this.userType;
+    var applicationId = sessionStorage.getItem('applicationId');
+    this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+    this.publicHalalConformityForm.saved_step = '5';
+    this.step6Data.authorizationList = this.authorizationList;
+    this.step6Data.recommend = this.recommend;
+    this.step6Data.is_draft = false;
+    this.step6Data.application_date = new Date();
+  
+    this.publicHalalConformityForm.step5 = this.step6Data;
+    // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+  
+    // this.step4DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
+    // //console.log(this.publicHalalConformityForm,'publicHalalConformityForm');
+    this.loader = false;
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.certificationBodies,this.publicHalalConformityForm)
+    .subscribe(
+      res => {
+        // //console.log(res,'res')
+        this.loader = true;
+        if(res['status'] == true) {
+          // this.toastr.success(res['msg'], '');
+          if(this.paymentFilePath != ''){
+            this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
+          }
+          else{
+            // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+            this.router.navigateByUrl('/dashboard/status/all');
+          }
+        }else{
+          this.toastr.warning(res['msg'], '');
+        }
+      });
+    //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+  }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+  }
+  
+  
+onSubmitStep7(ngForm7: any) {
+  this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+  //Paypal config data
+  //applyTrainerPublicCourse
+  this.transactionsItem['amount']               = {};
+  this.transactionsItem['amount']['total']      = 0.00;
+  this.transactionsItem['amount']['currency']   = 'USD';
+  this.transactionsItem['amount']['details']    = {};
+  this.transactionsItem['amount']['details']['subtotal'] = 0.00;
+  //declare Items data
+  this.transactionsItem['item_list']            = {};
+  this.transactionsItem['item_list']['items']   = [];
+  let custPrice: any = 0.01;
+  this.total = 0.05;
+  this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity: 1, price: custPrice, currency: 'USD'});
+    if(this.total > 0){
+      ////console.log("Calculate price: ", calcPrice);
+      this.transactionsItem['amount']['total'] = custPrice.toFixed(2);
+      this.transactionsItem['amount']['details']['subtotal'] = custPrice.toFixed(2);
+      this.transactions.push(this.transactionsItem);
+      ////console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
+    }
+    setTimeout(() => {
+      this.createPaymentButton(this.transactionsItem, this.publicHalalConformityForm, this);
+      let elem = document.getElementsByClassName('paypal-button-logo');
+      //console.log("button creting...");
+      if(elem){
+        //console.log("button creted...");
+      }else{
+        //console.log("Loding button...");
+      }
+    }, 100)
+  }
+  
+  onSubmitPaymentInformation(ngForm8: any, type?: boolean){
+  ////console.log("payment submitting.....");
+  this.publicHalalConformityForm = {};
+  this.publicHalalConformityForm.step8 = {};
+  
+    let dtFormat: string = '';
+    if(this.voucherSentData['payment_date'] != undefined && 
+      this.voucherSentData['payment_date']._i != undefined){
+      var dtData = this.voucherSentData['payment_date']._i;
+      var year = dtData.year;
+      var month = dtData.month;
+      var date = dtData.date;
+      dtFormat = year + "-" + month + "-" + date;
+    }
+    //     
+  
+  this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
+  this.voucherFile.append('amount',this.voucherSentData['amount']);
+  this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
+  this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
+  this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
+  this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
+  this.voucherFile.append('voucher_date',dtFormat);
+  this.voucherFile.append('accreditation',this.formApplicationId);
+  // this.voucherFile.append('application_id',this.formApplicationId);
+      
+  this.loader = false;
+  if(ngForm8.form.valid && this.paymentReceiptValidation != false) {
+    // //console.log(this.voucherFile);
+      this._trainerService.paymentVoucherSave((this.voucherFile))
+      .subscribe(
+          result => {
+            this.loader = true;
+            let data: any = result;
+            ////console.log("submit voucher: ", data);
+            if(data.status){
+              //this.voucherFile = new FormData();
+              //this.voucherSentData = {};
+              //this.toastr.success("Your form has been successfully submitted and it is under review.We will update you shortly.",'THANK YOU');
+              setTimeout(()=>{
+                let elem = document.getElementById('openAppDialog');
+                //console.log("App dialog hash....", elem);
+                if(elem){
+                  elem.click();
+                }
+              }, 100)
+              //this.openView('appComp','');
+              setTimeout(() => {                    
+                // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+                this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+              },3500)
+              
+            }else{
+              this.toastr.warning(data.msg,'');
+            }
+          }
+        )
+  }else if(type != undefined && type == true && this.paymentReceiptValidation != false){
+    this.publicHalalConformityForm.step9.is_draft = true;
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.publicHalalConformityForm)
+    .subscribe(
+    res => {
+      ////console.log(res,'res')
+      if(res['status'] == true) {
+        this.toastr.success(res['msg'], '');
+        //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+      }else{
+        this.toastr.warning(res['msg'], '');
+      }
+    });
+  }
+  else{
+    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+  }
+  
   }
 
 }

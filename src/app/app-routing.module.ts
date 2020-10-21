@@ -83,6 +83,7 @@ import { OperationsAccreditationServiceDetailsComponent } from './components/das
 import { StatusComponent } from './components/dashboard/status/status.component';
 import { AccountsComponent } from './components/dashboard/accounts/accounts.component';
 import { AccountDetailsComponent } from './components/dashboard/accounts/account-details/account-details.component';
+import { AccountUploadComponent } from './components/dashboard/accounts/account-upload/account-upload.component';
 
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
@@ -95,6 +96,7 @@ const routes: Routes = [
       { path: 'status/:id', component: StatusComponent, canActivate: [AuthGuard] },
       { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard] },
       { path: 'account-details/:id', component: AccountDetailsComponent, canActivate: [AuthGuard] },
+      { path: 'account-upload/:id', component: AccountUploadComponent, canActivate: [AuthGuard] },
       { path: 'onboarding-message-list', component: MessageComponent, canActivate: [AuthGuard] },
       { path: 'message-detail/:id', component: MessageDetailComponent, canActivate: [AuthGuard] },
       { path: 'trainers', component: TrainersComponent, canActivate: [AuthGuard],
