@@ -6,6 +6,7 @@ import { ToastrService} from 'ngx-toastr';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {CustomModalComponent} from 'src/app/components/utility/custom-modal/custom-modal.component';
 import { Observable, Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-accounts',
@@ -19,7 +20,7 @@ export class AccountsComponent implements OnInit {
   loader:boolean = true;
 
   paginationConfig: any;
-  pageLimit: number = 10;
+  pageLimit: number = 5;
   pageCurrentNumber: number = 1;
   pageConfigData: any = {};
   pageData: any = {};
@@ -27,11 +28,29 @@ export class AccountsComponent implements OnInit {
   subscriptions: Subscription[] = [];
   accountsData:any[] = [];
   // accountList:any = {};
+  userType:any;
+  voucherSentData: any = {};
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
-    private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent) { }
+    private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent,public router: Router) { }
 
   ngOnInit() {
+    this.userType = sessionStorage.getItem('type');
+    // if(this.userType != 'cab_client' || this.userType != 'operations' || this.userType != 'candidate'){
+    //   this.router.navigateByUrl('/dashboard'+this.userType'/cab_client/home');
+    // }
+    if(this.userType == 'cab_client'){
+      this.router.navigateByUrl('/dashboard/accounts');
+    }else if(this.userType == 'operations'){
+      this.router.navigateByUrl('/dashboard/accounts');
+    }else if(this.userType == 'candidate'){
+      this.router.navigateByUrl('/dashboard/accounts');
+    }else if(this.userType == 'trainers'){
+      this.router.navigateByUrl('/dashboard'+this.userType+'/cab_client/home');
+    }else if(this.userType == 'assessors'){
+      this.router.navigateByUrl('/dashboard'+this.userType+'/cab_client/home');
+    }
+
     this.loadPageData();
   }
 
@@ -50,18 +69,18 @@ export class AccountsComponent implements OnInit {
           allRecords = data.records
           allRecords.forEach((res,key) => {
             if(allRecords[key].paymentDetails != false) {
-              let getDetails = {};
-              console.log(allRecords[key].id,'key');
+              var getDetails = {};
 
               getDetails['appNo'] = allRecords[key].id;
               getDetails['createdDate'] = allRecords[key].created;
               getDetails['cabName'] = allRecords[key].cabDetails.cab_name;
               getDetails['appType'] = allRecords[key].form_meta;
+              getDetails['totalPayment'] = allRecords[key].paymentDetails.length;
               
               getDetails['prelim_visit'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'prelim_visit');
-              getDetails['application_fees'] = allRecords[key].paymentDetails.find(item => item.application_fees == 'application_fees');
+              getDetails['application_fees'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'application_fees');
               getDetails['document_review'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'document_review');
-              getDetails['assessment'] = allRecords[key].paymentDetails.find(item => item.assessment == 'assessment');
+              getDetails['assessment'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'assessment');
               getDetails['certification'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'certification');
 
               this.accountsData.push(getDetails);
@@ -72,8 +91,8 @@ export class AccountsComponent implements OnInit {
 
 
           // this.accountsData = data.records;
-          // // dataRec = data.records;
-          // this.pageTotal = data.records.length;
+          // dataRec = data.records;
+          this.pageTotal = this.accountsData.length;
         },
         ()=>{
           // console.log('comp...');

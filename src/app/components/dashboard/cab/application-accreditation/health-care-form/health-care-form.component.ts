@@ -2652,7 +2652,7 @@ if(ngForm7.form.valid){
   this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
   this.healthCareForm.saved_step = '7';
   this.step7Data.authorizationList = this.authorizationList;
-  this.step7Data.recommend = this.recommend;
+  // this.step7Data.recommend = this.recommend;
   this.step7Data.is_draft = false;
   this.step7Data.application_date = new Date();
 

@@ -15,7 +15,8 @@ export class AccountUploadComponent implements OnInit {
   accountUploadId:any;
   voucherSentData:any = {};
   loader:boolean = true;
-  paymentReceiptValidation:boolean = true;
+  paymentReceiptValidation:boolean = false;
+  fileExist:boolean = true;
   voucherFile:any = new FormData();
 
   constructor(private _service: AppService, private _constant: Constants, public toaster: ToastrService,
@@ -32,27 +33,28 @@ export class AccountUploadComponent implements OnInit {
     var ex_check = this._service.isInArray(file_exe,ex_type);
     if(ex_check){
       this.paymentReceiptValidation = true;
+      this.fileExist = true;
       //if(type == undefined){
         this.voucherFile.append('payment_receipt',fileEvent.target.files[0]);
       //}
     }else{
         this.paymentReceiptValidation = false;
+        this.fileExist = false;
         
     }
   }
 
   onSubmitPaymentInformation(ngForm7: any, type?: boolean){
     
-      let dtFormat: string = '';
-      if(this.voucherSentData['payment_date'] != undefined && 
-        this.voucherSentData['payment_date']._i != undefined){
-        var dtData = this.voucherSentData['payment_date']._i;
-        var year = dtData.year;
-        var month = dtData.month;
-        var date = dtData.date;
-        dtFormat = year + "-" + month + "-" + date;
-      }
-      //     
+    let dtFormat: string = '';
+    if(this.voucherSentData['payment_date'] != undefined && 
+      this.voucherSentData['payment_date']._i != undefined){
+      var dtData = this.voucherSentData['payment_date']._i;
+      var year = dtData.year;
+      var month = dtData.month + 1;
+      var date = dtData.date;
+      dtFormat = year + "-" + month + "-" + date;
+    }
     
     this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
     this.voucherFile.append('amount',this.voucherSentData['amount']);
@@ -64,10 +66,10 @@ export class AccountUploadComponent implements OnInit {
     this.voucherFile.append('accreditation',this.accountUploadId);
     // this.voucherFile.append('application_id',this.formApplicationId);
     
-    console.log(this.voucherFile,'voucherFile');
-    this.loader = false;
     if(ngForm7.form.valid && this.paymentReceiptValidation != false) {
+      this.fileExist = true;
       // //console.log(this.voucherFile);
+      this.loader = false;
         this._trainerService.accountPaymentSave((this.voucherFile))
         .subscribe(
             result => {
@@ -77,7 +79,8 @@ export class AccountUploadComponent implements OnInit {
               if(data.status){
                 setTimeout(() => {                    
                   // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-                  this.toaster.success('Data save successfully','');
+                  // this.toaster.success('Data save successfully','');
+                  this.toaster.warning(data.msg,'');
                 },3500)
                 
               }else{
@@ -85,6 +88,8 @@ export class AccountUploadComponent implements OnInit {
               }
             }
           )
+    }else if(ngForm7.form.valid && this.paymentReceiptValidation == false) {
+      this.fileExist = false;
     }
     else{
       this.toaster.warning('Please Fill required field','Validation Error',{timeOut:5000});
