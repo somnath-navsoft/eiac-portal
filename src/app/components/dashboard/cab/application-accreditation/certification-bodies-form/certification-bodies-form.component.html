@@ -743,8 +743,8 @@
                                                                             </mat-form-field>
                                                                         </td>
                                                                         <td class="content-icn">
-                                                                            <span *ngIf="i >= 0" class="icon-add" (click)="addRow(auditorsExaminersFulltime)"></span>&nbsp;
-                                                                            <span *ngIf="i >= 1" class="icon-cancel"></span>
+                                                                            <span *ngIf="i >= 0" class="icon-add" (click)="addRow(auditorsExaminersFulltime)"></span>&nbsp;.
+                                                                            <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(auditorsExaminersFulltime,i)"></span>
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -772,7 +772,7 @@
                                                                         </td>
                                                                         <td class="content-icn">
                                                                             <span *ngIf="i >= 0" class="icon-add" (click)="addRow(auditorsExaminersParttime)"></span>&nbsp;
-                                                                            <span *ngIf="i >= 1" class="icon-cancel"></span>
+                                                                            <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(auditorsExaminersParttime,i)"></span>
                                                                         </td>
                                                                     </tr>
                                                                 </table>

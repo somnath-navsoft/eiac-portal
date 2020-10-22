@@ -26,7 +26,7 @@
                                         </div>
                                         <!-- (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}" -->
                                         <div class="user-details-pending" 
-                                        id="course_header" >
+                                        id="course_header" (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}">
                                             <span [innerHTML]="item.desc"></span>
                                         </div>
                                     </div>
@@ -204,16 +204,16 @@
                                     </div>
 
                                     <div class="row">
-                                        <!-- <div class="col-md-3">
+                                        <div class="col-md-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Date of Establishment</mat-label>
                                                 <input matInput [matDatepicker]="date_of_establishment" [max]="today" (click)="Service._openCalendar(date_of_establishment)"  placeholder="Date Of Establishment" name="date_of_establishment" [(ngModel)]="step1Data.date_of_establishment">
                                                 <mat-datepicker-toggle matSuffix [for]="date_of_establishment"></mat-datepicker-toggle>
                                                 <mat-datepicker #date_of_establishment disabled="false"></mat-datepicker>
                                             </mat-form-field>
-                                        </div> -->
+                                        </div>
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Legal-Professional/Commercial/Trade License</mat-label>
                                                 <input matInput readonly="true"  name="tradelic" [(ngModel)]="selectTradeLicName"
