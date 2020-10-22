@@ -1,3 +1,4 @@
+<app-loader *ngIf="!loader"></app-loader>
 <div class="main-detail">
     <div class="container-fluid p-0">
         <div class="main-dashboard-table">
@@ -29,7 +30,7 @@
                                 <div class="col-md-4">
                                     <mat-form-field class="cab-data">
                                         <mat-label>Voucher Code</mat-label>
-                                        <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                                        <input type="number" [ngModelOptions]="{standalone: true}" required
                                         matInput placeholder="Voucher Code"
                                         [(ngModel)]="voucherSentData.voucher_code">
                                     </mat-form-field>
@@ -46,7 +47,7 @@
                                 <div class="col-md-4">
                                     <mat-form-field class="cab-data">
                                         <mat-label>Payment Amount</mat-label>
-                                        <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                                        <input type="number" [ngModelOptions]="{standalone: true}" required
                                         matInput placeholder="Payment Amount" 
                                         [(ngModel)]="voucherSentData.amount">
                                     </mat-form-field>
@@ -56,7 +57,7 @@
                                 <div class="col-md-4">
                                     <mat-form-field class="cab-data">
                                         <mat-label>Transaction Number</mat-label>
-                                        <input type="text" [ngModelOptions]="{standalone: true}" required="true"
+                                        <input type="text" [ngModelOptions]="{standalone: true}" required
                                         matInput placeholder="Transaction Number" 
                                         [(ngModel)]="voucherSentData.transaction_no">
                                     </mat-form-field>
@@ -67,7 +68,7 @@
                                         <!-- <input type="text" [ngModelOptions]="{standalone: true}" required="true"
                                         matInput placeholder="Payment Method" 
                                         [(ngModel)]="voucherSentData.payment_method"> -->
-                                        <mat-select placeholder="Payment Method" name="payment_method" [(ngModel)]="voucherSentData.payment_method" required="true">
+                                        <mat-select placeholder="Payment Method" name="payment_method" [(ngModel)]="voucherSentData.payment_method" required>
                                             <mat-option value="Cash">Cash</mat-option>
                                             <mat-option value="Online">Online</mat-option>
                                         </mat-select>
@@ -76,7 +77,7 @@
                                 <div class="col-md-4">
                                     <mat-form-field class="cab-data">
                                         <mat-label>Payment Made By</mat-label>
-                                        <input type="text" [ngModelOptions]="{standalone: true}" required="true"
+                                        <input type="text" [ngModelOptions]="{standalone: true}" required
                                         matInput placeholder="Payment Made By" 
                                         [(ngModel)]="voucherSentData.payment_made_by">
                                     </mat-form-field>
@@ -86,7 +87,7 @@
                                 <div class="col-md-6">
                                     <mat-form-field class="cab-data">
                                         <mat-label>Mobile Number</mat-label>
-                                        <input type="text" [ngModelOptions]="{standalone: true}" required="true"
+                                        <input type="text" [ngModelOptions]="{standalone: true}" 
                                         matInput placeholder="Mobile Number" 
                                         [(ngModel)]="voucherSentData.mobile_no" required>
                                     </mat-form-field>
@@ -97,7 +98,7 @@
                                         (change)="validateFileVoucher($event, 'payment_receipt')" required>
                                         <span class="icon-attach attach-data"></span>
                                     </span>
-                                    <p class="error" *ngIf="paymentReceiptValidation == false">Please Upload a valid file (ex: pdf)</p>
+                                    <p class="error" *ngIf="fileExist == false">Please Upload a valid file (ex: pdf)</p>
                                 </div>
 
                             </div>

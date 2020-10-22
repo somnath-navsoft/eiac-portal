@@ -47,141 +47,104 @@
                             <th></th>
                         </tr>
                     </thead>
+                    
                     <tbody>
-                        <tr *ngFor="let item of accountsData; let i = index;">
-                            <td class="fnt-clr"><a href="javascript:void(0)" routerLink="/dashboard/account-details/{{item.appNo}}">{{item.appNo}}</a></td>
-                            <td>{{item.createdDate | date}}</td>
-                            <td>{{item.cabName}}</td>
-                            <td>{{item.appType}}</td>
+                        <ng-container *ngIf="accountsData.length > 0">
+                            <tr *ngFor="let item of accountsData | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i = index;">
+                                <td class="fnt-clr"><a href="javascript:void(0)" routerLink="/dashboard/account-details/{{item.appNo}}">{{item.appNo}}</a></td>
+                                <td>{{item.createdDate | date}}</td>
+                                <td>{{item.cabName}}</td>
 
-                            <ng-container *ngIf="item.application_fees">
-                                <td>{{item.application_fees.amount}}</td>
-                                <td>{{item.application_fees.voucher_date | date}}</td>
-                                <td class="complete"><span>{{item.application_fees.payment_status}}</span></td>
-                            </ng-container>
-                            <ng-container *ngIf="!item.application_fees">
-                                <td>0.00</td>
-                                <td>N/A</td>
-                                <td><span>N/A</span></td>
-                            </ng-container>
+                                <td *ngIf="item.appType == 'testing_calibration'">Testing Calibration</td>
+                                <td *ngIf="item.appType == 'inspection_body'">Inspection Bodies</td>
+                                <td *ngIf="item.appType == 'health_care'">Health Care</td>
+                                <td *ngIf="item.appType == 'certification_bodies'">Certification Bodies</td>
 
-                            <ng-container *ngIf="item.prelim_visit">
-                                <td>{{item.prelim_visit.amount}}</td>
-                                <td>{{item.prelim_visit.voucher_date | date}}</td>
-                                <td class="complete"><span>{{item.prelim_visit.payment_status}}</span></td>
-                            </ng-container>
-                            <ng-container *ngIf="!item.prelim_visit">
-                                <td>0.00</td>
-                                <td>N/A</td>
-                                <td><span>N/A</span></td>
-                            </ng-container>
+                                <ng-container *ngIf="item.application_fees">
+                                    <td>{{item.application_fees.amount}}</td>
+                                    <td>{{item.application_fees.voucher_date | date}}</td>
+                                    <td class="complete"><span>{{item.application_fees.payment_status}}</span></td>
+                                </ng-container>
+                                <ng-container *ngIf="!item.application_fees">
+                                    <td>0.00</td>
+                                    <td>N/A</td>
+                                    <td><span>N/A</span></td>
+                                </ng-container>
 
-                            <ng-container *ngIf="item.document_review">
-                                <td>{{item.document_review.amount}}</td>
-                                <td>{{item.document_review.voucher_date | date}}</td>
-                                <td class="complete"><span>{{item.document_review.payment_status}}</span></td>
-                            </ng-container>
-                            <ng-container *ngIf="!item.document_review">
-                                <td>0.00</td>
-                                <td>N/A</td>
-                                <td><span>N/A</span></td>
-                            </ng-container>
+                                <ng-container *ngIf="item.prelim_visit">
+                                    <td>{{item.prelim_visit.amount}}</td>
+                                    <td>{{item.prelim_visit.voucher_date | date}}</td>
+                                    <td class="complete"><span>{{item.prelim_visit.payment_status}}</span></td>
+                                </ng-container>
+                                <ng-container *ngIf="!item.prelim_visit">
+                                    <td>0.00</td>
+                                    <td>N/A</td>
+                                    <td><span>N/A</span></td>
+                                </ng-container>
 
-                            <ng-container *ngIf="item.assessment">
-                                <td>{{item.assessment.amount}}</td>
-                                <td>{{item.assessment.voucher_date | date}}</td>
-                                <td class="complete"><span>{{item.assessment.payment_status}}</span></td>
-                            </ng-container>
-                            <ng-container *ngIf="!item.assessment">
-                                <td>0.00</td>
-                                <td>N/A</td>
-                                <td><span>N/A</span></td>
-                            </ng-container>
+                                <ng-container *ngIf="item.document_review">
+                                    <td>{{item.document_review.amount}}</td>
+                                    <td>{{item.document_review.voucher_date | date}}</td>
+                                    <td class="complete"><span>{{item.document_review.payment_status}}</span></td>
+                                </ng-container>
+                                <ng-container *ngIf="!item.document_review">
+                                    <td>0.00</td>
+                                    <td>N/A</td>
+                                    <td><span>N/A</span></td>
+                                </ng-container>
 
-                            <ng-container *ngIf="item.certification">
-                                <td>{{item.certification.amount}}</td>
-                                <td>{{item.certification.voucher_date | date}}</td>
-                                <td class="complete"><span>{{item.certification.payment_status}}</span></td>
-                            </ng-container>
-                            <ng-container *ngIf="!item.certification">
-                                <td>0.00</td>
-                                <td>N/A</td>
-                                <td><span>N/A</span></td>
-                            </ng-container>
-                            <td class="fnt-clr">
-                                <a href="javascript:void(0)" routerLink="/dashboard/account-upload/{{item.appNo}}">
-                                    <span class="icon-wallet"></span>
-                                </a>
-                            </td>
-                        </tr>
-                        <!-- <tr>
-                            <td class="fnt-clr">87102154</td>
-                            <td>2-3-2020</td>
-                            <td>Robert Thomson</td>
-                            <td>Inspection Bodies</td>
-                            <td>100.00</td>
-                            <td>15-07-2019</td>
-                            <td class="complete under-review"><span>Unpaid</span></td>
-                            <td>100.00</td>
-                            <td>15-07-2019</td>
-                            <td class="complete under-review"><span>Unpaid</span></td>
-                            <td>100.00</td>
-                            <td>15-07-2019</td>
-                            <td class="complete under-review"><span>Unpaid</span></td>
-                            <td>100.00</td>
-                            <td>15-07-2019</td>
-                            <td class="complete under-review"><span>Unpaid</span></td>
-                            <td>100.00</td>
-                            <td>15-07-2019</td>
-                            <td class="complete under-review"><span>Unpaid</span></td>
-                            <td class="fnt-clr"><span class="icon-wallet"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="fnt-clr">87102154</td>
-                            <td>1-5-2020</td>
-                            <td>Bob Williams</td>
-                            <td>Inspection Bodies</td>
-                            <td>100.00</td>
-                            <td>15-07-2019</td>
-                            <td class="complete"><span>Paid</span></td>
-                            <td>100.00</td>
-                            <td>15-07-2019</td>
-                            <td class="complete"><span>Paid</span></td>
-                            <td>100.00</td>
-                            <td>15-07-2019</td>
-                            <td class="complete"><span>Paid</span></td>
-                            <td>100.00</td>
-                            <td>15-07-2019</td>
-                            <td class="complete"><span>Paid</span></td>
-                            <td>100.00</td>
-                            <td>15-07-2019</td>
-                            <td class="complete"><span>Paid</span></td>
-                            <td class="fnt-clr"><span class="icon-wallet"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="fnt-clr">87102154</td>
-                            <td>1-5-2020</td>
-                            <td>Robert Thomson</td>
-                            <td>Certification Bodies</td>
-                            <td>100.00</td>
-                            <td>15-07-2019</td>
-                            <td class="complete under-review"><span>Unpaid</span></td>
-                            <td>100.00</td>
-                            <td>15-07-2019</td>
-                            <td class="complete under-review"><span>Unpaid</span></td>
-                            <td>100.00</td>
-                            <td>15-07-2019</td>
-                            <td class="complete under-review"><span>Unpaid</span></td>
-                            <td>100.00</td>
-                            <td>15-07-2019</td>
-                            <td class="complete under-review"><span>Unpaid</span></td>
-                            <td>100.00</td>
-                            <td>15-07-2019</td>
-                            <td class="complete under-review"><span>Unpaid</span></td>
-                            <td class="fnt-clr"><span class="icon-wallet"></span></td>
-                        </tr> -->
+                                <ng-container *ngIf="item.assessment">
+                                    <td>{{item.assessment.amount}}</td>
+                                    <td>{{item.assessment.voucher_date | date}}</td>
+                                    <td class="complete"><span>{{item.assessment.payment_status}}</span></td>
+                                </ng-container>
+                                <ng-container *ngIf="!item.assessment">
+                                    <td>0.00</td>
+                                    <td>N/A</td>
+                                    <td><span>N/A</span></td>
+                                </ng-container>
+
+                                <ng-container *ngIf="item.certification">
+                                    <td>{{item.certification.amount}}</td>
+                                    <td>{{item.certification.voucher_date | date}}</td>
+                                    <td class="complete"><span>{{item.certification.payment_status}}</span></td>
+                                </ng-container>
+                                <ng-container *ngIf="!item.certification">
+                                    <td>0.00</td>
+                                    <td>N/A</td>
+                                    <td><span>N/A</span></td>
+                                </ng-container>
+                                <td class="fnt-clr">
+                                    <a *ngIf="userType == 'cab_client' && item.totalPayment < 4" href="javascript:void(0)" routerLink="/dashboard/account-upload/{{item.appNo}}">
+                                        <span class="icon-wallet"></span>
+                                    </a>
+
+                                    <a *ngIf="userType == 'candidate' && item.totalPayment < 1" href="javascript:void(0)" routerLink="/dashboard/account-upload/{{item.appNo}}">
+                                        <span class="icon-wallet"></span>
+                                    </a>
+
+                                    <a *ngIf="userType == 'operations' && item.totalPayment < 4" href="javascript:void(0)" routerLink="/dashboard/account-upload/{{item.appNo}}">
+                                        <span class="icon-wallet"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        </ng-container>
+
+                        <ng-container *ngIf="accountsData.length == 0">
+                            <tr>
+                                <td colspan="5">
+                                    No Records
+                                </td>
+                            </tr>
+                        </ng-container>
+
                     </tbody>
                 </table>
+
+                <ng-container *ngIf="accountsData != undefined && accountsData.length > 5" >
+                    <pagination-controls (pageChange)="pageCurrentNumber = $event"></pagination-controls>
+                </ng-container>
+
             </div>
         </div>
     </div>
