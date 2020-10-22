@@ -36,6 +36,7 @@ export class CertificationBodiesFormComponent implements OnInit {
   public checkSecurity:boolean = false;
   public checkCaptchaValidation:boolean = false;
   public loader:boolean=true;
+  isPrelimSubmitted: boolean = false;
   public criteriaDetails: any = {
     table_data : [],
     contact_person:'',
@@ -2218,6 +2219,8 @@ onSubmitStep4(ngForm4: any){
     this.step4Data.is_draft = false;
     this.certificationBodiesForm.step4 = this.step4Data;
 
+    this.isPrelimSubmitted = true;
+
     //console.log(this.certificationBodiesForm);
     // this.step5DataBodyFormFile.append('data',JSON.stringify(this.certificationBodiesForm));
     this.loader = false;
@@ -2226,6 +2229,7 @@ onSubmitStep4(ngForm4: any){
       res => {
         // //console.log(res,'res')
         this.loader = true;
+        this.isPrelimSubmitted = false;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
           this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);

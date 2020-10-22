@@ -43,6 +43,8 @@ export class HealthCareFormComponent implements OnInit {
   public countryList:Array<any>=[];
   public labTypeList:Array<any>=[];
 
+  isPrelimSubmitted = false;
+
 
   public orgMembToggle: boolean = false;
   public is_bod: boolean = false;
@@ -2551,6 +2553,8 @@ onSubmitStep6(ngForm6: any){
     this.step6Data.is_draft = false;
     this.healthCareForm.step6 = this.step6Data;
 
+    this.isPrelimSubmitted = true;
+
     //console.log(this.healthCareForm);
     // this.step5DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
     this.loader = false;
@@ -2559,6 +2563,7 @@ onSubmitStep6(ngForm6: any){
       res => {
         // //console.log(res,'res')
         this.loader = true;
+        this.isPrelimSubmitted = false;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
           this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
