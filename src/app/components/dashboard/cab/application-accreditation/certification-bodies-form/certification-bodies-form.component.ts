@@ -119,6 +119,9 @@ export class CertificationBodiesFormComponent implements OnInit {
   urlVal:any;
   accredAgreemFile:any;
   checklistDocFile:any;
+
+  termsGeneral: any;
+
   pathPDF: any;
   closeResult: string;
   modalOptions:NgbModalOptions;
@@ -137,6 +140,8 @@ export class CertificationBodiesFormComponent implements OnInit {
   staticPosition:any = {};
   summaryDetailsArr:any = {};
   addMinutesToTime:any;
+
+  recommendYearValues: any[] = [];
 
    //Master scope form data declaration
    dynamicScopeModel:any         = {};   
@@ -204,12 +209,36 @@ export class CertificationBodiesFormComponent implements OnInit {
     // //console.log(">>>>Get MapBox Value: ", getVal);
     // this.Service.mapboxToken = getVal;
  }
+
+ loadTermsConditions(){
+  let post: any = {};
+  post['service_page_id'] = 4; // CertificationsBodies
+  this.Service.post(this.Service.apiServerUrl+"/" + 'terms-and-conditions/', post)
+    .subscribe(
+      res => {
+        console.log(res,'Terms data');
+        let getData: any = res;
+        if(getData){
+          this.termsGeneral = getData.data[0];
+
+          //console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
+        }
+        
+      });
+}
 ngOnInit() {
 
   //console.log(">>step change....");
   let saveStep = 5-1;
   //open step
   
+  this.loadTermsConditions();
+  var d = new Date();
+    var yr = d.getFullYear();
+    for(var k=2010; k<=2030; k++){
+      this.recommendYearValues.push({title: k.toString(), value: k});
+    }
+    this.step5Data.recommend_year = yr;
 
 
   this.ownOrgMembInfo = [
@@ -999,6 +1028,7 @@ loadAppInfo(){
           //console.log(res,'urlVal')
           this.loader = true;
           let getData: any = res;
+          let saveStep: number;
           if(res['data'].id && res['data'].id != '') {
               let pathData: any;
               let filePath: string;
@@ -1012,8 +1042,19 @@ loadAppInfo(){
                 }
                 //////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
               }
-              
-              // //console.log(res['data'].saved_step,"@saved step assign....");
+                    
+              //check steps
+              if(getData.data.is_draft){
+                saveStep = parseInt(getData.data.saved_step) - 1;
+              }else{
+                if(parseInt(getData.data.saved_step) == 7){
+                  saveStep = parseInt(getData.data.saved_step) - 1;
+                }else{
+                saveStep = parseInt(getData.data.saved_step);
+                }
+              }
+
+
               if(res['data'].saved_step  != null){
                 let saveStep = res['data'].saved_step;
                 //open step
@@ -1245,7 +1286,9 @@ loadAppInfo(){
                   this.authorizationList[key] = true;
                 })
                 this.authorizationStatus = true;
-                this.step5Data.recommend_visit = 'second';
+                let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
+                this.step5Data.recommend_visit = visitRecomm;//'second';
+                this.step7Data.recommend_year = parseInt(getData.data.recommend_year);
               }
 
               //Step 9
@@ -2427,6 +2470,9 @@ closeChecklistDialog(){
   this.modalService.dismissAll();
   this.authorizationList.undertaking_confirm2 = true;
   this.readReviewChecklist= true;
+}
+closeDialog(){
+  this.modalService.dismissAll();
 }
 
 onError(error: any) {
