@@ -18916,7 +18916,7 @@
         },
         {
             "id": "3796",
-            "name": "Abu Zabi",
+            "name": "Abu Dhabi",
             "country_id": "229"
         },
         {
@@ -18931,7 +18931,7 @@
         },
         {
             "id": "3799",
-            "name": "Ras al-Khaymah",
+            "name": "Ras Al Khaimah",
             "country_id": "229"
         },
         {
@@ -18940,23 +18940,13 @@
             "country_id": "229"
         },
         {
-            "id": "3801",
-            "name": "Sharjha",
-            "country_id": "229"
-        },
-        {
             "id": "3802",
-            "name": "Umm al Qaywayn",
+            "name": "Umm al-Quwain",
             "country_id": "229"
         },
         {
             "id": "3803",
-            "name": "al-Fujayrah",
-            "country_id": "229"
-        },
-        {
-            "id": "3804",
-            "name": "ash-Shariqah",
+            "name": "Fujairah",
             "country_id": "229"
         },
         {

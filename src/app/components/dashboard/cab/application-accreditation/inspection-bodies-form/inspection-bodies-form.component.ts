@@ -162,6 +162,9 @@ export class InspectionBodiesFormComponent implements OnInit {
   isApplicationSubmitted: boolean = false;
   isPrelimSubmitted: boolean = false;
 
+  termsGeneral: any;
+  termsILA: any;
+
   accredAgreemFile: any;
   checklistDocFile: any;
   modalOptions:NgbModalOptions;
@@ -644,6 +647,25 @@ export class InspectionBodiesFormComponent implements OnInit {
       //
   }
 
+
+  loadTermsConditions(){
+    let post: any = {};
+    post['service_page_id'] = 2; // IB
+    this.Service.post(this.Service.apiServerUrl+"/" + 'terms-and-conditions/', post)
+      .subscribe(
+        res => {
+          console.log(res,'Terms data');
+          let getData: any = res;
+          if(getData){
+            this.termsGeneral = getData.data[0];
+            this.termsILA     = getData.data[1];
+
+            //console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
+          }
+          
+        });
+  }
+
   ngOnInit() { 
 
     //this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
@@ -654,6 +676,8 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
     this.profileComplete = sessionStorage.getItem('profileComplete');
 
+    this.loadTermsConditions();
+
     //this.routeId = sessionStorage.getItem('routerId');
     //this.routeId = this.urlVal;//this.Service.getValue() != '' ? this.Service.getValue() : '';
     //////console.log("@@router: ", this.routeId, " -- ", this.Service.setValue);
@@ -661,7 +685,7 @@ export class InspectionBodiesFormComponent implements OnInit {
 
     var d = new Date();
     var yr = d.getFullYear();
-    for(var k=2010; k<2030; k++){
+    for(var k=2010; k<=2030; k++){
       this.recommendYearValues.push({title: k.toString(), value: k});
     }
     this.step7Data.recommend_year = yr;
@@ -864,7 +888,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       undertaking_confirm6:false,
       undertaking_confirm7:false,authorization_confirm1:false,authorization_confirm2:false};
 
-    this.recommend = {first:false,second:false,third:false,fourth:false}
+    // this.recommend = {first:false,second:false,third:false,fourth:false}
 
     this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail)
     .subscribe(
@@ -2366,7 +2390,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       //this.inspectionBodyForm.email = this.userEmail;
       //this.inspectionBodyForm.userType = this.userType;
       this.step7Data.authorizationList = this.authorizationList;
-      this.step7Data.recommend = this.recommend;
+      // this.step7Data.recommend = this.recommend;
 
       ////////console.log("@@@Step7 Data: ", this.step7Data);
       this.inspectionBodyForm.step7 = this.step7Data;
@@ -2382,8 +2406,6 @@ export class InspectionBodiesFormComponent implements OnInit {
       // this.step7Data.organization_name = (this.step7Data.digital_signature != '' && this.step7Data.digital_signature != 'undefined') ? this.step7Data.digital_signature : '';
 
       this.inspectionBodyForm.step7.application_date = new Date().toISOString().slice(0, 10);//'2020-09-14';
-
-      console.log(">>>Step7 submit Data: ", this.inspectionBodyForm, " -- ", this.inspectionBodyForm.step7);
 
      // return;
      ////console.log(">>> Enter....1 ", type, " -- ", ngForm7.form.valid, " -- ", this.authorizationStatus)
@@ -2418,13 +2440,14 @@ export class InspectionBodiesFormComponent implements OnInit {
 
       //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
     }else if(type != undefined && type == true && this.authorizationStatus == true){
-      ////console.log(">>> Enter....2 ", type, " -- ", ngForm7.form.valid, " -- ", this.authorizationStatus)
+      console.log(">>> Enter....2 ", type, " -- ", ngForm7.form.valid, " -- ", this.inspectionBodyForm)
       this.inspectionBodyForm.step7.is_draft = true;
       this.inspectionBodyForm.saved_step     = 7; 
       // this.toastr.success('Application Successfully Submitted', '');
       //     setTimeout(()=> {
       //       this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
       //     }, 2000)
+      // console.log(this.inspectionBodyForm);
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
       .subscribe(
       res => {
@@ -2648,7 +2671,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       //return;
       //this.inspectionBodyForm.step1['trade_license'] = this.step1DataBodyFormFile;
       this.inspectionBodyForm.step1.is_draft = false;
-      ////console.log(">>> First Step Data: ", this.inspectionBodyForm);
+      console.log(">>> First Step Data: ", this.inspectionBodyForm);
       //return;
       //this.step1DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
           // this.toastr.success('Application Successfully Submitted', '');

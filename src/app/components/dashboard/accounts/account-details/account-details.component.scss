@@ -25,7 +25,11 @@
   .accounts_inner_tab .main_acc_tab .main_tab_head.main_hd { border-right: 1px solid #B9B9B9; }
   .accounts_inner_tab .main_acc_tab th { background: #f7f4f2 ; color: #B19782; border: 1px solid #B9B9B9; text-align: center; padding: 5px; font-size: 16px; }
   .accounts { margin: 0 -15px; overflow: auto; }
+  .appln_main.accounts { margin: 0;}
   .accounts_inner_tab .fnt-clr { color: #B14A56; }
 
 .acc_state { display: flex; justify-content: space-between; padding: 10px 0; }
 .acc_state .state_hdr h4 { color: #5E5E5E; font-size: 20px; font-family: 'Dubai Medium'; margin: 0; }
+
+.train_det_bttn { display: flex; justify-content: flex-end; align-items: center; height: 100% }
+.train_det_bttn .training_btn { background: #B54150; border: 0; color: #fff; font-size: 14px; font-family: 'Dubai Bold'; padding: 5px 25px; border-radius: 5px; }

@@ -43,6 +43,8 @@ export class HealthCareFormComponent implements OnInit {
   public countryList:Array<any>=[];
   public labTypeList:Array<any>=[];
 
+  isPrelimSubmitted = false;
+
 
   public orgMembToggle: boolean = false;
   public is_bod: boolean = false;
@@ -147,6 +149,10 @@ export class HealthCareFormComponent implements OnInit {
   step10DataBodyFormFile:any = new FormData();
   userEmail:any;
   userType:any;
+
+  termsGeneral: any;
+  termsILA: any;
+
   isCompleteness:any;
   profileComplete:any;
   today = new Date();
@@ -242,7 +248,7 @@ export class HealthCareFormComponent implements OnInit {
           }
           let scopeName: string = '';
             let scopeTitle: string ='';
-            let getData = {"title": "None", scope_family:0};//this.criteriaMaster.find(rec => rec.scope_family == value);
+            let getData = {"title": " ", scope_family:0};//this.criteriaMaster.find(rec => rec.scope_family == value);
             ////console.log(">>> Fined Scheme: ", getData);
             if(getData){
               scopeName   = getData.title;
@@ -372,9 +378,9 @@ export class HealthCareFormComponent implements OnInit {
               scopeTitle  = getData.title.toString().toLowerCase().split(" ").join('_');
 
               //check already existing scheme...
-              for(var m in this.dynamicScopeModel){
-                  //console.log("mkey: ", m, " -- ", scopeTitle);
-                  if(m === scopeTitle){
+              for(var m in this.fullScope){
+                  console.log("mkey: ", m, " -- ", scopeTitle);
+                  if(this.fullScope[m].title === scopeTitle && m != secInd){
                     this.fullScope.splice(secInd, 1);
                     this.toastr.error("Scheme should be unique, Please check.","Validation")
                     return;
@@ -639,11 +645,29 @@ export class HealthCareFormComponent implements OnInit {
       this._customModal.closeDialog();
   }
   getSchme(sid: number){
-    let getSchemeData: any = this.criteriaMaster.find(item => item.scope_family == sid);
-    ////console.log("data: ", getSchemeData);
+    console.log(">>> get cheme: ", sid, " :: ", this.criteriaMaster);
+    if(sid == 0){
+      console.log("Null found....");
+      return 'Accreditation Scope for ' + 'Sample Collection';
+    }else{
+      console.log(">>> Else : ", this.schemes); 
+      let getSchemeData: any = this.criteriaMaster.find(item => item.scope_family == sid);
+    console.log("data: ", getSchemeData);
     if(getSchemeData){
       return 'Accreditation Scope for ' + getSchemeData.title;
     }
+    }
+    // let getSchemeData: any = this.criteriaMaster.find(item => item.scope_family == sid);
+    // console.log("data: ", getSchemeData);
+    // if(getSchemeData){
+    //   return 'Accreditation Scope for ' + getSchemeData.title;
+    // }
+    /*
+    let scdata: any = this.schemes.find(item => item.title == thevalue);
+    console.log(">>> get data: ", scdata);
+    this.step1Data.scheme = scdata.scope_accridiation.id;
+
+    */
   }
   deleteScopeData(schemId: any, deleteIndex: number){
       //console.log("deleting...", schemId, " -- ", deleteIndex);
@@ -750,6 +774,25 @@ scrollForm(data?:any){
    ////console.log(">>>>Get MapBox Value: ", getVal);
    this.Service.mapboxToken = getVal;
   }
+
+  loadTermsConditions(){
+    let post: any = {};
+    post['service_page_id'] = 1; // Medical / healthcare
+    this.Service.post(this.Service.apiServerUrl+"/" + 'terms-and-conditions/', post)
+      .subscribe(
+        res => {
+          console.log(res,'Terms data');
+          let getData: any = res;
+          if(getData){
+            this.termsGeneral = getData.data[0];
+            this.termsILA     = getData.data[1];
+
+            //console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
+          }
+          
+        });
+  }
+
  ngOnInit() { 
    //////console.log(this.Service.dutyTime());
   //  this.titleService.setTitle('EIAC - Healthcare Laboratories');
@@ -766,6 +809,8 @@ scrollForm(data?:any){
   this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,
     undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,
     undertaking_confirm6:false,undertaking_confirm7:false};
+
+    this.loadTermsConditions();
    ////console.log( this.addMinutesToTime);
   this.loadSchemeData();
   //  this.loadFormDynamicTable();
@@ -779,7 +824,7 @@ scrollForm(data?:any){
 
    var d = new Date();
     var yr = d.getFullYear();
-    for(var k=2010; k<2030; k++){
+    for(var k=2010; k<=2030; k++){
       this.recommendYearValues.push({title: k.toString(), value: k});
     }
     this.step7Data.recommend_year = yr;
@@ -1542,7 +1587,7 @@ loadScopeFamily(appId: number){
             this.scopeFamilyNull = false;
           }else{
             this.scopeFamilyNull = true;
-            let tempObj: any = {"title": "None", scope_family:0};
+            let tempObj: any = {"title": " ", scope_family:0};
             this.criteriaMaster = [];
             this.criteriaMaster.push(tempObj);
             this.schemeRows = [];
@@ -2420,9 +2465,10 @@ onSubmitStep5(ngForm: any, type?:any) {
     ////console.log(">>>Form Submit: ", ngForm, " -- ",ngForm.form, " -- ", this.schemeRows); 
    
    //return;
+   //&& this.schemeRows.length == 1 
+   //&& this.schemeRows[0].id === undefined
     //ngForm.form.valid &&
-    if(!ngForm.form.valid && type == undefined && this.schemeRows.length == 1 
-        && this.schemeRows[0].id === undefined && this.editScopeData != undefined && this.editScopeData != null) {
+    if(!ngForm.form.valid && type == undefined  && this.editScopeData != undefined && this.editScopeData != null) {
       //console.log(">>>Bypass saving...");
       //console.log(">>>Enter....2")
       this.saveScope();
@@ -2507,6 +2553,8 @@ onSubmitStep6(ngForm6: any){
     this.step6Data.is_draft = false;
     this.healthCareForm.step6 = this.step6Data;
 
+    this.isPrelimSubmitted = true;
+
     //console.log(this.healthCareForm);
     // this.step5DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
     this.loader = false;
@@ -2515,6 +2563,7 @@ onSubmitStep6(ngForm6: any){
       res => {
         // //console.log(res,'res')
         this.loader = true;
+        this.isPrelimSubmitted = false;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
           this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
@@ -2608,7 +2657,7 @@ if(ngForm7.form.valid){
   this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
   this.healthCareForm.saved_step = '7';
   this.step7Data.authorizationList = this.authorizationList;
-  this.step7Data.recommend = this.recommend;
+  // this.step7Data.recommend = this.recommend;
   this.step7Data.is_draft = false;
   this.step7Data.application_date = new Date();
 

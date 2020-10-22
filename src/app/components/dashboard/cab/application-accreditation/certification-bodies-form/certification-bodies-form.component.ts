@@ -36,6 +36,7 @@ export class CertificationBodiesFormComponent implements OnInit {
   public checkSecurity:boolean = false;
   public checkCaptchaValidation:boolean = false;
   public loader:boolean=true;
+  isPrelimSubmitted: boolean = false;
   public criteriaDetails: any = {
     table_data : [],
     contact_person:'',
@@ -119,6 +120,10 @@ export class CertificationBodiesFormComponent implements OnInit {
   urlVal:any;
   accredAgreemFile:any;
   checklistDocFile:any;
+
+  termsGeneral: any;
+  termsIAF: any;
+
   pathPDF: any;
   closeResult: string;
   modalOptions:NgbModalOptions;
@@ -206,16 +211,34 @@ export class CertificationBodiesFormComponent implements OnInit {
     // //console.log(">>>>Get MapBox Value: ", getVal);
     // this.Service.mapboxToken = getVal;
  }
+
+ loadTermsConditions(){
+  let post: any = {};
+  post['service_page_id'] = 4; // CertificationsBodies
+  this.Service.post(this.Service.apiServerUrl+"/" + 'terms-and-conditions/', post)
+    .subscribe(
+      res => {
+        console.log(res,'Terms data');
+        let getData: any = res;
+        if(getData){
+          this.termsGeneral = getData.data[0];
+          this.termsIAF     = getData.data[1];
+
+          //console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
+        }
+        
+      });
+}
 ngOnInit() {
 
   //console.log(">>step change....");
   let saveStep = 5-1;
   //open step
   
-
+  this.loadTermsConditions();
   var d = new Date();
     var yr = d.getFullYear();
-    for(var k=2010; k<2030; k++){
+    for(var k=2010; k<=2030; k++){
       this.recommendYearValues.push({title: k.toString(), value: k});
     }
     this.step5Data.recommend_year = yr;
@@ -970,7 +993,7 @@ loadAppInfo(){
         this.step1Data.date_of_issue = new Date(data.date_of_issue);
         this.step1Data.fax_no = data.applicant_fax_no;
         this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
-        this.step1Data.is_hold_other_accreditation = "1";
+        this.step1Data.is_hold_other_accreditation = "";
         this.step1Data.is_main_activity = "";
         this.step1Data.is_main_activity_note = "";
         this.step1Data.mailing_address = data.applicant_address;
@@ -2196,6 +2219,8 @@ onSubmitStep4(ngForm4: any){
     this.step4Data.is_draft = false;
     this.certificationBodiesForm.step4 = this.step4Data;
 
+    this.isPrelimSubmitted = true;
+
     //console.log(this.certificationBodiesForm);
     // this.step5DataBodyFormFile.append('data',JSON.stringify(this.certificationBodiesForm));
     this.loader = false;
@@ -2204,6 +2229,7 @@ onSubmitStep4(ngForm4: any){
       res => {
         // //console.log(res,'res')
         this.loader = true;
+        this.isPrelimSubmitted = false;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
           this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);

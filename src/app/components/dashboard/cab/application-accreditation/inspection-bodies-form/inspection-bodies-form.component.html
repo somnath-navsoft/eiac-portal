@@ -594,12 +594,12 @@
                                         </div>
 
                                         <div class="row mb-4 mt-4">
-                                            <div class="col-md-6">
+                                            <div class="col-md-3">
                                                 <div class="form-sub">
                                                         <span>Does CAB currently holds any accreditation(s):<span class="required_input">*</span></span>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-3">
                                                 <mat-radio-group name="is_hold_other_accreditation_select" 
                                                 [(ngModel)]="step1Data.is_hold_other_accreditation_select" #selectAccredHold="ngModel" required>
                                                     <div class="row">
@@ -1341,7 +1341,8 @@
                                                     </li>
                                                     
                                                     <li class="terms-condition"  (scroll)="scrollHandler($event)" #mydiv style="height:500px;overflow:auto">
-                                                        <div class="tnc">
+                                                        <div class="tnc" [innerHTML]="(termsGeneral != undefined && termsGeneral.content != undefined) ? termsGeneral.content : ''"></div>
+                                                        <!-- <div class="tnc">
                                                             <h3>Terms & Conditions</h3>
                                                             <ol>
                                                                 <li class="tnc-sub"><h5>FIRST PARTY OBLIGATION</h5>
@@ -1460,7 +1461,7 @@
                                                                     </ul>
                                                                 </li>
                                                             </ol>
-                                                        </div>
+                                                        </div> -->
                                                     </li>
                                                 
                                                     <li>
@@ -1498,6 +1499,9 @@
                                                 <mat-checkbox name="undertaking_confirmTop3" (change)="authorizeCheckCount($event)"
                                                 [(ngModel)]="authorizationList.undertaking_confirmTop3" required>Do you require ILA MRA Mark Laboratories</mat-checkbox>
                                             </div>
+                                            <div class="terms-condition" style="height:500px;overflow:auto">
+                                                <div class="tnc" [innerHTML]="(termsILA != undefined && termsILA.content != undefined) ? termsILA.content : ''"></div>
+                                            </div>                                            
 
                                             <div class="authData">I confirm that the below documents are available and will be furnished once requested by EIAC:</div>
                                             <div class="auth-details">
@@ -1544,21 +1548,21 @@
                                             </div>
                                             <div class="recommend my-3">
                                                 <div class="recommend-main">
-                                                <div class="recommend-quarter">
-                                                    <span class="confirm">I recommend the visit to be conducted in the</span>
-                                                    <mat-radio-group name="recommended" #recommendVisit="ngModel" [(ngModel)]="step7Data.recommend_visit" required>
-                                                        <mat-radio-button name="1st" value="first">1st</mat-radio-button>
-                                                        <mat-radio-button name="2nd" value="second">2nd</mat-radio-button>
-                                                        <mat-radio-button name="3rd" value="third">3rd</mat-radio-button>
-                                                        <mat-radio-button name="4th" value="fourth">4th quarter of the year</mat-radio-button>
-                                                    </mat-radio-group>
+                                                    <div class="recommend-quarter">
+                                                        <span class="confirm">I recommend the visit to be conducted in the</span>
+                                                        <mat-radio-group name="recommended" #recommendVisit="ngModel" [(ngModel)]="step7Data.recommend_visit" required>
+                                                            <mat-radio-button name="1st" value="first">1st</mat-radio-button>
+                                                            <mat-radio-button name="2nd" value="second">2nd</mat-radio-button>
+                                                            <mat-radio-button name="3rd" value="third">3rd</mat-radio-button>
+                                                            <mat-radio-button name="4th" value="fourth">4th quarter of the year</mat-radio-button>
+                                                        </mat-radio-group>
+                                                    </div>
+                                                    <div class="recommend-year">
+                                                        <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step7Data.recommend_year" required>
+                                                            <mat-option [value]="item.value" *ngFor="let item of recommendYearValues; let k=index;">{{item.title}}</mat-option>
+                                                        </mat-select>
+                                                    </div>
                                                 </div>
-                                                <div class="recommend-year">
-                                                    <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step7Data.recommend_year" required>
-                                                        <mat-option [value]="item.value" *ngFor="let item of recommendYearValues; let k=index;">{{item.title}}</mat-option>
-                                                    </mat-select>
-                                                </div>
-                                            </div>
                                                 <div class="col-md-6 p-0" [ngStyle]="{'margin-top':'5px'}">
                                                     <p class="error" *ngIf="recommendVisit.errors?.required && isApplicationSubmitted == true">Please select anyone option</p>
                                                 </div>                                                
@@ -1678,17 +1682,17 @@
                       <ng-template #checklistView let-modal>
                         <app-loader *ngIf="loaderPdf"></app-loader>
                         <div class="modal-header">
-                          <h4 class="modal-title" id="modal-basic-title">CHECKLIST </h4>
+                          <h4 class="modal-title" id="modal-basic-title">CHECKLIST
+                            <a [href]="pathPDF" target="_blank" [ngStyle]="{'color': '#000'}">
+                                <span class="icon-download-diff"></span>
+                            </a>       
+                        </h4>
                           <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
                             <span aria-hidden="true">&times;</span>
                           </button>
                           
                         </div>
                         <div class="modal-body">
-                            <a [href]="pathPDF" target="_blank" [ngStyle]="{'color': '#000'}">
-                            <span class="icon-download"></span>
-                            </a> 
-                            
                             <p *ngIf="errorLoader">Error Loading PDF</p>
                             <pdf-viewer [src]="(pathPDF)" [show-all]="true" [stick-to-page]="false"
                                 [zoom]="1.0" [original-size]="false" [autoresize]="true"
