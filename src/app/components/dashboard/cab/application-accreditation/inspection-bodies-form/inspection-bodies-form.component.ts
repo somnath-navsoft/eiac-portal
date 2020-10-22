@@ -888,7 +888,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       undertaking_confirm6:false,
       undertaking_confirm7:false,authorization_confirm1:false,authorization_confirm2:false};
 
-    this.recommend = {first:false,second:false,third:false,fourth:false}
+    // this.recommend = {first:false,second:false,third:false,fourth:false}
 
     this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail)
     .subscribe(
@@ -2390,7 +2390,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       //this.inspectionBodyForm.email = this.userEmail;
       //this.inspectionBodyForm.userType = this.userType;
       this.step7Data.authorizationList = this.authorizationList;
-      this.step7Data.recommend = this.recommend;
+      // this.step7Data.recommend = this.recommend;
 
       ////////console.log("@@@Step7 Data: ", this.step7Data);
       this.inspectionBodyForm.step7 = this.step7Data;
@@ -2406,8 +2406,6 @@ export class InspectionBodiesFormComponent implements OnInit {
       // this.step7Data.organization_name = (this.step7Data.digital_signature != '' && this.step7Data.digital_signature != 'undefined') ? this.step7Data.digital_signature : '';
 
       this.inspectionBodyForm.step7.application_date = new Date().toISOString().slice(0, 10);//'2020-09-14';
-
-      console.log(">>>Step7 submit Data: ", this.inspectionBodyForm, " -- ", this.inspectionBodyForm.step7);
 
      // return;
      ////console.log(">>> Enter....1 ", type, " -- ", ngForm7.form.valid, " -- ", this.authorizationStatus)
@@ -2449,6 +2447,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       //     setTimeout(()=> {
       //       this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
       //     }, 2000)
+      // console.log(this.inspectionBodyForm);
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
       .subscribe(
       res => {
