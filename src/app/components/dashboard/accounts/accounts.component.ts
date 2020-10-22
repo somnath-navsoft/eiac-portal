@@ -29,6 +29,7 @@ export class AccountsComponent implements OnInit {
   accountsData:any[] = [];
   // accountList:any = {};
   userType:any;
+  voucherSentData: any = {};
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent,public router: Router) { }
