@@ -1350,8 +1350,8 @@
                                                 <!-- (click)='proficiency_testing(1)' -->
                                                 <div class="col-md-2">
                                                     <div class="request_frm">
-                                                        <mat-radio-group name="perlim_visit_val" 
-                                                        [(ngModel)]="step4Data.prelim_visit_val" #selectPrelim="ngModel" required>
+                                                        <mat-radio-group name="is_prelim_visit" 
+                                                        [(ngModel)]="step4Data.is_prelim_visit" #selectPrelim="ngModel" required>
                                                             <div class="rad-space">
                                                                 <mat-radio-button value="1">Yes </mat-radio-button>
                                                                 <mat-radio-button value="0">No </mat-radio-button>
@@ -1392,7 +1392,7 @@
                                                         <mat-label>Select Time</mat-label>
                                                         <mat-select placeholder="Select" name="prelim_visit_time" 
                                                         (selectionChange)="getDutyTimeForm1Index($event)" 
-                                                        [(ngModel)]="step4Data.prelim_visit_time">
+                                                        [(ngModel)]="step4Data.prelim_visit_time" required>
                                                             <mat-option *ngFor="let item of addMinutesToTime; let i = index;" 
                                                             [value]="item.key">{{item.val}}</mat-option>
                                                         </mat-select>
