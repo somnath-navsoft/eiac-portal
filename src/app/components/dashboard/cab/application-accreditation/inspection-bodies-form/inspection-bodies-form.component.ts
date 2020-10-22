@@ -2442,7 +2442,7 @@ export class InspectionBodiesFormComponent implements OnInit {
 
       //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
     }else if(type != undefined && type == true && this.authorizationStatus == true){
-      ////console.log(">>> Enter....2 ", type, " -- ", ngForm7.form.valid, " -- ", this.authorizationStatus)
+      console.log(">>> Enter....2 ", type, " -- ", ngForm7.form.valid, " -- ", this.inspectionBodyForm)
       this.inspectionBodyForm.step7.is_draft = true;
       this.inspectionBodyForm.saved_step     = 7; 
       // this.toastr.success('Application Successfully Submitted', '');
@@ -2672,7 +2672,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       //return;
       //this.inspectionBodyForm.step1['trade_license'] = this.step1DataBodyFormFile;
       this.inspectionBodyForm.step1.is_draft = false;
-      ////console.log(">>> First Step Data: ", this.inspectionBodyForm);
+      console.log(">>> First Step Data: ", this.inspectionBodyForm);
       //return;
       //this.step1DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
           // this.toastr.success('Application Successfully Submitted', '');

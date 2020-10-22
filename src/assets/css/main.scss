@@ -764,6 +764,8 @@ a:hover { text-decoration: none; }
 .matupload .fileupload { position: absolute; right: 0px; top: 0px; bottom: 0px; width: 30px; display: flex; align-items: center; }
 .matupload .fileupload input[type=file] { right: 25px; }
 .attach-data { position: absolute; right:10px; color: #3F3F3F; cursor: pointer; }
+.fileupload input:focus { outline: none; }
+.fileupload input { width: 100% !important; }
 .view_file.matupload .fileupload { right: 30px; }
 .filter-search { display: flex; justify-content:  space-between; float: right; }
 .search-fil { margin-right: 20px; }

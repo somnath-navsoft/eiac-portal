@@ -121,6 +121,7 @@ export class CertificationBodiesFormComponent implements OnInit {
   checklistDocFile:any;
 
   termsGeneral: any;
+  termsIAF: any;
 
   pathPDF: any;
   closeResult: string;
@@ -220,6 +221,7 @@ export class CertificationBodiesFormComponent implements OnInit {
         let getData: any = res;
         if(getData){
           this.termsGeneral = getData.data[0];
+          this.termsIAF     = getData.data[1];
 
           //console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
         }
@@ -990,7 +992,7 @@ loadAppInfo(){
         this.step1Data.date_of_issue = new Date(data.date_of_issue);
         this.step1Data.fax_no = data.applicant_fax_no;
         this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
-        this.step1Data.is_hold_other_accreditation = "1";
+        this.step1Data.is_hold_other_accreditation = "";
         this.step1Data.is_main_activity = "";
         this.step1Data.is_main_activity_note = "";
         this.step1Data.mailing_address = data.applicant_address;

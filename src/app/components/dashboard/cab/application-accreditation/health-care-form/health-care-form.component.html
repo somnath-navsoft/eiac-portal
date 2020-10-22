@@ -652,7 +652,7 @@
                                                     <span>Does the Organization hold any other Accreditation's?<span class="required_input">*</span></span>
                                             </div>
                                         </div>
-                                        <div class="col-md-9">
+                                        <div class="col-md-3">
                                             <mat-radio-group name="is_hold_other_accreditation_select" [(ngModel)]="step1Data.is_hold_other_accreditation_select" 
                                             #selectAccredHold="ngModel" required>
                                                 <div class="row">
@@ -669,7 +669,7 @@
                                             
                                                 </div>
                                             </mat-radio-group>
-                                            <div class="col-md-6" [ngStyle]="{'margin-top':'5px'}">
+                                            <div class="col-md-8" [ngStyle]="{'margin-top':'5px'}"> 
                                                 <p class="error" *ngIf="isApplicationSubmitted == true && selectAccredHold.errors?.required">Please select anyone option</p>
                                             </div>
                                         </div>
