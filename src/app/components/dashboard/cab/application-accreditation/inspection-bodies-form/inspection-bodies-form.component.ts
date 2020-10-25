@@ -277,17 +277,20 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.toastr.success('Payment Success, Thank you.','Paypal>>',{timeOut:2000});
 
       //proforma save
-      let postData: any = {};
-      postData['application_id'] = this.formApplicationId;
-      this._trainerService.proformaAccrSave(postData)
-      .subscribe(
-        result => {
-            console.log(">>> Save resultts: ", result);
-        });
+      // let postData: any = {};
+      // postData.step8 = {};
+      // postData.step8['application_id']  = this.formApplicationId;
+      // postData.step8['is_draft']        = false;
+      // postData.saved_step = 8;
+      // this._trainerService.proformaAccrSave(postData)
+      // .subscribe(
+      //   result => {
+      //       console.log(">>> Save resultts: ", result);
+      //   });
 
 
       setTimeout(()=> {
-       // this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+       this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
       }, 1000)      
    }
    createPaymentButton(itemData: any, formObj?:any, compObj?:any){
