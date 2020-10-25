@@ -645,14 +645,14 @@ export class HealthCareFormComponent implements OnInit {
       this._customModal.closeDialog();
   }
   getSchme(sid: number){
-    console.log(">>> get cheme: ", sid, " :: ", this.criteriaMaster);
+    //console.log(">>> get cheme: ", sid, " :: ", this.criteriaMaster);
     if(sid == 0){
-      console.log("Null found....");
+      //console.log("Null found....");
       return 'Accreditation Scope for ' + 'Sample Collection';
     }else{
-      console.log(">>> Else : ", this.schemes); 
+      //console.log(">>> Else : ", this.schemes); 
       let getSchemeData: any = this.criteriaMaster.find(item => item.scope_family == sid);
-    console.log("data: ", getSchemeData);
+    //console.log("data: ", getSchemeData);
     if(getSchemeData){
       return 'Accreditation Scope for ' + getSchemeData.title;
     }
@@ -1534,14 +1534,15 @@ loadData(){
 
               //Step 9
               if(res['data'].paymentDetails != null && typeof res['data'].paymentDetails === 'object'){
-                // //console.log(">>>payment details...show");
+                console.log(">>>payment details...show ", res['data'].paymentDetails);
                   this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
                   this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
                   this.voucherSentData.amount           = res['data'].paymentDetails.amount;
-                  this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
-                  this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
-                  this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
-                  this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+
+                  this.voucherSentData.transaction_no   = (res['data'].paymentDetails.transaction_no != 'null') ? res['data'].paymentDetails.transaction_no : '';
+                  this.voucherSentData.payment_method   = (res['data'].paymentDetails.payment_method != 'null') ? res['data'].paymentDetails.payment_method : '';
+                  this.voucherSentData.payment_made_by  = (res['data'].paymentDetails.payment_made_by != 'null') ? res['data'].paymentDetails.payment_made_by : '';
+                  this.voucherSentData.mobile_no        = (res['data'].paymentDetails.mobile_no != 'null') ? res['data'].paymentDetails.mobile_no : '';
 
                   this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
                   this.paymentReceiptValidation = true;
@@ -2012,6 +2013,7 @@ savedraftStep(stepCount) {
     this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
     this.voucherFile.append('voucher_date',dtFormat);
     this.voucherFile.append('accreditation',this.formApplicationId);
+    this.voucherFile.append('is_draft', true);
     // this.voucherFile.append('application_id',this.formApplicationId);
         
     this.loader = false;
@@ -2750,6 +2752,7 @@ this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by'
 this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
 this.voucherFile.append('voucher_date',dtFormat);
 this.voucherFile.append('accreditation',this.formApplicationId);
+this.voucherFile.append('is_draft', false);
 // this.voucherFile.append('application_id',this.formApplicationId);
     
 this.loader = false;

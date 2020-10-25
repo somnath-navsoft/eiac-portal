@@ -29,6 +29,7 @@ export class Constants{
 		trainerCourseTypeDetails: 'trainer/training-course-type/',
 
 		paymentDetailsSave: 'webservice/payment-details-save/',
+		proformaAccrSave: 'webservice/proforma-step-accr/',
 		accountPaymentSave: 'webservice/account-payment-save/',
 
 		savePublicTrainingForm:'trainer/training-application-form/',
