@@ -335,7 +335,7 @@ ngOnInit() {
     .subscribe( 
       res => {
         let record: any = res['data'];
-        //console.log("@Load scope....", record);
+        console.log("@Load scope....", record);
         if(record){
           this.subTypeMaster = record.serviceList;
           //console.log("@Load Type....", this.subTypeMaster);
