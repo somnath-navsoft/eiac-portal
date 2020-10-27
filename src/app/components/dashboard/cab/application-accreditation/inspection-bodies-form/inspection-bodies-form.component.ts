@@ -277,21 +277,23 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.toastr.success('Payment Success, Thank you.','Paypal>>',{timeOut:2000});
 
       //proforma save
-      // let postData: any = {};
-      // postData.step8 = {};
-      // postData.step8['application_id']  = this.formApplicationId;
-      // postData.step8['is_draft']        = false;
-      // postData.saved_step = 8;
-      // this._trainerService.proformaAccrSave(postData)
-      // .subscribe(
-      //   result => {
-      //       console.log(">>> Save resultts: ", result);
-      //   });
+      let postData: any = new FormData();
+      postData.append('accreditation', this.formApplicationId);
+      this._trainerService.proformaAccrSave(postData)
+      .subscribe(
+        result => {
+            let data: any = result;
+            if(data.status){
+              this.paymentStepComp = true;
+              this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+            }
+            console.log(">>> Save resultts: ", result);
+        });
 
 
-      setTimeout(()=> {
-       this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
-      }, 1000)      
+      // setTimeout(()=> {
+      //  //this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+      // }, 1000)      
    }
    createPaymentButton(itemData: any, formObj?:any, compObj?:any){
     ////console.log("creating....buttons...", " -- ",this.transactionsItem, " --- ", this.transactions);
@@ -1299,10 +1301,12 @@ export class InspectionBodiesFormComponent implements OnInit {
           saveStep = parseInt(getData.data.saved_step) - 1;
         }else{
           if(parseInt(getData.data.saved_step) == 9){
-
             saveStep = parseInt(getData.data.saved_step) - 1;
+          }else if(parseInt(getData.data.saved_step) == 8){
+            saveStep = parseInt(getData.data.saved_step);
+            this.paymentStepComp = true;
           }else{
-          saveStep = parseInt(getData.data.saved_step);
+            saveStep = parseInt(getData.data.saved_step);
           }
         }
 
@@ -1676,6 +1680,7 @@ export class InspectionBodiesFormComponent implements OnInit {
           this.authorizationList.undertaking_confirm7 = true;
           
           this.authorizationStatus = true;
+          this.readReviewChecklist= true;
           let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
           //////console.log(">>>recommm", visitRecomm);
           this.step7Data.recommend_visit = visitRecomm;
@@ -1695,10 +1700,10 @@ export class InspectionBodiesFormComponent implements OnInit {
             this.voucherSentData.mobile_no        =  (getData.data.paymentDetails.mobile_no != 'null') ? getData.data.paymentDetails.mobile_no : '';
 
             //
-            if(getData.data.paymentDetails.transaction_no != null && getData.data.paymentDetails.payment_method != null &&
-              getData.data.paymentDetails.payment_made_by !+ null && getData.data.paymentDetails.mobile_no != null && getData.data.paymentDetails.payment_receipt != ''){
-                  this.paymentStepComp = true;
-            }
+            // if(getData.data.paymentDetails.transaction_no != null && getData.data.paymentDetails.payment_method != null &&
+            //   getData.data.paymentDetails.payment_made_by !+ null && getData.data.paymentDetails.mobile_no != null && getData.data.paymentDetails.payment_receipt != ''){
+            //       this.paymentStepComp = true;
+            // }
         }
         
       }
