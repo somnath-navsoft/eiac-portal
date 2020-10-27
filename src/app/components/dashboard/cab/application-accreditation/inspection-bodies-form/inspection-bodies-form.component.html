@@ -468,12 +468,8 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
-                                                    <!-- <mat-radio-button></mat-radio-button> -->
-                                                    <!-- {{dutyTime1}} -->
                                                 <mat-form-field class="frm-data">
-                                                    <!-- @{{step1Data.duty_from1}} -->
                                                     <mat-label>From</mat-label>
-                                                    <!-- <input matInput  type='time' placeholder="" name="duty_from1" [(ngModel)]="inspectionBodyForm.duty_from1"> -->
                                                     
                                                     <mat-select placeholder="Select" name="duty_from1" [required]="!dutyTime1"
                                                     (selectionChange)="getDutyTimeForm1Index($event)" [(ngModel)]="step1Data.duty_from1">
@@ -481,60 +477,44 @@
                                                     </mat-select>
 
                                                 </mat-form-field>
-                                                <mat-form-field class="frm-data">
-                                                    
-                                                    <!-- inspectionBodyForm.duty_from1 >= item.key -->
+                                                <mat-form-field class="frm-data">                                                    
                                                     <mat-label>To</mat-label>
-                                                    <!-- <input matInput type='time' placeholder="" name="duty_to1"  [(ngModel)]="inspectionBodyForm.duty_to1"> -->
-                                                    <mat-select  [required]="!dutyTime1" (selectionChange)="dayTimeChange($event,1)" placeholder="Select" name="duty_to1" [(ngModel)]="step1Data.duty_to1">
+                                                    <mat-select  [required]="!dutyTime1" (selectionChange)="dayTimeChange($event,1)" 
+                                                    placeholder="Select" name="duty_to1" [(ngModel)]="step1Data.duty_to1">
                                                         <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                     </mat-select>
                                                 </mat-form-field>
-                                                <!-- <p class="error" *ngIf="dutyTime1 == false">This is required</p> -->
-                                                <!-- <p class="error" *ngIf="dutyTime1 == false">Please enter From & To duty time</p> -->
                                             </div>
                                             <div class="col-md-3">
-                                                    <!-- <mat-radio-button></mat-radio-button> -->
                                                 <mat-form-field class="frm-data">
                                                     <mat-label>From</mat-label>
-                                                    <!-- @{{step1Data.duty_from2}} -->
-                                                    <!-- <input matInput type='time' placeholder="" name="duty_from2"  [(ngModel)]="inspectionBodyForm.duty_from2"> -->
-                                                    <mat-select  [required]="!dutyTime2" placeholder="Select" name="duty_from2" [(ngModel)]="step1Data.duty_from2" [disabled]="shift2_from">
+                                                    <mat-select  [required]="!dutyTime2" placeholder="Select" name="duty_from2" 
+                                                    [(ngModel)]="step1Data.duty_from2" [disabled]="shift2_from">
                                                         <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                     </mat-select>
                                                 </mat-form-field>
                                                 <mat-form-field class="frm-data">
                                                     <mat-label>To</mat-label>
-                                                    <!-- @{{step1Data.duty_to2}} -->
-                                                    <!-- <input matInput type='time' placeholder="" name="duty_to2"  [(ngModel)]="inspectionBodyForm.duty_to2"> -->
                                                     <mat-select placeholder="Select"  [required]="!dutyTime2"  [disabled]="shift2_to" (selectionChange)="dayTimeChange($event,2)" name="duty_to2" [(ngModel)]="step1Data.duty_to2">
                                                         <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                     </mat-select>
                                                 </mat-form-field>
-                                                <!-- <p class="error" *ngIf="!dutyTime2">Please enter from and to duty time</p> -->
-                                                <!-- <p class="error" *ngIf="dutyTime2 == false">Please nter From & To duty time</p> -->
                                             </div>
                                             <div class="col-md-3">
-                                                    <!-- <mat-radio-button></mat-radio-button> -->
                                                 <mat-form-field class="frm-data">
                                                     <mat-label>From</mat-label>
-                                                    <!-- <input matInput type='time' placeholder="" name="duty_from3"  [(ngModel)]="inspectionBodyForm.duty_from3"> -->
                                                     <mat-select placeholder="Select"  [required]="!dutyTime3" [disabled]="shift3_from"  name="duty_from3" [(ngModel)]="step1Data.duty_from3">
                                                         <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                     </mat-select>
                                                 </mat-form-field>
                                                 <mat-form-field class="frm-data">
                                                     <mat-label>To</mat-label>
-                                                    <!-- <input matInput type='time' placeholder="" name="duty_to3"  [(ngModel)]="inspectionBodyForm.duty_to3"> -->
                                                     <mat-select placeholder="Select"  [required]="!dutyTime3" [disabled]="shift3_to" (selectionChange)="dayTimeChange($event,3)" name="duty_to3" [(ngModel)]="step1Data.duty_to3">
                                                         <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                     </mat-select>
                                                 </mat-form-field>
-                                                <!-- <p class="error" *ngIf="!dutyTime3">Please enter from and to duty time</p> -->
-                                                <!-- <p class="error" *ngIf="dutyTime3 == false">Please enter From & To duty time</p> -->
                                             </div>
-                                        </div>
-                                        
+                                        </div>                                        
                                     
                                         <div class="row mb-4 mt-4">
                                             <div class="col-md-3">
@@ -594,12 +574,12 @@
                                         </div>
 
                                         <div class="row mb-4 mt-4">
-                                            <div class="col-md-6">
+                                            <div class="col-md-3">
                                                 <div class="form-sub">
                                                         <span>Does CAB currently holds any accreditation(s):<span class="required_input">*</span></span>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-3">
                                                 <mat-radio-group name="is_hold_other_accreditation_select" 
                                                 [(ngModel)]="step1Data.is_hold_other_accreditation_select" #selectAccredHold="ngModel" required>
                                                     <div class="row">
@@ -621,12 +601,6 @@
                                             </div>
                                             
                                         </div>
-                                        <!-- <div class="row">
-                                            <div class="col-md-6">
-                                                <p class="error" *ngIf="isApplicationSubmitted == true && selectAccredHold.errors?.required">This is required</p>
-                                            </div>
-                                        </div> -->
-                                        <!-- id="is_hold_other_accreditations" -->
                                         <div class="row"  *ngIf="step1Data.is_hold_other_accreditation_select==1">
                                             <div class="col-md-12">
                                                 <div class="table-content-health m-0 mb-4">
@@ -645,7 +619,6 @@
                                                                 <td>
                                                                     <mat-form-field class="cab-data">
                                                                         <mat-label>Type Here</mat-label>
-                                                                        <!-- [required]="inspectionBodyForm.is_hold_other_accreditation !='true' ? false : true" -->
                                                                         <input  (keypress)="Service.inputFilter($event, Service.regExCont)" matInput placeholder="" name="scheme_name_{{i}}" [(ngModel)]="accreditationInfo[i].scheme_name" required>
                                                                     </mat-form-field>
                                                                 </td>
@@ -1626,7 +1599,7 @@
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Date</mat-label>
                                                         <input matInput [matDatepicker]="onbehalf_representative_date" 
-                                                        placeholder="Date" name="onbehalf_representative_date" 
+                                                        placeholder="Date" name="onbehalf_representative_date" readonly="true"
                                                         [(ngModel)]="step7Data.application_date" [value]="Service.returnCurrentDate()">
                                                     </mat-form-field>
                                                 </div>
@@ -1869,7 +1842,8 @@
                                 <span id="openAppDialog" (click)="openView(appComp)"></span>
                                 <ng-template #appComp let-modal>
                                     <div class="main_pop">
-                                        <div class="pop_close" (click)="closeChecklistDialog()">
+                                        <!--  (click)="closeDialog()" -->
+                                        <div class="pop_close">
                                             <span class="icon-close"></span>
                                         </div>
                                         <div class="pop_thanks">

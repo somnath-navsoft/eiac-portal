@@ -36,6 +36,7 @@ export class CertificationBodiesFormComponent implements OnInit {
   public checkSecurity:boolean = false;
   public checkCaptchaValidation:boolean = false;
   public loader:boolean=true;
+  isPrelimSubmitted: boolean = false;
   public criteriaDetails: any = {
     table_data : [],
     contact_person:'',
@@ -70,7 +71,7 @@ export class CertificationBodiesFormComponent implements OnInit {
   public minDate;
   searchCountryLists: any;
   allCityByCountry: any = [];
-  onbehalf_representative_date:boolean = true;
+  onbehalf_representative_date:boolean = false;
   getCountryLists:any;
 
   paymentStepComp: boolean = false;
@@ -121,6 +122,7 @@ export class CertificationBodiesFormComponent implements OnInit {
   checklistDocFile:any;
 
   termsGeneral: any;
+  termsIAF: any;
 
   pathPDF: any;
   closeResult: string;
@@ -220,6 +222,7 @@ export class CertificationBodiesFormComponent implements OnInit {
         let getData: any = res;
         if(getData){
           this.termsGeneral = getData.data[0];
+          this.termsIAF     = getData.data[1];
 
           //console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
         }
@@ -990,7 +993,7 @@ loadAppInfo(){
         this.step1Data.date_of_issue = new Date(data.date_of_issue);
         this.step1Data.fax_no = data.applicant_fax_no;
         this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
-        this.step1Data.is_hold_other_accreditation = "1";
+        this.step1Data.is_hold_other_accreditation = "";
         this.step1Data.is_main_activity = "";
         this.step1Data.is_main_activity_note = "";
         this.step1Data.mailing_address = data.applicant_address;
@@ -1025,7 +1028,7 @@ loadAppInfo(){
       this.Service.getwithoutData(url2)
       .subscribe(
         res => {
-          //console.log(res,'urlVal')
+          console.log(res,'urlVal')
           this.loader = true;
           let getData: any = res;
           let saveStep: number;
@@ -1045,18 +1048,21 @@ loadAppInfo(){
                     
               //check steps
               if(getData.data.is_draft){
+
                 saveStep = parseInt(getData.data.saved_step) - 1;
               }else{
                 if(parseInt(getData.data.saved_step) == 7){
+                  
                   saveStep = parseInt(getData.data.saved_step) - 1;
                 }else{
+                  
                 saveStep = parseInt(getData.data.saved_step);
                 }
               }
 
 
               if(res['data'].saved_step  != null){
-                let saveStep = res['data'].saved_step;
+                //let saveStep = res['data'].saved_step;
                 //open step
                 this.headerSteps.forEach((item, key) => {
                       ///////console.log(item, " --- ", key);
@@ -1297,10 +1303,11 @@ loadAppInfo(){
                   this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
                   this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
                   this.voucherSentData.amount           = res['data'].paymentDetails.amount;
-                  this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
-                  this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
-                  this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
-                  this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+
+                  this.voucherSentData.transaction_no   = (res['data'].paymentDetails.transaction_no != 'null') ? res['data'].paymentDetails.transaction_no : '';
+                  this.voucherSentData.payment_method   = (res['data'].paymentDetails.payment_method != 'null') ? res['data'].paymentDetails.payment_method : '';
+                  this.voucherSentData.payment_made_by  = (res['data'].paymentDetails.payment_made_by != 'null') ? res['data'].paymentDetails.payment_made_by : '';
+                  this.voucherSentData.mobile_no        = (res['data'].paymentDetails.mobile_no != 'null') ? res['data'].paymentDetails.mobile_no : '';
 
                   this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
                   this.paymentReceiptValidation = true;
@@ -1508,6 +1515,7 @@ savedraftStep(stepCount) {
     this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
     this.voucherFile.append('voucher_date',dtFormat);
     this.voucherFile.append('accreditation',this.formApplicationId);
+    this.voucherFile.append('is_draft', true);
     // this.voucherFile.append('application_id',this.formApplicationId);
         
     this.loader = false;
@@ -2216,6 +2224,8 @@ onSubmitStep4(ngForm4: any){
     this.step4Data.is_draft = false;
     this.certificationBodiesForm.step4 = this.step4Data;
 
+    this.isPrelimSubmitted = true;
+
     //console.log(this.certificationBodiesForm);
     // this.step5DataBodyFormFile.append('data',JSON.stringify(this.certificationBodiesForm));
     this.loader = false;
@@ -2224,6 +2234,7 @@ onSubmitStep4(ngForm4: any){
       res => {
         // //console.log(res,'res')
         this.loader = true;
+        this.isPrelimSubmitted = false;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
           this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
@@ -2406,6 +2417,7 @@ this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by'
 this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
 this.voucherFile.append('voucher_date',dtFormat);
 this.voucherFile.append('accreditation',this.formApplicationId);
+this.voucherFile.append('is_draft', false);
 // this.voucherFile.append('application_id',this.formApplicationId);
     
 this.loader = false;

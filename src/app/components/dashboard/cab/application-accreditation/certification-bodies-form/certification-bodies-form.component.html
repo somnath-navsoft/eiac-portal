@@ -88,7 +88,7 @@
                                         <div class="col-md-6 col-sm-6 align-self-end mt-3"> 
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Certification Body's Name</mat-label>
-                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Certification Body's Name" name="official_commercial_name" [(ngModel)]="step1Data.official_commercial_name"  required>
+                                                <input readonly="true" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Certification Body's Name" name="official_commercial_name" [(ngModel)]="step1Data.official_commercial_name"  required>
                                                 <mat-error></mat-error>      
                                             </mat-form-field>
                                         </div>
@@ -323,41 +323,7 @@
                                         </div>
                                     </div> -->
 
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="form-sub">
-                                                    <span>Is Testing/Calibration the main activity of the organization  : <span class="required_input">*</span></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <mat-radio-group name="is_main_activity" #selectInspecActivity="ngModel" [(ngModel)]="step1Data.is_main_activity" required>
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <label class="check-rdo">
-                                                                <mat-radio-button value=true>Yes </mat-radio-button>
-                                                        </label>
-                                                    </div>  
-                                                    <div class="col-md-4">
-                                                        <label class="check-rdo">
-                                                                <mat-radio-button value=false>No </mat-radio-button>
-                                                        </label>
-                                                    </div>  
-                                            
-                                                </div>
-                                            </mat-radio-group>
-                                            <div class="col-md-6 p-0" [ngStyle]="{'margin-top':'5px'}">
-                                                <p class="error" *ngIf="isApplicationSubmitted == true && selectInspecActivity.errors?.required">Please select anyone option</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>(If No, indicate what are other activities related to the organization)</mat-label>
-                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                matInput placeholder="" name="indication" 
-                                                [required]="isApplicationSubmitted == true && is_main_activity_note_entry == true && step1Data.is_main_activity == 'false'" [(ngModel)]="step1Data.is_main_activity_note">
-                                                </mat-form-field>
-                                        </div>
-                                    </div>
+                                    
 
                                     <div class="row tog-content">
                                         <div class="col-md-12 col-sm-12 p-0">
@@ -462,99 +428,136 @@
                                             </div>
                                         </div>
                                     </div> -->
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-12 p-0">
-                                <div class="form-subheader-data">
-                                    <h5>EXISTING ACCREDITATION OR CERTIFICATION GRANTED TO THE ORGANIZATION</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-sub">
-                                        <span>Does the Organization hold any other Accreditation's?<span class="required_input">*</span></span>
-                                </div>
-                            </div>
-                            <div class="col-md-9">
-                                <mat-radio-group name="is_hold_other_accreditation" [(ngModel)]="step1Data.is_hold_other_accreditation" 
-                                #selectAccredHold="ngModel" required>
                                     <div class="row">
-                                        <div class="col-md-4">
-                                            <label class="check-rdo">
-                                                <mat-radio-button value="1">Yes </mat-radio-button>
-                                            </label>
-                                        </div>  
-                                        <div class="col-md-4">
-                                            <label class="check-rdo">
-                                                <mat-radio-button value="0">No </mat-radio-button>
-                                            </label>
-                                        </div>  
-                                
+                                        <div class="col-md-3">
+                                            <div class="form-sub">
+                                                    <span>Is Certification the main activity of the organization  : <span class="required_input">*</span></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <mat-radio-group name="is_main_activity" #selectInspecActivity="ngModel" [(ngModel)]="step1Data.is_main_activity" required>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <label class="check-rdo">
+                                                                <mat-radio-button value=true>Yes </mat-radio-button>
+                                                        </label>
+                                                    </div>  
+                                                    <div class="col-md-4">
+                                                        <label class="check-rdo">
+                                                                <mat-radio-button value=false>No </mat-radio-button>
+                                                        </label>
+                                                    </div>  
+                                            
+                                                </div>
+                                            </mat-radio-group>
+                                            <div class="col-md-6 p-0" [ngStyle]="{'margin-top':'5px'}">
+                                                <p class="error" *ngIf="isApplicationSubmitted == true && selectInspecActivity.errors?.required">Please select anyone option</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>(If No, indicate what are other activities related to the organization)</mat-label>
+                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                matInput placeholder="" name="indication" 
+                                                [required]="isApplicationSubmitted == true && is_main_activity_note_entry == true && step1Data.is_main_activity == 'false'" [(ngModel)]="step1Data.is_main_activity_note">
+                                                </mat-form-field>
+                                        </div>
                                     </div>
-                                </mat-radio-group>
-                                <div class="col-md-6" [ngStyle]="{'margin-top':'5px'}">
-                                    <p class="error" *ngIf="isApplicationSubmitted == true && selectAccredHold.errors?.required">Please select anyone option</p>
+
+
+                                    <div class="row">
+                                        <div class="col-12 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>EXISTING ACCREDITATION OR CERTIFICATION GRANTED TO THE ORGANIZATION</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4 mt-4">
+                                        <div class="col-md-3">
+                                            <div class="form-sub">
+                                                    <span>Does the Organization hold any other Accreditation's?<span class="required_input">*</span></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <mat-radio-group name="is_hold_other_accreditation" [(ngModel)]="step1Data.is_hold_other_accreditation" #selectAccredHold="ngModel" required>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <label class="check-rdo">
+                                                            <mat-radio-button value="1">Yes </mat-radio-button>
+                                                        </label>
+                                                    </div>  
+                                                    <div class="col-md-4">
+                                                        <label class="check-rdo">
+                                                            <mat-radio-button value="0">No </mat-radio-button>
+                                                        </label>
+                                                    </div>  
+                                            
+                                                </div>
+                                            </mat-radio-group>
+                                            <div class="col-md-8" [ngStyle]="{'margin-top':'5px'}">
+                                                <p class="error" *ngIf="isApplicationSubmitted == true && selectAccredHold.errors?.required">Please select anyone option</p>
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    <div class="row" id="is_hold_other_accreditations" *ngIf="step1Data.is_hold_other_accreditation == '1'">
+                                        <div class="col-md-12">
+                                            <div class="table-content-health">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Name of Scheme</th>
+                                                            <th>Name of Accreditation Body</th>
+                                                            <th>Scope of Accreditation & Certificate No</th>
+                                                            <th>Expiry Date of Certificate</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr  *ngFor="let item of accreditationInfo; let i = index;">
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExCont)" matInput placeholder="" name="scheme_name_{{i}}" [(ngModel)]="accreditationInfo[i].scheme_name" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExCont)" matInput placeholder="" name="acccreditation_body_name_{{i}}" [(ngModel)]="accreditationInfo[i].acccreditation_body_name" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input matInput placeholder=""  (keypress)="Service.inputFilter($event, Service.regExCont)" name="acccreditation_scope_{{i}}" [(ngModel)]="accreditationInfo[i].acccreditation_scope" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <input readonly="true"  (keypress)="Service.inputFilter($event, Service.regExName)" matInput [matDatepicker]="converted_date" readonly="true" placeholder="Date of Certificate" name="converted_date_{{i}}" (click)="Service._openCalendar(converted_date)" [(ngModel)]="accreditationInfo[i].converted_date" required>
+                                                                    <mat-datepicker-toggle matSuffix [for]="converted_date"></mat-datepicker-toggle>
+                                                                    <mat-datepicker #converted_date  disabled="false"></mat-datepicker>
+                                                                </mat-form-field>
+            
+                                                                </td>
+                                                            <td class="content-icn">
+                                                                <span *ngIf="i >= 0" class="icon-add" (click)="addRow(accreditationInfo)"></span>&nbsp;
+                                                                <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(accreditationInfo,i)"></span>
+                                                            </td>
+                                                        </tr>
+            
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
 
-
-                        <div class="row" id="is_hold_other_accreditations" *ngIf="step1Data.is_hold_other_accreditation == '1'">
-                            <div class="col-md-12">
-                                <div class="table-content-health">
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Name of Scheme</th>
-                                                <th>Name of Accreditation Body</th>
-                                                <th>Scope of Accreditation & Certificate No</th>
-                                                <th>Expiry Date of Certificate</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr  *ngFor="let item of accreditationInfo; let i = index;">
-                                                <td>
-                                                    <mat-form-field class="cab-data">
-                                                        <mat-label>Type Here</mat-label>
-                                                        <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="scheme_name_{{i}}" [(ngModel)]="accreditationInfo[i].scheme_name" required>
-                                                    </mat-form-field>
-                                                </td>
-                                                <td>
-                                                    <mat-form-field class="cab-data">
-                                                        <mat-label>Type Here</mat-label>
-                                                        <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="acccreditation_body_name_{{i}}" [(ngModel)]="accreditationInfo[i].acccreditation_body_name" required>
-                                                    </mat-form-field>
-                                                </td>
-                                                <td>
-                                                    <mat-form-field class="cab-data">
-                                                        <mat-label>Type Here</mat-label>
-                                                        <input matInput placeholder="" name="acccreditation_scope_{{i}}" [(ngModel)]="accreditationInfo[i].acccreditation_scope" required>
-                                                    </mat-form-field>
-                                                </td>
-                                                <td>
-                                                    <mat-form-field class="cab-data">
-                                                        <input readonly="true"  (keypress)="Service.inputFilter($event, Service.regExName)" matInput [matDatepicker]="converted_date" readonly="true" placeholder="Date of Certificate" name="converted_date_{{i}}" (click)="Service._openCalendar(converted_date)" [(ngModel)]="accreditationInfo[i].converted_date" required>
-                                                        <mat-datepicker-toggle matSuffix [for]="converted_date"></mat-datepicker-toggle>
-                                                        <mat-datepicker #converted_date  disabled="false"></mat-datepicker>
-                                                    </mat-form-field>
-
-                                                    </td>
-                                                <td class="content-icn">
-                                                    <span *ngIf="i >= 0" class="icon-add" (click)="addRow(accreditationInfo)"></span>&nbsp;
-                                                    <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(accreditationInfo,i)"></span>
-                                                </td>
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                        
 
                         <div class="row">
                             <div class="col-md-12">
@@ -739,7 +742,7 @@
                                                                         <td>
                                                                             <mat-form-field class="cab-data">
                                                                                 <mat-label>Type Here</mat-label>
-                                                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="number_of_persons_{{i}}" [(ngModel)]="auditorsExaminersFulltime[i].number_of_persons" required>
+                                                                                <input  (keypress)="Service.inputFilter($event, Service.regExNumb)" matInput placeholder="" name="number_of_persons_{{i}}" [(ngModel)]="auditorsExaminersFulltime[i].number_of_persons" required>
                                                                             </mat-form-field>
                                                                         </td>
                                                                         <td class="content-icn">
@@ -767,7 +770,7 @@
                                                                         <td>
                                                                             <mat-form-field class="cab-data">
                                                                                 <mat-label>Type Here</mat-label>
-                                                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput name="contract_number_of_persons_{{i}}" [(ngModel)]="auditorsExaminersParttime[i].number_of_persons" placeholder="" required>
+                                                                                <input  (keypress)="Service.inputFilter($event, Service.regExNumb)" matInput name="contract_number_of_persons_{{i}}" [(ngModel)]="auditorsExaminersParttime[i].number_of_persons" placeholder="" required>
                                                                             </mat-form-field>
                                                                         </td>
                                                                         <td class="content-icn">
@@ -1313,7 +1316,7 @@
                                     <!-- (click)="onSubmitInformationAuditManagement()" -->
                                     <div class="button-content">
                                         <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('personal_information',headerSteps,'menu','scope_accreditation')">BACK</a> 
-                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step3')">SAVE AS DRAFT</button> 
+                                        <button class="cancel-bttn" type="button" (click)="onSubmitStep3(ngForm3, true)">SAVE AS DRAFT</button> 
                                     </div>
                                     <button class="submit-bttn submit-health" >CONTINUE</button>
                                 </div>
@@ -1338,14 +1341,28 @@
                                     <div class="row mt-3">                                         
                                         <div class="col-md-12 p-0">
                                             <div class="row m-0">
-                                                <div class="col-md-6">
+                                                <div class="col-md-3">
                                                     <div class="request-subhdr">
                                                         <h5>Request for perlim visit</h5>
                                                     </div>
                                                 </div>
                                                 <!-- @@{{inspectionBodyForm.perlim_visit_val |  json}} -->
                                                 <!-- (click)='proficiency_testing(1)' -->
-                                                <div class="col-md-6">
+                                                <div class="col-md-2">
+                                                    <div class="request_frm">
+                                                        <mat-radio-group name="is_prelim_visit" 
+                                                        [(ngModel)]="step4Data.is_prelim_visit" #selectPrelim="ngModel" required>
+                                                            <div class="rad-space">
+                                                                <mat-radio-button value="1">Yes </mat-radio-button>
+                                                                <mat-radio-button value="0">No </mat-radio-button>
+                                                            </div>
+                                                        </mat-radio-group>
+                                                        <div class="col-md-6 p-0"  [ngStyle]="{'margin-top':'5px','margin-left' : '40px'}">
+                                                            <p class="error" *ngIf="isPrelimSubmitted == true && selectPrelim.errors?.required">Please select anyone option</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="col-md-6">
                                                     <div class="request_frm">
                                                         <mat-radio-group name="is_prelim_visit" 
                                                         [(ngModel)]="step4Data.is_prelim_visit" required>
@@ -1353,7 +1370,7 @@
                                                             <mat-radio-button value="0">No </mat-radio-button>
                                                         </mat-radio-group>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>                                                    
                                         </div>
                                     </div>
@@ -1375,7 +1392,7 @@
                                                         <mat-label>Select Time</mat-label>
                                                         <mat-select placeholder="Select" name="prelim_visit_time" 
                                                         (selectionChange)="getDutyTimeForm1Index($event)" 
-                                                        [(ngModel)]="step4Data.prelim_visit_time">
+                                                        [(ngModel)]="step4Data.prelim_visit_time" required>
                                                             <mat-option *ngFor="let item of addMinutesToTime; let i = index;" 
                                                             [value]="item.key">{{item.val}}</mat-option>
                                                         </mat-select>
@@ -1567,10 +1584,12 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="authData">
-                                                
+                                            <div class="authData">                                                
                                                 <mat-checkbox name="undertaking_confirmTop3"  (change)="authorizeCheckCount($event)"
-                                                [(ngModel)]="authorizationList.undertaking_confirmTop3" required>Do you require ILA MRA Mark Laboratories</mat-checkbox>
+                                                [(ngModel)]="authorizationList.undertaking_confirmTop3" required>Do you require IAF MLA Mark Laboratories</mat-checkbox>
+                                            </div>
+                                            <div class="terms-condition" style="height:500px;overflow:auto">
+                                                <div class="tnc" [innerHTML]="(termsIAF != undefined && termsIAF.content != undefined) ? termsIAF.content : ''"></div>
                                             </div>
 
                                             <div class="authData">I confirm that the below documents are available and will be furnished once requested by EIAC:</div>
@@ -1713,7 +1732,8 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Date</mat-label>
-                                                        <input matInput placeholder="Date" name="onbehalf_representative_date" 
+                                                        <input matInput placeholder="Date" [matDatepicker]="onbehalf_representative_date" 
+                                                        name="onbehalf_representative_date"  readonly="true"
                                                         [(ngModel)]="step5Data.application_date" [value]="Service.returnCurrentDate()">
                                                     </mat-form-field>
                                                 </div>
