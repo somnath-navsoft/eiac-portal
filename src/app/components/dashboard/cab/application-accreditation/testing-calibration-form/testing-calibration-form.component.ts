@@ -43,6 +43,8 @@ export class TestingCalibrationFormComponent implements OnInit {
   public countryList:Array<any>=[];
   public labTypeList:Array<any>=[];
 
+  isPrelimSubmitted: boolean = false;
+
   public orgMembToggle: boolean = false;
   public is_bod: boolean = false;
   public checkSecurity:boolean = false;
@@ -90,6 +92,8 @@ export class TestingCalibrationFormComponent implements OnInit {
 
   is_main_activity_note_entry: boolean = false;
   recommendYearValues: any[] =[];
+
+  paymentStepComp: boolean = false;
 
 
   shift2_from: boolean = false;
@@ -1224,6 +1228,7 @@ getCriteria(value, secInd: any){
   loadTermsConditions(){
     let post: any = {};
     post['service_page_id'] = 3; // Testing/Calibration
+    console.log(">>> Load terms....");
     this.Service.post(this.Service.apiServerUrl+"/" + 'terms-and-conditions/', post)
       .subscribe(
         res => {
@@ -1786,18 +1791,31 @@ getCriteria(value, secInd: any){
                   ////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
                 }
 
+                // if(getData.data.is_draft){
+                //   saveStep = parseInt(getData.data.saved_step) - 1;
+                // }else{
+                //   if(parseInt(getData.data.saved_step) == 9){
+        
+                //     saveStep = parseInt(getData.data.saved_step) - 1;
+                //   }else{
+                //   saveStep = parseInt(getData.data.saved_step);
+                //   }
+                // }
+
+                //check steps
                 if(getData.data.is_draft){
                   saveStep = parseInt(getData.data.saved_step) - 1;
                 }else{
                   if(parseInt(getData.data.saved_step) == 9){
-        
                     saveStep = parseInt(getData.data.saved_step) - 1;
+                    this.paymentStepComp = true;
+                  }else if(parseInt(getData.data.saved_step) == 8){
+                    saveStep = parseInt(getData.data.saved_step);
+                    this.paymentStepComp = true;
                   }else{
-                  saveStep = parseInt(getData.data.saved_step);
+                    saveStep = parseInt(getData.data.saved_step);
                   }
                 }
-
-
 
                 
                 if(res['data'].saved_step  != null){
@@ -1938,7 +1956,8 @@ getCriteria(value, secInd: any){
 
                 //Step 6
                 if(res['data'].is_prelim_visit != null){
-                  this.step6Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
+                  //this.step6Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
+                  this.step6Data.prelim_visit_val = (res['data'].is_prelim_visit) ? "1" : "0";
                   this.step6Data.prelim_visit_date = res['data'].prelim_visit_date;
                   this.step6Data.prelim_visit_time = res['data'].prelim_visit_time;
                 }
@@ -1970,10 +1989,16 @@ getCriteria(value, secInd: any){
                     this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
                     this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
                     this.voucherSentData.amount           = res['data'].paymentDetails.amount;
-                    this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
-                    this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
-                    this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
-                    this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+
+                    this.voucherSentData.transaction_no   = (getData.data.paymentDetails.transaction_no != 'null') ? getData.data.paymentDetails.transaction_no : '';
+                    this.voucherSentData.payment_method   = (getData.data.paymentDetails.payment_method != 'null') ? getData.data.paymentDetails.payment_method : '' ;
+                    this.voucherSentData.payment_made_by  = (getData.data.paymentDetails.payment_made_by != 'null') ? getData.data.paymentDetails.payment_made_by  : '';
+                    this.voucherSentData.mobile_no        =  (getData.data.paymentDetails.mobile_no != 'null') ? getData.data.paymentDetails.mobile_no : '';
+
+                    // this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
+                    // this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
+                    // this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
+                    // this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
 
                     this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
                     this.paymentReceiptValidation = true;
@@ -2364,6 +2389,7 @@ getCriteria(value, secInd: any){
       this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
       this.voucherFile.append('voucher_date',dtFormat);
       this.voucherFile.append('accreditation',this.formApplicationId);
+      this.voucherFile.append('is_draft',true);
       // this.voucherFile.append('application_id',this.formApplicationId);
           
       this.loader = false;
@@ -2937,7 +2963,7 @@ getMatchScheme(scId: any, scopeData: any){
   return false;
 }
   
-onSubmitStep5(ngForm5: any, type: any) {
+onSubmitStep5(ngForm: any, type: any) {
     //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
 
     //Check dynamic model column fields validation
@@ -2981,7 +3007,7 @@ onSubmitStep5(ngForm5: any, type: any) {
     //this.saveScope();
     this.testingCalForm = {};
     this.testingCalForm.step5 = {};
-    this.testingCalForm.saved_step  = '5';
+    this.testingCalForm.saved_step  = 5;
     this.testingCalForm.email       = this.userEmail;
     this.testingCalForm.userType    = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
@@ -2990,9 +3016,12 @@ onSubmitStep5(ngForm5: any, type: any) {
     this.testingCalForm.step5       = this.step5Data;
 
     console.log("@####step5 submit Data: ", this.step5Data, " :: ", this.testingCalForm);
-    
-    if(ngForm5.form.valid) {
+
+    //if(ngForm5.form.valid) {
+    if(!ngForm.form.valid && type == undefined && this.schemeRows.length == 1 
+        && this.schemeRows[0].id === undefined && this.editScopeData != undefined && this.editScopeData != null) {
       this.loader = false;
+      this.saveScope();
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
@@ -3005,7 +3034,50 @@ onSubmitStep5(ngForm5: any, type: any) {
             this.toastr.warning(res['msg'], '');
           }
         });
-    }else{
+    }else if(ngForm.form.valid && type == undefined) {
+      ////console.log(">>>Scope saving...");
+      ////console.log(">>>Enter....3")
+      this.saveScope();
+      ////console.log(">>> step5 submit...", this.step5Data, " -- ", this.inspectionBodyForm);
+      this.testingCalForm.step5.is_draft = false;
+      this.testingCalForm.saved_step = 5;
+      //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
+      .subscribe(
+        res => {
+          ////////console.log(res,'res')
+          if(res['status'] == true) {
+            //this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+
+    }
+    else if( type != undefined && type == true){
+      ////console.log(">>>Enter....4")
+      this.testingCalForm.step5.is_draft = true;
+      this.testingCalForm.saved_step = 5;
+      this.saveScope();
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
+      .subscribe(
+        res => {
+          ////////console.log(res,'res')
+          if(res['status'] == true) {
+            //this.toastr.success(res['msg'], '');
+            this.toastr.success('Save Draft Successfully', '');
+            //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+            // setTimeout(()=> {
+            //   this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+            // },2000) 
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }
+    
+    else{
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
 
@@ -3014,6 +3086,7 @@ onSubmitStep5(ngForm5: any, type: any) {
 
   onSubmitStep6(ngForm6: any){
     //this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+    this.isPrelimSubmitted = true;
     if(ngForm6.form.valid) {
       this.testingCalForm = {};
       this.testingCalForm.step6 = {};
@@ -3022,7 +3095,7 @@ onSubmitStep5(ngForm5: any, type: any) {
       this.testingCalForm.userType = this.userType;
       var applicationId = sessionStorage.getItem('applicationId');
       this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-      this.step6Data.is_prelim_visit = this.step6Data.is_prelim_visit == 0 ? false : true;
+      this.step6Data.is_prelim_visit = this.step6Data.prelim_visit_val == 0 ? false : true;
       this.step6Data.is_draft = false;
       this.testingCalForm.step6 = this.step6Data;
 
@@ -3034,6 +3107,7 @@ onSubmitStep5(ngForm5: any, type: any) {
         res => {
           // console.log(res,'res')
           this.loader = true;
+          this.isPrelimSubmitted = false;
           if(res['status'] == true) {
             // this.toastr.success(res['msg'], '');
             this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
@@ -3209,7 +3283,7 @@ onSubmitPaymentInformation(ngForm9: any, type?: boolean){
       dtFormat = year + "-" + month + "-" + date;
     }
     //     
-
+    let is_valid = false;
   this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
   this.voucherFile.append('amount',this.voucherSentData['amount']);
   this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
@@ -3218,10 +3292,20 @@ onSubmitPaymentInformation(ngForm9: any, type?: boolean){
   this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
   this.voucherFile.append('voucher_date',dtFormat);
   this.voucherFile.append('accreditation',this.formApplicationId);
-  // this.voucherFile.append('application_id',this.formApplicationId);
-      
-  this.loader = false;
-  if(ngForm9.form.valid && this.paymentReceiptValidation != false) {
+  this.voucherFile.append('is_draft',false);
+  // this.voucherFile.append('application_id',this.formApplicationId); 
+      //console.log(">>> form status: ", ngForm9.form.valid, " -- ", this.voucherSentData['mobile_no']);
+      //return false;
+      console.log(">>> Data: ", this.voucherSentData);
+
+    if(this.voucherSentData['transaction_no'] != '' && this.voucherSentData['payment_method'] != '' && this.voucherSentData['payment_made_by'] &&
+    this.voucherSentData['mobile_no'] != ''){
+      is_valid = true;
+    }
+    //ngForm9.form.valid 
+  
+  if(is_valid == true && this.paymentReceiptValidation != false) {
+    this.loader = false;
     // console.log(this.voucherFile);
       this._trainerService.paymentVoucherSave((this.voucherFile))
       .subscribe(
@@ -3251,7 +3335,14 @@ onSubmitPaymentInformation(ngForm9: any, type?: boolean){
             }
           }
         )
-  }else if(type != undefined && type == true && this.paymentReceiptValidation != false){
+  }
+  else{
+    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+  }
+
+  /*
+
+else if(type != undefined && type == true && this.paymentReceiptValidation != false){
     this.testingCalForm.step9.is_draft = true;
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.testingCalForm)
     .subscribe(
@@ -3265,9 +3356,7 @@ onSubmitPaymentInformation(ngForm9: any, type?: boolean){
       }
     });
   }
-  else{
-    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
-  }
+  */
 
 }
 
@@ -3394,11 +3483,24 @@ validateFileVoucher(fileEvent: any, type?: any) {
     //console.log(">>> The Data: ", theData);
     this.transactions = [];
     this.toastr.success('Payment Success, Thank you.','Paypal>>',{timeOut:2000});
-    setTimeout(()=> {
-      // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-      ////console.log("moving...");
-      this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
-    }, 1000)      
+
+    //proforma save
+    let postData: any = new FormData();
+    postData.append('accreditation', this.formApplicationId);
+    this._trainerService.proformaAccrSave(postData)
+    .subscribe(
+      result => {
+          let data: any = result;
+          if(data.status){
+            this.paymentStepComp = true;
+            this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+          }
+          console.log(">>> Save resultts: ", result);
+      });
+
+    // setTimeout(()=> {
+    //   this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+    // }, 1000)      
     //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
  }
  

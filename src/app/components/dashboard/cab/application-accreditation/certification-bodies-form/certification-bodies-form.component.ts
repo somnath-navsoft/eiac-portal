@@ -2419,7 +2419,7 @@ this.certificationBodiesForm.step7 = {};
     dtFormat = year + "-" + month + "-" + date;
   }
   //     
-
+  let is_valid: boolean = false;
 this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
 this.voucherFile.append('amount',this.voucherSentData['amount']);
 this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
@@ -2430,10 +2430,14 @@ this.voucherFile.append('voucher_date',dtFormat);
 this.voucherFile.append('accreditation',this.formApplicationId);
 this.voucherFile.append('is_draft', false);
 // this.voucherFile.append('application_id',this.formApplicationId);
-    
-this.loader = false;
-if(ngForm7.form.valid && this.paymentReceiptValidation != false) {
+if(this.voucherSentData['transaction_no'] != '' && this.voucherSentData['payment_method'] != '' && this.voucherSentData['payment_made_by'] &&
+this.voucherSentData['mobile_no'] != ''){
+  is_valid = true;
+}
+
+if(is_valid == true &&  this.paymentReceiptValidation != false) {
   // //console.log(this.voucherFile);
+  this.loader = false;
     this._trainerService.paymentVoucherSave((this.voucherFile))
     .subscribe(
         result => {

@@ -3857,7 +3857,7 @@ onSubmitPaymentInformation(ngForm7: any, type?: boolean){
           // }
 
           console.log("payment date: ", " -- ",this.voucherSentData, " -- ");
-
+        let is_valid: boolean = false;
         this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
         this.voucherFile.append('amount',this.voucherSentData['amount']);
         this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
@@ -3873,9 +3873,14 @@ onSubmitPaymentInformation(ngForm7: any, type?: boolean){
         //   //formData.append('file', blob,'readme.txt');
         //   this.voucherFile.append('payment_receipt',blob,'null_recipt.txt');
         // }
+        console.log(">>> Data: ", this.voucherSentData);
+        if(this.voucherSentData['transaction_no'] != '' && this.voucherSentData['payment_method'] != '' && this.voucherSentData['payment_made_by'] &&
+          this.voucherSentData['mobile_no'] != ''){
+            is_valid = true;
+          }
 
     //!ngForm7.form.valid &&
-    if(ngForm7.form.valid && type == undefined && this.paymentReceiptValidation != false) {
+    if(is_valid == true && type == undefined && this.paymentReceiptValidation != false) {
       //this.inspectionBodyForm.step7.payment_receipt = this.step7DataBodyFormFile;
       this.inspectionBodyForm.step9.is_draft = false;
       this.voucherFile.append('is_draft', false);
