@@ -89,6 +89,7 @@ export class TestingCalibrationFormComponent implements OnInit {
   paymentFilePath: string = '';
 
   is_main_activity_note_entry: boolean = false;
+  recommendYearValues: any[] =[];
 
 
   shift2_from: boolean = false;
@@ -114,6 +115,10 @@ export class TestingCalibrationFormComponent implements OnInit {
       if(( elem.srcElement.offsetHeight + elem.srcElement.scrollTop) >=  elem.srcElement.scrollHeight) {
          ////console.log("Yo have reached!");
          this.authorizationList.authorization_confirm2 = true;
+         this.readTermsCond = true;
+         this.authorizeCheckCount(elem, 'read')
+      }else{
+        this.authorizeCheckCount(elem, 'read')
       }
     }        
   }
@@ -175,7 +180,8 @@ export class TestingCalibrationFormComponent implements OnInit {
   criteriaMaster: any[] =[];
 
   isApplicationSubmitted: boolean = false;
-
+  termsGeneral: any;
+  termsILA: any;
 
   //declare scope type
   public schemeRows: Array<any> = [{}];
@@ -576,7 +582,7 @@ getCriteria(value, secInd: any){
     //  this.dynamicScopeModel[secInd] = {};
 
      this.Service.getwithoutData(apiURL).subscribe(record => {
-          //////console.log('Fullscope: ', record);
+          console.log('Fullscope: ', record);
           let dataScope:any = [];
           let fieldTitleValue: any = [];
           dataScope = record['data'];
@@ -680,7 +686,7 @@ getCriteria(value, secInd: any){
 
               ////console.log(">>> Field values: ", fieldValues, " -- ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeModel.fieldLines);
 
-              if(defLine['firstFieldValues'].length > 0  && key == 0){
+              if(defLine['firstFieldValues'] != undefined && defLine['firstFieldValues'].length > 0  && key == 0){
                 //////////console.log("calling.....default...1");
                 let getValue = defLine['firstFieldValues'][0].field_value.id;
                 
@@ -1215,6 +1221,24 @@ getCriteria(value, secInd: any){
   })
   }
 
+  loadTermsConditions(){
+    let post: any = {};
+    post['service_page_id'] = 3; // Testing/Calibration
+    this.Service.post(this.Service.apiServerUrl+"/" + 'terms-and-conditions/', post)
+      .subscribe(
+        res => {
+          console.log(res,'Terms data');
+          let getData: any = res;
+          if(getData){
+            this.termsGeneral = getData.data[0];
+            this.termsILA     = getData.data[1];
+
+           // console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
+          }
+          
+        });
+  }
+
   ngOnInit() { 
     // console.log(this.Service.getValue(),'ngOnInit')
     // this.Service.getDynamic().subscribe( res => {
@@ -1230,12 +1254,20 @@ getCriteria(value, secInd: any){
     // this.titleService.setTitle('EIAC - Testing and Calibration Laboratories');
     this.addMinutesToTime = this.Service.addMinutesToTime();
 
+    var d = new Date();
+    var yr = d.getFullYear();
+    for(var k=2010; k<=2030; k++){
+      this.recommendYearValues.push({title: k.toString(), value: k});
+    }
+    this.step7Data.recommend_year = yr;
+
     this.loadData();
     this.loadAppInfo();
     this.loadFormDynamicTable();
     this.loadCountryStateCity();
     this.stepDefaultValue();
     this.loadSchemeMaster();
+    this.loadTermsConditions();
     // this.loadCountryStateCity();
     //this.checkCaptchaValidation = true;
 
@@ -1287,7 +1319,7 @@ getCriteria(value, secInd: any){
 
   }
   
-  getPlaceName()
+  getPlaceName() 
   {
     if(typeof this.step1Data.physical_location_address != 'undefined')
     {
@@ -1924,7 +1956,12 @@ getCriteria(value, secInd: any){
                     this.authorizationList[key] = true;
                   })
                   this.authorizationStatus = true;
-                  this.step7Data.recommend_visit = 'second';
+                  this.readReviewChecklist= true;
+                  //this.step7Data.recommend_visit = 'second';
+                  let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
+                  this.step7Data.recommend_visit = visitRecomm;
+                  this.step7Data.recommend_year = parseInt(getData.data.recommend_year);
+
                 }
 
                 //Step 9
@@ -2081,6 +2118,7 @@ getCriteria(value, secInd: any){
       .subscribe(
         res => {
           this.loader = true;
+          this.isApplicationSubmitted = false;
           // console.log(res,'res')
           if(res['status'] == true) {
             // this.toastr.success(res['msg'], '');
@@ -2778,7 +2816,10 @@ getCriteria(value, secInd: any){
                       let selTitle: any       = colItem[0].title;
                       let selTitleValues: any = this.dynamicScopeModel[scopeTitle][key][k]['firstFieldValues'];
                       let fvalue: any         = this.dynamicScopeModel[scopeTitle][key][k][selTitle];
-                      let getVal: any         = selTitleValues.find(data => data.field_value.id == fvalue)
+                      let getVal: any;
+                      if(selTitleValues != undefined && selTitleValues.length > 0){
+                        getVal       = selTitleValues.find(data => data.field_value.id == fvalue)
+                      }                      
                       ////console.log("<><><><> ", getVal);
                       if(getVal){                  
                         getVal = getVal.value;
@@ -2896,9 +2937,48 @@ getMatchScheme(scId: any, scopeData: any){
   return false;
 }
   
-  onSubmitStep5(ngForm5: any) {
+onSubmitStep5(ngForm5: any, type: any) {
     //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
-    this.saveScope();
+
+    //Check dynamic model column fields validation
+  let secInd: number;
+  let selectScheme: any;
+  let errorScope: boolean = false;
+  if(this.schemeRows.length){
+    for(var t=0;t<this.schemeRows.length; t++){
+        secInd = t;
+        selectScheme = this.schemeRows[t].id;
+        let getData = this.criteriaMaster.find(rec => rec.scope_accridiation.id == selectScheme);
+        //////console.log("@Scheme Data: ", getData);
+        let scopeTitle: string ='';
+        if(getData){
+          scopeTitle = getData.title.toString().toLowerCase().split(" ").join('_');
+        }
+            for(var key in this.dynamicScopeModel[scopeTitle]){
+              if(key == 'fieldLines'){
+                let rowLen = this.dynamicScopeModel[scopeTitle][key].length;
+                // Browse rows
+                //////console.log("Section: ", scopeTitle, " -- ", rowLen)                
+                for(var k=0; k<rowLen; k++){
+                    this.dynamicScopeFieldColumns[scopeTitle].forEach((colItem,colIndex) => {
+                          let fieldSelValue: any;
+                          let selTitle: any       = colItem[0].title;
+                          fieldSelValue         = this.dynamicScopeModel[scopeTitle][key][k][selTitle];
+                          //////console.log(">>> ", scopeTitle, " :: ", selTitle, " -- ", fieldSelValue);
+                          if(fieldSelValue === undefined || fieldSelValue == ''){
+                            errorScope = true;
+                          }
+                    })
+                }
+              }
+            }
+      }
+  }
+  if(errorScope && type === undefined){
+    this.toastr.warning('Please Fill required field','Validation Error');
+    return false;    
+  }
+    //this.saveScope();
     this.testingCalForm = {};
     this.testingCalForm.step5 = {};
     this.testingCalForm.saved_step  = '5';
@@ -2910,6 +2990,7 @@ getMatchScheme(scId: any, scopeData: any){
     this.testingCalForm.step5       = this.step5Data;
 
     console.log("@####step5 submit Data: ", this.step5Data, " :: ", this.testingCalForm);
+    
     if(ngForm5.form.valid) {
       this.loader = false;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
@@ -2932,7 +3013,7 @@ getMatchScheme(scId: any, scopeData: any){
   }
 
   onSubmitStep6(ngForm6: any){
-    this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+    //this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
     if(ngForm6.form.valid) {
       this.testingCalForm = {};
       this.testingCalForm.step6 = {};
@@ -2965,15 +3046,63 @@ getMatchScheme(scId: any, scopeData: any){
     }
  }
 
- onSubmitUndertakingApplicant(ngForm7: any){
-  // this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
-  for(let key in this.authorizationList) {
-    if(this.authorizationList[key] == false) {
-      this.authorizationStatus = false;
-    }else {
-      this.authorizationStatus = true;
+ authorizeCheckCount(theEvent: any, type?:any){
+  //console.log(theEvent);
+  let checkCount = 0;
+  let readChecked = false;
+
+  if(type != undefined && type == 'read'){
+    //console.log(">>> readd...");
+    readChecked = true;
+  }
+
+  if(theEvent.checked || readChecked == true){
+    for(let key in this.authorizationList) {
+      ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
+      if(this.authorizationList[key]) {  
+        this.authorizationStatus = true;       
+        checkCount++;
+      }    
     }
   }
+      
+
+  if(this.authorizationStatus && checkCount == 10){
+    this.authorizationStatus = true;
+  }else{
+    this.authorizationStatus = false;
+  }
+  //console.log(">>> Check status count: ", checkCount);
+}
+
+ onSubmitUndertakingApplicant(ngForm7: any){
+  // this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
+  // for(let key in this.authorizationList) {
+  //   if(this.authorizationList[key] == false) {
+  //     this.authorizationStatus = false;
+  //   }else {
+  //     this.authorizationStatus = true;
+  //   }
+  // }
+
+  this.isApplicationSubmitted = true;
+
+  let checkCount = 0;
+    for(let key in this.authorizationList) {
+      ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
+      if(this.authorizationList[key]) {  
+        this.authorizationStatus = true;       
+        checkCount++;
+      } 
+      // if(this.authorizationList[key]) {
+      //   this.authorizationStatus = true;
+      // }     
+    }  
+    if(this.authorizationStatus && checkCount == 10){  
+      this.authorizationStatus = true;
+    }else{
+      this.authorizationStatus = false;
+    }
   
   // for(let key in this.recommend) {
   //   if(this.recommend[key] == true) {
@@ -3146,11 +3275,15 @@ agreeView(){
   this.modalService.dismissAll();
   this.authorizationList.undertaking_confirmTop2 = true;
   this.readAccredAgreem = true;
+  this.authorizeCheckCount(event, 'read');
 }
 closeChecklistDialog(){
   this.modalService.dismissAll();
   this.authorizationList.undertaking_confirm2 = true;
   this.readReviewChecklist= true;
+}
+closeDialog(){
+  this.modalService.dismissAll();
 }
 
 onError(error: any) {

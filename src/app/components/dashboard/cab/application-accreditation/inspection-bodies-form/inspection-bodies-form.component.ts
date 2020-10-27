@@ -1302,6 +1302,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         }else{
           if(parseInt(getData.data.saved_step) == 9){
             saveStep = parseInt(getData.data.saved_step) - 1;
+            this.paymentStepComp = true;
           }else if(parseInt(getData.data.saved_step) == 8){
             saveStep = parseInt(getData.data.saved_step);
             this.paymentStepComp = true;
