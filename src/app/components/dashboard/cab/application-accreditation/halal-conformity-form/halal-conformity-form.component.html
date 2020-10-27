@@ -248,6 +248,52 @@
                                             </mat-form-field>
                                         </div>
                                     </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Legal Status</mat-label>
+                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Official Website" name="legal_status" [(ngModel)]="step1Data.legal_status">
+                                                <mat-error></mat-error>  
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="matupload position-relative">
+                                                <mat-form-field  class="lng-data">
+                                                    <input matInput readonly="true" name="id_issued_esma" [(ngModel)]="step2Data.id_issued_esma"  placeholder="Registration form and ID issued by ESMA" required>
+
+                                                    <a href="javascript:void(0)" target="_blank">
+                                                        <span class="icon-eye visible-pwd"></span>
+                                                    </a>
+                                                </mat-form-field>
+    
+                                                <span class="fileupload">
+                                                    <input type="file" name="id_issuedEsma" [(ngModel)]="fileAny" (change)="validateFile($event)">
+                                                    <span class="icon-attach attach-data"></span>
+                                                </span>
+                                                <p class="error" *ngIf="!file_validation">Please Upload a valid file (ex: pdf)</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-4">
+                                            <div class="matupload position-relative">
+                                                <mat-form-field  class="lng-data">
+                                                    <input matInput readonly="true" name="halal_certificate_stamp" [(ngModel)]="step2Data.halal_certificate_stamp" placeholder="Halal Certificate" required>
+
+                                                    <a href="javascript:void(0)" target="_blank">
+                                                        <span class="icon-eye visible-pwd"></span>
+                                                    </a>
+                                                </mat-form-field>
+
+                                                <span class="fileupload">
+                                                    <input type="file" name="halal_certificateStamp" [(ngModel)]="fileAny" (change)="validateFile($event)">
+                                                    <span class="icon-attach attach-data"></span>
+                                                </span>
+                                                <p class="error" *ngIf="!file_validation">Please Upload a valid file (ex: pdf)</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                     
                                     <div class="row">
                                         <div class="col-12 p-0">
