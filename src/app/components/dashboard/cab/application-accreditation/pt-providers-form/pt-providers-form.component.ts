@@ -38,6 +38,8 @@ export class PtProvidersFormComponent implements OnInit {
   public ptProvidertypeList:Array<any>=[];
   public ptProviderAccrediationTypeList:Array<any>=[];
   public authorizationList:any;
+  readReviewChecklist: boolean = false;
+  readTermsCond: boolean = false;
   accreditationCriteriasId:any;
   public authorizationStatus:boolean=true;
   public authorization_confirm3:Array<any>=[];
@@ -48,7 +50,7 @@ export class PtProvidersFormComponent implements OnInit {
   public is_agreement: boolean=false;
   public checkSecurity:boolean = false;
   public checkCaptchaValidation:boolean = false;
-  public loader:boolean=true;
+  public loader:boolean=false;
   public banner:any=[];
   public isSubmit: boolean = true;
   afterSubmit: boolean = false;
@@ -59,6 +61,8 @@ export class PtProvidersFormComponent implements OnInit {
   public file_validation:boolean = true;
   public minDate;
   public maxDate = new Date();
+  termsGeneral: any;
+  termsILA: any;
   // ngx-google-places-autocomplete [options]='options' #placesRef="ngx-places"
   // version = VERSION;
   allCityByCountry: any = [];
@@ -67,6 +71,13 @@ export class PtProvidersFormComponent implements OnInit {
   dutyTime1: boolean = true;
   dutyTime2: boolean = true;
   dutyTime3: boolean = true;
+
+  shift2_from: boolean = false;
+  shift2_to: boolean = false;
+  shift3_from: boolean = false;
+  shift3_to: boolean = false;
+  is_main_activity_note_entry: boolean = false;
+
   searchCountryLists:any;
   onbehalf_representative_date:boolean = false;
   recommendStatus:boolean = false;
@@ -88,7 +99,10 @@ export class PtProvidersFormComponent implements OnInit {
       //console.debug("Scroll Event: ", elem.srcElement.scrollHeight, " == [ ",elem.srcElement.offsetHeight, " - ",elem.srcElement.scrollTop," ]"  );
       if(( elem.srcElement.offsetHeight + elem.srcElement.scrollTop) >=  elem.srcElement.scrollHeight) {
          ////console.log("Yo have reached!");
-         this.authorizationList.authorization_confirm2 = true;
+         this.authorizationList.authorization_confirm2 = true;this.readTermsCond = true;
+         this.authorizeCheckCount(elem, 'read')
+      }else{
+        this.authorizeCheckCount(elem, 'read')
       }
     }        
   }
@@ -137,12 +151,22 @@ export class PtProvidersFormComponent implements OnInit {
   paymentFile:any = false;
   paymentFilePath: string = '';
   paymentReceiptValidation:any;
+  recommendYearValues: any[] = [];
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,private modalService: NgbModal,public sanitizer:DomSanitizer,public _trainerService:TrainerService) { }
 
   getData(getVal: string){
     this.Service.mapboxToken = getVal;
    }
+
+   closeChecklistDialog(){
+    this.modalService.dismissAll();
+    this.authorizationList.undertaking_confirm2 = true;
+    this.readReviewChecklist= true;
+    }
+    closeDialog(){
+      this.modalService.dismissAll();
+    }
 
    loadData(){
     this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.pt_provider)
@@ -165,6 +189,24 @@ export class PtProvidersFormComponent implements OnInit {
     })
   }
 
+  loadTermsConditions(){
+    let post: any = {};
+    post['service_page_id'] = 10; // Medical / healthcare
+    this.Service.post(this.Service.apiServerUrl+"/" + 'terms-and-conditions/', post)
+      .subscribe(
+        res => {
+          console.log(res,'Terms data');
+          let getData: any = res;
+          if(getData){
+            this.termsGeneral = getData.data[0];
+           // this.termsILA     = getData.data[1];
+
+            //console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
+          }
+          
+        });
+  }
+
  ngOnInit() { 
    // this.minCurrentDate = new Date(2020, 0, 13);
   //  this.titleService.setTitle('EIAC - Proficiency Testing Providers');
@@ -178,9 +220,17 @@ export class PtProvidersFormComponent implements OnInit {
    this.addMinutesToTime = this.Service.addMinutesToTime();
    this.loadAppInfo();
    this.loadCountryStateCity();
+   this.loadTermsConditions();
    //this.checkCaptchaValidation = false;
    this.loadData();
    this.loader = false;
+
+   var d = new Date();
+    var yr = d.getFullYear();
+    for(var k=2010; k<=2030; k++){
+      this.recommendYearValues.push({title: k.toString(), value: k});
+    }
+    this.step7Data.recommend_year = yr;
   //  this.setting();
 
   this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');
@@ -219,7 +269,8 @@ export class PtProvidersFormComponent implements OnInit {
         title:'application_complete', desc:'10. Application Complete', activeStep:false, stepComp:false, icon:'icon-document-pen', activeClass:''
       },
     );
-    this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false};
+    //undertaking_confirmTop3: false,
+    this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false};
  }
 
  statelistById = async(country_id) => {
@@ -294,6 +345,87 @@ validateFileVoucher(fileEvent: any, type?: any) {
   }
   }
 
+  moveShift(theVal: any){
+    let val;
+    //console.log(">>>change shift: ", theVal, " -- ",val);
+    
+    if(theVal == 1){
+      if(this.step1Data.duty_from2 != undefined || this.step1Data.duty_to3 != undefined){
+        this.step1Data.duty_from2 = val;
+        this.step1Data.duty_to2 = val;
+        
+      }
+      if(this.step1Data.duty_from3 != undefined || this.step1Data.duty_to3 != undefined){
+        this.step1Data.duty_from3 = val;
+        this.step1Data.duty_to3 = val;
+        
+      }
+      if(this.step1Data.duty_from1 == undefined || this.step1Data.duty_to1 == undefined){
+        this.dutyTime1 = false;        
+      }
+      this.shift2_from = true;
+        this.shift2_to = true;
+        this.shift3_from = true;
+        this.shift3_to = true;
+  
+        this.dutyTime2 = true;
+        this.dutyTime3 = true;
+        //check from to input
+        //this.dutyTime1 = false;
+      //console.log(">>> shift 1 ", this.step1Data.duty_from2, " -- ",this.step1Data.duty_to2)
+    }
+    if(theVal == 2){      
+      if(this.step1Data.duty_from3 != undefined || this.step1Data.duty_to3 != undefined){
+        this.step1Data.duty_from3 = val;
+        this.step1Data.duty_to3 = val;
+        this.dutyTime3 = true;        
+      }
+      if(this.step1Data.duty_from1 != undefined || this.step1Data.duty_to1 != undefined){
+        this.dutyTime1 = true;        
+      }
+      if(this.step1Data.duty_from1 == undefined || this.step1Data.duty_to1 == undefined){
+        this.dutyTime1 = false;        
+      }
+      if(this.step1Data.duty_from2 == undefined || this.step1Data.duty_to2 == undefined){
+        this.dutyTime2 = false;        
+      }
+      this.shift3_from = true;
+      this.shift3_to = true;
+      this.shift2_from = false;
+      this.shift2_to = false;
+     // this.dutyTime2 = false; 
+  
+        //this.dutyTime3 = true;
+        //this.dutyTime1 = true;
+  
+      //console.log(">>> shift 2 ", this.step1Data.duty_from2, " -- ",this.step1Data.duty_to2)
+    }
+    if(theVal == 3){   
+      
+      if(this.step1Data.duty_from1 != undefined || this.step1Data.duty_to1 != undefined){
+        this.dutyTime1 = true;        
+      }
+      if(this.step1Data.duty_from2 != undefined || this.step1Data.duty_to2 != undefined){
+        this.dutyTime1 = true;        
+      }
+      if(this.step1Data.duty_from1 == undefined || this.step1Data.duty_to1 == undefined){
+        this.dutyTime1 = false;        
+      }
+      if(this.step1Data.duty_from2 == undefined || this.step1Data.duty_to2 == undefined){
+        this.dutyTime2 = false;        
+      }
+      if(this.step1Data.duty_from3 == undefined || this.step1Data.duty_to3 == undefined){
+        this.dutyTime3 = false;        
+      }
+      
+      this.shift3_from = false;
+      this.shift3_to = false;
+      this.shift2_from = false;
+      this.shift2_to = false;
+      //console.log(">>> shift 3 ", this.step1Data.duty_from2, " -- ",this.step1Data.duty_to2)
+    }
+  }
+
 setexDate(date){
   let cdate = date;
   this.minDate = new Date(cdate  + (60*60*24*1000));
@@ -340,6 +472,44 @@ setexDate(date){
  getSantizeUrl(url : string) { 
   return this.sanitizer.bypassSecurityTrustResourceUrl(url); 
   }
+  openView(content, type:string) {
+    let pathData: any;
+    ////console.log(">>>pop up...", content);
+    if(type != undefined && type == 'agreement'){
+      pathData = this.getSantizeUrl(this.accredAgreemFile);
+      this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
+    }
+    if(type != undefined && type == 'checklist'){
+      pathData = this.getSantizeUrl(this.checklistDocFile);
+      this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
+    }
+    
+    ////console.log(">>> open view", this.pathPDF, " -- ",  this.pathPDF);
+    
+    this.modalService.open(content, this.modalOptions).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      //////console.log("Closed: ", this.closeResult);
+      //this.courseViewData['courseDuration'] = '';
+      //this.courseViewData['courseFees'] = '';
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+    }
+    private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      //////console.log("Closed with ESC ");
+      
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      //////console.log("Closed with CLOSE ICON ");
+     
+      return 'by clicking on a backdrop';
+    } else {
+      //////console.log("Closed ",`with: ${reason}`);
+      
+      return  `with: ${reason}`;
+    }
+    }
 
  loadAppInfo(){
   //let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
@@ -429,13 +599,15 @@ setexDate(date){
 
     if(this.urlVal && this.urlVal != '') {
 
-      this.loader = false;
+      this.loader = true;
       let url2 = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+this.urlVal;
       this.Service.getwithoutData(url2)
       .subscribe(
         res => {
           console.log(res,'urlVal')
-          this.loader = true;
+          this.loader = false;
+          let getData: any;
+          getData = res;
           if(res['data'].id && res['data'].id != '') {
               let pathData: any;
               let filePath: string;
@@ -593,7 +765,11 @@ setexDate(date){
                   this.authorizationList[key] = true;
                 })
                 this.authorizationStatus = true;
-                this.step7Data.recommend_visit = 'second';
+                this.readReviewChecklist = true;
+                this.readTermsCond       = true;
+                let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
+                this.step7Data.recommend_visit = visitRecomm;//'second';
+                this.step7Data.recommend_year = parseInt(getData.data.recommend_year);
               }
 
               //Step 9
@@ -618,63 +794,104 @@ setexDate(date){
 onSubmitStep1(ngForm1: any){
 
   this.isApplicationSubmitted = true;
+  //this.isSubmit = true;
 
   if(this.step1Data.duty_shift == '1')
-  {
-    if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
     {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+        this.isSubmit = false;
+      }else{
+        this.dutyTime1 = true;
+        this.isSubmit = true;
+      }
+      // this.dutyTime1 = false;
+      // this.isSubmit = false;
+      
+    }else if(this.step1Data.duty_shift == '2')
+    {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+        this.isSubmit = false;
+      }else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined') {
+        this.dutyTime2 = false;
+        this.isSubmit = false;
+      }else if(typeof this.step1Data.duty_from2 != 'undefined' || typeof this.step1Data.duty_to2 != 'undefined'){
+        this.dutyTime2 = true;
+        this.isSubmit = true;
+      }
+      // this.dutyTime2 = false;
+      // this.isSubmit = false;
+    }else if(this.step1Data.duty_shift == '3')
+    {
+      if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
+      {
+        this.dutyTime1 = false;
+        this.isSubmit = false;
+      }
+      else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
+      {
+        this.dutyTime2 = false;
+        this.isSubmit = false;
+      }
+      else if(typeof typeof this.step1Data.duty_from3 == 'undefined' || typeof this.step1Data.duty_to3 == 'undefined') {
+        this.dutyTime3 = false;
+        this.isSubmit = false;
+      }else if(typeof this.step1Data.duty_from3 != 'undefined' || typeof this.step1Data.duty_to3 != 'undefined') {
+        this.dutyTime3 = true;
+        this.isSubmit = true;
+      }
+      // this.dutyTime3 = false;
+      // this.isSubmit = false;
+    }else if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
       this.dutyTime1 = false;
+      this.isSubmit = false;
     }else{
       this.dutyTime1 = true;
-      this.isSubmit = true;
-    }
-    this.dutyTime1 = false;
-    this.isSubmit = false;
-    
-  }else if(this.step1Data.duty_shift == '2')
-  {
-    if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
-    {
-      this.dutyTime1 = false;
-    }else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined') {
-      this.dutyTime2 = false;
-    }else if(typeof this.step1Data.duty_from2 != 'undefined' || typeof this.step1Data.duty_to2 != 'undefined'){
       this.dutyTime2 = true;
-      this.isSubmit = true;
-    }
-    // this.dutyTime2 = false;
-    // this.isSubmit = false;
-  }else if(this.step1Data.duty_shift == '3')
-  {
-    if(typeof this.step1Data.duty_from1 == 'undefined' || typeof this.step1Data.duty_to1 == 'undefined')
-    {
-      this.dutyTime1 = false;
-    }
-    else if(typeof this.step1Data.duty_from2 == 'undefined' || typeof this.step1Data.duty_to2 == 'undefined')
-    {
-      this.dutyTime2 = false;
-    }
-    else if(typeof typeof this.step1Data.duty_from3 == 'undefined' || typeof this.step1Data.duty_to3 == 'undefined') {
-      this.dutyTime3 = false;
-    }else if(typeof this.step1Data.duty_from3 != 'undefined' || typeof this.step1Data.duty_to3 != 'undefined') {
       this.dutyTime3 = true;
       this.isSubmit = true;
     }
-    // this.dutyTime3 = false;
-    // this.isSubmit = false;
-  }else if(typeof this.step1Data.duty_shift == 'undefined' || this.step1Data.duty_shift == '') {
-    this.dutyTime1 = false;
-    this.isSubmit = false;
-  }else{
-    this.dutyTime1 = true;
+
+  if(this.step1Data.duty_shift == '1' && !this.dutyTime2){
     this.dutyTime2 = true;
+  }if(this.step1Data.duty_shift == '2' && !this.dutyTime3){
     this.dutyTime3 = true;
-    this.isSubmit = true;
   }
-  // console.log(this.dutyTime2,'dutyTime2');
-  // console.log(this.dutyTime3,'dutyTime3');
+
+  if(this.step1Data.is_main_activity_note == undefined){
+    this.step1Data.is_main_activity_note = '';
+  }
   
-  if(ngForm1.form.valid && this.isSubmit == true) {
+  let str = this.step1Data.is_main_activity_note; 
+
+  // //console.log("nite enen: ", this.step1Data.is_main_activity_note, " -- ", this.step1Data.is_main_activity, " :: ", (!str || 0 === str.length));
+  
+  if(this.step1Data.is_main_activity == 'true' && this.step1Data.is_main_activity_note != ''){
+    this.step1Data.is_main_activity_note = '';
+  }
+  if(this.step1Data.is_main_activity == 'true'){
+    this.isNoteSubmit = true;
+  }
+
+  if((!str || 0 === str.length) && this.step1Data.is_main_activity == 'false'){
+    // //console.log(">>> Note is required...");
+    this.is_main_activity_note_entry = true;
+    this.isNoteSubmit = false;
+  }
+  if(this.step1Data.is_main_activity == 'false' && this.step1Data.is_main_activity_note != ''){
+    // //console.log(">>> Note is ebnterd.....");
+    this.is_main_activity_note_entry = false;
+    this.isNoteSubmit = true;
+  }
+   console.log(">>> form status: ", ngForm1.form.valid, " :: issubmit: ", this.isSubmit," : isNote subit: ",this.isNoteSubmit);
+  // console.log(this.dutyTime3,'dutyTime3');
+
+
+  
+  if(ngForm1.form.valid && this.isSubmit == true  && this.isNoteSubmit == true) {
     this.ptProvidersForm = {};
     this.ptProvidersForm.step1 = {};
     this.ptProvidersForm.email = this.userEmail;
@@ -704,15 +921,16 @@ onSubmitStep1(ngForm1: any){
       this.ptProvidersForm.step1['accreditationInfo'] = this.accreditationInfo;
     }
 
-    this.loader = false;
+    this.loader = true;
     // this.step1DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
       res => {
-        this.loader = true;
+        
         this.isApplicationSubmitted = false;
         // console.log(res,'res')
         if(res['status'] == true) {
+          this.loader = false;
           // this.toastr.success(res['msg'], '');
           this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
           this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
@@ -754,13 +972,13 @@ savedraftStep(stepCount) {
     if(this.accreditationInfo) {
       this.ptProvidersForm.step1['accreditationInfo'] = this.accreditationInfo;
     }
-    this.loader = false;
+    this.loader = true;
     // this.step1DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
       res => {
         // console.log(res,'res')
-        this.loader = true;
+        this.loader = false;
         if(res['status'] == true) {
           this.toastr.success('Save Draft Successfully', '');
         }else{
@@ -787,12 +1005,12 @@ savedraftStep(stepCount) {
       this.ptProvidersForm.step2['proficiencyTesting'] = this.proficiencyTesting;
     }
 
-    this.loader = false;
+    this.loader = true;
     // this.step2DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
       res => {
-        this.loader = true;
+        this.loader = false;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
           this.toastr.success('Save Draft Successfully', '');
@@ -828,14 +1046,14 @@ savedraftStep(stepCount) {
     this.step3Data.managementManager['relevent_experience'] = (this.step3Data.management_relevent_experience != '' && this.step3Data.management_relevent_experience != undefined) ? this.step3Data.management_relevent_experience : '';
 
     this.ptProvidersForm.step3 = this.step3Data;
-    this.loader = false;
+    this.loader = true;
     // this.step3DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
       res => {
         console.log(res,'res')
         if(res['status'] == true) {
-          this.loader = true;
+          this.loader = false;
           // this.toastr.success(res['msg'], '');
           this.toastr.success('Save Draft Successfully', '');
         }else{
@@ -853,14 +1071,14 @@ savedraftStep(stepCount) {
     this.ptProvidersForm.email = this.userEmail;
     this.ptProvidersForm.userType = this.userType;
     this.ptProvidersForm.step4 = this.step4Data;
-    this.loader = false;
+    this.loader = true;
     // this.step4DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
       res => {
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
-          this.loader = true;
+          this.loader = false;
           this.toastr.success('Save Draft Successfully', '');
         }else{
           this.toastr.warning(res['msg'], '');
@@ -884,13 +1102,13 @@ savedraftStep(stepCount) {
     this.ptProvidersForm.step6 = this.step6Data;
 
     // console.log(this.ptProvidersForm);
-    this.loader = false;
+    this.loader = true;
     // this.step5DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
       res => {
         // console.log(res,'res')
-        this.loader = true;
+        this.loader = false;
         if(res['status'] == true) {
           this.toastr.success('Save Draft Successfully', '');
           // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
@@ -906,18 +1124,22 @@ savedraftStep(stepCount) {
     this.ptProvidersForm.userType = this.userType;
     this.step7Data.authorizationList = this.authorizationList;
     this.step7Data.recommend = this.recommend;
+    this.step7Data.recommend = this.recommend;
+    var applicationId = sessionStorage.getItem('applicationId');
+    this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step7Data.is_draft = true;
     this.ptProvidersForm.saved_step = '7';
 
     this.ptProvidersForm.step7 = this.step7Data;
     // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
-    this.loader = false;
+    //this.loader = true;
+    console.log(">>> submit: ", this.ptProvidersForm);
     // this.step6DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
       res => {
         // console.log(res,'res')
-        this.loader = true;
+        //this.loader = false;
         if(res['status'] == true) {
           this.toastr.success('Save Draft Successfully', '');
         }else{
@@ -951,12 +1173,12 @@ savedraftStep(stepCount) {
     this.voucherFile.append('accreditation',this.formApplicationId);
     // this.voucherFile.append('application_id',this.formApplicationId);
         
-    this.loader = false;
+    this.loader = true;
     // console.log(this.voucherFile);
     this._trainerService.paymentVoucherSave((this.voucherFile))
     .subscribe(
         result => {
-          this.loader = true;
+          this.loader = false;
           let data: any = result;
           //console.log("submit voucher: ", data);
           if(data.status){
@@ -992,12 +1214,12 @@ onSubmitStep2(ngForm2: any){
     }
 
     // this.step2DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
-    this.loader = false;
+    this.loader = true;
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
       res => {
         // console.log(res,'res')
-        this.loader = true;
+        this.loader = false;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
           this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
@@ -1044,12 +1266,12 @@ onSubmitStep3(ngForm3: any){
 
     this.ptProvidersForm.step3 = this.step3Data;
     // this.step3DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
-    this.loader = false;
+    this.loader = true;
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
       res => {
         // console.log(res,'res')
-        this.loader = true;
+        this.loader = false;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
           this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
@@ -1075,11 +1297,11 @@ onSubmitStep4(ngForm4: any){
     this.ptProvidersForm.userType = this.userType;
     this.ptProvidersForm.step4 = this.step4Data;
     // this.step4DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
-    this.loader = false;
+    this.loader = true;
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
       res => {
-        this.loader = true;
+        this.loader = false;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
           this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
@@ -1112,12 +1334,12 @@ onSubmitStep6(ngForm6: any){
 
     // console.log(this.ptProvidersForm);
     // this.step5DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
-    this.loader = false;
+    this.loader = true;
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
       res => {
         // console.log(res,'res')
-        this.loader = true;
+        this.loader = false;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
           this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
@@ -1130,21 +1352,68 @@ onSubmitStep6(ngForm6: any){
   }
 }
 
+authorizeCheckCount(theEvent: any, type?:any){
+  //console.log(theEvent);
+  let checkCount = 0;
+  let readChecked = false;
+
+  if(type != undefined && type == 'read'){
+    //console.log(">>> readd...");
+    readChecked = true;
+  }
+
+  if(theEvent.checked || readChecked == true){
+    for(let key in this.authorizationList) {
+      ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
+      if(this.authorizationList[key]) {  
+        this.authorizationStatus = true;       
+        checkCount++;
+      }    
+    }
+  }
+      
+
+  if(this.authorizationStatus && checkCount == 9){
+    this.authorizationStatus = true;
+  }else{
+    this.authorizationStatus = false;
+  }
+  //console.log(">>> Check status count: ", checkCount);
+}
+
 onSubmitUndertakingApplicant(ngForm7: any){
 // this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
-for(let key in this.authorizationList) {
-  if(this.authorizationList[key] == false) {
-    this.authorizationStatus = false;
-  }else {
-    this.authorizationStatus = true;
-  }
-}
+this.isApplicationSubmitted = true;
+
+// for(let key in this.authorizationList) {
+//   if(this.authorizationList[key] == false) {
+//     this.authorizationStatus = false;
+//   }else {
+//     this.authorizationStatus = true;
+//   }
+// }
 
 // for(let key in this.recommend) {
 //   if(this.recommend[key] == true) {
 //     this.recommendStatus = true;
 //   }
 // }
+
+let checkCount = 0;
+for(let key in this.authorizationList) {
+  ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
+  if(this.authorizationList[key]) {  
+    this.authorizationStatus = true;       
+    checkCount++;
+  }      
+}  
+if(this.authorizationStatus && checkCount == 9){  
+  this.authorizationStatus = true;
+}else{
+  this.authorizationStatus = false;
+}
+
+
 if(this.authorizationStatus == false){
   this.isSubmit = false;
   this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
@@ -1171,12 +1440,13 @@ if(ngForm7.form.valid){
 
   // this.step6DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
   // console.log(this.ptProvidersForm,'ptProvidersForm');
-  this.loader = false;
+  this.loader = true;
   this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
   .subscribe(
     res => {
       // console.log(res,'res')
-      this.loader = true;
+      this.loader = false;
+      this.isApplicationSubmitted = false;
       if(res['status'] == true) {
         // this.toastr.success(res['msg'], '');
         if(this.paymentFilePath != ''){
@@ -1256,13 +1526,13 @@ this.voucherFile.append('voucher_date',dtFormat);
 this.voucherFile.append('accreditation',this.formApplicationId);
 // this.voucherFile.append('application_id',this.formApplicationId);
     
-this.loader = false;
+this.loader = true;
 if(ngForm9.form.valid && this.paymentReceiptValidation != false) {
   // console.log(this.voucherFile);
     this._trainerService.paymentVoucherSave((this.voucherFile))
     .subscribe(
         result => {
-          this.loader = true;
+          this.loader = false;
           let data: any = result;
           //console.log("submit voucher: ", data);
           if(data.status){

@@ -633,8 +633,11 @@
                                         </div>
                                         <div class="col-md-6">
                                             <mat-form-field class="cab-data">
+                                                <!-- [required]="healthCareForm.is_main_activity == 'false'" -->
                                                 <mat-label>(If No, indicate what are other activities related to the organization)</mat-label>
-                                                <input [required]="isApplicationSubmitted == true && is_main_activity_note_entry == true && step1Data.is_main_activity == 'false'" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="indication" [required]="healthCareForm.is_main_activity == 'false'" [(ngModel)]="step1Data.is_main_activity_note">
+                                                <input [required]="isApplicationSubmitted == true && is_main_activity_note_entry == true && step1Data.is_main_activity == 'false'" 
+                                                (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="indication" 
+                                                 [(ngModel)]="step1Data.is_main_activity_note">
                                                 </mat-form-field>
                                         </div>
                                     </div>
@@ -1054,7 +1057,7 @@
                                                                         <th *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
                                                                         <th>Action</th>
                                                                     </tr>
-                                                                    <ng-container *ngIf="item.value.scope_value.length > 0">
+                                                                    <ng-container *ngIf="item.value.scope_value != undefined && item.value.scope_value.length > 0">
                                                                         <tr *ngFor="let item2 of (item.value.scope_value) | keyvalue; let i4 = index;">
                                                                             <td *ngFor="let item3 of item2.value | keyvalue;">
                                                                                 <span [innerHTML]="(item3.value)"></span>
@@ -1064,7 +1067,7 @@
                                                                             </td>                                                                
                                                                         </tr>
                                                                     </ng-container>
-                                                                    <ng-container *ngIf="item.value.scope_value.length == 0">
+                                                                    <ng-container *ngIf="item.value.scope_value != undefined && item.value.scope_value.length == 0">
                                                                         <tr>
                                                                             <td [attr.colspan]="Service.getObjectLength(item.value.scope_heading)+1">
                                                                                 No Data

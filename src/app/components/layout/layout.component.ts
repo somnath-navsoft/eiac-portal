@@ -71,7 +71,7 @@ export class LayoutComponent implements OnInit {
         var splitForverifyAccount = wholeUrl.split('?');
         // this.dynamicsVar = '4';
         // this._service.addDynamicsVal(this.dynamicsVar);
-        // console.log(splitUrl,'splitUrl');
+        //console.log(splitUrl,'splitUrl');
         if(splitUrl[2] == 'account-details') {
           // this._service.setValueUrl(splitUrl[3]);
           sessionStorage.setItem('accountDetailId', splitUrl[3]);
@@ -80,6 +80,8 @@ export class LayoutComponent implements OnInit {
           // this._service.setValueUrl(splitUrl[3]);
           sessionStorage.setItem('accountUploadId', splitUrl[3]);
         }
+
+        //alert("...." + splitUrl[3] +" -- " + eval(splitUrl));
         
         if(splitUrl[3] == 'testing-calibration-form') {
           this._service.setValueUrl(splitUrl[4]);
@@ -90,6 +92,8 @@ export class LayoutComponent implements OnInit {
         }else if(splitUrl[3] == 'health-care-form') {
           this._service.setValueUrl(splitUrl[4]);
         }else if(splitUrl[3] == 'certification-bodies-form') {
+          this._service.setValueUrl(splitUrl[4]);
+        }else if(splitUrl[3] == 'pt-providers-form') {
           this._service.setValueUrl(splitUrl[4]);
         }else{
           this._service.setValueUrl('');

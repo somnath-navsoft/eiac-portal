@@ -131,7 +131,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   fileAny:any;
   tradeLicensedValidation:any = false;
   paymentReceiptValidation: boolean = false;
-
+  paymentFile:any = false;
   
 
   step1DataBodyFormFile:any = new FormData();
@@ -1700,6 +1700,9 @@ export class InspectionBodiesFormComponent implements OnInit {
             this.voucherSentData.payment_made_by  = (getData.data.paymentDetails.payment_made_by != 'null') ? getData.data.paymentDetails.payment_made_by  : '';
             this.voucherSentData.mobile_no        =  (getData.data.paymentDetails.mobile_no != 'null') ? getData.data.paymentDetails.mobile_no : '';
 
+            this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
+            this.paymentReceiptValidation = true;
+
             //
             // if(getData.data.paymentDetails.transaction_no != null && getData.data.paymentDetails.payment_method != null &&
             //   getData.data.paymentDetails.payment_made_by !+ null && getData.data.paymentDetails.mobile_no != null && getData.data.paymentDetails.payment_receipt != ''){
@@ -2682,14 +2685,14 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.inspectionBodyForm.step1['ownOrgMembInfo'] = [];
       this.inspectionBodyForm.step1['accreditationInfo'] = [];
       
-      if(!this.Service.isObjectEmpty(this.ownOrgBasicInfo[0])) {
-
+      //if(!this.Service.isObjectEmpty(this.ownOrgBasicInfo[0])) {
+      if(this.ownOrgBasicInfo) {
         this.inspectionBodyForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
       }
-      if(!this.Service.isObjectEmpty(this.ownOrgMembInfo[0])) {
+      if((this.ownOrgMembInfo)) {
         this.inspectionBodyForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
       }
-      if(!this.Service.isObjectEmpty(this.accreditationInfo[0])) {
+      if((this.accreditationInfo)) {
         this.inspectionBodyForm.step1['accreditationInfo'] = this.accreditationInfo;
       }
 

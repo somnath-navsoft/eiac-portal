@@ -499,49 +499,52 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-sub">
-                                                <span>Duty Period: *</span>
+                                                <span>Duty Period: <span class="required_input">*</span></span>
                                             </div>
                                         </div>
                                         <div class="col-md-9">
-                                            <mat-radio-group name="duty_shift" required [(ngModel)]="step1Data.duty_shift">
+                                            <mat-radio-group name="duty_shift" #selectDutyShift="ngModel" required [(ngModel)]="step1Data.duty_shift">
                                                 <div class="row">
                                                 <div class="col-md-4">
                                                     <label class="check-rdo">
-                                                        <mat-radio-button value="1" required>One Shift </mat-radio-button>
+                                                        <mat-radio-button value="1"  (click)="moveShift(1)" required>One Shift </mat-radio-button>
                                                     </label>
                                                 </div>  
                                             <div class="col-md-4">
                                             <label class="check-rdo">
-                                                    <mat-radio-button value="2" required>Two Shifts</mat-radio-button>
+                                                    <mat-radio-button value="2"  (click)="moveShift(2)" required>Two Shifts</mat-radio-button>
                                                 </label>
                                             </div>  
                                             <div class="col-md-4">
                                                 <label class="check-rdo">
-                                                        <mat-radio-button value="3" required>Three Shifts</mat-radio-button>
+                                                        <mat-radio-button value="3"  (click)="moveShift(3)" required>Three Shifts</mat-radio-button>
                                                 </label>
                                                 </div>  
                                             
                                             </div>
                                             </mat-radio-group>
+                                            <div class="col-md-6" [ngStyle]="{'margin-top':'5px'}">
+                                                <p class="error" *ngIf="isApplicationSubmitted == true && selectDutyShift.errors?.required">Please select anyone option</p>
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-sub">
-                                                <span>Duty Time: *</span>
+                                                <span>Duty Time: <span class="required_input">*</span></span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">                                                
                                             <mat-form-field class="frm-data">
                                                 <mat-label>From</mat-label>
-                                                <mat-select placeholder="Select"  name="duty_from1" [(ngModel)]="step1Data.duty_from1" >
+                                                <mat-select placeholder="Select"   [required]="!dutyTime1"  name="duty_from1" [(ngModel)]="step1Data.duty_from1">
                                                     <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
                                             <mat-form-field class="frm-data">
                                                 <mat-label>To</mat-label>
-                                                <mat-select placeholder="Select" (selectionChange)="dayTimeChange($event,1)" name="duty_to1" [(ngModel)]="step1Data.duty_to1" >
+                                                <mat-select placeholder="Select" [required]="!dutyTime1" (selectionChange)="dayTimeChange($event,1)" name="duty_to1" [(ngModel)]="step1Data.duty_to1" >
                                                     <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
@@ -551,13 +554,13 @@
                                                 
                                             <mat-form-field class="frm-data">
                                                 <mat-label>From</mat-label>
-                                                <mat-select placeholder="Select"  name="duty_from2" [(ngModel)]="step1Data.duty_from2" >
+                                                <mat-select placeholder="Select"  [required]="!dutyTime2" [disabled]="shift2_from"  name="duty_from2" [(ngModel)]="step1Data.duty_from2" >
                                                     <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
                                             <mat-form-field class="frm-data">
                                                 <mat-label>To</mat-label>
-                                                <mat-select placeholder="Select" (selectionChange)="dayTimeChange($event,2)" name="duty_to2" [(ngModel)]="step1Data.duty_to2" >
+                                                <mat-select placeholder="Select" [required]="!dutyTime2" [disabled]="shift2_to" (selectionChange)="dayTimeChange($event,2)" name="duty_to2" [(ngModel)]="step1Data.duty_to2" >
                                                     <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
@@ -566,13 +569,13 @@
                                         <div class="col-md-3">
                                             <mat-form-field class="frm-data">
                                                 <mat-label>From</mat-label>
-                                                <mat-select placeholder="Select"  name="duty_from3" [(ngModel)]="step1Data.duty_from3" >
+                                                <mat-select placeholder="Select" [disabled]="shift3_from"  [required]="!dutyTime3" name="duty_from3" [(ngModel)]="step1Data.duty_from3" >
                                                     <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
                                             <mat-form-field class="frm-data">
                                                 <mat-label>To</mat-label>
-                                                <mat-select placeholder="Select" (selectionChange)="dayTimeChange($event,3)" name="duty_to3" [(ngModel)]="step1Data.duty_to3" >
+                                                <mat-select placeholder="Select" [disabled]="shift3_to"  [required]="!dutyTime3" (selectionChange)="dayTimeChange($event,3)" name="duty_to3" [(ngModel)]="step1Data.duty_to3">
                                                     <mat-option *ngFor="let item of addMinutesToTime; let i = index;" [value]="item.key">{{item.val}}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
@@ -587,7 +590,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                            <mat-radio-group name="is_main_activity" [(ngModel)]="step1Data.is_main_activity">
+                                            <mat-radio-group name="is_main_activity" #selectInspecActivity="ngModel" [(ngModel)]="step1Data.is_main_activity" required>
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <label class="check-rdo">
@@ -602,11 +605,19 @@
                                             
                                                 </div>
                                             </mat-radio-group>
+                                            <div class="col-md-12" [ngStyle]="{'margin-top':'5px'}">
+                                                <p class="error" *ngIf="isApplicationSubmitted == true && selectInspecActivity.errors?.required">Please select anyone option</p>
+                                            </div>
                                         </div>
                                         <div class="col-md-6">
                                             <mat-form-field class="cab-data">
+                                                <!-- [required]="ptProvidersForm.is_main_activity == 'false'" -->
                                                 <mat-label>(If No, indicate what are other activities related to the organization)</mat-label>
-                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="indication" [required]="ptProvidersForm.is_main_activity == 'false'" [(ngModel)]="step1Data.is_main_activity_note">
+                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="indication" 
+                                                 [(ngModel)]="step1Data.is_main_activity_note"
+                                                [required]="isApplicationSubmitted == true && is_main_activity_note_entry == true && step1Data.is_main_activity == 'false'" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="indication" 
+                                                 [(ngModel)]="step1Data.is_main_activity_note"
+                                                >
                                                 </mat-form-field>
                                         </div>
                                     </div>
@@ -625,7 +636,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-9">
-                                            <mat-radio-group name="is_hold_other_accreditation_select" [(ngModel)]="step1Data.is_hold_other_accreditation_select">
+                                            <mat-radio-group #selectAccredHold="ngModel" required name="is_hold_other_accreditation_select" [(ngModel)]="step1Data.is_hold_other_accreditation_select">
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <label class="check-rdo">
@@ -640,6 +651,9 @@
                                             
                                                 </div>
                                             </mat-radio-group>
+                                            <div class="col-md-8" [ngStyle]="{'margin-top':'5px'}"> 
+                                                <p class="error" *ngIf="isApplicationSubmitted == true && selectAccredHold.errors?.required">Please select anyone option</p>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -1149,7 +1163,8 @@
                                             </li>
                                             
                                             <li class="terms-condition"  (scroll)="scrollHandler($event)" #mydiv style="height:500px;overflow:auto">
-                                                <div class="tnc">
+                                            <div class="tnc" [innerHTML]="(termsGeneral != undefined && termsGeneral.content != undefined) ? termsGeneral.content : ''"></div>
+                                                <!-- <div class="tnc">
                                                     <h3>Terms & Conditions</h3>
                                                     <ol>
                                                         <li class="tnc-sub"><h5>FIRST PARTY OBLIGATION</h5>
@@ -1268,7 +1283,7 @@
                                                             </ul>
                                                         </li>
                                                     </ol>
-                                                </div>
+                                                </div> -->
                                             </li>
                                         
                                             <li>
@@ -1277,7 +1292,7 @@
                                                 Agreement and request to provide us with a word agreement form for signature.</mat-checkbox>
                                             </li>
                                         </ul>
-                                        <p class="error" *ngIf="!readTermsCond">Read the Terms and Conditions</p>
+                                        <p class="error" *ngIf="!readTermsCond   && isApplicationSubmitted == true">Read the Terms and Conditions</p>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
@@ -1297,18 +1312,18 @@
                                                 </mat-checkbox><br>
                                                 <p class="error" *ngIf="!readAccredAgreem">Please read agree the agreement</p>
                                             </div> -->
-                                            <div class="authData">
+                                            <!-- <div class="authData">
                                                 
                                                 <mat-checkbox name="undertaking_confirmTop3" 
                                                 [(ngModel)]="authorizationList.undertaking_confirmTop3" required>Do you require ILA MRA Mark Laboratories</mat-checkbox>
-                                            </div>
+                                            </div> -->
 
                                             <div class="authData">I confirm that the below documents are available and will be furnished once requested by EIAC:</div>
                                             <div class="auth-details">
                                                 <table>
                                                     <tr>
                                                         <td width="1%">
-                                                            <mat-checkbox name="undertaking_confirm1" 
+                                                            <mat-checkbox name="undertaking_confirm1"  (change)="authorizeCheckCount($event)"
                                                             [(ngModel)]="authorizationList.undertaking_confirm1"></mat-checkbox></td>
                                                         <td>Management System Manual</td>
                                                     </tr>
@@ -1316,37 +1331,59 @@
                                                         <td><mat-checkbox name="undertaking_confirm2" [disableRipple]="true"
                                                             (click)="$event.preventDefault()" [(ngModel)]="authorizationList.undertaking_confirm2"></mat-checkbox></td>
                                                         <td><span><a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled Up Document Review Checklist</a></span> (Related to applied accreditation standard and for initial accreditation & Scope Extensions only)<br/>
-                                                            <p class="error" *ngIf="!readReviewChecklist">Please review the checklist</p>                                                            
+                                                            <p class="error" *ngIf="!readReviewChecklist  && isApplicationSubmitted == true">Please review the checklist</p>                                                            
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td><mat-checkbox name="undertaking_confirm3" [(ngModel)]="authorizationList.undertaking_confirm3"></mat-checkbox></td>
+                                                        <td><mat-checkbox name="undertaking_confirm3"  (change)="authorizeCheckCount($event)" [(ngModel)]="authorizationList.undertaking_confirm3"></mat-checkbox></td>
                                                         <td>Internal Procedures (as per the accreditation criteria)</td>
                                                     </tr>
                                                     <tr>
-                                                        <td><mat-checkbox name="undertaking_confirm4" [(ngModel)]="authorizationList.undertaking_confirm4"></mat-checkbox></td>
+                                                        <td><mat-checkbox name="undertaking_confirm4"  (change)="authorizeCheckCount($event)" [(ngModel)]="authorizationList.undertaking_confirm4"></mat-checkbox></td>
                                                         <td>Minutes/Report of last Management Review</td>
                                                     </tr>
                                                     <tr>
-                                                        <td><mat-checkbox name="undertaking_confirm5" [(ngModel)]="authorizationList.undertaking_confirm5"></mat-checkbox></td>
+                                                        <td><mat-checkbox name="undertaking_confirm5"  (change)="authorizeCheckCount($event)" [(ngModel)]="authorizationList.undertaking_confirm5"></mat-checkbox></td>
                                                         <td>Report of last Internal Audit</td>
                                                     </tr>
                                                     <tr>
-                                                        <td><mat-checkbox name="undertaking_confirm6" [(ngModel)]="authorizationList.undertaking_confirm6"></mat-checkbox></td>
+                                                        <td><mat-checkbox name="undertaking_confirm6"  (change)="authorizeCheckCount($event)" [(ngModel)]="authorizationList.undertaking_confirm6"></mat-checkbox></td>
                                                         <td>Participation in PT/ILC/Measurement Audit</td>
                                                     </tr>
                                                     <tr>
-                                                        <td><mat-checkbox name="undertaking_confirm7" [(ngModel)]="authorizationList.undertaking_confirm7"></mat-checkbox></td>
+                                                        <td><mat-checkbox name="undertaking_confirm7"  (change)="authorizeCheckCount($event)" [(ngModel)]="authorizationList.undertaking_confirm7"></mat-checkbox></td>
                                                         <td>List of key staff and Organizational Structure if not mentioned in the Management System Manual</td>
                                                     </tr>
                                                 </table>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p class="error" *ngIf="!authorizationStatus">All check are required.</p>
+                                                    <p class="error" *ngIf="!authorizationStatus  && isApplicationSubmitted == true">All check are required.</p>
                                                 </div>
                                             </div>
-                                            <div class="recommend">
+                                            <div class="recommend my-3">
+                                                <div class="recommend-main">
+                                                    <div class="recommend-quarter">
+                                                        <span class="confirm">I recommend the visit to be conducted in the</span>
+                                                        <mat-radio-group name="recommended" #recommendVisit="ngModel" [(ngModel)]="step7Data.recommend_visit" required>
+                                                            <mat-radio-button name="1st" value="first">1st</mat-radio-button>
+                                                            <mat-radio-button name="2nd" value="second">2nd</mat-radio-button>
+                                                            <mat-radio-button name="3rd" value="third">3rd</mat-radio-button>
+                                                            <mat-radio-button name="4th" value="fourth">4th quarter of the year</mat-radio-button>
+                                                        </mat-radio-group>
+                                                    </div>
+                                                    <div class="recommend-year">
+                                                        <!-- @{{step7Data.recommend_year}} -->
+                                                        <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step7Data.recommend_year" required>
+                                                            <mat-option [value]="item.value" *ngFor="let item of recommendYearValues; let k=index;">{{item.title}}</mat-option>
+                                                        </mat-select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 p-0" [ngStyle]="{'margin-top':'5px'}">
+                                                    <p class="error" *ngIf="recommendVisit.errors?.required && isApplicationSubmitted == true">Please select anyone option</p>
+                                                </div>                                                
+                                            </div>
+                                            <!-- <div class="recommend">
                                                 <span class="confirm">I recommend the visit to be conducted in the</span>
                                                 <mat-radio-group name="recommended" #recommendVisit="ngModel" [(ngModel)]="step7Data.recommend_visit" required>
                                                     <mat-radio-button name="1st" value="first">1st</mat-radio-button>
@@ -1359,7 +1396,7 @@
                                                 <div class="col-md-12">
                                                     <p class="error" *ngIf="recommendVisit.errors?.required">This is required</p>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                     <div class="row">
@@ -1472,8 +1509,13 @@
                       </ng-template>
                       <ng-template #checklistView let-modal>
                         <div class="modal-header">
-                          <h4 class="modal-title" id="modal-basic-title">CHECKLIST</h4>
-                          <button type="button" class="close" aria-label="Close" (click)="closeChecklistDialog()">
+                          <h4 class="modal-title" id="modal-basic-title">CHECKLIST
+                            <a [href]="pathPDF" target="_blank" [ngStyle]="{'color': '#000'}">
+                                <span class="icon-download-diff"></span>
+                                </a>
+
+                          </h4>
+                          <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
