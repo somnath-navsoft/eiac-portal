@@ -1292,7 +1292,7 @@
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <div class="request-subhdr">
-                                                        <span>Request for prelim visit *</span>
+                                                        <span>Request for prelim visit: <span class="required_input">*</span></span>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2">
@@ -1518,7 +1518,7 @@
                                                         </li>
                                                     </ol>
                                                 </div> -->
-                                    <div class="tnc" [innerHTML]="(termsGeneral != undefined && termsGeneral.content != undefined) ? termsGeneral.content : ''"></div>
+                                        <div class="tnc" [innerHTML]="(termsGeneral != undefined && termsGeneral.content != undefined) ? termsGeneral.content : ''"></div>
                                             
                                             </li>
                                         
@@ -1813,7 +1813,9 @@
                                         <!-- <button class="cancel-bttn" type="button" (click)="savedraftStep('step8')">SAVE AS DRAFT</button> -->
                                         <!-- <button class="submit-bttn submit-health" (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)">CONTINUE</button> -->
                                     </div>
+                                    <ng-container *ngIf="paymentFilePath != ''">
                                     <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button>
+                                    </ng-container>
                                     <ng-container *ngIf="transactions.length">
                                         <div id="paypalPayment"></div>
                                     </ng-container>

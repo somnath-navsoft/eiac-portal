@@ -1719,7 +1719,9 @@
                                         (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice')">BACK</a> 
                                         <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice()">SAVE AS DRAFT</button> -->
                                     </div>
+                                    <ng-container *ngIf="paymentFilePath != ''">
                                     <button class="submit-bttn submit-health" *ngIf="!transactions.length" >CONTINUE</button>
+                                    </ng-container>
                                     <ng-container *ngIf="transactions.length">
                                         <div id="paypalPayment"></div>
                                     </ng-container>
@@ -1823,7 +1825,7 @@
                                         <div class="col-md-6">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mobile Number</mat-label>
-                                                <input type="text" [ngModelOptions]="{standalone: true}" required="true"
+                                                <input type="text" [ngModelOptions]="{standalone: true}"
                                                 matInput placeholder="Mobile Number"maxlength="13" 
                                                 [(ngModel)]="voucherSentData.mobile_no" required>
                                             </mat-form-field>

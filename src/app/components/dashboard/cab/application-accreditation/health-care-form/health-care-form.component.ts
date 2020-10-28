@@ -1318,13 +1318,26 @@ loadData(){
               }
       
               //check steps
+              // if(getData.data.is_draft){
+              //   saveStep = parseInt(getData.data.saved_step) - 1;
+              // }else{
+              //   if(parseInt(getData.data.saved_step) == 9){
+              //     saveStep = parseInt(getData.data.saved_step) - 1;
+              //   }else{
+              //   saveStep = parseInt(getData.data.saved_step);
+              //   }
+              // }
               if(getData.data.is_draft){
                 saveStep = parseInt(getData.data.saved_step) - 1;
               }else{
                 if(parseInt(getData.data.saved_step) == 9){
                   saveStep = parseInt(getData.data.saved_step) - 1;
+                  this.paymentStepComp = true;
+                }else if(parseInt(getData.data.saved_step) == 8){
+                  saveStep = parseInt(getData.data.saved_step);
+                  this.paymentStepComp = true;
                 }else{
-                saveStep = parseInt(getData.data.saved_step);
+                  saveStep = parseInt(getData.data.saved_step);
                 }
               }
 
@@ -1515,6 +1528,7 @@ loadData(){
                   this.authorizationList[key] = true;
                 })
                 this.authorizationStatus = true;
+                this.readReviewChecklist= true;
                 let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
                 this.step7Data.recommend_visit = visitRecomm;//'second';
                  this.step7Data.recommend_year = parseInt(getData.data.recommend_year);
@@ -1547,10 +1561,10 @@ loadData(){
                   this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
                   this.paymentReceiptValidation = true;
 
-                  if(res['data'].paymentDetails.transaction_no != null && res['data'].paymentDetails.payment_method != null &&
-                    res['data'].paymentDetails.payment_made_by !+ null && res['data'].paymentDetails.mobile_no != null && res['data'].paymentDetails.payment_receipt != ''){
-                        this.paymentStepComp = true;
-                  }
+                  // if(res['data'].paymentDetails.transaction_no != null && res['data'].paymentDetails.payment_method != null &&
+                  //   res['data'].paymentDetails.payment_made_by !+ null && res['data'].paymentDetails.mobile_no != null && res['data'].paymentDetails.payment_receipt != ''){
+                  //       this.paymentStepComp = true;
+                  // }
               }
             }
         });
@@ -2743,7 +2757,7 @@ this.healthCareForm.step9 = {};
     dtFormat = year + "-" + month + "-" + date;
   }
   //     
-
+  let is_valid: boolean = false;
 this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
 this.voucherFile.append('amount',this.voucherSentData['amount']);
 this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
@@ -2754,10 +2768,14 @@ this.voucherFile.append('voucher_date',dtFormat);
 this.voucherFile.append('accreditation',this.formApplicationId);
 this.voucherFile.append('is_draft', false);
 // this.voucherFile.append('application_id',this.formApplicationId);
-    
-this.loader = false;
-if(ngForm9.form.valid && this.paymentReceiptValidation != false) {
+if(this.voucherSentData['transaction_no'] != '' && this.voucherSentData['payment_method'] != '' && this.voucherSentData['payment_made_by'] &&
+this.voucherSentData['mobile_no'] != ''){
+  is_valid = true;
+}
+
+if(is_valid == true && this.paymentReceiptValidation != false) {
   // //console.log(this.voucherFile);
+  this.loader = false;
     this._trainerService.paymentVoucherSave((this.voucherFile))
     .subscribe(
         result => {
@@ -2926,11 +2944,24 @@ saveInspectopnAfterPayment(theData: any){
   ////console.log(">>> The Data: ", theData);
   this.transactions = [];
   this.toastr.success('Payment Success, Thank you.','Paypal>>',{timeOut:2000});
-  setTimeout(()=> {
-    // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-    //////console.log("moving...");
-    this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
-  }, 1000)      
+
+  //proforma save
+  let postData: any = new FormData();
+  postData.append('accreditation', this.formApplicationId);
+  this._trainerService.proformaAccrSave(postData)
+  .subscribe(
+    result => {
+        let data: any = result;
+        if(data.status){
+          this.paymentStepComp = true;
+          this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+        }
+        //console.log(">>> Save resultts: ", result);
+    });
+
+  // setTimeout(()=> {
+  //   this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+  // }, 1000)      
   //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
 }
 

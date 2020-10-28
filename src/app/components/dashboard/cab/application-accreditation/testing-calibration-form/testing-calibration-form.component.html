@@ -22,9 +22,9 @@
                                         <div class="usernext-icon">
                                             <span [ngClass]="(item.activeClass === 'user-done') ? 'icon-tick' : item.icon"></span>
                                         </div>
-
+                                        <!-- (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}" -->
                                         <div class="user-details-pending" 
-                                        id="course_header" (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}">
+                                        id="course_header" >
                                             <span [innerHTML]="item.desc"></span>
                                         </div>
                                     </div>
@@ -1066,8 +1066,8 @@
                                         <div class="row">
                                             <div class="col-md-12 col-sm-12">
                                                 
-                                                <p *ngIf="scopeDataLoad && !scopeDataError">Loading</p>
-                                                <p *ngIf="scopeDataError">No Records</p>
+                                                <!-- <p *ngIf="scopeDataLoad && !scopeDataError">Loading</p>
+                                                <p *ngIf="scopeDataError">No Records</p> -->
             
                                                 <div class="row" *ngIf="fullScope.length > 0 && !scopeDataLoad">
                                                     <div class="col-12" *ngFor="let scope of fullScope; let i1 = index;">
@@ -1352,7 +1352,7 @@
                                             <hr>
                                         </div>
                                     </div>
-                                    <div class="row mt-3">                                         
+                                    <!-- <div class="row mt-3">                                         
                                         <div class="col-md-12 p-0">
                                             <div class="row m-0">
                                                 <div class="col-md-6">
@@ -1360,8 +1360,6 @@
                                                         <h5>Request for perlim visit</h5>
                                                     </div>
                                                 </div>
-                                                <!-- @@{{inspectionBodyForm.perlim_visit_val |  json}} -->
-                                                <!-- (click)='proficiency_testing(1)' -->
                                                 <div class="col-md-6">
                                                     <div class="request_frm">
                                                         <mat-radio-group name="is_prelim_visit" 
@@ -1373,9 +1371,34 @@
                                                 </div>
                                             </div>                                                    
                                         </div>
+                                    </div> -->
+                                    <div class="row mt-3">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="request-subhdr">
+                                                        <span>Request for prelim visit *</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="request_frm">
+                                                        <mat-radio-group name="perlim_visit_val" 
+                                                        [(ngModel)]="step6Data.prelim_visit_val" #selectPrelim="ngModel" required>
+                                                            <div class="rad-space">
+                                                                <mat-radio-button value="1">Yes </mat-radio-button>
+                                                                <mat-radio-button value="0">No </mat-radio-button>
+                                                            </div>
+                                                        </mat-radio-group>
+                                                        <div class="col-md-6 p-0"  [ngStyle]="{'margin-top':'5px','margin-left' : '40px'}">
+                                                            <p class="error" *ngIf="isPrelimSubmitted == true && selectPrelim.errors?.required">Please select anyone option</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>                                                    
+                                        </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12" *ngIf="step6Data.is_prelim_visit === '1'">
+                                        <div class="col-md-12" *ngIf="step6Data.prelim_visit_val === '1'">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <mat-form-field class="cab-data">
@@ -1392,7 +1415,7 @@
                                                         <mat-label>Select Time</mat-label>
                                                         <mat-select placeholder="Select" name="prelim_visit_time" 
                                                         (selectionChange)="getDutyTimeForm1Index($event)" 
-                                                        [(ngModel)]="step6Data.prelim_visit_time">
+                                                        [(ngModel)]="step6Data.prelim_visit_time" required>
                                                             <mat-option *ngFor="let item of addMinutesToTime; let i = index;" 
                                                             [value]="item.key">{{item.val}}</mat-option>
                                                         </mat-select>
@@ -1411,7 +1434,7 @@
                                     <!--  (click)="onSubmitPerlimVisit()" -->
                                     <div class="button-content">
                                         <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','perlim_visit')">BACK</a>
-                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step6')">SAVE AS DRAFT</button>
+                                        <button class="cancel-bttn" type="button" (click)="onSubmitStep6(ngForm6, true)">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health">CONTINUE</button>
                                 </div>
@@ -1445,11 +1468,11 @@
                                     <div class="auth">
                                         <ul>
                                             <li>
-                                                <mat-checkbox name="authorization_confirm1" [(ngModel)]="authorizationList.authorization_confirm1" >I confirm that the information provided in this application form is true and correct.</mat-checkbox>
+                                                <mat-checkbox (change)="authorizeCheckCount($event)" name="authorization_confirm1" [(ngModel)]="authorizationList.authorization_confirm1" >I confirm that the information provided in this application form is true and correct.</mat-checkbox>
                                             </li>
                                             
                                             <li class="terms-condition"  (scroll)="scrollHandler($event)" #mydiv style="height:500px;overflow:auto">
-                                                <div class="tnc">
+                                                <!-- <div class="tnc">
                                                     <h3>Terms & Conditions</h3>
                                                     <ol>
                                                         <li class="tnc-sub"><h5>FIRST PARTY OBLIGATION</h5>
@@ -1568,7 +1591,9 @@
                                                             </ul>
                                                         </li>
                                                     </ol>
-                                                </div>
+                                                </div> -->
+                                            
+                                                <div class="tnc" [innerHTML]="(termsGeneral != undefined && termsGeneral.content != undefined) ? termsGeneral.content : ''"></div>
                                             </li>
                                         
                                             <li>
@@ -1577,7 +1602,7 @@
                                                 Agreement and request to provide us with a word agreement form for signature.</mat-checkbox>
                                             </li>
                                         </ul>
-                                        <p class="error" *ngIf="!readTermsCond">Read the Terms and Conditions</p>
+                                        <p class="error" *ngIf="!readTermsCond  && isApplicationSubmitted == true">Read the Terms and Conditions</p>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
@@ -1599,8 +1624,11 @@
                                             </div> -->
                                             <div class="authData">
                                                 
-                                                <mat-checkbox name="undertaking_confirmTop3" 
+                                                <mat-checkbox name="undertaking_confirmTop3" (change)="authorizeCheckCount($event)"
                                                 [(ngModel)]="authorizationList.undertaking_confirmTop3" required>Do you require ILA MRA Mark Laboratories</mat-checkbox>
+                                            </div>
+                                            <div class="terms-condition" style="height:500px;overflow:auto">
+                                                <div class="tnc" [innerHTML]="(termsILA != undefined && termsILA.content != undefined) ? termsILA.content : ''"></div>
                                             </div>
 
                                             <div class="authData">I confirm that the below documents are available and will be furnished once requested by EIAC:</div>
@@ -1608,7 +1636,7 @@
                                                 <table>
                                                     <tr>
                                                         <td width="1%">
-                                                            <mat-checkbox name="undertaking_confirm1" 
+                                                            <mat-checkbox name="undertaking_confirm1" (change)="authorizeCheckCount($event)"
                                                             [(ngModel)]="authorizationList.undertaking_confirm1"></mat-checkbox></td>
                                                         <td>Management System Manual</td>
                                                     </tr>
@@ -1616,37 +1644,58 @@
                                                         <td><mat-checkbox name="undertaking_confirm2" [disableRipple]="true"
                                                             (click)="$event.preventDefault()" [(ngModel)]="authorizationList.undertaking_confirm2"></mat-checkbox></td>
                                                         <td><span><a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled Up Document Review Checklist</a></span> (Related to applied accreditation standard and for initial accreditation & Scope Extensions only)<br/>
-                                                            <p class="error" *ngIf="!readReviewChecklist">Please review the checklist</p>                                                            
+                                                            <p class="error" *ngIf="!readReviewChecklist && isApplicationSubmitted == true">Please review the checklist</p>                                                            
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td><mat-checkbox name="undertaking_confirm3" [(ngModel)]="authorizationList.undertaking_confirm3"></mat-checkbox></td>
+                                                        <td><mat-checkbox name="undertaking_confirm3"  (change)="authorizeCheckCount($event)" [(ngModel)]="authorizationList.undertaking_confirm3"></mat-checkbox></td>
                                                         <td>Internal Procedures (as per the accreditation criteria)</td>
                                                     </tr>
                                                     <tr>
-                                                        <td><mat-checkbox name="undertaking_confirm4" [(ngModel)]="authorizationList.undertaking_confirm4"></mat-checkbox></td>
+                                                        <td><mat-checkbox name="undertaking_confirm4"  (change)="authorizeCheckCount($event)" [(ngModel)]="authorizationList.undertaking_confirm4"></mat-checkbox></td>
                                                         <td>Minutes/Report of last Management Review</td>
                                                     </tr>
                                                     <tr>
-                                                        <td><mat-checkbox name="undertaking_confirm5" [(ngModel)]="authorizationList.undertaking_confirm5"></mat-checkbox></td>
+                                                        <td><mat-checkbox name="undertaking_confirm5"  (change)="authorizeCheckCount($event)" [(ngModel)]="authorizationList.undertaking_confirm5"></mat-checkbox></td>
                                                         <td>Report of last Internal Audit</td>
                                                     </tr>
                                                     <tr>
-                                                        <td><mat-checkbox name="undertaking_confirm6" [(ngModel)]="authorizationList.undertaking_confirm6"></mat-checkbox></td>
+                                                        <td><mat-checkbox name="undertaking_confirm6"  (change)="authorizeCheckCount($event)" [(ngModel)]="authorizationList.undertaking_confirm6"></mat-checkbox></td>
                                                         <td>Participation in PT/ILC/Measurement Audit</td>
                                                     </tr>
                                                     <tr>
-                                                        <td><mat-checkbox name="undertaking_confirm7" [(ngModel)]="authorizationList.undertaking_confirm7"></mat-checkbox></td>
+                                                        <td><mat-checkbox name="undertaking_confirm7"  (change)="authorizeCheckCount($event)" [(ngModel)]="authorizationList.undertaking_confirm7"></mat-checkbox></td>
                                                         <td>List of key staff and Organizational Structure if not mentioned in the Management System Manual</td>
                                                     </tr>
                                                 </table>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p class="error" *ngIf="!authorizationStatus">All check are required.</p>
+                                                    <p class="error" *ngIf="!authorizationStatus  && isApplicationSubmitted == true">All check are required.</p>
                                                 </div>
                                             </div>
-                                            <div class="recommend">
+                                            <div class="recommend my-3">
+                                                <div class="recommend-main">
+                                                    <div class="recommend-quarter">
+                                                        <span class="confirm">I recommend the visit to be conducted in the</span>
+                                                        <mat-radio-group name="recommended" #recommendVisit="ngModel" [(ngModel)]="step7Data.recommend_visit" required>
+                                                            <mat-radio-button name="1st" value="first">1st</mat-radio-button>
+                                                            <mat-radio-button name="2nd" value="second">2nd</mat-radio-button>
+                                                            <mat-radio-button name="3rd" value="third">3rd</mat-radio-button>
+                                                            <mat-radio-button name="4th" value="fourth">4th quarter of the year</mat-radio-button>
+                                                        </mat-radio-group>
+                                                    </div>
+                                                    <div class="recommend-year">
+                                                        <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step7Data.recommend_year" required>
+                                                            <mat-option [value]="item.value" *ngFor="let item of recommendYearValues; let k=index;">{{item.title}}</mat-option>
+                                                        </mat-select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 p-0" [ngStyle]="{'margin-top':'5px'}">
+                                                    <p class="error" *ngIf="recommendVisit.errors?.required && isApplicationSubmitted == true">Please select anyone option</p>
+                                                </div>                                                
+                                            </div>
+                                            <!-- <div class="recommend">
                                                 <span class="confirm">I recommend the visit to be conducted in the</span>
                                                 <mat-radio-group name="recommended" #recommendVisit="ngModel" [(ngModel)]="step7Data.recommend_visit" required>
                                                     <mat-radio-button name="1st" value="first">1st</mat-radio-button>
@@ -1657,9 +1706,9 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <p class="error" *ngIf="recommendVisit.errors?.required">This is required</p>
+                                                    <p class="error" *ngIf="recommendVisit.errors?.required && isApplicationSubmitted == true">Please select anyone option</p>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                     <div class="row">
@@ -1773,7 +1822,7 @@
                       <ng-template #checklistView let-modal>
                         <div class="modal-header">
                           <h4 class="modal-title" id="modal-basic-title">CHECKLIST</h4>
-                          <button type="button" class="close" aria-label="Close" (click)="closeChecklistDialog()">
+                          <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
@@ -1855,7 +1904,7 @@
                                             <hr>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row mt-3">
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Voucher Code</mat-label>
@@ -1896,10 +1945,15 @@
                                         </div>
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
-                                                <mat-label>Payment Method</mat-label>
+                                                <!-- <mat-label>Payment Method</mat-label>
                                                 <input type="text" [ngModelOptions]="{standalone: true}" required="true"
                                                 matInput placeholder="Payment Method" 
-                                                [(ngModel)]="voucherSentData.payment_method">
+                                                [(ngModel)]="voucherSentData.payment_method"> -->
+                                                <mat-label>Payment Made By</mat-label>
+                                                <mat-select placeholder="Select" name="payment_method" [(ngModel)]="voucherSentData.payment_method" required="true">
+                                                    <mat-option value="Cash">Cash</mat-option>
+                                                    <mat-option value="Online">Online</mat-option>
+                                                </mat-select>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-4">
@@ -1915,7 +1969,7 @@
                                         <div class="col-md-6">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mobile Number</mat-label>
-                                                <input type="text" [ngModelOptions]="{standalone: true}" required="true"
+                                                <input type="text" [ngModelOptions]="{standalone: true}"
                                                 matInput placeholder="Mobile Number" 
                                                 [(ngModel)]="voucherSentData.mobile_no" required>
                                             </mat-form-field>
@@ -1967,7 +2021,11 @@
                                     <!-- (click)="onSubmitPaymentInformation()" -->
                                     <!-- <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</button> -->
                                     <div class="button-content">
-                                        <a class="cancel-bttn" type="button" (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</a>
+                                        <!-- <a class="cancel-bttn" type="button" (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</a> -->
+                                        <ng-container *ngIf="!paymentStepComp">
+                                            <a href="javascript:void(0)" class="cancel-bttn" type="button" 
+                                            (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</a>
+                                        </ng-container>
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step9')">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >SUBMIT</button>
