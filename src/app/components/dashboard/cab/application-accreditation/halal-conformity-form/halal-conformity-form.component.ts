@@ -170,9 +170,17 @@ export class HalalConformityFormComponent implements OnInit {
   summaryDetails:any[] = [{}];
   scopeofHalalConformity:any[] = [{}];
   authorizedPersonforSigning:any[] = [{}];
-  hcabLogo1:any = {};
-  hcabLogo2:any = {};
-  hcabLogo3:any = {};
+  hcabLogo1;
+  hcabLogo2;
+  hcabLogo3;
+  file_validation_listAuditor:boolean = true;
+  esma_fileAny:any;
+  halal_certificate_fileAny:any;
+  file_validation_halal_certificate:boolean = true;
+  esma_file_validation:boolean = true;
+  hcabLogo1_validation:boolean = true;
+  hcabLogo2_validation:boolean = true;
+  hcabLogo3_validation:boolean = true;
   
   @ViewChild('captchaRef',{static:true}) captchaRef: RecaptchaComponent;
 
@@ -253,6 +261,64 @@ export class HalalConformityFormComponent implements OnInit {
     this.loadCountryStateCity();
   }
 
+
+  listAuditorFile(fileEvent: any,key:any,id?: any) {
+    // this.file_validation_listAuditor = ;
+    if(id && id != ''){
+      var file_name = fileEvent.target.files[0].name;
+      var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
+      var ex_type = ['pdf'];
+      var ex_check = this.Service.isInArray(file_exe,ex_type);
+      if(ex_check) {
+        this.accreditationInfo[key].list_auditor_upload = fileEvent.target.files[0].name;
+        this.step3DataBodyFormFile.append('qualification_file_exist_'+id,fileEvent.target.files[0]);
+        this.file_validation_listAuditor = true;
+      }else{
+        this.file_validation_listAuditor = false;
+      }
+    }else{
+      var file_name = fileEvent.target.files[0].name;
+      var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
+      var ex_type = ['pdf'];
+      var ex_check = this.Service.isInArray(file_exe,ex_type);
+      if(ex_check) {
+        this.accreditationInfo[key].list_auditor_upload = fileEvent.target.files[0].name;
+        this.step3DataBodyFormFile.append('qualification_file_'+key,fileEvent.target.files[0]);
+        this.file_validation_listAuditor = true;
+      }else{
+        this.file_validation_listAuditor = false;
+      }
+    }
+  }
+
+  halalCertificates(fileEvent: any,key:any,id?: any) {
+    // this.file_validation_listAuditor = ;
+    if(id && id != ''){
+      var file_name = fileEvent.target.files[0].name;
+      var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
+      var ex_type = ['pdf'];
+      var ex_check = this.Service.isInArray(file_exe,ex_type);
+      if(ex_check) {
+        this.authorizedPersonforSigning[key].authorized_personforSigning_upload = fileEvent.target.files[0].name;
+        this.step3DataBodyFormFile.append('qualification_file_exist_'+id,fileEvent.target.files[0]);
+        this.file_validation_listAuditor = true;
+      }else{
+        this.file_validation_listAuditor = false;
+      }
+    }else{
+      var file_name = fileEvent.target.files[0].name;
+      var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
+      var ex_type = ['pdf'];
+      var ex_check = this.Service.isInArray(file_exe,ex_type);
+      if(ex_check) {
+        this.authorizedPersonforSigning[key].authorized_personforSigning_upload = fileEvent.target.files[0].name;
+        this.step3DataBodyFormFile.append('qualification_file_'+key,fileEvent.target.files[0]);
+        this.file_validation_listAuditor = true;
+      }else{
+        this.file_validation_listAuditor = false;
+      }
+    }
+  }
 
   getDutyTimeForm1Index(indexVal){
     ////console.log('Get Index: ', indexVal.value, " -- ", indexVal);
@@ -595,53 +661,58 @@ export class HalalConformityFormComponent implements OnInit {
     this.minDate = new Date(cdate  + (60*60*24*1000));
   }
 
-  validateFile(fileEvent: any,type) {
-   
+  validateFile(fileEvent: any,fileName?:any) {
+    // console.log(fileName,'fileName')
     var file_name = fileEvent.target.files[0].name;
     var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
-    var ex_type = ['jpg','JPEG','gif','png'];
-    var ex_check = this.isInArray(file_exe,ex_type);
-    var ex = (fileEvent.target.files[0].name).split('.');
-  //  if(ex_check){
-     if(type=="trade_license" && ex_check  == true){
-       this.publicHalalConformityForm.trade_license_name = fileEvent.target.files[0].name;
-       this.publicHalalConformityFormTemp.append('trade_license',fileEvent.target.files[0]);
-       this.file_validation = true;
-     }else if(type=="trade_license" && ex_check  != true){
-      this.file_validation = false;
+    var ex_type = ['doc','odt','pdf','rtf','docx','xlsx'];
+    var ex_check = this.Service.isInArray(file_exe,ex_type);
+    if(ex_check && fileName == 'halal_certificate_stamp'){
+      this.publicHalalConformityForm.halal_certificate_stamp = fileEvent.target.files[0].name;
+      this.publicHalalConformityFormTemp.append('halal_certificate_stamp_file',fileEvent.target.files[0]);
+      this.file_validation_halal_certificate = true;
+      return true;
+    }else if(!ex_check && fileName == 'halal_certificate_stamp') {
+      this.file_validation_halal_certificate = false;
+      return false;
+    }else if(ex_check && fileName == 'id_issued_esma'){
+      this.publicHalalConformityForm.id_issued_esma = fileEvent.target.files[0].name;
+      this.publicHalalConformityFormTemp.append('id_issued_esma_file',fileEvent.target.files[0]);
+      this.esma_file_validation = true;
+      return true;
+    }else if(!ex_check && fileName == 'id_issued_esma') {
+      this.esma_file_validation = false;
+      return false;
+    }else if(ex_check && fileName == 'hcabLogo1'){
+      this.publicHalalConformityForm.hcabLogo1 = fileEvent.target.files[0].name;
+      this.publicHalalConformityFormTemp.append('hcabLogo1_file',fileEvent.target.files[0]);
+      this.hcabLogo1_validation = true;
+      return true;
+    }else if(!ex_check && fileName == 'hcabLogo1') {
+      this.hcabLogo1_validation = false;
+      return false;
+    }else if(ex_check && fileName == 'hcabLogo2'){
+      this.publicHalalConformityForm.hcabLogo2 = fileEvent.target.files[0].name;
+      this.publicHalalConformityFormTemp.append('hcabLogo2_file',fileEvent.target.files[0]);
+      this.hcabLogo2_validation = true;
+      return true;
+    }else if(!ex_check && fileName == 'hcabLogo2') {
+      this.hcabLogo2_validation = false;
+      return false;
+    }else if(ex_check && fileName == 'hcabLogo3'){
+      this.publicHalalConformityForm.hcabLogo3 = fileEvent.target.files[0].name;
+      this.publicHalalConformityFormTemp.append('hcabLogo3_file',fileEvent.target.files[0]);
+      this.hcabLogo3_validation = true;
+      return true;
+    }else if(!ex_check && fileName == 'hcabLogo3') {
+      this.hcabLogo3_validation = false;
+      return false;
     }
-     else if(type=="recognized_logo3" && ex_check  == true){
-       this.publicHalalConformityForm.recognized_logo3_name = fileEvent.target.files[0].name;
-       this.publicHalalConformityFormTemp.append('recognized_logo3',fileEvent.target.files[0]);
-       this.file_validation4 = true;
-     }else if(type=="recognized_logo3" && ex_check  != true){
-      this.file_validation4 = false;
-    }
-     if(type=="recognized_logo2" && ex_check  == true){
-       this.publicHalalConformityForm.recognized_logo2_name= fileEvent.target.files[0].name;
-       this.publicHalalConformityFormTemp.append('recognized_logo2',fileEvent.target.files[0]);
-       this.file_validation3 = true;
-     }else if(type=="recognized_logo2" && ex_check  != true){
-      this.file_validation3 = false;
-    }
-     if(type=="recognized_logo1" && ex_check  == true){
-       this.publicHalalConformityForm.recognized_logo1_name= fileEvent.target.files[0].name;
-       this.publicHalalConformityFormTemp.append('recognized_logo1',fileEvent.target.files[0]);
-       this.file_validation2 = true;
-     }else if(type=="recognized_logo1" && ex_check  != true){
-      this.file_validation2 = false;
-    }
- 
-     
-  //  }
-  //  else{
-  //   this.file_validation = false;
-  //    return false;
-  //  }
- }
+  }
+
  isInArray(value, array) {
-  return array.indexOf(value) > -1;
-}
+    return array.indexOf(value) > -1;
+  }
  
   resolvedSecurity(captchaResponse: string) {
     let captchaStatus   =  captchaResponse;
@@ -845,11 +916,12 @@ export class HalalConformityFormComponent implements OnInit {
     }
   }
 
-  getPlaceName()
+  getPlaceName(i)
   {
-    if(typeof this.publicHalalConformityForm.search_location_name != 'undefined')
+    // console.log(this.scopeofHalalConformity[i].location);
+    if(typeof this.scopeofHalalConformity[i].location != 'undefined')
     {
-      this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.publicHalalConformityForm.search_location_name+'.json?access_token='+this.Service.mapboxToken+'','')
+      this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.scopeofHalalConformity[i].location+'.json?access_token='+this.Service.mapboxToken+'','')
         .subscribe(res => {
             // //console.log(res['features']);
             this.searchCountryLists = res['features'];
@@ -1011,8 +1083,18 @@ export class HalalConformityFormComponent implements OnInit {
       this.publicHalalConformityForm.step2.managementManager['email'] = (this.step2Data.management_email != '' && this.step2Data.management_email != undefined) ? this.step2Data.management_email : '';
       this.publicHalalConformityForm.step2.managementManager['relevent_experience'] = (this.step2Data.management_relevent_experience != '' && this.step2Data.management_relevent_experience != undefined) ? this.step2Data.management_relevent_experience : '';
       this.publicHalalConformityForm.step2.managementManager['duration_at_current_post'] = (this.step2Data.duration_at_current_post_manager != '' && this.step2Data.duration_at_current_post_manager != undefined) ? this.step2Data.duration_at_current_post_manager : '';
+
+
+      this.publicHalalConformityForm.step2.islamicAffairs = {};
   
-      this.publicHalalConformityForm.step2['summaryDetail'] = [];
+      this.publicHalalConformityForm.step2.islamicAffairs['name'] = (this.step2Data.islamic_name != '' && this.step2Data.islamic_name != undefined) ? this.step2Data.islamic_name : '';
+      this.publicHalalConformityForm.step2.islamicAffairs['designation'] = (this.step2Data.islamic_designation != '' && this.step2Data.islamic_designation != undefined) ? this.step2Data.islamic_designation : '' ;
+      this.publicHalalConformityForm.step2.islamicAffairs['mobile_no'] = (this.step2Data.islamic_mobile_no != '' && this.step2Data.islamic_mobile_no != undefined) ? this.step2Data.islamic_mobile_no : '';
+      this.publicHalalConformityForm.step2.islamicAffairs['email'] = (this.step2Data.islamic_email != '' && this.step2Data.islamic_email != undefined) ? this.step2Data.islamic_email : '';
+      this.publicHalalConformityForm.step2.islamicAffairs['relevent_experience'] = (this.step2Data.islamic_relevent_experience != '' && this.step2Data.islamic_relevent_experience != undefined) ? this.step2Data.islamic_relevent_experience : '';
+      this.publicHalalConformityForm.step2.islamicAffairs['duration_at_current_post'] = (this.step2Data.islamic_duration_at_current_post != '' && this.step2Data.islamic_duration_at_current_post != undefined) ? this.step2Data.islamic_duration_at_current_post : '';
+  
+      this.publicHalalConformityForm.step2['summaryDetail'] = this.summaryDetails;
   
       this.publicHalalConformityForm.step2.is_draft = false;
       this.publicHalalConformityForm.saved_step = 2;
