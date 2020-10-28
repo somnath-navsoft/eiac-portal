@@ -5,7 +5,7 @@ import { AppService } from 'src/app/services/app.service';
 import { ToastrService } from 'ngx-toastr';
 import { HostListener, ElementRef } from '@angular/core';
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material'; 
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material';
 import { RecaptchaComponent } from 'ng-recaptcha';
 declare let paypal: any;
 import { DomSanitizer } from '@angular/platform-browser';
@@ -30,7 +30,7 @@ export class PtProvidersFormComponent implements OnInit {
   public scopeForTesting: Array<any> = [];
   public scopeForMedical: Array<any> = [];
 
-  public accreditationInfo: Array<any> = [{}];
+  public accreditationInfo: Array<any> = [];
   public technicalManager: any = {};
   public managementManager: any = {};
   public medicaMainlLabInfo:Array<any>=[];
@@ -80,10 +80,7 @@ export class PtProvidersFormComponent implements OnInit {
 
   searchCountryLists:any;
   onbehalf_representative_date:boolean = false;
-  recommendStatus:boolean = false;
-
-  isApplicationSubmitted:any = false;
-  public isNoteSubmit:boolean = false;
+  recommendStatus:boolean = false
 
   foods = [
     {value: 'steak-0', viewValue: 'Steak'},
@@ -210,19 +207,11 @@ export class PtProvidersFormComponent implements OnInit {
  ngOnInit() { 
    // this.minCurrentDate = new Date(2020, 0, 13);
   //  this.titleService.setTitle('EIAC - Proficiency Testing Providers');
-  this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
-    console.log(this.urlVal,'valofurl');
-    this.userEmail = sessionStorage.getItem('email');
-    this.userType = sessionStorage.getItem('type');
-    this.isCompleteness = sessionStorage.getItem('isCompleteness');
-    this.profileComplete = sessionStorage.getItem('profileComplete');
-    this.userId = sessionStorage.getItem('userId');
    this.addMinutesToTime = this.Service.addMinutesToTime();
    this.loadAppInfo();
    this.loadCountryStateCity();
    this.loadTermsConditions();
    //this.checkCaptchaValidation = false;
-   this.loadData();
    this.loader = false;
 
    var d = new Date();
@@ -515,7 +504,6 @@ setexDate(date){
   //let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
   let getUserdata = '';
   let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
-  console.log(">>>URL: ", url);
   this.Service.getwithoutData(url)
   .subscribe(
     res => {
@@ -538,7 +526,7 @@ setexDate(date){
 
         var step2 = getData.data['step2'];
 
-        var stateList =  this.Service.getState(); 
+        var stateList =  this.Service.getState();
         var cityList =  this.Service.getCity();
         stateList.subscribe( result => {
           for(let key in result['states']) {
@@ -581,7 +569,7 @@ setexDate(date){
         this.step1Data.date_of_issue = new Date(data.date_of_issue);
         this.step1Data.fax_no = data.applicant_fax_no;
         this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
-        //this.step1Data.is_hold_other_accreditation = "1";
+        this.step1Data.is_hold_other_accreditation = "1";
         this.step1Data.is_main_activity = "";
         this.step1Data.is_main_activity_note = "";
         this.step1Data.mailing_address = data.applicant_address;
@@ -903,7 +891,7 @@ onSubmitStep1(ngForm1: any){
     }
     this.ptProvidersForm.step1.is_draft = false;
     this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
-    this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation_select == '0' ? false : true;
+    this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
     this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
     this.ptProvidersForm.step1 = this.step1Data;
 
@@ -955,7 +943,7 @@ savedraftStep(stepCount) {
     }
     this.step1Data.is_draft = true;
     this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
-    this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation_select == '0' ? false : true;
+    this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
     this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
     this.ptProvidersForm.step1 = this.step1Data;
 
@@ -1579,9 +1567,9 @@ else{
 
   getPlaceName()
    {
-     if(typeof this.step1Data.physical_location_address != 'undefined')
+     if(typeof this.ptProvidersForm.search_location_name != 'undefined')
      {
-       this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.step1Data.physical_location_address+'.json?access_token='+this.Service.mapboxToken+'','')
+       this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.ptProvidersForm.search_location_name+'.json?access_token='+this.Service.mapboxToken+'','')
          .subscribe(res => {
              ////console.log(res['features']);
              this.searchCountryLists = res['features'];
