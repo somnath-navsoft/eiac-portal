@@ -1541,16 +1541,10 @@ addSchemeRow(obj: any = [],index: number){
 
   getPlaceName(i)
   {
-<<<<<<< HEAD
     // console.log(this.scopeofHalalConformity[i].location);
     if(typeof this.scopeofHalalConformity[i].location != 'undefined')
     {
       this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.scopeofHalalConformity[i].location+'.json?access_token='+this.Service.mapboxToken+'','')
-=======
-    if(typeof this.step1Data.physical_location_address != 'undefined')
-    {
-      this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.step1Data.physical_location_address+'.json?access_token='+this.Service.mapboxToken+'','')
->>>>>>> a0ba03b92350d484f72d9bfa70b0e63b671d01db
         .subscribe(res => {
             // //console.log(res['features']);
             this.searchCountryLists = res['features'];
