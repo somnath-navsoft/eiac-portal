@@ -479,7 +479,8 @@
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                            <mat-radio-group name="is_hold_other_accreditation" [(ngModel)]="step1Data.is_hold_other_accreditation" #selectAccredHold="ngModel" required>
+                                            <mat-radio-group name="is_hold_other_accreditation_select" 
+                                            [(ngModel)]="step1Data.is_hold_other_accreditation_select" #selectAccredHold="ngModel" required>
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <label class="check-rdo">
@@ -500,7 +501,7 @@
                                         </div>
                                     </div>
             
-                                    <div class="row" id="is_hold_other_accreditations" *ngIf="step1Data.is_hold_other_accreditation == '1'">
+                                    <div class="row" id="is_hold_other_accreditations" *ngIf="step1Data.is_hold_other_accreditation_select == '1'">
                                         <div class="col-md-12">
                                             <div class="table-content-health">
                                                 <table>
@@ -708,7 +709,7 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr *ngFor="let item of summaryDetails; let i = index;">
-                                                            <td>{{item['position']}}</td>
+                                                            <td><strong>{{item['position']}}</strong></td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
@@ -724,7 +725,8 @@
                                                         </tr>
                                                         
                                                         <tr>
-                                                            <td>Auditors/Examiners for Each Standard <span class="detail-cont">(List the standards and the auditors/ examiners/ experts for each standards)</span></td>
+                                                            <td><span class="detail-cont"><strong>Auditors/Examiners for Each Standard</strong></span><br> 
+                                                                (List the standards and the auditors/ examiners/ experts for each standards)</td>
                                                             <td class="inner-table">
                                                                 <table class="inner-tb">
                                                                     <tr>
@@ -1849,7 +1851,10 @@
                                         <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice(ngForm8, true)">SAVE AS DRAFT</button> -->
                                         <!-- <button class="submit-bttn submit-health" (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)">CONTINUE</button> -->
                                     </div>
+                                    <!-- @{{paymentFilePath}} -->
+                                    <ng-container *ngIf="paymentFilePath != ''">
                                     <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button>
+                                    </ng-container>
                                     <ng-container *ngIf="transactions.length">
                                         <div id="paypalPayment"></div>
                                     </ng-container>

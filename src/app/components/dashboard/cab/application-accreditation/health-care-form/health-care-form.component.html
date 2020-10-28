@@ -1813,7 +1813,9 @@
                                         <!-- <button class="cancel-bttn" type="button" (click)="savedraftStep('step8')">SAVE AS DRAFT</button> -->
                                         <!-- <button class="submit-bttn submit-health" (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)">CONTINUE</button> -->
                                     </div>
+                                    <ng-container *ngIf="paymentFilePath != ''">
                                     <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button>
+                                    </ng-container>
                                     <ng-container *ngIf="transactions.length">
                                         <div id="paypalPayment"></div>
                                     </ng-container>
