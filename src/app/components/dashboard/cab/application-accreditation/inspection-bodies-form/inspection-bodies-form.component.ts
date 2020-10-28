@@ -275,11 +275,25 @@ export class InspectionBodiesFormComponent implements OnInit {
       ////////console.log(">>> The Data: ", theData);
       this.transactions = [];
       this.toastr.success('Payment Success, Thank you.','Paypal>>',{timeOut:2000});
-      setTimeout(()=> {
-        // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-        ////////console.log("moving...");
-        this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
-      }, 1000)      
+
+      //proforma save
+      let postData: any = new FormData();
+      postData.append('accreditation', this.formApplicationId);
+      this._trainerService.proformaAccrSave(postData)
+      .subscribe(
+        result => {
+            let data: any = result;
+            if(data.status){
+              this.paymentStepComp = true;
+              this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+            }
+            console.log(">>> Save resultts: ", result);
+        });
+
+
+      // setTimeout(()=> {
+      //  //this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+      // }, 1000)      
    }
    createPaymentButton(itemData: any, formObj?:any, compObj?:any){
     ////console.log("creating....buttons...", " -- ",this.transactionsItem, " --- ", this.transactions);
@@ -1221,7 +1235,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         let pathData: any;
         let filePath: string;
         let saveStep: number;
-        //console.log(getData,"get APP Data:");
+        console.log(getData,"get APP Data:");
 
         this.viewData = getData;
 
@@ -1288,10 +1302,29 @@ export class InspectionBodiesFormComponent implements OnInit {
         }else{
           if(parseInt(getData.data.saved_step) == 9){
             saveStep = parseInt(getData.data.saved_step) - 1;
+            this.paymentStepComp = true;
+          }else if(parseInt(getData.data.saved_step) == 8){
+            saveStep = parseInt(getData.data.saved_step);
+            this.paymentStepComp = true;
           }else{
-          saveStep = parseInt(getData.data.saved_step);
+            saveStep = parseInt(getData.data.saved_step);
           }
         }
+
+        /*
+        if(this.step1Data.accredation_criteria == 2){
+              //Extension
+              let stepData: any = this.headerSteps.find(item => item.title == 'information_audit_management');
+              console.log(">>step select: 1 ", stepData);
+              if(stepData){
+                stepData.activeClass = '';
+                stepData.stepComp = true;
+              }
+              console.log(">>step select: 2 ", this.headerSteps);
+              this.Service.moveSteps('personal_information', 'scope_accreditation', this.headerSteps);
+            }
+
+        */
 
         if(getData.data.saved_step  != null){
           ///////////console.log("@saved step assign....");
@@ -1302,6 +1335,7 @@ export class InspectionBodiesFormComponent implements OnInit {
                 if(key < saveStep){
                   //////////console.log('moving steps....');
                   let curStep: any = item;
+                  
                   curStep.stepComp = true;
                   let nextStep: any = this.headerSteps[key+1];
                   this.Service.moveSteps(curStep.title, nextStep.title, this.headerSteps);
@@ -1313,6 +1347,14 @@ export class InspectionBodiesFormComponent implements OnInit {
                   this.Service.headerStepMove(item.title, this.headerSteps,'menu')
                 }
           })
+          if(getData.data.accredation_criteria == 2){
+            let stepData: any = this.headerSteps.find(item => item.title == 'information_audit_management');
+              console.log(">>step select: 1 ", stepData);
+              if(stepData){
+                stepData.activeClass = '';
+                stepData.stepComp = true;
+              }
+          }
           //////////console.log("#Step data: ", this.headerSteps);
         }
 
@@ -1639,6 +1681,7 @@ export class InspectionBodiesFormComponent implements OnInit {
           this.authorizationList.undertaking_confirm7 = true;
           
           this.authorizationStatus = true;
+          this.readReviewChecklist= true;
           let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
           //////console.log(">>>recommm", visitRecomm);
           this.step7Data.recommend_visit = visitRecomm;
@@ -1647,21 +1690,21 @@ export class InspectionBodiesFormComponent implements OnInit {
 
         //step 9
         if(getData.data.paymentDetails != null && typeof getData.data.paymentDetails === 'object'){
-          ////console.log(">>>payment details...show; ", getData.data.paymentDetails);
+          console.log(">>>payment details...show; ", getData.data.paymentDetails);
             this.voucherSentData.voucher_code     = getData.data.paymentDetails.voucher_no;
             this.voucherSentData.payment_date     = getData.data.paymentDetails.voucher_date;
             this.voucherSentData.amount           = getData.data.paymentDetails.amount;
 
-            this.voucherSentData.transaction_no   = getData.data.paymentDetails.transaction_no;
-            this.voucherSentData.payment_method   = getData.data.paymentDetails.payment_method;
-            this.voucherSentData.payment_made_by  = getData.data.paymentDetails.payment_made_by;
-            this.voucherSentData.mobile_no        = getData.data.paymentDetails.mobile_no;
+            this.voucherSentData.transaction_no   = (getData.data.paymentDetails.transaction_no != 'null') ? getData.data.paymentDetails.transaction_no : '';
+            this.voucherSentData.payment_method   = (getData.data.paymentDetails.payment_method != 'null') ? getData.data.paymentDetails.payment_method : '' ;
+            this.voucherSentData.payment_made_by  = (getData.data.paymentDetails.payment_made_by != 'null') ? getData.data.paymentDetails.payment_made_by  : '';
+            this.voucherSentData.mobile_no        =  (getData.data.paymentDetails.mobile_no != 'null') ? getData.data.paymentDetails.mobile_no : '';
 
             //
-            if(getData.data.paymentDetails.transaction_no != null && getData.data.paymentDetails.payment_method != null &&
-              getData.data.paymentDetails.payment_made_by !+ null && getData.data.paymentDetails.mobile_no != null && getData.data.paymentDetails.payment_receipt != ''){
-                  this.paymentStepComp = true;
-            }
+            // if(getData.data.paymentDetails.transaction_no != null && getData.data.paymentDetails.payment_method != null &&
+            //   getData.data.paymentDetails.payment_made_by !+ null && getData.data.paymentDetails.mobile_no != null && getData.data.paymentDetails.payment_receipt != ''){
+            //       this.paymentStepComp = true;
+            // }
         }
         
       }
@@ -3813,9 +3856,9 @@ onSubmitPaymentInformation(ngForm7: any, type?: boolean){
           //   dtFormat = year + "-" + month + "-" + date;
           // }
 
-          ////console.log("payment date: ", " -- ",this.voucherSentData, " -- ", dtFormat);
-
-        this.voucherFile.append('voucher_code',this.voucherSentData['voucher_code']);
+          console.log("payment date: ", " -- ",this.voucherSentData, " -- ");
+        let is_valid: boolean = false;
+        this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
         this.voucherFile.append('amount',this.voucherSentData['amount']);
         this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
         this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
@@ -3825,16 +3868,22 @@ onSubmitPaymentInformation(ngForm7: any, type?: boolean){
         this.voucherFile.append('accreditation',this.formApplicationId);
         this.voucherFile.append('application_id',this.formApplicationId);
         this.voucherFile.append('saved_step', 9);
-        
-
-      //console.log(this.voucherFile, " -- ", this.voucherFile);
-
-
+        // if(!this.paymentReceiptValidation){
+        //   var blob = new Blob(['Lorem ipsum'], { type: 'plain/text' });
+        //   //formData.append('file', blob,'readme.txt');
+        //   this.voucherFile.append('payment_receipt',blob,'null_recipt.txt');
+        // }
+        console.log(">>> Data: ", this.voucherSentData);
+        if(this.voucherSentData['transaction_no'] != '' && this.voucherSentData['payment_method'] != '' && this.voucherSentData['payment_made_by'] &&
+          this.voucherSentData['mobile_no'] != ''){
+            is_valid = true;
+          }
 
     //!ngForm7.form.valid &&
-    if(ngForm7.form.valid && this.paymentReceiptValidation != false) {
+    if(is_valid == true && type == undefined && this.paymentReceiptValidation != false) {
       //this.inspectionBodyForm.step7.payment_receipt = this.step7DataBodyFormFile;
       this.inspectionBodyForm.step9.is_draft = false;
+      this.voucherFile.append('is_draft', false);
       //this.subscriptions.push(
         this._trainerService.paymentVoucherSave((this.voucherFile))
           .subscribe(
@@ -3885,20 +3934,23 @@ onSubmitPaymentInformation(ngForm7: any, type?: boolean){
       //     this.toastr.warning(res['msg'], '');
       //   }
       // });
-    }else if(type != undefined && type == true && this.paymentReceiptValidation != false){
+      //&& this.paymentReceiptValidation == false
+    }else if(type != undefined && type == true ){
       this.inspectionBodyForm.step9.is_draft = true;
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
-      .subscribe(
-      res => {
-        ////////console.log(res,'res')
-        if(res['status'] == true) {
-          //this.toastr.success(res['msg'], '');
-          this.toastr.success("Saved Draft Successfully", '');
-          //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
-        }else{
-          this.toastr.warning(res['msg'], '');
+      this.voucherFile.append('is_draft', true);
+      console.log(">>> Saving draft....");
+      this._trainerService.paymentVoucherSave((this.voucherFile))
+        .subscribe(
+        result => {
+          let data: any = result;
+          console.log("submit payment: ", data);
+          if(data.status){
+            this.toastr.success('Save Draft Successfully', '');
+          }else{
+            this.toastr.warning(data.msg,'');
+          }
         }
-      });
+      )
     }
     else{
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
@@ -4242,3 +4294,4 @@ onSubmit(ngForm){
     // }
 
 }
+>>>>>>> origin/development

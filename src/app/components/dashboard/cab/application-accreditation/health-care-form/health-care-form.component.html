@@ -1292,7 +1292,7 @@
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <div class="request-subhdr">
-                                                        <span>Request for prelim visit *</span>
+                                                        <span>Request for prelim visit: <span class="required_input">*</span></span>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2">
@@ -1518,7 +1518,7 @@
                                                         </li>
                                                     </ol>
                                                 </div> -->
-                                    <div class="tnc" [innerHTML]="(termsGeneral != undefined && termsGeneral.content != undefined) ? termsGeneral.content : ''"></div>
+                                        <div class="tnc" [innerHTML]="(termsGeneral != undefined && termsGeneral.content != undefined) ? termsGeneral.content : ''"></div>
                                             
                                             </li>
                                         
@@ -1697,7 +1697,7 @@
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Date</mat-label>
                                                         <input matInput [matDatepicker]="onbehalf_representative_date" 
-                                                        placeholder="Date" name="onbehalf_representative_date" 
+                                                        placeholder="Date" name="onbehalf_representative_date" readonly="true"
                                                         [(ngModel)]="step7Data.application_date" [value]="Service.returnCurrentDate()">
                                                     </mat-form-field>
                                                 </div>

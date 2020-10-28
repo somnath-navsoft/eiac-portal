@@ -29,6 +29,7 @@ export class Constants{
 		trainerCourseTypeDetails: 'trainer/training-course-type/',
 
 		paymentDetailsSave: 'webservice/payment-details-save/',
+		proformaAccrSave: 'webservice/proforma-step-accr/',
 		accountPaymentSave: 'webservice/account-payment-save/',
 
 		savePublicTrainingForm:'trainer/training-application-form/',
@@ -51,6 +52,7 @@ export class Constants{
 		pt_provider: 'pt-provider-form/',
 		testing_cal_form_basic_data: 'testing_calibration_form_management/',
 		inspection_form_basic_data: 'inspection_body_form_management/',
+		halal_conformity_form_management: 'halal_conformity_form_management/',
 
 		criteriaIdByScope: this.apiUrl + 'criteria_wise_scope/',
 		criteriaScope: this.apiUrl + 'inspection_body_form_management/?scheme=',

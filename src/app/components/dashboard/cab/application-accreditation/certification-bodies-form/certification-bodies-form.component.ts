@@ -71,7 +71,7 @@ export class CertificationBodiesFormComponent implements OnInit {
   public minDate;
   searchCountryLists: any;
   allCityByCountry: any = [];
-  onbehalf_representative_date:boolean = true;
+  onbehalf_representative_date:boolean = false;
   getCountryLists:any;
 
   paymentStepComp: boolean = false;
@@ -335,7 +335,7 @@ ngOnInit() {
     .subscribe( 
       res => {
         let record: any = res['data'];
-        //console.log("@Load scope....", record);
+        console.log("@Load scope....", record);
         if(record){
           this.subTypeMaster = record.serviceList;
           //console.log("@Load Type....", this.subTypeMaster);
@@ -1028,7 +1028,7 @@ loadAppInfo(){
       this.Service.getwithoutData(url2)
       .subscribe(
         res => {
-          //console.log(res,'urlVal')
+          console.log(res,'urlVal')
           this.loader = true;
           let getData: any = res;
           let saveStep: number;
@@ -1047,19 +1047,32 @@ loadAppInfo(){
               }
                     
               //check steps
+              // if(getData.data.is_draft){
+              //   saveStep = parseInt(getData.data.saved_step) - 1;
+              // }else{
+              //   if(parseInt(getData.data.saved_step) == 7){
+              //     saveStep = parseInt(getData.data.saved_step) - 1;
+              //   }else{
+              //   saveStep = parseInt(getData.data.saved_step);
+              //   }
+              // }
               if(getData.data.is_draft){
                 saveStep = parseInt(getData.data.saved_step) - 1;
               }else{
                 if(parseInt(getData.data.saved_step) == 7){
                   saveStep = parseInt(getData.data.saved_step) - 1;
+                  this.paymentStepComp = true;
+                }else if(parseInt(getData.data.saved_step) == 6){
+                  saveStep = parseInt(getData.data.saved_step);
+                  this.paymentStepComp = true;
                 }else{
-                saveStep = parseInt(getData.data.saved_step);
+                  saveStep = parseInt(getData.data.saved_step);
                 }
               }
 
 
               if(res['data'].saved_step  != null){
-                let saveStep = res['data'].saved_step;
+                //let saveStep = res['data'].saved_step;
                 //open step
                 this.headerSteps.forEach((item, key) => {
                       ///////console.log(item, " --- ", key);
@@ -1271,7 +1284,7 @@ loadAppInfo(){
 
               //Step 6
               if(res['data'].is_prelim_visit != null){
-                this.step4Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
+                this.step4Data.is_prelim_visit_val = (res['data'].is_prelim_visit) ? "1" : "0";
                 this.step4Data.prelim_visit_date = res['data'].prelim_visit_date;
                 this.step4Data.prelim_visit_time = res['data'].prelim_visit_time;
               }
@@ -1289,6 +1302,7 @@ loadAppInfo(){
                   this.authorizationList[key] = true;
                 })
                 this.authorizationStatus = true;
+                this.readReviewChecklist= true;
                 let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
                 this.step5Data.recommend_visit = visitRecomm;//'second';
                 this.step7Data.recommend_year = parseInt(getData.data.recommend_year);
@@ -1300,18 +1314,19 @@ loadAppInfo(){
                   this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
                   this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
                   this.voucherSentData.amount           = res['data'].paymentDetails.amount;
-                  this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
-                  this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
-                  this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
-                  this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+
+                  this.voucherSentData.transaction_no   = (res['data'].paymentDetails.transaction_no != 'null') ? res['data'].paymentDetails.transaction_no : '';
+                  this.voucherSentData.payment_method   = (res['data'].paymentDetails.payment_method != 'null') ? res['data'].paymentDetails.payment_method : '';
+                  this.voucherSentData.payment_made_by  = (res['data'].paymentDetails.payment_made_by != 'null') ? res['data'].paymentDetails.payment_made_by : '';
+                  this.voucherSentData.mobile_no        = (res['data'].paymentDetails.mobile_no != 'null') ? res['data'].paymentDetails.mobile_no : '';
 
                   this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
                   this.paymentReceiptValidation = true;
 
-                  if(res['data'].paymentDetails.transaction_no != null && res['data'].paymentDetails.payment_method != null &&
-                    res['data'].paymentDetails.payment_made_by !+ null && res['data'].paymentDetails.mobile_no != null && res['data'].paymentDetails.payment_receipt != ''){
-                        this.paymentStepComp = true;
-                  }
+                  // if(res['data'].paymentDetails.transaction_no != null && res['data'].paymentDetails.payment_method != null &&
+                  //   res['data'].paymentDetails.payment_made_by !+ null && res['data'].paymentDetails.mobile_no != null && res['data'].paymentDetails.payment_receipt != ''){
+                  //       this.paymentStepComp = true;
+                  // }
               }
             }
         });
@@ -1438,7 +1453,7 @@ savedraftStep(stepCount) {
     this.certificationBodiesForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
     this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step4Data.is_prelim_visit = this.step4Data.is_prelim_visit == 0 ? false : true;
+    this.step4Data.is_prelim_visit = this.step4Data.is_prelim_visit_val == 0 ? false : true;
     this.step4Data.is_draft = true;
     this.certificationBodiesForm.saved_step = '4';
     this.certificationBodiesForm.step4 = this.step4Data;
@@ -1511,6 +1526,7 @@ savedraftStep(stepCount) {
     this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
     this.voucherFile.append('voucher_date',dtFormat);
     this.voucherFile.append('accreditation',this.formApplicationId);
+    this.voucherFile.append('is_draft', true);
     // this.voucherFile.append('application_id',this.formApplicationId);
         
     this.loader = false;
@@ -2215,7 +2231,7 @@ onSubmitStep4(ngForm4: any){
     this.certificationBodiesForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
     this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step4Data.is_prelim_visit = this.step4Data.is_prelim_visit == 0 ? false : true;
+    this.step4Data.is_prelim_visit = this.step4Data.is_prelim_visit_val == 0 ? false : true;
     this.step4Data.is_draft = false;
     this.certificationBodiesForm.step4 = this.step4Data;
 
@@ -2403,7 +2419,7 @@ this.certificationBodiesForm.step7 = {};
     dtFormat = year + "-" + month + "-" + date;
   }
   //     
-
+  let is_valid: boolean = false;
 this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
 this.voucherFile.append('amount',this.voucherSentData['amount']);
 this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
@@ -2412,11 +2428,16 @@ this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by'
 this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
 this.voucherFile.append('voucher_date',dtFormat);
 this.voucherFile.append('accreditation',this.formApplicationId);
+this.voucherFile.append('is_draft', false);
 // this.voucherFile.append('application_id',this.formApplicationId);
-    
-this.loader = false;
-if(ngForm7.form.valid && this.paymentReceiptValidation != false) {
+if(this.voucherSentData['transaction_no'] != '' && this.voucherSentData['payment_method'] != '' && this.voucherSentData['payment_made_by'] &&
+this.voucherSentData['mobile_no'] != ''){
+  is_valid = true;
+}
+
+if(is_valid == true &&  this.paymentReceiptValidation != false) {
   // //console.log(this.voucherFile);
+  this.loader = false;
     this._trainerService.paymentVoucherSave((this.voucherFile))
     .subscribe(
         result => {
@@ -2571,12 +2592,22 @@ saveInspectopnAfterPayment(theData: any){
   ////console.log(">>> The Data: ", theData);
   this.transactions = [];
   this.toastr.success('Payment Success, Thank you.','Paypal>>',{timeOut:2000});
-  setTimeout(()=> {
-    // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-    //////console.log("moving...");
-    this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
-  }, 1000)      
-  //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+  //proforma save
+  let postData: any = new FormData();
+  postData.append('accreditation', this.formApplicationId);
+  this._trainerService.proformaAccrSave(postData)
+  .subscribe(
+    result => {
+        let data: any = result;
+        if(data.status){
+          this.paymentStepComp = true;
+          this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+        }
+        console.log(">>> Save resultts: ", result);
+    });
+  // setTimeout(()=> {
+  //   this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+  // }, 1000)      
 }
 
 createPaymentButton(itemData: any, formObj?:any, compObj?:any){

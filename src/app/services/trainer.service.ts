@@ -60,6 +60,13 @@ export class TrainerService {
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
 
+  //proforma-step-accr/
+  proformaAccrSave(postData: any){
+    const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.proformaAccrSave;
+    console.log(">>> Prodorma saving: ", url);
+    return this.http.post(url, postData, this._service.getReqHeaders());
+  }
+
   accountPaymentSave(postData: any){
     const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.accountPaymentSave;
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
