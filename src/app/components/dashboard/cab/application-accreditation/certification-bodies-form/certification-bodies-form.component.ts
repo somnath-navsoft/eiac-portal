@@ -605,7 +605,7 @@ ngOnInit() {
 
 
  getTypeScheme(typeId: number, secInd: number){
-   let typeData: any = this.subTypeMaster;
+   let typeData: any = this.subTypeMaster; 
    let findType: any = this.subTypeMaster.find(rec => rec.service_page.id == typeId);
    ////console.log(">>> get type scheme...", typeId, " :: ", typeData);
    ////console.log(">>> find type: ", findType, " -- ", typeof findType);
