@@ -83,8 +83,6 @@ export class PtProvidersFormComponent implements OnInit {
   searchCountryLists:any;
   onbehalf_representative_date:boolean = false;
   recommendStatus:boolean = false;
-  isApplicationSubmitted:boolean = false;
-  isNoteSubmit:boolean = false;
 
   foods = [
     {value: 'steak-0', viewValue: 'Steak'},
