@@ -80,7 +80,9 @@ export class PtProvidersFormComponent implements OnInit {
 
   searchCountryLists:any;
   onbehalf_representative_date:boolean = false;
-  recommendStatus:boolean = false
+  recommendStatus:boolean = false;
+  isApplicationSubmitted:boolean = false;
+  isNoteSubmit:boolean = false;
 
   foods = [
     {value: 'steak-0', viewValue: 'Steak'},
@@ -207,6 +209,14 @@ export class PtProvidersFormComponent implements OnInit {
  ngOnInit() { 
    // this.minCurrentDate = new Date(2020, 0, 13);
   //  this.titleService.setTitle('EIAC - Proficiency Testing Providers');
+  this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
+   ////console.log(">>>Get URL value: ", this.urlVal);
+   this.userEmail = sessionStorage.getItem('email');
+   this.userType = sessionStorage.getItem('type');
+   this.isCompleteness = sessionStorage.getItem('isCompleteness');
+   this.profileComplete = sessionStorage.getItem('profileComplete');
+   this.userId = sessionStorage.getItem('userId');
+
    this.addMinutesToTime = this.Service.addMinutesToTime();
    this.loadAppInfo();
    this.loadCountryStateCity();
@@ -512,7 +522,7 @@ setexDate(date){
       //, getData.data.step1, " -- ", getData.data.step2
       console.log(getData,"Profile info >>> ");
 
-      if(getData.data.step1.length){
+      if(getData.data.step1 && getData.data.step1.length){
           data = getData.data['step1'][0];
           /////console.log('data enter...1', data);
 
