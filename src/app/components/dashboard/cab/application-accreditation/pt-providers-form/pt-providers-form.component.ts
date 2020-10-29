@@ -63,6 +63,8 @@ export class PtProvidersFormComponent implements OnInit {
   public maxDate = new Date();
   termsGeneral: any;
   termsILA: any;
+  isApplicationSubmitted:any = false;
+  public isNoteSubmit:boolean = false;
   // ngx-google-places-autocomplete [options]='options' #placesRef="ngx-places"
   // version = VERSION;
   allCityByCountry: any = [];
