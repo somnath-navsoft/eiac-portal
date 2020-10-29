@@ -879,7 +879,7 @@ addSchemeRow(obj: any = [],index: number){
       var ex_check = this.Service.isInArray(file_exe,ex_type);
       if(ex_check) {
         this.accreditationInfo[key].list_auditor_upload = fileEvent.target.files[0].name;
-        this.step3DataBodyFormFile.append('qualification_file_exist_'+id,fileEvent.target.files[0]);
+        this.step1DataBodyFormFile.append('qualification_file_exist_'+id,fileEvent.target.files[0]);
         this.file_validation_listAuditor = true;
       }else{
         this.file_validation_listAuditor = false;
@@ -891,11 +891,25 @@ addSchemeRow(obj: any = [],index: number){
       var ex_check = this.Service.isInArray(file_exe,ex_type);
       if(ex_check) {
         this.accreditationInfo[key].list_auditor_upload = fileEvent.target.files[0].name;
-        this.step3DataBodyFormFile.append('qualification_file_'+key,fileEvent.target.files[0]);
+        this.step1DataBodyFormFile.append('qualification_file_'+key,fileEvent.target.files[0]);
         this.file_validation_listAuditor = true;
       }else{
         this.file_validation_listAuditor = false;
       }
+    }
+  }
+
+  listAccreditationFile(fileEvent: any,key:any) { 
+    var file_name = fileEvent.target.files[0].name;
+    var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
+    var ex_type = ['pdf'];
+    var ex_check = this.Service.isInArray(file_exe,ex_type);
+    if(ex_check) {
+      this.accreditationInfo[key].list_auditor_upload = fileEvent.target.files[0].name;
+      // this.step3DataBodyFormFile.append('qualification_file_exist_'+id,fileEvent.target.files[0]);
+      this.file_validation_listAuditor = true;
+    }else{
+      this.file_validation_listAuditor = false;
     }
   }
 
@@ -1632,22 +1646,30 @@ addSchemeRow(obj: any = [],index: number){
       this.publicHalalConformityForm.step1 = this.step1Data;
   
       this.publicHalalConformityForm.step1['ownOrgBasicInfo'] = [];
+      this.publicHalalConformityForm.step1['managingDirector'] = [];
       this.publicHalalConformityForm.step1['ownOrgMembInfo'] = [];
+      this.publicHalalConformityForm.step1['otherActivityLocations'] = [];
       this.publicHalalConformityForm.step1['accreditationInfo'] = [];
       
       if(this.ownOrgBasicInfo) {
         this.publicHalalConformityForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
       }
       if(this.ownOrgMembInfo) {
+        this.publicHalalConformityForm.step1['managingDirector'] = this.managingDirector;
+      }
+      if(this.ownOrgMembInfo) {
         this.publicHalalConformityForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
+      }
+      if(this.hcabOtherLocation) {
+        this.publicHalalConformityForm.step1['otherActivityLocations'] = this.hcabOtherLocation;
       }
       if(this.accreditationInfo) {
         this.publicHalalConformityForm.step1['accreditationInfo'] = this.accreditationInfo;
       }
   
-      // this.step1DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
-      //console.log(this.publicHalalConformityForm,'publicHalalConformityForm');
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.certificationBodies,this.publicHalalConformityForm)
+      this.step1DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
+      console.log(this.step1DataBodyFormFile,'publicHalalConformityForm');
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step1DataBodyFormFile)
       .subscribe(
         res => {
           // //console.log(res,'res')

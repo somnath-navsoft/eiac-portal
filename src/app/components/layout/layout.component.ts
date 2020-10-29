@@ -95,6 +95,8 @@ export class LayoutComponent implements OnInit {
           this._service.setValueUrl(splitUrl[4]);
         }else if(splitUrl[3] == 'pt-providers-form') {
           this._service.setValueUrl(splitUrl[4]);
+        }else if(splitUrl[3] == 'halal-conformity-form') {
+          this._service.setValueUrl(splitUrl[4]);
         }else{
           this._service.setValueUrl('');
         }
