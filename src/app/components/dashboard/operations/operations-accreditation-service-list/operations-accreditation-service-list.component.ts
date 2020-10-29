@@ -215,11 +215,13 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
           this.voucherSentData['voucher_date']._i != undefined){
             var dtData = this.voucherSentData['voucher_date']._i;
             var year = dtData.year;
-            var month = dtData.month;
+            var month = dtData.month + 1;
             var date = dtData.date;
             dtFormat = year + "-" + month + "-" + date;
           }
-          console.log("@accred ID: ", this.voucherSentData['accreditation'])
+
+          //console.log(">>> Date: ", (dtFormat), " -- ", this.voucherSentData['voucher_date'], " -- ", this.voucherSentData['voucher_date']._i);
+          //console.log("@accred ID: ", this.voucherSentData['accreditation'])
           this.voucherFile.append('voucher_no',this.voucherSentData['voucher_no']);
           this.voucherFile.append('amount',this.voucherSentData['amount']);
           this.voucherFile.append('voucher_date',dtFormat);

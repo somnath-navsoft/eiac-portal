@@ -252,13 +252,17 @@
                         <div class="col-md-6">
                             <mat-form-field class="cab-data">
                                 <mat-label>Voucher Date</mat-label>
-                                <input matInput [matDatepicker]="voucher_date" 
+                                <input matInput [matDatepicker]="voucher_date"  readonly="true" placeholder="Voucher Date" 
+                                name="voucher_date" (click)="_service._openCalendar(voucher_date)" 
+                                [(ngModel)]="voucherSentData.voucher_date" required>
+                                <mat-datepicker-toggle matSuffix [for]="voucher_date"></mat-datepicker-toggle>
+                                <mat-datepicker #voucher_date  disabled="false"></mat-datepicker>
+                                <!-- <input matInput [matDatepicker]="voucher_date" 
                                 (click)="_service._openCalendar(voucher_date)" 
-                                readonly="true" 
-                                [min]="minDate" name="voucher_date" 
+                                readonly="true"  name="voucher_date" 
                                 [(ngModel)]="voucherSentData.voucher_date" placeholder="Voucher Date" required>
                                 <mat-datepicker-toggle matSuffix [for]="voucher_date"></mat-datepicker-toggle>
-                                <mat-datepicker #voucher_date disabled="false"></mat-datepicker>
+                                <mat-datepicker #voucher_date disabled="false"></mat-datepicker> -->
                             </mat-form-field>
                         </div>
                     </div>

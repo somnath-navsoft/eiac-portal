@@ -377,7 +377,7 @@ export class TestingCalibrationFormComponent implements OnInit {
   ////console.log("Add Line status: ", this.dynamicScopeModel);
 }
 
-onChangeScopeOption(getValues: any,secIndex: any, lineIndex: number, columnIndex: number, type?:string) {
+onChangeScopeOption(getValues: any,secIndex: any,familyId: any, lineIndex: number, columnIndex: number, type?:string) {
   console.log('@GET Options: ', getValues, " :: ",  lineIndex, " -- ", type, " -- ", columnIndex, " --sec--  ", secIndex);
 
   let selectValue: any;
@@ -499,56 +499,80 @@ getCriteria(value, secInd: any, typeFamily?: any){
           dataScope = record['data'];
           this.scopeDataLoad = false;
           let customKey;
+          let familyId: any;
 
           if(dataScope.scopeFamily == null){
             this.scopeFamilyNull = true;
+
             if(dataScope.firstColumnData != undefined && dataScope.firstColumnData.length > 0){
               let firstColumValues = dataScope.firstColumnData[0];
             }
               let scopeName: string = '';
               let scopeTitle: string ='';
               let getData = this.criteriaMaster.find(rec => rec.scope_accridiation.id == value);
-              //////console.log(">>> Fined Scheme: ", getData);
+              console.log(">>> Fined Scheme: ", getData);
               if(getData){
                 scopeName   = getData.title;
                 scopeTitle  = getData.title.toString().toLowerCase().split(" ").join('_');
 
                 //check already existing scheme...
-                for(var m in this.dynamicScopeModel){
-                  console.log("mkey: ", m, " -- ", scopeTitle);
-                    //let fobj: any = this.fullScope;
-                    if(m === scopeTitle){
-                      this.fullScope.splice(secInd, 1);
-                      this.toastr.error("Scheme should be unique, Please check.","Validation")
-                      return;
-                    }
-                }
+                // for(var m in this.dynamicScopeModel){
+                //   console.log("mkey: ", m, " -- ", scopeTitle);
+                //     //let fobj: any = this.fullScope;
+                //     if(m === scopeTitle){
+                //       this.fullScope.splice(secInd, 1);
+                //       this.toastr.error("Scheme should be unique, Please check.","Validation")
+                //       return;
+                //     }
+                // }
+                familyId = 0;
                 this.dynamicScopeFieldColumns[scopeTitle] = [];
+                this.dynamicScopeFieldColumns[scopeTitle][familyId.toString()] = [];
                 this.dynamicScopeFieldType[scopeTitle] = [];
+                this.dynamicScopeFieldType[scopeTitle][familyId.toString()] = [];
                 this.dynamicScopeModel[scopeTitle] = {};
+                this.dynamicScopeModel[scopeTitle][familyId.toString()] = {};
 
-                if(this.fullScope.length){
-                    //////console.log("@Existing scheme....1");
-                    //let findSchme = this.fullScope.find(item => item.id == value);
-                    ////////console.log("@Existing scheme....2", findSchme);
-                    let pushObj: any = {
-                      title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
-                    }
+                if(this.fullTypeFamily.length){
+                      let pushObj: any = {
+                        title: scopeTitle, id: getData.scope_accridiation.id, name: scopeName, familyData: [], scopeRows: [], isFamily: false
+                      }
+                      
+                      if(this.fullTypeFamily[secInd] != undefined && !this.Service.isObjectEmpty(this.fullTypeFamily[secInd])){
+                        console.log("@Existing scheme...found", this.fullTypeFamily[secInd]);
+                        this.fullTypeFamily[secInd] = pushObj;
+                      }else{
+                          this.fullTypeFamily.push({
+                            title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName, familyData: [], scopeRows: [], isFamily: false
+                          });
+                      }
+                  }else{
+                  this.fullTypeFamily.push({
+                      title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName, familyData: [], scopeRows: [], isFamily: false
+                    });
+                  }
+
+                // if(this.fullScope.length){
+                //     let pushObj: any = {
+                //       title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
+                //     }
                     
-                    if(this.fullScope[secInd] != undefined && !this.Service.isObjectEmpty(this.fullScope[secInd])){
-                      //////console.log("@Existing scheme...found", this.fullScope[secInd]);
-                      this.fullScope[secInd] = pushObj;
-                    }else{
-                        this.fullScope.push({
-                          title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
-                        });
-                    }
-                }else{
-                this.fullScope.push({
-                    title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
-                  });
-                }
+                //     if(this.fullScope[secInd] != undefined && !this.Service.isObjectEmpty(this.fullScope[secInd])){
+                //       //////console.log("@Existing scheme...found", this.fullScope[secInd]);
+                //       this.fullScope[secInd] = pushObj;
+                //     }else{
+                //         this.fullScope.push({
+                //           title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
+                //         });
+                //     }
+                // }else{
+                // this.fullScope.push({
+                //     title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
+                //   });
+                // }
               }
+
+              console.log("Full Type family datastructure: ", this.fullTypeFamily);
 
               if(dataScope.scopeValue.length){
                 var counter = 0;let defLine = {};
@@ -562,19 +586,19 @@ getCriteria(value, secInd: any, typeFamily?: any){
                         inputType: rec.scope.input_type,
                         defValue: rec.scope.default_value
                       }
-                      this.dynamicScopeFieldType[scopeTitle].push(fieldType);
+                      this.dynamicScopeFieldType[scopeTitle][familyId.toString()].push(fieldType);
                   }
 
                   
                   //this.fullScope[0].title
                   customKey = rec.title.toString().toLowerCase().split(' ').join('_');//rec.accr_title[0];
                   //this.dynamicScopeModel[customKey] = [];
-                  this.dynamicScopeFieldColumns[scopeTitle][key] = [];
+                  this.dynamicScopeFieldColumns[scopeTitle][familyId.toString()][key] = [];
                   //this.dynamicScopeFieldColumns[key] = [];
 
                   fieldTitleValue[key] = [];
                   //this.dynamicScopeModel[customKey].fieldLines = [];
-                  this.dynamicScopeModel[scopeTitle]['fieldLines'] = [];
+                  this.dynamicScopeModel[scopeTitle][familyId.toString()]['fieldLines'] = [];
 
                   if(dataScope.firstColumnData != undefined && dataScope.firstColumnData.length > 0){
                     ////////////console.log("first value length: ", rec.firstFieldValues.length);
@@ -587,7 +611,7 @@ getCriteria(value, secInd: any, typeFamily?: any){
                   let colObj: any ={};
                   colObj = {title: fieldTitle, values:fieldValues, name: rec.title, idVal: filedId};
                   //////console.log(">>col: ",colObj);
-                  this.dynamicScopeFieldColumns[scopeTitle][key].push(colObj);
+                  this.dynamicScopeFieldColumns[scopeTitle][familyId.toString()][key].push(colObj);
                   //this.dynamicScopeFieldColumns[secInd][key].push({title: fieldTitle, values:fieldValues, name: rec.title, idVal: filedId});
                   defLine[fieldValues] = [];
 
@@ -606,20 +630,20 @@ getCriteria(value, secInd: any, typeFamily?: any){
                     //////////console.log("calling.....default...1.2");
                     //Default load next column 
                     if(key == 0){
-                      this.onChangeScopeOption(getValue,scopeTitle,key,key,'initLoad');
+                      this.onChangeScopeOption(getValue,scopeTitle,familyId.toString(),key,key,'initLoad');
                     } 
                     setTimeout(()=>{
                       if(getValue != undefined && getValue > 0){  
                         let fSelValues: any = {};
                         //fSelValues[]                    
-                        this.dynamicScopeModel[scopeTitle]['fieldLines'][0][this.dynamicScopeFieldColumns[scopeTitle][0][0].values] = [defLine['firstFieldValues'][0]];
-                        this.dynamicScopeModel[scopeTitle].fieldLines[key][this.dynamicScopeFieldColumns[scopeTitle][key][0].title] = getValue;
+                        this.dynamicScopeModel[scopeTitle][familyId.toString()]['fieldLines'][0][this.dynamicScopeFieldColumns[scopeTitle][familyId.toString()][0][0].values] = [defLine['firstFieldValues'][0]];
+                        this.dynamicScopeModel[scopeTitle][familyId.toString()].fieldLines[key][this.dynamicScopeFieldColumns[scopeTitle][familyId.toString()][key][0].title] = getValue;
                       }
                     },0)                                
                     
                   }
                   //Load first field value default by selecting first item
-                  this.dynamicScopeModel[scopeTitle].fieldLines.push(defLine);
+                  this.dynamicScopeModel[scopeTitle][familyId.toString()].fieldLines.push(defLine);
                   //this.dynamicScopeModel[customKey].fieldLines.push(defLine);
                 });
                 console.log("@@@@Update Model: ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
