@@ -1719,7 +1719,9 @@
                                         (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice')">BACK</a> 
                                         <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice()">SAVE AS DRAFT</button> -->
                                     </div>
+                                    <ng-container *ngIf="paymentFilePath != ''">
                                     <button class="submit-bttn submit-health" *ngIf="!transactions.length" >CONTINUE</button>
+                                    </ng-container>
                                     <ng-container *ngIf="transactions.length">
                                         <div id="paypalPayment"></div>
                                     </ng-container>
@@ -1834,6 +1836,7 @@
                                                 (change)="validateFileVoucher($event, 'payment_receipt')" required>
                                                 <span class="icon-attach attach-data"></span>
                                             </span>
+                                            <a class="image_file_link" *ngIf="paymentFile != false && paymentFile != true" target="_blank" [href]="paymentFile">Click to view</a>
                                             <p class="error" *ngIf="paymentReceiptValidation == false">Please Upload a valid file (ex: pdf)</p>
                                         </div>
 

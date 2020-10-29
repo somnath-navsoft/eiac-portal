@@ -575,7 +575,7 @@ getCriteria(value, secInd: any){
      //value =18;
      let apiURL = this.Service.apiUatServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data+"?scheme="+value;
      //this.constant.API_ENDPOINT.criteriaScope + value;
-     ////////console.log("API: ", apiURL);
+     console.log("API: ", apiURL);
 
      //this.fullScope = [];
      //this.dynamicScopeModel = [];
@@ -1192,6 +1192,13 @@ getCriteria(value, secInd: any){
 
 
   loadSchemeMaster(){
+    /*
+    structure
+    scheme
+    scope family
+    scope table
+
+    */
     this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration)
     .subscribe(
       res => {
@@ -1201,7 +1208,7 @@ getCriteria(value, secInd: any){
         let schemeData: any = res['data']['schemes']
         if(typeof schemeData === 'object'){
             this.schemeMaster = schemeData;
-            //console.log(">>>schemee ", this.schemeMaster);
+            console.log(">>>schemee ", this.schemeMaster);
             if(this.step1Data.cab_type != undefined && this.step1Data.cab_type === 'testing_laboratory'){
               this.criteriaMaster = this.schemeMaster['testing_laboratory'];
             }

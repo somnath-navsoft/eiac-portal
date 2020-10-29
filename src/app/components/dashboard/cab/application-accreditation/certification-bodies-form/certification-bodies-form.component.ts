@@ -1126,7 +1126,7 @@ loadAppInfo(){
               //step2
               if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
                 this.accreditationInfo = [];
-                this.step2Data.is_hold_other_accreditation = "1";
+                this.step2Data.is_hold_other_accreditation_select = "1";
                 res['data'].otherAccr.forEach((item, key) => {
                     let data: any;
                     data = item['value'];
@@ -1135,7 +1135,7 @@ loadAppInfo(){
                     this.accreditationInfo.push(jparse);
                 })
               }else{
-                this.step2Data.is_hold_other_accreditation = "0";
+                this.step2Data.is_hold_other_accreditation_select = "0";
               }
 
               //step3
@@ -1345,7 +1345,7 @@ savedraftStep(stepCount) {
     }
     this.step1Data.is_draft = true;
     this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
-    this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
+    this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation_select == '0' ? false : true;
     this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
     this.certificationBodiesForm.step1 = this.step1Data;
 
@@ -1467,7 +1467,8 @@ savedraftStep(stepCount) {
         // //console.log(res,'res')
         this.loader = true;
         if(res['status'] == true) {
-          this.toastr.success(res['msg'], '');
+          //this.toastr.success(res['msg'], '');
+          this.toastr.success('Save Draft Successfully', '');
           // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
@@ -1496,7 +1497,8 @@ savedraftStep(stepCount) {
         // //console.log(res,'res')
         this.loader = true;
         if(res['status'] == true) {
-          this.toastr.success(res['msg'], '');
+          //this.toastr.success(res['msg'], '');
+          this.toastr.success('Save Draft Successfully', '');
         }else{
           this.toastr.warning(res['msg'], '');
         }
@@ -1580,7 +1582,7 @@ onSubmitStep1(ngForm1: any){
     this.isNoteSubmit = true;
   }
 
-
+  
 
   if(ngForm1.form.valid  && this.isNoteSubmit == true) {
     this.certificationBodiesForm = {};
@@ -1594,7 +1596,7 @@ onSubmitStep1(ngForm1: any){
     }
     // this.certificationBodiesForm.step1.is_draft = false;
     this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
-    this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
+    this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation_select == '0' ? false : true;
     this.certificationBodiesForm.step1 = this.step1Data;
 
     this.certificationBodiesForm.step1['ownOrgBasicInfo'] = [];
@@ -1610,6 +1612,8 @@ onSubmitStep1(ngForm1: any){
     if(this.accreditationInfo) {
       this.certificationBodiesForm.step1['accreditationInfo'] = this.accreditationInfo;
     }
+
+    console.log(">>> Post data: ", this.certificationBodiesForm);
 
     // this.step1DataBodyFormFile.append('data',JSON.stringify(this.certificationBodiesForm));
     //console.log(this.certificationBodiesForm,'certificationBodiesForm');

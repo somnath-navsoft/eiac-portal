@@ -1992,6 +1992,7 @@ savedraftStep(stepCount) {
         // //console.log(res,'res')
         this.loader = true;
         if(res['status'] == true) {
+          this.toastr.success('Save Draft Successfully', '');
         }else{
           this.toastr.warning(res['msg'], '');
         }

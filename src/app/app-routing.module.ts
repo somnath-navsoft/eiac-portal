@@ -158,6 +158,7 @@ const routes: Routes = [
         { path: 'health-care-form/:id', component:HealthCareFormComponent, canActivate: [AuthGuard] },
         { path: 'halal-conformity-form', component:HalalConformityFormComponent, canActivate: [AuthGuard] },
         { path: 'pt-providers-form', component:PtProvidersFormComponent, canActivate: [AuthGuard] },
+        { path: 'pt-providers-form/:id', component:PtProvidersFormComponent, canActivate: [AuthGuard] },
         { path: 'message-detail/:id', component:CabMessageDetailsComponent, canActivate: [AuthGuard] },
       ]
     },
