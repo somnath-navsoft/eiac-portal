@@ -1113,7 +1113,9 @@
                                                         <div class="col-md-12 p-0">
                                                             <div class="form-subhdr">
                                                                 <!-- {{step1Data.cab_type}} -->
-                                                                <h5>Accreditation Scope for {{scope.title}}</h5>
+                                                                <h5>Accreditation Scope for <span *ngIf="scope.title == '_'">Sample Collection</span> 
+                                                                    <span *ngIf="scope.title != '_'">{{scope.title}}</span> 
+                                                                    </h5>
                                                             </div> 
                                                         </div>
                                                     </div>
