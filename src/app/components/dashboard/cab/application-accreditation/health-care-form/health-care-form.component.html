@@ -1251,7 +1251,13 @@
                                 <div class="bttns-health bttn-staff">
                                     <!-- (click)="onSubmitInformationAuditManagement()" -->
                                     <div class="button-content">
-                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','scope_accreditation')">BACK</a> 
+                                        <!-- <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','scope_accreditation')">BACK</a>  -->
+                                        <ng-container *ngIf="step1Data.accredation_criteria == 1">
+                                            <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','scope_accreditation')">BACK</a> 
+                                            </ng-container>
+                                            <ng-container *ngIf="step1Data.accredation_criteria == 2">
+                                                <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('personal_information',headerSteps,'menu','scope_accreditation')">BACK</a> 
+                                            </ng-container>
                                         <button class="cancel-bttn" type="button" (click)="onSubmitStep5(ngForm5, true)">SAVE AS DRAFT</button> 
                                     </div>
                                     <button class="submit-bttn submit-health" >CONTINUE</button>
@@ -1301,13 +1307,13 @@
                                                 <div class="col-md-2">
                                                     <div class="request_frm">
                                                         <mat-radio-group name="perlim_visit_val" 
-                                                        [(ngModel)]="step6Data.is_prelim_visit" #selectPrelim="ngModel" required>
+                                                        [(ngModel)]="step6Data.prelim_visit_val" #selectPrelim="ngModel" required>
                                                             <div class="rad-space">
                                                                 <mat-radio-button value="1">Yes </mat-radio-button>
                                                                 <mat-radio-button value="0">No </mat-radio-button>
                                                             </div>
                                                         </mat-radio-group>
-                                                        <div class="col-md-6 p-0"  [ngStyle]="{'margin-top':'5px','margin-left' : '40px'}">
+                                                        <div class="col-md-12 p-0"  [ngStyle]="{'margin-top':'5px','margin-left' : '40px'}">
                                                             <p class="error" *ngIf="isPrelimSubmitted == true && selectPrelim.errors?.required">Please select anyone option</p>
                                                         </div>
                                                     </div>
@@ -1316,7 +1322,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12" *ngIf="step6Data.is_prelim_visit === '1'">
+                                        <div class="col-md-12" *ngIf="step6Data.prelim_visit_val === '1'">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <mat-form-field class="cab-data">
@@ -1333,7 +1339,7 @@
                                                         <mat-label>Select Time</mat-label>
                                                         <mat-select placeholder="Select" name="prelim_visit_time" 
                                                         (selectionChange)="getDutyTimeForm1Index($event)" 
-                                                        [(ngModel)]="step6Data.prelim_visit_time">
+                                                        [(ngModel)]="step6Data.prelim_visit_time" required>
                                                             <mat-option *ngFor="let item of addMinutesToTime; let i = index;" 
                                                             [value]="item.key">{{item.val}}</mat-option>
                                                         </mat-select>

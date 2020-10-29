@@ -2046,7 +2046,7 @@ saveScope(){
 }
 
   //console.log("#Updated Scope after edit: ", scopeCollections, " -- ", this.editScopeData);
-  this.step5Data['scopeDetails']    = scopeCollections;
+  this.step3Data['scopeDetails']    = scopeCollections;
   //return;
 }
 //scopeCollections[selectScheme]['scope_heading'][keyIds]  //assign scope heading
@@ -2085,9 +2085,9 @@ onSubmitStep3(ngForm: any, type?:any) {
   this.certificationBodiesForm = {};
   this.certificationBodiesForm.step3 = {};  
   var applicationId = sessionStorage.getItem('applicationId');
-  this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+  this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
   //this.certificationBodiesForm.step5.application_id = this.formApplicationId;
-  this.certificationBodiesForm.step3 = this.step5Data;
+  this.certificationBodiesForm.step3 = this.step3Data;
   //this.certificationBodiesForm.step5['cbsOtherActivity'] = [];
   // this.certificationBodiesForm.step3['otherActivityLocations'] = [];
   // this.certificationBodiesForm.step3['countriesForCertification'] = [];

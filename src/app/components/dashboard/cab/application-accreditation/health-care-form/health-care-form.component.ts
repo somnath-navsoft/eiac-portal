@@ -43,7 +43,7 @@ export class HealthCareFormComponent implements OnInit {
   public countryList:Array<any>=[];
   public labTypeList:Array<any>=[];
 
-  isPrelimSubmitted = false;
+  isPrelimSubmitted: boolean = false;
 
 
   public orgMembToggle: boolean = false;
@@ -1387,6 +1387,14 @@ loadData(){
                         this.Service.headerStepMove(item.title, this.headerSteps,'menu')
                       }
                 })
+                if(getData.data.accredation_criteria == 2){
+                    let stepData: any = this.headerSteps.find(item => item.title == 'information_audit_management');
+                    console.log(">>step select: 1 ", stepData);
+                    if(stepData){
+                      stepData.activeClass = '';
+                      stepData.stepComp = true;
+                    }
+                }
                 //////console.log("#Step data: ", this.headerSteps);
               }
 
@@ -1510,7 +1518,9 @@ loadData(){
 
               //Step 6
               if(res['data'].is_prelim_visit != null){
-                this.step6Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
+                //this.step6Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
+                this.step6Data.prelim_visit_val = (getData.data.is_prelim_visit) ? "1" : "0";
+
                 this.step6Data.prelim_visit_date = res['data'].prelim_visit_date;
                 this.step6Data.prelim_visit_time = res['data'].prelim_visit_time;
               }
@@ -1948,7 +1958,7 @@ savedraftStep(stepCount) {
     this.healthCareForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
     this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step6Data.is_prelim_visit = this.step6Data.is_prelim_visit == 0 ? false : true;
+    this.step6Data.is_prelim_visit = this.step6Data.prelim_visit_val == 0 ? false : true;
     this.step6Data.is_draft = true;
     this.healthCareForm.saved_step = '6';
     this.healthCareForm.step6 = this.step6Data;
@@ -2132,7 +2142,25 @@ onSubmitStep3(ngForm3: any){
         this.loader = true;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
-          this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+
+          if(this.step1Data.accredation_criteria == 1){
+            //Intial
+            this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+          }
+          if(this.step1Data.accredation_criteria == 2){
+            //Extension
+            let stepData: any = this.headerSteps.find(item => item.title == 'information_audit_management');
+            console.log(">>step select: 1 ", stepData);
+            if(stepData){
+              stepData.activeClass = '';
+              stepData.stepComp = true;
+            }
+            console.log(">>step select: 2 ", this.headerSteps);
+            this.Service.moveSteps('personal_information', 'scope_accreditation', this.headerSteps);
+          }
+
+
+          //this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
         }
@@ -2558,6 +2586,7 @@ onSubmitStep5(ngForm: any, type?:any) {
 
 onSubmitStep6(ngForm6: any){
   // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+  this.isPrelimSubmitted = true;
   if(ngForm6.form.valid) {
     this.healthCareForm = {};
     this.healthCareForm.step6 = {};
@@ -2566,11 +2595,11 @@ onSubmitStep6(ngForm6: any){
     this.healthCareForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
     this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step6Data.is_prelim_visit = this.step6Data.is_prelim_visit == 0 ? false : true;
+    this.step6Data.is_prelim_visit = this.step6Data.prelim_visit_val == 0 ? false : true;
     this.step6Data.is_draft = false;
     this.healthCareForm.step6 = this.step6Data;
 
-    this.isPrelimSubmitted = true;
+    
 
     //console.log(this.healthCareForm);
     // this.step5DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
