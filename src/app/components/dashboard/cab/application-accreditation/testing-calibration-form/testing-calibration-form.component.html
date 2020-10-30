@@ -1051,7 +1051,6 @@
                                                             [(ngModel)]="schemeRows[i].id" required>
                                                                 <mat-option [value]="item.scope_accridiation.id" *ngFor="let item of criteriaMaster; let k=index;">{{item.title}}</mat-option>
                                                             </mat-select>
-                                                            <mat-error></mat-error> 
                                                         </mat-form-field>
                                                     </div>
                                                     <div class="col-md-3 col-sm-3">
@@ -1095,25 +1094,24 @@
                                                         </div>
                                                     </div>
                                             <ng-container *ngIf="typeFamily.isFamily">
-                                                    <ng-container *ngFor="let itemF of scopeFamilyRows; let k = index;">  
+                                                    <ng-container *ngFor="let itemF of typeFamily.scopeFamilyRows; let k = index;">  
                                                         <div class="row mt-3">
                                                             <div class="col-md-9 col-sm-9">
-                                                                @index - {{k}} -- @{{scopeFamilyRows[k].id}}
+                                                                @index - {{k}} -- @{{typeFamily.scopeFamilyRows[k].id}}
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Scope Family</mat-label>
                                                                     
-                                                                    <mat-select (selectionChange)="getCriteria(typeFamily.id, k, scopeFamilyRows[k].id)" placeholder="Select" name="family_id_{{k}}"  
-                                                                    [(ngModel)]="scopeFamilyRows[k].id"  [required] = "editScopeData == undefined || editScopeData == null">
-                                                                        <mat-option [value]="item.scope_family" *ngFor="let item of typeFamily.familyData; let k=index;">{{item.title}}</mat-option>
+                                                                    <mat-select (selectionChange)="getCriteria(typeFamily.id, k, typeFamily.scopeFamilyRows[k].id)" placeholder="Select" name="family_id_{{k}}"  
+                                                                    [(ngModel)]="typeFamily.scopeFamilyRows[k].id" [ngModelOptions]="{standalone: true}"  [required] = "editScopeData == undefined || editScopeData == null">
+                                                                        <mat-option [value]="item.scope_family" *ngFor="let item of typeFamily.familyData; let k1=index;">{{item.title}}</mat-option>
                                                                     </mat-select>
-                                                                    <mat-error></mat-error> 
                                                                 </mat-form-field>
                                                             </div>
                                                             <div class="col-md-3 col-sm-3">
                                                                 <div class="add-content">
-                                                                    <span *ngIf="k >= 0" class="icon-add" (click)="addSchemeRow(scopeFamilyRows,k)"></span>&nbsp;
-                                                                    <span *ngIf="k >= 1" class="icon-cross" (click)="removeSchemeRow(scopeFamilyRows,k)"></span>
-                                                                </div>
+                                                                    <span *ngIf="k >= 0" class="icon-add" (click)="addFamilyRow(typeFamily.scopeFamilyRows,typeFamily.title,k)"></span>&nbsp;
+                                                                    <span *ngIf="k >= 1" class="icon-cross" (click)="removeFamilyRow(typeFamily.scopeFamilyRows,typeFamily.title,k)"></span>
+                                                                </div> 
                                                             </div>
                                                         </div> 
                                                     </ng-container>
@@ -1130,7 +1128,7 @@
                                                             </div>
                                                         </div>
                                                         <!-- Make Table -->
-                                                        <div class="row">
+                                                        <!-- <div class="row">
                                                             <div class="col-md-12">
                                                                 <div class="table-content-health">
                                                                     <table>
@@ -1244,7 +1242,7 @@
                                                                     </table>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div> -->
 
                                                     </div>
                                                 </div>

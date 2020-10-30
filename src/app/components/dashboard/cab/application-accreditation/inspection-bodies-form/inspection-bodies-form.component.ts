@@ -1238,7 +1238,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         console.log(getData,"get APP Data:");
 
         this.viewData = getData;
-
+        sessionStorage.setItem("userData", JSON.stringify(getData));
 
             var stateList =  this.Service.getState();
             var cityList =  this.Service.getCity();

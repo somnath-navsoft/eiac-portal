@@ -1292,6 +1292,8 @@ loadData(){
               let filePath: string;
               let getData: any = res;
               let saveStep: number;
+
+              sessionStorage.setItem("userData", JSON.stringify(getData));
               // if(!this.Service.isObjectEmpty(res['data'].paymentDetails)){
               
               //   if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''
