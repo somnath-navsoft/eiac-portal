@@ -1646,7 +1646,7 @@
                                                             <mat-radio-button name="1st" value="first">1st</mat-radio-button>
                                                             <mat-radio-button name="2nd" value="second">2nd</mat-radio-button>
                                                             <mat-radio-button name="3rd" value="third">3rd</mat-radio-button>
-                                                            <mat-radio-button name="4th" value="fourth">4th quarter of the year</mat-radio-button>
+                                                            <mat-radio-button name="4th" value="fourth">4th quarter</mat-radio-button>
                                                         </mat-radio-group>
                                                     </div>
                                                     <div class="recommend-year">
@@ -1654,6 +1654,7 @@
                                                             <mat-option [value]="item.value" *ngFor="let item of recommendYearValues; let k=index;">{{item.title}}</mat-option>
                                                         </mat-select>
                                                     </div>
+                                                    <span class="confirm">of the year</span>
                                                 </div>
                                                 <div class="col-md-6 p-0" [ngStyle]="{'margin-top':'5px'}">
                                                     <p class="error" *ngIf="recommendVisit.errors?.required && isApplicationSubmitted == true">Please select anyone option</p>

@@ -13,6 +13,7 @@ import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-b
 import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
 import { DomSanitizer } from '@angular/platform-browser';
 import {CustomModalComponent} from '../../../../utility/custom-modal/custom-modal.component';
+import { find } from 'rxjs/operators';
 
 @Component({
   selector: 'app-testing-calibration-form', 
@@ -218,6 +219,24 @@ export class TestingCalibrationFormComponent implements OnInit {
    * 
    * 
    */
+
+   //Family rows
+   addFamilyRow(obj: any, scopeTitle: string, index: number){
+    this.newRow     =   {};
+    console.log(">>> get title: ", scopeTitle)
+    let findRows: any = this.fullTypeFamily.find(rec => rec.title == scopeTitle);
+    console.log(">>> fanilt: ", findRows);
+    if(findRows){
+      if(findRows.scopeFamilyRows != undefined && typeof findRows.scopeFamilyRows == 'object'){
+        findRows.scopeFamilyRows.push(this.newRow);
+      }
+    }
+    
+    //obj.push(this.newRow);
+   }
+   removeFamilyRow(obj: any, scopeTitle: string, index: number){
+    obj.splice(index, 1);
+  }
 
   addSchemeRow(obj: any = [],index: number){
     ////console.log(">>> ", obj);
@@ -546,10 +565,10 @@ getCriteria(value, secInd: any, typeFamily?: any){
                       this.dynamicScopeModel[scopeTitle] = {};
                       this.dynamicScopeModel[scopeTitle][familyId.toString()] = {};
                     }
-
+                      //scopeFamilyRows
                       if(this.fullTypeFamily.length){
                           let pushObj: any = {
-                            title: scopeTitle, id: getData.scope_accridiation.id, name: scopeName, familyData: familyData, scopeRows: [], isFamily: isFamilyData
+                            title: scopeTitle, id: getData.scope_accridiation.id, name: scopeName, familyData: familyData, scopeFamilyRows: [{}], scopeRows: [], isFamily: isFamilyData
                           }
                           
                           if(this.fullTypeFamily[secInd] != undefined && !this.Service.isObjectEmpty(this.fullTypeFamily[secInd])){
@@ -557,12 +576,12 @@ getCriteria(value, secInd: any, typeFamily?: any){
                             this.fullTypeFamily[secInd] = pushObj;
                           }else{
                               this.fullTypeFamily.push({
-                                title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName, familyData: familyData, scopeRows: [], isFamily: isFamilyData
+                                title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName, familyData: familyData, scopeFamilyRows: [{}], scopeRows: [], isFamily: isFamilyData
                               });
                           }
                       }else{
                           this.fullTypeFamily.push({
-                              title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName, familyData: familyData, scopeRows: [], isFamily: isFamilyData
+                              title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName, familyData: familyData, scopeFamilyRows: [{}], scopeRows: [], isFamily: isFamilyData
                             });
                       }
 
@@ -672,6 +691,7 @@ getCriteria(value, secInd: any, typeFamily?: any){
           }else{
             console.log(">>>> type found");
             // type found
+            
 
           }
                     

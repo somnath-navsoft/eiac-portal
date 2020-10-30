@@ -324,35 +324,51 @@ addMinutesToTime()
       urlVal = splitUrl[4];
     }
     if(urlVal != ''){
-      let getId= (urlVal);
-      let url = this.apiServerUrl+"/"+'accrediation-details-show/'+getId;
-      ////console.log(">>>Get url and ID: ", url, " :: ", getId);
-      this.getwithoutData(url)
-      .subscribe(
-        res => {
-          let getData: any = res;
-          console.log(">>> Get Data: ", getData);
-          if(pageName === 'inspection-bodies-form' || pageName === 'health-care-form'){
-            console.log(">>> disable class...");
-            if(getData.data.accredation_criteria == 2){
-                // let stepData: any = stepRecords.find(item => item.title == 'information_audit_management');
-                // console.log(">>step select: 1 ", stepData);
-                // if(stepData){
-                //   stepData.activeClass = '';
-                //   stepData.stepComp = true;
-                // }
-                return true;
-            }
-          }
 
-        })
-      return false;
+      let getData: any = JSON.parse(sessionStorage.getItem('userData'));
+      //console.log(">>> User Save data: ", getData);
+      if(pageName === 'inspection-bodies-form' || pageName === 'health-care-form'){
+        if(getData.data.accredation_criteria == 2){
+          //console.log(">>step select: ", getData.data.accredation_criteria );
+        return true;
+        }
+
+      }
+
+      //let getId= (urlVal);
+      //let url = this.apiServerUrl+"/"+'accrediation-details-show/'+getId;
+      ////console.log(">>>Get url and ID: ", url, " :: ", getId);
+      // this.getwithoutData(url)
+      // .subscribe(
+      //   res => {
+      //     let getData: any = res;
+      //     console.log(">>> Get Data: ", getData);
+      //     if(pageName === 'inspection-bodies-form' || pageName === 'health-care-form'){
+      //       console.log(">>> disable class...");
+      //       if(getData.data.accredation_criteria == 2){
+      //           // let stepData: any = stepRecords.find(item => item.title == 'information_audit_management');
+      //           // console.log(">>step select: 1 ", stepData);
+      //           // if(stepData){
+      //           //   stepData.activeClass = '';
+      //           //   stepData.stepComp = true;
+      //           // }
+      //           return true;
+      //       }
+      //     }
+
+      //   })
+      
     }
+    return false;
   }
 
   //------------------ Custom Step Function ---------------------
   traverseSteps(stepId: string,stepData: any[],target?:any){
       //console.log('traverseSteps> ');
+
+      let disableStep: boolean = false;
+      disableStep = this.stepDisable();
+      console.log(">>> disable status: ", disableStep);
       
       if(stepData.length){
         let curStepIndex = stepData.findIndex(rec => rec.title === stepId.toString());
@@ -371,7 +387,13 @@ addMinutesToTime()
                     }
                 }
                 if(index < curStepIndex && stepData[index].stepComp === true){
-                  stepData[index].activeClass = 'user-done';
+                  console.log(">>> disable status: 2222 ", disableStep);
+                  if(disableStep && stepData[index].title == 'information_audit_management'){
+                    stepData[index].activeClass = '';
+                  }else{
+                    stepData[index].activeClass = 'user-done';
+                  }
+                  
                 }
             })
         }

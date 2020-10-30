@@ -1238,7 +1238,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         console.log(getData,"get APP Data:");
 
         this.viewData = getData;
-
+        sessionStorage.setItem("userData", JSON.stringify(getData));
 
             var stateList =  this.Service.getState();
             var cityList =  this.Service.getCity();
@@ -1701,7 +1701,10 @@ export class InspectionBodiesFormComponent implements OnInit {
             this.voucherSentData.mobile_no        =  (getData.data.paymentDetails.mobile_no != 'null') ? getData.data.paymentDetails.mobile_no : '';
 
             this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
-            this.paymentReceiptValidation = true;
+            
+            if(this.paymentFile != undefined && this.paymentFile != ''){
+              this.paymentReceiptValidation = true;
+            }
 
             //
             // if(getData.data.paymentDetails.transaction_no != null && getData.data.paymentDetails.payment_method != null &&
