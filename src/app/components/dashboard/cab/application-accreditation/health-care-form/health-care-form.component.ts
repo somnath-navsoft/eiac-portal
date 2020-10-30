@@ -84,7 +84,7 @@ export class HealthCareFormComponent implements OnInit {
   recommendYearValues: any[] = [];
 
   afterSubmit:boolean = false;
-  paymentReceiptValidation:boolean
+  paymentReceiptValidation:boolean = false;
   readAccredAgreem: boolean = false;
   readReviewChecklist: boolean = false;
   readTermsCond: boolean = false;
@@ -1571,7 +1571,9 @@ loadData(){
                   this.voucherSentData.mobile_no        = (res['data'].paymentDetails.mobile_no != 'null') ? res['data'].paymentDetails.mobile_no : '';
 
                   this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
-                  this.paymentReceiptValidation = true;
+                  if(this.paymentFile != undefined && this.paymentFile != ''){
+                    this.paymentReceiptValidation = true;
+                  }                  
 
                   // if(res['data'].paymentDetails.transaction_no != null && res['data'].paymentDetails.payment_method != null &&
                   //   res['data'].paymentDetails.payment_made_by !+ null && res['data'].paymentDetails.mobile_no != null && res['data'].paymentDetails.payment_receipt != ''){
@@ -2796,7 +2798,7 @@ this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no'])
 this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
 this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
 this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
-this.voucherFile.append('voucher_date',dtFormat);
+this.voucherFile.append('payment_date',dtFormat);
 this.voucherFile.append('accreditation',this.formApplicationId);
 this.voucherFile.append('is_draft', false);
 // this.voucherFile.append('application_id',this.formApplicationId);

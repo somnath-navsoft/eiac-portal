@@ -206,10 +206,17 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   }
 
   voucherSentSubmit(theForm){
-     console.log("Valid/Invalid: ", theForm.form, " -- ", this.voucherSentData);
+     
      let postObject: any = {};
+     let is_valid: boolean = false;
+     if(this.voucherSentData['voucher_no'] != undefined && this.voucherSentData['amount'] != undefined &&
+      this.voucherSentData['voucher_date'] != undefined){
+        is_valid = true;
+      }
+      //console.log("Valid/Invalid: ", theForm.form.valid, " -- "," --", is_valid, " --", this.voucherSentData);
 
-     if(theForm.form.valid && this.paymentReceiptValidation === true){
+    //return false;
+     if(is_valid == true && this.paymentReceiptValidation === true){ 
           let dtFormat: string = '';;
           if(this.voucherSentData['voucher_date'] != undefined && 
           this.voucherSentData['voucher_date']._i != undefined){

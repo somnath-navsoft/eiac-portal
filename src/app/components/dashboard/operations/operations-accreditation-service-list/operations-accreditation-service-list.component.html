@@ -244,9 +244,9 @@
                         <div class="col-md-6">
                             <mat-form-field class="cab-data">
                                 <mat-label>Voucher Number</mat-label>
-                                <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                                <input type="number" [ngModelOptions]="{standalone: true}"
                                 matInput placeholder="Voucher Number" 
-                                [(ngModel)]="voucherSentData.voucher_no">
+                                [(ngModel)]="voucherSentData.voucher_no" required>
                             </mat-form-field>
                         </div>
                         <div class="col-md-6">
@@ -270,9 +270,9 @@
                         <div class="col-md-6">
                             <mat-form-field class="cab-data">
                                 <mat-label>Amount</mat-label>
-                                <input type="number" [ngModelOptions]="{standalone: true}" required="true"
-                                matInput placeholder="Voucher Number" 
-                                [(ngModel)]="voucherSentData.amount">
+                                <input type="number" [ngModelOptions]="{standalone: true}" 
+                                matInput placeholder="Amount" 
+                                [(ngModel)]="voucherSentData.amount" required>
                             </mat-form-field>
                         </div>
 
