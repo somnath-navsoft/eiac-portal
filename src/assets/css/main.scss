@@ -971,8 +971,8 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .required_input { color: #B54150; }
 .recommend  .mat-radio-button { padding: 0 10px; }
 .recommend  .mat-radio-label { font-size: 18px; font-family: 'Dubai Medium'; }
-.recommend .recommend-main { display: flex; justify-content: space-between; width: 100%; }
-.recommend .recommend-year { width: 15%; }
+.recommend .recommend-main { display: flex; justify-content: flex-start; width: 100%; }
+.recommend .recommend-year { width: 10%; margin-right: 10px; }
 .confirm { font-size: 18px; font-family: 'Dubai Medium'; }
 .rad-space { display: flex; justify-content: space-around; }
 .train-bdy { background: #EFEFEF; margin-top: 30px; padding-bottom: 25px; }
@@ -1122,6 +1122,28 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .bttn-details .cancel-bttn { display: block; color: #B54150; font-family: 'Dubai Bold'; }
 .course-pop button:focus { outline: none; }
 .course-pop button span { color: #999999; }
+
+.tnc_inner_cond li:before { content: "("counter(item, lower-alpha)")"; }
+.tnc .tnc_inner_cond li { margin-bottom: 0; }
+.tnc_inner_data li:before {counter-increment: list; content: ""counter(list, lower-roman)")"; }
+.iaf-agre .iaf_header {
+  text-align: center;
+  font-size: 20px;
+  font-family: 'Dubai Medium';
+}
+.tnc ol li { position: relative; margin-bottom: 10px;  }
+.tnc ol ol ol > li { margin-bottom: 0; }
+.tnc ol li:before { position: absolute; left: -30px; }
+.iaf-agre p { margin: 0; }
+.iaf-agre .license { text-transform: uppercase; text-decoration: underline; margin: 0; }
+.tnc_note { display: block; font-family: "Dubai Medium"; margin-top: 10px; }
+.autho-hdr { text-align: center; }
+.authorization .autho-hdr h4 { text-transform: uppercase; font-size: 22px; font-family: 'Dubai Medium'; }
+.autho_table table { width: 100%; border: 1px solid; margin-top: 10px; }
+.autho_table table span { display: block; }
+.autho_table td { border: 1px solid; padding: 50px 20px; padding-top: 0; }
+.liscence_det { margin-top: 10px; }
+.iaf-agre .terms-condition { height: auto; overflow: auto; }
 
 
 // MODAL

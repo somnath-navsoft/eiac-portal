@@ -1653,6 +1653,7 @@
                                                             <mat-option [value]="item.value" *ngFor="let item of recommendYearValues; let k=index;">{{item.title}}</mat-option>
                                                         </mat-select>
                                                     </div>
+                                                    <span class="confirm">of the year</span>
                                                 </div>
                                                 <div class="col-md-6 p-0" [ngStyle]="{'margin-top':'5px'}">
                                                     <p class="error" *ngIf="recommendVisit.errors?.required && isApplicationSubmitted == true">Please select anyone option</p>
