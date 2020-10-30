@@ -14,6 +14,7 @@ import { Store } from '@ngrx/store';
 import { AppState, selectAuthState } from '../store/app.states';
 import { LogOut, LogInSuccess } from '../store/actions/auth.actions';
 import { FlashMessagesService } from 'angular2-flash-messages';
+import { Router } from '@angular/router';
 
 
 @Injectable()
@@ -55,7 +56,7 @@ export class AppService {
   urlSubscription: Subscription;
 
   constructor(public http: HttpClient, private _constant: Constants,
-    private _flashMessage: FlashMessagesService,
+    private _flashMessage: FlashMessagesService,public _router: Router,
     public dialog: MatDialog,public snackBar: MatSnackBar, private store: Store<AppState>) { 
       // this.dynamicVal = new Subject<any>();
       //initilize input type regex
@@ -308,9 +309,51 @@ addMinutesToTime()
     return (obj && (Object.keys(obj).length === 0));
   }
 
+  stepDisable(){
+    let urlVal: any= '';
+    console.log(">>> step: ", this._router.url);
+    var wholeUrl = this._router.url;
+    var splitUrl = wholeUrl.split('/');
+    let pageName: any;
+    
+    console.log(splitUrl);
+    if(splitUrl[3] != undefined && splitUrl[3] != ''){
+      pageName = splitUrl[3]; // page name - /
+    }
+    if(splitUrl[4] != undefined && splitUrl[4] != ''){
+      urlVal = splitUrl[4];
+    }
+    if(urlVal != ''){
+      let getId= (urlVal);
+      let url = this.apiServerUrl+"/"+'accrediation-details-show/'+getId;
+      ////console.log(">>>Get url and ID: ", url, " :: ", getId);
+      this.getwithoutData(url)
+      .subscribe(
+        res => {
+          let getData: any = res;
+          console.log(">>> Get Data: ", getData);
+          if(pageName === 'inspection-bodies-form' || pageName === 'health-care-form'){
+            console.log(">>> disable class...");
+            if(getData.data.accredation_criteria == 2){
+                // let stepData: any = stepRecords.find(item => item.title == 'information_audit_management');
+                // console.log(">>step select: 1 ", stepData);
+                // if(stepData){
+                //   stepData.activeClass = '';
+                //   stepData.stepComp = true;
+                // }
+                return true;
+            }
+          }
+
+        })
+      return false;
+    }
+  }
+
   //------------------ Custom Step Function ---------------------
   traverseSteps(stepId: string,stepData: any[],target?:any){
       //console.log('traverseSteps> ');
+      
       if(stepData.length){
         let curStepIndex = stepData.findIndex(rec => rec.title === stepId.toString());
         if(curStepIndex >= 0 && curStepIndex < stepData.length){
@@ -333,6 +376,7 @@ addMinutesToTime()
             })
         }
       }
+      
   }
 
   headerStepMove(stepId: string,stepData: any[],sec?: string,target?:any){
