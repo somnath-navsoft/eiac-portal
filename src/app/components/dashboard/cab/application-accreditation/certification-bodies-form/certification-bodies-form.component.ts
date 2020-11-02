@@ -184,6 +184,7 @@ export class CertificationBodiesFormComponent implements OnInit {
    otherStandards: any[] = [{}];
 
    //Master scope form data declaration
+   firstStep:any;
 
   @ViewChild('mydiv', null) mydiv: ElementRef;
   @ViewChild('captchaRef',{static:true}) captchaRef: RecaptchaComponent;
@@ -939,8 +940,10 @@ loadAppInfo(){
   this.Service.getwithoutData(url)
   .subscribe(
     res => {
+      
       let getData: any = res;
       let data: any;
+      this.firstStep = getData.data['step1'][0]
       //, getData.data.step1, " -- ", getData.data.step2
       //console.log(getData,"Profile info >>> ");
 
@@ -1001,6 +1004,7 @@ loadAppInfo(){
         this.step1Data.date_of_establishment = new Date(data.date_of_establisment);
         this.step1Data.date_of_expiry = new Date(data.date_of_expiry);
         this.step1Data.date_of_issue = new Date(data.date_of_issue);
+        // this.step1Data.legal_status = data.legal_status != null ? data.legal_status : '';
         this.step1Data.fax_no = data.applicant_fax_no;
         this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
         this.step1Data.is_hold_other_accreditation = "";
@@ -1132,6 +1136,8 @@ loadAppInfo(){
                     this.step1Data.is_main_activity_note = res['data'].is_main_activity_note.toString();
                   }
               }
+
+              this.step1Data.legal_status = this.firstStep.legal_status != null ? this.firstStep.legal_status : res['data'].legal_status;
 
               //step2
               if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
