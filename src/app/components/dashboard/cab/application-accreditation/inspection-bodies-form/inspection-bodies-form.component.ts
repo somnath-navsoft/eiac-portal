@@ -1838,12 +1838,12 @@ export class InspectionBodiesFormComponent implements OnInit {
                 this.step1Data.po_box = data.po_box;
                 this.step1Data.telephone = data.tel_no;
                 this.step1Data.fax_no = data.fax_no;
-                this.step1Data.mailing_address = data.mailing_address;
+                this.step1Data.mailing_address = data.applicant_address;
                 this.step1Data.official_website = data.applicant_website;
                 // this.step1Data.date_of_expiry = data.date_of_expiry;
                 // this.step1Data.date_of_establishment = data.date_of_establisment;
                 // this.step1Data.date_of_issue = data.date_of_issue; //|
-                this.step1Data.official_email = data.official_email;
+                this.step1Data.official_email = data.applicant_email;;//data.official_email;
                 this.step1Data.official_website = data.applicant_website;
             }
           }

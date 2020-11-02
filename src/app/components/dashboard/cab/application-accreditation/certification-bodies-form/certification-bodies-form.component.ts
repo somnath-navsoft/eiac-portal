@@ -417,16 +417,16 @@ ngOnInit() {
                   
                   if(findType.scopeRows[secInd] != undefined && !this.Service.isObjectEmpty(findType.scopeRows[secInd])){
                     //console.log("@Existing scheme...found", findType.scopeRows[secInd]);
-                    findType.scopeRows[secInd] = pushObj;
+                      findType.scopeRows[secInd] = pushObj;
                   }else{
-                    findType.scopeRows.push({
+                      findType.scopeRows.push({
                         title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
                       });
                   }
               }else{
-                findType.scopeRows.push({
-                  title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
-                });
+                      findType.scopeRows.push({
+                        title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
+                      });
               }
 
               // if(this.fullScope.length){
