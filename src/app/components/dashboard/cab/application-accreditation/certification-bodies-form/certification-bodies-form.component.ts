@@ -124,6 +124,9 @@ export class CertificationBodiesFormComponent implements OnInit {
   termsGeneral: any;
   termsIAF: any;
 
+  authorizationListTerms1: any;
+  authorizationListTerms2: any;
+
   pathPDF: any;
   closeResult: string;
   modalOptions:NgbModalOptions;
@@ -223,6 +226,13 @@ export class CertificationBodiesFormComponent implements OnInit {
         if(getData){
           this.termsGeneral = getData.data[0];
           this.termsIAF     = getData.data[1];
+
+          if(this.termsGeneral != undefined && this.termsGeneral != ''){
+            this.authorizationListTerms1 = this.termsGeneral.term_id;
+          }
+          if(this.termsIAF != undefined && this.termsIAF != ''){
+            this.authorizationListTerms2 = this.termsIAF.term_id;
+          }
 
           //console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
         }
@@ -1484,10 +1494,12 @@ savedraftStep(stepCount) {
     this.certificationBodiesForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
     this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step5Data.authorizationList = this.authorizationList;
+    this.step5Data.authorization_list_json = this.authorizationList;
     this.step5Data.recommend = this.recommend;
     this.step5Data.is_draft = true;
     this.certificationBodiesForm.saved_step = '5';
+    this.certificationBodiesForm.step7.terms1 = this.authorizationListTerms1;
+      this.certificationBodiesForm.step7.terms2 = this.authorizationListTerms2;
 
     this.certificationBodiesForm.step5 = this.step5Data;
     // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
@@ -2285,7 +2297,7 @@ authorizeCheckCount(theEvent: any, type?:any){
   }
       
 
-  if(this.authorizationStatus && checkCount == 10){
+  if(this.authorizationStatus && checkCount == 9){
     this.authorizationStatus = true;
   }else{
     this.authorizationStatus = false;
@@ -2341,10 +2353,13 @@ if(ngForm5.form.valid && this.authorizationStatus == true){
   var applicationId = sessionStorage.getItem('applicationId');
   this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
   this.certificationBodiesForm.saved_step = '5';
-  this.step5Data.authorizationList = this.authorizationList;
+  this.step5Data.authorization_list_json = this.authorizationList;
   this.step5Data.recommend = this.recommend;
   this.step5Data.is_draft = false;
   this.step5Data.application_date = new Date();
+
+  this.certificationBodiesForm.step7.terms1 = this.authorizationListTerms1;
+  this.certificationBodiesForm.step7.terms2 = this.authorizationListTerms2;
 
   this.certificationBodiesForm.step5 = this.step5Data;
   // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);

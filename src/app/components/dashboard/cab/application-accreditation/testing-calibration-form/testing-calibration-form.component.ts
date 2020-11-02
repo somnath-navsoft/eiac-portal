@@ -2843,8 +2843,8 @@ getCriteria(value, secInd: any){
                 }
           }
   }
-  ////console.log(">>> build scope: ", scopeCollections, " -- ", this.dynamicScopeModel, " -> Scheme: ", this.schemeRows);
-  //return;
+  console.log(">>> build scope: ", scopeCollections, " -- ", this.dynamicScopeModel, " -> Scheme: ", this.schemeRows);
+return;
 
   let secInd: number = 0;
   let resultTempAr: any = [];
@@ -3008,8 +3008,9 @@ getCriteria(value, secInd: any){
         }
     }
   }
-  ////console.log("#Updated Scope after edit: ", scopeCollections, " -- ", this.editScopeData);
+  console.log("#Updated Scope after edit: ", scopeCollections, " -- ", this.editScopeData);
   this.step5Data['scopeDetails']    = scopeCollections;
+  return;
 }
 //scopeCollections[selectScheme]['scope_heading'][keyIds]  //assign scope heading
 //scopeCollections[selectScheme]['scope_value'] //assign unmatch scope value

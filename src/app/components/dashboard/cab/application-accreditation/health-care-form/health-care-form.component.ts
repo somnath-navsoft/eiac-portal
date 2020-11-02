@@ -153,6 +153,9 @@ export class HealthCareFormComponent implements OnInit {
   termsGeneral: any;
   termsILA: any;
 
+  authorizationListTerms1: any;
+  authorizationListTerms2: any;
+
   isCompleteness:any;
   profileComplete:any;
   today = new Date();
@@ -786,6 +789,13 @@ scrollForm(data?:any){
           if(getData){
             this.termsGeneral = getData.data[0];
             this.termsILA     = getData.data[1];
+
+            if(this.termsGeneral != undefined && this.termsGeneral != ''){
+              this.authorizationListTerms1 = this.termsGeneral.term_id;
+            }
+            if(this.termsILA != undefined && this.termsILA != ''){
+              this.authorizationListTerms2 = this.termsILA.term_id;
+            }
 
             //console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
           }
@@ -1990,7 +2000,7 @@ savedraftStep(stepCount) {
     this.healthCareForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
     this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step7Data.authorizationList = this.authorizationList;
+    this.step7Data.authorization_list_json = this.authorizationList;
     this.step7Data.recommend = this.recommend;
     this.step7Data.is_draft = true;
     this.healthCareForm.saved_step = '7';
@@ -2647,7 +2657,7 @@ authorizeCheckCount(theEvent: any, type?:any){
   }
       
 
-  if(this.authorizationStatus && checkCount == 10){
+  if(this.authorizationStatus && checkCount == 9){
     this.authorizationStatus = true;
   }else{
     this.authorizationStatus = false;
@@ -2706,10 +2716,13 @@ if(ngForm7.form.valid){
   var applicationId = sessionStorage.getItem('applicationId');
   this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
   this.healthCareForm.saved_step = '7';
-  this.step7Data.authorizationList = this.authorizationList;
+  this.step7Data.authorization_list_json = this.authorizationList;
   // this.step7Data.recommend = this.recommend;
   this.step7Data.is_draft = false;
   this.step7Data.application_date = new Date();
+
+  this.healthCareForm.step7.terms1 = this.authorizationListTerms1;
+  this.healthCareForm.step7.terms2 = this.authorizationListTerms2;
 
   this.healthCareForm.step7 = this.step7Data;
   // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);

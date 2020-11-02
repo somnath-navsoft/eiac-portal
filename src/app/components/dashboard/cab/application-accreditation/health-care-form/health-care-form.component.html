@@ -898,7 +898,7 @@
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Relevant Experience</mat-label>
-                                                <input  (keypress)="Service.IsNumeric($event)" matInput placeholder="Relevant Experience" name="relevent_experience_technical" [(ngModel)]="step3Data.relevent_experience" required>
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Relevant Experience" name="relevent_experience_technical" [(ngModel)]="step3Data.relevent_experience" required>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -942,7 +942,7 @@
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Relevant Experience</mat-label>
-                                                <input  (keypress)="Service.IsNumeric($event)" matInput placeholder="Relevant Experience" name="management_relevent_experience" [(ngModel)]="step3Data.management_relevent_experience" required>
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Relevant Experience" name="management_relevent_experience" [(ngModel)]="step3Data.management_relevent_experience" required>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -1565,7 +1565,7 @@
                                                 <mat-checkbox name="undertaking_confirmTop3" (change)="authorizeCheckCount($event)"
                                                 [(ngModel)]="authorizationList.undertaking_confirmTop3" required>Do you require ILA MRA Mark Laboratories</mat-checkbox>
                                             </div>
-                                            <div class="terms-condition" style="height:500px;overflow:auto">
+                                            <div class="terms-condition" style="height:500px;overflow:auto" *ngIf="authorizationList.undertaking_confirmTop3">
                                                 <div class="tnc" [innerHTML]="(termsILA != undefined && termsILA.content != undefined) ? termsILA.content : ''"></div>
                                             </div>
 

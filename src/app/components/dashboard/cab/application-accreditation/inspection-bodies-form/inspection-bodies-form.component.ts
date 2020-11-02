@@ -72,6 +72,10 @@ export class InspectionBodiesFormComponent implements OnInit {
   field2:number=2;
   public minDate = new Date();
   public authorizationList:any;
+
+  authorizationListTerms1: any; //agreement
+  authorizationListTerms2: any; // ILA/IAF
+
   public recommend:any;
   public authorizationStatus: boolean = false;
   recommendStatus:boolean = false;
@@ -132,6 +136,8 @@ export class InspectionBodiesFormComponent implements OnInit {
   tradeLicensedValidation:any = false;
   paymentReceiptValidation: boolean = false;
   paymentFile:any = false;
+
+  recomendVisit: any[] = [];
   
 
   step1DataBodyFormFile:any = new FormData();
@@ -671,8 +677,16 @@ export class InspectionBodiesFormComponent implements OnInit {
           console.log(res,'Terms data');
           let getData: any = res;
           if(getData){
+            
             this.termsGeneral = getData.data[0];
             this.termsILA     = getData.data[1];
+            if(this.termsGeneral != undefined && this.termsGeneral != ''){
+              this.authorizationListTerms1 = this.termsGeneral.term_id;
+            }
+            if(this.termsILA != undefined && this.termsILA != ''){
+              this.authorizationListTerms2 = this.termsILA.term_id;
+            }
+
 
             //console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
           }
@@ -689,6 +703,25 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
     this.profileComplete = sessionStorage.getItem('profileComplete');
+
+    this.recomendVisit.push({
+      checked: false,
+      name: 'first',
+      label: '1st',
+    },{
+      checked: false,
+      name: 'second',
+      label: '2nd',
+    },{
+      checked: false,
+      name: 'third',
+      label: '3rd',
+    },{
+      checked: false,
+      name: 'fourth',
+      label: '4th',
+    }
+    );
 
     this.loadTermsConditions();
 
@@ -1667,24 +1700,40 @@ export class InspectionBodiesFormComponent implements OnInit {
           this.step7Data.digital_signature        = getAuthData.digital_signature;
           this.step7Data.application_date         = getAuthData.application_date;
           //check checkboxes
-          this.authorizationList.authorization_confirm1 = true;
-          this.authorizationList.authorization_confirm2 = true;
-          this.readTermsCond       = true;
-          this.authorizationList.undertaking_confirmTop3 = true;
-          this.authorizationList.undertaking_confirm1 = true;
-          this.authorizationList.undertaking_confirm2 = true;
-          this.readReviewChecklist = true;
-          this.authorizationList.undertaking_confirm3 = true;
-          this.authorizationList.undertaking_confirm4 = true;
-          this.authorizationList.undertaking_confirm5 = true;
-          this.authorizationList.undertaking_confirm6 = true;
-          this.authorizationList.undertaking_confirm7 = true;
-          
-          this.authorizationStatus = true;
-          this.readReviewChecklist= true;
-          let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
+
+          // this.authorizationList.authorization_confirm1 = true;
+          // this.authorizationList.authorization_confirm2 = true;
+          // this.readTermsCond       = true;
+          // this.authorizationList.undertaking_confirmTop3 = true;
+          // this.authorizationList.undertaking_confirm1 = true;
+          // this.authorizationList.undertaking_confirm2 = true;
+          // this.readReviewChecklist = true;
+          // this.authorizationList.undertaking_confirm3 = true;
+          // this.authorizationList.undertaking_confirm4 = true;
+          // this.authorizationList.undertaking_confirm5 = true;
+          // this.authorizationList.undertaking_confirm6 = true;
+          // this.authorizationList.undertaking_confirm7 = true;
+
+          let authList: any;
+          authList = getData.data.authorization_list;
+          console.log("@ Auth checked status: ", authList);
+          this.authorizationList = JSON.parse(authList);
+          console.log("# Auth checked status: ", this.authorizationList);
+
+
+          //this.authorizationStatus = true;
+          //this.readReviewChecklist= true;
+          //let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
           //////console.log(">>>recommm", visitRecomm);
-          this.step7Data.recommend_visit = visitRecomm;
+          //this.step7Data.recommend_visit = visitRecomm;
+          // let json: any = getData.data.recommend_visit;
+          // var newJson = json.replace(/([a-zA-Z0-9]+?):/g, '"$1":');
+          // newJson = newJson.replace(/'/g, '"');
+
+          // var dataJson = JSON.parse(newJson);
+          //console.log("@recommend visit  Data json : ", dataJson, " -- ", dataJson[0]);
+          this.step7Data.recommend_visit = (getData.data.recommend_visit);
+          console.log("@recommend visit: ", this.step7Data.recommend_visit, " -- ", getData.data.recommend_visit);
           this.step7Data.recommend_year = parseInt(getData.data.recommend_year);
         }
 
@@ -2368,7 +2417,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     }
         
 
-    if(this.authorizationStatus && checkCount == 10){ 
+    if(this.authorizationStatus && checkCount == 9){ 
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;
@@ -2393,23 +2442,27 @@ export class InspectionBodiesFormComponent implements OnInit {
     // }
 
     
-    this.isApplicationSubmitted = true;
-    let checkCount = 0;
-    for(let key in this.authorizationList) {
-      ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
-      if(this.authorizationList[key]) {  
-        this.authorizationStatus = true;       
-        checkCount++;
-      } 
-      // if(this.authorizationList[key]) {
-      //   this.authorizationStatus = true;
-      // }     
-    }
-    if(this.authorizationStatus && checkCount == 10){
-      this.authorizationStatus = true;
-    }else{
-      this.authorizationStatus = false;
-    }
+    
+
+    if(type == undefined){
+      this.isApplicationSubmitted = true;
+      let checkCount = 0;
+        for(let key in this.authorizationList) {
+          ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
+          if(this.authorizationList[key]) {  
+            this.authorizationStatus = true;       
+            checkCount++;
+          } 
+          // if(this.authorizationList[key]) {
+          //   this.authorizationStatus = true;
+          // }     
+        }
+        if(this.authorizationStatus && checkCount == 9){
+          this.authorizationStatus = true;
+        }else{
+          this.authorizationStatus = false;
+        }
+    }        
 
     //console.log(">>> Check status count: ", checkCount);
 
@@ -2438,14 +2491,27 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.inspectionBodyForm.step7 = {};
       //this.inspectionBodyForm.email = this.userEmail;
       //this.inspectionBodyForm.userType = this.userType;
-      this.step7Data.authorizationList = this.authorizationList;
-      // this.step7Data.recommend = this.recommend;
+      this.step7Data.authorization_list_json = this.authorizationList;
+
+      //make visit 
+      // let recomVisit: any = {
+      //   'first':false,'second':false, 'third': false, 'fourth':false
+      // };
+      // console.log(recomVisit);
+      // this.recomendVisit.forEach((item,index) => {
+      //   recomVisit[item.name.toString()] = item.checked;
+      // })
+      this.step7Data.recommend = this.recomendVisit;
 
       ////////console.log("@@@Step7 Data: ", this.step7Data);
       this.inspectionBodyForm.step7 = this.step7Data;
       this.inspectionBodyForm.step7.email = this.userEmail;
       this.inspectionBodyForm.step7.userType = this.userType;
       this.inspectionBodyForm.step7.application_id = this.formApplicationId;
+
+      this.inspectionBodyForm.step7.terms1 = this.authorizationListTerms1;
+      this.inspectionBodyForm.step7.terms2 = this.authorizationListTerms2;
+
 
       //console.log(">>>Def Data: ", this.step7Data);
 
@@ -2463,7 +2529,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       
       this.inspectionBodyForm.step7.is_draft = false;
       this.inspectionBodyForm.saved_step = 7;
-      //////console.log(">>>Step7 Data: ", this.inspectionBodyForm);
+      console.log(">>>Step7 Data: ", this.inspectionBodyForm);
       //return;
       //this.step6DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
       // setTimeout(() => {
@@ -2480,7 +2546,10 @@ export class InspectionBodiesFormComponent implements OnInit {
               this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
             }
             else{
-              this.router.navigateByUrl('/dashboard/status/all');
+              this.toastr.success("Application Submitted Successfully");
+              setTimeout(() => {
+                this.router.navigateByUrl('/dashboard/status/all');
+              }, 5000)              
             }
           }else{
             this.toastr.warning(res['msg'], '');
@@ -2488,8 +2557,9 @@ export class InspectionBodiesFormComponent implements OnInit {
         });
 
       //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
-    }else if(type != undefined && type == true && this.authorizationStatus == true){
-      console.log(">>> Enter....2 ", type, " -- ", ngForm7.form.valid, " -- ", this.inspectionBodyForm)
+      //&& this.authorizationStatus == true
+    }else if(type != undefined && type == true ){
+      console.log(">>> Enter drfat save: ", type, " -- ", ngForm7.form.valid, " -- ", this.inspectionBodyForm)
       this.inspectionBodyForm.step7.is_draft = true;
       this.inspectionBodyForm.saved_step     = 7; 
       // this.toastr.success('Application Successfully Submitted', '');
