@@ -82,6 +82,7 @@ export class HealthCareFormComponent implements OnInit {
   paymentStepComp: boolean = false;
 
   recommendYearValues: any[] = [];
+  recomendVisit: any[] = [];
 
   afterSubmit:boolean = false;
   paymentReceiptValidation:boolean = false;
@@ -832,6 +833,25 @@ scrollForm(data?:any){
    //this.getPlaceName();
    //this.checkCaptchaValidation = true;
 
+   this.recomendVisit.push({
+    checked: false,
+    name: 'first',
+    label: '1st',
+  },{
+    checked: false,
+    name: 'second',
+    label: '2nd',
+  },{
+    checked: false,
+    name: 'third',
+    label: '3rd',
+  },{
+    checked: false,
+    name: 'fourth',
+    label: '4th',
+  }
+  );
+
    var d = new Date();
     var yr = d.getFullYear();
     for(var k=2010; k<=2030; k++){
@@ -1546,26 +1566,49 @@ loadData(){
                 this.step7Data.digital_signature        = getAuthData.digital_signature;
                 this.step7Data.application_date         = getAuthData.application_date;
 
-                Object.keys(this.authorizationList).forEach( key => { 
-                  this.authorizationList[key] = true;
-                })
-                this.authorizationStatus = true;
-                this.readReviewChecklist= true;
-                let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
-                this.step7Data.recommend_visit = visitRecomm;//'second';
+                // Object.keys(this.authorizationList).forEach( key => { 
+                //   this.authorizationList[key] = true;
+                // })
+                // this.authorizationStatus = true;
+                // this.readReviewChecklist= true;
+                //let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
+                //this.step7Data.recommend_visit = visitRecomm;//'second';
                  this.step7Data.recommend_year = parseInt(getData.data.recommend_year);
-                this.authorizationList.authorization_confirm1 = true;
-                this.authorizationList.authorization_confirm2 = true;
-                this.readTermsCond       = true;
-                this.authorizationList.undertaking_confirmTop3 = true;
-                this.authorizationList.undertaking_confirm1 = true;
-                this.authorizationList.undertaking_confirm2 = true;
-                this.readReviewChecklist = true;
-                this.authorizationList.undertaking_confirm3 = true;
-                this.authorizationList.undertaking_confirm4 = true;
-                this.authorizationList.undertaking_confirm5 = true;
-                this.authorizationList.undertaking_confirm6 = true;
-                this.authorizationList.undertaking_confirm7 = true;
+                 this.recomendVisit.forEach((item, index) => {
+                  let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
+                  console.log(">>> replace: ", getData.data.recommend_visit, " :: ", replace);
+                  let cpjson: any = getData.data.recommend_visit ;//'{"first": false, "second": true, "third": false, "fourth": true}';
+                  let findVsit: any = JSON.parse(cpjson);;//;
+                  //
+                  console.log(">>> ", findVsit);
+                  for(let key in findVsit){
+                     if(key === item.name){
+                       console.log(">>>> found: ", item, " == ", findVsit[key]);
+                       item.checked = findVsit[key];
+                     }
+                  }
+            })
+            console.log("@recommend visit: ", this.recomendVisit, " -- ", getData.data.recommend_visit);
+            this.step7Data.recommend_visit = (getData.data.recommend_visit);
+
+                 let authList: any;
+                authList = getData.data.authorization_list;
+                console.log("@ Auth checked status: ", authList);
+                this.authorizationList = JSON.parse(authList);
+                console.log("# Auth checked status: ", this.authorizationList);
+
+                // this.authorizationList.authorization_confirm1 = true;
+                // this.authorizationList.authorization_confirm2 = true;
+                // this.readTermsCond       = true;
+                // this.authorizationList.undertaking_confirmTop3 = true;
+                // this.authorizationList.undertaking_confirm1 = true;
+                // this.authorizationList.undertaking_confirm2 = true;
+                // this.readReviewChecklist = true;
+                // this.authorizationList.undertaking_confirm3 = true;
+                // this.authorizationList.undertaking_confirm4 = true;
+                // this.authorizationList.undertaking_confirm5 = true;
+                // this.authorizationList.undertaking_confirm6 = true;
+                // this.authorizationList.undertaking_confirm7 = true;
               }
 
               //Step 9
@@ -2001,7 +2044,18 @@ savedraftStep(stepCount) {
     var applicationId = sessionStorage.getItem('applicationId');
     this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step7Data.authorization_list_json = this.authorizationList;
-    this.step7Data.recommend = this.recommend;
+    //this.step7Data.recommend = this.recommend;
+    //make visit 
+    let recomVisit: any = {
+      'first':false,'second':false, 'third': false, 'fourth':false
+    };
+    console.log(recomVisit);
+    this.recomendVisit.forEach((item,index) => {
+      recomVisit[item.name.toString()] = item.checked;
+    })
+    this.step7Data.recommend = recomVisit;
+
+
     this.step7Data.is_draft = true;
     this.healthCareForm.saved_step = '7';
 
@@ -2687,7 +2741,7 @@ onSubmitUndertakingApplicant(ngForm7: any){
       //   this.authorizationStatus = true;
       // }     
     }  
-    if(this.authorizationStatus && checkCount == 10){  
+    if(this.authorizationStatus && checkCount == 9){  
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;
@@ -2718,6 +2772,16 @@ if(ngForm7.form.valid){
   this.healthCareForm.saved_step = '7';
   this.step7Data.authorization_list_json = this.authorizationList;
   // this.step7Data.recommend = this.recommend;
+  //make visit 
+  let recomVisit: any = {
+    'first':false,'second':false, 'third': false, 'fourth':false
+  };
+  console.log(recomVisit);
+  this.recomendVisit.forEach((item,index) => {
+    recomVisit[item.name.toString()] = item.checked;
+  })
+  this.step7Data.recommend = recomVisit;//this.recomendVisit;
+
   this.step7Data.is_draft = false;
   this.step7Data.application_date = new Date();
 

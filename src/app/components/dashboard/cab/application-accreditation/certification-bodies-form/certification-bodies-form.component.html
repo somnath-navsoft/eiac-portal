@@ -463,7 +463,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <mat-form-field class="cab-data">
+                                            <mat-form-field class="cab-data" *ngIf="step1Data.is_main_activity == 'false'">
                                                 <mat-label>(If No, indicate what are other activities related to the organization)</mat-label>
                                                 <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
                                                 matInput placeholder="" name="indication" 
@@ -752,7 +752,7 @@
                                                                         <td>
                                                                             <mat-form-field class="cab-data">
                                                                                 <mat-label>Type Here</mat-label>
-                                                                                <input  (keypress)="Service.inputFilter($event, Service.regExNumb)" matInput placeholder="" name="number_of_persons_{{i}}" [(ngModel)]="auditorsExaminersFulltime[i].number_of_persons" required>
+                                                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="number_of_persons_{{i}}" [(ngModel)]="auditorsExaminersFulltime[i].number_of_persons" required>
                                                                             </mat-form-field>
                                                                         </td>
                                                                         <td class="content-icn">
@@ -956,7 +956,7 @@
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Sub Type</mat-label>
                                                             <mat-select (selectionChange)="getTypeScheme(subTypeRows[i].id, i)" placeholder="Select" name="subtype_id_{{i}}"  
-                                                            [(ngModel)]="subTypeRows[i].id"  [required] = "editScopeData == undefined || editScopeData == null">
+                                                            [(ngModel)]="subTypeRows[i].id" [ngModelOptions]="{standalone: true}" [required] = "editScopeData == undefined || editScopeData == null">
                                                                 <mat-option [value]="item.service_page.id" *ngFor="let item of subTypeMaster; let k=index;">{{item.title}}</mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
@@ -978,7 +978,7 @@
                                                             <div class="row">
                                                                 <div class="col-md-12 p-0">
                                                                     <div class="form-subhdr">
-                                                                        <h5>Sub Type for {{typeScope.name}}</h5>
+                                                                        <h5>Sub Type for {{typeScope.name}} -- {{t1}}</h5>
                                                                     </div> 
                                                                 </div>
                                                             </div>
@@ -986,7 +986,7 @@
                                                         <div class="row mt-3">
                                                             <div class="col-md-9 col-sm-9">
                                                                 <mat-form-field class="cab-data">
-                                                                    <mat-label>Scheme</mat-label>
+                                                                    <mat-label>Scheme -- {{i}}</mat-label>
                                                                     <!-- criteriaMaster -->
                                                                     <mat-select (selectionChange)="getCriteria(schemeRows[i].id, i, typeScope.title)" placeholder="Select" name="scheme_id_{{i}}"  
                                                                     [(ngModel)]="schemeRows[i].id" [ngModelOptions]="{standalone: true}" [required] = "editScopeData == undefined || editScopeData == null">
@@ -1182,7 +1182,7 @@
                                                                             <input onpaste="return false" 
                                                                             (keypress)="Service.inputFilter($event, Service.regExCont)"
                                                                              matInput placeholder="" name="category_{{i}}"
-                                                                              [(ngModel)]="otherStandards[i].category" required> 
+                                                                              [(ngModel)]="otherStandards[i].category" > 
                                                                         </mat-form-field>
                                                                     </td>
                                                                     <td>
@@ -1191,7 +1191,7 @@
                                                                             <input onpaste="return false" 
                                                                             (keypress)="Service.inputFilter($event, Service.regExCont)"
                                                                              matInput placeholder="" name="standard_{{i}}" 
-                                                                             [(ngModel)]="otherStandards[i].standard" required> 
+                                                                             [(ngModel)]="otherStandards[i].standard" > 
                                                                         </mat-form-field>
                                                                     </td>
                                                                     <td>
@@ -1199,7 +1199,7 @@
                                                                             <mat-label>Type Here</mat-label>
                                                                             <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExCont)" 
                                                                             matInput placeholder="" name="scopeScheme_{{i}}" 
-                                                                            [(ngModel)]="otherStandards[i].scopeScheme" required> 
+                                                                            [(ngModel)]="otherStandards[i].scopeScheme" > 
                                                                         </mat-form-field>
                                                                         </td>
                                                                     <td class="content-icn">
@@ -1649,22 +1649,27 @@
                                                 <div class="recommend-main">
                                                     <div class="recommend-quarter">
                                                         <span class="confirm">I recommend the visit to be conducted in the</span>
-                                                        <mat-radio-group name="recommended" #recommendVisit="ngModel" [(ngModel)]="step5Data.recommend_visit" required>
+                                                        <!-- <mat-radio-group name="recommended" #recommendVisit="ngModel" [(ngModel)]="step5Data.recommend_visit" required>
                                                             <mat-radio-button name="1st" value="first">1st</mat-radio-button>
                                                             <mat-radio-button name="2nd" value="second">2nd</mat-radio-button>
                                                             <mat-radio-button name="3rd" value="third">3rd</mat-radio-button>
                                                             <mat-radio-button name="4th" value="fourth">4th quarter</mat-radio-button>
-                                                        </mat-radio-group>
+                                                        </mat-radio-group> -->
+                                                        <ng-container *ngFor="let item of recomendVisit; let k=index;">
+                                                            <mat-checkbox  name="undertaking_confirm7_{{k}}" required
+                                                        [(ngModel)]="item.checked" value="first">{{item.label}}</mat-checkbox> 
+                                                        </ng-container>quarter
                                                     </div>
+                                                    <span class="confirm">of the year</span>
                                                     <div class="recommend-year">
                                                         <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step5Data.recommend_year" required>
                                                             <mat-option [value]="item.value" *ngFor="let item of recommendYearValues; let k=index;">{{item.title}}</mat-option>
                                                         </mat-select>
                                                     </div>
-                                                    <span class="confirm">of the year</span>
+                                                    
                                                 </div>
                                                 <div class="col-md-6 p-0" [ngStyle]="{'margin-top':'5px'}">
-                                                    <p class="error" *ngIf="recommendVisit.errors?.required && isApplicationSubmitted == true">Please select anyone option</p>
+                                                    <!-- <p class="error" *ngIf="recommendVisit.errors?.required && isApplicationSubmitted == true">Please select anyone option</p> -->
                                                 </div>                                                
                                             </div>
 

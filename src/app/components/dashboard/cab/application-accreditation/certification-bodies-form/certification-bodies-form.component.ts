@@ -75,6 +75,7 @@ export class CertificationBodiesFormComponent implements OnInit {
   getCountryLists:any;
 
   paymentStepComp: boolean = false;
+  recomendVisit: any[] = [];
 
   afterSubmit:boolean = false;
   today = new Date();
@@ -247,6 +248,26 @@ ngOnInit() {
   //open step
   
   this.loadTermsConditions();
+
+  this.recomendVisit.push({
+    checked: false,
+    name: 'first',
+    label: '1st',
+  },{
+    checked: false,
+    name: 'second',
+    label: '2nd',
+  },{
+    checked: false,
+    name: 'third',
+    label: '3rd',
+  },{
+    checked: false,
+    name: 'fourth',
+    label: '4th',
+  }
+  );
+
   var d = new Date();
     var yr = d.getFullYear();
     for(var k=2010; k<=2030; k++){
@@ -638,7 +659,7 @@ ngOnInit() {
             }
 
             let pushObj: any = {
-              title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: []
+              title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: [], schemeRows: []
             }
             
             if(this.fullTypeScope[secInd] != undefined && !this.Service.isObjectEmpty(this.fullTypeScope[secInd])){
@@ -646,12 +667,12 @@ ngOnInit() {
               this.fullTypeScope[secInd] = pushObj;
             }else{
                 this.fullTypeScope.push({
-                  title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: []
+                  title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: [], schemeRows: []
                 });
             }
         }else{
         this.fullTypeScope.push({
-            title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: []
+            title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: [], schemeRows: []
           });
         }
 
@@ -1314,13 +1335,39 @@ loadAppInfo(){
                 this.step5Data.digital_signature        = getAuthData.digital_signature;
                 this.step5Data.application_date         = getAuthData.application_date;
 
-                Object.keys(this.authorizationList).forEach( key => { 
-                  this.authorizationList[key] = true;
-                })
-                this.authorizationStatus = true;
-                this.readReviewChecklist= true;
-                let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
-                this.step5Data.recommend_visit = visitRecomm;//'second';
+                this.recomendVisit.forEach((item, index) => {
+                  let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
+                  console.log(">>> replace: ", getData.data.recommend_visit, " :: ", replace);
+                  let cpjson: any = getData.data.recommend_visit ;//'{"first": false, "second": true, "third": false, "fourth": true}';
+                  let findVsit: any = JSON.parse(cpjson);;//;
+                  //
+                  console.log(">>> ", findVsit);
+                  for(let key in findVsit){
+                     if(key === item.name){
+                       console.log(">>>> found: ", item, " == ", findVsit[key]);
+                       item.checked = findVsit[key];
+                     }
+                  }
+            })
+            console.log("@recommend visit: ", this.recomendVisit, " -- ", getData.data.recommend_visit);
+            this.step7Data.recommend_visit = (getData.data.recommend_visit);
+
+                let authList: any;
+                authList = getData.data.authorization_list;
+                console.log("@ Auth checked status: ", authList);
+                this.authorizationList = JSON.parse(authList);
+                console.log("# Auth checked status: ", this.authorizationList);
+
+                // Object.keys(this.authorizationList).forEach( key => { 
+                //   this.authorizationList[key] = true;
+                // })
+                // this.authorizationStatus = true;
+                // this.readReviewChecklist= true;
+
+                // let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
+                // this.step5Data.recommend_visit = visitRecomm;//'second';
+
+
                 this.step7Data.recommend_year = parseInt(getData.data.recommend_year);
               }
 
@@ -1501,7 +1548,19 @@ savedraftStep(stepCount) {
     var applicationId = sessionStorage.getItem('applicationId');
     this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step5Data.authorization_list_json = this.authorizationList;
-    this.step5Data.recommend = this.recommend;
+    //this.step5Data.recommend = this.recommend;
+
+    //make visit 
+    let recomVisit: any = {
+      'first':false,'second':false, 'third': false, 'fourth':false
+    };
+    console.log(recomVisit);
+    this.recomendVisit.forEach((item,index) => {
+      recomVisit[item.name.toString()] = item.checked;
+    })
+    this.step5Data.recommend = recomVisit;
+
+
     this.step5Data.is_draft = true;
     this.certificationBodiesForm.saved_step = '5';
     this.certificationBodiesForm.step7.terms1 = this.authorizationListTerms1;
@@ -2342,7 +2401,7 @@ let checkCount = 0;
         checkCount++;
       }    
     }
-    if(this.authorizationStatus && checkCount == 10){
+    if(this.authorizationStatus && checkCount == 9){
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;
@@ -2360,7 +2419,18 @@ if(ngForm5.form.valid && this.authorizationStatus == true){
   this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
   this.certificationBodiesForm.saved_step = '5';
   this.step5Data.authorization_list_json = this.authorizationList;
-  this.step5Data.recommend = this.recommend;
+ // this.step5Data.recommend = this.recommend;
+
+  //make visit 
+  let recomVisit: any = {
+    'first':false,'second':false, 'third': false, 'fourth':false
+  };
+  console.log(recomVisit);
+  this.recomendVisit.forEach((item,index) => {
+    recomVisit[item.name.toString()] = item.checked;
+  })
+  this.step5Data.recommend = recomVisit;
+
   this.step5Data.is_draft = false;
   this.step5Data.application_date = new Date();
 

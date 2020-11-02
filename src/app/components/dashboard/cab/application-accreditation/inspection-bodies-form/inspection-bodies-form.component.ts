@@ -737,6 +737,8 @@ export class InspectionBodiesFormComponent implements OnInit {
     }
     this.step7Data.recommend_year = yr;
 
+    
+
 
     // let jsonStrting = '{"18":{"scope_heading":{"43":"Inspection Category","45":"Inspection field","47":"Range of inspection","49":"Stage of the inspection","51":"Inspection criteria","53":"Inspection Activity Type"},"scope_value":[{"43":"Product","45":"Mechanical Engineering of Lifting Equipment","47":"Lever hoist","49":"In-service","51":"BS EN 13157","53":"A"},{"43":"Product","45":"Mechanical, Electrical and Structural Engineering of Lifting Equipment","47":"Mobile crane","49":"In-service","51":"BS 7121-2-1,BS 7121-2-3","53":"B,C"},{"43":"Product","45":"Mechanical Engineering of Lifting Equipment – Earth Moving","47":"Backhoe Loader","49":"In-service","51":"BS EN 474-4","53":"A,B"}]},"105":{"scope_heading":{"55":"Inspection Category","57":"Inspection field","59":"Range of inspection","61":"Stage of the inspection","63":"Inspection criteria","65":"Inspection Activity Type"},"scope_value":[{"55":"Product","57":"Mechanical Engineering of Lifting Accessories","59":"Hook","61":"In-service","63":"Welcome","65":"Hello"},{"55":"Product","57":"Mechanical Engineering of Lifting Accessories","59":"Chain sling","61":"In-service","63":"bbb","65":"aaa"}]}}';
     // let jsonObject = JSON.parse(jsonStrting);
@@ -1732,8 +1734,23 @@ export class InspectionBodiesFormComponent implements OnInit {
 
           // var dataJson = JSON.parse(newJson);
           //console.log("@recommend visit  Data json : ", dataJson, " -- ", dataJson[0]);
+          this.recomendVisit.forEach((item, index) => {
+                let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
+                console.log(">>> replace: ", getData.data.recommend_visit, " :: ", replace);
+                let cpjson: any = getData.data.recommend_visit ;//'{"first": false, "second": true, "third": false, "fourth": true}';
+                let findVsit: any = JSON.parse(cpjson);;//;
+                //
+                console.log(">>> ", findVsit);
+                for(let key in findVsit){
+                   if(key === item.name){
+                     console.log(">>>> found: ", item, " == ", findVsit[key]);
+                     item.checked = findVsit[key];
+                   }
+                }
+          })
+          console.log("@recommend visit: ", this.recomendVisit, " -- ", getData.data.recommend_visit);
           this.step7Data.recommend_visit = (getData.data.recommend_visit);
-          console.log("@recommend visit: ", this.step7Data.recommend_visit, " -- ", getData.data.recommend_visit);
+          
           this.step7Data.recommend_year = parseInt(getData.data.recommend_year);
         }
 
@@ -2494,14 +2511,14 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.step7Data.authorization_list_json = this.authorizationList;
 
       //make visit 
-      // let recomVisit: any = {
-      //   'first':false,'second':false, 'third': false, 'fourth':false
-      // };
-      // console.log(recomVisit);
-      // this.recomendVisit.forEach((item,index) => {
-      //   recomVisit[item.name.toString()] = item.checked;
-      // })
-      this.step7Data.recommend = this.recomendVisit;
+      let recomVisit: any = {
+        'first':false,'second':false, 'third': false, 'fourth':false
+      };
+      console.log(recomVisit);
+      this.recomendVisit.forEach((item,index) => {
+        recomVisit[item.name.toString()] = item.checked;
+      })
+      this.step7Data.recommend = recomVisit;//this.recomendVisit;
 
       ////////console.log("@@@Step7 Data: ", this.step7Data);
       this.inspectionBodyForm.step7 = this.step7Data;
