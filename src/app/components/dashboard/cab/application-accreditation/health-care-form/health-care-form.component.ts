@@ -43,7 +43,7 @@ export class HealthCareFormComponent implements OnInit {
   public countryList:Array<any>=[];
   public labTypeList:Array<any>=[];
 
-  isPrelimSubmitted = false;
+  isPrelimSubmitted: boolean = false;
 
 
   public orgMembToggle: boolean = false;
@@ -84,7 +84,7 @@ export class HealthCareFormComponent implements OnInit {
   recommendYearValues: any[] = [];
 
   afterSubmit:boolean = false;
-  paymentReceiptValidation:boolean
+  paymentReceiptValidation:boolean = false;
   readAccredAgreem: boolean = false;
   readReviewChecklist: boolean = false;
   readTermsCond: boolean = false;
@@ -1292,6 +1292,8 @@ loadData(){
               let filePath: string;
               let getData: any = res;
               let saveStep: number;
+
+              sessionStorage.setItem("userData", JSON.stringify(getData));
               // if(!this.Service.isObjectEmpty(res['data'].paymentDetails)){
               
               //   if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''
@@ -1387,6 +1389,14 @@ loadData(){
                         this.Service.headerStepMove(item.title, this.headerSteps,'menu')
                       }
                 })
+                if(getData.data.accredation_criteria == 2){
+                    let stepData: any = this.headerSteps.find(item => item.title == 'information_audit_management');
+                    console.log(">>step select: 1 ", stepData);
+                    if(stepData){
+                      stepData.activeClass = '';
+                      stepData.stepComp = true;
+                    }
+                }
                 //////console.log("#Step data: ", this.headerSteps);
               }
 
@@ -1510,7 +1520,9 @@ loadData(){
 
               //Step 6
               if(res['data'].is_prelim_visit != null){
-                this.step6Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
+                //this.step6Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
+                this.step6Data.prelim_visit_val = (getData.data.is_prelim_visit) ? "1" : "0";
+
                 this.step6Data.prelim_visit_date = res['data'].prelim_visit_date;
                 this.step6Data.prelim_visit_time = res['data'].prelim_visit_time;
               }
@@ -1559,7 +1571,9 @@ loadData(){
                   this.voucherSentData.mobile_no        = (res['data'].paymentDetails.mobile_no != 'null') ? res['data'].paymentDetails.mobile_no : '';
 
                   this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
-                  this.paymentReceiptValidation = true;
+                  if(this.paymentFile != undefined && this.paymentFile != ''){
+                    this.paymentReceiptValidation = true;
+                  }                  
 
                   // if(res['data'].paymentDetails.transaction_no != null && res['data'].paymentDetails.payment_method != null &&
                   //   res['data'].paymentDetails.payment_made_by !+ null && res['data'].paymentDetails.mobile_no != null && res['data'].paymentDetails.payment_receipt != ''){
@@ -1948,7 +1962,7 @@ savedraftStep(stepCount) {
     this.healthCareForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
     this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step6Data.is_prelim_visit = this.step6Data.is_prelim_visit == 0 ? false : true;
+    this.step6Data.is_prelim_visit = this.step6Data.prelim_visit_val == 0 ? false : true;
     this.step6Data.is_draft = true;
     this.healthCareForm.saved_step = '6';
     this.healthCareForm.step6 = this.step6Data;
@@ -2132,7 +2146,25 @@ onSubmitStep3(ngForm3: any){
         this.loader = true;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
-          this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+
+          if(this.step1Data.accredation_criteria == 1){
+            //Intial
+            this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+          }
+          if(this.step1Data.accredation_criteria == 2){
+            //Extension
+            let stepData: any = this.headerSteps.find(item => item.title == 'information_audit_management');
+            console.log(">>step select: 1 ", stepData);
+            if(stepData){
+              stepData.activeClass = '';
+              stepData.stepComp = true;
+            }
+            console.log(">>step select: 2 ", this.headerSteps);
+            this.Service.moveSteps('personal_information', 'scope_accreditation', this.headerSteps);
+          }
+
+
+          //this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
         }
@@ -2558,6 +2590,7 @@ onSubmitStep5(ngForm: any, type?:any) {
 
 onSubmitStep6(ngForm6: any){
   // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+  this.isPrelimSubmitted = true;
   if(ngForm6.form.valid) {
     this.healthCareForm = {};
     this.healthCareForm.step6 = {};
@@ -2566,11 +2599,11 @@ onSubmitStep6(ngForm6: any){
     this.healthCareForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
     this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step6Data.is_prelim_visit = this.step6Data.is_prelim_visit == 0 ? false : true;
+    this.step6Data.is_prelim_visit = this.step6Data.prelim_visit_val == 0 ? false : true;
     this.step6Data.is_draft = false;
     this.healthCareForm.step6 = this.step6Data;
 
-    this.isPrelimSubmitted = true;
+    
 
     //console.log(this.healthCareForm);
     // this.step5DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
@@ -2765,7 +2798,7 @@ this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no'])
 this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
 this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
 this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
-this.voucherFile.append('voucher_date',dtFormat);
+this.voucherFile.append('payment_date',dtFormat);
 this.voucherFile.append('accreditation',this.formApplicationId);
 this.voucherFile.append('is_draft', false);
 // this.voucherFile.append('application_id',this.formApplicationId);

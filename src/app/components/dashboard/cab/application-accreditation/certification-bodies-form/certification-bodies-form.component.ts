@@ -128,7 +128,7 @@ export class CertificationBodiesFormComponent implements OnInit {
   closeResult: string;
   modalOptions:NgbModalOptions;
   paymentFile:any = false;
-  paymentReceiptValidation:boolean
+  paymentReceiptValidation:boolean = false;
   readAccredAgreem: boolean = false;
   readReviewChecklist: boolean = false;
   readTermsCond: boolean = false;
@@ -418,16 +418,16 @@ ngOnInit() {
                   
                   if(findType.scopeRows[secInd] != undefined && !this.Service.isObjectEmpty(findType.scopeRows[secInd])){
                     //console.log("@Existing scheme...found", findType.scopeRows[secInd]);
-                    findType.scopeRows[secInd] = pushObj;
+                      findType.scopeRows[secInd] = pushObj;
                   }else{
-                    findType.scopeRows.push({
+                      findType.scopeRows.push({
                         title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
                       });
                   }
               }else{
-                findType.scopeRows.push({
-                  title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
-                });
+                      findType.scopeRows.push({
+                        title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
+                      });
               }
 
               // if(this.fullScope.length){
@@ -606,7 +606,7 @@ ngOnInit() {
 
 
  getTypeScheme(typeId: number, secInd: number){
-   let typeData: any = this.subTypeMaster;
+   let typeData: any = this.subTypeMaster; 
    let findType: any = this.subTypeMaster.find(rec => rec.service_page.id == typeId);
    ////console.log(">>> get type scheme...", typeId, " :: ", typeData);
    ////console.log(">>> find type: ", findType, " -- ", typeof findType);
@@ -1327,7 +1327,9 @@ loadAppInfo(){
                   this.voucherSentData.mobile_no        = (res['data'].paymentDetails.mobile_no != 'null') ? res['data'].paymentDetails.mobile_no : '';
 
                   this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
-                  this.paymentReceiptValidation = true;
+                  if(this.paymentFile != undefined && this.paymentFile != ''){
+                    this.paymentReceiptValidation = true;
+                  }
 
                   // if(res['data'].paymentDetails.transaction_no != null && res['data'].paymentDetails.payment_method != null &&
                   //   res['data'].paymentDetails.payment_made_by !+ null && res['data'].paymentDetails.mobile_no != null && res['data'].paymentDetails.payment_receipt != ''){
@@ -2052,7 +2054,7 @@ saveScope(){
 }
 
   //console.log("#Updated Scope after edit: ", scopeCollections, " -- ", this.editScopeData);
-  this.step5Data['scopeDetails']    = scopeCollections;
+  this.step3Data['scopeDetails']    = scopeCollections;
   //return;
 }
 //scopeCollections[selectScheme]['scope_heading'][keyIds]  //assign scope heading
@@ -2091,9 +2093,9 @@ onSubmitStep3(ngForm: any, type?:any) {
   this.certificationBodiesForm = {};
   this.certificationBodiesForm.step3 = {};  
   var applicationId = sessionStorage.getItem('applicationId');
-  this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+  this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
   //this.certificationBodiesForm.step5.application_id = this.formApplicationId;
-  this.certificationBodiesForm.step3 = this.step5Data;
+  this.certificationBodiesForm.step3 = this.step3Data;
   //this.certificationBodiesForm.step5['cbsOtherActivity'] = [];
   // this.certificationBodiesForm.step3['otherActivityLocations'] = [];
   // this.certificationBodiesForm.step3['countriesForCertification'] = [];
@@ -2436,7 +2438,8 @@ this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no'])
 this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
 this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
 this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
-this.voucherFile.append('voucher_date',dtFormat);
+//this.voucherFile.append('voucher_date',dtFormat);
+this.voucherFile.append('payment_date',this.voucherSentData['payment_date']);
 this.voucherFile.append('accreditation',this.formApplicationId);
 this.voucherFile.append('is_draft', false);
 // this.voucherFile.append('application_id',this.formApplicationId);

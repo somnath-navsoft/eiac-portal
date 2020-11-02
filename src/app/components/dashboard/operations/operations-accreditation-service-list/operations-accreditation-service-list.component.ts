@@ -206,20 +206,29 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   }
 
   voucherSentSubmit(theForm){
-     console.log("Valid/Invalid: ", theForm.form, " -- ", this.voucherSentData);
+     
      let postObject: any = {};
+     let is_valid: boolean = false;
+     if(this.voucherSentData['voucher_no'] != undefined && this.voucherSentData['amount'] != undefined &&
+      this.voucherSentData['voucher_date'] != undefined){
+        is_valid = true;
+      }
+      //console.log("Valid/Invalid: ", theForm.form.valid, " -- "," --", is_valid, " --", this.voucherSentData);
 
-     if(theForm.form.valid && this.paymentReceiptValidation === true){
+    //return false;
+     if(is_valid == true && this.paymentReceiptValidation === true){ 
           let dtFormat: string = '';;
           if(this.voucherSentData['voucher_date'] != undefined && 
           this.voucherSentData['voucher_date']._i != undefined){
             var dtData = this.voucherSentData['voucher_date']._i;
             var year = dtData.year;
-            var month = dtData.month;
+            var month = dtData.month + 1;
             var date = dtData.date;
             dtFormat = year + "-" + month + "-" + date;
           }
-          console.log("@accred ID: ", this.voucherSentData['accreditation'])
+
+          //console.log(">>> Date: ", (dtFormat), " -- ", this.voucherSentData['voucher_date'], " -- ", this.voucherSentData['voucher_date']._i);
+          //console.log("@accred ID: ", this.voucherSentData['accreditation'])
           this.voucherFile.append('voucher_no',this.voucherSentData['voucher_no']);
           this.voucherFile.append('amount',this.voucherSentData['amount']);
           this.voucherFile.append('voucher_date',dtFormat);

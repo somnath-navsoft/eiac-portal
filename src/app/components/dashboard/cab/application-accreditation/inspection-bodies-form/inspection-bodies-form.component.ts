@@ -1238,7 +1238,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         console.log(getData,"get APP Data:");
 
         this.viewData = getData;
-
+        sessionStorage.setItem("userData", JSON.stringify(getData));
 
             var stateList =  this.Service.getState();
             var cityList =  this.Service.getCity();
@@ -1701,7 +1701,10 @@ export class InspectionBodiesFormComponent implements OnInit {
             this.voucherSentData.mobile_no        =  (getData.data.paymentDetails.mobile_no != 'null') ? getData.data.paymentDetails.mobile_no : '';
 
             this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
-            this.paymentReceiptValidation = true;
+            
+            if(this.paymentFile != undefined && this.paymentFile != ''){
+              this.paymentReceiptValidation = true;
+            }
 
             //
             // if(getData.data.paymentDetails.transaction_no != null && getData.data.paymentDetails.payment_method != null &&
@@ -1835,12 +1838,12 @@ export class InspectionBodiesFormComponent implements OnInit {
                 this.step1Data.po_box = data.po_box;
                 this.step1Data.telephone = data.tel_no;
                 this.step1Data.fax_no = data.fax_no;
-                this.step1Data.mailing_address = data.mailing_address;
+                this.step1Data.mailing_address = data.applicant_address;
                 this.step1Data.official_website = data.applicant_website;
                 // this.step1Data.date_of_expiry = data.date_of_expiry;
                 // this.step1Data.date_of_establishment = data.date_of_establisment;
                 // this.step1Data.date_of_issue = data.date_of_issue; //|
-                this.step1Data.official_email = data.official_email;
+                this.step1Data.official_email = data.applicant_email;;//data.official_email;
                 this.step1Data.official_website = data.applicant_website;
             }
           }

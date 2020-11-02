@@ -22,10 +22,10 @@
                                         <div class="usernext-icon">
                                             <span [ngClass]="(item.activeClass === 'user-done') ? 'icon-tick' : item.icon"></span>
                                         </div>
-                                        <!-- (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}" -->
+                                        <!--  -->
                                         <div class="user-details-pending" 
                                         id="course_header" >
-                                            <span [innerHTML]="item.desc"></span>
+                                            <span [innerHTML]="item.desc" (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}"></span>
                                         </div>
                                     </div>
                                     <div class="next-step" *ngIf="k < headerSteps.length-1">
@@ -994,7 +994,7 @@
                                     </div>
 
                                     <!-- View scope data -->
-                                    <div class="row">
+                                    <div class="row mt-3">
                                         <div class="col-md-12">
                                             <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey)" [parent]="this" [modalType]="'delete'"></custom-modal>
                                             <ng-container *ngIf="editScopeData != undefined && editScopeData != null">
@@ -1006,7 +1006,7 @@
                                                     </div>
                                                 </div>
                                                 <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteIndex)" [parent]="this" [modalType]="'delete'"></custom-modal>
-                                                <ng-container *ngFor="let item of editScopeData | keyvalue">
+                                                <!-- <ng-container *ngFor="let item of editScopeData | keyvalue">
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="table-appln scope-data">
@@ -1039,7 +1039,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </ng-container>
+                                                </ng-container> -->
                                             </ng-container> 
                                     
                                             <ng-container *ngFor="let item of schemeRows; let i = index;">
@@ -1051,7 +1051,6 @@
                                                             [(ngModel)]="schemeRows[i].id" required>
                                                                 <mat-option [value]="item.scope_accridiation.id" *ngFor="let item of criteriaMaster; let k=index;">{{item.title}}</mat-option>
                                                             </mat-select>
-                                                            <mat-error></mat-error> 
                                                         </mat-form-field>
                                                     </div>
                                                     <div class="col-md-3 col-sm-3">
@@ -1062,19 +1061,70 @@
                                             </ng-container>
                                         </div>
                                     </div>
-    
+                                    <!-- <ng-container *ngIf="!scopeFamilyNull">
+                                        <ng-container *ngFor="let item of scopeFamilyRows; let k = index;">
+                                            <div class="row">
+                                                <div class="col-md-9 col-sm-9">
+                                                    <mat-form-field class="cab-data">
+                                                        <mat-label>Scope Family</mat-label>
+                                        <mat-select (selectionChange)="getCriteria(scopeFamilyRows[i].id, i)" placeholder="Select" name="scheme_id_{{i}}"  
+                                                        [(ngModel)]="scopeFamilyRows[i].id" required>
+                                                            <mat-option [value]="item.scope_family" *ngFor="let item of criteriaMaster; let k=index;">{{item.title}}</mat-option>
+                                                        </mat-select>
+                                                        <mat-error></mat-error> 
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3 col-sm-3">
+                                                <span *ngIf="i >= 0" class="icon-add-round" (click)="addSchemeRow(schemeRows,i)"></span>&nbsp;
+                                                <span *ngIf="i >= 1" class="icon-cross" (click)="removeSchemeRow(schemeRows,i)"></span>
+                                                </div>
+                                            </div> 
+                                        </ng-container>
+                                    </ng-container> -->
+
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12">
+                                            <div class="row" *ngIf="fullTypeFamily.length > 0">
+                                                <div class="col-12" *ngFor="let typeFamily of fullTypeFamily; let t1 = index;">
+                                                    
+                                            <ng-container *ngIf="typeFamily.isFamily">
+                                                <div class="row">
+                                                    <div class="col-md-12 p-0">
+                                                        <div class="form-subhdr">
+                                                            <h5>Scope Family for {{typeFamily.name}}  -- {{t1}}</h5>
+                                                        </div> 
+                                                    </div>
+                                                </div>
+                                                    <ng-container *ngFor="let itemF of typeFamily.scopeFamilyRows; let k = index;">  
+                                                        <div class="row mt-3">
+                                                            <div class="col-md-9 col-sm-9">
+                                                                @index - {{k}} -- @{{typeFamily.scopeFamilyRows[k].id}}
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Scope Family</mat-label>
+                                                                    
+                                                                    <mat-select (selectionChange)="getCriteria(typeFamily.id, k, typeFamily.scopeFamilyRows[k].id, typeFamily.title)" placeholder="Select" name="family_id_{{k}}"  
+                                                                    [(ngModel)]="typeFamily.scopeFamilyRows[k].id" [ngModelOptions]="{standalone: true}"  [required] = "editScopeData == undefined || editScopeData == null">
+                                                                        <mat-option [value]="item.scope_family" *ngFor="let item of typeFamily.familyData; let k1=index;">{{item.title}}</mat-option>
+                                                                    </mat-select>
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <div class="col-md-3 col-sm-3">
+                                                                <div class="add-content">
+                                                                    <span *ngIf="k >= 0" class="icon-add" (click)="addFamilyRow(typeFamily.scopeFamilyRows,typeFamily.title,k)"></span>&nbsp;
+                                                                    <span *ngIf="k >= 1" class="icon-cross" (click)="removeFamilyRow(typeFamily.scopeFamilyRows,typeFamily.title,k)"></span>
+                                                                </div> 
+                                                            </div>
+                                                        </div> 
+                                                    </ng-container>
+                                            </ng-container>
                                         <div class="row">
                                             <div class="col-md-12 col-sm-12">
-                                                
-                                                <!-- <p *ngIf="scopeDataLoad && !scopeDataError">Loading</p>
-                                                <p *ngIf="scopeDataError">No Records</p> -->
-            
-                                                <div class="row" *ngIf="fullScope.length > 0">
-                                                    <div class="col-12" *ngFor="let scope of fullScope; let i1 = index;">
+                                                <div class="row" *ngIf="typeFamily.scopeRows.length > 0">
+                                                    <div class="col-12" *ngFor="let scope of typeFamily.scopeRows; let i1 = index;">
                                                         <div class="row">
                                                             <div class="col-md-12 p-0">
                                                                 <div class="form-subhdr">
-                                                                    <h5>{{scope.name}}</h5>
+                                                                    <h5>Accreditation Scope for - {{scope.name}} >> {{scope.familyName}}</h5>
                                                                 </div> 
                                                             </div>
                                                         </div>
@@ -1082,244 +1132,130 @@
                                                         <div class="row">
                                                             <div class="col-md-12">
                                                                 <div class="table-content-health">
+                                                                    hvjjjjj
                                                                     <table>
                                                                         <thead>
                                                                             <tr>
                                                                                 <th># </th>
-                                                                                <th *ngFor="let fields of dynamicScopeFieldColumns[scope.title]; let i2 = index;">{{fields[0].name}}
+                                                                                <th *ngFor="let fields of dynamicScopeFieldColumns[scope.id][scope.familyId]; let i2 = index;">{{fields[0].name}}
                                                                                 </th>
                                                                                 <th>
                                                                                 </th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                            <!-- (dynamicScopeFieldType[i1][p].inputType != null  && dynamicScopeFieldType[i1][p].inputType != '' && dynamicScopeFieldType[i1][p].inputType == 'multi_select') ? 'multiple' : '' -->
-                                                                            <tr *ngFor="let item of dynamicScopeModel[scope.title]['fieldLines']; let k = index;">
+                                                                            <tr *ngFor="let item of dynamicScopeModel[scope.id][scope.familyId]['fieldLines']; let k = index;">
                                                                                 <td>{{("0" + (k+1)).slice(-2)}}</td>
-                                                                                <td *ngFor="let fieldsColumn of dynamicScopeFieldColumns[scope.title]; let p = index;">
+                                                                                <td *ngFor="let fieldsColumn of dynamicScopeFieldColumns[scope.id][scope.familyId]; let p = index;">
     
-                                                                                    <ng-container *ngIf="dynamicScopeFieldType[scope.title][p].inputType == 'text'">
+                                                                                    <ng-container *ngIf="dynamicScopeFieldType[scope.id][scope.familyId][p].inputType == 'text'">
                                                                                         <mat-form-field class="cab-data" *ngIf="p == 0">
                                                                                             <mat-label></mat-label>
                                                                                             <input matInput  
-                                                                                            placeholder="" name="dynamicScopeFieldColumns[scope.title][p][0].title" 
-                                                                                            [(ngModel)]="dynamicScopeModel[scope.title].fieldLines[k][dynamicScopeFieldColumns[scope.title][p][0].title]" required>
+                                                                                            placeholder="" name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" 
+                                                                                            [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]" required>
                                                                                         </mat-form-field>
                                                                                     </ng-container>
     
-                                                                                    <ng-container *ngIf="dynamicScopeFieldType[scope.title][p].inputType == 'select'">
+                                                                                    <ng-container *ngIf="dynamicScopeFieldType[scope.id][scope.familyId][p].inputType == 'select'">
                                                                                     <mat-form-field class="cab-data" *ngIf="p == 0">
                                                                                         
                                                                                         <mat-label>Select</mat-label>    
                                                                                         <mat-select 
                                                                                         
-                                                                                        [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.title].fieldLines[k][dynamicScopeFieldColumns[scope.title][i1][p].title], dynamicScopeModel[scope.title].fieldLines[k].firstFieldValues)" matTooltipPosition='above'
-                                                                                        [(ngModel)]="dynamicScopeModel[scope.title].fieldLines[k][dynamicScopeFieldColumns[scope.title][p][0].title]" 
-                                                                                        name="dynamicScopeFieldColumns[scope.title][p][0].title" [ngModelOptions]="{standalone: true}" 
+                                                                                        [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][i1][p].title], dynamicScopeModel[scope.id][scope.familyId].fieldLines[k].firstFieldValues)" matTooltipPosition='above'
+                                                                                        [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]" 
+                                                                                        name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" [ngModelOptions]="{standalone: true}" 
                                                                                         (selectionChange)="onChangeScopeOption($event,scope.title,k,p)">
-                                                                                            <mat-option *ngFor="let j1 of dynamicScopeModel[scope.title].fieldLines[k].firstFieldValues" [value]='j1.field_value.id'>
+                                                                                            <mat-option *ngFor="let j1 of dynamicScopeModel[scope.id][scope.familyId].fieldLines[k].firstFieldValues" [value]='j1.field_value.id'>
                                                                                             {{j1.value}}
                                                                                             </mat-option>
                                                                                         </mat-select>
                                                                                         
                                                                                     </mat-form-field>
                                                                                     </ng-container>
-                                                                                    <ng-container *ngIf="dynamicScopeFieldType[scope.title][p].inputType == 'multi_select'">
+                                                                                    <ng-container *ngIf="dynamicScopeFieldType[scope.id][scope.familyId][p].inputType == 'multi_select'">
                                                                                         <mat-form-field class="cab-data" *ngIf="p == 0">
                                                                                             <mat-label>Select</mat-label>    
                                                                                             <mat-select              
-                                                                                            [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.title].fieldLines[k][dynamicScopeFieldColumns[scope.title][i1][p].title], dynamicScopeModel[scope.title].fieldLines[k].firstFieldValues)" matTooltipPosition='above'
-                                                                                            [(ngModel)]="dynamicScopeModel[scope.title].fieldLines[k][dynamicScopeFieldColumns[scope.title][p][0].title]" 
-                                                                                            name="dynamicScopeFieldColumns[scope.title][p][0].title" [ngModelOptions]="{standalone: true}" multiple
+                                                                                            [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][i1][p].title], dynamicScopeModel[scope.id][scope.familyId].fieldLines[k].firstFieldValues)" matTooltipPosition='above'
+                                                                                            [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]" 
+                                                                                            name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" [ngModelOptions]="{standalone: true}" multiple
                                                                                             (selectionChange)="onChangeScopeOption($event,scope.title,k,p)">
-                                                                                                <mat-option *ngFor="let j1 of dynamicScopeModel[scope.title].fieldLines[k].firstFieldValues" [value]='j1.field_value.id'>
+                                                                                                <mat-option *ngFor="let j1 of dynamicScopeModel[scope.id][scope.familyId].fieldLines[k].firstFieldValues" [value]='j1.field_value.id'>
                                                                                                 {{j1.value}}
                                                                                                 </mat-option>
                                                                                             </mat-select>
                                                                                               
                                                                                         </mat-form-field>
                                                                                         </ng-container>
-                                                                                    <!-- @{{dynamicScopeFieldType[i1][p].inputType | json}}<br> -->
     
-                                                                                    <ng-container *ngIf="dynamicScopeFieldType[scope.title][p].inputType == 'text'">
-                                                                                        <mat-form-field class="cab-data" *ngIf="p > 0 && p <= dynamicScopeFieldColumns[scope.title].length">
+                                                                                    <ng-container *ngIf="dynamicScopeFieldType[scope.id][scope.familyId][p].inputType == 'text'">
+                                                                                        <mat-form-field class="cab-data" *ngIf="p > 0 && p <= dynamicScopeFieldColumns[scope.id][scope.familyId].length">
                                                                                             <mat-label></mat-label>
                                                                                             <input matInput  
                                                                                             [ngModelOptions]="{standalone: true}"
-                                                                                            placeholder="" name="dynamicScopeFieldColumns[scope.title][p][0].title" 
-                                                                                            [(ngModel)]="dynamicScopeModel[scope.title].fieldLines[k][dynamicScopeFieldColumns[scope.title][p][0].title]" required="true">
+                                                                                            placeholder="" name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" 
+                                                                                            [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]" required="true">
                                                                                         </mat-form-field>
                                                                                     </ng-container>
     
-                                                                                    <ng-container *ngIf="dynamicScopeFieldType[scope.title][p].inputType == 'select'">
-                                                                                    <mat-form-field class="cab-data" *ngIf="p > 0 && p <= dynamicScopeFieldColumns[scope.title].length">
+                                                                                    <ng-container *ngIf="dynamicScopeFieldType[scope.id][scope.familyId][p].inputType == 'select'">
+                                                                                    <mat-form-field class="cab-data" *ngIf="p > 0 && p <= dynamicScopeFieldColumns[scope.id][scope.familyId].length">
                                                                                         
                                                                                         <mat-label>Select</mat-label>
                                                                                         <mat-select  
                                                                                         required="true"
-                                                                                        [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.title].fieldLines[k][dynamicScopeFieldColumns[scope.title][p][0].title], dynamicScopeModel[scope.title].fieldLines[k][dynamicScopeFieldColumns[scope.title][p][0].values])" 
+                                                                                        [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title], dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].values])" 
                                                                                         matTooltipPosition='above' 
-                                                                                        [(ngModel)]="dynamicScopeModel[scope.title].fieldLines[k][dynamicScopeFieldColumns[scope.title][p][0].title]"
-                                                                                        name="dynamicScopeFieldColumns[scope.title][p][0].title" 
+                                                                                        [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]"
+                                                                                        name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" 
                                                                                         (selectionChange)="onChangeScopeOption($event,scope.title,k,p)" [ngModelOptions]="{standalone: true}" >
-                                                                                            <mat-option *ngFor="let j2 of dynamicScopeModel[scope.title].fieldLines[k][dynamicScopeFieldColumns[scope.title][p][0].values]" [value]='j2.field_value.id' [matTooltip]="j2.value">
+                                                                                            <mat-option *ngFor="let j2 of dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].values]" [value]='j2.field_value.id' [matTooltip]="j2.value">
                                                                                             {{j2.value}}
                                                                                             </mat-option>
                                                                                         </mat-select>
                                                                                     </mat-form-field>  
                                                                                     </ng-container>
-                                                                                    <ng-container *ngIf="dynamicScopeFieldType[scope.title][p].inputType == 'multi_select'">
-                                                                                        <mat-form-field class="cab-data" *ngIf="p > 0 && p <= dynamicScopeFieldColumns[scope.title].length">
+                                                                                    <ng-container *ngIf="dynamicScopeFieldType[scope.id][scope.familyId][p].inputType == 'multi_select'">
+                                                                                        <mat-form-field class="cab-data" *ngIf="p > 0 && p <= dynamicScopeFieldColumns[scope.id][scope.familyId].length">
                                                                                             
                                                                                             <mat-label>Select</mat-label>
                                                                                             <mat-select
                                                                                             required="true"  
                                                                                             multiple
-                                                                                            [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.title].fieldLines[k][dynamicScopeFieldColumns[scope.title][p][0].title], dynamicScopeModel[scope.title].fieldLines[k][dynamicScopeFieldColumns[scope.title][p][0].values])" 
-                                                                                            matTooltipPosition='above' [(ngModel)]="dynamicScopeModel[scope.title].fieldLines[k][dynamicScopeFieldColumns[scope.title][p][0].title]"
-                                                                                            name="dynamicScopeFieldColumns[scope.title][p][0].title" 
+                                                                                            [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title], dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].values])" 
+                                                                                            matTooltipPosition='above' [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]"
+                                                                                            name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" 
                                                                                             (selectionChange)="onChangeScopeOption($event,scope.title,k,p)" [ngModelOptions]="{standalone: true}" >
-                                                                                                <mat-option *ngFor="let j2 of dynamicScopeModel[scope.title].fieldLines[k][dynamicScopeFieldColumns[scope.title][p][0].values]" [value]='j2.field_value.id'>
+                                                                                                <mat-option *ngFor="let j2 of dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].values]" [value]='j2.field_value.id'>
                                                                                                 {{j2.value}}
                                                                                                 </mat-option>
                                                                                             </mat-select>
                                                                                         </mat-form-field>  
                                                                                         </ng-container>
-                                                                                    <!-- @{{dynamicScopeFieldType[i1][p].inputType | json}}<br>                                                                               -->
                                                                                 </td>
-                                                                                <!-- removeScopeLine(k, scope.title) -->
                                                                                 <td class="content-icn">
-                                                                                    <span *ngIf="k >= 0" class="icon-add" (click)="addScopeLine(k,scope.title, dynamicScopeModel[scope.title].fieldLines)"></span>&nbsp;
+                                                                                    <span *ngIf="k >= 0" class="icon-add" (click)="addScopeLine(k,scope.title, dynamicScopeModel[scope.id][scope.familyId].fieldLines)"></span>&nbsp;
                                                                                     <span *ngIf="k >= 1" class="icon-close-round" (click)="openDeleteScopeConfirm(k, scope.title)"></span>
                                                                                 </td>
                                                                             </tr>
-                                                                            <!-- OLD Versioon -->
                                                                         </tbody>
                                                                     </table>
                                                                 </div>
                                                             </div>
                                                         </div>
 
-                                                        <!-- <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="table-content-health">
-                                                                    <table>
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <th># </th>
-                                                                                <th *ngFor="let fields of dynamicScopeFieldColumns[i1]; let i2 = index;">{{fields[0].name}}
-                                                                                </th>
-                                                                                <th>
-                                                                                </th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                            <tr *ngFor="let item of dynamicScopeModel[i1]['fieldLines']; let k = index;">
-                                                                                <td>{{("0" + (k+1)).slice(-2)}}</td>
-                                                                                <td *ngFor="let fieldsColumn of dynamicScopeFieldColumns[i1]; let p = index;">
-    
-                                                                                    <ng-container *ngIf="dynamicScopeFieldType[i1][p].inputType == 'text'">
-                                                                                        <mat-form-field class="cab-data" *ngIf="p == 0">
-                                                                                            <mat-label></mat-label>
-                                                                                            <input matInput  
-                                                                                            placeholder="" name="dynamicScopeFieldColumns[i1][p][0].title" 
-                                                                                            [(ngModel)]="dynamicScopeModel[i1].fieldLines[k][dynamicScopeFieldColumns[i1][p][0].title]" required>
-                                                                                        </mat-form-field>
-                                                                                    </ng-container>
-    
-                                                                                    <ng-container *ngIf="dynamicScopeFieldType[i1][p].inputType == 'select'">
-                                                                                    <mat-form-field class="cab-data" *ngIf="p == 0">
-                                                                                        
-                                                                                        <mat-label>Select</mat-label>    
-                                                                                        <mat-select 
-                                                                                        
-                                                                                        [matTooltip]="getFieldTooltip(dynamicScopeModel[i1].fieldLines[k][dynamicScopeFieldColumns[i1][i1][p].title], dynamicScopeModel[i1].fieldLines[k].firstFieldValues)" matTooltipPosition='above'
-                                                                                        [(ngModel)]="dynamicScopeModel[i1].fieldLines[k][dynamicScopeFieldColumns[i1][p][0].title]" 
-                                                                                        name="dynamicScopeFieldColumns[i1][p][0].title" [ngModelOptions]="{standalone: true}" 
-                                                                                        (selectionChange)="onChangeScopeOption($event,i1,k,p)">
-                                                                                            <mat-option *ngFor="let j1 of dynamicScopeModel[i1].fieldLines[k].firstFieldValues" [value]='j1.field_value.id'>
-                                                                                            {{j1.value}}
-                                                                                            </mat-option>
-                                                                                        </mat-select>
-                                                                                        
-                                                                                    </mat-form-field>
-                                                                                    </ng-container>
-                                                                                    <ng-container *ngIf="dynamicScopeFieldType[i1][p].inputType == 'multi_select'">
-                                                                                        <mat-form-field class="cab-data" *ngIf="p == 0">
-                                                                                            <mat-label>Select</mat-label>    
-                                                                                            <mat-select              
-                                                                                            [matTooltip]="getFieldTooltip(dynamicScopeModel[i1].fieldLines[k][dynamicScopeFieldColumns[i1][i1][p].title], dynamicScopeModel[i1].fieldLines[k].firstFieldValues)" matTooltipPosition='above'
-                                                                                            [(ngModel)]="dynamicScopeModel[i1].fieldLines[k][dynamicScopeFieldColumns[i1][p][0].title]" 
-                                                                                            name="dynamicScopeFieldColumns[i1][p][0].title" [ngModelOptions]="{standalone: true}" multiple
-                                                                                            (selectionChange)="onChangeScopeOption($event,i1,k,p)">
-                                                                                                <mat-option *ngFor="let j1 of dynamicScopeModel[i1].fieldLines[k].firstFieldValues" [value]='j1.field_value.id'>
-                                                                                                {{j1.value}}
-                                                                                                </mat-option>
-                                                                                            </mat-select>
-                                                                                              
-                                                                                        </mat-form-field>
-                                                                                        </ng-container>
-    
-                                                                                    <ng-container *ngIf="dynamicScopeFieldType[i1][p].inputType == 'text'">
-                                                                                        <mat-form-field class="cab-data" *ngIf="p > 0 && p <= dynamicScopeFieldColumns[i1].length">
-                                                                                            <mat-label></mat-label>
-                                                                                            <input matInput  
-                                                                                            [ngModelOptions]="{standalone: true}"
-                                                                                            placeholder="" name="dynamicScopeFieldColumns[i1][p][0].title" 
-                                                                                            [(ngModel)]="dynamicScopeModel[i1].fieldLines[k][dynamicScopeFieldColumns[i1][p][0].title]" required>
-                                                                                        </mat-form-field>
-                                                                                    </ng-container>
-    
-                                                                                    <ng-container *ngIf="dynamicScopeFieldType[i1][p].inputType == 'select'">
-                                                                                    <mat-form-field class="cab-data" *ngIf="p > 0 && p <= dynamicScopeFieldColumns[i1].length">
-                                                                                        
-                                                                                        <mat-label>Select</mat-label>
-                                                                                        <mat-select  
-                                                                                        
-                                                                                        [matTooltip]="getFieldTooltip(dynamicScopeModel[i1].fieldLines[k][dynamicScopeFieldColumns[i1][p][0].title], dynamicScopeModel[i1].fieldLines[k][dynamicScopeFieldColumns[i1][p][0].values])" 
-                                                                                        matTooltipPosition='above' 
-                                                                                        [(ngModel)]="dynamicScopeModel[i1].fieldLines[k][dynamicScopeFieldColumns[i1][p][0].title]"
-                                                                                        name="dynamicScopeFieldColumns[i1][p][0].title" 
-                                                                                        (selectionChange)="onChangeScopeOption($event,i1,k,p)" [ngModelOptions]="{standalone: true}" >
-                                                                                            <mat-option *ngFor="let j2 of dynamicScopeModel[i1].fieldLines[k][dynamicScopeFieldColumns[i1][p][0].values]" [value]='j2.field_value.id'>
-                                                                                            {{j2.value}}
-                                                                                            </mat-option>
-                                                                                        </mat-select>
-                                                                                    </mat-form-field>  
-                                                                                    </ng-container>
-                                                                                    <ng-container *ngIf="dynamicScopeFieldType[i1][p].inputType == 'multi_select'">
-                                                                                        <mat-form-field class="cab-data" *ngIf="p > 0 && p <= dynamicScopeFieldColumns[i1].length">
-                                                                                            
-                                                                                            <mat-label>Select</mat-label>
-                                                                                            <mat-select  
-                                                                                            multiple
-                                                                                            [matTooltip]="getFieldTooltip(dynamicScopeModel[i1].fieldLines[k][dynamicScopeFieldColumns[i1][p][0].title], dynamicScopeModel[i1].fieldLines[k][dynamicScopeFieldColumns[i1][p][0].values])" 
-                                                                                            matTooltipPosition='above' [(ngModel)]="dynamicScopeModel[i1].fieldLines[k][dynamicScopeFieldColumns[i1][p][0].title]"
-                                                                                            name="dynamicScopeFieldColumns[i1][p][0].title" 
-                                                                                            (selectionChange)="onChangeScopeOption($event,i1,k,p)" [ngModelOptions]="{standalone: true}" >
-                                                                                                <mat-option *ngFor="let j2 of dynamicScopeModel[i1].fieldLines[k][dynamicScopeFieldColumns[i1][p][0].values]" [value]='j2.field_value.id'>
-                                                                                                {{j2.value}}
-                                                                                                </mat-option>
-                                                                                            </mat-select>
-                                                                                        </mat-form-field>  
-                                                                                        </ng-container>
-                                                                                </td>
-                                                                                <td class="content-icn">
-                                                                                    <span *ngIf="k >= 0" class="icon-add-round" (click)="addScopeLine(k,i1, dynamicScopeModel[i1].fieldLines)"></span>&nbsp;
-                                                                                    <span *ngIf="k >= 1" class="icon-close-round" (click)="removeScopeLine(k, i1)"></span>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                        </div> -->
                                                     </div>
                                                 </div>
     
     
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                                 </div>
                             </div>
