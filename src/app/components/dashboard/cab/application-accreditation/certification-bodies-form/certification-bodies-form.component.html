@@ -213,7 +213,7 @@
                                             </mat-form-field>
                                         </div> -->
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Legal-Professional/Commercial/Trade License</mat-label>
                                                 <input matInput readonly="true"  name="tradelic" [(ngModel)]="selectTradeLicName"
@@ -222,7 +222,15 @@
                                                     <span class="icon-eye visible-pwd"></span>
                                                     </a>
                                             </mat-form-field>
-                                        </div>                                                                              
+                                        </div>
+                                        
+                                        <div class="col-md-3">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Legal Status</mat-label>
+                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Official Website" name="legal_status" [(ngModel)]="step1Data.legal_status">
+                                                <mat-error></mat-error>  
+                                            </mat-form-field>
+                                        </div>
 
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">  

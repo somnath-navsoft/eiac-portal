@@ -1,5 +1,5 @@
 <app-loader *ngIf="!loader"></app-loader>
-<div class="main-detail">
+<div class="main-detail" *ngIf="userType != 'operations'">
     <div class="conatiner-fluid p-0">
       <div class="main-dashboard-cnt">
         <div class="row m-0">
@@ -31,3 +31,385 @@
       </div>
     </div>
   </div>
+
+
+
+
+  <div class="main-detail" *ngIf="userType == 'operations'">
+    <div class="container-fluid p-0">
+        <div class="main-dashboard-table">
+            <flash-messages></flash-messages>
+            <div class="row mb-4">
+                <div class="col-md-8">                    
+                    <div class="dashbrd-hdr">
+                        <h3>Accreditation Service</h3> 
+                    </div>
+                </div>
+                <div class="col-md-4"> 
+                    <div class="tbl-filter-data">
+                        <ul>
+                            <li>
+                                <div class="filter">
+                                    <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a>
+                                    <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <ng-container *ngIf="advSearch" class="tbl-filter-data">
+                <div class="filter-dash">
+                    <div class="close-bttn">
+                        <span class="icon-close" (click)="filterSearchSec()"></span>
+                    </div>
+                <div class="row m-0">
+                    <div class="col-md-4">
+                        <div class="user-details">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Search by Course ID</mat-label> 
+                            <input type="text" matInput [(ngModel)]="selectCode" placeholder="Search by CODE">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="user-details">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Search by Fees</mat-label> 
+                            <input matInput type="number" [(ngModel)]="selectFees" placeholder="Search by Fees">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="user-details">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Select Course Type</mat-label>                             
+                                <mat-select placeholder="Select" 
+                                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectCustomCourse" required>
+                                    <mat-option *ngFor="let item of selectCustomCourses;" [value]="item.value">{{item.title}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-0" >
+                    <div class="col-md-4">
+                        <div class="user-details">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Select Agreement Status</mat-label>                             
+                                <mat-select placeholder="Select Status" 
+                                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectAgreementStatus" required>
+                                    <mat-option *ngFor="let item of agreementStatus;" [value]="item.value">{{item.title}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="user-details">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Select Payment Status</mat-label>                             
+                                <mat-select placeholder="Select Status" 
+                                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectPaymentStatus" required>
+                                    <mat-option *ngFor="let item of paymentStatus;" [value]="item.value">{{item.title}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-0">
+                    <div class="col-md-12"> 
+                        <div class="filter-search">
+                            <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
+                            <a href="javascript:void(0)" (click)="filterSearchReset()">RESET</a>
+                        </div>         
+                    </div>
+                    <!-- <div class="col-md-4"> 
+                        
+                        <div class="add-data">
+                            <a href="javascript:void(0)" (click)="filterSearchSubmit()">SEARCH</a>
+                        </div>   
+                        <div class="add-data">
+                            <a href="javascript:void(0)" (click)="filterSearchReset()">RESET</a>
+                        </div>                    
+                    </div> -->
+                </div>
+                </div>
+                
+            </ng-container>
+            
+        
+        <div class="table-dashboard-cont">
+            <div class="row m-0">
+                <div class="col-md-12 p-0">
+                    <!-- @{{trainerdata | json}} -->
+                    <table>
+                        <tr>
+                            <th>Application No
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'id', curSortDir.id)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.id"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.id"></span>
+                                </a>
+                            </th>
+                            <th>Application Date
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'created_date', curSortDir.created_date)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.created_date"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.created_date"></span>
+                                </a>
+                            </th>
+                            <th width="15%">Status
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'accr_status', curSortDir.accr_status)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.accr_status"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.accr_status"></span>
+                                </a>
+                            </th>
+                            <th>Prelim Visit
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'prelim_visit', curSortDir.prelim_visit)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.prelim_visit"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.prelim_visit"></span>
+                                </a>
+                            </th>
+                            <th>Accreditation Type
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'form_meta', curSortDir.form_meta)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.form_meta"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.form_meta"></span>
+                                </a>
+                            </th>
+                            <th>Payment Status
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'payment_status', curSortDir.payment_status)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.payment_status"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.payment_status"></span>
+                                </a>
+                            </th>
+                            
+                            <th>Applicant
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'applicant', curSortDir.applicant)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.applicant"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.applicant"></span>
+                                </a>
+                            </th>
+                            <th>Action</th>
+                        </tr>
+                        <!-- trainerdata.records != undefined && -->
+                    <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
+                        <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
+                            <td class="fnt-clr">
+                                <a href="javascript:void(0)" (click)="getRouteId(item.id)" routerLink="/dashboard/operations/accreditation-service-details/{{item.id}}" title="View" alt="View">
+                                {{item.id}}</a></td>
+                            <td>
+                                {{item.created | date :'dd-MMM-yyyy' }}
+                            </td>
+                            <td [ngClass]="{'pending': (item.accr_status === 'pending' || item.accr_status == 'draft'), 'under-review':item.accr_status === null || item.accr_status === 'under_review', 'complete': item.accr_status === 'complete'}">
+                                <span *ngIf="item.accr_status == 'pending' || item.accr_status == 'draft'">Pending</span>
+                                <span *ngIf="item.accr_status == null || item.accr_status === 'under_review'">Under Review</span>
+                                <span *ngIf="item.accr_status == 'complete'">Complete</span>
+                            </td>
+                            <td [ngClass]="{'complete': item.is_prelim_visit == true, 'under-review':item.is_prelim_visit == false }">
+                                <span *ngIf="item.is_prelim_visit == true">Yes</span>
+                                <span *ngIf="item.is_prelim_visit == false">No</span>
+                            </td>
+                            <td>
+                                <span *ngIf="item.form_meta == 'testing_calibration'">Testing Calibration</span>
+                                <span *ngIf="item.form_meta == 'inspection_body'">Inspection Bodies</span>
+                                <span *ngIf="item.form_meta == 'health_care'">Health Care</span>
+                                <span *ngIf="item.form_meta == 'certification_bodies'">Certification Bodies</span>
+                            </td>
+                            <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review':item.payment_status === null }">
+                                <span *ngIf="item.payment_status == 'paid'">Paid</span>
+                                <span *ngIf="item.payment_status == null">Unpaid</span>
+                            </td> 
+                            <td>
+                                {{item.applicantName}}
+                            </td>                           
+                            <td class="action fnt-clr">
+                                <!-- *ngIf="(item.accr_status == null && item.accr_status === 'under_review')" -->
+                                <a href="javascript:void(0)" *ngIf="(item.payment_status == 'paid' && item.accr_status != 'complete')" (click)="serviceStatus(i2,item.id)" alt="Delete"><span class="icon-tick"></span></a>
+                                <!-- <a href="javascript:void(0)" *ngIf="item.accr_status == 'complete'" alt="Delete"><span class="icon-tick"></span></a> -->
+                                <a href="javascript:void(0)" *ngIf="(item.accr_status == null || item.accr_status === 'under_review' || item.accr_status == 'pending' || item.accr_status == 'draft') && item.payment_status != 'paid'" (click)="open(courseVoucher, item.id)" alt="Upload Proforma Invoice" title="Upload Proforma Invoice"><span class="icon-document-pen"></span></a>
+                                <!-- <ng-container *ngIf="item.training_course_type === 'custom_course'" class="action fnt-clr">
+                                    <a href="javascript:void(0)" (click)="openView(courseView, item.id)" title="View" alt="View"><span class="icon-document"></span></a>
+                                    <a routerLink="/dashboard/operations/training-apply/{{item.id}}" title="Edit" alt="Edit"><span class="icon-edit"></span></a>
+                                    <a href="javascript:void(0)" (click)="openDelete(item.id)" title="Delete" alt="Delete"><span class="icon-bin"></span></a>
+                                </ng-container>
+                                <ng-container *ngIf="item.training_course_type === 'public_course'"  class="action fnt-clr">
+                                    <a href="javascript:void(0)" (click)="openView(courseView, item.id)" title="View" alt="View">
+                                        <span class="icon-document"></span></a>
+                                    <a href="javascript:void(0)" title="Download" alt="Download"><span class="icon-download-diff"></span></a>
+                                </ng-container>
+                                <ng-container *ngIf="item.payment_status === 'voucher_sent'">
+                                    <a href="javascript:void(0)" (click)="open(courseVoucher, item.id)" title="Send Voucher" alt="Send Voucher">
+                                        <span class="icon-wallet"></span>
+                                    </a>
+                                </ng-container> -->
+                            </td>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="dataLoad && trainerdata.length == 0">
+                        <tr>
+                            <td colspan="5">
+                                No Records
+                            </td>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="!dataLoad">
+                        <tr>
+                            <td colspan="7" align="center">
+                                Loading...
+                            </td>
+                        </tr>
+                    </ng-container>
+                    </table>
+                    <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
+                        <pagination-controls (pageChange)="pageCurrentNumber = $event"></pagination-controls>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <ng-template #courseVoucher let-modal>
+            <div class="modal-header course-pop">
+              <h4 class="modal-title" id="modal-basic-title">UPLOAD PROFORMA INVOICE</h4>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span class="icon-close"></span>
+              </button>
+            </div>
+            <div class="modal-body">                 
+                <form #voucherForm="ngForm">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Voucher Number</mat-label>
+                                <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                                matInput placeholder="Voucher Number" 
+                                [(ngModel)]="voucherSentData.voucher_no">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Voucher Date</mat-label>
+                                <input matInput [matDatepicker]="voucher_date" 
+                                (click)="_service._openCalendar(voucher_date)" 
+                                readonly="true" 
+                                [min]="minDate" name="voucher_date" 
+                                [(ngModel)]="voucherSentData.voucher_date" placeholder="Voucher Date" required>
+                                <mat-datepicker-toggle matSuffix [for]="voucher_date"></mat-datepicker-toggle>
+                                <mat-datepicker #voucher_date disabled="false"></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Amount</mat-label>
+                                <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                                matInput placeholder="Voucher Number" 
+                                [(ngModel)]="voucherSentData.amount">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-6">
+                            <span class="fileupload">
+                                <input type="file" name="voucher_invoice"                                
+                                (change)="validateFile($event, 'voucher_invoice')" required>
+                                <span class="icon-attach attach-data"></span>
+                            </span>
+                            <p class="error" *ngIf="paymentReceiptValidation == false">Please Upload a valid file (ex: pdf)</p>
+                        </div>
+                    </div>
+                    <div class="row" [ngStyle]="{'margin-top': '10px'}">
+                        <div class="col-md-12">
+                            <div class="bttns-health">
+                                <button type="submit" (click)="voucherSentSubmit(voucherForm)" class="cancel-bttn">SUBMIT</button>
+                                <button type="button" class="submit-bttn submit-health" (click)="modal.close('Cancel click')">CANCEL</button>
+                            </div>
+                            
+                        </div>
+                    </div>                    
+                </form>
+            </div>
+            <!-- <div class="modal-footer">
+            </div> -->
+          </ng-template>
+          <!-- Modal -->
+          <!-- Modal VIEW -->
+        <ng-template #courseView let-modal>
+            <div class="modal-header">
+              <h4 class="modal-title" id="modal-basic-title">COURSE VIEW</h4>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body"> 
+                <ng-container *ngIf="selectCourseData != undefined">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Course Code</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <span [innerHTML]="selectCourseData.course_code"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Agreement Status</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <span [innerHTML]="selectCourseData.agreement_status | titlecase"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Payment Status</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <span [innerHTML]="selectCourseData.payment_status | titlecase"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Course Type</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <span [innerHTML]="(selectCourseData.training_course_type === 'custom_course') ? 'Custom Course' : 'Public Course'"></span>
+                    </div>
+                </div>
+                <div class="row" *ngIf="selectCourseData.customCourseListDetails != undefined && selectCourseData.customCourseListDetails.length > 0">
+                    <div class="col-md-6">
+                        <h5>Course Information</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <ng-container *ngIf="selectCourseData.customCourseListDetails != undefined && selectCourseData.customCourseListDetails.length > 0">
+                            <ng-container *ngFor="let item of selectCourseData.customCourseListDetails; let row = index">
+                                {{row + 1}}.&nbsp;{{item.name}}<br/>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                </div>
+                </ng-container>
+            </div>
+            <div class="modal-footer">
+              <!-- <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">CANCEL</button> -->
+            </div>
+          </ng-template>
+          <!-- Modal -->
+          <!-- Modal DELETE -->
+        <custom-modal *ngIf="deleteConfirm" (onDeleteAction)="deleteCourse(selectDeleteID)" [parent]="this" [modalType]="'delete'"></custom-modal>
+        <!-- <ng-template #courseDelete let-modal>            
+            <div class="modal-header">
+              <h4 class="modal-title" id="modal-basic-title">Delete Confirmation</h4>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body"> 
+                <p>Are you sure?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">CANCEL</button>  
+              <button type="button" class="btn btn-outline-dark" (click)="deleteCourse(selectDeleteID)">OK</button>
+            </div>
+          </ng-template> -->
+        <!--  -->
+    </div>
+    </div>
+</div>
