@@ -217,6 +217,11 @@ export class HalalConformityFormComponent implements OnInit {
 
    //Other scope fixed table
    otherStandards: any[] = [{}];
+   issuedEsmaPath:any;
+   certificateStampPath:any;
+   hcabLogo1Path:any;
+   hcabLogo2Path:any;
+   hcabLogo3Path:any;
 
    //Master scope form data declaration
 
@@ -1186,23 +1191,59 @@ addSchemeRow(obj: any = [],index: number){
                       this.step1Data.is_main_activity_note = res['data'].is_main_activity_note.toString();
                     }
                 }
-  
-                //step2
-                if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
-                  this.accreditationInfo = [];
-                  this.step2Data.is_hold_other_accreditation = "1";
-                  res['data'].otherAccr.forEach((item, key) => {
-                      let data: any;
-                      data = item['value'];
-                      var obj1 = data.replace(/'/g, "\"");
-                      let jparse = JSON.parse(obj1);
-                      this.accreditationInfo.push(jparse);
-                  })
-                }else{
-                  this.step2Data.is_hold_other_accreditation = "0";
+
+                if(res['data'].is_staff_ownership != undefined){
+                  this.step1Data.is_staff_ownership = res['data'].is_staff_ownership.toString();
+                  if(!res['data'].is_staff_ownership){
+                    this.step1Data.is_staff_ownership_note = res['data'].is_staff_ownership_note != null ? res['data'].is_staff_ownership_note.toString() : '';
+                  }
+                }
+
+                if(res['data'].reg_form_issued_esma != ''){
+                  let getFile = res['data'].reg_form_issued_esma.toString().split('/');
+                  if(getFile.length){
+                    this.publicHalalConformityForm.id_issued_esma = getFile[4].toString().split('.')[0];
+                    this.issuedEsmaPath = this.constant.mediaPath +  res['data'].reg_form_issued_esma.toString();
+                  }
+                }
+
+                if(res['data'].certificate_stamp != ''){
+                  let getFile = res['data'].certificate_stamp.toString().split('/');
+                  if(getFile.length){
+                    this.publicHalalConformityForm.halal_certificate_stamp = getFile[4].toString().split('.')[0];
+                    this.certificateStampPath = this.constant.mediaPath +  res['data'].certificate_stamp.toString();
+                  }
+                }
+
+                if(res['data'].legal_status != ''){
+                  this.step1Data.legal_status = res['data'].legal_status;
+                }
+                
+                if(res['data'].ownershipOfOrg != ''){
+                  this.ownOrgBasicInfo = res['data'].ownershipOfOrg;
+                }
+                
+                if(res['data'].bodMember != ''){
+                  this.ownOrgMembInfo = res['data'].bodMember;
+                }
+                
+                if(res['data'].otherActivityLocations != ''){
+                  this.step1Data.hcab_other_location = '1';
+                  var hcab_location = res['data'].otherActivityLocations
+                  for(let key in hcab_location) {
+                    var newLoaction = [];
+                    newLoaction.push(hcab_location[key].value);
+                  }
+
+                  this.hcabOtherLocation = newLoaction;
+                  // console.log(this.hcabOtherLocation);
+                }
+                
+                if(res['data'].hcabOtherAccreditation != ''){
+                  this.accreditationInfo = res['data'].hcabOtherAccreditation;
                 }
   
-                //step3
+                //step2
                 if(res['data'].technicalManager != undefined && res['data'].technicalManager.length > 0){
                   let getTechData: any = res['data'].technicalManager[0];
                   this.step2Data.name = getTechData.name;
@@ -1212,6 +1253,17 @@ addSchemeRow(obj: any = [],index: number){
                   this.step2Data.relevent_experience = getTechData.relevent_experience;
                   this.step2Data.duration_at_current_post = getTechData.duration_at_current_post;
                 }
+
+                if(res['data'].managementManager != undefined && res['data'].managementManager.length > 0){
+                  let getMangData: any = res['data'].managementManager[0];
+                  this.step2Data.islamic_name = getMangData.name;
+                  this.step2Data.islamic_designation = getMangData.designation;
+                  this.step2Data.islamic_mobile_no = getMangData.mobile_no;
+                  this.step2Data.islamic_email = getMangData.email;
+                  this.step2Data.islamic_relevent_experience = getMangData.relevent_experience;
+                  this.step2Data.islamic_duration_at_current_post = getMangData.duration_at_current_post;
+                }
+
                 if(res['data'].managementManager != undefined && res['data'].managementManager.length > 0){
                   let getMangData: any = res['data'].managementManager[0];
                   this.step2Data.management_name = getMangData.name;
@@ -1221,10 +1273,56 @@ addSchemeRow(obj: any = [],index: number){
                   this.step2Data.management_relevent_experience = getMangData.relevent_experience;
                   this.step2Data.duration_at_current_post_manager = getMangData.duration_at_current_post;
                 }
+
+                if(res['data'].summaryOfPersonnel != undefined && res['data'].summaryOfPersonnel.length > 0){
+                  this.summaryDetails = res['data'].summaryOfPersonnel;
+                }
+  
+                //step3
+                
   
                 //step4
                 
-  
+                if(res['data'].scopeOfHalalConformity != ''){
+                  var halalScope = res['data'].scopeOfHalalConformity;
+                  // this.ownOrgBasicInfo = res['data'].scopeOfHalalConformity;
+                  for(let key in halalScope) {
+                    var arr = [];
+                    var value_obj = JSON.parse(halalScope[key].value);
+                    arr.push(value_obj);
+                  }
+                  this.scopeofHalalConformity = arr;
+                }
+
+                if(res['data'].singningHalalCertificate != ''){
+                  this.authorizedPersonforSigning = res['data'].singningHalalCertificate;
+                }
+
+
+                if(res['data'].recognized_logo1 != ''){
+                  let getFile = res['data'].recognized_logo1.toString().split('/');
+                  if(getFile.length){
+                    this.publicHalalConformityForm.hcabLogo1 = getFile[4].toString().split('.')[0];
+                    this.hcabLogo1Path = this.constant.mediaPath +  res['data'].recognized_logo1.toString();
+                  }
+                }
+
+                if(res['data'].recognized_logo2 != ''){
+                  let getFile = res['data'].recognized_logo2.toString().split('/');
+                  if(getFile.length){
+                    this.publicHalalConformityForm.hcabLogo2 = getFile[4].toString().split('.')[0];
+                    this.hcabLogo2Path = this.constant.mediaPath +  res['data'].recognized_logo2.toString();
+                  }
+                }
+
+                if(res['data'].recognized_logo3 != ''){
+                  let getFile = res['data'].recognized_logo3.toString().split('/');
+                  if(getFile.length){
+                    this.publicHalalConformityForm.hcabLogo3 = getFile[4].toString().split('.')[0];
+                    this.hcabLogo2Path = this.constant.mediaPath +  res['data'].recognized_logo3.toString();
+                  }
+                }
+
                 //step5
                 //
                 
@@ -1596,6 +1694,10 @@ addSchemeRow(obj: any = [],index: number){
       obj.splice(index, 1);
     }    
     return true;
+  }
+
+  filePathVreateDynamics(filePath) {
+    return this.constant.mediaPath+'/'+filePath;
   }
 
   onSubmitStep1(ngForm1: any){
