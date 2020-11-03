@@ -1408,7 +1408,7 @@
                                                         <!-- @{{recomendVisit | json}} -->
                                                         <!-- <mat-radio-group name="recommended" #recommendVisit="ngModel"> -->
                                                             <ng-container *ngFor="let item of recomendVisit; let k=index;">
-                                                                <mat-checkbox  name="undertaking_confirm7_{{k}}" 
+                                                                <mat-checkbox  name="undertaking_confirm7_{{k}}" required
                                                             [(ngModel)]="item.checked" value="first">{{item.label}}</mat-checkbox> 
                                                             </ng-container>quarter
                                                             <!-- <mat-checkbox  name ="undertaking_confirm7" 
