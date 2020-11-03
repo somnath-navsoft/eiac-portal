@@ -1734,14 +1734,24 @@ export class InspectionBodiesFormComponent implements OnInit {
 
           // var dataJson = JSON.parse(newJson);
           //console.log("@recommend visit  Data json : ", dataJson, " -- ", dataJson[0]);
+          let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
+          
+          let replace1: any = replace.replaceAll('"', '');
+          console.log(">>>..", replace, " -- ",replace1, " :: ");
+          console.log(JSON.parse(JSON.stringify(replace)))
           this.recomendVisit.forEach((item, index) => {
-                let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
-                console.log(">>> replace: ", getData.data.recommend_visit, " :: ", replace);
-                let cpjson: any = getData.data.recommend_visit ;//'{"first": false, "second": true, "third": false, "fourth": true}';
-                let findVsit: any = JSON.parse(cpjson);;//;
+                
+                //console.log(">>> replace: ", getData.data.recommend_visit, " :: ", replace);
+                let tempJson = replace;//'{\"first\": false, \"second\": true, \"third\": true, \"fourth\": false}';//'{"first": false, "second": true, "third": false, "fourth": true}';
+                //let cpjson: any = getData.data.recommend_visit;
+                //replace1 = {"first": false, "second": true, "third": true, "fourth": false};
+                let findVsit: any = (replace1);
+                console.log("JOSN:  ", findVsit);
+                //console.log(replace);
+                //return;
                 //
-                console.log(">>> ", findVsit);
                 for(let key in findVsit){
+                 // console.log('>>> ', key);
                    if(key === item.name){
                      console.log(">>>> found: ", item, " == ", findVsit[key]);
                      item.checked = findVsit[key];

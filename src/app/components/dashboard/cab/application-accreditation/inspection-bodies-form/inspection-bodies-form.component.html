@@ -1408,7 +1408,7 @@
                                                         <!-- @{{recomendVisit | json}} -->
                                                         <!-- <mat-radio-group name="recommended" #recommendVisit="ngModel"> -->
                                                             <ng-container *ngFor="let item of recomendVisit; let k=index;">
-                                                                <mat-checkbox  name="undertaking_confirm7_{{k}}" required
+                                                                <mat-checkbox  name="recommend_visit" required #recommendVisit="ngModel"
                                                             [(ngModel)]="item.checked" value="first">{{item.label}}</mat-checkbox> 
                                                             </ng-container>quarter
                                                             <!-- <mat-checkbox  name ="undertaking_confirm7" 
@@ -1418,6 +1418,7 @@
                                                             <mat-radio-button name="3rd" value="third">3rd</mat-radio-button>
                                                             <mat-radio-button name="4th" value="fourth">4th quarter</mat-radio-button> -->
                                                         <!-- </mat-radio-group> -->
+                                                        @{{recommendVisit | json}}
                                                     </div> 
                                                     <span class="confirm">of the year</span>
                                                     <div class="recommend-year">
