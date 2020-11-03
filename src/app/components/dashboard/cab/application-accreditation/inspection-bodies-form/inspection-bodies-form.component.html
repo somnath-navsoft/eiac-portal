@@ -1405,12 +1405,11 @@
                                                     <div class="recommend-quarter">
                                                         <span class="confirm">I recommend the visit to be conducted in the</span>
                                                         <!-- [(ngModel)]="step7Data.recommend_visit" -->
-                                                        <!-- @{{recomendVisit | json}} -->
+                                                        @{{recomendVisit | json}}
                                                         <!-- <mat-radio-group name="recommended" #recommendVisit="ngModel"> -->
-                                                            <ng-container *ngFor="let item of recomendVisit; let k=index;">
-                                                                <mat-checkbox  name="recommend_visit" required #recommendVisit="ngModel"
-                                                            [(ngModel)]="item.checked" value="first">{{item.label}}</mat-checkbox> 
-                                                            </ng-container>
+                                                                <mat-checkbox  name="recommend_visit"  *ngFor="let item of recomendVisit; let k=index;"
+                                                            [(ngModel)]="item.checked" [ngModelOptions]="{standalone: true}" required>{{item.label}}</mat-checkbox> 
+                                                            
                                                             <!-- <mat-checkbox  name ="undertaking_confirm7" 
                                                             [(ngModel)]="step7Data.recommend_visit.first" value="first">1st</mat-checkbox> -->
                                                             <!-- <mat-radio-button name="1st" value="first">1st</mat-radio-button>

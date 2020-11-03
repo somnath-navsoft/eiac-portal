@@ -2407,9 +2407,23 @@ let checkCount = 0;
       this.authorizationStatus = false;
     }
 
+    //make visit 
+  let recomVisit: any = {
+    'first':false,'second':false, 'third': false, 'fourth':false
+  };
+  console.log(recomVisit);
+  let recomCheckCount = 0;
+    this.recomendVisit.forEach((item,index) => {
+      if(item.checked == true){
+        recomCheckCount++;
+      }
+    recomVisit[item.name.toString()] = item.checked;
+  })
+  this.step5Data.recommend = recomVisit;
+
     //console.log(">>> Check status count: ", checkCount);
 
-if(ngForm5.form.valid && this.authorizationStatus == true){
+if(ngForm5.form.valid && this.authorizationStatus == true && recomCheckCount >0){
 
   this.certificationBodiesForm = {};
   this.certificationBodiesForm.step5 = {};
@@ -2421,15 +2435,7 @@ if(ngForm5.form.valid && this.authorizationStatus == true){
   this.step5Data.authorization_list_json = this.authorizationList;
  // this.step5Data.recommend = this.recommend;
 
-  //make visit 
-  let recomVisit: any = {
-    'first':false,'second':false, 'third': false, 'fourth':false
-  };
-  console.log(recomVisit);
-  this.recomendVisit.forEach((item,index) => {
-    recomVisit[item.name.toString()] = item.checked;
-  })
-  this.step5Data.recommend = recomVisit;
+  
 
   this.step5Data.is_draft = false;
   this.step5Data.application_date = new Date();

@@ -2757,11 +2757,27 @@ onSubmitUndertakingApplicant(ngForm7: any){
 if(this.authorizationStatus == false){
   this.isSubmit = false;
   this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
-}else if(this.step7Data.recommend_visit == ''){
-  this.isSubmit = false;
-  this.toastr.error('Please Check any recommend the visit ', '');
 }
-if(ngForm7.form.valid){
+// else if(this.step7Data.recommend_visit == ''){
+//   this.isSubmit = false;
+//   this.toastr.error('Please Check any recommend the visit ', '');
+// }
+
+//make visit 
+let recomVisit: any = {
+  'first':false,'second':false, 'third': false, 'fourth':false
+};
+console.log(recomVisit);
+let recomCheckCount = 0;
+    this.recomendVisit.forEach((item,index) => {
+      if(item.checked == true){
+        recomCheckCount++;
+      }
+  recomVisit[item.name.toString()] = item.checked;
+})
+this.step7Data.recommend = recomVisit;//this.recomendVisit;
+
+if(ngForm7.form.valid && recomCheckCount > 0){
 
   this.healthCareForm = {};
   this.healthCareForm.step7 = {};
@@ -2772,15 +2788,7 @@ if(ngForm7.form.valid){
   this.healthCareForm.saved_step = '7';
   this.step7Data.authorization_list_json = this.authorizationList;
   // this.step7Data.recommend = this.recommend;
-  //make visit 
-  let recomVisit: any = {
-    'first':false,'second':false, 'third': false, 'fourth':false
-  };
-  console.log(recomVisit);
-  this.recomendVisit.forEach((item,index) => {
-    recomVisit[item.name.toString()] = item.checked;
-  })
-  this.step7Data.recommend = recomVisit;//this.recomendVisit;
+  
 
   this.step7Data.is_draft = false;
   this.step7Data.application_date = new Date();
