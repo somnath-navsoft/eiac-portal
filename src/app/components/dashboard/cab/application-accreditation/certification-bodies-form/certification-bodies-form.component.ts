@@ -515,7 +515,7 @@ ngOnInit() {
               this.dynamicScopeFieldColumns[findType.id][scopeTitle][key].push(colObj);
               defLine[fieldValues] = [];
               ////console.log(">>> Field values: ", fieldValues, " -- ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeModel.fieldLines);
-              if(defLine['firstFieldValues'].length > 0  && key == 0){
+              if(defLine['firstFieldValues'] != undefined && defLine['firstFieldValues'].length > 0  && key == 0){
                 let getValue = defLine['firstFieldValues'][0].field_value.id;
                 
                 if(key === 0){
@@ -539,7 +539,7 @@ ngOnInit() {
               this.dynamicScopeModel[findType.id][scopeTitle].fieldLines.push(defLine);
             });
 
-            //console.log("@@@@Update Model: ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
+            console.log("@@@@Update Model: ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
 
           }
           //////console.log(">>>> ", this.dynamicScopeModel, " --- ", this.dynamicScopeFieldColumns, " ::-> ",this.fullScope);
@@ -659,7 +659,7 @@ ngOnInit() {
             }
 
             let pushObj: any = {
-              title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: [], schemeRows: []
+              title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: [], schemeRows: [{}]
             }
             
             if(this.fullTypeScope[secInd] != undefined && !this.Service.isObjectEmpty(this.fullTypeScope[secInd])){
@@ -667,18 +667,18 @@ ngOnInit() {
               this.fullTypeScope[secInd] = pushObj;
             }else{
                 this.fullTypeScope.push({
-                  title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: [], schemeRows: []
+                  title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: [], schemeRows: [{}]
                 });
             }
         }else{
         this.fullTypeScope.push({
-            title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: [], schemeRows: []
+            title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: [], schemeRows: [{}]
           });
         }
 
 
 
-          //console.log(">>>> typte schme ...",  this.fullTypeScope, " -- ",);
+          console.log(">>>> typte schme ...",  this.fullTypeScope, " -- ",);
       }
    }
     
@@ -1877,8 +1877,8 @@ saveScope(){
     
 
   }
-  //console.log(">>> build scope: ", scopeCollections, " -- ", this.dynamicScopeModel, " -> Scheme: ", this.schemeRows);
-  //return;
+  console.log(">>> build scope headers ", scopeCollections, " -- ", this.dynamicScopeModel, " -> Scheme: ", this.schemeRows);
+  return;
 
   let secInd: number = 0;
   let resultTempAr: any = [];
@@ -2396,7 +2396,7 @@ this.isApplicationSubmitted = true;
 let checkCount = 0;
     for(let key in this.authorizationList) {
       ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
-      if(this.authorizationList[key]) {  
+      if(this.authorizationList[key] && key != 'undertaking_confirmTop3') {  
         this.authorizationStatus = true;       
         checkCount++;
       }    

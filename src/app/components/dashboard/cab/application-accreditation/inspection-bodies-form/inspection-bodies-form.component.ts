@@ -2460,13 +2460,13 @@ export class InspectionBodiesFormComponent implements OnInit {
 
     
     
-
+    let checkCount = 0;
     if(type == undefined){
       this.isApplicationSubmitted = true;
-      let checkCount = 0;
+      
         for(let key in this.authorizationList) {
           ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
-          if(this.authorizationList[key]) {  
+          if(this.authorizationList[key] && key != 'undertaking_confirmTop3') {  
             this.authorizationStatus = true;       
             checkCount++;
           } 
@@ -2481,7 +2481,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         }
     }        
 
-    //console.log(">>> Check status count: ", checkCount);
+    console.log(">>> Check status count: ", checkCount);
 
     ////////console.log("authorize checklist count: ",checkCount)
     // for(let key in this.authorizationList) {
@@ -2540,7 +2540,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.inspectionBodyForm.step7.application_date = new Date().toISOString().slice(0, 10);//'2020-09-14';
 
      // return;
-     ////console.log(">>> Enter....1 ", type, " -- ", ngForm7.form.valid, " -- ", this.authorizationStatus)
+     console.log(">>> Enter....1 ", ngForm7.form, " -- ", ngForm7.form.valid, " -- ", this.authorizationStatus)
 
     if(ngForm7.form.valid && type == undefined && this.authorizationStatus == true){
       

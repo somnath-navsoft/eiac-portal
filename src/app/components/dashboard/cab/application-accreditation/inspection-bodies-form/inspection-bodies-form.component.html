@@ -1351,7 +1351,7 @@
                                             <div class="authData">
                                                 
                                                 <mat-checkbox name="undertaking_confirmTop3" (change)="authorizeCheckCount($event)"
-                                                [(ngModel)]="authorizationList.undertaking_confirmTop3" required>Do you require ILA MRA Mark Laboratories</mat-checkbox>
+                                                [(ngModel)]="authorizationList.undertaking_confirmTop3">Do you require ILA MRA Mark Laboratories</mat-checkbox>
                                             </div>
                                             <div class="terms-condition" style="height:500px;overflow:auto" *ngIf="authorizationList.undertaking_confirmTop3">
                                                 <div class="tnc" [innerHTML]="(termsILA != undefined && termsILA.content != undefined) ? termsILA.content : ''"></div>
@@ -1408,7 +1408,7 @@
                                                         <!-- @{{recomendVisit | json}} -->
                                                         <!-- <mat-radio-group name="recommended" #recommendVisit="ngModel"> -->
                                                             <ng-container *ngFor="let item of recomendVisit; let k=index;">
-                                                                <mat-checkbox  name="undertaking_confirm7_{{k}}" required
+                                                                <mat-checkbox  name="undertaking_confirm7_{{k}}" 
                                                             [(ngModel)]="item.checked" value="first">{{item.label}}</mat-checkbox> 
                                                             </ng-container>quarter
                                                             <!-- <mat-checkbox  name ="undertaking_confirm7" 

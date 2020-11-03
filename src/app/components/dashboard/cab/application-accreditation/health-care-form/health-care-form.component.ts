@@ -2733,7 +2733,7 @@ onSubmitUndertakingApplicant(ngForm7: any){
     let checkCount = 0;
     for(let key in this.authorizationList) {
       ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
-      if(this.authorizationList[key]) {  
+      if(this.authorizationList[key] && key != 'undertaking_confirmTop3') {  
         this.authorizationStatus = true;       
         checkCount++;
       } 

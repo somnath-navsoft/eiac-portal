@@ -573,6 +573,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-3">
+                                            @{{step1Data.is_main_activity}}
                                             <mat-radio-group name="is_main_activity" #selectInspecActivity="ngModel" [(ngModel)]="step1Data.is_main_activity" required>
                                                 <div class="row">
                                                     <div class="col-md-4">
@@ -593,7 +594,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <mat-form-field class="cab-data">
+                                            <mat-form-field class="cab-data" *ngIf="step1Data.is_main_activity == 'false'">
                                                 <mat-label>(If No, indicate what are other activities related to the organization)</mat-label>
                                                 <input #enterOtherActivity="ngModel" (keypress)="Service.inputFilter($event, Service.regExName)" 
                                                 matInput placeholder="" name="indication" 
@@ -996,7 +997,7 @@
                                     <!-- View scope data -->
                                     <div class="row mt-3">
                                         <div class="col-md-12">
-                                            <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                                            <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey, selectDeleteFamilyKey)" [parent]="this" [modalType]="'delete'"></custom-modal>
                                             <ng-container *ngIf="editScopeData != undefined && editScopeData != null">
                                                 <div class="row">
                                                     <div class="col-md-12 p-0">
@@ -1236,8 +1237,8 @@
                                                                                         </ng-container>
                                                                                 </td>
                                                                                 <td class="content-icn">
-                                                                                    <span *ngIf="k >= 0" class="icon-add" (click)="addScopeLine(k,scope.title, dynamicScopeModel[scope.id][scope.familyId].fieldLines)"></span>&nbsp;
-                                                                                    <span *ngIf="k >= 1" class="icon-close-round" (click)="openDeleteScopeConfirm(k, scope.title)"></span>
+                                                                                    <span *ngIf="k >= 0" class="icon-add" (click)="addScopeLine(k,scope.id,scope.familyId, dynamicScopeModel[scope.id][scope.familyId].fieldLines)"></span>&nbsp;
+                                                                                    <span *ngIf="k >= 1" class="icon-close-round" (click)="openDeleteScopeConfirm(k, scope.id, scope.familyId)"></span>
                                                                                 </td>
                                                                             </tr>
                                                                         </tbody>
