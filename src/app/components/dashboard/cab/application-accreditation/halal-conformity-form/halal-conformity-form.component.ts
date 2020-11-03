@@ -1264,8 +1264,8 @@ addSchemeRow(obj: any = [],index: number){
                   this.step2Data.islamic_duration_at_current_post = getMangData.duration_at_current_post;
                 }
 
-                if(res['data'].managementManager != undefined && res['data'].managementManager.length > 0){
-                  let getMangData: any = res['data'].managementManager[0];
+                if(res['data'].qualityManager != undefined && res['data'].qualityManager.length > 0){
+                  let getMangData: any = res['data'].qualityManager[0];
                   this.step2Data.management_name = getMangData.name;
                   this.step2Data.management_designation = getMangData.designation;
                   this.step2Data.management_mobile_no = getMangData.mobile_no;
@@ -1823,24 +1823,24 @@ addSchemeRow(obj: any = [],index: number){
       this.publicHalalConformityForm.step2.technicalManager['relevent_experience'] = (this.step2Data.relevent_experience != '' && this.step2Data.relevent_experience != undefined) ? this.step2Data.relevent_experience : '';
       this.publicHalalConformityForm.step2.technicalManager['duration_at_current_post'] = (this.step2Data.duration_at_current_post != '' && this.step2Data.duration_at_current_post != undefined) ? this.step2Data.duration_at_current_post : '';
   
-      this.publicHalalConformityForm.step2.managementManager = {};
+      this.publicHalalConformityForm.step2.qualityManager = {};
   
-      this.publicHalalConformityForm.step2.managementManager['name'] = (this.step2Data.management_name != '' && this.step2Data.management_name != undefined) ? this.step2Data.management_name : '';
-      this.publicHalalConformityForm.step2.managementManager['designation'] = (this.step2Data.management_designation != '' && this.step2Data.management_designation != undefined) ? this.step2Data.management_designation : '' ;
-      this.publicHalalConformityForm.step2.managementManager['mobile_no'] = (this.step2Data.management_mobile_no != '' && this.step2Data.management_mobile_no != undefined) ? this.step2Data.management_mobile_no : '';
-      this.publicHalalConformityForm.step2.managementManager['email'] = (this.step2Data.management_email != '' && this.step2Data.management_email != undefined) ? this.step2Data.management_email : '';
-      this.publicHalalConformityForm.step2.managementManager['relevent_experience'] = (this.step2Data.management_relevent_experience != '' && this.step2Data.management_relevent_experience != undefined) ? this.step2Data.management_relevent_experience : '';
-      this.publicHalalConformityForm.step2.managementManager['duration_at_current_post'] = (this.step2Data.duration_at_current_post_manager != '' && this.step2Data.duration_at_current_post_manager != undefined) ? this.step2Data.duration_at_current_post_manager : '';
+      this.publicHalalConformityForm.step2.qualityManager['name'] = (this.step2Data.management_name != '' && this.step2Data.management_name != undefined) ? this.step2Data.management_name : '';
+      this.publicHalalConformityForm.step2.qualityManager['designation'] = (this.step2Data.management_designation != '' && this.step2Data.management_designation != undefined) ? this.step2Data.management_designation : '' ;
+      this.publicHalalConformityForm.step2.qualityManager['mobile_no'] = (this.step2Data.management_mobile_no != '' && this.step2Data.management_mobile_no != undefined) ? this.step2Data.management_mobile_no : '';
+      this.publicHalalConformityForm.step2.qualityManager['email'] = (this.step2Data.management_email != '' && this.step2Data.management_email != undefined) ? this.step2Data.management_email : '';
+      this.publicHalalConformityForm.step2.qualityManager['relevent_experience'] = (this.step2Data.management_relevent_experience != '' && this.step2Data.management_relevent_experience != undefined) ? this.step2Data.management_relevent_experience : '';
+      this.publicHalalConformityForm.step2.qualityManager['duration_at_current_post'] = (this.step2Data.duration_at_current_post_manager != '' && this.step2Data.duration_at_current_post_manager != undefined) ? this.step2Data.duration_at_current_post_manager : '';
 
 
-      this.publicHalalConformityForm.step2.islamicAffairs = {};
+      this.publicHalalConformityForm.step2.islamicAffair = {};
   
-      this.publicHalalConformityForm.step2.islamicAffairs['name'] = (this.step2Data.islamic_name != '' && this.step2Data.islamic_name != undefined) ? this.step2Data.islamic_name : '';
-      this.publicHalalConformityForm.step2.islamicAffairs['designation'] = (this.step2Data.islamic_designation != '' && this.step2Data.islamic_designation != undefined) ? this.step2Data.islamic_designation : '' ;
-      this.publicHalalConformityForm.step2.islamicAffairs['mobile_no'] = (this.step2Data.islamic_mobile_no != '' && this.step2Data.islamic_mobile_no != undefined) ? this.step2Data.islamic_mobile_no : '';
-      this.publicHalalConformityForm.step2.islamicAffairs['email'] = (this.step2Data.islamic_email != '' && this.step2Data.islamic_email != undefined) ? this.step2Data.islamic_email : '';
-      this.publicHalalConformityForm.step2.islamicAffairs['relevent_experience'] = (this.step2Data.islamic_relevent_experience != '' && this.step2Data.islamic_relevent_experience != undefined) ? this.step2Data.islamic_relevent_experience : '';
-      this.publicHalalConformityForm.step2.islamicAffairs['duration_at_current_post'] = (this.step2Data.islamic_duration_at_current_post != '' && this.step2Data.islamic_duration_at_current_post != undefined) ? this.step2Data.islamic_duration_at_current_post : '';
+      this.publicHalalConformityForm.step2.islamicAffair['name'] = (this.step2Data.islamic_name != '' && this.step2Data.islamic_name != undefined) ? this.step2Data.islamic_name : '';
+      this.publicHalalConformityForm.step2.islamicAffair['designation'] = (this.step2Data.islamic_designation != '' && this.step2Data.islamic_designation != undefined) ? this.step2Data.islamic_designation : '' ;
+      this.publicHalalConformityForm.step2.islamicAffair['mobile_no'] = (this.step2Data.islamic_mobile_no != '' && this.step2Data.islamic_mobile_no != undefined) ? this.step2Data.islamic_mobile_no : '';
+      this.publicHalalConformityForm.step2.islamicAffair['email'] = (this.step2Data.islamic_email != '' && this.step2Data.islamic_email != undefined) ? this.step2Data.islamic_email : '';
+      this.publicHalalConformityForm.step2.islamicAffair['relevent_experience'] = (this.step2Data.islamic_relevent_experience != '' && this.step2Data.islamic_relevent_experience != undefined) ? this.step2Data.islamic_relevent_experience : '';
+      this.publicHalalConformityForm.step2.islamicAffair['duration_at_current_post'] = (this.step2Data.islamic_duration_at_current_post != '' && this.step2Data.islamic_duration_at_current_post != undefined) ? this.step2Data.islamic_duration_at_current_post : '';
   
       this.publicHalalConformityForm.step2['summaryDetail'] = this.summaryDetails;
   
