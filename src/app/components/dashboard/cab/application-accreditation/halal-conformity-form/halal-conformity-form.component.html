@@ -796,26 +796,28 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4 col-sm-12">
+                                        <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Name</mat-label>
                                                 <input matInput  (keypress)="Service.inputFilter($event, Service.regExName)" [(ngModel)]="step2Data.name" placeholder="" name="name_technical" required>
                                             </mat-form-field>
                                         </div>
-                                        <div class="col-md-4 col-sm-12">
+                                        <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Designation</mat-label>
                                                 <input matInput  (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="" [(ngModel)]="step2Data.designation" name="designation_technical" required>
                                             </mat-form-field>
                                         </div>
+                                        
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mobile Phone No.</mat-label>
                                                 <input matInput placeholder="" maxlength="14" minlength="10" (keypress)="Service.IsNumeric($event)" [(ngModel)]="step2Data.mobile_no" name="mobile_no_technical" required>
                                             </mat-form-field>
                                         </div>
-                                    </div>
-                                    <div class="row">
+
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Email Address</mat-label>
@@ -829,12 +831,6 @@
                                                 <input matInput  (keypress)="Service.IsNumeric($event)" placeholder="" [(ngModel)]="step2Data.relevent_experience" name="relevent_experience" required>
                                             </mat-form-field>
                                         </div>
-                                        <div class="col-md-4 col-sm-12">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Duration at the Current position</mat-label>
-                                                <input matInput  [(ngModel)]="step2Data.duration_at_current_post" name="duration_current_position_technical" required>
-                                            </mat-form-field>
-                                        </div>
                                     </div>
 
                                     <div class="row mt-3">
@@ -845,26 +841,28 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4 col-sm-12">
+                                        <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Name</mat-label>
                                                 <input matInput (keypress)="Service.inputFilter($event, Service.regExName)" [(ngModel)]="step2Data.islamic_name" placeholder="" name="name_islamic" required>
                                             </mat-form-field>
                                         </div>
-                                        <div class="col-md-4 col-sm-12">
+                                        <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Designation</mat-label>
                                                 <input matInput (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="" [(ngModel)]="step2Data.islamic_designation" name="designation_islamic" required>
                                             </mat-form-field>
                                         </div>
+                                        
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mobile Phone No.</mat-label>
                                                 <input matInput placeholder="" maxlength="14" minlength="10" (keypress)="Service.IsNumeric($event)" [(ngModel)]="step2Data.islamic_mobile_no" name="mobile_no_islamic" required>
                                             </mat-form-field>
                                         </div>
-                                    </div>
-                                    <div class="row">
+
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Email Address</mat-label>
@@ -878,12 +876,6 @@
                                                 <input matInput (keypress)="Service.IsNumeric($event)" placeholder="" [(ngModel)]="step2Data.islamic_relevent_experience" name="relevent_experience_islamic" required>
                                             </mat-form-field>
                                         </div>
-                                        <div class="col-md-4 col-sm-12">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Duration at the Current position</mat-label>
-                                                <input matInput  [(ngModel)]="step2Data.islamic_duration_at_current_post" name="duration_current_position_islamic" required>
-                                            </mat-form-field>
-                                        </div>
                                     </div>
 
                                     <div class="row">
@@ -894,26 +886,27 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4 col-sm-12">
+                                        <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Name</mat-label>
                                                 <input matInput  (keypress)="Service.inputFilter($event, Service.regExName)"  placeholder="" [(ngModel)]="step2Data.management_name" name="quality_manager_name" required>
                                             </mat-form-field>
                                         </div>
-                                        <div class="col-md-4 col-sm-12">
+                                        <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Designation</mat-label>
                                                 <input matInput  (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="" [(ngModel)]="step2Data.management_designation" name="quality_manager_designation" required>
                                             </mat-form-field>
                                         </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mobile Phone No.</mat-label>
                                                 <input matInput placeholder="" maxlength="14" minlength="10" (keypress)="Service.IsNumeric($event)" [(ngModel)]="step2Data.management_mobile_no" name="quality_manager_mobile_no" required>
                                             </mat-form-field>
                                         </div>
-                                    </div>
-                                    <div class="row">
+
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Email Address</mat-label>
@@ -925,12 +918,6 @@
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Relevant Experience</mat-label>
                                                 <input matInput  (keypress)="Service.IsNumeric($event)" placeholder="" [(ngModel)]="step2Data.management_relevent_experience" name="quality_manager_relevent_experience" required>
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="col-md-4 col-sm-12">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Duration at the Current Position</mat-label>
-                                                <input matInput  placeholder="" [(ngModel)]="step2Data.duration_at_current_post_manager" name="quality_manager_duration_current_position" required>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -1446,7 +1433,7 @@
                                                                     <mat-form-field  class="lng-data">
                                                                         <input matInput readonly="true" name="authorized_personforSigning_upload_{{i}}" [(ngModel)]="authorizedPersonforSigning[i].authorized_personforSigning_upload"  placeholder="Upload Document">
             
-                                                                        <a *ngIf="authorizedPersonforSigning[i].qualification_file != null" href="{{filePathVreateDynamics(authorizedPersonforSigning[i].qualification_file)}}" target="_blank">
+                                                                        <a *ngIf="authorizedPersonforSigning[i].signature != null" href="{{filePathVreateDynamics(authorizedPersonforSigning[i].signature)}}" target="_blank">
                                                                             <span class="icon-eye visible-pwd"></span>
                                                                         </a>
                                                                     </mat-form-field>

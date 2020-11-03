@@ -1251,17 +1251,17 @@ addSchemeRow(obj: any = [],index: number){
                   this.step2Data.mobile_no = getTechData.mobile_no;
                   this.step2Data.email = getTechData.email;
                   this.step2Data.relevent_experience = getTechData.relevent_experience;
-                  this.step2Data.duration_at_current_post = getTechData.duration_at_current_post;
+                  // this.step2Data.duration_at_current_post = getTechData.duration_at_current_post;
                 }
 
-                if(res['data'].managementManager != undefined && res['data'].managementManager.length > 0){
-                  let getMangData: any = res['data'].managementManager[0];
+                if(res['data'].islamicAffairExpert != undefined && res['data'].islamicAffairExpert.length > 0){
+                  let getMangData: any = res['data'].islamicAffairExpert[0];
                   this.step2Data.islamic_name = getMangData.name;
                   this.step2Data.islamic_designation = getMangData.designation;
                   this.step2Data.islamic_mobile_no = getMangData.mobile_no;
                   this.step2Data.islamic_email = getMangData.email;
                   this.step2Data.islamic_relevent_experience = getMangData.relevent_experience;
-                  this.step2Data.islamic_duration_at_current_post = getMangData.duration_at_current_post;
+                  // this.step2Data.islamic_duration_at_current_post = getMangData.duration_at_current_post;
                 }
 
                 if(res['data'].qualityManager != undefined && res['data'].qualityManager.length > 0){
@@ -1271,7 +1271,7 @@ addSchemeRow(obj: any = [],index: number){
                   this.step2Data.management_mobile_no = getMangData.mobile_no;
                   this.step2Data.management_email = getMangData.email;
                   this.step2Data.management_relevent_experience = getMangData.relevent_experience;
-                  this.step2Data.duration_at_current_post_manager = getMangData.duration_at_current_post;
+                  // this.step2Data.duration_at_current_post_manager = getMangData.duration_at_current_post;
                 }
 
                 if(res['data'].summaryOfPersonnel != undefined && res['data'].summaryOfPersonnel.length > 0){
