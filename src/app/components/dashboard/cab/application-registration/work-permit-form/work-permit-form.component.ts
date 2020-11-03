@@ -14,7 +14,7 @@ export class WorkPermitFormComponent implements OnInit {
   public newRow: any = {};
   public testingCalForm: any = {};
   public workPermitForm: any = {};
-  public healthCareFormTemp:any = new FormData();
+  public workPermitFormData:any = new FormData();
   public checkSecurity:boolean = false;
   public checkCaptchaValidation:boolean = false;
   public banner:any=[];
@@ -28,6 +28,17 @@ export class WorkPermitFormComponent implements OnInit {
   public file_validation2:boolean = true;
   public file_validation3:boolean = true;
   public file_validation4:boolean = true;
+  licence_document_validation:boolean = true;
+  quality_manual_validation:boolean = true;
+  work_instruction_validation:boolean = true;
+  check_list_validation:boolean = true;
+  licence_document_file:any;
+  quality_manual_file:any;
+  work_instruction_file:any;
+  check_list_file:any;
+  // licence_document_validation:boolean = true;
+  // licence_document_validation:boolean = true;
+  // licence_document_validation:boolean = true;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
@@ -57,78 +68,59 @@ export class WorkPermitFormComponent implements OnInit {
 //     }
 //     //console.log(ex[1])
 // }
+validateFile(fileEvent: any,fileName?:any) {
+  // console.log(fileName,'fileName')
+  var file_name = fileEvent.target.files[0].name;
+  console.log(file_name,'file_name')
+  var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
+  var ex_type = ['doc','odt','pdf','rtf','docx','xlsx'];
+  var ex_check = this.Service.isInArray(file_exe,ex_type);
 
-validateFile(fileEvent: any,type) {
-   
-   var file_name = fileEvent.target.files[0].name;
-   var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
-   var ex_type = ['pdf','png'];
-   var ex_check = this.isInArray(file_exe,ex_type);
-   var ex = (fileEvent.target.files[0].name).split('.');
-  // if(ex_check){
-    if(type=="licence_document_file" && ex_check == true){
-      this.workPermitForm.licence_document_name = fileEvent.target.files[0].name;
-      this.healthCareFormTemp.append('licence_document_file',fileEvent.target.files[0]);
-      this.file_validation = true;
-    }else if(type=="licence_document_file" && ex_check != true){
-      this.file_validation = false;
-    }
-    else if(type=="quality_manual_file" && ex_check  == true){
-      this.workPermitForm.quality_manual_name = fileEvent.target.files[0].name;
-      this.healthCareFormTemp.append('quality_manual_file',fileEvent.target.files[0]);
-      this.file_validation2 = true;
-    }else if(type=="quality_manual_file" && ex_check  != true){
-      this.file_validation2 = false;
-    }
-    else if(type=="check_list_file" && ex_check  == true){
-      this.workPermitForm.check_list_name= fileEvent.target.files[0].name;
-      this.healthCareFormTemp.append('check_list_file',fileEvent.target.files[0]);
-      this.file_validation4 = true;
-    }else if(type=="check_list_file" && ex_check  != true){
-      this.file_validation4 = false;
-    }
-    else if(type=="work_instruction_file" && ex_check  == true){
-      this.workPermitForm.work_instruction_name= fileEvent.target.files[0].name;
-      this.healthCareFormTemp.append('work_instruction_file',fileEvent.target.files[0]);
-      this.file_validation3 = true;
-    }else if(type=="work_instruction_file" && ex_check != true){
-      this.file_validation3 = false;
-    }
-    
-    // return true;
-  // }
-  // else{
-  //   this.file_validation = false;
-  //   return false;
-  // }
+  if(ex_check && fileName == 'licence_document_file'){
+    this.workPermitForm.licence_document = fileEvent.target.files[0].name;
+    this.workPermitFormData.append(fileName,fileEvent.target.files[0]);
+    this.licence_document_validation = true;
+    return true;
+  }else if(!ex_check && fileName == 'licence_document_file') {
+    this.licence_document_validation = false;
+    return false;
+  }else if(ex_check && fileName == 'quality_manual_file'){
+    this.workPermitForm.quality_manual = fileEvent.target.files[0].name;
+    this.workPermitFormData.append(fileName,fileEvent.target.files[0]);
+    this.quality_manual_validation = true;
+    return true;
+  }else if(!ex_check && fileName == 'quality_manual_file') {
+    this.quality_manual_validation = false;
+    return false;
+  }else if(ex_check && fileName == 'work_instruction_file'){
+    this.workPermitForm.work_instruction = fileEvent.target.files[0].name;
+    this.workPermitFormData.append(fileName,fileEvent.target.files[0]);
+    this.work_instruction_validation = true;
+    return true;
+  }else if(!ex_check && fileName == 'work_instruction_file') {
+    this.work_instruction_validation = false;
+    return false;
+  }else if(ex_check && fileName == 'check_list_file'){
+    this.workPermitForm.check_list = fileEvent.target.files[0].name;
+    this.workPermitFormData.append(fileName,fileEvent.target.files[0]);
+    this.check_list_validation = true;
+    return true;
+  }else if(!ex_check && fileName == 'check_list_file') {
+    this.check_list_validation = false;
+    return false;
+  }
 }
+
  
- isInArray(value, array) {
+isInArray(value, array) {
   return array.indexOf(value) > -1;
 }
   onSubmit(ngForm){
-    this.authorizationStatus = true;
-    this.isSubmit = true;
-    Object.keys(this.authorizationList).forEach(key => {
-      if(this.authorizationList[key]==false){
-        this.authorizationStatus = false;
-      }
-    })
-    if(!this.authorizationStatus){
-      this.isSubmit = false;
-      this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
-    }
-    this.healthCareFormTemp.append('data',JSON.stringify(this.workPermitForm));
-    if(this.checkSecurity == true)
-    {
-      this.checkCaptchaValidation = true;
-    }else{
-      this.checkCaptchaValidation = false;
-    }
     
     if(ngForm.form.valid && this.isSubmit){
-
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.healthCareFormTemp)
+      this.workPermitForm.is_draft = false;
+      this.workPermitFormData.append('data',JSON.stringify(this.workPermitForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.workPermitFormData)
       .subscribe(
         res => {
           if(res['status']==true){
