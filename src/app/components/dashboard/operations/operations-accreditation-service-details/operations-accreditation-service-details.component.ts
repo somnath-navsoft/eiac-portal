@@ -47,7 +47,7 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   recommVisit: string;
 
   userEmail:string='';
-  userType:string='';
+  userType:any;
   applicantDetails: any;
   countryList: any;
   appCountry: string = '';
@@ -64,6 +64,8 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   ngOnInit() {
     this.loader = true;
     this.routeId = sessionStorage.getItem('routeId');
+
+    this.userType = sessionStorage.getItem('type');
 
     this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');
     this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Document%20review%20Checklist-%20ISO%2017020-%202012_Inspection%20Bodies.pdf');
@@ -304,6 +306,16 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
         this.paymentReceiptValidation = false;
         
     }
+  }
+
+  downloadCsv() {
+    // /admin/accreditation-application-csv?id=1068
+    // this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.accrediationCsv+this.routeId)
+    // .subscribe(
+    //   res => {
+    //     console.log(res,'res');
+    //   })
+    window.open(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.accrediationCsv+this.routeId, '_blank');
   }
 
   voucherSentSubmit(theForm){

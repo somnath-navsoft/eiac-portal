@@ -217,6 +217,11 @@ export class HalalConformityFormComponent implements OnInit {
 
    //Other scope fixed table
    otherStandards: any[] = [{}];
+   issuedEsmaPath:any;
+   certificateStampPath:any;
+   hcabLogo1Path:any;
+   hcabLogo2Path:any;
+   hcabLogo3Path:any;
 
    //Master scope form data declaration
 
@@ -879,7 +884,7 @@ addSchemeRow(obj: any = [],index: number){
       var ex_check = this.Service.isInArray(file_exe,ex_type);
       if(ex_check) {
         this.accreditationInfo[key].list_auditor_upload = fileEvent.target.files[0].name;
-        this.step1DataBodyFormFile.append('qualification_file_exist_'+id,fileEvent.target.files[0]);
+        this.step1DataBodyFormFile.append('scope_of_accr_exist_'+id,fileEvent.target.files[0]);
         this.file_validation_listAuditor = true;
       }else{
         this.file_validation_listAuditor = false;
@@ -891,7 +896,7 @@ addSchemeRow(obj: any = [],index: number){
       var ex_check = this.Service.isInArray(file_exe,ex_type);
       if(ex_check) {
         this.accreditationInfo[key].list_auditor_upload = fileEvent.target.files[0].name;
-        this.step1DataBodyFormFile.append('qualification_file_'+key,fileEvent.target.files[0]);
+        this.step1DataBodyFormFile.append('scope_of_accr_'+key,fileEvent.target.files[0]);
         this.file_validation_listAuditor = true;
       }else{
         this.file_validation_listAuditor = false;
@@ -922,7 +927,7 @@ addSchemeRow(obj: any = [],index: number){
       var ex_check = this.Service.isInArray(file_exe,ex_type);
       if(ex_check) {
         this.authorizedPersonforSigning[key].authorized_personforSigning_upload = fileEvent.target.files[0].name;
-        this.step3DataBodyFormFile.append('qualification_file_exist_'+id,fileEvent.target.files[0]);
+        this.step4DataBodyFormFile.append('signature_exist_'+id,fileEvent.target.files[0]);
         this.file_validation_listAuditor = true;
       }else{
         this.file_validation_listAuditor = false;
@@ -934,7 +939,7 @@ addSchemeRow(obj: any = [],index: number){
       var ex_check = this.Service.isInArray(file_exe,ex_type);
       if(ex_check) {
         this.authorizedPersonforSigning[key].authorized_personforSigning_upload = fileEvent.target.files[0].name;
-        this.step3DataBodyFormFile.append('qualification_file_'+key,fileEvent.target.files[0]);
+        this.step4DataBodyFormFile.append('signature_'+key,fileEvent.target.files[0]);
         this.file_validation_listAuditor = true;
       }else{
         this.file_validation_listAuditor = false;
@@ -1106,7 +1111,7 @@ addSchemeRow(obj: any = [],index: number){
             this.loader = true;
             let getData: any = res;
             let saveStep: number;
-            if(res['data'].id && res['data'].id != '') {
+            if(res['status'] == true && res['data'].id && res['data'].id != '') {
                 let pathData: any;
                 let filePath: string;
   
@@ -1186,23 +1191,59 @@ addSchemeRow(obj: any = [],index: number){
                       this.step1Data.is_main_activity_note = res['data'].is_main_activity_note.toString();
                     }
                 }
-  
-                //step2
-                if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
-                  this.accreditationInfo = [];
-                  this.step2Data.is_hold_other_accreditation = "1";
-                  res['data'].otherAccr.forEach((item, key) => {
-                      let data: any;
-                      data = item['value'];
-                      var obj1 = data.replace(/'/g, "\"");
-                      let jparse = JSON.parse(obj1);
-                      this.accreditationInfo.push(jparse);
-                  })
-                }else{
-                  this.step2Data.is_hold_other_accreditation = "0";
+
+                if(res['data'].is_staff_ownership != undefined){
+                  this.step1Data.is_staff_ownership = res['data'].is_staff_ownership.toString();
+                  if(!res['data'].is_staff_ownership){
+                    this.step1Data.is_staff_ownership_note = res['data'].is_staff_ownership_note != null ? res['data'].is_staff_ownership_note.toString() : '';
+                  }
+                }
+
+                if(res['data'].reg_form_issued_esma != ''){
+                  let getFile = res['data'].reg_form_issued_esma.toString().split('/');
+                  if(getFile.length){
+                    this.publicHalalConformityForm.id_issued_esma = getFile[4].toString().split('.')[0];
+                    this.issuedEsmaPath = this.constant.mediaPath +  res['data'].reg_form_issued_esma.toString();
+                  }
+                }
+
+                if(res['data'].certificate_stamp != ''){
+                  let getFile = res['data'].certificate_stamp.toString().split('/');
+                  if(getFile.length){
+                    this.publicHalalConformityForm.halal_certificate_stamp = getFile[4].toString().split('.')[0];
+                    this.certificateStampPath = this.constant.mediaPath +  res['data'].certificate_stamp.toString();
+                  }
+                }
+
+                if(res['data'].legal_status != ''){
+                  this.step1Data.legal_status = res['data'].legal_status;
+                }
+                
+                if(res['data'].ownershipOfOrg != ''){
+                  this.ownOrgBasicInfo = res['data'].ownershipOfOrg;
+                }
+                
+                if(res['data'].bodMember != ''){
+                  this.ownOrgMembInfo = res['data'].bodMember;
+                }
+                
+                if(res['data'].otherActivityLocations != ''){
+                  this.step1Data.hcab_other_location = '1';
+                  var hcab_location = res['data'].otherActivityLocations
+                  for(let key in hcab_location) {
+                    var newLoaction = [];
+                    newLoaction.push(hcab_location[key].value);
+                  }
+
+                  this.hcabOtherLocation = newLoaction;
+                  // console.log(this.hcabOtherLocation);
+                }
+                
+                if(res['data'].hcabOtherAccreditation != ''){
+                  this.accreditationInfo = res['data'].hcabOtherAccreditation;
                 }
   
-                //step3
+                //step2
                 if(res['data'].technicalManager != undefined && res['data'].technicalManager.length > 0){
                   let getTechData: any = res['data'].technicalManager[0];
                   this.step2Data.name = getTechData.name;
@@ -1212,8 +1253,19 @@ addSchemeRow(obj: any = [],index: number){
                   this.step2Data.relevent_experience = getTechData.relevent_experience;
                   this.step2Data.duration_at_current_post = getTechData.duration_at_current_post;
                 }
+
                 if(res['data'].managementManager != undefined && res['data'].managementManager.length > 0){
                   let getMangData: any = res['data'].managementManager[0];
+                  this.step2Data.islamic_name = getMangData.name;
+                  this.step2Data.islamic_designation = getMangData.designation;
+                  this.step2Data.islamic_mobile_no = getMangData.mobile_no;
+                  this.step2Data.islamic_email = getMangData.email;
+                  this.step2Data.islamic_relevent_experience = getMangData.relevent_experience;
+                  this.step2Data.islamic_duration_at_current_post = getMangData.duration_at_current_post;
+                }
+
+                if(res['data'].qualityManager != undefined && res['data'].qualityManager.length > 0){
+                  let getMangData: any = res['data'].qualityManager[0];
                   this.step2Data.management_name = getMangData.name;
                   this.step2Data.management_designation = getMangData.designation;
                   this.step2Data.management_mobile_no = getMangData.mobile_no;
@@ -1221,10 +1273,56 @@ addSchemeRow(obj: any = [],index: number){
                   this.step2Data.management_relevent_experience = getMangData.relevent_experience;
                   this.step2Data.duration_at_current_post_manager = getMangData.duration_at_current_post;
                 }
+
+                if(res['data'].summaryOfPersonnel != undefined && res['data'].summaryOfPersonnel.length > 0){
+                  this.summaryDetails = res['data'].summaryOfPersonnel;
+                }
+  
+                //step3
+                
   
                 //step4
                 
-  
+                if(res['data'].scopeOfHalalConformity != ''){
+                  var halalScope = res['data'].scopeOfHalalConformity;
+                  // this.ownOrgBasicInfo = res['data'].scopeOfHalalConformity;
+                  for(let key in halalScope) {
+                    var arr = [];
+                    var value_obj = JSON.parse(halalScope[key].value);
+                    arr.push(value_obj);
+                  }
+                  this.scopeofHalalConformity = arr;
+                }
+
+                if(res['data'].singningHalalCertificate != ''){
+                  this.authorizedPersonforSigning = res['data'].singningHalalCertificate;
+                }
+
+
+                if(res['data'].recognized_logo1 != ''){
+                  let getFile = res['data'].recognized_logo1.toString().split('/');
+                  if(getFile.length){
+                    this.publicHalalConformityForm.hcabLogo1 = getFile[4].toString().split('.')[0];
+                    this.hcabLogo1Path = this.constant.mediaPath +  res['data'].recognized_logo1.toString();
+                  }
+                }
+
+                if(res['data'].recognized_logo2 != ''){
+                  let getFile = res['data'].recognized_logo2.toString().split('/');
+                  if(getFile.length){
+                    this.publicHalalConformityForm.hcabLogo2 = getFile[4].toString().split('.')[0];
+                    this.hcabLogo2Path = this.constant.mediaPath +  res['data'].recognized_logo2.toString();
+                  }
+                }
+
+                if(res['data'].recognized_logo3 != ''){
+                  let getFile = res['data'].recognized_logo3.toString().split('/');
+                  if(getFile.length){
+                    this.publicHalalConformityForm.hcabLogo3 = getFile[4].toString().split('.')[0];
+                    this.hcabLogo2Path = this.constant.mediaPath +  res['data'].recognized_logo3.toString();
+                  }
+                }
+
                 //step5
                 //
                 
@@ -1301,12 +1399,13 @@ addSchemeRow(obj: any = [],index: number){
   validateFile(fileEvent: any,fileName?:any) {
     // console.log(fileName,'fileName')
     var file_name = fileEvent.target.files[0].name;
+    console.log(file_name,'file_name')
     var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
     var ex_type = ['doc','odt','pdf','rtf','docx','xlsx'];
     var ex_check = this.Service.isInArray(file_exe,ex_type);
     if(ex_check && fileName == 'halal_certificate_stamp'){
       this.publicHalalConformityForm.halal_certificate_stamp = fileEvent.target.files[0].name;
-      this.publicHalalConformityFormTemp.append('halal_certificate_stamp_file',fileEvent.target.files[0]);
+      this.step1DataBodyFormFile.append('certificate_stamp_file',fileEvent.target.files[0]);
       this.file_validation_halal_certificate = true;
       return true;
     }else if(!ex_check && fileName == 'halal_certificate_stamp') {
@@ -1314,7 +1413,7 @@ addSchemeRow(obj: any = [],index: number){
       return false;
     }else if(ex_check && fileName == 'id_issued_esma'){
       this.publicHalalConformityForm.id_issued_esma = fileEvent.target.files[0].name;
-      this.publicHalalConformityFormTemp.append('id_issued_esma_file',fileEvent.target.files[0]);
+      this.step1DataBodyFormFile.append('reg_form_issued_esma_file',fileEvent.target.files[0]);
       this.esma_file_validation = true;
       return true;
     }else if(!ex_check && fileName == 'id_issued_esma') {
@@ -1322,7 +1421,7 @@ addSchemeRow(obj: any = [],index: number){
       return false;
     }else if(ex_check && fileName == 'hcabLogo1'){
       this.publicHalalConformityForm.hcabLogo1 = fileEvent.target.files[0].name;
-      this.publicHalalConformityFormTemp.append('hcabLogo1_file',fileEvent.target.files[0]);
+      this.step4DataBodyFormFile.append('hcabLogo1_file',fileEvent.target.files[0]);
       this.hcabLogo1_validation = true;
       return true;
     }else if(!ex_check && fileName == 'hcabLogo1') {
@@ -1330,7 +1429,7 @@ addSchemeRow(obj: any = [],index: number){
       return false;
     }else if(ex_check && fileName == 'hcabLogo2'){
       this.publicHalalConformityForm.hcabLogo2 = fileEvent.target.files[0].name;
-      this.publicHalalConformityFormTemp.append('hcabLogo2_file',fileEvent.target.files[0]);
+      this.step4DataBodyFormFile.append('hcabLogo2_file',fileEvent.target.files[0]);
       this.hcabLogo2_validation = true;
       return true;
     }else if(!ex_check && fileName == 'hcabLogo2') {
@@ -1338,7 +1437,7 @@ addSchemeRow(obj: any = [],index: number){
       return false;
     }else if(ex_check && fileName == 'hcabLogo3'){
       this.publicHalalConformityForm.hcabLogo3 = fileEvent.target.files[0].name;
-      this.publicHalalConformityFormTemp.append('hcabLogo3_file',fileEvent.target.files[0]);
+      this.step4DataBodyFormFile.append('hcabLogo3_file',fileEvent.target.files[0]);
       this.hcabLogo3_validation = true;
       return true;
     }else if(!ex_check && fileName == 'hcabLogo3') {
@@ -1597,6 +1696,10 @@ addSchemeRow(obj: any = [],index: number){
     return true;
   }
 
+  filePathVreateDynamics(filePath) {
+    return this.constant.mediaPath+'/'+filePath;
+  }
+
   onSubmitStep1(ngForm1: any){
     this.Service.moveSteps('application_information', 'personal_information', this.headerSteps);
     // //console.log(this.ownOrgMembInfo,'ownOrgMembInfo');
@@ -1720,24 +1823,24 @@ addSchemeRow(obj: any = [],index: number){
       this.publicHalalConformityForm.step2.technicalManager['relevent_experience'] = (this.step2Data.relevent_experience != '' && this.step2Data.relevent_experience != undefined) ? this.step2Data.relevent_experience : '';
       this.publicHalalConformityForm.step2.technicalManager['duration_at_current_post'] = (this.step2Data.duration_at_current_post != '' && this.step2Data.duration_at_current_post != undefined) ? this.step2Data.duration_at_current_post : '';
   
-      this.publicHalalConformityForm.step2.managementManager = {};
+      this.publicHalalConformityForm.step2.qualityManager = {};
   
-      this.publicHalalConformityForm.step2.managementManager['name'] = (this.step2Data.management_name != '' && this.step2Data.management_name != undefined) ? this.step2Data.management_name : '';
-      this.publicHalalConformityForm.step2.managementManager['designation'] = (this.step2Data.management_designation != '' && this.step2Data.management_designation != undefined) ? this.step2Data.management_designation : '' ;
-      this.publicHalalConformityForm.step2.managementManager['mobile_no'] = (this.step2Data.management_mobile_no != '' && this.step2Data.management_mobile_no != undefined) ? this.step2Data.management_mobile_no : '';
-      this.publicHalalConformityForm.step2.managementManager['email'] = (this.step2Data.management_email != '' && this.step2Data.management_email != undefined) ? this.step2Data.management_email : '';
-      this.publicHalalConformityForm.step2.managementManager['relevent_experience'] = (this.step2Data.management_relevent_experience != '' && this.step2Data.management_relevent_experience != undefined) ? this.step2Data.management_relevent_experience : '';
-      this.publicHalalConformityForm.step2.managementManager['duration_at_current_post'] = (this.step2Data.duration_at_current_post_manager != '' && this.step2Data.duration_at_current_post_manager != undefined) ? this.step2Data.duration_at_current_post_manager : '';
+      this.publicHalalConformityForm.step2.qualityManager['name'] = (this.step2Data.management_name != '' && this.step2Data.management_name != undefined) ? this.step2Data.management_name : '';
+      this.publicHalalConformityForm.step2.qualityManager['designation'] = (this.step2Data.management_designation != '' && this.step2Data.management_designation != undefined) ? this.step2Data.management_designation : '' ;
+      this.publicHalalConformityForm.step2.qualityManager['mobile_no'] = (this.step2Data.management_mobile_no != '' && this.step2Data.management_mobile_no != undefined) ? this.step2Data.management_mobile_no : '';
+      this.publicHalalConformityForm.step2.qualityManager['email'] = (this.step2Data.management_email != '' && this.step2Data.management_email != undefined) ? this.step2Data.management_email : '';
+      this.publicHalalConformityForm.step2.qualityManager['relevent_experience'] = (this.step2Data.management_relevent_experience != '' && this.step2Data.management_relevent_experience != undefined) ? this.step2Data.management_relevent_experience : '';
+      this.publicHalalConformityForm.step2.qualityManager['duration_at_current_post'] = (this.step2Data.duration_at_current_post_manager != '' && this.step2Data.duration_at_current_post_manager != undefined) ? this.step2Data.duration_at_current_post_manager : '';
 
 
-      this.publicHalalConformityForm.step2.islamicAffairs = {};
+      this.publicHalalConformityForm.step2.islamicAffair = {};
   
-      this.publicHalalConformityForm.step2.islamicAffairs['name'] = (this.step2Data.islamic_name != '' && this.step2Data.islamic_name != undefined) ? this.step2Data.islamic_name : '';
-      this.publicHalalConformityForm.step2.islamicAffairs['designation'] = (this.step2Data.islamic_designation != '' && this.step2Data.islamic_designation != undefined) ? this.step2Data.islamic_designation : '' ;
-      this.publicHalalConformityForm.step2.islamicAffairs['mobile_no'] = (this.step2Data.islamic_mobile_no != '' && this.step2Data.islamic_mobile_no != undefined) ? this.step2Data.islamic_mobile_no : '';
-      this.publicHalalConformityForm.step2.islamicAffairs['email'] = (this.step2Data.islamic_email != '' && this.step2Data.islamic_email != undefined) ? this.step2Data.islamic_email : '';
-      this.publicHalalConformityForm.step2.islamicAffairs['relevent_experience'] = (this.step2Data.islamic_relevent_experience != '' && this.step2Data.islamic_relevent_experience != undefined) ? this.step2Data.islamic_relevent_experience : '';
-      this.publicHalalConformityForm.step2.islamicAffairs['duration_at_current_post'] = (this.step2Data.islamic_duration_at_current_post != '' && this.step2Data.islamic_duration_at_current_post != undefined) ? this.step2Data.islamic_duration_at_current_post : '';
+      this.publicHalalConformityForm.step2.islamicAffair['name'] = (this.step2Data.islamic_name != '' && this.step2Data.islamic_name != undefined) ? this.step2Data.islamic_name : '';
+      this.publicHalalConformityForm.step2.islamicAffair['designation'] = (this.step2Data.islamic_designation != '' && this.step2Data.islamic_designation != undefined) ? this.step2Data.islamic_designation : '' ;
+      this.publicHalalConformityForm.step2.islamicAffair['mobile_no'] = (this.step2Data.islamic_mobile_no != '' && this.step2Data.islamic_mobile_no != undefined) ? this.step2Data.islamic_mobile_no : '';
+      this.publicHalalConformityForm.step2.islamicAffair['email'] = (this.step2Data.islamic_email != '' && this.step2Data.islamic_email != undefined) ? this.step2Data.islamic_email : '';
+      this.publicHalalConformityForm.step2.islamicAffair['relevent_experience'] = (this.step2Data.islamic_relevent_experience != '' && this.step2Data.islamic_relevent_experience != undefined) ? this.step2Data.islamic_relevent_experience : '';
+      this.publicHalalConformityForm.step2.islamicAffair['duration_at_current_post'] = (this.step2Data.islamic_duration_at_current_post != '' && this.step2Data.islamic_duration_at_current_post != undefined) ? this.step2Data.islamic_duration_at_current_post : '';
   
       this.publicHalalConformityForm.step2['summaryDetail'] = this.summaryDetails;
   
@@ -1746,7 +1849,8 @@ addSchemeRow(obj: any = [],index: number){
       // this.publicHalalConformityForm.step3 = this.step3Data;
       this.loader = false;
       //console.log(this.publicHalalConformityForm,'publicHalalConformityForm');
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.certificationBodies,this.publicHalalConformityForm)
+      this.step2DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step2DataBodyFormFile)
       .subscribe(
         res => {
           this.loader = true;
@@ -2083,71 +2187,71 @@ getMatchScheme(scId: any, scopeData: any){
 
   onSubmitStep3(ngForm: any, type?:any) {
     
-    //this.Service.moveSteps('scope_accreditation','other_hcab_details',  this.headerSteps);
+    this.Service.moveSteps('scope_accreditation','other_hcab_details',  this.headerSteps);
 
     
-  //this.saveScope();
-  //console.log(">>>Enter....1:  ", type)
-  this.publicHalalConformityForm = {};
-  this.publicHalalConformityForm.step3 = {};  
-  var applicationId = sessionStorage.getItem('applicationId');
-  this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-  //this.publicHalalConformityForm.step5.application_id = this.formApplicationId;
-  this.publicHalalConformityForm.step3 = this.step5Data;
-  //this.publicHalalConformityForm.step5['cbsOtherActivity'] = [];
-  // this.publicHalalConformityForm.step3['otherActivityLocations'] = [];
-  // this.publicHalalConformityForm.step3['countriesForCertification'] = [];
-  this.publicHalalConformityForm.step3['otherActivityLocations'] = [];
-  this.publicHalalConformityForm.step3['countriesForCertification'] = [];
-  
-  if(this.cbsOtherActivity) {
-    this.publicHalalConformityForm.step3['otherActivityLocations'] = this.cbsOtherActivity;
-  }
-  if(this.nameOfCountry) {
-    this.publicHalalConformityForm.step3['countriesForCertification'] = this.nameOfCountry;
-  }
+    //this.saveScope();
+    //console.log(">>>Enter....1:  ", type)
+    this.publicHalalConformityForm = {};
+    this.publicHalalConformityForm.step3 = {};  
+    var applicationId = sessionStorage.getItem('applicationId');
+    this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+    //this.publicHalalConformityForm.step5.application_id = this.formApplicationId;
+    this.publicHalalConformityForm.step3 = this.step5Data;
+    //this.publicHalalConformityForm.step5['cbsOtherActivity'] = [];
+    // this.publicHalalConformityForm.step3['otherActivityLocations'] = [];
+    // this.publicHalalConformityForm.step3['countriesForCertification'] = [];
+    this.publicHalalConformityForm.step3['otherActivityLocations'] = [];
+    this.publicHalalConformityForm.step3['countriesForCertification'] = [];
+    
+    if(this.cbsOtherActivity) {
+      this.publicHalalConformityForm.step3['otherActivityLocations'] = this.cbsOtherActivity;
+    }
+    if(this.nameOfCountry) {
+      this.publicHalalConformityForm.step3['countriesForCertification'] = this.nameOfCountry;
+    }
 
-  this.publicHalalConformityForm.step3['scheme_id'] = 1;//this.schemeRows[0].id;
-  
-  //Check dynamic model column fields validation
-  let secInd: number;
-  let selectScheme: any;
-  let errorScope: boolean = false;
-  if(this.schemeRows.length){
-    for(var t=0;t<this.schemeRows.length; t++){
-        secInd = t;
-        selectScheme = this.schemeRows[t].id;
-        let getData = this.criteriaMaster.find(rec => rec.scope_accridiation.id == selectScheme);
-        ////console.log("@Scheme Data: ", getData);
-        let scopeTitle: string ='';
-        if(getData){
-          scopeTitle = getData.title.toString().toLowerCase().split(" ").join('_');
-        }
-            for(var key in this.dynamicScopeModel[scopeTitle]){
-              if(key == 'fieldLines'){
-                let rowLen = this.dynamicScopeModel[scopeTitle][key].length;
-                // Browse rows
-                ////console.log("Section: ", scopeTitle, " -- ", rowLen)                
-                for(var k=0; k<rowLen; k++){
-                    this.dynamicScopeFieldColumns[scopeTitle].forEach((colItem,colIndex) => {
-                          let fieldSelValue: any;
-                          let selTitle: any       = colItem[0].title;
-                          fieldSelValue         = this.dynamicScopeModel[scopeTitle][key][k][selTitle];
-                          ////console.log(">>> ", scopeTitle, " :: ", selTitle, " -- ", fieldSelValue);
-                          if(fieldSelValue === undefined || fieldSelValue == ''){
-                            errorScope = true;
-                          }
-                    })
+    this.publicHalalConformityForm.step3['scheme_id'] = 1;//this.schemeRows[0].id;
+    
+    //Check dynamic model column fields validation
+    let secInd: number;
+    let selectScheme: any;
+    let errorScope: boolean = false;
+    if(this.schemeRows.length){
+      for(var t=0;t<this.schemeRows.length; t++){
+          secInd = t;
+          selectScheme = this.schemeRows[t].id;
+          let getData = this.criteriaMaster.find(rec => rec.scope_accridiation.id == selectScheme);
+          ////console.log("@Scheme Data: ", getData);
+          let scopeTitle: string ='';
+          if(getData){
+            scopeTitle = getData.title.toString().toLowerCase().split(" ").join('_');
+          }
+              for(var key in this.dynamicScopeModel[scopeTitle]){
+                if(key == 'fieldLines'){
+                  let rowLen = this.dynamicScopeModel[scopeTitle][key].length;
+                  // Browse rows
+                  ////console.log("Section: ", scopeTitle, " -- ", rowLen)                
+                  for(var k=0; k<rowLen; k++){
+                      this.dynamicScopeFieldColumns[scopeTitle].forEach((colItem,colIndex) => {
+                            let fieldSelValue: any;
+                            let selTitle: any       = colItem[0].title;
+                            fieldSelValue         = this.dynamicScopeModel[scopeTitle][key][k][selTitle];
+                            ////console.log(">>> ", scopeTitle, " :: ", selTitle, " -- ", fieldSelValue);
+                            if(fieldSelValue === undefined || fieldSelValue == ''){
+                              errorScope = true;
+                            }
+                      })
+                  }
                 }
               }
-            }
-      }
-  }
-  if(errorScope && type === undefined){
-    this.toastr.warning('Please Fill required field','Validation Error');
-    return false;    
-  }
-  //Check dynamic model column fields validation
+        }
+    }
+    if(errorScope && type === undefined){
+      this.toastr.warning('Please Fill required field','Validation Error');
+      return false;    
+    }
+    //Check dynamic model column fields validation
 
 
     ////console.log("scheme Rows: ", this.schemeRows,  " -- ", this.schemeRows.length, " :: ", this.editScopeData, " :: ", this.getScopeData);
@@ -2233,26 +2337,65 @@ getMatchScheme(scId: any, scopeData: any){
   onSubmitStep4(ngForm4: any, type?:any) {
     
     this.Service.moveSteps('other_hcab_details','perlim_visit',  this.headerSteps);
-  }
 
-  onSubmitStep5(ngForm5: any){
-    this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
-    if(ngForm5.form.valid) {
+    if(ngForm4.form.valid) {
       this.publicHalalConformityForm = {};
       this.publicHalalConformityForm.step4 = {};
       this.publicHalalConformityForm.saved_step = '4';
       this.publicHalalConformityForm.email = this.userEmail;
       this.publicHalalConformityForm.userType = this.userType;
       var applicationId = sessionStorage.getItem('applicationId');
+      this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+      this.step4Data.is_draft = false;
+      this.publicHalalConformityForm.step4 = this.step4Data;
+  
+      this.publicHalalConformityForm.step4['scopeOfHalalConformity'] = [];
+      this.publicHalalConformityForm.step4['authorizedPersonforSigning'] = [];
+      
+      if(this.scopeofHalalConformity) {
+        this.publicHalalConformityForm.step4['scopeOfHalalConformity'] = this.scopeofHalalConformity;
+      }
+      if(this.ownOrgMembInfo) {
+        this.publicHalalConformityForm.step4['authorizedPersonforSigning'] = this.authorizedPersonforSigning;
+      }
+  
+      this.step4DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
+      // console.log(this.step1DataBodyFormFile,'publicHalalConformityForm');
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step4DataBodyFormFile)
+      .subscribe(
+        res => {
+          // //console.log(res,'res')
+          if(res['status'] == true) {
+            // this.toastr.success(res['msg'], '');
+            this.Service.moveSteps('other_hcab_details','perlim_visit',  this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else {
+      this.toastr.warning('Please Fill required field','');
+    }
+  }
+
+  onSubmitStep5(ngForm5: any){
+    this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+    if(ngForm5.form.valid) {
+      this.publicHalalConformityForm = {};
+      this.publicHalalConformityForm.step5 = {};
+      this.publicHalalConformityForm.saved_step = '5';
+      this.publicHalalConformityForm.email = this.userEmail;
+      this.publicHalalConformityForm.userType = this.userType;
+      var applicationId = sessionStorage.getItem('applicationId');
       this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step5Data.is_prelim_visit = this.step5Data.is_prelim_visit == 0 ? false : true;
       this.step5Data.is_draft = false;
-      this.publicHalalConformityForm.step4 = this.step5Data;
+      this.publicHalalConformityForm.step5 = this.step5Data;
   
       //console.log(this.publicHalalConformityForm);
       // this.step5DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
       this.loader = false;
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.certificationBodies,this.publicHalalConformityForm)
+      this.step5DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step5DataBodyFormFile)
       .subscribe(
         res => {
           // //console.log(res,'res')
@@ -2291,24 +2434,25 @@ getMatchScheme(scId: any, scopeData: any){
   if(ngForm6.form.valid && this.authorizationStatus == true){
   
     this.publicHalalConformityForm = {};
-    this.publicHalalConformityForm.step5 = {};
+    this.publicHalalConformityForm.step6 = {};
     this.publicHalalConformityForm.email = this.userEmail;
     this.publicHalalConformityForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
     this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.publicHalalConformityForm.saved_step = '5';
+    this.publicHalalConformityForm.saved_step = '6';
     this.step6Data.authorizationList = this.authorizationList;
     this.step6Data.recommend = this.recommend;
     this.step6Data.is_draft = false;
     this.step6Data.application_date = new Date();
   
-    this.publicHalalConformityForm.step5 = this.step6Data;
+    this.publicHalalConformityForm.step6 = this.step6Data;
     // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
   
     // this.step4DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
     // //console.log(this.publicHalalConformityForm,'publicHalalConformityForm');
     this.loader = false;
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.certificationBodies,this.publicHalalConformityForm)
+    this.step6DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step6DataBodyFormFile)
     .subscribe(
       res => {
         // //console.log(res,'res')

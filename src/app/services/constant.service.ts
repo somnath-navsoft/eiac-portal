@@ -72,6 +72,7 @@ export class Constants{
 		userPasswordReset: this.apiUrl + 'user-password-reset/',
 		accountLists: this.apiUrl + 'accounts/',
 		accountDetails: this.apiUrl + 'account-details-show/',
+		accrediationCsv: this.apiUrl + 'accrediation-csv/',
 	}
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."
 	public loggedIn													=	new Subject<any>();

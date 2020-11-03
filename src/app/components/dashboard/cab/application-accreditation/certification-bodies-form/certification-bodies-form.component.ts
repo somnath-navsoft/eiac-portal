@@ -75,6 +75,7 @@ export class CertificationBodiesFormComponent implements OnInit {
   getCountryLists:any;
 
   paymentStepComp: boolean = false;
+  recomendVisit: any[] = [];
 
   afterSubmit:boolean = false;
   today = new Date();
@@ -123,6 +124,9 @@ export class CertificationBodiesFormComponent implements OnInit {
 
   termsGeneral: any;
   termsIAF: any;
+
+  authorizationListTerms1: any;
+  authorizationListTerms2: any;
 
   pathPDF: any;
   closeResult: string;
@@ -181,6 +185,7 @@ export class CertificationBodiesFormComponent implements OnInit {
    otherStandards: any[] = [{}];
 
    //Master scope form data declaration
+   firstStep:any;
 
   @ViewChild('mydiv', null) mydiv: ElementRef;
   @ViewChild('captchaRef',{static:true}) captchaRef: RecaptchaComponent;
@@ -224,6 +229,13 @@ export class CertificationBodiesFormComponent implements OnInit {
           this.termsGeneral = getData.data[0];
           this.termsIAF     = getData.data[1];
 
+          if(this.termsGeneral != undefined && this.termsGeneral != ''){
+            this.authorizationListTerms1 = this.termsGeneral.term_id;
+          }
+          if(this.termsIAF != undefined && this.termsIAF != ''){
+            this.authorizationListTerms2 = this.termsIAF.term_id;
+          }
+
           //console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
         }
         
@@ -236,6 +248,26 @@ ngOnInit() {
   //open step
   
   this.loadTermsConditions();
+
+  this.recomendVisit.push({
+    checked: false,
+    name: 'first',
+    label: '1st',
+  },{
+    checked: false,
+    name: 'second',
+    label: '2nd',
+  },{
+    checked: false,
+    name: 'third',
+    label: '3rd',
+  },{
+    checked: false,
+    name: 'fourth',
+    label: '4th',
+  }
+  );
+
   var d = new Date();
     var yr = d.getFullYear();
     for(var k=2010; k<=2030; k++){
@@ -483,7 +515,7 @@ ngOnInit() {
               this.dynamicScopeFieldColumns[findType.id][scopeTitle][key].push(colObj);
               defLine[fieldValues] = [];
               ////console.log(">>> Field values: ", fieldValues, " -- ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeModel.fieldLines);
-              if(defLine['firstFieldValues'].length > 0  && key == 0){
+              if(defLine['firstFieldValues'] != undefined && defLine['firstFieldValues'].length > 0  && key == 0){
                 let getValue = defLine['firstFieldValues'][0].field_value.id;
                 
                 if(key === 0){
@@ -507,7 +539,7 @@ ngOnInit() {
               this.dynamicScopeModel[findType.id][scopeTitle].fieldLines.push(defLine);
             });
 
-            //console.log("@@@@Update Model: ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
+            console.log("@@@@Update Model: ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
 
           }
           //////console.log(">>>> ", this.dynamicScopeModel, " --- ", this.dynamicScopeFieldColumns, " ::-> ",this.fullScope);
@@ -627,7 +659,7 @@ ngOnInit() {
             }
 
             let pushObj: any = {
-              title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: []
+              title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: [], schemeRows: [{}]
             }
             
             if(this.fullTypeScope[secInd] != undefined && !this.Service.isObjectEmpty(this.fullTypeScope[secInd])){
@@ -635,18 +667,18 @@ ngOnInit() {
               this.fullTypeScope[secInd] = pushObj;
             }else{
                 this.fullTypeScope.push({
-                  title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: []
+                  title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: [], schemeRows: [{}]
                 });
             }
         }else{
         this.fullTypeScope.push({
-            title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: []
+            title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: [], schemeRows: [{}]
           });
         }
 
 
 
-          //console.log(">>>> typte schme ...",  this.fullTypeScope, " -- ",);
+          console.log(">>>> typte schme ...",  this.fullTypeScope, " -- ",);
       }
    }
     
@@ -929,8 +961,10 @@ loadAppInfo(){
   this.Service.getwithoutData(url)
   .subscribe(
     res => {
+      
       let getData: any = res;
       let data: any;
+      this.firstStep = getData.data['step1'][0]
       //, getData.data.step1, " -- ", getData.data.step2
       //console.log(getData,"Profile info >>> ");
 
@@ -991,6 +1025,7 @@ loadAppInfo(){
         this.step1Data.date_of_establishment = new Date(data.date_of_establisment);
         this.step1Data.date_of_expiry = new Date(data.date_of_expiry);
         this.step1Data.date_of_issue = new Date(data.date_of_issue);
+        // this.step1Data.legal_status = data.legal_status != null ? data.legal_status : '';
         this.step1Data.fax_no = data.applicant_fax_no;
         this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
         this.step1Data.is_hold_other_accreditation = "";
@@ -1122,6 +1157,8 @@ loadAppInfo(){
                     this.step1Data.is_main_activity_note = res['data'].is_main_activity_note.toString();
                   }
               }
+
+              this.step1Data.legal_status = this.firstStep.legal_status != null ? this.firstStep.legal_status : res['data'].legal_status;
 
               //step2
               if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
@@ -1298,13 +1335,39 @@ loadAppInfo(){
                 this.step5Data.digital_signature        = getAuthData.digital_signature;
                 this.step5Data.application_date         = getAuthData.application_date;
 
-                Object.keys(this.authorizationList).forEach( key => { 
-                  this.authorizationList[key] = true;
-                })
-                this.authorizationStatus = true;
-                this.readReviewChecklist= true;
-                let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
-                this.step5Data.recommend_visit = visitRecomm;//'second';
+                this.recomendVisit.forEach((item, index) => {
+                  let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
+                  console.log(">>> replace: ", getData.data.recommend_visit, " :: ", replace);
+                  let cpjson: any = getData.data.recommend_visit ;//'{"first": false, "second": true, "third": false, "fourth": true}';
+                  let findVsit: any = JSON.parse(cpjson);;//;
+                  //
+                  console.log(">>> ", findVsit);
+                  for(let key in findVsit){
+                     if(key === item.name){
+                       console.log(">>>> found: ", item, " == ", findVsit[key]);
+                       item.checked = findVsit[key];
+                     }
+                  }
+            })
+            console.log("@recommend visit: ", this.recomendVisit, " -- ", getData.data.recommend_visit);
+            this.step7Data.recommend_visit = (getData.data.recommend_visit);
+
+                let authList: any;
+                authList = getData.data.authorization_list;
+                console.log("@ Auth checked status: ", authList);
+                this.authorizationList = JSON.parse(authList);
+                console.log("# Auth checked status: ", this.authorizationList);
+
+                // Object.keys(this.authorizationList).forEach( key => { 
+                //   this.authorizationList[key] = true;
+                // })
+                // this.authorizationStatus = true;
+                // this.readReviewChecklist= true;
+
+                // let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
+                // this.step5Data.recommend_visit = visitRecomm;//'second';
+
+
                 this.step7Data.recommend_year = parseInt(getData.data.recommend_year);
               }
 
@@ -1484,10 +1547,24 @@ savedraftStep(stepCount) {
     this.certificationBodiesForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
     this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step5Data.authorizationList = this.authorizationList;
-    this.step5Data.recommend = this.recommend;
+    this.step5Data.authorization_list_json = this.authorizationList;
+    //this.step5Data.recommend = this.recommend;
+
+    //make visit 
+    let recomVisit: any = {
+      'first':false,'second':false, 'third': false, 'fourth':false
+    };
+    console.log(recomVisit);
+    this.recomendVisit.forEach((item,index) => {
+      recomVisit[item.name.toString()] = item.checked;
+    })
+    this.step5Data.recommend = recomVisit;
+
+
     this.step5Data.is_draft = true;
     this.certificationBodiesForm.saved_step = '5';
+    this.certificationBodiesForm.step7.terms1 = this.authorizationListTerms1;
+      this.certificationBodiesForm.step7.terms2 = this.authorizationListTerms2;
 
     this.certificationBodiesForm.step5 = this.step5Data;
     // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
@@ -1800,8 +1877,8 @@ saveScope(){
     
 
   }
-  //console.log(">>> build scope: ", scopeCollections, " -- ", this.dynamicScopeModel, " -> Scheme: ", this.schemeRows);
-  //return;
+  console.log(">>> build scope headers ", scopeCollections, " -- ", this.dynamicScopeModel, " -> Scheme: ", this.schemeRows);
+  return;
 
   let secInd: number = 0;
   let resultTempAr: any = [];
@@ -2285,7 +2362,7 @@ authorizeCheckCount(theEvent: any, type?:any){
   }
       
 
-  if(this.authorizationStatus && checkCount == 10){
+  if(this.authorizationStatus && checkCount == 9){
     this.authorizationStatus = true;
   }else{
     this.authorizationStatus = false;
@@ -2319,12 +2396,12 @@ this.isApplicationSubmitted = true;
 let checkCount = 0;
     for(let key in this.authorizationList) {
       ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
-      if(this.authorizationList[key]) {  
+      if(this.authorizationList[key] && key != 'undertaking_confirmTop3') {  
         this.authorizationStatus = true;       
         checkCount++;
       }    
     }
-    if(this.authorizationStatus && checkCount == 10){
+    if(this.authorizationStatus && checkCount == 9){
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;
@@ -2341,10 +2418,24 @@ if(ngForm5.form.valid && this.authorizationStatus == true){
   var applicationId = sessionStorage.getItem('applicationId');
   this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
   this.certificationBodiesForm.saved_step = '5';
-  this.step5Data.authorizationList = this.authorizationList;
-  this.step5Data.recommend = this.recommend;
+  this.step5Data.authorization_list_json = this.authorizationList;
+ // this.step5Data.recommend = this.recommend;
+
+  //make visit 
+  let recomVisit: any = {
+    'first':false,'second':false, 'third': false, 'fourth':false
+  };
+  console.log(recomVisit);
+  this.recomendVisit.forEach((item,index) => {
+    recomVisit[item.name.toString()] = item.checked;
+  })
+  this.step5Data.recommend = recomVisit;
+
   this.step5Data.is_draft = false;
   this.step5Data.application_date = new Date();
+
+  this.certificationBodiesForm.step7.terms1 = this.authorizationListTerms1;
+  this.certificationBodiesForm.step7.terms2 = this.authorizationListTerms2;
 
   this.certificationBodiesForm.step5 = this.step5Data;
   // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);

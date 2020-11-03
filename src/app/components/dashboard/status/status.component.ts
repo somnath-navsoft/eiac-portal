@@ -90,6 +90,10 @@ export class StatusComponent implements OnInit {
     )
   }
 
+  getRouteId(id) {
+
+  }
+
   sortedList(data: any, sortBy: string, sortDir: boolean){
     //true - asc / false - desc
     ////console.log('>>>', data);

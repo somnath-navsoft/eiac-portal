@@ -248,7 +248,7 @@
                                         </div>
                                     </div>
 
-                                    <!-- <div class="row">
+                                    <div class="row">
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Legal Status</mat-label>
@@ -262,7 +262,7 @@
                                                 <mat-form-field  class="lng-data">
                                                     <input matInput readonly="true" name="id_issued_esma" [(ngModel)]="publicHalalConformityForm.id_issued_esma"  placeholder="Registration form and ID issued by ESMA" required>
 
-                                                    <a href="javascript:void(0)" target="_blank">
+                                                    <a href="{{issuedEsmaPath}}" target="_blank">
                                                         <span class="icon-eye visible-pwd"></span>
                                                     </a>
                                                 </mat-form-field>
@@ -280,7 +280,7 @@
                                                 <mat-form-field  class="lng-data">
                                                     <input matInput readonly="true" name="halal_certificate_stamp" [(ngModel)]="publicHalalConformityForm.halal_certificate_stamp" placeholder="Halal Certificate Stamp or Symbol" required>
 
-                                                    <a href="javascript:void(0)" target="_blank">
+                                                    <a href="{{certificateStampPath}}" target="_blank">
                                                         <span class="icon-eye visible-pwd"></span>
                                                     </a>
                                                 </mat-form-field>
@@ -292,7 +292,7 @@
                                                 <p class="error" *ngIf="!file_validation_halal_certificate">Please Upload a valid file (ex: pdf)</p>
                                             </div>
                                         </div>
-                                    </div> -->
+                                    </div>
                                     
                                     <div class="row">
                                         <div class="col-12 p-0">
@@ -511,7 +511,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row">
+                                    <div class="row mt-3">
                                         <div class="col-md-3">
                                             <div class="form-sub">
                                                 <span>Does HCAB or any of its staff have any ownership,business relationship with a consultancy works, Halal production or Halal products trade or business,etc<span class="required_input">*</span></span>
@@ -695,7 +695,7 @@
                                                                     <mat-form-field  class="lng-data">
                                                                         <input matInput readonly="true" name="scope_accreditation_file_name_{{i}}" [(ngModel)]="accreditationInfo[i].list_auditor_upload"  placeholder="Upload Document">
             
-                                                                        <a *ngIf="accreditationInfo[i].qualification_file != null" href="{{filePathVreateDynamics(accreditationInfo[i].qualification_file)}}" target="_blank">
+                                                                        <a *ngIf="accreditationInfo[i].scope_of_accr != null" href="{{filePathVreateDynamics(accreditationInfo[i].scope_of_accr)}}" target="_blank">
                                                                             <span class="icon-eye visible-pwd"></span>
                                                                         </a>
                                                                     </mat-form-field>
@@ -963,7 +963,7 @@
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput name="total_no_{{i}}" [(ngModel)]="summaryDetails[i].total_no" placeholder="" required>
+                                                                    <input (keypress)="Service.IsNumeric($event)" matInput name="total_no_{{i}}" [(ngModel)]="summaryDetails[i].total_no" placeholder="" required>
                                                                 </mat-form-field>  
                                                             </td>
 
@@ -1495,39 +1495,14 @@
                                         <div class="col-md-12">
                                             <div class="table-content-health">
                                                 <table>
-                                                    <!-- <thead>
-                                                        <tr>
-                                                            <th>Type of Establishment</th>
-                                                            <th>Name of Establishment</th>
-                                                            <th>Contact Details,Name</th>
-                                                            <th>Location/Distance</th>
-                                                            <th>Product Category</th>
-                                                            <th>Products</th>
-                                                        </tr>
-                                                    </thead> -->
                                                     <tbody>
                                                         <tr>
                                                             <td>
-                                                                <!-- <div class="matupload position-relative view_file">
-                                                                    <mat-form-field  class="lng-data">
-                                                                        <input matInput readonly="true" name="hcabName1" [(ngModel)]="hcabLogo1.authorized_personforSigning_upload" placeholder="Logo1">
-            
-                                                                        <a *ngIf="hcabLogo1.qualification_file != null" href="{{filePathVreateDynamics(hcabLogo1.qualification_file)}}" target="_blank">
-                                                                            <span class="icon-eye visible-pwd"></span>
-                                                                        </a>
-                                                                    </mat-form-field>
-
-                                                                    <span class="fileupload">
-                                                                        <input type="file" name="hcabLogo1" [(ngModel)]="hcabLogo1.fileAny" (change)="listAuditorFile($event,hcabLogo1)">
-                                                                        <span class="icon-attach attach-data"></span>
-                                                                    </span>
-                                                                </div>
-                                                                <p class="error" *ngIf="!file_validation_listAuditor">Please Upload a valid file (ex: pdf)</p> -->
                                                                 <div class="matupload position-relative view_file">
                                                                     <mat-form-field  class="lng-data">
                                                                         <input matInput readonly="true" name="hcabLogo1" [(ngModel)]="publicHalalConformityForm.hcabLogo1"  placeholder="Logo1" required>
                                                             
-                                                                        <a href="javascript:void(0)" target="_blank">
+                                                                        <a href="{{hcabLogo1Path}}" target="_blank">
                                                                             <span class="icon-eye visible-pwd"></span>
                                                                         </a>
                                                                     </mat-form-field>
@@ -1545,7 +1520,7 @@
                                                                     <mat-form-field  class="lng-data">
                                                                         <input matInput readonly="true" name="hcabLogo2" [(ngModel)]="publicHalalConformityForm.hcabLogo2"  placeholder="Logo2" required>
                                                             
-                                                                        <a href="javascript:void(0)" target="_blank">
+                                                                        <a href="{{hcabLogo2Path}}" target="_blank">
                                                                             <span class="icon-eye visible-pwd"></span>
                                                                         </a>
                                                                     </mat-form-field>
@@ -1563,7 +1538,7 @@
                                                                     <mat-form-field  class="lng-data">
                                                                         <input matInput readonly="true" name="hcabLogo3" [(ngModel)]="publicHalalConformityForm.hcabLogo3"  placeholder="Logo3" required>
                                                             
-                                                                        <a href="javascript:void(0)" target="_blank">
+                                                                        <a href="{{hcabLogo3Path}}" target="_blank">
                                                                             <span class="icon-eye visible-pwd"></span>
                                                                         </a>
                                                                     </mat-form-field>
