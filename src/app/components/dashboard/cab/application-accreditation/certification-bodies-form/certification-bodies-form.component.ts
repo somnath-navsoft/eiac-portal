@@ -1357,20 +1357,19 @@ loadAppInfo(){
                 this.step5Data.digital_signature        = getAuthData.digital_signature;
                 this.step5Data.application_date         = getAuthData.application_date;
 
-                let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
+                // let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
                   
-                let replace1: string = replace.toString().replace('"', '');
-                let objVal: any = JSON.parse(JSON.stringify(replace1));
-                let objVal1: any = JSON.stringify(replace1).replace(/[\{\}"]+/g,"");
-                let objVal2: any = objVal1.replaceAll("\\", "");
-                
+                // let replace1: string = replace.toString().replace('"', '');
+                // let objVal: any = JSON.parse(JSON.stringify(replace1));
+                // let objVal1: any = JSON.stringify(replace1).replace(/[\{\}"]+/g,"");
+                // let objVal2: any = objVal1.replaceAll("\\", "");               
 
-                console.log(">>> COnv JSON: ", getData.data.recommend_visit, " :: ", replace, " -- ", replace1);
-                console.log(objVal2)
+                // console.log(">>> COnv JSON: ", getData.data.recommend_visit, " :: ", replace, " -- ", replace1);
+                // console.log(objVal2)
                 this.recomendVisit.forEach((item, index) => {
                   
                   //let cpjson: any = replace1;//'{"first": false, "second": true, "third": false, "fourth": true}';
-                  let findVsit: any = objVal.replace(/["']/g, "").toString()//{first: true, second: false, third: false, fourth: true};//;
+                  let findVsit: any = getData.data.recommend_visit;//objVal.replace(/["']/g, "").toString()//{first: true, second: false, third: false, fourth: true};//;
                   //console.log(">>> ", findVsit);
                   for(let key in findVsit){
                      if(key === item.name){
@@ -2454,7 +2453,7 @@ let checkCount = 0;
   this.step5Data.recommend = recomVisit;
 
     //console.log(">>> Check status count: ", checkCount);
-
+    console.log(">>>> Submit step: ", this.certificationBodiesForm);
 if(ngForm5.form.valid && this.authorizationStatus == true && recomCheckCount >0){
 
   this.certificationBodiesForm = {};

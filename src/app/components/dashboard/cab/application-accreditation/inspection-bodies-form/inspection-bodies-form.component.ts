@@ -1744,7 +1744,7 @@ export class InspectionBodiesFormComponent implements OnInit {
                 //console.log(">>> replace: ", getData.data.recommend_visit, " :: ", replace);
                 let tempJson = replace;//'{\"first\": false, \"second\": true, \"third\": true, \"fourth\": false}';//'{"first": false, "second": true, "third": false, "fourth": true}';
                 //let cpjson: any = getData.data.recommend_visit;
-                replace1 = {first: false, second: true, third: true, fourth: false}; //fixed data
+                replace1 =  JSON.parse(getData.data.recommend_visit);//{first: false, second: true, third: true, fourth: false}; //fixed data
                 let findVsit: any = (replace1);
                 console.log("JOSN:  ", findVsit);
                 //console.log(replace);

@@ -1575,11 +1575,11 @@ loadData(){
                 //this.step7Data.recommend_visit = visitRecomm;//'second';
                  this.step7Data.recommend_year = parseInt(getData.data.recommend_year);
                  this.recomendVisit.forEach((item, index) => {
-                  let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
-                  console.log(">>> replace: ", getData.data.recommend_visit, " :: ", replace);
+                  //let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
+                  //console.log(">>> replace: ", getData.data.recommend_visit, " :: ", replace);
                   let cpjson: any = getData.data.recommend_visit ;//'{"first": false, "second": true, "third": false, "fourth": true}';
-                  let findVsit: any = JSON.parse(cpjson);;//;
-                  //
+
+                  let findVsit: any = JSON.parse(cpjson);
                   console.log(">>> ", findVsit);
                   for(let key in findVsit){
                      if(key === item.name){
@@ -2777,13 +2777,15 @@ let recomCheckCount = 0;
 })
 this.step7Data.recommend = recomVisit;//this.recomendVisit;
 
+console.log(">>>> Submit step: ", this.healthCareForm);
+
 if(ngForm7.form.valid && recomCheckCount > 0){
 
   this.healthCareForm = {};
   this.healthCareForm.step7 = {};
   this.healthCareForm.email = this.userEmail;
   this.healthCareForm.userType = this.userType;
-  var applicationId = sessionStorage.getItem('applicationId');
+  var applicationId = sessionStorage.getItem('applicationId'); 
   this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
   this.healthCareForm.saved_step = '7';
   this.step7Data.authorization_list_json = this.authorizationList;
