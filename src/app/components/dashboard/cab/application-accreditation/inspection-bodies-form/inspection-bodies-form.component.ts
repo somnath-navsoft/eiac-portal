@@ -1734,14 +1734,24 @@ export class InspectionBodiesFormComponent implements OnInit {
 
           // var dataJson = JSON.parse(newJson);
           //console.log("@recommend visit  Data json : ", dataJson, " -- ", dataJson[0]);
+          let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
+          
+          let replace1: any = replace.replaceAll('"', '');
+          console.log(">>>..", replace, " -- ",replace1, " :: ");
+          console.log(JSON.parse(JSON.stringify(replace)))
           this.recomendVisit.forEach((item, index) => {
-                let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
-                console.log(">>> replace: ", getData.data.recommend_visit, " :: ", replace);
-                let cpjson: any = getData.data.recommend_visit ;//'{"first": false, "second": true, "third": false, "fourth": true}';
-                let findVsit: any = JSON.parse(cpjson);;//;
+                
+                //console.log(">>> replace: ", getData.data.recommend_visit, " :: ", replace);
+                let tempJson = replace;//'{\"first\": false, \"second\": true, \"third\": true, \"fourth\": false}';//'{"first": false, "second": true, "third": false, "fourth": true}';
+                //let cpjson: any = getData.data.recommend_visit;
+                replace1 = {first: false, second: true, third: true, fourth: false};
+                let findVsit: any = (replace1);
+                console.log("JOSN:  ", findVsit);
+                //console.log(replace);
+                //return;
                 //
-                console.log(">>> ", findVsit);
                 for(let key in findVsit){
+                 // console.log('>>> ', key);
                    if(key === item.name){
                      console.log(">>>> found: ", item, " == ", findVsit[key]);
                      item.checked = findVsit[key];
@@ -2515,10 +2525,18 @@ export class InspectionBodiesFormComponent implements OnInit {
         'first':false,'second':false, 'third': false, 'fourth':false
       };
       console.log(recomVisit);
+      let recomCheckCount = 0;
       this.recomendVisit.forEach((item,index) => {
+        if(item.checked == true){
+          recomCheckCount++;
+        }
         recomVisit[item.name.toString()] = item.checked;
       })
       this.step7Data.recommend = recomVisit;//this.recomendVisit;
+
+      //check check status
+      
+      
 
       ////////console.log("@@@Step7 Data: ", this.step7Data);
       this.inspectionBodyForm.step7 = this.step7Data;
@@ -2540,10 +2558,10 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.inspectionBodyForm.step7.application_date = new Date().toISOString().slice(0, 10);//'2020-09-14';
 
      // return;
-     console.log(">>> Enter....1 ", ngForm7.form, " -- ", ngForm7.form.valid, " -- ", this.authorizationStatus)
-
-    if(ngForm7.form.valid && type == undefined && this.authorizationStatus == true){
-      
+     console.log(">>> Enter....1 ", ngForm7.form, " -- ", ngForm7.form.valid, " -- ", this.authorizationStatus, " == ", recomCheckCount)
+     //return;
+    if(ngForm7.form.valid && type == undefined && this.authorizationStatus == true && recomCheckCount > 0){ 
+       
       this.inspectionBodyForm.step7.is_draft = false;
       this.inspectionBodyForm.saved_step = 7;
       console.log(">>>Step7 Data: ", this.inspectionBodyForm);
