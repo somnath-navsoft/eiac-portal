@@ -57,6 +57,14 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   selectDeleteID: number = 0;
   voucherFile:any = new FormData();
   paymentReceiptValidation: boolean = true;
+  criteriaMaster:any[] = [];
+  public inspectionBodyScopeFields:Array<any>=[];
+  public labTypeList:Array<any>=[];
+  public fullScope:any[]=[];
+  criteriaList: any = [];
+  step1Data:any = {};
+  editScopeData:any;
+  subTypeMaster:any[] = [];
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, public sanitizer: DomSanitizer,private modalService: NgbModal,public uiDialog: UiDialogService) { }
@@ -197,6 +205,32 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
     })
  }
 
+ getSchme(sid: number){
+  let getSchemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id == sid);
+  //////console.log("data: ", getSchemeData);
+  if(getSchemeData){
+    return getSchemeData.title;
+  }
+}
+
+getSchmeCb(sid: number, typeId: number){
+  let typeData: any;
+  let getSchemeData: any;
+  if(typeId){
+     typeData = this.subTypeMaster.find(rec => rec.service_page.id == typeId);
+  }
+  ////console.log(">>> Type data: ", typeData, " -- ", this.subTypeMaster);
+  if(typeData && typeData.scheme_list != undefined){
+    getSchemeData = typeData.scheme_list.find(item => item.scope_accridiation.id == sid);
+  }
+  //getSchemeData = this.criteriaMaster.find(item => item.scope_accridiation.id == sid);
+  ////console.log("data: schem get ", getSchemeData);
+  //return;
+  if(getSchemeData){
+    return 'Accreditation Scope for ' + getSchemeData.title;
+  }
+}
+
   loadData() {
     this.loader = false;
     this.subscriptions.push(this._trainerService.trainerAccredDetailsServtrainerAccredDetailsServ(this.routeId)
@@ -223,12 +257,14 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
           this.technicalManager = result['data']['technicalManager'] ? result['data']['technicalManager'][0] : '';
           this.managementManager = result['data']['technicalManager'] ? result['data']['technicalManager'][0] : '';
           this.paymentDetails = result['data'].paymentDetails;
+          this.editScopeData = result['data']['scopeDetails'];
+
           // this.scopeDetailsHeading = result['data']['scopeDetails'].heading.column_list;
-          for(let key in result['data']['scopeDetails']) {
-            // console.log(key,'key');
-            this.scopeDetailsHeading = result['data']['scopeDetails'][key].scope_heading;
-            this.scopeDetailvalues = result['data']['scopeDetails'][key].scope_value;
-          }
+          // for(let key in result['data']['scopeDetails']) {
+          //   // console.log(key,'key');
+          //   this.scopeDetailsHeading = result['data']['scopeDetails'][key].scope_heading;
+          //   this.scopeDetailvalues = result['data']['scopeDetails'][key].scope_value;
+          // }
           // console.log(this.scopeDetailsHeading,'scopeDetailsHeading');
           // console.log(this.scopeDetailvalues,'scopeDetailvalues');
           // this.scopeDetailvalues = result['data']['scopeDetails']['details'];
@@ -266,6 +302,42 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
     //     // console.log(res, "@@@applicant Info: ");
     //     this.applicantInfo = res['data']['step1'][0];
     //   })
+
+    this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.inspection_form_basic_data)
+      .subscribe( 
+        res => {
+          
+          ////console.log("@Load scope....", res);
+          this.inspectionBodyScopeFields = res['medicalLabScopeFields'];
+          //this.countryList = res['allCountry'];
+          this.labTypeList = res['allLabtype'];
+          //this.fullScope   = res['fullScope'];
+          this.criteriaList = res['data']['criteriaList'];
+          this.step1Data.criteria_request = this.criteriaList[0].code;
+          this.criteriaMaster = res['data']['schemes'];
+          ////////console.log("#Get criteria: ", this.criteriaMaster);
+
+        },
+        error => {
+        
+    })
+
+    this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.certificationBodies)
+    .subscribe( 
+      res => {
+        let record: any = res['data'];
+        if(record){
+          this.subTypeMaster = record.serviceList;
+          //console.log("@Load Type....", this.subTypeMaster);
+        }
+        //this.criteriaList = res['data']['criteriaList'];
+        //this.criteriaMaster = res['data']['schemes'];
+        //////console.log("#Get criteria: ", this.criteriaMaster);
+
+      },
+      error => {
+      
+  })
   }
 
   // Modal Actions

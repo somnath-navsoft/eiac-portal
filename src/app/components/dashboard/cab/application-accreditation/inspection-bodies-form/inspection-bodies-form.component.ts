@@ -1734,15 +1734,22 @@ export class InspectionBodiesFormComponent implements OnInit {
 
           // var dataJson = JSON.parse(newJson);
           //console.log("@recommend visit  Data json : ", dataJson, " -- ", dataJson[0]);
+          // console.log(getData.data.recommend_visit,'fghhhhhhhhhh');
           let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
+          var replace1:any = JSON.parse(replace);
+          // var recomData = getData.data.recommend_visit;
+          // var reaplaceComma  = replace.replace(/'/g, "\"");
+          // let reaplaceComma: any = replace.replaceAll('"', "'");
+          console.log(replace,'reaplaceComma');
+          // let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
           
-          let replace1: any = replace.replaceAll('"', '');
-          console.log(">>>..", replace, " -- ",replace1, " :: ");
-          console.log(JSON.parse(JSON.stringify(replace)))
+          // let replace1: any = replace.replaceAll('"', '');
+          // console.log(">>>..", replace, " -- ",replace1, " :: ");
+          // console.log(JSON.parse(JSON.stringify(replace)))
           this.recomendVisit.forEach((item, index) => {
                 
                 //console.log(">>> replace: ", getData.data.recommend_visit, " :: ", replace);
-                let tempJson = replace;//'{\"first\": false, \"second\": true, \"third\": true, \"fourth\": false}';//'{"first": false, "second": true, "third": false, "fourth": true}';
+                // let tempJson = replace;//'{\"first\": false, \"second\": true, \"third\": true, \"fourth\": false}';//'{"first": false, "second": true, "third": false, "fourth": true}';
                 //let cpjson: any = getData.data.recommend_visit;
                 replace1 =  JSON.parse(getData.data.recommend_visit);//{first: false, second: true, third: true, fourth: false}; //fixed data
                 let findVsit: any = (replace1);
@@ -1750,15 +1757,15 @@ export class InspectionBodiesFormComponent implements OnInit {
                 //console.log(replace);
                 //return;
                 //
-                for(let key in findVsit){
-                 // console.log('>>> ', key);
+                for(let key in replace1){
+                //  console.log('>>> ', key);
                    if(key === item.name){
-                     console.log(">>>> found: ", item, " == ", findVsit[key]);
-                     item.checked = findVsit[key];
+                     console.log(">>>> found: ", item, " == ", replace1[key]);
+                     item.checked = replace1[key];
                    }
                 }
           })
-          console.log("@recommend visit: ", this.recomendVisit, " -- ", getData.data.recommend_visit);
+          // console.log("@recommend visit: ", replace1, " -- ", getData.data.recommend_visit);
           this.step7Data.recommend_visit = this.recomendVisit;// (getData.data.recommend_visit);
           
           this.step7Data.recommend_year = parseInt(getData.data.recommend_year);

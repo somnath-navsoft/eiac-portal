@@ -158,9 +158,10 @@ export class WorkPermitFormComponent implements OnInit {
   onSubmit(ngForm){
     
     if(ngForm.form.valid && this.isSubmit){
+      // this.workPermitForm.application_type = '';
       this.workPermitForm.is_draft = false;
       this.workPermitFormData.append('data',JSON.stringify(this.workPermitForm));
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.workPermitFormData)
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.workPermitform,this.workPermitFormData)
       .subscribe(
         res => {
           if(res['status']==true){
