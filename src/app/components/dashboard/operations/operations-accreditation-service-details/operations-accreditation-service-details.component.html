@@ -243,7 +243,7 @@
                     <td>
                       <ng-container *ngIf="serviceDetail?.duty_shift != undefined">
                       <ng-container *ngIf="serviceDetail.duty_to1 && serviceDetail.duty_from1">
-                        {{serviceDetail.duty_to1 | date:'shortTime'}} - {{serviceDetail.duty_from1}}
+                        {{serviceDetail.duty_to1}} - {{serviceDetail.duty_from1}}
                       </ng-container>
                       <ng-container *ngIf="serviceDetail.duty_to2 && serviceDetail.duty_from2">
                         ,{{serviceDetail.duty_to2}} - {{serviceDetail.duty_from2}}
