@@ -1623,7 +1623,7 @@
                                                             <mat-radio-button name="4th" value="fourth">4th quarter</mat-radio-button>
                                                         </mat-radio-group> -->
                                                         <ng-container >
-                                                            <mat-checkbox  name="recommend_visit" *ngFor="let item of recomendVisit; let k=index;" required
+                                                            <mat-checkbox  name="recommend_visit" [ngModelOptions]="{standalone: true}" *ngFor="let item of recomendVisit; let k=index;" required
                                                         [(ngModel)]="item.checked">{{item.label}}</mat-checkbox> 
                                                         </ng-container>quarter
                                                     </div>

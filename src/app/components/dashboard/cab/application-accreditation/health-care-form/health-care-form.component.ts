@@ -2814,8 +2814,10 @@ if(ngForm7.form.valid && recomCheckCount > 0){
           this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
         }
         else{
-          // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
-          this.router.navigateByUrl('/dashboard/status/all');
+          this.toastr.success("Application Submitted Successfully");
+              setTimeout(() => {
+                this.router.navigateByUrl('/dashboard/status/all');
+              }, 5000)
         }
       }else{
         this.toastr.warning(res['msg'], '');

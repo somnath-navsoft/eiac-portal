@@ -1744,7 +1744,7 @@ export class InspectionBodiesFormComponent implements OnInit {
                 //console.log(">>> replace: ", getData.data.recommend_visit, " :: ", replace);
                 let tempJson = replace;//'{\"first\": false, \"second\": true, \"third\": true, \"fourth\": false}';//'{"first": false, "second": true, "third": false, "fourth": true}';
                 //let cpjson: any = getData.data.recommend_visit;
-                replace1 = {first: false, second: true, third: true, fourth: false};
+                replace1 = {first: false, second: true, third: true, fourth: false}; //fixed data
                 let findVsit: any = (replace1);
                 console.log("JOSN:  ", findVsit);
                 //console.log(replace);
@@ -1759,7 +1759,7 @@ export class InspectionBodiesFormComponent implements OnInit {
                 }
           })
           console.log("@recommend visit: ", this.recomendVisit, " -- ", getData.data.recommend_visit);
-          this.step7Data.recommend_visit = (getData.data.recommend_visit);
+          this.step7Data.recommend_visit = this.recomendVisit;// (getData.data.recommend_visit);
           
           this.step7Data.recommend_year = parseInt(getData.data.recommend_year);
         }
