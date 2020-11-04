@@ -169,7 +169,7 @@
                                                 <mat-form-field  class="lng-data">
                                                     <input matInput readonly="true" name="licence_document" [(ngModel)]="workPermitForm.licence_document" placeholder="Upload License Documents" required>
                                         
-                                                    <a href="{{hcabLogo1Path}}" target="_blank">
+                                                    <a *ngIf="licence_document_path" href="{{licence_document_path}}" target="_blank">
                                                         <span class="icon-eye visible-pwd"></span>
                                                     </a>
                                                 </mat-form-field>
@@ -187,7 +187,7 @@
                                                 <mat-form-field  class="lng-data">
                                                     <input matInput readonly="true" name="quality_manual" [(ngModel)]="workPermitForm.quality_manual" placeholder="Upload License Documents" required>
                                         
-                                                    <a href="{{hcabLogo1Path}}" target="_blank">
+                                                    <a *ngIf="quality_manual_path" href="{{quality_manual_path}}" target="_blank">
                                                         <span class="icon-eye visible-pwd"></span>
                                                     </a>
                                                 </mat-form-field>
@@ -207,7 +207,7 @@
                                                 <mat-form-field  class="lng-data">
                                                     <input matInput readonly="true" name="work_instruction" [(ngModel)]="workPermitForm.work_instruction" placeholder="Upload License Documents" required>
                                         
-                                                    <a href="{{hcabLogo1Path}}" target="_blank">
+                                                    <a *ngIf="work_instruction_path" href="{{work_instruction_path}}" target="_blank">
                                                         <span class="icon-eye visible-pwd"></span>
                                                     </a>
                                                 </mat-form-field>
@@ -225,7 +225,7 @@
                                                 <mat-form-field  class="lng-data">
                                                     <input matInput readonly="true" name="check_list" [(ngModel)]="workPermitForm.check_list" placeholder="Upload License Documents" required>
                                         
-                                                    <a href="{{hcabLogo1Path}}" target="_blank">
+                                                    <a *ngIf="check_list_path" href="{{check_list_path}}" target="_blank">
                                                         <span class="icon-eye visible-pwd"></span>
                                                     </a>
                                                 </mat-form-field>
@@ -242,6 +242,29 @@
                                     
                                 </div>
 
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr form_subhdr">
+                                                <h5>PLEDGE</h5>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
+
+                                    <div class="auth">
+                                        <ul>
+                                            <ol>
+                                                <li class="tnc-sub">
+                                                    <ol>
+                                                        <li>CAB hereby confirms that the information provided in this agreement is valid true and correct .</li>
+                                                    </ol>
+                                                </li>
+                                            </ol>
+                                        </ul>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-12 p-0">
@@ -254,7 +277,7 @@
 
                                     <div class="row">
                                         <div class="col-md-12 p-0">
-                                            <div class="form-subhdr">
+                                            <div class="form-subheader-data subhead-dt">
                                                 <h5>SIGNED FOR AND ON BEHALF OF APPLICANT</h5>
                                             </div>
                                             <hr>
@@ -281,7 +304,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Behalf Designation</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Behalf Designation" name="organization_name" [(ngModel)]="workPermitForm.behalf_designation">
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Behalf Designation" name="behalf_designation" [(ngModel)]="workPermitForm.behalf_designation">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
@@ -291,7 +314,7 @@
                                         <div class="col-md-6">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Digital Signature</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Digital Signature" name="organization_name" [(ngModel)]="workPermitForm.digital_signature">
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Digital Signature" name="digital_signature" [(ngModel)]="workPermitForm.digital_signature">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
