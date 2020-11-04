@@ -45,6 +45,7 @@ export class TestingCalibrationFormComponent implements OnInit {
   public labTypeList:Array<any>=[];
 
   isPrelimSubmitted: boolean = false;
+  recomendVisit: any[] = [];
 
   public orgMembToggle: boolean = false;
   public is_bod: boolean = false;
@@ -311,11 +312,11 @@ export class TestingCalibrationFormComponent implements OnInit {
   }
 
   getFamilySchme(sid: number, fid: number){
-    console.log(">>> Family Data: ", sid," :: ", fid)
+    //console.log(">>> Family Data: ", sid," :: ", fid)
     if(fid > 0){
-      console.log("Has family...");
+      //console.log("Has family...");
       //let getTypeData = this.fullTypeFamily.find(item => item.id == sid);
-      console.log(">>>> Type dataa: ", this.fullTypeFamily);
+      //console.log(">>>> Type dataa: ", this.fullTypeFamily);
       // let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testing_cal_form_basic_data+"?scheme="+sid;
       // this.Service.getwithoutData(apiURL).subscribe(record => {
       //   console.log('Fullscope: ', record, " -- ");
@@ -1406,6 +1407,25 @@ getCriteria(value, secInd: any){
     }
     this.step7Data.recommend_year = yr;
 
+    this.recomendVisit.push({
+      checked: false,
+      name: 'first',
+      label: '1st',
+    },{
+      checked: false,
+      name: 'second',
+      label: '2nd',
+    },{
+      checked: false,
+      name: 'third',
+      label: '3rd',
+    },{
+      checked: false,
+      name: 'fourth',
+      label: '4th',
+    }
+    );
+
     this.loadData();
     this.loadAppInfo();
     this.loadFormDynamicTable();
@@ -2111,14 +2131,37 @@ getCriteria(value, secInd: any){
                   this.step7Data.digital_signature        = getAuthData.digital_signature;
                   this.step7Data.application_date         = getAuthData.application_date;
 
-                  Object.keys(this.authorizationList).forEach( key => { 
-                    this.authorizationList[key] = true;
-                  })
-                  this.authorizationStatus = true;
-                  this.readReviewChecklist= true;
+                  // Object.keys(this.authorizationList).forEach( key => { 
+                  //   this.authorizationList[key] = true;
+                  // })
+                  // this.authorizationStatus = true;
+                  // this.readReviewChecklist= true;
                   //this.step7Data.recommend_visit = 'second';
-                  let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
-                  this.step7Data.recommend_visit = visitRecomm;
+
+                  let authList: any;
+                  authList = getData.data.authorization_list;
+                  console.log("@ Auth checked status: ", authList);
+                  this.authorizationList = JSON.parse(authList);
+                  console.log("# Auth checked status: ", this.authorizationList);
+
+                  // let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
+                  // this.step7Data.recommend_visit = visitRecomm;
+
+                  this.recomendVisit.forEach((item, index) => {
+                   let replace1 =  JSON.parse(getData.data.recommend_visit);//{first: false, second: true, third: true, fourth: false}; //fixed data
+                    let findVsit: any = (replace1);
+                    console.log("JOSN:  ", findVsit);
+                    for(let key in findVsit){
+                    //  console.log('>>> ', key);
+                       if(key === item.name){
+                         console.log(">>>> found: ", item, " == ", replace1[key]);
+                         item.checked = findVsit[key];
+                       }
+                    }
+              })
+              // console.log("@recommend visit: ", replace1, " -- ", getData.data.recommend_visit);
+              this.step7Data.recommend_visit = this.recomendVisit;
+
                   this.step7Data.recommend_year = parseInt(getData.data.recommend_year);
 
                 }
@@ -2141,7 +2184,9 @@ getCriteria(value, secInd: any){
                     // this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
 
                     this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
-                    this.paymentReceiptValidation = true;
+                    if(this.paymentFile != undefined && this.paymentFile != ''){
+                      this.paymentReceiptValidation = true;
+                    }
                 }
               }
           });
@@ -2484,10 +2529,28 @@ getCriteria(value, secInd: any){
       this.testingCalForm.step7 = {};
       this.testingCalForm.email = this.userEmail;
       this.testingCalForm.userType = this.userType;
-      this.step7Data.authorizationList = this.authorizationList;
-      this.step7Data.recommend = this.recommend;
+      this.step7Data.authorization_list_json = this.authorizationList;
+      //this.step7Data.recommend = this.recommend;
+
+      //make visit 
+      let recomVisit: any = {
+        'first':false,'second':false, 'third': false, 'fourth':false
+      };
+      console.log(recomVisit);
+      let recomCheckCount = 0;
+      this.recomendVisit.forEach((item,index) => {
+        if(item.checked == true){
+          recomCheckCount++;
+        }
+        recomVisit[item.name.toString()] = item.checked;
+      })
+      this.step7Data.recommend = recomVisit;//this.recomendVisit;
+
+      //check check status
       this.step7Data.is_draft = true;
       this.testingCalForm.saved_step = '7';
+
+
 
       this.testingCalForm.step7 = this.step7Data;
       // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
@@ -3402,7 +3465,7 @@ onSubmitStep5(ngForm: any, type: any) {
   }
       
 
-  if(this.authorizationStatus && checkCount == 10){
+  if(this.authorizationStatus && checkCount == 9){
     this.authorizationStatus = true;
   }else{
     this.authorizationStatus = false;
@@ -3425,7 +3488,7 @@ onSubmitStep5(ngForm: any, type: any) {
   let checkCount = 0;
     for(let key in this.authorizationList) {
       ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
-      if(this.authorizationList[key]) {  
+      if(this.authorizationList[key] && key != 'undertaking_confirmTop3') {  
         this.authorizationStatus = true;       
         checkCount++;
       } 
@@ -3433,7 +3496,7 @@ onSubmitStep5(ngForm: any, type: any) {
       //   this.authorizationStatus = true;
       // }     
     }  
-    if(this.authorizationStatus && checkCount == 10){  
+    if(this.authorizationStatus && checkCount == 9){  
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;
@@ -3444,28 +3507,70 @@ onSubmitStep5(ngForm: any, type: any) {
   //     this.recommendStatus = true;
   //   }
   // }
-  if(this.authorizationStatus == false){
-    this.isSubmit = false;
-    this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
-  }else if(this.step7Data.recommend_visit == ''){
-    this.isSubmit = false;
-    this.toastr.error('Please Check any recommend the visit ', '');
-  }
-  if(ngForm7.form.valid){
+  // if(this.authorizationStatus == false){
+  //   this.isSubmit = false;
+  //   this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
+  // }
 
-    this.testingCalForm = {};
+  this.testingCalForm = {};
     this.testingCalForm.step7 = {};
     this.testingCalForm.email = this.userEmail;
     this.testingCalForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
     this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.testingCalForm.saved_step = '7';
-    this.step7Data.authorizationList = this.authorizationList;
-    this.step7Data.recommend = this.recommend;
+    this.step7Data.authorization_list_json = this.authorizationList;
+    //this.step7Data.recommend = this.recommend;
+    //make visit 
+    let recomVisit: any = {
+      'first':false,'second':false, 'third': false, 'fourth':false
+    };
+    console.log(recomVisit);
+    let recomCheckCount = 0;
+    this.recomendVisit.forEach((item,index) => {
+      if(item.checked == true){
+        recomCheckCount++;
+      }
+      recomVisit[item.name.toString()] = item.checked;
+    })
+    this.step7Data.recommend = recomVisit;
     this.step7Data.is_draft = false;
     this.step7Data.application_date = new Date();
 
     this.testingCalForm.step7 = this.step7Data;
+    console.log(">>> valid status: ", ngForm7.form);
+  // else if(this.step7Data.recommend_visit == ''){
+  //   this.isSubmit = false;
+  //   this.toastr.error('Please Check any recommend the visit ', '');
+  // }
+  if(ngForm7.form.valid && this.authorizationStatus == true && recomCheckCount > 0){
+
+    // this.testingCalForm = {};
+    // this.testingCalForm.step7 = {};
+    // this.testingCalForm.email = this.userEmail;
+    // this.testingCalForm.userType = this.userType;
+    // var applicationId = sessionStorage.getItem('applicationId');
+    // this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+    // this.testingCalForm.saved_step = '7';
+    // this.step7Data.authorizationList = this.authorizationList;
+    // //this.step7Data.recommend = this.recommend;
+    // //make visit 
+    // let recomVisit: any = {
+    //   'first':false,'second':false, 'third': false, 'fourth':false
+    // };
+    // console.log(recomVisit);
+    // let recomCheckCount = 0;
+    // this.recomendVisit.forEach((item,index) => {
+    //   if(item.checked == true){
+    //     recomCheckCount++;
+    //   }
+    //   recomVisit[item.name.toString()] = item.checked;
+    // })
+    // this.step7Data.recommend = recomVisit;
+    // this.step7Data.is_draft = false;
+    // this.step7Data.application_date = new Date();
+
+    // this.testingCalForm.step7 = this.step7Data;
     // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
 
     // this.step6DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
@@ -3481,9 +3586,10 @@ onSubmitStep5(ngForm: any, type: any) {
           if(this.paymentFilePath != ''){
             this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
           }
-          else{
-            // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+          else{this.toastr.success("Application Submitted Successfully");
+          setTimeout(() => {
             this.router.navigateByUrl('/dashboard/status/all');
+          }, 5000)  
           }
         }else{
           this.toastr.warning(res['msg'], '');

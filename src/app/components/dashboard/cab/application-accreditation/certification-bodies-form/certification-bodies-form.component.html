@@ -780,7 +780,7 @@
                                                                         <td>
                                                                             <mat-form-field class="cab-data">
                                                                                 <mat-label>Type Here</mat-label>
-                                                                                <input  (keypress)="Service.inputFilter($event, Service.regExNumb)" matInput name="contract_number_of_persons_{{i}}" [(ngModel)]="auditorsExaminersParttime[i].number_of_persons" placeholder="" required>
+                                                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput name="contract_number_of_persons_{{i}}" [(ngModel)]="auditorsExaminersParttime[i].number_of_persons" placeholder="" required>
                                                                             </mat-form-field>
                                                                         </td>
                                                                         <td class="content-icn">
@@ -987,7 +987,7 @@
                                                             <div class="col-md-9 col-sm-9">
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Scheme -- {{i}}</mat-label>
-                                                                    @{{typeScope.schemeRows[i].id}}
+                                                                    <!-- @{{typeScope.schemeRows[i].id}} -->
                                                                     <mat-select (selectionChange)="getCriteria(typeScope.schemeRows[i].id, i, typeScope.title)" placeholder="Select" name="scheme_id_{{i}}"  
                                                                     [(ngModel)]="typeScope.schemeRows[i].id" [ngModelOptions]="{standalone: true}" [required] = "editScopeData == undefined || editScopeData == null">
                                                                         <mat-option [value]="item.scope_accridiation.id" *ngFor="let item of typeScope.schemeData; let k=index;">{{item.title}}</mat-option>
@@ -1614,7 +1614,7 @@
                                                     <tr>
                                                         <td><mat-checkbox name="undertaking_confirm2" [disableRipple]="true"
                                                             (click)="$event.preventDefault()" [(ngModel)]="authorizationList.undertaking_confirm2"></mat-checkbox></td>
-                                                        <td><span><a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled Up Document Review Checklist</a></span> (Related to applied accreditation standard and for initial accreditation & Scope Extensions only)<br/>
+                                                        <td><span><a href="javascript:void(0)" title="Please review the checklist" alt="Please review the checklist" (click)="openView(checklistView, 'checklist')">Filled Up Document Review Checklist</a></span> (Related to applied accreditation standard and for initial accreditation & Scope Extensions only)<br/>
                                                             <p class="error" *ngIf="!readReviewChecklist  && isApplicationSubmitted == true">Please review the checklist</p>                                                            
                                                         </td>
                                                     </tr>
@@ -1655,7 +1655,7 @@
                                                             <mat-radio-button name="3rd" value="third">3rd</mat-radio-button>
                                                             <mat-radio-button name="4th" value="fourth">4th quarter</mat-radio-button>
                                                         </mat-radio-group> -->
-                                                        @{{recomendVisit | json}}
+                                                        <!-- @{{recomendVisit | json}} -->
                                                             <mat-checkbox [ngModelOptions]="{standalone: true}" name="recommend_visit" *ngFor="let item of recomendVisit; let k=index;" required
                                                         [(ngModel)]="item.checked">{{item.label}}</mat-checkbox> 
                                                         quarter

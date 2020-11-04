@@ -1403,9 +1403,9 @@
                                             <div class="recommend my-3">
                                                 <div class="recommend-main">
                                                     <div class="recommend-quarter">
-                                                        <span class="confirm">I recommend the visit to be conducted in the</span>
+                                                        <span class="confirm">I recommend the visit to be conducted in the <span class="required_input">*</span></span>
                                                         <!-- [(ngModel)]="step7Data.recommend_visit" -->
-                                                        @{{recomendVisit | json}}
+                                                        <!-- @{{recomendVisit | json}} -->
                                                         <!-- <mat-radio-group name="recommended" #recommendVisit="ngModel"> -->
                                                                 <mat-checkbox  name="recommend_visit"  *ngFor="let item of recomendVisit; let k=index;"
                                                             [(ngModel)]="item.checked" [ngModelOptions]="{standalone: true}" required>{{item.label}}</mat-checkbox> 
@@ -1417,7 +1417,7 @@
                                                             <mat-radio-button name="3rd" value="third">3rd</mat-radio-button>
                                                             <mat-radio-button name="4th" value="fourth">4th quarter</mat-radio-button> -->
                                                         <!-- </mat-radio-group> -->
-                                                        @{{recommendVisit | json}}
+                                                        <!-- @{{recommendVisit | json}} -->
                                                     </div> 
                                                     <span class="confirm">quarter of the year</span>
                                                     <div class="recommend-year">

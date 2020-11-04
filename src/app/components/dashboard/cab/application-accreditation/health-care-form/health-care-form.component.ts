@@ -1589,7 +1589,7 @@ loadData(){
                   }
             })
             console.log("@recommend visit: ", this.recomendVisit, " -- ", getData.data.recommend_visit);
-            this.step7Data.recommend_visit = (getData.data.recommend_visit);
+            this.step7Data.recommend_visit = this.recomendVisit;//(getData.data.recommend_visit);
 
                  let authList: any;
                 authList = getData.data.authorization_list;
@@ -2763,25 +2763,7 @@ if(this.authorizationStatus == false){
 //   this.toastr.error('Please Check any recommend the visit ', '');
 // }
 
-//make visit 
-let recomVisit: any = {
-  'first':false,'second':false, 'third': false, 'fourth':false
-};
-console.log(recomVisit);
-let recomCheckCount = 0;
-    this.recomendVisit.forEach((item,index) => {
-      if(item.checked == true){
-        recomCheckCount++;
-      }
-  recomVisit[item.name.toString()] = item.checked;
-})
-this.step7Data.recommend = recomVisit;//this.recomendVisit;
-
-console.log(">>>> Submit step: ", this.healthCareForm);
-
-if(ngForm7.form.valid && recomCheckCount > 0){
-
-  this.healthCareForm = {};
+this.healthCareForm = {};
   this.healthCareForm.step7 = {};
   this.healthCareForm.email = this.userEmail;
   this.healthCareForm.userType = this.userType;
@@ -2798,7 +2780,28 @@ if(ngForm7.form.valid && recomCheckCount > 0){
   this.healthCareForm.step7.terms1 = this.authorizationListTerms1;
   this.healthCareForm.step7.terms2 = this.authorizationListTerms2;
 
-  this.healthCareForm.step7 = this.step7Data;
+  
+
+//make visit 
+let recomVisit: any = {
+  'first':false,'second':false, 'third': false, 'fourth':false
+};
+console.log(recomVisit);
+let recomCheckCount = 0;
+    this.recomendVisit.forEach((item,index) => {
+      if(item.checked == true){
+        recomCheckCount++;
+      }
+  recomVisit[item.name.toString()] = item.checked;
+})
+this.step7Data.recommend = recomVisit;//this.recomendVisit;
+
+this.healthCareForm.step7 = this.step7Data;
+console.log(">>>> Submit step: ", this.healthCareForm);
+
+if(ngForm7.form.valid && recomCheckCount > 0 && this.authorizationStatus == true){
+
+  
   // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
 
   // this.step6DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));

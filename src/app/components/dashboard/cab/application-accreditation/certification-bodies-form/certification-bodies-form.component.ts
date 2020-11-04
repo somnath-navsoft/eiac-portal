@@ -1369,8 +1369,8 @@ loadAppInfo(){
                 this.recomendVisit.forEach((item, index) => {
                   
                   //let cpjson: any = replace1;//'{"first": false, "second": true, "third": false, "fourth": true}';
-                  let findVsit: any = getData.data.recommend_visit;//objVal.replace(/["']/g, "").toString()//{first: true, second: false, third: false, fourth: true};//;
-                  //console.log(">>> ", findVsit);
+                  let findVsit: any = JSON.parse(getData.data.recommend_visit);
+                  console.log(">>> ", findVsit);
                   for(let key in findVsit){
                      if(key === item.name){
                        console.log(">>>> found: ", item, " == ", findVsit[key]);
@@ -1379,7 +1379,7 @@ loadAppInfo(){
                   }
             })
             console.log("@recommend visit: ", this.recomendVisit, " -- ", getData.data.recommend_visit);
-            this.step7Data.recommend_visit = (getData.data.recommend_visit);
+            this.step7Data.recommend_visit = this.recomendVisit;//(getData.data.recommend_visit);
 
                 let authList: any;
                 authList = getData.data.authorization_list;
@@ -2385,7 +2385,7 @@ authorizeCheckCount(theEvent: any, type?:any){
   if(theEvent.checked || readChecked == true){
     for(let key in this.authorizationList) {
       ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
-      if(this.authorizationList[key]) {  
+      if(this.authorizationList[key] && key != 'undertaking_confirmTop3') {  
         this.authorizationStatus = true;       
         checkCount++;
       }    
