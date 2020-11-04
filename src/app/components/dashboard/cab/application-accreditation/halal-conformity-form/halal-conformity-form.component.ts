@@ -222,7 +222,7 @@ export class HalalConformityFormComponent implements OnInit {
    hcabLogo1Path:any;
    hcabLogo2Path:any;
    hcabLogo3Path:any;
-
+   recomendVisit: any[] = [];
    //Master scope form data declaration
 
 
@@ -308,6 +308,24 @@ export class HalalConformityFormComponent implements OnInit {
 
     this.loadScopeData();
     this.loadScopeCriteria();
+    this.recomendVisit.push({
+        checked: false,
+        name: 'first',
+        label: '1st',
+      },{
+        checked: false,
+        name: 'second',
+        label: '2nd',
+      },{
+        checked: false,
+        name: 'third',
+        label: '3rd',
+      },{
+        checked: false,
+        name: 'fourth',
+        label: '4th',
+      }
+    );
   }
 
 
@@ -1054,7 +1072,7 @@ addSchemeRow(obj: any = [],index: number){
           //   acccreditation_scope: "",
           //   certificate_expiry_date: "",
           // }];
-          if(data.trade_license != ''){
+          if(data.trade_license != '' && data.trade_license != null){
             let getFile = data.trade_license.toString().split('/');
             if(getFile.length){
               this.selectTradeLicName = getFile[4].toString().split('.')[0];
@@ -1071,7 +1089,7 @@ addSchemeRow(obj: any = [],index: number){
           this.step1Data.date_of_expiry = new Date(data.date_of_expiry);
           this.step1Data.date_of_issue = new Date(data.date_of_issue);
           this.step1Data.fax_no = data.applicant_fax_no;
-          this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
+          // this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
           this.step1Data.is_hold_other_accreditation = "1";
           this.step1Data.is_main_activity = "";
           this.step1Data.is_main_activity_note = "";
@@ -1079,20 +1097,20 @@ addSchemeRow(obj: any = [],index: number){
           this.step1Data.official_commercial_name = data.cab_name;
           this.step1Data.official_email = data.applicant_email;
           this.step1Data.official_website = data.applicant_website;
-          this.ownOrgBasicInfo = step2['cabOwnerData'];
+          // this.ownOrgBasicInfo = step2['cabOwnerData'];
           //console.log(this.ownOrgBasicInfo,'ownOrgBasicInfo');
-          step2['cabBodData'].forEach((res,key) => {
-            // //console.log(res," -- ",key);
-            step2['cabBodData'][key].name = res.name;
-            step2['cabBodData'][key].bod_company = res.bod_company,
-            step2['cabBodData'][key].md_or_chief_executive = res.md_or_chief_executive != '' && res.md_or_chief_executive != undefined ? res.md_or_chief_executive : 'None';
-            step2['cabBodData'][key].authorized_contact_person = res.authorized_contact_person;
-            step2['cabBodData'][key].designation = res.designation;
-            step2['cabBodData'][key].mobile_no = res.mobile_no;
-            step2['cabBodData'][key].land_no = res.land_no != '' && res.land_no != undefined ? res.land_no : 'None';
-            step2['cabBodData'][key].email_address = res.email != '' && res.email != undefined ?  res.email : 'None';
-          });
-          this.ownOrgMembInfo = step2['cabBodData'];
+          // step2['cabBodData'].forEach((res,key) => {
+          //   // //console.log(res," -- ",key);
+          //   step2['cabBodData'][key].name = res.name;
+          //   step2['cabBodData'][key].bod_company = res.bod_company,
+          //   step2['cabBodData'][key].md_or_chief_executive = res.md_or_chief_executive != '' && res.md_or_chief_executive != undefined ? res.md_or_chief_executive : 'None';
+          //   step2['cabBodData'][key].authorized_contact_person = res.authorized_contact_person;
+          //   step2['cabBodData'][key].designation = res.designation;
+          //   step2['cabBodData'][key].mobile_no = res.mobile_no;
+          //   step2['cabBodData'][key].land_no = res.land_no != '' && res.land_no != undefined ? res.land_no : 'None';
+          //   step2['cabBodData'][key].email_address = res.email != '' && res.email != undefined ?  res.email : 'None';
+          // });
+          // this.ownOrgMembInfo = step2['cabBodData'];
           this.step1Data.physical_location_address = data.applicant_location;
           this.step1Data.po_box = data.po_box;
           
@@ -1698,6 +1716,228 @@ addSchemeRow(obj: any = [],index: number){
 
   filePathVreateDynamics(filePath) {
     return this.constant.mediaPath+'/'+filePath;
+  }
+
+
+  savedraftStep(stepCount) {
+    if(stepCount == 'step1') {
+      this.publicHalalConformityForm = {};
+      this.publicHalalConformityForm.step1 = {};
+      this.publicHalalConformityForm.email = this.userEmail;
+      this.publicHalalConformityForm.userType = this.userType;
+      this.publicHalalConformityForm.saved_step = '1';
+      if(this.formApplicationId > 0){
+        this.step1Data.application_id = this.formApplicationId;
+      }
+      this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
+      this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
+      this.step1Data.is_draft = true;
+      this.publicHalalConformityForm.step1 = this.step1Data;
+  
+      this.publicHalalConformityForm.step1['ownOrgBasicInfo'] = [];
+      this.publicHalalConformityForm.step1['managingDirector'] = [];
+      this.publicHalalConformityForm.step1['ownOrgMembInfo'] = [];
+      this.publicHalalConformityForm.step1['otherActivityLocations'] = [];
+      this.publicHalalConformityForm.step1['accreditationInfo'] = [];
+      
+      if(this.ownOrgBasicInfo) {
+        this.publicHalalConformityForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
+      }
+      if(this.ownOrgMembInfo) {
+        this.publicHalalConformityForm.step1['managingDirector'] = this.managingDirector;
+      }
+      if(this.ownOrgMembInfo) {
+        this.publicHalalConformityForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
+      }
+      if(this.hcabOtherLocation) {
+        this.publicHalalConformityForm.step1['otherActivityLocations'] = this.hcabOtherLocation;
+      }
+      if(this.accreditationInfo) {
+        this.publicHalalConformityForm.step1['accreditationInfo'] = this.accreditationInfo;
+      }
+      this.loader = false;
+      // this.step1DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
+      this.step1DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step1DataBodyFormFile)
+      .subscribe(
+        res => {
+          // //console.log(res,'res')
+          this.loader = true;
+          if(res['status'] == true) {
+            this.toastr.success('Save Draft Successfully', '');
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }
+    if(stepCount == 'step2') {
+      this.publicHalalConformityForm = {};
+      this.publicHalalConformityForm.step2 = {};
+      this.publicHalalConformityForm.email = this.userEmail;
+      this.publicHalalConformityForm.userType = this.userType;
+      this.publicHalalConformityForm.saved_step = '2';
+      var applicationId = sessionStorage.getItem('applicationId');
+      // this.step2Data.application_id = applicationId;
+      this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+      
+      this.step2Data.is_draft = true;
+      this.publicHalalConformityForm.step2 = this.step2Data;
+
+      this.publicHalalConformityForm.step2.technicalManager = {};
+  
+      this.publicHalalConformityForm.step2.technicalManager['name'] = (this.step2Data.name != '' && this.step2Data.name != undefined) ? this.step2Data.name : '';
+      this.publicHalalConformityForm.step2.technicalManager['designation'] = (this.step2Data.designation != '' && this.step2Data.designation != undefined) ? this.step2Data.designation : '';
+      this.publicHalalConformityForm.step2.technicalManager['mobile_no'] = (this.step2Data.mobile_no != '' && this.step2Data.mobile_no != undefined) ? this.step2Data.mobile_no : '';
+      this.publicHalalConformityForm.step2.technicalManager['email'] = (this.step2Data.email != '' && this.step2Data.email != undefined) ? this.step2Data.email : '';
+      this.publicHalalConformityForm.step2.technicalManager['relevent_experience'] = (this.step2Data.relevent_experience != '' && this.step2Data.relevent_experience != undefined) ? this.step2Data.relevent_experience : '';
+      this.publicHalalConformityForm.step2.technicalManager['duration_at_current_post'] = (this.step2Data.duration_at_current_post != '' && this.step2Data.duration_at_current_post != undefined) ? this.step2Data.duration_at_current_post : '';
+  
+      this.publicHalalConformityForm.step2.qualityManager = {};
+  
+      this.publicHalalConformityForm.step2.qualityManager['name'] = (this.step2Data.management_name != '' && this.step2Data.management_name != undefined) ? this.step2Data.management_name : '';
+      this.publicHalalConformityForm.step2.qualityManager['designation'] = (this.step2Data.management_designation != '' && this.step2Data.management_designation != undefined) ? this.step2Data.management_designation : '' ;
+      this.publicHalalConformityForm.step2.qualityManager['mobile_no'] = (this.step2Data.management_mobile_no != '' && this.step2Data.management_mobile_no != undefined) ? this.step2Data.management_mobile_no : '';
+      this.publicHalalConformityForm.step2.qualityManager['email'] = (this.step2Data.management_email != '' && this.step2Data.management_email != undefined) ? this.step2Data.management_email : '';
+      this.publicHalalConformityForm.step2.qualityManager['relevent_experience'] = (this.step2Data.management_relevent_experience != '' && this.step2Data.management_relevent_experience != undefined) ? this.step2Data.management_relevent_experience : '';
+      this.publicHalalConformityForm.step2.qualityManager['duration_at_current_post'] = (this.step2Data.duration_at_current_post_manager != '' && this.step2Data.duration_at_current_post_manager != undefined) ? this.step2Data.duration_at_current_post_manager : '';
+
+
+      this.publicHalalConformityForm.step2.islamicAffair = {};
+  
+      this.publicHalalConformityForm.step2.islamicAffair['name'] = (this.step2Data.islamic_name != '' && this.step2Data.islamic_name != undefined) ? this.step2Data.islamic_name : '';
+      this.publicHalalConformityForm.step2.islamicAffair['designation'] = (this.step2Data.islamic_designation != '' && this.step2Data.islamic_designation != undefined) ? this.step2Data.islamic_designation : '' ;
+      this.publicHalalConformityForm.step2.islamicAffair['mobile_no'] = (this.step2Data.islamic_mobile_no != '' && this.step2Data.islamic_mobile_no != undefined) ? this.step2Data.islamic_mobile_no : '';
+      this.publicHalalConformityForm.step2.islamicAffair['email'] = (this.step2Data.islamic_email != '' && this.step2Data.islamic_email != undefined) ? this.step2Data.islamic_email : '';
+      this.publicHalalConformityForm.step2.islamicAffair['relevent_experience'] = (this.step2Data.islamic_relevent_experience != '' && this.step2Data.islamic_relevent_experience != undefined) ? this.step2Data.islamic_relevent_experience : '';
+      this.publicHalalConformityForm.step2.islamicAffair['duration_at_current_post'] = (this.step2Data.islamic_duration_at_current_post != '' && this.step2Data.islamic_duration_at_current_post != undefined) ? this.step2Data.islamic_duration_at_current_post : '';
+  
+      this.publicHalalConformityForm.step2['summaryDetail'] = this.summaryDetails;
+      
+      this.loader = false;
+      // this.step1DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
+      this.step2DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step2DataBodyFormFile)
+      .subscribe(
+        res => {
+          // //console.log(res,'res')
+          this.loader = true;
+          if(res['status'] == true) {
+            this.toastr.success('Save Draft Successfully', '');
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }
+    if(stepCount == 'step3') {
+
+    }
+
+    if(stepCount == 'step4') {
+      this.publicHalalConformityForm = {};
+      this.publicHalalConformityForm.step2 = {};
+      this.publicHalalConformityForm.email = this.userEmail;
+      this.publicHalalConformityForm.userType = this.userType;
+      this.publicHalalConformityForm.saved_step = '4';
+      var applicationId = sessionStorage.getItem('applicationId');
+      // this.step2Data.application_id = applicationId;
+      this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+      
+      this.step4Data.is_draft = true;
+      this.publicHalalConformityForm.step4 = this.step4Data;
+
+      this.publicHalalConformityForm.step4['scopeOfHalalConformity'] = [];
+      this.publicHalalConformityForm.step4['authorizedPersonforSigning'] = [];
+      
+      if(this.scopeofHalalConformity) {
+        this.publicHalalConformityForm.step4['scopeOfHalalConformity'] = this.scopeofHalalConformity;
+      }
+      if(this.ownOrgMembInfo) {
+        this.publicHalalConformityForm.step4['authorizedPersonforSigning'] = this.authorizedPersonforSigning;
+      }
+  
+      this.step4DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
+      // console.log(this.step1DataBodyFormFile,'publicHalalConformityForm');
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step4DataBodyFormFile)
+      .subscribe(
+        res => {
+          // //console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success('Save Draft Successfully', '');
+            // this.Service.moveSteps('other_hcab_details','perlim_visit',  this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }
+
+    if(stepCount == 'step5') {
+      this.publicHalalConformityForm = {};
+      this.publicHalalConformityForm.step5 = {};
+      this.publicHalalConformityForm.email = this.userEmail;
+      this.publicHalalConformityForm.userType = this.userType;
+      var applicationId = sessionStorage.getItem('applicationId');
+      this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+      this.step5Data.is_prelim_visit = this.step5Data.prelim_visit_val == 0 ? false : true;
+      this.step5Data.is_draft = true;
+      this.publicHalalConformityForm.saved_step = '5';
+      this.publicHalalConformityForm.step5 = this.step5Data;
+
+      // //console.log(this.healthCareForm);
+      this.loader = false;
+      this.step5DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step5DataBodyFormFile)
+      .subscribe(
+        res => {
+          // //console.log(res,'res')
+          this.loader = true;
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }
+
+    if(stepCount == 'step6') {
+      this.publicHalalConformityForm = {};
+      this.publicHalalConformityForm.step7 = {};
+      this.publicHalalConformityForm.email = this.userEmail;
+      this.publicHalalConformityForm.userType = this.userType;
+      var applicationId = sessionStorage.getItem('applicationId');
+      this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+      this.step7Data.authorization_list_json = this.authorizationList;
+      //this.step7Data.recommend = this.recommend;
+      //make visit 
+      let recomVisit: any = {
+        'first':false,'second':false, 'third': false, 'fourth':false
+      };
+      console.log(recomVisit);
+      this.recomendVisit.forEach((item,index) => {
+        recomVisit[item.name.toString()] = item.checked;
+      })
+      this.step7Data.recommend = recomVisit;
+
+
+      this.step7Data.is_draft = true;
+      this.publicHalalConformityForm.saved_step = '7';
+
+      this.publicHalalConformityForm.step7 = this.step7Data;
+      // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+      this.loader = false;
+      // this.step6DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
+      //console.log(this.healthCareForm,'healthCareForm');
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.publicHalalConformityForm)
+      .subscribe(
+        res => {
+          // //console.log(res,'res')
+          this.loader = true;
+          if(res['status'] == true) {
+            this.toastr.success('Save Draft Successfully', '');
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }
   }
 
   onSubmitStep1(ngForm1: any){
