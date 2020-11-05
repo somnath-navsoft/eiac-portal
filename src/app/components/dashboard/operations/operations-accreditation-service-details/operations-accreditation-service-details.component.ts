@@ -65,6 +65,7 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   step1Data:any = {};
   editScopeData:any;
   subTypeMaster:any[] = [];
+  ilauUdertakingConfirm:any;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, public sanitizer: DomSanitizer,private modalService: NgbModal,public uiDialog: UiDialogService) { }
@@ -240,6 +241,9 @@ getSchmeCb(sid: number, typeId: number){
           //return;
           this.loader = true;
           this.serviceDetail = result['data'];
+          var ilaCheckbox = this.serviceDetail.authorization_list;
+          var parseIlaCheckbox = JSON.parse(ilaCheckbox);
+          this.ilauUdertakingConfirm = parseIlaCheckbox.undertaking_confirmTop3;
           // let getC: any = this.countryList.countries.find(item => item.id == this.serviceDetail.country)
           // console.log("cc>> ", getC);
           // if(getC){
