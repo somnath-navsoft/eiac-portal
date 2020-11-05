@@ -1581,7 +1581,7 @@
                                                     <tr>
                                                         <td><mat-checkbox name="undertaking_confirm2" [disableRipple]="true"
                                                             (click)="$event.preventDefault()" [(ngModel)]="authorizationList.undertaking_confirm2"></mat-checkbox></td>
-                                                        <td><span><a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled Up Document Review Checklist</a></span> (Related to applied accreditation standard and for initial accreditation & Scope Extensions only)<br/>
+                                                        <td><span><a href="javascript:void(0)" title="Please review the checklist" alt="Please review the checklist" (click)="openView(checklistView, 'checklist')">Filled Up Document Review Checklist</a></span> (Related to applied accreditation standard and for initial accreditation & Scope Extensions only)<br/>
                                                             <p class="error" *ngIf="!readReviewChecklist  && isApplicationSubmitted == true">Please review the checklist</p>                                                            
                                                         </td>
                                                     </tr>
@@ -1615,16 +1615,16 @@
                                             <div class="recommend my-3">
                                                 <div class="recommend-main">
                                                     <div class="recommend-quarter">
-                                                        <span class="confirm">I recommend the visit to be conducted in the</span>
+                                                        <span class="confirm">I recommend the visit to be conducted in the<span class="required_input">*</span></span>
                                                         <!-- <mat-radio-group name="recommended" #recommendVisit="ngModel" [(ngModel)]="step7Data.recommend_visit" required>
                                                             <mat-radio-button name="1st" value="first">1st</mat-radio-button>
                                                             <mat-radio-button name="2nd" value="second">2nd</mat-radio-button>
                                                             <mat-radio-button name="3rd" value="third">3rd</mat-radio-button>
                                                             <mat-radio-button name="4th" value="fourth">4th quarter</mat-radio-button>
                                                         </mat-radio-group> -->
-                                                        <ng-container *ngFor="let item of recomendVisit; let k=index;">
-                                                            <mat-checkbox  name="undertaking_confirm7_{{k}}" required
-                                                        [(ngModel)]="item.checked" value="first">{{item.label}}</mat-checkbox> 
+                                                        <ng-container >
+                                                            <mat-checkbox  name="recommend_visit" [ngModelOptions]="{standalone: true}" *ngFor="let item of recomendVisit; let k=index;" required
+                                                        [(ngModel)]="item.checked">{{item.label}}</mat-checkbox> 
                                                         </ng-container>quarter
                                                     </div>
                                                     <span class="confirm">of the year</span>

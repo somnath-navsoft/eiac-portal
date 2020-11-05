@@ -45,6 +45,7 @@ export class TestingCalibrationFormComponent implements OnInit {
   public labTypeList:Array<any>=[];
 
   isPrelimSubmitted: boolean = false;
+  recomendVisit: any[] = [];
 
   public orgMembToggle: boolean = false;
   public is_bod: boolean = false;
@@ -306,9 +307,45 @@ export class TestingCalibrationFormComponent implements OnInit {
     let getSchemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id == sid);
     //////console.log("data: ", getSchemeData);
     if(getSchemeData){
-      return getSchemeData.title;
+      return '<strong>Accreditation Scope for ' + getSchemeData.title+'</strong>';
     }
   }
+
+  getFamilySchme(sid: number, fid: number){
+    //console.log(">>> Family Data: ", sid," :: ", fid)
+    if(fid > 0){
+      //console.log("Has family...");
+      //let getTypeData = this.fullTypeFamily.find(item => item.id == sid);
+      //console.log(">>>> Type dataa: ", this.fullTypeFamily);
+      // let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testing_cal_form_basic_data+"?scheme="+sid;
+      // this.Service.getwithoutData(apiURL).subscribe(record => {
+      //   console.log('Fullscope: ', record, " -- ");
+      //   let data: any = record;
+      //   if(data && data.data.scopeFamily != undefined && data.data.scopeFamily.length > 0){
+      //     let findFamily: any = data.data.scopeFamily.find(item => item.scope_family == fid);
+      //     console.log(">>> family: 1 ", findFamily);
+      //     if(findFamily){
+      //       console.log(">>> family: ", findFamily.title);
+      //       return 'Accreditation Family Scope for ' + findFamily.title;
+      //     }
+      //   }
+
+      // });
+
+      return 'Accreditation Family Scope ';
+    }else{
+      console.log("NO family...");
+      return '';
+    }
+    // let getSchemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id == sid);
+    // //////console.log("data: ", getSchemeData);
+    // if(getSchemeData){
+    //   return getSchemeData.title;
+    // }
+  }
+
+  
+
   openDeleteScopeConfirm(delIndex: any, delKey: any, delFamilyKey: any){
     console.log(">>>delete ", delKey, " -- ", delIndex);
     if(delKey){
@@ -323,29 +360,68 @@ export class TestingCalibrationFormComponent implements OnInit {
   openDeleteEditScopeConfirm(delIndex: number, delKey: any, delFamilyKey: any){
     ////console.log(">>>delete ", delKey);
     if(delKey){
-      ////console.log("assign delete id: ", delIndex, " -- ", delIndex);
+      console.log("assign delete id: ", delIndex, " --S ", delKey, " --F ", delFamilyKey);
       this.selectDeleteIndex = delIndex;
       this.selectDeleteKey = delKey;
       this.selectDeleteFamilyKey = delFamilyKey;
       this.deleteEditScopeConfirm = true;
     } 
   }
-  deleteScopeData(schemId: any, deleteIndex: number){
-      ////console.log("deleting...", schemId, " -- ", deleteIndex);
+  deleteScopeData(schemId: any, deleteIndex: number, deleteFamilyId: any){
+      console.log("deleting...", schemId, " -- ", deleteIndex, " :: ", deleteFamilyId);
       let savedData: any = this.editScopeData;
-      ////console.log("saveData: ", savedData);
+      console.log("saveData: ", savedData);
 
-      for(var key in savedData){
-          ////console.log(">>> ", key, " :: ", savedData[key]);
-          if(key === schemId){
-            let getvalues: any =  savedData[key].scope_value;
-            ////console.log("<<< Found: ", getvalues);
-            if(typeof getvalues === 'object'){
-              ////console.log("deleting...");
-              getvalues.splice(deleteIndex, 1);
+      if(deleteFamilyId > 0){
+        console.log(" has family....");
+        for(let key in savedData){
+          console.log(">>> ", key, " :: ", savedData[key]);
+          if(typeof savedData[key] === 'object'){
+            for(let key1 in savedData[key]){
+
+                if(key == schemId && key1 == deleteFamilyId){
+                    console.log(">>> found to deete....", savedData[key]);
+                    let getvalues: any =  savedData[key][key1]['scope_value'];
+                    console.log(">>> found to deete....", getvalues);
+                    if(typeof getvalues === 'object'){
+                      console.log("@@@deleting data..");
+                      getvalues.splice(deleteIndex, 1); 
+                    }
+                }
             }
           }
+        }
+      }else{
+        console.log(" no family....", deleteFamilyId, " - index - ", deleteIndex);
+        for(var key in savedData){
+            console.log(">>> ", key, " :: ", savedData[key]);
+            if(typeof savedData[key] === 'object'){
+              for(let key1 in savedData[key]){
+                if(key == schemId && key1 == deleteFamilyId){
+                  console.log(">>> found to deete....", savedData[key]);
+                  let getvalues: any =  savedData[key][key1]['scope_value'];
+                  console.log(">>> found to deete....", getvalues);
+                  if(typeof getvalues === 'object'){
+                    console.log("@@@deleting data..");
+                    getvalues.splice(deleteIndex, 1); 
+                  }
+              }
+
+              }
+            }
+
+            // if(key === schemId){
+            //   let getvalues: any =  savedData[key].scope_value;
+            //   console.log("<<< Found: ", getvalues);
+            //   if(typeof getvalues === 'object'){
+            //     ////console.log("deleting...");
+            //     //getvalues.splice(deleteIndex, 1);
+            //   }
+            // }
+        }  
       }
+
+      
       this._customModal.closeDialog();
       //
   }
@@ -1331,6 +1407,25 @@ getCriteria(value, secInd: any){
     }
     this.step7Data.recommend_year = yr;
 
+    this.recomendVisit.push({
+      checked: false,
+      name: 'first',
+      label: '1st',
+    },{
+      checked: false,
+      name: 'second',
+      label: '2nd',
+    },{
+      checked: false,
+      name: 'third',
+      label: '3rd',
+    },{
+      checked: false,
+      name: 'fourth',
+      label: '4th',
+    }
+    );
+
     this.loadData();
     this.loadAppInfo();
     this.loadFormDynamicTable();
@@ -2010,13 +2105,12 @@ getCriteria(value, secInd: any){
 
                 //Step 5
                 if(getData.data.scopeDetails != undefined && !this.Service.isObjectEmpty(getData.data.scopeDetails)){
-                  console.log(">>> ", getData.data.scopeDetails);
+                  console.log(">>> Saved Scope: ", getData.data.scopeDetails);
                   //let jsonStrting = '{"18":{"scope_heading":{"43":"Inspection Category","45":"Inspection field","47":"Range of inspection","49":"Stage of the inspection","51":"Inspection criteria","53":"Inspection Activity Type"},"scope_value":[{"43":"Product","45":"Mechanical Engineering of Lifting Equipment","47":"Lever hoist","49":"In-service","51":"BS EN 13157","53":"A"},{"43":"Product","45":"Mechanical, Electrical and Structural Engineering of Lifting Equipment","47":"Mobile crane","49":"In-service","51":"BS 7121-2-1,BS 7121-2-3","53":"B,C"},{"43":"Product","45":"Mechanical Engineering of Lifting Equipment – Earth Moving","47":"Backhoe Loader","49":"In-service","51":"BS EN 474-4","53":"A,B"}]},"105":{"scope_heading":{"55":"Inspection Category","57":"Inspection field","59":"Range of inspection","61":"Stage of the inspection","63":"Inspection criteria","65":"Inspection Activity Type"},"scope_value":[{"55":"Product","57":"Mechanical Engineering of Lifting Accessories","59":"Hook","61":"In-service","63":"Welcome","65":"Hello"},{"55":"Product","57":"Mechanical Engineering of Lifting Accessories","59":"Chain sling","61":"In-service","63":"bbb","65":"aaa"}]}}';
                   //let jsonStrting = getData.data.scopeDetails.toString();
                   let jsonObject = getData.data.scopeDetails;//JSON.parse(jsonStrting);
                   //this.Service.oldScopeData = jsonObject;
                   this.editScopeData = jsonObject; 
-                  //this.getScopeData = jsonObject;
 
                 }
 
@@ -2037,14 +2131,37 @@ getCriteria(value, secInd: any){
                   this.step7Data.digital_signature        = getAuthData.digital_signature;
                   this.step7Data.application_date         = getAuthData.application_date;
 
-                  Object.keys(this.authorizationList).forEach( key => { 
-                    this.authorizationList[key] = true;
-                  })
-                  this.authorizationStatus = true;
-                  this.readReviewChecklist= true;
+                  // Object.keys(this.authorizationList).forEach( key => { 
+                  //   this.authorizationList[key] = true;
+                  // })
+                  // this.authorizationStatus = true;
+                  // this.readReviewChecklist= true;
                   //this.step7Data.recommend_visit = 'second';
-                  let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
-                  this.step7Data.recommend_visit = visitRecomm;
+
+                  let authList: any;
+                  authList = getData.data.authorization_list;
+                  console.log("@ Auth checked status: ", authList);
+                  this.authorizationList = JSON.parse(authList);
+                  console.log("# Auth checked status: ", this.authorizationList);
+
+                  // let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
+                  // this.step7Data.recommend_visit = visitRecomm;
+
+                  this.recomendVisit.forEach((item, index) => {
+                   let replace1 =  JSON.parse(getData.data.recommend_visit);//{first: false, second: true, third: true, fourth: false}; //fixed data
+                    let findVsit: any = (replace1);
+                    console.log("JOSN:  ", findVsit);
+                    for(let key in findVsit){
+                    //  console.log('>>> ', key);
+                       if(key === item.name){
+                         console.log(">>>> found: ", item, " == ", replace1[key]);
+                         item.checked = findVsit[key];
+                       }
+                    }
+              })
+              // console.log("@recommend visit: ", replace1, " -- ", getData.data.recommend_visit);
+              this.step7Data.recommend_visit = this.recomendVisit;
+
                   this.step7Data.recommend_year = parseInt(getData.data.recommend_year);
 
                 }
@@ -2067,7 +2184,9 @@ getCriteria(value, secInd: any){
                     // this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
 
                     this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
-                    this.paymentReceiptValidation = true;
+                    if(this.paymentFile != undefined && this.paymentFile != ''){
+                      this.paymentReceiptValidation = true;
+                    }
                 }
               }
           });
@@ -2410,10 +2529,28 @@ getCriteria(value, secInd: any){
       this.testingCalForm.step7 = {};
       this.testingCalForm.email = this.userEmail;
       this.testingCalForm.userType = this.userType;
-      this.step7Data.authorizationList = this.authorizationList;
-      this.step7Data.recommend = this.recommend;
+      this.step7Data.authorization_list_json = this.authorizationList;
+      //this.step7Data.recommend = this.recommend;
+
+      //make visit 
+      let recomVisit: any = {
+        'first':false,'second':false, 'third': false, 'fourth':false
+      };
+      console.log(recomVisit);
+      let recomCheckCount = 0;
+      this.recomendVisit.forEach((item,index) => {
+        if(item.checked == true){
+          recomCheckCount++;
+        }
+        recomVisit[item.name.toString()] = item.checked;
+      })
+      this.step7Data.recommend = recomVisit;//this.recomendVisit;
+
+      //check check status
       this.step7Data.is_draft = true;
       this.testingCalForm.saved_step = '7';
+
+
 
       this.testingCalForm.step7 = this.step7Data;
       // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
@@ -2599,209 +2736,6 @@ getCriteria(value, secInd: any){
     }
   }
 
-
-
-  /*
-  saveScope(){
-    
-    let scopeValues: any =[];
-    let scopeIds:any =[];
-    let scopeSelValues:any =[];
-    console.log("dynamic ", this.dynamicScopeModel, " -- ", this.dynamicScopeFieldColumns, " -- ", this.schemeRows, " -- ", this.formApplicationId);
-    var key = '';
-    var key2 = '';
-    let resultAr: any={};
-    let scopeCollections: any={};
-    scopeCollections['scope_heading'] = {};
-    scopeCollections['scope_value'] = [];
-
-
-    let selectScheme = this.schemeRows[0].id;
-    this.step5Data.scheme_id = selectScheme;
-
-    //let scopeSaveData: any = {};
-    // scopeSaveData['scheme'] = {};
-    // scopeSaveData['scheme']['heading'] = {};
-    // scopeSaveData['scheme']['details'] = {};
-
-    // console.log(">>>>> scope Data: ", scopeSaveData);
-    // this.schemeRows.forEach((rec,row) => {
-    //     console.log('>>> scheme row...', rec, " -- ", row);
-    // })
-          
-    
-      for(var key in this.dynamicScopeFieldColumns){
-            console.log(">>> ", key, " :: ", this.dynamicScopeFieldColumns[key], " -- ", typeof this.dynamicScopeFieldColumns[key]);
-            let tempData: any = this.dynamicScopeFieldColumns[key] ;
-            if(typeof tempData === 'object'){
-              tempData.forEach((item,key) => {
-                    console.log(item);
-                    let keyIds = item[0].idVal;
-                    let name = item[0].name;
-                    console.log("...", name);
-                    let tempObj = {};
-                    tempObj[keyIds] = name;
-                    console.log("...", tempObj);
-                    scopeCollections['scope_heading'][keyIds] = name;
-                });
-            }
-      }
-    
-          // this.dynamicScopeFieldColumns.forEach((item,key) => {
-          //     //////console.log(item);
-          //     let keyIds = item[0].idVal;
-          //     let name = item[0].name;
-          //     //////console.log("...", name);
-          //     let tempObj = {};
-          //     tempObj[keyIds] = name;
-          //     //////console.log("...", tempObj);
-          //     scopeCollections['scope_heading'][keyIds] = name;
-          // });
-    console.log(">>> build scope: ", scopeCollections);
-    //return;
-
-    let secInd: number = 0;
-    for(key in this.dynamicScopeModel[secInd]){
-        if(key == 'fieldLines'){
-          this.dynamicScopeModel[secInd].fieldLines.forEach((rec,key1) => {
-                console.log("browse Model: ",rec, " -- ", key1);
-                //resultAr[key1] = [];
-                scopeIds = [];
-                scopeSelValues = [];
-                let columnObject: any = this.dynamicScopeFieldColumns[secInd];
-                let getDataValues: any;
-                let getSelectValues: any;
-                for(key2 in rec){
-                  let selectVal;
-                  let selectId;
-                  
-                  let findValues: any = key2.toString().search('Values');
-                  //console.log("@key: ", key2, " Find: ", findValues);
-                  if(findValues >= 0){ 
-                    getDataValues = this.dynamicScopeFieldColumns[secInd].find(item => item[0].values == key2)
-                    //console.log("@find values: ", key2, "--", getDataValues, " #Values: ", rec[key2]);
-                    if(getDataValues){
-                        let fdata: any = getDataValues[0];
-                        //console.log("#Data Values: ",getDataValues, " -- ", fdata)                      
-                        if(fdata.values == key2){
-                          selectId = fdata.idVal;//rec[key2][0].id;
-                          scopeIds.push({id: selectId, rowValues:fdata.values})
-                        }
-                      }
-
-                  }else{
-                    getSelectValues = this.dynamicScopeFieldColumns[secInd].find(item => item[0].title == key2)
-                    //console.log("#find select values: ", key2, "--", getSelectValues);
-                    if(getSelectValues){
-                        let fdata: any = getSelectValues[0];
-                        //console.log("#Select Data Values: ",getDataValues, " -- ", fdata)                      
-                        if(fdata.title == key2){
-                          selectVal = rec[key2];
-                          scopeSelValues.push({value: selectVal})
-                        }
-                      }                      
-                  }
-                  scopeValues.push({id:selectId , value: selectVal});
-                }
-
-
-
-                console.log("@###Scope Values: ", scopeValues, " -- ", scopeIds, " :: ", scopeSelValues, ": Kye: ", key1);
-                resultAr[key1] = [];
-                
-                for(var k=0; k<scopeIds.length; k++){
-                  let idKey = scopeIds[k].id;
-                  let keyValues = scopeIds[k].rowValues;
-                  let valueKey = scopeSelValues[k].value;
-                  let tempObj = {};
-                  tempObj[idKey] = valueKey;
-                  resultAr[key1].push({id: idKey, value: valueKey, valueSrc: keyValues});
-               }
-               //resultAr[key1] = tempObj;
-               console.log('scope object: ', " -- ", resultAr);
-          })
-        }
-    }
-
-    //return;
-    
-    if(scopeCollections){
-      let resultTempAr: any =[];
-      let tempObj: any = {};
-      let rstAr: any=[];
-      //var p;
-      let scopeRows: any = {};
-      //this.dynamicScopeModel
-      if(this.dynamicScopeModel[secInd].fieldLines != undefined && this.dynamicScopeModel[secInd].fieldLines.length > 0){
-        scopeRows = this.dynamicScopeModel[secInd].fieldLines;
-      }
-      console.log("@Total rows: ", scopeRows);
-      for(var p in resultAr){
-        //resultTempAr[p] = [];
-        console.log("@resultAr ",p, " -- ", resultAr[p], " --- ", scopeRows[p])
-        if(resultAr[p].length){
-          tempObj = {};
-          resultAr[p].forEach(item =>{
-            console.log(">>>Loop: ", p, " :: ", item," -- ", typeof scopeRows[p]);
-            var optionName = '';
-            //tempObj[item.id] = item.value;
-            //console.log("@Values: ", scopeRows[p]);
-            if(typeof scopeRows[p] === 'object'){
-               //console.log("Enter: ", p);
-               for(var k1 in scopeRows[p]){
-                 //console.log('Enter >>>> ', k1, " -- ", item.valueSrc);
-                 //var optionName = '';
-                 if(k1 === item.valueSrc){
-                   let tempAr = scopeRows[p][k1];
-                   let findVal = tempAr.find(itemF => itemF.field_value.id == item.value);
-                    if(findVal == undefined){
-                      findVal = item.value;
-                      optionName = findVal;
-                    }
-                   if(findVal != undefined && typeof findVal == 'object'){
-                    optionName = findVal.value;
-                   }
-
-                   console.log("found...", k1," :: ", scopeRows[p][k1], " -- ",optionName, " --- ", findVal);
-                 }
-               }
-               //resultTempAr[item.id] = optionName;
-            }
-            tempObj[item.id] = optionName;
-            //resultTempAr[item.id] = optionName;
-          })
-          resultTempAr.push(tempObj);
-          //resultTempAr[p] = tempObj;
-          //resultTempAr[p].push(tempObj);
-        }
-        //rstAr.push(resultTempAr);
-      }
-
-      console.log('<<>>>> ', resultTempAr, " -- ", rstAr);
-      scopeCollections['scope_value'] = resultTempAr;
-    }
-    //return;
-
-    // }
-    /////console.log("@selected scope values: ", scopeCollections);
-    //return;
-    ////console.log("#Scope result: ", resultAr, " -- ", scopeCollections);
-    // this.dynamicScopeModel.forEach(rec => {
-    //      if(rec.fieldLines){
-    //       ////console.log("field rows: ", rec.fieldLines);
-    //      }
-    // })
-    if(scopeCollections != undefined){
-      //this.inspectionBodyForm.step5['scope_heading'] = scopeCollections['scope_heading'];
-      //this.inspectionBodyForm.step5['scope_value'] = scopeCollections['scope_value'];
-      this.step5Data['scope_heading']   = scopeCollections['scope_heading'];
-      this.step5Data['scope_value']     = scopeCollections['scope_value'];
-      
-    }
-    console.log("@step5 Data: ", this.step5Data);
-  }
-  */
-
  saveScope(){
     
   let scopeValues: any =[];
@@ -2817,7 +2751,7 @@ getCriteria(value, secInd: any){
   console.log(this.fullTypeFamily, " -- ", this.schemeRows);
   
   this.fullTypeFamily.forEach(typeScope => {
-      console.log(">>>> Type: ", typeScope);
+      console.log(">>>> @@@@Type: ", typeScope);
       //Not scope family
       if(typeScope.isFamily != undefined && !typeScope.isFamily){
             console.log(">>> Not scope family")
@@ -2861,6 +2795,45 @@ getCriteria(value, secInd: any){
       //Has scope family
       if(typeScope.isFamily != undefined && typeScope.isFamily == true){
         console.log(">>> HAs scope family")
+
+            let familyId = 0;
+            for(var t=0;t<typeScope.scopeRows.length; t++){
+
+              ////console.log("Scheme Sec: ", t," -- ", scopeCollections);
+              selectScheme = typeScope.scopeRows[t].id;
+              familyId = typeScope.scopeRows[t].familyId;
+
+              if(selectScheme == undefined){
+                console.log(">>Heading scheme notfff....exit", selectScheme);
+                break;
+              }
+              let getData = this.criteriaMaster.find(rec => rec.scope_accridiation.id == selectScheme);
+              console.log("@Scheme Data: ", getData);
+              let scopeTitle: string ='';
+              scopeTitle  = getData.title.toString().toLowerCase().split(" ").join('_');
+              if(getData){
+                scopeTitle = getData.title.toString().toLowerCase().split(" ").join('_');
+              }
+
+              scopeCollections[selectScheme] = {};
+              scopeCollections[selectScheme][familyId.toString()] = {};
+              scopeCollections[selectScheme][familyId.toString()]['scope_heading'] = {};
+                    for(let key in this.dynamicScopeFieldColumns){
+                          console.log(">>> ", key, " :: ", this.dynamicScopeFieldColumns[key], " -- ", typeof this.dynamicScopeFieldColumns[key]);
+                          let tempData: any = this.dynamicScopeFieldColumns[selectScheme][familyId.toString()];
+                          console.log(">> Col Data: ", tempData);
+                          if(typeof tempData === 'object'){
+                            tempData.forEach((item,key) => {
+                                  //////console.log(item);
+                                  let keyIds = item[0].idVal;
+                                  let name = item[0].name;
+                                  let tempObj = {};
+                                  tempObj[keyIds] = name;
+                                  scopeCollections[selectScheme][familyId.toString()]['scope_heading'][keyIds] = name;
+                              });
+                          }
+                    }
+            }
       }
 
   })
@@ -2900,7 +2873,7 @@ getCriteria(value, secInd: any){
   //         }
   // }
   console.log(">>> build scope: ", scopeCollections, " -- ");
- //return;
+  //return;
 
   let secInd: number = 0;
   let resultTempAr: any = [];
@@ -2945,7 +2918,7 @@ getCriteria(value, secInd: any){
                       // Browse rows
                       let getDataValues: any;
                       let getSelectValues: any;
-                      ////console.log("Section: ", scopeTitle, " -- ", rowLen)
+                      console.log("Section: ", selectScheme, " -- ", rowLen, " -- ", this.dynamicScopeModel[selectScheme][familyId.toString()][key])
                       
                       //let tempObj: any = {};
                       //let tempData: any = {};
@@ -2968,7 +2941,7 @@ getCriteria(value, secInd: any){
                             let optionName: any;
                             if(colIndex == 0){
                               //first coloumn row values - firstFieldValues
-                              ////console.log(">>>> First column: ");
+                              console.log(">>>> First column: ");
                               let selTitle: any       = colItem[0].title;
                               let selTitleValues: any = this.dynamicScopeModel[selectScheme][familyId.toString()][key][k]['firstFieldValues'];
                               let fvalue: any         = this.dynamicScopeModel[selectScheme][familyId.toString()][key][k][selTitle];
@@ -3039,46 +3012,234 @@ getCriteria(value, secInd: any){
     }
     //Has scope family
     if(typeScope.isFamily != undefined && typeScope.isFamily == true){
-      console.log(">>> HAs scope family")
+      console.log(">>> HAs scope family .... scope values....")
+      let familyId = 0;
+
+          if(typeScope.scopeRows.length){
+              for(var t=0;t<typeScope.scopeRows.length; t++){
+
+                  ////console.log("Scheme Sec: ", t);
+                  secInd = t;
+                  selectScheme = typeScope.scopeRows[t].id;
+                  familyId = typeScope.scopeRows[t].familyId;
+                  let getData = this.criteriaMaster.find(rec => rec.scope_accridiation.id == selectScheme);
+                  ////console.log("@Scheme Data: ", getData);
+                  if(getData == undefined){
+                    ////console.log("scheme not selecting...exit...", selectScheme, " -- ", getData);
+                    break;
+                  }
+                  let scopeTitle: string ='';
+                  if(getData){
+                    scopeTitle = getData.title.toString().toLowerCase().split(" ").join('_');
+                  }
+                 // scopeCollections[selectScheme] = {};
+                  //scopeCollections[selectScheme][familyId.toString()] = {};
+                  scopeCollections[selectScheme][familyId.toString()]['scope_value']   = [];
+
+                  tempDataObj[selectScheme] = [];
+                  tempDataObj[selectScheme][familyId.toString()] = [];
+                  tempDataRow = {};
+
+                  //Scope data population
+                  for(var key in this.dynamicScopeModel[selectScheme][familyId.toString()]){
+                    if(key == 'fieldLines'){
+                      let rowLen = this.dynamicScopeModel[selectScheme][familyId.toString()][key].length;
+                      // Browse rows
+                      let getDataValues: any;
+                      let getSelectValues: any;
+                      ////console.log("Section: ", scopeTitle, " -- ", rowLen)
+                      
+                      //let tempObj: any = {};
+                      //let tempData: any = {};
+                      let rstAr: any=[];
+                      for(var k=0; k<rowLen; k++){
+                        scopeIds = [];
+                        scopeSelValues = [];
+                        
+                        //resultTempAr[k] = [];
+                        let scopeRows: any = {};
+                        //tempObj[selectScheme] = [];
+                        //tempDataRow[k] = {};
+                        tempDataRow = {};
+                        //resultTempAr[k] = {};
+
+                        this.dynamicScopeFieldColumns[selectScheme][familyId.toString()].forEach((colItem,colIndex) => {
+                            ////console.log("...Col>>> ",colIndex, " :: ", colItem[0], " -- ", this.dynamicScopeModel[scopeTitle][key][k])
+                            let colData: any = colItem[0];
+                            let optionNameAr: any = [];
+                            let optionName: any;
+                            if(colIndex == 0){
+                              //first coloumn row values - firstFieldValues
+                              ////console.log(">>>> First column: ");
+                              let selTitle: any       = colItem[0].title;
+                              let selTitleValues: any = this.dynamicScopeModel[selectScheme][familyId.toString()][key][k]['firstFieldValues'];
+                              let fvalue: any         = this.dynamicScopeModel[selectScheme][familyId.toString()][key][k][selTitle];
+                              let getVal: any;
+                              if(selTitleValues != undefined && selTitleValues.length > 0){
+                                getVal       = selTitleValues.find(data => data.field_value.id == fvalue)
+                              }                      
+                              console.log("<><><><> ", getVal);
+                              if(getVal){                  
+                                getVal = getVal.value;
+                              }
+                              ////console.log("First field data: ", selTitleValues, " -- ", fvalue, " -- ", getVal);
+                              //tempObj[selectScheme][colData.idVal] = getVal;
+                              tempDataRow[colData.idVal] = getVal;
+                              
+                            }else{
+                                //Map column key to row key values
+                                
+                              let selTitle: any       = colItem[0].title;
+                              let selTitleVal: any    = colItem[0].values;
+                              let selTitleValues: any = this.dynamicScopeModel[selectScheme][familyId.toString()][key][k][selTitleVal];
+                              ////console.log("@fetching col index Data: ", colIndex, " -- ", selTitle, " -- ", selTitleVal, " -- ", selTitleValues);
+                              let fvalue: any         = this.dynamicScopeModel[selectScheme][familyId.toString()][key][k][selTitle];
+                              ////console.log(">>>Type of FVAL: ", typeof fvalue);
+                              if(typeof fvalue === 'object'){
+                                if(fvalue.length){
+                                  fvalue.forEach(dataRec => {
+                                      let fval = selTitleValues.find(itemF => itemF.field_value.id == dataRec);
+                                      if(fval){
+                                        optionNameAr.push(fval.value);
+                                      }
+                                  })
+                                }
+                                optionName = optionNameAr.join(',');
+                              }else if(typeof fvalue === 'string'){
+                                optionName = fvalue;
+                              }
+                              else if(fvalue == undefined){
+                                optionName = '';
+                              }
+                              else{
+                                let getVal: any         = selTitleValues.find(data => data.field_value.id == fvalue)
+                                if(getVal){                  
+                                  optionName = getVal.value;
+                                }
+                              }
+                              ////console.log("Column field data: ",colIndex, " -- ", selTitleValues, " -- ", fvalue, " -- ", optionName);
+                              //let tempData: any = {};
+                              tempDataRow[colData.idVal] = optionName;
+                              //tempObj[selectScheme].push(tempData);
+                              //tempObj[selectScheme][colData.idVal] = optionName;                      
+                            }                    
+                        })
+                        //
+                        tempDataObj[selectScheme][familyId.toString()].push(tempDataRow);
+                      } 
+                      ////console.log("@updated Temp object: ", tempDataObj); 
+                      // for(var p in tempDataObj){
+                      //     ////console.log(tempDataObj[p], " -- ", p);
+                      //     resultTempAr.push(tempDataObj[p]);
+                      // }
+                      scopeCollections[selectScheme][familyId.toString()]['scope_value'] =  tempDataObj[selectScheme][familyId.toString()];//resultTempAr[0];
+                      console.log(">>>> Result Ar: "," -- ", tempDataObj, " -- ", scopeCollections);
+                    }
+                  }
+              }
+          }
     }
 
   });
 
   //Update scope data
-  // if(this.editScopeData != undefined && this.editScopeData != null){
-  //     ////console.log("update scope: ", this.editScopeData, " -- ", scopeCollections)
-  //     let tempScopeDetails: any={};
-  //     let checkMatch: boolean = false;
-  //     for(var key in this.editScopeData){
-  //       tempScopeDetails[key] = {};
-  //       tempScopeDetails[key]['scope_value'] = [];
-  //       ////console.log(">>> ", key, " :: ", this.editScopeData[key]);
-  //       checkMatch = this.getMatchScheme(key, scopeCollections);
-  //       ////console.log("@@@ Finding schme status...", key);
-  //           if(checkMatch){
-  //             ////console.log("#>>> Find scheme in edit scope and update/marge...");
-  //             this.editScopeData[key]['scope_value'].forEach((item, p) => {
-  //               scopeCollections[key]['scope_value'].push(this.editScopeData[key]['scope_value'][p])
-  //             })
-  //             //scopeCollections[key]['scope_value'].push(this.editScopeData[key]['scope_value']);
-  //           }else{
-  //             ////console.log("@>>> Not Found scheme in edit scope and update and marge...");
-  //             scopeCollections[key] = {};
-  //             scopeCollections[key]['scope_heading']  = {};
-  //             scopeCollections[key]['scope_heading']  = this.editScopeData[key]['scope_heading'];
-  //             scopeCollections[key]['scope_value']    = [];
-  //             scopeCollections[key]['scope_value']    = this.editScopeData[key]['scope_value']
-  //           }
-  //     }      
-  // }
+  if(this.editScopeData != undefined && this.editScopeData != null){
+      console.log("update scope: ", this.editScopeData, " -- ", scopeCollections)
+      let tempScopeDetails: any={};
+      let checkMatch: boolean = false;
+      let checkFamilyMatch: boolean = false;
+      for(let key in this.editScopeData){
+        //tempScopeDetails[key] = {};
+        //tempScopeDetails[key]['scope_value'] = [];
+        ////console.log(">>> ", key, " :: ", this.editScopeData[key]);
+        checkMatch = this.getMatchScheme(key, scopeCollections);
+        console.log("@@@ Finding schme status...", key);
+            if(checkMatch){
+              console.log("#>>> Find scheme in edit scope and update/marge...");
+
+              //check under family id
+              if(typeof this.editScopeData[key] === 'object'){
+                    for(let key1 in this.editScopeData[key]){
+                       if(key1 == '0'){
+                         //found no family
+                         console.log(">>> No family....")
+                         this.editScopeData[key][key1]['scope_value'].forEach((item, p) => {
+                          scopeCollections[key][key1]['scope_value'].push(this.editScopeData[key][key1]['scope_value'][p])
+                        })
+                       }else{
+                         //found family
+                         //check family
+                         checkFamilyMatch = this.getMatchFamily(key1, scopeCollections[key]);
+                         console.log("@@@ Finding family id match...", checkFamilyMatch);
+                         if(checkFamilyMatch){
+                              this.editScopeData[key][key1]['scope_value'].forEach((item, p) => {
+                                scopeCollections[key][key1]['scope_value'].push(this.editScopeData[key][key1]['scope_value'][p])
+                              })
+                         }else{
+                              scopeCollections[key] = {};
+                              scopeCollections[key][key1] = {};
+                              scopeCollections[key][key1]['scope_heading']  = {};
+                              scopeCollections[key][key1]['scope_heading']  = this.editScopeData[key][key1]['scope_heading'];
+                              scopeCollections[key][key1]['scope_value']    = [];
+                              scopeCollections[key][key1]['scope_value']    = this.editScopeData[key][key1]['scope_value']
+                         }
+                       }
+                    }
+              } 
+            }else{
+              ////console.log("@>>> Not Found scheme in edit scope and update and marge...");
+              if(typeof this.editScopeData[key] === 'object'){
+                for(let key1 in this.editScopeData[key]){
+                  scopeCollections[key] = {};
+                  scopeCollections[key][key1] = {};
+                  scopeCollections[key][key1]['scope_heading']  = {};
+                  scopeCollections[key][key1]['scope_heading']  = this.editScopeData[key][key1]['scope_heading'];
+                  scopeCollections[key][key1]['scope_value']    = [];
+                  scopeCollections[key][key1]['scope_value']    = this.editScopeData[key][key1]['scope_value']
+                }
+              }else{
+                scopeCollections[key] = {};
+                scopeCollections[key]['scope_heading']  = {};
+                scopeCollections[key]['scope_heading']  = this.editScopeData[key]['scope_heading'];
+                scopeCollections[key]['scope_value']    = [];
+                scopeCollections[key]['scope_value']    = this.editScopeData[key]['scope_value']
+              }
+              // scopeCollections[key] = {};
+              // scopeCollections[key]['scope_heading']  = {};
+              // scopeCollections[key]['scope_heading']  = this.editScopeData[key]['scope_heading'];
+              // scopeCollections[key]['scope_value']    = [];
+              // scopeCollections[key]['scope_value']    = this.editScopeData[key]['scope_value']
+            }
+      }      
+  }
   //filter scope collections
   //////console.log(">> Fileter collection...", scopeCollections);
+
+  for(var p in scopeCollections){
+    if(scopeCollections[p]){
+      if(typeof scopeCollections[p] == 'object'){
+        for(let p1 in scopeCollections[p]){
+          console.log(scopeCollections[p]);
+          if(scopeCollections[p]['scope_value'] != undefined){
+            let getDetails: any = scopeCollections[p1]['scope_value'];
+          // //////console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
+          if(getDetails.length == 0){  
+            //////console.log(">>>Empty values: ", p, " deleting");  
+            delete scopeCollections[p];
+          }
+          }          
+        }
+      }
+    }
+  }
+
+
   // for(var p in scopeCollections){
   //   if(scopeCollections[p]){
   //       let getDetails: any = scopeCollections[p]['scope_value'];
   //       //////console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
   //       if(getDetails.length == 0){
-  //         //////console.log(">>>Empty values: ", p, " deleting");
+  //         //////console.log(">>>Empty values: ", p, " deleting");  
   //         delete scopeCollections[p];
   //       }
   //   }
@@ -3100,6 +3261,16 @@ getMatchScheme(scId: any, scopeData: any){
   }
   return false;
 }
+getMatchFamily(famId: any, scopeData: any){
+  ////console.log("@@@ Finding schme...");
+  for(var key in scopeData){
+    ////console.log("# Finding schme...", key, " -- ", scId);
+      if(key == famId){
+        return true;
+      }
+  }
+  return false;
+}
   
 onSubmitStep5(ngForm: any, type: any) {
     //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
@@ -3108,41 +3279,56 @@ onSubmitStep5(ngForm: any, type: any) {
   let secInd: number;
   let selectScheme: any;
   let errorScope: boolean = false;
-  if(this.schemeRows.length){
-    for(var t=0;t<this.schemeRows.length; t++){
-        secInd = t;
-        selectScheme = this.schemeRows[t].id;
-        let getData = this.criteriaMaster.find(rec => rec.scope_accridiation.id == selectScheme);
-        //////console.log("@Scheme Data: ", getData);
-        let scopeTitle: string ='';
-        if(getData){
-          scopeTitle = getData.title.toString().toLowerCase().split(" ").join('_');
-        }
-            for(var key in this.dynamicScopeModel[scopeTitle]){
-              if(key == 'fieldLines'){
-                let rowLen = this.dynamicScopeModel[scopeTitle][key].length;
-                // Browse rows
-                //////console.log("Section: ", scopeTitle, " -- ", rowLen)                
-                for(var k=0; k<rowLen; k++){
-                    this.dynamicScopeFieldColumns[scopeTitle].forEach((colItem,colIndex) => {
-                          let fieldSelValue: any;
-                          let selTitle: any       = colItem[0].title;
-                          fieldSelValue         = this.dynamicScopeModel[scopeTitle][key][k][selTitle];
-                          //////console.log(">>> ", scopeTitle, " :: ", selTitle, " -- ", fieldSelValue);
-                          if(fieldSelValue === undefined || fieldSelValue == ''){
-                            errorScope = true;
-                          }
-                    })
-                }
+
+  this.fullTypeFamily.forEach(typeScope => {
+    console.log(">>>> Type: ", typeScope);
+    // if(typeScope.isFamily != undefined && !typeScope.isFamily){
+    //   console.log(">>> Not scope family")
+    // }
+    // if(typeScope.isFamily != undefined && typeScope.isFamily){
+    //   console.log(">>> Has family")
+    // }
+
+      if(typeScope.scopeRows.length > 0){
+        
+        console.log(">>>> enter...1: ", typeScope.scopeRows);
+        for(var t=0;t<typeScope.scopeRows.length; t++){
+          let schemeId = 0;
+          let familyId: any = 0;
+          schemeId = typeScope.scopeRows[t].id;
+          familyId = typeScope.scopeRows[t].familyId;
+          console.log(">>>> enter...1.1: ", typeScope.scopeRows[t]);
+          console.log(">>>> enter...2: ", this.dynamicScopeModel, " -- ", familyId, " -- ", schemeId);
+          for(var key in this.dynamicScopeModel[schemeId][familyId]){
+            console.log(">>>> enter...3: ", key);
+            if(key == 'fieldLines'){
+              console.log(">>>> enter...4");
+              let rowLen = this.dynamicScopeModel[schemeId][familyId][key].length;
+              // Browse rows
+              console.log("Section: ", schemeId, " -- ", rowLen)                
+              for(var k=0; k<rowLen; k++){
+                  this.dynamicScopeFieldColumns[schemeId][familyId].forEach((colItem,colIndex) => {
+                        let fieldSelValue: any;
+                        let selTitle: any       = colItem[0].title;
+                        fieldSelValue         = this.dynamicScopeModel[schemeId][familyId][key][k][selTitle];
+                        console.log(">>> ", schemeId, " :: ", selTitle, " -- ", fieldSelValue);
+                        if(fieldSelValue === undefined || fieldSelValue == ''){
+                          errorScope = true;
+                        }
+                  })
               }
             }
+          }
+
+        }
       }
-  }
+  });  
   if(errorScope && type === undefined){
     this.toastr.warning('Please Fill required field','Validation Error');
     return false;    
   }
-    //this.saveScope();
+ // return;
+
     this.testingCalForm = {};
     this.testingCalForm.step5 = {};
     this.testingCalForm.saved_step  = 5;
@@ -3279,7 +3465,7 @@ onSubmitStep5(ngForm: any, type: any) {
   }
       
 
-  if(this.authorizationStatus && checkCount == 10){
+  if(this.authorizationStatus && checkCount == 9){
     this.authorizationStatus = true;
   }else{
     this.authorizationStatus = false;
@@ -3302,7 +3488,7 @@ onSubmitStep5(ngForm: any, type: any) {
   let checkCount = 0;
     for(let key in this.authorizationList) {
       ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
-      if(this.authorizationList[key]) {  
+      if(this.authorizationList[key] && key != 'undertaking_confirmTop3') {  
         this.authorizationStatus = true;       
         checkCount++;
       } 
@@ -3310,7 +3496,7 @@ onSubmitStep5(ngForm: any, type: any) {
       //   this.authorizationStatus = true;
       // }     
     }  
-    if(this.authorizationStatus && checkCount == 10){  
+    if(this.authorizationStatus && checkCount == 9){  
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;
@@ -3321,28 +3507,70 @@ onSubmitStep5(ngForm: any, type: any) {
   //     this.recommendStatus = true;
   //   }
   // }
-  if(this.authorizationStatus == false){
-    this.isSubmit = false;
-    this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
-  }else if(this.step7Data.recommend_visit == ''){
-    this.isSubmit = false;
-    this.toastr.error('Please Check any recommend the visit ', '');
-  }
-  if(ngForm7.form.valid){
+  // if(this.authorizationStatus == false){
+  //   this.isSubmit = false;
+  //   this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
+  // }
 
-    this.testingCalForm = {};
+  this.testingCalForm = {};
     this.testingCalForm.step7 = {};
     this.testingCalForm.email = this.userEmail;
     this.testingCalForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
     this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.testingCalForm.saved_step = '7';
-    this.step7Data.authorizationList = this.authorizationList;
-    this.step7Data.recommend = this.recommend;
+    this.step7Data.authorization_list_json = this.authorizationList;
+    //this.step7Data.recommend = this.recommend;
+    //make visit 
+    let recomVisit: any = {
+      'first':false,'second':false, 'third': false, 'fourth':false
+    };
+    console.log(recomVisit);
+    let recomCheckCount = 0;
+    this.recomendVisit.forEach((item,index) => {
+      if(item.checked == true){
+        recomCheckCount++;
+      }
+      recomVisit[item.name.toString()] = item.checked;
+    })
+    this.step7Data.recommend = recomVisit;
     this.step7Data.is_draft = false;
     this.step7Data.application_date = new Date();
 
     this.testingCalForm.step7 = this.step7Data;
+    console.log(">>> valid status: ", ngForm7.form);
+  // else if(this.step7Data.recommend_visit == ''){
+  //   this.isSubmit = false;
+  //   this.toastr.error('Please Check any recommend the visit ', '');
+  // }
+  if(ngForm7.form.valid && this.authorizationStatus == true && recomCheckCount > 0){
+
+    // this.testingCalForm = {};
+    // this.testingCalForm.step7 = {};
+    // this.testingCalForm.email = this.userEmail;
+    // this.testingCalForm.userType = this.userType;
+    // var applicationId = sessionStorage.getItem('applicationId');
+    // this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+    // this.testingCalForm.saved_step = '7';
+    // this.step7Data.authorizationList = this.authorizationList;
+    // //this.step7Data.recommend = this.recommend;
+    // //make visit 
+    // let recomVisit: any = {
+    //   'first':false,'second':false, 'third': false, 'fourth':false
+    // };
+    // console.log(recomVisit);
+    // let recomCheckCount = 0;
+    // this.recomendVisit.forEach((item,index) => {
+    //   if(item.checked == true){
+    //     recomCheckCount++;
+    //   }
+    //   recomVisit[item.name.toString()] = item.checked;
+    // })
+    // this.step7Data.recommend = recomVisit;
+    // this.step7Data.is_draft = false;
+    // this.step7Data.application_date = new Date();
+
+    // this.testingCalForm.step7 = this.step7Data;
     // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
 
     // this.step6DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
@@ -3358,9 +3586,10 @@ onSubmitStep5(ngForm: any, type: any) {
           if(this.paymentFilePath != ''){
             this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
           }
-          else{
-            // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+          else{this.toastr.success("Application Submitted Successfully");
+          setTimeout(() => {
             this.router.navigateByUrl('/dashboard/status/all');
+          }, 5000)  
           }
         }else{
           this.toastr.warning(res['msg'], '');

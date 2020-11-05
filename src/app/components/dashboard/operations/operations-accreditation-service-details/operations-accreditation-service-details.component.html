@@ -14,11 +14,11 @@
                   <div class="appln-data">
                     <h3>Application No. {{routeId}}</h3>
                   </div>
-                  <div class="appln-details">
+                  <!-- <div class="appln-details">
                     <span>
                       <img class="qr_code" src="../../../../../../assets/images/qr_code.png" />
                     </span>
-                  </div>
+                  </div> -->
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -94,7 +94,8 @@
                   <h5>Establishment Name</h5>
                 </div>
                 <div class="appln-details">
-                  <span>None</span>
+                  <span *ngIf="serviceDetail?.official_commercial_name">None</span>
+                  <span *ngIf="serviceDetail?.official_commercial_name">{{serviceDetail?.official_commercial_name}}</span>
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -157,7 +158,7 @@
                       <td>City</td>
                       <td *ngIf="serviceDetail?.city">{{serviceDetail?.city}}</td>
                       <td>Country</td>
-                      <td *ngIf="appCountry">{{appCountry}}</td>
+                      <td *ngIf="serviceDetail?.country">{{serviceDetail?.country}}</td>
                     </tr>
                     <tr>
                       <td>Mailing Address</td>
@@ -241,23 +242,24 @@
                     <td>Duty Time</td>
                     <td>
                       <ng-container *ngIf="serviceDetail?.duty_shift != undefined">
-                      <ng-container *ngIf="serviceDetail.duty_shift == '1'">
+                      <ng-container *ngIf="serviceDetail.duty_to1 && serviceDetail.duty_from1">
                         {{serviceDetail.duty_to1}} - {{serviceDetail.duty_from1}}
                       </ng-container>
-                      <ng-container *ngIf="serviceDetail.duty_shift == '2'">
-                        {{serviceDetail.duty_to2}} - {{serviceDetail.duty_from2}}
+                      <ng-container *ngIf="serviceDetail.duty_to2 && serviceDetail.duty_from2">
+                        , {{serviceDetail.duty_to2}} - {{serviceDetail.duty_from2}}
                       </ng-container>
-                      <ng-container *ngIf="serviceDetail.duty_shift == '3'">
-                        {{serviceDetail.duty_to3}} - {{serviceDetail.duty_from3}}
+                      <ng-container *ngIf="serviceDetail.duty_to3 && serviceDetail.duty_from3">
+                        , {{serviceDetail.duty_to3}} - {{serviceDetail.duty_from3}}
                       </ng-container>  
                     </ng-container>                    
                     </td>
                   </tr>
                   <tr>
                     <td>Is Testing the main activity of the organization</td>
-                    <td colspan="3">
+                    <td colspan="1">
                       {{ (serviceDetail?.is_main_activity != undefined && serviceDetail?.is_main_activity == true) ? 'Yes' : 'No' }}
                     </td>
+                    <td colspan="2">{{serviceDetail?.is_main_activity_note}}</td>
                   </tr>
                 </table>
               </div>
@@ -283,38 +285,13 @@
                     <div class="members_details">
                       <h4>{{row2.name}}</h4>
                       <p class="address_details">{{row2.company_list}}</p>
-                      <span class="personal_details">{{row2.contact_person}},</span>
-                      <span *ngIf="row2.designation">{{row2.designation}},</span>
+                      <span class="personal_details">{{row2.contact_person}}, </span>
+                      <span *ngIf="row2.designation">{{row2.designation}}, </span>
                       <span *ngIf="row2.mobile_no">Mobile : {{row2.mobile_no}}</span>
                     </div>
                   </div>
-                  <!-- <div class="col-md-6 pl-0">
-                      <div class="members_details members_last ">
-                        <h4>Mr. Jhon Williams</h4>
-                        <p class="address_details">Al Dahra Agricultural Company, Navigator Software Pvt. Ltd.</p>
-                        <span class="personal_details">Mr. Brad Williams,</span>
-                        <span>Manager, Mobile : (183) 959-1691</span>
-                      </div>
-                  </div> -->
                 </div>
-                <!-- <div class="row pb-1">
-                  <div class="col-md-6 pr-0">
-                    <div class="members_details">
-                      <h4>Mr. Jhon Williams</h4>
-                      <p class="address_details">Al Dahra Agricultural Company, Navigator Software Pvt. Ltd.</p>
-                      <span class="personal_details">Mr. Brad Williams,</span>
-                      <span>Manager, Mobile : (183) 959-1691</span>
-                    </div>
-                  </div>
-                  <div class="col-md-6 pl-0">
-                    <div class="members_details members_last ">
-                      <h4>Mr. Jhon Williams</h4>
-                      <p class="address_details">Al Dahra Agricultural Company, Navigator Software Pvt. Ltd.</p>
-                      <span class="personal_details">Mr. Brad Williams,</span>
-                      <span>Manager, Mobile : (183) 959-1691</span>
-                    </div>
-                  </div>
-                </div> -->
+                
               </div>
             </div>
           </div>
@@ -341,7 +318,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-subheader-desc form_org_data">
-                    <mat-radio-group name="other_accr" [(ngModel)]="other_accr_model">
+                    <mat-radio-group name="other_accr" disabled [(ngModel)]="other_accr_model">
                       <mat-radio-button value="1" >Yes</mat-radio-button>
                       <mat-radio-button value="0">No</mat-radio-button>
                     </mat-radio-group>
@@ -553,38 +530,175 @@
                   <div class="appln-subhdr" *ngIf="serviceDetail?.form_meta == 'health_care'">
                     <h5>ACCREDITATION SCOPE FOR HEALTH CARE</h5>
                   </div>
+                  <div class="appln-subhdr" *ngIf="serviceDetail?.form_meta == 'certification_bodies'">
+                    <h5>ACCREDITATION SCOPE FOR CERTIFICATION BODIES</h5>
+                  </div>
+                  <div class="appln-subhdr" *ngIf="serviceDetail?.form_meta == 'pt_providers'">
+                    <h5>ACCREDITATION SCOPE FOR PROFICIENCY TESTING PROVIDER</h5>
+                  </div>
+                  <div class="appln-subhdr" *ngIf="serviceDetail?.form_meta == 'halal_conformity_bodies'">
+                    <h5>ACCREDITATION SCOPE FOR PROFICIENCY HALAL CONFIRMITY BODIES</h5>
+                  </div>
                   <hr>
                 </div>
               </div>
+
               <div class="row">
                 <div class="col-md-12">
                   <div class="table-appln">
-                    <table>
-                        <!-- {{jsonParseKeyvalue(scopeDetailsHeading) | json}} -->
-                      <tr>
-                        <th *ngFor="let item5 of scopeDetailsHeading | keyvalue;">{{item5.value}}</th>
-                      </tr>
-                      <tr *ngFor="let item6 of scopeDetailvalues | keyvalue;">
-                        <td *ngFor="let item7 of item6.value | keyvalue;">
-                          <span [innerHTML]="(item7.value)"></span>
-                        </td>
-                      </tr>
-                      <!-- <tr>
-                        <td>Mechanical /Physical</td>
-                        <td>Hardened Concrete</td>
-                        <td>Testing concrete. Method for determination of compressive strength of concrete cubes</td>
-                        <td>BS 1881 : 1983 Part 116 AMD 6097-89 & AMD 6720 - 91</td>
-                      </tr>
-                      <tr>
-                        <td>Mechanical /Physical</td>
-                        <td>Hardened Concrete</td>
-                        <td>Testing concrete. Method for determination of compressive strength of concrete cubes</td>
-                        <td>BS 1881 : 1983 Part 116 AMD 6097-89 & AMD 6720 - 91</td>
-                      </tr> -->
-                    </table>
+                    
+                    <ng-container *ngIf="serviceDetail?.form_meta == 'inspection_body' && editScopeData != undefined && editScopeData != null">
+                      <div class="row">
+                          <div class="col-md-12 p-0">
+                              <div class="form-subheader-data">
+                                  <h5>SCOPE DATA</h5>
+                              </div>
+                          </div>
+                      </div>
+                      <ng-container *ngFor="let item of editScopeData | keyvalue">
+                          <div class="row">
+                              <div class="col-md-12">
+                                  <div class="table-appln scope-data">
+                                        <!-- @{{item.value.scope_heading | json}} || {{item.key}} || {{item.value.scope_heading.length}} -->
+                                      <div class="sub-header">
+                                          <h5 [innerHTML]="getSchme(item.key)"></h5>
+                                      </div>
+                                      <table>
+                                          <tr>
+                                              <th *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
+                                              <!-- <th>Action</th> -->
+                                          </tr>
+                                          <ng-container *ngIf="item.value.scope_value.length > 0">
+                                              <tr *ngFor="let item2 of (item.value.scope_value) | keyvalue; let i4 = index;">
+                                                  <td *ngFor="let item3 of item2.value | keyvalue;">
+                                                      <span [innerHTML]="(item3.value)"></span>
+                                                  </td>
+                                                  <!-- <td>
+                                                  <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item.key)"></span>
+                                                  </td> -->
+                                                </tr>
+                                          </ng-container>
+                                          <ng-container *ngIf="item.value.scope_value.length == 0">
+                                              <tr>
+                                                  <td [attr.colspan]="Service.getObjectLength(item.value.scope_heading)+1">
+                                                      No Data
+                                                  </td>
+                                              </tr>
+                                          </ng-container>
+                                      </table>  
+                                  </div>
+                              </div>
+                          </div>
+                      </ng-container>
+                  </ng-container>
+
+                  <ng-container *ngIf="serviceDetail?.form_meta == 'health_care' && editScopeData != undefined && editScopeData != null">
+                      <div class="row">
+                          <div class="col-md-12 p-0">
+                              <div class="form-subheader-data">
+                                  <h5>SCOPE DATA</h5>
+                              </div>
+                          </div>
+                      </div>
+                      <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteIndex)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                        <ng-container *ngFor="let item of editScopeData | keyvalue">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-appln scope-data">
+                                        <div class="sub-header">
+                                            <h5 [innerHTML]="getSchme(item.key)"></h5>
+                                        </div>
+                                        <table>
+                                            <tr>
+                                                <th *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
+                                                <!-- <th>Action</th> -->
+                                            </tr>
+                                            <ng-container *ngIf="item.value.scope_value != undefined && item.value.scope_value.length > 0">
+                                                <tr *ngFor="let item2 of (item.value.scope_value) | keyvalue; let i4 = index;">
+                                                    <td *ngFor="let item3 of item2.value | keyvalue;">
+                                                        <span [innerHTML]="(item3.value)"></span>
+                                                    </td>
+                                                    <!-- <td>
+                                                    <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item.key)"></span>
+                                                    </td>-->
+                                                </tr>
+                                            </ng-container>
+                                            <ng-container *ngIf="item.value.scope_value != undefined && item.value.scope_value.length == 0">
+                                                <tr>
+                                                    <td [attr.colspan]="Service.getObjectLength(item.value.scope_heading)+1">
+                                                        No Data
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                        </table>  
+                                    </div>
+                                </div>
+                            </div>
+                      </ng-container>
+                  </ng-container>  
+
+
+                  <ng-container *ngIf="serviceDetail?.form_meta == 'certification_bodies' && editScopeData != undefined && editScopeData != null">
+                      <div class="row">
+                          <div class="col-md-12 p-0">
+                              <div class="form-subheader-data">
+                                  <h5>SCOPE DATA</h5>
+                              </div>
+                          </div>
+                      </div>
+                      <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteTypeKey,selectDeleteIndex)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                      <ng-container *ngFor="let item of editScopeData | keyvalue">
+                          <div class="row"> 
+                              <div class="col-md-12">
+                                  <div class="sub-header">
+                                      <h5 [innerHTML]="getSubType(item.key)"></h5>
+                                  </div>
+                              </div>
+                          </div>
+                          <ng-container *ngIf="item.value != null && item.value != undefined">
+                              <ng-container *ngFor="let item5 of (item.value) | keyvalue;">
+                                  <div class="row">
+                                      <div class="col-md-12">
+                                          <div class="table-appln scope-data">
+                                              <div class="sub-header">
+                                                  <h5 [innerHTML]="getSchmeCb(item5.key, item.key)"></h5>
+                                              </div>
+                                              <table>
+                                                  <tr>
+                                                      <th *ngFor="let item1 of (item5.value.scope_heading) | keyvalue;">{{item1.value}}</th>
+                                                      <!-- <th>Action</th> -->
+                                                  </tr>
+                                                  <ng-container *ngIf="item5.value.scope_value.length > 0">
+                                                      <tr *ngFor="let item2 of (item5.value.scope_value) | keyvalue; let i4 = index;">
+                                                          <td *ngFor="let item3 of item2.value | keyvalue;">
+                                                              <span [innerHTML]="(item3.value)"></span>
+                                                          </td>
+                                                          <!-- <td>
+                                                          <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item5.key, item.key)"></span>
+                                                          </td>-->
+                                                      </tr>
+                                                  </ng-container>
+                                                  <ng-container *ngIf="item5.value.scope_value.length == 0">
+                                                      <tr>
+                                                          <td [attr.colspan]="Service.getObjectLength(item5.value.scope_heading)+1">
+                                                              No Data
+                                                          </td>
+                                                      </tr>
+                                                  </ng-container>
+                                              </table>  
+                                          </div>
+                                      </div>
+                                  </div>
+                              </ng-container>
+                          </ng-container>
+                      </ng-container>
+                  </ng-container>
+
+
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -734,7 +848,7 @@
                 <div class="authData">I acknowledge that I have read and understood and confirm to abide by the 
                   <a href="javascript:void(0)"  (click)="openView(agreementView, 'agreement')">Accreditation Agreement</a> and request to provide us with a word agreement form for signature
                 </div>
-                <div class="authData">I require ILA MRA "Laboratories" <a href="javascript:void(0)"  (click)="openView(ILAView, 'ILA')">Agreement</a>.</div>
+                <div class="authData"><span *ngIf="ilauUdertakingConfirm && ilauUdertakingConfirm == true" class="icon-tick"></span>I require ILA MRA "Laboratories" <a href="javascript:void(0)"  (click)="openView(ILAView, 'ILA')">Agreement</a>.</div>
 
                 <div class="authData">I confirm that the below documents are available and will be furnished once requested by EIAC:</div>
               </div>
@@ -747,12 +861,16 @@
                       <tr>
                           <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
                           <td>
-                            <a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled In Document Review Checklist based on the related standard </a>(for 1st submission only)
+                            Filled Up Document Review Checklist (Related to applied accreditation standard and for initial accreditation & Scope Extensions only)
                           </td>
                       </tr>
                       <tr>
                           <td><span class="icon-tick"></span></td>
-                          <td>Minutes/Report of last Management Review</td>
+                          <td>Internal Procedures (as per the accreditation criteria)</td>
+                      </tr>
+                      <tr>
+                        <td><span class="icon-tick"></span></td>
+                        <td>Minutes/Report of last Management Review</td>
                       </tr>
                       <tr>
                           <td><span class="icon-tick"></span></td>
@@ -764,9 +882,14 @@
                       </tr>
                       <tr>
                           <td><span class="icon-tick"></span></td>
-                          <td>List of key staff and Organizational Structure if not mentioned in the QM</td>
+                          <td>List of key staff and Organizational Structure if not mentioned in the Management System Manual</td>
                       </tr>
                       <tr>
+                        <td><span class="icon-tick"></span></td>
+                        <td>Internal Procedures (as per the accreditation criteria)</td>
+                      </tr>
+                      
+                      <!-- <tr>
                           <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
                           <td>Internal Procedures (as per the accreditation criteria)</td>
                       </tr>
@@ -789,7 +912,7 @@
                       <tr>
                         <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
                         <td>CMC calculations (for calibration laboratory)</td>
-                      </tr>
+                      </tr> -->
                   </table>
               </div>
               <div class="undertaking-last">
@@ -798,7 +921,7 @@
                     <span class="confirm">I recommend the visit to be conducted in the 
                       <a href="javascript:void(0)" [ngStyle]="{'cursor':'none'}">
                         {{recommVisit}}
-                      </a> quarter of the year.</span>
+                      </a> quarter of the year {{serviceDetail?.recommend_year}}.</span>
                   </div>
                   <div class="date_undertake" *ngIf="applicantDetails != undefined && applicantDetails.application_date != undefined">
                       <span>Date : {{applicantDetails.application_date | date:'dd-MM-yyyy'}}</span>
@@ -806,7 +929,8 @@
                 </div>
                 <div class="under_wrapper wrapper_name">
                   <div class="signature_under">
-                    <img src="../../../../../../assets/images/g10.svg" alt="">
+                    <!-- <img src="../../../../../../assets/images/g10.svg" alt=""> -->
+                    {{technicalManager?.name}}
                   </div>
                   <div class="sign_name">
                     <h5>{{technicalManager?.name}}</h5>

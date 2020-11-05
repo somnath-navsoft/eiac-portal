@@ -1403,14 +1403,13 @@
                                             <div class="recommend my-3">
                                                 <div class="recommend-main">
                                                     <div class="recommend-quarter">
-                                                        <span class="confirm">I recommend the visit to be conducted in the</span>
+                                                        <span class="confirm">I recommend the visit to be conducted in the <span class="required_input">*</span></span>
                                                         <!-- [(ngModel)]="step7Data.recommend_visit" -->
                                                         <!-- @{{recomendVisit | json}} -->
                                                         <!-- <mat-radio-group name="recommended" #recommendVisit="ngModel"> -->
-                                                            <ng-container *ngFor="let item of recomendVisit; let k=index;">
-                                                                <mat-checkbox  name="undertaking_confirm7_{{k}}" required
-                                                            [(ngModel)]="item.checked" value="first">{{item.label}}</mat-checkbox> 
-                                                            </ng-container>quarter
+                                                                <mat-checkbox  name="recommend_visit"  *ngFor="let item of recomendVisit; let k=index;"
+                                                            [(ngModel)]="item.checked" [ngModelOptions]="{standalone: true}" required>{{item.label}}</mat-checkbox> 
+                                                            
                                                             <!-- <mat-checkbox  name ="undertaking_confirm7" 
                                                             [(ngModel)]="step7Data.recommend_visit.first" value="first">1st</mat-checkbox> -->
                                                             <!-- <mat-radio-button name="1st" value="first">1st</mat-radio-button>
@@ -1418,8 +1417,9 @@
                                                             <mat-radio-button name="3rd" value="third">3rd</mat-radio-button>
                                                             <mat-radio-button name="4th" value="fourth">4th quarter</mat-radio-button> -->
                                                         <!-- </mat-radio-group> -->
+                                                        <!-- @{{recommendVisit | json}} -->
                                                     </div> 
-                                                    <span class="confirm">of the year</span>
+                                                    <span class="confirm">quarter of the year</span>
                                                     <div class="recommend-year">
                                                         <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step7Data.recommend_year" required>
                                                             <mat-option [value]="item.value" *ngFor="let item of recommendYearValues; let k=index;">{{item.title}}</mat-option>

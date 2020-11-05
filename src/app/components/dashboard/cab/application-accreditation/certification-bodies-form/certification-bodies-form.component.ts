@@ -236,6 +236,8 @@ export class CertificationBodiesFormComponent implements OnInit {
             this.authorizationListTerms2 = this.termsIAF.term_id;
           }
 
+          console.log(this.authorizationListTerms1, " >> ", this.authorizationListTerms2)
+
           //console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
         }
         
@@ -402,7 +404,7 @@ ngOnInit() {
           dataScope = record['data'];
           this.scopeDataLoad = false;
           let customKey;
-          //console.log('Fullscope: ', dataScope);
+          console.log('Fullscope: ', dataScope);
           if(dataScope.firstColumnData != undefined && dataScope.firstColumnData.length > 0){
             let firstColumValues = dataScope.firstColumnData[0];
           }
@@ -593,7 +595,7 @@ ngOnInit() {
         //console.log("select scope values: ", record['scopeValue'], " :: ", this.dynamicScopeFieldType[typeTitle][secIndex], " len: ", record['scopeValue'].length);
         //Auto selected for one item dropdown
         if(record['scopeValue'].length > 0 && record['scopeValue'].length == 1){
-            //console.log(">>>dep scope data: ", record['scopeValue']);
+            console.log(">>>dep scope data: ", record['scopeValue']);
             let getSelValue = 0; 
             if(typeof record['scopeValue'][0] === 'object'){                  
               getSelValue = record['scopeValue'][0].field_value.id;
@@ -609,26 +611,43 @@ ngOnInit() {
             //console.log(">>> scope field def: ", colDef);
             if(colDef === "None" || colDef === null){
               //console.log("Def enter...1");
+              //alert('calling....');
               this.dynamicScopeModel[typeTitle][secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[typeTitle][secIndex][nextColumnIndex][0].values] = record['scopeValue'];
             }
             else if(colDef != "None" && colDef != null && colDef != ""){
               //console.log("Def enter...2");
+              //alert('calling....1');
               let colValAr: any;                                                                                                                                                                                                                                    
               let colTempAr: any = [];
               colValAr = colDef.toString().split(',');                                                                                                                                                
               colValAr.forEach((item,key1) => {
                 let tempObj: any = {};
                 tempObj['field_value'] = {};
-                tempObj['field_value']['id'] = item;//(key1+1);
+                tempObj['field_value']['id'] = item;//(key1+1); 
                 tempObj['value'] = item;
                 //console.log("value obj: ", tempObj);
                 colTempAr.push(tempObj);
               });
+              // let scopValues: any = record['scopeValue'];
+              //     var resultUniq = scopValues.reduce((unique, o) => {
+              //       if(!unique.some(obj => obj.value === o.value)) {
+              //         unique.push(o);
+              //       }
+              //       return unique;
+              //   },[]);
               //console.log("Def enter...3");
               this.dynamicScopeModel[typeTitle][secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[typeTitle][secIndex][nextColumnIndex][0].values] = colTempAr;
             }else{
+              //alert('calling....2');
               //console.log("Def enter...4");
-              this.dynamicScopeModel[typeTitle][secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[typeTitle][secIndex][nextColumnIndex][0].values] = record['scopeValue'];
+              let scopValues: any = record['scopeValue'];
+                  var resultUniq = scopValues.reduce((unique, o) => {
+                    if(!unique.some(obj => obj.value === o.value)) {
+                      unique.push(o);
+                    }
+                    return unique;
+                },[]);
+              this.dynamicScopeModel[typeTitle][secIndex]['fieldLines'][lineIndex][this.dynamicScopeFieldColumns[typeTitle][secIndex][nextColumnIndex][0].values] = resultUniq;//record['scopeValue'];
             }
         }
       //console.log("@@@Updated Model Values: ", this.dynamicScopeModel);
@@ -966,7 +985,7 @@ loadAppInfo(){
       let data: any;
       this.firstStep = getData.data['step1'][0]
       //, getData.data.step1, " -- ", getData.data.step2
-      //console.log(getData,"Profile info >>> ");
+      console.log(getData,"Profile info >>> ");
 
       if(getData.data.step1.length){
           data = getData.data['step1'][0];
@@ -979,6 +998,8 @@ loadAppInfo(){
             this.criteriaList = getData.data.criteriaList;
           }
         }
+
+        this.step1Data.legal_status = (this.firstStep.legal_status != null) ? this.firstStep.legal_status : '';
 
         var step2 = getData.data['step2'];
 
@@ -1158,7 +1179,8 @@ loadAppInfo(){
                   }
               }
 
-              this.step1Data.legal_status = this.firstStep.legal_status != null ? this.firstStep.legal_status : res['data'].legal_status;
+              //this.step1Data.legal_status = (this.firstStep.legal_status != null) ? this.firstStep.legal_status : res['data'].legal_status;
+              this.step1Data.legal_status = res['data'].legal_status;
 
               //step2
               if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
@@ -1328,29 +1350,36 @@ loadAppInfo(){
               //Step 7
               if(res['data'].onBehalfApplicantDetails && res['data'].onBehalfApplicantDetails != null && res['data'].onBehalfApplicantDetails != undefined){
                 let getAuthData = res['data'].onBehalfApplicantDetails;
-                ////console.log(">>> Auth data: ", getAuthData);
+                console.log(">>> Auth data: ", getAuthData);
                 this.step5Data.organization_name        = getAuthData.organization_name;
                 this.step5Data.representative_name      = getAuthData.representative_name;
                 this.step5Data.designation              = getAuthData.designation;
                 this.step5Data.digital_signature        = getAuthData.digital_signature;
                 this.step5Data.application_date         = getAuthData.application_date;
 
+                // let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
+                  
+                // let replace1: string = replace.toString().replace('"', '');
+                // let objVal: any = JSON.parse(JSON.stringify(replace1));
+                // let objVal1: any = JSON.stringify(replace1).replace(/[\{\}"]+/g,"");
+                // let objVal2: any = objVal1.replaceAll("\\", "");               
+
+                // console.log(">>> COnv JSON: ", getData.data.recommend_visit, " :: ", replace, " -- ", replace1);
+                // console.log(objVal2)
                 this.recomendVisit.forEach((item, index) => {
-                  let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
-                  console.log(">>> replace: ", getData.data.recommend_visit, " :: ", replace);
-                  let cpjson: any = getData.data.recommend_visit ;//'{"first": false, "second": true, "third": false, "fourth": true}';
-                  let findVsit: any = JSON.parse(cpjson);;//;
-                  //
+                  
+                  //let cpjson: any = replace1;//'{"first": false, "second": true, "third": false, "fourth": true}';
+                  let findVsit: any = JSON.parse(getData.data.recommend_visit);
                   console.log(">>> ", findVsit);
                   for(let key in findVsit){
                      if(key === item.name){
                        console.log(">>>> found: ", item, " == ", findVsit[key]);
                        item.checked = findVsit[key];
-                     }
+                     } 
                   }
             })
             console.log("@recommend visit: ", this.recomendVisit, " -- ", getData.data.recommend_visit);
-            this.step7Data.recommend_visit = (getData.data.recommend_visit);
+            this.step7Data.recommend_visit = this.recomendVisit;//(getData.data.recommend_visit);
 
                 let authList: any;
                 authList = getData.data.authorization_list;
@@ -1563,8 +1592,8 @@ savedraftStep(stepCount) {
 
     this.step5Data.is_draft = true;
     this.certificationBodiesForm.saved_step = '5';
-    this.certificationBodiesForm.step7.terms1 = this.authorizationListTerms1;
-      this.certificationBodiesForm.step7.terms2 = this.authorizationListTerms2;
+    this.certificationBodiesForm.step5.terms1 = this.authorizationListTerms1;
+      this.certificationBodiesForm.step5.terms2 = this.authorizationListTerms2;
 
     this.certificationBodiesForm.step5 = this.step5Data;
     // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
@@ -1837,7 +1866,7 @@ saveScope(){
   }
   if(this.fullTypeScope.length){
     this.fullTypeScope.forEach(typeScope => {
-        //console.log(">>>>Type scope: ", typeScope);
+        console.log(">>>>Type scope: ", typeScope);
 
         for(var t=0;t<typeScope.scopeRows.length; t++){
 
@@ -1859,7 +1888,7 @@ saveScope(){
           scopeCollections[typeScope.id][selectScheme] = {};
           scopeCollections[typeScope.id][selectScheme]['scope_heading'] = {};
                 for(var key in this.dynamicScopeFieldColumns[typeScope.id][scopeTitle]){
-                      ////console.log(">>> ", key, " :: ", this.dynamicScopeFieldColumns[key]);
+                      console.log(">>> ", key, " :: ", this.dynamicScopeFieldColumns[key]);
                       let tempData: any = this.dynamicScopeFieldColumns[typeScope.id][scopeTitle];
                       if(typeof tempData === 'object'){
                         tempData.forEach((item,key) => {
@@ -1878,7 +1907,7 @@ saveScope(){
 
   }
   console.log(">>> build scope headers ", scopeCollections, " -- ", this.dynamicScopeModel, " -> Scheme: ", this.schemeRows);
-  return;
+  //return;
 
   let secInd: number = 0;
   let resultTempAr: any = [];
@@ -1936,18 +1965,19 @@ saveScope(){
                     //resultTempAr[k] = {};
 
                     this.dynamicScopeFieldColumns[typeScope.id][scopeTitle].forEach((colItem,colIndex) => {
-                        //console.log("...Col>>> ",colIndex, " :: ", colItem[0], " -- ", this.dynamicScopeModel[typeScope.id][scopeTitle][key][k])
+                        console.log("...Col>>> ",colIndex, " :: ", colItem[0], " -- ", this.dynamicScopeModel[typeScope.id][scopeTitle][key][k])
                         let colData: any = colItem[0];
                         let optionNameAr: any = [];
                         let optionName: any;
-                        if(colIndex == 0){
+                        if(colIndex == 0 && this.dynamicScopeModel[typeScope.id][scopeTitle][key][k]['firstFieldValues'] != undefined){
                           //first coloumn row values - firstFieldValues
                           //console.log(">>>> First column: ");
                           let selTitle: any       = colItem[0].title;
                           let selTitleValues: any = this.dynamicScopeModel[typeScope.id][scopeTitle][key][k]['firstFieldValues'];
+                          console.log("<><><> Titlevalues", selTitleValues);
                           let fvalue: any         = this.dynamicScopeModel[typeScope.id][scopeTitle][key][k][selTitle];
                           let getVal: any         = selTitleValues.find(data => data.field_value.id == fvalue)
-                          //console.log("<><><><> ", getVal);
+                          console.log("<><><><> ", getVal);
                           if(getVal){                  
                             getVal = getVal.value;
                           }
@@ -1963,7 +1993,7 @@ saveScope(){
                           let selTitleValues: any = this.dynamicScopeModel[typeScope.id][scopeTitle][key][k][selTitleVal];
                           //console.log("@fetching col index Data: ", colIndex, " -- ", selTitle, " -- ", selTitleVal, " -- ", selTitleValues);
                           let fvalue: any         = this.dynamicScopeModel[typeScope.id][scopeTitle][key][k][selTitle];
-                          //console.log(">>>Type of FVAL: ", typeof fvalue);
+                          console.log(">>>Type of FVAL: ", typeof fvalue, " -- ", fvalue);
                           if(typeof fvalue === 'object'){
                             if(fvalue.length){
                               fvalue.forEach(dataRec => {
@@ -1973,6 +2003,7 @@ saveScope(){
                                   }
                               })
                             }
+                            console.log(">>> Soret values: ", optionNameAr);
                             optionName = optionNameAr.join(',');
                           }else if(typeof fvalue === 'string'){
                             optionName = fvalue;
@@ -2124,7 +2155,7 @@ saveScope(){
     })
 }
 
-  //console.log("#Updated Scope after edit: ", scopeCollections, " -- ", this.editScopeData);
+  console.log("#Updated Scope after edit: ", scopeCollections, " -- ", this.editScopeData);
   this.step3Data['scopeDetails']    = scopeCollections;
   //return;
 }
@@ -2354,7 +2385,7 @@ authorizeCheckCount(theEvent: any, type?:any){
   if(theEvent.checked || readChecked == true){
     for(let key in this.authorizationList) {
       ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
-      if(this.authorizationList[key]) {  
+      if(this.authorizationList[key] && key != 'undertaking_confirmTop3') {  
         this.authorizationStatus = true;       
         checkCount++;
       }    
@@ -2407,9 +2438,23 @@ let checkCount = 0;
       this.authorizationStatus = false;
     }
 
-    //console.log(">>> Check status count: ", checkCount);
+    //make visit 
+  let recomVisit: any = {
+    'first':false,'second':false, 'third': false, 'fourth':false
+  };
+  console.log(recomVisit);
+  let recomCheckCount = 0;
+    this.recomendVisit.forEach((item,index) => {
+      if(item.checked == true){
+        recomCheckCount++;
+      }
+    recomVisit[item.name.toString()] = item.checked;
+  })
+  this.step5Data.recommend = recomVisit;
 
-if(ngForm5.form.valid && this.authorizationStatus == true){
+    //console.log(">>> Check status count: ", checkCount);
+    console.log(">>>> Submit step: ", this.certificationBodiesForm);
+if(ngForm5.form.valid && this.authorizationStatus == true && recomCheckCount >0){
 
   this.certificationBodiesForm = {};
   this.certificationBodiesForm.step5 = {};
@@ -2421,21 +2466,15 @@ if(ngForm5.form.valid && this.authorizationStatus == true){
   this.step5Data.authorization_list_json = this.authorizationList;
  // this.step5Data.recommend = this.recommend;
 
-  //make visit 
-  let recomVisit: any = {
-    'first':false,'second':false, 'third': false, 'fourth':false
-  };
-  console.log(recomVisit);
-  this.recomendVisit.forEach((item,index) => {
-    recomVisit[item.name.toString()] = item.checked;
-  })
-  this.step5Data.recommend = recomVisit;
+  
 
   this.step5Data.is_draft = false;
   this.step5Data.application_date = new Date();
 
-  this.certificationBodiesForm.step7.terms1 = this.authorizationListTerms1;
-  this.certificationBodiesForm.step7.terms2 = this.authorizationListTerms2;
+  console.log(this.authorizationListTerms1, " :: ", this.authorizationListTerms2)
+
+  this.certificationBodiesForm.step5.terms1 = this.authorizationListTerms1;
+  this.certificationBodiesForm.step5.terms2 = this.authorizationListTerms2;
 
   this.certificationBodiesForm.step5 = this.step5Data;
   // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
@@ -2454,8 +2493,10 @@ if(ngForm5.form.valid && this.authorizationStatus == true){
           this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
         }
         else{
-          // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
-          this.router.navigateByUrl('/dashboard/status/all');
+          this.toastr.success("Application Submitted Successfully");
+              setTimeout(() => {
+                this.router.navigateByUrl('/dashboard/status/all');
+              }, 5000)
         }
       }else{
         this.toastr.warning(res['msg'], '');
