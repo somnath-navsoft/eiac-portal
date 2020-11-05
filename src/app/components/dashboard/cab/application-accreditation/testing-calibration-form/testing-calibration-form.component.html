@@ -1108,7 +1108,7 @@
                                             </ng-container>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row" >
                                         <div class="col-md-12 col-sm-12">
                                             <div class="row" *ngIf="fullTypeFamily.length > 0">
                                                 <div class="col-12" *ngFor="let typeFamily of fullTypeFamily; let t1 = index;">
@@ -1143,14 +1143,19 @@
                                                         </div> 
                                                     </ng-container>
                                             </ng-container>
-                                        <div class="row">
-                                            <div class="col-md-12 col-sm-12">
+                                            <!-- [ngStyle]="{'display':showScopeTable}" -->
+                                        <div class="row" >
+                                            <div class="col-md-12 col-sm-12">  
                                                 <div class="row" *ngIf="typeFamily.scopeRows.length > 0">
                                                     <div class="col-12" *ngFor="let scope of typeFamily.scopeRows; let i1 = index;">
                                                         <div class="row">
                                                             <div class="col-md-12 p-0">
                                                                 <div class="form-subhdr"  *ngIf="scope.name != '' && scope.familyName !=''">
-                                                                    <h5>Accreditation Scope for - {{scope.name}} >> {{scope.familyName}}</h5>
+                                                                    <h5>Accreditation Scope for - {{scope.name}} 
+                                                                        <ng-container *ngIf="scope.familyName != ''">
+                                                                            >> {{scope.familyName}}
+                                                                        </ng-container>
+                                                                        </h5>
                                                                 </div> 
                                                             </div>
                                                         </div>

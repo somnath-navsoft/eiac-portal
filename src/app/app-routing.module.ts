@@ -148,6 +148,7 @@ const routes: Routes = [
         { path: 'application-registration', component:ApplicationRegistrationComponent, canActivate: [AuthGuard] },
         { path: 'application-accreditation', component:ApplicationAccreditationComponent, canActivate: [AuthGuard] },
         { path: 'work-permit-form', component:WorkPermitFormComponent, canActivate: [AuthGuard] },
+        { path: 'work-permit-form/:id', component:WorkPermitFormComponent, canActivate: [AuthGuard] },
         { path: 'no-objection-certificate-form', component:NoObjectionFormComponent, canActivate: [AuthGuard] },
         { path: 'inspection-bodies-form', component:InspectionBodiesFormComponent, canActivate: [AuthGuard] },
         { path: 'inspection-bodies-form/:id', component:InspectionBodiesFormComponent, canActivate: [AuthGuard] },

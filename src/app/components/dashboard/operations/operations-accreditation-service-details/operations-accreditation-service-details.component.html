@@ -920,7 +920,10 @@
                   <div class="recommend">
                     <span class="confirm">I recommend the visit to be conducted in the 
                       <a href="javascript:void(0)" [ngStyle]="{'cursor':'none'}">
-                        {{recommVisit}}
+                        <ng-container *ngIf="recommendVisit?.first == true">1, </ng-container>
+                        <ng-container *ngIf="recommendVisit?.second == true">2, </ng-container>
+                        <ng-container *ngIf="recommendVisit?.third == true">3,</ng-container>
+                        <ng-container *ngIf="recommendVisit?.fourth == true">4</ng-container>
                       </a> quarter of the year {{serviceDetail?.recommend_year}}.</span>
                   </div>
                   <div class="date_undertake" *ngIf="applicantDetails != undefined && applicantDetails.application_date != undefined">

@@ -66,6 +66,7 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   editScopeData:any;
   subTypeMaster:any[] = [];
   ilauUdertakingConfirm:any;
+  recommendVisit:any;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, public sanitizer: DomSanitizer,private modalService: NgbModal,public uiDialog: UiDialogService) { }
@@ -262,6 +263,8 @@ getSchmeCb(sid: number, typeId: number){
           this.managementManager = result['data']['technicalManager'] ? result['data']['technicalManager'][0] : '';
           this.paymentDetails = result['data'].paymentDetails;
           this.editScopeData = result['data']['scopeDetails'];
+
+          this.recommendVisit = JSON.parse(result['data'].recommend_visit);
 
           // this.scopeDetailsHeading = result['data']['scopeDetails'].heading.column_list;
           // for(let key in result['data']['scopeDetails']) {
