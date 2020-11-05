@@ -2489,6 +2489,7 @@ if(ngForm5.form.valid && this.authorizationStatus == true && recomCheckCount >0)
       this.loader = true;
       if(res['status'] == true) {
         // this.toastr.success(res['msg'], '');
+        this.isApplicationSubmitted = false;
         if(this.paymentFilePath != ''){
           this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
         }

@@ -209,6 +209,8 @@ export class TestingCalibrationFormComponent implements OnInit {
   selectDeleteIndex: any;
   deleteEditScopeConfirm: boolean = false;
   deleteScopeConfirm: boolean = false;
+
+  showScopeTable: any = 'none';
   
   constructor(public Service: AppService, public constant:Constants,public router: Router,
     public toastr: ToastrService,public _trainerService:TrainerService,
@@ -848,6 +850,8 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
 
               this.dynamicScopeModel[schemeId] = {};
               this.dynamicScopeModel[schemeId][familyId] = {};
+
+              this.showScopeTable = 'block';
 
               if(dataScope.scopeValue.length){ 
                 var counter = 0;let defLine = {};

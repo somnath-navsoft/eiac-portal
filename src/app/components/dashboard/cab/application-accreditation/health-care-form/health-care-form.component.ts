@@ -1579,7 +1579,7 @@ loadData(){
                   //console.log(">>> replace: ", getData.data.recommend_visit, " :: ", replace);
                   let cpjson: any = getData.data.recommend_visit ;//'{"first": false, "second": true, "third": false, "fourth": true}';
 
-                  let findVsit: any = JSON.parse(cpjson);
+                  let findVsit: any = JSON.parse(cpjson); 
                   console.log(">>> ", findVsit);
                   for(let key in findVsit){
                      if(key === item.name){
