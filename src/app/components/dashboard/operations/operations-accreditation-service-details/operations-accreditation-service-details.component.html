@@ -158,7 +158,7 @@
                       <td>City</td>
                       <td *ngIf="serviceDetail?.city">{{serviceDetail?.city}}</td>
                       <td>Country</td>
-                      <td *ngIf="appCountry">{{appCountry}}</td>
+                      <td *ngIf="serviceDetail?.country">{{serviceDetail?.country}}</td>
                     </tr>
                     <tr>
                       <td>Mailing Address</td>
@@ -246,19 +246,20 @@
                         {{serviceDetail.duty_to1}} - {{serviceDetail.duty_from1}}
                       </ng-container>
                       <ng-container *ngIf="serviceDetail.duty_to2 && serviceDetail.duty_from2">
-                        ,{{serviceDetail.duty_to2}} - {{serviceDetail.duty_from2}}
+                        , {{serviceDetail.duty_to2}} - {{serviceDetail.duty_from2}}
                       </ng-container>
                       <ng-container *ngIf="serviceDetail.duty_to3 && serviceDetail.duty_from3">
-                        ,{{serviceDetail.duty_to3}} - {{serviceDetail.duty_from3}}
+                        , {{serviceDetail.duty_to3}} - {{serviceDetail.duty_from3}}
                       </ng-container>  
                     </ng-container>                    
                     </td>
                   </tr>
                   <tr>
                     <td>Is Testing the main activity of the organization</td>
-                    <td colspan="3">
+                    <td colspan="1">
                       {{ (serviceDetail?.is_main_activity != undefined && serviceDetail?.is_main_activity == true) ? 'Yes' : 'No' }}
                     </td>
+                    <td colspan="2">{{serviceDetail?.is_main_activity_note}}</td>
                   </tr>
                 </table>
               </div>
@@ -284,38 +285,13 @@
                     <div class="members_details">
                       <h4>{{row2.name}}</h4>
                       <p class="address_details">{{row2.company_list}}</p>
-                      <span class="personal_details">{{row2.contact_person}},</span>
-                      <span *ngIf="row2.designation">{{row2.designation}},</span>
+                      <span class="personal_details">{{row2.contact_person}}, </span>
+                      <span *ngIf="row2.designation">{{row2.designation}}, </span>
                       <span *ngIf="row2.mobile_no">Mobile : {{row2.mobile_no}}</span>
                     </div>
                   </div>
-                  <!-- <div class="col-md-6 pl-0">
-                      <div class="members_details members_last ">
-                        <h4>Mr. Jhon Williams</h4>
-                        <p class="address_details">Al Dahra Agricultural Company, Navigator Software Pvt. Ltd.</p>
-                        <span class="personal_details">Mr. Brad Williams,</span>
-                        <span>Manager, Mobile : (183) 959-1691</span>
-                      </div>
-                  </div> -->
                 </div>
-                <!-- <div class="row pb-1">
-                  <div class="col-md-6 pr-0">
-                    <div class="members_details">
-                      <h4>Mr. Jhon Williams</h4>
-                      <p class="address_details">Al Dahra Agricultural Company, Navigator Software Pvt. Ltd.</p>
-                      <span class="personal_details">Mr. Brad Williams,</span>
-                      <span>Manager, Mobile : (183) 959-1691</span>
-                    </div>
-                  </div>
-                  <div class="col-md-6 pl-0">
-                    <div class="members_details members_last ">
-                      <h4>Mr. Jhon Williams</h4>
-                      <p class="address_details">Al Dahra Agricultural Company, Navigator Software Pvt. Ltd.</p>
-                      <span class="personal_details">Mr. Brad Williams,</span>
-                      <span>Manager, Mobile : (183) 959-1691</span>
-                    </div>
-                  </div>
-                </div> -->
+                
               </div>
             </div>
           </div>
@@ -872,7 +848,7 @@
                 <div class="authData">I acknowledge that I have read and understood and confirm to abide by the 
                   <a href="javascript:void(0)"  (click)="openView(agreementView, 'agreement')">Accreditation Agreement</a> and request to provide us with a word agreement form for signature
                 </div>
-                <div class="authData">I require ILA MRA "Laboratories" <a href="javascript:void(0)"  (click)="openView(ILAView, 'ILA')">Agreement</a>.</div>
+                <div class="authData"><span *ngIf="ilauUdertakingConfirm && ilauUdertakingConfirm == true" class="icon-tick"></span>I require ILA MRA "Laboratories" <a href="javascript:void(0)"  (click)="openView(ILAView, 'ILA')">Agreement</a>.</div>
 
                 <div class="authData">I confirm that the below documents are available and will be furnished once requested by EIAC:</div>
               </div>
@@ -885,12 +861,16 @@
                       <tr>
                           <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
                           <td>
-                            <a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled In Document Review Checklist based on the related standard </a>(for 1st submission only)
+                            Filled Up Document Review Checklist (Related to applied accreditation standard and for initial accreditation & Scope Extensions only)
                           </td>
                       </tr>
                       <tr>
                           <td><span class="icon-tick"></span></td>
-                          <td>Minutes/Report of last Management Review</td>
+                          <td>Internal Procedures (as per the accreditation criteria)</td>
+                      </tr>
+                      <tr>
+                        <td><span class="icon-tick"></span></td>
+                        <td>Minutes/Report of last Management Review</td>
                       </tr>
                       <tr>
                           <td><span class="icon-tick"></span></td>
@@ -902,9 +882,14 @@
                       </tr>
                       <tr>
                           <td><span class="icon-tick"></span></td>
-                          <td>List of key staff and Organizational Structure if not mentioned in the QM</td>
+                          <td>List of key staff and Organizational Structure if not mentioned in the Management System Manual</td>
                       </tr>
                       <tr>
+                        <td><span class="icon-tick"></span></td>
+                        <td>Internal Procedures (as per the accreditation criteria)</td>
+                      </tr>
+                      
+                      <!-- <tr>
                           <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
                           <td>Internal Procedures (as per the accreditation criteria)</td>
                       </tr>
@@ -927,7 +912,7 @@
                       <tr>
                         <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
                         <td>CMC calculations (for calibration laboratory)</td>
-                      </tr>
+                      </tr> -->
                   </table>
               </div>
               <div class="undertaking-last">
@@ -935,8 +920,11 @@
                   <div class="recommend">
                     <span class="confirm">I recommend the visit to be conducted in the 
                       <a href="javascript:void(0)" [ngStyle]="{'cursor':'none'}">
-                        {{recommVisit}}
-                      </a> quarter of the year.</span>
+                        <ng-container *ngIf="recommendVisit?.first == true">1, </ng-container>
+                        <ng-container *ngIf="recommendVisit?.second == true">2, </ng-container>
+                        <ng-container *ngIf="recommendVisit?.third == true">3,</ng-container>
+                        <ng-container *ngIf="recommendVisit?.fourth == true">4</ng-container>
+                      </a> quarter of the year {{serviceDetail?.recommend_year}}.</span>
                   </div>
                   <div class="date_undertake" *ngIf="applicantDetails != undefined && applicantDetails.application_date != undefined">
                       <span>Date : {{applicantDetails.application_date | date:'dd-MM-yyyy'}}</span>
@@ -944,7 +932,8 @@
                 </div>
                 <div class="under_wrapper wrapper_name">
                   <div class="signature_under">
-                    <img src="../../../../../../assets/images/g10.svg" alt="">
+                    <!-- <img src="../../../../../../assets/images/g10.svg" alt=""> -->
+                    {{technicalManager?.name}}
                   </div>
                   <div class="sign_name">
                     <h5>{{technicalManager?.name}}</h5>

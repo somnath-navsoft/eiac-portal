@@ -43,69 +43,80 @@ export class WorkPermitFormComponent implements OnInit {
   quality_manual_path:any;
   work_instruction_path:any;
   check_list_path:any;
+  getWorkPermitId:any;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
   ngOnInit() { 
+    this.getWorkPermitId = sessionStorage.getItem('workPermitId');
     this.checkCaptchaValidation = true;
     this.authorizationList = {authorization_confirm1:false};
+    this.loadData();
+    // console.log(this.getWorkPermitId,'getWorkPermitId');
   }
  
   loadData() {
-    this.workPermitForm.name_of_cab = '';
-    this.workPermitForm.address = '';
-    this.workPermitForm.cab_license_no = '';
-    this.workPermitForm.cab_issue_date = '';
-    this.workPermitForm.applicant_name = '';
-    this.workPermitForm.designation = '';
-    this.workPermitForm.tel_no = '';
-    this.workPermitForm.email_address = '';
-    this.workPermitForm.activity_section = '';
-    this.workPermitForm.scopes_to_be_authorized = '';
-    this.workPermitForm.license_no = '';
-    this.workPermitForm.date_of_issue = '';
-    this.workPermitForm.date_of_expiry = '';
+    // let url2 = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+this.urlVal;
+      this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.workPermitform+this.getWorkPermitId)
+      .subscribe(
+        res => {
+          console.log(res['data'],'res');
+          var allData = res['data'];
+          this.workPermitForm.name_of_cab = allData.name_of_cab;
+          this.workPermitForm.address = allData.address;
+          this.workPermitForm.cab_license_no = allData.cab_license_no;
+          this.workPermitForm.cab_issue_date = new Date(allData.cab_issue_date);
+          this.workPermitForm.applicant_name = allData.applicant_name;
+          this.workPermitForm.designation = allData.designation;
+          this.workPermitForm.tel_no = allData.tel_no;
+          this.workPermitForm.email_address = allData.email_address;
+          this.workPermitForm.activity_section = allData.activity_section;
+          this.workPermitForm.scopes_to_be_authorized = allData.scopes_to_be_authorized;
+          this.workPermitForm.license_no = allData.applicant_licence_no;
+          this.workPermitForm.date_of_issue = allData.date_of_issue;
+          this.workPermitForm.date_of_expiry = allData.date_of_expiry;
 
-    var recognized_logo1 = '';
-    if(recognized_logo1 != ''){
-      let getFile =recognized_logo1.toString().split('/');
-      if(getFile.length){
-        this.workPermitForm.licence_document = getFile[4].toString().split('.')[0];
-        this.licence_document_path = this.constant.mediaPath + recognized_logo1.toString();
-      }
-    }
+          var recognized_logo1 = allData.licence_document_file;
+          if(recognized_logo1 != ''){
+            let getFile =recognized_logo1.toString().split('/');
+            if(getFile.length){
+              this.workPermitForm.licence_document = getFile[4].toString().split('.')[0];
+              this.licence_document_path = this.constant.mediaPath + recognized_logo1.toString();
+            }
+          }
 
-    var quality_manual1 = '';
-    if(quality_manual1 != ''){
-      let getFile = quality_manual1.toString().split('/');
-      if(getFile.length){
-        this.workPermitForm.quality_manual = getFile[4].toString().split('.')[0];
-        this.quality_manual_path = this.constant.mediaPath + quality_manual1.toString();
-      }
-    }
+          var quality_manual1 = allData.quality_manual_file;
+          if(quality_manual1 != ''){
+            let getFile = quality_manual1.toString().split('/');
+            if(getFile.length){
+              this.workPermitForm.quality_manual = getFile[4].toString().split('.')[0];
+              this.quality_manual_path = this.constant.mediaPath + quality_manual1.toString();
+            }
+          }
 
-    var work_instruction1 = '';
-    if(work_instruction1 != ''){
-      let getFile = work_instruction1.toString().split('/');
-      if(getFile.length){
-        this.workPermitForm.work_instruction = getFile[4].toString().split('.')[0];
-        this.work_instruction_path = this.constant.mediaPath + work_instruction1.toString();
-      }
-    }
+          var work_instruction1 = allData.work_instruction_file;
+          if(work_instruction1 != ''){
+            let getFile = work_instruction1.toString().split('/');
+            if(getFile.length){
+              this.workPermitForm.work_instruction = getFile[4].toString().split('.')[0];
+              this.work_instruction_path = this.constant.mediaPath + work_instruction1.toString();
+            }
+          }
 
-    var check_list1 = '';
-    if(check_list1 != ''){
-      let getFile = check_list1.toString().split('/');
-      if(getFile.length){
-        this.workPermitForm.check_list = getFile[4].toString().split('.')[0];
-        this.check_list_path = this.constant.mediaPath + check_list1.toString();
-      }
-    }
+          var check_list1 = allData.check_list_file;
+          if(check_list1 != ''){
+            let getFile = check_list1.toString().split('/');
+            if(getFile.length){
+              this.workPermitForm.check_list = getFile[4].toString().split('.')[0];
+              this.check_list_path = this.constant.mediaPath + check_list1.toString();
+            }
+          }
 
-    this.workPermitForm.organization_name = '';
-    this.workPermitForm.representative_name = '';
-    this.workPermitForm.behalf_designation = '';
-    this.workPermitForm.digital_signature = '';
+          this.workPermitForm.organization_name = allData['onBehalfApplicant'][0].organization_name;
+          this.workPermitForm.representative_name = allData['onBehalfApplicant'][0].representative_name;
+          this.workPermitForm.behalf_designation = allData['onBehalfApplicant'][0].designation;
+          this.workPermitForm.digital_signature = allData['onBehalfApplicant'][0].digital_signature;
+      });
   }
   
   validateFile(fileEvent: any,fileName?:any) {
@@ -160,6 +171,7 @@ export class WorkPermitFormComponent implements OnInit {
     if(ngForm.form.valid && this.isSubmit){
       // this.workPermitForm.application_type = '';
       this.workPermitForm.is_draft = false;
+      this.workPermitForm.application_id = this.getWorkPermitId != undefined ? this.getWorkPermitId : '';
       this.workPermitFormData.append('data',JSON.stringify(this.workPermitForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.workPermitform,this.workPermitFormData)
       .subscribe(
