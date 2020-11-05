@@ -1536,7 +1536,7 @@
                                             <li>
                                                 <mat-checkbox name="authorization_confirm2" [disableRipple]="true"
                                                 (click)="$event.preventDefault()" [(ngModel)]="authorizationList.authorization_confirm2" >
-                                                Entering the authorised name will serve as an acceptance and digital binding signature for this agreement
+                                                I acknowledge that I have read and understood and confirm to abide by the Accreditation Agreement
                                                 </mat-checkbox>
                                             </li>
                                         </ul>
@@ -1625,9 +1625,9 @@
                                                         <ng-container >
                                                             <mat-checkbox  name="recommend_visit" [ngModelOptions]="{standalone: true}" *ngFor="let item of recomendVisit; let k=index;" required
                                                         [(ngModel)]="item.checked">{{item.label}}</mat-checkbox> 
-                                                        </ng-container>quarter
+                                                        </ng-container>
                                                     </div>
-                                                    <span class="confirm">of the year</span>
+                                                    <span class="confirm">quarter of the year</span>
                                                     <div class="recommend-year">
                                                         <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step7Data.recommend_year" required>
                                                             <mat-option [value]="item.value" *ngFor="let item of recommendYearValues; let k=index;">{{item.title}}</mat-option>
@@ -1668,6 +1668,11 @@
                                                     <hr>
                                                 </div>
                                             </div>
+
+                                            <mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm8" [(ngModel)]="authorizationList.undertaking_confirm8">
+                                                Entering the authorised name will serve as an acceptance and digital binding signature for this agreement
+                                            </mat-checkbox>
+                                            
                                             <div class="row mt-3">
                                                 <div class="col-12 p-0">
                                                     <div class="form-subheader-data subhead-dt">

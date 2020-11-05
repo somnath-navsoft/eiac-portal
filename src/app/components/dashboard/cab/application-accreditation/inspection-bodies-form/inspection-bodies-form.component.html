@@ -1321,7 +1321,7 @@
                                                     <li>
                                                         <mat-checkbox name="authorization_confirm2" [disableRipple]="true"
                                                         (click)="$event.preventDefault()" [(ngModel)]="authorizationList.authorization_confirm2" >
-                                                        Entering the authorised name will serve as an acceptance and digital binding signature for this agreement
+                                                        I acknowledge that I have read and understood and confirm to abide by the Accreditation Agreement
                                                         </mat-checkbox>
                                                     </li>
                                                 </ul>
@@ -1403,7 +1403,7 @@
                                             <div class="recommend my-3">
                                                 <div class="recommend-main">
                                                     <div class="recommend-quarter">
-                                                        <span class="confirm">I recommend the visit to be conducted in the <span class="required_input">*</span></span>
+                                                        <span class="confirm">I recommend the visit to be conducted in the</span>
                                                         <!-- [(ngModel)]="step7Data.recommend_visit" -->
                                                         <!-- @{{recomendVisit | json}} -->
                                                         <!-- <mat-radio-group name="recommended" #recommendVisit="ngModel"> -->
@@ -1443,6 +1443,11 @@
                                                     <hr>
                                                 </div>
                                             </div>
+
+                                            <mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm8" [(ngModel)]="authorizationList.undertaking_confirm8">
+                                                Entering the authorised name will serve as an acceptance and digital binding signature for this agreement
+                                            </mat-checkbox>
+
                                             <div class="row mt-3">
                                                 <div class="col-12 p-0">
                                                     <div class="form-subheader-data subhead-dt">

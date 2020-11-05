@@ -171,7 +171,9 @@ export class WorkPermitFormComponent implements OnInit {
     if(ngForm.form.valid && this.isSubmit){
       // this.workPermitForm.application_type = '';
       this.workPermitForm.is_draft = false;
-      this.workPermitForm.application_id = this.getWorkPermitId != undefined ? this.getWorkPermitId : '';
+      if(this.getWorkPermitId != undefined) {
+        this.workPermitForm.application_id = this.getWorkPermitId;
+      }
       this.workPermitFormData.append('data',JSON.stringify(this.workPermitForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.workPermitform,this.workPermitFormData)
       .subscribe(
@@ -186,11 +188,35 @@ export class WorkPermitFormComponent implements OnInit {
         },
         error => {
           this.toastr.error('Something went wrong','')
-    })
+      }
+      )
     }
     else{
       this.toastr.warning('Please Fill required field','')
     }
+  }
+
+  savedraftStep(){
+    this.workPermitForm.is_draft = true;
+    if(this.getWorkPermitId != 'undefined') {
+      this.workPermitForm.application_id = this.getWorkPermitId;
+    }
+    this.workPermitFormData.append('data',JSON.stringify(this.workPermitForm));
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.workPermitform,this.workPermitFormData)
+    .subscribe(
+      res => {
+        if(res['status']==true){
+          this.toastr.success('Save Draft Successfully', '');
+          this.router.navigate(['application-form/service/work_permit']);
+        }
+        else{
+          this.toastr.error(res['msg'],'')
+        }
+      },
+      error => {
+        this.toastr.error('Something went wrong','')
+    }
+    )
   }
 
 }
