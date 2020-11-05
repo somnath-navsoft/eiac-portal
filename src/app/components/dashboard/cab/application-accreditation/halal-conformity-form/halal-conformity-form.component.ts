@@ -1245,7 +1245,7 @@ addSchemeRow(obj: any = [],index: number){
                   this.ownOrgMembInfo = res['data'].bodMember;
                 }
                 
-                if(res['data'].otherActivityLocations != ''){
+                if(res['data'].otherActivityLocations != null){
                   this.step1Data.hcab_other_location = '1';
                   var hcab_location = res['data'].otherActivityLocations
                   for(let key in hcab_location) {
@@ -1460,7 +1460,7 @@ addSchemeRow(obj: any = [],index: number){
       return true;
     }else if(!ex_check && fileName == 'hcabLogo3') {
       this.hcabLogo3_validation = false;
-      return false;
+      return false; 
     }
   }
 
@@ -1941,7 +1941,7 @@ addSchemeRow(obj: any = [],index: number){
   }
 
   onSubmitStep1(ngForm1: any){
-    this.Service.moveSteps('application_information', 'personal_information', this.headerSteps);
+    //this.Service.moveSteps('application_information', 'personal_information', this.headerSteps);
     // //console.log(this.ownOrgMembInfo,'ownOrgMembInfo');
   
     this.isApplicationSubmitted = true;
@@ -2035,7 +2035,7 @@ addSchemeRow(obj: any = [],index: number){
   }
   
   onSubmitStep2(ngForm2: any){
-    this.Service.moveSteps('personal_information','scope_accreditation',  this.headerSteps);
+    //this.Service.moveSteps('personal_information','scope_accreditation',  this.headerSteps);
     if(ngForm2.form.valid) {
       var applicationId = sessionStorage.getItem('applicationId');
       // this.step3Data.application_id = applicationId;
@@ -2427,7 +2427,7 @@ getMatchScheme(scId: any, scopeData: any){
 
   onSubmitStep3(ngForm: any, type?:any) {
     
-    this.Service.moveSteps('scope_accreditation','other_hcab_details',  this.headerSteps);
+    //this.Service.moveSteps('scope_accreditation','other_hcab_details',  this.headerSteps);
 
     
     //this.saveScope();

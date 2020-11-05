@@ -920,7 +920,10 @@
                   <div class="recommend">
                     <span class="confirm">I recommend the visit to be conducted in the 
                       <a href="javascript:void(0)" [ngStyle]="{'cursor':'none'}">
-                        {{recommVisit}}
+                        <ng-container *ngIf="recommendVisit?.first == true">1, </ng-container>
+                        <ng-container *ngIf="recommendVisit?.second == true">2, </ng-container>
+                        <ng-container *ngIf="recommendVisit?.third == true">3,</ng-container>
+                        <ng-container *ngIf="recommendVisit?.fourth == true">4</ng-container>
                       </a> quarter of the year {{serviceDetail?.recommend_year}}.</span>
                   </div>
                   <div class="date_undertake" *ngIf="applicantDetails != undefined && applicantDetails.application_date != undefined">
@@ -989,7 +992,7 @@
       <div class="row m-0">
         <div class="col-md-12">
           <div class="bttns-health bttn-staff">
-            <div class="button-content">
+            <div *ngIf="paymentDetails && paymentDetails!= ''" class="button-content">
               <button class="cancel-bttn" (click)="uiDialog.openPDFViewer(_constant.mediaPath,serviceDetail.form_pdf)"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button>
 
               <button class="cancel-bttn" (click)="downloadCsv()"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD CSV</button>

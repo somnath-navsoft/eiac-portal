@@ -965,53 +965,7 @@
                                     </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey)" [parent]="this" [modalType]="'delete'"></custom-modal>
-                                        <ng-container *ngIf="editScopeData != undefined && editScopeData != null">
-                                            <div class="row">
-                                                <div class="col-md-12 p-0">
-                                                    <div class="form-subheader-data">
-                                                        <h5>SCOPE DATA</h5>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteIndex)" [parent]="this" [modalType]="'delete'"></custom-modal>
-                                            <ng-container *ngFor="let item of editScopeData | keyvalue">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="table-appln scope-data">
-                                                              <!-- @{{item.value.scope_heading | json}} || {{item.key}} || {{item.value.scope_heading.length}} -->
-                                                            <div class="sub-header">
-                                                                <h5 [innerHTML]="getSchme(item.key)"></h5>
-                                                            </div>
-                                                            <table>
-                                                                <tr>
-                                                                    <th *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
-                                                                    <th>Action</th>
-                                                                </tr>
-                                                                <ng-container *ngIf="item.value.scope_value.length > 0">
-                                                                    <tr *ngFor="let item2 of (item.value.scope_value) | keyvalue; let i4 = index;">
-                                                                        <td *ngFor="let item3 of item2.value | keyvalue;">
-                                                                            <span [innerHTML]="(item3.value)"></span>
-                                                                        </td>
-                                                                        <td>
-                                                                        <!-- deleteScopeData(item.key, i4) -->
-                                                                        <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item.key)"></span>
-                                                                        </td>                                                                
-                                                                    </tr>
-                                                                </ng-container>
-                                                                <ng-container *ngIf="item.value.scope_value.length == 0">
-                                                                    <tr>
-                                                                        <td [attr.colspan]="Service.getObjectLength(item.value.scope_heading)+1">
-                                                                            No Data
-                                                                        </td>
-                                                                    </tr>
-                                                                </ng-container>
-                                                            </table>  
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </ng-container>
-                                        </ng-container>    
+                                     <!-- exisiting...perev -->     
                                 <!-- step5Data.scheme_ids[i] -->
                                 <ng-container *ngFor="let item of schemeRows; let i = index;">
                                         <div class="row">
@@ -1174,7 +1128,56 @@
 
                                         </div>
                                     </div>
-                            
+
+                                    <!-- save table -->
+                                    <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                                    <ng-container *ngIf="editScopeData != undefined && editScopeData != null">
+                                        <div class="row">
+                                            <div class="col-md-12 p-0">
+                                                <div class="form-subheader-data">
+                                                    <h5>SCOPE DATA</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </ng-container> 
+                                    <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteIndex)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                                            <ng-container *ngFor="let item of editScopeData | keyvalue">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="table-appln scope-data">
+                                                              <!-- @{{item.value.scope_heading | json}} || {{item.key}} || {{item.value.scope_heading.length}} -->
+                                                            <div class="sub-header">
+                                                                <h5 [innerHTML]="getSchme(item.key)"></h5>
+                                                            </div>
+                                                            <table>
+                                                                <tr>
+                                                                    <th *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                                <ng-container *ngIf="item.value.scope_value.length > 0">
+                                                                    <tr *ngFor="let item2 of (item.value.scope_value) | keyvalue; let i4 = index;">
+                                                                        <td *ngFor="let item3 of item2.value | keyvalue;">
+                                                                            <span [innerHTML]="(item3.value)"></span>
+                                                                        </td>
+                                                                        <td>
+                                                                        <!-- deleteScopeData(item.key, i4) -->
+                                                                        <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item.key)"></span>
+                                                                        </td>                                                                
+                                                                    </tr>
+                                                                </ng-container>
+                                                                <ng-container *ngIf="item.value.scope_value.length == 0">
+                                                                    <tr>
+                                                                        <td [attr.colspan]="Service.getObjectLength(item.value.scope_heading)+1">
+                                                                            No Data
+                                                                        </td>
+                                                                    </tr>
+                                                                </ng-container>
+                                                            </table>  
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
                                 </div>
                             </div>
                         </div>
@@ -1321,7 +1324,7 @@
                                                     <li>
                                                         <mat-checkbox name="authorization_confirm2" [disableRipple]="true"
                                                         (click)="$event.preventDefault()" [(ngModel)]="authorizationList.authorization_confirm2" >
-                                                        Entering the authorised name will serve as an acceptance and digital binding signature for this agreement
+                                                        I acknowledge that I have read and understood and confirm to abide by the Accreditation Agreement
                                                         </mat-checkbox>
                                                     </li>
                                                 </ul>
@@ -1403,7 +1406,7 @@
                                             <div class="recommend my-3">
                                                 <div class="recommend-main">
                                                     <div class="recommend-quarter">
-                                                        <span class="confirm">I recommend the visit to be conducted in the <span class="required_input">*</span></span>
+                                                        <span class="confirm">I recommend the visit to be conducted in the</span>
                                                         <!-- [(ngModel)]="step7Data.recommend_visit" -->
                                                         <!-- @{{recomendVisit | json}} -->
                                                         <!-- <mat-radio-group name="recommended" #recommendVisit="ngModel"> -->
@@ -1443,6 +1446,11 @@
                                                     <hr>
                                                 </div>
                                             </div>
+
+                                            <mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm8" [(ngModel)]="authorizationList.undertaking_confirm8">
+                                                Entering the authorised name will serve as an acceptance and digital binding signature for this agreement
+                                            </mat-checkbox>
+
                                             <div class="row mt-3">
                                                 <div class="col-12 p-0">
                                                     <div class="form-subheader-data subhead-dt">
