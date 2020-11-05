@@ -992,7 +992,7 @@
       <div class="row m-0">
         <div class="col-md-12">
           <div class="bttns-health bttn-staff">
-            <div class="button-content">
+            <div *ngIf="paymentDetails && paymentDetails!= ''" class="button-content">
               <button class="cancel-bttn" (click)="uiDialog.openPDFViewer(_constant.mediaPath,serviceDetail.form_pdf)"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button>
 
               <button class="cancel-bttn" (click)="downloadCsv()"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD CSV</button>
