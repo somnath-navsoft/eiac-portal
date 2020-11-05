@@ -99,6 +99,8 @@ export class LayoutComponent implements OnInit {
           this._service.setValueUrl(splitUrl[4]);
         }else if(splitUrl[3] == 'accreditation-service-details') {
           sessionStorage.setItem('routeId', splitUrl[4]);
+        }else if(splitUrl[3] == 'work-permit-form') {
+          sessionStorage.setItem('workPermitId', splitUrl[4]);
         }else{
           this._service.setValueUrl('');
         }

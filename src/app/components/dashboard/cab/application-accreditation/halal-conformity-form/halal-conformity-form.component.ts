@@ -1245,7 +1245,7 @@ addSchemeRow(obj: any = [],index: number){
                   this.ownOrgMembInfo = res['data'].bodMember;
                 }
                 
-                if(res['data'].otherActivityLocations != ''){
+                if(res['data'].otherActivityLocations != null){
                   this.step1Data.hcab_other_location = '1';
                   var hcab_location = res['data'].otherActivityLocations
                   for(let key in hcab_location) {
