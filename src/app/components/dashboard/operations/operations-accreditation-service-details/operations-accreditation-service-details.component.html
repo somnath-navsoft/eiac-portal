@@ -443,7 +443,7 @@
                     {{technicalManager?.email}}
                   </span>
                   <span class="status_details">
-                    <span class="icon-google-docs"></span>
+                    <span class="icon-work"></span>
                     {{technicalManager?.relevent_experience}} Yrs.
                   </span>
                 </div>
@@ -478,7 +478,7 @@
                     {{managementManager?.email}}
                   </span>
                   <span class="status_details">
-                    <span class="icon-google-docs"></span>
+                    <span class="icon-work"></span>
                     {{managementManager?.relevent_experience}} Yrs.
                   </span>
                 </div>
@@ -848,7 +848,7 @@
                 <div class="authData">I acknowledge that I have read and understood and confirm to abide by the 
                   <a href="javascript:void(0)"  (click)="openView(agreementView, 'agreement')">Accreditation Agreement</a> and request to provide us with a word agreement form for signature
                 </div>
-                <div class="authData"><span *ngIf="ilauUdertakingConfirm && ilauUdertakingConfirm == true" class="icon-tick"></span>I require ILA MRA "Laboratories" <a href="javascript:void(0)"  (click)="openView(ILAView, 'ILA')">Agreement</a>.</div>
+                <div class="authData"><span class="auth-class-check">(✓)</span> I require ILA MRA "Laboratories"  <a href="javascript:void(0)"  (click)="openView(ILAView, 'ILA')">Agreement</a>.</div>
 
                 <div class="authData">I confirm that the below documents are available and will be furnished once requested by EIAC:</div>
               </div>
