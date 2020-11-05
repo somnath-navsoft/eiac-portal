@@ -1575,11 +1575,11 @@ loadData(){
                 //this.step7Data.recommend_visit = visitRecomm;//'second';
                  this.step7Data.recommend_year = parseInt(getData.data.recommend_year);
                  this.recomendVisit.forEach((item, index) => {
-                  let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
-                  console.log(">>> replace: ", getData.data.recommend_visit, " :: ", replace);
+                  //let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
+                  //console.log(">>> replace: ", getData.data.recommend_visit, " :: ", replace);
                   let cpjson: any = getData.data.recommend_visit ;//'{"first": false, "second": true, "third": false, "fourth": true}';
-                  let findVsit: any = JSON.parse(cpjson);;//;
-                  //
+
+                  let findVsit: any = JSON.parse(cpjson);
                   console.log(">>> ", findVsit);
                   for(let key in findVsit){
                      if(key === item.name){
@@ -1589,7 +1589,7 @@ loadData(){
                   }
             })
             console.log("@recommend visit: ", this.recomendVisit, " -- ", getData.data.recommend_visit);
-            this.step7Data.recommend_visit = (getData.data.recommend_visit);
+            this.step7Data.recommend_visit = this.recomendVisit;//(getData.data.recommend_visit);
 
                  let authList: any;
                 authList = getData.data.authorization_list;
@@ -2763,6 +2763,25 @@ if(this.authorizationStatus == false){
 //   this.toastr.error('Please Check any recommend the visit ', '');
 // }
 
+this.healthCareForm = {};
+  this.healthCareForm.step7 = {};
+  this.healthCareForm.email = this.userEmail;
+  this.healthCareForm.userType = this.userType;
+  var applicationId = sessionStorage.getItem('applicationId'); 
+  this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+  this.healthCareForm.saved_step = '7';
+  this.step7Data.authorization_list_json = this.authorizationList;
+  // this.step7Data.recommend = this.recommend;
+  
+
+  this.step7Data.is_draft = false;
+  this.step7Data.application_date = new Date();
+
+  this.healthCareForm.step7.terms1 = this.authorizationListTerms1;
+  this.healthCareForm.step7.terms2 = this.authorizationListTerms2;
+
+  
+
 //make visit 
 let recomVisit: any = {
   'first':false,'second':false, 'third': false, 'fourth':false
@@ -2777,26 +2796,12 @@ let recomCheckCount = 0;
 })
 this.step7Data.recommend = recomVisit;//this.recomendVisit;
 
-if(ngForm7.form.valid && recomCheckCount > 0){
+this.healthCareForm.step7 = this.step7Data;
+console.log(">>>> Submit step: ", this.healthCareForm);
 
-  this.healthCareForm = {};
-  this.healthCareForm.step7 = {};
-  this.healthCareForm.email = this.userEmail;
-  this.healthCareForm.userType = this.userType;
-  var applicationId = sessionStorage.getItem('applicationId');
-  this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-  this.healthCareForm.saved_step = '7';
-  this.step7Data.authorization_list_json = this.authorizationList;
-  // this.step7Data.recommend = this.recommend;
+if(ngForm7.form.valid && recomCheckCount > 0 && this.authorizationStatus == true){
+
   
-
-  this.step7Data.is_draft = false;
-  this.step7Data.application_date = new Date();
-
-  this.healthCareForm.step7.terms1 = this.authorizationListTerms1;
-  this.healthCareForm.step7.terms2 = this.authorizationListTerms2;
-
-  this.healthCareForm.step7 = this.step7Data;
   // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
 
   // this.step6DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));

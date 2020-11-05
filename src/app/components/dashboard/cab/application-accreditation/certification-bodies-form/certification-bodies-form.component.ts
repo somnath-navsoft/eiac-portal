@@ -1357,21 +1357,20 @@ loadAppInfo(){
                 this.step5Data.digital_signature        = getAuthData.digital_signature;
                 this.step5Data.application_date         = getAuthData.application_date;
 
-                let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
+                // let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
                   
-                let replace1: string = replace.toString().replace('"', '');
-                let objVal: any = JSON.parse(JSON.stringify(replace1));
-                let objVal1: any = JSON.stringify(replace1).replace(/[\{\}"]+/g,"");
-                let objVal2: any = objVal1.replaceAll("\\", "");
-                
+                // let replace1: string = replace.toString().replace('"', '');
+                // let objVal: any = JSON.parse(JSON.stringify(replace1));
+                // let objVal1: any = JSON.stringify(replace1).replace(/[\{\}"]+/g,"");
+                // let objVal2: any = objVal1.replaceAll("\\", "");               
 
-                console.log(">>> COnv JSON: ", getData.data.recommend_visit, " :: ", replace, " -- ", replace1);
-                console.log(objVal2)
+                // console.log(">>> COnv JSON: ", getData.data.recommend_visit, " :: ", replace, " -- ", replace1);
+                // console.log(objVal2)
                 this.recomendVisit.forEach((item, index) => {
                   
                   //let cpjson: any = replace1;//'{"first": false, "second": true, "third": false, "fourth": true}';
-                  let findVsit: any = objVal.replace(/["']/g, "").toString()//{first: true, second: false, third: false, fourth: true};//;
-                  //console.log(">>> ", findVsit);
+                  let findVsit: any = JSON.parse(getData.data.recommend_visit);
+                  console.log(">>> ", findVsit);
                   for(let key in findVsit){
                      if(key === item.name){
                        console.log(">>>> found: ", item, " == ", findVsit[key]);
@@ -1380,7 +1379,7 @@ loadAppInfo(){
                   }
             })
             console.log("@recommend visit: ", this.recomendVisit, " -- ", getData.data.recommend_visit);
-            this.step7Data.recommend_visit = (getData.data.recommend_visit);
+            this.step7Data.recommend_visit = this.recomendVisit;//(getData.data.recommend_visit);
 
                 let authList: any;
                 authList = getData.data.authorization_list;
@@ -2386,7 +2385,7 @@ authorizeCheckCount(theEvent: any, type?:any){
   if(theEvent.checked || readChecked == true){
     for(let key in this.authorizationList) {
       ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
-      if(this.authorizationList[key]) {  
+      if(this.authorizationList[key] && key != 'undertaking_confirmTop3') {  
         this.authorizationStatus = true;       
         checkCount++;
       }    
@@ -2454,7 +2453,7 @@ let checkCount = 0;
   this.step5Data.recommend = recomVisit;
 
     //console.log(">>> Check status count: ", checkCount);
-
+    console.log(">>>> Submit step: ", this.certificationBodiesForm);
 if(ngForm5.form.valid && this.authorizationStatus == true && recomCheckCount >0){
 
   this.certificationBodiesForm = {};

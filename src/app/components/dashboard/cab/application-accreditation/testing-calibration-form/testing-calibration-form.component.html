@@ -573,7 +573,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                            @{{step1Data.is_main_activity}}
+                                            <!-- @{{step1Data.is_main_activity}} -->
                                             <mat-radio-group name="is_main_activity" #selectInspecActivity="ngModel" [(ngModel)]="step1Data.is_main_activity" required>
                                                 <div class="row">
                                                     <div class="col-md-4">
@@ -860,7 +860,7 @@
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Relevant Experience</mat-label>
-                                                <input  (keypress)="Service.IsNumeric($event)" matInput placeholder="Relevant Experience" name="relevent_experience_technical" [(ngModel)]="step3Data.relevent_experience" required>
+                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Relevant Experience" name="relevent_experience_technical" [(ngModel)]="step3Data.relevent_experience" required>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -904,7 +904,7 @@
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Relevant Experience</mat-label>
-                                                <input  (keypress)="Service.IsNumeric($event)" matInput placeholder="Relevant Experience" name="management_relevent_experience" [(ngModel)]="step3Data.management_relevent_experience" required>
+                                                <input   (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Relevant Experience" name="management_relevent_experience" [(ngModel)]="step3Data.management_relevent_experience" required>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -1006,15 +1006,61 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteIndex)" [parent]="this" [modalType]="'delete'"></custom-modal>
-                                                <!-- <ng-container *ngFor="let item of editScopeData | keyvalue">
-                                                    <div class="row">
+                                                <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteIndex, selectDeleteFamilyKey)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                                                <ng-container *ngFor="let item of editScopeData | keyvalue">
+                                                    <div class="row"> 
+                                                        <div class="col-md-12">
+                                                            <div class="sub-header">
+                                                                <h5 [innerHTML]="getSchme(item.key)"></h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- {{item | json}} | {{item.value | json}} -->
+                                                    <ng-container *ngIf="item.value != null && item.value != undefined">
+                                                        <ng-container *ngFor="let item5 of (item.value) | keyvalue;">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="table-appln scope-data">
+                                                                        <div class="sub-header">
+                                                                            <h5 [innerHTML]="getFamilySchme(item.key, item5.key)"></h5>
+                                                                        </div>
+                                                                        <table>
+                                                                            <tr>
+                                                                                <th *ngFor="let item6 of (item5.value.scope_heading) | keyvalue;">{{item6.value}}</th>
+                                                                                <th>Action</th>
+                                                                            </tr>
+                                                                            <ng-container *ngIf="item5.value.scope_value.length > 0">
+                                                                                <tr *ngFor="let item2 of (item5.value.scope_value) | keyvalue; let i4 = index;">
+                                                                                    <td *ngFor="let item3 of item2.value | keyvalue;">
+                                                                                        <span [innerHTML]="(item3.value)"></span> 
+                                                                                    </td>
+                                                                                    <td>
+                                                                                    <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item.key, item5.key )"></span>
+                                                                                    </td>                                                                
+                                                                                </tr>
+                                                                            </ng-container>
+                                                                            <ng-container *ngIf="item5.value.scope_value.length == 0">
+                                                                                <tr>
+                                                                                    <td [attr.colspan]="Service.getObjectLength(item5.value.scope_heading)+1">
+                                                                                        No Data
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </ng-container>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </ng-container>
+                                                    </ng-container>
+
+                                                    <!-- <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="table-appln scope-data">
                                                                 <div class="sub-header">
+                                                                    {{item | json}}
                                                                     <h5 [innerHTML]="getSchme(item.key)"></h5>
-                                                                </div>
-                                                                <table>
+                                                                </div> -->
+                                                                <!-- <table>
                                                                     <tr>
                                                                         <th *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
                                                                         <th>Action</th>
@@ -1036,11 +1082,11 @@
                                                                             </td>
                                                                         </tr>
                                                                     </ng-container>
-                                                                </table>  
-                                                            </div>
+                                                                </table>   -->
+                                                            <!-- </div>
                                                         </div>
-                                                    </div>
-                                                </ng-container> -->
+                                                    </div> -->
+                                                </ng-container>
                                             </ng-container> 
                                     
                                             <ng-container *ngFor="let item of schemeRows; let i = index;">
@@ -1062,27 +1108,6 @@
                                             </ng-container>
                                         </div>
                                     </div>
-                                    <!-- <ng-container *ngIf="!scopeFamilyNull">
-                                        <ng-container *ngFor="let item of scopeFamilyRows; let k = index;">
-                                            <div class="row">
-                                                <div class="col-md-9 col-sm-9">
-                                                    <mat-form-field class="cab-data">
-                                                        <mat-label>Scope Family</mat-label>
-                                        <mat-select (selectionChange)="getCriteria(scopeFamilyRows[i].id, i)" placeholder="Select" name="scheme_id_{{i}}"  
-                                                        [(ngModel)]="scopeFamilyRows[i].id" required>
-                                                            <mat-option [value]="item.scope_family" *ngFor="let item of criteriaMaster; let k=index;">{{item.title}}</mat-option>
-                                                        </mat-select>
-                                                        <mat-error></mat-error> 
-                                                    </mat-form-field>
-                                                </div>
-                                                <div class="col-md-3 col-sm-3">
-                                                <span *ngIf="i >= 0" class="icon-add-round" (click)="addSchemeRow(schemeRows,i)"></span>&nbsp;
-                                                <span *ngIf="i >= 1" class="icon-cross" (click)="removeSchemeRow(schemeRows,i)"></span>
-                                                </div>
-                                            </div> 
-                                        </ng-container>
-                                    </ng-container> -->
-
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
                                             <div class="row" *ngIf="fullTypeFamily.length > 0">
@@ -1099,7 +1124,7 @@
                                                     <ng-container *ngFor="let itemF of typeFamily.scopeFamilyRows; let k = index;">  
                                                         <div class="row mt-3">
                                                             <div class="col-md-9 col-sm-9">
-                                                                @index - {{k}} -- @{{typeFamily.scopeFamilyRows[k].id}}
+                                                                <!-- @index - {{k}} -- @{{typeFamily.scopeFamilyRows[k].id}} -->
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Scope Family</mat-label>
                                                                     
@@ -1124,7 +1149,7 @@
                                                     <div class="col-12" *ngFor="let scope of typeFamily.scopeRows; let i1 = index;">
                                                         <div class="row">
                                                             <div class="col-md-12 p-0">
-                                                                <div class="form-subhdr">
+                                                                <div class="form-subhdr"  *ngIf="scope.name != '' && scope.familyName !=''">
                                                                     <h5>Accreditation Scope for - {{scope.name}} >> {{scope.familyName}}</h5>
                                                                 </div> 
                                                             </div>
@@ -1133,7 +1158,7 @@
                                                         <div class="row">
                                                             <div class="col-md-12">
                                                                 <div class="table-content-health">
-                                                                    hvjjjjj
+                                                                    
                                                                     <table>
                                                                         <thead>
                                                                             <tr>
@@ -1562,9 +1587,9 @@
                                             <div class="authData">
                                                 
                                                 <mat-checkbox name="undertaking_confirmTop3" (change)="authorizeCheckCount($event)"
-                                                [(ngModel)]="authorizationList.undertaking_confirmTop3" required>Do you require ILA MRA Mark Laboratories</mat-checkbox>
+                                                [(ngModel)]="authorizationList.undertaking_confirmTop3">Do you require ILA MRA Mark Laboratories</mat-checkbox>
                                             </div>
-                                            <div class="terms-condition" style="height:500px;overflow:auto">
+                                            <div class="terms-condition" style="height:500px;overflow:auto" *ngIf="authorizationList.undertaking_confirmTop3">
                                                 <div class="tnc" [innerHTML]="(termsILA != undefined && termsILA.content != undefined) ? termsILA.content : ''"></div>
                                             </div>
 
@@ -1580,7 +1605,7 @@
                                                     <tr>
                                                         <td><mat-checkbox name="undertaking_confirm2" [disableRipple]="true"
                                                             (click)="$event.preventDefault()" [(ngModel)]="authorizationList.undertaking_confirm2"></mat-checkbox></td>
-                                                        <td><span><a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled Up Document Review Checklist</a></span> (Related to applied accreditation standard and for initial accreditation & Scope Extensions only)<br/>
+                                                        <td><span><a href="javascript:void(0)" title="Please review the checklist" alt="Please review the checklist" (click)="openView(checklistView, 'checklist')">Filled Up Document Review Checklist</a></span> (Related to applied accreditation standard and for initial accreditation & Scope Extensions only)<br/>
                                                             <p class="error" *ngIf="!readReviewChecklist && isApplicationSubmitted == true">Please review the checklist</p>                                                            
                                                         </td>
                                                     </tr>
@@ -1614,6 +1639,22 @@
                                             <div class="recommend my-3">
                                                 <div class="recommend-main">
                                                     <div class="recommend-quarter">
+                                                        <span class="confirm">I recommend the visit to be conducted in the<span class="required_input">*</span></span>
+                                                        <!-- @{{recomendVisit | json}} -->
+                                                        <mat-checkbox  name="recommend_visit"  *ngFor="let item of recomendVisit; let k=index;"
+                                                        [(ngModel)]="item.checked" [ngModelOptions]="{standalone: true}" required>{{item.label}}</mat-checkbox> 
+                                                    </div> 
+                                                    <span class="confirm">quarter of the year</span>
+                                                    <div class="recommend-year">
+                                                        <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step7Data.recommend_year" required>
+                                                            <mat-option [value]="item.value" *ngFor="let item of recommendYearValues; let k=index;">{{item.title}}</mat-option>
+                                                        </mat-select>
+                                                    </div>
+                                                </div>                                             
+                                            </div>
+                                            <!-- <div class="recommend my-3">
+                                                <div class="recommend-main">
+                                                    <div class="recommend-quarter">
                                                         <span class="confirm">I recommend the visit to be conducted in the</span>
                                                         <mat-radio-group name="recommended" #recommendVisit="ngModel" [(ngModel)]="step7Data.recommend_visit" required>
                                                             <mat-radio-button name="1st" value="first">1st</mat-radio-button>
@@ -1631,7 +1672,7 @@
                                                 <div class="col-md-6 p-0" [ngStyle]="{'margin-top':'5px'}">
                                                     <p class="error" *ngIf="recommendVisit.errors?.required && isApplicationSubmitted == true">Please select anyone option</p>
                                                 </div>                                                
-                                            </div>
+                                            </div> -->
                                             <!-- <div class="recommend">
                                                 <span class="confirm">I recommend the visit to be conducted in the</span>
                                                 <mat-radio-group name="recommended" #recommendVisit="ngModel" [(ngModel)]="step7Data.recommend_visit" required>
