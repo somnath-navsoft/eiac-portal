@@ -184,11 +184,17 @@ export class HalalConformityFormComponent implements OnInit {
   hcabLogo3:any;
 
 
+
+
+
    //Master scope form data declaration
    dynamicScopeModel:any         = {};   
    dynamicScopeFieldColumns:any  = {};  
    dynamicScopeFieldType:any     = {}; 
-   
+
+   scopeCheckboxes: any[] =[];
+   scope_options_others: string;;
+   checkItemOthers: boolean = false;
 
    criteriaMaster: any[] = [];
    fullScope:any[]=[];
@@ -253,6 +259,21 @@ export class HalalConformityFormComponent implements OnInit {
     this.Service.mapboxToken = getVal;
   }
 
+  checkItemClick(theEvt: any){
+    if(theEvt.checked){
+      this.checkItemOthers = false;
+    }
+  }
+  checkOthersItemClick(theEvt: any){
+    if(theEvt.checked){
+        this.scopeCheckboxes.forEach(item => {
+            if(item.checked){
+              item.checked = false;
+            }
+        })      
+    }
+  }
+
   ngOnInit() {
     // this.titleService.setTitle('EIAC - Halal Conformity Bodies');
     // this.loadCountryStateCity();
@@ -297,6 +318,39 @@ export class HalalConformityFormComponent implements OnInit {
         title:'application_complete', desc:'9. Application Complete', activeStep:false, stepComp:false, icon:'icon-document-pen', activeClass:''
       },
     );
+
+    this.scopeCheckboxes.push({
+      name: "UAE_S_2055_2_2016",
+      checked: false,
+      label: "UAE.S 2055 - 2:2016"
+    },
+    {
+      name: "GSO_S_2055_2_2015",
+      checked: false,
+      label: "GSO.S 2055 - 2:2015"
+    },
+    {
+      name: "OIS_SMIIC_2_2011",
+      checked: false,
+      label: "OIS/SMIIC - 2:2011"
+    },
+    {
+      name: "Halal_Inspection_Bodies for providing Halal Products Market Surveillance",
+      checked: false,
+      label: "Halal Inspection Bodies for providing Halal Products Market Surveillance"
+    },
+    {
+      name: "Halal_Inspection_Bodies_for_Slaughter_Houses_Inspection",
+      checked: false,
+      label: "Halal Inspection Bodies for Slaughter Houses Inspection"
+    },
+    {
+      name: "Halal Products Testing Compliance",
+      checked: false,
+      label: "Halal Products Testing Compliance"
+    }
+    )
+
 
     this.summaryDetails = [{"position":'Managerial/Professional'},{'position':'Decision Maker'},{'position':'Technical'},{'position':'Administrative'},{'position':'Auditors Name'},{'position':'Category Code'},{'position':'Technical Expert'},{'position':'Inspectors Name'},{'position':'Category Code'},{'position':'Islamic Affairs Expert'},{'position':'Others'}];
 
@@ -454,25 +508,6 @@ getCriteria(value, secInd: any, typeTitle: any){
                });
              }
 
-             // if(this.fullScope.length){
-             //     //console.log("@Existing scheme....1");
-             //     let pushObj: any = {
-             //       title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
-             //     }
-                 
-             //     if(this.fullScope[secInd] != undefined && !this.Service.isObjectEmpty(this.fullScope[secInd])){
-             //       ////console.log("@Existing scheme...found", this.fullScope[secInd]);
-             //       this.fullScope[secInd] = pushObj;
-             //     }else{
-             //         this.fullScope.push({
-             //           title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
-             //         });
-             //     }
-             // }else{
-             // this.fullScope.push({
-             //     title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
-             //   });
-             // }
            }
 
          if(dataScope.scopeValue.length){
@@ -551,7 +586,7 @@ onChangeScopeOption(getValues: any,secIndex: any,typeTitle: any, lineIndex: numb
    selectValue = getValues;
  }
  let url = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data;
- //console.log("option change value: ", url, " :: ", getValues, " -- ", selectValue, " -- Type: ", typeof selectValue);
+ console.log("option change value: ", url, " :: ", getValues, " -- ", selectValue, " -- Type: ", typeof selectValue);
  let jsonReq: any = {};
  if(typeof selectValue === 'number'){
    jsonReq['value_id'] = [selectValue];
@@ -2122,12 +2157,12 @@ saveScope(){
   
   //Create Heading
   //check other certifications
-  if(this.otherStandards.length > 0){
-    scopeCollections['others'] = {};
-    scopeCollections['others']['others'] = {};
-    scopeCollections['others']['others']['scope_heading'] = {};
-    scopeCollections['others']['others']['scope_value'] = [];
-  }
+  // if(this.otherStandards.length > 0){
+  //   scopeCollections['others'] = {};
+  //   scopeCollections['others']['others'] = {};
+  //   scopeCollections['others']['others']['scope_heading'] = {};
+  //   scopeCollections['others']['others']['scope_value'] = [];
+  // }
   if(this.fullTypeScope.length){
     this.fullTypeScope.forEach(typeScope => {
         //console.log(">>>>Type scope: ", typeScope);
@@ -2398,7 +2433,7 @@ saveScope(){
 // }
 
   //console.log("#Updated Scope after edit: ", scopeCollections, " -- ", this.editScopeData);
-  this.step5Data['scopeDetails']    = scopeCollections;
+  this.step3Data['scopeDetails']    = scopeCollections;
   //return;
 }
 //scopeCollections[selectScheme]['scope_heading'][keyIds]  //assign scope heading
@@ -2435,21 +2470,44 @@ getMatchScheme(scId: any, scopeData: any){
     this.publicHalalConformityForm = {};
     this.publicHalalConformityForm.step3 = {};  
     var applicationId = sessionStorage.getItem('applicationId');
-    this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+    this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     //this.publicHalalConformityForm.step5.application_id = this.formApplicationId;
-    this.publicHalalConformityForm.step3 = this.step5Data;
+    //alert(">>>> calling.....1");
+    //validation s for other checkboxes
+    let scopeOptionsCheckCount: number = 0;
+    let scopeOptionsValues: any = {};
+    scopeOptionsValues['checkItems'] = [];
+    scopeOptionsValues['checkItemsOthers'] = [];
+    this.scopeCheckboxes.forEach((item,index) => {
+      let tempObj: any ={};
+      if(item.checked == true){
+        tempObj['value'] = item.label;
+        scopeOptionsValues['checkItems'].push(tempObj);
+        scopeOptionsCheckCount++;
+      }
+    })
+    if(this.checkItemOthers){
+      if(this.scope_options_others != ''){
+        scopeOptionsValues['checkItemsOthers'].push({value: this.scope_options_others});
+      }
+      scopeOptionsCheckCount++;
+    }
+    this.step3Data.scopeOptionsCheckDetails = scopeOptionsValues;
+    //alert(">>>> calling.....2");
+
+    this.publicHalalConformityForm.step3 = this.step3Data;
     //this.publicHalalConformityForm.step5['cbsOtherActivity'] = [];
     // this.publicHalalConformityForm.step3['otherActivityLocations'] = [];
     // this.publicHalalConformityForm.step3['countriesForCertification'] = [];
-    this.publicHalalConformityForm.step3['otherActivityLocations'] = [];
-    this.publicHalalConformityForm.step3['countriesForCertification'] = [];
+    // this.publicHalalConformityForm.step3['otherActivityLocations'] = [];
+    // this.publicHalalConformityForm.step3['countriesForCertification'] = [];
     
-    if(this.cbsOtherActivity) {
-      this.publicHalalConformityForm.step3['otherActivityLocations'] = this.cbsOtherActivity;
-    }
-    if(this.nameOfCountry) {
-      this.publicHalalConformityForm.step3['countriesForCertification'] = this.nameOfCountry;
-    }
+    // if(this.cbsOtherActivity) {
+    //   this.publicHalalConformityForm.step3['otherActivityLocations'] = this.cbsOtherActivity;
+    // }
+    // if(this.nameOfCountry) {
+    //   this.publicHalalConformityForm.step3['countriesForCertification'] = this.nameOfCountry;
+    // }
 
     this.publicHalalConformityForm.step3['scheme_id'] = 1;//this.schemeRows[0].id;
     
@@ -2493,12 +2551,11 @@ getMatchScheme(scId: any, scopeData: any){
     }
     //Check dynamic model column fields validation
 
-
+    //alert(">>>> calling.....3");
     ////console.log("scheme Rows: ", this.schemeRows,  " -- ", this.schemeRows.length, " :: ", this.editScopeData, " :: ", this.getScopeData);
 
     ////console.log(">>>Form Submit: ", ngForm, " -- ",ngForm.form, " -- ", this.schemeRows); 
-    console.log(">>> step3 submit...", this.step5Data, " -- ", this.publicHalalConformityForm);
-   //return;
+    
     //ngForm.form.valid &&
     //&& this.schemeRows.length == 1   && this.schemeRows[0].id === undefined
     if(!ngForm.form.valid && type == undefined  && this.subTypeRows.length == 1   && this.subTypeRows[0].id === undefined
@@ -2510,8 +2567,11 @@ getMatchScheme(scId: any, scopeData: any){
       this.publicHalalConformityForm.step3.is_draft = false;
       this.publicHalalConformityForm.saved_step = 3;
       this.step5Data = {};
+      //alert(">>>> calling.....5");
+      console.log(">>> step3 submit...", this.step3Data, " -- ", this.publicHalalConformityForm);
+    return;
       //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.publicHalalConformityForm,this.publicHalalConformityForm)
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.publicHalalConformityForm)
       .subscribe(
         res => {
           //////console.log(res,'res')
@@ -2524,16 +2584,18 @@ getMatchScheme(scId: any, scopeData: any){
         });
 
     }
-    else if(ngForm.form.valid && type == undefined) {
-      //console.log(">>>Scope saving...");
-      //console.log(">>>Enter....3")
+    else if(ngForm.form.valid && type == undefined && scopeOptionsCheckCount > 0) {
+      console.log(">>>Scope saving...");
+      console.log(">>>Enter....3")
       this.saveScope();
       //console.log(">>> step5 submit...", this.step3Data, " -- ", this.publicHalalConformityForm);
       this.publicHalalConformityForm.step3.is_draft = false;
       this.publicHalalConformityForm.saved_step = 3;
-      this.step5Data = {};
+      console.log(">>> step3 submit...", this.step3Data, " -- ", this.publicHalalConformityForm);
+      //return;
+      //this.step5Data = {};
       //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.publicHalalConformityForm,this.publicHalalConformityForm)
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.publicHalalConformityForm)
       .subscribe(
         res => {
           //////console.log(res,'res')
@@ -2551,7 +2613,7 @@ getMatchScheme(scId: any, scopeData: any){
       this.publicHalalConformityForm.step3.is_draft = true;
       this.publicHalalConformityForm.saved_step = 5;
       this.saveScope();
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.publicHalalConformityForm,this.publicHalalConformityForm)
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.publicHalalConformityForm)
       .subscribe(
         res => {
           //////console.log(res,'res')
@@ -2576,7 +2638,7 @@ getMatchScheme(scId: any, scopeData: any){
 
   onSubmitStep4(ngForm4: any, type?:any) {
     
-    this.Service.moveSteps('other_hcab_details','perlim_visit',  this.headerSteps);
+    //this.Service.moveSteps('other_hcab_details','perlim_visit',  this.headerSteps);
 
     if(ngForm4.form.valid) {
       this.publicHalalConformityForm = {};
@@ -2618,7 +2680,7 @@ getMatchScheme(scId: any, scopeData: any){
   }
 
   onSubmitStep5(ngForm5: any){
-    this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+    //this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
     if(ngForm5.form.valid) {
       this.publicHalalConformityForm = {};
       this.publicHalalConformityForm.step5 = {};
@@ -2653,7 +2715,7 @@ getMatchScheme(scId: any, scopeData: any){
   }
   
   onSubmitUndertakingApplicant(ngForm6: any){
-    this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
+    //this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
     this.isApplicationSubmitted = true;
     let checkCount = 0;
       for(let key in this.authorizationList) {

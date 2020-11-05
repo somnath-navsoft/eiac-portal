@@ -1008,16 +1008,45 @@
                                         </div>
                                     </div>
 
-                                    <div class="row  mt-3">
+                                    <!-- <div class="row  mt-3">
                                         <div class="col-md-12">
                                             @{{criteriaList | json}}
                                         </div>
-                                    </div>
+                                    </div> -->
                                     
                                     
                                     <!-- SCOPE SECTION START -->
                                     <div class="row  mt-3">
                                         <!-- @{{editScopeData | json}} Chaitali!1991-->
+                                        <div class="col-md-12">
+                                            <ul [ngStyle]="{'list-style':'none'}">
+                                                {{scopeCheckboxes |  json}}
+                                                <ng-container *ngFor="let item of scopeCheckboxes; let k=index;">
+                                                    <li>
+                                                        <mat-checkbox  name="scope_options" (change)="checkItemClick($event)" 
+                                            [(ngModel)]="item.checked" [ngModelOptions]="{standalone: true}" required>{{item.label}}</mat-checkbox> 
+                                                    </li>
+                                                </ng-container>
+                                                <li>
+                                                    <!-- other check -->
+                                            <mat-checkbox  name="scope_options_others_check" (change)="checkOthersItemClick($event)" [(ngModel)]="checkItemOthers">Others</mat-checkbox>
+                                                </li>
+                                                <li>
+                                                    <ng-container *ngIf="checkItemOthers">
+                                                        {{checkItemOthers}}
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Type Other</mat-label>
+                                                            <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                            matInput name="scope_options_others" 
+                                                            [(ngModel)]="scope_options_others" placeholder="Others" required>
+                                                        </mat-form-field> 
+                                                    </ng-container>
+                                                </li>
+                                            </ul>
+                                            
+                                             
+
+                                        </div>
                                         <div class="col-md-12">
                                             <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey, selectDeleteTypeTitle)" [parent]="this" [modalType]="'delete'"></custom-modal>
                                             <ng-container *ngIf="editScopeData != undefined && editScopeData != null">
