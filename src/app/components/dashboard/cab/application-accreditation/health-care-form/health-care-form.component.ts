@@ -819,7 +819,7 @@ scrollForm(data?:any){
   this.addMinutesToTime = this.Service.addMinutesToTime();
   this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,
     undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,
-    undertaking_confirm6:false,undertaking_confirm7:false};
+    undertaking_confirm6:false,undertaking_confirm7:false,undertaking_confirm8:false};
 
     this.loadTermsConditions();
    ////console.log( this.addMinutesToTime);
@@ -2711,7 +2711,7 @@ authorizeCheckCount(theEvent: any, type?:any){
   }
       
 
-  if(this.authorizationStatus && checkCount == 9){
+  if(this.authorizationStatus && checkCount == 10){
     this.authorizationStatus = true;
   }else{
     this.authorizationStatus = false;
@@ -2741,7 +2741,7 @@ onSubmitUndertakingApplicant(ngForm7: any){
       //   this.authorizationStatus = true;
       // }     
     }  
-    if(this.authorizationStatus && checkCount == 9){  
+    if(this.authorizationStatus && checkCount == 10){  
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;

@@ -935,7 +935,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     this.authorizationList = {undertaking_confirm1:false, undertaking_confirmTop3: false, undertaking_confirm2:false,undertaking_confirm3:false,
       undertaking_confirm4:false,undertaking_confirm5:false,
       undertaking_confirm6:false,
-      undertaking_confirm7:false,authorization_confirm1:false,authorization_confirm2:false};
+      undertaking_confirm7:false,undertaking_confirm8:false,authorization_confirm1:false,authorization_confirm2:false};
 
     // this.recommend = {first:false,second:false,third:false,fourth:false}
 
@@ -2451,7 +2451,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     }
         
 
-    if(this.authorizationStatus && checkCount == 9){ 
+    if(this.authorizationStatus && checkCount == 10){ 
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;
@@ -2491,7 +2491,7 @@ export class InspectionBodiesFormComponent implements OnInit {
           //   this.authorizationStatus = true;
           // }     
         }
-        if(this.authorizationStatus && checkCount == 9){
+        if(this.authorizationStatus && checkCount == 10){
           this.authorizationStatus = true;
         }else{
           this.authorizationStatus = false;

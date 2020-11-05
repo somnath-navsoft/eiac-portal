@@ -182,6 +182,7 @@ export class HalalConformityFormComponent implements OnInit {
   hcabLogo1:any;
   hcabLogo2:any;
   hcabLogo3:any;
+  bodMembInfo:any;
 
 
 
@@ -1132,7 +1133,7 @@ addSchemeRow(obj: any = [],index: number){
           this.step1Data.official_commercial_name = data.cab_name;
           this.step1Data.official_email = data.applicant_email;
           this.step1Data.official_website = data.applicant_website;
-          // this.ownOrgBasicInfo = step2['cabOwnerData'];
+          this.ownOrgBasicInfo = step2['cabOwnerData'];
           //console.log(this.ownOrgBasicInfo,'ownOrgBasicInfo');
           // step2['cabBodData'].forEach((res,key) => {
           //   // //console.log(res," -- ",key);
@@ -1145,7 +1146,16 @@ addSchemeRow(obj: any = [],index: number){
           //   step2['cabBodData'][key].land_no = res.land_no != '' && res.land_no != undefined ? res.land_no : 'None';
           //   step2['cabBodData'][key].email_address = res.email != '' && res.email != undefined ?  res.email : 'None';
           // });
-          // this.ownOrgMembInfo = step2['cabBodData'];
+          step2['cabBodData'].forEach((res,key) => {
+            step2['cabBodData'][key].name = res.name;
+            step2['cabBodData'][key].designation = res.designation;
+            step2['cabBodData'][key].relationship = res.relationship && res.relationship != undefined ? res.relationship : 'None';
+            step2['cabBodData'][key].current_occupation = res.current_occupation && res.current_occupation != undefined ? res.current_occupation : 'None';
+            step2['cabBodData'][key].employment = res.employment && res.employment != undefined ? res.employment : 'None';
+          });
+          this.bodMembInfo = step2['cabBodData'];
+          this.ownOrgMembInfo = this.bodMembInfo;
+          
           this.step1Data.physical_location_address = data.applicant_location;
           this.step1Data.po_box = data.po_box;
           
@@ -1272,12 +1282,14 @@ addSchemeRow(obj: any = [],index: number){
                   this.step1Data.legal_status = res['data'].legal_status;
                 }
                 
-                if(res['data'].ownershipOfOrg != ''){
-                  this.ownOrgBasicInfo = res['data'].ownershipOfOrg;
-                }
+                // if(res['data'].ownershipOfOrg != ''){
+                //   this.ownOrgBasicInfo = res['data'].ownershipOfOrg;
+                // }
                 
                 if(res['data'].bodMember != ''){
                   this.ownOrgMembInfo = res['data'].bodMember;
+                }else{
+                  this.ownOrgMembInfo = this.bodMembInfo;
                 }
                 
                 if(res['data'].otherActivityLocations != null){
@@ -1352,7 +1364,7 @@ addSchemeRow(obj: any = [],index: number){
                 }
 
 
-                if(res['data'].recognized_logo1 != ''){
+                if(res['data'].recognized_logo1 && res['data'].recognized_logo1 != ''){
                   let getFile = res['data'].recognized_logo1.toString().split('/');
                   if(getFile.length){
                     this.publicHalalConformityForm.hcabLogo1 = getFile[4].toString().split('.')[0];
@@ -1360,7 +1372,7 @@ addSchemeRow(obj: any = [],index: number){
                   }
                 }
 
-                if(res['data'].recognized_logo2 != ''){
+                if(res['data'].recognized_logo2 && res['data'].recognized_logo2 != ''){
                   let getFile = res['data'].recognized_logo2.toString().split('/');
                   if(getFile.length){
                     this.publicHalalConformityForm.hcabLogo2 = getFile[4].toString().split('.')[0];
@@ -1368,7 +1380,7 @@ addSchemeRow(obj: any = [],index: number){
                   }
                 }
 
-                if(res['data'].recognized_logo3 != ''){
+                if(res['data'].recognized_logo3 && res['data'].recognized_logo3 != ''){
                   let getFile = res['data'].recognized_logo3.toString().split('/');
                   if(getFile.length){
                     this.publicHalalConformityForm.hcabLogo3 = getFile[4].toString().split('.')[0];

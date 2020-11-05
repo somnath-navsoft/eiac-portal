@@ -36,6 +36,14 @@ font-weight: normal;
 }
 
 
+@font-face {
+  font-family: 'Sign Regular';
+  src: url('../fonts/sign_painter_regular.ttf');
+  font-style: normal;
+  font-weight: normal;
+  /* src: local('Dubai Bold'), url('../font/Dubai-Bold.woff') format('woff'); */
+  }
+
 /* @font-face {
   font-family: 'eiac';
   src:  url('../fonts/eiac.eot?9u64u7');

@@ -260,9 +260,9 @@
                                         <div class="col-md-4">
                                             <div class="matupload position-relative view_file">
                                                 <mat-form-field  class="lng-data">
-                                                    <input matInput readonly="true" name="id_issued_esma" [(ngModel)]="publicHalalConformityForm.id_issued_esma"  placeholder="Registration form and ID issued by ESMA" required>
+                                                    <input matInput readonly="true" name="id_issued_esma" [(ngModel)]="publicHalalConformityForm.id_issued_esma" placeholder="Registration form and ID issued by ESMA" required>
 
-                                                    <a href="{{issuedEsmaPath}}" target="_blank">
+                                                    <a *ngIf="issuedEsmaPath" href="{{issuedEsmaPath}}" target="_blank">
                                                         <span class="icon-eye visible-pwd"></span>
                                                     </a>
                                                 </mat-form-field>
@@ -280,7 +280,7 @@
                                                 <mat-form-field  class="lng-data">
                                                     <input matInput readonly="true" name="halal_certificate_stamp" [(ngModel)]="publicHalalConformityForm.halal_certificate_stamp" placeholder="Halal Certificate Stamp or Symbol" required>
 
-                                                    <a href="{{certificateStampPath}}" target="_blank">
+                                                    <a *ngIf="certificateStampPath" href="{{certificateStampPath}}" target="_blank">
                                                         <span class="icon-eye visible-pwd"></span>
                                                     </a>
                                                 </mat-form-field>

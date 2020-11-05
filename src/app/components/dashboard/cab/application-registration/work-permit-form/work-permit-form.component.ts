@@ -52,15 +52,40 @@ export class WorkPermitFormComponent implements OnInit {
     this.checkCaptchaValidation = true;
     this.authorizationList = {authorization_confirm1:false};
     this.loadData();
-    // console.log(this.getWorkPermitId,'getWorkPermitId');
+
+    this.workPermitForm.name_of_cab = '';
+    this.workPermitForm.address = '';
+    this.workPermitForm.cab_license_no = '';
+    this.workPermitForm.cab_issue_date = null;
+    this.workPermitForm.applicant_name = '';
+    this.workPermitForm.designation = '';
+    this.workPermitForm.tel_no = '';
+    this.workPermitForm.email_address = '';
+    this.workPermitForm.activity_section = '';
+    this.workPermitForm.scopes_to_be_authorized = '';
+    this.workPermitForm.license_no = '';
+    this.workPermitForm.date_of_issue = null;
+    this.workPermitForm.date_of_expiry = null;
+
+    this.workPermitFormData.append('licence_document_file','');
+    this.workPermitFormData.append('quality_manual_file','');
+    this.workPermitFormData.append('work_instruction_file','');
+    this.workPermitFormData.append('check_list_file','');
+
+    this.workPermitForm.organization_name = '';
+    this.workPermitForm.representative_name = '';
+    this.workPermitForm.behalf_designation = '';
+    this.workPermitForm.digital_signature = '';
   }
  
   loadData() {
     // let url2 = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+this.urlVal;
+    if(this.getWorkPermitId != 'undefined') {
+      
       this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.workPermitform+this.getWorkPermitId)
       .subscribe(
         res => {
-          console.log(res['data'],'res');
+          // console.log(res['data'],'res');
           var allData = res['data'];
           this.workPermitForm.name_of_cab = allData.name_of_cab;
           this.workPermitForm.address = allData.address;
@@ -117,6 +142,7 @@ export class WorkPermitFormComponent implements OnInit {
           this.workPermitForm.behalf_designation = allData['onBehalfApplicant'][0].designation;
           this.workPermitForm.digital_signature = allData['onBehalfApplicant'][0].digital_signature;
       });
+    }
   }
   
   validateFile(fileEvent: any,fileName?:any) {
@@ -171,7 +197,9 @@ export class WorkPermitFormComponent implements OnInit {
     if(ngForm.form.valid && this.isSubmit){
       // this.workPermitForm.application_type = '';
       this.workPermitForm.is_draft = false;
-      this.workPermitForm.application_id = this.getWorkPermitId != undefined ? this.getWorkPermitId : '';
+      if(this.getWorkPermitId != undefined) {
+        this.workPermitForm.application_id = this.getWorkPermitId;
+      }
       this.workPermitFormData.append('data',JSON.stringify(this.workPermitForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.workPermitform,this.workPermitFormData)
       .subscribe(
@@ -186,11 +214,35 @@ export class WorkPermitFormComponent implements OnInit {
         },
         error => {
           this.toastr.error('Something went wrong','')
-    })
+      }
+      )
     }
     else{
       this.toastr.warning('Please Fill required field','')
     }
+  }
+
+  savedraftStep(){
+    this.workPermitForm.is_draft = true;
+    if(this.getWorkPermitId != 'undefined') {
+      this.workPermitForm.application_id = this.getWorkPermitId;
+    }
+    this.workPermitFormData.append('data',JSON.stringify(this.workPermitForm));
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.workPermitform,this.workPermitFormData)
+    .subscribe(
+      res => {
+        if(res['status']==true){
+          this.toastr.success('Save Draft Successfully', '');
+          this.router.navigate(['application-form/service/work_permit']);
+        }
+        else{
+          this.toastr.error(res['msg'],'')
+        }
+      },
+      error => {
+        this.toastr.error('Something went wrong','')
+    }
+    )
   }
 
 }

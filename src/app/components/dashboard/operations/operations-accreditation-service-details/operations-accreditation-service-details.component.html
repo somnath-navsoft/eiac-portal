@@ -443,7 +443,7 @@
                     {{technicalManager?.email}}
                   </span>
                   <span class="status_details">
-                    <span class="icon-google-docs"></span>
+                    <span class="icon-work"></span>
                     {{technicalManager?.relevent_experience}} Yrs.
                   </span>
                 </div>
@@ -478,7 +478,7 @@
                     {{managementManager?.email}}
                   </span>
                   <span class="status_details">
-                    <span class="icon-google-docs"></span>
+                    <span class="icon-work"></span>
                     {{managementManager?.relevent_experience}} Yrs.
                   </span>
                 </div>
@@ -549,7 +549,7 @@
                     
                     <ng-container *ngIf="serviceDetail?.form_meta == 'inspection_body' && editScopeData != undefined && editScopeData != null">
                       <div class="row">
-                          <div class="col-md-12 p-0">
+                          <div class="col-md-12">
                               <div class="form-subheader-data">
                                   <h5>SCOPE DATA</h5>
                               </div>
@@ -848,7 +848,7 @@
                 <div class="authData">I acknowledge that I have read and understood and confirm to abide by the 
                   <a href="javascript:void(0)"  (click)="openView(agreementView, 'agreement')">Accreditation Agreement</a> and request to provide us with a word agreement form for signature
                 </div>
-                <div class="authData"><span *ngIf="ilauUdertakingConfirm && ilauUdertakingConfirm == true" class="icon-tick"></span>I require ILA MRA "Laboratories" <a href="javascript:void(0)"  (click)="openView(ILAView, 'ILA')">Agreement</a>.</div>
+                <div class="authData"><span class="auth-class-check">(✓)</span> I require ILA MRA "Laboratories"  <a href="javascript:void(0)"  (click)="openView(ILAView, 'ILA')">Agreement</a>.</div>
 
                 <div class="authData">I confirm that the below documents are available and will be furnished once requested by EIAC:</div>
               </div>
@@ -992,7 +992,7 @@
       <div class="row m-0">
         <div class="col-md-12">
           <div class="bttns-health bttn-staff">
-            <div class="button-content">
+            <div *ngIf="paymentDetails && paymentDetails!= ''" class="button-content">
               <button class="cancel-bttn" (click)="uiDialog.openPDFViewer(_constant.mediaPath,serviceDetail.form_pdf)"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button>
 
               <button class="cancel-bttn" (click)="downloadCsv()"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD CSV</button>
