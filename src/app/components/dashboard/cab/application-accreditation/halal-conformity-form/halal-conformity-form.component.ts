@@ -1805,6 +1805,7 @@ addSchemeRow(obj: any = [],index: number){
         this.step1Data.application_id = this.formApplicationId;
       }
       this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
+      this.step1Data.phone_no = '';
       this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
       this.step1Data.is_draft = true;
       this.publicHalalConformityForm.step1 = this.step1Data;
