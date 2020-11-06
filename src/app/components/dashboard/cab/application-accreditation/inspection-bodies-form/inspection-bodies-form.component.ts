@@ -450,7 +450,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       if(type !== undefined && type === 'initLoad'){
         selectValue = getValues;
       }
-      let url = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data;
+      let url = this.Service.apiUatServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data;
       ////console.log("option change value: ", url, " :: ", getValues, " -- ", selectValue, " -- Type: ", typeof selectValue);
       //this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,
       let jsonReq: any = {};
@@ -649,22 +649,7 @@ export class InspectionBodiesFormComponent implements OnInit {
             }
           }
       }
-      // //console.log(">>>Final Data: ", this.editScopeData);
-      // if(typeof this.editScopeData === 'object'){
-      //   for(var key in this.editScopeData){
-      //     if(this.editScopeData[key]['scope_value'] != undefined){
-      //         if(this.editScopeData[key]['scope_value'].length == 0){
-      //             //console.log("no data...");
-      //             delete this.editScopeData[key];
-      //         }
-      //     }
-      //     //console.log(">> ", key, " :: ", this.editScopeData);
-      // }
-      // }
-      
-
       this._customModal.closeDialog();
-      //
   }
 
 
@@ -3493,7 +3478,7 @@ findObjectKeyValues(object: any, value: string){
     return false;
 }
 
- saveScope(){
+ saveScope(rowInd: any){
     
   let scopeValues: any =[];
   let scopeIds:any =[];
@@ -3505,7 +3490,7 @@ findObjectKeyValues(object: any, value: string){
   let scopeCollections: any={};
   let selectScheme          = '';//this.schemeRows[0].id;
   
-  for(var t=0;t<this.schemeRows.length; t++){
+  for(let t=rowInd;t<this.schemeRows.length; t++){
 
     ////console.log("Scheme Sec: ", t," -- ", scopeCollections);
     selectScheme = this.schemeRows[t].id;
@@ -3546,7 +3531,7 @@ findObjectKeyValues(object: any, value: string){
   let tempDataObj: any = {};
   let tempDataRow: any = {};
   if(this.schemeRows.length){
-      for(var t=0;t<this.schemeRows.length; t++){
+      for(let t=rowInd;t<this.schemeRows.length; t++){
 
           ////console.log("Scheme Sec: ", t);
           secInd = t;
@@ -3702,6 +3687,7 @@ findObjectKeyValues(object: any, value: string){
   }
   ////console.log("#Updated Scope after edit: ", scopeCollections, " -- ", this.editScopeData);
   this.step5Data['scopeDetails']    = scopeCollections;
+  this.editScopeData = scopeCollections;
 }
 //scopeCollections[selectScheme]['scope_heading'][keyIds]  //assign scope heading
 //scopeCollections[selectScheme]['scope_value'] //assign unmatch scope value
@@ -3718,32 +3704,24 @@ getMatchScheme(scId: any, scopeData: any){
 }
 
 
- onSubmitScopeAccreditation(ngForm: any, type?: boolean){
-  //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
-  //scopeDetails.details
-  // if(this.viewData != undefined && this.viewData.data.id > 0 && 
-  //   this.viewData.data.scopeDetails != undefined && typeof this.viewData.data.scopeDetails == 'object' &&
-  //   this.viewData.data.scopeDetails.details.length > 0){
-  //   //////console.log(">>>find ID");
-  //   this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
-  //   return;
-  // }
+continueScopeAccreditation(){
+  this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+}
+backScopeAccreditation(){
+  this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+}
 
-  //this.saveScope();
-  ////console.log(">>>Enter....1:  ", type)
+ onSubmitScopeAccreditation(ngForm: any, type?: boolean, rowInd?:any){
+  
   this.inspectionBodyForm = {};
   this.inspectionBodyForm.step5 = {};
   this.inspectionBodyForm.step5 = this.step5Data;
   this.inspectionBodyForm.step5.application_id = this.formApplicationId;
-  this.inspectionBodyForm.step5['scheme_id'] = 1;//this.schemeRows[0].id;
-  // if(this.step5Data.criteria_request != undefined){
-  //   let schemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id);
-  //   ////////console.log("scheme data: ", schemeData);
-  //     if(schemeData){
-  //     this.step5Data.criteria_request = schemeData.title;
-  //     this.inspectionBodyForm.step5['scheme_id'] = schemeData.scope_accridiation.id;
-  //     }
-  //   }
+  this.inspectionBodyForm.step5['scheme_id'] = 1;
+
+  
+  //console.log(">>> Rows: ", this.fullScope, " -- ", this.schemeRows, " -- ", rowInd);
+  //return;
 
   //Check dynamic model column fields validation
   let secInd: number;
@@ -3796,8 +3774,8 @@ getMatchScheme(scId: any, scopeData: any){
         && this.schemeRows[0].id === undefined && this.editScopeData != undefined && this.editScopeData != null) {
       ////console.log(">>>Bypass saving...");
       ////console.log(">>>Enter....2")
-      this.saveScope();
-      ////console.log(">>> step5 submit...", this.step5Data, " -- ", this.inspectionBodyForm);
+      this.saveScope(rowInd);
+      console.log(">>> step5 submit...", this.step5Data, " -- ", this.inspectionBodyForm);
       this.inspectionBodyForm.step5.is_draft = false;
       this.inspectionBodyForm.saved_step = 5;
       //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
@@ -3806,8 +3784,8 @@ getMatchScheme(scId: any, scopeData: any){
         res => {
           ////////console.log(res,'res')
           if(res['status'] == true) {
-            //this.toastr.success(res['msg'], '');
-            this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+            this.toastr.success(res['msg'], '');
+            //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -3835,7 +3813,7 @@ getMatchScheme(scId: any, scopeData: any){
     else if(ngForm.form.valid && type == undefined) {
       ////console.log(">>>Scope saving...");
       ////console.log(">>>Enter....3")
-      this.saveScope();
+      this.saveScope(rowInd);
       ////console.log(">>> step5 submit...", this.step5Data, " -- ", this.inspectionBodyForm);
       this.inspectionBodyForm.step5.is_draft = false;
       this.inspectionBodyForm.saved_step = 5;
@@ -3845,8 +3823,8 @@ getMatchScheme(scId: any, scopeData: any){
         res => {
           ////////console.log(res,'res')
           if(res['status'] == true) {
-            //this.toastr.success(res['msg'], '');
-            this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+            this.toastr.success(res['msg'], '');
+            //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -3857,7 +3835,7 @@ getMatchScheme(scId: any, scopeData: any){
       ////console.log(">>>Enter....4")
       this.inspectionBodyForm.step5.is_draft = true;
       this.inspectionBodyForm.saved_step = 5;
-      this.saveScope();
+      this.saveScope(rowInd);
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.inspectionBodyForm)
       .subscribe(
         res => {

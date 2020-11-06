@@ -967,7 +967,7 @@
                                     <div class="col-md-12">
                                      <!-- exisiting...perev -->     
                                 <!-- step5Data.scheme_ids[i] -->
-                                <ng-container *ngFor="let item of schemeRows; let i = index;">
+                                    <ng-container *ngFor="let item of schemeRows; let i = index;">
                                         <div class="row">
                                             <div class="col-md-9 col-sm-9">
                                                 <mat-form-field class="cab-data">
@@ -1120,6 +1120,7 @@
                                                                     </tbody>
                                                                 </table>
                                                             </div>
+                                                            <button class="submit-bttn submit-health" (click)="onSubmitScopeAccreditation(ngForm5,null,i1)" [ngStyle]="{'float': 'right'}">ADD ROW</button>
                                                         </div>
                                                     </div>
                                                 </div>

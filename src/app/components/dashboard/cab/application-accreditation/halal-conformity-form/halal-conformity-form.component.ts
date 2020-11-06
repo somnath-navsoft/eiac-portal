@@ -411,7 +411,7 @@ export class HalalConformityFormComponent implements OnInit {
  }
  loadScopeData(){
   //
- this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halal_conformity_form_management)
+ this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity)
    .subscribe( 
      res => {
        let record: any = res['data'];
@@ -688,7 +688,7 @@ getTypeScheme(typeId: number, secInd: number){
            }
 
            let pushObj: any = {
-             title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: []
+             title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: [], schemeRows: [{}]
            }
            
            if(this.fullTypeScope[secInd] != undefined && !this.Service.isObjectEmpty(this.fullTypeScope[secInd])){
@@ -696,12 +696,12 @@ getTypeScheme(typeId: number, secInd: number){
              this.fullTypeScope[secInd] = pushObj;
            }else{
                this.fullTypeScope.push({
-                 title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: []
+                 title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: [], schemeRows: [{}]
                });
            }
        }else{
        this.fullTypeScope.push({
-           title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: []
+           title: typeTitle, id:findType.service_page.id, name:typeName, schemeData:findType.scheme_list, scopeRows: [], schemeRows: [{}]
          });
        }
 
@@ -1344,7 +1344,35 @@ addSchemeRow(obj: any = [],index: number){
                 }
   
                 //step3
-                
+                if(getData.data.scopeDetails != undefined && !this.Service.isObjectEmpty(getData.data.scopeDetails)){                 
+                  let jsonObject = getData.data.scopeDetails;
+                  this.editScopeData = jsonObject; 
+                  console.log(">>> Saved scope: ", getData.data.scopeDetails);
+
+                  //scope type options
+                  let cabTypeData: any = JSON.parse(getData.data.cab_type);
+                  //scopeCheckboxes  | checkItemOthers: boolean
+                  if(cabTypeData){
+                    console.log(">>> Cab type: ", cabTypeData)
+                      if(cabTypeData.checkItems.length){
+                        this.scopeCheckboxes.forEach(rec => {
+                             console.log("val: ", rec);
+                             cabTypeData.checkItems.forEach(item => {
+                                if(item.value == rec.label){
+                                  console.log(">>> Match label: ", rec.label, " :: ", item.value);
+                                  rec.checked = true;
+                                }
+                            })
+                        })
+                       
+                      }
+                      if(cabTypeData.checkItemsOthers.length){
+                        this.checkItemOthers = true;
+                        this.scope_options_others = cabTypeData.checkItemsOthers[0].value;
+                      }
+                  }
+
+                }
   
                 //step4
                 
@@ -2358,7 +2386,7 @@ saveScope(){
       //console.log("update edit scope: ", this.editScopeData, " -- ", scopeCollections)
       let tempScopeDetails: any={};
       let checkMatch: boolean = false;
-      let checkTypeMatch: boolean = false;
+      let checkTypeMatch: boolean = false;  
 
             for(var key in this.editScopeData){
               //console.log(">>> ", key, " :: ", this.editScopeData[key]);
@@ -2581,15 +2609,16 @@ getMatchScheme(scId: any, scopeData: any){
       this.step5Data = {};
       //alert(">>>> calling.....5");
       console.log(">>> step3 submit...", this.step3Data, " -- ", this.publicHalalConformityForm);
-    return;
+      this.step3DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
+    //return;
       //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.publicHalalConformityForm)
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step3DataBodyFormFile)
       .subscribe(
         res => {
           //////console.log(res,'res')
           if(res['status'] == true) {
             //this.toastr.success(res['msg'], '');
-            this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+            this.Service.moveSteps('scope_accreditation', 'other_hcab_details', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -2603,17 +2632,18 @@ getMatchScheme(scId: any, scopeData: any){
       //console.log(">>> step5 submit...", this.step3Data, " -- ", this.publicHalalConformityForm);
       this.publicHalalConformityForm.step3.is_draft = false;
       this.publicHalalConformityForm.saved_step = 3;
-      console.log(">>> step3 submit...", this.step3Data, " -- ", this.publicHalalConformityForm);
+      console.log(">>> step3 submit...5", this.step3Data, " -- ", this.publicHalalConformityForm);
+      this.step3DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
       //return;
       //this.step5Data = {};
       //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.publicHalalConformityForm)
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step3DataBodyFormFile)
       .subscribe(
         res => {
           //////console.log(res,'res')
           if(res['status'] == true) {
             //this.toastr.success(res['msg'], '');
-            this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+            this.Service.moveSteps('scope_accreditation', 'other_hcab_details', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -2625,6 +2655,8 @@ getMatchScheme(scId: any, scopeData: any){
       this.publicHalalConformityForm.step3.is_draft = true;
       this.publicHalalConformityForm.saved_step = 5;
       this.saveScope();
+      console.log(">>> save a draft step3 submit...6", this.step3Data, " -- ", this.publicHalalConformityForm);
+      this.step3DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.publicHalalConformityForm)
       .subscribe(
         res => {

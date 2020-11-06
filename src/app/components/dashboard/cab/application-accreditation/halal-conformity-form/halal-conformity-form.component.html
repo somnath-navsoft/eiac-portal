@@ -1020,7 +1020,6 @@
                                         <!-- @{{editScopeData | json}} Chaitali!1991-->
                                         <div class="col-md-12">
                                             <ul [ngStyle]="{'list-style':'none'}">
-                                                {{scopeCheckboxes |  json}}
                                                 <ng-container *ngFor="let item of scopeCheckboxes; let k=index;">
                                                     <li>
                                                         <mat-checkbox  name="scope_options" (change)="checkItemClick($event)" 
@@ -1033,7 +1032,6 @@
                                                 </li>
                                                 <li>
                                                     <ng-container *ngIf="checkItemOthers">
-                                                        {{checkItemOthers}}
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Type Other</mat-label>
                                                             <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
@@ -1136,14 +1134,13 @@
                                                                     </div> 
                                                                 </div>
                                                             </div>
-                                                    <ng-container *ngFor="let item of schemeRows; let i = index;">
+                                                    <ng-container *ngFor="let item of typeScope.schemeRows; let i = index;">
                                                         <div class="row mt-3">
                                                             <div class="col-md-9 col-sm-9">
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Scheme</mat-label>
-                                                                    <!-- criteriaMaster -->
-                                                                    <mat-select (selectionChange)="getCriteria(schemeRows[i].id, i, typeScope.title)" placeholder="Select" name="scheme_id_{{i}}"  
-                                                                    [(ngModel)]="schemeRows[i].id"  [required] = "editScopeData == undefined || editScopeData == null">
+                                                                    <mat-select (selectionChange)="getCriteria(typeScope.schemeRows[i].id, i, typeScope.title)" placeholder="Select" name="scheme_id_{{i}}"  
+                                                                    [(ngModel)]="typeScope.schemeRows[i].id"  [required] = "editScopeData == undefined || editScopeData == null">
                                                                         <mat-option [value]="item.scope_accridiation.id" *ngFor="let item of typeScope.schemeData; let k=index;">{{item.title}}</mat-option>
                                                                     </mat-select>
                                                                     <mat-error></mat-error> 
@@ -1151,8 +1148,8 @@
                                                             </div>
                                                             <div class="col-md-3 col-sm-3">
                                                                 <div class="add-content">
-                                                                    <span *ngIf="i >= 0" class="icon-add" (click)="addSchemeRow(schemeRows,i)"></span>&nbsp;
-                                                                    <span *ngIf="i >= 1" class="icon-cross" (click)="removeSchemeRow(schemeRows,i)"></span>
+                                                                    <span *ngIf="i >= 0" class="icon-add" (click)="addSchemeRow(typeScope.schemeRows,i)"></span>&nbsp;
+                                                                    <span *ngIf="i >= 1" class="icon-cross" (click)="removeSchemeRow(typeScope.schemeRows,i)"></span>
                                                                 </div>
                                                             </div>
                                                         </div> 

@@ -916,38 +916,6 @@
                                                             </div>
                                                         </ng-container>
                                                     </ng-container>
-                                                    <!-- <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="table-appln scope-data">
-                                                                <div class="sub-header">
-                                                                    <h5 [innerHTML]="getSchme(item.key)"></h5>
-                                                                </div>
-                                                                <table>
-                                                                    <tr>
-                                                                        <th *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
-                                                                        <th>Action</th>
-                                                                    </tr>
-                                                                    <ng-container *ngIf="item.value.scope_value.length > 0">
-                                                                        <tr *ngFor="let item2 of (item.value.scope_value) | keyvalue; let i4 = index;">
-                                                                            <td *ngFor="let item3 of item2.value | keyvalue;">
-                                                                                <span [innerHTML]="(item3.value)"></span>
-                                                                            </td>
-                                                                            <td>
-                                                                            <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item.key)"></span>
-                                                                            </td>                                                                
-                                                                        </tr>
-                                                                    </ng-container>
-                                                                    <ng-container *ngIf="item.value.scope_value.length == 0">
-                                                                        <tr>
-                                                                            <td [attr.colspan]="Service.getObjectLength(item.value.scope_heading)+1">
-                                                                                No Data
-                                                                            </td>
-                                                                        </tr>
-                                                                    </ng-container>
-                                                                </table>  
-                                                            </div>
-                                                        </div>
-                                                    </div> -->
                                                 </ng-container>
                                             </ng-container>
                                             <ng-container *ngFor="let item of subTypeRows; let i = index;">
