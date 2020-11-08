@@ -315,12 +315,30 @@ export class ClientCabProfileComponent implements OnInit {
     // return;
   }
 
+  dateChanged(evt){
+    let selectedDate = new Date(evt);
+    console.log("by default:", selectedDate);
+    console.log("by UTCString:", selectedDate.toUTCString());
+    console.log("by LocaleString:", selectedDate.toLocaleString());
+    console.log("by LocaleTimeString:", selectedDate.toLocaleTimeString());
+    return selectedDate.toISOString();
+  }
+
   onSubmitStep1(ngForm1) {
-    //console.log(this.clientCabForm);
+    // console.log(new Date(this.step1Data.date_of_birth));
     if(ngForm1.form.valid) {
+      // var datestr = (new Date(this.step1Data.date_of_birth)).toISOString();
+      // console.log(datestr,'datestr');
+      // let newDate= new Date(this.step1Data.date_of_birth);
+      // newDate = newDate.setMinutes(newDate.getMinutes() - newDate.getTimezoneOffset());
+
+      let newDate= new Date(this.step1Data.date_of_birth);
+      newDate.setMinutes(newDate.getMinutes() - newDate.getTimezoneOffset());
+      
       this.clientCabForm.step1 = {};
       this.clientCabForm.email = this.userEmail;
       this.clientCabForm.userType = this.userType;
+      this.step1Data.date_of_birth = newDate;
       this.step1Data.first_name = this.step1Data.title+' '+this.step1Data.first_name;
       this.clientCabForm.step1 = this.step1Data;
       this.step1DataBodyFormFile.append('data',JSON.stringify(this.clientCabForm));
@@ -404,12 +422,24 @@ export class ClientCabProfileComponent implements OnInit {
 
   onSubmitStep2(ngForm2) {
     if(ngForm2.form.valid  && this.tradeLicensedValidation != false) {
+
+      let date_establishment= new Date(this.step2Data.date_establishment);
+      date_establishment.setMinutes(date_establishment.getMinutes() - date_establishment.getTimezoneOffset());
+
+      let date_issue= new Date(this.step2Data.date_issue);
+      date_issue.setMinutes(date_issue.getMinutes() - date_issue.getTimezoneOffset());
+
+      let date_expire= new Date(this.step2Data.date_expire);
+      date_expire.setMinutes(date_expire.getMinutes() - date_expire.getTimezoneOffset());
       
       this.clientCabForm = {};
       this.clientCabForm.step2 = {};
 
       this.clientCabForm.email = this.userEmail;
       this.clientCabForm.userType = this.userType;
+      this.step2Data.date_establishment = date_establishment;
+      this.step2Data.date_issue = date_issue;
+      this.step2Data.date_expire = date_expire;
       this.clientCabForm.step2 = this.step2Data;
 
       this.clientCabForm.step2['nameOftheOwner'] = [];

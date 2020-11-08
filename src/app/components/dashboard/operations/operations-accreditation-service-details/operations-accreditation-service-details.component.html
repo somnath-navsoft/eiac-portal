@@ -254,8 +254,13 @@
                     </ng-container>                    
                     </td>
                   </tr>
-                  <tr>
-                    <td>Is Testing the main activity of the organization</td>
+                  <tr *ngIf="serviceDetail?.is_main_activity">
+                    <td *ngIf="serviceDetail?.form_meta == 'inspection_body'">Is Inspection the main activity of the organization</td>
+                    <td *ngIf="serviceDetail?.form_meta == 'health_care'">Is Healthcare the main activity of the organization</td>
+                    <td *ngIf="serviceDetail?.form_meta == 'certification_bodies'">Is Certification the main activity of the organization</td>
+                    <td *ngIf="serviceDetail?.form_meta == 'testing_calibration'">Is Testing the main activity of the organization</td>
+                    <td *ngIf="serviceDetail?.form_meta == 'halal_conformity_bodies'">Is Halal the main activity of the organization</td>
+                    <td *ngIf="serviceDetail?.form_meta == 'pt_providers'">Is Proficiency the main activity of the organization</td>
                     <td colspan="1">
                       {{ (serviceDetail?.is_main_activity != undefined && serviceDetail?.is_main_activity == true) ? 'Yes' : 'No' }}
                     </td>

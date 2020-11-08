@@ -451,9 +451,82 @@ a:hover { text-decoration: none; }
 .io_details .date-update { border-radius: 0 0 5px 5px; }
 .io_details .date-update .data-bg { border-radius: 0 0 5px 5px; }
 
-
+.ourcourse-data { display: flex; justify-content: space-between; margin-bottom: 25px; }
+.ourcourse-data .sort-data { height: 100%; border-radius: 25px; border: 1px solid #A5A5A5; padding: 5px 10px;  }
+.sort-data label { margin: 0; }
+.sort-data .mat-form-field-underline {
+  display: none;
+}
+.sort-data .mat-form-field-wrapper { padding: 0; }
+.sort-data .mat-form-field-appearance-fill .mat-form-field-flex { padding: 0; }
+.sort-data .mat-form-field-wrapper .mat-form-field-infix { border: 0; padding: 0; }
+.sort-data .mat-form-field-appearance-fill .mat-select-arrow-wrapper { display: flex; }
+.sort-data .mat-select-value { padding-left: 10px; }
+.sort-data select { border: 0; }
+.sort-data select:focus { outline: none; }
+.sort-data .mat-form-field-appearance-fill .mat-form-field-flex { background: #fff; }
+.progs-course h4 { color: #77777B; font-size: 30px; font-family: 'Dubai Regular'; margin: 0;   }
+.progs-up .prog-details li { font-size: 22px; }
+.prog-details p { margin: 0; }
+.progs-up ul { margin: 0; padding: 0; list-style: none; }
+.scheduled-prog { background: #EFEFEF; margin-bottom: 20px; border-radius: 5px; }
+.scheduled-prog hr { margin: 0;  }
+.training-data h4 { color: #B54150; font-size: 22px; font-family: 'Dubai Medium'; margin: 0; padding: 10px 20px; }
+.training-details { padding: 25px 20px; }
+.training_det span { color: #9F7F50; font-size: 16px; font-family: 'Dubai Medium'; }
+.training_type span { color: #606060; font-size: 18px; font-family: 'Dubai Medium'; }
+.train_det_bttn { display: flex; justify-content: flex-end; align-items: center; height: 100% }
+.train_det_bttn .training_btn { background: #B54150; border: 0; color: #fff; font-size: 14px; font-family: 'Dubai Bold'; padding: 5px 25px; border-radius: 5px; }
+// .training-main-details { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+.training-details .row .border-left-dash:first-child { border: none; }
 // .dash-data { background: #B19681; display: flex; justify-content: center; align-items: center; }
 
+
+
+.description-course img { width: 100%; height: auto; border-radius: 5px; }
+.service-course-block {
+  float: right; 
+  margin-right: -65px;
+  margin-top: 30px;
+  width: 100%;
+  -webkit-box-shadow: -35px -35px 0px -6px rgba(198, 184, 164, 1);
+  -moz-box-shadow: -35px -35px 0px -6px rgba(198, 184, 164, 1);
+  box-shadow: -35px -35px 0px -6px rgba(198, 184, 164, 1)
+}
+.course-info { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, .4); width: 100%; padding: 15px 0;  }
+.course-data {
+  // height: 420px;
+  background: #B54150;
+  color: #ffffff;
+  font-family: "Dubai Regular";
+  padding: 20px 50px;
+  position: relative;
+}
+.course-det { width: 100%; }
+.course-det:last-child { border-left: 1px solid rgba(255, 255, 255, .4); padding-left: 20px; }
+.course-data h3 { font-size: 32px; padding: 5px 0; margin: 0; }
+.course-data h5 { font-size: 27px; margin: 0; }
+.course-data span { color: #E7DCCD; }
+.course-bttnmain { display: flex; justify-content: space-between; }
+.course-btn { text-align: center; }
+.course-bttn { display: flex; justify-content: flex-end; }
+.curs-apply {
+  border: none;
+  background: #B54150;
+  font-family: "Dubai Bold";
+  color: #ffffff;
+  font-size: 22px;
+  padding: 15px 45px;
+  // margin-top: 5px;
+  text-transform: uppercase;
+  display: block;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.curs-apply:hover { color: #fff; text-decoration: none; }
+.curs-apply:not([href]) { color: #fff; }
+.curs-apply:not([href]):hover { color: #fff; }
+.crs-btn { margin-right: 20px; }
 
 //==================CREATE APPLICATION==================//
 .create-app { text-align: right; }
