@@ -1008,16 +1008,43 @@
                                         </div>
                                     </div>
 
-                                    <div class="row  mt-3">
+                                    <!-- <div class="row  mt-3">
                                         <div class="col-md-12">
                                             @{{criteriaList | json}}
                                         </div>
-                                    </div>
+                                    </div> -->
                                     
                                     
                                     <!-- SCOPE SECTION START -->
                                     <div class="row  mt-3">
                                         <!-- @{{editScopeData | json}} Chaitali!1991-->
+                                        <div class="col-md-12">
+                                            <ul [ngStyle]="{'list-style':'none'}">
+                                                <ng-container *ngFor="let item of scopeCheckboxes; let k=index;">
+                                                    <li>
+                                                        <mat-checkbox  name="scope_options" (change)="checkItemClick($event)" 
+                                            [(ngModel)]="item.checked" [ngModelOptions]="{standalone: true}" required>{{item.label}}</mat-checkbox> 
+                                                    </li>
+                                                </ng-container>
+                                                <li>
+                                                    <!-- other check -->
+                                            <mat-checkbox  name="scope_options_others_check" (change)="checkOthersItemClick($event)" [(ngModel)]="checkItemOthers">Others</mat-checkbox>
+                                                </li>
+                                                <li>
+                                                    <ng-container *ngIf="checkItemOthers">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Type Other</mat-label>
+                                                            <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                            matInput name="scope_options_others" 
+                                                            [(ngModel)]="scope_options_others" placeholder="Others" required>
+                                                        </mat-form-field> 
+                                                    </ng-container>
+                                                </li>
+                                            </ul>
+                                            
+                                             
+
+                                        </div>
                                         <div class="col-md-12">
                                             <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey, selectDeleteTypeTitle)" [parent]="this" [modalType]="'delete'"></custom-modal>
                                             <ng-container *ngIf="editScopeData != undefined && editScopeData != null">
@@ -1107,14 +1134,13 @@
                                                                     </div> 
                                                                 </div>
                                                             </div>
-                                                    <ng-container *ngFor="let item of schemeRows; let i = index;">
+                                                    <ng-container *ngFor="let item of typeScope.schemeRows; let i = index;">
                                                         <div class="row mt-3">
                                                             <div class="col-md-9 col-sm-9">
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Scheme</mat-label>
-                                                                    <!-- criteriaMaster -->
-                                                                    <mat-select (selectionChange)="getCriteria(schemeRows[i].id, i, typeScope.title)" placeholder="Select" name="scheme_id_{{i}}"  
-                                                                    [(ngModel)]="schemeRows[i].id"  [required] = "editScopeData == undefined || editScopeData == null">
+                                                                    <mat-select (selectionChange)="getCriteria(typeScope.schemeRows[i].id, i, typeScope.title)" placeholder="Select" name="scheme_id_{{i}}"  
+                                                                    [(ngModel)]="typeScope.schemeRows[i].id"  [required] = "editScopeData == undefined || editScopeData == null">
                                                                         <mat-option [value]="item.scope_accridiation.id" *ngFor="let item of typeScope.schemeData; let k=index;">{{item.title}}</mat-option>
                                                                     </mat-select>
                                                                     <mat-error></mat-error> 
@@ -1122,8 +1148,8 @@
                                                             </div>
                                                             <div class="col-md-3 col-sm-3">
                                                                 <div class="add-content">
-                                                                    <span *ngIf="i >= 0" class="icon-add" (click)="addSchemeRow(schemeRows,i)"></span>&nbsp;
-                                                                    <span *ngIf="i >= 1" class="icon-cross" (click)="removeSchemeRow(schemeRows,i)"></span>
+                                                                    <span *ngIf="i >= 0" class="icon-add" (click)="addSchemeRow(typeScope.schemeRows,i)"></span>&nbsp;
+                                                                    <span *ngIf="i >= 1" class="icon-cross" (click)="removeSchemeRow(typeScope.schemeRows,i)"></span>
                                                                 </div>
                                                             </div>
                                                         </div> 
