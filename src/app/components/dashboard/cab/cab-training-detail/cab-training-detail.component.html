@@ -66,7 +66,7 @@
 
                                 <div class="course-info">
                                     <h5>Location : <span *ngIf="courseDetails?.event.location == 'eiac_training_center'">EIAC Training Center</span>
-                                    <span *ngIf="courseDetails?.event.location != '' || courseDetails?.event.location != 'eiac_training_center'">N/A</span>
+                                    <span *ngIf="courseDetails?.event.location != '' && courseDetails?.event.location != 'eiac_training_center'">N/A</span>
                                     </h5>
                                 </div>
 
@@ -94,7 +94,7 @@
                     <div class="col-md-6">
                         <div class="course-bttn">
                             <div class="course-btn ">
-                                <a class="curs-apply" (click)="scrollForm(targetList)">Apply Now</a>
+                                <a class="curs-apply" routerLink = "/dashboard/cab_client/training-public-course-form/{{routeId}}">Apply Now</a>
                             </div>
                         </div>
                     </div>
