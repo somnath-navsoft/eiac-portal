@@ -84,6 +84,7 @@ import { StatusComponent } from './components/dashboard/status/status.component'
 import { AccountsComponent } from './components/dashboard/accounts/accounts.component';
 import { AccountDetailsComponent } from './components/dashboard/accounts/account-details/account-details.component';
 import { AccountUploadComponent } from './components/dashboard/accounts/account-upload/account-upload.component';
+import { CabTrainingDetailComponent } from './components/dashboard/cab/cab-training-detail/cab-training-detail.component';
 
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
@@ -143,6 +144,7 @@ const routes: Routes = [
         { path: 'training-course', component:CabTrainingApplicationComponent, canActivate: [AuthGuard] },
         { path: 'training-public-course', component:CabTrainingPublicCourseComponent, canActivate: [AuthGuard] },
         { path: 'training-public-course-list', component:CabTrainingPublicCourseListComponent, canActivate: [AuthGuard] },
+        { path: 'training-course-details/:id', component:CabTrainingDetailComponent, canActivate: [AuthGuard] },
         { path: 'training-inpremise-course', component:CabTrainingInpremiseCourseComponent, canActivate: [AuthGuard] },
         { path: 'training-service', component:CabTrainerServiceListComponent, canActivate: [AuthGuard] },
         { path: 'application-registration', component:ApplicationRegistrationComponent, canActivate: [AuthGuard] },
