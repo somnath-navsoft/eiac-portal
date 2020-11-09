@@ -67,7 +67,24 @@ export class StatusComponent implements OnInit {
     sessionStorage.setItem('ibUrlId', id);
   }
 
-  loadPageData() {
+  editVisible(object: any){
+    console.log(">>> Item data: ", object);
+    let getId= (object.id);
+    let url = this._service.apiServerUrl+"/"+'accrediation-details-show/'+getId;
+    //let getScheme: any  = this.schemeRows[rowInd].id;
+
+    console.log(">>>Get url and ID: ", url, " :: ", getId, " -- ");
+    this._service.getwithoutData(url)
+    .subscribe(
+    async res => {
+        let getData: any  =res;
+        console.log(">>>. Data: ", getData);
+        
+        
+    });
+  }
+
+  loadPageData() { 
     this.loader = false;
     var id = 'all';
     this.subscriptions.push(this._trainerService.getAccreditationStatusList(id)
@@ -77,7 +94,7 @@ export class StatusComponent implements OnInit {
           let data: any = result;
           let dataRec: any=[];
           this.dataLoad = true;
-          // console.log('loading...', data.records);
+          console.log('Data load...', data.records);
           
           this.trainerdata = data.records;
           dataRec = data.records;
@@ -88,10 +105,6 @@ export class StatusComponent implements OnInit {
         }
       )          
     )
-  }
-
-  getRouteId(id) {
-
   }
 
   sortedList(data: any, sortBy: string, sortDir: boolean){

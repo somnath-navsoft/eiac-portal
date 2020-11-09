@@ -1276,6 +1276,8 @@ export class InspectionBodiesFormComponent implements OnInit {
     }
   }
 
+
+
   loadAppData(){
     ////console.log(">> >route id:  ", " -- ", this.routeId, " -- ", this.urlVal, " -- ", );
     let url = '';
@@ -1745,6 +1747,15 @@ export class InspectionBodiesFormComponent implements OnInit {
           console.log("@ Auth checked status: ", authList);
           this.authorizationList = JSON.parse(authList);
           console.log("# Auth checked status: ", this.authorizationList);
+
+          //check read ters check
+          if(this.authorizationList.authorization_confirm2){
+            this.readTermsCond       = true;
+          }
+          //check review checklist checked
+          if(this.authorizationList.undertaking_confirm2){
+            this.readReviewChecklist       = true;
+          }
 
 
           //this.authorizationStatus = true;
@@ -2325,6 +2336,14 @@ export class InspectionBodiesFormComponent implements OnInit {
   showHideMembInfo(data){
     this.orgMembToggle  = data.checked;
   }
+
+  scrollPage(pageId: any){
+    const el = document.getElementById(pageId);
+            console.log("@Elem: ",el);
+            if(el){
+              el.scrollIntoView(true);    //arguement true bypass the non-exist element or undefined
+            }
+  }
   
   getFieldTooltip123(modelValue: any, modelObject: any, type: any){
     ////////////console.log("Model Tooltip: ", modelValue, " --- ", modelObject);
@@ -2467,7 +2486,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     if(theEvent.checked || readChecked == true){
       for(let key in this.authorizationList) {
         console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
-        if(this.authorizationList[key]) {  
+        if(this.authorizationList[key] && key != 'undertaking_confirmTop3') {  
           this.authorizationStatus = true;       
           checkCount++;
         }    
@@ -3212,7 +3231,6 @@ export class InspectionBodiesFormComponent implements OnInit {
   }
 
   onSubmitPersonalInformation(ngForm3: any, type?: boolean){
-   
       this.inspectionBodyForm = {};
       this.inspectionBodyForm.step3 = {};
       //this.inspectionBodyForm.email = this.userEmail;
@@ -3283,12 +3301,14 @@ export class InspectionBodiesFormComponent implements OnInit {
           ////////console.log(res,'res')
           if(res['status'] == true) {
             //this.toastr.success(res['msg'], '');
+            //alert(this.step1Data.accredation_criteria);
             if(this.step1Data.accredation_criteria == 1){
               //Intial
               this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
             }
             if(this.step1Data.accredation_criteria == 2){
               //Extension
+              //alert(this.step1Data.accredation_criteria);
               let stepData: any = this.headerSteps.find(item => item.title == 'information_audit_management');
               console.log(">>step select: 1 ", stepData);
               if(stepData){
@@ -3338,6 +3358,19 @@ export class InspectionBodiesFormComponent implements OnInit {
     //   this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
     //   //return;
     // }
+    console.log("@Enter........");
+    if(this.step1Data.accredation_criteria == 2){
+      //Extension
+      //alert(this.step1Data.accredation_criteria);
+      let stepData: any = this.headerSteps.find(item => item.title == 'information_audit_management');
+      //console.log(">>step select: 1 ", stepData);
+      if(stepData){
+        stepData.activeClass = '';
+        stepData.stepComp = true;
+      }
+      //console.log(">>step select: 2 ", this.headerSteps);
+      this.Service.moveSteps('personal_information', 'scope_accreditation', this.headerSteps);
+    }
 
     this.inspectionBodyForm = {};
       this.inspectionBodyForm.step4 = {};
@@ -4011,8 +4044,8 @@ backScopeAccreditation(){
   //declare Items data
   this.transactionsItem['item_list']            = {};
   this.transactionsItem['item_list']['items']   = [];
-  let custPrice: any = 520;
-  this.total = 520;
+  let custPrice: any = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;
+  this.total = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//520;
     this.transactionsItem['item_list']['items'].push({name: 'Inspection Body Application', quantity: 1, price: custPrice, currency: 'USD'});
       if(this.total > 0){
         //////////console.log("Calculate price: ", calcPrice);

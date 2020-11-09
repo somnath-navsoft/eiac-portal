@@ -349,9 +349,9 @@ ngOnInit() {
 // //console.log(">>>steps: ", this.headerSteps);
 
   this.summaryDetails = [{"position":'Managerial/Professional'},{'position':'Administrative'},{'position':'Marketing/Sales'}];
-  
+  //undertaking_confirm6:false, undertaking_confirm3:false,
   this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,
-    undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,
+    undertaking_confirm2:false,undertaking_confirm4:false,undertaking_confirm5:false,
     undertaking_confirm7:false,undertaking_confirm8:false};
   this.loadAppInfo()
   this.loadCountryStateCity();
@@ -1077,8 +1077,8 @@ loadAppInfo(){
         this.step1Data.fax_no = data.applicant_fax_no;
         this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
         this.step1Data.is_hold_other_accreditation = "";
-        this.step1Data.is_main_activity = "";
-        this.step1Data.is_main_activity_note = "";
+        //this.step1Data.is_main_activity = "";
+        //this.step1Data.is_main_activity_note = "";
         this.step1Data.mailing_address = data.applicant_address;
         this.step1Data.official_commercial_name = data.cab_name;
         this.step1Data.official_email = data.applicant_email;
@@ -1200,6 +1200,7 @@ loadAppInfo(){
               }
 
               if(res['data'].is_main_activity != undefined){
+                //console.log(">>> main activity...", res['data'].is_main_activity);
                   this.step1Data.is_main_activity = res['data'].is_main_activity.toString();
                   if(!res['data'].is_main_activity){
                     this.step1Data.is_main_activity_note = res['data'].is_main_activity_note.toString();
@@ -1212,7 +1213,7 @@ loadAppInfo(){
               //step2
               if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
                 this.accreditationInfo = [];
-                this.step2Data.is_hold_other_accreditation_select = "1";
+                this.step1Data.is_hold_other_accreditation_select = "1";
                 res['data'].otherAccr.forEach((item, key) => {
                     let data: any;
                     data = item['value'];
@@ -1221,7 +1222,7 @@ loadAppInfo(){
                     this.accreditationInfo.push(jparse);
                 })
               }else{
-                this.step2Data.is_hold_other_accreditation_select = "0";
+                this.step1Data.is_hold_other_accreditation_select = "0";
               }
 
               //step3
@@ -1347,7 +1348,6 @@ loadAppInfo(){
                 if(this.editScopeData.others != undefined && typeof this.editScopeData.others == 'object'){
                       let colheader: any = ['category', 'standard', 'scopeScheme'];
                       let otherData: any = this.editScopeData['others']['others']['scope_value'];
-                      
                       otherData.forEach((rec, key) => {
                         //console.log(">>> other values: ", rec, " -- ", key);
                         let tmpObj: any ={};
@@ -1363,8 +1363,12 @@ loadAppInfo(){
                   //console.log(">>> null key found and deleting...");
                   delete this.editScopeData['null'];
                 }
-                this.otherStandards = otherCopy;
-                delete this.editScopeData['others'];
+                if(otherCopy.length > 0){
+                  this.otherStandards = otherCopy;
+                  delete this.editScopeData['others'];
+                }
+                
+                //
                 //console.log(">>> scope entry: ", this.editScopeData, " == ", otherCopy);
               }
 
@@ -1413,6 +1417,15 @@ loadAppInfo(){
                 console.log("@ Auth checked status: ", authList);
                 this.authorizationList = JSON.parse(authList);
                 console.log("# Auth checked status: ", this.authorizationList);
+
+                //check read ters check
+                if(this.authorizationList.authorization_confirm2){
+                  this.readTermsCond       = true;
+                }
+                //check review checklist checked
+                if(this.authorizationList.undertaking_confirm2){
+                  this.readReviewChecklist       = true;
+                }
 
                 // Object.keys(this.authorizationList).forEach( key => { 
                 //   this.authorizationList[key] = true;
@@ -1911,6 +1924,7 @@ this.subTypeRows = [{}];
         //this.editScopeData = jsonObject;
         console.log(jsonObject);
         if(this.otherStandards.length > 0){
+          console.log(">>>> otehr certifica data.....");
           jsonObject['others'] = {};
           jsonObject['others']['others'] = {};
           jsonObject['others']['others']['scope_heading'] = {};
@@ -1937,6 +1951,8 @@ this.subTypeRows = [{}];
 
             }
         }
+
+        //this.step3Data['scopeDetails'] = 
 
         //saving
         this.certificationBodiesForm = {};
@@ -2193,7 +2209,7 @@ saveScope(rowInd: number, typeScopeId: number){
 
   //Update scope data
   if(this.editScopeData != undefined && this.editScopeData != null){
-      //console.log("update edit scope: ", this.editScopeData, " -- ", scopeCollections)
+      console.log("update edit scope: ", this.editScopeData, " -- ", scopeCollections)
       let tempScopeDetails: any={};
       let checkMatch: boolean = false;
       let checkTypeMatch: boolean = false;
@@ -2228,54 +2244,35 @@ saveScope(rowInd: number, typeScopeId: number){
                 }
               }else{
                 //New Type added
-                //console.log("<><><>>>>>> not match adding: ", this.editScopeData[key]);
+                console.log("<><><>>>>>> not match adding: ", this.editScopeData[key]);
                 if(key != null && key != 'null' && key != undefined){
-                  //console.log(">>>>> Enetr cond..............");
+                  console.log(">>>>> Enetr cond..............");
                   scopeCollections[key] = {};
-               scopeCollections[key] = this.editScopeData[key];
+                  scopeCollections[key] = this.editScopeData[key];
                 }
                 
               }
 
 
-              // tempScopeDetails[key] = {};
-              // tempScopeDetails[key]['scope_value'] = [];
-              // //console.log(">>> ", key, " :: ", this.editScopeData[key]);
-              // checkMatch = this.getMatchScheme(key, scopeCollections);
-              // //console.log("@@@ Finding schme status...", key);
-              //     if(checkMatch){
-              //       //console.log("#>>> Find scheme in edit scope and update/marge...");
-              //       this.editScopeData[key]['scope_value'].forEach((item, p) => {
-              //         scopeCollections[key]['scope_value'].push(this.editScopeData[key]['scope_value'][p])
-              //       })
-              //       //scopeCollections[key]['scope_value'].push(this.editScopeData[key]['scope_value']);
-              //     }else{
-              //       //console.log("@>>> Not Found scheme in edit scope and update and marge...");
-              //       scopeCollections[key] = {};
-              //       scopeCollections[key]['scope_heading']  = {};
-              //       scopeCollections[key]['scope_heading']  = this.editScopeData[key]['scope_heading'];
-              //       scopeCollections[key]['scope_value']    = [];
-              //       scopeCollections[key]['scope_value']    = this.editScopeData[key]['scope_value']
-              //     }
             }
       //filter scope collections
       //console.log(">> Fileter collection...", scopeCollections);
       var type: any;
-      for(type in scopeCollections){
-        //console.log(">>> browse Type: ", type, " :: ", scopeCollections[type]);
-          if(type > 0){
-            for(var p in scopeCollections[type]){
-              if(scopeCollections[type][p]){
-                  let getDetails: any = scopeCollections[type][p]['scope_value'];
-                  //console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
-                  if(getDetails.length == 0){
-                    //console.log(">>>Empty values: ", p, " deleting");
-                    delete scopeCollections[type][p];
-                  }
-              }
-            }
-          }
-      }                
+      // for(type in scopeCollections){
+      //   //console.log(">>> browse Type: ", type, " :: ", scopeCollections[type]);
+      //     if(type > 0){
+      //       for(var p in scopeCollections[type]){
+      //         if(scopeCollections[type][p]){
+      //             let getDetails: any = scopeCollections[type][p]['scope_value'];
+      //             //console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
+      //             if(getDetails.length == 0){
+      //               //console.log(">>>Empty values: ", p, " deleting");
+      //               delete scopeCollections[type][p];
+      //             }
+      //         }
+      //       }
+      //     }
+      // }                
   }
 
   //MAnage Others
@@ -2416,8 +2413,8 @@ onSubmitStep3(ngForm: any, type?:any, rowInd?: any, typeScopeId?: number) {
     ////console.log("scheme Rows: ", this.schemeRows,  " -- ", this.schemeRows.length, " :: ", this.editScopeData, " :: ", this.getScopeData);
 
     ////console.log(">>>Form Submit: ", ngForm, " -- ",ngForm.form, " -- ", this.schemeRows); 
-    console.log(">>> step3 submit...", this.step5Data, " -- ", this.certificationBodiesForm);
-   //return;
+    console.log(">>> step3 submit...", this.step3Data, " -- ", this.certificationBodiesForm);
+    //return;
     //ngForm.form.valid &&
     //&& this.schemeRows.length == 1   && this.schemeRows[0].id === undefined
     if(!ngForm.form.valid && type == undefined  && this.subTypeRows.length == 1   && this.subTypeRows[0].id === undefined
@@ -2554,7 +2551,7 @@ authorizeCheckCount(theEvent: any, type?:any){
   }
       
 
-  if(this.authorizationStatus && checkCount == 10){
+  if(this.authorizationStatus && checkCount == 8){
     this.authorizationStatus = true;
   }else{
     this.authorizationStatus = false;
@@ -2593,7 +2590,7 @@ let checkCount = 0;
         checkCount++;
       }    
     }
-    if(this.authorizationStatus && checkCount == 10){
+    if(this.authorizationStatus && checkCount == 8){
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;
@@ -2682,8 +2679,8 @@ this.transactionsItem['amount']['details']['subtotal'] = 0.00;
 //declare Items data
 this.transactionsItem['item_list']            = {};
 this.transactionsItem['item_list']['items']   = [];
-let custPrice: any = 0.01;
-this.total = 0.05;
+let custPrice: any = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//0.01;
+this.total = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//0.05;
 this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity: 1, price: custPrice, currency: 'USD'});
   if(this.total > 0){
     ////console.log("Calculate price: ", calcPrice);
@@ -3038,6 +3035,14 @@ removeRow(obj: any, index: number, type?:string){
   }    
   this._customModal.closeDialog();
   return true;
+}
+
+scrollPage(pageId: any){
+  const el = document.getElementById(pageId);
+          console.log("@Elem: ",el);
+          if(el){
+            el.scrollIntoView(true);    //arguement true bypass the non-exist element or undefined
+          }
 }
 
 resolvedSecurity(captchaResponse: string) {
