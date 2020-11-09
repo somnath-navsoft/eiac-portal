@@ -1153,8 +1153,8 @@
                                                             </div>
                                                             <table>
                                                                 <tr>
-                                                                    <th *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
-                                                                    <th>Action</th>
+                                                                    <th width="15%" *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
+                                                                    <th width="5%">Action</th>
                                                                 </tr>
                                                                 <ng-container *ngIf="item.value.scope_value.length > 0">
                                                                     <tr *ngFor="let item2 of (item.value.scope_value) | keyvalue; let i4 = index;">
