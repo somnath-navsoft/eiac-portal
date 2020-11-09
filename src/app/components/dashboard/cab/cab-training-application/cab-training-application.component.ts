@@ -30,10 +30,11 @@ export class CabTrainingApplicationComponent implements OnInit  {
     this.subscriptions.push(this._trainerService.getTrainerPageDetails()
     .subscribe(
        result => {
+        console.log(">>>>course: ", result);
          let data: any = result;
          this.pageDetails = data.pageData;
          this.loaderData = false;
-         console.log(">>>>course: ", data);
+         
        }
     ));
   }

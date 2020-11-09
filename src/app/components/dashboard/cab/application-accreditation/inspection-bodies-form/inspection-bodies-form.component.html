@@ -951,7 +951,7 @@
                 </div>
 
                 <div class="cust-stepper" id="scope_accreditation"  [ngStyle]="{'display':'none'}">
-                    <form #ngForm5="ngForm" (ngSubmit)="onSubmitScopeAccreditation(ngForm5)" autocomplete="off">
+                    <!-- <form #ngForm5="ngForm" (ngSubmit)="onSubmitScopeAccreditation(ngForm5)" autocomplete="off"> -->
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-12">
@@ -967,7 +967,7 @@
                                     <div class="col-md-12">
                                      <!-- exisiting...perev -->     
                                 <!-- step5Data.scheme_ids[i] -->
-                                <ng-container *ngFor="let item of schemeRows; let i = index;">
+                                    <ng-container *ngFor="let item of schemeRows; let i = index;">
                                         <div class="row">
                                             <div class="col-md-9 col-sm-9">
                                                 <mat-form-field class="cab-data">
@@ -989,11 +989,12 @@
                                     </ng-container>                                    
                                     </div>
                                   </div>
-                            
+                                  
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
                                             <div class="row" *ngIf="fullScope.length > 0">
                                                 <div class="col-12" *ngFor="let scope of fullScope; let i1 = index;">
+                                            <form #ngForm1="ngForm" autocomplete="off">
                                                     <div class="row">
                                                         <div class="col-md-12 p-0">
                                                             <div class="form-subhdr">
@@ -1120,12 +1121,12 @@
                                                                     </tbody>
                                                                 </table>
                                                             </div>
+                                                            <button class="submit-bttn submit-health" (click)="onSubmitScopeAccreditation(ngForm1,null,i1)" [ngStyle]="{'float': 'right'}">ADD ROW</button>
                                                         </div>
                                                     </div>
+                                                </form>
                                                 </div>
                                             </div>
-
-
                                         </div>
                                     </div>
 
@@ -1152,8 +1153,8 @@
                                                             </div>
                                                             <table>
                                                                 <tr>
-                                                                    <th *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
-                                                                    <th>Action</th>
+                                                                    <th width="15%" *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
+                                                                    <th width="5%">Action</th>
                                                                 </tr>
                                                                 <ng-container *ngIf="item.value.scope_value.length > 0">
                                                                     <tr *ngFor="let item2 of (item.value.scope_value) | keyvalue; let i4 = index;">
@@ -1185,19 +1186,21 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <ng-container *ngIf="step1Data.accredation_criteria == 1">
+                                        <!-- <ng-container *ngIf="step1Data.accredation_criteria == 1">
                                         <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','scope_accreditation')">BACK</a> 
                                         </ng-container>
                                         <ng-container *ngIf="step1Data.accredation_criteria == 2">
                                             <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('personal_information',headerSteps,'menu','scope_accreditation')">BACK</a> 
-                                        </ng-container>
-                                        <button class="cancel-bttn" type="button" (click)="onSubmitScopeAccreditation(ngForm5, true)">SAVE AS DRAFT</button>
+                                        </ng-container> -->
+                                        <!--  (click)="onSubmitScopeAccreditation(ngForm5, true)" -->
+                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="backScopeAccreditation()">BACK</a> 
+                                        <button class="cancel-bttn" type="button">SAVE AS DRAFT</button>
                                     </div>
-                                    <button class="submit-bttn submit-health" >CONTINUE</button>
+                                    <button class="submit-bttn submit-health" (click)="continueScopeAccreditation()">CONTINUE</button>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    <!-- </form> -->
                 </div>
 
                 <div class="cust-stepper" id="perlim_visit"  [ngStyle]="{'display':'none'}">
