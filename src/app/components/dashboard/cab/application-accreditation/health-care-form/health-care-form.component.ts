@@ -817,9 +817,12 @@ scrollForm(data?:any){
   this.userId = sessionStorage.getItem('userId');
   // this.titleService.setTitle('EIAC - Testing and Calibration Laboratories');
   this.addMinutesToTime = this.Service.addMinutesToTime();
-  this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,
+
+  this.authorizationList = {
+    authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,
     undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,
-    undertaking_confirm6:false,undertaking_confirm7:false,undertaking_confirm8:false};
+    undertaking_confirm6:false,undertaking_confirm7:false,undertaking_confirm8:false,undertaking_confirm9:false, 
+    undertaking_confirm10:false,undertaking_confirm11:false,};
 
     this.loadTermsConditions();
    ////console.log( this.addMinutesToTime);
@@ -1596,6 +1599,16 @@ loadData(){
                 console.log("@ Auth checked status: ", authList);
                 this.authorizationList = JSON.parse(authList);
                 console.log("# Auth checked status: ", this.authorizationList);
+
+                //check read ters check
+                if(this.authorizationList.authorization_confirm2){
+                  this.readTermsCond       = true;
+                }
+                //check review checklist checked
+                if(this.authorizationList.undertaking_confirm2){
+                  this.readReviewChecklist       = true;
+                }
+
 
                 // this.authorizationList.authorization_confirm1 = true;
                 // this.authorizationList.authorization_confirm2 = true;
@@ -2703,7 +2716,7 @@ authorizeCheckCount(theEvent: any, type?:any){
   if(theEvent.checked || readChecked == true){
     for(let key in this.authorizationList) {
       ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
-      if(this.authorizationList[key]) {  
+      if(this.authorizationList[key] && key != 'undertaking_confirmTop3') {  
         this.authorizationStatus = true;       
         checkCount++;
       }    
@@ -2711,7 +2724,7 @@ authorizeCheckCount(theEvent: any, type?:any){
   }
       
 
-  if(this.authorizationStatus && checkCount == 10){
+  if(this.authorizationStatus && checkCount == 13){
     this.authorizationStatus = true;
   }else{
     this.authorizationStatus = false;
@@ -2741,7 +2754,7 @@ onSubmitUndertakingApplicant(ngForm7: any){
       //   this.authorizationStatus = true;
       // }     
     }  
-    if(this.authorizationStatus && checkCount == 10){  
+    if(this.authorizationStatus && checkCount == 13){  
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;
@@ -2846,8 +2859,8 @@ this.transactionsItem['amount']['details']['subtotal'] = 0.00;
 //declare Items data
 this.transactionsItem['item_list']            = {};
 this.transactionsItem['item_list']['items']   = [];
-let custPrice: any = 0.01;
-this.total = 0.05;
+let custPrice: any = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//0.01;
+this.total = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//0.05;
 this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity: 1, price: custPrice, currency: 'USD'});
   if(this.total > 0){
     ////console.log("Calculate price: ", calcPrice);
