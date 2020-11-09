@@ -2700,7 +2700,7 @@ onSubmitStep5(ngForm: any, type?:any, rowInd?:any) {
       //console.log(">>>Enter....4")
       this.healthCareForm.step5.is_draft = true;
       this.healthCareForm.saved_step = 5;
-      this.saveScope();
+      this.saveScope(rowInd);
       console.log(">>> step5 submit...", this.step5Data, " -- ", this.healthCareForm);
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
       .subscribe(
