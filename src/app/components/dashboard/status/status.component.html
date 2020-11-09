@@ -197,7 +197,7 @@
                                 <a href="javascript:void(0)" *ngIf="item.form_meta == 'pt_providers'" alt="Edit" routerLink="/dashboard/cab_client/pt-providers-form/{{item.id}}"><span class="icon-edit"></span></a>
                                 </ng-container>
                                 <ng-container *ngIf="item.form_meta == 'inspection_body' && item.accr_status != 'complete'">
-                                <a href="javascript:void(0)" [hidden]="true" *ngIf="item.form_meta == 'inspection_body' && item.accr_status != 'complete'" alt="Edit" routerLink="/dashboard/cab_client/inspection-bodies-form/{{item.id}}" (click)="setIB(item.id)"><span class="icon-edit"></span></a>
+                                <a href="javascript:void(0)" *ngIf="item.form_meta == 'inspection_body' && item.accr_status != 'complete'" alt="Edit" routerLink="/dashboard/cab_client/inspection-bodies-form/{{item.id}}" (click)="setIB(item.id)"><span class="icon-edit"></span></a>
                                 </ng-container>
                                 <ng-container *ngIf="item.form_meta == 'health_care' && item.accr_status != 'complete'">
                                 <a href="javascript:void(0)" *ngIf="item.form_meta == 'health_care'" alt="Edit" routerLink="/dashboard/cab_client/health-care-form/{{item.id}}"><span class="icon-edit"></span></a>
