@@ -23,7 +23,7 @@ export class ApplicationRegistrationComponent implements OnInit {
 
   loadService() {
     this.loader = false;
-    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.service_details_page+"?data=registration_service")
+    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.service_details_page+"?data=registration_service&language_id=1")
     .subscribe(
       res => {
         // console.log(res,'res');

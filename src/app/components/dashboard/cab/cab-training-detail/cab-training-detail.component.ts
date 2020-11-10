@@ -24,7 +24,7 @@ export class CabTrainingDetailComponent implements OnInit {
 
   loadData() {
     this.loaderData = false;
-    this._service.getwithoutData(this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.course_details+this.routeId)
+    this._service.getwithoutData(this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.course_details+this.routeId+'?data=1')
     .subscribe(
       res => {
         this.loaderData = true;
