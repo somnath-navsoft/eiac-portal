@@ -13,7 +13,7 @@
                         </div>
                     </div>
                 </div>
-
+                <div id="page_header"></div>
                 <ng-container>
                     <div class="row user_main">
                         <div class="col-md-12">
@@ -995,7 +995,7 @@
                 </div>
 
                 <div class="cust-stepper" id="scope_accreditation" [ngStyle]="{'display':'none'}">
-                    <form #ngForm3="ngForm" (ngSubmit)="onSubmitStep3(ngForm3)" autocomplete="off">
+                    <!-- <form #ngForm3="ngForm" (ngSubmit)="onSubmitStep3(ngForm3)" autocomplete="off"> -->
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-md-12"> 
@@ -1007,18 +1007,17 @@
                                             <hr>
                                         </div>
                                     </div>
-
-                                    <!-- <div class="row  mt-3">
-                                        <div class="col-md-12">
-                                            @{{criteriaList | json}}
-                                        </div>
-                                    </div> -->
-                                    
                                     
                                     <!-- SCOPE SECTION START -->
                                     <div class="row  mt-3">
                                         <!-- @{{editScopeData | json}} Chaitali!1991-->
-                                        <div class="col-md-12">
+                                        <div class="col-md-3 col-sm-3 ">                                            
+                                            <div class="form-subheader">
+                                                <span>Cab Type:<span class="required_input">*</span></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9 col-sm-9 p-0 pt-4">
+
                                             <ul [ngStyle]="{'list-style':'none'}">
                                                 <ng-container *ngFor="let item of scopeCheckboxes; let k=index;">
                                                     <li>
@@ -1046,7 +1045,7 @@
 
                                         </div>
                                         <div class="col-md-12">
-                                            <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey, selectDeleteTypeTitle)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                                            <!-- <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey, selectDeleteTypeTitle)" [parent]="this" [modalType]="'delete'"></custom-modal>
                                             <ng-container *ngIf="editScopeData != undefined && editScopeData != null">
                                                 <div class="row">
                                                     <div class="col-md-12 p-0">
@@ -1101,7 +1100,7 @@
                                                         </ng-container>
                                                     </ng-container>
                                                 </ng-container>
-                                            </ng-container>
+                                            </ng-container> -->
                                             <ng-container *ngFor="let item of subTypeRows; let i = index;">
                                                 <div class="row mt-3">
                                                     <div class="col-md-9 col-sm-9">
@@ -1121,10 +1120,11 @@
                                                     </div>
                                                 </div> 
                                             </ng-container>
-                                            <hr>
+
                                             
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
+                                                    <form #ngForm1="ngForm" autocomplete="off">
                                                     <div class="row" *ngIf="fullTypeScope.length > 0">
                                                         <div class="col-12" *ngFor="let typeScope of fullTypeScope; let t1 = index;">
                                                             <div class="row">
@@ -1282,6 +1282,10 @@
                                                                             </table>
                                                                         </div>
                                                                     </div>
+                                                                    <button class="submit-bttn submit-health" 
+                                                                    (click)="onSubmitStep3(ngForm1,null,i1, typeScope.id)" 
+                                                                    [ngStyle]="{'float': 'right'}">
+                                                                        <span class="icon-add"></span>&nbsp;&nbsp;ADD</button>
                                                                 </div>
                                                             
                                                             </div>
@@ -1290,12 +1294,74 @@
 
                                                     </div>
                                                 </div>
-                                    </div>
-                                </div>
+                                            </div>
+                                            
+                                            </div>
+                                        </form>
                             </div>
-                        </div>
+                                            </div>
 
                                     <!-- SCOPE SECTION END -->
+                                    <div class="row"> 
+                                        <div class="col-md-12">
+                                            <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey, selectDeleteTypeTitle)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                                            <ng-container *ngIf="editScopeData != undefined && editScopeData != null">
+                                                <div class="row">
+                                                    <div class="col-md-12 p-0">
+                                                        <div class="form-subheader-data">
+                                                            <h5>SCOPE DATA</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteTypeKey,selectDeleteIndex)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                                                <ng-container *ngFor="let item of editScopeData | keyvalue">
+                                                    <div class="row"> 
+                                                        <div class="col-md-12">
+                                                            <div class="sub-header">
+                                                                <h5 [innerHTML]="getSubType(item.key)"></h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <ng-container *ngIf="item.value != null && item.value != undefined">
+                                                        <ng-container *ngFor="let item5 of (item.value) | keyvalue;">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="table-appln scope-data">
+                                                                        <div class="sub-header">
+                                                                            <h5 [innerHTML]="getSchme(item5.key, item.key)"></h5>
+                                                                        </div>
+                                                                        <table>
+                                                                            <tr>
+                                                                                <th *ngFor="let item1 of (item5.value.scope_heading) | keyvalue;">{{item1.value}}</th>
+                                                                                <th>Action</th>
+                                                                            </tr>
+                                                                            <ng-container *ngIf="item5.value.scope_value.length > 0">
+                                                                                <tr *ngFor="let item2 of (item5.value.scope_value) | keyvalue; let i4 = index;">
+                                                                                    <td *ngFor="let item3 of item2.value | keyvalue;">
+                                                                                        <span [innerHTML]="(item3.value)"></span>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                    <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item5.key, item.key)"></span>
+                                                                                    </td>                                                                
+                                                                                </tr>
+                                                                            </ng-container>
+                                                                            <ng-container *ngIf="item5.value.scope_value.length == 0">
+                                                                                <tr>
+                                                                                    <td [attr.colspan]="Service.getObjectLength(item5.value.scope_heading)+1">
+                                                                                        No Data
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </ng-container>
+                                                                        </table>  
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </ng-container>
+                                        </div>
+                                    </div>
                                     
                                 </div>
                                     </div>
@@ -1312,14 +1378,16 @@
                             <div class="col-md-12"> 
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="Service.headerStepMove('personal_information',headerSteps,'menu','summary_number_ofpersonnel')">BACK</a> 
+                                        <!-- (click)="Service.headerStepMove('personal_information',headerSteps,'menu','summary_number_ofpersonnel')" -->
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="backScopeAccreditation();scrollPage('page_header')"
+                                        >BACK</a> 
                                         <button class="cancel-bttn" (click)="onSubmitStep3(ngForm3, true)" type="button">SAVE AS DRAFT</button>
                                     </div>
-                                    <button class="submit-bttn submit-health" >CONTINUE</button>
+                                    <button class="submit-bttn submit-health"  (click)="continueScopeAccreditation()">CONTINUE</button>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    <!-- </form> -->
                 </div>
 
                 <div class="cust-stepper" id="other_hcab_details"  [ngStyle]="{'display':'none'}">
@@ -1581,7 +1649,8 @@
                                 <div class="bttns-health bttn-staff">
                                     <!-- (click)="onSubmitInformationAuditManagement()" -->
                                     <div class="button-content">
-                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('personal_information',headerSteps,'menu','scope_accreditation')">BACK</a> 
+                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" 
+                                        (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','other_hcab_details')">BACK</a> 
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step4')">SAVE AS DRAFT</button> 
                                     </div>
                                     <button class="submit-bttn submit-health" >CONTINUE</button>

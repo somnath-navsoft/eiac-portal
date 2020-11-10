@@ -206,7 +206,7 @@ export class HealthCareFormComponent implements OnInit {
   selectDeleteIndex: any;
   deleteEditScopeConfirm: boolean = false;
   deleteScopeConfirm: boolean = false;
-  inspectionBodyForm: any = {};
+  //healthCareForm: any = {};
   schemeRows: Array<any> = [{}];
   //Master scope form data declaration
   is_main_activity_note_entry: boolean = false;
@@ -696,6 +696,26 @@ export class HealthCareFormComponent implements OnInit {
             }
           }
       }
+
+      //save to server at time
+      this.healthCareForm = {};      
+      this.step5Data['scopeDetails']    = this.editScopeData;
+      this.healthCareForm = {};
+      this.healthCareForm.step5 = {};
+      this.healthCareForm.step5 = this.step5Data;
+      this.healthCareForm.step5.is_draft = false;
+      this.healthCareForm.saved_step = 5;
+      this.healthCareForm.step5.application_id = this.formApplicationId;
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
+      .subscribe(
+        res => {
+          if(res['status'] == true) {
+            //this.toastr.success("Saved scope updated...", '');
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+
       this._customModal.closeDialog();
       //console.log(">>>Final Data: ", this.editScopeData);
   }
@@ -1549,7 +1569,50 @@ loadData(){
                 let jsonObject = res['data'].scopeDetails;//JSON.parse(jsonStrting);
                 this.Service.oldScopeData = jsonObject;
                 this.editScopeData = jsonObject; 
-                this.getScopeData = jsonObject;
+                //this.getScopeData = jsonObject;
+
+                //alert(getData.data.cab_type);
+
+                if(getData.data.cab_type == 'Sample Collection'){
+                    let savedData: any = this.editScopeData;
+                    for(let key in savedData){
+                      if(key != "0"){
+                        console.log(">>>found elese collection....");
+                        delete savedData[key]
+                      }
+                    }
+                    this.editScopeData = savedData;
+                }else if(getData.data.cab_type == 'Healthcare' || getData.data.cab_type == 'Medical'){
+                  let savedData: any = this.editScopeData;
+                    for(let key in savedData){
+                      if(key == "0"){
+                        console.log(">>>found sammple collection....");
+                        delete savedData[key]
+                      }
+                    }
+                    this.editScopeData = savedData;
+                }else{
+                  //select others
+                  this.editScopeData = {};
+                }
+                //update scope data service
+                // this.healthCareForm = {};      
+                // this.step5Data['scopeDetails']    = this.editScopeData;
+                // this.healthCareForm = {};
+                // this.healthCareForm.step5 = {};
+                // this.healthCareForm.step5 = this.step5Data;
+                // this.healthCareForm.step5.is_draft = false;
+                // this.healthCareForm.saved_step = 5;
+                // this.healthCareForm.step5.application_id = this.formApplicationId;
+                // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
+                // .subscribe(
+                //   res => {
+                //     if(res['status'] == true) {
+                //       //this.toastr.success("Saved scope updated...", '');
+                //     }else{
+                //       this.toastr.warning(res['msg'], '');
+                //     }
+                //   });
                 
                 // this.Service.jsonToArray(jsonObject);
                 //console.log(">>>Saved details: ", jsonObject, " -- ", this.editScopeData);
@@ -1663,7 +1726,9 @@ loadData(){
 } 
 
 getType(thevalue: any){
-  console.log(">> get Type: ", thevalue);
+  this.step1Data.cab_type = thevalue;
+  console.log(">> get Type: ", thevalue, " -- ", this.step1Data.cab_type);
+  
   if(thevalue != 'others'){
     let scdata: any = this.schemes.find(item => item.title == thevalue);
     console.log(">>> get data: ", scdata);
@@ -1676,13 +1741,14 @@ getType(thevalue: any){
 }
 
 loadScopeFamily(appId: number){
+  //alert("....scope  aajaj "+this.step1Data.cab_type);
     console.log(">>> Enter scope family...1", appId);
     if(appId){
       let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm+"?application="+appId;
       console.log(">>> Enter scope family...2", apiURL);
       this.Service.getwithoutData(apiURL).subscribe(record => {
           console.log(">>> Scope family result: ", record);
-          let data: any = record['data'];
+          let data: any = record['data']; 
           if(data.scopeFamily && data.scopeFamily != null){
             console.log(">>> assign scope family....");
             this.criteriaMaster = data.scopeFamily;
@@ -1819,9 +1885,18 @@ onSubmitStep1(ngForm1: any){
       this.step1Data.is_hold_other_accreditation = false;
     }
 
-    if(this.step1Data.other_cab_type != undefined && this.step1Data.other_cab_type != ''){
-      this.step1Data.cab_type = this.step1Data.other_cab_type;
+    if(this.step1Data.cab_type == 'Healthcare' || this.step1Data.cab_type == 'Medical' || this.step1Data.cab_type == 'Sample Collection'){
+      console.log("hhahahaha");
+      if(this.step1Data.other_cab_type != undefined && this.step1Data.other_cab_type != ''){
+        this.step1Data.other_cab_type = '';
+      }
+    }else{
+      if(this.step1Data.other_cab_type != undefined && this.step1Data.other_cab_type != ''){
+        this.step1Data.cab_type = this.step1Data.other_cab_type;
+      }
     }
+
+    
 
     //this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
     this.healthCareForm.step1 = this.step1Data;
@@ -1860,6 +1935,11 @@ onSubmitStep1(ngForm1: any){
           this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
           if(getData){
             console.log(">>> APP Id generate: ", getData);
+
+            //update scope
+
+
+
             let appId: number = getData.application_id;
             this.formApplicationId = getData.application_id;
             if(this.step1Data.other_cab_type === undefined || this.step1Data.other_cab_type === ''){
@@ -2147,6 +2227,27 @@ savedraftStep(stepCount) {
   }
 }
 
+backStep2(){
+  //selecting other...
+  console.log("### selecting Cab TYpe: ", this.step1Data.cab_type);
+  if(this.step1Data.cab_type == 'Healthcare' || this.step1Data.cab_type == 'Medical' || this.step1Data.cab_type == 'Sample Collection'){
+    console.log("hhahahaha");
+    return;
+  }else{
+    console.log("@@@@ adding otherrs: ", this.step1Data.cab_type);
+    this.step1Data.other_cab_type = this.step1Data.cab_type;
+    this.step1Data.cab_type = 'others';  
+  }
+  // if(this.step1Data.cab_type == 'Healthcare' || this.step1Data.cab_type == 'Medical' || this.step1Data.cab_type == 'Sample Collection'){
+  //   return;
+  // }else{
+  //   console.log("### selecting otherrs: ", this.step1Data.cab_type);
+  //   this.step1Data.other_cab_type = this.step1Data.cab_type;
+  //   this.step1Data.cab_type = 'others';
+
+  // }
+}
+
 onSubmitStep2(ngForm2: any){
   // this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
 
@@ -2237,15 +2338,43 @@ onSubmitStep3(ngForm3: any){
           }
           if(this.step1Data.accredation_criteria == 2){
             //Extension
-            let stepData: any = this.headerSteps.find(item => item.title == 'information_audit_management');
-            console.log(">>step select: 1 ", stepData);
-            if(stepData){
-              stepData.activeClass = '';
-              stepData.stepComp = true;
-            }
+           
             console.log(">>step select: 2 ", this.headerSteps);
-            this.Service.moveSteps('personal_information', 'scope_accreditation', this.headerSteps);
+            if(this.step1Data.cab_type != 'Healthcare' && this.step1Data.cab_type != 'Medical' &&
+              this.step1Data.cab_type != 'Sample Collection'){
+                //Cab type other
+              //alert(">>> select cab type other...");
+                let stepData: any = this.headerSteps.find(item => item.title == 'scope_accreditation');
+                console.log(">>step select: 1 ", stepData);
+                if(stepData){
+                console.log(">>>...class reset scope_accreditation");
+                  stepData.activeClass = '';
+                  stepData.stepComp = true;
+                }
+                let stepData1: any = this.headerSteps.find(item => item.title == 'information_audit_management');
+                console.log(">>step select: 1111 ", stepData1);
+                if(stepData1){
+                  console.log(">>>...class reset information_audit_management");
+                  stepData1.activeClass = '';
+                  stepData1.stepComp = true;
+                }
+                console.log(">>step select: 22222 ", this.headerSteps);
+                this.Service.moveSteps('personal_information', 'perlim_visit', this.headerSteps);
+              }else{
+                this.Service.moveSteps('personal_information', 'scope_accreditation', this.headerSteps);
+              }                
           }
+          // if(this.step1Data.other_cab_type != undefined && this.step1Data.other_cab_type != ''){
+          //   //Cab type other
+          //   let stepData: any = this.headerSteps.find(item => item.title == 'scope_accreditation');
+          //   console.log(">>step select: 1 ", stepData);
+          //   if(stepData){
+          //     stepData.activeClass = '';
+          //     stepData.stepComp = true;
+          //   }
+          //   console.log(">>step select: 2 ", this.headerSteps);
+          //   this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
+          // } 
 
 
           //this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
@@ -2256,6 +2385,65 @@ onSubmitStep3(ngForm3: any){
   }else{
     this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
   }
+}
+
+backStep4(){
+  console.log("####### perlim back step.....");
+  if(this.step1Data.accredation_criteria == 1){
+    //Intial
+    if(this.step1Data.cab_type != 'Healthcare' && this.step1Data.cab_type != 'Medical' &&
+      this.step1Data.cab_type != 'Sample Collection'){
+        //Cab type other
+        let stepData: any = this.headerSteps.find(item => item.title == 'scope_accreditation');
+        console.log(">>step select: 1 ", stepData);
+        if(stepData){
+        console.log(">>>...class reset scope_accreditation");
+          stepData.activeClass = '';
+          stepData.stepComp = true;
+        }
+        let stepData1: any = this.headerSteps.find(item => item.title == 'information_audit_management');
+        console.log(">>step select: 1111 ", stepData1);
+        if(stepData1){
+          console.log(">>>...class reset information_audit_management");
+          stepData1.activeClass = '';
+          stepData1.stepComp = true;
+        }
+        console.log(">>step select: 22222 ", this.headerSteps);
+        this.Service.moveSteps('perlim_visit', 'information_audit_management', this.headerSteps);
+      }else{
+        this.Service.moveSteps('perlim_visit', 'scope_accreditation', this.headerSteps);
+      }
+
+    //this.Service.moveSteps('perlim_visit', 'scope_accreditation', this.headerSteps);
+  }
+  if(this.step1Data.accredation_criteria == 2){
+    //Extension
+   
+    console.log(">>step select: 2 ", this.headerSteps);
+    if(this.step1Data.cab_type != 'Healthcare' && this.step1Data.cab_type != 'Medical' &&
+      this.step1Data.cab_type != 'Sample Collection'){
+        //Cab type other
+        let stepData: any = this.headerSteps.find(item => item.title == 'scope_accreditation');
+        console.log(">>step select: 1 ", stepData);
+        if(stepData){
+        console.log(">>>...class reset scope_accreditation");
+          stepData.activeClass = '';
+          stepData.stepComp = true;
+        }
+        let stepData1: any = this.headerSteps.find(item => item.title == 'information_audit_management');
+        console.log(">>step select: 1111 ", stepData1);
+        if(stepData1){
+          console.log(">>>...class reset information_audit_management");
+          stepData1.activeClass = '';
+          stepData1.stepComp = true;
+        }
+        console.log(">>step select: 22222 ", this.headerSteps);
+        this.Service.moveSteps('perlim_visit', 'personal_information', this.headerSteps);
+      }else{
+        this.Service.moveSteps('perlim_visit', 'scope_accreditation', this.headerSteps);
+      }                
+  }
+
 }
 
 onSubmitStep4(ngForm4: any){
@@ -2282,12 +2470,15 @@ onSubmitStep4(ngForm4: any){
           // this.toastr.success(res['msg'], '');
           //this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
 
-          if(this.step1Data.other_cab_type == undefined || this.step1Data.other_cab_type == ''){
+          if(this.step1Data.cab_type == 'Healthcare' || this.step1Data.cab_type == 'Medical' || 
+              this.step1Data.cab_type == 'Sample Collection'){
             //Cab type not other
             this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
           }
-          if(this.step1Data.other_cab_type != undefined && this.step1Data.other_cab_type != ''){
+          if(this.step1Data.cab_type != 'Healthcare' && this.step1Data.cab_type != 'Medical' &&
+          this.step1Data.cab_type != 'Sample Collection'){
             //Cab type other
+           // alert(">>> select cab type other...");
             let stepData: any = this.headerSteps.find(item => item.title == 'scope_accreditation');
             console.log(">>step select: 1 ", stepData);
             if(stepData){
@@ -2559,15 +2750,29 @@ updateScopeData = async(rowInd: number) => {
 
 continueScopeAccreditation(){
 
-if(!this.scopeFamilyNull){
-//Reset all model data 
-this.dynamicScopeFieldColumns = {};
-this.dynamicScopeFieldType = {};
-this.dynamicScopeModel = {};
-this.fullScope = [];
-this.schemeRows = [{}];
-this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
-}
+  if(!this.scopeFamilyNull){
+  //Reset all model data 
+    this.dynamicScopeFieldColumns = {};
+    this.dynamicScopeFieldType = {};
+    this.dynamicScopeModel = {};
+    this.fullScope = [];
+    this.schemeRows = [{}];
+  }else{
+      let appId: number = this.formApplicationId;
+      let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm+"?application="+appId;
+      this.Service.getwithoutData(apiURL).subscribe(record => {
+          let data: any = record['data'];
+          if(data.scopeFamily == null){
+            let tempObj: any = {"title": " ", scope_family:0};
+            this.criteriaMaster = [];
+            this.criteriaMaster.push(tempObj);
+            this.schemeRows = [];
+            this.schemeRows.push({"id": 0})
+            this.getCriteriaScopeFamilyNull(data, 0);
+          }
+      });
+  }
+  this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
 }
 backScopeAccreditation(){
   
@@ -2578,6 +2783,20 @@ if(!this.scopeFamilyNull){
   this.dynamicScopeModel = {};
   this.fullScope = [];
   this.schemeRows = [{}];
+}else{
+  let appId: number = this.formApplicationId;
+  let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm+"?application="+appId;
+  this.Service.getwithoutData(apiURL).subscribe(record => {
+      let data: any = record['data'];
+      if(data.scopeFamily == null){
+        let tempObj: any = {"title": " ", scope_family:0};
+        this.criteriaMaster = [];
+        this.criteriaMaster.push(tempObj);
+        this.schemeRows = [];
+        this.schemeRows.push({"id": 0})
+        this.getCriteriaScopeFamilyNull(data, 0);
+      }
+  });
 }
 if(this.step1Data.accredation_criteria == 1){
 this.Service.moveSteps('scope_accreditation', 'information_audit_management', this.headerSteps);
@@ -2658,7 +2877,7 @@ onSubmitStep5(ngForm: any, type?:any, rowInd?:any) {
       //console.log(">>> step5 submit...", this.step5Data, " -- ", this.healthCareForm);
       this.healthCareForm.step5.is_draft = false;
       this.healthCareForm.saved_step = 5;
-      //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
+      //this.step5DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
       .subscribe(
         res => {
@@ -2679,7 +2898,7 @@ onSubmitStep5(ngForm: any, type?:any, rowInd?:any) {
       console.log(">>> step5 submit...", this.step5Data, " -- ", this.healthCareForm);
       this.healthCareForm.step5.is_draft = false;
       this.healthCareForm.saved_step = 5;
-      //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
+      //this.step5DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
       .subscribe(
        async res => {

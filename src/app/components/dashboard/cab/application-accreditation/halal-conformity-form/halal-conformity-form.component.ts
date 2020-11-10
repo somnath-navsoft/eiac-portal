@@ -198,7 +198,7 @@ export class HalalConformityFormComponent implements OnInit {
    checkItemOthers: boolean = false;
 
    criteriaMaster: any[] = [];
-   fullScope:any[]=[];
+   fullScope:any[]=[]; 
 
    //fullTypeScope:any={};
    fullTypeScope:any[]=[];
@@ -846,6 +846,44 @@ addSchemeRow(obj: any = [],index: number){
            }
          }          
      }
+     //save to server at time
+          this.publicHalalConformityForm = {};
+          this.publicHalalConformityForm.step3 = {};  
+          var applicationId = sessionStorage.getItem('applicationId');
+          this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+          this.publicHalalConformityForm.saved_step = 3;
+          this.step3Data['scopeDetails']  = this.editScopeData;
+          let scopeOptionsValues: any = {};
+          scopeOptionsValues['checkItems'] = [];
+          scopeOptionsValues['checkItemsOthers'] = [];
+          this.scopeCheckboxes.forEach((item,index) => {
+            let tempObj: any ={};
+            if(item.checked == true){
+              tempObj['value'] = item.label;
+              scopeOptionsValues['checkItems'].push(tempObj);
+            }
+          })
+          if(this.checkItemOthers){
+            if(this.scope_options_others != '' && this.scope_options_others != undefined){
+              scopeOptionsValues['checkItemsOthers'].push({value: this.scope_options_others});
+            }            
+          }
+          this.step3Data.scopeOptionsCheckDetails = scopeOptionsValues;
+          this.step3Data.is_draft = false;
+          this.publicHalalConformityForm.step3 = this.step3Data;
+          console.log(">>> Step3 submit step : ", this.publicHalalConformityForm)  
+          this.step3DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
+            this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step3DataBodyFormFile)
+            .subscribe(
+              res => {
+                console.log(res,'@Submit Result: ')
+                if(res['status'] == true) {
+                  //this.toastr.success(res['msg'], '');
+                  //this.Service.moveSteps('scope_accreditation', 'other_hcab_details', this.headerSteps);
+                }else{
+                  this.toastr.warning(res['msg'], '');
+                }
+              });
      this._customModal.closeDialog();
      //console.log(">>>Final Data: ", this.editScopeData);
  }
@@ -1344,33 +1382,32 @@ addSchemeRow(obj: any = [],index: number){
                 }
   
                 //step3
+                //scope type options
+                let cabTypeData: any = JSON.parse(getData.data.cab_type);
+                //scopeCheckboxes  | checkItemOthers: boolean
+                if(cabTypeData){
+                  console.log(">>> Cab type: ", cabTypeData)
+                    if(cabTypeData.checkItems.length){
+                      this.scopeCheckboxes.forEach(rec => {
+                           console.log("val: ", rec);
+                           cabTypeData.checkItems.forEach(item => {
+                              if(item.value == rec.label){
+                                console.log(">>> Match label: ", rec.label, " :: ", item.value);
+                                rec.checked = true;
+                              }
+                          })
+                      })
+                     
+                    }
+                    if(cabTypeData.checkItemsOthers.length){
+                      this.checkItemOthers = true;
+                      this.scope_options_others = cabTypeData.checkItemsOthers[0].value;
+                    }
+                }
                 if(getData.data.scopeDetails != undefined && !this.Service.isObjectEmpty(getData.data.scopeDetails)){                 
                   let jsonObject = getData.data.scopeDetails;
                   this.editScopeData = jsonObject; 
-                  console.log(">>> Saved scope: ", getData.data.scopeDetails);
-
-                  //scope type options
-                  let cabTypeData: any = JSON.parse(getData.data.cab_type);
-                  //scopeCheckboxes  | checkItemOthers: boolean
-                  if(cabTypeData){
-                    console.log(">>> Cab type: ", cabTypeData)
-                      if(cabTypeData.checkItems.length){
-                        this.scopeCheckboxes.forEach(rec => {
-                             console.log("val: ", rec);
-                             cabTypeData.checkItems.forEach(item => {
-                                if(item.value == rec.label){
-                                  console.log(">>> Match label: ", rec.label, " :: ", item.value);
-                                  rec.checked = true;
-                                }
-                            })
-                        })
-                       
-                      }
-                      if(cabTypeData.checkItemsOthers.length){
-                        this.checkItemOthers = true;
-                        this.scope_options_others = cabTypeData.checkItemsOthers[0].value;
-                      }
-                  }
+                  console.log(">>> Saved scope: ", getData.data.scopeDetails);                 
 
                 }
   
@@ -2183,7 +2220,177 @@ addSchemeRow(obj: any = [],index: number){
   }
 
   //Scope Save functions
-saveScope(){
+
+  updateScopeData = async() => {
+    let getId= (this.formApplicationId);
+    let url = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+getId;
+    console.log(">>>Get url and ID: ", url, " :: ", getId, " -- ");
+    this.Service.getwithoutData(url)
+    .subscribe(
+    res => {
+        let getData: any  =res;
+        console.log(">>>. Data: ", getData);
+        if(getData.data.scopeDetails != undefined && !this.Service.isObjectEmpty(getData.data.scopeDetails)){
+          let jsonObject: any = getData.data.scopeDetails;
+          this.editScopeData = jsonObject;
+        }
+    });
+  }  
+  
+  continueScopeAccreditation(){
+  //Reset all model data 
+  this.dynamicScopeFieldColumns = {};
+  this.dynamicScopeFieldType = {};
+  this.dynamicScopeModel = {};
+  this.fullTypeScope = [];
+  this.subTypeRows = [{}];
+  
+  //Action for others scope data saving
+    let getId= (this.formApplicationId);
+    let OtherHeaders: any[] = ['category', 'standard', 'scopeScheme'];
+    let url = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+getId;
+    console.log(">>>Get url and ID: ", url, " :: ", getId, " -- ");
+    this.Service.getwithoutData(url)
+    .subscribe(
+    res => {
+        let getData: any  =res;
+        console.log(">>>. Data: ", getData);
+        let scopeOptionsCheckCount: number = 0;
+          let scopeOptionsValues: any = {};
+          scopeOptionsValues['checkItems'] = [];
+          scopeOptionsValues['checkItemsOthers'] = [];
+          this.scopeCheckboxes.forEach((item,index) => {
+            let tempObj: any ={};
+            if(item.checked == true){
+              tempObj['value'] = item.label;
+              scopeOptionsValues['checkItems'].push(tempObj);
+              scopeOptionsCheckCount++;
+            }
+          })
+          if(this.checkItemOthers){
+            if(this.scope_options_others != '' && this.scope_options_others != undefined){
+              scopeOptionsValues['checkItemsOthers'].push({value: this.scope_options_others});
+              scopeOptionsCheckCount++;
+            }            
+          }
+          this.step3Data.scopeOptionsCheckDetails = scopeOptionsValues;
+        if(getData.data.scopeDetails != undefined && !this.Service.isObjectEmpty(getData.data.scopeDetails)){
+          let jsonObject: any = getData.data.scopeDetails;
+          //this.editScopeData = jsonObject;
+          console.log(jsonObject);
+          // let scopeOptionsCheckCount: number = 0;
+          // let scopeOptionsValues: any = {};
+          // scopeOptionsValues['checkItems'] = [];
+          // scopeOptionsValues['checkItemsOthers'] = [];
+          // this.scopeCheckboxes.forEach((item,index) => {
+          //   let tempObj: any ={};
+          //   if(item.checked == true){
+          //     tempObj['value'] = item.label;
+          //     scopeOptionsValues['checkItems'].push(tempObj);
+          //     scopeOptionsCheckCount++;
+          //   }
+          // })
+          // if(this.checkItemOthers){
+          //   if(this.scope_options_others != ''){
+          //     scopeOptionsValues['checkItemsOthers'].push({value: this.scope_options_others});
+          //   }
+          //   scopeOptionsCheckCount++;
+          // }
+          // this.step3Data.scopeOptionsCheckDetails = scopeOptionsValues;
+          this.step3Data['scopeDetails'] = jsonObject;
+  
+          //saving
+          this.publicHalalConformityForm = {};
+          this.publicHalalConformityForm.step3 = {};  
+          var applicationId = sessionStorage.getItem('applicationId');
+          this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+          this.publicHalalConformityForm.step3 = this.step3Data;
+         // this.publicHalalConformityForm.step3['otherActivityLocations'] = [];
+          //this.publicHalalConformityForm.step3['countriesForCertification'] = [];
+          this.publicHalalConformityForm.saved_step = 3;
+          this.publicHalalConformityForm.step3.is_draft = false;
+          
+  
+          console.log(">>> Step3 submit step : ", this.publicHalalConformityForm);
+  
+          //this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.publicHalalConformityForm,this.publicHalalConformityForm)
+          this.step3DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
+          //return;
+          //this.step5Data = {};
+          //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
+          if(scopeOptionsCheckCount > 0){
+            this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step3DataBodyFormFile)
+            .subscribe(
+              res => {
+                console.log(res,'@Submit Result: ')
+                if(res['status'] == true) {
+                  //this.toastr.success(res['msg'], '');
+                  this.Service.moveSteps('scope_accreditation', 'other_hcab_details', this.headerSteps);
+                }else{
+                  this.toastr.warning(res['msg'], '');
+                }
+              });
+          }else{
+            this.toastr.warning('Please Fill required field','Validation Error');
+            return false; 
+          }
+        }else{
+          this.publicHalalConformityForm = {};
+          this.publicHalalConformityForm.step3 = {};  
+          var applicationId = sessionStorage.getItem('applicationId');
+          this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+          this.step3Data['scopeDetails'] = {};
+          this.publicHalalConformityForm.step3 = this.step3Data;
+          this.publicHalalConformityForm.saved_step = 3;
+          this.publicHalalConformityForm.step3.is_draft = false;
+          
+  
+          console.log(">>> Step3 submit step : ", this.publicHalalConformityForm);
+  
+          //this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.publicHalalConformityForm,this.publicHalalConformityForm)
+          this.step3DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
+          if(scopeOptionsCheckCount > 0){
+            this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step3DataBodyFormFile)
+            .subscribe(
+              res => {
+                console.log(res,'@Submit Result: ')
+                if(res['status'] == true) {
+                  //this.toastr.success(res['msg'], '');
+                  this.Service.moveSteps('scope_accreditation', 'other_hcab_details', this.headerSteps);
+                }else{
+                  this.toastr.warning(res['msg'], '');
+                }
+              });
+          }else{
+            this.toastr.warning('Please Fill required field','Validation Error');
+            return false; 
+          }
+
+          //this.Service.moveSteps('scope_accreditation', 'other_hcab_details', this.headerSteps);
+        }
+    });
+  
+  //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+  }
+  
+  backScopeAccreditation(){
+  //Reset all model data 
+  this.dynamicScopeFieldColumns = {};
+  this.dynamicScopeFieldType = {};
+  this.dynamicScopeModel = {};
+  this.fullTypeScope = [];
+  this.subTypeRows = [{}];
+  this.Service.moveSteps('scope_accreditation', 'personal_information', this.headerSteps);
+  }
+
+  scrollPage(pageId: any){
+    const el = document.getElementById(pageId);
+            console.log("@Elem: ",el);
+            if(el){
+              el.scrollIntoView(true);    //arguement true bypass the non-exist element or undefined
+            }
+  }
+saveScope(rowInd:  number,typeScopeId: number){
     
   let scopeValues: any =[];
   let scopeIds:any =[];
@@ -2208,42 +2415,43 @@ saveScope(){
     this.fullTypeScope.forEach(typeScope => {
         //console.log(">>>>Type scope: ", typeScope);
 
-        for(var t=0;t<typeScope.scopeRows.length; t++){
+      if(typeScope.id == typeScopeId){
+          for(var t=rowInd;t<=rowInd; t++){
 
-          //console.log("Scheme Sec: ", t," -- ", scopeCollections);
-          selectScheme = typeScope.scopeRows[t].id;
-          if(selectScheme == undefined){
-            //console.log(">>Heading scheme notfff....exit", selectScheme);
-            break;
+            //console.log("Scheme Sec: ", t," -- ", scopeCollections);
+            selectScheme = typeScope.scopeRows[t].id;
+            if(selectScheme == undefined){
+              //console.log(">>Heading scheme notfff....exit", selectScheme);
+              break;
+            }
+            let getData = typeScope.schemeData.find(rec => rec.scope_accridiation.id == selectScheme);
+            //console.log("@Scheme Data: ", getData);
+            let scopeTitle: string ='';
+            //scopeTitle  = getData.title.toString().toLowerCase().split(" ").join('_');
+            if(getData){
+              scopeTitle = getData.title.toString().toLowerCase().split(" ").join('_');
+            }
+            scopeCollections[typeScope.id] = {};
+            
+            scopeCollections[typeScope.id][selectScheme] = {};
+            scopeCollections[typeScope.id][selectScheme]['scope_heading'] = {};
+                  for(var key in this.dynamicScopeFieldColumns[typeScope.id][scopeTitle]){
+                        ////console.log(">>> ", key, " :: ", this.dynamicScopeFieldColumns[key]);
+                        let tempData: any = this.dynamicScopeFieldColumns[typeScope.id][scopeTitle];
+                        if(typeof tempData === 'object'){
+                          tempData.forEach((item,key) => {
+                                ////console.log(">>>> Col items: ",item);
+                                let keyIds = item[0].idVal;
+                                let name = item[0].name;
+                                let tempObj = {};
+                                tempObj[keyIds] = name;
+                                scopeCollections[typeScope.id][selectScheme]['scope_heading'][keyIds] = name;
+                            });
+                        }
+                  }
           }
-          let getData = typeScope.schemeData.find(rec => rec.scope_accridiation.id == selectScheme);
-          //console.log("@Scheme Data: ", getData);
-          let scopeTitle: string ='';
-          //scopeTitle  = getData.title.toString().toLowerCase().split(" ").join('_');
-          if(getData){
-            scopeTitle = getData.title.toString().toLowerCase().split(" ").join('_');
-          }
-          scopeCollections[typeScope.id] = {};
-          
-          scopeCollections[typeScope.id][selectScheme] = {};
-          scopeCollections[typeScope.id][selectScheme]['scope_heading'] = {};
-                for(var key in this.dynamicScopeFieldColumns[typeScope.id][scopeTitle]){
-                      ////console.log(">>> ", key, " :: ", this.dynamicScopeFieldColumns[key]);
-                      let tempData: any = this.dynamicScopeFieldColumns[typeScope.id][scopeTitle];
-                      if(typeof tempData === 'object'){
-                        tempData.forEach((item,key) => {
-                              ////console.log(">>>> Col items: ",item);
-                              let keyIds = item[0].idVal;
-                              let name = item[0].name;
-                              let tempObj = {};
-                              tempObj[keyIds] = name;
-                              scopeCollections[typeScope.id][selectScheme]['scope_heading'][keyIds] = name;
-                          });
-                      }
-                }
-        }
-    })
-    
+      }
+    })   
 
   }
   //console.log(">>> build scope: ", scopeCollections, " -- ", this.dynamicScopeModel, " -> Scheme: ", this.schemeRows);
@@ -2258,8 +2466,11 @@ saveScope(){
 
   if(this.fullTypeScope.length){
     this.fullTypeScope.forEach(typeScope => {
+      if(typeScope.id == typeScopeId){
+
         if(typeScope.scopeRows.length){
-          for(var t=0;t<typeScope.scopeRows.length; t++){
+          
+          for(var t=rowInd;t<=rowInd; t++){
 
               //console.log("Scheme Sec: ", t);
               secInd = t;
@@ -2375,6 +2586,7 @@ saveScope(){
                 }
               }
           }
+        }
       }
     })
 
@@ -2449,29 +2661,6 @@ saveScope(){
       }                
   }
 
-  //MAnage Others
-  //Assign Others Values
-//   if(this.otherStandards.length){
-//     // scopeCollections[0][0] = {};
-//     // scopeCollections[0][0]['scope_heading'] = {};
-//     // scopeCollections[0][0]['scope_value'] = [];
-//     //Assign others heading
-//     for(var k=0; k<OtherHeaders.length; k++){
-//       let keyIds = k;
-//       let headName = OtherHeaders[k];
-//       scopeCollections['others']['others']['scope_heading'][keyIds] = headName;
-//     }
-//     //Assign values
-//     this.otherStandards.forEach((rec,key) => {
-//       //console.log('@ val: ', rec);
-//       let tempObj: any = {};
-//           for(var p=0; p < OtherHeaders.length; p++){
-//             let headkey = OtherHeaders[p];
-//             tempObj[p] = rec[headkey]
-//           }
-//           scopeCollections['others']['others']['scope_value'].push(tempObj); 
-//     })
-// }
 
   //console.log("#Updated Scope after edit: ", scopeCollections, " -- ", this.editScopeData);
   this.step3Data['scopeDetails']    = scopeCollections;
@@ -2501,7 +2690,7 @@ getMatchScheme(scId: any, scopeData: any){
   return false;
 }
 
-  onSubmitStep3(ngForm: any, type?:any) {
+  onSubmitStep3(ngForm: any, type?:any, rowInd?: any, typeScopeId?: number) {
     
     //this.Service.moveSteps('scope_accreditation','other_hcab_details',  this.headerSteps);
 
@@ -2556,26 +2745,31 @@ getMatchScheme(scId: any, scopeData: any){
     let secInd: number;
     let selectScheme: any;
     let errorScope: boolean = false;
-    if(this.schemeRows.length){
-      for(var t=0;t<this.schemeRows.length; t++){
+    if(this.fullTypeScope.length){
+      this.fullTypeScope.forEach(typeScope => {
+  
+        if(typeScope.id == typeScopeId){
+          console.log("@.....field dynamic validation.........");
+          for(var t=rowInd;t<=rowInd; t++){
           secInd = t;
-          selectScheme = this.schemeRows[t].id;
-          let getData = this.criteriaMaster.find(rec => rec.scope_accridiation.id == selectScheme);
+          selectScheme = typeScope.scopeRows[t].id;;//this.schemeRows[t].id;
+         // let getData = this.criteriaMaster.find(rec => rec.scope_accridiation.id == selectScheme);
+         let getData = typeScope.schemeData.find(rec => rec.scope_accridiation.id == selectScheme);
           ////console.log("@Scheme Data: ", getData);
-          let scopeTitle: string ='';
-          if(getData){
-            scopeTitle = getData.title.toString().toLowerCase().split(" ").join('_');
-          }
-              for(var key in this.dynamicScopeModel[scopeTitle]){
+            let scopeTitle: string ='';
+              if(getData){
+                scopeTitle = getData.title.toString().toLowerCase().split(" ").join('_');
+              }
+              for(var key in this.dynamicScopeModel[typeScope.id][scopeTitle]){
                 if(key == 'fieldLines'){
-                  let rowLen = this.dynamicScopeModel[scopeTitle][key].length;
+                  let rowLen = this.dynamicScopeModel[typeScope.id][scopeTitle][key].length;
                   // Browse rows
                   ////console.log("Section: ", scopeTitle, " -- ", rowLen)                
                   for(var k=0; k<rowLen; k++){
-                      this.dynamicScopeFieldColumns[scopeTitle].forEach((colItem,colIndex) => {
+                      this.dynamicScopeFieldColumns[typeScope.id][scopeTitle].forEach((colItem,colIndex) => {
                             let fieldSelValue: any;
                             let selTitle: any       = colItem[0].title;
-                            fieldSelValue         = this.dynamicScopeModel[scopeTitle][key][k][selTitle];
+                            fieldSelValue         = this.dynamicScopeModel[typeScope.id][scopeTitle][key][k][selTitle];
                             ////console.log(">>> ", scopeTitle, " :: ", selTitle, " -- ", fieldSelValue);
                             if(fieldSelValue === undefined || fieldSelValue == ''){
                               errorScope = true;
@@ -2584,9 +2778,12 @@ getMatchScheme(scId: any, scopeData: any){
                   }
                 }
               }
-        }
+            }
+          }
+        });
     }
-    if(errorScope && type === undefined){
+    //}
+    if(errorScope){
       this.toastr.warning('Please Fill required field','Validation Error');
       return false;    
     }
@@ -2603,7 +2800,7 @@ getMatchScheme(scId: any, scopeData: any){
         && this.editScopeData != undefined && this.editScopeData != null) {
       //console.log(">>>Bypass saving...");
       //console.log(">>>Enter....2")
-      this.saveScope();
+      this.saveScope(rowInd, typeScopeId);
       //console.log(">>> step5 submit...", this.step3Data, " -- ", this.publicHalalConformityForm);
       this.publicHalalConformityForm.step3.is_draft = false;
       this.publicHalalConformityForm.saved_step = 3;
@@ -2625,11 +2822,11 @@ getMatchScheme(scId: any, scopeData: any){
           }
         });
 
-    }
-    else if(ngForm.form.valid && type == undefined && scopeOptionsCheckCount > 0) {
+    }//&& scopeOptionsCheckCount > 0
+    else if(ngForm.form.valid && type == undefined ) {
       console.log(">>>Scope saving...");
       console.log(">>>Enter....3")
-      this.saveScope();
+      this.saveScope(rowInd, typeScopeId);
       //console.log(">>> step5 submit...", this.step3Data, " -- ", this.publicHalalConformityForm);
       this.publicHalalConformityForm.step3.is_draft = false;
       this.publicHalalConformityForm.saved_step = 3;
@@ -2640,11 +2837,14 @@ getMatchScheme(scId: any, scopeData: any){
       //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step3DataBodyFormFile)
       .subscribe(
-        res => {
+        async res => {
           //////console.log(res,'res')
           if(res['status'] == true) {
             //this.toastr.success(res['msg'], '');
-            this.Service.moveSteps('scope_accreditation', 'other_hcab_details', this.headerSteps);
+
+            await this.updateScopeData();
+
+            //this.Service.moveSteps('scope_accreditation', 'other_hcab_details', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -2655,7 +2855,7 @@ getMatchScheme(scId: any, scopeData: any){
       //console.log(">>>Enter....4")
       this.publicHalalConformityForm.step3.is_draft = true;
       this.publicHalalConformityForm.saved_step = 5;
-      this.saveScope();
+      this.saveScope(rowInd, typeScopeId);
       console.log(">>> save a draft step3 submit...6", this.step3Data, " -- ", this.publicHalalConformityForm);
       this.step3DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.publicHalalConformityForm)

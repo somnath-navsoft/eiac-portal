@@ -74,60 +74,6 @@
                                                         </div>
                                                     </ng-container>
 
-                                                    <!-- <div class="col-md-4">
-                                                        <div class="initial_data">
-                                                            <mat-radio-button value="Hospital">Hospital</mat-radio-button>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="initial_data">
-                                                            <mat-radio-button value="Day Care Surgery">Day Care Surgery</mat-radio-button>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="initial_data">
-                                                            <mat-radio-button value="Medical Laboratory">Medical Laboratory</mat-radio-button>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="initial_data">
-                                                            <mat-radio-button value="Mobile Medical Laboratory">Mobile Medical Laboratory</mat-radio-button>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="initial_data">
-                                                            <mat-radio-button value="Point of Care Testing">Point of Care Testing(POCT)</mat-radio-button>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="initial_data">
-                                                            <mat-radio-button value="Simple Collection Center">Simple Collection Center</mat-radio-button>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="initial_data">
-                                                            <mat-radio-button value="Clinics">Clinics</mat-radio-button>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="initial_data">
-                                                            <mat-radio-button value="Neurophysiology">Neurophysiology</mat-radio-button>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="initial_data">
-                                                            <mat-radio-button value="Radiology & Imaging">Radiology & Imaging</mat-radio-button>
-                                                        </div>
-                                                    </div> -->
-
                                                     <div class="col-md-12">
                                                         <div class="initial_data">
                                                             <mat-radio-button value="others" (change)="getType('others')">Others</mat-radio-button>
@@ -836,7 +782,8 @@
                                 <div class="bttns-health bttn-staff">
                                     <!-- (click)="onSubmitTestingParticipation()" -->
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="Service.headerStepMove('application_information',headerSteps,'menu','profciency_testing_participation');scrollPage('page_header')">BACK</a> 
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" 
+                                        (click)="Service.headerStepMove('application_information',headerSteps,'menu','profciency_testing_participation');scrollPage('page_header');backStep2()">BACK</a> 
                                         <button class="cancel-bttn" (click)="savedraftStep('step2')" type="button">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >CONTINUE</button>
@@ -1267,7 +1214,7 @@
                                                                 <div class="sub-header">
                                                                     <h5 [innerHTML]="getSchme(item.key)"></h5>
                                                                 </div>
-                                                                <table>
+                                                                <table *ngIf="item.value.scope_heading != undefined">
                                                                     <tr>
                                                                         <th width="20%" *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
                                                                         <th  width="5%">Action</th>
@@ -1281,7 +1228,7 @@
                                                                             <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item.key)"></span>
                                                                             </td>                                                                
                                                                         </tr>
-                                                                    </ng-container>
+                                                                    </ng-container> 
                                                                     <ng-container *ngIf="item.value.scope_value != undefined && item.value.scope_value.length == 0">
                                                                         <tr>
                                                                             <td [attr.colspan]="Service.getObjectLength(item.value.scope_heading)+1">
@@ -1337,22 +1284,6 @@
                                     </div>
                                     <div class="row mt-3">                                         
                                         <div class="col-md-12">
-                                            <!-- <div class="row m-0">
-                                                <div class="col-md-6">
-                                                    <div class="request-subhdr">
-                                                        <h5>Request for perlim visit *</h5>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="request_frm">
-                                                        <mat-radio-group name="is_prelim_visit" 
-                                                        [(ngModel)]="step6Data.is_prelim_visit" required>
-                                                            <mat-radio-button value="1">Yes </mat-radio-button>
-                                                            <mat-radio-button value="0">No </mat-radio-button>
-                                                        </mat-radio-group>
-                                                    </div>
-                                                </div>
-                                            </div>-->
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <div class="request-subhdr">
@@ -1415,14 +1346,16 @@
                                         <!-- <a class="cancel-bttn" href="javascript:void(0)" type="button" 
                                         (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','perlim_visit')">BACK</a> -->
 
-                                        <ng-container *ngIf="step1Data.other_cab_type == undefined">
+                                        <!-- <ng-container *ngIf="step1Data.other_cab_type == undefined">
                                         <a href="javascript:void(0)" class="cancel-bttn" type="button" 
                                         (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','prelim_visit');scrollPage('page_header')">BACK</a> 
                                         </ng-container>
                                         <ng-container *ngIf="step1Data.other_cab_type != undefined && step1Data.other_cab_type != ''">
                                             <a href="javascript:void(0)" class="cancel-bttn" type="button" 
                                             (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','prelim_visit');scrollPage('page_header')">BACK</a> 
-                                        </ng-container>
+                                        </ng-container> -->
+                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" 
+                                        (click)="backStep4()">BACK</a> 
                                         
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step6')">SAVE AS DRAFT</button>
                                     </div>
