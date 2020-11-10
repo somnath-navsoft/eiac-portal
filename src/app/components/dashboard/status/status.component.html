@@ -154,7 +154,7 @@
                             
                             <th>Action</th>
                         </tr>
-                        <!-- trainerdata.records != undefined && -->
+                        <!-- trainerdata.records != undefined && --> 
                     <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
                         <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
                             <td class="fnt-clr">
@@ -187,12 +187,24 @@
                                 {{item.location}}
                             </td>                            -->
                             <td class="action fnt-clr">
+                                <ng-container *ngIf="item.form_meta == 'testing_calibration' && item.accr_status != 'complete'">
                                 <a href="javascript:void(0)" *ngIf="item.form_meta == 'testing_calibration'" alt="Edit" routerLink="/dashboard/cab_client/testing-calibration-form/{{item.id}}"><span class="icon-edit"></span></a>
-                                <a href="javascript:void(0)" *ngIf="item.form_meta == 'halal_conformity_bodies'" alt="Edit" routerLink="/dashboard/cab_client/halal-conformity-form/{{item.id}}"><span class="icon-edit"></span></a>
+                                </ng-container>
+                                <ng-container *ngIf="item.form_meta == 'halal_conformity_bodies' && item.accr_status != 'complete'">
+                                <a href="javascript:void(0)"  *ngIf="item.form_meta == 'halal_conformity_bodies'" alt="Edit" routerLink="/dashboard/cab_client/halal-conformity-form/{{item.id}}"><span class="icon-edit"></span></a>
+                                </ng-container>
+                                <ng-container *ngIf="item.form_meta == 'pt_providers' && item.accr_status != 'complete'">
                                 <a href="javascript:void(0)" *ngIf="item.form_meta == 'pt_providers'" alt="Edit" routerLink="/dashboard/cab_client/pt-providers-form/{{item.id}}"><span class="icon-edit"></span></a>
+                                </ng-container>
+                                <ng-container *ngIf="item.form_meta == 'inspection_body' && item.accr_status != 'complete'">
                                 <a href="javascript:void(0)" *ngIf="item.form_meta == 'inspection_body' && item.accr_status != 'complete'" alt="Edit" routerLink="/dashboard/cab_client/inspection-bodies-form/{{item.id}}" (click)="setIB(item.id)"><span class="icon-edit"></span></a>
+                                </ng-container>
+                                <ng-container *ngIf="item.form_meta == 'health_care' && item.accr_status != 'complete'">
                                 <a href="javascript:void(0)" *ngIf="item.form_meta == 'health_care'" alt="Edit" routerLink="/dashboard/cab_client/health-care-form/{{item.id}}"><span class="icon-edit"></span></a>
+                                </ng-container>
+                                <ng-container *ngIf="item.form_meta == 'certification_bodies' && item.accr_status != 'complete'">
                                 <a href="javascript:void(0)" *ngIf="item.form_meta == 'certification_bodies'" alt="Edit" routerLink="/dashboard/cab_client/certification-bodies-form/{{item.id}}"><span class="icon-edit"></span></a>
+                                </ng-container>
                                 <!-- <a href="javascript:void(0)" (click)="open(courseVoucher, item.id)" alt="Upload Proforma Invoice" title="Upload Proforma Invoice"><span class="icon-document-pen"></span></a> -->
                                 <!-- <ng-container *ngIf="item.training_course_type === 'custom_course'" class="action fnt-clr">
                                     <a href="javascript:void(0)" (click)="openView(courseView, item.id)" title="View" alt="View"><span class="icon-document"></span></a>

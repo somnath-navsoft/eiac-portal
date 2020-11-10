@@ -16,6 +16,7 @@
                     </div>
                 </div>
                 <!-- (click)="Service.headerStepMove(item.title, headerSteps,'menu')"  -->
+                <div id="page_header"></div>
                 <ng-container>
                     <div class="row user_main">
                         <div class="col-md-12">
@@ -42,7 +43,7 @@
 
             
                 <div class="cust-stepper" id="application_information">
-                    <form #ngForm1="ngForm" (keydown.enter)="$event.preventDefault()" (ngSubmit)="onSubmitApplication(ngForm1)" autocomplete="off"> 
+                    <form #ngForm1="ngForm" (keydown.enter)="$event.preventDefault()" (ngSubmit)="onSubmitApplication(ngForm1);scrollPage('page_header')" autocomplete="off"> 
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-md-12">
@@ -678,7 +679,7 @@
                 </div>
 
                 <div class="cust-stepper" id="profciency_testing_participation"  [ngStyle]="{'display':'none'}">
-                    <form #ngForm2="ngForm" (ngSubmit)="onSubmitTestingParticipation(ngForm2)" autocomplete="off">
+                    <form #ngForm2="ngForm" (ngSubmit)="onSubmitTestingParticipation(ngForm2);scrollPage('page_header')" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-12">
@@ -770,7 +771,7 @@
                                 <div class="bttns-health bttn-staff">
                                     <!-- (click)="onSubmitTestingParticipation()" -->
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="Service.headerStepMove('application_information',headerSteps,'menu','profciency_testing_participation')">BACK</a> 
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="Service.headerStepMove('application_information',headerSteps,'menu','profciency_testing_participation'); scrollPage('page_header')">BACK</a> 
                                         <button class="cancel-bttn" type="button" (click)="onSubmitTestingParticipation(ngForm2, true)">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >CONTINUE</button>
@@ -781,7 +782,7 @@
                 </div>
 
                 <div class="cust-stepper" id="personal_information"  [ngStyle]="{'display':'none'}">
-                    <form #ngForm3="ngForm" (ngSubmit)="onSubmitPersonalInformation(ngForm3)" autocomplete="off"> 
+                    <form #ngForm3="ngForm" (ngSubmit)="onSubmitPersonalInformation(ngForm3);scrollPage('page_header')" autocomplete="off"> 
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-12">
@@ -887,7 +888,7 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('profciency_testing_participation',headerSteps,'menu','personal_information')">BACK</a> 
+                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('profciency_testing_participation',headerSteps,'menu','personal_information'); scrollPage('page_header')">BACK</a> 
 
                                         <button class="cancel-bttn" type="button" (click)="onSubmitPersonalInformation(ngForm3, true)">SAVE AS DRAFT</button>
                                     </div>
@@ -899,7 +900,7 @@
                 </div>
 
                 <div class="cust-stepper" id="information_audit_management"  [ngStyle]="{'display':'none'}">
-                    <form #ngForm4="ngForm" (ngSubmit)="onSubmitInformationAuditManagement(ngForm4)" autocomplete="off">
+                    <form #ngForm4="ngForm" (ngSubmit)="onSubmitInformationAuditManagement(ngForm4);scrollPage('page_header')" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-12">
@@ -939,7 +940,7 @@
                                 <div class="bttns-health bttn-staff">
                                     <!-- (click)="onSubmitInformationAuditManagement()" -->
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('personal_information',headerSteps,'menu','information_audit_management')">BACK</a> 
+                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('personal_information',headerSteps,'menu','information_audit_management'); scrollPage('page_header')">BACK</a> 
 
                                         <button class="cancel-bttn" type="button" (click)="onSubmitInformationAuditManagement(ngForm4, true)">SAVE AS DRAFT</button>
                                     </div>
@@ -1121,7 +1122,8 @@
                                                                     </tbody>
                                                                 </table>
                                                             </div>
-                                                            <button class="submit-bttn submit-health" (click)="onSubmitScopeAccreditation(ngForm1,null,i1)" [ngStyle]="{'float': 'right'}">ADD ROW</button>
+                                                            <button class="submit-bttn submit-health" (click)="onSubmitScopeAccreditation(ngForm1,null,i1);scrollPage('page_header')" [ngStyle]="{'float': 'right'}">
+                                                                <span class="icon-add"></span>&nbsp;&nbsp;ADD</button>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -1193,7 +1195,7 @@
                                             <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('personal_information',headerSteps,'menu','scope_accreditation')">BACK</a> 
                                         </ng-container> -->
                                         <!--  (click)="onSubmitScopeAccreditation(ngForm5, true)" -->
-                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="backScopeAccreditation()">BACK</a> 
+                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="backScopeAccreditation(); scrollPage('page_header')">BACK</a> 
                                         <button class="cancel-bttn" type="button">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" (click)="continueScopeAccreditation()">CONTINUE</button>
@@ -1204,7 +1206,7 @@
                 </div>
 
                 <div class="cust-stepper" id="perlim_visit"  [ngStyle]="{'display':'none'}">
-                    <form #ngForm6="ngForm" (ngSubmit)="onSubmitPerlimVisit(ngForm6)" autocomplete="off">  
+                    <form #ngForm6="ngForm" (ngSubmit)="onSubmitPerlimVisit(ngForm6);scrollPage('page_header')" autocomplete="off">  
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-12">
@@ -1279,7 +1281,7 @@
                                 <div class="bttns-health bttn-staff">
                                     <!--  (click)="onSubmitPerlimVisit()" -->
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','perlim_visit')">BACK</a> 
+                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','perlim_visit'); scrollPage('page_header')">BACK</a> 
                                         <button class="cancel-bttn" type="button" (click)="onSubmitPerlimVisit(ngForm6, true)">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health">CONTINUE</button>
@@ -1290,7 +1292,7 @@
                 </div>
 
                 <div class="cust-stepper" id="undertaking_applicant"  [ngStyle]="{'display':'none'}">
-                    <form #ngForm7="ngForm" (ngSubmit)="onSubmitUndertakingApplicant(ngForm7)" autocomplete="off">
+                    <form #ngForm7="ngForm" (ngSubmit)="onSubmitUndertakingApplicant(ngForm7);scrollPage('page_header')" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-12">
@@ -1316,7 +1318,7 @@
                                             <div class="auth">
                                                 <ul>
                                                     <li>
-                                                        <mat-checkbox  (change)="authorizeCheckCount($event)" name="authorization_confirm1" [(ngModel)]="authorizationList.authorization_confirm1" >I confirm that the information provided in this application form is true and correct.</mat-checkbox>
+                                                        <mat-checkbox  (change)="authorizeCheckCount($event)" name="authorization_confirm1" [(ngModel)]="authorizationList.authorization_confirm1" >I confirm that the information provided in this application form is true and correct.<span class="required_input">*</span></mat-checkbox>
                                                     </li>
                                                     
                                                     <li class="terms-condition"  (scroll)="scrollHandler($event)" #mydiv style="height:500px;overflow:auto">
@@ -1327,7 +1329,7 @@
                                                     <li>
                                                         <mat-checkbox name="authorization_confirm2" [disableRipple]="true"
                                                         (click)="$event.preventDefault()" [(ngModel)]="authorizationList.authorization_confirm2" >
-                                                        I acknowledge that I have read and understood and confirm to abide by the Accreditation Agreement
+                                                        I acknowledge that I have read and understood and confirm to abide by the Accreditation Agreement and request to provide us with a word agreement form for signature.<span class="required_input">*</span>
                                                         </mat-checkbox>
                                                     </li>
                                                 </ul>
@@ -1363,7 +1365,7 @@
                                                 <div class="tnc" [innerHTML]="(termsILA != undefined && termsILA.content != undefined) ? termsILA.content : ''"></div>
                                             </div>                                            
 
-                                            <div class="authData">I confirm that the below documents are available and will be furnished once requested by EIAC:</div>
+                                            <div class="authData">I confirm that the below documents are available and will be furnished once requested by EIAC:<span class="required_input">*</span></div>
                                             <div class="auth-details">
                                                 <table>
                                                     <tr>
@@ -1375,7 +1377,7 @@
                                                     <tr>
                                                         <td><mat-checkbox name="undertaking_confirm2" [disableRipple]="true"
                                                             (click)="$event.preventDefault()" [(ngModel)]="authorizationList.undertaking_confirm2"></mat-checkbox></td>
-                                                        <td><span><a href="javascript:void(0)" title="Please review the checklist" alt="Please review the checklist" (click)="openView(checklistView, 'checklist')">Filled Up Document Review Checklist</a></span> (Related to applied accreditation standard and for initial accreditation & Scope Extensions only)<br/>
+                                                        <td><span><a href="javascript:void(0)" title="Please review the checklist" alt="Please review the checklist" (click)="openView(checklistView, 'checklist')">Filled in Document Review Checklist</a></span> (for 1st submission only)<br/>
                                                             <p class="error" *ngIf="!readReviewChecklist && isApplicationSubmitted == true">Please review the checklist</p>                                                            
                                                         </td>
                                                     </tr>
@@ -1393,11 +1395,11 @@
                                                     </tr>
                                                     <tr>
                                                         <td><mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm6" [(ngModel)]="authorizationList.undertaking_confirm6"></mat-checkbox></td>
-                                                        <td>Participation in PT/ILC/Measurement Audit</td>
+                                                        <td>Participation in PT</td>
                                                     </tr>
                                                     <tr>
                                                         <td><mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm7" [(ngModel)]="authorizationList.undertaking_confirm7"></mat-checkbox></td>
-                                                        <td>List of key staff and Organizational Structure if not mentioned in the Management System Manual</td>
+                                                        <td>List of key staff and Organizational Structure if not mentioned in the QM</td>
                                                     </tr>
                                                 </table>
                                             </div>
@@ -1449,10 +1451,12 @@
                                                     <hr>
                                                 </div>
                                             </div>
-
-                                            <mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm8" [(ngModel)]="authorizationList.undertaking_confirm8">
-                                                Entering the authorised name will serve as an acceptance and digital binding signature for this agreement
+                                            <div class="auth">
+                                            <mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm8" 
+                                            [(ngModel)]="authorizationList.undertaking_confirm8">
+                                                Entering the authorised name will serve as an acceptance and digital binding signature for this agreement<span class="required_input">*</span>
                                             </mat-checkbox>
+                                            </div>
 
                                             <div class="row mt-3">
                                                 <div class="col-12 p-0">
@@ -1514,7 +1518,7 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('perlim_visit',headerSteps,'menu','undertaking_applicant')">BACK</a> 
+                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('perlim_visit',headerSteps,'menu','undertaking_applicant'); scrollPage('page_header')">BACK</a> 
 
                                         <button class="cancel-bttn" type="button" (click)="onSubmitUndertakingApplicant(ngForm7,true)">SAVE AS DRAFT</button>
                                     </div>
@@ -1617,7 +1621,7 @@
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
                                         <a href="javascript:void(0)" class="cancel-bttn" type="button" 
-                                        (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice')">BACK</a> 
+                                        (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice'); scrollPage('page_header')">BACK</a> 
                                         <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice()">SAVE AS DRAFT</button> -->
                                     </div>
                                     <ng-container *ngIf="paymentFilePath != ''">
@@ -1765,7 +1769,7 @@
                                     <div class="button-content">
                                         <ng-container *ngIf="!paymentStepComp">
                                             <a href="javascript:void(0)" class="cancel-bttn" type="button" 
-                                            (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</a>
+                                            (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update'); scrollPage('page_header')">BACK</a>
                                         </ng-container>
                                         <button class="cancel-bttn" type="button" (click)="onSubmitPaymentInformation(ngForm9, true)">SAVE AS DRAFT</button>
                                     </div>
@@ -1785,7 +1789,14 @@
                     </form>
                 </div>
 
-                
+                <div class="cust-stepper" id="application_complete" [ngStyle]="{'display':'none'}">
+                    <div class="row mt-3">
+                        <div class="col-md-12">                        
+                            <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('payment_update',headerSteps,'menu','application_complete');scrollPage('page_header')">BACK</a>
+                        </div>
+
+                    </div>
+                </div>
 
             </div>
         </div>
