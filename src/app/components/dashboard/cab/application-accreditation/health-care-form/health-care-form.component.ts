@@ -233,6 +233,13 @@ export class HealthCareFormComponent implements OnInit {
     private modalService: NgbModal,public sanitizer:DomSanitizer,public _trainerService:TrainerService) { }
 
 
+    scrollPage(pageId: any){
+      const el = document.getElementById(pageId);
+              console.log("@Elem: ",el);
+              if(el){
+                el.scrollIntoView(true);    //arguement true bypass the non-exist element or undefined
+              }
+    }
   /*******************************
   * Scope Funtions
   * @Abhishek
@@ -1318,7 +1325,7 @@ loadData(){
       this.Service.getwithoutData(url2)
       .subscribe(
         res => {
-          // //console.log(res,'urlVal')
+          console.log(res,'urlVal')
           this.loader = true;
           if(res['data'].id && res['data'].id != '') {
               let pathData: any;
@@ -2301,7 +2308,7 @@ onSubmitStep4(ngForm4: any){
 }
 
 //Scope Save functions
-saveScope(){
+saveScope(rowInd: number){
     
   let scopeValues: any =[];
   let scopeIds:any =[];
@@ -2313,7 +2320,7 @@ saveScope(){
   let scopeCollections: any={};
   let selectScheme          = '';//this.schemeRows[0].id;
   
-  for(var t=0;t<this.schemeRows.length; t++){
+  for(var t=rowInd;t<=rowInd; t++){
 
     //console.log("Scheme Sec: ", t," -- ", scopeCollections);
     selectScheme = this.schemeRows[t].id;
@@ -2354,7 +2361,7 @@ saveScope(){
   let tempDataObj: any = {};
   let tempDataRow: any = {};
   if(this.schemeRows.length){
-      for(var t=0;t<this.schemeRows.length; t++){
+      for(var t=rowInd;t<=rowInd; t++){
 
           //console.log("Scheme Sec: ", t);
           secInd = t;
@@ -2531,7 +2538,57 @@ getMatchScheme(scId: any, scopeData: any){
 
 //Scope Save functions
 
-onSubmitStep5(ngForm: any, type?:any) {
+updateScopeData = async(rowInd: number) => {
+  let getId= (this.formApplicationId);
+  let url = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+getId;
+  let getScheme: any  = this.schemeRows[rowInd].id;
+
+  console.log(">>>Get url and ID: ", url, " :: ", getId, " -- ", getScheme);
+  this.Service.getwithoutData(url)
+  .subscribe(
+  res => {
+      let getData: any  =res;
+      console.log(">>>. Data: ", getData);
+      if(getData.data.scopeDetails != undefined && !this.Service.isObjectEmpty(getData.data.scopeDetails)){
+        let jsonObject: any = getData.data.scopeDetails;
+        this.editScopeData = jsonObject;
+      }
+  });
+}
+
+
+continueScopeAccreditation(){
+
+if(!this.scopeFamilyNull){
+//Reset all model data 
+this.dynamicScopeFieldColumns = {};
+this.dynamicScopeFieldType = {};
+this.dynamicScopeModel = {};
+this.fullScope = [];
+this.schemeRows = [{}];
+this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+}
+}
+backScopeAccreditation(){
+  
+//Reset all model data 
+if(!this.scopeFamilyNull){
+  this.dynamicScopeFieldColumns = {};
+  this.dynamicScopeFieldType = {};
+  this.dynamicScopeModel = {};
+  this.fullScope = [];
+  this.schemeRows = [{}];
+}
+if(this.step1Data.accredation_criteria == 1){
+this.Service.moveSteps('scope_accreditation', 'information_audit_management', this.headerSteps);
+}
+if(this.step1Data.accredation_criteria == 2){
+this.Service.moveSteps('scope_accreditation', 'personal_information', this.headerSteps);
+}
+}
+
+
+onSubmitStep5(ngForm: any, type?:any, rowInd?:any) {
   //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
 
   
@@ -2550,7 +2607,7 @@ onSubmitStep5(ngForm: any, type?:any) {
   let selectScheme: any;
   let errorScope: boolean = false;
   if(this.schemeRows.length){
-    for(var t=0;t<this.schemeRows.length; t++){
+    for(var t=rowInd;t<=rowInd; t++){
         secInd = t;
         selectScheme = this.schemeRows[t].id;
         let getData = this.criteriaMaster.find(rec => rec.scope_family == selectScheme);
@@ -2579,7 +2636,7 @@ onSubmitStep5(ngForm: any, type?:any) {
             }
       }
   }
-  if(errorScope && type === undefined){
+  if(errorScope){
     this.toastr.warning('Please Fill required field','Validation Error');
     return false;    
   }
@@ -2597,7 +2654,7 @@ onSubmitStep5(ngForm: any, type?:any) {
     if(!ngForm.form.valid && type == undefined  && this.editScopeData != undefined && this.editScopeData != null) {
       //console.log(">>>Bypass saving...");
       //console.log(">>>Enter....2")
-      this.saveScope();
+      this.saveScope(rowInd);
       //console.log(">>> step5 submit...", this.step5Data, " -- ", this.healthCareForm);
       this.healthCareForm.step5.is_draft = false;
       this.healthCareForm.saved_step = 5;
@@ -2616,20 +2673,23 @@ onSubmitStep5(ngForm: any, type?:any) {
 
     }
     else if(ngForm.form.valid && type == undefined) {
-      //console.log(">>>Scope saving...");
-      //console.log(">>>Enter....3")
-      this.saveScope();
+      console.log(">>>Scope saving...");
+      console.log(">>>Enter....3")
+      this.saveScope(rowInd);
       console.log(">>> step5 submit...", this.step5Data, " -- ", this.healthCareForm);
       this.healthCareForm.step5.is_draft = false;
       this.healthCareForm.saved_step = 5;
       //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
       .subscribe(
-        res => {
+       async res => {
           //////console.log(res,'res')
           if(res['status'] == true) {
             //this.toastr.success(res['msg'], '');
-            this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+            console.log("Saved....arow....");
+            await this.updateScopeData(rowInd);
+            
+            //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -2640,7 +2700,7 @@ onSubmitStep5(ngForm: any, type?:any) {
       //console.log(">>>Enter....4")
       this.healthCareForm.step5.is_draft = true;
       this.healthCareForm.saved_step = 5;
-      this.saveScope();
+      this.saveScope(rowInd);
       console.log(">>> step5 submit...", this.step5Data, " -- ", this.healthCareForm);
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.healthCareForm)
       .subscribe(

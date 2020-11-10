@@ -102,7 +102,7 @@ export class ApplicationAccreditationComponent implements OnInit {
 
   loadService() {
     this.loader = false;
-    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.service_details_page+"?data=accreditation_service")
+    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.service_details_page+"?data=accreditation_service&language_id=1")
     .subscribe(
       res => {
         // console.log(res,'res');
