@@ -85,6 +85,8 @@ import { AccountsComponent } from './components/dashboard/accounts/accounts.comp
 import { AccountDetailsComponent } from './components/dashboard/accounts/account-details/account-details.component';
 import { AccountUploadComponent } from './components/dashboard/accounts/account-upload/account-upload.component';
 import { CabTrainingDetailComponent } from './components/dashboard/cab/cab-training-detail/cab-training-detail.component';
+import { CabTrainingInpremiseDetailComponent } from './components/dashboard/cab/cab-training-inpremise-detail/cab-training-inpremise-detail.component';
+import { CabTrainingInpremiseFormComponent } from './components/dashboard/cab/cab-training-inpremise-form/cab-training-inpremise-form.component';
 
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
@@ -143,8 +145,10 @@ const routes: Routes = [
         { path: 'training-apply/:id', component:CabTrainerServiceComponent, canActivate: [AuthGuard] },
         { path: 'training-course', component:CabTrainingApplicationComponent, canActivate: [AuthGuard] },
         { path: 'training-public-course-form/:id', component:CabTrainingPublicCourseComponent, canActivate: [AuthGuard] },
+        { path: 'training-inpremise-form/:id', component:CabTrainingInpremiseFormComponent, canActivate: [AuthGuard] },
         { path: 'training-public-course-list', component:CabTrainingPublicCourseListComponent, canActivate: [AuthGuard] },
         { path: 'training-course-details/:id', component:CabTrainingDetailComponent, canActivate: [AuthGuard] },
+        { path: 'training-inpremise-details/:id', component:CabTrainingInpremiseDetailComponent, canActivate: [AuthGuard] },
         { path: 'training-inpremise-course', component:CabTrainingInpremiseCourseComponent, canActivate: [AuthGuard] },
         { path: 'training-service', component:CabTrainerServiceListComponent, canActivate: [AuthGuard] },
         { path: 'application-registration', component:ApplicationRegistrationComponent, canActivate: [AuthGuard] },
