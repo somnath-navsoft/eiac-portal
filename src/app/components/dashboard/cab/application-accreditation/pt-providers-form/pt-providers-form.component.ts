@@ -154,6 +154,8 @@ export class PtProvidersFormComponent implements OnInit {
   paymentReceiptValidation:any;
   recommendYearValues: any[] = [];
 
+  paymentStepComp: boolean = false;
+
   //Scope data declarations
   dynamicScopeModel:any         = {};   //Master form data object
   dynamicScopeFieldColumns:any  = {};  
@@ -290,6 +292,53 @@ export class PtProvidersFormComponent implements OnInit {
  * SCOPE FUNCTIONS
  * 
  * ***********************/ 
+getSchme(sid: number){
+  let getSchemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id == sid);
+  //////console.log("data: ", getSchemeData);
+  if(getSchemeData){
+    return getSchemeData.title;
+  }
+}
+deleteScopeData(schemId: any, deleteIndex: number){
+  ////console.log("deleting...", schemId, " -- ", deleteIndex);
+  let savedData: any = this.editScopeData;
+  ////console.log("saveData: ", savedData);
+
+  for(var key in savedData){
+      ////console.log(">>> ", key, " :: ", savedData[key]);
+      if(key === schemId){
+        let getvalues: any =  savedData[key].scope_value;
+        ////console.log("<<< Found: ", getvalues);
+        if(typeof getvalues === 'object'){
+          ////console.log("deleting...");
+          getvalues.splice(deleteIndex, 1);
+        }
+      }
+  }
+  
+      
+      //save to server at time
+      this.step5Data = {};
+      this.step5Data['scopeDetails']    = this.editScopeData;
+      this.ptProvidersForm = {};
+      this.ptProvidersForm.step5 = {};
+      this.ptProvidersForm.step5 = this.step5Data;
+      this.ptProvidersForm.step5.is_draft = false;
+      this.ptProvidersForm.saved_step = 5;
+      this.ptProvidersForm.step5.application_id = this.formApplicationId;
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
+      .subscribe(
+        res => {
+          if(res['status'] == true) {
+            this.toastr.success("Saved scope updated...", '');
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+
+
+  this._customModal.closeDialog();
+}
 openDeleteScopeConfirm(delIndex: any, delKey: any){
   ////console.log(">>>delete ", delKey, " -- ", delIndex);
   if(delKey){
@@ -501,6 +550,7 @@ onChangeScopeOption(getValues: any,secIndex: any, lineIndex: number, columnIndex
 getCriteria(value, secInd: any){
   //////console.log("select Criteris: ", value, " -- ", secInd);
   //this.scopeDataLoad = true;
+  let duplicateScheme: boolean = false;
   if(value != undefined && value > 0){
      //Get fullscope
      //let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.criteriaIdByScope + value;
@@ -544,39 +594,51 @@ getCriteria(value, secInd: any){
               scopeTitle  = getData.title.toString().toLowerCase().split(" ").join('_');
 
               //check already existing scheme...
-              for(var m in this.dynamicScopeModel){
-                ////console.log("mkey: ", m, " -- ", scopeTitle);
-                  //let fobj: any = this.fullScope;
-                  if(m === scopeTitle){
-                    this.fullScope.splice(secInd, 1);
-                    this.toastr.error("Scheme should be unique, Please check.","Validation")
-                    return;
-                  }
-              }
-              this.dynamicScopeFieldColumns[scopeTitle] = [];
-              this.dynamicScopeFieldType[scopeTitle] = [];
-              this.dynamicScopeModel[scopeTitle] = {};
+              this.fullScope.forEach((item, index) => {
+                console.log(item.title, " :: ", scopeTitle);
+                if(item.title == scopeTitle){
+                  duplicateScheme = true;
+                  this.toastr.warning("Duplicate Scheme!","Validation")
+                  return;
+                }
+            })
+              // for(var m in this.dynamicScopeModel){
+              //   ////console.log("mkey: ", m, " -- ", scopeTitle);
+              //     //let fobj: any = this.fullScope;
+              //     if(m === scopeTitle){
+              //       this.fullScope.splice(secInd, 1);
+              //       this.toastr.error("Scheme should be unique, Please check.","Validation")
+              //       return;
+              //     }
+              // }
 
-              if(this.fullScope.length){
-                  //////console.log("@Existing scheme....1");
-                  //let findSchme = this.fullScope.find(item => item.id == value);
-                  ////////console.log("@Existing scheme....2", findSchme);
-                  let pushObj: any = {
-                    title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
-                  }
-                  
-                  if(this.fullScope[secInd] != undefined && !this.Service.isObjectEmpty(this.fullScope[secInd])){
-                    //////console.log("@Existing scheme...found", this.fullScope[secInd]);
-                    this.fullScope[secInd] = pushObj;
-                  }else{
-                      this.fullScope.push({
+            if(!duplicateScheme){
+                    this.dynamicScopeFieldColumns[scopeTitle] = [];
+                    this.dynamicScopeFieldType[scopeTitle] = [];
+                    this.dynamicScopeModel[scopeTitle] = {};
+
+                    if(this.fullScope.length){
+                        //////console.log("@Existing scheme....1");
+                        //let findSchme = this.fullScope.find(item => item.id == value);
+                        ////////console.log("@Existing scheme....2", findSchme);
+                        let pushObj: any = {
+                          title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
+                        }
+                        
+                        if(this.fullScope[secInd] != undefined && !this.Service.isObjectEmpty(this.fullScope[secInd])){
+                          //////console.log("@Existing scheme...found", this.fullScope[secInd]);
+                          this.fullScope[secInd] = pushObj;
+                        }else{
+                            this.fullScope.push({
+                              title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
+                            });
+                        }
+                    }else{
+                    this.fullScope.push({
                         title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
                       });
-                  }
-              }else{
-              this.fullScope.push({
-                  title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName
-                });
+                    }
+
               }
             }
 
@@ -1001,6 +1063,7 @@ setexDate(date){
           this.loader = false;
           let getData: any;
           getData = res;
+          let saveStep: number;
           if(res['data'].id && res['data'].id != '') {
               let pathData: any;
               let filePath: string;
@@ -1014,10 +1077,25 @@ setexDate(date){
                 }
                 ////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
               }
+
+              //check steps
+              if(getData.data.is_draft){
+                saveStep = parseInt(getData.data.saved_step) - 1;
+              }else{
+                if(parseInt(getData.data.saved_step) == 9){
+                  saveStep = parseInt(getData.data.saved_step) - 1;
+                  this.paymentStepComp = true;
+                }else if(parseInt(getData.data.saved_step) == 8){
+                  saveStep = parseInt(getData.data.saved_step);
+                  this.paymentStepComp = true;
+                }else{
+                  saveStep = parseInt(getData.data.saved_step);
+                }
+              }
               
               if(res['data'].saved_step  != null){
                 /////console.log("@saved step assign....");
-                let saveStep = res['data'].saved_step;
+                //let saveStep = res['data'].saved_step;
                 //open step
                 this.headerSteps.forEach((item, key) => {
                       /////console.log(item, " --- ", key);
@@ -1136,6 +1214,15 @@ setexDate(date){
               }
               if(res['data'].mrm_date != null){
                 this.step4Data.mrm_date = new Date(res['data'].mrm_date);
+              }
+
+              //step 5
+              if(getData.data.scopeDetails != undefined && !this.Service.isObjectEmpty(getData.data.scopeDetails)){
+                ////console.log(">>> ", getData.data.scopeDetails);
+                
+                let jsonObject = getData.data.scopeDetails;
+                this.Service.oldScopeData = jsonObject;
+                this.editScopeData = jsonObject; 
               }
 
               //Step 6
@@ -1708,7 +1795,7 @@ onSubmitStep4(ngForm4: any){
 }
 
 // Scope saving
-saveScope(){
+saveScope(rowInd: any){
     
   let scopeValues: any =[];
   let scopeIds:any =[];
@@ -1720,7 +1807,8 @@ saveScope(){
   let scopeCollections: any={};
   let selectScheme          = '';//this.schemeRows[0].id;
   
-  for(var t=0;t<this.schemeRows.length; t++){
+  //for(var t=0;t<this.schemeRows.length; t++){
+  for(let t=rowInd;t<=rowInd; t++){
 
     ////console.log("Scheme Sec: ", t," -- ", scopeCollections);
     selectScheme = this.schemeRows[t].id;
@@ -1758,10 +1846,11 @@ saveScope(){
 
   let secInd: number = 0;
   let resultTempAr: any = [];
-  let tempDataObj: any = {};
+  let tempDataObj: any = {};  
   let tempDataRow: any = {};
   if(this.schemeRows.length){
-      for(var t=0;t<this.schemeRows.length; t++){
+      for(let t=rowInd;t<=rowInd; t++){
+      //for(var t=0;t<this.schemeRows.length; t++){
 
           ////console.log("Scheme Sec: ", t);
           secInd = t;
@@ -1909,8 +1998,8 @@ saveScope(){
   for(var p in scopeCollections){
     if(scopeCollections[p]){
         let getDetails: any = scopeCollections[p]['scope_value'];
-        //////console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
-        if(getDetails.length == 0){
+        console.log(">>>Value: ", p, " -- ", getDetails, " -- ");
+        if(getDetails != undefined && getDetails.length == 0){
           //////console.log(">>>Empty values: ", p, " deleting");
           delete scopeCollections[p];
         }
@@ -1933,7 +2022,51 @@ getMatchScheme(scId: any, scopeData: any){
   return false;
 }
 
-onSubmitStep5(ngForm: any, type?: any ) {
+updateScopeData = async(rowInd: number) => {
+  let getId= (this.formApplicationId);
+  let url = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+getId;
+  let getScheme: any  = this.schemeRows[rowInd].id;
+
+  console.log(">>>Get url and ID: ", url, " :: ", getId, " -- ", getScheme);
+  this.Service.getwithoutData(url)
+  .subscribe(
+  res => {
+      let getData: any  =res;
+      console.log(">>>. Data: ", getData);
+      if(getData.data.scopeDetails != undefined && !this.Service.isObjectEmpty(getData.data.scopeDetails)){
+        let jsonObject: any = getData.data.scopeDetails;
+        this.editScopeData = jsonObject;
+      }
+  });
+}
+
+
+continueScopeAccreditation(){
+//Reset all model data 
+this.dynamicScopeFieldColumns = {};
+this.dynamicScopeFieldType = {};
+this.dynamicScopeModel = {};
+this.fullScope = [];
+this.schemeRows = [{}];
+this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+}
+backScopeAccreditation(){
+//Reset all model data 
+this.dynamicScopeFieldColumns = {};
+this.dynamicScopeFieldType = {};
+this.dynamicScopeModel = {};
+this.fullScope = [];
+this.schemeRows = [{}];
+this.Service.moveSteps('scope_accreditation', 'information_audit_management', this.headerSteps);
+// if(this.step1Data.accredation_criteria == 1){
+// this.Service.moveSteps('scope_accreditation', 'information_audit_management', this.headerSteps);
+// }
+// if(this.step1Data.accredation_criteria == 2){
+// this.Service.moveSteps('scope_accreditation', 'personal_information', this.headerSteps);
+// }
+}
+
+onSubmitStep5(ngForm: any, type?: any , rowInd?:any) {
   //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
 
   this.ptProvidersForm = {};
@@ -1955,7 +2088,7 @@ onSubmitStep5(ngForm: any, type?: any ) {
   let selectScheme: any;
   let errorScope: boolean = false;
   if(this.schemeRows.length){
-    for(var t=0;t<this.schemeRows.length; t++){
+    for(let t=rowInd;t<=rowInd; t++){
         secInd = t;
         selectScheme = this.schemeRows[t].id;
         let getData = this.criteriaMaster.find(rec => rec.scope_accridiation.id == selectScheme);
@@ -1984,7 +2117,7 @@ onSubmitStep5(ngForm: any, type?: any ) {
             }
       }
   }
-  if(errorScope && type === undefined){
+  if(errorScope){
     this.toastr.warning('Please Fill required field','Validation Error');
     return false;    
   }
@@ -2001,7 +2134,7 @@ onSubmitStep5(ngForm: any, type?: any ) {
         && this.schemeRows[0].id === undefined && this.editScopeData != undefined && this.editScopeData != null) {
       ////console.log(">>>Bypass saving...");
       ////console.log(">>>Enter....2")
-      this.saveScope();
+      this.saveScope(rowInd);
       ////console.log(">>> step5 submit...", this.step5Data, " -- ", this.ptProvidersForm);
       this.ptProvidersForm.step5.is_draft = false;
       this.ptProvidersForm.saved_step = 5;
@@ -2021,17 +2154,19 @@ onSubmitStep5(ngForm: any, type?: any ) {
     else if(ngForm.form.valid && type == undefined) {
       console.log(">>>Scope saving...");
       console.log(">>>Enter....3")
-      this.saveScope();
+      this.saveScope(rowInd);
       console.log(">>> step5 submit...", this.step5Data, " -- ", this.ptProvidersForm);
       this.ptProvidersForm.step5.is_draft = false;
       this.ptProvidersForm.saved_step = 5;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
       .subscribe(
-        res => {
+       async res => {
           ////////console.log(res,'res')
           if(res['status'] == true) {
             //this.toastr.success(res['msg'], '');
-            this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+            console.log("Saved....arow....");
+            await this.updateScopeData(rowInd);
+            //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -2042,7 +2177,7 @@ onSubmitStep5(ngForm: any, type?: any ) {
       ////console.log(">>>Enter....4")
       this.ptProvidersForm.step5.is_draft = true;
       this.ptProvidersForm.saved_step = 5;
-      this.saveScope();
+      this.saveScope(rowInd);
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
       .subscribe(
         res => {

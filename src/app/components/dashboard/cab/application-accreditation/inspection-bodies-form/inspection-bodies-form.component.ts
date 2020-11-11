@@ -1065,7 +1065,7 @@ export class InspectionBodiesFormComponent implements OnInit {
                     console.log(item.title, " :: ", scopeTitle);
                     if(item.title == scopeTitle){
                       duplicateScheme = true;
-                      this._toaster.warning("Scheme should be unique","Validation")
+                      this._toaster.warning("Duplicate Scheme!","Validation")
                       return;
                     }
                 })
@@ -1082,13 +1082,12 @@ export class InspectionBodiesFormComponent implements OnInit {
                 //     }
                 // }
                 if(!duplicateScheme){
-                  console.log(">>> build strucucuc.........");
                   this.dynamicScopeFieldColumns[scopeTitle] = [];
                 this.dynamicScopeFieldType[scopeTitle] = [];
                 this.dynamicScopeModel[scopeTitle] = {};
 
                 if(this.fullScope.length){
-                     console.log("@Existing scheme....1");
+                     //console.log("@Existing scheme....1");
                     //let findSchme = this.fullScope.find(item => item.id == value);
                     ////////console.log("@Existing scheme....2", findSchme); 
                     let pushObj: any = {
@@ -1849,7 +1848,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         let getData: any = res;
         let data: any;
         //, getData.data.step1, " -- ", getData.data.step2
-        ////console.log(getData,"Profile info >>> ");
+        //console.log(getData,"Profile info >>> ");
 
         if(getData.data.step1.length){
           data = getData.data['step1'][0];
@@ -1952,7 +1951,7 @@ export class InspectionBodiesFormComponent implements OnInit {
               this.step1Data.date_of_issue = data.date_of_issue;
             }
             if(this.urlVal == 'undefined'){
-                this.step1Data.physical_location_address = data.applicant_address;
+                this.step1Data.physical_location_address = data.applicant_location;
                 this.step1Data.po_box = data.po_box;
                 this.step1Data.telephone = data.tel_no;
                 this.step1Data.fax_no = data.fax_no;

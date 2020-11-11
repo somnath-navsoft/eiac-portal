@@ -105,6 +105,8 @@ export class LayoutComponent implements OnInit {
           sessionStorage.setItem('courseDetailId', splitUrl[4]);
         }else if(splitUrl[3] == 'training-public-course-form') {
           sessionStorage.setItem('publicCourseId', splitUrl[4]);
+        }else if(splitUrl[3] == 'training-inpremise-details') {
+          sessionStorage.setItem('inpremiseCourseId', splitUrl[4]);
         }else{
           this._service.setValueUrl('');
         }
