@@ -1065,7 +1065,7 @@ export class InspectionBodiesFormComponent implements OnInit {
                     console.log(item.title, " :: ", scopeTitle);
                     if(item.title == scopeTitle){
                       duplicateScheme = true;
-                      this._toaster.warning("Scheme should be unique","Validation")
+                      this._toaster.warning("Duplicate Scheme!","Validation")
                       return;
                     }
                 })
@@ -1082,13 +1082,12 @@ export class InspectionBodiesFormComponent implements OnInit {
                 //     }
                 // }
                 if(!duplicateScheme){
-                  console.log(">>> build strucucuc.........");
                   this.dynamicScopeFieldColumns[scopeTitle] = [];
                 this.dynamicScopeFieldType[scopeTitle] = [];
                 this.dynamicScopeModel[scopeTitle] = {};
 
                 if(this.fullScope.length){
-                     console.log("@Existing scheme....1");
+                     //console.log("@Existing scheme....1");
                     //let findSchme = this.fullScope.find(item => item.id == value);
                     ////////console.log("@Existing scheme....2", findSchme); 
                     let pushObj: any = {
