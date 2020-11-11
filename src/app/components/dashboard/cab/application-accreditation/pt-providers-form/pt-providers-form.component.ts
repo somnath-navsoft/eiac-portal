@@ -1758,7 +1758,7 @@ saveScope(){
 
   let secInd: number = 0;
   let resultTempAr: any = [];
-  let tempDataObj: any = {};
+  let tempDataObj: any = {};  
   let tempDataRow: any = {};
   if(this.schemeRows.length){
       for(var t=0;t<this.schemeRows.length; t++){
