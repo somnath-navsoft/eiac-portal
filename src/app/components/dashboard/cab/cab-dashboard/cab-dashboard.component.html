@@ -1,0 +1,556 @@
+<app-loader *ngIf="!loader"></app-loader>
+<div class="main-detail">
+    <div class="container-fluid p-0">
+        <div class="main-dashboard">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="trainer-details">
+                        <div class="trainer-name">
+                            <h4>{{userDetails?.first_name}} {{userDetails?.last_name}}</h4>
+                            <div class="acc_verified">
+                                <span class="icon-check-circle"></span>
+                                <span class="tooltip_data">Account Verified</span>
+                            </div>
+                        </div>
+                        <div class="trainer-detail">
+                            <!-- <span class="trainer-data"><span class="icon-company"></span>Navigators Software Pvt. Ltd.</span> -->
+                            <span class="trainer-data"><span class="icon-Page"></span>{{userDetails.email}}</span>
+                            <!-- <span class="trainer-data"><span class="icon-call"></span>+971 254-3269</span> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="trainer-content">
+                        <div class="trainer-type">
+                            <span>Code</span>
+                        </div>
+                        <div class="trainer-type-data">
+                            <span>{{step1Data?.cab_code}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="trainer-content">
+                        <div class="trainer-type">
+                            <span>Authorized Representative</span>
+                        </div>
+                        <div class="trainer-type-data">
+                            <span>{{step1Data?.cab_name}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="trainer-content">
+                        <div class="trainer-type">
+                            <span>Designation</span>
+                        </div>
+                        <div class="trainer-type-data">
+                            <span>{{userDetails?.designation}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="trainer-content">
+                        <div class="trainer-type">
+                            <span>Contact Number</span>
+                        </div>
+                        <div class="trainer-type-data">
+                            <span>{{userDetails?.contact}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="trainer-main-details">
+                        <div class="user-icons">
+                            <span class="icon-user-dash"></span>
+                        </div>
+                        <div class="trainer-data-det">
+                            <div class="trainer-pro">
+                                <span>Profile</span>
+                            </div>
+                            <div class="trainer-maindata trainer-update">
+                                <span>Update<span class="icon-right-arrow"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="trainer-main-details trainer2">
+                        <div class="user-icons">
+                            <span class="icon-doc-write"></span>
+                        </div>
+                        <div class="trainer-data-det">
+                            <div class="trainer-pro">
+                                <span>Certificates</span>
+                            </div>
+                            <div class="trainer-maindata">
+                                <span>324</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="trainer-main-details trainer3">
+                        <div class="user-icons">
+                            <span class="icon-calendar"></span>
+                        </div>
+                        <div class="trainer-data-det">
+                            <div class="trainer-pro">
+                                <span>Events</span>
+                            </div>
+                            <div class="trainer-maindata">
+                                <span>542</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="trainer-main-details trainer4">
+                        <div class="user-icons">
+                            <span class="icon-doc-diff"></span>
+                        </div>
+                        <div class="trainer-data-det">
+                            <div class="trainer-pro">
+                                <span>Records</span>
+                            </div>
+                            <div class="trainer-maindata">
+                                <span>324</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="service-links">
+            <div class="row m-0">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="trainer_head">
+                                <h4>Service</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="dash-main">
+                                <div class="dash-wrap">
+                                    <div class="usermain">
+                                        <div class="main-status">
+                                            <p class="head-dash">Type</p>
+                                            <p class="sub-head-dash">IB</p>
+                                        </div>
+                                        <div class="view-all">
+                                            <p>View all type<span class="icon-right-arrow"></span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dash-logo">
+                                    <span class="icon-file-tray"></span> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="dash-main">
+                                <div class="dash-wrap">
+                                    <div class="usermain">
+                                        <div class="main-status">
+                                            <p class="head-dash">Scheme</p>
+                                            <p class="sub-head-dash">25</p>
+                                        </div>
+                                        <div class="view-all">
+                                            <p>View all type<span class="icon-right-arrow"></span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dash-logo">
+                                    <span class="icon-doc-write"></span> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="dash-main">
+                                <div class="dash-wrap">
+                                    <div class="usermain">
+                                        <div class="main-status">
+                                            <p class="head-dash">Applications</p>
+                                            <p class="sub-head-dash">15<span class="active-dash">Active</span></p>
+                                        </div>
+                                        <div class="view-all">
+                                            <p>From last week</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dash-logo">
+                                    <span class="icon-pages"></span> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="dash-main">
+                                <div class="dash-wrap">
+                                    <div class="usermain">
+                                        <div class="main-status">
+                                            <p class="head-dash">Applications</p>
+                                            <p class="sub-head-dash">32<span class="active-dash complete-dash">Completed</span></p>
+                                        </div>
+                                        <div class="view-all">
+                                            <p>From last week</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dash-logo">
+                                    <span class="icon-pages"></span> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="trainer_head">
+                                <h4>Billing</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="dash-main">
+                                <div class="dash-wrap">
+                                    <div class="usermain">
+                                        <div class="main-status">
+                                            <p class="head-dash head-dash-bill">Vouchers</p>
+                                            <p class="sub-head-dash">20<span class="active-dash">active</span></p>
+                                        </div>
+                                        <div class="view-all">
+                                            <p>From last week</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dash-logo bill-logo">
+                                    <span class="icon-tag"></span> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="dash-main">
+                                <div class="dash-wrap">
+                                    <div class="usermain">
+                                        <div class="main-status">
+                                            <p class="head-dash head-dash-bill">Processed</p>
+                                            <ul class="bill-details">
+                                                <li>8 <span>Online</span></li>
+                                                <li>2 <span>Manul</span></li>
+                                            </ul>
+                                        </div>
+                                        <div class="view-all">
+                                            <p>From last week</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dash-logo bill-logo">
+                                    <span class="icon-computer"></span> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="dash-main">
+                                <div class="dash-wrap">
+                                    <div class="usermain">
+                                        <div class="main-status">
+                                            <p class="head-dash head-dash-bill">Vouchers</p>
+                                            <p class="sub-head-dash">17<span class="active-dash expired-dash">Expired</span></p>
+                                        </div>
+                                        <div class="view-all">
+                                            <p>From last week</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dash-logo bill-logo">
+                                    <span class="icon-tag"></span> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="dash-main">
+                                <div class="dash-wrap">
+                                    <div class="usermain">
+                                        <div class="main-status">
+                                            <p class="head-dash head-dash-bill">Payments</p>
+                                            <p class="sub-head-dash">18<span class="active-dash confirmed-dash">Confirmed</span></p>
+                                        </div>
+                                        <div class="view-all">
+                                            <p>From last week</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dash-logo bill-logo">
+                                    <span class="icon-wallet"></span> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row m-0">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="tra_events">
+                                <div class="trainer_head">
+                                    <h4>Service Links</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="service_data">
+                                <h3>ACCREDITATION</h3>
+                                <a href="javascript:void(0)">Apply</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="service_data">
+                                <h3>REGISTRATION</h3>
+                                <a href="javascript:void(0)">Apply</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="service_data">
+                                <h3>TRAINING</h3>
+                                <a href="javascript:void(0)">Apply</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="service_data">
+                                <h3>PAYMENT</h3>
+                                <a href="javascript:void(0)">Apply</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-events">
+            <div class="row m-0">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="tra_events">
+                                <div class="trainer_head">
+                                    <h4>Recent Updates</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="event_timings client_timings">
+                                <div class="date-cnt">
+                                    <span>20/01/2020</span>
+                                </div>
+                                <div class="activity-details">
+                                    <ul>
+                                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                                            Ut enim ad minim veniam, quis nostrud exercitation.<span>05:25 PM</span></li>
+                                        <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.<span>05:21 PM</span></li>
+                                        <li>On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms 
+                                            of pleasure of the moment.<span>05:25 PM</span></li>
+                                        <li>These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when 
+                                            nothing prevents.<span>05:21 PM</span></li>
+                                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                             Ut enim ad minim veniam, quis nostrud exercitation.<span>05:25 PM</span></li>
+                                        <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.<span>05:21 PM</span></li>
+                                    </ul>
+                                </div>
+                                <div class="date-cnt">
+                                    <span>19/01/2020</span>
+                                </div>
+                                <div class="activity-details">
+                                    <ul>
+                                        <li>On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized 
+                                            by the charms of pleasure of the moment.<span>05:25 PM</span></li>
+                                        <li>These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is 
+                                            untrammelled and when nothing prevents.<span>05:21 PM</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="comments-section">
+            <div class="row m-0">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="tra_events">
+                                <div class="trainer_head">
+                                    <h4>Communication</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ass-name-det">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="ass-data">
+                                    <h3>Daniel Thompson</h3>
+                                    <p>Dec 31, 2019 - 05:25 PM</p>
+                                </div>
+                                <hr>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="ass-details">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+                                        ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+                                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
+                                        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non 
+                                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
+                                    <div class="attach-cnt">
+                                        <a href="javascript:void(0)" class="attachment-cnt"><span class="icon-attach"></span>Accreditation Application for PTP Provider.xlsx</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ass-name-det">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="ass-data">
+                                    <h3>Brayn Williams</h3>
+                                    <p>Dec 25, 2019 - 07:02 PM</p>
+                                </div>
+                                <hr>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="ass-details">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
+                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+                                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit 
+                                        esse cillum dolore eu fugiat nulla pariatur.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ass-name-det m-0">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="ass-data">
+                                    <h3>Peter Robertson</h3>
+                                    <p>Nov 01, 2019 - 09:56 PM</p>
+                                </div>
+                                <hr>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="ass-details">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
+                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+                                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit 
+                                        esse cillum dolore eu fugiat nulla pariatur.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hdr-sec">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="trainer_head">
+                                    <h4>Write A Comment</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="cmnt-content">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Name</mat-label>
+                                            <input  matInput autocomplete="off" placeholder="Name">
+                                            <mat-error></mat-error>      
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Message</mat-label>
+                                            <input  matInput autocomplete="off" placeholder="Message">
+                                            <mat-error></mat-error>      
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="matupload position-relative">
+                                            <mat-form-field  class="cab-data">
+                                                <input matInput name="trade_license_name" placeholder="Upload Document" >
+                                            </mat-form-field>
+                                            <span class="fileupload">
+                                                <input type="file" required>
+                                                <span class="icon-attach attach-data"></span>
+                                            </span>
+                                        </div>
+                                        <span class="place_holder_doc">Only PDF, below 2 MB</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="row message_detail">
+                                            <div class="col-md-6">
+                                                <div class="form-subheader">
+                                                    <span>Message Type</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="cab-data">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="initial_data">
+                                                                <mat-radio-button value="1" >Public</mat-radio-button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="initial_data">
+                                                                <mat-radio-button value="2">Private</mat-radio-button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Notify Team</mat-label>
+                                            <mat-select placeholder="">
+                                                <mat-option>1</mat-option>
+                                            </mat-select>
+                                            <mat-error></mat-error>      
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-md-12">
+                                        <div class="bttns-appln mb-0">
+                                            <button class="submit-bttn">SEND MESSAGE</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

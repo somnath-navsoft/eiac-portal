@@ -1,0 +1,32 @@
+<div class="main-content">
+    <div class="happy-dets">
+        <div class="top-bg"></div>
+        <div class="questions-rvw">
+            <div class="questions-review">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="pdf-data" *ngIf="completeLoaded">
+                            <a href="{{path}}" title="Download PDF" target="_blank" [ngStyle]="{'color': '#000'}">
+                                <span class="icon-download"></span> Download
+                            </a>
+                            <a href="javascript:void(0)" title="Back" (click)="close()" [ngStyle]="{'color': '#000'}">
+                                <span class="icon-close"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <app-loader *ngIf="loaderPdf"></app-loader>
+            <p *ngIf="errorLoader">Error Loading PDF</p>
+            <pdf-viewer [src]="(path)" [show-all]="true" [stick-to-page]="true"
+                [zoom]="1.0" [original-size]="false" [autoresize]="true"
+                [show-borders]="true" (error)="onError($event)" (on-progress)="onProgress($event)"
+                (after-load-complete)="completeLoadPDF($event)"
+                [render-text]="true">
+            </pdf-viewer>
+            <!-- <ngx-extended-pdf-viewer [src]="path" 
+            useBrowserLocale="false" height="80vh"></ngx-extended-pdf-viewer> -->
+        </div>
+    </div>
+</div>
+

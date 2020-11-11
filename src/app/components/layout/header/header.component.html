@@ -1,0 +1,57 @@
+<!-- <p>header works!</p> -->
+<header>
+    <div class="container-fluid p-0">
+        <div class="row m-0 aftr-login">
+            <div class="col-md-12 p-0">
+                <div class="header-aftr-lgin">
+                    <div class="hdr-login">
+                        <img class="rgt-logo-lgin" src="assets/images/logo-right.png">
+                        <img class="lft-logo-lgin" src="assets/images/logo-left.png">
+                    </div>
+                    <div class="hdr-login-det">
+                        <div *ngIf="!showHeader" class="row m-0">
+                            <div class="col-md-4">
+                                <div class="search-data">
+                                    <form class="search-cnt" action="">
+                                        <input class="form-control w-100" type="text" placeholder="Keyword Search...">
+                                        <span class="icon-search"></span>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                            </div>
+                            <div class="col-md-3">
+                                <div class="usr-info">
+                                    <ul>
+                                        <!-- <li><a href="javascript:void(0)" class="notify-port">
+                                            <span class="icon-bell"></span>
+                                            <span class="notify-data">3</span>
+                                        </a>
+                                        </li> -->
+                                        <li>
+                                            <a *ngIf="firstName" href="javascript:void(0)">
+                                                WELCOME {{firstName}}
+                                            </a>
+                                            <a *ngIf="firstName == '' || firstName == null" href="javascript:void(0)">
+                                                WELCOME USER
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)" (click)="logOut()">
+                                                LOGOUT
+                                            </a>
+                                        </li>
+                                        <!-- <li><a href="javascript:void(0)" class="notify-port">
+                                            <span class="icon-mail"></span>
+                                            <span class="notify-data">3</span></a></li> -->
+                                        <li><a href="javascript:void(0)"><img src="/assets/images/profile-pic.png" alt=""></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

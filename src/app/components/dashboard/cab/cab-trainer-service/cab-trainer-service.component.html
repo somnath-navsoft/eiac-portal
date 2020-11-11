@@ -1,0 +1,645 @@
+
+
+<!-- New Design -->
+<div class="main-detail">
+    <!-- ============================================= -->
+    
+    
+    
+    <!-- ================================== -->
+      <div class="user-header"> 
+          <div class="container-fluid p-0">
+              <div class="main-dashboard-cnt">
+                  <div class="row">
+                      <div class="col-md-6">
+                          <div class="dashbrd-hdr">
+                              <h3>Apply Training Service</h3>
+                          </div>
+                          <!-- {{applyForm | json}}<br>
+                          # {{selectCustomCourse}} -->
+                      </div>
+                      <div class="col-md-6">
+                          <div class="create-app">
+                            
+                              <mat-form-field class="crt-app">
+                                  <mat-label>Select Course Type</mat-label>                             
+                                  <mat-select placeholder="Select" 
+                                    (ngModelChange)="selectCourseType($event)"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="selectCustomCourse" required>
+                                        <!-- <mat-option [value]="selectCustomCourseValue">Custom Course</mat-option> -->
+                                        <mat-option *ngFor="let item of selectCustomCourses;" [value]="item.value">{{item.title}}</mat-option>
+                                    </mat-select>
+                                  <!-- <select matNativeControl required>
+                                      <option value="1">Custom Course</option>
+                                  </select> -->
+                              </mat-form-field>
+                          </div>
+                      </div>
+                  </div>
+    
+                  <ng-container *ngIf="selectCustomCourse === 'custom_course'">
+                    <div class="row user_main">
+                        <div class="col-md-12">
+                            <div class="user-steps">
+                                <ng-container *ngFor="let item of headerSteps; let k=index;">
+                                <div class="user-next {{item.active}}">
+                                    <div class="usernext-icon">
+                                        <span class="icon-google-docs"></span>
+                                    </div>
+                                    <div class="user-details-pending" 
+                                    id="course_header" (click)="_service.headerStepMove(item.title, headerSteps)" [ngStyle]="{'cursor':'pointer'}">
+                                        <span [innerHTML]="item.desc"></span>
+                                    </div>
+                                </div>
+                                <div class="next-step">
+                                    <span class="icon-r-arrow"></span>
+                                </div>
+                              </ng-container>                              
+                            </div>
+                        </div>
+                    </div>
+                  </ng-container>                 
+              
+                </div>
+          </div>
+      </div>
+    
+    <!-- <div class="form-maindata">
+        <div class="container-fluid p-0" id="course">
+            
+            <form action="">
+                <div class="form-bdy">
+                    <div class="row m-0">
+                        <div class="wrapper">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12 p-0">
+                                        <div class="form-subhdr">
+                                            <h5>Course INFORMATION</h5>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <ng-container *ngFor="let item of courseSelection; let i = index;">
+                                    <div class="row" *ngIf="i >= 1">
+                                        <hr>
+                                    </div>
+                                    <div class="row" >
+                                        <div class="col-md-6">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Select Course</mat-label>
+                                                <mat-select [ngModelOptions]="{standalone: true}"                                                    
+                                                [(ngModel)]="item.course" placeholder="Select" required>
+                                                    <mat-option [value]="item.id" *ngFor="let item of selectCourses">{{item.courseDetails}}</mat-option>
+                                                </mat-select>
+                                                <mat-error></mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" *ngIf="i >= 1">
+                                        <div class="remove-clss">
+                                            <span class="icon-cancel" (click)="removeRow(courseSelection, i)">X</span>
+                                        </div>
+                                </div>
+                            </ng-container>
+                            <div class="row">
+                                    <div class="col-12"> 
+                                        <div class="add-new">
+                                            <a  href="javascript:void(0)" (click)="addRow(courseSelection)">
+                                                <span class="icon-add"></span>
+                                                <span>ADD NEW</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="agree-condi">
+                                            <mat-checkbox [(ngModel)]="isAgree" [ngModelOptions]="{standalone: true}">Agree to Terms & Conditions</mat-checkbox>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="row">
+                    <div class="col-md-12">
+                        <div class="bttns-health bttn-staff">
+                            <button class="cancel-bttn">CANCEL</button> 
+                            <button class="submit-bttn submit-health"  (click)="onCourseNext()">CONTINUE</button>                                
+                        </div>
+                    </div>
+                </div>
+            </form>
+        
+        </div>
+    
+        <div class="container-fluid p-0"  id="payment" [ngStyle]="{'display': 'none'}">
+            <div class="container-fluid p-0">
+                <form action="">
+                    <div class="form-bdy">
+                        <div class="row m-0">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr">
+                                                <h5>Payment Details</h5>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>                                    
+                                    <ng-container *ngFor="let item of selectCoursePayment;let i=index">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            {{item.courseDetails}}
+                                        </div>
+                                        <div class="col-md-4">
+                                           $&nbsp;{{item.fees_per_trainee}}
+                                        </div>
+                                    </div>
+                                    <hr *ngIf="i>=1">
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="bttns-health bttn-staff">
+                                <button class="cancel-bttn" (click)="backStep()">BACK</button> 
+                                <button class="submit-bttn submit-health" (click)="onPaymentRequest()">REQUEST FOR PAYMENT</button>                                
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="container-fluid p-0"  id="review" [ngStyle]="{'display': 'none'}">
+            <div class="container-fluid p-0">
+                <form action="">
+                    <div class="form-bdy">
+                        <div class="row m-0">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr">
+                                                <h5>Review Details</h5>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="bttns-health bttn-staff">
+                                <button class="cancel-bttn">CANCEL</button> 
+                                <button class="submit-bttn submit-health" (click)="onReviewNext()">CONTINUE</button>                                
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="container-fluid p-0"  id="finish" [ngStyle]="{'display': 'none'}">
+            <div class="container-fluid p-0">
+                <form action="">
+                    <div class="form-bdy">
+                        <div class="row m-0">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr">
+                                                <h5>Finish (Step Complete)</h5>
+                                                <p>Welcome....</p>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    
+    </div> -->
+    <ng-container *ngIf="selectCustomCourse === 'custom_course'">
+        <div class="form-maindata">
+            <div class="container-fluid p-0 cust-stepper" id="course">
+                <form action="">   
+                    <div class="form-bdy">
+                        <div class="row m-0">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr">
+                                                <h5>Course Details</h5>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                    <ng-container *ngFor="let item of courseSelection; let i = index;">
+                                        <div class="row" *ngIf="i >= 1">
+                                            <hr>
+                                        </div>
+                                        <div class="row" >
+                                            <div class="col-md-6">
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Select Course</mat-label>
+                                                    <mat-select [ngModelOptions]="{standalone: true}"                                                    
+                                                    [(ngModel)]="item.course" placeholder="Select" required>
+                                                        <mat-option [value]="item.id" *ngFor="let item of selectCourses">{{item.courseDetails}}</mat-option>
+                                                    </mat-select>
+                                                    <mat-error></mat-error>
+                                                </mat-form-field>
+                                                <ng-container *ngIf="i >= 1">
+                                                    <div class="remove-clss">
+                                                        <span class="icon-cancel" (click)="removeRow(courseSelection, i)">X</span>
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                        
+                                </ng-container>
+                                <div class="row">
+                                        <div class="col-12"> 
+                                            <div class="add-new">
+                                                <a  href="javascript:void(0)" (click)="addRow(courseSelection)">
+                                                    <span class="icon-add"></span>
+                                                    <span>ADD NEW</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                </div>
+                                <div class="row" >
+                                    <div class="col-md-6">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Select Course Type</mat-label>
+                                            <mat-select [ngModelOptions]="{standalone: true}"  [disabled] = "courseTypeDisabled"                                                   
+                                            [(ngModel)]="selectCustomCourseType" placeholder="Select" required>
+                                                <mat-option [value]="item.id" *ngFor="let item of selectPublicCourseOptions.courseType">{{item.courseType}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="agree-condi">
+                                                <mat-checkbox [(ngModel)]="isAgree" [ngModelOptions]="{standalone: true}">Agree to Terms & Conditions</mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>             
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="bttns-health bttn-staff">
+                                <button class="cancel-bttn" routerLink="/dashboard/cab_client/training-service">BACK</button> 
+                                <button class="submit-bttn submit-health"  (click)="onCourseNext()">CONTINUE</button>                                
+                            </div>
+                        </div>
+                    </div>
+                </form>        
+            </div>    
+            <div class="container-fluid p-0 cust-stepper"  id="payment" [ngStyle]="{'display': 'none'}">
+                <div class="container-fluid p-0">
+                    <form action="">
+                        <div class="form-bdy">
+                            <div class="row m-0">
+                                <div class="wrapper">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12 p-0">
+                                                <div class="form-subhdr">
+                                                    <h5>Payment</h5>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                        </div>
+                                        <ng-container *ngFor="let item of selectCoursePayment;let i=index">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    {{item.courseDetails}}
+                                                </div>
+                                                <div class="col-md-4">
+                                                   $&nbsp;{{item.fees_per_trainee}}
+                                                </div>
+                                            </div>
+                                            <hr *ngIf="i>=1">
+                                            </ng-container> 
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <button class="cancel-bttn" (click)="_service.headerStepMove('course',headerSteps,'payment')">BACK</button> 
+                                    <button class="submit-bttn submit-health" (click)="onPaymentRequest()">SUBMIT</button>                                
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>           
+        </div>
+    </ng-container>
+      <!-- Step Wizard -->
+      <!-- <ng-container *ngIf="selectCustomCourse === 'custom_course'">
+        <mat-horizontal-stepper #stepper [selectedIndex]="0">
+            <mat-step>
+                <ng-template matStepLabel>
+                    <span>
+                      1. Course Information
+                    </span>
+                  </ng-template>
+                  <div class="form-maindata">
+                    <div class="container-fluid p-0">
+                        <form action="">
+                            <div class="form-bdy">
+                                <div class="row m-0">
+                                    <div class="wrapper">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    {{courseSelection | json}}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 p-5">
+                                                    <div class="form-subhdr">
+                                                        <h5>Course INFORMATION</h5>
+                                                    </div>
+                                                    <hr>
+                                                </div>
+                                            </div>
+                                            <ng-container *ngFor="let item of courseSelection; let i = index;">
+                                                <div class="row" *ngIf="i >= 1">
+                                                    <hr>
+                                                </div>
+                                                <div class="row" >
+                                                    <div class="col-md-6">
+                                                        <mat-form-field class="cab-data">
+                                                            <mat-label>Select Course</mat-label>
+                                                            <mat-select [ngModelOptions]="{standalone: true}"                                                    
+                                                            [(ngModel)]="item.course" placeholder="Select" required>
+                                                                <mat-option [value]="item.id" *ngFor="let item of selectCourses">{{item.courseDetails}}</mat-option>
+                                                            </mat-select>
+                                                            <mat-error></mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4" *ngIf="i >= 1">
+                                                    <div class="remove-clss">
+                                                        <span class="icon-cancel" (click)="removeRow(courseSelection, i)">X</span>
+                                                    </div>
+                                            </div>
+                                        </ng-container>
+                                        <div class="row">
+                                                <div class="col-12"> 
+                                                    <div class="add-new">
+                                                        <a  href="javascript:void(0)" (click)="addRow(courseSelection)">
+                                                            <span class="icon-add"></span>
+                                                            <span>ADD NEW</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                        <div class="row" >
+                                            <div class="col-md-6">
+                                                {{selectCustomCourseType}} | {{courseTypeDisabled}}
+                                                <mat-form-field class="cab-data">
+                                                    <mat-label>Select Course Type</mat-label>
+                                                    <mat-select [ngModelOptions]="{standalone: true}"  [disabled] = "courseTypeDisabled"                                                   
+                                                    [(ngModel)]="selectCustomCourseType" placeholder="Select" required>
+                                                        <mat-option [value]="item.id" *ngFor="let item of selectPublicCourseOptions.courseType">{{item.courseType}}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="agree-condi">
+                                                        <mat-checkbox [(ngModel)]="isAgree" [ngModelOptions]="{standalone: true}">Agree to Terms & Conditions</mat-checkbox>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="row">
+                                <div class="col-md-12">
+                                    <div class="bttns-health bttn-staff">
+                                        <button class="cancel-bttn">CANCEL</button> 
+                                        <button class="submit-bttn submit-health" (click)="onCourseNext()">CONTINUE</button>                                
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </mat-step>
+            <mat-step [completed]="isCompletedCourse" [hidden]="true"  [editable]="isCompletedCourse" (selectionChange)="stepClick($event)">
+                <ng-template matStepLabel >
+                    <span (click)="stepClick($event)">2. Payment <br> Details</span>
+                  </ng-template>
+                  <div class="form-maindata" *ngIf="isCompletedCourse && isAgree">
+                    <div class="container-fluid p-0">
+                        <form action="">
+                            <div class="form-bdy">
+                                <div class="row m-0">
+                                    <div class="wrapper">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-12 p-0">
+                                                    <div class="form-subhdr">
+                                                        <h5>Payment Details</h5>
+                                                    </div>
+                                                    <hr>
+                                                </div>
+                                            </div>                                    
+                                            <ng-container *ngFor="let item of selectCoursePayment;let i=index">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    {{item.courseDetails}}
+                                                </div>
+                                                <div class="col-md-4">
+                                                   $&nbsp;{{item.fees_per_trainee}}
+                                                </div>
+                                            </div>
+                                            <hr *ngIf="i>=1">
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="bttns-health bttn-staff">
+                                        <button class="cancel-bttn" (click)="backStep()">BACK</button> 
+                                        <button class="submit-bttn submit-health" (click)="onPaymentRequest()">REQUEST FOR PAYMENT</button>                                
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                  </div>
+                  <div class="form-maindata" *ngIf="!isCompletedCourse || !isAgree">
+                     <p>Please complete your course step first.</p>
+                  </div>
+            </mat-step>
+        </mat-horizontal-stepper>
+      </ng-container>   -->
+      <!-- Step Wizard -->
+    
+      <!-- Public Course  -->
+      <ng-container *ngIf="selectCustomCourse === 'public_course'">
+        <div class="form-maindata">
+            <div class="container-fluid p-0" id="course">
+                <!-- @{{public_course_item | json}} -->
+                <form action="">
+                    <div class="form-bdy">
+                        <div class="row m-0">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr">
+                                                <h5>Public Course ADD</h5>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>  
+                                    <div class="row" >
+                                        <div class="col-md-6">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Enter English Name</mat-label>
+                                                <input type="text" required matInput placeholder="Enter English Name" 
+                                                [(ngModel)]="public_course_item.course_english_name" [ngModelOptions]="{standalone: true}">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Enter Arabic Name</mat-label>
+                                                <input type="text" required matInput placeholder="Enter Arabic Name" 
+                                                [(ngModel)]="public_course_item.course_arabic_name" [ngModelOptions]="{standalone: true}">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row" >
+                                        <div class="col-md-6">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Details English</mat-label>
+                                                <textarea matInput cols="50" [ngModelOptions]="{standalone: true}" rows="7" 
+                                                placeholder="Details English" [(ngModel)]="public_course_item.course_english_details"></textarea>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Details Arabic</mat-label>
+                                                <textarea matInput cols="50" [ngModelOptions]="{standalone: true}" rows="7" placeholder="Details Arabic" [(ngModel)]="public_course_item.course_arabic_details"></textarea>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row" >
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Select Targeted Audience</mat-label>
+                                                <mat-select [ngModelOptions]="{standalone: true}"                                                    
+                                                [(ngModel)]="public_course_item.target_audience" placeholder="Select" multiple required>
+                                                    <mat-option [value]="item.id" *ngFor="let item of selectPublicCourseOptions.targatedAudiance">{{item.title}}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Select CAB Type</mat-label>
+                                                <mat-select [ngModelOptions]="{standalone: true}"                                                    
+                                                [(ngModel)]="public_course_item.cabs_type" placeholder="Select" multiple required>
+                                                    <mat-option [value]="item.service_page_id" *ngFor="let item of selectPublicCourseOptions.cabType">{{item.title}}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Select Course Type</mat-label>
+                                                <mat-select [ngModelOptions]="{standalone: true}"                                                    
+                                                [(ngModel)]="public_course_item.course_type" placeholder="Select">
+                                                    <mat-option [value]="item.id" *ngFor="let item of selectPublicCourseOptions.courseType">{{item.courseType}}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row" >
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Select Locations</mat-label>
+                                                <mat-select [ngModelOptions]="{standalone: true}"                                                    
+                                                [(ngModel)]="public_course_item.course_location" placeholder="Select" required>
+                                                    <mat-option [value]="item.value" *ngFor="let item of selectPublicCourseOptions.courseLocations">{{item.title}}</mat-option>
+                                                </mat-select>
+                                                <mat-error></mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Select Days</mat-label>
+                                                <mat-select [ngModelOptions]="{standalone: true}" 
+                                                (selectionChange)="getCalculateFeesByDays()"                                                   
+                                                [(ngModel)]="public_course_item.course_days" placeholder="Select" required>
+                                                    <mat-option [value]="item" *ngFor="let item of trainingDays">{{item}}</mat-option>
+                                                </mat-select>
+                                                <mat-error></mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Capacity</mat-label>
+                                                <input type="number" [ngModelOptions]="{standalone: true}" 
+                                                matInput placeholder="Capacity" [(ngModel)]="public_course_item.course_capacity">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>  
+                                    <div class=" row" *ngIf="feesPerTrainee != ''">
+                                        <div class="col-md-4"></div>
+                                        <div class="col-md-4">
+                                            <span>Fees per Trainee:&nbsp;{{feesPerTrainee}}</span>
+                                        </div>
+                                        <div class="col-md-4"></div>
+                                    </div>                            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col-md-12">
+                            <div class="bttns-health bttn-staff">
+                                <!-- <button class="cancel-bttn">CANCEL</button>  -->
+                                <button class="submit-bttn submit-health" (click)="onPublicCourse()">SUBMIT</button>                                
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            
+            </div>
+        </div>
+      </ng-container>
+      <!-- Public Course  -->
+    <!-- New Design -->
+</div>
+    
+    

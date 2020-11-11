@@ -1,0 +1,73 @@
+<app-loader *ngIf="loaderData"></app-loader>
+<div class="main-detail">
+    <div class="conatiner-fluid p-0">
+      <div class="main-dashboard-cnt">
+        <div class="row m-0">
+          <div class="col-md-12">
+            <div class="dashbrd-hdr">
+              <h3>Training</h3>
+            </div>
+          </div>
+        </div>
+        <div class="row m-0">
+          <div class="col-md-6" *ngFor="let item of pageDetails; let i = index;">
+            <div class="accreditation-container">
+              <div class="acc-main">
+                <div class="accreditation-img">
+                  <img [src]="_constant.mediaPath + item.page_path.image_file" alt="">
+                  <div class="acc-hov acc-apply">
+                    <ng-container *ngIf="item.page_path.path != '' && item.page_path.path == 'public_training'">
+                        <a routerLink="/dashboard/cab_client/training-public-course-list">
+                            <h4>Apply Now</h4>
+                        </a>
+                    </ng-container>
+                    <ng-container *ngIf="item.page_path.path != '' && item.page_path.path == 'in_premise_training'">
+                        <a href="javascript:void(0)">
+                        <h4>Apply Now</h4>
+                        </a>
+                    </ng-container>
+                  </div>
+                </div>                
+                <div class="accreditation-desc">
+                  <p>{{item.page_title}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- <div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 p-0 mb-3">
+                <div class="dashbrd-hdr">
+                    <h3>Training</h3> 
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <ng-container *ngFor="let item of pageDetails; let row = index;">
+                <div class="col-md-6 col-sm-12 p-0">
+                    <div class="service-hdr-data123">
+                        <div class="service_desc_sec" [ngStyle]="{'width': '100%'}">
+                            <img class="service_img" [ngStyle]="{'width': '100%', 'height':'150px'}" 
+                            [src]="_constant.mediaPath + item.page_path.image_file">
+                        </div>
+                        <div class="service_desc">
+                            <ng-container *ngIf="item.page_path.path != '' && item.page_path.path == 'public_training'">
+                                <a routerLink="/dashboard/cab_client/training-public-course-list">
+                                    <h4>{{item.page_title}}</h4>
+                                </a>
+                            </ng-container>
+                            <ng-container *ngIf="item.page_path.path != '' && item.page_path.path == 'in_premise_training'">
+                                <h4>{{item.page_title}}</h4>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>            
+        </div>
+    </div>
+</div> -->

@@ -1,0 +1,152 @@
+
+<!-- <app-header [loggedStatus]="logStatus"></app-header>
+
+
+<div class="container" style="min-height:300px">
+<div class="row">
+<div class="col-sm">
+    <div class="text-center">
+        <h2>{{ "SITE.login_page_label" | translate }}</h2>
+    </div>            
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <form [formGroup]="signin" class="example-container" (ngSubmit)="createLogin()">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm">
+                                <form [formGroup]="signin" class="example-container" (ngSubmit)="createLogin()">
+                                    <mat-form-field appearance="outline">
+                                        <input matInput [(ngModel)]="userObject.email" placeholder="{{ 'SITE.FORM.LOGIN.user_label_placeholder' | translate}}" formControlName="email" required>
+                                    </mat-form-field>
+                                    <mat-form-field>
+                                        <input matInput autocomplete='off'  [(ngModel)]="userObject.password" placeholder="{{ 'SITE.FORM.password_label_placeholder' | translate}}" type="password" formControlName="password" required>                            
+                                    </mat-form-field>
+                                    &nbsp;
+                                    <button type="submit"  class="btn btn-primary">{{ "SITE.FORM.login_button_label" | translate }}</button>&nbsp;
+                                    <a routerLink="/sign-in/forgot-password">
+                                    <span>{{ "SITE.forgot_password_label" | translate }}</span></a>
+                                    <button type="button" (click)="signInWithGoogle()" mat-raised-button color="primary">{{ "SITE.FORM.login_google_button_label" | translate }}</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>                    
+                </form>
+                <mat-checkbox [(ngModel)]="checkRemember">
+                        {{ "SITE.remember_me_label" | translate }}           
+                </mat-checkbox>            
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<app-loader [loading]="httpLoader"></app-loader>
+<app-footer></app-footer> -->
+<!-- <app-loader *ngIf="loader"></app-loader> -->
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+              <form [formGroup]="signin" (ngSubmit)="createLogin()">
+                    <div class="login-frm">
+                        <div class="logos">
+                            <img src="/assets/images/logo-left.png" alt="">
+                            <img src="/assets/images/logo-right.png" alt="">
+                        </div>
+                    <div class="login-data">
+                        <div class="login-hdr">
+                            <h3>Sign in to EIAC's Portal</h3>
+                            <h4>To keep connected please login to your account</h4>
+                        </div>
+                        <div *ngIf="errorMessage">
+                            <div class="alert alert-danger" role="alert">
+                              {{errorMessage}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="usr-details">
+                                    <mat-form-field class="cab-data" >
+                                        <mat-label>Registered Email Address or CAB Code</mat-label>
+                                        <input matInput  type="text"
+                                         formControlName="email" required placeholder="Email">
+                                    </mat-form-field>                                    
+                                </div>
+                            </div>
+                        </div> 
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="usr-details">
+                                    <mat-form-field class="cab-data change-password" >
+                                        <mat-label>Password</mat-label>
+                                        <input matInput [type]="passblock ? 'text' : 'password'" 
+                                        (keyup)="checkPassword('password', $event)"
+                                        autocomplete='off' formControlName="password" required 
+                                        [(ngModel)]="changePasswordForm.password" placeholder="Password">
+                                        <a href="javascript:void(0)" (click)="passwordDisplay()"><span class="icon-invisible visible-pwd"></span></a>
+                                        
+                                    </mat-form-field>
+                                    <!-- <ul class="passwordsuggestion pl-0">
+                                        <li [ngClass]="(changePasswordForm.passwordStrength['password'].pcLengthValue == 1) ? 'greensuggest' : (changePasswordForm.password == '') ? '' : 'redsuggest'"><div>8+</div></li>
+                                        <li [ngClass]="(changePasswordForm.passwordStrength['password'].pcLowerValue == 1) ? 'greensuggest' : (changePasswordForm.password == '') ? '' : 'redsuggest'"><div>a-z</div></li>
+                                        <li [ngClass]="(changePasswordForm.passwordStrength['password'].pcUpperValue == 1) ? 'greensuggest' : (changePasswordForm.password == '') ? '' : 'redsuggest'"><div>A-Z</div></li>
+                                        <li [ngClass]="(changePasswordForm.passwordStrength['password'].pcNumberValue == 1) ? 'greensuggest' : (changePasswordForm.password == '') ? '' : 'redsuggest'"><div>0-9</div></li>
+                                        <li [ngClass]="(changePasswordForm.passwordStrength['password'].pcSpecialValue == 1) ? 'greensuggest' : (changePasswordForm.password == '') ? '' : 'redsuggest'"><div>!#?</div></li>
+                                    </ul>
+                                    <a href="javascript:void(0)" [ngClass]="validCheckPassword('password')">
+                                    <i class="fa fa-check-circle" aria-hidden="true"></i></a> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="remembr-pwd">
+                                    <mat-checkbox [ngModelOptions]="{standalone: true}" [(ngModel)]="checkRemember" >Remember me</mat-checkbox>
+                                    <a routerLink="/forgot-password" class="forgot">Forgot Password</a>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="row m-0">
+                                        <div class="form-group col-md-6 p-0">
+                                            <div class="md-form"> 
+                                                <label for="form1"></label>
+                                                <re-captcha (resolved)="resolvedSecurity($event)"></re-captcha>
+                                                <span *ngIf="!checkCaptchaValidation && is_submit == true">
+                                                    <mat-error>Security Check is required</mat-error>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="login-bttn">
+                                    <button type="submit" class="login">LOGIN</button>
+                                </div>
+                            </div>
+                        </div>               
+                        <div class="row">
+                            
+                            <div class="col-md-12">
+                                <div class="no-acc">
+                                    <p>Don't have an account? <a href="javascript:void(0)" routerLink="/sign-up">Register Now</a></p>
+                                </div>
+                            </div>
+                        </div>                           
+                            
+                      </div>
+                    </div>                    
+                </form>
+
+                <div class="copyright">
+                    <p>Copyright © EIAC Accreditation Center 2020, All Rights Reserved.</p>
+                </div>
+            </div>
+            <div class="col-md-4 p-0">
+                <div class="bg-img"></div>
+            </div>
+        </div>
+    </div>
+</div>

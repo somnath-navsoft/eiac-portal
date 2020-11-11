@@ -1,0 +1,63 @@
+
+<div class="main-content">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12" style="margin-left: 100px;width: 150px; overflow:auto;">
+            <div class="construction" style="margin-left: 100px;width: 100%; display: block;">
+                <div class="container123">
+                    <h2>Trainer ADD</h2>
+                    <form class="form-horizontal" #ngForm (ngSubmit)="createRecord()">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>First Name</span>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" style="width: 500px" [(ngModel)]="trainerModel.first_name"
+                                class="form-control" id="first_name" placeholder="First Name" name="first_name">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>Last Name</span>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" style="width: 500px"  [(ngModel)]="trainerModel.last_name"
+                                class="form-control" id="last_name" placeholder="Last Name" name="last_name">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>Username</span>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" style="width: 500px"  [(ngModel)]="trainerModel.username"
+                                class="form-control" id="username" placeholder="Username" name="username">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>Email</span>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" style="width: 500px"  [(ngModel)]="trainerModel.email"
+                                class="form-control" id="email" placeholder="Email" name="email">
+                            </div>
+                        </div>
+
+
+                      <div class="row">
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-primary">Submit</button>&nbsp;&nbsp;
+                            <a routerLink="/dashboard/trainers/">
+                            <button type="button"  class="btn btn-primary">Back</button></a>
+                        </div>
+                        
+                      </div>
+                    </form>
+                  </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+</div>

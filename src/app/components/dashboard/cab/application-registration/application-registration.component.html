@@ -1,0 +1,36 @@
+<app-loader *ngIf="!loader"></app-loader>
+
+<div class="main-detail">
+    <div class="conatiner-fluid p-0">
+      <div class="main-dashboard-cnt">
+        <div class="row m-0">
+          <div class="col-md-12">
+            <div class="dashbrd-hdr">
+              <h3>Registrations</h3>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row m-0">
+            <div class="col-md-6" *ngFor="let row of serviceList; let i = index;">
+              <div class="accreditation-container">
+                <div class="acc-main">
+                  <div class="accreditation-img">
+                    <img src="{{constant.mediaPath}}{{row.service_page.thumb_image}}" alt="">
+                    <div class="acc-hov acc-apply">
+                      <a href="javascript:void(0)" routerLink="/{{row.service_page.meta_title !='' ? '/dashboard/cab_client/'+row.service_page.meta_title+'-form' : '#'}}">APPLY NOW</a>
+                    </div>
+                  </div>                  
+                  <div class="accreditation-desc">
+                    <p>{{row.title}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+      </div>
+    </div>
+  </div>
+
+

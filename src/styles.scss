@@ -1,0 +1,46 @@
+/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import '~@angular/material/theming';
+/* Add application styles & imports to this file! */
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+/*@import "~@ng-select/ng-select/themes/material.theme.css";*/
+@import url("../node_modules/bootstrap/dist/css/bootstrap.min.css");
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import '~./assets/css/font-icon.css';
+
+@include mat-core();
+$custom-theme-primary: mat-palette($mat-light-blue,A700, A100 , 800);
+$custom-theme-accent: mat-palette($mat-deep-orange, A200, 300, 800);
+$custom-theme-warn: mat-palette($mat-red);
+$custom-theme: mat-light-theme($custom-theme-primary, $custom-theme-accent, $custom-theme-warn);
+@include angular-material-theme($custom-theme);
+/******************************************************
+*
+*   Custom Component Global Common style
+*   @Created By:    Abhishek
+*   
+*******************************************************/
+// Material Snackbar Error Dialog
+.mat-snack-bar-container{
+    transform: scale(1);
+    opacity: 1;
+    background-color: red;
+}
+.mat-simple-snackbar{
+    span{
+    font-size: 14px;
+    font-weight: 700;
+    }
+}
+.mat-simple-snackbar-action button{
+    border: 1px solid lightcoral;
+    font-size: medium;
+    font-weight: 700;
+    color: whitesmoke;
+}
+
+mat-dialog-container{
+    width: 1100px !important;
+}
+

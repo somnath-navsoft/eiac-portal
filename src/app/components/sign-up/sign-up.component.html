@@ -1,0 +1,254 @@
+<app-loader *ngIf="!loader"></app-loader>
+<!-- <app-header></app-header>
+<h2>{{ "SITE.sign_up_page_label" | translate }}</h2>
+
+<form class="example-container" [formGroup]="signup" (ngSubmit)="onSubmit()" autocomplete="off">
+
+
+    <div class="container">
+            <div class="md-form">
+            <mat-form-field>
+            <input type="text" matInput name="full_name_english" formControlName="full_name_english" [(ngModel)]="userObject.full_name_english" class="form-control" placeholder="{{ 'SITE.FORM.SIGNUP.full_name_english' | translate }}" required>            
+            </mat-form-field>
+            </div>
+            <div class="md-form">
+            <mat-form-field>
+            <input type="text" matInput name="full_name_arabic" formControlName="full_name_arabic" [(ngModel)]="userObject.full_name_arabic"  class="form-control" placeholder="{{ 'SITE.FORM.SIGNUP.full_name_arabic' | translate }}" required>            
+            </mat-form-field>    
+            </div>
+            <div class="md-form">
+            <mat-form-field>
+            <mat-label>{{ 'SITE.FORM.SIGNUP.country' | translate }}</mat-label>
+            <mat-select formControlName="country" name="country" [(ngModel)]="userObject.country" required>
+                <mat-option *ngFor="let country of countryData" [value]="country.code">{{country.name}}</mat-option>
+            </mat-select>
+            </mat-form-field>                          
+
+            </div>
+            <div class="md-form">
+            <mat-form-field>
+            <input type="text" matInput formControlName="mobile" name="mobile" [(ngModel)]="userObject.mobile"  class="form-control" placeholder="{{ 'SITE.FORM.SIGNUP.mobile' | translate }}" required>            
+            <span *ngIf="inputErrorValidation.mobileValidation">
+                <mat-error>{{ "SITE.FORM.mobile_invalid" | translate }}</mat-error>
+            </span>
+            </mat-form-field>    
+            </div>
+            <div class="md-form">
+            <mat-form-field>
+            <input type="text" matInput formControlName="email" name="email" [(ngModel)]="userObject.email"  class="form-control" placeholder="{{ 'SITE.FORM.SIGNUP.email' | translate }}" required>            
+            <span *ngIf="inputErrorValidation.emailValidationBlankInput || inputErrorValidation.emailValidationInvalid">
+                <mat-error *ngIf="inputErrorValidation.emailValidationBlankInput">{{ "SITE.FORM.email_blank_input" | translate }}</mat-error>
+                <mat-error *ngIf="inputErrorValidation.emailValidationInvalid">{{ "SITE.FORM.email_invalid" | translate }}</mat-error>
+            </span>
+            </mat-form-field>    
+            </div>
+            <div class="md-form">
+            <mat-form-field>
+            <input type="text" matInput formControlName="user_type" name="user_type" [(ngModel)]="userObject.user_type"  class="form-control" placeholder="{{ 'SITE.FORM.SIGNUP.user_type' | translate }}" required>            
+            </mat-form-field>    
+            </div>
+            <div class="md-form">
+            <mat-form-field>
+            <input type="password" matInput formControlName="password" name="password" [(ngModel)]="userObject.password"  class="form-control" placeholder="{{ 'SITE.FORM.SIGNUP.password' | translate }}" required>            
+            </mat-form-field>    
+            </div>
+            <div class="md-form">
+            <mat-form-field>
+            <input  type="password" matInput formControlName="confirm_password" name="confirm_password"  [(ngModel)]="confirmPassword"  class="form-control" placeholder="{{ 'SITE.FORM.SIGNUP.confirm_password' | translate }}" required>            
+            <span *ngIf="inputErrorValidation.passwordValidation">
+                <mat-error>{{ "SITE.FORM.confirmPassword_invalid" | translate }}</mat-error>
+            </span>
+            </mat-form-field>    
+            </div>
+            <div class="md-form">
+            <mat-checkbox formControlName="checkTermsConditions">
+            {{ "SITE.FORM.SIGNUP.termsAndCondition" | translate }}<span>*</span>
+            </mat-checkbox>
+            <span *ngIf="inputErrorValidation.checkTermsValidation">
+                <mat-error>{{ "SITE.FORM.termsCheck" | translate }}</mat-error>
+            </span>
+            </div>
+            <div class="md-form">
+            <label for="form1">{{ "SITE.FORM.SIGNUP.securityCheck" | translate }}</label><span>*</span>
+            <re-captcha formControlName="recaptchaReactive"></re-captcha>
+            <span *ngIf="inputErrorValidation.checkCaptchaValidation">
+                <mat-error>{{ "SITE.FORM.captchaCheck" | translate }}</mat-error>
+            </span>
+            </div>
+            <div class="example-button-row">
+            <a routerLink="/sign-in">
+            <button type="button" mat-raised-button color="primary">{{ "SITE.FORM.login_button_label" | translate }}</button></a>&nbsp;&nbsp;
+            <button type="submit" mat-raised-button color="primary">{{ "SITE.sign_up_button_label" | translate }}</button>            
+            </div>
+    </div>
+</form>
+<app-footer></app-footer> -->
+
+
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8 col-md-12">
+                <form #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)" autocomplete="off">
+                    <div class="login-frm">
+                        <div class="logos">
+                            <img src="../../../../../assets/images/logo-left.png" alt="">
+                            <img src="../../../../../assets/images/logo-right.png" alt="">
+                        </div>
+                        <div class="login-data">
+                            <div class="login-hdr">
+                                <h3>Sign up to EIAC's Portal</h3>
+                                <h4>Select the profile that matches you</h4>
+                            </div>
+                            <!-- <div class="check-data">
+                                <div class="user-type">
+                                    <mat-radio-group name="type" [(ngModel)]="userData.type">
+                                        <mat-radio-button *ngFor="let item of roleRecord;" name="userRole" [value]="item.id">{{item.title}}</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </div> -->
+                            <div class="usr-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Email Address</mat-label>
+                                    <input matInput name="email" required [(ngModel)]="userData.email" placeholder="Email Address">
+                                </mat-form-field>
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Name</mat-label>
+                                    <input matInput name="name" required [(ngModel)]="userData.name" placeholder="Name">
+                                </mat-form-field>
+                                <div class="usr-mobile">
+                                    <mat-form-field class="cab-data mobile-code mr-2">
+                                        <mat-label>code</mat-label>
+                                        <!-- <input matInput name="code" required [(ngModel)]="userData.code" placeholder=""> -->
+                                        <mat-select placeholder="Select" name="code"  [(ngModel)]="userData.code" required>
+                                            <mat-option value="">Select</mat-option>
+                                            <mat-option value="+91">+91</mat-option>
+                                            <mat-option value="+92">+92</mat-option>
+                                            <mat-option value="+93">+93</mat-option>
+                                            <mat-option value="+94">+94</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="cab-data">
+                                        <mat-label>Mobile Number</mat-label>
+                                        <input matInput maxlength="15" minlength="10"  maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" name="mobile" required [(ngModel)]="userData.mobile" placeholder="Mobile Number">
+                                        <mat-error class="error" *ngIf="userData.mobile && !Service.checkInput('onlyNumber',userData.mobile)">Please Enter Only Number</mat-error>
+                                    </mat-form-field>
+                                     
+                                </div>
+                                <!-- <mat-form-field class="cab-data">
+                                    <mat-label>Confirm Email Address</mat-label>
+                                    <input matInput name="cemail" [(ngModel)]="userData.cemail" placeholder="">
+                                </mat-form-field> -->
+                                <mat-form-field class="cab-data change-password">
+                                    <mat-label>Password</mat-label>
+                                    <input matInput [type]="passblock ? 'text' : 'password'" placeholder="Password" required (keyup)="checkPassword($event,'password')" name="password" [(ngModel)]="changePasswordForm.password">
+                                    <a href="javascript:void(0)" (click)="passwordDisplay('normal')"><span class="icon-invisible visible-pwd"></span></a>
+                                </mat-form-field>
+                                    <div class="password">
+                                        <ul class="passwordsuggestion pl-0">
+                                            <li [ngClass]="(changePasswordForm.passwordStrength['password'].pcLengthValue == 1) ? 'greensuggest' : (changePasswordForm.password == '') ? '' : 'redsuggest'"><div>8+</div></li>
+                                            <li [ngClass]="(changePasswordForm.passwordStrength['password'].pcLowerValue == 1) ? 'greensuggest' : (changePasswordForm.password == '') ? '' : 'redsuggest'"><div>a-z</div></li>
+                                            <li [ngClass]="(changePasswordForm.passwordStrength['password'].pcUpperValue == 1) ? 'greensuggest' : (changePasswordForm.password == '') ? '' : 'redsuggest'"><div>A-Z</div></li>
+                                            <li [ngClass]="(changePasswordForm.passwordStrength['password'].pcNumberValue == 1) ? 'greensuggest' : (changePasswordForm.password == '') ? '' : 'redsuggest'"><div>0-9</div></li>
+                                            <li [ngClass]="(changePasswordForm.passwordStrength['password'].pcSpecialValue == 1) ? 'greensuggest' : (changePasswordForm.password == '') ? '' : 'redsuggest'"><div>!#?</div></li>
+                                        </ul>
+                                    </div>
+                                
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Confirm Password</mat-label>
+                                    <input matInput [type]="passConfBlock ? 'text' : 'password'" placeholder="Confirm Password" name="cpassword" required (keyup)="checkPassword($event,'cpassword')" [(ngModel)]="changePasswordForm.cpassword">
+                                    <a href="javascript:void(0)" (click)="passwordDisplay('confirm')"><span class="icon-invisible visible-pwd"></span></a>
+                                    <!-- <div class="password">
+                                        <ul class="passwordsugg">
+                                            <li class="greensugg"><span>8+</span></li>
+                                            <li class="redsugg"><span>a-z</span></li>
+                                            <li class="redsugg"><span>A-Z</span></li>
+                                            <li class="redsugg"><span>0-9</span></li>
+                                            <li class="redsugg"><span>!#?</span></li>
+                                        </ul>
+                                    </div> -->
+                                </mat-form-field>
+
+                                <div class="password">
+                                    <ul class="passwordsuggestion pl-0">
+                                        <li [ngClass]="(changePasswordForm.passwordStrength['cpassword'].pcLengthValue == 1) ? 'greensuggest' : (changePasswordForm.cpassword == '') ? '' : 'redsuggest'"><div>8+</div></li>
+                                        <li [ngClass]="(changePasswordForm.passwordStrength['cpassword'].pcLowerValue == 1) ? 'greensuggest' : (changePasswordForm.cpassword == '') ? '' : 'redsuggest'"><div>a-z</div></li>
+                                        <li [ngClass]="(changePasswordForm.passwordStrength['cpassword'].pcUpperValue == 1) ? 'greensuggest' : (changePasswordForm.cpassword == '') ? '' : 'redsuggest'"><div>A-Z</div></li>
+                                        <li [ngClass]="(changePasswordForm.passwordStrength['cpassword'].pcNumberValue == 1) ? 'greensuggest' : (changePasswordForm.cpassword == '') ? '' : 'redsuggest'"><div>0-9</div></li>
+                                        <li [ngClass]="(changePasswordForm.passwordStrength['cpassword'].pcSpecialValue == 1) ? 'greensuggest' : (changePasswordForm.cpassword == '') ? '' : 'redsuggest'"><div>!#?</div></li>
+                                    </ul>
+                                </div>
+
+                                <!-- <mat-form-field class="cab-data">
+                                    <mat-label>Mobile Number</mat-label>
+                                    <input matInput name="mobile" [(ngModel)]="userData.mobile" required placeholder="">
+                                </mat-form-field> -->
+
+                                <div class="sort-data">
+                                    <!-- <label for="sort" >Reason For Registration :</label> -->
+
+                                    <mat-form-field class="cab-data">
+                                        <mat-label>Reason For Registration :</mat-label>
+                                        <mat-select placeholder="Select" name="userType"  [(ngModel)]="userData.userType" required>
+                                            <mat-option value="">Select</mat-option>
+                                            <mat-option value="cab_client">Client - CAB</mat-option>
+                                            <mat-option value="candidate">Candidate</mat-option>
+                                            <mat-option value="trainers">Trainers</mat-option>
+                                            <mat-option value="assessors">Assessors</mat-option>
+                                            <mat-option value="operations">Internal Operations</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+                            <div class="remembr-pwd rem-sigup">
+                                <mat-checkbox name="terms_condition" [(ngModel)]="userData.terms_condition">Agree to terms and conditions</mat-checkbox>
+                                <!-- <a href="javascript:void(0)" class="forgot">I have forgotten my password</a> -->
+                            </div>
+                            <!-- <div class="sort-data">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Reason For Registration :</mat-label>
+                                    <mat-select placeholder="Select" name="userType"  [(ngModel)]="userData.userType" required>
+                                        <mat-option value="">Select</mat-option>
+                                        <mat-option value="coursename">Client - CAB</mat-option>
+                                        <mat-option value="audience">Candidate</mat-option>
+                                        <mat-option value="date">Trainers</mat-option>
+                                        <mat-option value="days">Assessors</mat-option>
+                                        <mat-option value="days">Internal Operations</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div> -->
+                            <div class="row">                                        
+                                <div class="col-md-3">
+                                    <div class="row m-0">
+                                        <div class="form-group col-md-6 p-0">
+                                            <div class="md-form"> 
+                                                <label for="form1"></label>
+                                                <re-captcha (resolved)="resolvedSecurity($event)"></re-captcha>
+                                                <span *ngIf="!checkCaptchaValidation && is_submit == true">
+                                                    <mat-error>Security Check is required</mat-error>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="login-bttn">
+                                <button type="submit" class="login">REGISTER</button>
+                            </div>
+                            <div class="no-acc">
+                                <p>Already have an account? <a href="javascript:void(0)" routerLink="/sign-in">Login Now</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="copyright">
+                    <p>Copyright © EIAC Accreditation Center 2020, All Rights Reserved.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 p-0">
+                <div class="bg-img-signup"></div>
+            </div>
+        </div>
+    </div>
+</div>

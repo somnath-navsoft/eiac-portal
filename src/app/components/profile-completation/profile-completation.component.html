@@ -1,0 +1,19 @@
+<ng-container *ngIf="userType == 'assessors'">
+    <app-assessors-profile></app-assessors-profile>
+</ng-container>    
+
+<ng-container *ngIf="userType == 'candidate'">
+    <app-candidate-profile></app-candidate-profile>
+</ng-container>
+
+<ng-container *ngIf="userType == 'cab_client'">
+    <app-client-cab-profile></app-client-cab-profile>
+</ng-container> 
+
+<ng-container *ngIf="userType == 'operations'">
+    <app-internal-operations-profile></app-internal-operations-profile>
+</ng-container>
+
+<ng-container *ngIf="userType == 'trainers'">
+    <app-trainers-profile></app-trainers-profile>
+</ng-container>

@@ -1,0 +1,135 @@
+<app-loader *ngIf="!loader"></app-loader>
+<div class="main-detail">
+    <div class="container-fluid p-0">
+        <div class="main-dashboard-table">
+            <flash-messages></flash-messages>
+            <div class="row mb-4">
+                <div class="col-md-8">                    
+                    <div class="dashbrd-hdr">
+                        <h3>Application No.: {{accountDetailId}}</h3> 
+                    </div>
+                </div>
+            </div>
+            <div class="accounts">
+                <table class="accounts_inner_tab">
+                    <thead>
+                        <tr class="main_acc_tab">
+                            <th colspan="3">Application Fees</th>
+                            <th colspan="3">Preliminary Visit</th>
+                            <th colspan="3">Document Review</th>
+                            <th colspan="3">Assessment</th>
+                            <th colspan="3">Certification</th>
+                        </tr>
+                        <tr>
+                            <th>Fees</th>
+                            <th>Fees Date</th>
+                            <th>Status</th>
+                            <th>Fees</th>
+                            <th>Fees Date</th>
+                            <th>Status</th>
+                            <th>Fees</th>
+                            <th>Fees Date</th>
+                            <th>Status</th>
+                            <th>Fees</th>
+                            <th>Fees Date</th>
+                            <th>Status</th>
+                            <th>Fees</th>
+                            <th>Fees Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <ng-container *ngIf="accountsData?.application_fees">
+                            <td>{{accountsData?.application_fees.amount}}</td>
+                            <td>{{accountsData?.application_fees.voucher_date | date}}</td>
+                            <td class="complete"><span>{{accountsData?.application_fees.payment_status}}</span></td>
+                        </ng-container>
+                        <ng-container *ngIf="!accountsData?.application_fees">
+                            <td>0.00</td>
+                            <td>N/A</td>
+                            <td><span>N/A</span></td>
+                        </ng-container>
+
+                        <ng-container *ngIf="accountsData?.prelim_visit">
+                            <td>{{accountsData?.prelim_visit.amount}}</td>
+                            <td>{{accountsData?.prelim_visit.voucher_date | date}}</td>
+                            <td class="complete"><span>{{accountsData?.prelim_visit.payment_status}}</span></td>
+                        </ng-container>
+                        <ng-container *ngIf="!accountsData?.prelim_visit">
+                            <td>0.00</td>
+                            <td>N/A</td>
+                            <td><span>N/A</span></td>
+                        </ng-container>
+
+                        <ng-container *ngIf="accountsData?.document_review">
+                            <td>{{accountsData?.document_review.amount}}</td>
+                            <td>{{accountsData?.document_review.voucher_date | date}}</td>
+                            <td class="complete"><span>{{accountsData?.document_review.payment_status}}</span></td>
+                        </ng-container>
+                        <ng-container *ngIf="!accountsData?.document_review">
+                            <td>0.00</td>
+                            <td>N/A</td>
+                            <td><span>N/A</span></td>
+                        </ng-container>
+
+                        <ng-container *ngIf="accountsData?.assessment">
+                            <td>{{accountsData?.assessment.amount}}</td>
+                            <td>{{accountsData?.assessment.voucher_date | date}}</td>
+                            <td class="complete"><span>{{accountsData?.assessment.payment_status}}</span></td>
+                        </ng-container>
+                        <ng-container *ngIf="!accountsData?.assessment">
+                            <td>0.00</td>
+                            <td>N/A</td>
+                            <td><span>N/A</span></td>
+                        </ng-container>
+
+                        <ng-container *ngIf="accountsData?.certification">
+                            <td>{{accountsData?.certification.amount}}</td>
+                            <td>{{accountsData?.certification.voucher_date | date}}</td>
+                            <td class="complete"><span>{{accountsData?.certification.payment_status}}</span></td>
+                        </ng-container>
+                        <ng-container *ngIf="!accountsData?.certification">
+                            <td>0.00</td>
+                            <td>N/A</td>
+                            <td><span>N/A</span></td>
+                        </ng-container>
+                    </tbody>
+                </table>
+                <div class="acc_state">
+                    <div class="state_hdr">
+                        <h4>Statement of Accounts</h4>
+                    </div>
+                    <div class="train_det_bttn">
+                        <a href="javascript:void(0)" (click)="exportexcel()" class="training_btn">DOWNLOAD</a>
+                    </div>
+                </div>
+                <div class="appln_main accounts">
+                    <table class="accounts_inner_tab" id="excel-table">
+                        <thead>
+                            <tr>
+                                <th>Voucher No.</th>
+                                <th>Date</th>
+                                <th>Payment By</th>
+                                <th>Payment Mode</th>
+                                <th>Debit Amount</th>
+                                <th>Credit Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of allRecords; let i = index;">
+                                <td class="fnt-clr">{{row.voucher_no}}</td>
+                                <td>{{row.voucher_date | date}}</td>
+                                <td>{{row.payment_made_by}}</td>
+                                <td>{{row.payment_method}}</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
