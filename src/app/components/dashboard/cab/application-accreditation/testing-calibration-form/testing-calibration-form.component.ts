@@ -3455,7 +3455,7 @@ onSubmitStep5(ngForm: any, type: any) {
 
   if(type != undefined && type == 'read'){
     //console.log(">>> readd...");
-    readChecked = true;
+    readChecked = true; 
   }
 
   if(theEvent.checked || readChecked == true){

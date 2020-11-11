@@ -856,7 +856,7 @@ ngOnInit() {
       .subscribe(
         res => {
           if(res['status'] == true) {
-            this.toastr.success("Saved scope updated...", '');
+            //this.toastr.success("Saved scope updated...", '');
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -2203,8 +2203,6 @@ saveScope(rowInd: number, typeScopeId: number){
           }
       }
     })
-    
-
   }
 
   //Update scope data
