@@ -1549,11 +1549,8 @@ getCriteria(value, secInd: any){
     this.testingCalForm.testingLabInfo           = this.testingLabInfo;
     this.testingCalForm.calLabInfo               = this.calLabInfo;
     this.testingCalForm.medicaMainlLabInfo        = this.medicaMainlLabInfo;
-    //undertaking_confirm3:false,,undertaking_confirm6:false
-    this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  
-      undertaking_confirmTop3: false,undertaking_confirm1:false,undertaking_confirm2:false,
-      undertaking_confirm4:false,undertaking_confirm5:false,
-      undertaking_confirm7:false,undertaking_confirm8:false };
+    this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,
+      undertaking_confirm7:false};
 
     // this.recommend = {first:false,second:false,third:false,fourth:false}
   }

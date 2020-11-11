@@ -523,6 +523,9 @@ a:hover { text-decoration: none; }
   cursor: pointer;
   border-radius: 5px;
 }
+.participant_trainee {
+  display: flex;
+}
 .curs-apply:hover { color: #fff; text-decoration: none; }
 .curs-apply:not([href]) { color: #fff; }
 .curs-apply:not([href]):hover { color: #fff; }

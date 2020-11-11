@@ -73,6 +73,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   getCountryLists:any;
   allStateList:any[] = [];
   allCityList: Array<any> = [];
+  formApplicationId:any
+  trainingDuration:any[] = [];
 
   constructor(private Service: AppService, private http: HttpClient,
     public _toaster: ToastrService, private _router: Router, private _route: ActivatedRoute,
@@ -94,7 +96,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
       },
       {
-      title:'participant', desc:'2. Participant/Trainee Details', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'participant', desc:'2.Participant/Trainee Details', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
       title:'training_details', desc:'3. Training Details', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
@@ -115,6 +117,21 @@ export class CabTrainingPublicCourseComponent implements OnInit {
         title:'application_complete', desc:'8. Application Complete', activeStep:false, stepComp:false, icon:'icon-file_invoice', activeClass:''
       },
     );
+
+    this.loadCountryStateCity();
+    this.loadDetailsPage();
+    this.trainingDuration = [{key:1,title:'1 Day'},{key:2,title:'2 Days'},{key:3,title:'3 Days'},{key:4,title:'4 Days'},{key:5,title:'5 Days'},{key:6,title:'6 Days'},{key:7,title:'7 Days'},{key:8,title:'8 Days'},{key:9,title:'9 Days'},{key:10,title:'10 Days'}]
+  }
+
+  loadDetailsPage() {
+    this.Service.getwithoutData(this.Service.apiServerUrl+'/'+this._constant.API_ENDPOINT.course_details+this.publicCourseId+'?data=1')
+    .subscribe(
+      res => {
+        var courseDetails = res['courseDetails'];
+        this.step3Data.training_course_title = courseDetails.course;
+        this.step3Data.training_duration = courseDetails.training_days;
+        console.log(courseDetails.training_days,'training_days');
+      })
   }
 
   loadCountryStateCity = async() => {
@@ -167,15 +184,25 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.publicTrainingForm.userType = this.userType;
       this.publicTrainingForm.saved_step = '1';
       this.step1Data.is_draft = false;
+      this.step1Data.training_form_type = 'public_training';
 
       this.publicTrainingForm.step1 = this.step1Data;
 
-      console.log(this.publicTrainingForm);
-      // this.step1DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
-      // this.Service.post(this.Service.apiServerUrl+"/"+this._constant.API_ENDPOINT.healthcareForm,this.step1DataBodyFormFile)
-      // .subscribe(
-      //   res => {
-      //   })
+      // console.log(this.publicTrainingForm);
+      this.loader = false;
+      this.step1DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this._constant.API_ENDPOINT.publicTrainingForm,this.step1DataBodyFormFile)
+      .subscribe(
+        res => {
+          this.loader = true;
+          if(res['status'] == true) {
+            this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['id']);
+            this.Service.moveSteps('application_information', 'participant', this.headerSteps);
+          // console.log(res);
+          }else{
+            this._toaster.warning(res['msg'], '');
+          }
+        })
     }
   }
 
@@ -187,16 +214,31 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.publicTrainingForm.email = this.userEmail;
       this.publicTrainingForm.userType = this.userType;
       this.publicTrainingForm.saved_step = '2';
+      var applicationId = sessionStorage.getItem('applicationId');
+      // this.step2Data.application_id = applicationId;
+      this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step1Data.is_draft = false;
 
-      this.publicTrainingForm.step2 = this.step1Data;
+      this.publicTrainingForm.step2 = this.step2Data;
 
-      console.log(this.publicTrainingForm);
-      // this.step2DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
-      // this.Service.post(this.Service.apiServerUrl+"/"+this._constant.API_ENDPOINT.healthcareForm,this.step2DataBodyFormFile)
-      // .subscribe(
-      //   res => {
-      //   })
+      this.publicTrainingForm.step2['trainee_details'] = [];
+    
+      if(this.participantTraineeDetails) {
+        this.publicTrainingForm.step2['trainee_details'] = this.participantTraineeDetails;
+      }
+
+      // console.log(this.publicTrainingForm);
+      this.step2DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this._constant.API_ENDPOINT.publicTrainingForm,this.step2DataBodyFormFile)
+      .subscribe(
+        res => {
+          if(res['status'] == true) {
+            this.Service.moveSteps('participant', 'training_details', this.headerSteps);
+            // console.log(res);
+          }else{
+            this._toaster.warning(res['msg'], '');
+          }
+        })
     }
   }
 
@@ -210,14 +252,24 @@ export class CabTrainingPublicCourseComponent implements OnInit {
         this.publicTrainingForm.saved_step = '3';
         this.step1Data.is_draft = false;
 
-        this.publicTrainingForm.step3 = this.step1Data;
+        var applicationId = sessionStorage.getItem('applicationId');
+        // this.step2Data.application_id = applicationId;
+        this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
 
-        console.log(this.publicTrainingForm);
-        // this.step2DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
-        // this.Service.post(this.Service.apiServerUrl+"/"+this._constant.API_ENDPOINT.healthcareForm,this.step2DataBodyFormFile)
-        // .subscribe(
-        //   res => {
-        //   })
+        this.publicTrainingForm.step3 = this.step3Data;
+
+        // console.log(this.publicTrainingForm);
+        this.step2DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
+        this.Service.post(this.Service.apiServerUrl+"/"+this._constant.API_ENDPOINT.publicTrainingForm,this.step2DataBodyFormFile)
+        .subscribe(
+          res => {
+            if(res['status'] == true) {
+              this.Service.moveSteps('training_details', 'fee_details', this.headerSteps);
+              // console.log(res);
+            }else{
+              this._toaster.warning(res['msg'], '');
+            }
+          })
       }
     }
 

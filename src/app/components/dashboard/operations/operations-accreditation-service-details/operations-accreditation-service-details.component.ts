@@ -26,7 +26,7 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   routeId:any;
   serviceDetail:any;
   ownershipOfOrg:any;
-  bodMember:any;
+  ownOrgMembInfo:any;
   otherAccr:any;
   other_accr_model:any;
   Object = Object;
@@ -67,6 +67,8 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   subTypeMaster:any[] = [];
   ilauUdertakingConfirm:any;
   recommendVisit:any;
+  authorizationList:any;
+  ilaMraCheck:boolean = false;;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, public sanitizer: DomSanitizer,private modalService: NgbModal,public uiDialog: UiDialogService) { }
@@ -233,6 +235,15 @@ getSchmeCb(sid: number, typeId: number){
   }
 }
 
+getSubType(typeId: number){
+  if(typeId){
+    let typeData: any = this.subTypeMaster.find(rec => rec.service_page.id == typeId);
+    if(typeData){
+      return 'Accreditation SubType For: ' + typeData.title;
+    }
+  }
+}
+
   loadData() {
     this.loader = false;
     this.subscriptions.push(this._trainerService.trainerAccredDetailsServtrainerAccredDetailsServ(this.routeId)
@@ -242,29 +253,39 @@ getSchmeCb(sid: number, typeId: number){
           //return;
           this.loader = true;
           this.serviceDetail = result['data'];
-          var ilaCheckbox = this.serviceDetail.authorization_list;
-          var parseIlaCheckbox = JSON.parse(ilaCheckbox);
-          this.ilauUdertakingConfirm = parseIlaCheckbox.undertaking_confirmTop3;
+          // var ilaCheckbox = this.serviceDetail.authorization_list;
+          // var parseIlaCheckbox = JSON.parse(ilaCheckbox);
+          // this.ilauUdertakingConfirm = parseIlaCheckbox.undertaking_confirmTop3;
           // let getC: any = this.countryList.countries.find(item => item.id == this.serviceDetail.country)
           // console.log("cc>> ", getC);
           // if(getC){
           //   this.appCountry = getC.name;
           // }
           //
-          if(this.serviceDetail.onBehalfApplicantDetails != undefined && this.serviceDetail.onBehalfApplicantDetails.length >0 ){
-            this.applicantDetails = this.serviceDetail.onBehalfApplicantDetails[0]
+          // console.log(this.serviceDetail.is_main_activity,'is_main_activity');
+          if(this.serviceDetail.onBehalfApplicantDetails ){
+            this.applicantDetails = this.serviceDetail.onBehalfApplicantDetails;
           }
           this.ownershipOfOrg = result['data']['ownershipOfOrg']
-          this.bodMember = result['data']['bodMember'];
+          this.ownOrgMembInfo = result['data']['bodMember'];
           this.otherAccr = result['data']['otherAccr'];
           this.other_accr_model = result['data']['otherAccr'] != '' && result['data']['otherAccr'] != null ? '1' : '0' ;
           this.ptParticipation = result['data']['ptParticipation'];
           this.technicalManager = result['data']['technicalManager'] ? result['data']['technicalManager'][0] : '';
-          this.managementManager = result['data']['technicalManager'] ? result['data']['technicalManager'][0] : '';
+          this.managementManager = result['data']['managementManager'] ? result['data']['managementManager'][0] : '';
           this.paymentDetails = result['data'].paymentDetails;
           this.editScopeData = result['data']['scopeDetails'];
 
           this.recommendVisit = JSON.parse(result['data'].recommend_visit);
+          this.authorizationList = JSON.parse(result['data'].authorization_list);
+          // let checkCount = 0;
+          for(let key in this.authorizationList) {
+            ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
+            if(this.authorizationList['undertaking_confirmTop3'] == true) {  
+              this.ilaMraCheck = true;       
+              // checkCount++;
+            } 
+          }
 
           // this.scopeDetailsHeading = result['data']['scopeDetails'].heading.column_list;
           // for(let key in result['data']['scopeDetails']) {
