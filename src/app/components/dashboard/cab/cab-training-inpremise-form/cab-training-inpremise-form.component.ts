@@ -1,5 +1,3 @@
-
-
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../../../../services/app.service';
 import { TrainerService } from '../../../../services/trainer.service';
@@ -9,14 +7,12 @@ import { ToastrService, Overlay, OverlayContainer } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscription } from 'rxjs';
 
-declare let paypal: any;
 @Component({
-  selector: 'app-cab-training-public-course',
-  templateUrl: './cab-training-public-course.component.html',
-  styleUrls: ['./cab-training-public-course.component.scss'],
-  providers: [Constants, AppService, ToastrService, Overlay, OverlayContainer] 
+  selector: 'app-cab-training-inpremise-form',
+  templateUrl: './cab-training-inpremise-form.component.html',
+  styleUrls: ['./cab-training-inpremise-form.component.scss']
 })
-export class CabTrainingPublicCourseComponent implements OnInit {
+export class CabTrainingInpremiseFormComponent implements OnInit {
 
   subscriptions: Subscription[] = [];
   headerSteps: any[] = [];
@@ -79,6 +75,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     private _trainerService: TrainerService, private _constant: Constants) { }
 
   ngOnInit() {
+
     this.publicCourseId = sessionStorage.getItem('publicCourseId');
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
@@ -312,24 +309,4 @@ export class CabTrainingPublicCourseComponent implements OnInit {
         //   })
       }
     }
-
-    onSubmitStep6(ngForm6) {
-      this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
-    }
-
-    onSubmitStep7(ngForm7) {
-      setTimeout(()=>{
-        let elem = document.getElementById('openAppDialog');
-        //console.log("App dialog hash....", elem);
-        if(elem){
-          elem.click();
-        }
-      }, 100)
-      //this.openView('appComp','');
-      setTimeout(() => {                    
-        // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-        this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
-      },3500)
-    }
 }
-
