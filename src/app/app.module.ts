@@ -136,7 +136,8 @@ import { AccountsComponent } from './components/dashboard/accounts/accounts.comp
 import { AccountDetailsComponent } from './components/dashboard/accounts/account-details/account-details.component';
 import { AccountUploadComponent } from './components/dashboard/accounts/account-upload/account-upload.component';
 import { CabTrainingDetailComponent } from './components/dashboard/cab/cab-training-detail/cab-training-detail.component';
-import { CabTrainingInpremiseDetailComponent } from './component/dashboard/cab/cab-training-inpremise-detail/cab-training-inpremise-detail.component';
+import { CabTrainingInpremiseDetailComponent } from './components/dashboard/cab/cab-training-inpremise-detail/cab-training-inpremise-detail.component';
+import { CabTrainingInpremiseFormComponent } from './components/dashboard/cab/cab-training-inpremise-form/cab-training-inpremise-form.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -182,7 +183,8 @@ export const MY_FORMATS = {
     AccountDetailsComponent,
     AccountUploadComponent,
     CabTrainingDetailComponent,
-    CabTrainingInpremiseDetailComponent],
+    CabTrainingInpremiseDetailComponent,
+    CabTrainingInpremiseFormComponent],
   imports: [
     CommonModule,
     FormsModule,
