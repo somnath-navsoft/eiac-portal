@@ -983,7 +983,7 @@
                 </div>
 
                 <div class="cust-stepper" id="scope_accreditation"  [ngStyle]="{'display':'none'}">
-                    <form #ngForm5="ngForm" (ngSubmit)="onSubmitStep5(ngForm5)" autocomplete="off">
+                    <!-- <form #ngForm5="ngForm" (ngSubmit)="onSubmitStep5(ngForm5)" autocomplete="off"> -->
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-12"> 
@@ -1025,6 +1025,7 @@
                                             <div class="col-md-12 col-sm-12">
                                                 <div class="row" *ngIf="fullScope.length > 0">
                                                     <div class="col-12" *ngFor="let scope of fullScope; let i1 = index;">
+                                                    <form #ngForm1="ngForm" autocomplete="off">
                                                         <div class="row">
                                                             <div class="col-md-12 p-0">
                                                                 <div class="form-subhdr">
@@ -1146,8 +1147,11 @@
                                                                         </tbody>
                                                                     </table>
                                                                 </div>
+                                                                <button class="submit-bttn submit-health" (click)="onSubmitStep5(ngForm1,null,i1)" [ngStyle]="{'float': 'right'}">
+                                                                <span class="icon-add"></span>&nbsp;&nbsp;ADD</button>
                                                             </div>
                                                         </div>
+                                                    </form>
                                                     </div>
                                                 </div>
     
@@ -1168,41 +1172,40 @@
                                             
                                         </ng-container> 
                                         <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteIndex)" [parent]="this" [modalType]="'delete'"></custom-modal>
-                                                <ng-container *ngFor="let item of editScopeData | keyvalue">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="table-appln scope-data">
-                                                                <div class="sub-header">
-                                                                    <h5 [innerHTML]="getSchme(item.key)"></h5>
-                                                                </div>
-                                                                <table>
-                                                                    <tr>
-                                                                        <th *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
-                                                                        <th>Action</th>
-                                                                    </tr>
-                                                                    <ng-container *ngIf="item.value.scope_value.length > 0">
-                                                                        <tr *ngFor="let item2 of (item.value.scope_value) | keyvalue; let i4 = index;">
-                                                                            <td *ngFor="let item3 of item2.value | keyvalue;">
-                                                                                <span [innerHTML]="(item3.value)"></span>
-                                                                            </td>
-                                                                            <td>
-                                                                            <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item.key)"></span>
-                                                                            </td>                                                                
-                                                                        </tr>
-                                                                    </ng-container>
-                                                                    <ng-container *ngIf="item.value.scope_value.length == 0">
-                                                                        <tr>
-                                                                            <td [attr.colspan]="Service.getObjectLength(item.value.scope_heading)+1">
-                                                                                No Data
-                                                                            </td>
-                                                                        </tr>
-                                                                    </ng-container>
-                                                                </table>  
-                                                            </div>
+                                        <ng-container *ngFor="let item of editScopeData | keyvalue">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="table-appln scope-data">
+                                                        <div class="sub-header">
+                                                            <h5 [innerHTML]="getSchme(item.key)"></h5>
                                                         </div>
+                                                        <table *ngIf="item.value != null">
+                                                            <tr>
+                                                                <th width="22%" *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
+                                                                <th width="7%">Action</th>
+                                                            </tr>
+                                                            <ng-container *ngIf="item.value.scope_value != undefined && item.value.scope_value.length > 0">
+                                                                <tr *ngFor="let item2 of (item.value.scope_value) | keyvalue; let i4 = index;">
+                                                                    <td *ngFor="let item3 of item2.value | keyvalue;">
+                                                                        <span [innerHTML]="(item3.value)"></span>
+                                                                    </td>
+                                                                    <td>
+                                                                    <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item.key)"></span>
+                                                                    </td>                                                                
+                                                                </tr>
+                                                            </ng-container>
+                                                            <ng-container *ngIf="item.value.scope_value != undefined && item.value.scope_value.length == 0">
+                                                                <tr>
+                                                                    <td [attr.colspan]="Service.getObjectLength(item.value.scope_heading)+1">
+                                                                        No Data
+                                                                    </td>
+                                                                </tr>
+                                                            </ng-container>
+                                                        </table>  
                                                     </div>
-                                                </ng-container>
-
+                                                </div>
+                                            </div>
+                                        </ng-container>
                                 </div>
                             </div>
                         </div>
@@ -1210,14 +1213,16 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','scope_accreditation')">BACK</a> 
+                                        <!-- (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','scope_accreditation')" -->
+                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" 
+                                        (click)="backScopeAccreditation();">BACK</a> 
                                         <button class="cancel-bttn" type="button" (click)="onSubmitStep5(ngForm5, true)">SAVE AS DRAFT</button> 
                                     </div>
-                                    <button class="submit-bttn submit-health" >CONTINUE</button>
+                                    <button class="submit-bttn submit-health" (click)="continueScopeAccreditation()">CONTINUE</button>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    <!-- </form> -->
                 </div>
 
                 <div class="cust-stepper" id="perlim_visit"  [ngStyle]="{'display':'none'}">
@@ -1739,7 +1744,9 @@
                                         <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice(ngForm8, true)">SAVE AS DRAFT</button> -->
                                         <!-- <button class="submit-bttn submit-health" (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)">CONTINUE</button> -->
                                     </div>
+                                    <ng-container *ngIf="paymentFilePath != ''">
                                     <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button>
+                                    </ng-container>
                                     <ng-container *ngIf="transactions.length">
                                         <div id="paypalPayment"></div>
                                     </ng-container>
@@ -1851,7 +1858,8 @@
                                         <div class="pop_thanks">
                                             <h5>Thank you</h5>
                                             <p>Your form has been successfully submitted and it is under review. We will update you shortly.</p>
-                                            <button class="submit-bttn" (click)="closeChecklistDialog()" routerLink="/dashboard/cab_client/application-accreditation">Back to Application</button>
+                                            <button class="submit-bttn" (click)="closeChecklistDialog()" 
+                                            routerLink="/dashboard/cab_client/status/all">Back to Application</button>
                                         </div>
                                     </div>
                                 </ng-template>
@@ -1864,7 +1872,10 @@
                                     <!-- (click)="onSubmitPaymentInformation()" -->
                                     <!-- <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</button> -->
                                     <div class="button-content">
-                                        <a class="cancel-bttn" type="button" (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</a>
+                                        <ng-container *ngIf="!paymentStepComp">
+                                        <a class="cancel-bttn" type="button" 
+                                        (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</a>
+                                        </ng-container>
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step9')">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >SUBMIT</button>
