@@ -100,7 +100,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
       title:'fees_details', desc:'4. Fees Details', activeStep:false, stepComp:false, icon:'icon-task', activeClass:''
       },
       {
-        title:'authorization_application', desc:'5. Authorization of The Application', activeStep:false, stepComp:false, icon:'icon-sheet', activeClass:''
+        title:'authorization', desc:'5. Authorization of The Application', activeStep:false, stepComp:false, icon:'icon-sheet', activeClass:''
       },
       {
       title:'proforma_invoice', desc:'6. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-paper', activeClass:''
@@ -238,7 +238,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
   }
 
     onSubmitStep3(ngForm3){
-      this.Service.moveSteps('training_details', 'fee_details', this.headerSteps);
+      this.Service.moveSteps('training_details', 'fees_details', this.headerSteps);
       if(ngForm3.form.valid) {
         this.publicTrainingForm = {};
         this.publicTrainingForm.step3 = {};
@@ -259,7 +259,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
         .subscribe(
           res => {
             if(res['status'] == true) {
-              this.Service.moveSteps('training_details', 'fee_details', this.headerSteps);
+              this.Service.moveSteps('training_details', 'fees_details', this.headerSteps);
               // console.log(res);
             }else{
               this._toaster.warning(res['msg'], '');
@@ -269,7 +269,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
     }
 
     onSubmitStep4(ngForm4){
-      this.Service.moveSteps('fee_details', 'authorization', this.headerSteps);
+      this.Service.moveSteps('fees_details', 'authorization', this.headerSteps);
       if(ngForm4.form.valid) {
         this.publicTrainingForm = {};
         this.publicTrainingForm.step4 = {};
