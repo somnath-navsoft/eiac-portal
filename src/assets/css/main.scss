@@ -634,7 +634,10 @@ a:hover { text-decoration: none; }
 .ass-name-det hr { margin: 0; }
 .ass-data { display: flex; justify-content: space-between; background: #E9E9E9; padding: 10px 20px; border-radius: 5px 5px 0 0; }
 .ass-data h3 { color: #B14A56; font-family: "Dubai Medium"; font-size: 16px; margin: 0; }
-.ass-data p { color: #444444; font-family: "Dubai Regular"; font-size: 14px; margin: 0; }
+.ass-data .date_wrapper p { color: #444444; font-family: "Dubai Regular"; font-size: 14px; margin: 0; border-right: 1px solid #D1CACB; padding-right: 10px; }
+.ass-data .date_wrapper { display: flex; justify-content: space-between; }
+.reply_msg { color: #B54150; font-family: 'Dubai Medium'; padding-left: 10px; font-size: 14px; }
+.reply_msg span { margin-right: 5px; vertical-align: middle; }
 .ass-details { padding: 10px 20px; }
 .ass-details p { color: #656565; font-size: 16px; font-family: "Dubai Regular"; line-height: 2; }
 .attach-cnt { padding: 10px 0; }
