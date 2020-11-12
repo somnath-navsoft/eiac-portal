@@ -882,8 +882,115 @@
                               </ng-container>
                           </ng-container>
                       </ng-container>
+                      <!-- Other standard -->
+                      <div class="row">
+                        <div class="col-md-12">
+                            <div class="appln-subhdr">
+                                <h5>OTHER CERTIFICATION STANDARDS</h5>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col-md-12">
+                            <div class="table-content-health">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th width="30%">Category</th>
+                                            <th width="30%">Standard</th>
+                                            <th width="30%">Scope / Scheme</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr  *ngFor="let item of cbOtherStandards; let i = index;">
+                                            <td>
+                                              {{item.category}}
+                                            </td>
+                                            <td>
+                                              {{item.standard}}
+                                            </td>
+                                            <td>
+                                              {{item.scopeScheme}}
+                                            </td>
+                                            
+                                        </tr>
+                                    
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                   </ng-container>
-
+                  <!-- other activity -->
+                  <div class="row">
+                    <div class="col-md-12">
+                        <div class="appln-subhdr">
+                            <h5>CB'S OTHER ACTIVITY LOCATIONS</h5>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+                <div class="row" >
+                  <div class="col-md-12">
+                      <div class="table-content-health">
+                          <table>
+                              <thead>
+                                  <tr>
+                                      <th width="30%">Location Type(such as Regional office,Branch)</th>
+                                      <th width="30%">City & Countries</th>
+                                      <th width="30%">Activities carried out at this Location</th>
+                                  </tr>
+                              </thead>  
+                              <tbody>
+                                  <tr  *ngFor="let item of cbsOtherActivity; let i = index;">
+                                      <td>
+                                          {{item.location_type}}
+                                      </td>
+                                      <td>
+                                        {{item.city_country}}
+                                      </td>
+                                      <td>
+                                        {{item.activity_carried_out}}
+                                      </td>
+                                     
+                                  </tr>
+                              
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+                  <!-- name of country -->
+                  <div class="row">
+                    <div class="col-md-12">
+                        <div class="appln-subhdr">
+                            <h5>PLEASE LIST DOWN THE NAME(S) OF COUNTRIES WHERE CERTIFICATION BODY INTENDS TO PROVIDE EIAC ACCREDITED CERTIFICATIONS</h5>
+                        </div>
+                        <hr>
+                    </div>
+                    </div>
+                    <div class="row" >
+                      <div class="col-md-12">
+                          <div class="table-content-health">
+                              <table>
+                                  <thead>
+                                      <tr>
+                                          <th>Name of Country</th>
+                                      </tr>
+                                  </thead>  
+                                  <tbody>
+                                      <tr  *ngFor="let item of cbnameOfCountry; let i = index;">
+                                          <td>
+                                              {{item.country}}
+                                          </td>
+                                      </tr>
+                                  
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
 
                   </div>
                 </div>
@@ -923,14 +1030,15 @@
           </button>
         </div>
         <div class="modal-body"> 
-            <app-loader *ngIf="loaderPdf"></app-loader>
-            <p *ngIf="errorLoader">Error Loading PDF</p>
-            <pdf-viewer [src]="(pathPDF)" [show-all]="true" [stick-to-page]="true"
+            <p [innerHTML]="termsGeneral"></p>
+            <!-- <app-loader *ngIf="loaderPdf"></app-loader>
+            <p *ngIf="errorLoader">Error Loading PDF</p> -->
+            <!-- <pdf-viewer [src]="(pathPDF)" [show-all]="true" [stick-to-page]="true"
                 [zoom]="1.0" [original-size]="false" [autoresize]="true"
                 [show-borders]="true" (error)="onError($event)" (on-progress)="onProgress($event)"
                 (after-load-complete)="completeLoadPDF($event)"
                 [render-text]="true">
-            </pdf-viewer>
+            </pdf-viewer> -->
         </div>
         <div class="modal-footer">
         </div>
@@ -1063,7 +1171,7 @@
           <div class="row">
               <div class="col-md-12">
                   <div class="appln-subhdr">
-                      <h5>UNDERTAKING</h5>
+                      <h5>AUTHORIZATION OF THE APPLICATION</h5>
                   </div>
                   <hr>
               </div>
@@ -1090,9 +1198,9 @@
                           <td>Quality Manual</td>
                       </tr>
                       <tr>
-                          <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
-                          <td>
-                            Filled in Document Review Checklist (for 1st submission only)
+                          <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td> 
+                          <td class="authData">
+                            <a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled in Document Review Checklist</a> (for 1st submission only)
                           </td>
                       </tr>
                       <tr>
@@ -1125,7 +1233,7 @@
                       <tr>
                           <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
                           <td>
-                            Filled Up Document Review Checklist (Related to applied accreditation standard and for initial accreditation & Scope Extensions only)
+                            <a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled in Document Review Checklist</a> (Related to applied accreditation standard and for initial accreditation & Scope Extensions only)
                           </td>
                       </tr>
                       <tr>
@@ -1150,7 +1258,7 @@
                     <tr>
                         <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
                         <td>
-                          Filled In Document Review Checklist (for 1st submission only)
+                          <a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled in Document Review Checklist</a> (for 1st submission only)
                         </td>
                     </tr>
                     <tr>

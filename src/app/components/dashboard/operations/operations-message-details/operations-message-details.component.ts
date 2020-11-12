@@ -24,17 +24,22 @@ export class OperationsMessageDetailsComponent implements OnInit {
   tradeLicenseFile:any;
   tradeLicenseText:any;
   rejectedMessageId:boolean = false;
+  param1: string;
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public route: ActivatedRoute,public toastr: ToastrService,public uiDialog: UiDialogService) { }
+  constructor(public Service: AppService, public constant:Constants,public router: Router,public route: ActivatedRoute,public toastr: ToastrService,public uiDialog: UiDialogService) {
+    
+    
+   }
 
   ngOnInit() {
+    console.log(this.router.url.toString().split('/')[4]);
     this.userType = sessionStorage.getItem('type');
     this.userEmail = sessionStorage.getItem('email');
     // this.routeId = this.route.snapshot.queryParamMap.get('id');
     // console.log(sessionStorage.getItem('routeId'));
     this.routeId = sessionStorage.getItem('routeId');
-
     this.userType = sessionStorage.getItem('type');
+
     if(this.userType != 'operations')
     {
       var landUrl = '/dashboard'+this.userType+'/home'

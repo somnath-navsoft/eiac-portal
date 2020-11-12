@@ -77,6 +77,7 @@ export class Constants{
 		training_course_list: this.apiUrl + 'training-course-list/',
 		course_details: this.apiUrl + 'course-details/',
 		publicTrainingForm: 'training_request_form/',
+		replyMessage: this.apiUrl + 'message-list/',
 		// webservice/training_request_form/
 	}
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."

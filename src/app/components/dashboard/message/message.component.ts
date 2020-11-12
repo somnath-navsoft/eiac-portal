@@ -40,7 +40,7 @@ export class MessageComponent implements OnInit {
     .subscribe(
       res => {
         this.messageList = res['data'].message_list;
-        console.log(this.messageList);
+        // console.log(this.messageList);
         
         this.loader = true;
         // console.log(res['data'].message_list);
