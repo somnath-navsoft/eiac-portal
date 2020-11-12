@@ -76,8 +76,8 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   nameOfCountry: any[] = [{}];
   hcabOtherLocation:any[] = [];
   accreditationInfo:any[] = [];
-  hcabOthers:any;
-  doesHcab:any;
+  hcabOthers:any = {};
+  doesHcab:any = {};
 
   cbOtherStandards: any[] = [];
   cbnameOfCountry: any[] = [{}];

@@ -392,8 +392,8 @@
                 <div class="col-md-2">
                   <div class="form-subheader-desc form_org_data">
                     <mat-radio-group name="hcabOthers" disabled [(ngModel)]="hcabOthers">
-                      <mat-radio-button value="1" >Yes</mat-radio-button>
-                      <mat-radio-button value="0">No</mat-radio-button>
+                      <mat-radio-button [value]="1" >Yes</mat-radio-button>
+                      <mat-radio-button [value]="0">No</mat-radio-button>
                     </mat-radio-group>
                   </div>
                 </div>
@@ -441,8 +441,8 @@
                 <div class="col-md-2">
                   <div class="form-subheader-desc form_org_data">
                     <mat-radio-group name="doesHcab" disabled [(ngModel)]="doesHcab">
-                      <mat-radio-button value="1" >Yes</mat-radio-button>
-                      <mat-radio-button value="0">No</mat-radio-button>
+                      <mat-radio-button [value]="1" >Yes</mat-radio-button>
+                      <mat-radio-button [value]="0">No</mat-radio-button>
                     </mat-radio-group>
                   </div>
                 </div>
@@ -567,7 +567,7 @@
           </div>
         </div>
 
-        <div class="col-md-6" *ngIf="serviceDetail?.form_meta != 'halal_conformity_bodies' && qualityManager != null">
+        <div class="col-md-6" *ngIf="serviceDetail?.form_meta == 'halal_conformity_bodies' && qualityManager != null">
           <div class="row">
             <div class="col-md-12">
               <div class="appln-subhdr">
@@ -641,12 +641,12 @@
         </div>
       </div>
 
-      <div class="row m-0">
-        <div class="col-md-6" *ngIf="serviceDetail?.form_meta != 'halal_conformity_bodies' && islamicAffairExpert != null">
+      <div class="row m-0" *ngIf="serviceDetail?.form_meta == 'halal_conformity_bodies' && islamicAffairExpert != null">
+        <div class="col-md-6">
           <div class="row">
             <div class="col-md-12">
               <div class="appln-subhdr">
-                <h5>QUALITY MANAGER</h5>
+                <h5>ISLAMIC AFFAIRS EXPERT</h5>
               </div>
               <hr>
             </div>
@@ -883,7 +883,7 @@
                           </ng-container>
                       </ng-container>
                       <!-- Other standard -->
-                      <div class="row">
+                      <div class="row" *ngIf="serviceDetail?.form_meta == 'certification_bodies' && cbOtherStandards != ''">
                         <div class="col-md-12">
                             <div class="appln-subhdr">
                                 <h5>OTHER CERTIFICATION STANDARDS</h5>
@@ -891,7 +891,7 @@
                             <hr>
                         </div>
                     </div>
-                    <div class="row" >
+                    <div class="row" *ngIf="serviceDetail?.form_meta == 'certification_bodies' && cbOtherStandards != ''">
                         <div class="col-md-12">
                             <div class="table-content-health">
                                 <table>
@@ -923,7 +923,7 @@
                     </div>
                   </ng-container>
                   <!-- other activity -->
-                  <div class="row">
+                  <div class="row" *ngIf="serviceDetail?.form_meta == 'certification_bodies' && cbsOtherActivity != ''">
                     <div class="col-md-12">
                         <div class="appln-subhdr">
                             <h5>CB'S OTHER ACTIVITY LOCATIONS</h5>
@@ -931,7 +931,7 @@
                         <hr>
                     </div>
                 </div>
-                <div class="row" >
+                <div class="row" *ngIf="serviceDetail?.form_meta == 'certification_bodies' && cbsOtherActivity != ''">
                   <div class="col-md-12">
                       <div class="table-content-health">
                           <table>
@@ -962,7 +962,7 @@
                   </div>
               </div>
                   <!-- name of country -->
-                  <div class="row">
+                  <div class="row" *ngIf="serviceDetail?.form_meta == 'certification_bodies' && cbnameOfCountry != ''">
                     <div class="col-md-12">
                         <div class="appln-subhdr">
                             <h5>PLEASE LIST DOWN THE NAME(S) OF COUNTRIES WHERE CERTIFICATION BODY INTENDS TO PROVIDE EIAC ACCREDITED CERTIFICATIONS</h5>
@@ -970,7 +970,7 @@
                         <hr>
                     </div>
                     </div>
-                    <div class="row" >
+                    <div class="row" *ngIf="serviceDetail?.form_meta == 'certification_bodies' && cbnameOfCountry != ''">
                       <div class="col-md-12">
                           <div class="table-content-health">
                               <table>
