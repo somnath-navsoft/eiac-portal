@@ -40,7 +40,7 @@
                 </ng-container>
                 
                 <div class="cust-stepper" id="application_information">
-                    <form #ngForm1="ngForm" (ngSubmit)="onSubmitStep1(ngForm1);scrollPage('page_header')" autocomplete="off">
+                    <form #ngForm1="ngForm" (ngSubmit)="onSubmitStep1(ngForm1);" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-md-12">
@@ -441,7 +441,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-sub">
-                                                    <span>Is Certification the main activity of the organization  : <span class="required_input">*</span></span>
+                                                    <span>Is Certification the main activity of the organization : <span class="required_input">*</span></span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -485,7 +485,7 @@
                                     <div class="row mb-4 mt-4">
                                         <div class="col-md-3">
                                             <div class="form-sub">
-                                                    <span>Does the Organization hold any other Accreditation's?<span class="required_input">*</span></span>
+                                                    <span>Does CAB currently hold any accreditation(s) ?<span class="required_input">*</span></span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -585,7 +585,7 @@
                 </div>
 
                 <div class="cust-stepper" id="personal_information" [ngStyle]="{'display':'none'}">
-                    <form #ngForm2="ngForm" (ngSubmit)="onSubmitStep2(ngForm2);scrollPage('page_header')" autocomplete="off">
+                    <form #ngForm2="ngForm" (ngSubmit)="onSubmitStep2(ngForm2);" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-12">
@@ -809,7 +809,7 @@
                                 <div class="bttns-health bttn-staff">
                                     <!-- (click)="onSubmitTestingParticipation()" -->
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="Service.headerStepMove('application_information',headerSteps,'menu','personal_information');scrollPage('page_header');scrollPage('page_header')">BACK</a> 
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="Service.headerStepMove('application_information',headerSteps,'menu','personal_information');;">BACK</a> 
                                         <button class="cancel-bttn" (click)="savedraftStep('step2')" type="button">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >CONTINUE</button>
@@ -1077,7 +1077,7 @@
                                                                                 </tbody>
                                                                             </table>
                                                                         </div>
-                                                                        <button class="submit-bttn submit-health" (click)="onSubmitStep3(ngForm1,null,i1, typeScope.id);scrollPage('page_header')" [ngStyle]="{'float': 'right'}">
+                                                                        <button class="submit-bttn submit-health" (click)="onSubmitStep3(ngForm1,null,i1, typeScope.id);" [ngStyle]="{'float': 'right'}">
                                                                         <span class="icon-add"></span>&nbsp;&nbsp;ADD</button>
                                                                     </div>
                                                                 </div>
@@ -1337,7 +1337,7 @@
                                         <!-- <a class="cancel-bttn" href="javascript:void(0)" type="button" 
                                             (click)="Service.headerStepMove('personal_information',headerSteps,'menu','scope_accreditation')">BACK</a>  -->
                                         <a href="javascript:void(0)" class="cancel-bttn" type="button" 
-                                        (click)="backScopeAccreditation();scrollPage('page_header')">BACK</a> 
+                                        (click)="backScopeAccreditation();">BACK</a> 
                                         <!--  (click)="onSubmitStep3(ngForm3, true)" -->
                                         <button class="cancel-bttn" type="button" >SAVE AS DRAFT</button> 
                                     </div>
@@ -1349,7 +1349,7 @@
                 </div>
 
                 <div class="cust-stepper" id="perlim_visit"  [ngStyle]="{'display':'none'}">
-                    <form #ngForm4="ngForm" (ngSubmit)="onSubmitStep4(ngForm4);scrollPage('page_header')" autocomplete="off">  
+                    <form #ngForm4="ngForm" (ngSubmit)="onSubmitStep4(ngForm4);" autocomplete="off">  
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-12">
@@ -1434,7 +1434,7 @@
                                     <!--  (click)="onSubmitPerlimVisit()" -->
                                     <div class="button-content">
                                         <a class="cancel-bttn" href="javascript:void(0)" type="button"
-                                         (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','perlim_visit');scrollPage('page_header')">BACK</a>
+                                         (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','perlim_visit');">BACK</a>
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step4')">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health">CONTINUE</button>
@@ -1446,7 +1446,7 @@
                 
 
                 <div class="cust-stepper" id="undertaking_applicant"  [ngStyle]="{'display':'none'}">
-                    <form #ngForm5="ngForm" (ngSubmit)="onSubmitUndertakingApplicant(ngForm5);scrollPage('page_header')" autocomplete="off">
+                    <form #ngForm5="ngForm" (ngSubmit)="onSubmitUndertakingApplicant(ngForm5);" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-12">
@@ -1646,7 +1646,7 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('perlim_visit',headerSteps,'menu','undertaking_applicant');scrollPage('page_header')">BACK</a> 
+                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('perlim_visit',headerSteps,'menu','undertaking_applicant');">BACK</a> 
 
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step5')">SAVE AS DRAFT</button>
                                     </div>
@@ -1744,7 +1744,7 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice');scrollPage('page_header')">BACK</a> 
+                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice');">BACK</a> 
                                         <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice(ngForm8, true)">SAVE AS DRAFT</button> -->
                                         <!-- <button class="submit-bttn submit-health" (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)">CONTINUE</button> -->
                                     </div>
@@ -1762,7 +1762,7 @@
                 </div>
 
                 <div class="cust-stepper" id="payment_update" [ngStyle]="{'display':'none'}">
-                    <form #ngForm7="ngForm" (ngSubmit)="onSubmitPaymentInformation(ngForm7);scrollPage('page_header')" autocomplete="off">
+                    <form #ngForm7="ngForm" (ngSubmit)="onSubmitPaymentInformation(ngForm7);" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <!--  (ngSubmit)="onSubmitPaymentInformation(ngForm8)" -->
@@ -1886,7 +1886,7 @@
                                     <div class="button-content">
                                         <ng-container *ngIf="!paymentStepComp">
                                         <a href="javascript:void(0)" class="cancel-bttn" type="button" 
-                                            (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update');scrollPage('page_header')">BACK
+                                            (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update');">BACK
                                         </a>
                                         </ng-container>
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step7')">SAVE AS DRAFT</button>
@@ -1901,7 +1901,7 @@
                 <div class="cust-stepper" id="application_complete" [ngStyle]="{'display':'none'}">
                     <div class="row mt-3">
                         <div class="col-md-12">                        
-                            <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('payment_update',headerSteps,'menu','application_complete');scrollPage('page_header')">BACK</a>
+                            <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('payment_update',headerSteps,'menu','application_complete');">BACK</a>
                         </div>
 
                     </div>
