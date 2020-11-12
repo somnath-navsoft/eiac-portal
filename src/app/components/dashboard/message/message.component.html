@@ -49,7 +49,13 @@
                             <div class="col-md-12">
                                 <div class="ass-data">
                                     <h3>{{row.title}}</h3>
-                                    <p>{{row.user.date_joined | date}}</p>
+                                    <div class="date_wrapper">
+                                        <p>{{row.user.date_joined | date}}</p>
+                                        <div class="reply_msg">
+                                            <span class="icon-chat"></span>
+                                            Reply
+                                        </div>
+                                    </div>
                                 </div>
                                 <hr>
                             </div>
