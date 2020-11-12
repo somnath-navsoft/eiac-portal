@@ -1118,7 +1118,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12 p-0">
                                                         <div class="form-subhdr">
-                                                            <h5>Scope Family for {{typeFamily.name}}  -- {{t1}}</h5>
+                                                            <h5>Scope Family for {{typeFamily.name}}</h5>
                                                         </div> 
                                                     </div>
                                                 </div>
@@ -1147,13 +1147,22 @@
                                             <!-- [ngStyle]="{'display':showScopeTable}" -->
                                         <div class="row" >
                                             <div class="col-md-12 col-sm-12">  
+                                                
                                                 <div class="row" *ngIf="typeFamily.scopeRows.length > 0">
                                                     <div class="col-12" *ngFor="let scope of typeFamily.scopeRows; let i1 = index;">
+                                                        @family - {{scope.familyId}} == {{scope.familyName}} >> {{typeFamily.scopeFamilyRows.length}}
                                                     <form #ngForm1="ngForm" autocomplete="off">
-                                                        <div class="row">
+                                                        <div class="row" *ngIf="scope.familyId == 0">
                                                             <div class="col-md-12 p-0">
-                                                                <div class="form-subhdr"  *ngIf="scope.name != '' && scope.familyName !=''">
-                                                                    <h5>Accreditation Scope for - {{scope.name}} 
+                                                                <div class="form-subhdr">
+                                                                    <h5>Accreditation Scope for - {{scope.name}}</h5>
+                                                                </div> 
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" *ngIf="scope.familyId != '' && scope.familyId > 0">
+                                                            <div class="col-md-12 p-0">
+                                                                <div class="form-subhdr">
+                                                                    <h5>Accreditation Scope for - {{scope.name}}
                                                                         <ng-container *ngIf="scope.familyName != ''">
                                                                             >> {{scope.familyName}}
                                                                         </ng-container>
@@ -1162,7 +1171,7 @@
                                                             </div>
                                                         </div>
                                                         <!-- Make Table -->
-                                                        <div class="row">
+                                                        <div class="row" *ngIf="scope.familyId != ''">
                                                             <div class="col-md-12">
                                                                 <div class="table-content-health">                                                                    
                                                                     <table>
@@ -1198,7 +1207,7 @@
                                                                                         [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][i1][p].title], dynamicScopeModel[scope.id][scope.familyId].fieldLines[k].firstFieldValues)" matTooltipPosition='above'
                                                                                         [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]" 
                                                                                         name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" [ngModelOptions]="{standalone: true}" 
-                                                                                        (selectionChange)="onChangeScopeOption($event,scope.title,k,p)">
+                                                                                        (selectionChange)="onChangeScopeOption($event,scope.id,scope.familyId,k,p)">
                                                                                             <mat-option *ngFor="let j1 of dynamicScopeModel[scope.id][scope.familyId].fieldLines[k].firstFieldValues" [value]='j1.field_value.id'>
                                                                                             {{j1.value}}
                                                                                             </mat-option>
@@ -1213,7 +1222,7 @@
                                                                                             [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][i1][p].title], dynamicScopeModel[scope.id][scope.familyId].fieldLines[k].firstFieldValues)" matTooltipPosition='above'
                                                                                             [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]" 
                                                                                             name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" [ngModelOptions]="{standalone: true}" multiple
-                                                                                            (selectionChange)="onChangeScopeOption($event,scope.title,k,p)">
+                                                                                            (selectionChange)="onChangeScopeOption($event,scope.id,scope.familyId,k,p)">
                                                                                                 <mat-option *ngFor="let j1 of dynamicScopeModel[scope.id][scope.familyId].fieldLines[k].firstFieldValues" [value]='j1.field_value.id'>
                                                                                                 {{j1.value}}
                                                                                                 </mat-option>
@@ -1242,7 +1251,7 @@
                                                                                         matTooltipPosition='above' 
                                                                                         [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]"
                                                                                         name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" 
-                                                                                        (selectionChange)="onChangeScopeOption($event,scope.title,k,p)" [ngModelOptions]="{standalone: true}" >
+                                                                                        (selectionChange)="onChangeScopeOption($event,scope.id,scope.familyId,k,p)" [ngModelOptions]="{standalone: true}" >
                                                                                             <mat-option *ngFor="let j2 of dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].values]" [value]='j2.field_value.id' [matTooltip]="j2.value">
                                                                                             {{j2.value}}
                                                                                             </mat-option>
@@ -1259,7 +1268,7 @@
                                                                                             [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title], dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].values])" 
                                                                                             matTooltipPosition='above' [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]"
                                                                                             name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" 
-                                                                                            (selectionChange)="onChangeScopeOption($event,scope.title,k,p)" [ngModelOptions]="{standalone: true}" >
+                                                                                            (selectionChange)="onChangeScopeOption($event,scope.id,scope.familyId,k,p)" [ngModelOptions]="{standalone: true}" >
                                                                                                 <mat-option *ngFor="let j2 of dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].values]" [value]='j2.field_value.id'>
                                                                                                 {{j2.value}}
                                                                                                 </mat-option>
@@ -1357,10 +1366,12 @@
                                 <div class="bttns-health bttn-staff">
                                     <!-- (click)="onSubmitInformationAuditManagement()" -->
                                     <div class="button-content">
-                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','scope_accreditation')">BACK</a> 
+                                        <!--  (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','scope_accreditation')" -->
+                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="backScopeAccreditation()"
+                                        >BACK</a> 
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step5')">SAVE AS DRAFT</button> 
                                     </div>
-                                    <button class="submit-bttn submit-health" >CONTINUE</button>
+                                    <button class="submit-bttn submit-health" (click)="continueScopeAccreditation()">CONTINUE</button>
                                 </div>
                             </div>
                         </div>

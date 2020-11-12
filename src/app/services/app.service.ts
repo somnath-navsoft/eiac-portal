@@ -99,10 +99,6 @@ getObjectLength(obj: any){
   }
   return count;
 } 
-removePlus(data) {
-  var neData = data.replace('+','');
-  return neData;
-}
 setValueUrlIB(value: any) {
   // console.log(">>assign IB value: ", value);
   //this.userDataSource.next(value);
