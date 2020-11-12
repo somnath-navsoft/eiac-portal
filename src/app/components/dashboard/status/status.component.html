@@ -191,7 +191,7 @@
                                 <a href="javascript:void(0)"  alt="Edit" [hidden]="editVisible(item)" routerLink="/dashboard/cab_client/testing-calibration-form/{{item.id}}"><span class="icon-edit"></span></a>
                                 </ng-container>
                                 <ng-container *ngIf="item.form_meta == 'halal_conformity_bodies'">
-                                <a href="javascript:void(0)"   alt="Edit" [hidden]="editVisible(item)" routerLink="/dashboard/cab_client/halal-conformity-form/{{item.id}}"><span class="icon-edit"></span></a>
+                                <a href="javascript:void(0)"   alt="Edit" routerLink="/dashboard/cab_client/halal-conformity-form/{{item.id}}"><span class="icon-edit"></span></a>
                                 </ng-container>
                                 <ng-container *ngIf="item.form_meta == 'pt_providers'">
                                 <a href="javascript:void(0)"  alt="Edit" [hidden]="editVisible(item)" routerLink="/dashboard/cab_client/pt-providers-form/{{item.id}}"><span class="icon-edit"></span></a>

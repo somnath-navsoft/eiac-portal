@@ -76,8 +76,8 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   nameOfCountry: any[] = [{}];
   hcabOtherLocation:any[] = [];
   accreditationInfo:any[] = [];
-  hcabOthers:any;
-  doesHcab:any;
+  hcabOthers:any = {};
+  doesHcab:any = {};
 
   cbOtherStandards: any[] = [];
   cbnameOfCountry: any[] = [{}];
@@ -310,7 +310,7 @@ getSubType(typeId: number){
           this.technicalManager = result['data']['technicalManager'] ? result['data']['technicalManager'][0] : '';
           this.managementManager = result['data']['managementManager'] ? result['data']['managementManager'][0] : '';
           this.qualityManager = result['data']['qualityManager'] ? result['data']['qualityManager'][0] : '';
-          this.islamicAffairExpert = result['data']['managementManager'] ? result['data']['managementManager'][0] : '';
+          this.islamicAffairExpert = result['data']['islamicAffairExpert'] ? result['data']['islamicAffairExpert'][0] : '';
           this.paymentDetails = result['data'].paymentDetails;
           this.editScopeData = result['data']['scopeDetails'];
 
