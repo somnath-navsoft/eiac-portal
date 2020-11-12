@@ -12,7 +12,7 @@ import  { UiDialogService } from  'src/app/services/uiDialog.service';
 
 @Component({
   selector: 'app-operations-accreditation-service-details',
-  templateUrl: './operations-accreditation-service-details.component.html',
+  templateUrl: './operations-accreditation-service-details.component.html', 
   styleUrls: ['./operations-accreditation-service-details.component.scss'],
   providers: [CustomModalComponent, ToastrService, Overlay, OverlayContainer]
 })
@@ -69,6 +69,11 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   recommendVisit:any;
   authorizationList:any;
   ilaMraCheck:boolean = false;;
+
+  cbOtherStandards: any[] = [];
+  cbsOtherActivity: any[] = [{}];
+  cbnameOfCountry: any[] = [{}];
+  termsGeneral: any;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, public sanitizer: DomSanitizer,private modalService: NgbModal,public uiDialog: UiDialogService) { }
@@ -207,7 +212,25 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
         this.countryList = rec;
         // console.log(">>>cccc ", this.countryList);
     })
+
+    this.loadTermsConditions(2);
  }
+
+ loadTermsConditions(pageId: number){
+  let post: any = {};
+  post['service_page_id'] = pageId; 
+  this._service.post(this._service.apiServerUrl+"/" + 'terms-and-conditions/', post)
+    .subscribe(
+      res => {
+        console.log(res,'Terms data');
+        let getData: any = res;
+        if(getData){
+          this.termsGeneral = getData.data[0].content;
+          //this.termsIAF     = getData.data[1];
+
+        }        
+      });
+}
 
  getSchme(sid: number){
   let getSchemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id == sid);
@@ -252,6 +275,7 @@ getSubType(typeId: number){
           // console.log(result, " -- ", this.countryList);
           //return;
           this.loader = true;
+          let getData: any = result;
           this.serviceDetail = result['data'];
           // var ilaCheckbox = this.serviceDetail.authorization_list;
           // var parseIlaCheckbox = JSON.parse(ilaCheckbox);
@@ -275,6 +299,65 @@ getSubType(typeId: number){
           this.managementManager = result['data']['managementManager'] ? result['data']['managementManager'][0] : '';
           this.paymentDetails = result['data'].paymentDetails;
           this.editScopeData = result['data']['scopeDetails'];
+
+          if(getData.data.form_meta == 'certification_bodies'){
+            this.loadTermsConditions(4)
+          }
+          if(getData.data.form_meta == 'inspection_body'){
+            this.loadTermsConditions(2)
+          }
+          if(getData.data.form_meta == 'health_care'){
+            this.loadTermsConditions(1)
+          }
+
+          if(getData.data.form_meta == 'certification_bodies'){
+            let otherCopy: any=[];
+            if(this.editScopeData.others != undefined && typeof this.editScopeData.others == 'object'){
+              let colheader: any = ['category', 'standard', 'scopeScheme'];
+              let otherData: any = this.editScopeData['others']['others']['scope_value'];
+              otherData.forEach((rec, key) => {
+                //console.log(">>> other values: ", rec, " -- ", key);
+                let tmpObj: any ={};
+                    for(var p in rec){
+                      //console.log(">>>col.. ", colheader[p], " == ",  rec[p]);
+                      tmpObj[colheader[p].toString()] = rec[p];
+
+                    }
+                    otherCopy.push(tmpObj);
+              })
+            }
+            if(otherCopy.length > 0){
+              this.cbOtherStandards = otherCopy;
+              delete this.editScopeData['others'];
+            }
+            let getActivity: any = getData.data.otherActivityLocations;
+              console.log(">>> other activity: ", getActivity);
+              if(getActivity != null){
+                let tempAct: any =[];
+              for(var k in getActivity){
+                console.log(">>>> ", getActivity[k]['value'], " -- ", typeof getActivity[k]['value']);
+                let tempObj: any = (getActivity[k]['value']);
+                tempAct.push(tempObj);
+                console.log(">>> ", k , " :: ", tempAct);
+              }
+              this.cbsOtherActivity = tempAct;
+              }
+              
+
+              let getNameCountry: any = getData.data.nameOfCountry;
+              console.log(">>> other name country: ", getNameCountry);
+              if(getNameCountry != null){
+              let tempNameCountry: any =[];
+              for(var k in getNameCountry){
+                let tempObj: any = (getNameCountry[k]['value']);
+                tempNameCountry.push(tempObj);
+                console.log(">>> ", k , " :: ", tempNameCountry);
+              }
+              this.cbnameOfCountry = tempNameCountry;
+              }
+
+          }
+
 
           this.recommendVisit = JSON.parse(result['data'].recommend_visit);
           this.authorizationList = JSON.parse(result['data'].authorization_list);

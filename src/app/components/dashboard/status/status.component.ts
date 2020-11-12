@@ -69,19 +69,36 @@ export class StatusComponent implements OnInit {
 
   editVisible(object: any){
     console.log(">>> Item data: ", object);
-    let getId= (object.id);
-    let url = this._service.apiServerUrl+"/"+'accrediation-details-show/'+getId;
-    //let getScheme: any  = this.schemeRows[rowInd].id;
 
-    console.log(">>>Get url and ID: ", url, " :: ", getId, " -- ");
-    this._service.getwithoutData(url)
-    .subscribe(
-    async res => {
-        let getData: any  =res;
-        console.log(">>>. Data: ", getData);
+    if(object){
+      if(object.accr_status != undefined && object.accr_status == 'complete'){
+        return true;
+      }
+      if(object.paymentDetails != undefined && object.paymentDetails == false && object.accr_status != 'draft'){
+        return true;
+      }
+      if(object.accr_status != undefined && object.accr_status == 'draft'){
+        return false;
+      }
+      if(object.paymentDetails != undefined && object.paymentDetails != false && typeof object.paymentDetails == 'object' && object.paymentDetails.voucher_invoice != ''){
+        return false;
+      }
+    }
+
+
+    // let getId= (object.id);
+    // let url = this._service.apiServerUrl+"/"+'accrediation-details-show/'+getId;
+    // //let getScheme: any  = this.schemeRows[rowInd].id;
+
+    // console.log(">>>Get url and ID: ", url, " :: ", getId, " -- ");
+    // this._service.getwithoutData(url)
+    // .subscribe(
+    // async res => {
+    //     let getData: any  =res;
+    //     console.log(">>>. Data: ", getData);
         
         
-    });
+    // });
   }
 
   loadPageData() { 

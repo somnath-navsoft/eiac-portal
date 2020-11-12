@@ -2289,6 +2289,7 @@ getCriteria(value, secInd: any){
     }
 
 
+   
     
     if(ngForm1.form.valid && this.isSubmit == true && this.isNoteSubmit == true) {
       this.testingCalForm = {};
@@ -2325,6 +2326,8 @@ getCriteria(value, secInd: any){
       if(this.accreditationInfo) {
         this.testingCalForm.step1['accreditationInfo'] = this.accreditationInfo;
       }
+
+      console.log(">>> Step Data: ", this.testingCalForm);
 
       this.loader = false;
       // this.step1DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
@@ -3275,8 +3278,52 @@ getMatchFamily(famId: any, scopeData: any){
   }
   return false;
 }
+//Scope others functions
+updateScopeData = async(rowInd: number) => {
+  let getId= (this.formApplicationId);
+  let url = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+getId;
+  let getScheme: any  = this.schemeRows[rowInd].id;
+
+  console.log(">>>Get url and ID: ", url, " :: ", getId, " -- ", getScheme);
+  this.Service.getwithoutData(url)
+  .subscribe(
+  res => {
+      let getData: any  =res;
+      console.log(">>>. Data: ", getData);
+      if(getData.data.scopeDetails != undefined && !this.Service.isObjectEmpty(getData.data.scopeDetails)){
+        let jsonObject: any = getData.data.scopeDetails;
+        this.editScopeData = jsonObject;
+      }
+  });
+}
+
+
+continueScopeAccreditation(){
+//Reset all model data 
+this.dynamicScopeFieldColumns = {};
+this.dynamicScopeFieldType = {};
+this.dynamicScopeModel = {};
+this.fullScope = [];
+this.schemeRows = [{}];
+this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+}
+backScopeAccreditation(){
+//Reset all model data 
+this.dynamicScopeFieldColumns = {};
+this.dynamicScopeFieldType = {};
+this.dynamicScopeModel = {};
+this.fullScope = [];
+this.schemeRows = [{}];
+if(this.step1Data.accredation_criteria == 1){
+this.Service.moveSteps('scope_accreditation', 'information_audit_management', this.headerSteps);
+}
+if(this.step1Data.accredation_criteria == 2){
+this.Service.moveSteps('scope_accreditation', 'personal_information', this.headerSteps);
+}
+}
+
   
-onSubmitStep5(ngForm: any, type: any) {
+onSubmitStep5(ngForm: any, type?: any, rowInd?:any) {
     //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
 
     //Check dynamic model column fields validation
@@ -3285,7 +3332,7 @@ onSubmitStep5(ngForm: any, type: any) {
   let errorScope: boolean = false;
 
   this.fullTypeFamily.forEach(typeScope => {
-    console.log(">>>> Type: ", typeScope);
+    console.log(">>>> Type: ", typeScope, " -- ", typeScope.scopeRows);
     // if(typeScope.isFamily != undefined && !typeScope.isFamily){
     //   console.log(">>> Not scope family")
     // }
@@ -3296,7 +3343,8 @@ onSubmitStep5(ngForm: any, type: any) {
       if(typeScope.scopeRows.length > 0){
         
         console.log(">>>> enter...1: ", typeScope.scopeRows);
-        for(var t=0;t<typeScope.scopeRows.length; t++){
+        //for(var t=0;t<typeScope.scopeRows.length; t++){
+          for(var t=rowInd;t<=rowInd; t++){
           let schemeId = 0;
           let familyId: any = 0;
           schemeId = typeScope.scopeRows[t].id;
@@ -3327,7 +3375,7 @@ onSubmitStep5(ngForm: any, type: any) {
         }
       }
   });  
-  if(errorScope && type === undefined){
+  if(errorScope){
     this.toastr.warning('Please Fill required field','Validation Error');
     return false;    
   }

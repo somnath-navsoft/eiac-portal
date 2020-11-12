@@ -1471,11 +1471,11 @@
                                                     </tr>
                                                 </table>
                                             </div>
-                                            <div class="row">
+                                            <!-- <div class="row">
                                                 <div class="col-md-12">
                                                     <p class="error" *ngIf="!authorizationStatus  && isApplicationSubmitted == true">All check are required.</p>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div class="recommend my-3">
                                                 <div class="recommend-main">
                                                     <div class="recommend-quarter">
@@ -1519,6 +1519,11 @@
                                             <mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm8" [(ngModel)]="authorizationList.undertaking_confirm8">
                                                 Entering the authorised name will serve as an acceptance and digital binding signature for this agreement<span class="required_input">*</span>
                                             </mat-checkbox>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p class="error" *ngIf="!authorizationStatus  && isApplicationSubmitted == true">All checkboxes are mandatory.</p>
+                                                </div>
                                             </div>
                                             <div class="row mt-3">
                                                 <div class="col-12 p-0">

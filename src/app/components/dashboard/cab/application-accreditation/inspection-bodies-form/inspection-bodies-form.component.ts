@@ -2875,7 +2875,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       //this.inspectionBodyForm.step1['trade_license'] = this.step1DataBodyFormFile;
       this.inspectionBodyForm.step1.is_draft = false;
       console.log(">>> First Step Data: ", this.inspectionBodyForm);
-      //return;
+      return;
       //this.step1DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
           // this.toastr.success('Application Successfully Submitted', '');
           // setTimeout(()=> {
@@ -3936,7 +3936,7 @@ backScopeAccreditation(){
       console.log(">>>Scope saving...");
       ////console.log(">>>Enter....3")
       this.saveScope(rowInd);
-      ////console.log(">>> step5 submit...", this.step5Data, " -- ", this.inspectionBodyForm);
+      console.log(">>> step5 submit...", this.step5Data, " -- ", this.inspectionBodyForm);
       this.inspectionBodyForm.step5.is_draft = false;
       this.inspectionBodyForm.saved_step = 5;
       //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));

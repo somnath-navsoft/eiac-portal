@@ -282,12 +282,12 @@ ngOnInit() {
     {
       name:'',
       bod_company:'',
-      md_or_chief_executive:'None',
+      md_or_chief_executive:'',
       authorized_contact_person:'',
       designation:'',
       mobile_no:'',
-      land_no:'None',
-      email_address:'None',
+      land_no:'',
+      email_address:'',
     }
   ]
 
@@ -421,14 +421,23 @@ ngOnInit() {
               scopeTitle  = getData.title.toString().toLowerCase().split(" ").join('_');
 
               //check already existing scheme...
-              for(var m in this.dynamicScopeModel){
-                  //console.log("mkey: ", m, " -- ", scopeTitle);
-                  if(m === scopeTitle){
-                    this.fullScope.splice(secInd, 1);
-                    this.toastr.error("Scheme should be unique, Please check.","Validation")
-                    return;
-                  }
+              if((findType.scopeRows.length)){
+                //console.log("@Existing scheme....1");
+                let dupdata: any = findType.scopeRows.find(item => item.title == scopeTitle);
+                console.log(">>Dup Type schem found...", dupdata);
+                if(dupdata != undefined){
+                  this.toastr.error("Duplicate  Scheme","Validation")
+                  return;
+                }
               }
+              // for(var m in this.dynamicScopeModel){
+              //     //console.log("mkey: ", m, " -- ", scopeTitle);
+              //     if(m === scopeTitle){
+              //       this.fullScope.splice(secInd, 1);
+              //       this.toastr.error("Scheme should be unique, Please check.","Validation")
+              //       return;
+              //     }
+              // }
               // this.dynamicScopeFieldColumns[scopeTitle] = [];
               // this.dynamicScopeFieldType[scopeTitle] = [];
               // this.dynamicScopeModel[scopeTitle] = {};
@@ -673,7 +682,7 @@ ngOnInit() {
             let dupdata: any = this.fullTypeScope.find(item => item.title == typeTitle);
             //console.log(">>Dup found...", dupdata);
             if(dupdata != undefined){
-              this.toastr.error("Sub Type should be unique, Please check.","Validation")
+              this.toastr.error("Duplicate  Type","Validation")
               return;
             }
 
@@ -789,7 +798,7 @@ ngOnInit() {
       if(typeId){
         let typeData: any = this.subTypeMaster.find(rec => rec.service_page.id == typeId);
         if(typeData){
-          return 'Accreditation SubType For: ' + typeData.title;
+          return 'Accreditation Sub Type For: ' + typeData.title;
         }
       }
   }
@@ -1089,12 +1098,12 @@ loadAppInfo(){
           // //console.log(res," -- ",key);
           step2['cabBodData'][key].name = res.name;
           step2['cabBodData'][key].bod_company = res.bod_company,
-          step2['cabBodData'][key].md_or_chief_executive = res.md_or_chief_executive != '' && res.md_or_chief_executive != undefined ? res.md_or_chief_executive : 'None';
+          step2['cabBodData'][key].md_or_chief_executive = res.md_or_chief_executive != '' && res.md_or_chief_executive != undefined ? res.md_or_chief_executive : '';
           step2['cabBodData'][key].authorized_contact_person = res.authorized_contact_person;
           step2['cabBodData'][key].designation = res.designation;
           step2['cabBodData'][key].mobile_no = res.mobile_no;
-          step2['cabBodData'][key].land_no = res.land_no != '' && res.land_no != undefined ? res.land_no : 'None';
-          step2['cabBodData'][key].email_address = res.email != '' && res.email != undefined ?  res.email : 'None';
+          step2['cabBodData'][key].land_no = res.land_no != '' && res.land_no != undefined ? res.land_no : '';
+          step2['cabBodData'][key].email_address = res.email != '' && res.email != undefined ?  res.email : '';
         });
         this.ownOrgMembInfo = step2['cabBodData'];
         this.step1Data.physical_location_address = data.applicant_location;
@@ -1410,7 +1419,7 @@ loadAppInfo(){
                   }
             })
             console.log("@recommend visit: ", this.recomendVisit, " -- ", getData.data.recommend_visit);
-            this.step7Data.recommend_visit = this.recomendVisit;//(getData.data.recommend_visit);
+            //this.step5Data.recommend_visit = this.recomendVisit;//(getData.data.recommend_visit);
 
                 let authList: any;
                 authList = getData.data.authorization_list;
@@ -1435,9 +1444,9 @@ loadAppInfo(){
 
                 // let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
                 // this.step5Data.recommend_visit = visitRecomm;//'second';
+                console.log(">>>> crecomm year: ", getData.data.recommend_year);
 
-
-                this.step7Data.recommend_year = parseInt(getData.data.recommend_year);
+                this.step5Data.recommend_year = parseInt(getData.data.recommend_year);
               }
 
               //Step 9

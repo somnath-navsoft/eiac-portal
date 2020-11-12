@@ -364,7 +364,10 @@
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Name the members of Board of Directors (BOD) (if any)</mat-label>
-                                                            <input matInput  readonly="true" (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name the members of Board of Directors (BOD)"  name="bod_directors_name_{{i}}" [(ngModel)]="ownOrgMembInfo[i].name"  >
+                                                            <input matInput  readonly="true" 
+                                                            (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                            placeholder="Name the members of Board of Directors (BOD)"  name="bod_directors_name_{{i}}" 
+                                                            [(ngModel)]="ownOrgMembInfo[i].name"  >
                                                         </mat-form-field>
                                                     </div>
 
@@ -379,8 +382,10 @@
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
-                                                            <mat-label>Managing Director/Chief Executive</mat-label>
-                                                            <input matInput readonly="true" placeholder="Authorized Contact Person Name"   name="md_or_chief_executive_{{i}}" [(ngModel)]="ownOrgMembInfo[i].md_or_chief_executive" (keypress)="Service.inputFilter($event, Service.regExName)">
+                                                            <mat-label>Managing Director/Chief Executive....</mat-label>
+                                                            <input matInput readonly="true" placeholder="Authorized Contact Person Name"   
+                                                            name="md_or_chief_executive_{{i}}" [(ngModel)]="ownOrgMembInfo[i].md_or_chief_executive" 
+                                                            (keypress)="Service.inputFilter($event, Service.regExName)">
                                                         </mat-form-field>
                                                     </div>
 
@@ -1535,11 +1540,11 @@
                                                     </tr>
                                                 </table>
                                             </div>
-                                            <div class="row">
+                                            <!-- <div class="row">
                                                 <div class="col-md-12">
                                                     <p class="error" *ngIf="!authorizationStatus  && isApplicationSubmitted == true">All check are required.</p>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div class="recommend my-3">
                                                 <div class="recommend-main">
                                                     <div class="recommend-quarter">
@@ -1579,18 +1584,24 @@
                                                     <hr>
                                                 </div>
                                             </div>
+                                            <div class="auth">
+                                                <mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm8" [(ngModel)]="authorizationList.undertaking_confirm8">
+                                                    Entering the authorised name will serve as an acceptance and digital binding signature for this agreement<span class="required_input">*</span>
+                                                </mat-checkbox>
+                                                </div>
+    
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <p class="error" *ngIf="!authorizationStatus  && isApplicationSubmitted == true">All checkboxes are mandatory.</p>
+                                                    </div>
+                                                </div>
                                             <div class="row mt-3">
                                                 <div class="col-12 p-0">
                                                     <div class="form-subheader-data subhead-dt">
                                                         <h5>SIGNED FOR AND ON BEHALF OF APPLICANT</h5>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="auth">
-                                            <mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm8" [(ngModel)]="authorizationList.undertaking_confirm8">
-                                                Entering the authorised name will serve as an acceptance and digital binding signature for this agreement<span class="required_input">*</span>
-                                            </mat-checkbox>
-                                            </div>
+                                            </div>                                            
 
                                             <div class="row">
                                                 <div class="col-md-4 col-sm-12">
