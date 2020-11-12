@@ -2743,7 +2743,7 @@ getCriteria(value, secInd: any){
     }
   }
 
- saveScope(){
+ saveScope(rowInd : number){
     
   let scopeValues: any =[];
   let scopeIds:any =[];
@@ -2763,8 +2763,8 @@ getCriteria(value, secInd: any){
       if(typeScope.isFamily != undefined && !typeScope.isFamily){
             console.log(">>> Not scope family")
             let familyId = 0;
-            for(var t=0;t<typeScope.scopeRows.length; t++){
-
+            //for(var t=0;t<typeScope.scopeRows.length; t++){
+              for(var t=rowInd;t<=rowInd; t++){
               ////console.log("Scheme Sec: ", t," -- ", scopeCollections);
               selectScheme = typeScope.scopeRows[t].id;
               if(selectScheme == undefined){
@@ -3305,6 +3305,7 @@ this.dynamicScopeFieldType = {};
 this.dynamicScopeModel = {};
 this.fullScope = [];
 this.schemeRows = [{}];
+this.fullTypeFamily = [];
 this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
 }
 backScopeAccreditation(){
@@ -3314,6 +3315,7 @@ this.dynamicScopeFieldType = {};
 this.dynamicScopeModel = {};
 this.fullScope = [];
 this.schemeRows = [{}];
+this.fullTypeFamily = [];
 if(this.step1Data.accredation_criteria == 1){
 this.Service.moveSteps('scope_accreditation', 'information_audit_management', this.headerSteps);
 }
@@ -3397,7 +3399,7 @@ onSubmitStep5(ngForm: any, type?: any, rowInd?:any) {
     if(!ngForm.form.valid && type == undefined && this.schemeRows.length == 1 
         && this.schemeRows[0].id === undefined && this.editScopeData != undefined && this.editScopeData != null) {
       this.loader = false;
-      this.saveScope();
+      this.saveScope(rowInd);
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
         res => {
@@ -3411,9 +3413,9 @@ onSubmitStep5(ngForm: any, type?: any, rowInd?:any) {
           }
         });
     }else if(ngForm.form.valid && type == undefined) {
-      ////console.log(">>>Scope saving...");
-      ////console.log(">>>Enter....3")
-      this.saveScope();
+      console.log(">>>Scope saving...");
+      console.log(">>>Enter....3")
+      this.saveScope(rowInd);
       ////console.log(">>> step5 submit...", this.step5Data, " -- ", this.inspectionBodyForm);
       this.testingCalForm.step5.is_draft = false;
       this.testingCalForm.saved_step = 5;
