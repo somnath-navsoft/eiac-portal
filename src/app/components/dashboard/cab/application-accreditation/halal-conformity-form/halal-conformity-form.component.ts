@@ -1849,6 +1849,8 @@ addSchemeRow(obj: any = [],index: number){
       this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
       this.step1Data.phone_no = '';
       this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accr == '0' ? false : true;
+      this.step1Data.hcab_other_location = this.step1Data.hcab_other_loc == '0' ? false : true;
+      
       this.step1Data.is_draft = true;
       this.publicHalalConformityForm.step1 = this.step1Data;
   
@@ -2104,6 +2106,8 @@ addSchemeRow(obj: any = [],index: number){
       // this.publicHalalConformityForm.step1.is_draft = false;
       this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
       this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accr == '0' ? false : true;
+      this.step1Data.hcab_other_location = this.step1Data.hcab_other_loc == '0' ? false : true;
+      
       this.publicHalalConformityForm.step1 = this.step1Data;
   
       this.publicHalalConformityForm.step1['ownOrgBasicInfo'] = [];
