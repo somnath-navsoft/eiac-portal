@@ -35,6 +35,54 @@ export class MessageReplyComponent implements OnInit {
     //   var landUrl = '/dashboard' + this.userType + '/home'
     //   this.router.navigateByUrl(landUrl);
     // }
+    this.getMessage();
+  }
+
+  getMessage() {
+    this.loader = false;
+    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.replyMessage + '?id=' + this.userId)
+      .subscribe(
+        res => {
+          this.messageList = res['data'].message_list;
+          // console.log(this.messageList);
+
+          this.loader = true;
+          // console.log(res['data'].message_list);
+        });
+  }
+
+  validateFile(fileEvent: any) {
+    var file_name = fileEvent.target.files[0].name;
+    var file_exe = file_name.substring(file_name.lastIndexOf('.') + 1, file_name.length);
+    var ex_type = ['pdf', 'xlsx', 'xlx'];
+    var ex_check = this.Service.isInArray(file_exe, ex_type);
+    if (ex_check) {
+      this.chatMessage.upload_message = fileEvent.target.files[0].name;
+      this.chatMessageFile.append('upload_message_file', fileEvent.target.files[0]);
+      this.file_validation = true;
+      return true;
+    } else {
+      this.file_validation = false;
+      return false;
+    }
+  }
+
+
+  onSubmit(ngForm) {
+    if (ngForm.form.valid) {
+      this.chatMessage.email = this.userEmail;
+      this.chatMessage.userType = this.userType;
+      this.loader = false;
+      this.chatMessageFile.append('data', JSON.stringify(this.chatMessage));
+      this.Service.post(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.profileService, this.chatMessageFile)
+        .subscribe(
+          res => {
+            if (res['status'] == true) {
+              this.loader = true;
+              this.toastr.success(res['msg'], '');
+            }
+          })
+    }
   }
 
 }
