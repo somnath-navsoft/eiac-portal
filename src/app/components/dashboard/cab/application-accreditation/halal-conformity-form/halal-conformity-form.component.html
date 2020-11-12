@@ -629,7 +629,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-9">
-                                            <mat-radio-group name="is_hold_other_accreditation" [(ngModel)]="step1Data.is_hold_other_accreditation" 
+                                            <mat-radio-group name="is_hold_other_accr" [(ngModel)]="step1Data.is_hold_other_accr" 
                                             #selectAccredHold="ngModel" required>
                                                 <div class="row">
                                                     <div class="col-md-4">
@@ -652,7 +652,7 @@
 
                                     </div>
 
-                                    <div class="row" id="is_hold_other_accreditations" *ngIf="step1Data.is_hold_other_accreditation == '1'">
+                                    <div class="row" id="is_hold_other_accreditations" *ngIf="step1Data.is_hold_other_accr == '1'">
                                         <div class="col-md-12">
                                             <div class="table-content-health">
                                                 <table>
@@ -1379,7 +1379,9 @@
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
                                         <!-- (click)="Service.headerStepMove('personal_information',headerSteps,'menu','summary_number_ofpersonnel')" -->
-                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="backScopeAccreditation();scrollPage('page_header')"
+                                        <!-- <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="backScopeAccreditation();scrollPage('page_header')"
+                                        >BACK</a>  -->
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="Service.headerStepMove('personal_information',headerSteps,'menu','scope_accreditation')"
                                         >BACK</a> 
                                         <button class="cancel-bttn" (click)="onSubmitStep3(ngForm3, true)" type="button">SAVE AS DRAFT</button>
                                     </div>
