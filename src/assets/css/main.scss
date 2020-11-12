@@ -634,7 +634,10 @@ a:hover { text-decoration: none; }
 .ass-name-det hr { margin: 0; }
 .ass-data { display: flex; justify-content: space-between; background: #E9E9E9; padding: 10px 20px; border-radius: 5px 5px 0 0; }
 .ass-data h3 { color: #B14A56; font-family: "Dubai Medium"; font-size: 16px; margin: 0; }
-.ass-data p { color: #444444; font-family: "Dubai Regular"; font-size: 14px; margin: 0; }
+.ass-data .date_wrapper p { color: #444444; font-family: "Dubai Regular"; font-size: 14px; margin: 0; border-right: 1px solid #D1CACB; padding-right: 10px; }
+.ass-data .date_wrapper { display: flex; justify-content: space-between; }
+.reply_msg { color: #B54150; font-family: 'Dubai Medium'; padding-left: 10px; font-size: 14px; cursor: pointer;}
+.reply_msg span { margin-right: 5px; vertical-align: middle; }
 .ass-details { padding: 10px 20px; }
 .ass-details p { color: #656565; font-size: 16px; font-family: "Dubai Regular"; line-height: 2; }
 .attach-cnt { padding: 10px 0; }
@@ -1242,7 +1245,28 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .main_pop .pop_thanks h5 { font-size: 36px; font-family: 'Dubai Regular'; text-transform: uppercase; margin-bottom: 20px; color: #C6B8A4; }
 .main_pop .pop_thanks p { font-size: 22px; font-family: 'Dubai Regular'; margin-bottom: 50px; }
 
+//Reply Message
 
+.message_data { border-bottom: 1px solid #CFCFCF; padding: 15px 0; height: inherit; }
+.messaging_chat { display: flex; padding: 25px 0; align-items: flex-start; }
+.message_user {
+  background: #B19782;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 18px;
+  font-family: 'Dubai Medium';
+  line-height: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+  padding: 15px;
+}
+.message_chat .message_cnt { background: #EFEFEF; color: #656565; font-family: 'Dubai Regular'; font-size: 16px; padding: 10px 20px; margin-bottom: 5px; border-radius: 5px; }
+.message_chat .message_time { font-size: 14px; color: #444444; display: flex; justify-content: flex-start; }
+.message_wrapper .messaging_chat:nth-child(even) { flex-direction: row-reverse; }
+.message_wrapper .messaging_chat:nth-child(even) .message_user { margin-left: 20px; }
+.messaging_chat:nth-child(even) .message_chat .message_time { justify-content: flex-end; }
 
 //==================RESPONSIVE==================//
 @media(max-width: 1500px) {
