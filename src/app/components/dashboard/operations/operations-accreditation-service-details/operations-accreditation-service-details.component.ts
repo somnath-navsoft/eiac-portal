@@ -33,6 +33,8 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   ptParticipation:any[] = [];
   technicalManager:any;
   managementManager:any;
+  qualityManager:any;
+  islamicAffairExpert:any;
   paymentDetails:any;
   applicantInfo:any;
   scopeDetailsHeading:any;
@@ -68,7 +70,14 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   ilauUdertakingConfirm:any;
   recommendVisit:any;
   authorizationList:any;
-  ilaMraCheck:boolean = false;;
+  ilaMraCheck:boolean = false;
+  cbsOtherActivity: any[] = [{}];
+  otherStandards: any[] = [{}];
+  nameOfCountry: any[] = [{}];
+  hcabOtherLocation:any[] = [];
+  accreditationInfo:any[] = [];
+  hcabOthers:any;
+  doesHcab:any;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, public sanitizer: DomSanitizer,private modalService: NgbModal,public uiDialog: UiDialogService) { }
@@ -209,6 +218,10 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
     })
  }
 
+ removePlusItem(data) {
+   return this._service.removePlus(data);
+ }
+
  getSchme(sid: number){
   let getSchemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id == sid);
   //////console.log("data: ", getSchemeData);
@@ -273,8 +286,95 @@ getSubType(typeId: number){
           this.ptParticipation = result['data']['ptParticipation'];
           this.technicalManager = result['data']['technicalManager'] ? result['data']['technicalManager'][0] : '';
           this.managementManager = result['data']['managementManager'] ? result['data']['managementManager'][0] : '';
+          this.qualityManager = result['data']['qualityManager'] ? result['data']['qualityManager'][0] : '';
+          this.islamicAffairExpert = result['data']['managementManager'] ? result['data']['managementManager'][0] : '';
           this.paymentDetails = result['data'].paymentDetails;
           this.editScopeData = result['data']['scopeDetails'];
+
+          if(result['data'].otherActivityLocations) {
+            let getActivity: any =  result['data'].otherActivityLocations;
+            // console.log(">>> other activity: ", getActivity);
+            if(getActivity != null){
+              let tempAct: any =[];
+            for(var k in getActivity){
+              // console.log(">>>> ", getActivity[k]['value'], " -- ", typeof getActivity[k]['value']);
+              let tempObj: any = (getActivity[k]['value']);
+              tempAct.push(tempObj);
+              // console.log(">>> ", k , " :: ", tempAct);
+            }
+            this.cbsOtherActivity = tempAct;
+            }
+          }
+
+
+          if(result['data'].scopeDetails != undefined && !this._service.isObjectEmpty(result['data'].scopeDetails)){
+                
+            let jsonObject = result['data'].scopeDetails;//JSON.parse(jsonStrting);
+            this.editScopeData = jsonObject; 
+            let otherCopy: any=[];
+            //console.log(">>>Edit scope: ", this.editScopeData);
+            if(this.editScopeData.others != undefined && typeof this.editScopeData.others == 'object'){
+                  let colheader: any = ['category', 'standard', 'scopeScheme'];
+                  let otherData: any = this.editScopeData['others']['others']['scope_value'];
+                  otherData.forEach((rec, key) => {
+                    //console.log(">>> other values: ", rec, " -- ", key);
+                    let tmpObj: any ={};
+                        for(var p in rec){
+                          //console.log(">>>col.. ", colheader[p], " == ",  rec[p]);
+                          tmpObj[colheader[p].toString()] = rec[p];
+
+                        }
+                        otherCopy.push(tmpObj);
+                  })
+            }
+            if(this.editScopeData.null != undefined && typeof this.editScopeData.null == 'object'){
+              //console.log(">>> null key found and deleting...");
+              delete this.editScopeData['null'];
+            }
+            if(otherCopy.length > 0){
+              this.otherStandards = otherCopy;
+              delete this.editScopeData['others'];
+            }
+            
+            //
+            //console.log(">>> scope entry: ", this.editScopeData, " == ", otherCopy);
+          }
+
+          if(result['data'].otherActivityLocations != null){
+            this.step1Data.hcab_other_location = '1';
+            var hcab_location = result['data'].otherActivityLocations
+            for(let key in hcab_location) {
+              var newLoaction = [];
+              newLoaction.push(hcab_location[key].value);
+            }
+
+            this.hcabOtherLocation = newLoaction;
+            this.hcabOthers = 1;
+
+            // console.log(this.hcabOtherLocation);
+          }
+          else{
+            this.hcabOthers = 0;
+          }
+          
+          if(result['data'].hcabOtherAccreditation != ''){
+            this.accreditationInfo = result['data'].hcabOtherAccreditation;
+            this.doesHcab = 1;
+          }else{
+            this.doesHcab = 1;
+          }
+
+          // console.log(this.otherStandards,'cbsOtherActivity');
+          let getNameCountry: any = result['data'].nameOfCountry;
+            if(getNameCountry != null){
+            let tempNameCountry: any =[];
+            for(var k in getNameCountry){
+              let tempObj: any = (getNameCountry[k]['value']);
+              tempNameCountry.push(tempObj);
+              console.log(">>> ", k , " :: ", tempNameCountry);
+            }
+            this.nameOfCountry = tempNameCountry;
+            }
 
           this.recommendVisit = JSON.parse(result['data'].recommend_visit);
           this.authorizationList = JSON.parse(result['data'].authorization_list);
