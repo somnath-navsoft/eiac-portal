@@ -1307,23 +1307,23 @@ addSchemeRow(obj: any = [],index: number){
                   }
                 }
 
-                if(res['data'].reg_form_issued_esma != ''){
+                if(res['data'].reg_form_issued_esma != null){
                   let getFile = res['data'].reg_form_issued_esma.toString().split('/');
-                  if(getFile.length){
+                  // if(getFile.length){
                     this.publicHalalConformityForm.id_issued_esma = getFile[4].toString().split('.')[0];
                     this.issuedEsmaPath = this.constant.mediaPath +  res['data'].reg_form_issued_esma.toString();
                     this.publicHalalConformityForm.id_issued_esma = getFile[4];
-                  }
+                  // }
                 }
 
-                if(res['data'].certificate_stamp != ''){
+                if(res['data'].certificate_stamp != null){
                   let getFile = res['data'].certificate_stamp.toString().split('/');
-                  if(getFile.length){
+                  // if(getFile.length){
                     this.publicHalalConformityForm.halal_certificate_stamp = getFile[4].toString().split('.')[0];
                     this.certificateStampPath = this.constant.mediaPath +  res['data'].certificate_stamp.toString();
                     this.publicHalalConformityForm.halal_certificate_stamp = getFile[4];
 
-                  }
+                  // }
                 }
 
                 if(res['data'].legal_status != ''){
@@ -1361,7 +1361,7 @@ addSchemeRow(obj: any = [],index: number){
                   this.step1Data.hcab_other_loc = '0';
                 }
                 
-                if(res['data'].hcabOtherAccreditation != ''){
+                if(res['data'].hcabOtherAccreditation != null){
                   this.accreditationInfo = res['data'].hcabOtherAccreditation;
                   this.step1Data.is_hold_other_accr = '1';
                   // is_hold_other_accreditation
@@ -2060,44 +2060,59 @@ addSchemeRow(obj: any = [],index: number){
     }
 
     if(stepCount == 'step6') {
-      this.publicHalalConformityForm = {};
-      this.publicHalalConformityForm.step7 = {};
-      this.publicHalalConformityForm.email = this.userEmail;
-      this.publicHalalConformityForm.userType = this.userType;
-      var applicationId = sessionStorage.getItem('applicationId');
-      this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-      this.step7Data.authorization_list_json = this.authorizationList;
-      //this.step7Data.recommend = this.recommend;
-      //make visit 
-      let recomVisit: any = {
-        'first':false,'second':false, 'third': false, 'fourth':false
-      };
-      console.log(recomVisit);
-      this.recomendVisit.forEach((item,index) => {
-        recomVisit[item.name.toString()] = item.checked;
-      })
-      this.step7Data.recommend = recomVisit;
-
-
-      this.step7Data.is_draft = true;
-      this.publicHalalConformityForm.saved_step = '7';
-
-      this.publicHalalConformityForm.step7 = this.step7Data;
-      // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
-      this.loader = false;
-      // this.step6DataBodyFormFile.append('data',JSON.stringify(this.healthCareForm));
-      //console.log(this.healthCareForm,'healthCareForm');
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.publicHalalConformityForm)
-      .subscribe(
-        res => {
-          // //console.log(res,'res')
-          this.loader = true;
-          if(res['status'] == true) {
-            this.toastr.success('Save Draft Successfully', '');
-          }else{
-            this.toastr.warning(res['msg'], '');
-          }
-        });
+        this.publicHalalConformityForm = {};
+        this.publicHalalConformityForm.step6 = {};
+        this.publicHalalConformityForm.email = this.userEmail;
+        this.publicHalalConformityForm.userType = this.userType;
+        var applicationId = sessionStorage.getItem('applicationId');
+        this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+        this.publicHalalConformityForm.saved_step = '6';
+        // this.step6Data.authorizationList = this.authorizationList;
+        this.step6Data.authorization_list_json = this.authorizationList;
+        this.step6Data.recommend = this.recommend;
+        this.step6Data.is_draft = false;
+        this.step6Data.application_date = new Date();
+      
+        let recomVisit: any = {
+          'first':false,'second':false, 'third': false, 'fourth':false
+        };
+        let recomCheckCount = 0;
+            this.recomendVisit.forEach((item,index) => {
+              if(item.checked == true){
+                recomCheckCount++;
+              }
+          recomVisit[item.name.toString()] = item.checked;
+        })
+        this.step6Data.recommend = recomVisit;//this.recomendVisit;
+    
+        this.publicHalalConformityForm.step6 = this.step6Data;
+        // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+      
+        // this.step4DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
+        // //console.log(this.publicHalalConformityForm,'publicHalalConformityForm');
+        this.loader = false;
+        this.step6DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
+        this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step6DataBodyFormFile)
+        .subscribe(
+          res => {
+            // //console.log(res,'res')
+            this.loader = true;
+            if(res['status'] == true) {
+              // this.toastr.success(res['msg'], '');
+              if(this.paymentFilePath != ''){
+                this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
+              }
+              else{
+                this.toastr.success("Application Submitted Successfully");
+                    setTimeout(() => {
+                      this.router.navigateByUrl('/dashboard/status/all');
+                    }, 5000)
+              }
+            }else{
+              this.toastr.warning(res['msg'], '');
+            }
+          });
+        //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
     }
   }
 
@@ -2145,6 +2160,7 @@ addSchemeRow(obj: any = [],index: number){
         this.step1Data.application_id = this.formApplicationId;
       }
       // this.publicHalalConformityForm.step1.is_draft = false;
+      this.step1Data.phone_no = '';
       this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
       this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accr == '0' ? false : true;
       this.step1Data.hcab_other_location = this.step1Data.hcab_other_loc == '0' ? false : true;
