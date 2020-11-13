@@ -225,7 +225,7 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
  }
 
  removePlusItem(data) {
-   return this._service.removePlus(data);
+   //return this._service.removePlus(data);
  }
 
  loadTermsConditions(pageId: number){

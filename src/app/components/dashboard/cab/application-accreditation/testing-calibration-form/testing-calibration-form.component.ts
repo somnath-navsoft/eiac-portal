@@ -307,34 +307,66 @@ export class TestingCalibrationFormComponent implements OnInit {
   }
   getSchme(sid: number){
     let getSchemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id == sid);
-    ////////console.log("data: ", getSchemeData);
+    //console.log("data: ", getSchemeData);
     if(getSchemeData){
       return '<strong>Accreditation Scope for ' + getSchemeData.title+'</strong>';
     }
   }
 
-  getFamilySchme(sid: number, fid: number){
+  getFamilyData = async(sid: number, fid: number) =>{
+    let findFamily: any = {};
+    ////console.log("Has family...");
+    let getTypeData = this.fullTypeFamily.find(item => item.id == sid);
+    //console.log(">>>> Type dataa: ", this.fullTypeFamily);
+    let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testing_cal_form_basic_data+"?scheme="+sid;
+    this.Service.getwithoutData(apiURL).subscribe(
+      record => {
+      //console.log('Fullscope: ', record, " -- ");
+      let data: any = record;
+      if(data && data.data.scopeFamily != undefined && data.data.scopeFamily.length > 0){
+        findFamily = data.data.scopeFamily.find(item => item.scope_family == fid);
+        console.log(">>> family: 1 ", findFamily);
+        if(findFamily){
+          console.log(">>> family: ", findFamily.title);
+          //return findFamily.title;
+          //return 'Accreditation Family Scope for ' + findFamily.title;
+        } 
+      }
+    });
+  }
+
+  getFamilySchme = (sid: number, fid: number) =>{
     ////console.log(">>> Family Data: ", sid," :: ", fid)
     if(fid > 0){
-      ////console.log("Has family...");
-      //let getTypeData = this.fullTypeFamily.find(item => item.id == sid);
-      ////console.log(">>>> Type dataa: ", this.fullTypeFamily);
+      let getFamilydata: any;
+      //getFamilydata =  this.getFamilyData(sid, fid);
+      //console.log(">>>>eneneenenen:   ", getFamilydata);
+      // let findFamily: any = {};
+      // ////console.log("Has family...");
+      // let getTypeData = this.fullTypeFamily.find(item => item.id == sid);
+      // //console.log(">>>> Type dataa: ", this.fullTypeFamily);
       // let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testing_cal_form_basic_data+"?scheme="+sid;
-      // this.Service.getwithoutData(apiURL).subscribe(record => {
+      // this.Service.getwithoutData(apiURL).subscribe(
+      //   async record => {
       //   //console.log('Fullscope: ', record, " -- ");
       //   let data: any = record;
       //   if(data && data.data.scopeFamily != undefined && data.data.scopeFamily.length > 0){
-      //     let findFamily: any = data.data.scopeFamily.find(item => item.scope_family == fid);
-      //     //console.log(">>> family: 1 ", findFamily);
+      //     findFamily = data.data.scopeFamily.find(item => item.scope_family == fid);
+      //     console.log(">>> family: 1 ", findFamily);
       //     if(findFamily){
-      //       //console.log(">>> family: ", findFamily.title);
-      //       return 'Accreditation Family Scope for ' + findFamily.title;
+      //       console.log(">>> family: ", findFamily.title);
+      //       //return 'Accreditation Family Scope for ' + findFamily.title;
       //     }
       //   }
-
       // });
+      // if(findFamily.title != undefined){
+      //   console.log(">>>>eneneenenen:   ", findFamily.title);
+      //   return 'Accreditation Family Scope for ' + findFamily.title;
+      // }
+      
+      
 
-      return 'Accreditation Family Scope ';
+    return 'Accreditation Family Scope ';
     }else{
       //console.log("NO family...");
       return '';
@@ -624,6 +656,10 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
           let familyId: any;
           let isFamilyData: boolean = false;
           let familyData: any[]=[];
+          let duplicateScheme: boolean = false;
+          let duplicateFamily: boolean = false;
+
+          console.log(dataScope, "scope data:");
           
 
           if(typeFamily == undefined){
@@ -652,44 +688,47 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
                     scopeTitle  = getData.title.toString().toLowerCase().split(" ").join('_'); 
                     schemeId    = getData.scope_accridiation.id;
 
-                    //check already existing scheme...
-                    // for(var m in this.dynamicScopeModel){
-                    //   //console.log("mkey: ", m, " -- ", scopeTitle);
-                    //     //let fobj: any = this.fullScope;
-                    //     if(m === scopeTitle){
-                    //       this.fullScope.splice(secInd, 1);
-                    //       this.toastr.error("Scheme should be unique, Please check.","Validation")
-                    //       return;
-                    //     }
-                    // }
-                    familyId = 0;
-                    if(dataScope.scopeFamily == null){
-                      this.dynamicScopeFieldColumns[schemeId] = [];
-                      this.dynamicScopeFieldColumns[schemeId][familyId.toString()] = [];
-                      this.dynamicScopeFieldType[schemeId] = [];
-                      this.dynamicScopeFieldType[schemeId][familyId.toString()] = [];
-                      this.dynamicScopeModel[schemeId] = {};
-                      this.dynamicScopeModel[schemeId][familyId.toString()] = {};
-                    }
-                      //scopeFamilyRows
-                      if(this.fullTypeFamily.length){
-                          let pushObj: any = {
-                            title: scopeTitle, id: getData.scope_accridiation.id, name: scopeName,familyId: familyId, familyData: familyData, scopeFamilyRows: [], scopeRows: [], isFamily: isFamilyData
+                      //check already existing scheme...
+                      this.fullTypeFamily.forEach((item, index) => {
+                        console.log(item.title, " :: ", scopeTitle);
+                        if(item.title == scopeTitle){
+                          duplicateScheme = true;
+                          this.toastr.warning("Duplicate Scheme!","Validation")
+                          return;
+                        }
+                      })
+
+                    if(!duplicateScheme){
+                          familyId = 0;
+                          if(dataScope.scopeFamily == null){
+                            this.dynamicScopeFieldColumns[schemeId] = [];
+                            this.dynamicScopeFieldColumns[schemeId][familyId.toString()] = [];
+                            this.dynamicScopeFieldType[schemeId] = [];
+                            this.dynamicScopeFieldType[schemeId][familyId.toString()] = [];
+                            this.dynamicScopeModel[schemeId] = {};
+                            this.dynamicScopeModel[schemeId][familyId.toString()] = {};
                           }
-                          
-                          if(this.fullTypeFamily[secInd] != undefined && !this.Service.isObjectEmpty(this.fullTypeFamily[secInd])){
-                            //console.log("@Existing scheme...found", this.fullTypeFamily[secInd]);
-                            this.fullTypeFamily[secInd] = pushObj;
+                          //scopeFamilyRows
+                          if(this.fullTypeFamily.length){
+                              let pushObj: any = {
+                                title: scopeTitle, id: getData.scope_accridiation.id, name: scopeName,familyId: familyId, 
+                                familyData: familyData, scopeFamilyRows: [], scopeRows: [], isFamily: isFamilyData
+                              }
+                              
+                              if(this.fullTypeFamily[secInd] != undefined && !this.Service.isObjectEmpty(this.fullTypeFamily[secInd])){
+                                //console.log("@Existing scheme...found", this.fullTypeFamily[secInd]);
+                                this.fullTypeFamily[secInd] = pushObj;
+                              }else{
+                                  this.fullTypeFamily.push({
+                                    title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName, familyData: familyData, scopeFamilyRows: [{}], scopeRows: [], isFamily: isFamilyData
+                                  });
+                              }
                           }else{
                               this.fullTypeFamily.push({
-                                title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName, familyData: familyData, scopeFamilyRows: [{}], scopeRows: [], isFamily: isFamilyData
-                              });
+                                  title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName, familyData: familyData, scopeFamilyRows: [{}], scopeRows: [], isFamily: isFamilyData
+                                });
                           }
-                      }else{
-                          this.fullTypeFamily.push({
-                              title: scopeTitle, id:getData.scope_accridiation.id, name:scopeName, familyData: familyData, scopeFamilyRows: [{}], scopeRows: [], isFamily: isFamilyData
-                            });
-                      }
+                        
 
                       //scope rows
                      let getTypeData: any = this.fullTypeFamily.find(item => item.title == scopeTitle);
@@ -705,13 +744,15 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
                           getTypeData.scopeRows[secInd] = pushObj;
                         }else{
                           getTypeData.scopeRows.push({
-                            SchemeTitle: typeTitle, id: getTypeData.id, name:getTypeData.name, familyId: familyId, 
+                            SchemeTitle: typeTitle, id: getTypeData.id, name:getTypeData.name, familyId: familyId
                           });
                         }
                     }else{
                       getTypeData.scopeRows.push({
-                        SchemeTitle: typeTitle, id: getTypeData.id, name:getTypeData.name,  familyId: familyId, 
+                        SchemeTitle: typeTitle, id: getTypeData.id, name:getTypeData.name,  familyId: familyId
                       });
+                    }
+
                     }
 
                       
@@ -736,7 +777,7 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
                     // }
                   }
 
-                  //console.log("Full Type family datastructure: ", this.fullTypeFamily);
+                console.log("Full Type family datastructure: ", this.fullTypeFamily);
 
                   if(dataScope.scopeValue.length){
                     var counter = 0;let defLine = {};
@@ -828,52 +869,67 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
             let schemeId: number;
             let familyId: number;
 
-            if(typeTitle != undefined){
-              getTypeData = this.fullTypeFamily.find(item => item.title == typeTitle);
-              //console.log("Type data: ", getTypeData);
-              schemeId = getTypeData.id;
-            }
-            if(getTypeData){
-
-                  familyData  = getTypeData.familyData.find(rec => rec.scope_family == typeFamily)
-                  if(familyData){
-                    familyName = familyData.title.toString();
-                    familyTitle = familyData.title.toString().toLowerCase().split(" ").join('_'); ;
-                    familyId = typeFamily;
-                  }
-
-                  if(getTypeData.scopeRows.length){
-                    ////console.log("@Existing scheme....1");
-                    let pushObj: any = {
-                      SchemeTitle: typeTitle, id: getTypeData.id, name:getTypeData.name, familyTitle: familyTitle, familyId: familyId, familyName: familyName
+                    if(typeTitle != undefined){
+                      getTypeData = this.fullTypeFamily.find(item => item.title == typeTitle);
+                      //console.log("Type data: ", getTypeData);
+                      schemeId = getTypeData.id;
                     }
-                    
-                    if(getTypeData.scopeRows[secInd] != undefined && !this.Service.isObjectEmpty(getTypeData.scopeRows[secInd])){
-                      ////console.log("@Existing scheme...found", findType.scopeRows[secInd]);
-                      getTypeData.scopeRows[secInd] = pushObj;
-                    }else{
-                      getTypeData.scopeRows.push({
-                        SchemeTitle: typeTitle, id: getTypeData.id, name:getTypeData.name, familyTitle: familyTitle, familyId: familyId, familyName: familyName
-                      });
+                    if(getTypeData){
+
+                          familyData  = getTypeData.familyData.find(rec => rec.scope_family == typeFamily)
+                          if(familyData){
+                            familyName = familyData.title.toString();
+                            familyTitle = familyData.title.toString().toLowerCase().split(" ").join('_'); ;
+                            familyId = typeFamily;
+                          }
+
+                          //check already existing scheme...
+                          if(getTypeData.scopeRows != undefined){
+                            getTypeData.scopeRows.forEach((item, index) => {
+                              console.log(item.SchemeTitle, " :: ", typeTitle);
+                              if(item.SchemeTitle == typeTitle){
+                                duplicateFamily = true;
+                                this.toastr.warning("Duplicate Family!","Validation")
+                                return;
+                              }
+                            })
+                          }
+                              
+
+                          if(getTypeData.scopeRows.length){
+                            ////console.log("@Existing scheme....1");
+                            let pushObj: any = {
+                              SchemeTitle: typeTitle, id: getTypeData.id, name:getTypeData.name, familyTitle: familyTitle, familyId: familyId, familyName: familyName,familyFound: true
+                            }
+                            
+                            if(getTypeData.scopeRows[secInd] != undefined && !this.Service.isObjectEmpty(getTypeData.scopeRows[secInd])){
+                              ////console.log("@Existing scheme...found", findType.scopeRows[secInd]);
+                              getTypeData.scopeRows[secInd] = pushObj;
+                            }else{
+                              getTypeData.scopeRows.push({
+                                SchemeTitle: typeTitle, id: getTypeData.id, name:getTypeData.name, familyTitle: familyTitle, familyId: familyId, familyName: familyName,familyFound: true
+                              });
+                            }
+                        }else{
+                          getTypeData.scopeRows.push({
+                            SchemeTitle: typeTitle, id: getTypeData.id, name:getTypeData.name, familyTitle: familyTitle, familyId: familyId, familyName: familyName,familyFound: true
+                          });
+                        }
                     }
-                }else{
-                  getTypeData.scopeRows.push({
-                    SchemeTitle: typeTitle, id: getTypeData.id, name:getTypeData.name, familyTitle: familyTitle, familyId: familyId, familyName: familyName
-                  });
-                }
-            }
 
-            //console.log("@Updated Type data: ", getTypeData);
-              this.dynamicScopeFieldColumns[schemeId] = [];
-              this.dynamicScopeFieldColumns[schemeId][familyId] = [];
+                  //console.log("@Updated Type data: ", getTypeData);
+                    this.dynamicScopeFieldColumns[schemeId] = [];
+                    this.dynamicScopeFieldColumns[schemeId][familyId] = [];
 
-              this.dynamicScopeFieldType[schemeId] = [];
-              this.dynamicScopeFieldType[schemeId][familyId] = [];
+                    this.dynamicScopeFieldType[schemeId] = [];
+                    this.dynamicScopeFieldType[schemeId][familyId] = [];
 
-              this.dynamicScopeModel[schemeId] = {};
-              this.dynamicScopeModel[schemeId][familyId] = {};
+                    this.dynamicScopeModel[schemeId] = {};
+                    this.dynamicScopeModel[schemeId][familyId] = {};
 
-              this.showScopeTable = 'block';
+                    this.showScopeTable = 'block';
+
+              console.log("Full Type family datastructure: ", this.fullTypeFamily);
 
               if(dataScope.scopeValue.length){ 
                 var counter = 0;let defLine = {};
@@ -1571,7 +1627,9 @@ getCriteria(value, secInd: any){
     this.testingCalForm.testingLabInfo           = this.testingLabInfo;
     this.testingCalForm.calLabInfo               = this.calLabInfo;
     this.testingCalForm.medicaMainlLabInfo        = this.medicaMainlLabInfo;
-    this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,
+    this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false, 
+      undertaking_confirm8: false, undertaking_confirm9: false,
+      undertaking_confirmTop3: false,undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,
       undertaking_confirm7:false};
 
     // this.recommend = {first:false,second:false,third:false,fourth:false}
@@ -3536,7 +3594,7 @@ onSubmitStep5(ngForm: any, type?: any, rowInd?:any) {
   if(theEvent.checked || readChecked == true){
     for(let key in this.authorizationList) {
       //////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
-      if(this.authorizationList[key]) {  
+      if(this.authorizationList[key] && key != 'undertaking_confirmTop3') {  
         this.authorizationStatus = true;       
         checkCount++;
       }    
@@ -3544,12 +3602,12 @@ onSubmitStep5(ngForm: any, type?: any, rowInd?:any) {
   }
       
 
-  if(this.authorizationStatus && checkCount == 9){
+  if(this.authorizationStatus && checkCount == 11){
     this.authorizationStatus = true;
   }else{
     this.authorizationStatus = false;
   }
-  ////console.log(">>> Check status count: ", checkCount);
+  console.log(">>> Check status count: ", checkCount);
 }
 
  onSubmitUndertakingApplicant(ngForm7: any){
@@ -3575,7 +3633,7 @@ onSubmitStep5(ngForm: any, type?: any, rowInd?:any) {
       //   this.authorizationStatus = true;
       // }     
     }  
-    if(this.authorizationStatus && checkCount == 9){  
+    if(this.authorizationStatus && checkCount == 11){  
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;
