@@ -179,14 +179,7 @@ export class HalalConformityFormComponent implements OnInit {
   hcabLogo1_validation:boolean = true;
   hcabLogo2_validation:boolean = true;
   hcabLogo3_validation:boolean = true;
-  hcabLogo1:any;
-  hcabLogo2:any;
-  hcabLogo3:any;
   bodMembInfo:any;
-
-
-
-
 
    //Master scope form data declaration
    dynamicScopeModel:any         = {};   
@@ -232,8 +225,14 @@ export class HalalConformityFormComponent implements OnInit {
    recomendVisit: any[] = [];
    //Master scope form data declaration
    recommendYearValues: any[] = [];
-
-
+   id_issued_esma:any;
+   halal_certificate_stamp:any;
+   hcabLogo1:any;
+   hcabLogo2:any;
+   hcabLogo3:any;
+   hcabLogon1:any;
+   hcabLogon2:any;
+   hcabLogon3:any;
   
   @ViewChild('captchaRef',{static:true}) captchaRef: RecaptchaComponent;
 
@@ -1310,18 +1309,18 @@ addSchemeRow(obj: any = [],index: number){
                 if(res['data'].reg_form_issued_esma != null){
                   let getFile = res['data'].reg_form_issued_esma.toString().split('/');
                   // if(getFile.length){
-                    this.publicHalalConformityForm.id_issued_esma = getFile[4].toString().split('.')[0];
+                    this.id_issued_esma = getFile[4].toString().split('.')[0];
                     this.issuedEsmaPath = this.constant.mediaPath +  res['data'].reg_form_issued_esma.toString();
-                    this.publicHalalConformityForm.id_issued_esma = getFile[4];
+                    this.id_issued_esma = getFile[4];
                   // }
                 }
 
                 if(res['data'].certificate_stamp != null){
                   let getFile = res['data'].certificate_stamp.toString().split('/');
                   // if(getFile.length){
-                    this.publicHalalConformityForm.halal_certificate_stamp = getFile[4].toString().split('.')[0];
+                    this.halal_certificate_stamp = getFile[4].toString().split('.')[0];
                     this.certificateStampPath = this.constant.mediaPath +  res['data'].certificate_stamp.toString();
-                    this.publicHalalConformityForm.halal_certificate_stamp = getFile[4];
+                    this.halal_certificate_stamp = getFile[4];
 
                   // }
                 }
@@ -1334,13 +1333,13 @@ addSchemeRow(obj: any = [],index: number){
                 //   this.ownOrgBasicInfo = res['data'].ownershipOfOrg;
                 // }
                 
-                if(res['data'].bodMember != ''){
+                if(res['data'].bodMember != null){
                   this.ownOrgMembInfo = res['data'].bodMember;
                 }else{
                   this.ownOrgMembInfo = this.bodMembInfo;
                 }
 
-                if(res['data'].accrFormDirector != ''){
+                if(res['data'].accrFormDirector != null){
                   this.managingDirector = res['data'].accrFormDirector;
                 }
                 
@@ -1455,20 +1454,20 @@ addSchemeRow(obj: any = [],index: number){
                 if(res['data'].recognized_logo1 && res['data'].recognized_logo1 != ''){
                   let getFile = res['data'].recognized_logo1.toString().split('/');
                   
-                  this.publicHalalConformityForm.hcabLogo1 = getFile[4].toString().split('.')[0];
+                  this.hcabLogo1 = getFile[4].toString().split('.')[0];
                   this.hcabLogo1Path = this.constant.mediaPath +  res['data'].recognized_logo1.toString();
                 }
 
                 if(res['data'].recognized_logo2 && res['data'].recognized_logo2 != ''){
                   let getFile = res['data'].recognized_logo2.toString().split('/');
-                    this.publicHalalConformityForm.hcabLogo2 = getFile[4].toString().split('.')[0];
+                    this.hcabLogo2 = getFile[4].toString().split('.')[0];
                     this.hcabLogo2Path = this.constant.mediaPath +  res['data'].recognized_logo2.toString();
                 }
 
                 if(res['data'].recognized_logo3 && res['data'].recognized_logo3 != ''){
                   let getFile = res['data'].recognized_logo3.toString().split('/');
                   
-                  this.publicHalalConformityForm.hcabLogo3 = getFile[4].toString().split('.')[0];
+                  this.hcabLogo3 = getFile[4].toString().split('.')[0];
                   this.hcabLogo2Path = this.constant.mediaPath +  res['data'].recognized_logo3.toString();
                   
                 }
@@ -1580,7 +1579,7 @@ addSchemeRow(obj: any = [],index: number){
     var ex_type = ['doc','odt','pdf','rtf','docx','xlsx'];
     var ex_check = this.Service.isInArray(file_exe,ex_type);
     if(ex_check && fileName == 'halal_certificate_stamp'){
-      this.publicHalalConformityForm.halal_certificate_stamp = fileEvent.target.files[0].name;
+      this.halal_certificate_stamp = fileEvent.target.files[0].name;
       this.step1DataBodyFormFile.append('certificate_stamp_file',fileEvent.target.files[0]);
       this.file_validation_halal_certificate = true;
       return true;
@@ -1588,7 +1587,7 @@ addSchemeRow(obj: any = [],index: number){
       this.file_validation_halal_certificate = false;
       return false;
     }else if(ex_check && fileName == 'id_issued_esma'){
-      this.publicHalalConformityForm.id_issued_esma = fileEvent.target.files[0].name;
+      this.id_issued_esma = fileEvent.target.files[0].name;
       this.step1DataBodyFormFile.append('reg_form_issued_esma_file',fileEvent.target.files[0]);
       this.esma_file_validation = true;
       return true;
@@ -1596,7 +1595,7 @@ addSchemeRow(obj: any = [],index: number){
       this.esma_file_validation = false;
       return false;
     }else if(ex_check && fileName == 'hcabLogo1'){
-      this.publicHalalConformityForm.hcabLogo1 = fileEvent.target.files[0].name;
+      this.hcabLogo1 = fileEvent.target.files[0].name;
       this.step4DataBodyFormFile.append('hcabLogo1_file',fileEvent.target.files[0]);
       this.hcabLogo1_validation = true;
       return true;
@@ -1604,7 +1603,7 @@ addSchemeRow(obj: any = [],index: number){
       this.hcabLogo1_validation = false;
       return false;
     }else if(ex_check && fileName == 'hcabLogo2'){
-      this.publicHalalConformityForm.hcabLogo2 = fileEvent.target.files[0].name;
+      this.hcabLogo2 = fileEvent.target.files[0].name;
       this.step4DataBodyFormFile.append('hcabLogo2_file',fileEvent.target.files[0]);
       this.hcabLogo2_validation = true;
       return true;
@@ -1612,7 +1611,7 @@ addSchemeRow(obj: any = [],index: number){
       this.hcabLogo2_validation = false;
       return false;
     }else if(ex_check && fileName == 'hcabLogo3'){
-      this.publicHalalConformityForm.hcabLogo3 = fileEvent.target.files[0].name;
+      this.hcabLogo3 = fileEvent.target.files[0].name;
       this.step4DataBodyFormFile.append('hcabLogo3_file',fileEvent.target.files[0]);
       this.hcabLogo3_validation = true;
       return true;
@@ -1904,7 +1903,7 @@ addSchemeRow(obj: any = [],index: number){
       if(this.ownOrgBasicInfo) {
         this.publicHalalConformityForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
       }
-      if(this.ownOrgMembInfo) {
+      if(this.managingDirector) {
         this.publicHalalConformityForm.step1['managingDirector'] = this.managingDirector;
       }
       if(this.ownOrgMembInfo) {
@@ -2188,13 +2187,15 @@ addSchemeRow(obj: any = [],index: number){
       if(this.accreditationInfo) {
         this.publicHalalConformityForm.step1['accreditationInfo'] = this.accreditationInfo;
       }
+      this.loader = false;
   
       this.step1DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
-      console.log(this.step1DataBodyFormFile,'publicHalalConformityForm');
+      // console.log(this.step1DataBodyFormFile,'publicHalalConformityForm');
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step1DataBodyFormFile)
       .subscribe(
         res => {
           // //console.log(res,'res')
+          this.loader = true;
           let data: any =res;
           if(res['status'] == true) {
             // this.toastr.success(res['msg'], '');
@@ -2972,12 +2973,14 @@ getMatchScheme(scId: any, scopeData: any){
         this.publicHalalConformityForm.step4['authorizedPersonforSigning'] = this.authorizedPersonforSigning;
       }
   
+      this.loader = false;
       this.step4DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
       // console.log(this.step1DataBodyFormFile,'publicHalalConformityForm');
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step4DataBodyFormFile)
       .subscribe(
         res => {
           // //console.log(res,'res')
+          this.loader = true;
           if(res['status'] == true) {
             // this.toastr.success(res['msg'], '');
             this.Service.moveSteps('other_hcab_details','perlim_visit',  this.headerSteps);
