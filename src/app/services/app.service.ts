@@ -329,7 +329,7 @@ addMinutesToTime()
 
       let getData: any = JSON.parse(sessionStorage.getItem('userData'));
       //console.log(">>> User Save data: ", getData);
-      if(pageName === 'inspection-bodies-form' || pageName === 'health-care-form'){
+      if(pageName === 'inspection-bodies-form' || pageName === 'health-care-form' || pageName == 'testing-calibration-form'){
         if(getData.data.accredation_criteria == 2){
           //console.log(">>step select: ", getData.data.accredation_criteria );
         return true;

@@ -2020,6 +2020,7 @@ getCriteria(value, secInd: any){
             this.loader = true;
             let saveStep: number;
             let getData: any = res;
+            sessionStorage.setItem("userData", JSON.stringify(getData));
 
             if(res['data'].id && res['data'].id != '') {
                 let pathData: any;
@@ -2082,6 +2083,14 @@ getCriteria(value, secInd: any){
                           this.Service.headerStepMove(item.title, this.headerSteps,'menu')
                         }
                   })
+                  if(getData.data.accredation_criteria == 2){
+                    let stepData: any = this.headerSteps.find(item => item.title == 'information_audit_management');
+                      console.log(">>step select: 1 ", stepData);
+                      if(stepData){
+                        stepData.activeClass = '';
+                        stepData.stepComp = true;
+                      }
+                  }
                   //////console.log("#Step data: ", this.headerSteps);
                 }
 
@@ -2783,7 +2792,25 @@ getCriteria(value, secInd: any){
           this.loader = true;
           if(res['status'] == true) {
             // this.toastr.success(res['msg'], '');
-            this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+            if(this.step1Data.accredation_criteria == 1){
+              //Intial
+              this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+            }
+            if(this.step1Data.accredation_criteria == 2){
+              //Extension
+              //alert(this.step1Data.accredation_criteria);
+              let stepData: any = this.headerSteps.find(item => item.title == 'information_audit_management');
+              console.log(">>step select: 1 ", stepData);
+              if(stepData){
+                stepData.activeClass = '';
+                stepData.stepComp = true;
+              }
+              console.log(">>step select: 2 ", this.headerSteps);
+              this.Service.moveSteps('personal_information', 'scope_accreditation', this.headerSteps);
+            }
+
+
+            //this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
           }
