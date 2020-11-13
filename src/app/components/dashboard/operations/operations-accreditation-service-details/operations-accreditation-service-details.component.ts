@@ -366,9 +366,11 @@ getSubType(typeId: number){
           if(result['data'].otherActivityLocations != null){
             this.step1Data.hcab_other_location = '1';
             var hcab_location = result['data'].otherActivityLocations
+            var newLoaction = [];
             for(let key in hcab_location) {
-              var newLoaction = [];
-              newLoaction.push(hcab_location[key].value);
+              if(hcab_location[key].value.location_type) {
+                newLoaction.push(hcab_location[key].value);
+              }
             }
 
             this.hcabOtherLocation = newLoaction;

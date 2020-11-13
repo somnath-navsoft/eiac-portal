@@ -166,6 +166,7 @@ export class TestingCalibrationFormComponent implements OnInit {
   recommendStatus:boolean = false
   total: any = 0;
   criteriaList:any[] = [];
+  criteriaLoad:any[] = [];
   userId:any;
   selectTradeLicName :string = ''; 
   selectTradeLicPath :string = ''; 
@@ -1903,20 +1904,57 @@ getCriteria(value, secInd: any){
     this.step1Data.telephone = "";
   }
 
+  loadCriteria(param: any){
+      if(param != ''){
+        for(let key in this.criteriaLoad){
+          console.log(">>> ", key, " -- ", param)
+            if(key == param){
+              this.criteriaList = this.criteriaLoad[key]
+            }
+        }
+      }
+      console.log(">>>> Load criteria: ", param, " :: ", this.criteriaList );
+  }
+
   loadData(){
+    let jsonObj: any = {}
+    jsonObj['testing'] = [];
+    jsonObj['calibration'] = [];
+    jsonObj['testing'].push({
+      code:"Testing 1", value: 1
+    },
+    {
+      code:"Testing 2", value: 2
+    },
+    {
+      code:"Testing 3", value: 3
+    },
+    );
+    jsonObj['calibration'].push({
+      code:"calibration 1", value: 1
+    },
+    {
+      code:"calibration 2", value: 2
+    },
+    {
+      code:"calibration 3", value: 3
+    },
+    )
+
     this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testing_cal_form_basic_data)
       .subscribe( 
         res => {
-          //console.log("@Load scope....", res);
+          console.log("@Load scope....", res);
           //this.inspectionBodyScopeFields = res['medicalLabScopeFields'];
           //this.countryList = res['allCountry'];
           // this.labTypeList = res['allLabtype'];
           // //this.fullScope   = res['fullScope'];
-          //this.criteriaList = res['data']['criteriaList'];
+          //this.criteriaLoad = jsonObj;
+          this.criteriaList = res['data']['criteriaList'];
           //this.schemes = res['data']['schemes'];
           // this.step1Data.criteria_request = this.criteriaList[0].code; 
           // this.criteriaMaster = res['data']['schemes'];
-          //////////console.log("#Get criteria: ", this.criteriaMaster);
+          console.log("#Get criteria: ", this.criteriaList, " -- ",this.criteriaLoad);
   
         },
         error => {
@@ -2020,6 +2058,7 @@ getCriteria(value, secInd: any){
             this.loader = true;
             let saveStep: number;
             let getData: any = res;
+            sessionStorage.setItem("userData", JSON.stringify(getData));
 
             if(res['data'].id && res['data'].id != '') {
                 let pathData: any;
@@ -2082,6 +2121,14 @@ getCriteria(value, secInd: any){
                           this.Service.headerStepMove(item.title, this.headerSteps,'menu')
                         }
                   })
+                  if(getData.data.accredation_criteria == 2){
+                    let stepData: any = this.headerSteps.find(item => item.title == 'information_audit_management');
+                      console.log(">>step select: 1 ", stepData);
+                      if(stepData){
+                        stepData.activeClass = '';
+                        stepData.stepComp = true;
+                      }
+                  }
                   //////console.log("#Step data: ", this.headerSteps);
                 }
 
@@ -2783,7 +2830,25 @@ getCriteria(value, secInd: any){
           this.loader = true;
           if(res['status'] == true) {
             // this.toastr.success(res['msg'], '');
-            this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+            if(this.step1Data.accredation_criteria == 1){
+              //Intial
+              this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+            }
+            if(this.step1Data.accredation_criteria == 2){
+              //Extension
+              //alert(this.step1Data.accredation_criteria);
+              let stepData: any = this.headerSteps.find(item => item.title == 'information_audit_management');
+              console.log(">>step select: 1 ", stepData);
+              if(stepData){
+                stepData.activeClass = '';
+                stepData.stepComp = true;
+              }
+              console.log(">>step select: 2 ", this.headerSteps);
+              this.Service.moveSteps('personal_information', 'scope_accreditation', this.headerSteps);
+            }
+
+
+            //this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
           }
