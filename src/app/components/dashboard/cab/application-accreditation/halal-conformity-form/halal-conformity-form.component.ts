@@ -551,7 +551,7 @@ getCriteria(value, secInd: any, typeTitle: any){
              this.dynamicScopeFieldColumns[findType.id][scopeTitle][key].push(colObj);
              defLine[fieldValues] = [];
              ////console.log(">>> Field values: ", fieldValues, " -- ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeModel.fieldLines);
-             if(defLine['firstFieldValues'].length > 0  && key == 0){
+             if(defLine['firstFieldValues'] != undefined && defLine['firstFieldValues'].length > 0  && key == 0){
                let getValue = defLine['firstFieldValues'][0].field_value.id;
                
                if(key === 0){
@@ -853,7 +853,7 @@ addSchemeRow(obj: any = [],index: number){
            }
          }          
      }
-     //save to server at time
+     //save to server at time 
           this.publicHalalConformityForm = {};
           this.publicHalalConformityForm.step3 = {};  
           var applicationId = sessionStorage.getItem('applicationId');
@@ -1361,7 +1361,7 @@ addSchemeRow(obj: any = [],index: number){
                   this.step1Data.hcab_other_loc = '0';
                 }
                 
-                if(res['data'].hcabOtherAccreditation != null){
+                if(res['data'].hcabOtherAccreditation != ''){
                   this.accreditationInfo = res['data'].hcabOtherAccreditation;
                   this.step1Data.is_hold_other_accr = '1';
                   // is_hold_other_accreditation

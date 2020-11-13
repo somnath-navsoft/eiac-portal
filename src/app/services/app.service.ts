@@ -100,7 +100,7 @@ getObjectLength(obj: any){
   return count;
 } 
 setValueUrlIB(value: any) {
-  // console.log(">>assign IB value: ", value);
+  // //console.log(">>assign IB value: ", value);
   //this.userDataSource.next(value);
   //this.setIBValue =  value;
   // const currentValue = this.userDataSource.value;
@@ -114,32 +114,32 @@ removePlus(data) {
 }
 
 setValueUrl(value?:any) {
-  // console.log(">>assign value: ", value);
+  // //console.log(">>assign value: ", value);
   this.setValue =  value;
 }
 getValue(){
-  // console.log(">>get value: ", this.setValue);
+  // //console.log(">>get value: ", this.setValue);
   return this.setValue;
 }
 getValueIB(){
   setTimeout(() => {
-    // console.log(">>>getting val...",);
+    // //console.log(">>>getting val...",);
     return this.setValue;
   },100)
   
   // this.userData.subscribe(rec => {
-  //     console.log("<><><> Get Value: ", rec);
+  //     //console.log("<><><> Get Value: ", rec);
   // })
   //return this.setIBValue;
 }
 
 jsonToArray(data: any){
   var result = [];
-  console.log("get convert: ", data);
+  //console.log("get convert: ", data);
     for(var i in data){
       result.push([i,data[i]]);
     }
-    console.log("convert: ", result);
+    //console.log("convert: ", result);
   return result;    
 }
 
@@ -149,7 +149,7 @@ jsonToArray(data: any){
 // addDynamicsVal(data) {
  
 //   this.dynamicVal.next({value: 2});
-//   console.log(data,'segsrgtd',this.dynamicVal);
+//   //console.log(data,'segsrgtd',this.dynamicVal);
 // }
 
 addMinutesToTime()
@@ -190,7 +190,7 @@ addMinutesToTime()
     let decodeToken: any;
     if(getToken != null){
       decodeToken = this.decodeJWT(getToken);
-      //console.log("@Decode: ", decodeToken);
+      ////console.log("@Decode: ", decodeToken);
       if(typeof decodeToken === 'object'){
         this._constant.logType = decodeToken.user_type;
       }
@@ -232,7 +232,7 @@ addMinutesToTime()
   updateStoreAuthenticated(){
     let getToken = this.getToken();
     if(getToken != '' && getToken != 'null'){
-      //console.log('store update....');
+      ////console.log('store update....');
       this.store.dispatch(new LogInSuccess({token: getToken}));
     }
   }
@@ -265,20 +265,20 @@ addMinutesToTime()
     return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
   }
   inputFilter(e: any, regType?:any) {
-    //////console.log('@ ',e, " - ", regType)
+    ////////console.log('@ ',e, " - ", regType)
     //By Regular expression
     try {        
         let regEx = (regType === undefined) ? new RegExp(this.regExCont) : new RegExp(regType);
         if (regEx.test(e.key)) {
-           //////console.log('test true');
+           ////////console.log('test true');
             return true;
         } else {
-          //////console.log('test false');
+          ////////console.log('test false');
             e.preventDefault();
             return false;
         }
     } catch (ex) {
-      //////console.log('Exception: ',ex);
+      ////////console.log('Exception: ',ex);
     }
   }
   stripHTML(theText: string, ...allowTags: any[]){
@@ -300,7 +300,7 @@ addMinutesToTime()
   isObjectEmpty(Obj) {
     for(var key in Obj) 
     {
-      //////console.log(key, " -- ", Obj);
+      ////////console.log(key, " -- ", Obj);
       if(Obj.hasOwnProperty(key))
       return false;
     }
@@ -313,12 +313,12 @@ addMinutesToTime()
 
   stepDisable(){
     let urlVal: any= '';
-    console.log(">>> step: ", this._router.url);
+    //console.log(">>> step: ", this._router.url);
     var wholeUrl = this._router.url;
     var splitUrl = wholeUrl.split('/');
     let pageName: any;
     
-    console.log(splitUrl);
+    //console.log(splitUrl);
     if(splitUrl[3] != undefined && splitUrl[3] != ''){
       pageName = splitUrl[3]; // page name - /
     }
@@ -328,10 +328,10 @@ addMinutesToTime()
     if(urlVal != ''){
 
       let getData: any = JSON.parse(sessionStorage.getItem('userData'));
-      //console.log(">>> User Save data: ", getData);
+      ////console.log(">>> User Save data: ", getData);
       if(pageName === 'inspection-bodies-form' || pageName === 'health-care-form' || pageName == 'testing-calibration-form'){
         if(getData.data.accredation_criteria == 2){
-          //console.log(">>step select: ", getData.data.accredation_criteria );
+          ////console.log(">>step select: ", getData.data.accredation_criteria );
         return true;
         }
 
@@ -339,17 +339,17 @@ addMinutesToTime()
 
       //let getId= (urlVal);
       //let url = this.apiServerUrl+"/"+'accrediation-details-show/'+getId;
-      ////console.log(">>>Get url and ID: ", url, " :: ", getId);
+      //////console.log(">>>Get url and ID: ", url, " :: ", getId);
       // this.getwithoutData(url)
       // .subscribe(
       //   res => {
       //     let getData: any = res;
-      //     console.log(">>> Get Data: ", getData);
+      //     //console.log(">>> Get Data: ", getData);
       //     if(pageName === 'inspection-bodies-form' || pageName === 'health-care-form'){
-      //       console.log(">>> disable class...");
+      //       //console.log(">>> disable class...");
       //       if(getData.data.accredation_criteria == 2){
       //           // let stepData: any = stepRecords.find(item => item.title == 'information_audit_management');
-      //           // console.log(">>step select: 1 ", stepData);
+      //           // //console.log(">>step select: 1 ", stepData);
       //           // if(stepData){
       //           //   stepData.activeClass = '';
       //           //   stepData.stepComp = true;
@@ -366,19 +366,19 @@ addMinutesToTime()
 
   //------------------ Custom Step Function ---------------------
   traverseSteps(stepId: string,stepData: any[],target?:any){
-      //console.log('traverseSteps> ');
+      ////console.log('traverseSteps> ');
 
       let disableStep: boolean = false;
       disableStep = this.stepDisable();
-      console.log(">>> disable status: ", disableStep);
+      //console.log(">>> disable status: ", disableStep);
       
       if(stepData.length){
         let curStepIndex = stepData.findIndex(rec => rec.title === stepId.toString());
         if(curStepIndex >= 0 && curStepIndex < stepData.length){
-            //console.log('@Enter ....1');
+            ////console.log('@Enter ....1');
             stepData.forEach((item,index) => {
                 if(item.activeClass != '' && (item.activeClass === 'user-present' || item.activeClass === 'user-done')){
-                  //console.log('@Enter ....2 -- Find active class: ', item.activeClass, " -- index ",curStepIndex, " -- ", index );
+                  ////console.log('@Enter ....2 -- Find active class: ', item.activeClass, " -- index ",curStepIndex, " -- ", index );
                     if(index === curStepIndex){
                       let getSelData: any = stepData[index]
                       if(getSelData){
@@ -389,7 +389,7 @@ addMinutesToTime()
                     }
                 }
                 if(index < curStepIndex && stepData[index].stepComp === true){
-                  console.log(">>> disable status: 2222 ", disableStep);
+                  //console.log(">>> disable status: 2222 ", disableStep);
                   if(disableStep && stepData[index].title == 'information_audit_management'){
                     stepData[index].activeClass = '';
                   }else{
@@ -410,7 +410,7 @@ addMinutesToTime()
      //search active steps
      let activeCurr = stepData.find(rec => rec.activeStep == true);
      let curStep = stepData.findIndex(rec => rec.title === stepId.toString());
-    //  console.log('Hedaers enter.....1')
+    //  //console.log('Hedaers enter.....1')
      if(curStep > 0 || curStep == 0){
        if(curStep-1 < 0){
         if(activeCurr){
@@ -431,15 +431,15 @@ addMinutesToTime()
             }
         }
         if(stepElem){
-          // console.log('Hedaers enter.....2')
+          // //console.log('Hedaers enter.....2')
           stepElem.style.display = 'block';
         }
      }
      if(targetElem){
-      // console.log('Hedaers enter.....3')
+      // //console.log('Hedaers enter.....3')
       targetElem.style.display = 'none';
     }else{
-      // console.log('Hedaers enter.....4')
+      // //console.log('Hedaers enter.....4')
       stepData[curStep].activeClass = 'user-present';
       var myClasses = document.querySelectorAll('.cust-stepper'),
           i = 0,
@@ -451,9 +451,9 @@ addMinutesToTime()
           }
       }
     }
-    //console.log("@Step Data: ", stepData);
+    ////console.log("@Step Data: ", stepData);
     if(sec != '' && sec === 'menu'){
-      // console.log('Hedaers enter.....5')
+      // //console.log('Hedaers enter.....5')
       this.traverseSteps(stepId, stepData,target)
     }    
   }
@@ -471,13 +471,13 @@ addMinutesToTime()
         let targetElem = document.getElementById(prevTitle.toString());
         targetElem.style.display = 'none';
       }
-      // console.log("#Step Data: ", stepData);
+      // //console.log("#Step Data: ", stepData);
       this.headerStepMove(toStep, stepData);
   }
 
   moveJumpSteps(jumpStep: string, stepData: any[]){
       let jumpToStep = stepData.findIndex(rec => rec.title === jumpStep);
-      // console.log('Jumpstep: ', jumpToStep);
+      // //console.log('Jumpstep: ', jumpToStep);
       if(jumpToStep){
         stepData.forEach((item,index) => {
             let theStep = item.title;
@@ -493,20 +493,20 @@ addMinutesToTime()
               if(index > 0 && index <= jumpToStep){
                 nextStep = stepData[index + 1].title;
               }
-              // console.log(index, " - ", theStep, " << ", prevStep, " >> ", nextStep );
+              // //console.log(index, " - ", theStep, " << ", prevStep, " >> ", nextStep );
               if(prevStep != ''){
                 this.moveSteps(prevStep,theStep, stepData);
               }
               if(prevStep != '' && index == (jumpToStep-1)){
                 
                 stepElem = document.getElementById(theStep);
-                // console.log('target...', stepElem);
+                // //console.log('target...', stepElem);
                 if(stepElem){
-                  // console.log('target opening...', theStep);
+                  // //console.log('target opening...', theStep);
                   this.headerStepMove(theStep,stepData, '');
-                  // console.log('target opening...1');
+                  // //console.log('target opening...1');
                   // if(stepElem.style.display == 'none'){
-                  //   console.log('target opening...1');
+                  //   //console.log('target opening...1');
                   //   stepElem.style.display = 'block';
                   // }
                   
@@ -572,9 +572,9 @@ addMinutesToTime()
     }
 
     post(url: string, body: any) {
+      ////////console.log('======');
+      ////////console.log(body)
       //////console.log('======');
-      //////console.log(body)
-      ////console.log('======');
       if(this.getToken() != 'undefined' && this.getToken() != '' && this.getToken() != null){
         return this.http.post(url, body, this.getReqHeaders());
       }
@@ -662,17 +662,17 @@ addMinutesToTime()
     }
     //Make all key value of any object set empty
     public objectKeyValueEmpty(object: any){
-      //////console.log('Get object: ', object);
+      ////////console.log('Get object: ', object);
       if(object != null){
          object.forEach((rec,k) => {
-             //////console.log(rec[k]);
+             ////////console.log(rec[k]);
          })
       }
       // let filterObject = object.filter(record => {
-      //    //////console.log(record);
+      //    ////////console.log(record);
       // })
       //(object, val) => Object.keys(object).forEach(k => object[k] = '');
-      ////////console.log(filterObject);
+      //////////console.log(filterObject);
       //return filterObject;
     }
     public objectToArrayValue(getObject: any){

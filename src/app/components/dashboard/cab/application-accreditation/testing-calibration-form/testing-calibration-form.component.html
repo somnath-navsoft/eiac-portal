@@ -1144,6 +1144,7 @@
                                                             </div>
                                                         </div> 
                                                     </ng-container>
+                                                    <!-- {{typeFamily.scopeRows |  json}} -->
                                             </ng-container>
                                             <!-- [ngStyle]="{'display':showScopeTable}" -->
                                         <div class="row" >
@@ -1151,17 +1152,18 @@
                                                 
                                                 <div class="row" *ngIf="typeFamily.scopeRows.length > 0">
                                                     <div class="col-12" *ngFor="let scope of typeFamily.scopeRows; let i1 = index;">
+                                                        <!-- @family - {{scope.familyId}} == {{typeFamily.isFamily}} -->
                                                         <!-- @family - {{scope.familyId}} == {{scope.familyName}} >> {{typeFamily.scopeFamilyRows.length}}
                                                         #{{scope.familyFound}} -->
                                                     <form #ngForm1="ngForm" autocomplete="off">
-                                                        <div class="row" *ngIf="scope.familyFound == undefined">
+                                                        <div class="row" *ngIf="!typeFamily.isFamily">
                                                             <div class="col-md-12 p-0">
                                                                 <div class="form-subhdr">
                                                                     <h5>Accreditation Scope for - {{scope.name}}</h5>
                                                                 </div> 
                                                             </div>
                                                         </div>
-                                                        <div class="row" *ngIf="scope.familyFound != undefined && scope.familyFound == true">
+                                                        <div class="row" *ngIf="typeFamily.isFamily && scope.familyId > 0">
                                                             <div class="col-md-12 p-0">
                                                                 <div class="form-subhdr">
                                                                     <h5>Accreditation Scope for - {{scope.name}}
@@ -1173,7 +1175,7 @@
                                                             </div>
                                                         </div>
                                                         <!-- Make Table -->
-                                                        <div class="row" *ngIf="scope.familyFound == undefined">
+                                                        <div class="row" *ngIf="!typeFamily.isFamily">
                                                             <div class="col-md-12">
                                                                 <div class="table-content-health">                                                                    
                                                                     <table>
@@ -1292,7 +1294,7 @@
                                                             </div>
                                                         </div>
                                                         <!-- ///////////////////// -->
-                                                        <div class="row" *ngIf="scope.familyFound != undefined && scope.familyFound == true">
+                                                        <div class="row" *ngIf="typeFamily.isFamily && scope.familyId > 0">
                                                             <div class="col-md-12">
                                                                 <div class="table-content-health">                                                                    
                                                                     <table>
