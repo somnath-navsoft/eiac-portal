@@ -231,7 +231,7 @@ export class HalalConformityFormComponent implements OnInit {
    hcabLogo3Path:any;
    recomendVisit: any[] = [];
    //Master scope form data declaration
-
+   recommendYearValues: any[] = [];
 
 
   
@@ -289,6 +289,13 @@ export class HalalConformityFormComponent implements OnInit {
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
     this.profileComplete = sessionStorage.getItem('profileComplete'); 
     this.userId = sessionStorage.getItem('userId');
+
+    var d = new Date();
+    var yr = d.getFullYear();
+    for(var k=2010; k<=2030; k++){
+      this.recommendYearValues.push({title: k.toString(), value: k});
+    }
+    this.step6Data.recommend_year = yr;
 
     this.headerSteps.push(
       {
@@ -357,7 +364,7 @@ export class HalalConformityFormComponent implements OnInit {
 
     this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,
     undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,
-    undertaking_confirm7:false};
+    undertaking_confirm7:false,undertaking_confirm8:false,undertaking_confirm9:false,undertaking_confirm10:false};
     this.loadAppInfo();
     this.loadCountryStateCity();
 
@@ -1459,33 +1466,59 @@ addSchemeRow(obj: any = [],index: number){
                 }
 
                 //step5
-                //
-                
-  
-                //Step 6
                 if(res['data'].is_prelim_visit != null){
-                  this.step4Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
-                  this.step4Data.prelim_visit_date = res['data'].prelim_visit_date;
-                  this.step4Data.prelim_visit_time = res['data'].prelim_visit_time;
+                  this.step5Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
+                  this.step5Data.prelim_visit_date = res['data'].prelim_visit_date;
+                  this.step5Data.prelim_visit_time = res['data'].prelim_visit_time;
                 }
-                //Step 7
+                //Step 6
                 if(res['data'].onBehalfApplicantDetails && res['data'].onBehalfApplicantDetails != null && res['data'].onBehalfApplicantDetails != undefined){
                   let getAuthData = res['data'].onBehalfApplicantDetails;
                   ////console.log(">>> Auth data: ", getAuthData);
-                  this.step5Data.organization_name        = getAuthData.organization_name;
-                  this.step5Data.representative_name      = getAuthData.representative_name;
-                  this.step5Data.designation              = getAuthData.designation;
-                  this.step5Data.digital_signature        = getAuthData.digital_signature;
-                  this.step5Data.application_date         = getAuthData.application_date;
+                  this.step6Data.organization_name        = getAuthData.organization_name;
+                  this.step6Data.representative_name      = getAuthData.representative_name;
+                  this.step6Data.designation              = getAuthData.designation;
+                  this.step6Data.digital_signature        = getAuthData.digital_signature;
+                  this.step6Data.application_date         = getAuthData.application_date;
   
-                  Object.keys(this.authorizationList).forEach( key => { 
-                    this.authorizationList[key] = true;
+                  // Object.keys(this.authorizationList).forEach( key => { 
+                  //   this.authorizationList[key] = true;
+                  // })
+                  // this.authorizationStatus = true;
+                  // this.step5Data.recommend_visit = 'second';
+                  let authList: any;
+                  authList = getData.data.authorization_list;
+                  // console.log("@ Auth checked status: ", authList);
+                  this.authorizationList = JSON.parse(authList);
+                  // console.log("# Auth checked status: ", this.authorizationList);
+
+                  //check read ters check
+                  if(this.authorizationList.authorization_confirm2){
+                    this.readTermsCond       = true;
+                  }
+                  //check review checklist checked
+                  if(this.authorizationList.undertaking_confirm2){
+                    this.readReviewChecklist  = true;
+                  }
+
+                  this.recomendVisit.forEach((item, index) => {
+                
+                   let replace1 =  JSON.parse(getData.data.recommend_visit);//{first: false, second: true, third: true, fourth: false}; //fixed data
+                    let findVsit: any = (replace1);
+                    for(let key in findVsit){
+                    //  console.log('>>> ', key);
+                       if(key === item.name){
+                        //  console.log(">>>> found: ", item, " == ", replace1[key]);
+                         item.checked = findVsit[key];
+                       }
+                    }
                   })
-                  this.authorizationStatus = true;
-                  this.step5Data.recommend_visit = 'second';
+                  this.step6Data.recommend_visit = this.recomendVisit;// (getData.data.recommend_visit);
+                  
+                  this.step6Data.recommend_year = parseInt(getData.data.recommend_year);
                 }
   
-                //Step 9
+                //Step 7
                 if(res['data'].paymentDetails != null && typeof res['data'].paymentDetails === 'object'){
                   // //console.log(">>>payment details...show");
                     this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
@@ -1614,7 +1647,7 @@ addSchemeRow(obj: any = [],index: number){
     }
         
   
-    if(this.authorizationStatus && checkCount == 10){
+    if(this.authorizationStatus && checkCount == 13){
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;
@@ -2979,7 +3012,7 @@ getMatchScheme(scId: any, scopeData: any){
           checkCount++;
         }    
       }
-      if(this.authorizationStatus && checkCount == 10){
+      if(this.authorizationStatus && checkCount == 13){
         this.authorizationStatus = true;
       }else{
         this.authorizationStatus = false;
@@ -2996,11 +3029,24 @@ getMatchScheme(scId: any, scopeData: any){
     var applicationId = sessionStorage.getItem('applicationId');
     this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.publicHalalConformityForm.saved_step = '6';
-    this.step6Data.authorizationList = this.authorizationList;
+    // this.step6Data.authorizationList = this.authorizationList;
+    this.step6Data.authorization_list_json = this.authorizationList;
     this.step6Data.recommend = this.recommend;
     this.step6Data.is_draft = false;
     this.step6Data.application_date = new Date();
   
+    let recomVisit: any = {
+      'first':false,'second':false, 'third': false, 'fourth':false
+    };
+    let recomCheckCount = 0;
+        this.recomendVisit.forEach((item,index) => {
+          if(item.checked == true){
+            recomCheckCount++;
+          }
+      recomVisit[item.name.toString()] = item.checked;
+    })
+    this.step6Data.recommend = recomVisit;//this.recomendVisit;
+
     this.publicHalalConformityForm.step6 = this.step6Data;
     // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
   
@@ -3019,8 +3065,10 @@ getMatchScheme(scId: any, scopeData: any){
             this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
           }
           else{
-            // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
-            this.router.navigateByUrl('/dashboard/status/all');
+            this.toastr.success("Application Submitted Successfully");
+                setTimeout(() => {
+                  this.router.navigateByUrl('/dashboard/status/all');
+                }, 5000)
           }
         }else{
           this.toastr.warning(res['msg'], '');
