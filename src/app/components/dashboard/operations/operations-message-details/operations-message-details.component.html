@@ -206,7 +206,7 @@
                       </tr>
                       <tr>
                         <td>Trade License Date of Expiry</td>
-                        <td>10-07-2020</td>
+                        <td>{{cabStep1?.date_of_expiry | date}}</td>
                       </tr>                      
                     </table>
                   </div>
@@ -234,40 +234,38 @@
                   <div class="table-appln">
                     <table>
                       <tr>
-                        <td>Entity Commercial Name</td>
-                        <td>{{cabStep1?.cab_name}}</td>
+                        <td>CAB Name Official & Commercial Name</td>
+                        <td>{{cabStep1?.name}} </td>                      
+                        <td>Date of Establishment</td>
+                        <td>{{cabStep1?.registration_date}}</td>
                       </tr>
                       <tr>
-                        <td>Location</td>
-                        <td>{{cabStep1?.applicant_location}}</td>
+                        <td>Registerd Address</td>
+                        <td colspan="3">{{cabStep1?.office_address}}</td>
+                      </tr>
+                      <tr>
+                        <td>City</td>
+                        <td>{{cabStep1?.city}}</td>                      
+                        <td>Country</td>
+                        <td>{{cabStep1?.country}}</td>
                       </tr>
                       <tr>
                         <td>Mailing Address</td>
-                        <td>{{cabStep1?.applicant_address}}</td>
-                      </tr>
-                      <tr>
-                        <td>Phone (with Area Code)</td>
-                        <td>{{cabStep1?.applicant_tel_no}}</td>
-                      </tr>
-                      <tr>
-                        <td>Fax (with Area Code)</td>
-                        <td>{{cabStep1?.applicant_fax_no}}</td>
-                      </tr>
-                      <tr>
-                        <td>Official Email Address</td>
-                        <td>{{cabStep1?.applicant_email}}</td>
-                      </tr>
-                      <tr>
-                        <td>Official Website</td>
+                         <td>{{cabStep1?.mailing_address}}</td>                     
+                        <td>PO Box No./ Zip Code </td>
                         <td>{{cabStep1?.applicant_website}}</td>
                       </tr>
                       <tr>
-                        <td>Date Of Issue</td>
-                        <td>{{cabStep1?.date_of_issue | date}}</td>
+                        <td>Official E-mail Address</td>
+                        <td>{{cabStep1?.office_email}}</td>                      
+                        <td>Official Website</td>
+                        <td>{{cabStep1?.date_of_expiry | date}}</td>
                       </tr>
                       <tr>
-                        <td>Date Of Expired</td>
-                        <td>{{cabStep1?.date_of_expiry | date}}</td>
+                        <td>Telephone Number</td>
+                        <td>{{cabStep1?.office_tel_no}}</td>                      
+                        <td>Fax Number</td>
+                        <td>{{cabStep1?.office_fax_no}}</td>
                       </tr>
                     </table>
                   </div>

@@ -61,6 +61,8 @@ export class OperationsMessageDetailsComponent implements OnInit {
         this.tradeLicenseFile = this.constant.mediaPath+this.cabStep1.trade_license
         var tradeLicenseField = this.cabStep1.trade_license != null ? this.cabStep1.trade_license.split('/') : '';
         this.tradeLicenseText = tradeLicenseField[4];
+        console.log(this.cabStep1);
+        
     });
   }
 
