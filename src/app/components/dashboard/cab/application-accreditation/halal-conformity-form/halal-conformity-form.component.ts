@@ -1172,8 +1172,8 @@ addSchemeRow(obj: any = [],index: number){
           this.step1Data.fax_no = data.applicant_fax_no;
           // this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
           // this.step1Data.is_hold_other_accreditation = "1";
-          this.step1Data.is_main_activity = "";
-          this.step1Data.is_main_activity_note = "";
+          // this.step1Data.is_main_activity = "";
+          // this.step1Data.is_main_activity_note = "";
           this.step1Data.mailing_address = data.applicant_address;
           this.step1Data.official_commercial_name = data.cab_name;
           this.step1Data.official_email = data.applicant_email;
@@ -1339,23 +1339,34 @@ addSchemeRow(obj: any = [],index: number){
                 }else{
                   this.ownOrgMembInfo = this.bodMembInfo;
                 }
+
+                if(res['data'].accrFormDirector != ''){
+                  this.managingDirector = res['data'].accrFormDirector;
+                }
                 
                 if(res['data'].otherActivityLocations != null){
-                  this.step1Data.hcab_other_location = '1';
+                  this.step1Data.hcab_other_loc = '1';
                   var hcab_location = res['data'].otherActivityLocations
+                  var newLoaction = [];
                   for(let key in hcab_location) {
-                    var newLoaction = [];
-                    newLoaction.push(hcab_location[key].value);
+                    // console.log(hcab_location[key].value);
+                    if(hcab_location[key].value.location_type) {
+                      newLoaction.push(hcab_location[key].value);
+                    }
                   }
 
                   this.hcabOtherLocation = newLoaction;
-                  // console.log(this.hcabOtherLocation);
+
+                }else{
+                  this.step1Data.hcab_other_loc = '0';
                 }
                 
                 if(res['data'].hcabOtherAccreditation != ''){
                   this.accreditationInfo = res['data'].hcabOtherAccreditation;
                   this.step1Data.is_hold_other_accr = '1';
                   // is_hold_other_accreditation
+                }else{
+                  this.step1Data.is_hold_other_accr = '0';
                 }
   
                 //step2
@@ -1443,26 +1454,23 @@ addSchemeRow(obj: any = [],index: number){
 
                 if(res['data'].recognized_logo1 && res['data'].recognized_logo1 != ''){
                   let getFile = res['data'].recognized_logo1.toString().split('/');
-                  if(getFile.length){
-                    this.publicHalalConformityForm.hcabLogo1 = getFile[4].toString().split('.')[0];
-                    this.hcabLogo1Path = this.constant.mediaPath +  res['data'].recognized_logo1.toString();
-                  }
+                  
+                  this.publicHalalConformityForm.hcabLogo1 = getFile[4].toString().split('.')[0];
+                  this.hcabLogo1Path = this.constant.mediaPath +  res['data'].recognized_logo1.toString();
                 }
 
                 if(res['data'].recognized_logo2 && res['data'].recognized_logo2 != ''){
                   let getFile = res['data'].recognized_logo2.toString().split('/');
-                  if(getFile.length){
                     this.publicHalalConformityForm.hcabLogo2 = getFile[4].toString().split('.')[0];
                     this.hcabLogo2Path = this.constant.mediaPath +  res['data'].recognized_logo2.toString();
-                  }
                 }
 
                 if(res['data'].recognized_logo3 && res['data'].recognized_logo3 != ''){
                   let getFile = res['data'].recognized_logo3.toString().split('/');
-                  if(getFile.length){
-                    this.publicHalalConformityForm.hcabLogo3 = getFile[4].toString().split('.')[0];
-                    this.hcabLogo2Path = this.constant.mediaPath +  res['data'].recognized_logo3.toString();
-                  }
+                  
+                  this.publicHalalConformityForm.hcabLogo3 = getFile[4].toString().split('.')[0];
+                  this.hcabLogo2Path = this.constant.mediaPath +  res['data'].recognized_logo3.toString();
+                  
                 }
 
                 //step5
@@ -3082,7 +3090,7 @@ getMatchScheme(scId: any, scopeData: any){
   
   
 onSubmitStep7(ngForm7: any) {
-  this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+  // this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
   //Paypal config data
   //applyTrainerPublicCourse
   this.transactionsItem['amount']               = {};
@@ -3139,6 +3147,7 @@ onSubmitStep7(ngForm7: any) {
   this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
   this.voucherFile.append('voucher_date',dtFormat);
   this.voucherFile.append('accreditation',this.formApplicationId);
+  this.voucherFile.append('is_draft', false);
   // this.voucherFile.append('application_id',this.formApplicationId);
       
   this.loader = false;
