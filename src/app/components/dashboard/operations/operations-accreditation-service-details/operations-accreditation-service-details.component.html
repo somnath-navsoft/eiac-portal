@@ -148,8 +148,8 @@
                     <tr>
                       <td>Type of Accreditation</td>
                       <td>{{(serviceDetail?.accredation_criteria == 1) ? 'Initial' : 'Extension' }}</td>
-                      <td>Criteria for which Acc. is Requested</td>
-                      <td>{{serviceDetail?.criteria_request}}</td>
+                      <td *ngIf="serviceDetail?.criteria_request != null">Criteria for which Acc. is Requested</td>
+                      <td *ngIf="serviceDetail?.criteria_request != null">{{serviceDetail?.criteria_request}}</td>
                     </tr>
                     <tr>
                       <td>Registered Address</td>
@@ -175,7 +175,7 @@
                     </tr>
                     <tr>
                       <td>Telephone Number</td>
-                      <td *ngIf="serviceDetail?.telephone">{{serviceDetail?.telephone}}</td>
+                      <td *ngIf="serviceDetail?.telephone">{{_service.removePlus(serviceDetail?.telephone)}}</td>
                       <td>Fax Number</td>
                       <td *ngIf="serviceDetail?.fax_no">{{serviceDetail?.fax_no}}</td>
                     </tr>
@@ -205,11 +205,11 @@
                 <div class="status-subdata">
                   <span class="status_details">
                     <span class="icon-mobile"></span>
-                    {{row.mobile_no}}
+                    {{_service.removePlus(row.mobile_no)}}
                   </span>
                   <span class="status_details">
                     <span class="icon-call-data icon-call-2"></span>
-                    {{row.telephone_no}}
+                    {{_service.removePlus(row.telephone_no)}}
                   </span>
                   <span class="status_details">
                     <span class="icon-email"></span>
@@ -279,7 +279,8 @@
           </div>
         </div>
       </div>
-      <div class="row m-0">
+      
+      <div class="row m-0" *ngIf="serviceDetail?.form_meta != 'halal_conformity_bodies'">
         <div class="col-md-12">
           <div class="row status-det-wrapper">
             <div class="col-md-12 p-0">
@@ -296,7 +297,7 @@
                   <div class="col-md-6 p-0" *ngFor="let row2 of ownOrgMembInfo; let i1 = index;">
                     <div class="members_details">
                       <h4>{{row2.name}}</h4>
-                      <p class="address_details">{{row2.company_list}}</p>
+                      <p class="address_details">{{row2.bod_company}}</p>
                       <span class="personal_details">{{row2.contact_person}}</span>
                       <span *ngIf="row2.designation">, {{row2.designation}}</span>
                       <span *ngIf="row2.mobile_no">, Mobile : {{row2.mobile_no}}</span>
@@ -310,7 +311,38 @@
         </div>
       </div>
 
-      <div class="row m-0" *ngIf="otherAccr != ''">
+      <div class="row m-0" *ngIf="serviceDetail?.form_meta == 'halal_conformity_bodies'">
+        <div class="col-md-12">
+          <div class="row status-det-wrapper">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="appln-subhdr">
+                    <h5>BOARD MEMBERS OF THE COMPANY</h5>
+                  </div>
+                  <hr>
+                </div>
+              </div>
+              <div class="status_main">
+                <div class="row m-0">
+                  <div class="col-md-6 p-0" *ngFor="let row2 of ownOrgMembInfo; let i1 = index;">
+                    <div class="members_details">
+                      <h4>{{row2.name}}</h4>
+                      <p *ngIf="row2.designation" class="address_details">{{row2.designation}}</p>
+                      <!-- <span *ngIf="row2.designation">{{row2.designation}}</span> -->
+                      <span *ngIf="row2.relationship">{{row2.relationship}}</span>
+                      <span *ngIf="row2.employment">, {{row2.employment}}</span>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row m-0" *ngIf="otherAccr != null">
         <div class="col-md-12">
           <div class="row status-det-wrapper">
             <div class="col-md-12 p-0">
@@ -375,6 +407,109 @@
           </div>
         </div>
       </div>
+
+
+      <div class="row m-0" *ngIf="hcabOtherLocation != ''">
+        <div class="col-md-12">
+          <div class="row status-det-wrapper">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-10">
+                  <div class="appln-subhdr">
+                    <h5>IF HCAB HAVE OTHER LOCATION(S) OTHER THAN THE MAIN/HEAD OFFICE OR BRANCHES WHERE KEY ACTIVITIES TAKE PLACE</h5>
+                  </div>
+                  <hr>
+                </div>
+
+                <div class="col-md-2">
+                  <div class="form-subheader-desc form_org_data">
+                    <mat-radio-group name="hcabOthers" disabled [(ngModel)]="hcabOthers">
+                      <mat-radio-button [value]="1" >Yes</mat-radio-button>
+                      <mat-radio-button [value]="0">No</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row" *ngIf="hcabOthers == '1'">
+                <div class="col-md-12">
+                  <div class="table-appln pt-0">
+                    <table>
+                      <tr>
+                        <th>Location Type(such of Regional Off)	</th>
+                        <th>Address/City/Country</th>
+                        <th>Key Activities carried out at this Location</th>
+                      </tr>
+                      <!-- <ng-container *ngFor="let othr_accr of otherAccr; let i3 = index;"> -->
+                        <tr *ngFor="let item of hcabOtherLocation; let hcabi = index;">
+                            <td>{{item.location_type}}</td>
+                            <td>{{item.city_country}}</td>
+                            <td>{{item.activity_carried_out}}</td>
+                        </tr>
+                      <!-- </ng-container> -->
+                      
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="row m-0" *ngIf="hcabOtherLocation != ''">
+        <div class="col-md-12">
+          <div class="row status-det-wrapper">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-10">
+                  <div class="appln-subhdr">
+                    <h5>DOES HCAB CURRENTLY HOLD ANT OTHER CURRENT OR PREVIOUS ACCREDITATION (S) ?</h5>
+                  </div>
+                  <hr>
+                </div>
+
+                <div class="col-md-2">
+                  <div class="form-subheader-desc form_org_data">
+                    <mat-radio-group name="doesHcab" disabled [(ngModel)]="doesHcab">
+                      <mat-radio-button [value]="1" >Yes</mat-radio-button>
+                      <mat-radio-button [value]="0">No</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row" *ngIf="doesHcab == '1'">
+                <div class="col-md-12">
+                  <div class="table-appln pt-0">
+                    <table>
+                      <tr>
+                        <th>Standard Name</th>
+                        <th>Accreditation Body</th>
+                        <th>Entity Location</th>
+                        <th>Initial Accreditation Date</th>
+                        <th>Expiry Date of Latest Accreditation</th>
+                      </tr>
+                      <!-- <ng-container *ngFor="let othr_accr of otherAccr; let i3 = index;"> -->
+                        <tr *ngFor="let item of accreditationInfo; let hcabi2 = index;">
+                            <td>{{item.name}}</td>
+                            <td>{{item.accr_body}}</td>
+                            <td>{{item.entity_location}}</td>
+                            <td>{{item.initial_accr_date | date:'dd-MM-yyyy'}}</td>
+                            <td>{{item.expiry_date | date:'dd-MM-yyyy'}}</td>
+                        </tr>
+                      <!-- </ng-container> -->
+                      
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
       <div class="row m-0" *ngIf="ptParticipation != '' && ptParticipation != null">
         <div class="col-md-12">
@@ -464,11 +599,49 @@
           </div>
         </div>
 
-        <div class="col-md-6" *ngIf="managementManager != ''">
+        <div class="col-md-6" *ngIf="serviceDetail?.form_meta == 'halal_conformity_bodies' && qualityManager != null">
           <div class="row">
             <div class="col-md-12">
               <div class="appln-subhdr">
+                <h5>QUALITY MANAGER</h5>
+              </div>
+              <hr>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="status-main-details">
+                <div class="status-data">
+                  <p>{{qualityManager?.name}}, </p>
+                  <span>{{qualityManager?.designation}}</span>
+                </div>
+                <div class="status-subdata">
+                  <span class="status_details">
+                    <span class="icon-mobile"></span>
+                    {{qualityManager?.mobile_no}}
+                  </span>
+                  <span class="status_details">
+                    <span class="icon-email"></span>
+                    {{qualityManager?.email}}
+                  </span>
+                  <span class="status_details">
+                    <span class="icon-work"></span>
+                    {{qualityManager?.relevent_experience}} Yrs.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6" *ngIf="managementManager != ''">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="appln-subhdr" *ngIf="serviceDetail?.form_meta != 'certification_bodies'">
                 <h5>MANAGEMENT MANAGER</h5>
+              </div>
+              <div class="appln-subhdr" *ngIf="serviceDetail?.form_meta == 'certification_bodies'">
+                <h5>QUALITY MANAGER</h5>
               </div>
               <hr>
             </div>
@@ -492,6 +665,43 @@
                   <span class="status_details">
                     <span class="icon-work"></span>
                     {{managementManager?.relevent_experience}} Yrs.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row m-0" *ngIf="serviceDetail?.form_meta == 'halal_conformity_bodies' && islamicAffairExpert != null">
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="appln-subhdr">
+                <h5>ISLAMIC AFFAIRS EXPERT</h5>
+              </div>
+              <hr>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="status-main-details">
+                <div class="status-data">
+                  <p>{{islamicAffairExpert?.name}}, </p>
+                  <span>{{islamicAffairExpert?.designation}}</span>
+                </div>
+                <div class="status-subdata">
+                  <span class="status_details">
+                    <span class="icon-mobile"></span>
+                    {{islamicAffairExpert?.mobile_no}}
+                  </span>
+                  <span class="status_details">
+                    <span class="icon-email"></span>
+                    {{islamicAffairExpert?.email}}
+                  </span>
+                  <span class="status_details">
+                    <span class="icon-work"></span>
+                    {{islamicAffairExpert?.relevent_experience}} Yrs.
                   </span>
                 </div>
               </div>
@@ -649,6 +859,126 @@
                       </ng-container>
                   </ng-container>  
 
+                  <ng-container *ngIf="serviceDetail?.form_meta == 'halal_conformity_bodies' && editScopeData != undefined && editScopeData != null">
+                    <div class="row"> 
+                      <div class="col-md-12">
+                          <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey, selectDeleteTypeTitle)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                          <ng-container *ngIf="editScopeData != undefined && editScopeData != null">
+                              <div class="row">
+                                  <div class="col-md-12">
+                                      <div class="form-subheader-data">
+                                          <h5>SCOPE DATA</h5>
+                                      </div>
+                                  </div>
+                              </div>
+                              <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteTypeKey,selectDeleteIndex)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                              <ng-container *ngFor="let item of editScopeData | keyvalue">
+                                  <div class="row"> 
+                                      <div class="col-md-12">
+                                          <div class="sub-header">
+                                              <h5 [innerHTML]="getSubType(item.key)"></h5>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <ng-container *ngIf="item.value != null && item.value != undefined">
+                                      <ng-container *ngFor="let item5 of (item.value) | keyvalue;">
+                                          <div class="row">
+                                              <div class="col-md-12">
+                                                  <div class="table-appln scope-data">
+                                                      <div class="sub-header">
+                                                          <h5 [innerHTML]="getSchme(item5.key, item.key)"></h5>
+                                                      </div>
+                                                      <table>
+                                                          <tr>
+                                                              <th *ngFor="let item1 of (item5.value.scope_heading) | keyvalue;">{{item1.value}}</th>
+                                                          </tr>
+                                                          <ng-container *ngIf="item5.value.scope_value.length > 0">
+                                                              <tr *ngFor="let item2 of (item5.value.scope_value) | keyvalue; let i4 = index;">
+                                                                  <td *ngFor="let item3 of item2.value | keyvalue;">
+                                                                      <span [innerHTML]="(item3.value)"></span>
+                                                                  </td>
+                                                                  <!-- <td>
+                                                                  <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item5.key, item.key)"></span>
+                                                                  </td>                                                                 -->
+                                                              </tr>
+                                                          </ng-container>
+                                                          <ng-container *ngIf="item5.value.scope_value.length == 0">
+                                                              <tr>
+                                                                  <td [attr.colspan]="Service.getObjectLength(item5.value.scope_heading)+1">
+                                                                      No Data
+                                                                  </td>
+                                                              </tr>
+                                                          </ng-container>
+                                                      </table>  
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </ng-container>
+                                  </ng-container>
+                              </ng-container>
+                          </ng-container>
+                      </div>
+                  </div>
+                  </ng-container>
+
+                  <ng-container *ngIf="serviceDetail?.form_meta == 'testing_calibration' && editScopeData != undefined && editScopeData != null">
+                    
+                      <div class="row">
+                          <div class="col-md-12">
+                              <div class="form-subheader-data">
+                                  <h5>SCOPE DATA</h5>
+                              </div>
+                          </div>
+                      </div>
+                      <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteTypeKey,selectDeleteIndex)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                      <ng-container *ngFor="let item of editScopeData | keyvalue">
+                          <div class="row"> 
+                              <div class="col-md-12">
+                                  <div class="sub-header">
+                                      <h5 [innerHTML]="getSubType(item.key)"></h5>
+                                  </div>
+                              </div>
+                          </div>
+                          <ng-container *ngIf="item.value != null && item.value != undefined">
+                              <ng-container *ngFor="let item5 of (item.value) | keyvalue;">
+                                  <div class="row">
+                                      <div class="col-md-12">
+                                          <div class="table-appln scope-data">
+                                              <div class="sub-header">
+                                                  <h5 [innerHTML]="getSchme(item5.key, item.key)"></h5>
+                                              </div>
+                                              <table *ngIf="item5.value.scope_value != undefined">
+                                                  <tr >
+                                                      <th *ngFor="let item1 of (item5.value.scope_heading) | keyvalue;">{{item1.value}}</th>
+                                                      <th>Action</th>
+                                                  </tr>
+                                                  <ng-container>
+                                                      <tr *ngFor="let item2 of (item5.value.scope_value) | keyvalue; let i4 = index;">
+                                                          <td *ngFor="let item3 of item2.value | keyvalue;">
+                                                              <span [innerHTML]="(item3.value)"></span>
+                                                          </td>
+                                                          <td>
+                                                          <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item5.key, item.key)"></span>
+                                                          </td>                                                                
+                                                      </tr>
+                                                  </ng-container>
+                                                  <!-- <ng-container *ngIf="item5.value.scope_value.length == 0">
+                                                      <tr>
+                                                          <td [attr.colspan]="Service.getObjectLength(item5.value.scope_heading)+1">
+                                                              No Data
+                                                          </td>
+                                                      </tr>
+                                                  </ng-container> -->
+                                              </table>  
+                                          </div>
+                                      </div>
+                                  </div>
+                              </ng-container>
+                          </ng-container>
+                      </ng-container>
+                  
+                  </ng-container>
+
 
                   <ng-container *ngIf="serviceDetail?.form_meta == 'certification_bodies' && editScopeData != undefined && editScopeData != null">
                       <div class="row">
@@ -704,8 +1034,115 @@
                               </ng-container>
                           </ng-container>
                       </ng-container>
+                      <!-- Other standard -->
+                      <div class="row" *ngIf="serviceDetail?.form_meta == 'certification_bodies' && cbOtherStandards != ''">
+                        <div class="col-md-12">
+                            <div class="appln-subhdr">
+                                <h5>OTHER CERTIFICATION STANDARDS</h5>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="serviceDetail?.form_meta == 'certification_bodies' && cbOtherStandards != ''">
+                        <div class="col-md-12">
+                            <div class="table-content-health">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th width="30%">Category</th>
+                                            <th width="30%">Standard</th>
+                                            <th width="30%">Scope / Scheme</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr  *ngFor="let item of cbOtherStandards; let i = index;">
+                                            <td>
+                                              {{item.category}}
+                                            </td>
+                                            <td>
+                                              {{item.standard}}
+                                            </td>
+                                            <td>
+                                              {{item.scopeScheme}}
+                                            </td>
+                                            
+                                        </tr>
+                                    
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                   </ng-container>
-
+                  <!-- other activity -->
+                  <div class="row" *ngIf="serviceDetail?.form_meta == 'certification_bodies' && cbsOtherActivity != ''">
+                    <div class="col-md-12">
+                        <div class="appln-subhdr">
+                            <h5>CB'S OTHER ACTIVITY LOCATIONS</h5>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+                <div class="row" *ngIf="serviceDetail?.form_meta == 'certification_bodies' && cbsOtherActivity != ''">
+                  <div class="col-md-12">
+                      <div class="table-content-health">
+                          <table>
+                              <thead>
+                                  <tr>
+                                      <th width="30%">Location Type(such as Regional office,Branch)</th>
+                                      <th width="30%">City & Countries</th>
+                                      <th width="30%">Activities carried out at this Location</th>
+                                  </tr>
+                              </thead>  
+                              <tbody>
+                                  <tr  *ngFor="let item of cbsOtherActivity; let i = index;">
+                                      <td>
+                                          {{item.location_type}}
+                                      </td>
+                                      <td>
+                                        {{item.city_country}}
+                                      </td>
+                                      <td>
+                                        {{item.activity_carried_out}}
+                                      </td>
+                                     
+                                  </tr>
+                              
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+                  <!-- name of country -->
+                  <div class="row" *ngIf="serviceDetail?.form_meta == 'certification_bodies' && cbnameOfCountry != ''">
+                    <div class="col-md-12">
+                        <div class="appln-subhdr">
+                            <h5>PLEASE LIST DOWN THE NAME(S) OF COUNTRIES WHERE CERTIFICATION BODY INTENDS TO PROVIDE EIAC ACCREDITED CERTIFICATIONS</h5>
+                        </div>
+                        <hr>
+                    </div>
+                    </div>
+                    <div class="row" *ngIf="serviceDetail?.form_meta == 'certification_bodies' && cbnameOfCountry != ''">
+                      <div class="col-md-12">
+                          <div class="table-content-health">
+                              <table>
+                                  <thead>
+                                      <tr>
+                                          <th>Name of Country</th>
+                                      </tr>
+                                  </thead>  
+                                  <tbody>
+                                      <tr  *ngFor="let item of cbnameOfCountry; let i = index;">
+                                          <td>
+                                              {{item.country}}
+                                          </td>
+                                      </tr>
+                                  
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
 
                   </div>
                 </div>
@@ -745,14 +1182,15 @@
           </button>
         </div>
         <div class="modal-body"> 
-            <app-loader *ngIf="loaderPdf"></app-loader>
-            <p *ngIf="errorLoader">Error Loading PDF</p>
-            <pdf-viewer [src]="(pathPDF)" [show-all]="true" [stick-to-page]="true"
+            <p [innerHTML]="termsGeneral"></p>
+            <!-- <app-loader *ngIf="loaderPdf"></app-loader>
+            <p *ngIf="errorLoader">Error Loading PDF</p> -->
+            <!-- <pdf-viewer [src]="(pathPDF)" [show-all]="true" [stick-to-page]="true"
                 [zoom]="1.0" [original-size]="false" [autoresize]="true"
                 [show-borders]="true" (error)="onError($event)" (on-progress)="onProgress($event)"
                 (after-load-complete)="completeLoadPDF($event)"
                 [render-text]="true">
-            </pdf-viewer>
+            </pdf-viewer> -->
         </div>
         <div class="modal-footer">
         </div>
@@ -779,29 +1217,16 @@
         </div>
         </ng-template>
 
-      <!-- <div class="row m-0">
+      <div class="row m-0" *ngIf="otherStandards != '' && serviceDetail?.form_meta == 'certification_bodies'">
         <div class="col-md-12">
           <div class="row status-det-wrapper">
             <div class="col-md-12 p-0">
               <div class="row">
                 <div class="col-md-12">
                   <div class="appln-subhdr">
-                    <h5>EXISTING ACCREDITATION OR CERTIFICATION GRANTED TO THE ORGANIZATION</h5>
+                    <h5>OTHER CERTIFICATION STANDARDS</h5>
                   </div>
                   <hr>
-                </div>
-              </div>
-              <div class="row m-0">
-                <div class="col-md-6">
-                  <div class="org_hdr">
-                    <p>Does the Organization hold any other Accreditation’s?</p>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-subheader-desc form_org_data">
-                      <mat-radio-button>Yes</mat-radio-button>
-                      <mat-radio-button>No</mat-radio-button>
-                  </div>
                 </div>
               </div>
               <div class="row">
@@ -809,29 +1234,15 @@
                   <div class="table-appln pt-0">
                     <table>
                       <tr>
-                        <th>Name of Scheme</th>
-                        <th>Name of Accreditation Body</th>
-                        <th>Scope of Accreditation & Certificate No</th>
-                        <th>Expiry Date of Certificate</th>
+                        <th>Category</th>
+                        <th>Standard</th>
+                        <th>Scope/Scheme</th>
                       </tr>
-                      <tr>
-                        <td>ISO/IEC 17025</td>
-                        <td>Chris Estrada</td>
-                        <td>Testing Laboratory & 006-1596</td>
-                        <td>21-08-2021</td>
-                      </tr>
-                      <tr>
-                        <td>ISO/IEC 17025</td>
-                        <td>Chris Estrada</td>
-                        <td>Testing Laboratory & 006-1596</td>
-                        <td>21-08-2021</td>
-                      </tr>
-                      <tr>
-                        <td>ISO/IEC 17025</td>
-                        <td>Chris Estrada</td>
-                        <td>Testing Laboratory & 006-1596</td>
-                        <td>21-08-2021</td>
-                      </tr>
+                        <tr *ngFor="let item of otherStandards;">
+                            <td>{{item.category}}</td>
+                            <td>{{item.standard}}</td>
+                            <td>{{item.scopeScheme}}</td>
+                        </tr>
                     </table>
                   </div>
                 </div>
@@ -839,14 +1250,80 @@
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
+
+      <div class="row m-0" *ngIf="cbsOtherActivity != '' && serviceDetail?.form_meta == 'certification_bodies'">
+        <div class="col-md-12">
+          <div class="row status-det-wrapper">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="appln-subhdr">
+                    <h5>CB'S OTHER ACTIVITY LOCATIONS</h5>
+                  </div>
+                  <hr>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="table-appln pt-0">
+                    <table>
+                      <tr>
+                        <th>Location Type(such as Regional office,Branch)</th>
+                        <th>City & Countries</th>
+                        <th>Activities carried out at this Location</th>
+                      </tr>
+                        <tr *ngFor="let item of cbsOtherActivity;">
+                            <td>{{item.location_type}}</td>
+                            <td>{{item.city_country}}</td>
+                            <td>{{item.activity_carried_out}}</td>
+                        </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row m-0" *ngIf="nameOfCountry != '' && serviceDetail?.form_meta == 'certification_bodies'">
+        <div class="col-md-12">
+          <div class="row status-det-wrapper">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="appln-subhdr">
+                    <h5>PLEASE LIST DOWN THE NAME(S) OF COUNTRIES WHERE CERTIFICATION BODY INTENDS TO PROVIDE EIAC ACCREDITED CERTIFICATIONS</h5>
+                  </div>
+                  <hr>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="table-appln pt-0">
+                    <table>
+                      <tr>
+                        <th>Name of Country	</th>
+                      </tr>
+                        <tr *ngFor="let item of nameOfCountry;">
+                            <td>{{item.country}}</td>
+                        </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       
       <div class="row m-0">
         <div class="col-md-12">
           <div class="row">
               <div class="col-md-12">
                   <div class="appln-subhdr">
-                      <h5>UNDERTAKING</h5>
+                      <h5>AUTHORIZATION OF THE APPLICATION</h5>
                   </div>
                   <hr>
               </div>
@@ -873,9 +1350,9 @@
                           <td>Quality Manual</td>
                       </tr>
                       <tr>
-                          <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
-                          <td>
-                            Filled in Document Review Checklist (for 1st submission only)
+                          <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td> 
+                          <td class="authData">
+                            <a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled in Document Review Checklist</a> (for 1st submission only)
                           </td>
                       </tr>
                       <tr>
@@ -908,7 +1385,7 @@
                       <tr>
                           <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
                           <td>
-                            Filled Up Document Review Checklist (Related to applied accreditation standard and for initial accreditation & Scope Extensions only)
+                            <a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled in Document Review Checklist</a> (Related to applied accreditation standard and for initial accreditation & Scope Extensions only)
                           </td>
                       </tr>
                       <tr>
@@ -933,7 +1410,7 @@
                     <tr>
                         <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
                         <td>
-                          Filled In Document Review Checklist (for 1st submission only)
+                          <a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled in Document Review Checklist</a> (for 1st submission only)
                         </td>
                     </tr>
                     <tr>
@@ -972,6 +1449,84 @@
                       </td>
                     </tr>
                 </table>
+
+                <table *ngIf="serviceDetail?.form_meta == 'halal_conformity_bodies'">
+                    <tr>
+                        <td width="1%"><span class="icon-tick"></span></td>
+                        <td>Master list of documents and forms</td>
+                    </tr>
+                    <tr>
+                        <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
+                        <td>
+                          <a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled in Document Review Checklist</a> (for 1st submission only)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="icon-tick"></span></td>
+                        <td>Quality Manual</td>
+                    </tr>
+                    <tr>
+                      <td><span class="icon-tick"></span></td>
+                      <td>Internal Procedures (as per the accreditation criteria)</td>
+                    </tr>
+                    <tr>
+                        <td><span class="icon-tick"></span></td>
+                        <td>Companies and Products List Certified By HCB</td>
+                    </tr>
+                    <tr>
+                      <td><span class="icon-tick"></span></td>
+                      <td>List of documents required for Halal CAB Accreditation</td>
+                    </tr>
+                    <tr>
+                      <td><span class="icon-tick"></span></td>
+                      <td>Slaughterhouse And Meat Products List</td>
+                    </tr>
+                    <tr>
+                      <td><span class="icon-tick"></span></td>
+                      <td>Minutes of last Management Review Meeting</td>
+                    </tr>
+                    <tr>
+                      <td><span class="icon-tick"></span></td>
+                      <td>Report of last Internal Audit</td>
+                    </tr>
+                </table>
+                
+                <table *ngIf="serviceDetail?.form_meta == 'testing_calibration'">
+                  <tr>
+                      <td width="1%"><span class="icon-tick"></span></td>
+                      <td>Quality Manual</td>
+                  </tr>
+                  <tr>
+                      <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td>
+                      <td>
+                        <a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled in Document Review Checklist</a> (for 1st submission only)
+                      </td>
+                  </tr>
+                  <tr>
+                    <td><span class="icon-tick"></span></td>
+                    <td>Internal Procedures (as per the accreditation criteria)</td>
+                  </tr>
+                  <tr>
+                      <td><span class="icon-tick"></span></td>
+                      <td>Minutes/ report of last Management Review</td>
+                  </tr>
+                  <tr>
+                    <td><span class="icon-tick"></span></td>
+                    <td>Report of last Internal Audit</td>
+                  </tr>
+                  <tr>
+                    <td><span class="icon-tick"></span></td>
+                    <td>Participation in PT/ILC/ Measurement Audit</td>
+                  </tr>
+                  <tr>
+                    <td><span class="icon-tick"></span></td>
+                    <td>List of key staff and Organizational Structure if not mentioned in the QM))</td>
+                  </tr>
+                  <tr>
+                    <td><span class="icon-tick"></span></td>
+                    <td>CMC calculations (for calibration laboratory)</td>
+                  </tr>
+              </table>
               </div>
               
               <div class="undertaking-last">
@@ -1040,7 +1595,7 @@
                     </tr>
                     <tr>
                       <td>Mobile Number</td>
-                      <td *ngIf="paymentDetails?.mobile_no != null" colspan="3">+{{paymentDetails?.mobile_no}}</td>
+                      <td *ngIf="paymentDetails?.mobile_no != null" colspan="3">{{_service.removePlus(paymentDetails?.mobile_no)}}</td>
                     </tr>
                   </table>
                 </div>
@@ -1056,7 +1611,7 @@
 
               <button class="cancel-bttn" (click)="downloadCsv()"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD CSV</button>
             </div>
-            <a *ngIf="!paymentDetails && userType == 'operations'" class="submit-bttn submit-health" href="javascript:void(0)" (click)="open(courseVoucher, routeId)">PROFORMA UPLOAD</a>
+            <!-- <a *ngIf="!paymentDetails && userType == 'operations'" class="submit-bttn submit-health" href="javascript:void(0)" (click)="open(courseVoucher, routeId)">PROFORMA UPLOAD</a> -->
           </div>
           
         </div>

@@ -8,6 +8,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService, Overlay, OverlayContainer } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscription } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
+import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 
 declare let paypal: any;
 @Component({
@@ -24,6 +26,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   public publicTrainingForm: any = {
     training_duration:0,
   };
+  modalOptions:NgbModalOptions;
   public newRow: any = {};
   public participant_details: Array<any> = [];
   public participant_details_addMOre: Array<any> = [];
@@ -73,10 +76,11 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   allCityList: Array<any> = [];
   formApplicationId:any
   trainingDuration:any[] = [];
+  closeResult: string;
 
   constructor(private Service: AppService, private http: HttpClient,
     public _toaster: ToastrService, private _router: Router, private _route: ActivatedRoute,
-    private _trainerService: TrainerService, private _constant: Constants) { }
+    private _trainerService: TrainerService, private _constant: Constants,public sanitizer:DomSanitizer,private modalService: NgbModal) { }
 
   ngOnInit() {
     this.publicCourseId = sessionStorage.getItem('publicCourseId');
@@ -118,7 +122,14 @@ export class CabTrainingPublicCourseComponent implements OnInit {
 
     this.loadCountryStateCity();
     this.loadDetailsPage();
-    this.trainingDuration = [{key:1,title:'1 Day'},{key:2,title:'2 Days'},{key:3,title:'3 Days'},{key:4,title:'4 Days'},{key:5,title:'5 Days'},{key:6,title:'6 Days'},{key:7,title:'7 Days'},{key:8,title:'8 Days'},{key:9,title:'9 Days'},{key:10,title:'10 Days'}]
+    this.trainingDuration = [{key:1,title:'1 Day'},{key:2,title:'2 Days'},{key:3,title:'3 Days'},{key:4,title:'4 Days'},{key:5,title:'5 Days'},{key:6,title:'6 Days'},{key:7,title:'7 Days'},{key:8,title:'8 Days'},{key:9,title:'9 Days'},{key:10,title:'10 Days'}];
+
+    console.log(this.participantTraineeDetails.length);
+  }
+
+  addRow(obj) {
+    var newObj = [];
+    obj.push(newObj);
   }
 
   loadDetailsPage() {
@@ -173,6 +184,54 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     );
   }
 
+  openView(content, type:string) {
+    let pathData: any;
+    ////console.log(">>>pop up...", content);
+    // if(type != undefined && type == 'agreement'){
+    //   pathData = this.getSantizeUrl(this.accredAgreemFile);
+    //   this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
+    // }
+    // if(type != undefined && type == 'checklist'){
+    //   pathData = this.getSantizeUrl(this.checklistDocFile);
+    //   this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
+    // }
+  
+    ////console.log(">>> open view", this.pathPDF, " -- ",  this.pathPDF);
+  
+    this.modalService.open(content, this.modalOptions).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      //////console.log("Closed: ", this.closeResult);
+      //this.courseViewData['courseDuration'] = '';
+      //this.courseViewData['courseFees'] = '';
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      //////console.log("Closed with ESC ");
+      
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      //////console.log("Closed with CLOSE ICON ");
+     
+      return 'by clicking on a backdrop';
+    } else {
+      //////console.log("Closed ",`with: ${reason}`);
+      
+      return  `with: ${reason}`;
+    }
+  }
+
+  getSantizeUrl(url : string) { 
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url); 
+  }
+
+  closeChecklistDialog(){
+    this.modalService.dismissAll();
+  }
+
   onSubmitStep1(ngForm1){
     this.Service.moveSteps('application_information', 'participant', this.headerSteps);
     if(ngForm1.form.valid) {
@@ -215,7 +274,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       var applicationId = sessionStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-      this.step1Data.is_draft = false;
+      this.step2Data.is_draft = false;
 
       this.publicTrainingForm.step2 = this.step2Data;
 
@@ -248,7 +307,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.publicTrainingForm.email = this.userEmail;
       this.publicTrainingForm.userType = this.userType;
       this.publicTrainingForm.saved_step = '3';
-      this.step1Data.is_draft = false;
+      this.step3Data.is_draft = false;
 
       var applicationId = sessionStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
@@ -257,8 +316,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.publicTrainingForm.step3 = this.step3Data;
 
       // console.log(this.publicTrainingForm);
-      this.step2DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
-      this.Service.post(this.Service.apiServerUrl+"/"+this._constant.API_ENDPOINT.publicTrainingForm,this.step2DataBodyFormFile)
+      this.step3DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this._constant.API_ENDPOINT.publicTrainingForm,this.step3DataBodyFormFile)
       .subscribe(
         res => {
           if(res['status'] == true) {
@@ -279,16 +338,25 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.publicTrainingForm.email = this.userEmail;
       this.publicTrainingForm.userType = this.userType;
       this.publicTrainingForm.saved_step = '4';
-      this.step1Data.is_draft = false;
+      this.step4Data.is_draft = false;
 
-      this.publicTrainingForm.step4 = this.step1Data;
+      var applicationId = sessionStorage.getItem('applicationId');
+      // this.step2Data.application_id = applicationId;
+      this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
 
-      console.log(this.publicTrainingForm);
-      // this.step2DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
-      // this.Service.post(this.Service.apiServerUrl+"/"+this._constant.API_ENDPOINT.healthcareForm,this.step2DataBodyFormFile)
-      // .subscribe(
-      //   res => {
-      //   })
+      this.publicTrainingForm.step4 = this.step4Data;
+
+      this.step4DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this._constant.API_ENDPOINT.publicTrainingForm,this.step4DataBodyFormFile)
+      .subscribe(
+        res => {
+          if(res['status'] == true) {
+            this.Service.moveSteps('fees_details', 'authorization', this.headerSteps);
+            // console.log(res);
+          }else{
+            this._toaster.warning(res['msg'], '');
+          }
+        })
     }
   }
 
@@ -300,16 +368,21 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.publicTrainingForm.email = this.userEmail;
       this.publicTrainingForm.userType = this.userType;
       this.publicTrainingForm.saved_step = '5';
-      this.step1Data.is_draft = false;
+      this.step5Data.is_draft = false;
 
-      this.publicTrainingForm.step5 = this.step1Data;
+      this.publicTrainingForm.step5 = this.step5Data;
 
-      console.log(this.publicTrainingForm);
-      // this.step2DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
-      // this.Service.post(this.Service.apiServerUrl+"/"+this._constant.API_ENDPOINT.healthcareForm,this.step2DataBodyFormFile)
-      // .subscribe(
-      //   res => {
-      //   })
+      this.step5DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this._constant.API_ENDPOINT.publicTrainingForm,this.step5DataBodyFormFile)
+      .subscribe(
+        res => {
+          if(res['status'] == true) {
+            this.Service.moveSteps('fees_details', 'authorization', this.headerSteps);
+            // console.log(res);
+          }else{
+            this._toaster.warning(res['msg'], '');
+          }
+        })
     }
   }
 

@@ -231,7 +231,7 @@ export class HalalConformityFormComponent implements OnInit {
    hcabLogo3Path:any;
    recomendVisit: any[] = [];
    //Master scope form data declaration
-
+   recommendYearValues: any[] = [];
 
 
   
@@ -289,6 +289,13 @@ export class HalalConformityFormComponent implements OnInit {
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
     this.profileComplete = sessionStorage.getItem('profileComplete'); 
     this.userId = sessionStorage.getItem('userId');
+
+    var d = new Date();
+    var yr = d.getFullYear();
+    for(var k=2010; k<=2030; k++){
+      this.recommendYearValues.push({title: k.toString(), value: k});
+    }
+    this.step6Data.recommend_year = yr;
 
     this.headerSteps.push(
       {
@@ -357,7 +364,7 @@ export class HalalConformityFormComponent implements OnInit {
 
     this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,
     undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,
-    undertaking_confirm7:false};
+    undertaking_confirm7:false,undertaking_confirm8:false,undertaking_confirm9:false,undertaking_confirm10:false};
     this.loadAppInfo();
     this.loadCountryStateCity();
 
@@ -1164,9 +1171,9 @@ addSchemeRow(obj: any = [],index: number){
           this.step1Data.date_of_issue = new Date(data.date_of_issue);
           this.step1Data.fax_no = data.applicant_fax_no;
           // this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
-          this.step1Data.is_hold_other_accreditation = "1";
-          this.step1Data.is_main_activity = "";
-          this.step1Data.is_main_activity_note = "";
+          // this.step1Data.is_hold_other_accreditation = "1";
+          // this.step1Data.is_main_activity = "";
+          // this.step1Data.is_main_activity_note = "";
           this.step1Data.mailing_address = data.applicant_address;
           this.step1Data.official_commercial_name = data.cab_name;
           this.step1Data.official_email = data.applicant_email;
@@ -1305,6 +1312,7 @@ addSchemeRow(obj: any = [],index: number){
                   if(getFile.length){
                     this.publicHalalConformityForm.id_issued_esma = getFile[4].toString().split('.')[0];
                     this.issuedEsmaPath = this.constant.mediaPath +  res['data'].reg_form_issued_esma.toString();
+                    this.publicHalalConformityForm.id_issued_esma = getFile[4];
                   }
                 }
 
@@ -1313,6 +1321,8 @@ addSchemeRow(obj: any = [],index: number){
                   if(getFile.length){
                     this.publicHalalConformityForm.halal_certificate_stamp = getFile[4].toString().split('.')[0];
                     this.certificateStampPath = this.constant.mediaPath +  res['data'].certificate_stamp.toString();
+                    this.publicHalalConformityForm.halal_certificate_stamp = getFile[4];
+
                   }
                 }
 
@@ -1329,21 +1339,34 @@ addSchemeRow(obj: any = [],index: number){
                 }else{
                   this.ownOrgMembInfo = this.bodMembInfo;
                 }
+
+                if(res['data'].accrFormDirector != ''){
+                  this.managingDirector = res['data'].accrFormDirector;
+                }
                 
                 if(res['data'].otherActivityLocations != null){
-                  this.step1Data.hcab_other_location = '1';
+                  this.step1Data.hcab_other_loc = '1';
                   var hcab_location = res['data'].otherActivityLocations
+                  var newLoaction = [];
                   for(let key in hcab_location) {
-                    var newLoaction = [];
-                    newLoaction.push(hcab_location[key].value);
+                    // console.log(hcab_location[key].value);
+                    if(hcab_location[key].value.location_type) {
+                      newLoaction.push(hcab_location[key].value);
+                    }
                   }
 
                   this.hcabOtherLocation = newLoaction;
-                  // console.log(this.hcabOtherLocation);
+
+                }else{
+                  this.step1Data.hcab_other_loc = '0';
                 }
                 
                 if(res['data'].hcabOtherAccreditation != ''){
                   this.accreditationInfo = res['data'].hcabOtherAccreditation;
+                  this.step1Data.is_hold_other_accr = '1';
+                  // is_hold_other_accreditation
+                }else{
+                  this.step1Data.is_hold_other_accr = '0';
                 }
   
                 //step2
@@ -1413,7 +1436,7 @@ addSchemeRow(obj: any = [],index: number){
   
                 //step4
                 
-                if(res['data'].scopeOfHalalConformity != ''){
+                if(res['data'].scopeOfHalalConformity != null){
                   var halalScope = res['data'].scopeOfHalalConformity;
                   // this.ownOrgBasicInfo = res['data'].scopeOfHalalConformity;
                   for(let key in halalScope) {
@@ -1424,63 +1447,86 @@ addSchemeRow(obj: any = [],index: number){
                   this.scopeofHalalConformity = arr;
                 }
 
-                if(res['data'].singningHalalCertificate != ''){
+                if(res['data'].singningHalalCertificate != null){
                   this.authorizedPersonforSigning = res['data'].singningHalalCertificate;
                 }
 
 
                 if(res['data'].recognized_logo1 && res['data'].recognized_logo1 != ''){
                   let getFile = res['data'].recognized_logo1.toString().split('/');
-                  if(getFile.length){
-                    this.publicHalalConformityForm.hcabLogo1 = getFile[4].toString().split('.')[0];
-                    this.hcabLogo1Path = this.constant.mediaPath +  res['data'].recognized_logo1.toString();
-                  }
+                  
+                  this.publicHalalConformityForm.hcabLogo1 = getFile[4].toString().split('.')[0];
+                  this.hcabLogo1Path = this.constant.mediaPath +  res['data'].recognized_logo1.toString();
                 }
 
                 if(res['data'].recognized_logo2 && res['data'].recognized_logo2 != ''){
                   let getFile = res['data'].recognized_logo2.toString().split('/');
-                  if(getFile.length){
                     this.publicHalalConformityForm.hcabLogo2 = getFile[4].toString().split('.')[0];
                     this.hcabLogo2Path = this.constant.mediaPath +  res['data'].recognized_logo2.toString();
-                  }
                 }
 
                 if(res['data'].recognized_logo3 && res['data'].recognized_logo3 != ''){
                   let getFile = res['data'].recognized_logo3.toString().split('/');
-                  if(getFile.length){
-                    this.publicHalalConformityForm.hcabLogo3 = getFile[4].toString().split('.')[0];
-                    this.hcabLogo2Path = this.constant.mediaPath +  res['data'].recognized_logo3.toString();
-                  }
+                  
+                  this.publicHalalConformityForm.hcabLogo3 = getFile[4].toString().split('.')[0];
+                  this.hcabLogo2Path = this.constant.mediaPath +  res['data'].recognized_logo3.toString();
+                  
                 }
 
                 //step5
-                //
-                
-  
-                //Step 6
                 if(res['data'].is_prelim_visit != null){
-                  this.step4Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
-                  this.step4Data.prelim_visit_date = res['data'].prelim_visit_date;
-                  this.step4Data.prelim_visit_time = res['data'].prelim_visit_time;
+                  this.step5Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
+                  this.step5Data.prelim_visit_date = res['data'].prelim_visit_date;
+                  this.step5Data.prelim_visit_time = res['data'].prelim_visit_time;
                 }
-                //Step 7
+                //Step 6
                 if(res['data'].onBehalfApplicantDetails && res['data'].onBehalfApplicantDetails != null && res['data'].onBehalfApplicantDetails != undefined){
                   let getAuthData = res['data'].onBehalfApplicantDetails;
                   ////console.log(">>> Auth data: ", getAuthData);
-                  this.step5Data.organization_name        = getAuthData.organization_name;
-                  this.step5Data.representative_name      = getAuthData.representative_name;
-                  this.step5Data.designation              = getAuthData.designation;
-                  this.step5Data.digital_signature        = getAuthData.digital_signature;
-                  this.step5Data.application_date         = getAuthData.application_date;
+                  this.step6Data.organization_name        = getAuthData.organization_name;
+                  this.step6Data.representative_name      = getAuthData.representative_name;
+                  this.step6Data.designation              = getAuthData.designation;
+                  this.step6Data.digital_signature        = getAuthData.digital_signature;
+                  this.step6Data.application_date         = getAuthData.application_date;
   
-                  Object.keys(this.authorizationList).forEach( key => { 
-                    this.authorizationList[key] = true;
+                  // Object.keys(this.authorizationList).forEach( key => { 
+                  //   this.authorizationList[key] = true;
+                  // })
+                  // this.authorizationStatus = true;
+                  // this.step5Data.recommend_visit = 'second';
+                  let authList: any;
+                  authList = getData.data.authorization_list;
+                  // console.log("@ Auth checked status: ", authList);
+                  this.authorizationList = JSON.parse(authList);
+                  // console.log("# Auth checked status: ", this.authorizationList);
+
+                  //check read ters check
+                  if(this.authorizationList.authorization_confirm2){
+                    this.readTermsCond       = true;
+                  }
+                  //check review checklist checked
+                  if(this.authorizationList.undertaking_confirm2){
+                    this.readReviewChecklist  = true;
+                  }
+
+                  this.recomendVisit.forEach((item, index) => {
+                
+                   let replace1 =  JSON.parse(getData.data.recommend_visit);//{first: false, second: true, third: true, fourth: false}; //fixed data
+                    let findVsit: any = (replace1);
+                    for(let key in findVsit){
+                    //  console.log('>>> ', key);
+                       if(key === item.name){
+                        //  console.log(">>>> found: ", item, " == ", replace1[key]);
+                         item.checked = findVsit[key];
+                       }
+                    }
                   })
-                  this.authorizationStatus = true;
-                  this.step5Data.recommend_visit = 'second';
+                  this.step6Data.recommend_visit = this.recomendVisit;// (getData.data.recommend_visit);
+                  
+                  this.step6Data.recommend_year = parseInt(getData.data.recommend_year);
                 }
   
-                //Step 9
+                //Step 7
                 if(res['data'].paymentDetails != null && typeof res['data'].paymentDetails === 'object'){
                   // //console.log(">>>payment details...show");
                     this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
@@ -1609,7 +1655,7 @@ addSchemeRow(obj: any = [],index: number){
     }
         
   
-    if(this.authorizationStatus && checkCount == 10){
+    if(this.authorizationStatus && checkCount == 13){
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;
@@ -1843,7 +1889,9 @@ addSchemeRow(obj: any = [],index: number){
       }
       this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
       this.step1Data.phone_no = '';
-      this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
+      this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accr == '0' ? false : true;
+      this.step1Data.hcab_other_location = this.step1Data.hcab_other_loc == '0' ? false : true;
+      
       this.step1Data.is_draft = true;
       this.publicHalalConformityForm.step1 = this.step1Data;
   
@@ -2098,7 +2146,9 @@ addSchemeRow(obj: any = [],index: number){
       }
       // this.publicHalalConformityForm.step1.is_draft = false;
       this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
-      this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
+      this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accr == '0' ? false : true;
+      this.step1Data.hcab_other_location = this.step1Data.hcab_other_loc == '0' ? false : true;
+      
       this.publicHalalConformityForm.step1 = this.step1Data;
   
       this.publicHalalConformityForm.step1['ownOrgBasicInfo'] = [];
@@ -2970,7 +3020,7 @@ getMatchScheme(scId: any, scopeData: any){
           checkCount++;
         }    
       }
-      if(this.authorizationStatus && checkCount == 10){
+      if(this.authorizationStatus && checkCount == 13){
         this.authorizationStatus = true;
       }else{
         this.authorizationStatus = false;
@@ -2987,11 +3037,24 @@ getMatchScheme(scId: any, scopeData: any){
     var applicationId = sessionStorage.getItem('applicationId');
     this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.publicHalalConformityForm.saved_step = '6';
-    this.step6Data.authorizationList = this.authorizationList;
+    // this.step6Data.authorizationList = this.authorizationList;
+    this.step6Data.authorization_list_json = this.authorizationList;
     this.step6Data.recommend = this.recommend;
     this.step6Data.is_draft = false;
     this.step6Data.application_date = new Date();
   
+    let recomVisit: any = {
+      'first':false,'second':false, 'third': false, 'fourth':false
+    };
+    let recomCheckCount = 0;
+        this.recomendVisit.forEach((item,index) => {
+          if(item.checked == true){
+            recomCheckCount++;
+          }
+      recomVisit[item.name.toString()] = item.checked;
+    })
+    this.step6Data.recommend = recomVisit;//this.recomendVisit;
+
     this.publicHalalConformityForm.step6 = this.step6Data;
     // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
   
@@ -3010,8 +3073,10 @@ getMatchScheme(scId: any, scopeData: any){
             this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
           }
           else{
-            // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
-            this.router.navigateByUrl('/dashboard/status/all');
+            this.toastr.success("Application Submitted Successfully");
+                setTimeout(() => {
+                  this.router.navigateByUrl('/dashboard/status/all');
+                }, 5000)
           }
         }else{
           this.toastr.warning(res['msg'], '');
@@ -3025,7 +3090,7 @@ getMatchScheme(scId: any, scopeData: any){
   
   
 onSubmitStep7(ngForm7: any) {
-  this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+  // this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
   //Paypal config data
   //applyTrainerPublicCourse
   this.transactionsItem['amount']               = {};
@@ -3082,6 +3147,7 @@ onSubmitStep7(ngForm7: any) {
   this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
   this.voucherFile.append('voucher_date',dtFormat);
   this.voucherFile.append('accreditation',this.formApplicationId);
+  this.voucherFile.append('is_draft', false);
   // this.voucherFile.append('application_id',this.formApplicationId);
       
   this.loader = false;

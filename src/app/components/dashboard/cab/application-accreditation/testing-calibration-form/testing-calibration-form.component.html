@@ -419,14 +419,16 @@
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Name the members of Board of Directors (BOD) (if any)</mat-label>
-                                                            <input matInput readonly (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name the members of Board of Directors (BOD)"  name="bod_directors_name_{{i}}" [(ngModel)]="ownOrgMembInfo[i].name"  required>
+                                                            <input matInput readonly (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name the members of Board of Directors (BOD)"  name="bod_directors_name_{{i}}" 
+                                                            [(ngModel)]="ownOrgMembInfo[i].name"  required>
                                                         </mat-form-field>
                                                     </div>
     
                                                     <div class="col-md-8 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>List the companies name of BOD members</mat-label>
-                                                            <input readonly matInput placeholder="List the companies name of BOD members"  (keypress)="Service.inputFilter($event, Service.regExName)" name="company_name_bod_{{i}}" [(ngModel)]="ownOrgMembInfo[i].bod_company"  required>
+                                                            <input readonly matInput placeholder="List the companies name of BOD members"  (keypress)="Service.inputFilter($event, Service.regExName)" name="company_name_bod_{{i}}" 
+                                                            [(ngModel)]="ownOrgMembInfo[i].bod_company"  required>
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
@@ -981,7 +983,7 @@
                 </div>
 
                 <div class="cust-stepper" id="scope_accreditation"  [ngStyle]="{'display':'none'}">
-                    <form #ngForm5="ngForm" (ngSubmit)="onSubmitStep5(ngForm5)" autocomplete="off">
+                    <!-- <form #ngForm5="ngForm" (ngSubmit)="onSubmitStep5(ngForm5)" autocomplete="off"> -->
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-12"> 
@@ -997,7 +999,7 @@
                                     <!-- View scope data -->
                                     <div class="row mt-3">
                                         <div class="col-md-12">
-                                            <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey, selectDeleteFamilyKey)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                                            <!-- <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey, selectDeleteFamilyKey)" [parent]="this" [modalType]="'delete'"></custom-modal>
                                             <ng-container *ngIf="editScopeData != undefined && editScopeData != null">
                                                 <div class="row">
                                                     <div class="col-md-12 p-0">
@@ -1015,7 +1017,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!-- {{item | json}} | {{item.value | json}} -->
                                                     <ng-container *ngIf="item.value != null && item.value != undefined">
                                                         <ng-container *ngFor="let item5 of (item.value) | keyvalue;">
                                                             <div class="row">
@@ -1051,9 +1052,11 @@
                                                                 </div>
                                                             </div>
                                                         </ng-container>
-                                                    </ng-container>
-
-                                                    <!-- <div class="row">
+                                                    </ng-container>                                                    
+                                                </ng-container>
+                                            </ng-container> -->
+                                            
+                                            <!-- old <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="table-appln scope-data">
                                                                 <div class="sub-header">
@@ -1086,8 +1089,6 @@
                                                             <!-- </div>
                                                         </div>
                                                     </div> -->
-                                                </ng-container>
-                                            </ng-container> 
                                     
                                             <ng-container *ngFor="let item of schemeRows; let i = index;">
                                                 <div class="row">
@@ -1117,7 +1118,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12 p-0">
                                                         <div class="form-subhdr">
-                                                            <h5>Scope Family for {{typeFamily.name}}  -- {{t1}}</h5>
+                                                            <h5>Scope Family for {{typeFamily.name}}</h5>
                                                         </div> 
                                                     </div>
                                                 </div>
@@ -1146,12 +1147,23 @@
                                             <!-- [ngStyle]="{'display':showScopeTable}" -->
                                         <div class="row" >
                                             <div class="col-md-12 col-sm-12">  
+                                                
                                                 <div class="row" *ngIf="typeFamily.scopeRows.length > 0">
                                                     <div class="col-12" *ngFor="let scope of typeFamily.scopeRows; let i1 = index;">
-                                                        <div class="row">
+                                                        <!-- @family - {{scope.familyId}} == {{scope.familyName}} >> {{typeFamily.scopeFamilyRows.length}}
+                                                        #{{scope.familyFound}} -->
+                                                    <form #ngForm1="ngForm" autocomplete="off">
+                                                        <div class="row" *ngIf="scope.familyFound == undefined">
                                                             <div class="col-md-12 p-0">
-                                                                <div class="form-subhdr"  *ngIf="scope.name != '' && scope.familyName !=''">
-                                                                    <h5>Accreditation Scope for - {{scope.name}} 
+                                                                <div class="form-subhdr">
+                                                                    <h5>Accreditation Scope for - {{scope.name}}</h5>
+                                                                </div> 
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" *ngIf="scope.familyFound != undefined && scope.familyFound == true">
+                                                            <div class="col-md-12 p-0">
+                                                                <div class="form-subhdr">
+                                                                    <h5>Accreditation Scope for - {{scope.name}}
                                                                         <ng-container *ngIf="scope.familyName != ''">
                                                                             >> {{scope.familyName}}
                                                                         </ng-container>
@@ -1160,10 +1172,9 @@
                                                             </div>
                                                         </div>
                                                         <!-- Make Table -->
-                                                        <div class="row">
+                                                        <div class="row" *ngIf="scope.familyFound == undefined">
                                                             <div class="col-md-12">
-                                                                <div class="table-content-health">
-                                                                    
+                                                                <div class="table-content-health">                                                                    
                                                                     <table>
                                                                         <thead>
                                                                             <tr>
@@ -1197,7 +1208,7 @@
                                                                                         [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][i1][p].title], dynamicScopeModel[scope.id][scope.familyId].fieldLines[k].firstFieldValues)" matTooltipPosition='above'
                                                                                         [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]" 
                                                                                         name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" [ngModelOptions]="{standalone: true}" 
-                                                                                        (selectionChange)="onChangeScopeOption($event,scope.title,k,p)">
+                                                                                        (selectionChange)="onChangeScopeOption($event,scope.id,scope.familyId,k,p)">
                                                                                             <mat-option *ngFor="let j1 of dynamicScopeModel[scope.id][scope.familyId].fieldLines[k].firstFieldValues" [value]='j1.field_value.id'>
                                                                                             {{j1.value}}
                                                                                             </mat-option>
@@ -1212,7 +1223,7 @@
                                                                                             [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][i1][p].title], dynamicScopeModel[scope.id][scope.familyId].fieldLines[k].firstFieldValues)" matTooltipPosition='above'
                                                                                             [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]" 
                                                                                             name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" [ngModelOptions]="{standalone: true}" multiple
-                                                                                            (selectionChange)="onChangeScopeOption($event,scope.title,k,p)">
+                                                                                            (selectionChange)="onChangeScopeOption($event,scope.id,scope.familyId,k,p)">
                                                                                                 <mat-option *ngFor="let j1 of dynamicScopeModel[scope.id][scope.familyId].fieldLines[k].firstFieldValues" [value]='j1.field_value.id'>
                                                                                                 {{j1.value}}
                                                                                                 </mat-option>
@@ -1241,7 +1252,7 @@
                                                                                         matTooltipPosition='above' 
                                                                                         [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]"
                                                                                         name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" 
-                                                                                        (selectionChange)="onChangeScopeOption($event,scope.title,k,p)" [ngModelOptions]="{standalone: true}" >
+                                                                                        (selectionChange)="onChangeScopeOption($event,scope.id,scope.familyId,k,p)" [ngModelOptions]="{standalone: true}" >
                                                                                             <mat-option *ngFor="let j2 of dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].values]" [value]='j2.field_value.id' [matTooltip]="j2.value">
                                                                                             {{j2.value}}
                                                                                             </mat-option>
@@ -1258,7 +1269,7 @@
                                                                                             [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title], dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].values])" 
                                                                                             matTooltipPosition='above' [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]"
                                                                                             name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" 
-                                                                                            (selectionChange)="onChangeScopeOption($event,scope.title,k,p)" [ngModelOptions]="{standalone: true}" >
+                                                                                            (selectionChange)="onChangeScopeOption($event,scope.id,scope.familyId,k,p)" [ngModelOptions]="{standalone: true}" >
                                                                                                 <mat-option *ngFor="let j2 of dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].values]" [value]='j2.field_value.id'>
                                                                                                 {{j2.value}}
                                                                                                 </mat-option>
@@ -1274,9 +1285,131 @@
                                                                         </tbody>
                                                                     </table>
                                                                 </div>
+
+                                                                <button class="submit-bttn submit-health" (click)="onSubmitStep5(ngForm1,null,i1)" [ngStyle]="{'float': 'right'}">
+                                                                    <span class="icon-add"></span>&nbsp;&nbsp;ADD</button>
                                                             </div>
                                                         </div>
+                                                        <!-- ///////////////////// -->
+                                                        <div class="row" *ngIf="scope.familyFound != undefined && scope.familyFound == true">
+                                                            <div class="col-md-12">
+                                                                <div class="table-content-health">                                                                    
+                                                                    <table>
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th># </th>
+                                                                                <th *ngFor="let fields of dynamicScopeFieldColumns[scope.id][scope.familyId]; let i2 = index;">{{fields[0].name}}
+                                                                                </th>
+                                                                                <th>
+                                                                                </th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr *ngFor="let item of dynamicScopeModel[scope.id][scope.familyId]['fieldLines']; let k = index;">
+                                                                                <td>{{("0" + (k+1)).slice(-2)}}</td>
+                                                                                <td *ngFor="let fieldsColumn of dynamicScopeFieldColumns[scope.id][scope.familyId]; let p = index;">
+    
+                                                                                    <ng-container *ngIf="dynamicScopeFieldType[scope.id][scope.familyId][p].inputType == 'text'">
+                                                                                        <mat-form-field class="cab-data" *ngIf="p == 0">
+                                                                                            <mat-label></mat-label>
+                                                                                            <input matInput  
+                                                                                            placeholder="" name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" 
+                                                                                            [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]" required>
+                                                                                        </mat-form-field>
+                                                                                    </ng-container>
+    
+                                                                                    <ng-container *ngIf="dynamicScopeFieldType[scope.id][scope.familyId][p].inputType == 'select'">
+                                                                                    <mat-form-field class="cab-data" *ngIf="p == 0">
+                                                                                        
+                                                                                        <mat-label>Select</mat-label>    
+                                                                                        <mat-select 
+                                                                                        
+                                                                                        [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][i1][p].title], dynamicScopeModel[scope.id][scope.familyId].fieldLines[k].firstFieldValues)" matTooltipPosition='above'
+                                                                                        [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]" 
+                                                                                        name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" [ngModelOptions]="{standalone: true}" 
+                                                                                        (selectionChange)="onChangeScopeOption($event,scope.id,scope.familyId,k,p)">
+                                                                                            <mat-option *ngFor="let j1 of dynamicScopeModel[scope.id][scope.familyId].fieldLines[k].firstFieldValues" [value]='j1.field_value.id'>
+                                                                                            {{j1.value}}
+                                                                                            </mat-option>
+                                                                                        </mat-select>
+                                                                                        
+                                                                                    </mat-form-field>
+                                                                                    </ng-container>
+                                                                                    <ng-container *ngIf="dynamicScopeFieldType[scope.id][scope.familyId][p].inputType == 'multi_select'">
+                                                                                        <mat-form-field class="cab-data" *ngIf="p == 0">
+                                                                                            <mat-label>Select</mat-label>    
+                                                                                            <mat-select              
+                                                                                            [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][i1][p].title], dynamicScopeModel[scope.id][scope.familyId].fieldLines[k].firstFieldValues)" matTooltipPosition='above'
+                                                                                            [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]" 
+                                                                                            name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" [ngModelOptions]="{standalone: true}" multiple
+                                                                                            (selectionChange)="onChangeScopeOption($event,scope.id,scope.familyId,k,p)">
+                                                                                                <mat-option *ngFor="let j1 of dynamicScopeModel[scope.id][scope.familyId].fieldLines[k].firstFieldValues" [value]='j1.field_value.id'>
+                                                                                                {{j1.value}}
+                                                                                                </mat-option>
+                                                                                            </mat-select>
+                                                                                              
+                                                                                        </mat-form-field>
+                                                                                        </ng-container>
+    
+                                                                                    <ng-container *ngIf="dynamicScopeFieldType[scope.id][scope.familyId][p].inputType == 'text'">
+                                                                                        <mat-form-field class="cab-data" *ngIf="p > 0 && p <= dynamicScopeFieldColumns[scope.id][scope.familyId].length">
+                                                                                            <mat-label></mat-label>
+                                                                                            <input matInput  
+                                                                                            [ngModelOptions]="{standalone: true}"
+                                                                                            placeholder="" name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" 
+                                                                                            [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]" required="true">
+                                                                                        </mat-form-field>
+                                                                                    </ng-container>
+    
+                                                                                    <ng-container *ngIf="dynamicScopeFieldType[scope.id][scope.familyId][p].inputType == 'select'">
+                                                                                    <mat-form-field class="cab-data" *ngIf="p > 0 && p <= dynamicScopeFieldColumns[scope.id][scope.familyId].length">
+                                                                                        
+                                                                                        <mat-label>Select</mat-label>
+                                                                                        <mat-select  
+                                                                                        required="true"
+                                                                                        [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title], dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].values])" 
+                                                                                        matTooltipPosition='above' 
+                                                                                        [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]"
+                                                                                        name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" 
+                                                                                        (selectionChange)="onChangeScopeOption($event,scope.id,scope.familyId,k,p)" [ngModelOptions]="{standalone: true}" >
+                                                                                            <mat-option *ngFor="let j2 of dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].values]" [value]='j2.field_value.id' [matTooltip]="j2.value">
+                                                                                            {{j2.value}}
+                                                                                            </mat-option>
+                                                                                        </mat-select>
+                                                                                    </mat-form-field>  
+                                                                                    </ng-container>
+                                                                                    <ng-container *ngIf="dynamicScopeFieldType[scope.id][scope.familyId][p].inputType == 'multi_select'">
+                                                                                        <mat-form-field class="cab-data" *ngIf="p > 0 && p <= dynamicScopeFieldColumns[scope.id][scope.familyId].length">
+                                                                                            
+                                                                                            <mat-label>Select</mat-label>
+                                                                                            <mat-select
+                                                                                            required="true"  
+                                                                                            multiple
+                                                                                            [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title], dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].values])" 
+                                                                                            matTooltipPosition='above' [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]"
+                                                                                            name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" 
+                                                                                            (selectionChange)="onChangeScopeOption($event,scope.id,scope.familyId,k,p)" [ngModelOptions]="{standalone: true}" >
+                                                                                                <mat-option *ngFor="let j2 of dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].values]" [value]='j2.field_value.id'>
+                                                                                                {{j2.value}}
+                                                                                                </mat-option>
+                                                                                            </mat-select>
+                                                                                        </mat-form-field>  
+                                                                                        </ng-container>
+                                                                                </td>
+                                                                                <td class="content-icn">
+                                                                                    <span *ngIf="k >= 0" class="icon-add" (click)="addScopeLine(k,scope.id,scope.familyId, dynamicScopeModel[scope.id][scope.familyId].fieldLines)"></span>&nbsp;
+                                                                                    <span *ngIf="k >= 1" class="icon-close-round" (click)="openDeleteScopeConfirm(k, scope.id, scope.familyId)"></span>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
 
+                                                                <button class="submit-bttn submit-health" (click)="onSubmitStep5(ngForm1,null,i1)" [ngStyle]="{'float': 'right'}">
+                                                                    <span class="icon-add"></span>&nbsp;&nbsp;ADD</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
                                                     </div>
                                                 </div>
     
@@ -1287,7 +1420,64 @@
                                 </div>
                             </div>
                         </div>
-
+                        <!-- view data -->
+                                 <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey, selectDeleteFamilyKey)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                                <ng-container *ngIf="editScopeData != undefined && editScopeData != null">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>SCOPE DATA</h5> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteIndex, selectDeleteFamilyKey)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                                    <ng-container *ngFor="let item of editScopeData | keyvalue">
+                                        <div class="row"> 
+                                            <div class="col-md-12">
+                                                <div class="sub-header">
+                                                    <h5 [innerHTML]="getSchme(item.key)"></h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <ng-container *ngIf="item.value != null && item.value != undefined">
+                                            <ng-container *ngFor="let item5 of (item.value) | keyvalue;">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="table-appln scope-data">
+                                                            <div class="sub-header">
+                                                                <h5 [innerHTML]="getFamilySchme(item.key, item5.key)"></h5>
+                                                                
+                                                            </div>
+                                                            <table *ngIf="item5.value.scope_value != undefined">
+                                                                <tr>
+                                                                    <th *ngFor="let item6 of (item5.value.scope_heading) | keyvalue;">{{item6.value}}</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                                <ng-container *ngIf="item5.value.scope_value.length > 0">
+                                                                    <tr *ngFor="let item2 of (item5.value.scope_value) | keyvalue; let i4 = index;">
+                                                                        <td *ngFor="let item3 of item2.value | keyvalue;">
+                                                                            <span [innerHTML]="(item3.value)"></span> 
+                                                                        </td>
+                                                                        <td>
+                                                                        <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item.key, item5.key )"></span>
+                                                                        </td>                                                                
+                                                                    </tr>
+                                                                </ng-container>
+                                                                <ng-container *ngIf="item5.value.scope_value.length == 0">
+                                                                    <tr>
+                                                                        <td [attr.colspan]="Service.getObjectLength(item5.value.scope_heading)+1">
+                                                                            No Data
+                                                                        </td>
+                                                                    </tr>
+                                                                </ng-container>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>                                                    
+                                    </ng-container>
+                                </ng-container>
                                 </div>
                             </div>
                         </div>
@@ -1296,14 +1486,16 @@
                                 <div class="bttns-health bttn-staff">
                                     <!-- (click)="onSubmitInformationAuditManagement()" -->
                                     <div class="button-content">
-                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','scope_accreditation')">BACK</a> 
+                                        <!--  (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','scope_accreditation')" -->
+                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="backScopeAccreditation()"
+                                        >BACK</a> 
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step5')">SAVE AS DRAFT</button> 
                                     </div>
-                                    <button class="submit-bttn submit-health" >CONTINUE</button>
+                                    <button class="submit-bttn submit-health" (click)="continueScopeAccreditation()">CONTINUE</button>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    <!-- </form> -->
                 </div>
 
                 <div class="cust-stepper" id="perlim_visit"  [ngStyle]="{'display':'none'}">
@@ -1439,127 +1631,7 @@
                                             </li>
                                             
                                             <li class="terms-condition"  (scroll)="scrollHandler($event)" #mydiv style="height:500px;overflow:auto">
-                                                <!-- <div class="tnc">
-                                                    <h3>Terms & Conditions</h3>
-                                                    <ol>
-                                                        <li class="tnc-sub"><h5>FIRST PARTY OBLIGATION</h5>
-                                                            <ol>
-                                                                <li>CAB hereby confirms that the information provided in this agreement is valid true and correct .</li>
-                                                                <li>CAB acknowledges and agrees to abide and sustain full compliance at all times with the following 
-                                                                    documents relevant to the accredited work scope under this agreement and stated within the accreditation 
-                                                                    application:
-                                                                    <ol>
-                                                                        <li>Relevant accreditation criteria, Accreditation requirements and Guidelines issued by EIAC
-                                                                            and any Relevant Mandatory and Guidance Documents issued by the international Recognition Bodies. 
-                                                                            CAB is required to frequently visit the EIAC’s website www.eiac.gov.ae for the latest updates, </li>
-                                                                        <li>committed to fulfill continually the requirements of accreditation scope for which 
-                                                                            accreditation is sought or granted and to commit to provide evidence of fulfillment . 
-                                                                            This includes agreement to adapt to changes in the requirements for accreditation,</li>
-                                                                        <li>To provide EIAC with all needed documentation information as listed in the accreditation application</li>
-                                                                    </ol>
-                                                                </li>
-                                                                <li>To provide EIAC with clear and valid reasons for the objection to any member of the Assessment 
-                                                                    Personnel in writing within 5 (five) working days of receipt of the notification of Assessment .</li>
-                                                                <li>To arrange the witnessing of conformity assessment services when requested by EI AC,</li>
-                                                                <li>To have, where applicable, legally enforceable arrangements with their clients that committ he 
-                                                                    clients to provide, on request , access to EIAC’s assessment teams to assesst he CAB’s performance 
-                                                                    carrying out conformity assessment activities at the client’s site, </li>
-                                                                <li>To claim accreditation only with respect to the scope for which it has been granted accreditation,</li>
-                                                                <li>To commit to follow EIAC’s policy for the use of the accreditation symbol ,</li>
-                                                                <li>Not to use its accreditation in such a manner as to bring the EIAC into dispute,</li>
-                                                                <li>To assist in the investigation and resolution of any complaints made by third parties about the CAB’s 
-                                                                    accredited activities, and </li>
-                                                                <li>To inform EIAC, without delay, of significant changes relevant to its accreditation, in any aspect of 
-                                                                    its status or operation relating to : 
-                                                                    <ol type="a">
-                                                                        <li>its legal , commercial , ownership or organizational status,</li>
-                                                                        <li>the organization, top management and key per sonnel ,</li>
-                                                                        <li>resources, premises and methods,</li>
-                                                                        <li>scope of accreditation, and</li>
-                                                                        <li>Other such matters that may affect the ability of the CAB to fulfill requirements for accreditation.</li>
-                                                                    </ol>
-                                                                </li>
-                                                                <li>The CAB is obliged to comply with EIAC Fees requirement available at website, knowing that all fees 
-                                                                    are non- refundable.</li>
-                                                                <li>In case EIAC could not provide the service after the fees being paid, or if there is change in 
-                                                                    the CAB’s circumstances after paying the fees; the CAB can request a refund of these fees in writing 
-                                                                    with a justification, accordingly the authority of EIAC will decide upon the refund of the transferred 
-                                                                    fees.</li>
-                                                                <li>In case t he CAB del ays to conf or m t he assessment plan on defined time; all expenses, 
-                                                                    such as, but not limited to , travel tickets, accommodations and accreditation fees of the visit 
-                                                                    shall be paid in full .</li>
-                                                                <li>The CAB may withdraw from the present contractual agreement at any moment , by means of an of 
-                                                                    ficialletter sent to EIAC.</li>
-                                                                <li>Upon suspension or reduction of its accreditation (however determined) , 
-                                                                    CAB shall discontinue immediately with no delay the use of all presentations and advertising 
-                                                                    that contains any reference to that terminated scope of accreditation</li>
-                                                                <li>The CAB shall not cede, assign or in any way transfer its accreditation to another party and such 
-                                                                    status shall not extend to the franchisee or franchisor of the CAB</li>
-                                                            </ol>
-                                                        </li>
-                                                        <li class="tnc-sub"><h5>EIAC OBLIGATION & RESPONSIBILITIES</h5>
-                                                            <ol>
-                                                                <li>EIAC shall publish all updated documents on its website: www.eiac.gov.ae and will notify the First 
-                                                                    Party of any changes to those documents.</li>
-                                                                <li>EIAC shall carry out accreditation services consistently in accordance with the relevant 
-                                                                    International / National standards and Regulations, Guidelines, Requirements of (ARAC, PAC, IAF and ILAC) , 
-                                                                    EIAC Requirements and avail suitable Personnel to its accreditation service.</li>
-                                                                <li>EIAC shall only consider objections in writing by CAB to any member of assessment Personnel due 
-                                                                    to conflict of interest in respect of such member with a clear and valid reasons for the objection within 
-                                                                    five working days.</li>
-                                                                <li>In case of unoreseen reasons/ circumstances affecting maintenance of CAB's accreditation; EIAC may 
-                                                                    but without prejudice to its right to suspend or terminate this Agreement .  The suspension will be 
-                                                                    released once the maintenance of EIAC requirements for Accreditation had been assured.</li>
-                                                                <li>In the event that accreditation has been granted, accreditation Certificate including the 
-                                                                    scope shall be issued to the CAB.</li>
-                                                                <li>EIAC shall publish on its website (www.eiac.gov.ae) , on a regular basis, the status of accredited 
-                                                                    CABs.</li>
-                                                                <li>EIAC shall notify the Customer how continuing conformity with the requirements for Accreditation 
-                                                                    will be monitored in order that it may maintain Accreditation. The frequency of monitoring will 
-                                                                    be determined by EIAC in accordance with EIAC published documents and will depend on the scope 
-                                                                    and scale of the Accreditation. In addition to the planned assessment program, EIAC reserves 
-                                                                    the right to carry out extraordinary visits at any time during the accreditation cycle other 
-                                                                    than those predeter mined as it may require.</li>
-                                                                <li>EIAC shall give the CAB Notice immediately upon imposing any kind of sanctions related to the 
-                                                                    accreditation status of the CAB .</li>
-                                                            </ol>
-                                                        </li>
-                                                        <li class="tnc-sub"><h5>TERMS AND CONDITIONS OF THE AGREEMENT</h5>
-                                                            <ol>
-                                                                <li>The agreement shall continue in force unless and until terminated by either party by giving 3 
-                                                                    months written notification or if the accreditation is withdrawn.</li>
-                                                                <li>At the date of termination of this agreement , any certificate of accreditation granted 
-                                                                    hereunder shall immediately deemed to be invalid. </li>
-                                                                <li>All out standing charges pursuant to this agreement shall be settled before the termination of this agreement . </li>
-                                                                <li>In cases of a change in the name of the CAB only, EIAC shall carry out the necessary verifications and 
-                                                                    subsequent issue of a new accreditation certificate as well as the relative annexes with updated data without 
-                                                                    there being the need to sign a new agreement .</li>
-                                                                <li>If the change involves any legal modifications on the status of CAB such as transfer of 
-                                                                    ownership of CAB; the CAB shall sign a new accreditation agreement .</li>
-                                                            </ol>
-                                                        </li>
-                                                        <li class="tnc-sub"><h5>LAW AND JURISDICTION</h5>
-                                                            <p>This agreement shall be governed and construed in accordance with UAE law. The parties hereby submit 
-                                                                    to the exclusive jurisdiction of the Dubai courts.</p>
-                                                        </li>
-                                                        <li class="tnc-sub"><h5>DECLARATION BY THE FIRST PARTY</h5>
-                                                            <p>By signing this agreement , I am asa First Party declares that :</p>
-                                                            <ul>
-                                                                <li>I have viewed the rights and obligations of the present agreement and other relevant documents, 
-                                                                    I shall respect all related obligations.</li>
-                                                                <li>I guarantee that I take all responsibilities, that all communications I make to the Second Party, 
-                                                                    both written and during the assessment visits, correspond to the truth.</li>
-                                                                <li>I guarantee that I take all responsibilities, that all the data carried in the documents that I 
-                                                                    present to the Second Party, during the assessment visit and at all other times, correspond to the truth.</li>
-                                                                <li>I acknowledge that I am aware with EIAC General Accreditation Requirement no. EIAC-RQ-GNL-001 and 
-                                                                    will fully comply with it at all times </li>
-                                                                <li>If I am providing the service to the Emirates of Dubai ; I acknowledge that I agree to abide and sustain 
-                                                                    full compliance at all times with the regulation no. 2</li>
-                                                            </ul>
-                                                        </li>
-                                                    </ol>
-                                                </div> -->
-                                            
+                                                
                                                 <div class="tnc" [innerHTML]="(termsGeneral != undefined && termsGeneral.content != undefined) ? termsGeneral.content : ''"></div>
                                             </li>
                                         
@@ -1605,12 +1677,12 @@
                                                         <td width="1%">
                                                             <mat-checkbox name="undertaking_confirm1" (change)="authorizeCheckCount($event)"
                                                             [(ngModel)]="authorizationList.undertaking_confirm1"></mat-checkbox></td>
-                                                        <td>Management System Manual</td>
+                                                        <td>Quality Manual</td>
                                                     </tr>
                                                     <tr>
                                                         <td><mat-checkbox name="undertaking_confirm2" [disableRipple]="true"
                                                             (click)="$event.preventDefault()" [(ngModel)]="authorizationList.undertaking_confirm2"></mat-checkbox></td>
-                                                        <td><span><a href="javascript:void(0)" title="Please review the checklist" alt="Please review the checklist" (click)="openView(checklistView, 'checklist')">Filled Up Document Review Checklist</a></span> (Related to applied accreditation standard and for initial accreditation & Scope Extensions only)<br/>
+                                                        <td><span><a href="javascript:void(0)" title="Please review the checklist" alt="Please review the checklist" (click)="openView(checklistView, 'checklist')">Filled Up Document Review Checklist based on the related standard</a></span> (for 1st submission only)<br/>
                                                             <p class="error" *ngIf="!readReviewChecklist && isApplicationSubmitted == true">Please review the checklist</p>                                                            
                                                         </td>
                                                     </tr>
@@ -1632,15 +1704,19 @@
                                                     </tr>
                                                     <tr>
                                                         <td><mat-checkbox name="undertaking_confirm7"  (change)="authorizeCheckCount($event)" [(ngModel)]="authorizationList.undertaking_confirm7"></mat-checkbox></td>
-                                                        <td>List of key staff and Organizational Structure if not mentioned in the Management System Manual</td>
+                                                        <td>List of key staff and Organizational Structure if not mentioned in the QM))</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><mat-checkbox name="undertaking_confirm9"  (change)="authorizeCheckCount($event)" [(ngModel)]="authorizationList.undertaking_confirm9"></mat-checkbox></td>
+                                                        <td>CMC calculations (for calibration laboratory)</td>
                                                     </tr>
                                                 </table>
                                             </div>
-                                            <div class="row">
+                                            <!-- <div class="row">
                                                 <div class="col-md-12">
                                                     <p class="error" *ngIf="!authorizationStatus  && isApplicationSubmitted == true">All check are required.</p>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div class="recommend my-3">
                                                 <div class="recommend-main">
                                                     <div class="recommend-quarter">
@@ -1704,6 +1780,18 @@
                                                     <hr>
                                                 </div>
                                             </div>
+                                            <div class="auth">
+                                                <mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm8" 
+                                                [(ngModel)]="authorizationList.undertaking_confirm8">
+                                                    Entering the authorised name will serve as an acceptance and digital binding signature for this agreement<span class="required_input">*</span>
+                                                </mat-checkbox>
+                                                </div>
+    
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <p class="error" *ngIf="!authorizationStatus && isApplicationSubmitted == true">All checkboxes are mandatory.</p>
+                                                    </div>
+                                                </div>
                                             <div class="row mt-3">
                                                 <div class="col-12 p-0">
                                                     <div class="form-subheader-data subhead-dt">
@@ -1862,7 +1950,9 @@
                                         <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice(ngForm8, true)">SAVE AS DRAFT</button> -->
                                         <!-- <button class="submit-bttn submit-health" (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)">CONTINUE</button> -->
                                     </div>
+                                    <ng-container *ngIf="paymentFilePath != ''">
                                     <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button>
+                                    </ng-container>
                                     <ng-container *ngIf="transactions.length">
                                         <div id="paypalPayment"></div>
                                     </ng-container>

@@ -68,20 +68,48 @@ export class StatusComponent implements OnInit {
   }
 
   editVisible(object: any){
-    console.log(">>> Item data: ", object);
-    let getId= (object.id);
-    let url = this._service.apiServerUrl+"/"+'accrediation-details-show/'+getId;
-    //let getScheme: any  = this.schemeRows[rowInd].id;
+    //console.log(">>> Item data: ", object);
 
-    console.log(">>>Get url and ID: ", url, " :: ", getId, " -- ");
-    this._service.getwithoutData(url)
-    .subscribe(
-    async res => {
-        let getData: any  =res;
-        console.log(">>>. Data: ", getData);
+    if(object){
+      if(object.accr_status != undefined && object.accr_status == 'complete'){
+        return true;
+      }
+      else if(object.accr_status != undefined && (object.accr_status == 'draft' || object.is_draft == false || object.accr_status == null)){
+        return false;
+      }
+      // else if(object.accr_status != undefined && (object.accr_status == 'draft' || object.is_draft == false || object.accr_status == null)){
+      //   console.log(">>> Enter....1: ", object.id);
+      //   if(object.paymentDetails != undefined && object.paymentDetails == false && object.accr_status != 'draft'){
+      //     console.log(">>> Enter....1.3: ", object.id);  
+      //     return true;
+      //   }else{
+      //     return false;
+      //   }
+      // }
+      else if(object.paymentDetails != undefined && object.paymentDetails != false && typeof object.paymentDetails == 'object' && object.paymentDetails.voucher_invoice != ''){
+        //console.log(">>> Enter....2: ", object.id);
+        return false;
+      }
+      // else if(object.paymentDetails != undefined && object.paymentDetails == false && object.accr_status != 'draft'){
+      //   console.log(">>> Enter....3: ", object.id);
+      //   return true;
+      // }
+    }
+
+
+    // let getId= (object.id);
+    // let url = this._service.apiServerUrl+"/"+'accrediation-details-show/'+getId;
+    // //let getScheme: any  = this.schemeRows[rowInd].id;
+
+    // console.log(">>>Get url and ID: ", url, " :: ", getId, " -- ");
+    // this._service.getwithoutData(url)
+    // .subscribe(
+    // async res => {
+    //     let getData: any  =res;
+    //     console.log(">>>. Data: ", getData);
         
         
-    });
+    // });
   }
 
   loadPageData() { 

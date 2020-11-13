@@ -3936,7 +3936,7 @@ backScopeAccreditation(){
       console.log(">>>Scope saving...");
       ////console.log(">>>Enter....3")
       this.saveScope(rowInd);
-      ////console.log(">>> step5 submit...", this.step5Data, " -- ", this.inspectionBodyForm);
+      console.log(">>> step5 submit...", this.step5Data, " -- ", this.inspectionBodyForm);
       this.inspectionBodyForm.step5.is_draft = false;
       this.inspectionBodyForm.saved_step = 5;
       //this.step5DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));

@@ -145,12 +145,12 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.form_meta"></span>
                                 </a>
                             </th>
-                            <!-- <th>Location
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'payment_status', curSortDir.payment_status)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.payment_status"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.payment_status"></span>
+                            <th>Location
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'location', curSortDir.location)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.location"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.location"></span>
                                 </a>
-                            </th> -->
+                            </th>
                             
                             <th>Action</th>
                         </tr>
@@ -183,27 +183,30 @@
                                 <span *ngIf="item.form_meta == 'pt_providers'">Proficiency Testing Providers</span>
                                 <span *ngIf="item.form_meta == 'halal_conformity_bodies'">Halal Confirmity Bodies</span>
                             </td> 
-                            <!-- <td>
-                                {{item.location}}
-                            </td>                            -->
+                            <td>
+                                {{item.city}},  {{item.country}}
+                            </td> 
                             <td class="action fnt-clr">
-                                <ng-container *ngIf="item.form_meta == 'testing_calibration' && item.accr_status != 'complete'">
-                                <a href="javascript:void(0)" *ngIf="item.form_meta == 'testing_calibration'" alt="Edit" routerLink="/dashboard/cab_client/testing-calibration-form/{{item.id}}"><span class="icon-edit"></span></a>
+                                <ng-container *ngIf="item.form_meta == 'testing_calibration'">
+                                <a href="javascript:void(0)"  alt="Edit" [hidden]="editVisible(item)" routerLink="/dashboard/cab_client/testing-calibration-form/{{item.id}}"><span class="icon-edit"></span></a>
                                 </ng-container>
-                                <ng-container *ngIf="item.form_meta == 'halal_conformity_bodies' && item.accr_status != 'complete'">
-                                <a href="javascript:void(0)"  *ngIf="item.form_meta == 'halal_conformity_bodies'" alt="Edit" routerLink="/dashboard/cab_client/halal-conformity-form/{{item.id}}"><span class="icon-edit"></span></a>
+                                <ng-container *ngIf="item.form_meta == 'halal_conformity_bodies'">
+                                <a href="javascript:void(0)"   alt="Edit" [hidden]="editVisible(item)" routerLink="/dashboard/cab_client/halal-conformity-form/{{item.id}}"><span class="icon-edit"></span></a>
                                 </ng-container>
-                                <ng-container *ngIf="item.form_meta == 'pt_providers' && item.accr_status != 'complete'">
-                                <a href="javascript:void(0)" *ngIf="item.form_meta == 'pt_providers'" alt="Edit" routerLink="/dashboard/cab_client/pt-providers-form/{{item.id}}"><span class="icon-edit"></span></a>
+                                <ng-container *ngIf="item.form_meta == 'pt_providers'">
+                                <a href="javascript:void(0)"  alt="Edit" [hidden]="editVisible(item)" routerLink="/dashboard/cab_client/pt-providers-form/{{item.id}}"><span class="icon-edit"></span></a>
                                 </ng-container>
-                                <ng-container *ngIf="item.form_meta == 'inspection_body' && item.accr_status != 'complete'">
-                                <a href="javascript:void(0)" *ngIf="item.form_meta == 'inspection_body' && item.accr_status != 'complete'" alt="Edit" routerLink="/dashboard/cab_client/inspection-bodies-form/{{item.id}}" (click)="setIB(item.id)"><span class="icon-edit"></span></a>
+                                <ng-container *ngIf="item.form_meta == 'inspection_body'">
+                                    <!-- <ng-container *ngIf="item.accr_status == 'draft' || item.paymentDetails ==  "> -->
+                                        <a href="javascript:void(0)" [hidden]="editVisible(item)"  alt="Edit" routerLink="/dashboard/cab_client/inspection-bodies-form/{{item.id}}" (click)="setIB(item.id)"><span class="icon-edit"></span></a>
+                                    <!-- </ng-container> -->
+                                    
                                 </ng-container>
-                                <ng-container *ngIf="item.form_meta == 'health_care' && item.accr_status != 'complete'">
-                                <a href="javascript:void(0)" *ngIf="item.form_meta == 'health_care'" alt="Edit" routerLink="/dashboard/cab_client/health-care-form/{{item.id}}"><span class="icon-edit"></span></a>
+                                <ng-container *ngIf="item.form_meta == 'health_care' ">
+                                <a href="javascript:void(0)"  alt="Edit" [hidden]="editVisible(item)" routerLink="/dashboard/cab_client/health-care-form/{{item.id}}"><span class="icon-edit"></span></a>
                                 </ng-container>
-                                <ng-container *ngIf="item.form_meta == 'certification_bodies' && item.accr_status != 'complete'">
-                                <a href="javascript:void(0)" *ngIf="item.form_meta == 'certification_bodies'" alt="Edit" routerLink="/dashboard/cab_client/certification-bodies-form/{{item.id}}"><span class="icon-edit"></span></a>
+                                <ng-container *ngIf="item.form_meta == 'certification_bodies'">
+                                <a href="javascript:void(0)"  alt="Edit" [hidden]="editVisible(item)" routerLink="/dashboard/cab_client/certification-bodies-form/{{item.id}}"><span class="icon-edit"></span></a>
                                 </ng-container>
                                 <!-- <a href="javascript:void(0)" (click)="open(courseVoucher, item.id)" alt="Upload Proforma Invoice" title="Upload Proforma Invoice"><span class="icon-document-pen"></span></a> -->
                                 <!-- <ng-container *ngIf="item.training_course_type === 'custom_course'" class="action fnt-clr">
