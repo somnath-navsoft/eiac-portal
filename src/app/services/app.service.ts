@@ -111,6 +111,10 @@ setValueUrlIB(value: any) {
   this.urlData.next(value); 
 }
 
+removePlus(data) {
+  return data.replace('+','');
+}
+
 setValueUrl(value?:any) {
   // console.log(">>assign value: ", value);
   this.setValue =  value;

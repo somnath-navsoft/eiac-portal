@@ -1520,7 +1520,7 @@
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="type_of_establishment_{{i}}" [(ngModel)]="authorizedPersonforSigning[i].type_of_establishment" required>
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="type_of_establishment_{{i}}" [(ngModel)]="authorizedPersonforSigning[i].name" required>
                                                                 </mat-form-field>
                                                             </td>
 
@@ -1918,56 +1918,68 @@
                                                         <td width="1%">
                                                             <mat-checkbox name="undertaking_confirm1"  (change)="authorizeCheckCount($event)"
                                                             [(ngModel)]="authorizationList.undertaking_confirm1"></mat-checkbox></td>
-                                                        <td>Management System Manual</td>
+                                                        <td>Master list of documents and forms</td>
                                                     </tr>
                                                     <tr>
                                                         <td><mat-checkbox name="undertaking_confirm2" [disableRipple]="true"
                                                             (click)="$event.preventDefault()" [(ngModel)]="authorizationList.undertaking_confirm2"></mat-checkbox></td>
-                                                        <td><span><a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled Up Document Review Checklist</a></span> (Related to applied accreditation standard and for initial accreditation & Scope Extensions only)<br/>
+                                                        <td><span><a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled In  Document Review Checklist</a></span>(Related to applied accreditation standard  e.g. UAE 2055-2, SMIIC-2 and for 1st submission only)<br/>
                                                             <p class="error" *ngIf="!readReviewChecklist  && isApplicationSubmitted == true">Please review the checklist</p>                                                            
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td><mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm3" [(ngModel)]="authorizationList.undertaking_confirm3"></mat-checkbox></td>
-                                                        <td>Internal Procedures (as per the accreditation criteria)</td>
+                                                        <td>Quality Manual</td>
                                                     </tr>
                                                     <tr>
                                                         <td><mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm4" [(ngModel)]="authorizationList.undertaking_confirm4"></mat-checkbox></td>
-                                                        <td>Minutes/Report of last Management Review</td>
+                                                        <td>Internal Procedures (as per the accreditation criteria)</td>
                                                     </tr>
                                                     <tr>
                                                         <td><mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm5" [(ngModel)]="authorizationList.undertaking_confirm5"></mat-checkbox></td>
-                                                        <td>Report of last Internal Audit</td>
+                                                        <td>Companies and Products List Certified By HCB</td>
                                                     </tr>
                                                     <tr>
                                                         <td><mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm6" [(ngModel)]="authorizationList.undertaking_confirm6"></mat-checkbox></td>
-                                                        <td>Participation in PT/ILC/Measurement Audit</td>
+                                                        <td>List of documents required for Halal CAB Accreditation</td>
                                                     </tr>
                                                     <tr>
                                                         <td><mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm7" [(ngModel)]="authorizationList.undertaking_confirm7"></mat-checkbox></td>
-                                                        <td>List of key staff and Organizational Structure if not mentioned in the Management System Manual</td>
+                                                        <td>Slaughterhouse And Meat Products List</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm7" [(ngModel)]="authorizationList.undertaking_confirm8"></mat-checkbox></td>
+                                                        <td>Minutes of last Management Review Meeting</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm7" [(ngModel)]="authorizationList.undertaking_confirm9"></mat-checkbox></td>
+                                                        <td>Report of last Internal Audit</td>
                                                     </tr>
                                                 </table>
                                             </div>
-                                            <div class="row">
+                                            <!-- <div class="row">
                                                 <div class="col-md-12">
                                                     <p class="error" *ngIf="!authorizationStatus  && isApplicationSubmitted == true">All check are required.</p>
                                                 </div>
-                                            </div>
-                                            <div class="recommend">
-                                                <span class="confirm">I recommend the visit to be conducted in the</span>
-                                                <mat-radio-group name="recommended" #recommendVisit="ngModel" [(ngModel)]="step5Data.recommend_visit" required>
-                                                    <mat-radio-button name="1st" value="first">1st</mat-radio-button>
-                                                    <mat-radio-button name="2nd" value="second">2nd</mat-radio-button>
-                                                    <mat-radio-button name="3rd" value="third">3rd</mat-radio-button>
-                                                    <mat-radio-button name="4th" value="fourth">4th quarter of the year</mat-radio-button>
-                                                </mat-radio-group>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <p class="error" *ngIf="recommendVisit.errors?.required  && isApplicationSubmitted == true">Please select anyone option</p>
+                                            </div> -->
+                                            <div class="recommend my-3">
+                                                <div class="recommend-main">
+                                                    <div class="recommend-quarter">
+                                                        <span class="confirm">I recommend the visit to be conducted in the</span>
+                                                            <mat-checkbox  name="recommend_visit"  *ngFor="let item of recomendVisit; let k=index;"
+                                                            [(ngModel)]="item.checked" [ngModelOptions]="{standalone: true}" required>{{item.label}}</mat-checkbox>
+                                                    </div> 
+                                                    <span class="confirm">quarter of the year</span>
+                                                    <div class="recommend-year">
+                                                        <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step6Data.recommend_year" required>
+                                                            <mat-option [value]="item.value" *ngFor="let item of recommendYearValues; let k=index;">{{item.title}}</mat-option>
+                                                        </mat-select>
+                                                    </div>
                                                 </div>
+                                                <div class="col-md-6 p-0" [ngStyle]="{'margin-top':'5px'}">
+                                                </div>                                                
                                             </div>
+
                                         </div>
                                     </div>
                                     <div class="row">
@@ -1980,6 +1992,20 @@
                                                     <hr>
                                                 </div>
                                             </div>
+
+                                            <div class="auth">
+                                                <mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm10" 
+                                                [(ngModel)]="authorizationList.undertaking_confirm10">
+                                                    Entering the authorised name will serve as an acceptance and digital binding signature for this agreement<span class="required_input">*</span>
+                                                </mat-checkbox>
+                                            </div>
+    
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p class="error" *ngIf="!authorizationStatus && isApplicationSubmitted == true">All checkboxes are mandatory.</p>
+                                                </div>
+                                            </div>
+
                                             <div class="row mt-3">
                                                 <div class="col-12 p-0">
                                                     <div class="form-subheader-data subhead-dt">
@@ -2026,7 +2052,7 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Date</mat-label>
-                                                        <input matInput placeholder="Date" name="onbehalf_representative_date" 
+                                                        <input matInput placeholder="Date" [matDatepicker]="onbehalf_representative_date" name="onbehalf_representative_date" 
                                                         [(ngModel)]="step6Data.application_date" [value]="Service.returnCurrentDate()">
                                                     </mat-form-field>
                                                 </div>

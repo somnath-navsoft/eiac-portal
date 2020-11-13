@@ -224,9 +224,9 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
     this.loadTermsConditions(2);
  }
 
- removePlusItem(data) {
-   return this._service.removePlus(data);
- }
+//  removePlusItem(data) {
+//    return this._service.removePlus(data);
+//  }
 
  loadTermsConditions(pageId: number){
   let post: any = {};

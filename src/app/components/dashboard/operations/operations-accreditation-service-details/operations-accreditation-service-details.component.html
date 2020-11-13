@@ -279,7 +279,8 @@
           </div>
         </div>
       </div>
-      <div class="row m-0">
+      
+      <div class="row m-0" *ngIf="serviceDetail?.form_meta != 'halal_conformity_bodies'">
         <div class="col-md-12">
           <div class="row status-det-wrapper">
             <div class="col-md-12 p-0">
@@ -300,6 +301,37 @@
                       <span class="personal_details">{{row2.contact_person}}</span>
                       <span *ngIf="row2.designation">, {{row2.designation}}</span>
                       <span *ngIf="row2.mobile_no">, Mobile : {{row2.mobile_no}}</span>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row m-0" *ngIf="serviceDetail?.form_meta == 'halal_conformity_bodies'">
+        <div class="col-md-12">
+          <div class="row status-det-wrapper">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="appln-subhdr">
+                    <h5>BOARD MEMBERS OF THE COMPANY</h5>
+                  </div>
+                  <hr>
+                </div>
+              </div>
+              <div class="status_main">
+                <div class="row m-0">
+                  <div class="col-md-6 p-0" *ngFor="let row2 of ownOrgMembInfo; let i1 = index;">
+                    <div class="members_details">
+                      <h4>{{row2.name}}</h4>
+                      <p *ngIf="row2.designation" class="address_details">{{row2.designation}}</p>
+                      <!-- <span *ngIf="row2.designation">{{row2.designation}}</span> -->
+                      <span *ngIf="row2.relationship">{{row2.relationship}}</span>
+                      <span *ngIf="row2.employment">, {{row2.employment}}</span>
                     </div>
                   </div>
                 </div>
