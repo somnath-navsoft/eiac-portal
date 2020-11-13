@@ -4,6 +4,7 @@
           <h3>Daniel Thompson</h3>
       </div>
       <div class="message_wrapper">
+
           <div class="messaging_chat">
               <div class="message_user">
                   <span>DT</span>
@@ -18,7 +19,9 @@
                   </div>
               </div>
           </div>
-          <div class="messaging_chat">
+
+
+          <!-- <div class="messaging_chat">
               <div class="message_user">
                   <span>DT</span>
               </div>
@@ -31,24 +34,25 @@
                       <span>09:53 PM</span>
                   </div>
               </div>
-          </div>
+          </div> -->
+
       </div>
       <div class="row">
         <div class="col-md-12">
             <div class="cmnt-content">
                 <form #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)">
                     <div class="row">
-                        <div class="col-md-4">
+                        <!-- <div class="col-md-4">
                             <mat-form-field class="cab-data">
                                 <mat-label>Name</mat-label>
                                 <input name="title" [(ngModel)]="chatMessage.title" required matInput autocomplete="off" placeholder="Name">     
                             </mat-form-field>
-                        </div>
+                        </div> -->
 
-                        <div class="col-md-4">
+                        <div class="col-md-8">
                             <mat-form-field class="cab-data">
                                 <mat-label>Message</mat-label>
-                                <input name="message" [(ngModel)]="chatMessage.message" matInput autocomplete="off" placeholder="Message">
+                                <input name="message" required [(ngModel)]="chatMessage.message" matInput autocomplete="off" placeholder="Message">
                                 <mat-error></mat-error>      
                             </mat-form-field>
                         </div>
@@ -56,7 +60,7 @@
                         <div class="col-md-4">
                             <div class="matupload position-relative">
                                 <mat-form-field class="lng-data">
-                                    <input name="upload_message" [(ngModel)]="chatMessage.upload_message" matInput name="message" placeholder="Upload Document" >
+                                    <input name="upload_message" [(ngModel)]="chatMessage.upload_message" matInput name="document" placeholder="Upload Document" >
                                 </mat-form-field>
                                 <span class="fileupload">
                                     <input type="file" name="upload_message_file" [(ngModel)]="chatMessage.upload_message_file" (change)="validateFile($event)" required>
