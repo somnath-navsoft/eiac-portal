@@ -1140,7 +1140,7 @@
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Scheme</mat-label>
                                                                     <mat-select (selectionChange)="getCriteria(typeScope.schemeRows[i].id, i, typeScope.title)" placeholder="Select" name="scheme_id_{{i}}"  
-                                                                    [(ngModel)]="typeScope.schemeRows[i].id"  [required] = "editScopeData == undefined || editScopeData == null">
+                                                                    [(ngModel)]="typeScope.schemeRows[i].id" [ngModelOptions]="{standalone: true}"  [required] = "editScopeData == undefined || editScopeData == null">
                                                                         <mat-option [value]="item.scope_accridiation.id" *ngFor="let item of typeScope.schemeData; let k=index;">{{item.title}}</mat-option>
                                                                     </mat-select>
                                                                     <mat-error></mat-error> 
