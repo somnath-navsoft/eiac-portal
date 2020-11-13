@@ -68,21 +68,32 @@ export class StatusComponent implements OnInit {
   }
 
   editVisible(object: any){
-    console.log(">>> Item data: ", object);
+    //console.log(">>> Item data: ", object);
 
     if(object){
       if(object.accr_status != undefined && object.accr_status == 'complete'){
         return true;
       }
-      if(object.paymentDetails != undefined && object.paymentDetails == false && object.accr_status != 'draft'){
-        return true;
-      }
-      if(object.accr_status != undefined && object.accr_status == 'draft'){
+      else if(object.accr_status != undefined && (object.accr_status == 'draft' || object.is_draft == false || object.accr_status == null)){
         return false;
       }
-      if(object.paymentDetails != undefined && object.paymentDetails != false && typeof object.paymentDetails == 'object' && object.paymentDetails.voucher_invoice != ''){
+      // else if(object.accr_status != undefined && (object.accr_status == 'draft' || object.is_draft == false || object.accr_status == null)){
+      //   console.log(">>> Enter....1: ", object.id);
+      //   if(object.paymentDetails != undefined && object.paymentDetails == false && object.accr_status != 'draft'){
+      //     console.log(">>> Enter....1.3: ", object.id);  
+      //     return true;
+      //   }else{
+      //     return false;
+      //   }
+      // }
+      else if(object.paymentDetails != undefined && object.paymentDetails != false && typeof object.paymentDetails == 'object' && object.paymentDetails.voucher_invoice != ''){
+        //console.log(">>> Enter....2: ", object.id);
         return false;
       }
+      // else if(object.paymentDetails != undefined && object.paymentDetails == false && object.accr_status != 'draft'){
+      //   console.log(">>> Enter....3: ", object.id);
+      //   return true;
+      // }
     }
 
 

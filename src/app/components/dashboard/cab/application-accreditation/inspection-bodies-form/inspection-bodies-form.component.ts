@@ -2875,7 +2875,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       //this.inspectionBodyForm.step1['trade_license'] = this.step1DataBodyFormFile;
       this.inspectionBodyForm.step1.is_draft = false;
       console.log(">>> First Step Data: ", this.inspectionBodyForm);
-      return;
+      //return;
       //this.step1DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
           // this.toastr.success('Application Successfully Submitted', '');
           // setTimeout(()=> {

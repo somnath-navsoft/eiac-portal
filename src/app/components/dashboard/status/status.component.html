@@ -145,12 +145,12 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.form_meta"></span>
                                 </a>
                             </th>
-                            <!-- <th>Location
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'payment_status', curSortDir.payment_status)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.payment_status"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.payment_status"></span>
+                            <th>Location
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'location', curSortDir.location)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.location"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.location"></span>
                                 </a>
-                            </th> -->
+                            </th>
                             
                             <th>Action</th>
                         </tr>
@@ -183,9 +183,9 @@
                                 <span *ngIf="item.form_meta == 'pt_providers'">Proficiency Testing Providers</span>
                                 <span *ngIf="item.form_meta == 'halal_conformity_bodies'">Halal Confirmity Bodies</span>
                             </td> 
-                            <!-- <td>
-                                {{item.location}}
-                            </td>                            -->
+                            <td>
+                                {{item.city}},  {{item.country}}
+                            </td> 
                             <td class="action fnt-clr">
                                 <ng-container *ngIf="item.form_meta == 'testing_calibration'">
                                 <a href="javascript:void(0)"  alt="Edit" [hidden]="editVisible(item)" routerLink="/dashboard/cab_client/testing-calibration-form/{{item.id}}"><span class="icon-edit"></span></a>
