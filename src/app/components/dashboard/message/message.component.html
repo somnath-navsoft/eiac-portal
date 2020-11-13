@@ -50,7 +50,7 @@
                                 <div class="ass-data">
                                     <h3>{{row.title}}</h3>
                                     <div class="date_wrapper">
-                                        <p>{{row.user.date_joined | date}}</p>
+                                        <p>{{row.user?.date_joined | date}}</p>
                                         <div class="reply_msg" *ngIf="row.meta_title != 'user_registration'" routerLink="/dashboard/message-reply/{{row.id}}">
                                             <span class="icon-chat"></span>
                                             Reply

@@ -20,38 +20,38 @@ export class MessageReplyComponent implements OnInit {
   messageList: any;
   userId: any;
   replyMessageId: any;
+  messageDetail: any;
+  message: any;
+  document: any;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) { }
 
   ngOnInit() {
 
     this.replyMessageId = this.router.url.toString().split('/')[3];
-    console.log(this.replyMessageId);
-
+    this.loader = false;
     this.userType = sessionStorage.getItem('type');
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
-    // if (this.userType != 'operations') {
-    //   var landUrl = '/dashboard' + this.userType + '/home'
-    //   this.router.navigateByUrl(landUrl);
-    // }
+    this.userId = sessionStorage.getItem('userId');
     this.getMessage();
   }
 
   getMessage() {
     this.loader = false;
-    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.replyMessage + '?id=' + this.userId)
+    // https://dev-service.eiac.gov.ae/webservice/message-list/message_id=12  
+    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-list?message_id=' + this.replyMessageId)
       .subscribe(
         res => {
           this.messageList = res['data'].message_list;
-          // console.log(this.messageList);
-
+          console.log(this.messageList);
           this.loader = true;
-          // console.log(res['data'].message_list);
+          
         });
   }
 
   validateFile(fileEvent: any) {
+    this.document = fileEvent.target.files[0];
     var file_name = fileEvent.target.files[0].name;
     var file_exe = file_name.substring(file_name.lastIndexOf('.') + 1, file_name.length);
     var ex_type = ['pdf', 'xlsx', 'xlx'];
@@ -69,19 +69,34 @@ export class MessageReplyComponent implements OnInit {
 
 
   onSubmit(ngForm) {
+    
     if (ngForm.form.valid) {
-      this.chatMessage.email = this.userEmail;
-      this.chatMessage.userType = this.userType;
+      console.log('valid');
+      
+      this.chatMessage.user_id = this.userId;
+      this.chatMessage.message_id = this.replyMessageId;
+      let formdata = new FormData();
+      formdata.append('user_id', this.userId);
+      formdata.append('message_id', this.replyMessageId);
+      formdata.append('message', this.chatMessage.message);
+      formdata.append('document', this.document);
+      // this.chatMessageFile.append('data', JSON.stringify(this.chatMessage));
+
+
       this.loader = false;
-      this.chatMessageFile.append('data', JSON.stringify(this.chatMessage));
-      this.Service.post(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.profileService, this.chatMessageFile)
+      this.Service.put(this.Service.apiServerUrl + "/" + 'message-list/', formdata)
         .subscribe(
           res => {
             if (res['status'] == true) {
+              this.chatMessage.message = '';
+              this.chatMessage.upload_message = '';
               this.loader = true;
-              this.toastr.success(res['msg'], '');
+              this.toastr.success(res['msg'], '');    
+              this.getMessage();          
             }
           })
+    }else{
+      console.log('invalid');
     }
   }
 
