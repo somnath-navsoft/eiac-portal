@@ -1309,21 +1309,21 @@ addSchemeRow(obj: any = [],index: number){
 
                 if(res['data'].reg_form_issued_esma != ''){
                   let getFile = res['data'].reg_form_issued_esma.toString().split('/');
-                  if(getFile.length){
+                  // if(getFile.length){
                     this.publicHalalConformityForm.id_issued_esma = getFile[4].toString().split('.')[0];
                     this.issuedEsmaPath = this.constant.mediaPath +  res['data'].reg_form_issued_esma.toString();
                     this.publicHalalConformityForm.id_issued_esma = getFile[4];
-                  }
+                  // }
                 }
 
                 if(res['data'].certificate_stamp != ''){
                   let getFile = res['data'].certificate_stamp.toString().split('/');
-                  if(getFile.length){
+                  // if(getFile.length){
                     this.publicHalalConformityForm.halal_certificate_stamp = getFile[4].toString().split('.')[0];
                     this.certificateStampPath = this.constant.mediaPath +  res['data'].certificate_stamp.toString();
                     this.publicHalalConformityForm.halal_certificate_stamp = getFile[4];
 
-                  }
+                  // }
                 }
 
                 if(res['data'].legal_status != ''){
@@ -2145,6 +2145,7 @@ addSchemeRow(obj: any = [],index: number){
         this.step1Data.application_id = this.formApplicationId;
       }
       // this.publicHalalConformityForm.step1.is_draft = false;
+      this.step1Data.phone_no = '';
       this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
       this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accr == '0' ? false : true;
       this.step1Data.hcab_other_location = this.step1Data.hcab_other_loc == '0' ? false : true;

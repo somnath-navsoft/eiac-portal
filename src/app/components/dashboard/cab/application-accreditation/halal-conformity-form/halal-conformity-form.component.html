@@ -252,7 +252,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Legal Status</mat-label>
-                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Official Website" name="legal_status" [(ngModel)]="step1Data.legal_status">
+                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Legal Status" name="legal_status" [(ngModel)]="step1Data.legal_status">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
@@ -396,7 +396,7 @@
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Land Line Phone No.</mat-label>
-                                                            <input matInput (keypress)="Service.IsNumeric($event)" placeholder="Land Line Phone No." name="phone_no_{{i}}" [(ngModel)]="managingDirector[i].telephone_no" required>
+                                                            <input matInput (keypress)="Service.IsNumeric($event)" placeholder="Land Line Phone No." name="phone_no_{{i}}" [(ngModel)]="managingDirector[i].phone_no" required>
                                                         </mat-form-field>
                                                     </div>
 
@@ -502,12 +502,12 @@
                                                 <p class="error" *ngIf="isApplicationSubmitted == true && selectInspecActivity.errors?.required">Please select anyone option</p>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" *ngIf="step1Data.is_main_activity == 'false'">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>(If No, indicate what are other activities related to the organization)</mat-label>
                                                 <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
                                                 matInput placeholder="" name="indication" [(ngModel)]="step1Data.is_main_activity_note">
-                                                </mat-form-field>
+                                            </mat-form-field>
                                         </div>
                                     </div>
 
@@ -537,7 +537,7 @@
                                                 <p class="error" *ngIf="isApplicationSubmitted == true && hcabHold.errors?.required">Please select anyone option</p>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" *ngIf="step1Data.is_staff_ownership == 'false'">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>(If No, indicate what are other activities related to the organization)</mat-label>
                                                 <input matInput placeholder="" name="indication" [(ngModel)]="step1Data.is_staff_ownership_note">
@@ -729,7 +729,7 @@
 
                                                             <td>
                                                                 <mat-form-field class="cab-data">
-                                                                    <input readonly="true" (click)="Service._openCalendar(initial_date)" matInput [matDatepicker]="initial_date" readonly="true" placeholder="Select Initial Date" name="initial_date_{{i}}" (dateChange)="setexDate(accreditationInfo[i].initial_date)" [(ngModel)]="accreditationInfo[i].initial_accr_date" required>
+                                                                    <input readonly="true" (click)="Service._openCalendar(initial_date)" matInput [matDatepicker]="initial_date" readonly="true" placeholder="Selectd" name="initial_date_{{i}}" (dateChange)="setexDate(accreditationInfo[i].initial_date)" [(ngModel)]="accreditationInfo[i].initial_accr_date" required>
                                                                     <mat-datepicker-toggle matSuffix [for]="initial_date"></mat-datepicker-toggle>
                                                                     <mat-datepicker #initial_date  disabled="false"></mat-datepicker>
                                                                 </mat-form-field>
@@ -737,7 +737,7 @@
 
                                                             <td>
                                                                 <mat-form-field class="cab-data">
-                                                                    <input readonly="true" (keypress)="Service.inputFilter($event, Service.regExName)" matInput [matDatepicker]="expiry_date" readonly="true" [min]="minDate" placeholder="Select Expiry Date" name="expiry_date_{{i}}" (click)="Service._openCalendar(expiry_date)" [(ngModel)]="accreditationInfo[i].expiry_date" required>
+                                                                    <input readonly="true" (keypress)="Service.inputFilter($event, Service.regExName)" matInput [matDatepicker]="expiry_date" readonly="true" [min]="minDate" placeholder="Selectd" name="expiry_date_{{i}}" (click)="Service._openCalendar(expiry_date)" [(ngModel)]="accreditationInfo[i].expiry_date" required>
                                                                     <mat-datepicker-toggle matSuffix [for]="expiry_date"></mat-datepicker-toggle>
                                                                     <mat-datepicker #expiry_date  disabled="false"></mat-datepicker>
                                                                 </mat-form-field>
