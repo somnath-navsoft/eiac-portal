@@ -138,6 +138,7 @@ import { AccountUploadComponent } from './components/dashboard/accounts/account-
 import { CabTrainingDetailComponent } from './components/dashboard/cab/cab-training-detail/cab-training-detail.component';
 import { CabTrainingInpremiseDetailComponent } from './components/dashboard/cab/cab-training-inpremise-detail/cab-training-inpremise-detail.component';
 import { CabTrainingInpremiseFormComponent } from './components/dashboard/cab/cab-training-inpremise-form/cab-training-inpremise-form.component';
+import { MessageReplyComponent } from './components/dashboard/message/message-reply/message-reply.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -184,7 +185,9 @@ export const MY_FORMATS = {
     AccountUploadComponent,
     CabTrainingDetailComponent,
     CabTrainingInpremiseDetailComponent,
-    CabTrainingInpremiseFormComponent],
+    CabTrainingInpremiseFormComponent,
+    MessageReplyComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,

@@ -419,14 +419,16 @@
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Name the members of Board of Directors (BOD) (if any)</mat-label>
-                                                            <input matInput readonly (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name the members of Board of Directors (BOD)"  name="bod_directors_name_{{i}}" [(ngModel)]="ownOrgMembInfo[i].name"  required>
+                                                            <input matInput readonly (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name the members of Board of Directors (BOD)"  name="bod_directors_name_{{i}}" 
+                                                            [(ngModel)]="ownOrgMembInfo[i].name"  required>
                                                         </mat-form-field>
                                                     </div>
     
                                                     <div class="col-md-8 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>List the companies name of BOD members</mat-label>
-                                                            <input readonly matInput placeholder="List the companies name of BOD members"  (keypress)="Service.inputFilter($event, Service.regExName)" name="company_name_bod_{{i}}" [(ngModel)]="ownOrgMembInfo[i].bod_company"  required>
+                                                            <input readonly matInput placeholder="List the companies name of BOD members"  (keypress)="Service.inputFilter($event, Service.regExName)" name="company_name_bod_{{i}}" 
+                                                            [(ngModel)]="ownOrgMembInfo[i].bod_company"  required>
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
@@ -981,7 +983,7 @@
                 </div>
 
                 <div class="cust-stepper" id="scope_accreditation"  [ngStyle]="{'display':'none'}">
-                    <form #ngForm5="ngForm" (ngSubmit)="onSubmitStep5(ngForm5)" autocomplete="off">
+                    <!-- <form #ngForm5="ngForm" (ngSubmit)="onSubmitStep5(ngForm5)" autocomplete="off"> -->
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-12"> 
@@ -997,7 +999,7 @@
                                     <!-- View scope data -->
                                     <div class="row mt-3">
                                         <div class="col-md-12">
-                                            <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey, selectDeleteFamilyKey)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                                            <!-- <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey, selectDeleteFamilyKey)" [parent]="this" [modalType]="'delete'"></custom-modal>
                                             <ng-container *ngIf="editScopeData != undefined && editScopeData != null">
                                                 <div class="row">
                                                     <div class="col-md-12 p-0">
@@ -1015,7 +1017,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!-- {{item | json}} | {{item.value | json}} -->
                                                     <ng-container *ngIf="item.value != null && item.value != undefined">
                                                         <ng-container *ngFor="let item5 of (item.value) | keyvalue;">
                                                             <div class="row">
@@ -1051,9 +1052,11 @@
                                                                 </div>
                                                             </div>
                                                         </ng-container>
-                                                    </ng-container>
-
-                                                    <!-- <div class="row">
+                                                    </ng-container>                                                    
+                                                </ng-container>
+                                            </ng-container> -->
+                                            
+                                            <!-- old <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="table-appln scope-data">
                                                                 <div class="sub-header">
@@ -1086,8 +1089,6 @@
                                                             <!-- </div>
                                                         </div>
                                                     </div> -->
-                                                </ng-container>
-                                            </ng-container> 
                                     
                                             <ng-container *ngFor="let item of schemeRows; let i = index;">
                                                 <div class="row">
@@ -1117,7 +1118,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12 p-0">
                                                         <div class="form-subhdr">
-                                                            <h5>Scope Family for {{typeFamily.name}}  -- {{t1}}</h5>
+                                                            <h5>Scope Family for {{typeFamily.name}}</h5>
                                                         </div> 
                                                     </div>
                                                 </div>
@@ -1146,12 +1147,22 @@
                                             <!-- [ngStyle]="{'display':showScopeTable}" -->
                                         <div class="row" >
                                             <div class="col-md-12 col-sm-12">  
+                                                
                                                 <div class="row" *ngIf="typeFamily.scopeRows.length > 0">
                                                     <div class="col-12" *ngFor="let scope of typeFamily.scopeRows; let i1 = index;">
-                                                        <div class="row">
+                                                        @family - {{scope.familyId}} == {{scope.familyName}} >> {{typeFamily.scopeFamilyRows.length}}
+                                                    <form #ngForm1="ngForm" autocomplete="off">
+                                                        <div class="row" *ngIf="scope.familyId == 0">
                                                             <div class="col-md-12 p-0">
-                                                                <div class="form-subhdr"  *ngIf="scope.name != '' && scope.familyName !=''">
-                                                                    <h5>Accreditation Scope for - {{scope.name}} 
+                                                                <div class="form-subhdr">
+                                                                    <h5>Accreditation Scope for - {{scope.name}}</h5>
+                                                                </div> 
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" *ngIf="scope.familyId != '' && scope.familyId > 0">
+                                                            <div class="col-md-12 p-0">
+                                                                <div class="form-subhdr">
+                                                                    <h5>Accreditation Scope for - {{scope.name}}
                                                                         <ng-container *ngIf="scope.familyName != ''">
                                                                             >> {{scope.familyName}}
                                                                         </ng-container>
@@ -1160,10 +1171,9 @@
                                                             </div>
                                                         </div>
                                                         <!-- Make Table -->
-                                                        <div class="row">
+                                                        <div class="row" *ngIf="scope.familyId != ''">
                                                             <div class="col-md-12">
-                                                                <div class="table-content-health">
-                                                                    
+                                                                <div class="table-content-health">                                                                    
                                                                     <table>
                                                                         <thead>
                                                                             <tr>
@@ -1197,7 +1207,7 @@
                                                                                         [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][i1][p].title], dynamicScopeModel[scope.id][scope.familyId].fieldLines[k].firstFieldValues)" matTooltipPosition='above'
                                                                                         [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]" 
                                                                                         name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" [ngModelOptions]="{standalone: true}" 
-                                                                                        (selectionChange)="onChangeScopeOption($event,scope.title,k,p)">
+                                                                                        (selectionChange)="onChangeScopeOption($event,scope.id,scope.familyId,k,p)">
                                                                                             <mat-option *ngFor="let j1 of dynamicScopeModel[scope.id][scope.familyId].fieldLines[k].firstFieldValues" [value]='j1.field_value.id'>
                                                                                             {{j1.value}}
                                                                                             </mat-option>
@@ -1212,7 +1222,7 @@
                                                                                             [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][i1][p].title], dynamicScopeModel[scope.id][scope.familyId].fieldLines[k].firstFieldValues)" matTooltipPosition='above'
                                                                                             [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]" 
                                                                                             name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" [ngModelOptions]="{standalone: true}" multiple
-                                                                                            (selectionChange)="onChangeScopeOption($event,scope.title,k,p)">
+                                                                                            (selectionChange)="onChangeScopeOption($event,scope.id,scope.familyId,k,p)">
                                                                                                 <mat-option *ngFor="let j1 of dynamicScopeModel[scope.id][scope.familyId].fieldLines[k].firstFieldValues" [value]='j1.field_value.id'>
                                                                                                 {{j1.value}}
                                                                                                 </mat-option>
@@ -1241,7 +1251,7 @@
                                                                                         matTooltipPosition='above' 
                                                                                         [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]"
                                                                                         name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" 
-                                                                                        (selectionChange)="onChangeScopeOption($event,scope.title,k,p)" [ngModelOptions]="{standalone: true}" >
+                                                                                        (selectionChange)="onChangeScopeOption($event,scope.id,scope.familyId,k,p)" [ngModelOptions]="{standalone: true}" >
                                                                                             <mat-option *ngFor="let j2 of dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].values]" [value]='j2.field_value.id' [matTooltip]="j2.value">
                                                                                             {{j2.value}}
                                                                                             </mat-option>
@@ -1258,7 +1268,7 @@
                                                                                             [matTooltip]="getFieldTooltip(dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title], dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].values])" 
                                                                                             matTooltipPosition='above' [(ngModel)]="dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title]"
                                                                                             name="dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].title" 
-                                                                                            (selectionChange)="onChangeScopeOption($event,scope.title,k,p)" [ngModelOptions]="{standalone: true}" >
+                                                                                            (selectionChange)="onChangeScopeOption($event,scope.id,scope.familyId,k,p)" [ngModelOptions]="{standalone: true}" >
                                                                                                 <mat-option *ngFor="let j2 of dynamicScopeModel[scope.id][scope.familyId].fieldLines[k][dynamicScopeFieldColumns[scope.id][scope.familyId][p][0].values]" [value]='j2.field_value.id'>
                                                                                                 {{j2.value}}
                                                                                                 </mat-option>
@@ -1274,9 +1284,12 @@
                                                                         </tbody>
                                                                     </table>
                                                                 </div>
+
+                                                                <button class="submit-bttn submit-health" (click)="onSubmitStep5(ngForm1,null,i1)" [ngStyle]="{'float': 'right'}">
+                                                                    <span class="icon-add"></span>&nbsp;&nbsp;ADD</button>
                                                             </div>
                                                         </div>
-
+                                                    </form>
                                                     </div>
                                                 </div>
     
@@ -1287,6 +1300,63 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- view data -->
+                                 <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey, selectDeleteFamilyKey)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                                <ng-container *ngIf="editScopeData != undefined && editScopeData != null">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>SCOPE DATA</h5> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteIndex, selectDeleteFamilyKey)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                                    <ng-container *ngFor="let item of editScopeData | keyvalue">
+                                        <div class="row"> 
+                                            <div class="col-md-12">
+                                                <div class="sub-header">
+                                                    <h5 [innerHTML]="getSchme(item.key)"></h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <ng-container *ngIf="item.value != null && item.value != undefined">
+                                            <ng-container *ngFor="let item5 of (item.value) | keyvalue;">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="table-appln scope-data">
+                                                            <div class="sub-header">
+                                                                <h5 [innerHTML]="getFamilySchme(item.key, item5.key)"></h5>
+                                                            </div>
+                                                            <table *ngIf="item5.value.scope_value != undefined">
+                                                                <tr>
+                                                                    <th *ngFor="let item6 of (item5.value.scope_heading) | keyvalue;">{{item6.value}}</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                                <ng-container *ngIf="item5.value.scope_value.length > 0">
+                                                                    <tr *ngFor="let item2 of (item5.value.scope_value) | keyvalue; let i4 = index;">
+                                                                        <td *ngFor="let item3 of item2.value | keyvalue;">
+                                                                            <span [innerHTML]="(item3.value)"></span> 
+                                                                        </td>
+                                                                        <td>
+                                                                        <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item.key, item5.key )"></span>
+                                                                        </td>                                                                
+                                                                    </tr>
+                                                                </ng-container>
+                                                                <ng-container *ngIf="item5.value.scope_value.length == 0">
+                                                                    <tr>
+                                                                        <td [attr.colspan]="Service.getObjectLength(item5.value.scope_heading)+1">
+                                                                            No Data
+                                                                        </td>
+                                                                    </tr>
+                                                                </ng-container>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>                                                    
+                                    </ng-container>
+                                </ng-container>
 
                                 </div>
                             </div>
@@ -1296,14 +1366,16 @@
                                 <div class="bttns-health bttn-staff">
                                     <!-- (click)="onSubmitInformationAuditManagement()" -->
                                     <div class="button-content">
-                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','scope_accreditation')">BACK</a> 
+                                        <!--  (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','scope_accreditation')" -->
+                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="backScopeAccreditation()"
+                                        >BACK</a> 
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step5')">SAVE AS DRAFT</button> 
                                     </div>
-                                    <button class="submit-bttn submit-health" >CONTINUE</button>
+                                    <button class="submit-bttn submit-health" (click)="continueScopeAccreditation()">CONTINUE</button>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    <!-- </form> -->
                 </div>
 
                 <div class="cust-stepper" id="perlim_visit"  [ngStyle]="{'display':'none'}">
