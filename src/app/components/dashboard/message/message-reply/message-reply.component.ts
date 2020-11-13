@@ -22,7 +22,8 @@ export class MessageReplyComponent implements OnInit {
   replyMessageId: any;
   messageDetail: any;
   message: any;
-  document: any;
+  document: any = '';
+  attachedFile: string;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) { }
 
@@ -46,7 +47,7 @@ export class MessageReplyComponent implements OnInit {
           this.messageList = res['data'].message_list;
           console.log(this.messageList);
           this.loader = true;
-          
+
         });
   }
 
@@ -54,7 +55,7 @@ export class MessageReplyComponent implements OnInit {
     this.document = fileEvent.target.files[0];
     var file_name = fileEvent.target.files[0].name;
     var file_exe = file_name.substring(file_name.lastIndexOf('.') + 1, file_name.length);
-    var ex_type = ['pdf', 'xlsx', 'xlx'];
+    var ex_type = ['pdf', 'jpeg', 'JPEG', 'png', 'PNG', 'jpg', 'JPG'];
     var ex_check = this.Service.isInArray(file_exe, ex_type);
     if (ex_check) {
       this.chatMessage.upload_message = fileEvent.target.files[0].name;
@@ -69,10 +70,8 @@ export class MessageReplyComponent implements OnInit {
 
 
   onSubmit(ngForm) {
-    
+
     if (ngForm.form.valid) {
-      console.log('valid');
-      
       this.chatMessage.user_id = this.userId;
       this.chatMessage.message_id = this.replyMessageId;
       let formdata = new FormData();
@@ -80,9 +79,6 @@ export class MessageReplyComponent implements OnInit {
       formdata.append('message_id', this.replyMessageId);
       formdata.append('message', this.chatMessage.message);
       formdata.append('document', this.document);
-      // this.chatMessageFile.append('data', JSON.stringify(this.chatMessage));
-
-
       this.loader = false;
       this.Service.put(this.Service.apiServerUrl + "/" + 'message-list/', formdata)
         .subscribe(
@@ -91,12 +87,10 @@ export class MessageReplyComponent implements OnInit {
               this.chatMessage.message = '';
               this.chatMessage.upload_message = '';
               this.loader = true;
-              this.toastr.success(res['msg'], '');    
-              this.getMessage();          
+              this.toastr.success(res['msg'], '');
+              this.getMessage();
             }
           })
-    }else{
-      console.log('invalid');
     }
   }
 
