@@ -29,8 +29,7 @@ export class MessageReplyComponent implements OnInit {
   ngOnInit() {
 
     this.replyMessageId = this.router.url.toString().split('/')[3];
-    console.log(this.replyMessageId);
-
+    this.loader = false;
     this.userType = sessionStorage.getItem('type');
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
@@ -70,8 +69,10 @@ export class MessageReplyComponent implements OnInit {
 
 
   onSubmit(ngForm) {
-
+    
     if (ngForm.form.valid) {
+      console.log('valid');
+      
       this.chatMessage.user_id = this.userId;
       this.chatMessage.message_id = this.replyMessageId;
       let formdata = new FormData();
@@ -83,14 +84,19 @@ export class MessageReplyComponent implements OnInit {
 
 
       this.loader = false;
-      this.Service.put(this.Service.apiServerUrl + "/" + 'message-list', formdata)
+      this.Service.put(this.Service.apiServerUrl + "/" + 'message-list/', formdata)
         .subscribe(
           res => {
             if (res['status'] == true) {
+              this.chatMessage.message = '';
+              this.chatMessage.upload_message = '';
               this.loader = true;
-              this.toastr.success(res['msg'], '');
+              this.toastr.success(res['msg'], '');    
+              this.getMessage();          
             }
           })
+    }else{
+      console.log('invalid');
     }
   }
 

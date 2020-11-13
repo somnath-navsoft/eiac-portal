@@ -5,14 +5,13 @@
       </div>
       <div class="message_wrapper">
 
-          <div class="messaging_chat">
+          <div class="messaging_chat" *ngFor="let msg of messageList; let i = index;">
               <div class="message_user">
                   <span>DT</span>
               </div>
               <div class="message_chat">
                   <div class="message_cnt">
-                      <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span>
+                      <span>{{msg.message}}</span>
                   </div>
                   <div class="message_time">
                       <span>09:53 PM</span>
@@ -63,7 +62,7 @@
                                     <input name="upload_message" [(ngModel)]="chatMessage.upload_message" matInput name="document" placeholder="Upload Document" >
                                 </mat-form-field>
                                 <span class="fileupload">
-                                    <input type="file" name="upload_message_file" [(ngModel)]="chatMessage.upload_message_file" (change)="validateFile($event)" required>
+                                    <input type="file" name="upload_message_file" [(ngModel)]="chatMessage.upload_message_file" (change)="validateFile($event)">
                                     <!-- <mat-error class="error" *ngIf="!file_validation">Please Upload a valid file (ex: pdf,xlsx,xlx)</mat-error>  -->
                                     <span class="icon-attach attach-data"></span>
                                 </span>
