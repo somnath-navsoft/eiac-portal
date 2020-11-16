@@ -32,6 +32,8 @@ export class PtProvidersFormComponent implements OnInit {
   public scopeForTesting: Array<any> = [];
   public scopeForMedical: Array<any> = [];
 
+  isPrelimSubmitted: boolean = false;
+
   public accreditationInfo: Array<any> = [{}];
   public technicalManager: any = {};
   public managementManager: any = {};
@@ -69,6 +71,11 @@ export class PtProvidersFormComponent implements OnInit {
   public isNoteSubmit:boolean = false;
   // ngx-google-places-autocomplete [options]='options' #placesRef="ngx-places"
   // version = VERSION;
+
+  authorizationListTerms1: any;
+  authorizationListTerms2: any;
+
+  recomendVisit: any[] = [];
   allCityByCountry: any = [];
   getCountryLists:any;
   authorization_confirm2:any;
@@ -203,7 +210,7 @@ export class PtProvidersFormComponent implements OnInit {
 
   loadTermsConditions(){
     let post: any = {};
-    post['service_page_id'] = 10; // Medical / healthcare
+    post['service_page_id'] = 1; // Medical / healthcare
     this.Service.post(this.Service.apiServerUrl+"/" + 'terms-and-conditions/', post)
       .subscribe(
         res => {
@@ -211,7 +218,14 @@ export class PtProvidersFormComponent implements OnInit {
           let getData: any = res;
           if(getData){
             this.termsGeneral = getData.data[0];
-           // this.termsILA     = getData.data[1];
+            this.termsILA     = getData.data[1];
+
+            if(this.termsGeneral != undefined && this.termsGeneral != ''){
+              this.authorizationListTerms1 = this.termsGeneral.term_id;
+            }
+            if(this.termsILA != undefined && this.termsILA != ''){
+              this.authorizationListTerms2 = this.termsILA.term_id;
+            }
 
             //console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
           }
@@ -238,6 +252,25 @@ export class PtProvidersFormComponent implements OnInit {
    this.loadTermsConditions();
    //this.checkCaptchaValidation = false;
    this.loader = false;
+
+   this.recomendVisit.push({
+    checked: false,
+    name: 'first',
+    label: '1st',
+  },{
+    checked: false,
+    name: 'second',
+    label: '2nd',
+  },{
+    checked: false,
+    name: 'third',
+    label: '3rd',
+  },{
+    checked: false,
+    name: 'fourth',
+    label: '4th',
+  }
+  );
 
    var d = new Date();
     var yr = d.getFullYear();
@@ -283,8 +316,11 @@ export class PtProvidersFormComponent implements OnInit {
         title:'application_complete', desc:'10. Application Complete', activeStep:false, stepComp:false, icon:'icon-document-pen', activeClass:''
       },
     );
-    //undertaking_confirmTop3: false,
-    this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false};
+    //
+    this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  
+      undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,
+      undertaking_confirm8: false,undertaking_confirmTop3: false,undertaking_confirm9: false,
+      undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false};
  }
 
 
@@ -1065,6 +1101,9 @@ setexDate(date){
           let getData: any;
           getData = res;
           let saveStep: number;
+          
+          sessionStorage.setItem("userData", JSON.stringify(getData));
+
           if(res['data'].id && res['data'].id != '') {
               let pathData: any;
               let filePath: string;
@@ -1134,7 +1173,7 @@ setexDate(date){
               console.log("@cab type: ", this.step1Data.cab_type);
               
               if(res['data'].accredation_criteria  != ''){
-                //this.step1Data.accredation_criteria = res['data'].accredation_criteria.toString();
+                this.step1Data.accredation_criteria = res['data'].accredation_criteria.toString();
               }
               if(res['data'].criteria_request  != ''){
                 this.step1Data.criteria_request = res['data'].criteria_request;
@@ -1242,15 +1281,47 @@ setexDate(date){
                 this.step7Data.digital_signature        = getAuthData.digital_signature;
                 this.step7Data.application_date         = getAuthData.application_date;
 
-                Object.keys(this.authorizationList).forEach( key => { 
-                  this.authorizationList[key] = true;
-                })
-                this.authorizationStatus = true;
-                this.readReviewChecklist = true;
-                this.readTermsCond       = true;
-                let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
-                this.step7Data.recommend_visit = visitRecomm;//'second';
+                // Object.keys(this.authorizationList).forEach( key => { 
+                //   this.authorizationList[key] = true;
+                // })
+                // this.authorizationStatus = true;
+                // this.readReviewChecklist = true;
+                // this.readTermsCond       = true;
+                // let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
+                // this.step7Data.recommend_visit = visitRecomm;//'second';
+                // this.step7Data.recommend_year = parseInt(getData.data.recommend_year);
                 this.step7Data.recommend_year = parseInt(getData.data.recommend_year);
+                 this.recomendVisit.forEach((item, index) => {
+                  //let replace:  any = getData.data.recommend_visit.replaceAll("\\", "");
+                  //console.log(">>> replace: ", getData.data.recommend_visit, " :: ", replace);
+                  let cpjson: any = getData.data.recommend_visit ;//'{"first": false, "second": true, "third": false, "fourth": true}';
+
+                  let findVsit: any = JSON.parse(cpjson); 
+                  console.log(">>> ", findVsit);
+                  for(let key in findVsit){
+                     if(key === item.name){
+                       console.log(">>>> found: ", item, " == ", findVsit[key]);
+                       item.checked = findVsit[key];
+                     }
+                  }
+                  })
+                console.log("@recommend visit: ", this.recomendVisit, " -- ", getData.data.recommend_visit);
+                this.step7Data.recommend_visit = this.recomendVisit;//(getData.data.recommend_visit);
+                let authList: any;
+                authList = getData.data.authorization_list;
+                console.log("@ Auth checked status: ", authList);
+                this.authorizationList = JSON.parse(authList);
+                console.log("# Auth checked status: ", this.authorizationList);
+
+                //check read ters check
+                if(this.authorizationList.authorization_confirm2){
+                  this.readTermsCond       = true;
+                }
+                //check review checklist checked
+                if(this.authorizationList.undertaking_confirm2){
+                  this.readReviewChecklist       = true;
+
+
               }
 
               //Step 9
@@ -1268,6 +1339,7 @@ setexDate(date){
                   this.paymentReceiptValidation = true;
               }
             }
+          }
         });
     }
 }
@@ -1603,13 +1675,22 @@ savedraftStep(stepCount) {
     this.ptProvidersForm.step7 = {};
     this.ptProvidersForm.email = this.userEmail;
     this.ptProvidersForm.userType = this.userType;
-    this.step7Data.authorizationList = this.authorizationList;
-    this.step7Data.recommend = this.recommend;
-    this.step7Data.recommend = this.recommend;
+    this.step7Data.authorization_list_json = this.authorizationList;
+    //this.step7Data.recommend = this.recommend;
+    //this.step7Data.recommend = this.recommend;
     var applicationId = sessionStorage.getItem('applicationId');
     this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step7Data.is_draft = true;
     this.ptProvidersForm.saved_step = '7';
+
+    let recomVisit: any = {
+      'first':false,'second':false, 'third': false, 'fourth':false
+    };
+    console.log(recomVisit);
+    this.recomendVisit.forEach((item,index) => {
+      recomVisit[item.name.toString()] = item.checked;
+    })
+    this.step7Data.recommend = recomVisit;
 
     this.ptProvidersForm.step7 = this.step7Data;
     // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
@@ -1751,11 +1832,27 @@ onSubmitStep3(ngForm3: any){
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
       res => {
-        // console.log(res,'res')
+        console.log(res,'res')
         this.loader = false;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
-          this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+          if(this.step1Data.accredation_criteria == 1){
+            //Intial
+            this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+          }
+          if(this.step1Data.accredation_criteria == 2){
+            //Extension
+            alert(this.step1Data.accredation_criteria);
+            let stepData: any = this.headerSteps.find(item => item.title == 'information_audit_management');
+            console.log(">>step select: 1 ", stepData);
+            if(stepData){
+              stepData.activeClass = '';
+              stepData.stepComp = true;
+            }
+            console.log(">>step select: 2 ", this.headerSteps);
+            this.Service.moveSteps('personal_information', 'scope_accreditation', this.headerSteps);
+          }
+          //this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
         }
@@ -2053,18 +2150,21 @@ this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
 }
 backScopeAccreditation(){
 //Reset all model data 
+console.log("@back scope....1: ", this.step1Data.accredation_criteria);
 this.dynamicScopeFieldColumns = {};
 this.dynamicScopeFieldType = {};
 this.dynamicScopeModel = {};
 this.fullScope = [];
 this.schemeRows = [{}];
-this.Service.moveSteps('scope_accreditation', 'information_audit_management', this.headerSteps);
-// if(this.step1Data.accredation_criteria == 1){
-// this.Service.moveSteps('scope_accreditation', 'information_audit_management', this.headerSteps);
-// }
-// if(this.step1Data.accredation_criteria == 2){
-// this.Service.moveSteps('scope_accreditation', 'personal_information', this.headerSteps);
-// }
+//this.Service.moveSteps('scope_accreditation', 'information_audit_management', this.headerSteps);
+  if(this.step1Data.accredation_criteria == 1){
+    console.log("@back scope....1.1");
+  this.Service.moveSteps('scope_accreditation', 'information_audit_management', this.headerSteps);
+  }
+  if(this.step1Data.accredation_criteria == 2){
+    console.log("@back scope....1.2");
+  this.Service.moveSteps('scope_accreditation', 'personal_information', this.headerSteps);
+  }
 }
 
 onSubmitStep5(ngForm: any, type?: any , rowInd?:any) {
@@ -2203,7 +2303,8 @@ onSubmitStep5(ngForm: any, type?: any , rowInd?:any) {
 }
 
 onSubmitStep6(ngForm6: any){
-  this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+  //this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+  this.isPrelimSubmitted = true;
   if(ngForm6.form.valid) {
     this.ptProvidersForm = {};
     this.ptProvidersForm.step6 = {};
@@ -2212,7 +2313,8 @@ onSubmitStep6(ngForm6: any){
     this.ptProvidersForm.userType = this.userType;
     var applicationId = sessionStorage.getItem('applicationId');
     this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step6Data.is_prelim_visit = this.step6Data.is_prelim_visit == 0 ? false : true;
+    //this.step6Data.is_prelim_visit = this.step6Data.is_prelim_visit == 0 ? false : true;
+    this.step6Data.is_prelim_visit = this.step6Data.prelim_visit_val == 0 ? false : true;
     this.step6Data.is_draft = false;
     this.ptProvidersForm.step6 = this.step6Data;
 
@@ -2224,6 +2326,7 @@ onSubmitStep6(ngForm6: any){
       res => {
         // console.log(res,'res')
         this.loader = false;
+        this.isPrelimSubmitted = false;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
           this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
@@ -2249,7 +2352,7 @@ authorizeCheckCount(theEvent: any, type?:any){
   if(theEvent.checked || readChecked == true){
     for(let key in this.authorizationList) {
       ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
-      if(this.authorizationList[key]) {  
+      if(this.authorizationList[key] && key != 'undertaking_confirmTop3') {  
         this.authorizationStatus = true;       
         checkCount++;
       }    
@@ -2257,7 +2360,7 @@ authorizeCheckCount(theEvent: any, type?:any){
   }
       
 
-  if(this.authorizationStatus && checkCount == 9){
+  if(this.authorizationStatus && checkCount == 11){
     this.authorizationStatus = true;
   }else{
     this.authorizationStatus = false;
@@ -2286,12 +2389,12 @@ this.isApplicationSubmitted = true;
 let checkCount = 0;
 for(let key in this.authorizationList) {
   ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
-  if(this.authorizationList[key]) {  
+  if(this.authorizationList[key] && key != 'undertaking_confirmTop3') {  
     this.authorizationStatus = true;       
     checkCount++;
   }      
 }  
-if(this.authorizationStatus && checkCount == 9){  
+if(this.authorizationStatus && checkCount == 11){  
   this.authorizationStatus = true;
 }else{
   this.authorizationStatus = false;
@@ -2301,11 +2404,28 @@ if(this.authorizationStatus && checkCount == 9){
 if(this.authorizationStatus == false){
   this.isSubmit = false;
   this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
-}else if(this.step7Data.recommend_visit == ''){
-  this.isSubmit = false;
-  this.toastr.error('Please Check any recommend the visit ', '');
 }
-if(ngForm7.form.valid){
+// else if(this.step7Data.recommend_visit == ''){
+//   this.isSubmit = false;
+//   this.toastr.error('Please Check any recommend the visit ', '');
+// }
+//make visit 
+let recomVisit: any = {
+  'first':false,'second':false, 'third': false, 'fourth':false
+};
+console.log(recomVisit);
+let recomCheckCount = 0;
+    this.recomendVisit.forEach((item,index) => {
+      if(item.checked == true){
+        recomCheckCount++;
+      }
+  recomVisit[item.name.toString()] = item.checked;
+})
+this.step7Data.recommend = recomVisit;//this.recomendVisit;
+
+//this.ptProvidersForm.step7 = this.step7Data;
+
+if(ngForm7.form.valid && recomCheckCount > 0 && this.authorizationStatus == true){
 
   this.ptProvidersForm = {};
   this.ptProvidersForm.step7 = {};
@@ -2314,12 +2434,14 @@ if(ngForm7.form.valid){
   var applicationId = sessionStorage.getItem('applicationId');
   this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
   this.ptProvidersForm.saved_step = '7';
-  this.step7Data.authorizationList = this.authorizationList;
-  this.step7Data.recommend = this.recommend;
+  this.step7Data.authorization_list_json = this.authorizationList;
+  //this.step7Data.recommend = this.recommend;
   this.step7Data.is_draft = false;
   this.step7Data.application_date = new Date();
 
   this.ptProvidersForm.step7 = this.step7Data;
+  this.ptProvidersForm.step7.terms1 = this.authorizationListTerms1;
+  this.ptProvidersForm.step7.terms2 = this.authorizationListTerms2;
   // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
 
   // this.step6DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
@@ -2337,8 +2459,12 @@ if(ngForm7.form.valid){
           this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
         }
         else{
+          this.toastr.success("Application Submitted Successfully");
+              setTimeout(() => {
+                this.router.navigateByUrl('/dashboard/status/all');
+              }, 5000)
           // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
-          this.router.navigateByUrl('/dashboard/status/all');
+          //this.router.navigateByUrl('/dashboard/status/all');
         }
       }else{
         this.toastr.warning(res['msg'], '');
@@ -2408,6 +2534,7 @@ this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by'
 this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
 this.voucherFile.append('voucher_date',dtFormat);
 this.voucherFile.append('accreditation',this.formApplicationId);
+this.voucherFile.append('is_draft', false);
 // this.voucherFile.append('application_id',this.formApplicationId);
     
 this.loader = true;
@@ -2497,11 +2624,24 @@ saveInspectopnAfterPayment(theData: any){
   //console.log(">>> The Data: ", theData);
   this.transactions = [];
   this.toastr.success('Payment Success, Thank you.','Paypal>>',{timeOut:2000});
-  setTimeout(()=> {
-    // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-    ////console.log("moving...");
-    this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
-  }, 1000)      
+  //proforma save
+  let postData: any = new FormData();
+  postData.append('accreditation', this.formApplicationId);
+  this._trainerService.proformaAccrSave(postData)
+  .subscribe(
+    result => {
+        let data: any = result;
+        if(data.status){
+          this.paymentStepComp = true;
+          this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+        }
+        //console.log(">>> Save resultts: ", result);
+    });
+  // setTimeout(()=> {
+  //   // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+  //   ////console.log("moving...");
+  //   this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+  // }, 1000)      
   //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
 }
 

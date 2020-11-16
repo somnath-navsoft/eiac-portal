@@ -55,7 +55,7 @@
                                         <div class="col-md-12 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>CAB Name official and Commercial Name</mat-label>
-                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="CAB Name official and Commercial Name" name="official_commercial_name" [(ngModel)]="step1Data.official_commercial_name"  required>
+                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="CAB Name official and Commercial Name" name="official_commercial_name" [(ngModel)]="step1Data.official_commercial_name"  required>
                                                 <mat-error></mat-error>      
                                             </mat-form-field>
                                         </div>
@@ -116,7 +116,7 @@
                                         <div class="col-md-8">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Registered Physical Location Address</mat-label>
-                                                <input matInput onpaste="return false"  autocomplete="off"   
+                                                <input matInput   autocomplete="off"   
                                                 placeholder="Registered Physical Location Address" name="physical_location_address" 
                                                 [(ngModel)]="step1Data.physical_location_address" required>
                                             </mat-form-field>
@@ -125,7 +125,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mailing Address</mat-label>
-                                                <input type="email" onpaste="return false" matInput autocomplete="off"  placeholder="Mailing Address"   name="mailing_address" [(ngModel)]="step1Data.mailing_address"  required>
+                                                <input type="email"  matInput autocomplete="off"  placeholder="Mailing Address"   name="mailing_address" [(ngModel)]="step1Data.mailing_address"  required>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -133,7 +133,7 @@
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>PO Box No./ZIP Code</mat-label>
-                                                <input onpaste="return false" (keypress)="Service.IsNumeric($event)" 
+                                                <input  (keypress)="Service.IsNumeric($event)" 
                                                 matInput autocomplete="off"  placeholder="PO BOX NO./Zip Code" name="po_box" 
                                                 [(ngModel)]="step1Data.po_box" required>
                                                 <mat-error></mat-error> 
@@ -173,7 +173,7 @@
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Telephone Number</mat-label>
-                                                <input type="text" onpaste="return false" (keypress)="Service.IsNumeric($event)" 
+                                                <input type="text"  (keypress)="Service.IsNumeric($event)" 
                                                 matInput autocomplete="off"  placeholder="Telephone No" name="telephone" 
                                                 [(ngModel)]="step1Data.telephone" maxlength="15" minlength="10"  required>
                                                 <mat-error></mat-error>                                            
@@ -193,7 +193,7 @@
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Official E-mail Address</mat-label>
-                                                <input onpaste="return false" matInput autocomplete="off"  placeholder="Official Email Address"  name="official_email"  [(ngModel)]="step1Data.official_email"  required>
+                                                <input  matInput autocomplete="off"  placeholder="Official Email Address"  name="official_email"  [(ngModel)]="step1Data.official_email"  required>
                                                 <mat-error></mat-error> 
                                             </mat-form-field>
                                             <p class="error" *ngIf="step1Data.official_email && !Service.checkInput('email',step1Data.official_email)">Please Enter Correct Email Id</p>
@@ -202,7 +202,7 @@
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Official Website</mat-label>
-                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off"  placeholder="Official Website"  name="official_website" [(ngModel)]="step1Data.official_website">
+                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off"  placeholder="Official Website"  name="official_website" [(ngModel)]="step1Data.official_website">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
@@ -276,14 +276,14 @@
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Name</mat-label>
-                                                            <input readonly onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off"  placeholder="Name"  maxlength="20" name="ownership_name_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].name" required>
+                                                            <input readonly  (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off"  placeholder="Name"  maxlength="20" name="ownership_name_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].name" required>
                                                             <mat-error></mat-error>    
                                                         </mat-form-field>
                                                     </div>
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Designation</mat-label>
-                                                            <input readonly onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" required placeholder="Designation" name="ownership_designation_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].designation" required>
+                                                            <input readonly  (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" required placeholder="Designation" name="ownership_designation_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].designation" required>
                                                             <mat-error></mat-error> 
                                                         </mat-form-field>
                                                     </div>
@@ -292,7 +292,7 @@
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Mobile Phone No.</mat-label>
-                                                            <input readonly type="text" (keypress)="Service.IsNumeric($event)" maxlength="15" minlength="10" matInput autocomplete="off"  placeholder="Mobile No." name="ownership_phone_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].phone_no" onpaste="return false" required>
+                                                            <input readonly type="text" (keypress)="Service.IsNumeric($event)" maxlength="15" minlength="10" matInput autocomplete="off"  placeholder="Mobile No." name="ownership_phone_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].phone_no"  required>
                                                             <mat-error></mat-error>
                                                         </mat-form-field>
                                                         <p class="error" *ngIf="ownOrgBasicInfo[i].phone_no && !Service.checkInput('onlyNumberWithPlus',ownOrgBasicInfo[i].phone_no)">Please Enter Correct Telephone Number</p> 
@@ -300,7 +300,7 @@
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Land Line Phone No.</mat-label>
-                                                            <input readonly onpaste="return false" matInput (keypress)="Service.IsNumeric($event)"  maxlength="15" minlength="10" autocomplete="off"  placeholder="Landline No."  name="ownership_mobile_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].mobile_no" required >
+                                                            <input readonly  matInput (keypress)="Service.IsNumeric($event)"  maxlength="15" minlength="10" autocomplete="off"  placeholder="Landline No."  name="ownership_mobile_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].mobile_no" required >
                                                             <mat-error></mat-error>      
                                                         </mat-form-field>
                                                         <p class="error" *ngIf="ownOrgBasicInfo[i].mobile_no && !Service.checkInput('onlyNumberWithPlus',ownOrgBasicInfo[i].mobile_no)">Please Enter Correct Telephone Number</p> 
@@ -308,7 +308,7 @@
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Email Address</mat-label>
-                                                            <input readonly onpaste="return false" type="email" matInput autocomplete="off"  placeholder="Email Address" name="ownership_email_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].email" required >
+                                                            <input readonly  type="email" matInput autocomplete="off"  placeholder="Email Address" name="ownership_email_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].email" required >
                                                             <mat-error></mat-error>
                                                         </mat-form-field>
                                                         <p class="error" *ngIf="ownOrgBasicInfo[i].email && !Service.checkInput('email',ownOrgBasicInfo[i].email)">Please Enter Correct Email Id</p>
@@ -598,24 +598,24 @@
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="scheme_name_{{i}}" [(ngModel)]="accreditationInfo[i].scheme_name" required>
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="scheme_name_{{i}}" [(ngModel)]="accreditationInfo[i].scheme_name" required>
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="acccreditation_body_name_{{i}}" [(ngModel)]="accreditationInfo[i].acccreditation_body_name" required>
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="acccreditation_body_name_{{i}}" [(ngModel)]="accreditationInfo[i].acccreditation_body_name" required>
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="acccreditation_scope_{{i}}" [(ngModel)]="accreditationInfo[i].acccreditation_scope" required>
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="acccreditation_scope_{{i}}" [(ngModel)]="accreditationInfo[i].acccreditation_scope" required>
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
-                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput [matDatepicker]="converted_date" readonly="true" placeholder="Date of Certificate" name="converted_date_{{i}}" (click)="Service._openCalendar(converted_date)" [(ngModel)]="accreditationInfo[i].converted_date" required>
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput [matDatepicker]="converted_date" readonly="true" placeholder="Date of Certificate" name="converted_date_{{i}}" (click)="Service._openCalendar(converted_date)" [(ngModel)]="accreditationInfo[i].converted_date" required>
                                                                     <mat-datepicker-toggle matSuffix [for]="converted_date"></mat-datepicker-toggle>
                                                                     <mat-datepicker #converted_date  disabled="false"></mat-datepicker>
                                                                 </mat-form-field>
@@ -641,9 +641,10 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" routerLink="/dashboard/cab_client/application-accreditation">CANCEL</a> 
                                         <button class="cancel-bttn" type="button">SAVE AS DRAFT</button>
                                     </div>
-                                    <button class="submit-bttn submit-health">AGREE</button>
+                                    <button class="submit-bttn submit-health">CONTINUE</button>
                                 </div>
                             </div>
                         </div>
@@ -683,12 +684,12 @@
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="test_name_{{i}}" [(ngModel)]="proficiencyTesting[i].test_name" required> 
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="test_name_{{i}}" [(ngModel)]="proficiencyTesting[i].test_name" required> 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
-                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput [matDatepicker]="participate_date" (dateChange)="Service.inputEvent($event,i,proficiencyTesting)" readonly="true" name="participate_date_{{i}}" placeholder="Select Date" (click)="Service._openCalendar(participate_date)" [(ngModel)]="proficiencyTesting[i].participation_date" required>
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput [matDatepicker]="participate_date" (dateChange)="Service.inputEvent($event,i,proficiencyTesting)" readonly="true" name="participate_date_{{i}}" placeholder="Select Date" (click)="Service._openCalendar(participate_date)" [(ngModel)]="proficiencyTesting[i].participation_date" required>
                                                                     <mat-datepicker-toggle matSuffix [for]="participate_date"></mat-datepicker-toggle>
                                                                     <mat-datepicker #participate_date  disabled="false"></mat-datepicker>
                                                                 </mat-form-field>
@@ -697,13 +698,13 @@
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="pt_provider_{{i}}" [(ngModel)]="proficiencyTesting[i].pt_provider" required> 
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="pt_provider_{{i}}" [(ngModel)]="proficiencyTesting[i].pt_provider" required> 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="result_summery_{{i}}" [(ngModel)]="proficiencyTesting[i].result" required> 
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="result_summery_{{i}}" [(ngModel)]="proficiencyTesting[i].result" required> 
                                                                 </mat-form-field>
                                                                 </td>
                                                             <td class="content-icn">
@@ -769,13 +770,13 @@
                                         <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Name</mat-label>
-                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Name" name="name_technical" [(ngModel)]="step3Data.name" required>
+                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Name" name="name_technical" [(ngModel)]="step3Data.name" required>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Designation</mat-label>
-                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="designation_technical" [(ngModel)]="step3Data.designation" required>
+                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="designation_technical" [(ngModel)]="step3Data.designation" required>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -783,14 +784,14 @@
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mobile Phone No.</mat-label>
-                                                <input onpaste="return false" type="text" (keypress)="Service.IsNumeric($event)" maxlength="15" minlength="10" matInput placeholder="Mobile Phone No." name="mobile_no_technical" [(ngModel)]="step3Data.mobile_no"required>
+                                                <input  type="text" (keypress)="Service.IsNumeric($event)" maxlength="15" minlength="10" matInput placeholder="Mobile Phone No." name="mobile_no_technical" [(ngModel)]="step3Data.mobile_no"required>
                                             </mat-form-field>
                                             <p class="error" *ngIf="step3Data.mobile_no && !Service.checkInput('onlyNumberWithPlus',step3Data.mobile_no)">Please Enter Correct Telephone Number</p> 
                                         </div>
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Email Address</mat-label>
-                                                <input onpaste="return false" matInput placeholder="Email Address" name="email_technical" [(ngModel)]="step3Data.email" required>
+                                                <input  matInput placeholder="Email Address" name="email_technical" [(ngModel)]="step3Data.email" required>
                                             </mat-form-field>
                                             <p class="error" *ngIf="step3Data.email && !Service.checkInput('email',step3Data.email)">Please Enter Correct Email Id</p>
 
@@ -798,7 +799,7 @@
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Relevant Experience</mat-label>
-                                                <input onpaste="return false" (keypress)="Service.IsNumeric($event)" matInput placeholder="Relevant Experience" name="relevent_experience_technical" [(ngModel)]="step3Data.relevent_experience" required>
+                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Relevant Experience" name="relevent_experience_technical" [(ngModel)]="step3Data.relevent_experience" required>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -813,13 +814,13 @@
                                         <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Name</mat-label>
-                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Name" name="name" [(ngModel)]="step3Data.management_name" required>
+                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Name" name="name" [(ngModel)]="step3Data.management_name" required>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Designation</mat-label>
-                                                <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="designation" [(ngModel)]="step3Data.management_designation" required>
+                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="designation" [(ngModel)]="step3Data.management_designation" required>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -827,14 +828,14 @@
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mobile Phone No.</mat-label>
-                                                <input type="text" (keypress)="Service.IsNumeric($event)" maxlength="14" minlength="10" onpaste="return false" matInput placeholder="Mobile Phone No." name="management_mobile_no" [(ngModel)]="step3Data.management_mobile_no" required>
+                                                <input type="text" (keypress)="Service.IsNumeric($event)" maxlength="14" minlength="10"  matInput placeholder="Mobile Phone No." name="management_mobile_no" [(ngModel)]="step3Data.management_mobile_no" required>
                                             </mat-form-field>
                                             <p class="error" *ngIf="step3Data.management_mobile_no && !Service.checkInput('onlyNumberWithPlus',step3Data.management_mobile_no)">Please Enter Correct Telephone Number</p> 
                                         </div>
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Email Address</mat-label>
-                                                <input onpaste="return false" matInput placeholder="Email Address" name="email" [(ngModel)]="step3Data.management_email" required>
+                                                <input  matInput placeholder="Email Address" name="email" [(ngModel)]="step3Data.management_email" required>
                                             </mat-form-field>
                                             <p class="error" *ngIf="step3Data.email && !Service.checkInput('email',step3Data.email)">Please Enter Correct Email Id</p>
 
@@ -842,7 +843,7 @@
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Relevant Experience</mat-label>
-                                                <input onpaste="return false" (keypress)="Service.IsNumeric($event)" matInput placeholder="Relevant Experience" name="management_relevent_experience" [(ngModel)]="step3Data.management_relevent_experience" required>
+                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Relevant Experience" name="management_relevent_experience" [(ngModel)]="step3Data.management_relevent_experience" required>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -1151,7 +1152,7 @@
                                     <div class="button-content">
                                         <!-- (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','scope_accreditation')" -->
                                         <a class="cancel-bttn" href="javascript:void(0)" type="button" 
-                                        (click)="backScopeAccreditation();">BACK</a> 
+                                        (click)="backScopeAccreditation();">BACK....</a> 
                                         <button class="cancel-bttn" type="button" (click)="onSubmitStep5(ngForm5, true)">SAVE AS DRAFT</button> 
                                     </div>
                                     <button class="submit-bttn submit-health" (click)="continueScopeAccreditation()">CONTINUE</button>
@@ -1174,16 +1175,14 @@
                                             <hr>
                                         </div>
                                     </div>
-                                    <div class="row mt-3">                                         
+                                    <!-- <div class="row mt-3">                                         
                                         <div class="col-md-12 p-0">
                                             <div class="row m-0">
                                                 <div class="col-md-6">
                                                     <div class="request-subhdr">
-                                                        <h5>Request for perlim visit</h5>
+                                                        <h5>Request for perlim visit<span class="required_input">*</span></h5>
                                                     </div>
                                                 </div>
-                                                <!-- @@{{inspectionBodyForm.perlim_visit_val |  json}} -->
-                                                <!-- (click)='proficiency_testing(1)' -->
                                                 <div class="col-md-6">
                                                     <div class="request_frm">
                                                         <mat-radio-group name="is_prelim_visit" 
@@ -1195,9 +1194,34 @@
                                                 </div>
                                             </div>                                                    
                                         </div>
+                                    </div> -->
+                                    <div class="row mt-3">                                         
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="request-subhdr">
+                                                        <span>Request for prelim visit: <span class="required_input">*</span></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="request_frm">
+                                                        <mat-radio-group name="perlim_visit_val" 
+                                                        [(ngModel)]="step6Data.prelim_visit_val" #selectPrelim="ngModel" required>
+                                                            <div class="rad-space">
+                                                                <mat-radio-button value="1">Yes </mat-radio-button>
+                                                                <mat-radio-button value="0">No </mat-radio-button>
+                                                            </div>
+                                                        </mat-radio-group>
+                                                        <div class="col-md-12 p-0"  [ngStyle]="{'margin-top':'5px','margin-left' : '40px'}">
+                                                            <p class="error" *ngIf="isPrelimSubmitted == true && selectPrelim.errors?.required">Please select anyone option</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12" *ngIf="step6Data.is_prelim_visit === '1'">
+                                        <div class="col-md-12" *ngIf="step6Data.prelim_visit_val === '1'">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <mat-form-field class="cab-data">
@@ -1214,7 +1238,7 @@
                                                         <mat-label>Select Time</mat-label>
                                                         <mat-select placeholder="Select" name="prelim_visit_time" 
                                                         (selectionChange)="getDutyTimeForm1Index($event)" 
-                                                        [(ngModel)]="step6Data.prelim_visit_time">
+                                                        [(ngModel)]="step6Data.prelim_visit_time" required>
                                                             <mat-option *ngFor="let item of addMinutesToTime; let i = index;" 
                                                             [value]="item.key">{{item.val}}</mat-option>
                                                         </mat-select>
@@ -1272,126 +1296,7 @@
                                             
                                             <li class="terms-condition"  (scroll)="scrollHandler($event)" #mydiv style="height:500px;overflow:auto">
                                             <div class="tnc" [innerHTML]="(termsGeneral != undefined && termsGeneral.content != undefined) ? termsGeneral.content : ''"></div>
-                                                <!-- <div class="tnc">
-                                                    <h3>Terms & Conditions</h3>
-                                                    <ol>
-                                                        <li class="tnc-sub"><h5>FIRST PARTY OBLIGATION</h5>
-                                                            <ol>
-                                                                <li>CAB hereby confirms that the information provided in this agreement is valid true and correct .</li>
-                                                                <li>CAB acknowledges and agrees to abide and sustain full compliance at all times with the following 
-                                                                    documents relevant to the accredited work scope under this agreement and stated within the accreditation 
-                                                                    application:
-                                                                    <ol>
-                                                                        <li>Relevant accreditation criteria, Accreditation requirements and Guidelines issued by EIAC
-                                                                            and any Relevant Mandatory and Guidance Documents issued by the international Recognition Bodies. 
-                                                                            CAB is required to frequently visit the EIAC’s website www.eiac.gov.ae for the latest updates, </li>
-                                                                        <li>committed to fulfill continually the requirements of accreditation scope for which 
-                                                                            accreditation is sought or granted and to commit to provide evidence of fulfillment . 
-                                                                            This includes agreement to adapt to changes in the requirements for accreditation,</li>
-                                                                        <li>To provide EIAC with all needed documentation information as listed in the accreditation application</li>
-                                                                    </ol>
-                                                                </li>
-                                                                <li>To provide EIAC with clear and valid reasons for the objection to any member of the Assessment 
-                                                                    Personnel in writing within 5 (five) working days of receipt of the notification of Assessment .</li>
-                                                                <li>To arrange the witnessing of conformity assessment services when requested by EI AC,</li>
-                                                                <li>To have, where applicable, legally enforceable arrangements with their clients that committ he 
-                                                                    clients to provide, on request , access to EIAC’s assessment teams to assesst he CAB’s performance 
-                                                                    carrying out conformity assessment activities at the client’s site, </li>
-                                                                <li>To claim accreditation only with respect to the scope for which it has been granted accreditation,</li>
-                                                                <li>To commit to follow EIAC’s policy for the use of the accreditation symbol ,</li>
-                                                                <li>Not to use its accreditation in such a manner as to bring the EIAC into dispute,</li>
-                                                                <li>To assist in the investigation and resolution of any complaints made by third parties about the CAB’s 
-                                                                    accredited activities, and </li>
-                                                                <li>To inform EIAC, without delay, of significant changes relevant to its accreditation, in any aspect of 
-                                                                    its status or operation relating to : 
-                                                                    <ol type="a">
-                                                                        <li>its legal , commercial , ownership or organizational status,</li>
-                                                                        <li>the organization, top management and key per sonnel ,</li>
-                                                                        <li>resources, premises and methods,</li>
-                                                                        <li>scope of accreditation, and</li>
-                                                                        <li>Other such matters that may affect the ability of the CAB to fulfill requirements for accreditation.</li>
-                                                                    </ol>
-                                                                </li>
-                                                                <li>The CAB is obliged to comply with EIAC Fees requirement available at website, knowing that all fees 
-                                                                    are non- refundable.</li>
-                                                                <li>In case EIAC could not provide the service after the fees being paid, or if there is change in 
-                                                                    the CAB’s circumstances after paying the fees; the CAB can request a refund of these fees in writing 
-                                                                    with a justification, accordingly the authority of EIAC will decide upon the refund of the transferred 
-                                                                    fees.</li>
-                                                                <li>In case t he CAB del ays to conf or m t he assessment plan on defined time; all expenses, 
-                                                                    such as, but not limited to , travel tickets, accommodations and accreditation fees of the visit 
-                                                                    shall be paid in full .</li>
-                                                                <li>The CAB may withdraw from the present contractual agreement at any moment , by means of an of 
-                                                                    ficialletter sent to EIAC.</li>
-                                                                <li>Upon suspension or reduction of its accreditation (however determined) , 
-                                                                    CAB shall discontinue immediately with no delay the use of all presentations and advertising 
-                                                                    that contains any reference to that terminated scope of accreditation</li>
-                                                                <li>The CAB shall not cede, assign or in any way transfer its accreditation to another party and such 
-                                                                    status shall not extend to the franchisee or franchisor of the CAB</li>
-                                                            </ol>
-                                                        </li>
-                                                        <li class="tnc-sub"><h5>EIAC OBLIGATION & RESPONSIBILITIES</h5>
-                                                            <ol>
-                                                                <li>EIAC shall publish all updated documents on its website: www.eiac.gov.ae and will notify the First 
-                                                                    Party of any changes to those documents.</li>
-                                                                <li>EIAC shall carry out accreditation services consistently in accordance with the relevant 
-                                                                    International / National standards and Regulations, Guidelines, Requirements of (ARAC, PAC, IAF and ILAC) , 
-                                                                    EIAC Requirements and avail suitable Personnel to its accreditation service.</li>
-                                                                <li>EIAC shall only consider objections in writing by CAB to any member of assessment Personnel due 
-                                                                    to conflict of interest in respect of such member with a clear and valid reasons for the objection within 
-                                                                    five working days.</li>
-                                                                <li>In case of unoreseen reasons/ circumstances affecting maintenance of CAB's accreditation; EIAC may 
-                                                                    but without prejudice to its right to suspend or terminate this Agreement .  The suspension will be 
-                                                                    released once the maintenance of EIAC requirements for Accreditation had been assured.</li>
-                                                                <li>In the event that accreditation has been granted, accreditation Certificate including the 
-                                                                    scope shall be issued to the CAB.</li>
-                                                                <li>EIAC shall publish on its website (www.eiac.gov.ae) , on a regular basis, the status of accredited 
-                                                                    CABs.</li>
-                                                                <li>EIAC shall notify the Customer how continuing conformity with the requirements for Accreditation 
-                                                                    will be monitored in order that it may maintain Accreditation. The frequency of monitoring will 
-                                                                    be determined by EIAC in accordance with EIAC published documents and will depend on the scope 
-                                                                    and scale of the Accreditation. In addition to the planned assessment program, EIAC reserves 
-                                                                    the right to carry out extraordinary visits at any time during the accreditation cycle other 
-                                                                    than those predeter mined as it may require.</li>
-                                                                <li>EIAC shall give the CAB Notice immediately upon imposing any kind of sanctions related to the 
-                                                                    accreditation status of the CAB .</li>
-                                                            </ol>
-                                                        </li>
-                                                        <li class="tnc-sub"><h5>TERMS AND CONDITIONS OF THE AGREEMENT</h5>
-                                                            <ol>
-                                                                <li>The agreement shall continue in force unless and until terminated by either party by giving 3 
-                                                                    months written notification or if the accreditation is withdrawn.</li>
-                                                                <li>At the date of termination of this agreement , any certificate of accreditation granted 
-                                                                    hereunder shall immediately deemed to be invalid. </li>
-                                                                <li>All out standing charges pursuant to this agreement shall be settled before the termination of this agreement . </li>
-                                                                <li>In cases of a change in the name of the CAB only, EIAC shall carry out the necessary verifications and 
-                                                                    subsequent issue of a new accreditation certificate as well as the relative annexes with updated data without 
-                                                                    there being the need to sign a new agreement .</li>
-                                                                <li>If the change involves any legal modifications on the status of CAB such as transfer of 
-                                                                    ownership of CAB; the CAB shall sign a new accreditation agreement .</li>
-                                                            </ol>
-                                                        </li>
-                                                        <li class="tnc-sub"><h5>LAW AND JURISDICTION</h5>
-                                                            <p>This agreement shall be governed and construed in accordance with UAE law. The parties hereby submit 
-                                                                    to the exclusive jurisdiction of the Dubai courts.</p>
-                                                        </li>
-                                                        <li class="tnc-sub"><h5>DECLARATION BY THE FIRST PARTY</h5>
-                                                            <p>By signing this agreement , I am asa First Party declares that :</p>
-                                                            <ul>
-                                                                <li>I have viewed the rights and obligations of the present agreement and other relevant documents, 
-                                                                    I shall respect all related obligations.</li>
-                                                                <li>I guarantee that I take all responsibilities, that all communications I make to the Second Party, 
-                                                                    both written and during the assessment visits, correspond to the truth.</li>
-                                                                <li>I guarantee that I take all responsibilities, that all the data carried in the documents that I 
-                                                                    present to the Second Party, during the assessment visit and at all other times, correspond to the truth.</li>
-                                                                <li>I acknowledge that I am aware with EIAC General Accreditation Requirement no. EIAC-RQ-GNL-001 and 
-                                                                    will fully comply with it at all times </li>
-                                                                <li>If I am providing the service to the Emirates of Dubai ; I acknowledge that I agree to abide and sustain 
-                                                                    full compliance at all times with the regulation no. 2</li>
-                                                            </ul>
-                                                        </li>
-                                                    </ol>
-                                                </div> -->
+                                                
                                             </li>
                                         
                                             <li>
@@ -1420,11 +1325,15 @@
                                                 </mat-checkbox><br>
                                                 <p class="error" *ngIf="!readAccredAgreem">Please read agree the agreement</p>
                                             </div> -->
-                                            <!-- <div class="authData">
+                                            <div class="authData">
                                                 
-                                                <mat-checkbox name="undertaking_confirmTop3" 
-                                                [(ngModel)]="authorizationList.undertaking_confirmTop3" required>Do you require ILA MRA Mark Laboratories</mat-checkbox>
-                                            </div> -->
+                                                <mat-checkbox name="undertaking_confirmTop3" (change)="authorizeCheckCount($event)"
+                                                [(ngModel)]="authorizationList.undertaking_confirmTop3">Do you require ILA MRA Mark Laboratories</mat-checkbox>
+                                            </div>
+                                            <div class="terms-condition" style="height:500px;overflow:auto" *ngIf="authorizationList.undertaking_confirmTop3">
+                                                <div class="tnc" [innerHTML]="(termsILA != undefined && termsILA.content != undefined) ? termsILA.content : ''"></div>
+                                            </div>
+
 
                                             <div class="authData">I confirm that the below documents are available and will be furnished once requested by EIAC:</div>
                                             <div class="auth-details">
@@ -1433,12 +1342,12 @@
                                                         <td width="1%">
                                                             <mat-checkbox name="undertaking_confirm1"  (change)="authorizeCheckCount($event)"
                                                             [(ngModel)]="authorizationList.undertaking_confirm1"></mat-checkbox></td>
-                                                        <td>Management System Manual</td>
+                                                        <td>Quality Manual</td>
                                                     </tr>
                                                     <tr>
                                                         <td><mat-checkbox name="undertaking_confirm2" [disableRipple]="true"
                                                             (click)="$event.preventDefault()" [(ngModel)]="authorizationList.undertaking_confirm2"></mat-checkbox></td>
-                                                        <td><span><a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled Up Document Review Checklist</a></span> (Related to applied accreditation standard and for initial accreditation & Scope Extensions only)<br/>
+                                                        <td><span><a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled Up Document Review Checklist</a>based on the related standard </span> (for 1st submission only)<br/>
                                                             <p class="error" *ngIf="!readReviewChecklist  && isApplicationSubmitted == true">Please review the checklist</p>                                                            
                                                         </td>
                                                     </tr>
@@ -1460,16 +1369,46 @@
                                                     </tr>
                                                     <tr>
                                                         <td><mat-checkbox name="undertaking_confirm7"  (change)="authorizeCheckCount($event)" [(ngModel)]="authorizationList.undertaking_confirm7"></mat-checkbox></td>
-                                                        <td>List of key staff and Organizational Structure if not mentioned in the Management System Manual</td>
+                                                        <td>List of key staff and Organizational Structure if not mentioned in the QM))</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><mat-checkbox name="undertaking_confirm9"  
+                                                            (change)="authorizeCheckCount($event)" [(ngModel)]="authorizationList.undertaking_confirm9"></mat-checkbox></td>
+                                                        <td>CMC calculations (for calibration laboratory)</td>
                                                     </tr>
                                                 </table>
                                             </div>
-                                            <div class="row">
+                                            <!-- <div class="row">
                                                 <div class="col-md-12">
                                                     <p class="error" *ngIf="!authorizationStatus  && isApplicationSubmitted == true">All check are required.</p>
                                                 </div>
-                                            </div>
+                                            </div> -->
+
                                             <div class="recommend my-3">
+                                                <div class="recommend-main">
+                                                    <div class="recommend-quarter">
+                                                        <span class="confirm">I recommend the visit to be conducted in the<span class="required_input">*</span></span>
+                                                        <!-- <mat-radio-group name="recommended" #recommendVisit="ngModel" [(ngModel)]="step7Data.recommend_visit" required>
+                                                            <mat-radio-button name="1st" value="first">1st</mat-radio-button>
+                                                            <mat-radio-button name="2nd" value="second">2nd</mat-radio-button>
+                                                            <mat-radio-button name="3rd" value="third">3rd</mat-radio-button>
+                                                            <mat-radio-button name="4th" value="fourth">4th quarter</mat-radio-button>
+                                                        </mat-radio-group> -->
+                                                        <ng-container >
+                                                            <mat-checkbox  name="recommend_visit" [ngModelOptions]="{standalone: true}" *ngFor="let item of recomendVisit; let k=index;" required
+                                                        [(ngModel)]="item.checked">{{item.label}}</mat-checkbox> 
+                                                        </ng-container>
+                                                    </div>
+                                                    <span class="confirm">quarter of the year</span>
+                                                    <div class="recommend-year">
+                                                        <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step7Data.recommend_year" required>
+                                                            <mat-option [value]="item.value" *ngFor="let item of recommendYearValues; let k=index;">{{item.title}}</mat-option>
+                                                        </mat-select>
+                                                    </div>                                                    
+                                                </div>                                                
+                                            </div>
+
+                                            <!-- <div class="recommend my-3">
                                                 <div class="recommend-main">
                                                     <div class="recommend-quarter">
                                                         <span class="confirm">I recommend the visit to be conducted in the</span>
@@ -1481,7 +1420,6 @@
                                                         </mat-radio-group>
                                                     </div>
                                                     <div class="recommend-year">
-                                                        <!-- @{{step7Data.recommend_year}} -->
                                                         <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step7Data.recommend_year" required>
                                                             <mat-option [value]="item.value" *ngFor="let item of recommendYearValues; let k=index;">{{item.title}}</mat-option>
                                                         </mat-select>
@@ -1490,7 +1428,7 @@
                                                 <div class="col-md-6 p-0" [ngStyle]="{'margin-top':'5px'}">
                                                     <p class="error" *ngIf="recommendVisit.errors?.required && isApplicationSubmitted == true">Please select anyone option</p>
                                                 </div>                                                
-                                            </div>
+                                            </div> -->
                                             <!-- <div class="recommend">
                                                 <span class="confirm">I recommend the visit to be conducted in the</span>
                                                 <mat-radio-group name="recommended" #recommendVisit="ngModel" [(ngModel)]="step7Data.recommend_visit" required>
@@ -1517,6 +1455,16 @@
                                                     <hr>
                                                 </div>
                                             </div>
+                                            <div class="auth">
+                                                <mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm8" [(ngModel)]="authorizationList.undertaking_confirm8">
+                                                    Entering the authorised name will serve as an acceptance and digital binding signature for this agreement<span class="required_input">*</span>
+                                                </mat-checkbox>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <p class="error" *ngIf="!authorizationStatus  && isApplicationSubmitted == true">All checkboxes are mandatory.</p>
+                                                    </div>
+                                                </div>
                                             <div class="row mt-3">
                                                 <div class="col-12 p-0">
                                                     <div class="form-subheader-data subhead-dt">
@@ -1528,7 +1476,7 @@
                                                 <div class="col-md-4 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Organization Name</mat-label>
-                                                        <input onpaste="return false" 
+                                                        <input  
                                                         (keypress)="Service.inputFilter($event, Service.regExName)" 
                                                         matInput placeholder="Organization Name" name="onbehalf_company_name" 
                                                         [(ngModel)]="step7Data.organization_name" required>
@@ -1537,7 +1485,7 @@
                                                 <div class="col-md-4 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Full Name of Authorized Representative</mat-label>
-                                                        <input onpaste="return false" 
+                                                        <input  
                                                         (keypress)="Service.inputFilter($event, Service.regExName)" matInput 
                                                         placeholder="Full Name of Authorized Representative" name="onbehalf_representative_name" 
                                                         [(ngModel)]="step7Data.representative_name" required>
@@ -1546,7 +1494,7 @@
                                                 <div class="col-md-4 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Designation</mat-label>
-                                                        <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                        <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
                                                         matInput placeholder="Designation" name="designation" [(ngModel)]="step7Data.designation" required>
                                                     </mat-form-field>
                                                 </div>
@@ -1555,7 +1503,7 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Digital Signature</mat-label>
-                                                        <input onpaste="return false" 
+                                                        <input  
                                                         (keypress)="Service.inputFilter($event, Service.regExName)" matInput 
                                                         placeholder="Digital Signature" name="digi_sign" [(ngModel)]="step7Data.digital_signature" required>
                                                     </mat-form-field>
@@ -1720,8 +1668,7 @@
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Payment Date</mat-label>
                                                 <input matInput [matDatepicker]="payment_date" 
-                                                (click)="Service._openCalendar(payment_date)" 
-                                                
+                                                (click)="Service._openCalendar(payment_date)"                                                 
                                                 [min]="minDate" name="payment_date" 
                                                 [(ngModel)]="voucherSentData.payment_date" placeholder="Payment Date" required>
                                                 <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle>
@@ -1749,9 +1696,13 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Payment Method</mat-label>
-                                                <input type="text" [ngModelOptions]="{standalone: true}" required="true"
+                                                <mat-select placeholder="Select" name="payment_method" [(ngModel)]="voucherSentData.payment_method" required="true">
+                                                    <mat-option value="Cash">Cash</mat-option>
+                                                    <mat-option value="Online">Online</mat-option>
+                                                </mat-select>
+                                                <!-- <input type="text" [ngModelOptions]="{standalone: true}" required="true"
                                                 matInput placeholder="Payment Method" 
-                                                [(ngModel)]="voucherSentData.payment_method">
+                                                [(ngModel)]="voucherSentData.payment_method"> -->
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-4">
