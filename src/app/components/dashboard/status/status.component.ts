@@ -88,6 +88,11 @@ export class StatusComponent implements OnInit {
         typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.accr_status == 'complete'){
         return true;
       }
+      if(item.saved_step != null && item.saved_step == 9 && (item.is_draft == false || item.is_draft == true) && 
+        item.paymentDetails != undefined && item.accr_status !== 'complete'){
+        return false;
+      }
+
        if(item.saved_step != null && item.saved_step == 7 && item.is_draft == false && 
           item.paymentDetails != undefined && item.paymentDetails == false){
         return true;
@@ -98,21 +103,6 @@ export class StatusComponent implements OnInit {
         return false;
       }
     }
-
-
-    // let getId= (object.id);
-    // let url = this._service.apiServerUrl+"/"+'accrediation-details-show/'+getId;
-    // //let getScheme: any  = this.schemeRows[rowInd].id;
-
-    // console.log(">>>Get url and ID: ", url, " :: ", getId, " -- ");
-    // this._service.getwithoutData(url)
-    // .subscribe(
-    // async res => {
-    //     let getData: any  =res;
-    //     console.log(">>>. Data: ", getData);
-        
-        
-    // });
   }
 
   loadPageData() { 

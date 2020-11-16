@@ -32,7 +32,7 @@ export class PtProvidersFormComponent implements OnInit {
   public scopeForTesting: Array<any> = [];
   public scopeForMedical: Array<any> = [];
 
-  public accreditationInfo: Array<any> = [];
+  public accreditationInfo: Array<any> = [{}];
   public technicalManager: any = {};
   public managementManager: any = {};
   public medicaMainlLabInfo:Array<any>=[];
@@ -192,6 +192,7 @@ export class PtProvidersFormComponent implements OnInit {
         res => {
           console.log("@Load Accreditation criteria....", res);         
           this.criteriaMaster = res['data']['schemes'];
+          this.criteriaList = res['data']['criteriaList'];
           console.log("#Get criteria: ", this.criteriaMaster);
   
         },
@@ -987,7 +988,7 @@ setexDate(date){
             //console.log('data enter...2');
           if(getData.data.criteriaList != undefined && getData.data.criteriaList.length){
             //console.log(">>>Criteria list: ", getData.data.criteriaList);
-            this.criteriaList = getData.data.criteriaList;
+            //this.criteriaList = getData.data.criteriaList;
           }
         }
 
@@ -2043,7 +2044,7 @@ updateScopeData = async(rowInd: number) => {
 
 continueScopeAccreditation(){
 //Reset all model data 
-this.dynamicScopeFieldColumns = {};
+this.dynamicScopeFieldColumns = {}; 
 this.dynamicScopeFieldType = {};
 this.dynamicScopeModel = {};
 this.fullScope = [];

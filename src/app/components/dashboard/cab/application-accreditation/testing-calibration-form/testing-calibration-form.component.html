@@ -1448,8 +1448,16 @@
                                                     <div class="col-md-12">
                                                         <div class="table-appln scope-data">
                                                             <div class="sub-header">
-                                                                <h5 [innerHTML]="getFamilySchme(item.key, item5.key)"></h5>
-                                                                
+                                                                <!-- <h5 [innerHTML]="getFamilySchme(item.key, item5.key, item5)"></h5> -->
+                                                                <h5>
+                                                                    <!-- {{getFamilySchme(item.key, item5.key, item5)}}
+                                                                    @{{getFamilyName}}
+                                                                    #{{findFamily |  json}} --> 
+                                                                    {{getFamilySchme(item.key, item5.key)}}
+                                                                    <ng-container *ngIf="getFamilyName && findFamily != undefined">
+                                                                        Accreditation Family Scope for  {{findFamily.title}}
+                                                                    </ng-container>
+                                                                </h5>
                                                             </div>
                                                             <table *ngIf="item5.value.scope_value != undefined">
                                                                 <tr>

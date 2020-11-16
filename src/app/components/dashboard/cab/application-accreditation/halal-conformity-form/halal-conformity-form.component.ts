@@ -473,14 +473,23 @@ getCriteria(value, secInd: any, typeTitle: any){
              scopeTitle  = getData.title.toString().toLowerCase().split(" ").join('_');
 
              //check already existing scheme...
-             for(var m in this.dynamicScopeModel){
-                 //console.log("mkey: ", m, " -- ", scopeTitle);
-                 if(m === scopeTitle){
-                   this.fullScope.splice(secInd, 1);
-                   this.toastr.error("Scheme should be unique, Please check.","Validation")
-                   return;
-                 }
-             }
+             if((findType.scopeRows.length)){
+              //console.log("@Existing scheme....1");
+              let dupdata: any = findType.scopeRows.find(item => item.title == scopeTitle);
+              console.log(">>Dup Type schem found...", dupdata);
+              if(dupdata != undefined){
+                this.toastr.error("Duplicate  Scheme","Validation")
+                return;
+              }
+            }
+            //  for(var m in this.dynamicScopeModel){
+            //      //console.log("mkey: ", m, " -- ", scopeTitle);
+            //      if(m === scopeTitle){
+            //        this.fullScope.splice(secInd, 1);
+            //        this.toastr.error("Scheme should be unique, Please check.","Validation")
+            //        return;
+            //      }
+            //  }
              // this.dynamicScopeFieldColumns[scopeTitle] = [];
              // this.dynamicScopeFieldType[scopeTitle] = [];
              // this.dynamicScopeModel[scopeTitle] = {};
@@ -689,7 +698,7 @@ getTypeScheme(typeId: number, secInd: number){
            let dupdata: any = this.fullTypeScope.find(item => item.title == typeTitle);
            //console.log(">>Dup found...", dupdata);
            if(dupdata != undefined){
-             this.toastr.error("Sub Type should be unique, Please check.","Validation")
+             this.toastr.error("Duplicate Type","Validation")
              return;
            }
 

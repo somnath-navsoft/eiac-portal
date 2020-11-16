@@ -212,6 +212,8 @@ export class TestingCalibrationFormComponent implements OnInit {
   deleteScopeConfirm: boolean = false;
 
   showScopeTable: any = 'none';
+  getFamilyName: boolean = false;
+  findFamily: any = {};
   
   constructor(public Service: AppService, public constant:Constants,public router: Router,
     public toastr: ToastrService,public _trainerService:TrainerService,
@@ -326,67 +328,70 @@ export class TestingCalibrationFormComponent implements OnInit {
     //////console.log("Has family...");
     let getTypeData = this.fullTypeFamily.find(item => item.id == sid);
     ////console.log(">>>> Type dataa: ", this.fullTypeFamily);
-    let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testing_cal_form_basic_data+"?scheme="+sid;
-    this.Service.getwithoutData(apiURL).subscribe(
-      record => {
-      ////console.log('Fullscope: ', record, " -- ");
-      let data: any = record;
-      if(data && data.data.scopeFamily != undefined && data.data.scopeFamily.length > 0){
-        findFamily = data.data.scopeFamily.find(item => item.scope_family == fid);
-        //console.log(">>> family: 1 ", findFamily);
-        if(findFamily){
-          //console.log(">>> family: ", findFamily.title);
-          //return findFamily.title;
-          //return 'Accreditation Family Scope for ' + findFamily.title;
-        } 
-      }
-    });
+
+    // let promise: any = new Promise((resolve, reject) => {
+    //   let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testing_cal_form_basic_data+"?scheme="+sid;
+    //   this.Service.getwithoutData(apiURL).toPromise()
+    //       .then(
+    //          res => {
+    //           let data: any = res;
+    //           findFamily = data.data.scopeFamily.find(item => item.scope_family == fid);
+    //           //return findFamily;
+    //            resolve(findFamily);
+    //          },
+    //          err => {
+    //            reject(err);
+    //          }
+    //       )
+        
+    // })
+
+
+    // let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testing_cal_form_basic_data+"?scheme="+sid;
+    // this.Service.getwithoutData(apiURL).subscribe(
+    //   record => {
+    //   ////console.log('Fullscope: ', record, " -- ");
+    //   let data: any = record;
+    //   if(data && data.data.scopeFamily != undefined && data.data.scopeFamily.length > 0){
+    //     findFamily = data.data.scopeFamily.find(item => item.scope_family == fid);
+    //     //console.log(">>> family: 1 ", findFamily);
+    //     if(findFamily){
+    //       //console.log(">>> family: ", findFamily.title);
+    //       return findFamily;
+    //       //return 'Accreditation Family Scope for ' + findFamily.title;
+    //     } 
+    //   }
+    // });
   }
 
   getFamilySchme = (sid: number, fid: number) =>{
-    //////console.log(">>> Family Data: ", sid," :: ", fid)
+    //console.log(">>> Family Data: ", sid," :: ", fid, " -- ", familyData)
     if(fid > 0){
       let getFamilydata: any;
-      //getFamilydata =  this.getFamilyData(sid, fid);
-      ////console.log(">>>>eneneenenen:   ", getFamilydata);
-      // let findFamily: any = {};
-      // //////console.log("Has family...");
-      // let getTypeData = this.fullTypeFamily.find(item => item.id == sid);
-      // ////console.log(">>>> Type dataa: ", this.fullTypeFamily);
-      // let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testing_cal_form_basic_data+"?scheme="+sid;
-      // this.Service.getwithoutData(apiURL).subscribe(
-      //   async record => {
-      //   ////console.log('Fullscope: ', record, " -- ");
-      //   let data: any = record;
-      //   if(data && data.data.scopeFamily != undefined && data.data.scopeFamily.length > 0){
-      //     findFamily = data.data.scopeFamily.find(item => item.scope_family == fid);
-      //     //console.log(">>> family: 1 ", findFamily);
-      //     if(findFamily){
-      //       //console.log(">>> family: ", findFamily.title);
-      //       //return 'Accreditation Family Scope for ' + findFamily.title;
-      //     }
-      //   }
-      // });
-      // if(findFamily.title != undefined){
-      //   //console.log(">>>>eneneenenen:   ", findFamily.title);
-      //   return 'Accreditation Family Scope for ' + findFamily.title;
-      // }
-      
-      
-
-    return 'Accreditation Family Scope ';
+      let getTypeData = this.fullTypeFamily.find(item => item.id == sid);
+      if(!this.getFamilyName){
+        let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testing_cal_form_basic_data+"?scheme="+sid;
+          this.Service.getwithoutData(apiURL).subscribe(
+            async record => {
+            ////console.log('Fullscope: ', record, " -- ");
+            let data: any = record;
+            if(data && data.data.scopeFamily != undefined && data.data.scopeFamily.length > 0){
+              this.findFamily = data.data.scopeFamily.find(item => item.scope_family == fid);
+              //console.log(">>> family: 1 ", this.findFamily);
+              if(this.findFamily){
+                //console.log(">>> family namem: ", this.findFamily);
+                this.getFamilyName = true;
+                return;
+                //return 'Accreditation Family Scope for ' + findFamily.title;
+              }
+            }
+          });
+      }
     }else{
       ////console.log("NO family...");
       return '';
     }
-    // let getSchemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id == sid);
-    // //////////console.log("data: ", getSchemeData);
-    // if(getSchemeData){
-    //   return getSchemeData.title;
-    // }
-  }
-
-  
+  }  
 
   openDeleteScopeConfirm(delIndex: any, delKey: any, delFamilyKey: any){
     ////console.log(">>>delete ", delKey, " -- ", delIndex);
@@ -763,7 +768,7 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
 
                     }
                       
-                  }
+                  } 
 
                 console.log("Full Type family datastructure: ", this.fullTypeFamily);
                   if(dataScope.scopeValue.length){
