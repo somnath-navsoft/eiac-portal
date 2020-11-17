@@ -836,7 +836,7 @@
                                     <div class="row mt-3">
                                         <div class="col-12 p-0">
                                             <div class="form-subheader-data subhead-dt">
-                                                <h5>ISMALIC AFFAIRS EXPERT</h5>
+                                                <h5>ISLAMIC AFFAIRS EXPERT</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -950,21 +950,21 @@
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input (keypress)="Service.IsNumeric($event)" matInput name="total_no_{{i}}" [(ngModel)]="summaryDetails[i].total_no" placeholder="" required>
+                                                                    <input (keypress)="Service.IsNumeric($event)" matInput name="total_no_{{i}}" [(ngModel)]="summaryDetails[i].total_no" placeholder="">
                                                                 </mat-form-field>  
                                                             </td>
 
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput name="fulltime_emp_name_{{i}}" [(ngModel)]="summaryDetails[i].fulltime_emp_name" placeholder="" required>
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput name="fulltime_emp_name_{{i}}" [(ngModel)]="summaryDetails[i].fulltime_emp_name" placeholder="">
                                                                 </mat-form-field>  
                                                             </td>
 
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput name="parttime_emp_name_{{i}}" [(ngModel)]="summaryDetails[i].parttime_emp_name" placeholder="" required>
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput name="parttime_emp_name_{{i}}" [(ngModel)]="summaryDetails[i].parttime_emp_name" placeholder="">
                                                                 </mat-form-field>
                                                             </td>
                                                         </tr>
@@ -1910,6 +1910,10 @@
                                                 
                                                 <mat-checkbox name="undertaking_confirmTop3"  (change)="authorizeCheckCount($event)"
                                                 [(ngModel)]="authorizationList.undertaking_confirmTop3" required>Do you require ILA MRA Mark Laboratories</mat-checkbox>
+                                            </div>
+
+                                            <div class="terms-condition" style="height:500px;overflow:auto" *ngIf="authorizationList.undertaking_confirmTop3">
+                                                <div class="tnc" [innerHTML]="(termsILA != undefined && termsILA.content != undefined) ? termsILA.content : ''"></div>
                                             </div>
 
                                             <div class="authData">I confirm that the below documents are available and will be furnished once requested by EIAC:</div>
