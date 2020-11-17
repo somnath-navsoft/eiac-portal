@@ -170,7 +170,7 @@
                                                 <mat-label>Telephone Number</mat-label>
                                                 <input type="text"  (keypress)="Service.IsNumeric($event)" 
                                                 matInput autocomplete="off"  placeholder="Telephone No" name="telephone" 
-                                                [(ngModel)]="step1Data.telephone" maxlength="15" minlength="10"  required>
+                                                [(ngModel)]="step1Data.telephone" maxlength="15"   required>
                                                 <mat-error></mat-error>                                            
                                             </mat-form-field>
                                             <p class="error" *ngIf="step1Data.telephone && !Service.checkInput('onlyNumberWithPlus',step1Data.telephone)">Please Enter Correct Telephone Number</p> 
@@ -331,7 +331,7 @@
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Mobile Phone No.</mat-label>
-                                                            <input type="text" (keypress)="Service.IsNumeric($event)" maxlength="15" minlength="10" matInput autocomplete="off"  placeholder="Mobile No." name="ownership_phone_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].phone_no"  required>
+                                                            <input type="text" (keypress)="Service.IsNumeric($event)" maxlength="15"  matInput autocomplete="off"  placeholder="Mobile No." name="ownership_phone_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].phone_no"  required>
                                                             <mat-error></mat-error>
                                                         </mat-form-field>
                                                         <p class="error" *ngIf="ownOrgBasicInfo[i].phone_no && !Service.checkInput('onlyNumberWithPlus',ownOrgBasicInfo[i].phone_no)">Please Enter Correct Telephone Number</p> 
@@ -339,7 +339,7 @@
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Land Line Phone No.</mat-label>
-                                                            <input  matInput maxlength="15" minlength="10" autocomplete="off"  placeholder="Landline No."  name="ownership_mobile_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].mobile_no" required >
+                                                            <input  matInput maxlength="15" autocomplete="off"  placeholder="Landline No."  name="ownership_mobile_no_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].mobile_no" required >
                                                             <mat-error></mat-error>      
                                                         </mat-form-field>
                                                         <p class="error" *ngIf="ownOrgBasicInfo[i].mobile_no && !Service.checkInput('onlyNumberWithPlus',ownOrgBasicInfo[i].mobile_no)">Please Enter Correct Telephone Number</p> 
@@ -814,7 +814,7 @@
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mobile Phone No.</mat-label>
-                                                <input matInput placeholder="" maxlength="14" minlength="10" (keypress)="Service.IsNumeric($event)" [(ngModel)]="step2Data.mobile_no" name="mobile_no_technical" required>
+                                                <input matInput placeholder="" maxlength="14"  (keypress)="Service.IsNumeric($event)" [(ngModel)]="step2Data.mobile_no" name="mobile_no_technical" required>
                                             </mat-form-field>
                                         </div>
 
@@ -859,7 +859,7 @@
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mobile Phone No.</mat-label>
-                                                <input matInput placeholder="" maxlength="14" minlength="10" (keypress)="Service.IsNumeric($event)" [(ngModel)]="step2Data.islamic_mobile_no" name="mobile_no_islamic" required>
+                                                <input matInput placeholder="" maxlength="14"  (keypress)="Service.IsNumeric($event)" [(ngModel)]="step2Data.islamic_mobile_no" name="mobile_no_islamic" required>
                                             </mat-form-field>
                                         </div>
 
@@ -903,7 +903,7 @@
                                         <div class="col-md-4 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mobile Phone No.</mat-label>
-                                                <input matInput placeholder="" maxlength="14" minlength="10" (keypress)="Service.IsNumeric($event)" [(ngModel)]="step2Data.management_mobile_no" name="quality_manager_mobile_no" required>
+                                                <input matInput placeholder="" maxlength="14"  (keypress)="Service.IsNumeric($event)" [(ngModel)]="step2Data.management_mobile_no" name="quality_manager_mobile_no" required>
                                             </mat-form-field>
                                         </div>
 
@@ -2279,8 +2279,9 @@
                                         </div>
                                         <div class="pop_thanks">
                                             <h5>Thank you</h5>
-                                            <p>Your form has been successfully submitted and it is under review. We will update you shortly.</p>
-                                            <button class="submit-bttn" (click)="closeChecklistDialog()" routerLink="/dashboard/cab_client/application-accreditation">Back to Application</button>
+                                            <p>Your Application has been submitted successfully and is under review. Please check the status and your dashboard for updates.</p>
+                                            <button class="submit-bttn" (click)="closeChecklistDialog()" 
+                                            routerLink="/dashboard/cab_client/status/all">Return to Status</button>
                                         </div>
                                     </div>
                                 </ng-template>

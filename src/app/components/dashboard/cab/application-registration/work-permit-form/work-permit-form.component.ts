@@ -65,7 +65,7 @@ export class WorkPermitFormComponent implements OnInit {
     this.workPermitForm.scopes_to_be_authorized = '';
     this.workPermitForm.license_no = '';
     this.workPermitForm.date_of_issue = null;
-    this.workPermitForm.date_of_expiry = null;
+    this.workPermitForm.date_of_expiry = null; 
 
     this.workPermitFormData.append('licence_document_file','');
     this.workPermitFormData.append('quality_manual_file','');

@@ -249,6 +249,7 @@ export class TestingCalibrationFormComponent implements OnInit {
     if(findRows.scopeRows != undefined && typeof findRows.scopeRows == 'object'){
       findRows.scopeRows.splice(index, 1);
     }
+    //REmove from dynamic Model
 
   }
 
@@ -262,27 +263,36 @@ export class TestingCalibrationFormComponent implements OnInit {
     obj.splice(index, 1);  //not deleting...
     //////////console.log("compare object: 1 ", this.schemeRows, " ::: ",  this.step5Data.scheme_ids);
     //this.schemeRows.splice(index, 1);
-    //////////console.log("compare object: 2 ", this.schemeRows, " ::: ", this.fullScope, " -- index: ", index);
-    let sectionTitle: string = '';
-    let fullscopeData: any = this.fullScope[index];
-    if(fullscopeData){
-      sectionTitle = fullscopeData.title;
-    }
-    ////////console.log("find section...", sectionTitle);
+    //console.log("compare object: 2 ", this.fullTypeFamily, " -- index: ", index);
+    //let sectionTitle: string = '';
 
-    if(this.fullScope[index] != undefined && !this.Service.isObjectEmpty(this.fullScope[index])){
-      //////////console.log("removing ...fullscope....", index, " :: ", this.fullScope[index]);
-      this.fullScope.splice(index, 1)
+    if(this.fullTypeFamily.length){
+      //console.log("....deleting...");
+      this.fullTypeFamily.splice(index, 1);
     }
-    if(this.dynamicScopeFieldType[sectionTitle] != undefined && !this.Service.isObjectEmpty(this.dynamicScopeFieldType[sectionTitle])){
-      ////////console.log("removing ...fieldType....1", index, " :: ", this.dynamicScopeFieldType);
-      //this.dynamicScopeFieldType.splice(index, 1);
-      delete this.dynamicScopeFieldType[sectionTitle];
-      //////////console.log("removing ...fieldType....2", this.schemeRows,  " --",this.fullScope, " :: ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
-    }
-    if(this.dynamicScopeModel[sectionTitle] != undefined && !this.Service.isObjectEmpty(this.dynamicScopeModel[sectionTitle])){
-      delete this.dynamicScopeModel[sectionTitle];
-    }
+
+    //let findRows: any = this.fullTypeFamily.find(rec => rec.title == familyTitle);
+
+
+    // let fullscopeData: any = this.fullScope[index];
+    // if(fullscopeData){
+    //   sectionTitle = fullscopeData.title;
+    // }
+    // ////////console.log("find section...", sectionTitle);
+
+    // if(this.fullScope[index] != undefined && !this.Service.isObjectEmpty(this.fullScope[index])){
+    //   //////////console.log("removing ...fullscope....", index, " :: ", this.fullScope[index]);
+    //   this.fullScope.splice(index, 1)
+    // }
+    // if(this.dynamicScopeFieldType[sectionTitle] != undefined && !this.Service.isObjectEmpty(this.dynamicScopeFieldType[sectionTitle])){
+    //   ////////console.log("removing ...fieldType....1", index, " :: ", this.dynamicScopeFieldType);
+    //   //this.dynamicScopeFieldType.splice(index, 1);
+    //   delete this.dynamicScopeFieldType[sectionTitle];
+    //   //////////console.log("removing ...fieldType....2", this.schemeRows,  " --",this.fullScope, " :: ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
+    // }
+    // if(this.dynamicScopeModel[sectionTitle] != undefined && !this.Service.isObjectEmpty(this.dynamicScopeModel[sectionTitle])){
+    //   delete this.dynamicScopeModel[sectionTitle];
+    // }
 
     ////////console.log(">>>After delete scheme: ", "Full Scope: ", this.fullScope, " :FieldType: ", this.dynamicScopeFieldType, " :Model: ", this.dynamicScopeModel);
 
@@ -713,6 +723,7 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
 
                     if(!duplicateScheme){
                           familyId = 0;
+
                           if(dataScope.scopeFamily == null){
                             this.dynamicScopeFieldColumns[schemeId] = [];
                             this.dynamicScopeFieldColumns[schemeId][familyId.toString()] = [];
@@ -725,7 +736,7 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
                           if(this.fullTypeFamily.length){
                               let pushObj: any = {
                                 title: scopeTitle, id: getData.scope_accridiation.id, name: scopeName,familyId: familyId, 
-                                familyData: familyData, scopeFamilyRows: [], scopeRows: [], isFamily: isFamilyData
+                                familyData: familyData, scopeFamilyRows: [{}], scopeRows: [], isFamily: isFamilyData
                               }
                               
                               if(this.fullTypeFamily[secInd] != undefined && !this.Service.isObjectEmpty(this.fullTypeFamily[secInd])){
@@ -841,7 +852,7 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
                       this.dynamicScopeModel[schemeId][familyId.toString()].fieldLines.push(defLine);
                       //this.dynamicScopeModel[customKey].fieldLines.push(defLine);
                     });
-                    ////console.log("@@@@Update Model: ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
+                    console.log("#######Update Model: ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
 
                   }
               //}
@@ -849,7 +860,7 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
               //   this.scopeFamilyNull = false;
               // }
           }else{
-            //console.log(">>>> type found");
+            console.log(">>>> type found");
             // type found
             let getTypeData: any;
             let familyTitle: string = '';
@@ -912,7 +923,7 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
                             }
                     }
 
-                  ////console.log("@Updated Type data: ", getTypeData);
+                  console.log("@Before Updated Family ID: ", familyId);
                     this.dynamicScopeFieldColumns[schemeId] = [];
                     this.dynamicScopeFieldColumns[schemeId][familyId] = [];
 
@@ -929,7 +940,7 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
                     if(dataScope.scopeValue.length){ 
                       var counter = 0;let defLine = {};
                       dataScope.scopeValue.forEach((rec, key) => {
-                        ////console.log("--Scope ", rec, " :: ", key);
+                        console.log("--Scope ", rec, " :: ", key);
 
                         if(rec.scope != undefined && typeof rec.scope === 'object' && !this.Service.isObjectEmpty(rec.scope)){
                             let fieldType: any = {
@@ -998,7 +1009,7 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
                         this.dynamicScopeModel[schemeId][familyId].fieldLines.push(defLine);
                         //this.dynamicScopeModel[customKey].fieldLines.push(defLine);
                       });
-                      ////console.log("@@@@Update Model: ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
+                      console.log("@@@@Update Model: ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
 
                     }
             
@@ -1945,6 +1956,10 @@ getCriteria(value, secInd: any){
           // //this.fullScope   = res['fullScope'];
           //this.criteriaLoad = jsonObj;
           this.criteriaList = res['data']['criteriaList'];
+          if(this.criteriaList.length == 1){
+            this.step1Data.criteria_request = this.criteriaList[0].code;
+          }
+          
           //this.schemes = res['data']['schemes'];
           // this.step1Data.criteria_request = this.criteriaList[0].code; 
           // this.criteriaMaster = res['data']['schemes'];
@@ -3809,8 +3824,10 @@ onSubmitStep8(ngForm8: any) {
   //declare Items data
   this.transactionsItem['item_list']            = {};
   this.transactionsItem['item_list']['items']   = [];
-  let custPrice: any = 0.01;
-  this.total = 0.05;
+  // let custPrice: any = 0.01;
+  // this.total = 0.05;
+  let custPrice: any = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//0.01;
+  this.total = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//0.05;
   this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity: 1, price: custPrice, currency: 'USD'});
     if(this.total > 0){
       //////console.log("Calculate price: ", calcPrice);
