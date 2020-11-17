@@ -139,6 +139,7 @@ import { CabTrainingDetailComponent } from './components/dashboard/cab/cab-train
 import { CabTrainingInpremiseDetailComponent } from './components/dashboard/cab/cab-training-inpremise-detail/cab-training-inpremise-detail.component';
 import { CabTrainingInpremiseFormComponent } from './components/dashboard/cab/cab-training-inpremise-form/cab-training-inpremise-form.component';
 import { MessageReplyComponent } from './components/dashboard/message/message-reply/message-reply.component';
+import {TimeAgoPipe} from 'time-ago-pipe';
 
 export const MY_FORMATS = {
   parse: {
@@ -186,7 +187,8 @@ export const MY_FORMATS = {
     CabTrainingDetailComponent,
     CabTrainingInpremiseDetailComponent,
     CabTrainingInpremiseFormComponent,
-    MessageReplyComponent
+    MessageReplyComponent,
+    TimeAgoPipe
   ],
   imports: [
     CommonModule,

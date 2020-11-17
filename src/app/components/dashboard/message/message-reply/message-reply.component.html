@@ -19,7 +19,8 @@
                     <a [href]="constant.mediaPath+msg.document" target="_blank" class="attachment-cnt"><span class="icon-attach"></span></a>
                   </div> -->
                   <div class="message_time">
-                      <span>{{msg.created | date:'MM/dd/yy h:mm:ss a'}}</span>
+                      <span>{{msg.created | date:'MM/dd/yy h:mm a'}}</span>
+                      <!-- <span>{{msg.created | timeAgo}}</span> -->
                   </div>
               </div>
           </div>
