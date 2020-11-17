@@ -22,6 +22,124 @@
                     </div>
                 </div>
 
+                <div *ngIf="trainingCartArr == ''">
+                    <div class="col-md-12">
+                        <div class="scheduled-prog">
+                            No Data Found
+                        </div>
+                    </div>
+                </div>
+                <div class="row" *ngFor="let row2 of trainingCartArr; let i=index;">
+                    <div class="col-md-12">
+                        <div class="scheduled-prog">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="training-data">
+                                        <h4>{{row2.course.name}}</h4>
+                                    </div>
+                                    <hr>
+                                </div>
+                            </div>
+                            <div class="training-details">
+                                <div class="row">
+                                    <div class="col-lg-4 border-left-dash">
+                                        <div class="training-main-details">
+                                            <div class="training_det">
+                                                <span>Audience</span>
+                                            </div>
+                                            <div class="training_type">
+                                                <span>{{row2.target_audiance}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 border-left-dash">
+                                        <div class="training-main-details">
+                                            <div class="training_det">
+                                                <span>Duration</span>
+                                            </div>
+                                            <div class="training_type">
+                                                <span>{{row2.course.training_course.training_days}} Days</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 border-left-dash">
+                                        <div class="training-main-details">
+                                            <div class="training_det">
+                                                <span>Rates</span>
+                                            </div>
+                                            <div class="training_type">
+                                                <span>AED 200.00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 border-left-dash">
+                                        <div class="train_det_bttn">
+                                            <a style="text-decoration:none" routerLink="/training-course-detail/{{row2.id}}" href="javascript:void(0)" class="training_btn">DETAILS</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-icn">
+                        <a class="icon-cross" href="javascript:void(0)" (click)="removeTraining(allCourseTraining,i)"></a>
+                    </div>
+                </div>
+
+                <form #ngForm1="ngForm" (ngSubmit)="onSubmit(ngForm1)" autocomplete="off">
+                    <div class="row form-bdy m-0">
+                        <div class="wrapper">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12 p-0">
+                                        <div class="form-subhdr form_subhdr">
+                                            <h5>EVENT DETAILS</h5>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                </div>
+                               
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Select Date</mat-label>
+                                            <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Select Date" name="select_date" [(ngModel)]="inPremiseForm.select_date">
+                                            <mat-error></mat-error>  
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Select Location</mat-label>
+                                            <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Select Location" name="select_location" [(ngModel)]="inPremiseForm.select_location">
+                                            <mat-error></mat-error>  
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>No. of Candidate</mat-label>
+                                            <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="No. of Candidate" name="no_of_candidate" [(ngModel)]="inPremiseForm.no_of_candidate">
+                                            <mat-error></mat-error>  
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="wrapper"> 
+                                <div class="col-md-12">
+                                    <div class="bttns-health bttn-staff">
+                                        <button class="submit-bttn submit-health">SUBMIT</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                </form>
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="ourcourse-data">
@@ -87,11 +205,10 @@
                                     <div class="col-lg-2 border-left-dash">
                                         <div class="training-main-details">
                                             <div class="training_det">
-                                                <span>Location</span>
+                                                <span>Rates</span>
                                             </div>
                                             <div class="training_type">
-                                                <span *ngIf="row2.course.training_course.location == 'client_premisis'">Client Premise/Eiac Training Center</span>
-                                                <span *ngIf="row2.course.training_course.location == 'eiac_training_center'">Eiac Training Center</span>
+                                                <span>AED 2500.00</span>
                                             </div>
                                         </div>
                                     </div>
@@ -102,8 +219,14 @@
                                     </div>
                                 </div>
                             </div>
+                            
                         </div>
                     </div>
+
+                    <div class="content-icn">
+                        <a href="javascript:void(0)" class="icon-add" (click)="addTraining(allCourseTraining,i,row2.id)"></a>
+                    </div>
+
                 </div>
                 <div class="load-more-dir">
                     <a href="javascript:void(0)" *ngIf="allCourses?.length > totalRow" (click)="load_more('1')">Load More...</a>

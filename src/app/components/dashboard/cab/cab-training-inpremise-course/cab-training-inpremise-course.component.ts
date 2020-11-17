@@ -23,11 +23,42 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
   trainingList:any = [];
   targated_aud_name:any;
   audienceId:any = 0;
+  inPremiseForm:any = {};
+  trainingCartArr:any[] = []; 
 
   constructor(public _service: AppService, public _constant:Constants, public _trainerService: TrainerService) { }
 
   ngOnInit() {
     this.loadTrainingData();
+  }
+
+  addTraining(obj,index,id) {
+    // console.log(obj);
+    // console.log(index);
+    // var newArray = [];
+    // console.log(this.trainingCartArr);
+    if(this.trainingCartArr.length == 0) {
+      
+        var findElem = obj.find((res,key) => key == index);
+        
+        // newArray.push();
+        this.trainingCartArr.push(findElem);
+        console.log(this.trainingCartArr);
+    }else{
+      var checkId = this.trainingCartArr.find(res => res.id == id);
+      if(!checkId || typeof checkId == undefined) {
+        var findElem = obj.find((res,key) => key == index);
+        
+        this.trainingCartArr.push(findElem);
+        console.log(this.trainingCartArr);
+      }
+    }
+
+  }
+
+  removeTraining(obj,index) {
+    this.trainingCartArr.splice(index,1);
+     return true;
   }
 
   loadTrainingData() {
