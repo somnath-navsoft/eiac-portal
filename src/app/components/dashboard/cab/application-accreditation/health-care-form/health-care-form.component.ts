@@ -1212,7 +1212,7 @@ validateFile(fileEvent: any) {
     }
 }
 
-loadData(){
+loadData(){ 
   this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcare_form_basic_data)
     .subscribe( 
       res => {

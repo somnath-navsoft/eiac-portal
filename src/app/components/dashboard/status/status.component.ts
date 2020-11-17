@@ -60,6 +60,14 @@ export class StatusComponent implements OnInit {
 
   ngOnInit() {
     this.loadPageData();
+    this.curSortDir['id']                       = false;
+    this.curSortDir['created_date']             = false;
+    this.curSortDir['accr_status']             = false;
+    this.curSortDir['applicantName']             = false;
+    this.curSortDir['criteria_request']             = false;
+    this.curSortDir['form_meta']             = false;
+    this.curSortDir['location']             = false;
+    // |  |  |  | 
   }
 
   setIB(id: any){
@@ -67,49 +75,34 @@ export class StatusComponent implements OnInit {
     sessionStorage.setItem('ibUrlId', id);
   }
 
-  editVisible(object: any){
+  editVisible(item: any){
     //console.log(">>> Item data: ", object);
+    
+    if(item){
 
-    if(object){
-      if(object.accr_status != undefined && object.accr_status == 'complete'){
+      if(item.saved_step != null && item.saved_step < 7 && (item.is_draft == true || item.is_draft == false)){
+        return false;
+      }
+       if(item.saved_step != null && item.saved_step > 7 && item.is_draft == false && 
+        item.paymentDetails != undefined && item.paymentDetails != false && 
+        typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.accr_status == 'complete'){
         return true;
       }
-      else if(object.accr_status != undefined && (object.accr_status == 'draft' || object.is_draft == false || object.accr_status == null)){
+      if(item.saved_step != null && item.saved_step == 9 && (item.is_draft == false || item.is_draft == true) && 
+        item.paymentDetails != undefined && item.accr_status !== 'complete'){
         return false;
       }
-      // else if(object.accr_status != undefined && (object.accr_status == 'draft' || object.is_draft == false || object.accr_status == null)){
-      //   console.log(">>> Enter....1: ", object.id);
-      //   if(object.paymentDetails != undefined && object.paymentDetails == false && object.accr_status != 'draft'){
-      //     console.log(">>> Enter....1.3: ", object.id);  
-      //     return true;
-      //   }else{
-      //     return false;
-      //   }
-      // }
-      else if(object.paymentDetails != undefined && object.paymentDetails != false && typeof object.paymentDetails == 'object' && object.paymentDetails.voucher_invoice != ''){
-        //console.log(">>> Enter....2: ", object.id);
+
+       if(item.saved_step != null && item.saved_step == 7 && item.is_draft == false && 
+          item.paymentDetails != undefined && item.paymentDetails == false){
+        return true;
+      }
+       if(item.saved_step != null && item.saved_step == 7 && item.is_draft == false && 
+        item.paymentDetails != undefined && item.paymentDetails != false && item.paymentDetails != false && 
+        typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
         return false;
       }
-      // else if(object.paymentDetails != undefined && object.paymentDetails == false && object.accr_status != 'draft'){
-      //   console.log(">>> Enter....3: ", object.id);
-      //   return true;
-      // }
     }
-
-
-    // let getId= (object.id);
-    // let url = this._service.apiServerUrl+"/"+'accrediation-details-show/'+getId;
-    // //let getScheme: any  = this.schemeRows[rowInd].id;
-
-    // console.log(">>>Get url and ID: ", url, " :: ", getId, " -- ");
-    // this._service.getwithoutData(url)
-    // .subscribe(
-    // async res => {
-    //     let getData: any  =res;
-    //     console.log(">>>. Data: ", getData);
-        
-        
-    // });
   }
 
   loadPageData() { 
@@ -224,29 +217,29 @@ export class StatusComponent implements OnInit {
           }
         }
         //By Payment Status
-        if(sortBy == 'payment_status'){
-          this.curSortDir.payment_status = !sortDir;
+        // if(sortBy == 'payment_status'){
+        //   this.curSortDir.payment_status = !sortDir;
+        //   //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
+        //   if(this.curSortDir.payment_status){
+        //     let array = data.slice().sort((a, b) => (a.payment_status > b.payment_status) ? 1 : -1)
+        //     this.trainerdata = array;
+        //     //console.log("after:: ", array, " :: ", this.trainerdata);
+        //   }
+        //   if(!this.curSortDir.payment_status){
+        //     let array = data.slice().sort((a, b) => (a.payment_status < b.payment_status) ? 1 : -1)
+        //     this.trainerdata = array;
+        //   }
+        // }  
+        if(sortBy == 'location'){
+          this.curSortDir.location = !sortDir;
           //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
-          if(this.curSortDir.payment_status){
-            let array = data.slice().sort((a, b) => (a.payment_status > b.payment_status) ? 1 : -1)
+          if(this.curSortDir.location){
+            let array = data.slice().sort((a, b) => (a.location > b.location) ? 1 : -1)
             this.trainerdata = array;
             //console.log("after:: ", array, " :: ", this.trainerdata);
           }
-          if(!this.curSortDir.payment_status){
-            let array = data.slice().sort((a, b) => (a.payment_status < b.payment_status) ? 1 : -1)
-            this.trainerdata = array;
-          }
-        }  
-        if(sortBy == 'applicant'){
-          this.curSortDir.applicant = !sortDir;
-          //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
-          if(this.curSortDir.applicant){
-            let array = data.slice().sort((a, b) => (a.applicant > b.applicant) ? 1 : -1)
-            this.trainerdata = array;
-            //console.log("after:: ", array, " :: ", this.trainerdata);
-          }
-          if(!this.curSortDir.applicant){
-            let array = data.slice().sort((a, b) => (a.applicant < b.applicant) ? 1 : -1)
+          if(!this.curSortDir.location){
+            let array = data.slice().sort((a, b) => (a.location < b.location) ? 1 : -1)
             this.trainerdata = array;
           }
         }        

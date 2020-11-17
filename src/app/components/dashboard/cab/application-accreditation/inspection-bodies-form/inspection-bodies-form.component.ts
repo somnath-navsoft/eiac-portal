@@ -3813,15 +3813,18 @@ continueScopeAccreditation(){
 }
 backScopeAccreditation(){
   //Reset all model data 
+  console.log("@back scope....1");
   this.dynamicScopeFieldColumns = {};
   this.dynamicScopeFieldType = {};
   this.dynamicScopeModel = {};
   this.fullScope = [];
   this.schemeRows = [{}];
   if(this.step1Data.accredation_criteria == 1){
+    console.log("@back scope....1.1");
     this.Service.moveSteps('scope_accreditation', 'information_audit_management', this.headerSteps);
   }
   if(this.step1Data.accredation_criteria == 2){
+    console.log("@back scope....1.2");
     this.Service.moveSteps('scope_accreditation', 'personal_information', this.headerSteps);
   }
 }

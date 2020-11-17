@@ -82,6 +82,10 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   cbOtherStandards: any[] = [];
   cbnameOfCountry: any[] = [{}];
   termsGeneral: any;
+  getFamilyName: boolean = false;
+  findFamily: any;
+  loadTCScheme: boolean = false;
+  TCSchmeData: any;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, public sanitizer: DomSanitizer,private modalService: NgbModal,public uiDialog: UiDialogService) { }
@@ -91,7 +95,7 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
     this.routeId = sessionStorage.getItem('routeId');
 
     this.userType = sessionStorage.getItem('type');
-
+    this.step1Data['cab_type'] = '';
     this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');
     this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Document%20review%20Checklist-%20ISO%2017020-%202012_Inspection%20Bodies.pdf');
     this.ILAAgreement     = ('https://uat-service.eiac.gov.ae/media/publication/files/EIAC%20ILAC%20MRA%20Mark%20Agreement%20with%20CAB.pdf');;
@@ -251,6 +255,128 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
     return getSchemeData.title;
   }
 }
+getSchmeHalal(sid: number, typeId: number){
+  let typeData: any;
+  let getSchemeData: any;
+  if(typeId){
+     typeData = this.subTypeMaster.find(rec => rec.service_page.id == typeId);
+  }
+  if(typeData && typeData.scheme_list != undefined){
+    getSchemeData = typeData.scheme_list.find(item => item.scope_accridiation.id == sid);
+  }
+  if(getSchemeData){
+    return 'Accreditation Scope for ' + getSchemeData.title;
+  }
+}
+
+getSchmeTC(sid: number){
+
+  if(!this.loadTCScheme){
+    this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.testingCalibration)
+        .subscribe(
+          async res => {
+            console.log("@Load scheme....", res);
+            //////console.log(">>sele schme Type: ", this.step1Data.cab_type);
+
+            let schemeData: any = res['data']['schemes']
+            let schemeMaster: any;
+            if(typeof schemeData === 'object'){
+                schemeMaster = schemeData;
+                console.log(">>>schemee ", schemeMaster, " -- ", this.step1Data.cab_type, " -- ", this.step1Data.cab_type);
+                //this.criteriaMaster = schemeMaster;
+                if(this.step1Data.cab_type != undefined && this.step1Data.cab_type === 'testing_laboratory'){
+                  this.criteriaMaster = schemeData['testing_laboratory'];
+                }
+                if(this.step1Data.cab_type != undefined && this.step1Data.cab_type === 'calibration_laboratories'){
+                  console.log(">>> found calibration....");
+                  this.criteriaMaster = schemeData['calibration_laboratory'];
+                }
+
+                //create type family data storage
+                if(this.criteriaMaster.length){
+                  let getSchemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id == sid);
+                console.log("data: ", getSchemeData, " -- ");
+                if(getSchemeData){
+                  console.log('reteteete.')
+                  this.loadTCScheme = true;
+                  this.TCSchmeData = getSchemeData;
+                  //return '<strong>Accreditation Scope for ' + getSchemeData.title+'</strong>';
+                }
+                }
+                
+                
+            }
+            console.log(">>>schcriteria master ", this.criteriaMaster);
+          },
+          error => {      
+      })
+  }
+        
+
+
+  // let getSchemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id == sid);
+  // console.log("data: ", getSchemeData, " -- ");
+  // if(getSchemeData){
+  //   return '<strong>Accreditation Scope for ' + getSchemeData.title+'</strong>';
+  // }
+}
+getFamilySchmeTC = (sid: number, fid: number) =>{
+  //console.log(">>> Family Data: ", sid," :: ", fid, " -- ", familyData)
+  if(fid > 0){
+    //let getFamilydata: any;
+    //let getTypeData = this.fullTypeFamily.find(item => item.id == sid);
+    if(!this.getFamilyName){
+      let apiURL = this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.testing_cal_form_basic_data+"?scheme="+sid;
+        this._service.getwithoutData(apiURL).subscribe(
+          async record => {
+          console.log('Fullscope: ', record, " -- ");
+          let data: any = record;
+          if(data && data.data.scopeFamily != undefined && data.data.scopeFamily.length > 0){
+            this.findFamily = data.data.scopeFamily.find(item => item.scope_family == fid);
+            //console.log(">>> family: 1 ", this.findFamily);
+            if(this.findFamily){
+              console.log(">>> family namem: ", this.findFamily);
+              this.getFamilyName = true;
+              return;
+              //return 'Accreditation Family Scope for ' + findFamily.title;
+            }
+          }
+        });
+    }
+  }else{
+    ////console.log("NO family...");
+    return '';
+  }
+}
+loadSchemeMasterTC = async(cabType: any) => {
+//   this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.testingCalibration)
+//   .subscribe(
+//     async res => {
+//       console.log("@Load scheme....", res);
+//       //////console.log(">>sele schme Type: ", this.step1Data.cab_type);
+
+//       let schemeData: any = res['data']['schemes']
+//       let schemeMaster: any;
+//       if(typeof schemeData === 'object'){
+//         schemeMaster = schemeData;
+//           console.log(">>>schemee ", schemeMaster, " -- ", this.step1Data.cab_type, " -- ", cabType);
+//           //this.criteriaMaster = schemeMaster;
+//           if(this.step1Data.cab_type != undefined && this.step1Data.cab_type === 'testing_laboratory'){
+//             this.criteriaMaster = schemeData['testing_laboratory'];
+//           }
+//           if(this.step1Data.cab_type != undefined && this.step1Data.cab_type === 'calibration_laboratories'){
+//             console.log(">>> found calibration....");
+//             this.criteriaMaster = schemeData['calibration_laboratory'];
+//           }
+
+//           //create type family data storage
+          
+//       }
+//       console.log(">>>schcriteria master ", this.criteriaMaster);
+//     },
+//     error => {      
+// })
+}
 
 getSchmeCb(sid: number, typeId: number){
   let typeData: any;
@@ -279,12 +405,40 @@ getSubType(typeId: number){
   }
 }
 
+getSubTypeHalal = (typeId: number) =>{
+  if(typeId){
+    let typeData: any = this.subTypeMaster.find(rec => rec.service_page.id == typeId);
+    console.log(">>>> ", typeData);
+    if(typeData){
+      console.log(">>>>... ", typeData.title);
+      return 'Accreditation SubType For: ' + typeData.title;
+    }
+  }
+}
+
+loadScopeDataHalal(){
+  this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.halalConfirmity)
+   .subscribe( 
+     res => {
+       let record: any = res['data'];
+       console.log("@Load subtype Master....", record);
+       if(record){
+         this.subTypeMaster = record.serviceList;
+         console.log("@Load Type....", this.subTypeMaster);
+       }
+
+     },
+     error => {
+     
+ })
+}
+
   loadData() {
     this.loader = false;
     this.subscriptions.push(this._trainerService.trainerAccredDetailsServtrainerAccredDetailsServ(this.routeId)
       .subscribe(
         result => {
-          // console.log(result, " -- ", this.countryList);
+          console.log(result, "@Get Data");
           //return;
           this.loader = true;
           let getData: any = result;
@@ -299,6 +453,13 @@ getSubType(typeId: number){
           // }
           //
           // console.log(this.serviceDetail.is_main_activity,'is_main_activity');
+          
+          this.step1Data.cab_type = getData.data.cab_type;
+          //alert(this.step1Data.cab_type + " -- "+ getData.data.cab_type);
+          if(getData.data.form_meta == 'halal_conformity_bodies'){
+            console.log(">>> Load halal types......");
+            this.loadScopeDataHalal();
+          }
           if(this.serviceDetail.onBehalfApplicantDetails ){
             this.applicantDetails = this.serviceDetail.onBehalfApplicantDetails;
           }
@@ -405,6 +566,24 @@ getSubType(typeId: number){
           }
           if(getData.data.form_meta == 'inspection_body'){
             this.loadTermsConditions(2)
+            this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.inspection_form_basic_data)
+              .subscribe( 
+                res => {
+                  
+                  ////console.log("@Load scope....", res);
+                  this.inspectionBodyScopeFields = res['medicalLabScopeFields'];
+                  //this.countryList = res['allCountry'];
+                  this.labTypeList = res['allLabtype'];
+                  //this.fullScope   = res['fullScope'];
+                  this.criteriaList = res['data']['criteriaList'];
+                  this.step1Data.criteria_request = this.criteriaList[0].code;
+                  this.criteriaMaster = res['data']['schemes'];
+                  ////////console.log("#Get criteria: ", this.criteriaMaster);
+
+                },
+                error => {
+                
+            })
           }
           if(getData.data.form_meta == 'health_care'){
             this.loadTermsConditions(1)
@@ -513,24 +692,24 @@ getSubType(typeId: number){
     //     this.applicantInfo = res['data']['step1'][0];
     //   })
 
-    this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.inspection_form_basic_data)
-      .subscribe( 
-        res => {
+    // this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.inspection_form_basic_data)
+    //   .subscribe( 
+    //     res => {
           
-          ////console.log("@Load scope....", res);
-          this.inspectionBodyScopeFields = res['medicalLabScopeFields'];
-          //this.countryList = res['allCountry'];
-          this.labTypeList = res['allLabtype'];
-          //this.fullScope   = res['fullScope'];
-          this.criteriaList = res['data']['criteriaList'];
-          this.step1Data.criteria_request = this.criteriaList[0].code;
-          this.criteriaMaster = res['data']['schemes'];
-          ////////console.log("#Get criteria: ", this.criteriaMaster);
+    //       ////console.log("@Load scope....", res);
+    //       this.inspectionBodyScopeFields = res['medicalLabScopeFields'];
+    //       //this.countryList = res['allCountry'];
+    //       this.labTypeList = res['allLabtype'];
+    //       //this.fullScope   = res['fullScope'];
+    //       this.criteriaList = res['data']['criteriaList'];
+    //       this.step1Data.criteria_request = this.criteriaList[0].code;
+    //       this.criteriaMaster = res['data']['schemes'];
+    //       ////////console.log("#Get criteria: ", this.criteriaMaster);
 
-        },
-        error => {
+    //     },
+    //     error => {
         
-    })
+    // })
 
     this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.certificationBodies)
     .subscribe( 
