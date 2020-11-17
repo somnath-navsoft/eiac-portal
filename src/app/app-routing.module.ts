@@ -97,7 +97,7 @@ const routes: Routes = [
     children: [
       //Trainers
       { path: 'onboarding-message-list', component: MessageComponent, canActivate: [AuthGuard] },
-      { path: 'status/:id', component: StatusComponent, canActivate: [AuthGuard] },
+      { path: 'status/:id', component: StatusComponent, canActivate: [AuthGuard] }, 
       { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard] },
       { path: 'account-details/:id', component: AccountDetailsComponent, canActivate: [AuthGuard] },
       { path: 'account-upload/:id', component: AccountUploadComponent, canActivate: [AuthGuard] },
@@ -158,6 +158,7 @@ const routes: Routes = [
         { path: 'work-permit-form', component:WorkPermitFormComponent, canActivate: [AuthGuard] },
         { path: 'work-permit-form/:id', component:WorkPermitFormComponent, canActivate: [AuthGuard] },
         { path: 'no-objection-certificate-form', component:NoObjectionFormComponent, canActivate: [AuthGuard] },
+        { path: 'no-objection-certificate-form/:id', component:NoObjectionFormComponent, canActivate: [AuthGuard] },
         { path: 'inspection-bodies-form', component:InspectionBodiesFormComponent, canActivate: [AuthGuard] },
         { path: 'inspection-bodies-form/:id', component:InspectionBodiesFormComponent, canActivate: [AuthGuard] },
         { path: 'testing-calibration-form', component:TestingCalibrationFormComponent, canActivate: [AuthGuard] },
