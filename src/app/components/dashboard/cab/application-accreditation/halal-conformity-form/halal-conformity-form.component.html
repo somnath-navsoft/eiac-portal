@@ -547,12 +547,12 @@
 
 
                                     <div class="row">
-                                        <div class="col-12 p-0">
+                                        <div class="col-md-10 p-0">
                                             <div class="form-subheader-data">
                                                 <h5>IF HCAB HAVE OTHER LOCATION(S) OTHER THAN THE MAIN/HEAD OFFICE OR BRANCHES WHERE KEY ACTIVITIES TAKE PLACE</h5>
                                             </div>
                                         </div>
-                                        <div class="col-md-9">
+                                        <div class="col-md-2">
                                             <mat-radio-group name="hcab_other_loc" #hcabOtherLoc="ngModel" [(ngModel)]="step1Data.hcab_other_loc" 
                                             #selectAccredHold="ngModel" required>
                                                 <div class="row">
@@ -623,12 +623,12 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-12 p-0">
+                                        <div class="col-md-10 p-0">
                                             <div class="form-subheader-data">
                                                 <h5>DOES HCAB CURRENTLY HOLD ANT OTHER CURRENT OR PREVIOUS ACCREDITATION (S) ?</h5>
                                             </div>
                                         </div>
-                                        <div class="col-md-9">
+                                        <div class="col-md-2">
                                             <mat-radio-group name="is_hold_other_accr" #hcabCurrentlyHold="ngModel" [(ngModel)]="step1Data.is_hold_other_accr" 
                                             #selectAccredHold="ngModel" required>
                                                 <div class="row">
@@ -1584,9 +1584,9 @@
                                                             <td>
                                                                 <div class="matupload position-relative view_file">
                                                                     <mat-form-field  class="lng-data">
-                                                                        <input matInput readonly="true" name="hcabLogo1" [(ngModel)]="hcabLogo1"  placeholder="Logo1" required>
+                                                                        <input matInput readonly="true" name="hcabLogo1" [(ngModel)]="hcabLogo1"  placeholder="Logo1">
                                                             
-                                                                        <a href="{{hcabLogo1Path}}" target="_blank">
+                                                                        <a *ngIf="hcabLogo1Path" href="{{hcabLogo1Path}}" target="_blank">
                                                                             <span class="icon-eye visible-pwd"></span>
                                                                         </a>
                                                                     </mat-form-field>
@@ -1602,9 +1602,9 @@
                                                             <td>
                                                                 <div class="matupload position-relative view_file">
                                                                     <mat-form-field  class="lng-data">
-                                                                        <input matInput readonly="true" name="hcabLogo2" [(ngModel)]="hcabLogo2"  placeholder="Logo2" required>
+                                                                        <input matInput readonly="true" name="hcabLogo2" [(ngModel)]="hcabLogo2"  placeholder="Logo2">
                                                             
-                                                                        <a href="{{hcabLogo2Path}}" target="_blank">
+                                                                        <a *ngIf="hcabLogo2Path" href="{{hcabLogo2Path}}" target="_blank">
                                                                             <span class="icon-eye visible-pwd"></span>
                                                                         </a>
                                                                     </mat-form-field>
@@ -1620,9 +1620,9 @@
                                                             <td>
                                                                 <div class="matupload position-relative view_file">
                                                                     <mat-form-field  class="lng-data">
-                                                                        <input matInput readonly="true" name="hcabLogo3" [(ngModel)]="hcabLogo3"  placeholder="Logo3" required>
+                                                                        <input matInput readonly="true" name="hcabLogo3" [(ngModel)]="hcabLogo3"  placeholder="Logo3">
                                                             
-                                                                        <a href="{{hcabLogo3Path}}" target="_blank">
+                                                                        <a *ngIf="hcabLogo3Path" href="{{hcabLogo3Path}}" target="_blank">
                                                                             <span class="icon-eye visible-pwd"></span>
                                                                         </a>
                                                                     </mat-form-field>

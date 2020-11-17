@@ -1369,7 +1369,7 @@ addSchemeRow(obj: any = [],index: number){
                   this.step1Data.hcab_other_loc = '0';
                 }
                 
-                if(res['data'].hcabOtherAccreditation != ''){
+                if(res['data'].hcabOtherAccreditation != null){
                   this.accreditationInfo = res['data'].hcabOtherAccreditation;
                   this.step1Data.is_hold_other_accr = '1';
                   // is_hold_other_accreditation
@@ -1881,7 +1881,7 @@ addSchemeRow(obj: any = [],index: number){
   }
 
   filePathVreateDynamics(filePath) {
-    return this.constant.mediaPath+'/'+filePath;
+    return this.constant.mediaPath+'/media/'+filePath;
   }
 
 
