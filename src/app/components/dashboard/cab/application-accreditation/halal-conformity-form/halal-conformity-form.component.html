@@ -260,7 +260,7 @@
                                         <div class="col-md-4">
                                             <div class="matupload position-relative view_file">
                                                 <mat-form-field  class="lng-data">
-                                                    <input matInput readonly="true" name="id_issued_esma" [(ngModel)]="publicHalalConformityForm.id_issued_esma" placeholder="Registration form and ID issued by ESMA" required>
+                                                    <input matInput readonly="true" name="id_issued_esma" [(ngModel)]="id_issued_esma" placeholder="Registration form and ID issued by ESMA" required>
 
                                                     <a *ngIf="issuedEsmaPath" href="{{issuedEsmaPath}}" target="_blank">
                                                         <span class="icon-eye visible-pwd"></span>
@@ -278,7 +278,7 @@
                                         <div class="col-md-4">
                                             <div class="matupload position-relative view_file">
                                                 <mat-form-field  class="lng-data">
-                                                    <input matInput readonly="true" name="halal_certificate_stamp" [(ngModel)]="publicHalalConformityForm.halal_certificate_stamp" placeholder="Halal Certificate Stamp or Symbol" required>
+                                                    <input matInput readonly="true" name="halal_certificate_stamp" [(ngModel)]="halal_certificate_stamp" placeholder="Halal Certificate Stamp or Symbol" required>
 
                                                     <a *ngIf="certificateStampPath" href="{{certificateStampPath}}" target="_blank">
                                                         <span class="icon-eye visible-pwd"></span>
@@ -1584,7 +1584,7 @@
                                                             <td>
                                                                 <div class="matupload position-relative view_file">
                                                                     <mat-form-field  class="lng-data">
-                                                                        <input matInput readonly="true" name="hcabLogo1" [(ngModel)]="publicHalalConformityForm.hcabLogo1"  placeholder="Logo1" required>
+                                                                        <input matInput readonly="true" name="hcabLogo1" [(ngModel)]="hcabLogo1"  placeholder="Logo1" required>
                                                             
                                                                         <a href="{{hcabLogo1Path}}" target="_blank">
                                                                             <span class="icon-eye visible-pwd"></span>
@@ -1592,7 +1592,7 @@
                                                                     </mat-form-field>
                                                             
                                                                     <span class="fileupload">
-                                                                        <input type="file" name="id_issuedEsma" [(ngModel)]="hcabLogo1" (change)="validateFile($event,'hcabLogo1')">
+                                                                        <input type="file" name="id_issuedEsma" [(ngModel)]="hcabLogon1" (change)="validateFile($event,'hcabLogo1')">
                                                                         <span class="icon-attach attach-data"></span>
                                                                     </span>
                                                                     <p class="error" *ngIf="!hcabLogo1_validation">Please Upload a valid file (ex: pdf)</p>
@@ -1602,7 +1602,7 @@
                                                             <td>
                                                                 <div class="matupload position-relative view_file">
                                                                     <mat-form-field  class="lng-data">
-                                                                        <input matInput readonly="true" name="hcabLogo2" [(ngModel)]="publicHalalConformityForm.hcabLogo2"  placeholder="Logo2" required>
+                                                                        <input matInput readonly="true" name="hcabLogo2" [(ngModel)]="hcabLogo2"  placeholder="Logo2" required>
                                                             
                                                                         <a href="{{hcabLogo2Path}}" target="_blank">
                                                                             <span class="icon-eye visible-pwd"></span>
@@ -1610,7 +1610,7 @@
                                                                     </mat-form-field>
                                                             
                                                                     <span class="fileupload">
-                                                                        <input type="file" name="id_issuedEsma" [(ngModel)]="hcabLogo2" (change)="validateFile($event,'hcabLogo2')">
+                                                                        <input type="file" name="id_issuedEsma" [(ngModel)]="hcabLogon2" (change)="validateFile($event,'hcabLogo2')">
                                                                         <span class="icon-attach attach-data"></span>
                                                                     </span>
                                                                     <p class="error" *ngIf="!hcabLogo2_validation">Please Upload a valid file (ex: pdf)</p>
@@ -1620,7 +1620,7 @@
                                                             <td>
                                                                 <div class="matupload position-relative view_file">
                                                                     <mat-form-field  class="lng-data">
-                                                                        <input matInput readonly="true" name="hcabLogo3" [(ngModel)]="publicHalalConformityForm.hcabLogo3"  placeholder="Logo3" required>
+                                                                        <input matInput readonly="true" name="hcabLogo3" [(ngModel)]="hcabLogo3"  placeholder="Logo3" required>
                                                             
                                                                         <a href="{{hcabLogo3Path}}" target="_blank">
                                                                             <span class="icon-eye visible-pwd"></span>
@@ -1628,7 +1628,7 @@
                                                                     </mat-form-field>
                                                             
                                                                     <span class="fileupload">
-                                                                        <input type="file" name="id_issuedEsma" [(ngModel)]="hcabLogo3" (change)="validateFile($event,'hcabLogo3')">
+                                                                        <input type="file" name="id_issuedEsma" [(ngModel)]="hcabLogon3" (change)="validateFile($event,'hcabLogo3')">
                                                                         <span class="icon-attach attach-data"></span>
                                                                     </span>
                                                                     <p class="error" *ngIf="!hcabLogo3_validation">Please Upload a valid file (ex: pdf)</p>

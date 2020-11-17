@@ -16,7 +16,17 @@
                     <div class="col-md-12">
                         <div class="ourcourse-data">
                             <div class="progs-course">
-                                <h4>Apply In Premise Course</h4>
+                                <h4>Course Selected to be conducted In Premise</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="ourcourse-data">
+                            <div class="progs-course">
+                                <h4>Select a Course or Multiple Course from Below to request an Event</h4>
                             </div>
                             <div class="sort-data">
                                  <label for="sort">Sort By :</label>
@@ -34,54 +44,43 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="trainingList == ''">
+                <div *ngIf="allCourseTraining == ''">
                     <div class="col-md-12">
                         <div class="scheduled-prog">
                             No Data Found
                         </div>
                     </div>
                 </div>
-                <div class="row" *ngFor="let trainingCourse of trainingList; let i=index">
+                <div class="row" *ngFor="let row2 of allCourseTraining; let i=index;">
                     <div class="col-md-12">
                         <div class="scheduled-prog">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="training-data">
-                                        <h4>{{trainingCourse.course.name}}</h4>
+                                        <h4>{{row2.course.name}}</h4>
                                     </div>
                                     <hr>
                                 </div>
                             </div>
-                            
                             <div class="training-details">
                                 <div class="row">
-                                    <div class="col-lg-2  border-left-dash">
+                                    <div class="col-lg-4 border-left-dash">
                                         <div class="training-main-details">
                                             <div class="training_det">
                                                 <span>Audience</span>
                                             </div>
                                             <div class="training_type">
-                                                <span>{{trainingCourse.target_audiance}}</span>
+                                                <span>{{row2.target_audiance}}</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-2 border-left-dash">
-                                       <div class="training-main-details">
+                                        <div class="training-main-details">
                                             <div class="training_det">
                                                 <span>Duration</span>
                                             </div>
                                             <div class="training_type">
-                                                <span>{{trainingCourse.course.training_course.training_days}} Days</span>
-                                            </div>
-                                        </div> 
-                                    </div>
-                                    <div class="col-lg-2 border-left-dash">
-                                        <div class="training-main-details">
-                                            <div class="training_det">
-                                                <span>Date</span>
-                                            </div>
-                                            <div class="training_type">
-                                                <span>{{trainingCourse.event.eventDates[0].event_date | date}}</span>
+                                                <span>{{row2.course.training_course.training_days}} Days</span>
                                             </div>
                                         </div>
                                     </div>
@@ -91,20 +90,23 @@
                                                 <span>Location</span>
                                             </div>
                                             <div class="training_type">
-                                                <span *ngIf="trainingCourse.course.training_course.location == 'eiac_training_center'">EIAC Training Center</span>
-                                                <span *ngIf="trainingCourse.course.training_course.location == ''"></span>
+                                                <span *ngIf="row2.course.training_course.location == 'client_premisis'">Client Premise/Eiac Training Center</span>
+                                                <span *ngIf="row2.course.training_course.location == 'eiac_training_center'">Eiac Training Center</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 border-left-dash">
                                         <div class="train_det_bttn">
-                                            <a style="text-decoration:none" routerLink="/dashboard/cab_client/training-inpremise-details/{{trainingCourse.training_course}}" href="javascript:void(0)" class="training_btn">DETAILS</a>
+                                            <a style="text-decoration:none" routerLink="/training-course-detail/{{row2.id}}" href="javascript:void(0)" class="training_btn">DETAILS</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="load-more-dir">
+                    <a href="javascript:void(0)" *ngIf="allCourses?.length > totalRow" (click)="load_more('1')">Load More...</a>
                 </div>
 
             </div>

@@ -21,6 +21,8 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
   scheduleProgramSection :string = '';
   programSection:any;
   trainingList:any = [];
+  targated_aud_name:any;
+  audienceId:any = 0;
 
   constructor(public _service: AppService, public _constant:Constants, public _trainerService: TrainerService) { }
 
@@ -38,17 +40,43 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
         var targatedAudianceCourse = res['targatedAudianceCourse'];
         //this.trainingList = res['targatedAudianceCourse'];
         
+        // for(let key in targatedAudianceCourse)
+        // {
+        //   if(targatedAudianceCourse[key].event && targatedAudianceCourse[key].event.tutor != '')
+        //   {
+        //     this.trainingList.push(targatedAudianceCourse[key]);
+            
+        //     this.trainingList = this.getUnique(this.trainingList);
+            
+        //     // //console.log(targatedAudianceCourse[key],'targatedAudianceCourse');
+        //   }
+        // }
+
         for(let key in targatedAudianceCourse)
         {
           if(targatedAudianceCourse[key].event && targatedAudianceCourse[key].event.tutor != '')
           {
             this.trainingList.push(targatedAudianceCourse[key]);
-            
-            this.trainingList = this.getUnique(this.trainingList);
-            
+            if(this.audienceId == '0')
+            {
+              this.trainingList = this.getUnique(this.trainingList);
+            }
             // //console.log(targatedAudianceCourse[key],'targatedAudianceCourse');
           }
         }
+        // //console.log(this.trainingList,'trainingList');
+        this.allCourses = res['courseList'];
+        //console.log(this.allCourses,'allCourses')
+       
+        for(let i=0; i<= this.rowCount*4; i++){
+          if(this.allCourses[i]){
+            this.allCourseTraining.push(this.allCourses[i]);
+          }
+        }
+        
+        // console.log(this.allCourseTraining,'allCourseTraining');
+        
+        this.targated_aud_name = res['targatedAudName'];
       });
   }
 

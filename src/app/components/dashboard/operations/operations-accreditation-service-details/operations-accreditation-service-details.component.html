@@ -770,13 +770,13 @@
                   <div class="table-appln">
                     
                     <ng-container *ngIf="serviceDetail?.form_meta == 'inspection_body' && editScopeData != undefined && editScopeData != null">
-                      <div class="row">
+                      <!-- <div class="row">
                           <div class="col-md-12">
                               <div class="form-subheader-data">
                                   <h5>SCOPE DATA</h5>
                               </div>
                           </div>
-                      </div>
+                      </div> -->
                       <ng-container *ngFor="let item of editScopeData | keyvalue">
                           <div class="row">
                               <div class="col-md-12">
@@ -815,13 +815,13 @@
                   </ng-container>
 
                   <ng-container *ngIf="serviceDetail?.form_meta == 'health_care' && editScopeData != undefined && editScopeData != null">
-                      <div class="row">
+                      <!-- <div class="row">
                           <div class="col-md-12">
                               <div class="form-subheader-data">
                                   <h5>SCOPE DATA</h5>
                               </div>
                           </div>
-                      </div>
+                      </div> -->
                       <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteIndex)" [parent]="this" [modalType]="'delete'"></custom-modal>
                         <ng-container *ngFor="let item of editScopeData | keyvalue">
                             <div class="row">
@@ -864,19 +864,18 @@
                       <div class="col-md-12">
                           <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey, selectDeleteTypeTitle)" [parent]="this" [modalType]="'delete'"></custom-modal>
                           <ng-container *ngIf="editScopeData != undefined && editScopeData != null">
-                              <div class="row">
+                              <!-- <div class="row">
                                   <div class="col-md-12">
                                       <div class="form-subheader-data">
                                           <h5>SCOPE DATA</h5>
                                       </div>
                                   </div>
-                              </div>
-                              <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteTypeKey,selectDeleteIndex)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                              </div> -->
                               <ng-container *ngFor="let item of editScopeData | keyvalue">
                                   <div class="row"> 
                                       <div class="col-md-12">
                                           <div class="sub-header">
-                                              <h5 [innerHTML]="getSubType(item.key)"></h5>
+                                              <h5 [innerHTML]="getSubTypeHalal(item.key)"></h5>
                                           </div>
                                       </div>
                                   </div>
@@ -886,7 +885,7 @@
                                               <div class="col-md-12">
                                                   <div class="table-appln scope-data">
                                                       <div class="sub-header">
-                                                          <h5 [innerHTML]="getSchme(item5.key, item.key)"></h5>
+                                                          <h5 [innerHTML]="getSchmeHalal(item5.key, item.key)"></h5>
                                                       </div>
                                                       <table>
                                                           <tr>
@@ -923,71 +922,82 @@
 
                   <ng-container *ngIf="serviceDetail?.form_meta == 'testing_calibration' && editScopeData != undefined && editScopeData != null">
                     
-                      <div class="row">
+                      <!-- <div class="row">
                           <div class="col-md-12">
                               <div class="form-subheader-data">
                                   <h5>SCOPE DATA</h5>
                               </div>
                           </div>
-                      </div>
-                      <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteTypeKey,selectDeleteIndex)" [parent]="this" [modalType]="'delete'"></custom-modal>
+                      </div> -->
                       <ng-container *ngFor="let item of editScopeData | keyvalue">
-                          <div class="row"> 
-                              <div class="col-md-12">
-                                  <div class="sub-header">
-                                      <h5 [innerHTML]="getSubType(item.key)"></h5>
-                                  </div>
-                              </div>
-                          </div>
-                          <ng-container *ngIf="item.value != null && item.value != undefined">
-                              <ng-container *ngFor="let item5 of (item.value) | keyvalue;">
-                                  <div class="row">
-                                      <div class="col-md-12">
-                                          <div class="table-appln scope-data">
-                                              <div class="sub-header">
-                                                  <h5 [innerHTML]="getSchme(item5.key, item.key)"></h5>
-                                              </div>
-                                              <table *ngIf="item5.value.scope_value != undefined">
-                                                  <tr >
-                                                      <th *ngFor="let item1 of (item5.value.scope_heading) | keyvalue;">{{item1.value}}</th>
-                                                      <th>Action</th>
-                                                  </tr>
-                                                  <ng-container>
-                                                      <tr *ngFor="let item2 of (item5.value.scope_value) | keyvalue; let i4 = index;">
-                                                          <td *ngFor="let item3 of item2.value | keyvalue;">
-                                                              <span [innerHTML]="(item3.value)"></span>
-                                                          </td>
-                                                          <td>
-                                                          <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item5.key, item.key)"></span>
-                                                          </td>                                                                
-                                                      </tr>
+                        <div class="row"> 
+                            <div class="col-md-12">
+                                <div class="sub-header">
+                                    <ng-container *ngIf="!loadTCScheme">
+                                      {{getSchmeTC(item.key)}}
+                                    </ng-container>
+                                    <ng-container *ngIf="loadTCScheme">
+                                      <h5><strong>Accreditation Scope for {{TCSchmeData.title}} </strong></h5>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                        <ng-container *ngIf="item.value != null && item.value != undefined">
+                            <ng-container *ngFor="let item5 of (item.value) | keyvalue;">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-appln scope-data">
+                                            <div class="sub-header">
+                                                <h5>
+                                                  <ng-container *ngIf="!getFamilyName">
+                                                    {{getFamilySchmeTC(item.key, item5.key)}}
+                                                  </ng-container>                     
+                                                  <ng-container *ngIf="getFamilyName && findFamily != undefined">
+                                                      Accreditation Family Scope for  {{findFamily.title}}
                                                   </ng-container>
-                                                  <!-- <ng-container *ngIf="item5.value.scope_value.length == 0">
-                                                      <tr>
-                                                          <td [attr.colspan]="Service.getObjectLength(item5.value.scope_heading)+1">
-                                                              No Data
-                                                          </td>
-                                                      </tr>
-                                                  </ng-container> -->
-                                              </table>  
-                                          </div>
-                                      </div>
-                                  </div>
-                              </ng-container>
-                          </ng-container>
-                      </ng-container>
+                                                </h5>
+                                            </div>
+                                            <table *ngIf="item5.value.scope_value != undefined">
+                                                <tr>
+                                                    <th *ngFor="let item6 of (item5.value.scope_heading) | keyvalue;">{{item6.value}}</th>
+                                                    <!-- <th>Action</th> -->
+                                                </tr>
+                                                <ng-container *ngIf="item5.value.scope_value.length > 0">
+                                                    <tr *ngFor="let item2 of (item5.value.scope_value) | keyvalue; let i4 = index;">
+                                                        <td *ngFor="let item3 of item2.value | keyvalue;">
+                                                            <span [innerHTML]="(item3.value)"></span> 
+                                                        </td>
+                                                        <!-- <td>
+                                                        <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item.key, item5.key )"></span>
+                                                        </td>-->
+                                                    </tr>
+                                                </ng-container>
+                                                <ng-container *ngIf="item5.value.scope_value.length == 0">
+                                                    <tr>
+                                                        <td [attr.colspan]="Service.getObjectLength(item5.value.scope_heading)+1">
+                                                            No Data
+                                                        </td>
+                                                    </tr>
+                                                </ng-container>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </ng-container>                                                    
+                    </ng-container>
                   
                   </ng-container>
 
 
                   <ng-container *ngIf="serviceDetail?.form_meta == 'certification_bodies' && editScopeData != undefined && editScopeData != null">
-                      <div class="row">
+                      <!-- <div class="row">
                           <div class="col-md-12">
                               <div class="form-subheader-data">
                                   <h5>SCOPE DATA</h5>
                               </div>
                           </div>
-                      </div>
+                      </div> -->
                       <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteTypeKey,selectDeleteIndex)" [parent]="this" [modalType]="'delete'"></custom-modal>
                       <ng-container *ngFor="let item of editScopeData | keyvalue">
                           <div class="row"> 
