@@ -27,7 +27,7 @@ export class PtProvidersFormComponent implements OnInit {
   public ptProvidersFormFile: any = new FormData();
   public ownOrgBasicInfo: Array<any> = [];
   public ownOrgMembInfo: Array<any> = [];
-  public proficiencyTesting: Array<any> = [];
+  public proficiencyTesting: Array<any> = [{}];
   public scopeForCalibration: Array<any> = [];
   public scopeForTesting: Array<any> = [];
   public scopeForMedical: Array<any> = [];
@@ -1132,6 +1132,10 @@ setexDate(date){
                   saveStep = parseInt(getData.data.saved_step);
                 }
               }
+
+              if(getData.data.accredation_criteria == 2 && saveStep == 3){
+                saveStep = 4;
+              }
               
               if(res['data'].saved_step  != null){
                 /////console.log("@saved step assign....");
@@ -1153,6 +1157,14 @@ setexDate(date){
                         this.Service.headerStepMove(item.title, this.headerSteps,'menu')
                       }
                 })
+                if(getData.data.accredation_criteria == 2){
+                  let stepData: any = this.headerSteps.find(item => item.title == 'information_audit_management');
+                    console.log(">>step select: 1 ", stepData);
+                    if(stepData){
+                      stepData.activeClass = '';
+                      stepData.stepComp = true;
+                    }
+                }
                 ////console.log("#Step data: ", this.headerSteps);
               }
 
