@@ -35,6 +35,10 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
   white-space: normal !important;
 }
 
+.cab-data .mat-checkbox-layout {
+  white-space: normal !important;
+}
+
 
 body { font-size: 18px; font-family: 'Dubai Regular'; }
 input { font-family: 'Dubai Regular'; }
@@ -1049,6 +1053,17 @@ ul.bill-details li:first-child { border-right: 1px solid #C9C9C9; }
 }
 .auth-details .mat-checkbox-inner-container { height: 20px; width: 20px; margin-top: 7px; }
 .auth-details .mat-checkbox-layout .mat-checkbox-label { line-height: 34px; font-family: "Dubai Medium"; font-size: 18px; }
+
+.cab-data .mat-checkbox-frame {
+  border-color: rgba(153, 153, 153, 1); 
+  border-width: 1px; 
+  border-radius: 0; 
+  width: 20px; 
+  height: 20px;
+}
+.cab-data ul { padding: 0; margin: 0; list-style: none; display: flex; flex-wrap: wrap; }
+.cab-data .mat-checkbox-inner-container { height: 20px; width: 20px; margin-top: 7px; }
+.cab-data .mat-checkbox-layout .mat-checkbox-label { line-height: 34px; font-family: "Dubai Medium"; font-size: 18px; }
 .mat-select-arrow-wrapper .mat-select-arrow { border: solid #797979;
   border-width: 0 2px 2px 0;
   display: inline-block;
