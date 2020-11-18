@@ -60,6 +60,7 @@ export class NoObjectionFormComponent implements OnInit {
   step8Data: any ={};
 
   noObjectionBodyForm: any = {};
+  isFormSubmitted: boolean = false;
   formApplicationId: number = 0;
   voucherFile:any = new FormData();
   voucherSentData: any = {};
@@ -101,7 +102,7 @@ export class NoObjectionFormComponent implements OnInit {
   removable = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   filteredFruits: Observable<string[]>;
-  users: string[] = ['aaa','bbb'];
+  users: string[] = [];
   userItems: any;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
@@ -705,7 +706,41 @@ export class NoObjectionFormComponent implements OnInit {
   }
 
   onSubmitCabInformation(theForm: any, type?: any){
-    this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
+    //this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
+    this.isFormSubmitted = true;
+    if(theForm.form.valid && type == undefined){
+      this.noObjectionBodyForm = {};      
+      this.noObjectionBodyForm.saved_step = 2;      
+      this.noObjectionBodyForm.step2 = this.step2Data;
+      this.noObjectionBodyForm.step2.application_id = this.formApplicationId;
+      this.noObjectionBodyForm.step2.is_draft = false;
+      console.log(">> Submit Form: ", this.step1Data, " -- ", this.noObjectionBodyForm);
+
+      this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
+      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
+      // .subscribe(
+      //   res => {
+      //     if(res['status'] == true) {
+      //       let data: any = {};
+      //       this.isFormSubmitted = false;
+      //        data = res;               
+      //       //this.toastr.success(res['msg'],);
+      //       this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
+      //     }else{
+      //       this.toastr.warning(res['msg'], '');
+      //     }
+      //   });
+
+    }else if(type != undefined && type == true){
+      this.noObjectionBodyForm = {};
+      this.noObjectionBodyForm.saved_step = 2;      
+      this.noObjectionBodyForm.step2 = this.step2Data;
+      this.noObjectionBodyForm.step2.is_draft = true;
+      console.log(">> Submit Save draft: ", this.step1Data, " -- ", this.noObjectionBodyForm);
+
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
     
   }
 

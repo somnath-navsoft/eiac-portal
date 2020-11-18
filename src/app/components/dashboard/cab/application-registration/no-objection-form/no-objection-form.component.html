@@ -379,16 +379,16 @@
                                         <div class="col-md-4 col-sm-6 p-0 pt-4">
                                             <div class="cab-data">
                                                 <mat-radio-group name="cab_type_laboratory" 
-                                                [(ngModel)]="step1Data.cabTypeLaboratory" #selectAccrdCriteria="ngModel" required>
+                                                [(ngModel)]="step2Data.cabTypeLaboratory" #selectCabLab="ngModel" required>
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <div class="initial_data">
-                                                            <mat-radio-button value="1"  [checked]="accreditationChecked">Initial</mat-radio-button>
+                                                            <mat-radio-button value="testing_laboratory">Testing Laboratory</mat-radio-button>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="initial_data">
-                                                            <mat-radio-button value="2">Extension</mat-radio-button>
+                                                            <mat-radio-button value="calibration_laboratory">Calibration Laboratory</mat-radio-button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -396,14 +396,14 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <p class="error" *ngIf="isApplicationSubmitted == true && selectAccrdCriteria.errors?.required">Please select anyone option</p>
+                                                    <p class="error" *ngIf="isFormSubmitted == true && selectCabLab.errors?.required">Please select anyone option</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
                                     
-                                    <div class="row">
+                                    <!-- <div class="row">
                                         @{{users | json}}
                                         <div class="col-12 p-0">
                                             <mat-form-field class="example-chip-list">
@@ -428,7 +428,7 @@
                                                 </mat-chip-list>
                                             </mat-form-field>
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                 </div>
                             </div>
