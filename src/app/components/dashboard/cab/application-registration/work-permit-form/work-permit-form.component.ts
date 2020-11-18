@@ -46,9 +46,46 @@ export class WorkPermitFormComponent implements OnInit {
   getWorkPermitId:any;
   headerSteps:any[] = [];
 
+  allStateList: any[] = [];
+  allCityList: any[] = [];
+  allCountryList: any[] = [];
+
+  step1Data:any = {};
+  step2Data:any = {};
+  step3Data:any = {};
+  step4Data:any = {};
+  step5Data:any = {};
+  step6Data:any = {};
+  step7Data:any = {};
+  fileAny:any;
+
+  step1DataBodyFormFile:any = new FormData();
+  step2DataBodyFormFile:any = new FormData();
+  step3DataBodyFormFile:any = new FormData();
+  step4DataBodyFormFile:any = new FormData();
+  step5DataBodyFormFile:any = new FormData();
+  step6DataBodyFormFile:any = new FormData();
+  step7DataBodyFormFile:any = new FormData();
+  step1DraftDataBodyFormFile:any = new FormData();
+  step2DraftDataBodyFormFile:any = new FormData();
+  step3DraftDataBodyFormFile:any = new FormData();
+  step4DraftDataBodyFormFile:any = new FormData();
+  step5DraftDataBodyFormFile:any = new FormData();
+  step6DraftDataBodyFormFile:any = new FormData();
+  step7DraftDataBodyFormFile:any = new FormData();
+
+  userEmail:any;
+  userType:any;
+  isCompleteness:any;
+  profileComplete:any;
+  today = new Date();
+  urlVal: any;
+  ownOrgBasicInfo:any = [{}];
+  ownOrgMembInfo:any = [{}];
+
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.getWorkPermitId = sessionStorage.getItem('workPermitId');
     this.checkCaptchaValidation = true;
     this.authorizationList = {authorization_confirm1:false};
