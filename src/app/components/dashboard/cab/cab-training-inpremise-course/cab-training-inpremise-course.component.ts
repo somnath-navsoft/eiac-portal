@@ -21,11 +21,44 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
   scheduleProgramSection :string = '';
   programSection:any;
   trainingList:any = [];
+  targated_aud_name:any;
+  audienceId:any = 0;
+  inPremiseForm:any = {};
+  trainingCartArr:any[] = []; 
 
   constructor(public _service: AppService, public _constant:Constants, public _trainerService: TrainerService) { }
 
   ngOnInit() {
     this.loadTrainingData();
+  }
+
+  addTraining(obj,index,id) {
+    // console.log(obj);
+    // console.log(index);
+    // var newArray = [];
+    // console.log(this.trainingCartArr);
+    if(this.trainingCartArr.length == 0) {
+      
+        var findElem = obj.find((res,key) => key == index);
+        
+        // newArray.push();
+        this.trainingCartArr.push(findElem);
+        console.log(this.trainingCartArr);
+    }else{
+      var checkId = this.trainingCartArr.find(res => res.id == id);
+      if(!checkId || typeof checkId == undefined) {
+        var findElem = obj.find((res,key) => key == index);
+        
+        this.trainingCartArr.push(findElem);
+        console.log(this.trainingCartArr);
+      }
+    }
+
+  }
+
+  removeTraining(obj,index) {
+    this.trainingCartArr.splice(index,1);
+     return true;
   }
 
   loadTrainingData() {
@@ -38,17 +71,43 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
         var targatedAudianceCourse = res['targatedAudianceCourse'];
         //this.trainingList = res['targatedAudianceCourse'];
         
+        // for(let key in targatedAudianceCourse)
+        // {
+        //   if(targatedAudianceCourse[key].event && targatedAudianceCourse[key].event.tutor != '')
+        //   {
+        //     this.trainingList.push(targatedAudianceCourse[key]);
+            
+        //     this.trainingList = this.getUnique(this.trainingList);
+            
+        //     // //console.log(targatedAudianceCourse[key],'targatedAudianceCourse');
+        //   }
+        // }
+
         for(let key in targatedAudianceCourse)
         {
           if(targatedAudianceCourse[key].event && targatedAudianceCourse[key].event.tutor != '')
           {
             this.trainingList.push(targatedAudianceCourse[key]);
-            
-            this.trainingList = this.getUnique(this.trainingList);
-            
+            if(this.audienceId == '0')
+            {
+              this.trainingList = this.getUnique(this.trainingList);
+            }
             // //console.log(targatedAudianceCourse[key],'targatedAudianceCourse');
           }
         }
+        // //console.log(this.trainingList,'trainingList');
+        this.allCourses = res['courseList'];
+        //console.log(this.allCourses,'allCourses')
+       
+        for(let i=0; i<= this.rowCount*4; i++){
+          if(this.allCourses[i]){
+            this.allCourseTraining.push(this.allCourses[i]);
+          }
+        }
+        
+        // console.log(this.allCourseTraining,'allCourseTraining');
+        
+        this.targated_aud_name = res['targatedAudName'];
       });
   }
 

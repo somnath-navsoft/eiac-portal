@@ -2488,8 +2488,10 @@ this.transactionsItem['amount']['details']['subtotal'] = 0.00;
 //declare Items data
 this.transactionsItem['item_list']            = {};
 this.transactionsItem['item_list']['items']   = [];
-let custPrice: any = 0.01;
-this.total = 0.05;
+// let custPrice: any = 0.01;
+// this.total = 0.05;
+let custPrice: any = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//0.01;
+this.total = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//0.05;
 this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity: 1, price: custPrice, currency: 'USD'});
   if(this.total > 0){
     //console.log("Calculate price: ", calcPrice);
@@ -2590,9 +2592,9 @@ else{
 
   getPlaceName()
    {
-     if(typeof this.ptProvidersForm.search_location_name != 'undefined')
+     if(typeof this.step1Data.physical_location_address != 'undefined')
      {
-       this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.ptProvidersForm.search_location_name+'.json?access_token='+this.Service.mapboxToken+'','')
+       this.Service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.step1Data.physical_location_address+'.json?access_token='+this.Service.mapboxToken+'','')
          .subscribe(res => {
              ////console.log(res['features']);
              this.searchCountryLists = res['features'];

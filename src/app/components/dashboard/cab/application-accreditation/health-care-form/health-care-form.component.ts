@@ -932,7 +932,7 @@ scrollForm(data?:any){
       title:'application_complete', desc:'10. Application Complete', activeStep:false, stepComp:false, icon:'icon-document-pen', activeClass:''
     },
   );
- }
+    }
 
 
  loadSchemeData(){
