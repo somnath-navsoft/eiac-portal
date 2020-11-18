@@ -24,23 +24,23 @@ export class MessageComponent implements OnInit {
   userId: any;
   select_field: any = [];
   selectedField: any = 'CAB Name';
-  myControl = new FormControl();
-  options: string[] = ['One Four', 'Two', 'Three'];
-  filteredOptions: Observable<string[]>;
+  searchDetails: any = [];
+  selectSearch: any = [];
+  getUserType: string = 'cab_client';
+  // searchTerm: any = '';
+  selectedUserId: any;
+
+
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) { }
 
   ngOnInit() {
-    this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filter(value))
-      );
+    this.getUserType = 'cab_client';
     this.select_field = [
       { field: 'CAB Name', value: 'CAB Name' },
       { field: 'CAB Code', value: 'CAB Code' },
       { field: 'Candidate', value: 'Candidate' },
       { field: 'Trainer', value: 'Trainer' },
-      { field: 'Assesor', value: 'Assesor' },
+      { field: 'Assessor', value: 'Assessor' },
       { field: 'Super Admin', value: 'Super Admin' }
     ];
     this.userType = sessionStorage.getItem('type');
@@ -63,19 +63,88 @@ export class MessageComponent implements OnInit {
           // console.log(res['data'].message_list);
         });
 
-
+    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=cab_client&searchKey=S')
+      .subscribe(
+        res => {
+          this.searchDetails = [];
+          // this.selectSearch = [];
+          this.searchDetails = res['data'].user_list;
+          // this.selectSearch = res['data'].user_list;
+        }, err => {
+          this.loader = true;
+        });
 
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+  search(query: string) {
+    // this.searchTerm = query;
+    let result = this.select(query);
+    // this.searchDetails = result;
+    if (query != '') {
+      this.selectSearch = result;
+    } else {
+      this.selectSearch = [];
+    }
+
+  }
+
+  select(query: string): string[] {
+    let result: string[] = [];
+    if (this.getUserType == 'cab_client' || this.getUserType == 'cab_code') {
+      for (let a of this.searchDetails) {
+        if (a.username.toLowerCase().indexOf(query) > -1) {
+          result.push(a);
+        }
+      }
+    } else {
+      for (let a of this.searchDetails) {
+        if (a.email.toLowerCase().indexOf(query) > -1) {
+          result.push(a);
+        }
+      }
+    }
+
+    // this.searchDetails = result;
+    return result;
   }
 
   setField(value) {
-    console.log(value);
-
+    // this.search(this.searchTerm);
+    this.loader = false;
+    this.searchDetails = [];
+    this.selectSearch = [];
     this.selectedField = value;
+    // cab_code,cab_client,candidate,assessors,trainers,super_admin
+    if (this.selectedField == 'CAB Name') {
+      this.getUserType = 'cab_client';
+    }
+    if (this.selectedField == 'CAB Code') {
+      this.getUserType = 'cab_code';
+    }
+    if (this.selectedField == 'Candidate') {
+      this.getUserType = 'candidate';
+    }
+    if (this.selectedField == 'Trainer') {
+      this.getUserType = 'trainers';
+    }
+    if (this.selectedField == 'Assessor') {
+      this.getUserType = 'assessors';
+    }
+    if (this.selectedField == 'Super Admin') {
+      this.getUserType = 'super_admin';
+    }
+
+    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=' + this.getUserType + '&searchKey=S')
+      .subscribe(
+        res => {
+          this.searchDetails = res['data'].user_list;
+          this.loader = true;;
+          // this.search(this.searchTerm);
+
+        }, err => {
+          this.loader = true;
+        });
+
   }
 
   getRouteId(routeId) {
@@ -116,6 +185,8 @@ export class MessageComponent implements OnInit {
   }
 
   onOperationSubmit(ngForm) {
+    console.log(ngForm);
+
     if (ngForm.form.valid) {
       this.chatMessage.email = this.userEmail;
       this.chatMessage.userType = this.userType;
@@ -130,6 +201,11 @@ export class MessageComponent implements OnInit {
             }
           })
     }
+  }
+
+  getValue(value) {
+    this.selectedUserId = value;
+
   }
 
 }

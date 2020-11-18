@@ -2005,6 +2005,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         this.labTypeList = res['allLabtype'];
         //this.fullScope   = res['fullScope'];
         this.criteriaList = res['data']['criteriaList'];
+        
         this.step1Data.criteria_request = this.criteriaList[0].code;
         this.criteriaMaster = res['data']['schemes'];
         ////////console.log("#Get criteria: ", this.criteriaMaster);

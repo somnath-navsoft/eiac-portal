@@ -851,6 +851,8 @@ scrollForm(data?:any){
     undertaking_confirm6:false,undertaking_confirm7:false,undertaking_confirm8:false,undertaking_confirm9:false, 
     undertaking_confirm10:false,undertaking_confirm11:false,};
 
+    //this.scrollPage('page_top');
+    window.scrollTo(0,0);
     this.loadTermsConditions();
    ////console.log( this.addMinutesToTime);
   this.loadSchemeData();
@@ -932,7 +934,7 @@ scrollForm(data?:any){
       title:'application_complete', desc:'10. Application Complete', activeStep:false, stepComp:false, icon:'icon-document-pen', activeClass:''
     },
   );
- }
+    }
 
 
  loadSchemeData(){

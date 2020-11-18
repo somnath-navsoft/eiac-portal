@@ -277,7 +277,7 @@ export class HalalConformityFormComponent implements OnInit {
   ngOnInit() {
     // this.titleService.setTitle('EIAC - Halal Conformity Bodies');
     // this.loadCountryStateCity();
-
+    window.scrollTo(0,0);
     this.addMinutesToTime = this.Service.addMinutesToTime();
 
     this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');
@@ -1883,7 +1883,7 @@ addSchemeRow(obj: any = [],index: number){
   }
 
   filePathVreateDynamics(filePath) {
-    return this.constant.mediaPath+'/'+filePath;
+    return this.constant.mediaPath+'/media/'+filePath;
   }
 
 
@@ -3131,8 +3131,10 @@ onSubmitStep7(ngForm7: any) {
   //declare Items data
   this.transactionsItem['item_list']            = {};
   this.transactionsItem['item_list']['items']   = [];
-  let custPrice: any = 0.01;
-  this.total = 0.05;
+  // let custPrice: any = 0.01;
+  // this.total = 0.05;
+  let custPrice: any = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//0.01;
+  this.total = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//0.05;
   this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity: 1, price: custPrice, currency: 'USD'});
     if(this.total > 0){
       ////console.log("Calculate price: ", calcPrice);
