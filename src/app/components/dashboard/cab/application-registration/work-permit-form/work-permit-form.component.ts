@@ -44,6 +44,7 @@ export class WorkPermitFormComponent implements OnInit {
   work_instruction_path:any;
   check_list_path:any;
   getWorkPermitId:any;
+  headerSteps:any[] = [];
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
@@ -52,6 +53,30 @@ export class WorkPermitFormComponent implements OnInit {
     this.checkCaptchaValidation = true;
     this.authorizationList = {authorization_confirm1:false};
     this.loadData();
+
+    this.headerSteps.push(
+      {
+      title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
+      },
+      {
+      title:'activities_scope', desc:'2. Activities & Scope', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
+      },
+      {
+        title:'documents_tobe_attached', desc:'3. Documents to be Attached', activeStep:false, stepComp:false, icon:'icon-sheet', activeClass:''
+      },
+      {
+      title:'authorization_ofthe_application', desc:'4. Authorization of the Application', activeStep:false, stepComp:false, icon:'icon-work', activeClass:''
+      },
+      {
+        title:'proforma_invoice', desc:'5. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-file_invoice', activeClass:''
+      },
+      {
+        title:'payment_update', desc:'6. Payment Update', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
+      },
+      {
+        title:'application_complete', desc:'7. Application Complete', activeStep:false, stepComp:false, icon:'icon-document-pen', activeClass:''
+      },
+    );
 
     this.workPermitForm.name_of_cab = '';
     this.workPermitForm.address = '';
