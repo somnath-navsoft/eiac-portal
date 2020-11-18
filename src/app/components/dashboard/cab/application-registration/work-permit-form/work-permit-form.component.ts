@@ -44,14 +44,76 @@ export class WorkPermitFormComponent implements OnInit {
   work_instruction_path:any;
   check_list_path:any;
   getWorkPermitId:any;
+  headerSteps:any[] = [];
+
+  allStateList: any[] = [];
+  allCityList: any[] = [];
+  allCountryList: any[] = [];
+
+  step1Data:any = {};
+  step2Data:any = {};
+  step3Data:any = {};
+  step4Data:any = {};
+  step5Data:any = {};
+  step6Data:any = {};
+  step7Data:any = {};
+  fileAny:any;
+
+  step1DataBodyFormFile:any = new FormData();
+  step2DataBodyFormFile:any = new FormData();
+  step3DataBodyFormFile:any = new FormData();
+  step4DataBodyFormFile:any = new FormData();
+  step5DataBodyFormFile:any = new FormData();
+  step6DataBodyFormFile:any = new FormData();
+  step7DataBodyFormFile:any = new FormData();
+  step1DraftDataBodyFormFile:any = new FormData();
+  step2DraftDataBodyFormFile:any = new FormData();
+  step3DraftDataBodyFormFile:any = new FormData();
+  step4DraftDataBodyFormFile:any = new FormData();
+  step5DraftDataBodyFormFile:any = new FormData();
+  step6DraftDataBodyFormFile:any = new FormData();
+  step7DraftDataBodyFormFile:any = new FormData();
+
+  userEmail:any;
+  userType:any;
+  isCompleteness:any;
+  profileComplete:any;
+  today = new Date();
+  urlVal: any;
+  ownOrgBasicInfo:any = [{}];
+  ownOrgMembInfo:any = [{}];
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.getWorkPermitId = sessionStorage.getItem('workPermitId');
     this.checkCaptchaValidation = true;
     this.authorizationList = {authorization_confirm1:false};
     this.loadData();
+
+    this.headerSteps.push(
+      {
+      title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
+      },
+      {
+      title:'activities_scope', desc:'2. Activities & Scope', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
+      },
+      {
+        title:'documents_tobe_attached', desc:'3. Documents to be Attached', activeStep:false, stepComp:false, icon:'icon-sheet', activeClass:''
+      },
+      {
+      title:'authorization_ofthe_application', desc:'4. Authorization of the Application', activeStep:false, stepComp:false, icon:'icon-work', activeClass:''
+      },
+      {
+        title:'proforma_invoice', desc:'5. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-file_invoice', activeClass:''
+      },
+      {
+        title:'payment_update', desc:'6. Payment Update', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
+      },
+      {
+        title:'application_complete', desc:'7. Application Complete', activeStep:false, stepComp:false, icon:'icon-document-pen', activeClass:''
+      },
+    );
 
     this.workPermitForm.name_of_cab = '';
     this.workPermitForm.address = '';
