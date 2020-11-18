@@ -174,7 +174,7 @@
                                                             <mat-label>Select</mat-label>
                                                             <mat-select required [(ngModel)]="selectedField"
                                                                 [ngModelOptions]="{standalone: true}"
-                                                                (change)="setField($event.target.value)">
+                                                                (ngModelChange)="setField($event)">
                                                                 <mat-option *ngFor="let data of select_field"
                                                                     [value]="data.value">
                                                                     {{data.field}}</mat-option>
@@ -189,14 +189,14 @@
                                                             <input name="message" [(ngModel)]="chatMessage.message"
                                                                 matInput autocomplete="off" placeholder="Message">
                                                             <mat-error></mat-error> -->
-                                                            <input type="text" required placeholder="{{selectedField}}"
-                                                                aria-label="Number" matInput [formControl]="myControl"
+                                                            <input type="text" (keyup)="search($event.target.value)" required placeholder="{{selectedField}}"
+                                                                 matInput 
                                                                 [matAutocomplete]="auto">
                                                             <mat-autocomplete #auto="matAutocomplete">
-                                                                <mat-option
-                                                                    *ngFor="let option of filteredOptions | async"
-                                                                    [value]="option">
-                                                                    {{option}}
+                                                                <mat-option 
+                                                                    *ngFor="let option of selectSearch"
+                                                                    [value]="option.username">
+                                                                    {{option.username}}
                                                                 </mat-option>
                                                             </mat-autocomplete>
                                                         </mat-form-field>
