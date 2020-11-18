@@ -26,7 +26,10 @@ export class MessageComponent implements OnInit {
   selectedField: any = 'CAB Name';
   searchDetails: any = [];
   selectSearch: any = [];
-  getUserType: any;
+  getUserType: string = 'cab_client';
+  // searchTerm: any = '';
+  selectedUserId: any;
+
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) { }
 
@@ -37,7 +40,7 @@ export class MessageComponent implements OnInit {
       { field: 'CAB Code', value: 'CAB Code' },
       { field: 'Candidate', value: 'Candidate' },
       { field: 'Trainer', value: 'Trainer' },
-      { field: 'Assesor', value: 'Assesor' },
+      { field: 'Assessor', value: 'Assessor' },
       { field: 'Super Admin', value: 'Super Admin' }
     ];
     this.userType = sessionStorage.getItem('type');
@@ -67,12 +70,14 @@ export class MessageComponent implements OnInit {
           // this.selectSearch = [];
           this.searchDetails = res['data'].user_list;
           // this.selectSearch = res['data'].user_list;
+        }, err => {
+          this.loader = true;
         });
 
   }
 
   search(query: string) {
-    // console.log("query", query);
+    // this.searchTerm = query;
     let result = this.select(query);
     // this.searchDetails = result;
     if (query != '') {
@@ -104,8 +109,10 @@ export class MessageComponent implements OnInit {
   }
 
   setField(value) {
+    // this.search(this.searchTerm);
+    this.loader = false;
     this.searchDetails = [];
-    // this.selectSearch = [];
+    this.selectSearch = [];
     this.selectedField = value;
     // cab_code,cab_client,candidate,assessors,trainers,super_admin
     if (this.selectedField == 'CAB Name') {
@@ -120,7 +127,7 @@ export class MessageComponent implements OnInit {
     if (this.selectedField == 'Trainer') {
       this.getUserType = 'trainers';
     }
-    if (this.selectedField == 'Assesor') {
+    if (this.selectedField == 'Assessor') {
       this.getUserType = 'assessors';
     }
     if (this.selectedField == 'Super Admin') {
@@ -131,8 +138,11 @@ export class MessageComponent implements OnInit {
       .subscribe(
         res => {
           this.searchDetails = res['data'].user_list;
-          // this.selectSearch = res['data'].user_list;
+          this.loader = true;;
+          // this.search(this.searchTerm);
 
+        }, err => {
+          this.loader = true;
         });
 
   }
@@ -175,6 +185,8 @@ export class MessageComponent implements OnInit {
   }
 
   onOperationSubmit(ngForm) {
+    console.log(ngForm);
+
     if (ngForm.form.valid) {
       this.chatMessage.email = this.userEmail;
       this.chatMessage.userType = this.userType;
@@ -189,6 +201,11 @@ export class MessageComponent implements OnInit {
             }
           })
     }
+  }
+
+  getValue(value) {
+    this.selectedUserId = value;
+
   }
 
 }
