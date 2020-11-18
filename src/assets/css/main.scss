@@ -472,6 +472,9 @@ a:hover { text-decoration: none; }
 .progs-up ul { margin: 0; padding: 0; list-style: none; }
 .scheduled-prog { background: #EFEFEF; margin-bottom: 20px; border-radius: 5px; }
 .scheduled-prog hr { margin: 0;  }
+.scheduled_data { display: flex; }
+.scheduled_wrapper .scheduled-prog { width: 100%; }
+.scheduled_add a { font-size: 20px; margin-left: 15px; color: #B54150; display: flex; align-items: center; height: 100%; }
 .training-data h4 { color: #B54150; font-size: 22px; font-family: 'Dubai Medium'; margin: 0; padding: 10px 20px; }
 .training-details { padding: 25px 20px; }
 .training_det span { color: #9F7F50; font-size: 16px; font-family: 'Dubai Medium'; }
@@ -481,7 +484,7 @@ a:hover { text-decoration: none; }
 // .training-main-details { display: flex; flex-direction: column; justify-content: center; height: 100%; }
 .training-details .row .border-left-dash:first-child { border: none; }
 // .dash-data { background: #B19681; display: flex; justify-content: center; align-items: center; }
-
+.load-more-dir a { display: block; text-align: center; color: #B54150; }
 
 .description-course { border: 10px solid #F3F3F3; height: 450px; overflow: hidden; border-radius: 5px; }
 .description-course img { width: 100%; height: auto; border-radius: 5px; }
