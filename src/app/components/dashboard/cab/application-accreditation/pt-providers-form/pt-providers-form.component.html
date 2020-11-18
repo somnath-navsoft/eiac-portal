@@ -671,6 +671,7 @@
                                             <hr>
                                         </div>
                                     </div>
+                                    <custom-modal *ngIf="deleteRowConfirm" (onDeleteAction)="removeRow(selectDeleteKey,selectDeleteIndex)" [parent]="this" [modalType]="'delete'"></custom-modal>
                                     <div class="row" >
                                         <div class="col-md-12">
                                             <div class="table-content-health">
@@ -714,7 +715,7 @@
                                                                 </td>
                                                             <td class="content-icn">
                                                                 <span *ngIf="i >= 0" class="icon-add" (click)="addRow(proficiencyTesting)"></span> &nbsp;
-                                                                <span *ngIf="i >= 1" class="icon-cross" (click)="openDialog(proficiencyTesting,i)"></span>
+                                                                <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(proficiencyTesting,i)"></span>
                                                             </td>
                                                         </tr>
                                                     

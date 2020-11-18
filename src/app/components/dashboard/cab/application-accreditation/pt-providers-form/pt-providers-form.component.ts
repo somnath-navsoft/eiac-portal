@@ -176,6 +176,7 @@ export class PtProvidersFormComponent implements OnInit {
   selectDeleteIndex: any;
   deleteEditScopeConfirm: boolean = false;
   deleteScopeConfirm: boolean = false;
+  deleteRowConfirm: boolean = false;
 
   constructor(public Service: AppService, public constant:Constants, private _customModal: CustomModalComponent,
     public router: Router,public toastr: ToastrService,private modalService: NgbModal,public sanitizer:DomSanitizer,public _trainerService:TrainerService) { }
@@ -322,6 +323,16 @@ export class PtProvidersFormComponent implements OnInit {
       undertaking_confirm8: false,undertaking_confirmTop3: false,undertaking_confirm9: false,
       undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false};
  }
+
+ openDialog(delKey: any, delIndex: any){
+  ////console.log(">>>delete ", delKey, " -- ", delIndex);
+  if(delKey){
+    ////console.log("assign delete id: ", delIndex, " -- ", delKey);
+    this.selectDeleteIndex = delIndex;
+    this.selectDeleteKey = delKey;
+    this.deleteRowConfirm = true;
+  } 
+}
 
 
 /**************************
@@ -956,6 +967,7 @@ setexDate(date){
    if(type === '' || type == undefined){
      obj.splice(index, 1);
    }    
+   this._customModal.closeDialog();
    return true;
  }
  showHideMembInfo(data){
