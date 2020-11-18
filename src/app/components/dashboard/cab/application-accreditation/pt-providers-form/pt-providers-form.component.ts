@@ -245,7 +245,7 @@ export class PtProvidersFormComponent implements OnInit {
    this.userId = sessionStorage.getItem('userId');
 
    this.addMinutesToTime = this.Service.addMinutesToTime();
-
+   window.scrollTo(0,0);
    this.loadData();
    this.loadAppInfo();
    this.loadCountryStateCity();
@@ -1842,7 +1842,7 @@ onSubmitStep3(ngForm3: any){
           }
           if(this.step1Data.accredation_criteria == 2){
             //Extension
-            alert(this.step1Data.accredation_criteria);
+            //alert(this.step1Data.accredation_criteria);
             let stepData: any = this.headerSteps.find(item => item.title == 'information_audit_management');
             console.log(">>step select: 1 ", stepData);
             if(stepData){
