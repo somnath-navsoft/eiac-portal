@@ -154,7 +154,8 @@
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Official E-mail Address</mat-label>
-                                                <input readonly="true"  matInput autocomplete="off"  placeholder="Official Email Address"  name="official_email"  [(ngModel)]="step1Data.official_email"  required>
+                                                <input readonly="true"  matInput autocomplete="off"  placeholder="Official Email Address"  name="official_email"  
+                                                [(ngModel)]="step1Data.official_email"  required>
                                                 <mat-error></mat-error> 
                                             </mat-form-field>
                                             <p class="error" *ngIf="step1Data.official_email && !Service.checkInput('email',step1Data.official_email)">Please Enter Correct Email Id</p>
@@ -163,7 +164,9 @@
                                         <div class="col-md-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Official Website</mat-label>
-                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off"  placeholder="Official Website"  name="official_website" [(ngModel)]="step1Data.official_website">
+                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                matInput autocomplete="off"  placeholder="Official Website"  
+                                                name="official_website" [(ngModel)]="step1Data.official_website">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
@@ -317,16 +320,16 @@
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Mobile Phone No.</mat-label>
-                                                            <input  readonly="true" type="text" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="bod_mobile_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].mobile_no" >
+                                                            <input  readonly="true" type="text" maxlength="15" minlength="10" 
+                                                            (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." 
+                                                            name="bod_mobile_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].mobile_no" >
                                                         </mat-form-field>
                                                         <p class="error" *ngIf="ownOrgMembInfo[i].mobile_no && !Service.checkInput('onlyNumberWithPlus',ownOrgMembInfo[i].mobile_no)">Please Enter Correct Telephone Number</p> 
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </div>
-                                    </div>
-                                  
+                                    </div>                                  
                                 </div>
                             </div>
                         </div>
@@ -335,7 +338,7 @@
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
                                         <a class="cancel-bttn" routerLink="/dashboard/cab_client/application-registration" type="button">CANCEL</a>
-                                        <button class="cancel-bttn" (click)="savedraftStep('step1')" type="button">SAVE AS DRAFT</button>
+                                        <button class="cancel-bttn" (click)="onSubmitApplicationInformation(ngForm1, true)" type="button">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health">CONTINUE</button>
                                 </div>
@@ -356,6 +359,89 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <!-- START INPUT FIELDS -->
+                                    <div class="row">
+                                        <div class="col-12 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>CAB TYPE :</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Add Options -->
+                                    <div class="row"> 
+                                        <div class="col-md-3 col-sm-6 ">                                            
+                                            <div class="form-subheader">
+                                                <span>a) Laboratory:</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-sm-6 p-0 pt-4">
+                                            <div class="cab-data">
+                                                <mat-radio-group name="cab_type_laboratory" 
+                                                [(ngModel)]="step1Data.cabTypeLaboratory" #selectAccrdCriteria="ngModel" required>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="initial_data">
+                                                            <mat-radio-button value="1"  [checked]="accreditationChecked">Initial</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="initial_data">
+                                                            <mat-radio-button value="2">Extension</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </mat-radio-group>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <p class="error" *ngIf="isApplicationSubmitted == true && selectAccrdCriteria.errors?.required">Please select anyone option</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="row">
+                                        @{{users | json}}
+                                        <div class="col-12 p-0">
+                                            <mat-form-field class="example-chip-list">
+                                                <mat-chip-list #chipList aria-label="Fruit selection">
+                                                  <mat-chip
+                                                    *ngFor="let user of users"
+                                                    [selectable]="selectable"
+                                                    [removable]="removable"
+                                                    (removed)="removeUser(user)">
+                                                    {{user}}
+                                                    <mat-icon matChipRemove *ngIf="removable">X</mat-icon>
+                                                  </mat-chip>
+                                                  <input
+                                                    placeholder="Add User"
+                                                    name="userInput"
+                                                    #fruitInput
+                                                    [(ngModel)]="userItems"
+                                                    [matAutocomplete]="auto"
+                                                    [matChipInputFor]="chipList"
+                                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                    (matChipInputTokenEnd)="addUser($event)">
+                                                </mat-chip-list>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <div class="button-content">
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" 
+                                        (click)="Service.headerStepMove('application_information',headerSteps,'menu','cab_information')">BACK</a>
+                                        <button class="cancel-bttn" (click)="onSubmitCabInformation(ngForm2, true)" type="button">SAVE AS DRAFT</button>
+                                    </div>
+                                    <button class="submit-bttn submit-health">CONTINUE</button>
                                 </div>
                             </div>
                         </div>
@@ -377,6 +463,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <div class="button-content">
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" 
+                                        (click)="Service.headerStepMove('cab_information',headerSteps,'menu','list_service_scope')">BACK</a>
+                                        <button class="cancel-bttn" (click)="onSubmitListServiceScope(ngForm3, true)" type="button">SAVE AS DRAFT</button>
+                                    </div>
+                                    <button class="submit-bttn submit-health">CONTINUE</button>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
 
@@ -392,6 +490,18 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <div class="button-content">
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" 
+                                        (click)="Service.headerStepMove('list_service_scope',headerSteps,'menu','list_instrument_equipment')">BACK</a>
+                                        <button class="cancel-bttn" (click)="onSubmitListInstrumentEquipment(ngForm4, true)" type="button">SAVE AS DRAFT</button>
+                                    </div>
+                                    <button class="submit-bttn submit-health">CONTINUE</button>
                                 </div>
                             </div>
                         </div>
@@ -413,6 +523,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <div class="button-content">
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" 
+                                        (click)="Service.headerStepMove('list_instrument_equipment',headerSteps,'menu','list_staff')">BACK</a>
+                                        <button class="cancel-bttn" (click)="onSubmitListStaff(ngForm5, true)" type="button">SAVE AS DRAFT</button>
+                                    </div>
+                                    <button class="submit-bttn submit-health">CONTINUE</button>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
 
@@ -428,6 +550,18 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <div class="button-content">
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" 
+                                        (click)="Service.headerStepMove('list_staff',headerSteps,'menu','authorization_application')">BACK</a>
+                                        <button class="cancel-bttn" (click)="onSubmitAuthorizeApplication(ngForm6, true)" type="button">SAVE AS DRAFT</button>
+                                    </div>
+                                    <button class="submit-bttn submit-health">CONTINUE</button>
                                 </div>
                             </div>
                         </div>
@@ -449,6 +583,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <div class="button-content">
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" 
+                                        (click)="Service.headerStepMove('authorization_application',headerSteps,'menu','proforma_invoice')">BACK</a>
+                                        <button class="cancel-bttn" (click)="onSubmitProformaInvoice(ngForm7, true)" type="button">SAVE AS DRAFT</button>
+                                    </div>
+                                    <button class="submit-bttn submit-health">CONTINUE</button>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
 
@@ -467,10 +613,35 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <div class="button-content">
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" 
+                                        (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</a> 
+                                        <button class="cancel-bttn" (click)="onSubmitPaymentUpdate(ngForm8, true)" type="button">SAVE AS DRAFT</button>
+                                    </div>
+                                    <button class="submit-bttn submit-health">CONTINUE</button>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
 
                 <div class="cust-stepper" id="application_complete" [ngStyle]="{'display':'none'}">
+                    <div class="row form-bdy m-0">
+                        <div class="wrapper">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12 p-0">
+                                        <div class="form-subhdr form_subhdr">
+                                            <h5>9. APPLICATION COMPLETE</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>

@@ -1,8 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Constants } from 'src/app/services/constant.service';
 import { AppService } from 'src/app/services/app.service';
 import { ToastrService } from 'ngx-toastr';
+import {FormControl} from '@angular/forms';
+import {MatChipInputEvent} from '@angular/material/chips';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-no-objection-form',
@@ -13,6 +17,7 @@ export class NoObjectionFormComponent implements OnInit {
 
   @ViewChild('fileInput' , {static: true}) fileInput;
   @ViewChild('reCaptcha' , {static: true}) reCaptcha;
+  @ViewChild('fruitInput' , {static: true}) fruitInput: ElementRef<HTMLInputElement>;
 
   public newRow: any = {};
   //public healthCareForm: any = {};
@@ -46,6 +51,19 @@ export class NoObjectionFormComponent implements OnInit {
   public ownOrgMembInfo: Array<any> = [{}];
 
   step1Data: any ={};
+  step2Data: any ={};
+  step3Data: any ={};
+  step4Data: any ={};
+  step5Data: any ={};
+  step6Data: any ={};
+  step7Data: any ={};
+  step8Data: any ={};
+
+  noObjectionBodyForm: any = {};
+  formApplicationId: number = 0;
+  voucherFile:any = new FormData();
+  voucherSentData: any = {};
+  paymentReceiptValidation: boolean = false;
 
 
   searchCountryLists: any[] =[];
@@ -64,12 +82,27 @@ export class NoObjectionFormComponent implements OnInit {
   userId: any;
   headerSteps: any[] = [];
 
-  Obj:any = {              
-      laboratory: '', 
-      inspection_body: '',
-      certification_body: '',
-      halal_cab: '',
-  };
+  //Stepwise input declaration
+  //STEP 2
+  cabTypeLaboratory: any;
+  cabTypeInspectionBody: any;
+  cabTypeCertificationBody: any;
+  cabTypeHalal: any;
+
+  // Obj:any = {              
+  //     laboratory: '', 
+  //     inspection_body: '',
+  //     certification_body: '',
+  //     halal_cab: '',
+  // };
+
+  //Add multiple input items
+  selectable = true;
+  removable = true;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  filteredFruits: Observable<string[]>;
+  users: string[] = ['aaa','bbb'];
+  userItems: any;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
@@ -91,7 +124,7 @@ export class NoObjectionFormComponent implements OnInit {
       title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
       },
       {
-      title:'cab_information', desc:'2. CAB Information', activeStep:false, stepComp:true, icon:'icon-user', activeClass:''
+      title:'cab_information', desc:'2. CAB Information', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
       },
       {
       title:'list_service_scope', desc:'3. List Of Services Scope', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
@@ -117,6 +150,51 @@ export class NoObjectionFormComponent implements OnInit {
     );
       
     
+  }
+
+  //Add /REmove multiple items
+  //Ref link - https://material.angular.io/components/chips/examples
+  addUser(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+    if(this.users.length >=5){
+        this.toastr.warning("Maximum users(5) exceeds.");
+        return;
+    }
+    // Add our fruit
+    if ((value || '').trim()) {
+      this.users.push(value.trim());
+    }
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+  }
+  removeUser(user: string): void {
+    const index = this.users.indexOf(user);
+    if(this.users.length == 1){
+      this.toastr.warning("At least one user required.");
+      return;
+    }
+    if (index >= 0) {
+      this.users.splice(index, 1);
+    }
+  }
+  //Add /REmove multiple items
+
+  validateFileVoucher(fileEvent: any, type?: any) {
+    var file_name = fileEvent.target.files[0].name;
+    var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
+    var ex_type = ['pdf', 'PDF'];
+    var ex_check = this.Service.isInArray(file_exe,ex_type);
+    if(ex_check){
+      this.paymentReceiptValidation = true;
+        this.voucherFile.append('payment_receipt',fileEvent.target.files[0]);
+    }else{
+      //////console.log("...voucher file...3: ", ex_check);
+        this.paymentReceiptValidation = false;
+        
+    }
   }
 
   statelistById = async(country_id) => {
@@ -213,7 +291,7 @@ export class NoObjectionFormComponent implements OnInit {
           this.step1Data.date_of_issue = new Date(data.date_of_issue);
           this.step1Data.fax_no = data.applicant_fax_no;
           this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
-          this.step1Data.mailing_address = data.applicant_address;
+          this.step1Data.mailing_address = data.mailing_address;// data.applicant_address;
           this.step1Data.official_commercial_name = data.cab_name;
           this.step1Data.official_email = data.applicant_email;
           this.step1Data.official_website = data.applicant_website;
@@ -572,7 +650,87 @@ export class NoObjectionFormComponent implements OnInit {
    ********************************/
 
   onSubmitApplicationInformation(theForm: any, type?: any){
+    //this.Service.moveSteps('application_information', 'cab_information', this.headerSteps);
 
+
+    if(theForm.form.valid && type == undefined){
+      this.noObjectionBodyForm = {};      
+      this.noObjectionBodyForm.saved_step = 1;      
+      this.noObjectionBodyForm.step1 = this.step1Data;
+      this.noObjectionBodyForm.step1['ownOrgBasicInfo'] = [];
+      this.noObjectionBodyForm.step1['ownOrgMembInfo'] = [];
+      if(this.ownOrgBasicInfo) {
+        this.noObjectionBodyForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
+      }
+      if((this.ownOrgMembInfo)) {
+        this.noObjectionBodyForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
+      }
+      if(this.formApplicationId > 0){
+        this.noObjectionBodyForm.step1.application_id = this.formApplicationId;
+      }
+      this.noObjectionBodyForm.step1.is_draft = false;
+      console.log(">> Submit Form: ", this.step1Data, " -- ", this.noObjectionBodyForm);
+
+      this.Service.moveSteps('application_information', 'cab_information', this.headerSteps);
+
+      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
+      // .subscribe(
+      //   res => {
+      //     ////////console.log(res,'Step1 Submit...')
+      //     if(res['status'] == true) {
+      //       let data: any = {};
+      //       //this.isApplicationSubmitted = false;
+      //        data = res;
+      //       if(data.application_id != undefined && data.application_id > 0){
+      //         this.formApplicationId = data.application_id;
+      //       }
+      //       //this.toastr.success(res['msg'],);
+      //       this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+      //     }else{
+      //       this.toastr.warning(res['msg'], '');
+      //     }
+      //   });
+
+    }else if(type != undefined && type == true){
+      this.noObjectionBodyForm = {};
+      this.noObjectionBodyForm.saved_step = 1;      
+      this.noObjectionBodyForm.step1 = this.step1Data;
+      this.noObjectionBodyForm.step1.is_draft = true;
+      console.log(">> Submit Save draft: ", this.step1Data, " -- ", this.noObjectionBodyForm);
+
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+
+  }
+
+  onSubmitCabInformation(theForm: any, type?: any){
+    this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
+    
+  }
+
+  onSubmitListServiceScope(theForm: any, type?: any){
+    this.Service.moveSteps('list_service_scope', 'list_instrument_equipment', this.headerSteps);
+  }
+
+  onSubmitListInstrumentEquipment(theForm: any, type?: any){
+    this.Service.moveSteps('list_instrument_equipment', 'list_staff', this.headerSteps);
+  }
+
+  onSubmitListStaff(theForm: any, type?: any){
+    this.Service.moveSteps('list_staff', 'authorization_application', this.headerSteps);
+  }
+
+  onSubmitAuthorizeApplication(theForm: any, type?: any){
+    this.Service.moveSteps('authorization_application', 'proforma_invoice', this.headerSteps);
+  }
+
+  onSubmitProformaInvoice(theForm: any, type?: any){
+    this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+  }
+
+  onSubmitPaymentUpdate(theForm: any, type?: any){
+    this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
   }
 
 
