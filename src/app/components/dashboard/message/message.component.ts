@@ -70,6 +70,8 @@ export class MessageComponent implements OnInit {
           // this.selectSearch = [];
           this.searchDetails = res['data'].user_list;
           // this.selectSearch = res['data'].user_list;
+        }, err => {
+          this.loader = true;
         });
 
   }
@@ -139,6 +141,8 @@ export class MessageComponent implements OnInit {
           this.loader = true;;
           // this.search(this.searchTerm);
 
+        }, err => {
+          this.loader = true;
         });
 
   }
