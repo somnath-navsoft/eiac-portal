@@ -82,6 +82,7 @@ export class WorkPermitFormComponent implements OnInit {
   urlVal: any;
   ownOrgBasicInfo:any = [{}];
   ownOrgMembInfo:any = [{}];
+  formApplicationId:any;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
@@ -254,9 +255,77 @@ export class WorkPermitFormComponent implements OnInit {
   isInArray(value, array) {
     return array.indexOf(value) > -1;
   }
-  onSubmit(ngForm){
+
+  onSubmit1(ngForm1) {
+    this.Service.moveSteps('application_information', 'activities_scope', this.headerSteps);
+    if(ngForm1.form.valid) {
+      this.workPermitForm = {};
+      this.workPermitForm.step1 = {};
+      this.workPermitForm.email = this.userEmail;
+      this.workPermitForm.userType = this.userType;
+      this.workPermitForm.saved_step = '1';
+      this.step1Data.is_draft = false;
+      if(this.formApplicationId > 0){
+        this.step1Data.application_id = this.formApplicationId;
+      }
+
+      this.workPermitForm.step1.is_draft = false;
+      this.workPermitForm.step1 = this.step1Data;
+
+      this.workPermitForm.step1['ownOrgBasicInfo'] = [];
+      this.workPermitForm.step1['ownOrgMembInfo'] = [];
+      
+      if(this.ownOrgBasicInfo) {
+        this.workPermitForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
+      }
+      if(this.ownOrgMembInfo) {
+        this.workPermitForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
+      }
+
+      this.loader = false;
+
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.workPermitForm)
+      .subscribe(
+        res => {
+          this.loader = true;
+          let getData: any = res;
+          if(res['status'] == true) {
+
+            this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
+            // if(getData){
+            //   console.log(">>> APP Id generate: ", getData);
+
+            //   let appId: number = getData.application_id;
+            //   this.formApplicationId = getData.application_id;
+            // }
+            this.Service.moveSteps('application_information', 'activities_scope', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+    }else {
+      this.toastr.warning('Please Fill required field','');
+    }
+  }
+
+  onSubmit2(ngForm2) {
+    this.Service.moveSteps('activities_scope', 'documents_tobe_attached', this.headerSteps);
     
-    if(ngForm.form.valid && this.isSubmit){
+  }
+
+  onSubmit3(ngForm3) {
+    this.Service.moveSteps('documents_tobe_attached', 'authorization_ofthe_application', this.headerSteps);
+    
+  }
+
+  onSubmit4(ngForm4) {
+    this.Service.moveSteps('documents_tobe_attached', 'authorization_ofthe_application', this.headerSteps);
+    
+  }
+
+  onSubmit(ngForm1){
+    
+    if(ngForm1.form.valid && this.isSubmit) {
       // this.workPermitForm.application_type = '';
       this.workPermitForm.is_draft = false;
       if(this.getWorkPermitId != undefined) {

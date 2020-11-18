@@ -40,14 +40,14 @@
                 </ng-container>
                 
                 <div class="cust-stepper" id="application_information">
-                    <form #ngForm1="ngForm" (keydown.enter)="$event.preventDefault()" (ngSubmit)="onSubmitApplication(ngForm1);" autocomplete="off"> 
+                    <form #ngForm1="ngForm" (keydown.enter)="$event.preventDefault()" (ngSubmit)="onSubmit1(ngForm1);" autocomplete="off"> 
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr form_subhdr">
-                                                <h5>1. APPLICANT INFORMATION</h5>
+                                                <h5>APPLICANT INFORMATION</h5>
                                                 <!-- <span>*If you want the certificate issued on a different address please update below</span> -->
                                             </div>
                                             <hr>
@@ -379,6 +379,379 @@
                     </form> 
                 </div>
 
+                <div class="cust-stepper" id="activities_scope">
+                    <form #ngForm2="ngForm" (ngSubmit)="onSubmit2(ngForm2);" autocomplete="off">
+
+                        <div class="row form-bdy m-0">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr form_subhdr">
+                                                <h5>Activities & Scope</h5>
+                                                <!-- <span>*If you want the certificate issued on a different address please update below</span> -->
+                                            </div>
+                                            <hr>
+                                        </div>
+                                        
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Activity Section</mat-label>
+                                                <mat-select placeholder="Select" name="activity_section" [(ngModel)]="step2Data.activity_section" required>
+                                                    <mat-option value="Yes">Yes</mat-option>
+                                                    <mat-option value="No">No</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Scope to be Authorized</mat-label>
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Scope to be Authorized" name="scopes_to_be_authorized" [(ngModel)]="step2Data.scopes_to_be_authorized">
+                                                <mat-error></mat-error>  
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <div class="button-content">
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" routerLink="/dashboard/cab_client/application-accreditation">CANCEL</a> 
+                                        <!-- onSubmitApplication(ngForm1, true) -->
+                                        <button class="cancel-bttn" type="button" (click)="step1SaveADraft()">SAVE AS DRAFT</button>
+                                    </div>
+                                    <button class="submit-bttn submit-health">CONTINUE</button>
+                                    <!-- </ng-container> -->
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- <div class="cust-stepper" id="activities_scope">
+                    <form #ngForm2="ngForm" (ngSubmit)="onSubmit2(ngForm2);" autocomplete="off">
+
+                        <div class="row form-bdy m-0">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr form_subhdr">
+                                                <h5>ACTIVITIES & SCOPE</h5>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                        
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Activity Section</mat-label>
+                                                <mat-select placeholder="Select" name="activity_section" [(ngModel)]="step2Data.activity_section" required>
+                                                    <mat-option value="Yes">Yes</mat-option>
+                                                    <mat-option value="No">No</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Scope to be Authorized</mat-label>
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Scope to be Authorized" name="scopes_to_be_authorized" [(ngModel)]="step2Data.scopes_to_be_authorized">
+                                                <mat-error></mat-error>  
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <div class="button-content">
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" routerLink="/dashboard/cab_client/application-accreditation">CANCEL</a>
+                                        <button class="cancel-bttn" type="button" (click)="step1SaveADraft()">SAVE AS DRAFT</button>
+                                    </div>
+                                    <button class="submit-bttn submit-health">CONTINUE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div> -->
+
+
+                <div class="cust-stepper" id="documents_tobe_attached">
+                    <form #ngForm3="ngForm" (ngSubmit)="onSubmit3(ngForm3);" autocomplete="off">
+
+                        <div class="row form-bdy m-0">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr form_subhdr">
+                                                <h5>DOCUMENTS ATTACHED TO THE APPLICATION</h5>
+                                                <!-- <span>*If you want the certificate issued on a different address please update below</span> -->
+                                            </div>
+                                            <hr>
+                                        </div>
+                                        
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>License No.</mat-label>
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="License No." name="license_no" [(ngModel)]="step3Data.license_no">
+                                                <mat-error></mat-error>  
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Date of Issue</mat-label>
+                                                <input readonly matInput [matDatepicker]="date_of_issue" [max]="today" 
+                                                  placeholder="Issued Date" (click)="Service._openCalendar(date_of_issue)" name="date_of_issue" [(ngModel)]="step3Data.date_of_issue">
+                                                <mat-datepicker-toggle matSuffix [for]="date_of_issue"></mat-datepicker-toggle>
+                                                <mat-datepicker #date_of_issue disabled="false"></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Date of Expiry</mat-label>
+                                                <input readonly matInput [matDatepicker]="date_of_expiry" [max]="today" 
+                                                  placeholder="Issued Date" (click)="Service._openCalendar(date_of_expiry)" name="date_of_expiry" [(ngModel)]="step3Data.date_of_expiry">
+                                                <mat-datepicker-toggle matSuffix [for]="date_of_expiry"></mat-datepicker-toggle>
+                                                <mat-datepicker #date_of_expiry disabled="false"></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="matupload position-relative view_file">
+                                                <mat-form-field  class="lng-data">
+                                                    <input matInput readonly="true" name="licence_document" [(ngModel)]="step3Data.licence_document" placeholder="Upload License Documents" required>
+                                        
+                                                    <a *ngIf="licence_document_path" href="{{licence_document_path}}" target="_blank">
+                                                        <span class="icon-eye visible-pwd"></span>
+                                                    </a>
+                                                </mat-form-field>
+                                        
+                                                <span class="fileupload">
+                                                    <input type="file" name="id_issuedEsma" [(ngModel)]="licence_document_file" (change)="validateFile($event,'licence_document_file')">
+                                                    <span class="icon-attach attach-data"></span>
+                                                </span>
+                                                <p class="error" *ngIf="!licence_document_validation">Please Upload a valid file (ex: pdf)</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="matupload position-relative view_file">
+                                                <mat-form-field  class="lng-data">
+                                                    <input matInput readonly="true" name="quality_manual" [(ngModel)]="step3Data.quality_manual" placeholder="Upload License Documents" required>
+                                        
+                                                    <a *ngIf="quality_manual_path" href="{{quality_manual_path}}" target="_blank">
+                                                        <span class="icon-eye visible-pwd"></span>
+                                                    </a>
+                                                </mat-form-field>
+                                        
+                                                <span class="fileupload">
+                                                    <input type="file" name="id_issuedEsma" [(ngModel)]="quality_manual_file" (change)="validateFile($event,'quality_manual_file')">
+                                                    <span class="icon-attach attach-data"></span>
+                                                </span>
+                                                <p class="error" *ngIf="!quality_manual_validation">Please Upload a valid file (ex: pdf)</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="matupload position-relative view_file">
+                                                <mat-form-field  class="lng-data">
+                                                    <input matInput readonly="true" name="work_instruction" [(ngModel)]="step3Data.work_instruction" placeholder="Upload License Documents" required>
+                                        
+                                                    <a *ngIf="work_instruction_path" href="{{work_instruction_path}}" target="_blank">
+                                                        <span class="icon-eye visible-pwd"></span>
+                                                    </a>
+                                                </mat-form-field>
+                                        
+                                                <span class="fileupload">
+                                                    <input type="file" name="id_issuedEsma" [(ngModel)]="work_instruction_file" (change)="validateFile($event,'work_instruction_file')">
+                                                    <span class="icon-attach attach-data"></span>
+                                                </span>
+                                                <p class="error" *ngIf="!work_instruction_validation">Please Upload a valid file (ex: pdf)</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="matupload position-relative view_file">
+                                                <mat-form-field  class="lng-data">
+                                                    <input matInput readonly="true" name="check_list" [(ngModel)]="step3Data.check_list" placeholder="Upload License Documents" required>
+                                        
+                                                    <a *ngIf="check_list_path" href="{{check_list_path}}" target="_blank">
+                                                        <span class="icon-eye visible-pwd"></span>
+                                                    </a>
+                                                </mat-form-field>
+                                        
+                                                <span class="fileupload">
+                                                    <input type="file" name="id_issuedEsma" [(ngModel)]="check_list_file" (change)="validateFile($event,'check_list_file')">
+                                                    <span class="icon-attach attach-data"></span>
+                                                </span>
+                                                <p class="error" *ngIf="!check_list_validation">Please Upload a valid file (ex: pdf)</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <div class="button-content">
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" routerLink="/dashboard/cab_client/application-accreditation">CANCEL</a> 
+                                        <!-- onSubmitApplication(ngForm1, true) -->
+                                        <button class="cancel-bttn" type="button" (click)="step1SaveADraft()">SAVE AS DRAFT</button>
+                                    </div>
+                                    <button class="submit-bttn submit-health">CONTINUE</button>
+                                    <!-- </ng-container> -->
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="cust-stepper" id="authorization_ofthe_application">
+                    <form #ngForm4="ngForm" (ngSubmit)="onSubmit4(ngForm4);" autocomplete="off">
+
+                        <div class="row form-bdy m-0">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr form_subhdr">
+                                                <h5>AUTHORIZATION OF THE APPLICATION</h5>
+                                                <!-- <span>*If you want the certificate issued on a different address please update below</span> -->
+                                            </div>
+                                            <hr>
+                                        </div>
+                                        
+                                    </div>
+
+                                    <div class="auth">
+                                        <ul>
+                                            <p>
+                                                I, the undersigned confirm that the above-mentioned Conformity Assessment Body have been processed in accordance with Law No. 2/ 2010 regarding organizing work of conformity assessment bodies operating in the emirate of Dubai, and pledge to abide by the application requirements described below:
+                                            </p>
+                                            <ol>
+                                                <li>Providing all the required documents at the site by the time of audit visit as per the requirements of the system and its executive administrative.</li>
+
+                                                <li>The presence of the Director and the staff involved at the site during the audit visit. </li>
+
+                                                <li>Notify the Accreditation Department in the event of any amendments to the Quality Management System.</li>
+                                                
+                                                <li>Tolerate all the consequences and legal sanctions in case of violation of any of the conditions. </li>
+
+                                                <li>Therefore, kindly make an appointment for on-site audit in preparation for issuing the permit activity.</li>
+
+                                            </ol>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr form_subhdr">
+                                                <h5>ON THE BEHALF OF THE APPLICANT COMPANY</h5>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subheader-data subhead-dt">
+                                                <h5>SIGNED FOR AND ON BEHALF OF APPLICANT</h5>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Organization Name</mat-label>
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Organization Name" name="organization_name" [(ngModel)]="step4Data.organization_name">
+                                                <mat-error></mat-error>  
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Full Name of Authorized Representative</mat-label>
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Full Name of Authorized Representative" name="representative_name" [(ngModel)]="step4Data.representative_name">
+                                                <mat-error></mat-error>  
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Behalf Designation</mat-label>
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Behalf Designation" name="behalf_designation" [(ngModel)]="step4Data.behalf_designation">
+                                                <mat-error></mat-error>  
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Digital Signature</mat-label>
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Digital Signature" name="digital_signature" [(ngModel)]="step4Data.digital_signature">
+                                                <mat-error></mat-error>  
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Date</mat-label>
+                                                <input matInput placeholder="Date" name="onbehalf_representative_date" 
+                                                [(ngModel)]="step4Data.application_date" [value]="Service.returnCurrentDate()">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <div class="button-content">
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" routerLink="/dashboard/cab_client/application-accreditation">CANCEL</a> 
+                                        <!-- onSubmitApplication(ngForm1, true) -->
+                                        <button class="cancel-bttn" type="button" (click)="step1SaveADraft()">SAVE AS DRAFT</button>
+                                    </div>
+                                    <button class="submit-bttn submit-health">CONTINUE</button>
+                                    <!-- </ng-container> -->
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
                 <!-- <div class="cust-stepper" id="application_information">
                     <form #ngForm1="ngForm" (ngSubmit)="onSubmit(ngForm1)" autocomplete="off">
                         <div class="row form-bdy m-0">
