@@ -124,23 +124,20 @@
                                         </mat-form-field>
                                     </div>
                                 </div>
-
-                            </div>
-
-                            <div class="wrapper"> 
-                                <div class="col-md-12">
-                                    <div class="bttns-health bttn-staff">
-                                        <button class="submit-bttn submit-health">SUBMIT</button>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="bttns-health bttn-staff justify-content-end">
+                                            <button class="submit-bttn submit-health">SUBMIT</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            
                         </div>
                     </div>
 
                 </form>
 
-                <div class="row">
+                <div class="row mt-4">
                     <div class="col-md-12">
                         <div class="ourcourse-data">
                             <div class="progs-course">
@@ -171,61 +168,63 @@
                 </div>
                 <div class="row" *ngFor="let row2 of allCourseTraining; let i=index;">
                     <div class="col-md-12">
-                        <div class="scheduled-prog">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="training-data">
-                                        <h4>{{row2.course.name}}</h4>
-                                    </div>
-                                    <hr>
-                                </div>
-                            </div>
-                            <div class="training-details">
+                        <div class="scheduled_wrapper scheduled_data">
+                            <div class="scheduled-prog">
                                 <div class="row">
-                                    <div class="col-lg-4 border-left-dash">
-                                        <div class="training-main-details">
-                                            <div class="training_det">
-                                                <span>Audience</span>
-                                            </div>
-                                            <div class="training_type">
-                                                <span>{{row2.target_audiance}}</span>
+                                    <div class="col-md-12">
+                                        <div class="training-data">
+                                            <h4>{{row2.course.name}}</h4>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="training-details">
+                                    <div class="row">
+                                        <div class="col-lg-4 border-left-dash">
+                                            <div class="training-main-details">
+                                                <div class="training_det">
+                                                    <span>Audience</span>
+                                                </div>
+                                                <div class="training_type">
+                                                    <span>{{row2.target_audiance}}</span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-2 border-left-dash">
-                                        <div class="training-main-details">
-                                            <div class="training_det">
-                                                <span>Duration</span>
-                                            </div>
-                                            <div class="training_type">
-                                                <span>{{row2.course.training_course.training_days}} Days</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 border-left-dash">
-                                        <div class="training-main-details">
-                                            <div class="training_det">
-                                                <span>Rates</span>
-                                            </div>
-                                            <div class="training_type">
-                                                <span>AED 2500.00</span>
+                                        <div class="col-lg-2 border-left-dash">
+                                            <div class="training-main-details">
+                                                <div class="training_det">
+                                                    <span>Duration</span>
+                                                </div>
+                                                <div class="training_type">
+                                                    <span>{{row2.course.training_course.training_days}} Days</span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-4 border-left-dash">
-                                        <div class="train_det_bttn">
-                                            <a style="text-decoration:none" routerLink="/training-course-detail/{{row2.id}}" href="javascript:void(0)" class="training_btn">DETAILS</a>
+                                        <div class="col-lg-2 border-left-dash">
+                                            <div class="training-main-details">
+                                                <div class="training_det">
+                                                    <span>Rates</span>
+                                                </div>
+                                                <div class="training_type">
+                                                    <span>AED 2500.00</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 border-left-dash">
+                                            <div class="train_det_bttn">
+                                                <a style="text-decoration:none" routerLink="/training-course-detail/{{row2.id}}" href="javascript:void(0)" class="training_btn">DETAILS</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
+                            <div class="content-icn scheduled_add">
+                                <a href="javascript:void(0)" class="icon-add" (click)="addTraining(allCourseTraining,i,row2.id)"></a>
+                            </div>
                         </div>
+                        
                     </div>
 
-                    <div class="content-icn">
-                        <a href="javascript:void(0)" class="icon-add" (click)="addTraining(allCourseTraining,i,row2.id)"></a>
-                    </div>
 
                 </div>
                 <div class="load-more-dir">
