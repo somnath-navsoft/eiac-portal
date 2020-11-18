@@ -2101,9 +2101,13 @@ updateScopeData = async(rowInd: number) => {
   .subscribe(
   res => {
       let getData: any  =res;
-      console.log(">>>. Data: ", getData);
+      //console.log(">>>. Data: ", getData);
       if(getData.data.scopeDetails != undefined && !this.Service.isObjectEmpty(getData.data.scopeDetails)){
         let jsonObject: any = getData.data.scopeDetails;
+        if(jsonObject[getScheme]['scope_value'] != undefined){
+          jsonObject[getScheme]['scope_value'].reverse();
+        }
+        //console.log(">>> scope: ", jsonObject[getScheme]['scope_value'], " :: ", jsonObject[getScheme]['scope_value'].reverse());
         this.editScopeData = jsonObject;
       }
   });
