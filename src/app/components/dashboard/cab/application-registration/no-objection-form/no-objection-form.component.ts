@@ -90,12 +90,28 @@ export class NoObjectionFormComponent implements OnInit {
   cabTypeCertificationBody: any;
   cabTypeHalal: any;
 
-  // Obj:any = {              
-  //     laboratory: '', 
-  //     inspection_body: '',
-  //     certification_body: '',
-  //     halal_cab: '',
-  // };
+  //STEP 3
+  testingLabCheckboxes: any[] = [];
+  testingLabCheckItemOthers:boolean = false;
+  testingLabCheckItemOtherInput: any;
+  testingLabInfo: any[] = [{}];
+  calibrationLabCheckboxes: any[] = [];
+  calibrationLabCheckItemOthers:boolean = false;
+  calibrationLabInfo: any[] = [{}];
+
+  certificationBodiesCheckboxesFirst: any[] = [];
+  certificationBodiesCheckItemOthersFirst:boolean = false;
+  certificationBodiesCheckboxesSecond: any[] = [];
+  certificationBodiesCheckItemOthersSecond:boolean = false;
+  certificationBodiesInfo: any[] = [{}];
+  certificationBodiesCheckboxesForProducts: boolean = false;
+  certificationBodiesCheckboxesForPersons: boolean = false;
+  certificationBodiesCheckboxesForInspection: boolean = false;
+  halalCabCheckboxes: any[] = [];
+  halalCabCheckItemOthers: boolean = false;
+
+  //STEP 4
+
 
   //Add multiple input items
   selectable = true;
@@ -151,6 +167,99 @@ export class NoObjectionFormComponent implements OnInit {
     );
       
     
+    //Step wise checkboxes
+    //STEP 3
+    this.testingLabCheckboxes.push({
+      name: "Construction Materials",
+      checked: false,
+      label: "Construction Materials"
+    },
+    {
+      name: "Environmental",
+      checked: false,
+      label: "Environmental"
+    },
+    {
+      name: "Food",
+      checked: false,
+      label: "Food"
+    },
+    {
+      name: "Geo Technical Investigation",
+      checked: false,
+      label: "Geo Technical Investigation"
+    },
+    {
+      name: "Precious Metals",
+      checked: false,
+      label: "Precious Metals"
+    },
+    {
+      name: "Petroleum and Petrochemical",
+      checked: false,
+      label: "Petroleum and Petrochemical"
+    },
+    {
+      name: "Electrical Appliances",
+      checked: false,
+      label: "Electrical Appliances"
+    },
+    {
+      name: "Metalurgical",
+      checked: false,
+      label: "Metalurgical"
+    },
+    {
+      name: "Textile",
+      checked: false,
+      label: "Textile"
+    });
+
+
+  }
+
+  //Table row Add/Remove
+  addRow(theObj: any){
+    let newRow: any ={};
+    theObj.push(newRow);
+  }
+  removeRow(theObj: any, index: number){
+    theObj.splice(index, 1);
+  }
+
+
+  checkItemClick(theEvt: any, type: string){
+    switch(type){
+
+      case 'testing_lab':
+        if(theEvt.checked){
+          this.testingLabCheckItemOthers = false;
+        }
+      break;
+
+      default:
+      break;
+
+    }
+
+  }
+  checkOthersItemClick(theEvt: any, type: string){
+    switch(type){
+
+      case 'testing_lab':
+        if(theEvt.checked){
+          this.testingLabCheckboxes.forEach(item => {
+            if(item.checked){
+              item.checked = false;
+            }
+          }) 
+        }
+      break;
+
+      default:
+      break;
+
+    }
   }
 
   //Add /REmove multiple items
@@ -619,7 +728,7 @@ export class NoObjectionFormComponent implements OnInit {
 
   }
   //organizationArray
-  addRow(obj: any = [],type?: string){
+  addRow1(obj: any = [],type?: string){
     if(type != '' && type != undefined){
       //console.log('1st')
       let getIndex    =   obj.findIndex(rec => rec.type == type);
@@ -634,7 +743,7 @@ export class NoObjectionFormComponent implements OnInit {
       
     return true;
   }
-  removeRow(obj: any, index: number, type?:string){
+  removeRow1(obj: any, index: number, type?:string){
 
     if(type === '' || type == undefined){
       obj.splice(index, 1);

@@ -671,6 +671,7 @@
                                             <hr>
                                         </div>
                                     </div>
+                                    <custom-modal *ngIf="deleteRowConfirm" (onDeleteAction)="removeRow(selectDeleteKey,selectDeleteIndex)" [parent]="this" [modalType]="'delete'"></custom-modal>
                                     <div class="row" >
                                         <div class="col-md-12">
                                             <div class="table-content-health">
@@ -714,7 +715,7 @@
                                                                 </td>
                                                             <td class="content-icn">
                                                                 <span *ngIf="i >= 0" class="icon-add" (click)="addRow(proficiencyTesting)"></span> &nbsp;
-                                                                <span *ngIf="i >= 1" class="icon-cross" (click)="openDialog(proficiencyTesting,i)"></span>
+                                                                <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(proficiencyTesting,i)"></span>
                                                             </td>
                                                         </tr>
                                                     
@@ -1157,7 +1158,7 @@
                                     <div class="button-content">
                                         <!-- (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','scope_accreditation')" -->
                                         <a class="cancel-bttn" href="javascript:void(0)" type="button" 
-                                        (click)="backScopeAccreditation();">BACK....</a> 
+                                        (click)="backScopeAccreditation();">BACK</a> 
                                         <button class="cancel-bttn" type="button" (click)="onSubmitStep5(ngForm5, true)">SAVE AS DRAFT</button> 
                                     </div>
                                     <button class="submit-bttn submit-health" (click)="continueScopeAccreditation()">CONTINUE</button>
@@ -1165,7 +1166,7 @@
                             </div>
                         </div>
                     <!-- </form> -->
-                </div>s
+                </div>
 
                 <div class="cust-stepper" id="perlim_visit"  [ngStyle]="{'display':'none'}">
                     <form #ngForm6="ngForm" (ngSubmit)="onSubmitStep6(ngForm6)" autocomplete="off">  

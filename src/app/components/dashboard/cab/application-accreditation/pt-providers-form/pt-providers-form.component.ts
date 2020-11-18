@@ -27,7 +27,7 @@ export class PtProvidersFormComponent implements OnInit {
   public ptProvidersFormFile: any = new FormData();
   public ownOrgBasicInfo: Array<any> = [];
   public ownOrgMembInfo: Array<any> = [];
-  public proficiencyTesting: Array<any> = [];
+  public proficiencyTesting: Array<any> = [{}];
   public scopeForCalibration: Array<any> = [];
   public scopeForTesting: Array<any> = [];
   public scopeForMedical: Array<any> = [];
@@ -176,6 +176,7 @@ export class PtProvidersFormComponent implements OnInit {
   selectDeleteIndex: any;
   deleteEditScopeConfirm: boolean = false;
   deleteScopeConfirm: boolean = false;
+  deleteRowConfirm: boolean = false;
 
   constructor(public Service: AppService, public constant:Constants, private _customModal: CustomModalComponent,
     public router: Router,public toastr: ToastrService,private modalService: NgbModal,public sanitizer:DomSanitizer,public _trainerService:TrainerService) { }
@@ -322,6 +323,16 @@ export class PtProvidersFormComponent implements OnInit {
       undertaking_confirm8: false,undertaking_confirmTop3: false,undertaking_confirm9: false,
       undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false};
  }
+
+ openDialog(delKey: any, delIndex: any){
+  ////console.log(">>>delete ", delKey, " -- ", delIndex);
+  if(delKey){
+    ////console.log("assign delete id: ", delIndex, " -- ", delKey);
+    this.selectDeleteIndex = delIndex;
+    this.selectDeleteKey = delKey;
+    this.deleteRowConfirm = true;
+  } 
+}
 
 
 /**************************
@@ -956,6 +967,7 @@ setexDate(date){
    if(type === '' || type == undefined){
      obj.splice(index, 1);
    }    
+   this._customModal.closeDialog();
    return true;
  }
  showHideMembInfo(data){
@@ -1132,6 +1144,10 @@ setexDate(date){
                   saveStep = parseInt(getData.data.saved_step);
                 }
               }
+
+              if(getData.data.accredation_criteria == 2 && saveStep == 3){
+                saveStep = 4;
+              }
               
               if(res['data'].saved_step  != null){
                 /////console.log("@saved step assign....");
@@ -1153,6 +1169,14 @@ setexDate(date){
                         this.Service.headerStepMove(item.title, this.headerSteps,'menu')
                       }
                 })
+                if(getData.data.accredation_criteria == 2){
+                  let stepData: any = this.headerSteps.find(item => item.title == 'information_audit_management');
+                    console.log(">>step select: 1 ", stepData);
+                    if(stepData){
+                      stepData.activeClass = '';
+                      stepData.stepComp = true;
+                    }
+                }
                 ////console.log("#Step data: ", this.headerSteps);
               }
 
