@@ -277,7 +277,7 @@ export class HalalConformityFormComponent implements OnInit {
   ngOnInit() {
     // this.titleService.setTitle('EIAC - Halal Conformity Bodies');
     // this.loadCountryStateCity();
-
+    window.scrollTo(0,0);
     this.addMinutesToTime = this.Service.addMinutesToTime();
 
     this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');

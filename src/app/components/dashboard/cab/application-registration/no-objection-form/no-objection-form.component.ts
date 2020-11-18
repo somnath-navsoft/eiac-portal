@@ -1,8 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Constants } from 'src/app/services/constant.service';
 import { AppService } from 'src/app/services/app.service';
 import { ToastrService } from 'ngx-toastr';
+import {FormControl} from '@angular/forms';
+import {MatChipInputEvent} from '@angular/material/chips';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-no-objection-form',
@@ -13,6 +17,7 @@ export class NoObjectionFormComponent implements OnInit {
 
   @ViewChild('fileInput' , {static: true}) fileInput;
   @ViewChild('reCaptcha' , {static: true}) reCaptcha;
+  @ViewChild('fruitInput' , {static: true}) fruitInput: ElementRef<HTMLInputElement>;
 
   public newRow: any = {};
   //public healthCareForm: any = {};
@@ -77,12 +82,27 @@ export class NoObjectionFormComponent implements OnInit {
   userId: any;
   headerSteps: any[] = [];
 
-  Obj:any = {              
-      laboratory: '', 
-      inspection_body: '',
-      certification_body: '',
-      halal_cab: '',
-  };
+  //Stepwise input declaration
+  //STEP 2
+  cabTypeLaboratory: any;
+  cabTypeInspectionBody: any;
+  cabTypeCertificationBody: any;
+  cabTypeHalal: any;
+
+  // Obj:any = {              
+  //     laboratory: '', 
+  //     inspection_body: '',
+  //     certification_body: '',
+  //     halal_cab: '',
+  // };
+
+  //Add multiple input items
+  selectable = true;
+  removable = true;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  filteredFruits: Observable<string[]>;
+  users: string[] = ['aaa','bbb'];
+  userItems: any;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
@@ -131,6 +151,36 @@ export class NoObjectionFormComponent implements OnInit {
       
     
   }
+
+  //Add /REmove multiple items
+  //Ref link - https://material.angular.io/components/chips/examples
+  addUser(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+    if(this.users.length >=5){
+        this.toastr.warning("Maximum users(5) exceeds.");
+        return;
+    }
+    // Add our fruit
+    if ((value || '').trim()) {
+      this.users.push(value.trim());
+    }
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+  }
+  removeUser(user: string): void {
+    const index = this.users.indexOf(user);
+    if(this.users.length == 1){
+      this.toastr.warning("At least one user required.");
+      return;
+    }
+    if (index >= 0) {
+      this.users.splice(index, 1);
+    }
+  }
+  //Add /REmove multiple items
 
   validateFileVoucher(fileEvent: any, type?: any) {
     var file_name = fileEvent.target.files[0].name;
