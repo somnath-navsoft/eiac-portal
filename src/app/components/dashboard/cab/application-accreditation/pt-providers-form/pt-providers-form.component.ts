@@ -177,6 +177,7 @@ export class PtProvidersFormComponent implements OnInit {
   deleteEditScopeConfirm: boolean = false;
   deleteScopeConfirm: boolean = false;
   deleteRowConfirm: boolean = false;
+  aboutSubcontractors:Array<any> = [{}];
 
   constructor(public Service: AppService, public constant:Constants, private _customModal: CustomModalComponent,
     public router: Router,public toastr: ToastrService,private modalService: NgbModal,public sanitizer:DomSanitizer,public _trainerService:TrainerService) { }
