@@ -1246,10 +1246,12 @@ setexDate(date){
                     ////console.log('>> ', item, " :: ", key);
                     let data: any;
                     data = item['value'];
-                    if(data != ''){
+                   
                     var obj1 = data.replace(/'/g, "\"");
                     let jparse = JSON.parse(obj1);
                     this.accreditationInfo.push(jparse);
+                    if(this.accreditationInfo[0].scheme_name){
+                      this.step1Data.is_hold_other_accreditation_select = "1";
                     }else{
                       this.step1Data.is_hold_other_accreditation_select = "0";
                       return;
