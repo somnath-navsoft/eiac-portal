@@ -1541,8 +1541,8 @@ onSubmitStep1(ngForm1: any){
               sessionStorage.setItem('applicationId',data.application_id);
               ////////console.log(this.formApplicationId,'App id assigned')
             }
-          //this.formApplicationId = 
-          //this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
+          
+            //this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
           this.Service.moveSteps('application_information', 'personal_information', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
