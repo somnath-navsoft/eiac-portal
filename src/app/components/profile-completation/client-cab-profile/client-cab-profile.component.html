@@ -357,8 +357,8 @@
                                             </mat-form-field>
 
                                             <span class="fileupload">
-                                                <input type="file" name="trade_license" [(ngModel)]="fileAny" (change)="validateFile($event)">
-                                                <span class="icon-attach attach-data"></span>
+                                                <input type="file" #file3 name="trade_license" [(ngModel)]="fileAny" (change)="validateFile($event)">
+                                                <span class="icon-attach attach-data" (click)="file3.click()"></span>
                                             </span>
                                             <p class="error" *ngIf="!file_validation">Please Upload a valid file (ex: pdf)</p>
                                         </div>

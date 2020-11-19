@@ -230,8 +230,8 @@
                                             
                                             </div>
                                             <span class="fileupload">
-                                                <input type="file" name="qualification_degree_file" [(ngModel)]="step2Data.qualification_degree_file" (change)="validateFile($event,'qualification_degree')">
-                                                <span class="icon-attach attach-data"></span>
+                                                <input type="file" #file name="qualification_degree_file" [(ngModel)]="step2Data.qualification_degree_file" (change)="validateFile($event,'qualification_degree')">
+                                                <span class="icon-attach attach-data" (click)="file.click()"></span>
                                             </span>
                                             <a class="image_file_link" *ngIf="tradeLicensedValidation1 != false && tradeLicensedValidation1 != true" target="_blank" [href]="tradeLicensedValidation1">Link</a>
                                             <p class="error" *ngIf="!file_validation1">Please Upload a valid file (ex: pdf,png,jpg,jpeg)</p>
@@ -252,8 +252,8 @@
                                             
                                             </div>
                                             <span class="fileupload">
-                                                <input type="file" name="education_specialization_file" [(ngModel)]="step2Data.education_specialization_file" (change)="validateFile($event,'education_specialization')">
-                                                <span class="icon-attach attach-data"></span>
+                                                <input type="file" #file2 name="education_specialization_file" [(ngModel)]="step2Data.education_specialization_file" (change)="validateFile($event,'education_specialization')">
+                                                <span class="icon-attach attach-data" (click)="file2.click()"></span>
                                             </span>
                                             <a class="image_file_link" *ngIf="tradeLicensedValidation2 != false && tradeLicensedValidation2 != true" target="_blank" [href]="tradeLicensedValidation2">Link</a>
                                             <p class="error" *ngIf="!file_validation2">Please Upload a valid file (ex: pdf,png,jpg,jpeg)</p>
@@ -269,8 +269,8 @@
                                             
                                             </div>
                                             <span class="fileupload">
-                                                <input type="file" name="further_education_file" [(ngModel)]="step2Data.further_education_file" (change)="validateFile($event,'further_education')">
-                                                <span class="icon-attach attach-data"></span>
+                                                <input type="file" #file3 name="further_education_file" [(ngModel)]="step2Data.further_education_file" (change)="validateFile($event,'further_education')">
+                                                <span class="icon-attach attach-data" (click)="file3.click()"></span>
                                             </span>
                                             <a class="image_file_link" *ngIf="tradeLicensedValidation3" target="_blank" [href]="tradeLicensedValidation3">Link</a>
                                             <p class="error" *ngIf="!file_validation3">Please Upload a valid file (ex: pdf,png,jpg,jpeg)</p>
