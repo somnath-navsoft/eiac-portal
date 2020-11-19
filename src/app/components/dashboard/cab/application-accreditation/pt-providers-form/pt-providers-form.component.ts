@@ -160,7 +160,7 @@ export class PtProvidersFormComponent implements OnInit {
   urlVal: any;
   paymentFile:any = false;
   paymentFilePath: string = '';
-  paymentReceiptValidation:any;
+  paymentReceiptValidation:boolean = false;
   recommendYearValues: any[] = [];
 
   paymentStepComp: boolean = false;
@@ -179,7 +179,8 @@ export class PtProvidersFormComponent implements OnInit {
   deleteEditScopeConfirm: boolean = false;
   deleteScopeConfirm: boolean = false;
   deleteRowConfirm: boolean = false;
-  aboutSubcontractors:Array<any> = [{}];
+
+  aboutSubContractors:Array<any> = [{}];
 
   constructor(public Service: AppService, public constant:Constants, private _customModal: CustomModalComponent,
     public router: Router,public toastr: ToastrService,private modalService: NgbModal,public sanitizer:DomSanitizer,public _trainerService:TrainerService) { }
@@ -209,6 +210,9 @@ export class PtProvidersFormComponent implements OnInit {
           this.step1Data.criteria_request = this.criteriaList[0].code;
           }
           console.log("#Get criteria: ", this.criteriaMaster);
+          if(this.criteriaList.length == 1){
+            this.step1Data.criteria_request = this.criteriaList[0].code;
+            }
   
         },
         error => {
@@ -325,9 +329,10 @@ export class PtProvidersFormComponent implements OnInit {
       },
     );
     //
+    //undertaking_confirmTop3: false
     this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  
       undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,
-      undertaking_confirm8: false,undertaking_confirmTop3: false,undertaking_confirm9: false,
+      undertaking_confirm8: false,undertaking_confirm9: false,
       undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false};
  }
 
@@ -385,7 +390,7 @@ deleteScopeData(schemId: any, deleteIndex: number){
       .subscribe(
         res => {
           if(res['status'] == true) {
-            this.toastr.success("Saved scope updated...", '');
+            //this.toastr.success("Saved scope updated...", '');
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -1092,10 +1097,11 @@ setexDate(date){
         this.step1Data.date_of_issue = new Date(data.date_of_issue);
         this.step1Data.fax_no = data.applicant_fax_no;
         this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
-        // this.step1Data.is_hold_other_accreditation = "";
-        // this.step1Data.is_main_activity = "";
-        // this.step1Data.is_main_activity_note = "";
-        this.step1Data.mailing_address = data.applicant_address;
+
+        this.step1Data.is_hold_other_accreditation = "1";
+        //this.step1Data.is_main_activity = "";
+        //this.step1Data.is_main_activity_note = "";
+        this.step1Data.mailing_address = data.mailing_address; //data.applicant_address;
         this.step1Data.official_commercial_name = data.cab_name;
         this.step1Data.official_email = data.applicant_email;
         this.step1Data.official_website = data.applicant_website;
@@ -1238,6 +1244,7 @@ setexDate(date){
                   if(!res['data'].is_main_activity){
                     this.step1Data.is_main_activity_note = res['data'].is_main_activity_note.toString();
                   }
+                  console.log(this.step1Data.is_main_activity,'is_main_activity');
               }
               //if(this.accreditationInfo.length > 0 && !this.Service.isObjectEmpty(this.accreditationInfo[0])) {
               if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0 && !this.Service.isObjectEmpty(res['data'].otherAccr[0])){
@@ -1249,19 +1256,19 @@ setexDate(date){
                     ////console.log('>> ', item, " :: ", key);
                     let data: any;
                     data = item['value'];
-                    console.log(">>> value: ", data);
-                    if(data != ''){
-                      var obj1 = data.replace(/'/g, "\"");
-                      let jparse = JSON.parse(obj1);
-                      this.accreditationInfo.push(jparse);
+
+                    var obj1 = data.replace(/'/g, "\"");
+                    let jparse = JSON.parse(obj1);
+                    this.accreditationInfo.push(jparse);
+                    if(this.accreditationInfo[0].scheme_name){
+                      this.step1Data.is_hold_other_accreditation_select = "1";
                     }else{
                       this.step1Data.is_hold_other_accreditation_select = "0";
                       return;
                     }
-                    
+
                 })
               }else{
-                //this.accreditationInfo = [{}];
                 this.step1Data.is_hold_other_accreditation_select = "0";
               }
              // alert(this.step1Data.is_hold_other_accreditation_select);
@@ -1285,7 +1292,7 @@ setexDate(date){
                 this.step2Data.management_relevent_experience = getMangData.relevent_experience;
               }
 
-              //step4
+              //step3
               if(res['data'].audit_date != null){
                 this.step3Data.audit_date = new Date(res['data'].audit_date);
               }
@@ -1293,7 +1300,7 @@ setexDate(date){
                 this.step3Data.mrm_date = new Date(res['data'].mrm_date);
               }
 
-              //step 5
+              //step 4
               if(getData.data.scopeDetails != undefined && !this.Service.isObjectEmpty(getData.data.scopeDetails)){
                 ////console.log(">>> ", getData.data.scopeDetails);
                 
@@ -1302,9 +1309,15 @@ setexDate(date){
                 this.editScopeData = jsonObject; 
               }
 
+              //step 5
+              var subcontractors = res['data']['aboutSubContractors'];
+              this.aboutSubContractors = subcontractors && subcontractors != '' ? subcontractors : [{}];
+
               //Step 6
               if(res['data'].is_prelim_visit != null){
-                this.step6Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
+                //alert(">>"+res['data'].is_prelim_visit);
+                this.step6Data.prelim_visit_val = (res['data'].is_prelim_visit) ? "1" : "0";
+                //alert(">>"+this.step6Data.is_prelim_visit);
                 this.step6Data.prelim_visit_date = res['data'].prelim_visit_date;
                 this.step6Data.prelim_visit_time = res['data'].prelim_visit_time;
               }
@@ -1367,13 +1380,20 @@ setexDate(date){
                   this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
                   this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
                   this.voucherSentData.amount           = res['data'].paymentDetails.amount;
-                  this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
-                  this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
-                  this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
-                  this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+
+                  // this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
+                  // this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
+                  // this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
+                  // this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+                  this.voucherSentData.transaction_no   = (res['data'].paymentDetails.transaction_no != 'null') ? res['data'].paymentDetails.transaction_no : '';
+                  this.voucherSentData.payment_method   = (res['data'].paymentDetails.payment_method != 'null') ? res['data'].paymentDetails.payment_method : '';
+                  this.voucherSentData.payment_made_by  = (res['data'].paymentDetails.payment_made_by != 'null') ? res['data'].paymentDetails.payment_made_by : '';
+                  this.voucherSentData.mobile_no        = (res['data'].paymentDetails.mobile_no != 'null') ? res['data'].paymentDetails.mobile_no : '';
 
                   this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
-                  this.paymentReceiptValidation = true;
+                  if(this.paymentFile != undefined && this.paymentFile != ''){
+                    this.paymentReceiptValidation = true;
+                  }
               }
             }
           }
@@ -1494,8 +1514,9 @@ onSubmitStep1(ngForm1: any){
     }
     this.ptProvidersForm.step1.is_draft = false;
     this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
-    this.step1Data.is_hold_other_accreditation = (this.step1Data.is_hold_other_accreditation_select == '0') ? false : true;
-    //this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
+
+    this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation_select == '0' ? false : true;
+   // this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
     this.ptProvidersForm.step1 = this.step1Data;
 
     this.ptProvidersForm.step1['ownOrgBasicInfo'] = [];
@@ -1508,8 +1529,9 @@ onSubmitStep1(ngForm1: any){
     if(this.ownOrgMembInfo) {
       this.ptProvidersForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
     }
+
+    //if(this.accreditationInfo) {
     if(this.accreditationInfo.length > 0 && !this.Service.isObjectEmpty(this.accreditationInfo[0]) && this.step1Data.is_hold_other_accreditation_select == '1') {
-      console.log("Entey...", this.accreditationInfo, " -- ", this.accreditationInfo.length," :: ", this.Service.isObjectEmpty(this.accreditationInfo[0]));
       this.ptProvidersForm.step1['accreditationInfo'] = this.accreditationInfo;
     }
 
@@ -1564,8 +1586,9 @@ savedraftStep(stepCount) {
     if(this.ownOrgMembInfo) {
       this.ptProvidersForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
     }
-    if(this.accreditationInfo.length > 0 && !this.Service.isObjectEmpty(this.accreditationInfo[0])) {
-      //console.log("Entey...", this.accreditationInfo, " -- ", this.accreditationInfo.length," :: ", this.Service.isObjectEmpty(this.accreditationInfo[0]));
+
+    //if(this.accreditationInfo) {
+      if(this.accreditationInfo.length > 0 && !this.Service.isObjectEmpty(this.accreditationInfo[0]) && this.step1Data.is_hold_other_accreditation_select == '1') {
       this.ptProvidersForm.step1['accreditationInfo'] = this.accreditationInfo;
     }
     this.loader = true;
@@ -1584,12 +1607,14 @@ savedraftStep(stepCount) {
   }
   if(stepCount == 'step2') {
     this.ptProvidersForm = {};
+
+    this.ptProvidersForm.step2 = {};
     // this.step3Data = {};
     var applicationId = sessionStorage.getItem('applicationId');
     // this.step3Data.application_id = applicationId;
     this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step2Data.is_draft = true;
-    this.ptProvidersForm.saved_step = '3';
+    this.ptProvidersForm.saved_step = '2';
     this.ptProvidersForm.email = this.userEmail;
     this.ptProvidersForm.userType = this.userType;
 
@@ -1614,7 +1639,7 @@ savedraftStep(stepCount) {
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
       res => {
-        console.log(res,'res')
+        // console.log(res,'res')
         if(res['status'] == true) {
           this.loader = false;
           // this.toastr.success(res['msg'], '');
@@ -1626,7 +1651,7 @@ savedraftStep(stepCount) {
   }
   if(stepCount == 'step3') {
     this.ptProvidersForm = {};
-    this.ptProvidersForm.step4 = {};
+    this.ptProvidersForm.step3 = {};
     var applicationId = sessionStorage.getItem('applicationId');
     this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step3Data.is_draft = true;
@@ -1648,9 +1673,53 @@ savedraftStep(stepCount) {
         }
       });
   }
+<<<<<<< HEAD
+  if(stepCount == 'step3') {
+    this.ptProvidersForm = {};
+    this.ptProvidersForm.step4 = {};
+    var applicationId = sessionStorage.getItem('applicationId');
+    this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+    this.step3Data.is_draft = true;
+    this.ptProvidersForm.saved_step = '3';
+    this.ptProvidersForm.email = this.userEmail;
+    this.ptProvidersForm.userType = this.userType;
+    this.ptProvidersForm.step3 = this.step3Data;
+=======
 
   if(stepCount == 'step5') {
+    this.ptProvidersForm = {};
+    this.ptProvidersForm.step5 = {};
+    this.ptProvidersForm.email = this.userEmail;
+    this.ptProvidersForm.userType = this.userType;
+    this.ptProvidersForm.saved_step = '5';
+    var applicationId = sessionStorage.getItem('applicationId');
+    // this.step2Data.application_id = applicationId;
+    this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     
+    this.step5Data.is_draft = true;
+    this.ptProvidersForm.step5 = this.step5Data;
+
+    this.ptProvidersForm.step5['aboutSubContractors'] = [];
+    
+    if(this.ownOrgBasicInfo) {
+      this.ptProvidersForm.step5['aboutSubContractors'] = this.aboutSubContractors;
+    }
+
+    // this.step2DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
+>>>>>>> origin/development
+    this.loader = true;
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
+    .subscribe(
+      res => {
+        // console.log(res,'res')
+        this.loader = false;
+        if(res['status'] == true) {
+          // this.toastr.success(res['msg'], '');
+          this.toastr.success('Save Draft Successfully', '');
+        }else{
+          this.toastr.warning(res['msg'], '');
+        }
+      });
   }
   if(stepCount == 'step6') {
     this.ptProvidersForm = {};
@@ -1743,6 +1812,7 @@ savedraftStep(stepCount) {
     this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
     this.voucherFile.append('voucher_date',dtFormat);
     this.voucherFile.append('accreditation',this.formApplicationId);
+    this.voucherFile.append('is_draft', true);
     // this.voucherFile.append('application_id',this.formApplicationId);
         
     this.loader = true;
@@ -1764,10 +1834,18 @@ savedraftStep(stepCount) {
 }
 
 onSubmitStep2(ngForm2: any){
+<<<<<<< HEAD
   //this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
 
   if(ngForm2.form.valid) {
     this.ptProvidersForm = {};
+=======
+  // this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+
+  if(ngForm2.form.valid) {
+    this.ptProvidersForm = {};
+    this.ptProvidersForm.step2 = {};
+>>>>>>> origin/development
     // this.step3Data = {};
     var applicationId = sessionStorage.getItem('applicationId');
     // this.step3Data.application_id = applicationId;
@@ -1802,7 +1880,7 @@ onSubmitStep2(ngForm2: any){
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
       res => {
-        console.log(res,'res')
+        // console.log(res,'res')
         this.loader = false;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
@@ -1834,10 +1912,14 @@ onSubmitStep2(ngForm2: any){
 
 onSubmitStep3(ngForm3: any){
 // this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
+<<<<<<< HEAD
 //this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
+=======
+// this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
+>>>>>>> origin/development
   if(ngForm3.form.valid) {
     this.ptProvidersForm = {};
-    this.ptProvidersForm.step4 = {};
+    this.ptProvidersForm.step3 = {};
     var applicationId = sessionStorage.getItem('applicationId');
     this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step3Data.is_draft = false;
@@ -2074,8 +2156,8 @@ saveScope(rowInd: any){
         }
     }
   }
-  ////console.log("#Updated Scope after edit: ", scopeCollections, " -- ", this.editScopeData);
-  this.step5Data['scopeDetails']    = scopeCollections;
+  console.log("#Updated Scope after edit: ", scopeCollections, " -- ", this.editScopeData);
+  this.step4Data['scopeDetails']    = scopeCollections;
 }
 //scopeCollections[selectScheme]['scope_heading'][keyIds]  //assign scope heading
 //scopeCollections[selectScheme]['scope_value'] //assign unmatch scope value
@@ -2107,7 +2189,10 @@ updateScopeData = async(rowInd: number) => {
         if(jsonObject[getScheme]['scope_value'] != undefined){
           jsonObject[getScheme]['scope_value'].reverse();
         }
+<<<<<<< HEAD
         //console.log(">>> scope: ", jsonObject[getScheme]['scope_value'], " :: ", jsonObject[getScheme]['scope_value'].reverse());
+=======
+>>>>>>> origin/development
         this.editScopeData = jsonObject;
       }
   });
@@ -2146,10 +2231,11 @@ onSubmitStep4(ngForm: any, type?: any , rowInd?:any) {
   //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
 
   this.ptProvidersForm = {};
-  this.ptProvidersForm.step5 = {};
-  this.ptProvidersForm.step5 = this.step5Data;
-  this.ptProvidersForm.step5.application_id = this.formApplicationId;
-  this.ptProvidersForm.step5['scheme_id'] = 1;//this.schemeRows[0].id;
+  this.ptProvidersForm.step4 = {};
+  this.ptProvidersForm.step4 = this.step4Data;
+  var applicationId = sessionStorage.getItem('applicationId');
+  this.ptProvidersForm.step4.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+  this.ptProvidersForm.step4['scheme_id'] = 1;//this.schemeRows[0].id;
   // if(this.step5Data.criteria_request != undefined){
   //   let schemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id);
   //   ////////console.log("scheme data: ", schemeData);
@@ -2202,9 +2288,9 @@ onSubmitStep4(ngForm: any, type?: any , rowInd?:any) {
 
     ////console.log("scheme Rows: ", this.schemeRows,  " -- ", this.schemeRows.length, " :: ", this.editScopeData, " :: ", this.getScopeData);
 
-    //////console.log(">>>Form Submit: ", ngForm, " -- ",ngForm.form, " -- ", this.schemeRows); 
+    //console.log(">>> step4 submit...", this.step4Data, " -- ", this.ptProvidersForm); 
    
-   //return;
+    //return;
     //ngForm.form.valid &&
     if(!ngForm.form.valid && type == undefined && this.schemeRows.length == 1 
         && this.schemeRows[0].id === undefined && this.editScopeData != undefined && this.editScopeData != null) {
@@ -2231,9 +2317,11 @@ onSubmitStep4(ngForm: any, type?: any , rowInd?:any) {
       console.log(">>>Scope saving...");
       console.log(">>>Enter....3")
       this.saveScope(rowInd);
+      
+      this.ptProvidersForm.step4.is_draft = false;
+      this.ptProvidersForm.saved_step = 4;
       console.log(">>> step5 submit...", this.step5Data, " -- ", this.ptProvidersForm);
-      this.ptProvidersForm.step5.is_draft = false;
-      this.ptProvidersForm.saved_step = 5;
+      //return;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
       .subscribe(
        async res => {
@@ -2279,13 +2367,21 @@ onSubmitStep4(ngForm: any, type?: any , rowInd?:any) {
 
 onSubmitStep5(ngForm5: any){
   // this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+<<<<<<< HEAD
   //this.Service.moveSteps('scope_accreditation', 'about_subcontractors', this.headerSteps);
+=======
+  // this.Service.moveSteps('scope_accreditation', 'about_subcontractors', this.headerSteps);
+>>>>>>> origin/development
   if(ngForm5.form.valid) {
     this.ptProvidersForm = {};
     this.ptProvidersForm.step5 = {};
     this.ptProvidersForm.email = this.userEmail;
     this.ptProvidersForm.userType = this.userType;
+<<<<<<< HEAD
     this.ptProvidersForm.saved_step = '2';
+=======
+    this.ptProvidersForm.saved_step = '5';
+>>>>>>> origin/development
     var applicationId = sessionStorage.getItem('applicationId');
     // this.step2Data.application_id = applicationId;
     this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
@@ -2293,6 +2389,7 @@ onSubmitStep5(ngForm5: any){
     this.step5Data.is_draft = false;
     this.ptProvidersForm.step5 = this.step5Data;
 
+<<<<<<< HEAD
     this.ptProvidersForm.step5['aboutSubcontractors'] = [];
     
     if(this.ownOrgBasicInfo) {
@@ -2300,6 +2397,16 @@ onSubmitStep5(ngForm5: any){
     }
 
     // this.step2DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
+=======
+    this.ptProvidersForm.step5['aboutSubContractors'] = [];
+    
+    if(this.ownOrgBasicInfo) {
+      this.ptProvidersForm.step5['aboutSubContractors'] = this.aboutSubContractors;
+    }
+
+    // this.step2DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
+    console.log(this.ptProvidersForm);
+>>>>>>> origin/development
     this.loader = true;
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
@@ -2308,7 +2415,11 @@ onSubmitStep5(ngForm5: any){
         this.loader = false;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
+<<<<<<< HEAD
           this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+=======
+          this.Service.moveSteps('about_subcontractors', 'perlim_visit', this.headerSteps);
+>>>>>>> origin/development
         }else{
           this.toastr.warning(res['msg'], '');
         }
@@ -2368,7 +2479,7 @@ authorizeCheckCount(theEvent: any, type?:any){
   if(theEvent.checked || readChecked == true){
     for(let key in this.authorizationList) {
       ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
-      if(this.authorizationList[key] && key != 'undertaking_confirmTop3') {  
+      if(this.authorizationList[key]) {  
         this.authorizationStatus = true;       
         checkCount++;
       }    
@@ -2405,7 +2516,7 @@ this.isApplicationSubmitted = true;
 let checkCount = 0;
 for(let key in this.authorizationList) {
   ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
-  if(this.authorizationList[key] && key != 'undertaking_confirmTop3') {  
+  if(this.authorizationList[key]) {  
     this.authorizationStatus = true;       
     checkCount++;
   }      
@@ -2417,10 +2528,17 @@ if(this.authorizationStatus && checkCount == 11){
 }
 
 
+<<<<<<< HEAD
 if(this.authorizationStatus == false){
   this.isSubmit = false;
   //this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
 }
+=======
+// if(this.authorizationStatus == false){
+//   this.isSubmit = false;
+//   this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
+// }
+>>>>>>> origin/development
 // else if(this.step7Data.recommend_visit == ''){
 //   this.isSubmit = false;
 //   this.toastr.error('Please Check any recommend the visit ', '');
@@ -2478,7 +2596,7 @@ if(ngForm7.form.valid && recomCheckCount > 0 && this.authorizationStatus == true
           this.toastr.success("Application Submitted Successfully");
               setTimeout(() => {
                 this.router.navigateByUrl('/dashboard/status/all');
-              }, 5000)
+              }, 3000)
           // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
           //this.router.navigateByUrl('/dashboard/status/all');
         }
@@ -2543,7 +2661,7 @@ this.ptProvidersForm.step9 = {};
     dtFormat = year + "-" + month + "-" + date;
   }
   //     
-
+  let is_valid: boolean = false;
 this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
 this.voucherFile.append('amount',this.voucherSentData['amount']);
 this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
@@ -2554,9 +2672,16 @@ this.voucherFile.append('voucher_date',dtFormat);
 this.voucherFile.append('accreditation',this.formApplicationId);
 this.voucherFile.append('is_draft', false);
 // this.voucherFile.append('application_id',this.formApplicationId);
+if(this.voucherSentData['transaction_no'] != '' && this.voucherSentData['payment_method'] != '' && this.voucherSentData['payment_made_by'] &&
+this.voucherSentData['mobile_no'] != ''){
+  is_valid = true;
+}
     
 this.loader = true;
-if(ngForm9.form.valid && this.paymentReceiptValidation != false) {
+console.log(">>> File: ", this.paymentReceiptValidation);
+//if(ngForm9.form.valid && this.paymentReceiptValidation != false) {
+  //return;
+if(is_valid == true &&  this.paymentReceiptValidation != false) {
   // console.log(this.voucherFile);
     this._trainerService.paymentVoucherSave((this.voucherFile))
     .subscribe(
@@ -2601,6 +2726,7 @@ if(ngForm9.form.valid && this.paymentReceiptValidation != false) {
   });
 }
 else{
+  this.loader = false;
   this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
 }
 
