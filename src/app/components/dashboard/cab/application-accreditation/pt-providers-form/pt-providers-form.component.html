@@ -1170,7 +1170,7 @@
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr">
-                                                <h5>PERLIM VISIT</h5>
+                                                <h5>6. PERLIM VISIT</h5>
                                             </div>
                                             <hr>
                                         </div>
@@ -1326,14 +1326,14 @@
                                                 </mat-checkbox><br>
                                                 <p class="error" *ngIf="!readAccredAgreem">Please read agree the agreement</p>
                                             </div> -->
-                                            <div class="authData">
+                                            <!-- <div class="authData">
                                                 
                                                 <mat-checkbox name="undertaking_confirmTop3" (change)="authorizeCheckCount($event)"
                                                 [(ngModel)]="authorizationList.undertaking_confirmTop3">Do you require ILA MRA Mark Laboratories</mat-checkbox>
                                             </div>
                                             <div class="terms-condition" style="height:500px;overflow:auto" *ngIf="authorizationList.undertaking_confirmTop3">
                                                 <div class="tnc" [innerHTML]="(termsILA != undefined && termsILA.content != undefined) ? termsILA.content : ''"></div>
-                                            </div>
+                                            </div> -->
 
 
                                             <div class="authData">I confirm that the below documents are available and will be furnished once requested by EIAC:</div>
@@ -1348,7 +1348,7 @@
                                                     <tr>
                                                         <td><mat-checkbox name="undertaking_confirm2" [disableRipple]="true"
                                                             (click)="$event.preventDefault()" [(ngModel)]="authorizationList.undertaking_confirm2"></mat-checkbox></td>
-                                                        <td><a href="javascript:void(0)" title="Please review the checklist" alt="Please review the checklist" (click)="openView(checklistView, 'checklist')">Filled In Document Review Checklist</a> based on the related standard(for 1st submission only)<br/>
+                                                        <td><a href="javascript:void(0)" title="Please review the checklist" alt="Please review the checklist" (click)="openView(checklistView, 'checklist')">Filled In Document Review Checklist based on the related standard </a>(for 1st submission only)<br/>
                                                             <p class="error" *ngIf="!readReviewChecklist  && isApplicationSubmitted == true">Please review the checklist</p>                                                            
                                                         </td>
                                                     </tr>
