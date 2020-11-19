@@ -860,11 +860,13 @@ a:hover { text-decoration: none; }
 .matupload .mat-form-field {width: 100%;}
 .matupload .fileupload input[type=file] { opacity: 0; position: absolute; right: 0px; top: 0px; bottom: 0px; overflow: hidden; z-index: 1; cursor: pointer; }
 .matupload .fileupload { position: absolute; right: 0px; top: 0px; bottom: 0px; width: 30px; display: flex; align-items: center; }
-.matupload .fileupload input[type=file] { right: 25px; }
-.attach-data { position: absolute; right:10px; color: #3F3F3F; cursor: pointer; }
+// .matupload .fileupload input[type=file] { right: 25px; }
+.attach-data { position: absolute; right: 0px; color: #3F3F3F; cursor: pointer; }
+// .attach-data { right: 10px; }
 .fileupload input:focus { outline: none; }
 .fileupload input { width: 100% !important; }
-.view_file.matupload .fileupload { right: 30px; }
+// .view_file.matupload .fileupload { right: 30px; }
+.view_file.matupload .fileupload { right: 0; }
 .filter-search { display: flex; justify-content:  space-between; float: right; }
 .search-fil { margin-right: 20px; }
 .filter-search a { background: #B54150; color: #fff; font-size: 15px; font-family: 'Dubai Regular'; padding: 5px 15px; border-radius: 5px; }
@@ -974,6 +976,7 @@ ul.bill-details li:first-child { border-right: 1px solid #C9C9C9; }
 .acc-apply a { width: 200px; color: #fff; font-size: 18px; font-family: 'Dubai Bold'; background: rgba(181, 65, 80, 1); padding: 10px 25px; letter-spacing: 1px; border-radius: 5px; }
 .acc-apply a:hover { text-decoration: none; color: #fff; background: #AA9777; }
 .save_draft { margin-top: 15px; }
+.view_file .mat-form-field-infix .mat-form-field-label { font-size: 16px; } 
 
 // ================FORMS================== //
 .table-content-health { margin-bottom: 30px; overflow: auto; }
