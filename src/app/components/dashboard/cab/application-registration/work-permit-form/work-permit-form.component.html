@@ -379,7 +379,7 @@
                     </form> 
                 </div>
 
-                <div class="cust-stepper" id="activities_scope">
+                <div class="cust-stepper" id="activities_scope" [ngStyle]="{'display':'none'}">
                     <form #ngForm2="ngForm" (ngSubmit)="onSubmit2(ngForm2);" autocomplete="off">
 
                         <div class="row form-bdy m-0">
@@ -489,7 +489,7 @@
                 </div> -->
 
 
-                <div class="cust-stepper" id="documents_tobe_attached">
+                <div class="cust-stepper" id="documents_tobe_attached" [ngStyle]="{'display':'none'}">
                     <form #ngForm3="ngForm" (ngSubmit)="onSubmit3(ngForm3);" autocomplete="off">
 
                         <div class="row form-bdy m-0">
@@ -632,7 +632,7 @@
                     </form>
                 </div>
 
-                <div class="cust-stepper" id="authorization_ofthe_application">
+                <div class="cust-stepper" id="authorization_ofthe_application" [ngStyle]="{'display':'none'}">
                     <form #ngForm4="ngForm" (ngSubmit)="onSubmit4(ngForm4);" autocomplete="off">
 
                         <div class="row form-bdy m-0">
@@ -751,345 +751,186 @@
                         </div>
                     </form>
                 </div>
-                
-                <!-- <div class="cust-stepper" id="application_information">
-                    <form #ngForm1="ngForm" (ngSubmit)="onSubmit(ngForm1)" autocomplete="off">
+
+                <div class="cust-stepper" id="proforma_invoice" [ngStyle]="{'display':'none'}">
+                    <form #ngForm5="ngForm" (ngSubmit)="onSubmit5(ngForm5)" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div class="col-md-12 p-0">
-                                            <div class="form-subhdr form_subhdr">
-                                                <h5>DETAILS OF CONFORMITY ASSESSMENT BODY (CAB)</h5>
-                                            </div>
-                                            <hr>
-                                        </div>
-                                    </div>
-                                   
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Name of CAB</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Official Website" name="name_of_cab" [(ngModel)]="workPermitForm.name_of_cab">
-                                                <mat-error></mat-error>  
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div class="col-md-9">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Address</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Address" name="address" [(ngModel)]="workPermitForm.address">
-                                                <mat-error></mat-error>  
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>License no.</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="License no." name="cab_license_no" [(ngModel)]="workPermitForm.cab_license_no">
-                                                <mat-error></mat-error>  
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Issued Date</mat-label>
-                                                <input readonly matInput [matDatepicker]="cab_issue_date" [max]="today" 
-                                                  placeholder="Issued Date" (click)="Service._openCalendar(cab_issue_date)" name="cab_issue_date" [(ngModel)]="workPermitForm.cab_issue_date">
-                                                <mat-datepicker-toggle matSuffix [for]="cab_issue_date"></mat-datepicker-toggle>
-                                                <mat-datepicker #cab_issue_date disabled="false"></mat-datepicker>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Applicant Name</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="License no." name="applicant_name" [(ngModel)]="workPermitForm.applicant_name">
-                                                <mat-error></mat-error>  
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Designation</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Designation" name="designation" [(ngModel)]="workPermitForm.designation">
-                                                <mat-error></mat-error>  
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Tel. No.</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Issued Date" name="tel_no" [(ngModel)]="workPermitForm.tel_no">
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Email Address</mat-label>
-                                                <input  matInput autocomplete="off" placeholder="Email Address"  name="email_address"  [(ngModel)]="workPermitForm.email_address"  required>
-                                                <mat-error></mat-error> 
-                                            </mat-form-field>
-                                            <p class="error" *ngIf="workPermitForm.email_address && !Service.checkInput('email',workPermitForm.email_address)">Please Enter Correct Email Id</p>
-                                        </div>
-                                    </div>
-
-                                    
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Activity Section</mat-label>
-                                                <mat-select placeholder="Select" name="activity_section" [(ngModel)]="workPermitForm.activity_section" required>
-                                                    <mat-option value="Yes">Yes</mat-option>
-                                                    <mat-option value="No">No</mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Scope to be Authorized</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Scope to be Authorized" name="scopes_to_be_authorized" [(ngModel)]="workPermitForm.scopes_to_be_authorized">
-                                                <mat-error></mat-error>  
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div class="col-md-12 p-0">
-                                            <div class="form-subhdr form_subhdr">
-                                                <h5>DOCUMENTS ATTACHED TO THE APPLICATION</h5>
-                                            </div>
-                                            <hr>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>License No.</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="License No." name="license_no" [(ngModel)]="workPermitForm.license_no">
-                                                <mat-error></mat-error>  
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Date of Issue</mat-label>
-                                                <input readonly matInput [matDatepicker]="date_of_issue" [max]="today" 
-                                                  placeholder="Issued Date" (click)="Service._openCalendar(date_of_issue)" name="date_of_issue" [(ngModel)]="workPermitForm.date_of_issue">
-                                                <mat-datepicker-toggle matSuffix [for]="date_of_issue"></mat-datepicker-toggle>
-                                                <mat-datepicker #date_of_issue disabled="false"></mat-datepicker>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Date of Expiry</mat-label>
-                                                <input readonly matInput [matDatepicker]="date_of_expiry" [max]="today" 
-                                                  placeholder="Issued Date" (click)="Service._openCalendar(date_of_expiry)" name="date_of_expiry" [(ngModel)]="workPermitForm.date_of_expiry">
-                                                <mat-datepicker-toggle matSuffix [for]="date_of_expiry"></mat-datepicker-toggle>
-                                                <mat-datepicker #date_of_expiry disabled="false"></mat-datepicker>
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="matupload position-relative view_file">
-                                                <mat-form-field  class="lng-data">
-                                                    <input matInput readonly="true" name="licence_document" [(ngModel)]="workPermitForm.licence_document" placeholder="Upload License Documents" required>
-                                        
-                                                    <a *ngIf="licence_document_path" href="{{licence_document_path}}" target="_blank">
-                                                        <span class="icon-eye visible-pwd"></span>
-                                                    </a>
-                                                </mat-form-field>
-                                        
-                                                <span class="fileupload">
-                                                    <input type="file" name="id_issuedEsma" [(ngModel)]="licence_document_file" (change)="validateFile($event,'licence_document_file')">
-                                                    <span class="icon-attach attach-data"></span>
-                                                </span>
-                                                <p class="error" *ngIf="!licence_document_validation">Please Upload a valid file (ex: pdf)</p>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="matupload position-relative view_file">
-                                                <mat-form-field  class="lng-data">
-                                                    <input matInput readonly="true" name="quality_manual" [(ngModel)]="workPermitForm.quality_manual" placeholder="Upload License Documents" required>
-                                        
-                                                    <a *ngIf="quality_manual_path" href="{{quality_manual_path}}" target="_blank">
-                                                        <span class="icon-eye visible-pwd"></span>
-                                                    </a>
-                                                </mat-form-field>
-                                        
-                                                <span class="fileupload">
-                                                    <input type="file" name="id_issuedEsma" [(ngModel)]="quality_manual_file" (change)="validateFile($event,'quality_manual_file')">
-                                                    <span class="icon-attach attach-data"></span>
-                                                </span>
-                                                <p class="error" *ngIf="!quality_manual_validation">Please Upload a valid file (ex: pdf)</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="matupload position-relative view_file">
-                                                <mat-form-field  class="lng-data">
-                                                    <input matInput readonly="true" name="work_instruction" [(ngModel)]="workPermitForm.work_instruction" placeholder="Upload License Documents" required>
-                                        
-                                                    <a *ngIf="work_instruction_path" href="{{work_instruction_path}}" target="_blank">
-                                                        <span class="icon-eye visible-pwd"></span>
-                                                    </a>
-                                                </mat-form-field>
-                                        
-                                                <span class="fileupload">
-                                                    <input type="file" name="id_issuedEsma" [(ngModel)]="work_instruction_file" (change)="validateFile($event,'work_instruction_file')">
-                                                    <span class="icon-attach attach-data"></span>
-                                                </span>
-                                                <p class="error" *ngIf="!work_instruction_validation">Please Upload a valid file (ex: pdf)</p>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="matupload position-relative view_file">
-                                                <mat-form-field  class="lng-data">
-                                                    <input matInput readonly="true" name="check_list" [(ngModel)]="workPermitForm.check_list" placeholder="Upload License Documents" required>
-                                        
-                                                    <a *ngIf="check_list_path" href="{{check_list_path}}" target="_blank">
-                                                        <span class="icon-eye visible-pwd"></span>
-                                                    </a>
-                                                </mat-form-field>
-                                        
-                                                <span class="fileupload">
-                                                    <input type="file" name="id_issuedEsma" [(ngModel)]="check_list_file" (change)="validateFile($event,'check_list_file')">
-                                                    <span class="icon-attach attach-data"></span>
-                                                </span>
-                                                <p class="error" *ngIf="!check_list_validation">Please Upload a valid file (ex: pdf)</p>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    
-                                </div>
-
+                                <!--  (ngSubmit)="onSubmitPaymentInformation(ngForm8)" -->
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-md-12 p-0">
-                                            <div class="form-subhdr form_subhdr">
-                                                <h5>PLEDGE</h5>
+                                            <div class="form-subhdr">
+                                                <h5>8. Proforma Invoice</h5>
                                             </div>
                                             <hr>
                                         </div>
                                     </div>
-
-                                    <div class="auth">
-                                        <ul>
-                                            <p>
-                                                I, the undersigned confirm that the above-mentioned Conformity Assessment Body have been processed in accordance with Law No. 2/ 2010 regarding organizing work of conformity assessment bodies operating in the emirate of Dubai, and pledge to abide by the application requirements described below:
-                                            </p>
-                                            <ol>
-                                                <li>Providing all the required documents at the site by the time of audit visit as per the requirements of the system and its executive administrative.</li>
-
-                                                <li>The presence of the Director and the staff involved at the site during the audit visit. </li>
-
-                                                <li>Notify the Accreditation Department in the event of any amendments to the Quality Management System.</li>
-                                                
-                                                <li>Tolerate all the consequences and legal sanctions in case of violation of any of the conditions. </li>
-
-                                                <li>Therefore, kindly make an appointment for on-site audit in preparation for issuing the permit activity.</li>
-
-                                            </ol>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
+                                    <!-- paymentFilePath -->
                                     <div class="row">
-                                        <div class="col-md-12 p-0">
-                                            <div class="form-subhdr form_subhdr">
-                                                <h5>ON THE BEHALF OF THE APPLICANT COMPANY</h5>
-                                            </div>
-                                            <hr>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-12 p-0">
-                                            <div class="form-subheader-data subhead-dt">
-                                                <h5>SIGNED FOR AND ON BEHALF OF APPLICANT</h5>
-                                            </div>
-                                            <hr>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Organization Name</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Organization Name" name="organization_name" [(ngModel)]="workPermitForm.organization_name">
-                                                <mat-error></mat-error>  
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Full Name of Authorized Representative</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Full Name of Authorized Representative" name="representative_name" [(ngModel)]="workPermitForm.representative_name">
-                                                <mat-error></mat-error>  
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Behalf Designation</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Behalf Designation" name="behalf_designation" [(ngModel)]="workPermitForm.behalf_designation">
-                                                <mat-error></mat-error>  
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Digital Signature</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Digital Signature" name="digital_signature" [(ngModel)]="workPermitForm.digital_signature">
-                                                <mat-error></mat-error>  
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Date</mat-label>
-                                                <input matInput placeholder="Date" name="onbehalf_representative_date" 
-                                                [(ngModel)]="workPermitForm.application_date" [value]="Service.returnCurrentDate()">
-                                            </mat-form-field>
-                                        </div>
+                                        <app-loader *ngIf="loaderPdf"></app-loader>
+                                        <p *ngIf="errorLoader">Error Loading PDF</p>
+                                        <pdf-viewer [src]="paymentFilePath" [show-all]="true" [stick-to-page]="true"
+                                            [zoom]="1.0" [original-size]="false" [autoresize]="true"
+                                            [show-borders]="true" (error)="onError($event)" (on-progress)="onProgress($event)"
+                                            (after-load-complete)="completeLoadPDF($event)"
+                                            [render-text]="true" [ngStyle]="{'margin':'0 auto'}">
+                                        </pdf-viewer>
                                     </div>
                                 </div>
                             </div>
-                                
                         </div>
-
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
-                                    <div class="button-content"> 
-                                        <button class="cancel-bttn" (click)="savedraftStep()" type="button">SAVE AS DRAFT</button>
+                                    <div class="button-content">
+                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice')">BACK</a> 
+                                        <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice(ngForm8, true)">SAVE AS DRAFT</button> -->
+                                        <!-- <button class="submit-bttn submit-health" (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)">CONTINUE</button> -->
                                     </div>
-                                    <button class="submit-bttn submit-health">CONTINUE</button>
+                                    <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button>
+                                    <ng-container *ngIf="transactions.length">
+                                        <div id="paypalPayment"></div>
+                                    </ng-container>
                                 </div>
                             </div>
                         </div>
                     </form>
-                </div> -->
+                </div>
+
+                <div class="cust-stepper" id="payment_update" [ngStyle]="{'display':'none'}">
+                    <form #ngForm8="ngForm" (ngSubmit)="onSubmitPaymentInformation(ngForm8)" autocomplete="off">
+                        <div class="row form-bdy m-0">
+                            <div class="wrapper">
+                                <!--  (ngSubmit)="onSubmitPaymentInformation(ngForm8)" -->
+                                
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr">
+                                                <h5>9. Payment Update</h5>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Voucher Code</mat-label>
+                                                <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                                                matInput placeholder="Voucher Code" readonly="true"
+                                                [(ngModel)]="voucherSentData.voucher_code">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <!-- (click)="Service._openCalendar(payment_date)"  [min]="minDate"-->
+                                                <mat-label>Payment Date</mat-label>
+                                                <input matInput [matDatepicker]="payment_date" 
+                                                readonly="true"
+                                                 name="payment_date" 
+                                                [(ngModel)]="voucherSentData.payment_date" placeholder="Payment Date" required>
+                                                <!-- <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle> -->
+                                                <mat-datepicker #payment_date disabled="false"></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Payment Amount</mat-label>
+                                                <input type="number"  readonly="true" [ngModelOptions]="{standalone: true}" required="true"
+                                                matInput placeholder="Payment Amount" 
+                                                [(ngModel)]="voucherSentData.amount">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Transaction Number</mat-label>
+                                                <input type="text" [ngModelOptions]="{standalone: true}" required="true"
+                                                matInput placeholder="Transaction Number" 
+                                                [(ngModel)]="voucherSentData.transaction_no">
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Payment Method</mat-label>
+                                                <mat-select placeholder="Select" name="city" [(ngModel)]="voucherSentData.payment_method" required>
+                                                    <mat-option value="Cash">Cash</mat-option>
+                                                    <mat-option value="Online">Online</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Payment Made By</mat-label>
+                                                <input type="text" [ngModelOptions]="{standalone: true}" required="true"
+                                                matInput placeholder="Payment Made By" 
+                                                [(ngModel)]="voucherSentData.payment_made_by">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Mobile Number</mat-label>
+                                                <input type="text" [ngModelOptions]="{standalone: true}" required="true"
+                                                matInput placeholder="Mobile Number" 
+                                                [(ngModel)]="voucherSentData.mobile_no" required>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span class="fileupload">
+                                                <input type="file" name="payment_receipt"                                
+                                                (change)="validateFileVoucher($event, 'payment_receipt')" required>
+                                                <span class="icon-attach attach-data"></span>
+                                            </span>
+                                            <p class="error" *ngIf="paymentReceiptValidation == false">Please Upload a valid file (ex: pdf)</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <span id="openAppDialog" (click)="openView(appComp)"></span>
+                                <ng-template #appComp let-modal>
+                                    <div class="main_pop">
+                                        <div class="pop_close" (click)="closeChecklistDialog()">
+                                            <span class="icon-close"></span>
+                                        </div>
+                                        <div class="pop_thanks">
+                                            <h5>Thank you</h5>
+                                            <p>Your Application has been submitted successfully and is under review. Please check the status and your dashboard for updates.</p>
+                                            <button class="submit-bttn" (click)="closeChecklistDialog()" 
+                                            routerLink="/dashboard/cab_client/status/all">Return to Status</button>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="bttns-health bttn-staff">
+                                    <div class="button-content">
+                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" 
+                                            (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK
+                                        </a>
+                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step8')">SAVE AS DRAFT</button>
+                                    </div>
+                                    <button class="submit-bttn submit-health" >SUBMIT</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="cust-stepper" id="application_complete" [ngStyle]="{'display':'none'}">
+                    <div class="row mt-3">
+                        <div class="col-md-12">                        
+                            <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('payment_update',headerSteps,'menu','application_complete')">BACK</a>
+                        </div>
+
+                    </div>
+                </div>
 
             </div>
         </div>

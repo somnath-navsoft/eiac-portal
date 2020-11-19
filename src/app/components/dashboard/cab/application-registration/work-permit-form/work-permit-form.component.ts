@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { Constants } from 'src/app/services/constant.service';
 import { AppService } from 'src/app/services/app.service';
 import { ToastrService } from 'ngx-toastr';
+declare let paypal: any;
+// import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import { TrainerService } from '../../../../../services/trainer.service';
 
 @Component({
   selector: 'app-work-permit-form',
@@ -83,8 +86,19 @@ export class WorkPermitFormComponent implements OnInit {
   ownOrgBasicInfo:any = [{}];
   ownOrgMembInfo:any = [{}];
   formApplicationId:any;
+  transactionsItem: any={};
+  voucherSentData: any = {};
+  total: any = 0;
+  transactions: any[] =[];
+  voucherFile:any = new FormData();
+  pathPDF: any;
+  closeResult: string;
+  // modalOptions:NgbModalOptions;
+  accredAgreemFile: any;
+  checklistDocFile: any;
+  paymentReceiptValidation:boolean
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
+  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,public _trainerService:TrainerService) { }
 
   ngOnInit() {
     this.getWorkPermitId = sessionStorage.getItem('workPermitId');
@@ -320,6 +334,193 @@ export class WorkPermitFormComponent implements OnInit {
 
   onSubmit4(ngForm4) {
     this.Service.moveSteps('documents_tobe_attached', 'authorization_ofthe_application', this.headerSteps);
+    
+  }
+
+  onSubmit5(ngForm5) {
+    this.transactionsItem['amount']               = {};
+    this.transactionsItem['amount']['total']      = 0.00;
+    this.transactionsItem['amount']['currency']   = 'USD';
+    this.transactionsItem['amount']['details']    = {};
+    this.transactionsItem['amount']['details']['subtotal'] = 0.00;
+    //declare Items data
+    this.transactionsItem['item_list']            = {};
+    this.transactionsItem['item_list']['items']   = [];
+    // let custPrice: any = 0.01;
+    // this.total = 0.05;
+    let custPrice: any = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//0.01;
+    this.total = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//0.05;
+    this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity: 1, price: custPrice, currency: 'USD'});
+      if(this.total > 0){
+        ////console.log("Calculate price: ", calcPrice);
+        this.transactionsItem['amount']['total'] = custPrice.toFixed(2);
+        this.transactionsItem['amount']['details']['subtotal'] = custPrice.toFixed(2);
+        this.transactions.push(this.transactionsItem);
+        ////console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
+      }
+      setTimeout(() => {
+        this.createPaymentButton(this.transactionsItem, this.workPermitForm, this);
+        let elem = document.getElementsByClassName('paypal-button-logo');
+        //console.log("button creting...");
+        if(elem){
+          //console.log("button creted...");
+        }else{
+          //console.log("Loding button...");
+        }
+      }, 100)
+  }
+
+  createPaymentButton(itemData: any, formObj?:any, compObj?:any){
+    ////console.log("creating....buttons...", this.paymentReview, " :: ", this.paymentReview.length, " -- ",this.transactionsItem, " --- ", this.transactions);
+   //AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl = das.abhishek77@gmail.com
+   //Get transaction ID - https://uateloper.paypal.com/docs/checkout/reference/server-integration/get-transaction/#on-the-server
+    if(this.transactions.length){
+      //console.log('Paypal');
+      this.loadExternalScript("https://www.paypalobjects.com/api/checkout.js").then(() => {
+      paypal.Button.render({
+        env: 'sandbox',
+        client: {
+          sandbox: 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
+        },
+        commit: true,
+        payment: function (data, actions) {
+          //console.log("@Paypal payment actionms: ", actions, " -- ", data, " --- ", itemData);        
+          return actions.payment.create({
+            payment: {
+              transactions: [itemData]
+            }
+          })
+        },
+        onAuthorize: function(data, actions) {
+          //console.log("@Paypal onAuthorize actionms: ", actions, " -- ", data);
+          return actions.payment.execute().then(function(payment) {
+            //console.log(">>>Success: ", payment);
+            formObj.paypalReturn = payment;
+            formObj.paypalStatus = 'success';
+            //console.log("<<<Review obj: ", formObj, " :: ", compObj);
+            compObj.saveInspectopnAfterPayment(formObj);
+          })
+        },
+        onCancel: (data, actions) => {
+          //console.log('OnCancel', data, actions);
+          //this.showCancel = true;
+          formObj.paypalReturn = data;
+          formObj.paypalStatus = 'cancel';
+          this.toastr.warning("You have cancelled payment, Continue next step please complete payment process again.", 'Paypal>>',{timeOut:6500});
+      },
+      onError: err => {
+          //console.log('OnError', err);
+          formObj.paypalReturn = err;
+          formObj.paypalStatus = 'error';
+          //compObj.saveCourseAfterPayment(formObj);
+          this.toastr.error("Paypal transaction error has occured, please try again", 'Payment Return'); 
+      },
+      onClick: (data, actions) => {
+          //console.log('onClick', data, actions);
+          //this.resetStatus();
+      }
+      }, '#paypalPayment');
+    });
+    }
+  }
+
+  private loadExternalScript(scriptUrl: string) {
+    return new Promise((resolve, reject) => {
+      const scriptElement = document.createElement('script')
+      scriptElement.src = scriptUrl
+      scriptElement.onload = resolve
+      ////console.log("load script...");
+      document.body.appendChild(scriptElement)
+    })
+  }
+  
+  saveInspectopnAfterPayment(theData: any){
+    ////console.log(">>> The Data: ", theData);
+    this.transactions = [];
+    this.toastr.success('Payment Success, Thank you.','Paypal>>',{timeOut:2000});
+    setTimeout(()=> {
+      // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+      //////console.log("moving...");
+      this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+    }, 1000)      
+    //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+  }
+
+  onSubmitPaymentInformation(ngForm6: any, type?: boolean){
+      ////console.log("payment submitting.....");
+      this.workPermitForm = {};
+      this.workPermitForm.step6 = {};
+      
+        let dtFormat: string = '';
+        if(this.voucherSentData['payment_date'] != undefined && 
+          this.voucherSentData['payment_date']._i != undefined){
+          var dtData = this.voucherSentData['payment_date']._i;
+          var year = dtData.year;
+          var month = dtData.month;
+          var date = dtData.date;
+          dtFormat = year + "-" + month + "-" + date;
+        }
+        //     
+      
+      this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
+      this.voucherFile.append('amount',this.voucherSentData['amount']);
+      this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
+      this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
+      this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
+      this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
+      this.voucherFile.append('voucher_date',dtFormat);
+      this.voucherFile.append('accreditation',this.formApplicationId);
+      this.voucherFile.append('is_draft', false);
+      // this.voucherFile.append('application_id',this.formApplicationId);
+          
+      this.loader = false;
+      if(ngForm6.form.valid && this.paymentReceiptValidation != false) {
+        // //console.log(this.voucherFile);
+          this._trainerService.paymentVoucherSave((this.voucherFile))
+          .subscribe(
+              result => {
+                this.loader = true;
+                let data: any = result;
+                ////console.log("submit voucher: ", data);
+                if(data.status){
+                  //this.voucherFile = new FormData();
+                  //this.voucherSentData = {};
+                  //this.toastr.success("Your form has been successfully submitted and it is under review.We will update you shortly.",'THANK YOU');
+                  setTimeout(()=>{
+                    let elem = document.getElementById('openAppDialog');
+                    //console.log("App dialog hash....", elem);
+                    if(elem){
+                      elem.click();
+                    }
+                  }, 100)
+                  //this.openView('appComp','');
+                  setTimeout(() => {                    
+                    // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+                    this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+                  },3500)
+                  
+                }else{
+                  this.toastr.warning(data.msg,'');
+                }
+              }
+            )
+      }else if(type != undefined && type == true && this.paymentReceiptValidation != false){
+        this.workPermitForm.step9.is_draft = true;
+        this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.workPermitForm)
+        .subscribe(
+        res => {
+          ////console.log(res,'res')
+          if(res['status'] == true) {
+            this.toastr.success(res['msg'], '');
+            //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+      }
+      else{
+        this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+      }
     
   }
 
