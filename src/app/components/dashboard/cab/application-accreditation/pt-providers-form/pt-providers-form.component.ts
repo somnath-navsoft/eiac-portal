@@ -294,10 +294,10 @@ export class PtProvidersFormComponent implements OnInit {
       title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
       },
       {
-      title:'personal_information', desc:'2. Personal Information', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
+      title:'personal_information', desc:'2. Personnel Information', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
       },
       {
-      title:'information_audit_management', desc:'3. Internal Audit & Management', activeStep:false, stepComp:false, icon:'icon-task', activeClass:''
+      title:'information_audit_management', desc:'3. Internal Audit & MRM Date', activeStep:false, stepComp:false, icon:'icon-task', activeClass:''
       },
       {
         title:'scope_accreditation', desc:'4. Accreditation Scope', activeStep:false, stepComp:false, icon:'icon-sheet', activeClass:''
@@ -322,9 +322,10 @@ export class PtProvidersFormComponent implements OnInit {
       },
     );
     //
+    //undertaking_confirmTop3: false
     this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  
       undertaking_confirm1:false,undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,
-      undertaking_confirm8: false,undertaking_confirmTop3: false,undertaking_confirm9: false,
+      undertaking_confirm8: false,undertaking_confirm9: false,
       undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false};
  }
 
@@ -1240,7 +1241,7 @@ setexDate(date){
               if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
                 //console.log('>>>Accr infor: ', getData.data.otherAccr);
                 this.accreditationInfo = [];
-                
+                this.step1Data.is_hold_other_accreditation_select = "1";
                 //this.accreditationInfo = '';
                 res['data'].otherAccr.forEach((item, key) => {
                     ////console.log('>> ', item, " :: ", key);
@@ -1255,6 +1256,8 @@ setexDate(date){
                       return;
                     }
                 })
+              }else{
+                this.step1Data.is_hold_other_accreditation_select = "0";
               }
 
               //step2
@@ -1299,7 +1302,9 @@ setexDate(date){
 
               //Step 6
               if(res['data'].is_prelim_visit != null){
-                this.step6Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
+                //alert(">>"+res['data'].is_prelim_visit);
+                this.step6Data.prelim_visit_val = (res['data'].is_prelim_visit) ? "1" : "0";
+                //alert(">>"+this.step6Data.is_prelim_visit);
                 this.step6Data.prelim_visit_date = res['data'].prelim_visit_date;
                 this.step6Data.prelim_visit_time = res['data'].prelim_visit_time;
               }
@@ -2107,8 +2112,8 @@ saveScope(rowInd: any){
         }
     }
   }
-  ////console.log("#Updated Scope after edit: ", scopeCollections, " -- ", this.editScopeData);
-  this.step5Data['scopeDetails']    = scopeCollections;
+  console.log("#Updated Scope after edit: ", scopeCollections, " -- ", this.editScopeData);
+  this.step4Data['scopeDetails']    = scopeCollections;
 }
 //scopeCollections[selectScheme]['scope_heading'][keyIds]  //assign scope heading
 //scopeCollections[selectScheme]['scope_value'] //assign unmatch scope value
@@ -2178,10 +2183,11 @@ onSubmitStep4(ngForm: any, type?: any , rowInd?:any) {
   //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
 
   this.ptProvidersForm = {};
-  this.ptProvidersForm.step5 = {};
-  this.ptProvidersForm.step5 = this.step5Data;
-  this.ptProvidersForm.step5.application_id = this.formApplicationId;
-  this.ptProvidersForm.step5['scheme_id'] = 1;//this.schemeRows[0].id;
+  this.ptProvidersForm.step4 = {};
+  this.ptProvidersForm.step4 = this.step4Data;
+  var applicationId = sessionStorage.getItem('applicationId');
+  this.ptProvidersForm.step4.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+  this.ptProvidersForm.step4['scheme_id'] = 1;//this.schemeRows[0].id;
   // if(this.step5Data.criteria_request != undefined){
   //   let schemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id);
   //   ////////console.log("scheme data: ", schemeData);
@@ -2234,9 +2240,9 @@ onSubmitStep4(ngForm: any, type?: any , rowInd?:any) {
 
     ////console.log("scheme Rows: ", this.schemeRows,  " -- ", this.schemeRows.length, " :: ", this.editScopeData, " :: ", this.getScopeData);
 
-    //////console.log(">>>Form Submit: ", ngForm, " -- ",ngForm.form, " -- ", this.schemeRows); 
+    //console.log(">>> step4 submit...", this.step4Data, " -- ", this.ptProvidersForm); 
    
-   //return;
+    //return;
     //ngForm.form.valid &&
     if(!ngForm.form.valid && type == undefined && this.schemeRows.length == 1 
         && this.schemeRows[0].id === undefined && this.editScopeData != undefined && this.editScopeData != null) {
@@ -2263,9 +2269,11 @@ onSubmitStep4(ngForm: any, type?: any , rowInd?:any) {
       console.log(">>>Scope saving...");
       console.log(">>>Enter....3")
       this.saveScope(rowInd);
+      
+      this.ptProvidersForm.step4.is_draft = false;
+      this.ptProvidersForm.saved_step = 4;
       console.log(">>> step5 submit...", this.step5Data, " -- ", this.ptProvidersForm);
-      this.ptProvidersForm.step5.is_draft = false;
-      this.ptProvidersForm.saved_step = 5;
+      //return;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
       .subscribe(
        async res => {
@@ -2401,7 +2409,7 @@ authorizeCheckCount(theEvent: any, type?:any){
   if(theEvent.checked || readChecked == true){
     for(let key in this.authorizationList) {
       ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
-      if(this.authorizationList[key] && key != 'undertaking_confirmTop3') {  
+      if(this.authorizationList[key]) {  
         this.authorizationStatus = true;       
         checkCount++;
       }    
@@ -2438,7 +2446,7 @@ this.isApplicationSubmitted = true;
 let checkCount = 0;
 for(let key in this.authorizationList) {
   ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
-  if(this.authorizationList[key] && key != 'undertaking_confirmTop3') {  
+  if(this.authorizationList[key]) {  
     this.authorizationStatus = true;       
     checkCount++;
   }      
@@ -2450,10 +2458,10 @@ if(this.authorizationStatus && checkCount == 11){
 }
 
 
-if(this.authorizationStatus == false){
-  this.isSubmit = false;
-  this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
-}
+// if(this.authorizationStatus == false){
+//   this.isSubmit = false;
+//   this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
+// }
 // else if(this.step7Data.recommend_visit == ''){
 //   this.isSubmit = false;
 //   this.toastr.error('Please Check any recommend the visit ', '');
@@ -2511,7 +2519,7 @@ if(ngForm7.form.valid && recomCheckCount > 0 && this.authorizationStatus == true
           this.toastr.success("Application Submitted Successfully");
               setTimeout(() => {
                 this.router.navigateByUrl('/dashboard/status/all');
-              }, 5000)
+              }, 3000)
           // this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
           //this.router.navigateByUrl('/dashboard/status/all');
         }
