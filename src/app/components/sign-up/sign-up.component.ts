@@ -102,17 +102,17 @@ export class SignUpComponent implements OnInit {
       return false;
     }
     if(this.userData.code  == '' ){
-      this.toastr.error("Please select any area code","Validation Error", {timeOut: 3000});
+      this.toastr.error("Please type any area code","Validation Error", {timeOut: 3000});
       return false;
     }
     if(this.userData.mobile  == '' ){
       this.toastr.error("Mobile Number can't be empty","Validation Error", {timeOut: 3000});
       return false;
     }
-    if(this.userData.mobile  != '' && this.userData.mobile.length!=10){
-      this.toastr.error("Mobile Number should be 10 digit","Validation Error", {timeOut: 3000});
-      return false;
-    }
+    // if(this.userData.mobile  != '' && this.userData.mobile.length!=10){
+    //   this.toastr.error("Mobile Number should be 10 digit","Validation Error", {timeOut: 3000});
+    //   return false;
+    // }
     // if(this.userData.mobile_code  == '' ){
     //   this.toastr.error("Mobile Code Number can't be empty","Validation Error", {timeOut: 3000});
     //   return false;
