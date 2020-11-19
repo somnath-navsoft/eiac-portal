@@ -22,9 +22,9 @@
                                         <div class="usernext-icon">
                                             <span [ngClass]="(item.activeClass === 'user-done') ? 'icon-tick' : item.icon"></span>
                                         </div>
-
+                                        <!-- (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}" -->
                                         <div class="user-details-pending" 
-                                        id="course_header" (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}">
+                                        id="course_header" >
                                             <span [innerHTML]="item.desc"></span>
                                         </div>
                                     </div>
@@ -1348,7 +1348,7 @@
                                                     <tr>
                                                         <td><mat-checkbox name="undertaking_confirm2" [disableRipple]="true"
                                                             (click)="$event.preventDefault()" [(ngModel)]="authorizationList.undertaking_confirm2"></mat-checkbox></td>
-                                                        <td><span><a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled Up Document Review Checklist based on the related standard</a> </span> (for 1st submission only)<br/>
+                                                        <td><a href="javascript:void(0)" title="Please review the checklist" alt="Please review the checklist" (click)="openView(checklistView, 'checklist')">Filled In Document Review Checklist</a> based on the related standard(for 1st submission only)<br/>
                                                             <p class="error" *ngIf="!readReviewChecklist  && isApplicationSubmitted == true">Please review the checklist</p>                                                            
                                                         </td>
                                                     </tr>
@@ -1747,7 +1747,7 @@
                                             <h5>Thank you</h5>
                                             <p>Your Application has been submitted successfully and is under review. Please check the status and your dashboard for updates.</p>
                                             <button class="submit-bttn" (click)="closeChecklistDialog()" 
-                                            routerLink="/dashboard/cab_client/status/all">Return to Status</button>
+                                            routerLink="/dashboard/status/all">Return to Status</button>
                                         </div>
                                     </div>
                                 </ng-template>
@@ -1773,9 +1773,9 @@
                     </form>
                 </div>
 
-                <div class="cust-stepper" id="payment_update" [ngStyle]="{'display':'none'}">
+                <!-- <div class="cust-stepper" id="payment_update" [ngStyle]="{'display':'none'}">
 
-                </div>
+                </div> -->
                 
             </div>
         </div>
