@@ -158,8 +158,7 @@ export class MessageComponent implements OnInit {
     // window.open(fileEvent.target.value, '_blank');
     this.localUrl = URL.createObjectURL(fileEvent.target.files[0]);
     this.document = fileEvent.target.files[0];
-    var file_name = fileEvent.target.files[0].name;
-    this.documentName = fileEvent.target.files[0].name;
+    var file_name = fileEvent.target.files[0].name;    
     var file_exe = file_name.substring(file_name.lastIndexOf('.') + 1, file_name.length);
     var ex_type = ['pdf'];
     var ex_check = this.Service.isInArray(file_exe, ex_type);
@@ -167,9 +166,12 @@ export class MessageComponent implements OnInit {
       this.chatMessage.upload_message = fileEvent.target.files[0].name;
       this.chatMessageFile.append('upload_message_file', fileEvent.target.files[0]);
       this.file_validation = true;
+      this.documentName = fileEvent.target.files[0].name;
       return true;
     } else {
       this.file_validation = false;
+      this.documentName = '';
+      this.document = '';
       return false;
     }
 
@@ -214,7 +216,7 @@ export class MessageComponent implements OnInit {
       let formdata = new FormData();
       formdata.append('message_by', this.userId);
       formdata.append('user_id', this.selectedUserId);
-      // formdata.append('message_id', this.replyMessageId);
+      // formdata.append('message_id', null);
       formdata.append('message', this.chatMessage.message);
       formdata.append('document', this.document);
       formdata.append('message_type', 'admin_comment');
@@ -229,6 +231,8 @@ export class MessageComponent implements OnInit {
               this.toastr.success(res['msg'], '');
               // this.getMessage();
             }
+          },err=>{
+            this.loader = true;
           })
     }
   }

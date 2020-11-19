@@ -56,8 +56,7 @@ export class MessageReplyComponent implements OnInit {
   validateFile(fileEvent: any) {
     this.localUrl = URL.createObjectURL(fileEvent.target.files[0]);
     this.document = fileEvent.target.files[0];
-    var file_name = fileEvent.target.files[0].name;
-    this.documentName = fileEvent.target.files[0].name;
+    var file_name = fileEvent.target.files[0].name;    
     var file_exe = file_name.substring(file_name.lastIndexOf('.') + 1, file_name.length);
     var ex_type = ['pdf'];
     var ex_check = this.Service.isInArray(file_exe, ex_type);
@@ -65,9 +64,12 @@ export class MessageReplyComponent implements OnInit {
       this.chatMessage.upload_message = fileEvent.target.files[0].name;
       this.chatMessageFile.append('upload_message_file', fileEvent.target.files[0]);
       this.file_validation = true;
+      this.documentName = fileEvent.target.files[0].name;
       return true;
     } else {
       this.file_validation = false;
+      this.documentName = '';
+      this.document = '';
       return false;
     }
   }
