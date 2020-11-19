@@ -1673,18 +1673,7 @@ savedraftStep(stepCount) {
         }
       });
   }
-<<<<<<< HEAD
-  if(stepCount == 'step3') {
-    this.ptProvidersForm = {};
-    this.ptProvidersForm.step4 = {};
-    var applicationId = sessionStorage.getItem('applicationId');
-    this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step3Data.is_draft = true;
-    this.ptProvidersForm.saved_step = '3';
-    this.ptProvidersForm.email = this.userEmail;
-    this.ptProvidersForm.userType = this.userType;
-    this.ptProvidersForm.step3 = this.step3Data;
-=======
+
 
   if(stepCount == 'step5') {
     this.ptProvidersForm = {};
@@ -1706,7 +1695,6 @@ savedraftStep(stepCount) {
     }
 
     // this.step2DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
->>>>>>> origin/development
     this.loader = true;
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
@@ -1834,18 +1822,12 @@ savedraftStep(stepCount) {
 }
 
 onSubmitStep2(ngForm2: any){
-<<<<<<< HEAD
-  //this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
 
-  if(ngForm2.form.valid) {
-    this.ptProvidersForm = {};
-=======
   // this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
 
   if(ngForm2.form.valid) {
     this.ptProvidersForm = {};
     this.ptProvidersForm.step2 = {};
->>>>>>> origin/development
     // this.step3Data = {};
     var applicationId = sessionStorage.getItem('applicationId');
     // this.step3Data.application_id = applicationId;
@@ -1912,11 +1894,7 @@ onSubmitStep2(ngForm2: any){
 
 onSubmitStep3(ngForm3: any){
 // this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
-<<<<<<< HEAD
-//this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
-=======
 // this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
->>>>>>> origin/development
   if(ngForm3.form.valid) {
     this.ptProvidersForm = {};
     this.ptProvidersForm.step3 = {};
@@ -2189,10 +2167,7 @@ updateScopeData = async(rowInd: number) => {
         if(jsonObject[getScheme]['scope_value'] != undefined){
           jsonObject[getScheme]['scope_value'].reverse();
         }
-<<<<<<< HEAD
-        //console.log(">>> scope: ", jsonObject[getScheme]['scope_value'], " :: ", jsonObject[getScheme]['scope_value'].reverse());
-=======
->>>>>>> origin/development
+
         this.editScopeData = jsonObject;
       }
   });
@@ -2367,21 +2342,15 @@ onSubmitStep4(ngForm: any, type?: any , rowInd?:any) {
 
 onSubmitStep5(ngForm5: any){
   // this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
-<<<<<<< HEAD
-  //this.Service.moveSteps('scope_accreditation', 'about_subcontractors', this.headerSteps);
-=======
+
   // this.Service.moveSteps('scope_accreditation', 'about_subcontractors', this.headerSteps);
->>>>>>> origin/development
   if(ngForm5.form.valid) {
     this.ptProvidersForm = {};
     this.ptProvidersForm.step5 = {};
     this.ptProvidersForm.email = this.userEmail;
     this.ptProvidersForm.userType = this.userType;
-<<<<<<< HEAD
-    this.ptProvidersForm.saved_step = '2';
-=======
+
     this.ptProvidersForm.saved_step = '5';
->>>>>>> origin/development
     var applicationId = sessionStorage.getItem('applicationId');
     // this.step2Data.application_id = applicationId;
     this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
@@ -2389,15 +2358,6 @@ onSubmitStep5(ngForm5: any){
     this.step5Data.is_draft = false;
     this.ptProvidersForm.step5 = this.step5Data;
 
-<<<<<<< HEAD
-    this.ptProvidersForm.step5['aboutSubcontractors'] = [];
-    
-    if(this.ownOrgBasicInfo) {
-      this.ptProvidersForm.step5['aboutSubcontractors'] = this.aboutSubcontractors;
-    }
-
-    // this.step2DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
-=======
     this.ptProvidersForm.step5['aboutSubContractors'] = [];
     
     if(this.ownOrgBasicInfo) {
@@ -2406,7 +2366,6 @@ onSubmitStep5(ngForm5: any){
 
     // this.step2DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
     console.log(this.ptProvidersForm);
->>>>>>> origin/development
     this.loader = true;
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
@@ -2415,11 +2374,8 @@ onSubmitStep5(ngForm5: any){
         this.loader = false;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
-<<<<<<< HEAD
-          this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
-=======
+
           this.Service.moveSteps('about_subcontractors', 'perlim_visit', this.headerSteps);
->>>>>>> origin/development
         }else{
           this.toastr.warning(res['msg'], '');
         }
@@ -2528,17 +2484,11 @@ if(this.authorizationStatus && checkCount == 11){
 }
 
 
-<<<<<<< HEAD
-if(this.authorizationStatus == false){
-  this.isSubmit = false;
-  //this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
-}
-=======
+
 // if(this.authorizationStatus == false){
 //   this.isSubmit = false;
 //   this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
 // }
->>>>>>> origin/development
 // else if(this.step7Data.recommend_visit == ''){
 //   this.isSubmit = false;
 //   this.toastr.error('Please Check any recommend the visit ', '');
