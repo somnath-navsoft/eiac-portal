@@ -78,6 +78,7 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   accreditationInfo:any[] = [];
   hcabOthers:any = {};
   doesHcab:any = {};
+  aboutSubContractors:any[] = [];
 
   cbOtherStandards: any[] = [];
   cbnameOfCountry: any[] = [{}];
@@ -474,6 +475,7 @@ loadScopeDataHalal(){
           this.islamicAffairExpert = result['data']['islamicAffairExpert'] ? result['data']['islamicAffairExpert'][0] : '';
           this.paymentDetails = result['data'].paymentDetails;
           this.editScopeData = result['data']['scopeDetails'];
+          this.aboutSubContractors = result['data']['aboutSubContractors'];
 
           if(result['data'].otherActivityLocations) {
             let getActivity: any =  result['data'].otherActivityLocations;
