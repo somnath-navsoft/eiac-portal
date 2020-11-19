@@ -215,7 +215,7 @@ export class PtProvidersFormComponent implements OnInit {
 
   loadTermsConditions(){
     let post: any = {};
-    post['service_page_id'] = 1; // Medical / healthcare
+    post['service_page_id'] = 10; // Medical / healthcare
     this.Service.post(this.Service.apiServerUrl+"/" + 'terms-and-conditions/', post)
       .subscribe(
         res => {
@@ -223,14 +223,14 @@ export class PtProvidersFormComponent implements OnInit {
           let getData: any = res;
           if(getData){
             this.termsGeneral = getData.data[0];
-            this.termsILA     = getData.data[1];
+            //this.termsILA     = getData.data[1];
 
             if(this.termsGeneral != undefined && this.termsGeneral != ''){
               this.authorizationListTerms1 = this.termsGeneral.term_id;
             }
-            if(this.termsILA != undefined && this.termsILA != ''){
-              this.authorizationListTerms2 = this.termsILA.term_id;
-            }
+            // if(this.termsILA != undefined && this.termsILA != ''){
+            //   this.authorizationListTerms2 = this.termsILA.term_id;
+            // }
 
             //console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
           }

@@ -1084,16 +1084,18 @@ export class NoObjectionFormComponent implements OnInit {
   onSubmitListServiceScope(theForm: any, type?: any){
     //this.Service.moveSteps('list_service_scope', 'list_instrument_equipment', this.headerSteps);
 
-    //For testing lab checkboxes
+      //For testing lab checkboxes
       let testingLabCheckCount = 0;
       let testingLabCheckValues: any = {};
-      let tempObj: any ={};
+      
       testingLabCheckValues['checkItems'] = [];
       testingLabCheckValues['checkItemsOthers'] = [];
       this.testingLabCheckboxes.forEach((item,index) => {
+        let tempObj: any ={};
         if(item.checked == true){
           testingLabCheckCount++;
           tempObj['value'] = item.label;
+          console.log("@heck items: ", item.label);
           testingLabCheckValues['checkItems'].push(tempObj);
         }
       })
@@ -1104,45 +1106,109 @@ export class NoObjectionFormComponent implements OnInit {
         }            
       }
       this.step3Data.testingLabCheckDetails = testingLabCheckValues;
+      this.step3Data.testingLabInformation = this.testingLabInfo;
 
-    if(theForm.form.valid && type == undefined && testingLabCheckCount > 0){
+      //For calibration lab checkboxes
+      let calibrationLabCheckCount = 0;
+      let calibrationLabCheckValues: any = {};
+      
+      calibrationLabCheckValues['checkItems'] = [];
+      calibrationLabCheckValues['checkItemsOthers'] = [];
+      this.calibrationLabCheckboxes.forEach((item,index) => {
+        let tempObj: any ={};
+        if(item.checked == true){
+          calibrationLabCheckCount++;
+          tempObj['value'] = item.label;
+          calibrationLabCheckValues['checkItems'].push(tempObj);
+        }
+      })
+      if(this.calibrationLabCheckItemOthers){
+        if(this.calibrationLabCheckItemOtherInput != '' && this.calibrationLabCheckItemOtherInput != undefined){
+          calibrationLabCheckCount++;
+          calibrationLabCheckValues['checkItemsOthers'].push({value: this.calibrationLabCheckItemOtherInput});
+        }            
+      }
+      this.step3Data.calibrationLabCheckDetails = calibrationLabCheckValues;
+      this.step3Data.calibrationLabInformation = this.calibrationLabInfo;
+
+      //For certification bodies checkboxes
+      let certificationCheckCountFirst = 0;
+      let certificationCheckValuesFirst: any = {};
+      certificationCheckValuesFirst['checkItems'] = [];
+      certificationCheckValuesFirst['checkItemsOthers'] = [];
+      this.certificationBodiesCheckboxesFirst.forEach((item,index) => {
+        let tempObj: any ={};
+      if(item.checked == true){
+          certificationCheckCountFirst++;
+          tempObj['value'] = item.label;
+          certificationCheckValuesFirst['checkItems'].push(tempObj);
+        }
+      })
+      if(this.certificationBodiesCheckItemOthersFirst){
+        if(this.certificationBodiesCheckItemOthersFirstInput != '' && this.certificationBodiesCheckItemOthersFirstInput != undefined){
+          certificationCheckCountFirst++;
+          certificationCheckValuesFirst['checkItemsOthers'].push({value: this.certificationBodiesCheckItemOthersFirstInput});
+        }            
+      }
+      this.step3Data.certificationCheckDetailsFirst = certificationCheckValuesFirst;
+
+      let certificationCheckCountSecond = 0;
+      let certificationCheckValuesSecond: any = {};
+      certificationCheckValuesSecond['checkItems'] = [];
+      certificationCheckValuesSecond['checkItemsOthers'] = [];
+      this.certificationBodiesCheckboxesSecond.forEach((item,index) => {
+        let tempObj: any ={};
+      if(item.checked == true){
+        certificationCheckCountSecond++;
+          tempObj['value'] = item.label;
+          certificationCheckValuesSecond['checkItems'].push(tempObj);
+        }
+      })
+      if(this.certificationBodiesCheckItemOthersSecond){
+        if(this.certificationBodiesCheckItemOthersSecondInput != '' && this.certificationBodiesCheckItemOthersSecondInput != undefined){
+          certificationCheckCountSecond++;
+          certificationCheckValuesSecond['checkItemsOthers'].push({value: this.certificationBodiesCheckItemOthersSecondInput});
+        }            
+      }
+      this.step3Data.certificationCheckDetailsSecond = certificationCheckValuesSecond;
+      this.step3Data.certificationInformation = this.certificationBodiesInfo;
+
+      //Hall Lab checkboxes
+      let halalLabCheckCount = 0;
+      let halalLabCheckValues: any = {};
+      
+      halalLabCheckValues['checkItems'] = [];
+      halalLabCheckValues['checkItemsOthers'] = [];
+      this.halalCabCheckboxes.forEach((item,index) => {
+        let tempObj: any ={};
+        if(item.checked == true){
+          halalLabCheckCount++;
+          tempObj['value'] = item.label;
+          halalLabCheckValues['checkItems'].push(tempObj);
+        }
+      })
+      if(this.halalCabCheckItemOthers){
+        if(this.halalCabCheckItemOthersInput != '' && this.halalCabCheckItemOthersInput != undefined){
+          halalLabCheckCount++;
+          halalLabCheckValues['checkItemsOthers'].push({value: this.halalCabCheckItemOthersInput});
+        }            
+      }
+      this.step3Data.halalLabCheckDetails = halalLabCheckValues;
+
+
+
+    if(theForm.form.valid && type == undefined && testingLabCheckCount > 0 && 
+        calibrationLabCheckCount > 0 && certificationCheckCountFirst > 0 && certificationCheckCountSecond > 0 && halalLabCheckCount > 0){
       this.noObjectionBodyForm = {};      
       this.noObjectionBodyForm.saved_step = 3; 
       
-          //For testing lab
-          // let testingLabCheckValues: any = {};
-          // testingLabCheckValues['checkItems'] = [];
-          // testingLabCheckValues['checkItemsOthers'] = [];
-          // this.testingLabCheckboxes.forEach((item,index) => {
-          //   let tempObj: any ={};
-          //   if(item.checked == true){
-          //     tempObj['value'] = item.label;
-          //     testingLabCheckValues['checkItems'].push(tempObj);
-          //   }
-          // })
-          // if(this.testingLabCheckItemOthers){
-          //   if(this.testingLabCheckItemOtherInput != '' && this.testingLabCheckItemOtherInput != undefined){
-          //     testingLabCheckValues['checkItemsOthers'].push({value: this.testingLabCheckItemOtherInput});
-          //   }            
-          // }
-          // this.step3Data.testingLabCheckDetails = testingLabCheckValues;
-
-      
-      console.log("@Check testing lab checkboxes: ", testingLabCheckCount);
-
-
-
-
-
-
-
 
       this.noObjectionBodyForm.step3 = this.step3Data;
       this.noObjectionBodyForm.step3.application_id = this.formApplicationId;
       this.noObjectionBodyForm.step3.is_draft = false;
       console.log(">> Submit Form: ", this.step3Data, " -- ", this.noObjectionBodyForm);
 
-      //this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
+      this.Service.moveSteps('list_service_scope', 'list_instrument_equipment', this.headerSteps);
       // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
       // .subscribe(
       //   res => {
@@ -1159,10 +1225,10 @@ export class NoObjectionFormComponent implements OnInit {
 
     }else if(type != undefined && type == true){
       this.noObjectionBodyForm = {};
-      this.noObjectionBodyForm.saved_step = 2;      
-      this.noObjectionBodyForm.step2 = this.step2Data;
-      this.noObjectionBodyForm.step2.is_draft = true;
-      console.log(">> Submit Save draft: ", this.step1Data, " -- ", this.noObjectionBodyForm);
+      this.noObjectionBodyForm.saved_step = 3;      
+      this.noObjectionBodyForm.step3 = this.step3Data;
+      this.noObjectionBodyForm.step3.is_draft = true;
+      console.log(">> Submit Save draft: ", this.step3Data, " -- ", this.noObjectionBodyForm);
 
     }else{
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
