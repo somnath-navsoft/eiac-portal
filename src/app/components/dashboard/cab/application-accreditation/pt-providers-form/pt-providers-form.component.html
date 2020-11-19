@@ -520,12 +520,12 @@
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <label class="check-rdo">
-                                                                <mat-radio-button value=true>Yes </mat-radio-button>
+                                                                <mat-radio-button value='true'>Yes </mat-radio-button>
                                                         </label>
                                                     </div>  
                                                     <div class="col-md-4">
                                                         <label class="check-rdo">
-                                                                <mat-radio-button value=false>No </mat-radio-button>
+                                                                <mat-radio-button value='false'>No </mat-radio-button>
                                                         </label>
                                                     </div>  
                                             
@@ -1101,30 +1101,30 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr  *ngFor="let item of aboutSubcontractors; let i = index;">
+                                                        <tr  *ngFor="let item of aboutSubContractors; let i = index;">
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="organization_{{i}}" [(ngModel)]="aboutSubcontractors[i].organization" required> 
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="organization_{{i}}" [(ngModel)]="aboutSubContractors[i].organization" required> 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="function_role_{{i}}" [(ngModel)]="aboutSubcontractors[i].function_and_role" required> 
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="function_role_{{i}}" [(ngModel)]="aboutSubContractors[i].function_and_role" required> 
                                                                 </mat-form-field>
                                                                 
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="basic_for_approval_{{i}}" [(ngModel)]="aboutSubcontractors[i].basic_for_approval" required> 
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="basic_for_approval_{{i}}" [(ngModel)]="aboutSubContractors[i].basis_for_approval" required> 
                                                                 </mat-form-field>
                                                             </td>
                                                             
                                                             <td class="content-icn">
-                                                                <span *ngIf="i >= 0" class="icon-add" (click)="addRow(aboutSubcontractors)"></span> &nbsp;
-                                                                <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(aboutSubcontractors,i)"></span>
+                                                                <span *ngIf="i >= 0" class="icon-add" (click)="addRow(aboutSubContractors)"></span> &nbsp;
+                                                                <span *ngIf="i >= 1" class="icon-cross" (click)="removeRow(aboutSubContractors,i)"></span>
                                                             </td>
                                                         </tr>
                                                     

@@ -177,7 +177,7 @@ export class PtProvidersFormComponent implements OnInit {
   deleteEditScopeConfirm: boolean = false;
   deleteScopeConfirm: boolean = false;
   deleteRowConfirm: boolean = false;
-  aboutSubcontractors:Array<any> = [{}];
+  aboutSubContractors:Array<any> = [{}];
 
   constructor(public Service: AppService, public constant:Constants, private _customModal: CustomModalComponent,
     public router: Router,public toastr: ToastrService,private modalService: NgbModal,public sanitizer:DomSanitizer,public _trainerService:TrainerService) { }
@@ -1231,12 +1231,13 @@ setexDate(date){
                   if(!res['data'].is_main_activity){
                     this.step1Data.is_main_activity_note = res['data'].is_main_activity_note.toString();
                   }
+                  console.log(this.step1Data.is_main_activity,'is_main_activity');
               }
 
-              if(res['data'].otherAccr[0].value != ''){
+              if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
                 //console.log('>>>Accr infor: ', getData.data.otherAccr);
                 this.accreditationInfo = [];
-                this.step1Data.is_hold_other_accreditation_select = "1";
+                
                 //this.accreditationInfo = '';
                 res['data'].otherAccr.forEach((item, key) => {
                     ////console.log('>> ', item, " :: ", key);
@@ -1245,10 +1246,13 @@ setexDate(date){
                     var obj1 = data.replace(/'/g, "\"");
                     let jparse = JSON.parse(obj1);
                     this.accreditationInfo.push(jparse);
+                    // console.log(this.accreditationInfo[0],'accreditationInfo');
+                    if(this.accreditationInfo[0].scheme_name){
+                      this.step1Data.is_hold_other_accreditation_select = "1";
+                    }else{
+                      this.step1Data.is_hold_other_accreditation_select = "0";
+                    }
                 })
-              }else{
-                //this.accreditationInfo = [{}];
-                this.step1Data.is_hold_other_accreditation_select = "0";
               }
 
               //step2
@@ -1288,8 +1292,8 @@ setexDate(date){
               }
 
               //step 5
-              var subcontractors = res['data']['aboutSubcontractors'];
-              this.aboutSubcontractors = subcontractors && subcontractors != '' ? subcontractors : [{}];
+              var subcontractors = res['data']['aboutSubContractors'];
+              this.aboutSubContractors = subcontractors && subcontractors != '' ? subcontractors : [{}];
 
               //Step 6
               if(res['data'].is_prelim_visit != null){
@@ -1372,7 +1376,7 @@ setexDate(date){
 
 onSubmitStep1(ngForm1: any){
 
-  this.Service.moveSteps('application_information', 'personal_information', this.headerSteps);
+  // this.Service.moveSteps('application_information', 'personal_information', this.headerSteps);
   this.isApplicationSubmitted = true;
   //this.isSubmit = true;
 
@@ -1647,10 +1651,10 @@ savedraftStep(stepCount) {
     this.step5Data.is_draft = true;
     this.ptProvidersForm.step5 = this.step5Data;
 
-    this.ptProvidersForm.step5['aboutSubcontractors'] = [];
+    this.ptProvidersForm.step5['aboutSubContractors'] = [];
     
     if(this.ownOrgBasicInfo) {
-      this.ptProvidersForm.step5['aboutSubcontractors'] = this.aboutSubcontractors;
+      this.ptProvidersForm.step5['aboutSubContractors'] = this.aboutSubContractors;
     }
 
     // this.step2DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
@@ -1780,7 +1784,7 @@ savedraftStep(stepCount) {
 }
 
 onSubmitStep2(ngForm2: any){
-  this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+  // this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
 
   if(ngForm2.form.valid) {
     this.ptProvidersForm = {};
@@ -1851,7 +1855,7 @@ onSubmitStep2(ngForm2: any){
 
 onSubmitStep3(ngForm3: any){
 // this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
-this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
+// this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
   if(ngForm3.form.valid) {
     this.ptProvidersForm = {};
     this.ptProvidersForm.step3 = {};
@@ -2306,13 +2310,14 @@ onSubmitStep5(ngForm5: any){
     this.step5Data.is_draft = false;
     this.ptProvidersForm.step5 = this.step5Data;
 
-    this.ptProvidersForm.step5['aboutSubcontractors'] = [];
+    this.ptProvidersForm.step5['aboutSubContractors'] = [];
     
     if(this.ownOrgBasicInfo) {
-      this.ptProvidersForm.step5['aboutSubcontractors'] = this.aboutSubcontractors;
+      this.ptProvidersForm.step5['aboutSubContractors'] = this.aboutSubContractors;
     }
 
     // this.step2DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
+    console.log(this.ptProvidersForm);
     this.loader = true;
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
@@ -2321,7 +2326,7 @@ onSubmitStep5(ngForm5: any){
         this.loader = false;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
-          this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+          this.Service.moveSteps('about_subcontractors', 'perlim_visit', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
         }
