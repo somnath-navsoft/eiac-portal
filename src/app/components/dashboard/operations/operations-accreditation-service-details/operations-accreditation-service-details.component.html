@@ -87,6 +87,7 @@
                   <span *ngIf="serviceDetail?.form_meta == 'testing_calibration'">Testing Calibration</span>
                   <span *ngIf="serviceDetail?.form_meta == 'health_care'">Health Care</span>
                   <span *ngIf="serviceDetail?.form_meta == 'certification_bodies'">Certification Bodies</span>
+                  <span *ngIf="serviceDetail?.form_meta == 'pt_providers'">Certification Bodies</span>
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -387,18 +388,6 @@
                             <td>{{item.converted_date | date:'dd-MM-yyyy'}}</td>
                         </tr>
                       </ng-container>
-                      <!-- <tr>
-                        <td>ISO/IEC 17025</td>
-                        <td>Chris Estrada</td>
-                        <td>Testing Laboratory & 006-1596</td>
-                        <td>21-08-2021</td>
-                      </tr>
-                      <tr>
-                        <td>ISO/IEC 17025</td>
-                        <td>Chris Estrada</td>
-                        <td>Testing Laboratory & 006-1596</td>
-                        <td>21-08-2021</td>
-                      </tr> -->
                     </table>
                   </div>
                 </div>
@@ -814,7 +803,52 @@
                       </ng-container>
                   </ng-container>
 
-                  <ng-container *ngIf="serviceDetail?.form_meta == 'health_care' && editScopeData != undefined && editScopeData != null">
+                  <ng-container *ngIf="serviceDetail?.form_meta == 'inspection_body' && editScopeData != undefined && editScopeData != null">
+                    <!-- <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-subheader-data">
+                                <h5>SCOPE DATA</h5>
+                            </div>
+                        </div>
+                    </div> -->
+                    <ng-container *ngFor="let item of editScopeData | keyvalue">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-appln scope-data">
+                                      <!-- @{{item.value.scope_heading | json}} || {{item.key}} || {{item.value.scope_heading.length}} -->
+                                    <div class="sub-header">
+                                        <h5 [innerHTML]="getSchme(item.key)"></h5>
+                                    </div>
+                                    <table>
+                                        <tr>
+                                            <th *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
+                                            <!-- <th>Action</th> -->
+                                        </tr>
+                                        <ng-container *ngIf="item.value.scope_value.length > 0">
+                                            <tr *ngFor="let item2 of (item.value.scope_value) | keyvalue; let i4 = index;">
+                                                <td *ngFor="let item3 of item2.value | keyvalue;">
+                                                    <span [innerHTML]="(item3.value)"></span>
+                                                </td>
+                                                <!-- <td>
+                                                <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item.key)"></span>
+                                                </td> -->
+                                              </tr>
+                                        </ng-container>
+                                        <ng-container *ngIf="item.value.scope_value.length == 0">
+                                            <tr>
+                                                <td [attr.colspan]="Service.getObjectLength(item.value.scope_heading)+1">
+                                                    No Data
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </table>  
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-container>
+                
+                  <ng-container *ngIf="serviceDetail?.form_meta == 'pt_providers' && editScopeData != undefined && editScopeData != null">
                       <!-- <div class="row">
                           <div class="col-md-12">
                               <div class="form-subheader-data">
@@ -1163,6 +1197,43 @@
         </div>
       </div>
 
+      <div class="row m-0" *ngIf="aboutSubContractors != null">
+        <div class="col-md-12">
+          <div class="row status-det-wrapper">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="appln-subhdr">
+                    <h5>ABOUT SUBCONTRACTORS : PLEASE PROVIDE INFORMATION CONCERNING THE INVOLVEMENT OF ANY SUBCONTRACTORS IN THE PT PROVIDER SCHEME</h5>
+                  </div>
+                  <hr>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="table-appln">
+                    <table>
+                      <tr>
+                        <th>Organization</th>
+                        <th>Function And Role Of Subcontractor Including Activities Subcontracted</th>
+                        <th>Basic For Approval As A Subcontractor</th>
+                      </tr>
+                      <ng-container *ngFor="let item of aboutSubContractors; let i4 = index;">
+                        <tr >
+                            <td>{{item.organization}}</td>
+                            <td>{{item.function_and_role}}</td>
+                            <td>{{item.basis_for_approval}}</td>
+                        </tr>
+                      </ng-container>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <ng-template #ILAView let-modal>
         <div class="modal-header">
           <h4 class="modal-title" id="modal-basic-title">ILA MRA Laboratories</h4>
@@ -1386,6 +1457,43 @@
                           <td>List of key staff and Organizational Structure if not mentioned in the QM</td>
                       </tr>
                   </table>
+
+                  <table *ngIf="serviceDetail?.form_meta == 'pt_providers'">
+                    <tr>
+                        <td width="1%"><span class="icon-tick"></span></td>
+                        <td>Quality Manual</td>
+                    </tr>
+                    <tr>
+                        <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td> 
+                        <td class="authData">
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled in Document Review Checklist</a> based on the related standard(for 1st submission only)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="icon-tick"></span></td>
+                        <td>Internal Procedures (as per the accreditation criteria)</td>
+                    </tr>
+                    <tr>
+                      <td><span class="icon-tick"></span></td>
+                      <td>Minutes/Report of last Management Review</td>
+                    </tr>
+                    <tr>
+                        <td><span class="icon-tick"></span></td>
+                        <td>Report of last Internal Audit</td>
+                    </tr>
+                    <tr>
+                        <td><span class="icon-tick"></span></td>
+                        <td>Participation in PT/ILC/Measurement Audit</td>
+                    </tr>
+                    <tr>
+                        <td><span class="icon-tick"></span></td>
+                        <td>List of key staff and Organizational Structure if not mentioned in the QM</td>
+                    </tr>
+                    <tr>
+                      <td><span class="icon-tick"></span></td>
+                      <td>CMC calculations (for calibration laboratory)</td>
+                  </tr>
+                </table>
 
                   <table *ngIf="serviceDetail?.form_meta == 'certification_bodies'">
                       <tr>
