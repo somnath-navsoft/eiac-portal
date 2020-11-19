@@ -1247,6 +1247,7 @@ setexDate(date){
                     let data: any;
                     data = item['value'];
                     if(data != ''){
+                    this.step1Data.is_hold_other_accreditation_select = "1";
                     var obj1 = data.replace(/'/g, "\"");
                     let jparse = JSON.parse(obj1);
                     this.accreditationInfo.push(jparse);
