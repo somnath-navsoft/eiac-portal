@@ -1246,11 +1246,12 @@ setexDate(date){
                     ////console.log('>> ', item, " :: ", key);
                     let data: any;
                     data = item['value'];
-                    if(data != ''){
-                    this.step1Data.is_hold_other_accreditation_select = "1";
+                   
                     var obj1 = data.replace(/'/g, "\"");
                     let jparse = JSON.parse(obj1);
                     this.accreditationInfo.push(jparse);
+                    if(this.accreditationInfo[0].scheme_name){
+                      this.step1Data.is_hold_other_accreditation_select = "1";
                     }else{
                       this.step1Data.is_hold_other_accreditation_select = "0";
                       return;
@@ -2318,7 +2319,7 @@ onSubmitStep5(ngForm5: any){
     this.ptProvidersForm.step5 = {};
     this.ptProvidersForm.email = this.userEmail;
     this.ptProvidersForm.userType = this.userType;
-    this.ptProvidersForm.saved_step = 5;
+    this.ptProvidersForm.saved_step = '5';
     var applicationId = sessionStorage.getItem('applicationId');
     // this.step2Data.application_id = applicationId;
     this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
