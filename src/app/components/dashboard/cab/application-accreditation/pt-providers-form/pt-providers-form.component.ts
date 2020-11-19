@@ -1270,7 +1270,7 @@ setexDate(date){
                 this.step2Data.management_relevent_experience = getMangData.relevent_experience;
               }
 
-              //step4
+              //step3
               if(res['data'].audit_date != null){
                 this.step3Data.audit_date = new Date(res['data'].audit_date);
               }
@@ -1278,7 +1278,7 @@ setexDate(date){
                 this.step3Data.mrm_date = new Date(res['data'].mrm_date);
               }
 
-              //step 5
+              //step 4
               if(getData.data.scopeDetails != undefined && !this.Service.isObjectEmpty(getData.data.scopeDetails)){
                 ////console.log(">>> ", getData.data.scopeDetails);
                 
@@ -1286,6 +1286,10 @@ setexDate(date){
                 this.Service.oldScopeData = jsonObject;
                 this.editScopeData = jsonObject; 
               }
+
+              //step 5
+              var subcontractors = res['data']['aboutSubcontractors'];
+              this.aboutSubcontractors = subcontractors && subcontractors != '' ? subcontractors : [{}];
 
               //Step 6
               if(res['data'].is_prelim_visit != null){
@@ -1564,12 +1568,13 @@ savedraftStep(stepCount) {
   }
   if(stepCount == 'step2') {
     this.ptProvidersForm = {};
+    this.ptProvidersForm.step2 = {};
     // this.step3Data = {};
     var applicationId = sessionStorage.getItem('applicationId');
     // this.step3Data.application_id = applicationId;
     this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step2Data.is_draft = true;
-    this.ptProvidersForm.saved_step = '3';
+    this.ptProvidersForm.saved_step = '2';
     this.ptProvidersForm.email = this.userEmail;
     this.ptProvidersForm.userType = this.userType;
 
@@ -1594,7 +1599,7 @@ savedraftStep(stepCount) {
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
       res => {
-        console.log(res,'res')
+        // console.log(res,'res')
         if(res['status'] == true) {
           this.loader = false;
           // this.toastr.success(res['msg'], '');
@@ -1606,7 +1611,7 @@ savedraftStep(stepCount) {
   }
   if(stepCount == 'step3') {
     this.ptProvidersForm = {};
-    this.ptProvidersForm.step4 = {};
+    this.ptProvidersForm.step3 = {};
     var applicationId = sessionStorage.getItem('applicationId');
     this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step3Data.is_draft = true;
@@ -1630,7 +1635,38 @@ savedraftStep(stepCount) {
   }
 
   if(stepCount == 'step5') {
+    this.ptProvidersForm = {};
+    this.ptProvidersForm.step5 = {};
+    this.ptProvidersForm.email = this.userEmail;
+    this.ptProvidersForm.userType = this.userType;
+    this.ptProvidersForm.saved_step = '5';
+    var applicationId = sessionStorage.getItem('applicationId');
+    // this.step2Data.application_id = applicationId;
+    this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     
+    this.step5Data.is_draft = true;
+    this.ptProvidersForm.step5 = this.step5Data;
+
+    this.ptProvidersForm.step5['aboutSubcontractors'] = [];
+    
+    if(this.ownOrgBasicInfo) {
+      this.ptProvidersForm.step5['aboutSubcontractors'] = this.aboutSubcontractors;
+    }
+
+    // this.step2DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
+    this.loader = true;
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
+    .subscribe(
+      res => {
+        // console.log(res,'res')
+        this.loader = false;
+        if(res['status'] == true) {
+          // this.toastr.success(res['msg'], '');
+          this.toastr.success('Save Draft Successfully', '');
+        }else{
+          this.toastr.warning(res['msg'], '');
+        }
+      });
   }
   if(stepCount == 'step6') {
     this.ptProvidersForm = {};
@@ -1748,6 +1784,7 @@ onSubmitStep2(ngForm2: any){
 
   if(ngForm2.form.valid) {
     this.ptProvidersForm = {};
+    this.ptProvidersForm.step2 = {};
     // this.step3Data = {};
     var applicationId = sessionStorage.getItem('applicationId');
     // this.step3Data.application_id = applicationId;
@@ -1782,7 +1819,7 @@ onSubmitStep2(ngForm2: any){
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
       res => {
-        console.log(res,'res')
+        // console.log(res,'res')
         this.loader = false;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
@@ -1817,7 +1854,7 @@ onSubmitStep3(ngForm3: any){
 this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
   if(ngForm3.form.valid) {
     this.ptProvidersForm = {};
-    this.ptProvidersForm.step4 = {};
+    this.ptProvidersForm.step3 = {};
     var applicationId = sessionStorage.getItem('applicationId');
     this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step3Data.is_draft = false;
@@ -2255,13 +2292,13 @@ onSubmitStep4(ngForm: any, type?: any , rowInd?:any) {
 
 onSubmitStep5(ngForm5: any){
   // this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
-  this.Service.moveSteps('scope_accreditation', 'about_subcontractors', this.headerSteps);
+  // this.Service.moveSteps('scope_accreditation', 'about_subcontractors', this.headerSteps);
   if(ngForm5.form.valid) {
     this.ptProvidersForm = {};
     this.ptProvidersForm.step5 = {};
     this.ptProvidersForm.email = this.userEmail;
     this.ptProvidersForm.userType = this.userType;
-    this.ptProvidersForm.saved_step = '2';
+    this.ptProvidersForm.saved_step = '5';
     var applicationId = sessionStorage.getItem('applicationId');
     // this.step2Data.application_id = applicationId;
     this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
