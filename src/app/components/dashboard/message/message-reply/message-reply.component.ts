@@ -24,6 +24,8 @@ export class MessageReplyComponent implements OnInit {
   message: any;
   document: any = '';
   attachedFile: string;
+  documentName: any = '';
+  localUrl: string;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) { }
 
@@ -41,7 +43,7 @@ export class MessageReplyComponent implements OnInit {
   getMessage() {
     this.loader = false;
     // https://dev-service.eiac.gov.ae/webservice/message-list/message_id=12  
-    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-list?message_id=' + this.replyMessageId+"&user_id="+this.userId)
+    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-list?message_id=' + this.replyMessageId + "&user_id=" + this.userId)
       .subscribe(
         res => {
           this.messageList = res['data'].message_list;
@@ -52,10 +54,12 @@ export class MessageReplyComponent implements OnInit {
   }
 
   validateFile(fileEvent: any) {
+    this.localUrl = URL.createObjectURL(fileEvent.target.files[0]);
     this.document = fileEvent.target.files[0];
     var file_name = fileEvent.target.files[0].name;
+    this.documentName = fileEvent.target.files[0].name;
     var file_exe = file_name.substring(file_name.lastIndexOf('.') + 1, file_name.length);
-    var ex_type = ['pdf', 'jpeg', 'JPEG', 'png', 'PNG', 'jpg', 'JPG'];
+    var ex_type = ['pdf'];
     var ex_check = this.Service.isInArray(file_exe, ex_type);
     if (ex_check) {
       this.chatMessage.upload_message = fileEvent.target.files[0].name;
@@ -77,6 +81,7 @@ export class MessageReplyComponent implements OnInit {
       let formdata = new FormData();
       formdata.append('user_id', this.userId);
       formdata.append('message_id', this.replyMessageId);
+      formdata.append('message_type', 'reply');
       formdata.append('message', this.chatMessage.message);
       formdata.append('document', this.document);
       this.loader = false;
@@ -92,6 +97,10 @@ export class MessageReplyComponent implements OnInit {
             }
           })
     }
+  }
+
+  showFile() {
+    window.open(this.localUrl, '_blank');
   }
 
 }

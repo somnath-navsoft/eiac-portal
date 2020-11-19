@@ -29,6 +29,9 @@ export class MessageComponent implements OnInit {
   getUserType: string = 'cab_client';
   // searchTerm: any = '';
   selectedUserId: any;
+  document: any = '';
+  documentName: any = '';
+  localUrl: any;
 
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) { }
@@ -152,9 +155,13 @@ export class MessageComponent implements OnInit {
   }
 
   validateFile(fileEvent: any) {
+    // window.open(fileEvent.target.value, '_blank');
+    this.localUrl = URL.createObjectURL(fileEvent.target.files[0]);
+    this.document = fileEvent.target.files[0];
     var file_name = fileEvent.target.files[0].name;
+    this.documentName = fileEvent.target.files[0].name;
     var file_exe = file_name.substring(file_name.lastIndexOf('.') + 1, file_name.length);
-    var ex_type = ['pdf', 'xlsx', 'xlx'];
+    var ex_type = ['pdf'];
     var ex_check = this.Service.isInArray(file_exe, ex_type);
     if (ex_check) {
       this.chatMessage.upload_message = fileEvent.target.files[0].name;
@@ -165,6 +172,8 @@ export class MessageComponent implements OnInit {
       this.file_validation = false;
       return false;
     }
+
+
   }
 
   onSubmit(ngForm) {
@@ -185,19 +194,40 @@ export class MessageComponent implements OnInit {
   }
 
   onOperationSubmit(ngForm) {
-    console.log(ngForm);
+    // console.log(ngForm);
 
+    // if (ngForm.form.valid) {
+    //   this.chatMessage.email = this.userEmail;
+    //   this.chatMessage.userType = this.userType;
+    //   this.loader = false;
+    //   this.chatMessageFile.append('data', JSON.stringify(this.chatMessage));
+    //   this.Service.post(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.profileService, this.chatMessageFile)
+    //     .subscribe(
+    //       res => {
+    //         if (res['status'] == true) {
+    //           this.loader = true;
+    //           this.toastr.success(res['msg'], '');
+    //         }
+    //       })
+    // }
     if (ngForm.form.valid) {
-      this.chatMessage.email = this.userEmail;
-      this.chatMessage.userType = this.userType;
+      let formdata = new FormData();
+      formdata.append('message_by', this.userId);
+      formdata.append('user_id', this.selectedUserId);
+      // formdata.append('message_id', this.replyMessageId);
+      formdata.append('message', this.chatMessage.message);
+      formdata.append('document', this.document);
+      formdata.append('message_type', 'admin_comment');
       this.loader = false;
-      this.chatMessageFile.append('data', JSON.stringify(this.chatMessage));
-      this.Service.post(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.profileService, this.chatMessageFile)
+      this.Service.put(this.Service.apiServerUrl + "/" + 'message-list/', formdata)
         .subscribe(
           res => {
             if (res['status'] == true) {
+              this.chatMessage.message = '';
+              this.chatMessage.upload_message = '';
               this.loader = true;
               this.toastr.success(res['msg'], '');
+              // this.getMessage();
             }
           })
     }
@@ -206,6 +236,10 @@ export class MessageComponent implements OnInit {
   getValue(value) {
     this.selectedUserId = value;
 
+  }
+
+  showFile() {
+    window.open(this.localUrl, '_blank');
   }
 
 }
