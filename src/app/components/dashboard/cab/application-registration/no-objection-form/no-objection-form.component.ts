@@ -1084,11 +1084,51 @@ export class NoObjectionFormComponent implements OnInit {
   onSubmitListServiceScope(theForm: any, type?: any){
     //this.Service.moveSteps('list_service_scope', 'list_instrument_equipment', this.headerSteps);
 
-    if(theForm.form.valid && type == undefined){
+    //For testing lab checkboxes
+      let testingLabCheckCount = 0;
+      let testingLabCheckValues: any = {};
+      let tempObj: any ={};
+      testingLabCheckValues['checkItems'] = [];
+      testingLabCheckValues['checkItemsOthers'] = [];
+      this.testingLabCheckboxes.forEach((item,index) => {
+        if(item.checked == true){
+          testingLabCheckCount++;
+          tempObj['value'] = item.label;
+          testingLabCheckValues['checkItems'].push(tempObj);
+        }
+      })
+      if(this.testingLabCheckItemOthers){
+        if(this.testingLabCheckItemOtherInput != '' && this.testingLabCheckItemOtherInput != undefined){
+          testingLabCheckCount++;
+          testingLabCheckValues['checkItemsOthers'].push({value: this.testingLabCheckItemOtherInput});
+        }            
+      }
+      this.step3Data.testingLabCheckDetails = testingLabCheckValues;
+
+    if(theForm.form.valid && type == undefined && testingLabCheckCount > 0){
       this.noObjectionBodyForm = {};      
       this.noObjectionBodyForm.saved_step = 3; 
       
-      //
+          //For testing lab
+          // let testingLabCheckValues: any = {};
+          // testingLabCheckValues['checkItems'] = [];
+          // testingLabCheckValues['checkItemsOthers'] = [];
+          // this.testingLabCheckboxes.forEach((item,index) => {
+          //   let tempObj: any ={};
+          //   if(item.checked == true){
+          //     tempObj['value'] = item.label;
+          //     testingLabCheckValues['checkItems'].push(tempObj);
+          //   }
+          // })
+          // if(this.testingLabCheckItemOthers){
+          //   if(this.testingLabCheckItemOtherInput != '' && this.testingLabCheckItemOtherInput != undefined){
+          //     testingLabCheckValues['checkItemsOthers'].push({value: this.testingLabCheckItemOtherInput});
+          //   }            
+          // }
+          // this.step3Data.testingLabCheckDetails = testingLabCheckValues;
+
+      
+      console.log("@Check testing lab checkboxes: ", testingLabCheckCount);
 
 
 
@@ -1097,9 +1137,9 @@ export class NoObjectionFormComponent implements OnInit {
 
 
 
-      this.noObjectionBodyForm.step2 = this.step3Data;
-      this.noObjectionBodyForm.step2.application_id = this.formApplicationId;
-      this.noObjectionBodyForm.step2.is_draft = false;
+      this.noObjectionBodyForm.step3 = this.step3Data;
+      this.noObjectionBodyForm.step3.application_id = this.formApplicationId;
+      this.noObjectionBodyForm.step3.is_draft = false;
       console.log(">> Submit Form: ", this.step3Data, " -- ", this.noObjectionBodyForm);
 
       //this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);

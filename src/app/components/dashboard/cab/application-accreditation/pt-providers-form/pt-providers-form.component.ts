@@ -1533,7 +1533,16 @@ onSubmitStep1(ngForm1: any){
         if(res['status'] == true) {
           this.loader = false;
           // this.toastr.success(res['msg'], '');
-          this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
+          let data: any = {};
+            data = res;
+             ////////console.log(res,'Data')
+            if(data.application_id != undefined && data.application_id > 0){
+              this.formApplicationId = data.application_id;
+              sessionStorage.setItem('applicationId',data.application_id);
+              ////////console.log(this.formApplicationId,'App id assigned')
+            }
+          
+            //this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
           this.Service.moveSteps('application_information', 'personal_information', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
@@ -2133,6 +2142,7 @@ getMatchScheme(scId: any, scopeData: any){
 
 updateScopeData = async(rowInd: number) => {
   let getId= (this.formApplicationId);
+  console.log(this.formApplicationId);
   let url = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+getId;
   let getScheme: any  = this.schemeRows[rowInd].id;
 
