@@ -54,7 +54,7 @@
                                     <div class="row mt-3">
                                         <div class="col-md-12 col-sm-12">
                                             <mat-form-field class="cab-data">
-                                                <mat-label>CAB Name official and Commercial Name</mat-label>
+                                                <mat-label>CAB Name Official and Commercial Name</mat-label>
                                                 <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="CAB Name official and Commercial Name" name="official_commercial_name" [(ngModel)]="step1Data.official_commercial_name"  required>
                                                 <mat-error></mat-error>      
                                             </mat-form-field>
@@ -64,7 +64,7 @@
                                     <div class="row pb-3">
                                         <div class="col-md-3 col-sm-6 ">                                            
                                             <div class="form-subheader">
-                                                <span>Type of Accreditation Required:</span>
+                                                <span>Type of Accreditation Required:<span class="required_input">*</span></span>
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-sm-6 p-0 pt-4">
@@ -85,11 +85,11 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-4">
+                                                    <!-- <div class="col-md-4">
                                                         <div class="initial_data">
                                                             <mat-radio-button value="3">Renewal</mat-radio-button>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                                 </mat-radio-group>
                                             </div>
@@ -338,7 +338,7 @@
                                     <div class="row tog-content">
                                         <div class="col-md-12 col-sm-12 p-0">
                                             <div class="form-subheader-data">
-                                                <h5>DOES THE COMPANY HAVE BOARD MEMBERS ?</h5>
+                                                <h5>BOARD MEMBERS</h5>
                                             </div>
                                         </div>
                                         <!-- <div class="col-md-6 col-sm-12 p-0">
@@ -353,13 +353,13 @@
                                     <div class="row" *ngFor="let item of ownOrgMembInfo; let i = index;">
                                         <div class="col-12"  *ngIf="step1Data.is_bod == '1'" >
                                             <div class="ownr-details">
-                                                <div class="row" *ngIf="i >= 1">
+                                                <!-- <div class="row" *ngIf="i >= 1">
                                                     <div class="col-12">
                                                         <div class="remove-clss">
                                                             <span class="icon-close-round" (click)="removeRow(ownOrgMembInfo, i)"></span>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                 <div class="row">
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
@@ -512,7 +512,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-sub">
-                                            <span>Is Testing/Calibration the main activity of the organization :*</span>
+                                            <span>Is Proficiency Testing the main activity of the organization :*</span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -535,7 +535,7 @@
                                                 <p class="error" *ngIf="isApplicationSubmitted == true && selectInspecActivity.errors?.required">Please select anyone option</p>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" *ngIf="step1Data.is_main_activity == 'false'">
                                             <mat-form-field class="cab-data">
                                                 <!-- [required]="ptProvidersForm.is_main_activity == 'false'" -->
                                                 <mat-label>(If No, indicate what are other activities related to the organization)</mat-label>
@@ -717,7 +717,7 @@
                                     <div class="row">
                                         <div class="col-12 p-0">
                                             <div class="form-subheader-data subhead-dt">
-                                                <h5>MANAGEMENT SYSTEM MANAGER</h5>
+                                                <h5>MANAGEMENT MANAGER</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -769,7 +769,8 @@
                                         <button class="cancel-bttn" type="button" (click)="Service.headerStepMove('profciency_testing_participation',headerSteps,'menu','personal_information')">BACK</button> 
                                     </div> -->
                                     <div class="button-content">
-                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('profciency_testing_participation',headerSteps,'menu','personal_information')">BACK</a> 
+                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" 
+                                        (click)="Service.headerStepMove('application_information',headerSteps,'menu','personal_information')">BACK</a> 
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step3')">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >CONTINUE</button>
@@ -820,7 +821,8 @@
                                 <div class="bttns-health bttn-staff">
                                     <!-- (click)="onSubmitInformationAuditManagement()" -->
                                     <div class="button-content">
-                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('personal_information',headerSteps,'menu','information_audit_management')">BACK</a> 
+                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" 
+                                        (click)="Service.headerStepMove('personal_information',headerSteps,'menu','information_audit_management')">BACK</a> 
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step4')">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >CONTINUE</button>
@@ -1063,7 +1065,7 @@
                                     <div class="button-content">
                                         <!-- (click)="Service.headerStepMove('information_audit_management',headerSteps,'menu','scope_accreditation')" -->
                                         <a class="cancel-bttn" href="javascript:void(0)" type="button" 
-                                        (click)="backScopeAccreditation();">BACK....</a> 
+                                        (click)="backScopeAccreditation();">BACK</a> 
                                         <button class="cancel-bttn" type="button" (click)="onSubmitStep4(ngForm5, true)">SAVE AS DRAFT</button> 
                                     </div>
                                     <button class="submit-bttn submit-health" (click)="continueScopeAccreditation()">CONTINUE</button>
@@ -1149,7 +1151,8 @@
                                 <div class="bttns-health bttn-staff">
                                     <!-- (click)="onSubmitTestingParticipation()" -->
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="Service.headerStepMove('application_information',headerSteps,'menu','profciency_testing_participation')">BACK</a> 
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" 
+                                        (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','about_subcontractors')">BACK</a> 
                                         <button class="cancel-bttn" (click)="savedraftStep('step2')" type="button">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >CONTINUE</button>
@@ -1253,7 +1256,8 @@
                                 <div class="bttns-health bttn-staff">
                                     <!--  (click)="onSubmitPerlimVisit()" -->
                                     <div class="button-content">
-                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','perlim_visit')">BACK</a>
+                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" 
+                                        (click)="Service.headerStepMove('about_subcontractors',headerSteps,'menu','perlim_visit')">BACK</a>
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step6')">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health">CONTINUE</button>
@@ -1344,7 +1348,7 @@
                                                     <tr>
                                                         <td><mat-checkbox name="undertaking_confirm2" [disableRipple]="true"
                                                             (click)="$event.preventDefault()" [(ngModel)]="authorizationList.undertaking_confirm2"></mat-checkbox></td>
-                                                        <td><span><a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled Up Document Review Checklist</a>based on the related standard </span> (for 1st submission only)<br/>
+                                                        <td><span><a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled Up Document Review Checklist based on the related standard</a> </span> (for 1st submission only)<br/>
                                                             <p class="error" *ngIf="!readReviewChecklist  && isApplicationSubmitted == true">Please review the checklist</p>                                                            
                                                         </td>
                                                     </tr>
@@ -1454,7 +1458,7 @@
                                             </div>
                                             <div class="auth">
                                                 <mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm8" [(ngModel)]="authorizationList.undertaking_confirm8">
-                                                    Entering the authorised name will serve as an acceptance and digital binding signature for this agreement<span class="required_input">*</span>
+                                                    Entering the authorised name will serve as an acceptance and digital binding signature for this agreement
                                                 </mat-checkbox>
                                                 </div>
                                                 <div class="row">
