@@ -7,7 +7,7 @@
 
           <div class="messaging_chat" *ngFor="let msg of messageList; let i = index;">
               <div class="message_user">
-                  <span>DT</span>
+                  <span>{{msg.message_by_name}}</span>
               </div>
               <div class="message_chat">
                   <div class="message_cnt">
