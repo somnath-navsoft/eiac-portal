@@ -1233,7 +1233,7 @@ setexDate(date){
                   }
               }
 
-              if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
+              if(res['data'].otherAccr[0].value != ''){
                 //console.log('>>>Accr infor: ', getData.data.otherAccr);
                 this.accreditationInfo = [];
                 this.step1Data.is_hold_other_accreditation_select = "1";
