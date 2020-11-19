@@ -54,7 +54,7 @@ export class MessageReplyComponent implements OnInit {
   }
 
   validateFile(fileEvent: any) {
-    this.localUrl = URL.createObjectURL(fileEvent.target.files[0]);
+    this.localUrl = window.URL.createObjectURL(fileEvent.target.files[0]);
     this.document = fileEvent.target.files[0];
     var file_name = fileEvent.target.files[0].name;    
     var file_exe = file_name.substring(file_name.lastIndexOf('.') + 1, file_name.length);

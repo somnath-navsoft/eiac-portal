@@ -2318,7 +2318,7 @@ onSubmitStep5(ngForm5: any){
     this.ptProvidersForm.step5 = {};
     this.ptProvidersForm.email = this.userEmail;
     this.ptProvidersForm.userType = this.userType;
-    this.ptProvidersForm.saved_step = '5';
+    this.ptProvidersForm.saved_step = 5;
     var applicationId = sessionStorage.getItem('applicationId');
     // this.step2Data.application_id = applicationId;
     this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
