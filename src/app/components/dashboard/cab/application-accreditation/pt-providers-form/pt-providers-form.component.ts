@@ -158,7 +158,7 @@ export class PtProvidersFormComponent implements OnInit {
   urlVal: any;
   paymentFile:any = false;
   paymentFilePath: string = '';
-  paymentReceiptValidation:any;
+  paymentReceiptValidation:boolean = false;
   recommendYearValues: any[] = [];
 
   paymentStepComp: boolean = false;
@@ -177,7 +177,7 @@ export class PtProvidersFormComponent implements OnInit {
   deleteEditScopeConfirm: boolean = false;
   deleteScopeConfirm: boolean = false;
   deleteRowConfirm: boolean = false;
-  aboutSubcontractors:Array<any> = [{}];
+  aboutSubContractors:Array<any> = [{}];
 
   constructor(public Service: AppService, public constant:Constants, private _customModal: CustomModalComponent,
     public router: Router,public toastr: ToastrService,private modalService: NgbModal,public sanitizer:DomSanitizer,public _trainerService:TrainerService) { }
@@ -203,6 +203,9 @@ export class PtProvidersFormComponent implements OnInit {
           this.criteriaMaster = res['data']['schemes'];
           this.criteriaList = res['data']['criteriaList'];
           console.log("#Get criteria: ", this.criteriaMaster);
+          if(this.criteriaList.length == 1){
+            this.step1Data.criteria_request = this.criteriaList[0].code;
+            }
   
         },
         error => {
@@ -379,7 +382,7 @@ deleteScopeData(schemId: any, deleteIndex: number){
       .subscribe(
         res => {
           if(res['status'] == true) {
-            this.toastr.success("Saved scope updated...", '');
+            //this.toastr.success("Saved scope updated...", '');
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -1087,9 +1090,9 @@ setexDate(date){
         this.step1Data.fax_no = data.applicant_fax_no;
         this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
         this.step1Data.is_hold_other_accreditation = "1";
-        this.step1Data.is_main_activity = "";
-        this.step1Data.is_main_activity_note = "";
-        this.step1Data.mailing_address = data.applicant_address;
+        //this.step1Data.is_main_activity = "";
+        //this.step1Data.is_main_activity_note = "";
+        this.step1Data.mailing_address = data.mailing_address; //data.applicant_address;
         this.step1Data.official_commercial_name = data.cab_name;
         this.step1Data.official_email = data.applicant_email;
         this.step1Data.official_website = data.applicant_website;
@@ -1146,8 +1149,8 @@ setexDate(date){
                 }
               }
 
-              if(getData.data.accredation_criteria == 2 && saveStep == 3){
-                saveStep = 4;
+              if(getData.data.accredation_criteria == 2 && saveStep == 2){
+                saveStep = 3;
               }
               
               if(res['data'].saved_step  != null){
@@ -1231,24 +1234,27 @@ setexDate(date){
                   if(!res['data'].is_main_activity){
                     this.step1Data.is_main_activity_note = res['data'].is_main_activity_note.toString();
                   }
+                  console.log(this.step1Data.is_main_activity,'is_main_activity');
               }
 
-              if(res['data'].otherAccr[0].value != ''){
+              if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
                 //console.log('>>>Accr infor: ', getData.data.otherAccr);
                 this.accreditationInfo = [];
-                this.step1Data.is_hold_other_accreditation_select = "1";
+                
                 //this.accreditationInfo = '';
                 res['data'].otherAccr.forEach((item, key) => {
                     ////console.log('>> ', item, " :: ", key);
                     let data: any;
                     data = item['value'];
+                    if(data != ''){
                     var obj1 = data.replace(/'/g, "\"");
                     let jparse = JSON.parse(obj1);
                     this.accreditationInfo.push(jparse);
+                    }else{
+                      this.step1Data.is_hold_other_accreditation_select = "0";
+                      return;
+                    }
                 })
-              }else{
-                //this.accreditationInfo = [{}];
-                this.step1Data.is_hold_other_accreditation_select = "0";
               }
 
               //step2
@@ -1288,8 +1294,8 @@ setexDate(date){
               }
 
               //step 5
-              var subcontractors = res['data']['aboutSubcontractors'];
-              this.aboutSubcontractors = subcontractors && subcontractors != '' ? subcontractors : [{}];
+              var subcontractors = res['data']['aboutSubContractors'];
+              this.aboutSubContractors = subcontractors && subcontractors != '' ? subcontractors : [{}];
 
               //Step 6
               if(res['data'].is_prelim_visit != null){
@@ -1356,13 +1362,20 @@ setexDate(date){
                   this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
                   this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
                   this.voucherSentData.amount           = res['data'].paymentDetails.amount;
-                  this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
-                  this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
-                  this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
-                  this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+
+                  // this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
+                  // this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
+                  // this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
+                  // this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+                  this.voucherSentData.transaction_no   = (res['data'].paymentDetails.transaction_no != 'null') ? res['data'].paymentDetails.transaction_no : '';
+                  this.voucherSentData.payment_method   = (res['data'].paymentDetails.payment_method != 'null') ? res['data'].paymentDetails.payment_method : '';
+                  this.voucherSentData.payment_made_by  = (res['data'].paymentDetails.payment_made_by != 'null') ? res['data'].paymentDetails.payment_made_by : '';
+                  this.voucherSentData.mobile_no        = (res['data'].paymentDetails.mobile_no != 'null') ? res['data'].paymentDetails.mobile_no : '';
 
                   this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
-                  this.paymentReceiptValidation = true;
+                  if(this.paymentFile != undefined && this.paymentFile != ''){
+                    this.paymentReceiptValidation = true;
+                  }
               }
             }
           }
@@ -1372,7 +1385,7 @@ setexDate(date){
 
 onSubmitStep1(ngForm1: any){
 
-  this.Service.moveSteps('application_information', 'personal_information', this.headerSteps);
+  //this.Service.moveSteps('application_information', 'personal_information', this.headerSteps);
   this.isApplicationSubmitted = true;
   //this.isSubmit = true;
 
@@ -1483,8 +1496,8 @@ onSubmitStep1(ngForm1: any){
     }
     this.ptProvidersForm.step1.is_draft = false;
     this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
-    this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
-    this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
+    this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation_select == '0' ? false : true;
+   // this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
     this.ptProvidersForm.step1 = this.step1Data;
 
     this.ptProvidersForm.step1['ownOrgBasicInfo'] = [];
@@ -1497,7 +1510,8 @@ onSubmitStep1(ngForm1: any){
     if(this.ownOrgMembInfo) {
       this.ptProvidersForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
     }
-    if(this.accreditationInfo) {
+    //if(this.accreditationInfo) {
+    if(this.accreditationInfo.length > 0 && !this.Service.isObjectEmpty(this.accreditationInfo[0]) && this.step1Data.is_hold_other_accreditation_select == '1') {
       this.ptProvidersForm.step1['accreditationInfo'] = this.accreditationInfo;
     }
 
@@ -1549,7 +1563,8 @@ savedraftStep(stepCount) {
     if(this.ownOrgMembInfo) {
       this.ptProvidersForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
     }
-    if(this.accreditationInfo) {
+    //if(this.accreditationInfo) {
+      if(this.accreditationInfo.length > 0 && !this.Service.isObjectEmpty(this.accreditationInfo[0]) && this.step1Data.is_hold_other_accreditation_select == '1') {
       this.ptProvidersForm.step1['accreditationInfo'] = this.accreditationInfo;
     }
     this.loader = true;
@@ -1647,10 +1662,10 @@ savedraftStep(stepCount) {
     this.step5Data.is_draft = true;
     this.ptProvidersForm.step5 = this.step5Data;
 
-    this.ptProvidersForm.step5['aboutSubcontractors'] = [];
+    this.ptProvidersForm.step5['aboutSubContractors'] = [];
     
     if(this.ownOrgBasicInfo) {
-      this.ptProvidersForm.step5['aboutSubcontractors'] = this.aboutSubcontractors;
+      this.ptProvidersForm.step5['aboutSubContractors'] = this.aboutSubContractors;
     }
 
     // this.step2DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
@@ -1759,6 +1774,7 @@ savedraftStep(stepCount) {
     this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
     this.voucherFile.append('voucher_date',dtFormat);
     this.voucherFile.append('accreditation',this.formApplicationId);
+    this.voucherFile.append('is_draft', true);
     // this.voucherFile.append('application_id',this.formApplicationId);
         
     this.loader = true;
@@ -1780,7 +1796,7 @@ savedraftStep(stepCount) {
 }
 
 onSubmitStep2(ngForm2: any){
-  this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
+  // this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
 
   if(ngForm2.form.valid) {
     this.ptProvidersForm = {};
@@ -1851,7 +1867,7 @@ onSubmitStep2(ngForm2: any){
 
 onSubmitStep3(ngForm3: any){
 // this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
-this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
+// this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
   if(ngForm3.form.valid) {
     this.ptProvidersForm = {};
     this.ptProvidersForm.step3 = {};
@@ -2121,6 +2137,9 @@ updateScopeData = async(rowInd: number) => {
       console.log(">>>. Data: ", getData);
       if(getData.data.scopeDetails != undefined && !this.Service.isObjectEmpty(getData.data.scopeDetails)){
         let jsonObject: any = getData.data.scopeDetails;
+        if(jsonObject[getScheme]['scope_value'] != undefined){
+          jsonObject[getScheme]['scope_value'].reverse();
+        }
         this.editScopeData = jsonObject;
       }
   });
@@ -2306,13 +2325,14 @@ onSubmitStep5(ngForm5: any){
     this.step5Data.is_draft = false;
     this.ptProvidersForm.step5 = this.step5Data;
 
-    this.ptProvidersForm.step5['aboutSubcontractors'] = [];
+    this.ptProvidersForm.step5['aboutSubContractors'] = [];
     
     if(this.ownOrgBasicInfo) {
-      this.ptProvidersForm.step5['aboutSubcontractors'] = this.aboutSubcontractors;
+      this.ptProvidersForm.step5['aboutSubContractors'] = this.aboutSubContractors;
     }
 
     // this.step2DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
+    console.log(this.ptProvidersForm);
     this.loader = true;
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
@@ -2321,7 +2341,7 @@ onSubmitStep5(ngForm5: any){
         this.loader = false;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
-          this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+          this.Service.moveSteps('about_subcontractors', 'perlim_visit', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
         }
@@ -2556,7 +2576,7 @@ this.ptProvidersForm.step9 = {};
     dtFormat = year + "-" + month + "-" + date;
   }
   //     
-
+  let is_valid: boolean = false;
 this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
 this.voucherFile.append('amount',this.voucherSentData['amount']);
 this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
@@ -2567,9 +2587,16 @@ this.voucherFile.append('voucher_date',dtFormat);
 this.voucherFile.append('accreditation',this.formApplicationId);
 this.voucherFile.append('is_draft', false);
 // this.voucherFile.append('application_id',this.formApplicationId);
+if(this.voucherSentData['transaction_no'] != '' && this.voucherSentData['payment_method'] != '' && this.voucherSentData['payment_made_by'] &&
+this.voucherSentData['mobile_no'] != ''){
+  is_valid = true;
+}
     
 this.loader = true;
-if(ngForm9.form.valid && this.paymentReceiptValidation != false) {
+console.log(">>> File: ", this.paymentReceiptValidation);
+//if(ngForm9.form.valid && this.paymentReceiptValidation != false) {
+  //return;
+if(is_valid == true &&  this.paymentReceiptValidation != false) {
   // console.log(this.voucherFile);
     this._trainerService.paymentVoucherSave((this.voucherFile))
     .subscribe(
@@ -2614,6 +2641,7 @@ if(ngForm9.form.valid && this.paymentReceiptValidation != false) {
   });
 }
 else{
+  this.loader = false;
   this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
 }
 
