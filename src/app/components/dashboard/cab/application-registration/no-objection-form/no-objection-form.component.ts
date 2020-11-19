@@ -90,12 +90,33 @@ export class NoObjectionFormComponent implements OnInit {
   cabTypeCertificationBody: any;
   cabTypeHalal: any;
 
-  // Obj:any = {              
-  //     laboratory: '', 
-  //     inspection_body: '',
-  //     certification_body: '',
-  //     halal_cab: '',
-  // };
+  //STEP 3
+  testingLabCheckboxes: any[] = [];
+  testingLabCheckItemOthers:boolean = false;
+  testingLabCheckItemOtherInput: any;
+  testingLabInfo: any[] = [{}];
+  calibrationLabCheckboxes: any[] = [];
+  calibrationLabCheckItemOthers:boolean = false;
+  calibrationLabInfo: any[] = [{}];
+  calibrationLabCheckItemOtherInput: any;
+
+  certificationBodiesCheckboxesFirst: any[] = [];
+  certificationBodiesCheckItemOthersFirst:boolean = false;
+  certificationBodiesCheckItemOthersFirstInput: any;
+
+  certificationBodiesCheckboxesSecond: any[] = [];
+  certificationBodiesCheckItemOthersSecond:boolean = false;
+  certificationBodiesCheckItemOthersSecondInput: any;
+  certificationBodiesInfo: any[] = [{}];
+  certificationBodiesCheckboxesForProducts: boolean = false;
+  certificationBodiesCheckboxesForPersons: boolean = false;
+  certificationBodiesCheckboxesForInspection: boolean = false;
+  halalCabCheckboxes: any[] = [];
+  halalCabCheckItemOthers: boolean = false;
+  halalCabCheckItemOthersInput: any;
+
+  //STEP 4
+
 
   //Add multiple input items
   selectable = true;
@@ -151,6 +172,322 @@ export class NoObjectionFormComponent implements OnInit {
     );
       
     
+    //Step wise checkboxes
+    //STEP 3
+    this.testingLabCheckboxes.push({
+      name: "Construction Materials",
+      checked: false,
+      label: "Construction Materials"
+    },
+    {
+      name: "Environmental",
+      checked: false,
+      label: "Environmental"
+    },
+    {
+      name: "Food",
+      checked: false,
+      label: "Food"
+    },
+    {
+      name: "Geo Technical Investigation",
+      checked: false,
+      label: "Geo Technical Investigation"
+    },
+    {
+      name: "Precious Metals",
+      checked: false,
+      label: "Precious Metals"
+    },
+    {
+      name: "Petroleum and Petrochemical",
+      checked: false,
+      label: "Petroleum and Petrochemical"
+    },
+    {
+      name: "Electrical Appliances",
+      checked: false,
+      label: "Electrical Appliances"
+    },
+    {
+      name: "Metalurgical",
+      checked: false,
+      label: "Metalurgical"
+    },
+    {
+      name: "Textile",
+      checked: false,
+      label: "Textile"
+    });
+
+    this.calibrationLabCheckboxes.push({
+      name: "Density",
+      checked: false,
+      label: "Density"
+    },
+    {
+      name: "Chemical",
+      checked: false,
+      label: "Chemical"
+    },
+    {
+      name: "Electrical",
+      checked: false,
+      label: "Electrical"
+    },    
+    {
+      name: "Flow",
+      checked: false,
+      label: "Flow"
+    },
+    {
+      name: "Fiber Optics",
+      checked: false,
+      label: "Fiber Optics"
+    },
+    {
+      name: "Hardness",
+      checked: false,
+      label: "Hardness"
+    },
+    {
+      name: "Mass",
+      checked: false,
+      label: "Mass"
+    },
+    {
+      name: "Radiological",
+      checked: false,
+      label: "Radiological"
+    },
+    {
+      name: "Pressure",
+      checked: false,
+      label: "Pressure"
+    },
+    {
+      name: "Temperature",
+      checked: false,
+      label: "Temperature"
+    },
+    {
+      name: "Ultrasonic",
+      checked: false,
+      label: "Ultrasonic"
+    },
+    {
+      name: "Torque",
+      checked: false,
+      label: "Torque"
+    },
+    {
+      name: "Viscosity",
+      checked: false,
+      label: "Viscosity"
+    },
+    {
+      name: "Acoustic",
+      checked: false,
+      label: "Acoustic"
+    },
+    {
+      name: "Accelerometer",
+      checked: false,
+      label: "Accelerometer"
+    },
+    {
+      name: "Dimesional",
+      checked: false,
+      label: "Dimesional"
+    },
+    {
+      name: "Force",
+      checked: false,
+      label: "Force"
+    },
+    {
+      name: "Optical",
+      checked: false,
+      label: "Optical"
+    },
+    {
+      name: "Volume",
+      checked: false,
+      label: "Volume"
+    },
+    {
+      name: "Humidity",
+      checked: false,
+      label: "Humidity"
+    });
+
+    this.certificationBodiesCheckboxesFirst.push({
+      name: "ISO 9001",
+      checked: false,
+      label: "ISO 9001"
+    },
+    {
+      name: "ISO 22000",
+      checked: false,
+      label: "ISO 22000"
+    },
+    {
+      name: "ISO 14001",
+      checked: false,
+      label: "ISO 14001"
+    },
+    {
+      name: "OHSAS 18001",
+      checked: false,
+      label: "OHSAS 18001"
+    },
+    {
+      name: "HACCP",
+      checked: false,
+      label: "HACCP"
+    })
+
+    this.certificationBodiesCheckboxesSecond.push({
+      name: "Lifting Equipment Inspection",
+      checked: false,
+      label: "Lifting Equipment Inspection"
+    },
+    {
+      name: "Pressure Equipment Inspection",
+      checked: false,
+      label: "Pressure Equipment Inspection"
+    },
+    {
+      name: "Lifting Accessories Inspection",
+      checked: false,
+      label: "Lifting Accessories Inspection"
+    },
+    {
+      name: "Non Destructive Testing",
+      checked: false,
+      label: "Non Destructive Testing"
+    },
+    {
+      name: "Sustanability Inspection",
+      checked: false,
+      label: "Sustanability Inspection"
+    })
+  
+    this.halalCabCheckboxes.push({
+      name: "Lab",
+      checked: false,
+      label: "Lab"
+    },
+    {
+      name: "IB",
+      checked: false,
+      label: "IB"
+    },
+    {
+      name: "CB",
+      checked: false,
+      label: "CB"
+    }
+    )
+  }
+
+  //Table row Add/Remove
+  addRow(theObj: any){
+    let newRow: any ={};
+    theObj.push(newRow);
+  }
+  removeRow(theObj: any, index: number){
+    theObj.splice(index, 1);
+  }
+
+
+  checkItemClick(theEvt: any, type: string){
+    switch(type){
+
+      case 'testing_lab':
+        if(theEvt.checked){
+          this.testingLabCheckItemOthers = false;
+        }
+      break;
+      case 'calibration_lab':
+        if(theEvt.checked){
+          this.calibrationLabCheckItemOthers = false;
+        }
+      break;
+      case 'certification_body_first':
+        if(theEvt.checked){
+          this.certificationBodiesCheckItemOthersFirst = false;
+        }
+      break;
+      case 'certification_body_second':
+        if(theEvt.checked){
+          this.certificationBodiesCheckItemOthersSecond = false;
+        }
+      break;
+      case 'halal_cab':
+        if(theEvt.checked){
+          this.halalCabCheckItemOthers = false;
+        }
+      break;
+      default:
+      break;
+
+    }
+
+  }
+  checkOthersItemClick(theEvt: any, type: string){
+    switch(type){
+
+      case 'testing_lab':
+        if(theEvt.checked){
+          this.testingLabCheckboxes.forEach(item => {
+            if(item.checked){
+              item.checked = false;
+            }
+          }) 
+        }
+      break;
+      case 'calibration_lab':
+        if(theEvt.checked){
+          this.calibrationLabCheckboxes.forEach(item => {
+            if(item.checked){
+              item.checked = false;
+            }
+          }) 
+        }
+      break;
+      case 'certification_body_first':
+        if(theEvt.checked){
+          this.certificationBodiesCheckboxesFirst.forEach(item => {
+            if(item.checked){
+              item.checked = false;
+            }
+          }) 
+        }
+      break;
+      case 'certification_body_second':
+        if(theEvt.checked){
+          this.certificationBodiesCheckboxesSecond.forEach(item => {
+            if(item.checked){
+              item.checked = false;
+            }
+          }) 
+        }
+      break;
+      case 'halal_cab':
+        if(theEvt.checked){
+          this.halalCabCheckboxes.forEach(item => {
+            if(item.checked){
+              item.checked = false;
+            }
+          }) 
+        }
+      break;
+
+      default:
+      break;
+
+    }
   }
 
   //Add /REmove multiple items
@@ -619,7 +956,7 @@ export class NoObjectionFormComponent implements OnInit {
 
   }
   //organizationArray
-  addRow(obj: any = [],type?: string){
+  addRow1(obj: any = [],type?: string){
     if(type != '' && type != undefined){
       //console.log('1st')
       let getIndex    =   obj.findIndex(rec => rec.type == type);
@@ -634,7 +971,7 @@ export class NoObjectionFormComponent implements OnInit {
       
     return true;
   }
-  removeRow(obj: any, index: number, type?:string){
+  removeRow1(obj: any, index: number, type?:string){
 
     if(type === '' || type == undefined){
       obj.splice(index, 1);
@@ -745,7 +1082,53 @@ export class NoObjectionFormComponent implements OnInit {
   }
 
   onSubmitListServiceScope(theForm: any, type?: any){
-    this.Service.moveSteps('list_service_scope', 'list_instrument_equipment', this.headerSteps);
+    //this.Service.moveSteps('list_service_scope', 'list_instrument_equipment', this.headerSteps);
+
+    if(theForm.form.valid && type == undefined){
+      this.noObjectionBodyForm = {};      
+      this.noObjectionBodyForm.saved_step = 3; 
+      
+      //
+
+
+
+
+
+
+
+
+      this.noObjectionBodyForm.step2 = this.step3Data;
+      this.noObjectionBodyForm.step2.application_id = this.formApplicationId;
+      this.noObjectionBodyForm.step2.is_draft = false;
+      console.log(">> Submit Form: ", this.step3Data, " -- ", this.noObjectionBodyForm);
+
+      //this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
+      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
+      // .subscribe(
+      //   res => {
+      //     if(res['status'] == true) {
+      //       let data: any = {};
+      //       this.isFormSubmitted = false;
+      //        data = res;               
+      //       //this.toastr.success(res['msg'],);
+      //       this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
+      //     }else{
+      //       this.toastr.warning(res['msg'], '');
+      //     }
+      //   });
+
+    }else if(type != undefined && type == true){
+      this.noObjectionBodyForm = {};
+      this.noObjectionBodyForm.saved_step = 2;      
+      this.noObjectionBodyForm.step2 = this.step2Data;
+      this.noObjectionBodyForm.step2.is_draft = true;
+      console.log(">> Submit Save draft: ", this.step1Data, " -- ", this.noObjectionBodyForm);
+
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+
+
   }
 
   onSubmitListInstrumentEquipment(theForm: any, type?: any){

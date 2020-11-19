@@ -123,6 +123,7 @@ export class HalalConformityFormComponent implements OnInit {
   paymentFile:any = false;
   isApplicationSubmitted:any = false;
   public isNoteSubmit:boolean = false;
+  termsILA: any;
   
 
   //Master scope form data declaration
@@ -192,6 +193,8 @@ export class HalalConformityFormComponent implements OnInit {
 
    criteriaMaster: any[] = [];
    fullScope:any[]=[]; 
+   authorizationListTerms1: any; //agreement
+   authorizationListTerms2: any; // ILA/IAF
 
    //fullTypeScope:any={};
    fullTypeScope:any[]=[];
@@ -233,6 +236,7 @@ export class HalalConformityFormComponent implements OnInit {
    hcabLogon1:any;
    hcabLogon2:any;
    hcabLogon3:any;
+   termsGeneral: any;
   
   @ViewChild('captchaRef',{static:true}) captchaRef: RecaptchaComponent;
 
@@ -277,7 +281,7 @@ export class HalalConformityFormComponent implements OnInit {
   ngOnInit() {
     // this.titleService.setTitle('EIAC - Halal Conformity Bodies');
     // this.loadCountryStateCity();
-    window.scrollTo(0,0);
+
     this.addMinutesToTime = this.Service.addMinutesToTime();
 
     this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');
@@ -359,7 +363,7 @@ export class HalalConformityFormComponent implements OnInit {
     )
 
 
-    this.summaryDetails = [{"position":'Managerial/Professional'},{'position':'Decision Maker'},{'position':'Technical'},{'position':'Administrative'},{'position':'Auditors Name'},{'position':'Category Code'},{'position':'Technical Expert'},{'position':'Inspectors Name'},{'position':'Category Code'},{'position':'Islamic Affairs Expert'},{'position':'Others'}];
+    this.summaryDetails = [{"position":'Managerial/Professional','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Decision Maker','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Technical','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Administrative','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Auditors Name','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Category Code','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Technical Expert','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Inspectors Name','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Category Code','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Islamic Affairs Expert','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Others','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''}];
 
     this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,
     undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,
@@ -387,6 +391,7 @@ export class HalalConformityFormComponent implements OnInit {
         label: '4th',
       }
     );
+    this.loadTermsConditions();
   }
 
 
@@ -1065,6 +1070,32 @@ addSchemeRow(obj: any = [],index: number){
             return;
           }
       }
+  }
+
+  loadTermsConditions(){
+    let post: any = {};
+    post['service_page_id'] = 2; // IB
+    this.Service.post(this.Service.apiServerUrl+"/" + 'terms-and-conditions/', post)
+      .subscribe(
+        res => {
+          console.log(res,'Terms data');
+          let getData: any = res;
+          if(getData){
+            
+            this.termsGeneral = getData.data[0];
+            this.termsILA     = getData.data[1];
+            if(this.termsGeneral != undefined && this.termsGeneral != ''){
+              this.authorizationListTerms1 = this.termsGeneral.term_id;
+            }
+            if(this.termsILA != undefined && this.termsILA != ''){
+              this.authorizationListTerms2 = this.termsILA.term_id;
+            }
+
+
+            //console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
+          }
+          
+        });
   }
   
   statelistById = async(country_id) => {
@@ -3067,6 +3098,8 @@ getMatchScheme(scId: any, scopeData: any){
     var applicationId = sessionStorage.getItem('applicationId');
     this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.publicHalalConformityForm.saved_step = '6';
+    this.publicHalalConformityForm.step6.terms1 = this.authorizationListTerms1;
+    this.publicHalalConformityForm.step6.terms2 = this.authorizationListTerms2;
     // this.step6Data.authorizationList = this.authorizationList;
     this.step6Data.authorization_list_json = this.authorizationList;
     this.step6Data.recommend = this.recommend;

@@ -13,6 +13,7 @@ import { TrainerService } from '../../../../../services/trainer.service';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
 import {CustomModalComponent} from '../../../../utility/custom-modal/custom-modal.component';
+import { relativeTimeRounding } from 'moment';
 
 @Component({
   selector: 'app-pt-providers-form',
@@ -27,14 +28,15 @@ export class PtProvidersFormComponent implements OnInit {
   public ptProvidersFormFile: any = new FormData();
   public ownOrgBasicInfo: Array<any> = [];
   public ownOrgMembInfo: Array<any> = [];
-  public proficiencyTesting: Array<any> = [];
+  public proficiencyTesting: Array<any> = [{}];
   public scopeForCalibration: Array<any> = [];
   public scopeForTesting: Array<any> = [];
   public scopeForMedical: Array<any> = [];
 
   isPrelimSubmitted: boolean = false;
 
-  public accreditationInfo: Array<any> = [{}];
+  //public accreditationInfo: Array<any> = [{}];
+  accreditationInfo: any[] = [{}];
   public technicalManager: any = {};
   public managementManager: any = {};
   public medicaMainlLabInfo:Array<any>=[];
@@ -176,6 +178,8 @@ export class PtProvidersFormComponent implements OnInit {
   selectDeleteIndex: any;
   deleteEditScopeConfirm: boolean = false;
   deleteScopeConfirm: boolean = false;
+  deleteRowConfirm: boolean = false;
+  aboutSubcontractors:Array<any> = [{}];
 
   constructor(public Service: AppService, public constant:Constants, private _customModal: CustomModalComponent,
     public router: Router,public toastr: ToastrService,private modalService: NgbModal,public sanitizer:DomSanitizer,public _trainerService:TrainerService) { }
@@ -199,7 +203,11 @@ export class PtProvidersFormComponent implements OnInit {
         res => {
           console.log("@Load Accreditation criteria....", res);         
           this.criteriaMaster = res['data']['schemes'];
+          
           this.criteriaList = res['data']['criteriaList'];
+          if(this.criteriaList.length == 1){
+          this.step1Data.criteria_request = this.criteriaList[0].code;
+          }
           console.log("#Get criteria: ", this.criteriaMaster);
   
         },
@@ -289,16 +297,16 @@ export class PtProvidersFormComponent implements OnInit {
       title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
       },
       {
-      title:'profciency_testing_participation', desc:'2. Profciency Testing Participation', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
+      title:'personal_information', desc:'2. Personnel Information', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
       },
       {
-      title:'personal_information', desc:'3. Personal Information', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
+      title:'information_audit_management', desc:'3. Internal Audit & MRM Date', activeStep:false, stepComp:false, icon:'icon-task', activeClass:''
       },
       {
-      title:'information_audit_management', desc:'4. Internal Audit & Management', activeStep:false, stepComp:false, icon:'icon-task', activeClass:''
+        title:'scope_accreditation', desc:'4. Accreditation Scope', activeStep:false, stepComp:false, icon:'icon-sheet', activeClass:''
       },
       {
-        title:'scope_accreditation', desc:'5. Accreditation Scope', activeStep:false, stepComp:false, icon:'icon-sheet', activeClass:''
+      title:'about_subcontractors', desc:'5. About Subcontractors', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
       title:'perlim_visit', desc:'6. Prelim Visit', activeStep:false, stepComp:false, icon:'icon-paper', activeClass:''
@@ -322,6 +330,16 @@ export class PtProvidersFormComponent implements OnInit {
       undertaking_confirm8: false,undertaking_confirmTop3: false,undertaking_confirm9: false,
       undertaking_confirm5:false,undertaking_confirm6:false,undertaking_confirm7:false};
  }
+
+ openDialog(delKey: any, delIndex: any){
+  ////console.log(">>>delete ", delKey, " -- ", delIndex);
+  if(delKey){
+    ////console.log("assign delete id: ", delIndex, " -- ", delKey);
+    this.selectDeleteIndex = delIndex;
+    this.selectDeleteKey = delKey;
+    this.deleteRowConfirm = true;
+  } 
+}
 
 
 /**************************
@@ -956,6 +974,7 @@ setexDate(date){
    if(type === '' || type == undefined){
      obj.splice(index, 1);
    }    
+   this._customModal.closeDialog();
    return true;
  }
  showHideMembInfo(data){
@@ -1073,9 +1092,9 @@ setexDate(date){
         this.step1Data.date_of_issue = new Date(data.date_of_issue);
         this.step1Data.fax_no = data.applicant_fax_no;
         this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
-        this.step1Data.is_hold_other_accreditation = "1";
-        this.step1Data.is_main_activity = "";
-        this.step1Data.is_main_activity_note = "";
+        // this.step1Data.is_hold_other_accreditation = "";
+        // this.step1Data.is_main_activity = "";
+        // this.step1Data.is_main_activity_note = "";
         this.step1Data.mailing_address = data.applicant_address;
         this.step1Data.official_commercial_name = data.cab_name;
         this.step1Data.official_email = data.applicant_email;
@@ -1132,6 +1151,10 @@ setexDate(date){
                   saveStep = parseInt(getData.data.saved_step);
                 }
               }
+
+              if(getData.data.accredation_criteria == 2 && saveStep == 2){
+                saveStep = 3;
+              }
               
               if(res['data'].saved_step  != null){
                 /////console.log("@saved step assign....");
@@ -1153,6 +1176,14 @@ setexDate(date){
                         this.Service.headerStepMove(item.title, this.headerSteps,'menu')
                       }
                 })
+                if(getData.data.accredation_criteria == 2){
+                  let stepData: any = this.headerSteps.find(item => item.title == 'information_audit_management');
+                    console.log(">>step select: 1 ", stepData);
+                    if(stepData){
+                      stepData.activeClass = '';
+                      stepData.stepComp = true;
+                    }
+                }
                 ////console.log("#Step data: ", this.headerSteps);
               }
 
@@ -1203,12 +1234,13 @@ setexDate(date){
               }
               if(res['data'].is_main_activity != undefined){
                   this.step1Data.is_main_activity = res['data'].is_main_activity.toString();
+                  //alert(this.step1Data.is_main_activity);
                   if(!res['data'].is_main_activity){
                     this.step1Data.is_main_activity_note = res['data'].is_main_activity_note.toString();
                   }
               }
-
-              if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
+              //if(this.accreditationInfo.length > 0 && !this.Service.isObjectEmpty(this.accreditationInfo[0])) {
+              if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0 && !this.Service.isObjectEmpty(res['data'].otherAccr[0])){
                 //console.log('>>>Accr infor: ', getData.data.otherAccr);
                 this.accreditationInfo = [];
                 this.step1Data.is_hold_other_accreditation_select = "1";
@@ -1217,43 +1249,48 @@ setexDate(date){
                     ////console.log('>> ', item, " :: ", key);
                     let data: any;
                     data = item['value'];
-                    var obj1 = data.replace(/'/g, "\"");
-                    let jparse = JSON.parse(obj1);
-                    this.accreditationInfo.push(jparse);
+                    console.log(">>> value: ", data);
+                    if(data != ''){
+                      var obj1 = data.replace(/'/g, "\"");
+                      let jparse = JSON.parse(obj1);
+                      this.accreditationInfo.push(jparse);
+                    }else{
+                      this.step1Data.is_hold_other_accreditation_select = "0";
+                      return;
+                    }
+                    
                 })
               }else{
                 //this.accreditationInfo = [{}];
                 this.step1Data.is_hold_other_accreditation_select = "0";
               }
+             // alert(this.step1Data.is_hold_other_accreditation_select);
 
               //step2
-              var ptProvider = res['data']['ptParticipation'];
-              this.proficiencyTesting = ptProvider && ptProvider != '' ? ptProvider : [{}];
-
-              //step3
+              
               if(res['data'].technicalManager != undefined && res['data'].technicalManager.length > 0){
                 let getTechData: any = res['data'].technicalManager[0];
-                this.step3Data.name = getTechData.name;
-                this.step3Data.designation = getTechData.designation;
-                this.step3Data.mobile_no = getTechData.mobile_no;
-                this.step3Data.email = getTechData.email;
-                this.step3Data.relevent_experience = getTechData.relevent_experience;
+                this.step2Data.name = getTechData.name;
+                this.step2Data.designation = getTechData.designation;
+                this.step2Data.mobile_no = getTechData.mobile_no;
+                this.step2Data.email = getTechData.email;
+                this.step2Data.relevent_experience = getTechData.relevent_experience;
               }
               if(res['data'].managementManager != undefined && res['data'].managementManager.length > 0){
                 let getMangData: any = res['data'].managementManager[0];
-                this.step3Data.management_name = getMangData.name;
-                this.step3Data.management_designation = getMangData.designation;
-                this.step3Data.management_mobile_no = getMangData.mobile_no;
-                this.step3Data.management_email = getMangData.email;
-                this.step3Data.management_relevent_experience = getMangData.relevent_experience;
+                this.step2Data.management_name = getMangData.name;
+                this.step2Data.management_designation = getMangData.designation;
+                this.step2Data.management_mobile_no = getMangData.mobile_no;
+                this.step2Data.management_email = getMangData.email;
+                this.step2Data.management_relevent_experience = getMangData.relevent_experience;
               }
 
               //step4
               if(res['data'].audit_date != null){
-                this.step4Data.audit_date = new Date(res['data'].audit_date);
+                this.step3Data.audit_date = new Date(res['data'].audit_date);
               }
               if(res['data'].mrm_date != null){
-                this.step4Data.mrm_date = new Date(res['data'].mrm_date);
+                this.step3Data.mrm_date = new Date(res['data'].mrm_date);
               }
 
               //step 5
@@ -1346,6 +1383,7 @@ setexDate(date){
 
 onSubmitStep1(ngForm1: any){
 
+  //this.Service.moveSteps('application_information', 'personal_information', this.headerSteps);
   this.isApplicationSubmitted = true;
   //this.isSubmit = true;
 
@@ -1456,8 +1494,8 @@ onSubmitStep1(ngForm1: any){
     }
     this.ptProvidersForm.step1.is_draft = false;
     this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
-    this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
-    this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
+    this.step1Data.is_hold_other_accreditation = (this.step1Data.is_hold_other_accreditation_select == '0') ? false : true;
+    //this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
     this.ptProvidersForm.step1 = this.step1Data;
 
     this.ptProvidersForm.step1['ownOrgBasicInfo'] = [];
@@ -1470,12 +1508,16 @@ onSubmitStep1(ngForm1: any){
     if(this.ownOrgMembInfo) {
       this.ptProvidersForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
     }
-    if(this.accreditationInfo) {
+    if(this.accreditationInfo.length > 0 && !this.Service.isObjectEmpty(this.accreditationInfo[0]) && this.step1Data.is_hold_other_accreditation_select == '1') {
+      console.log("Entey...", this.accreditationInfo, " -- ", this.accreditationInfo.length," :: ", this.Service.isObjectEmpty(this.accreditationInfo[0]));
       this.ptProvidersForm.step1['accreditationInfo'] = this.accreditationInfo;
     }
 
     this.loader = true;
     // this.step1DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
+
+    console.log(">>>>STEP 1 submit: ", this.ptProvidersForm);
+    //return;
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
       res => {
@@ -1486,7 +1528,7 @@ onSubmitStep1(ngForm1: any){
           this.loader = false;
           // this.toastr.success(res['msg'], '');
           this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
-          this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
+          this.Service.moveSteps('application_information', 'personal_information', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
         }
@@ -1522,7 +1564,8 @@ savedraftStep(stepCount) {
     if(this.ownOrgMembInfo) {
       this.ptProvidersForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
     }
-    if(this.accreditationInfo) {
+    if(this.accreditationInfo.length > 0 && !this.Service.isObjectEmpty(this.accreditationInfo[0])) {
+      //console.log("Entey...", this.accreditationInfo, " -- ", this.accreditationInfo.length," :: ", this.Service.isObjectEmpty(this.accreditationInfo[0]));
       this.ptProvidersForm.step1['accreditationInfo'] = this.accreditationInfo;
     }
     this.loader = true;
@@ -1541,64 +1584,31 @@ savedraftStep(stepCount) {
   }
   if(stepCount == 'step2') {
     this.ptProvidersForm = {};
-    this.ptProvidersForm.step2 = {};
-    this.ptProvidersForm.email = this.userEmail;
-    this.ptProvidersForm.userType = this.userType;
-    this.ptProvidersForm.saved_step = '2';
-    var applicationId = sessionStorage.getItem('applicationId');
-    // this.step2Data.application_id = applicationId;
-    this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    
-    this.step2Data.is_draft = true;
-    this.ptProvidersForm.step2 = this.step2Data;
-
-    this.ptProvidersForm.step2['proficiencyTesting'] = [];
-    
-    if(this.ownOrgBasicInfo) {
-      this.ptProvidersForm.step2['proficiencyTesting'] = this.proficiencyTesting;
-    }
-
-    this.loader = true;
-    // this.step2DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
-    .subscribe(
-      res => {
-        this.loader = false;
-        if(res['status'] == true) {
-          // this.toastr.success(res['msg'], '');
-          this.toastr.success('Save Draft Successfully', '');
-        }else{
-          this.toastr.warning(res['msg'], '');
-        }
-      });
-  }
-  if(stepCount == 'step3') {
-    this.ptProvidersForm = {};
     // this.step3Data = {};
     var applicationId = sessionStorage.getItem('applicationId');
     // this.step3Data.application_id = applicationId;
-    this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step3Data.is_draft = true;
+    this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+    this.step2Data.is_draft = true;
     this.ptProvidersForm.saved_step = '3';
     this.ptProvidersForm.email = this.userEmail;
     this.ptProvidersForm.userType = this.userType;
 
-    this.step3Data.technicalManager = {};
-    this.step3Data.technicalManager['name'] = (this.step3Data.name != '' && this.step3Data.name != undefined) ? this.step3Data.name : '';
-    this.step3Data.technicalManager['designation'] = (this.step3Data.designation != '' && this.step3Data.designation != undefined) ? this.step3Data.designation : '';
-    this.step3Data.technicalManager['mobile_no'] = (this.step3Data.mobile_no != '' && this.step3Data.mobile_no != undefined) ? this.step3Data.mobile_no : '';
-    this.step3Data.technicalManager['email'] = (this.step3Data.email != '' && this.step3Data.email != undefined) ? this.step3Data.email : '';
-    this.step3Data.technicalManager['relevent_experience'] = (this.step3Data.relevent_experience != '' && this.step3Data.relevent_experience != undefined) ? this.step3Data.relevent_experience : '';
+    this.step2Data.technicalManager = {};
+    this.step2Data.technicalManager['name'] = (this.step2Data.name != '' && this.step2Data.name != undefined) ? this.step2Data.name : '';
+    this.step2Data.technicalManager['designation'] = (this.step2Data.designation != '' && this.step2Data.designation != undefined) ? this.step2Data.designation : '';
+    this.step2Data.technicalManager['mobile_no'] = (this.step2Data.mobile_no != '' && this.step2Data.mobile_no != undefined) ? this.step2Data.mobile_no : '';
+    this.step2Data.technicalManager['email'] = (this.step2Data.email != '' && this.step2Data.email != undefined) ? this.step2Data.email : '';
+    this.step2Data.technicalManager['relevent_experience'] = (this.step2Data.relevent_experience != '' && this.step2Data.relevent_experience != undefined) ? this.step2Data.relevent_experience : '';
     //}     relevent_experience
 
-    this.step3Data.managementManager = {};
-    this.step3Data.managementManager['name'] = (this.step3Data.management_name != '' && this.step3Data.management_name != undefined) ? this.step3Data.management_name : '';
-    this.step3Data.managementManager['designation'] = (this.step3Data.management_designation != '' && this.step3Data.management_designation != undefined) ? this.step3Data.management_designation : '' ;
-    this.step3Data.managementManager['mobile_no'] = (this.step3Data.management_mobile_no != '' && this.step3Data.management_mobile_no != undefined) ? this.step3Data.management_mobile_no : '';
-    this.step3Data.managementManager['email'] = (this.step3Data.management_email != '' && this.step3Data.management_email != undefined) ? this.step3Data.management_email : '';
-    this.step3Data.managementManager['relevent_experience'] = (this.step3Data.management_relevent_experience != '' && this.step3Data.management_relevent_experience != undefined) ? this.step3Data.management_relevent_experience : '';
+    this.step2Data.managementManager = {};
+    this.step2Data.managementManager['name'] = (this.step2Data.management_name != '' && this.step2Data.management_name != undefined) ? this.step2Data.management_name : '';
+    this.step2Data.managementManager['designation'] = (this.step2Data.management_designation != '' && this.step2Data.management_designation != undefined) ? this.step2Data.management_designation : '' ;
+    this.step2Data.managementManager['mobile_no'] = (this.step2Data.management_mobile_no != '' && this.step2Data.management_mobile_no != undefined) ? this.step2Data.management_mobile_no : '';
+    this.step2Data.managementManager['email'] = (this.step2Data.management_email != '' && this.step2Data.management_email != undefined) ? this.step2Data.management_email : '';
+    this.step2Data.managementManager['relevent_experience'] = (this.step2Data.management_relevent_experience != '' && this.step2Data.management_relevent_experience != undefined) ? this.step2Data.management_relevent_experience : '';
 
-    this.ptProvidersForm.step3 = this.step3Data;
+    this.ptProvidersForm.step2 = this.step2Data;
     this.loader = true;
     // this.step3DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
@@ -1614,16 +1624,16 @@ savedraftStep(stepCount) {
         }
       });
   }
-  if(stepCount == 'step4') {
+  if(stepCount == 'step3') {
     this.ptProvidersForm = {};
     this.ptProvidersForm.step4 = {};
     var applicationId = sessionStorage.getItem('applicationId');
-    this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step4Data.is_draft = true;
-    this.ptProvidersForm.saved_step = '4';
+    this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+    this.step3Data.is_draft = true;
+    this.ptProvidersForm.saved_step = '3';
     this.ptProvidersForm.email = this.userEmail;
     this.ptProvidersForm.userType = this.userType;
-    this.ptProvidersForm.step4 = this.step4Data;
+    this.ptProvidersForm.step3 = this.step3Data;
     this.loader = true;
     // this.step4DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
@@ -1754,79 +1764,39 @@ savedraftStep(stepCount) {
 }
 
 onSubmitStep2(ngForm2: any){
-  // this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+  //this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
 
   if(ngForm2.form.valid) {
-    this.ptProvidersForm = {};
-    this.ptProvidersForm.step2 = {};
-    this.ptProvidersForm.email = this.userEmail;
-    this.ptProvidersForm.userType = this.userType;
-    this.ptProvidersForm.saved_step = '2';
-    var applicationId = sessionStorage.getItem('applicationId');
-    // this.step2Data.application_id = applicationId;
-    this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    
-    this.step2Data.is_draft = false;
-    this.ptProvidersForm.step2 = this.step2Data;
-
-    this.ptProvidersForm.step2['proficiencyTesting'] = [];
-    
-    if(this.ownOrgBasicInfo) {
-      this.ptProvidersForm.step2['proficiencyTesting'] = this.proficiencyTesting;
-    }
-
-    // this.step2DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
-    this.loader = true;
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
-    .subscribe(
-      res => {
-        // console.log(res,'res')
-        this.loader = false;
-        if(res['status'] == true) {
-          // this.toastr.success(res['msg'], '');
-          this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
-        }else{
-          this.toastr.warning(res['msg'], '');
-        }
-      });
-  }else{
-    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
-  }
-}
-
-onSubmitStep3(ngForm3: any){
-  // this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
-  if(ngForm3.form.valid) {
     this.ptProvidersForm = {};
     // this.step3Data = {};
     var applicationId = sessionStorage.getItem('applicationId');
     // this.step3Data.application_id = applicationId;
-    this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step3Data.is_draft = false;
-    this.ptProvidersForm.saved_step = '3';
+    this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+    this.step2Data.is_draft = false;
+    this.ptProvidersForm.saved_step = '2';
     this.ptProvidersForm.email = this.userEmail;
     this.ptProvidersForm.userType = this.userType;
 
-    this.step3Data.technicalManager = {};
+    this.step2Data.technicalManager = {};
     //if(this.step3Data.name_technical != '' && this.step3Data.designation_technical != '' && this.step3Data.mobile_no_technical != ''
       // && this.step3Data.tech_email_technical != '' && this.step3Data.relevent_experience_technical != ''){
-    this.step3Data.technicalManager['name'] = (this.step3Data.name != '' && this.step3Data.name != undefined) ? this.step3Data.name : '';
-    this.step3Data.technicalManager['designation'] = (this.step3Data.designation != '' && this.step3Data.designation != undefined) ? this.step3Data.designation : '';
-    this.step3Data.technicalManager['mobile_no'] = (this.step3Data.mobile_no != '' && this.step3Data.mobile_no != undefined) ? this.step3Data.mobile_no : '';
-    this.step3Data.technicalManager['email'] = (this.step3Data.email != '' && this.step3Data.email != undefined) ? this.step3Data.email : '';
-    this.step3Data.technicalManager['relevent_experience'] = (this.step3Data.relevent_experience != '' && this.step3Data.relevent_experience != undefined) ? this.step3Data.relevent_experience : '';
+    this.step2Data.technicalManager['name'] = (this.step2Data.name != '' && this.step2Data.name != undefined) ? this.step2Data.name : '';
+    this.step2Data.technicalManager['designation'] = (this.step2Data.designation != '' && this.step2Data.designation != undefined) ? this.step2Data.designation : '';
+    this.step2Data.technicalManager['mobile_no'] = (this.step2Data.mobile_no != '' && this.step2Data.mobile_no != undefined) ? this.step2Data.mobile_no : '';
+    this.step2Data.technicalManager['email'] = (this.step2Data.email != '' && this.step2Data.email != undefined) ? this.step2Data.email : '';
+    this.step2Data.technicalManager['relevent_experience'] = (this.step2Data.relevent_experience != '' && this.step2Data.relevent_experience != undefined) ? this.step2Data.relevent_experience : '';
     //}     relevent_experience
 
-    this.step3Data.managementManager = {};
+    this.step2Data.managementManager = {};
     //if(this.step3Data.management_name != '' && this.step3Data.management_designation != '' && this.step3Data.management_mobile_no != ''
       // && this.step3Data.management_email != '' && this.step3Data.management_relevent_experience != ''){
-    this.step3Data.managementManager['name'] = (this.step3Data.management_name != '' && this.step3Data.management_name != undefined) ? this.step3Data.management_name : '';
-    this.step3Data.managementManager['designation'] = (this.step3Data.management_designation != '' && this.step3Data.management_designation != undefined) ? this.step3Data.management_designation : '' ;
-    this.step3Data.managementManager['mobile_no'] = (this.step3Data.management_mobile_no != '' && this.step3Data.management_mobile_no != undefined) ? this.step3Data.management_mobile_no : '';
-    this.step3Data.managementManager['email'] = (this.step3Data.management_email != '' && this.step3Data.management_email != undefined) ? this.step3Data.management_email : '';
-    this.step3Data.managementManager['relevent_experience'] = (this.step3Data.management_relevent_experience != '' && this.step3Data.management_relevent_experience != undefined) ? this.step3Data.management_relevent_experience : '';
+    this.step2Data.managementManager['name'] = (this.step2Data.management_name != '' && this.step2Data.management_name != undefined) ? this.step2Data.management_name : '';
+    this.step2Data.managementManager['designation'] = (this.step2Data.management_designation != '' && this.step2Data.management_designation != undefined) ? this.step2Data.management_designation : '' ;
+    this.step2Data.managementManager['mobile_no'] = (this.step2Data.management_mobile_no != '' && this.step2Data.management_mobile_no != undefined) ? this.step2Data.management_mobile_no : '';
+    this.step2Data.managementManager['email'] = (this.step2Data.management_email != '' && this.step2Data.management_email != undefined) ? this.step2Data.management_email : '';
+    this.step2Data.managementManager['relevent_experience'] = (this.step2Data.management_relevent_experience != '' && this.step2Data.management_relevent_experience != undefined) ? this.step2Data.management_relevent_experience : '';
 
-    this.ptProvidersForm.step3 = this.step3Data;
+    this.ptProvidersForm.step2 = this.step2Data;
     // this.step3DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
     this.loader = true;
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
@@ -1862,18 +1832,19 @@ onSubmitStep3(ngForm3: any){
   }
 }
 
-onSubmitStep4(ngForm4: any){
+onSubmitStep3(ngForm3: any){
 // this.Service.moveSteps('information_audit_management', 'perlim_visit', this.headerSteps);
-  if(ngForm4.form.valid) {
+//this.Service.moveSteps('information_audit_management', 'scope_accreditation', this.headerSteps);
+  if(ngForm3.form.valid) {
     this.ptProvidersForm = {};
     this.ptProvidersForm.step4 = {};
     var applicationId = sessionStorage.getItem('applicationId');
-    this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-    this.step4Data.is_draft = false;
-    this.ptProvidersForm.saved_step = '4';
+    this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+    this.step3Data.is_draft = false;
+    this.ptProvidersForm.saved_step = '3';
     this.ptProvidersForm.email = this.userEmail;
     this.ptProvidersForm.userType = this.userType;
-    this.ptProvidersForm.step4 = this.step4Data;
+    this.ptProvidersForm.step3 = this.step3Data;
     // this.step4DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
     this.loader = true;
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
@@ -2130,9 +2101,13 @@ updateScopeData = async(rowInd: number) => {
   .subscribe(
   res => {
       let getData: any  =res;
-      console.log(">>>. Data: ", getData);
+      //console.log(">>>. Data: ", getData);
       if(getData.data.scopeDetails != undefined && !this.Service.isObjectEmpty(getData.data.scopeDetails)){
         let jsonObject: any = getData.data.scopeDetails;
+        if(jsonObject[getScheme]['scope_value'] != undefined){
+          jsonObject[getScheme]['scope_value'].reverse();
+        }
+        //console.log(">>> scope: ", jsonObject[getScheme]['scope_value'], " :: ", jsonObject[getScheme]['scope_value'].reverse());
         this.editScopeData = jsonObject;
       }
   });
@@ -2146,7 +2121,7 @@ this.dynamicScopeFieldType = {};
 this.dynamicScopeModel = {};
 this.fullScope = [];
 this.schemeRows = [{}];
-this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+this.Service.moveSteps('scope_accreditation', 'about_subcontractors', this.headerSteps);
 }
 backScopeAccreditation(){
 //Reset all model data 
@@ -2167,7 +2142,7 @@ this.schemeRows = [{}];
   }
 }
 
-onSubmitStep5(ngForm: any, type?: any , rowInd?:any) {
+onSubmitStep4(ngForm: any, type?: any , rowInd?:any) {
   //this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
 
   this.ptProvidersForm = {};
@@ -2238,7 +2213,7 @@ onSubmitStep5(ngForm: any, type?: any , rowInd?:any) {
       this.saveScope(rowInd);
       ////console.log(">>> step5 submit...", this.step5Data, " -- ", this.ptProvidersForm);
       this.ptProvidersForm.step5.is_draft = false;
-      this.ptProvidersForm.saved_step = 5;
+      this.ptProvidersForm.saved_step = 4;
       //this.step5DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
       .subscribe(
@@ -2246,7 +2221,7 @@ onSubmitStep5(ngForm: any, type?: any , rowInd?:any) {
           ////////console.log(res,'res')
           if(res['status'] == true) {
             //this.toastr.success(res['msg'], '');
-            this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
+            this.Service.moveSteps('scope_accreditation', 'about_subcontractors', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -2300,6 +2275,47 @@ onSubmitStep5(ngForm: any, type?: any , rowInd?:any) {
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
 
+}
+
+onSubmitStep5(ngForm5: any){
+  // this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+  //this.Service.moveSteps('scope_accreditation', 'about_subcontractors', this.headerSteps);
+  if(ngForm5.form.valid) {
+    this.ptProvidersForm = {};
+    this.ptProvidersForm.step5 = {};
+    this.ptProvidersForm.email = this.userEmail;
+    this.ptProvidersForm.userType = this.userType;
+    this.ptProvidersForm.saved_step = '2';
+    var applicationId = sessionStorage.getItem('applicationId');
+    // this.step2Data.application_id = applicationId;
+    this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+    
+    this.step5Data.is_draft = false;
+    this.ptProvidersForm.step5 = this.step5Data;
+
+    this.ptProvidersForm.step5['aboutSubcontractors'] = [];
+    
+    if(this.ownOrgBasicInfo) {
+      this.ptProvidersForm.step5['aboutSubcontractors'] = this.aboutSubcontractors;
+    }
+
+    // this.step2DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
+    this.loader = true;
+    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
+    .subscribe(
+      res => {
+        // console.log(res,'res')
+        this.loader = false;
+        if(res['status'] == true) {
+          // this.toastr.success(res['msg'], '');
+          this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+        }else{
+          this.toastr.warning(res['msg'], '');
+        }
+      });
+  }else{
+    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+  }
 }
 
 onSubmitStep6(ngForm6: any){
@@ -2403,7 +2419,7 @@ if(this.authorizationStatus && checkCount == 11){
 
 if(this.authorizationStatus == false){
   this.isSubmit = false;
-  this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
+  //this.toastr.error('Please Check All Authorization of the Application Confirm ', '');
 }
 // else if(this.step7Data.recommend_visit == ''){
 //   this.isSubmit = false;

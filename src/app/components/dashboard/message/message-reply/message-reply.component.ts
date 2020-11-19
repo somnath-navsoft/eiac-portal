@@ -41,7 +41,7 @@ export class MessageReplyComponent implements OnInit {
   getMessage() {
     this.loader = false;
     // https://dev-service.eiac.gov.ae/webservice/message-list/message_id=12  
-    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-list?message_id=' + this.replyMessageId)
+    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-list?message_id=' + this.replyMessageId+"&user_id="+this.userId)
       .subscribe(
         res => {
           this.messageList = res['data'].message_list;
