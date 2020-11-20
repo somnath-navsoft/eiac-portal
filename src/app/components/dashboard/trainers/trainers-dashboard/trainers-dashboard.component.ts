@@ -14,6 +14,7 @@ export class TrainersDashboardComponent implements OnInit {
   messageList: any;
   userId: any;
   loader: boolean = true;
+  recordsTotal: any;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) { }
 
@@ -25,10 +26,13 @@ export class TrainersDashboardComponent implements OnInit {
       .subscribe(
         res => {
           this.messageList = res['data'].message_list;
-          // console.log(this.messageList);
-          this.loader = true;
-          // console.log(res['data'].message_list);
+          this.recordsTotal = res['data'].recordsTotal;
+          this.loader = true;          
         });
+  }
+
+  getUserDetails(user){
+    sessionStorage.setItem('messageUserDetails', JSON.stringify(user));
   }
 
 }

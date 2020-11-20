@@ -18,6 +18,7 @@ export class CabDashboardComponent implements OnInit {
   loader:boolean = true;
   messageList: any;
   userId: any;
+  recordsTotal: any;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
@@ -39,10 +40,13 @@ export class CabDashboardComponent implements OnInit {
       .subscribe(
         res => {
           this.messageList = res['data'].message_list;
-          // console.log(this.messageList);
-          this.loader = true;
-          // console.log(res['data'].message_list);
+          this.recordsTotal = res['data'].recordsTotal;
+          this.loader = true;          
         });
+  }
+
+  getUserDetails(user){
+    sessionStorage.setItem('messageUserDetails', JSON.stringify(user));
   }
 
 }

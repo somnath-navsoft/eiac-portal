@@ -281,7 +281,7 @@
                         </div>
                     </div>
                     
-                    <h5 *ngIf="messageList.length==0">No New Message</h5>
+                    <h5 *ngIf="recordsTotal==0">No New Message</h5>
                     <div class="ass-name-det" *ngFor="let row of messageList; let i = index;">
                         <div class="row">
                             <div class="col-md-12">
@@ -289,7 +289,7 @@
                                     <h3>{{row.title}}</h3>
                                     <div class="date_wrapper">
                                         <p>{{row.created | date}}</p>
-                                        <div class="reply_msg" *ngIf="row.meta_title != 'user_registration'"
+                                        <div class="reply_msg" (click)="getUserDetails(row.user)" *ngIf="row.meta_title != 'user_registration'"
                                             routerLink="/dashboard/message-reply/{{row.id}}">
                                             <span class="icon-chat"></span>
                                             Reply
@@ -319,7 +319,7 @@
                                         proident, sunt in culpa qui officia deserunt mollit anim id est
                                         laborum. </p> -->
                                     <div class="attach-cnt" *ngIf="row.document!=null">
-                                        <a href="{{row.document}}" target="_blank" class="attachment-cnt"><span
+                                        <a href="{{constant.mediaPath+row.document}}" target="_blank" class="attachment-cnt"><span
                                                 class="icon-attach"></span></a>
                                     </div>
                                 </div>

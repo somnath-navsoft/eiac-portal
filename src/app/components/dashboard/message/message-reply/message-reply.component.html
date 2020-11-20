@@ -1,32 +1,35 @@
 <div class="row">
-  <div class="col-md-12">
-      <div class="dashbrd-hdr message_data">
-          <h3>Daniel Thompson</h3>
-      </div>
-      <div class="message_wrapper">
-
-          <div class="messaging_chat" *ngFor="let msg of messageList; let i = index;">
-              <div class="message_user">
-                  <span>{{msg.message_by_name}}</span>
-              </div>
-              <div class="message_chat">
-                  <div class="message_cnt">
-                      <span>{{msg.message}}</span>
-                      <br/>
-                      <a *ngIf="msg.document" [href]="constant.mediaPath+msg.document" target="_blank" class="attachment-cnt"><span class="icon-attach"></span></a>
-                  </div> 
-                  <!-- <div class="attach-cnt" *ngIf="msg.document">
+    <div class="col-md-12">
+        <div class="dashbrd-hdr message_data">
+            <h3 *ngIf="userType=='operations'">{{userDetails.first_name}} {{userDetails.last_name}}</h3>
+            <h3 *ngIf="userType!='operations'">Admin</h3>
+        </div>
+        <div class="message_wrapper">
+            <div class="messaging_chat" [ngClass]="{'msg_client' : msg.message_by_name!='You'}" *ngFor="let msg of messageList; let i = index;">
+                <div class="message_user">
+                    <span
+                        *ngIf="msg.message_by_name=='You' || msg.message_by_name=='Admin'">{{msg.message_by_name}}</span>
+                    <span *ngIf="msg.message_by_name=='User'">{{getShortName(userDetails.first_name)| titlecase}}{{getShortName(userDetails.last_name)| titlecase}}</span>
+                </div>
+                <div class="message_chat">
+                    <div class="message_cnt">
+                        <span>{{msg.message}}</span>
+                        <br />
+                        <a *ngIf="msg.document" [href]="constant.mediaPath+msg.document" target="_blank"
+                            class="attachment-cnt"><span class="icon-attach"></span></a>
+                    </div>
+                    <!-- <div class="attach-cnt" *ngIf="msg.document">
                     <a [href]="constant.mediaPath+msg.document" target="_blank" class="attachment-cnt"><span class="icon-attach"></span></a>
                   </div> -->
-                  <div class="message_time">
-                      <span>{{msg.created | date:'MM/dd/yy h:mm a'}}</span>
-                      <!-- <span>{{msg.created | timeAgo}}</span> -->
-                  </div>
-              </div>
-          </div>
+                    <div class="message_time">
+                        <span>{{msg.created | date:'MM/dd/yy h:mm a'}}</span>
+                        <!-- <span>{{msg.created | timeAgo}}</span> -->
+                    </div>
+                </div>
+            </div>
 
 
-          <!-- <div class="messaging_chat">
+            <!-- <div class="messaging_chat">
               <div class="message_user">
                   <span>DT</span>
               </div>
@@ -41,52 +44,56 @@
               </div>
           </div> -->
 
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-            <div class="cmnt-content">
-                <form #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)">
-                    <div class="row">
-                        <!-- <div class="col-md-4">
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="cmnt-content">
+                    <form #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)">
+                        <div class="row">
+                            <!-- <div class="col-md-4">
                             <mat-form-field class="cab-data">
                                 <mat-label>Name</mat-label>
                                 <input name="title" [(ngModel)]="chatMessage.title" required matInput autocomplete="off" placeholder="Name">     
                             </mat-form-field>
                         </div> -->
 
-                        <div class="col-md-8">
-                            <mat-form-field class="cab-data">
-                                <mat-label>Message</mat-label>
-                                <input name="message" required [(ngModel)]="chatMessage.message" matInput autocomplete="off" placeholder="Message">
-                                <mat-error></mat-error>      
-                            </mat-form-field>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="matupload position-relative">
-                                <mat-form-field class="lng-data">
-                                    <input readonly name="upload_message" [(ngModel)]="documentName" matInput name="document" placeholder="Upload Document" >
+                            <div class="col-md-8">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Message</mat-label>
+                                    <input name="message" required [(ngModel)]="chatMessage.message" matInput
+                                        autocomplete="off" placeholder="Message">
+                                    <mat-error></mat-error>
                                 </mat-form-field>
-                                <span class="fileupload">
-                                    <input #file type="file" name="upload_message_file" [(ngModel)]="chatMessage.upload_message_file" (change)="validateFile($event)" accept="application/pdf" >
-                                    <!-- <mat-error class="error" *ngIf="!file_validation">Please Upload a valid file (ex: pdf,xlsx,xlx)</mat-error>  -->
-                                    <span class="icon-attach attach-data" (click)="file.click()"></span>
-                                </span>
-                                <p class="error" *ngIf="!file_validation">Please Upload a valid file (ex: pdf)</p>
                             </div>
-                        </div>
 
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-md-12">
-                            <div class="bttns-appln mb-0">
-                                <button class="submit-bttn">SEND MESSAGE</button>
+                            <div class="col-md-4">
+                                <div class="matupload position-relative">
+                                    <mat-form-field class="lng-data">
+                                        <input readonly name="upload_message" [(ngModel)]="documentName" matInput
+                                            name="document" placeholder="Upload Document">
+                                    </mat-form-field>
+                                    <span class="fileupload">
+                                        <input #file type="file" name="upload_message_file"
+                                            [(ngModel)]="chatMessage.upload_message_file"
+                                            (change)="validateFile($event)" accept="application/pdf">
+                                        <!-- <mat-error class="error" *ngIf="!file_validation">Please Upload a valid file (ex: pdf,xlsx,xlx)</mat-error>  -->
+                                        <span class="icon-attach attach-data" (click)="file.click()"></span>
+                                    </span>
+                                    <p class="error" *ngIf="!file_validation">Please Upload a valid file (ex: pdf)</p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <div class="bttns-appln mb-0">
+                                    <button class="submit-bttn">SEND MESSAGE</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-  </div>
 </div>

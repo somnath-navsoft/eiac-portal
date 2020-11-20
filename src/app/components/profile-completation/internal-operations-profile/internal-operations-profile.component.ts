@@ -44,7 +44,7 @@ export class InternalOperationsProfileComponent implements OnInit {
   }
 
   stepDefaultValue() {
-    this.eiacStaff.first_name = '';
+    this.eiacStaff.firstName = '';
     this.eiacStaff.last_name = '';
     this.eiacStaff.department = '';
     this.eiacStaff.company_email = '';
@@ -63,6 +63,7 @@ export class InternalOperationsProfileComponent implements OnInit {
           // console.log(res['data'].step1[0],'data');
           var first_nameData = res['data']['user_data'][0].first_name.split(' ');
             
+          console.log(first_nameData);
             this.titleArr.forEach((res2,key) => {
               if(res2 == first_nameData[0]){
                 this.titleFind = first_nameData[0];
@@ -71,7 +72,7 @@ export class InternalOperationsProfileComponent implements OnInit {
             })
             this.eiacStaff.title = this.titleFind;
 
-          this.eiacStaff.first_name = this.titleFind != '' && this.titleFind != undefined ? first_nameData[1] : first_nameData[0];
+          this.eiacStaff.firstName = this.titleFind != '' && this.titleFind != undefined ? first_nameData[1] : first_nameData[0];
           this.eiacStaff.last_name = res['data']['user_data'][0].last_name;
           this.eiacStaff.personal_email = res['data']['user_data'][0].email;
           this.eiacStaff.personal_phone_with_area = res['data']['user_data'][0].contact;
@@ -99,7 +100,7 @@ export class InternalOperationsProfileComponent implements OnInit {
       //console.log(this.eiacStaff);
       this.eiacStaff.email = this.userEmail;
       this.eiacStaff.userType = this.userType;
-      this.eiacStaff.first_name = this.eiacStaff.title+' '+this.eiacStaff.first_name;
+      this.eiacStaff.first_name = this.eiacStaff.title+' '+this.eiacStaff.firstName;
       this.eiacStaffFormFile.append('data',JSON.stringify(this.eiacStaff));
       this.loader = false;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.eiacStaffFormFile)
