@@ -109,4 +109,8 @@ export class MessageReplyComponent implements OnInit {
     window.open(this.localUrl, '_blank');
   }
 
+  getShortName(fullName) { 
+    return fullName.split(' ').map(n => n[0]).join('');
+  }
+
 }
