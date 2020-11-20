@@ -2499,9 +2499,16 @@ getCriteria(value, secInd: any){
           this.loader = true;
           this.isApplicationSubmitted = false;
           // ////console.log(res,'res')
+          let data: any = res;
           if(res['status'] == true) {
             // this.toastr.success(res['msg'], '');
-            this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
+            if(data.application_id != undefined && data.application_id > 0){
+              this.formApplicationId = data.application_id;
+              sessionStorage.setItem('applicationId',data.application_id);
+              ////////console.log(this.formApplicationId,'App id assigned')
+            }
+
+            //(this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
             this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
