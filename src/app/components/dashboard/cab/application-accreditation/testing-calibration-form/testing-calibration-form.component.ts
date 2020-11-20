@@ -688,7 +688,7 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
           if(typeFamily == undefined){
             //console.log(">>>> type  nor found: ", dataScope.scopeFamily);
               //if(dataScope.scopeFamily == 'null'){
-                ////console.log(">>>> type  nor found....1");
+                console.log(">>>> type  nor found....1");
                 let schemeId: number;
                   if(dataScope.scopeFamily == null){
                     this.scopeFamilyNull = true;
@@ -781,7 +781,8 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
                       
                   } 
 
-                console.log("Full Type family datastructure: ", this.fullTypeFamily);
+                //console.log("Full Type family datastructure: ", this.fullTypeFamily);
+                console.log("##Model datastructure: ", this.dynamicScopeFieldColumns, " -- ",this.dynamicScopeFieldType , " -- ", this.dynamicScopeModel);
                   if(dataScope.scopeValue.length){
                     var counter = 0;let defLine = {};
                     dataScope.scopeValue.forEach((rec, key) => {
@@ -935,7 +936,7 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
 
                     this.showScopeTable = 'block';
 
-              //console.log("Full Type family datastructure: ", this.fullTypeFamily);
+              console.log("@Model datastructure: ", this.dynamicScopeFieldColumns, " -- ",this.dynamicScopeFieldType , " -- ", this.dynamicScopeModel);
 
                     if(dataScope.scopeValue.length){ 
                       var counter = 0;let defLine = {};

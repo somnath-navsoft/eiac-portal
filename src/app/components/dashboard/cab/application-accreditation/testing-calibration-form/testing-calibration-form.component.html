@@ -1116,8 +1116,8 @@
                                         <div class="col-md-12 col-sm-12">
                                             <div class="row" *ngIf="fullTypeFamily.length > 0">
                                                 <div class="col-12" *ngFor="let typeFamily of fullTypeFamily; let t1 = index;">
-                                                    @{{typeFamily.isFamily}}
-                                                    #{{typeFamily.scopeFamilyRows | json}}
+                                                    <!-- @{{typeFamily.isFamily}}
+                                                    #{{typeFamily.scopeFamilyRows | json}} -->
                                             <ng-container *ngIf="typeFamily.isFamily">
                                                 <div class="row">
                                                     <div class="col-md-12 p-0">
@@ -1128,10 +1128,11 @@
                                                 </div>
                                                     <ng-container *ngFor="let itemF of typeFamily.scopeFamilyRows; let k = index;">  
                                                         <div class="row mt-3">
+                                                            @{{typeFamily.id}} == {{typeFamily.scopeFamilyRows[k].id}}
                                                             <div class="col-md-9 col-sm-9">
                                                                 <!-- @index - {{k}} -- @{{typeFamily.scopeFamilyRows[k].id}} -->
                                                                 <mat-form-field class="cab-data">
-                                                                    @{{typeFamily.id}} == {{typeFamily.scopeFamilyRows[k].id}}
+                                                                    
                                                                     <mat-label>Scope Family</mat-label>
                                                                     
                                                                     <mat-select (selectionChange)="getCriteria(typeFamily.id, k, typeFamily.scopeFamilyRows[k].id, typeFamily.title)" placeholder="Select" name="family_id_{{k}}"  
@@ -1179,7 +1180,7 @@
                                                             </div>
                                                         </div>
                                                         <!-- Make Table -->
-                                                        <div class="row" *ngIf="!typeFamily.isFamily">
+                                                        <!-- <div class="row" *ngIf="!typeFamily.isFamily">
                                                             <div class="col-md-12">
                                                                 <div class="table-content-health">                                                                    
                                                                     <table>
@@ -1296,7 +1297,7 @@
                                                                 <button class="submit-bttn submit-health" (click)="onSubmitStep5(ngForm1,null,i1)" [ngStyle]="{'float': 'right'}">
                                                                     <span class="icon-add"></span>&nbsp;&nbsp;ADD</button>
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                         <!-- ///////////////////// -->
                                                         <div class="row" *ngIf="typeFamily.isFamily && scope.familyId > 0">
                                                             <div class="col-md-12">
@@ -1311,7 +1312,7 @@
                                                                                 </th>
                                                                             </tr>
                                                                         </thead>
-                                                                        <tbody>
+                                                                        <!-- <tbody>
                                                                             <tr *ngFor="let item of dynamicScopeModel[scope.id][scope.familyId]['fieldLines']; let k = index;">
                                                                                 <td>{{("0" + (k+1)).slice(-2)}}</td>
                                                                                 <td *ngFor="let fieldsColumn of dynamicScopeFieldColumns[scope.id][scope.familyId]; let p = index;">
@@ -1408,7 +1409,7 @@
                                                                                     <span *ngIf="k >= 1" class="icon-close-round" (click)="openDeleteScopeConfirm(k, scope.id, scope.familyId)"></span>
                                                                                 </td>
                                                                             </tr>
-                                                                        </tbody>
+                                                                        </tbody> -->
                                                                     </table>
                                                                 </div>
 
