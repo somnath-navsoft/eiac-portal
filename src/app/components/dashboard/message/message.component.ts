@@ -225,6 +225,9 @@ export class MessageComponent implements OnInit {
         .subscribe(
           res => {
             if (res['status'] == true) {
+              this.setField('CAB Name');
+              this.documentName = '';
+              this.selectedUserId = '';              
               this.chatMessage.message = '';
               this.chatMessage.upload_message = '';
               this.loader = true;
