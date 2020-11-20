@@ -226,8 +226,20 @@ export class CertificationBodiesFormComponent implements OnInit {
         console.log(res,'Terms data');
         let getData: any = res;
         if(getData){
-          this.termsGeneral = getData.data[0];
-          this.termsIAF     = getData.data[1];
+          // if(getData.data[0] != undefined && getData.data[0].title == "Accreditation Agreement"){
+          // this.termsGeneral = getData.data[0];
+          // }
+          // if(getData.data[0] != undefined && getData.data[0].title == "IAF-EIAC Agreement with CB"){
+          // this.termsIAF     = getData.data[1];
+          // }
+          getData.data.forEach(item =>{
+            if(item.title != undefined && item.title == "Accreditation Agreement"){
+              this.termsGeneral = item;
+            }
+            if(item.title != undefined && item.title == "IAF-EIAC Agreement with CB"){
+              this.termsIAF = item;
+            }
+          })
 
           if(this.termsGeneral != undefined && this.termsGeneral != ''){
             this.authorizationListTerms1 = this.termsGeneral.term_id;
