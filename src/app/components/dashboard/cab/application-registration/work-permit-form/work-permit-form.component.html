@@ -435,59 +435,6 @@
                     </form>
                 </div>
 
-                <!-- <div class="cust-stepper" id="activities_scope">
-                    <form #ngForm2="ngForm" (ngSubmit)="onSubmit2(ngForm2);" autocomplete="off">
-
-                        <div class="row form-bdy m-0">
-                            <div class="wrapper">
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div class="col-md-12 p-0">
-                                            <div class="form-subhdr form_subhdr">
-                                                <h5>ACTIVITIES & SCOPE</h5>
-                                            </div>
-                                            <hr>
-                                        </div>
-                                        
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Activity Section</mat-label>
-                                                <mat-select placeholder="Select" name="activity_section" [(ngModel)]="step2Data.activity_section" required>
-                                                    <mat-option value="Yes">Yes</mat-option>
-                                                    <mat-option value="No">No</mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Scope to be Authorized</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Scope to be Authorized" name="scopes_to_be_authorized" [(ngModel)]="step2Data.scopes_to_be_authorized">
-                                                <mat-error></mat-error>  
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="bttns-health bttn-staff">
-                                    <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" routerLink="/dashboard/cab_client/application-accreditation">CANCEL</a>
-                                        <button class="cancel-bttn" type="button" (click)="step1SaveADraft()">SAVE AS DRAFT</button>
-                                    </div>
-                                    <button class="submit-bttn submit-health">CONTINUE</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div> -->
-
 
                 <div class="cust-stepper" id="documents_tobe_attached" [ngStyle]="{'display':'none'}">
                     <form #ngForm3="ngForm" (ngSubmit)="onSubmit3(ngForm3);" autocomplete="off">
@@ -540,7 +487,7 @@
                                         <div class="col-md-6">
                                             <div class="matupload position-relative view_file">
                                                 <mat-form-field  class="lng-data">
-                                                    <input matInput readonly="true" name="licence_document" [(ngModel)]="step3Data.licence_document" placeholder="Upload License Documents" required>
+                                                    <input matInput readonly="true" name="licence_document" [(ngModel)]="step3Data.licence_document" placeholder="Upload License Documents">
                                         
                                                     <a *ngIf="licence_document_path" href="{{licence_document_path}}" target="_blank">
                                                         <span class="icon-eye visible-pwd"></span>
@@ -558,7 +505,7 @@
                                         <div class="col-md-6">
                                             <div class="matupload position-relative view_file">
                                                 <mat-form-field  class="lng-data">
-                                                    <input matInput readonly="true" name="quality_manual" [(ngModel)]="step3Data.quality_manual" placeholder="Upload License Documents" required>
+                                                    <input matInput readonly="true" name="quality_manual" [(ngModel)]="step3Data.quality_manual" placeholder="Upload License Documents">
                                         
                                                     <a *ngIf="quality_manual_path" href="{{quality_manual_path}}" target="_blank">
                                                         <span class="icon-eye visible-pwd"></span>
@@ -578,7 +525,7 @@
                                         <div class="col-md-6">
                                             <div class="matupload position-relative view_file">
                                                 <mat-form-field  class="lng-data">
-                                                    <input matInput readonly="true" name="work_instruction" [(ngModel)]="step3Data.work_instruction" placeholder="Upload License Documents" required>
+                                                    <input matInput readonly="true" name="work_instruction" [(ngModel)]="step3Data.work_instruction" placeholder="Upload License Documents">
                                         
                                                     <a *ngIf="work_instruction_path" href="{{work_instruction_path}}" target="_blank">
                                                         <span class="icon-eye visible-pwd"></span>
@@ -596,7 +543,7 @@
                                         <div class="col-md-6">
                                             <div class="matupload position-relative view_file">
                                                 <mat-form-field  class="lng-data">
-                                                    <input matInput readonly="true" name="check_list" [(ngModel)]="step3Data.check_list" placeholder="Upload License Documents" required>
+                                                    <input matInput readonly="true" name="check_list" [(ngModel)]="step3Data.check_list" placeholder="Upload License Documents">
                                         
                                                     <a *ngIf="check_list_path" href="{{check_list_path}}" target="_blank">
                                                         <span class="icon-eye visible-pwd"></span>
@@ -761,7 +708,7 @@
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr">
-                                                <h5>8. Proforma Invoice</h5>
+                                                <h5>5. Proforma Invoice</h5>
                                             </div>
                                             <hr>
                                         </div>
@@ -788,6 +735,7 @@
                                         <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice(ngForm8, true)">SAVE AS DRAFT</button> -->
                                         <!-- <button class="submit-bttn submit-health" (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)">CONTINUE</button> -->
                                     </div>
+                                    @{{transactions.length}}
                                     <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button>
                                     <ng-container *ngIf="transactions.length">
                                         <div id="paypalPayment"></div>
@@ -799,7 +747,7 @@
                 </div>
 
                 <div class="cust-stepper" id="payment_update" [ngStyle]="{'display':'none'}">
-                    <form #ngForm8="ngForm" (ngSubmit)="onSubmitPaymentInformation(ngForm8)" autocomplete="off">
+                    <form #ngForm6="ngForm" (ngSubmit)="onSubmitPaymentInformation(ngForm6)" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <!--  (ngSubmit)="onSubmitPaymentInformation(ngForm8)" -->
@@ -914,7 +862,7 @@
                                         <a href="javascript:void(0)" class="cancel-bttn" type="button" 
                                             (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK
                                         </a>
-                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step8')">SAVE AS DRAFT</button>
+                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step6')">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >SUBMIT</button>
                                 </div>

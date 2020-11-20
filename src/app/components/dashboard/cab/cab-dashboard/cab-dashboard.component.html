@@ -396,7 +396,7 @@
                             </div>
                         </div>
                     </div>
-                    <h5 *ngIf="messageList.length==0">No New Message</h5>
+                    <h5 *ngIf="messageList?.length==0">No New Message</h5>
                     <div class="ass-name-det" *ngFor="let row of messageList; let i = index;">
                         <div class="row"  *ngIf="row.meta_title != 'user_registration'">
                             <div class="col-md-12">
