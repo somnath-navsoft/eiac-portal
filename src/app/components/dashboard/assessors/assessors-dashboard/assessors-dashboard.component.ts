@@ -14,6 +14,7 @@ export class AssessorsDashboardComponent implements OnInit {
   messageList: any;
   userId: any;
   loader: boolean = true;
+  recordsTotal:any;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) { }
 
@@ -27,6 +28,7 @@ export class AssessorsDashboardComponent implements OnInit {
           this.messageList = res['data'].message_list;
           // console.log(this.messageList);
           this.loader = true;
+          this.recordsTotal = res['data'].recordsTotal;
           // console.log(res['data'].message_list);
         });
   }
