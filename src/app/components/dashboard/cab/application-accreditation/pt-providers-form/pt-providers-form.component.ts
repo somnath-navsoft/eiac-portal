@@ -215,7 +215,7 @@ export class PtProvidersFormComponent implements OnInit {
 
   loadTermsConditions(){
     let post: any = {};
-    post['service_page_id'] = 1; // Medical / healthcare
+    post['service_page_id'] = 10; // Medical / healthcare
     this.Service.post(this.Service.apiServerUrl+"/" + 'terms-and-conditions/', post)
       .subscribe(
         res => {
@@ -223,14 +223,14 @@ export class PtProvidersFormComponent implements OnInit {
           let getData: any = res;
           if(getData){
             this.termsGeneral = getData.data[0];
-            this.termsILA     = getData.data[1];
+            //this.termsILA     = getData.data[1];
 
             if(this.termsGeneral != undefined && this.termsGeneral != ''){
               this.authorizationListTerms1 = this.termsGeneral.term_id;
             }
-            if(this.termsILA != undefined && this.termsILA != ''){
-              this.authorizationListTerms2 = this.termsILA.term_id;
-            }
+            // if(this.termsILA != undefined && this.termsILA != ''){
+            //   this.authorizationListTerms2 = this.termsILA.term_id;
+            // }
 
             //console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
           }
@@ -1541,8 +1541,8 @@ onSubmitStep1(ngForm1: any){
               sessionStorage.setItem('applicationId',data.application_id);
               ////////console.log(this.formApplicationId,'App id assigned')
             }
-          //this.formApplicationId = 
-          //this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
+          
+            //this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
           this.Service.moveSteps('application_information', 'personal_information', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
