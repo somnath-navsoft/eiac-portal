@@ -95,6 +95,7 @@ export class MessageReplyComponent implements OnInit {
         .subscribe(
           res => {
             if (res['status'] == true) {
+              this.documentName = '';
               this.chatMessage.message = '';
               this.chatMessage.upload_message = '';
               this.loader = true;
