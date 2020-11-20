@@ -246,4 +246,8 @@ export class MessageComponent implements OnInit {
     window.open(this.localUrl, '_blank');
   }
 
+  getUserDetails(user){
+    sessionStorage.setItem('messageUserDetails', JSON.stringify(user));
+  }
+
 }

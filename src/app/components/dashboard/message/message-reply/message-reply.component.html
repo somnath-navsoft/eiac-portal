@@ -1,7 +1,8 @@
 <div class="row">
   <div class="col-md-12">
       <div class="dashbrd-hdr message_data">
-          <h3>Daniel Thompson</h3>
+          <h3 *ngIf="userType=='operations'">{{userDetails.first_name}} {{userDetails.last_name}}</h3>
+          <h3 *ngIf="userType!='operations'">Admin</h3>
       </div>
       <div class="message_wrapper">
 
