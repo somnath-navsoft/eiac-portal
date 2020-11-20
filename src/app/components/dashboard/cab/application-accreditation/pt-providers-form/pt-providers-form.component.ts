@@ -222,8 +222,17 @@ export class PtProvidersFormComponent implements OnInit {
           console.log(res,'Terms data');
           let getData: any = res;
           if(getData){
-            this.termsGeneral = getData.data[0];
+            // if(getData.data[0] != undefined && getData.data[0].title == "Accreditation Agreement"){
+            //   this.termsGeneral = getData.data[0];
+            // }
+            getData.data.forEach(item =>{
+              if(item.title != undefined && item.title == "Accreditation Agreement"){
+                this.termsGeneral = item;
+              }
+            })
+            
             //this.termsILA     = getData.data[1];
+             
 
             if(this.termsGeneral != undefined && this.termsGeneral != ''){
               this.authorizationListTerms1 = this.termsGeneral.term_id;
@@ -231,7 +240,7 @@ export class PtProvidersFormComponent implements OnInit {
             // if(this.termsILA != undefined && this.termsILA != ''){
             //   this.authorizationListTerms2 = this.termsILA.term_id;
             // }
-
+ 
             //console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
           }
           
@@ -1664,6 +1673,7 @@ savedraftStep(stepCount) {
         }
       });
   }
+  
 
   if(stepCount == 'step5') {
     this.ptProvidersForm = {};
@@ -1895,6 +1905,9 @@ onSubmitStep3(ngForm3: any){
     this.ptProvidersForm.userType = this.userType;
     this.ptProvidersForm.step3 = this.step3Data;
     // this.step4DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
+
+    //console.log(">>> data: ", this.step3Data, " :: ", this.ptProvidersForm)
+    //return;
     this.loader = true;
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
@@ -2157,7 +2170,8 @@ updateScopeData = async(rowInd: number) => {
         if(jsonObject[getScheme]['scope_value'] != undefined){
           jsonObject[getScheme]['scope_value'].reverse();
         }
-        this.editScopeData = jsonObject;
+        this.toastr.success('Scope Data added successfully!','Success',{timeOut:2300});
+        this.editScopeData = jsonObject;  
       }
   });
 }

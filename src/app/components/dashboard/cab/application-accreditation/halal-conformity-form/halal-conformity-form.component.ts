@@ -364,8 +364,8 @@ export class HalalConformityFormComponent implements OnInit {
 
 
     this.summaryDetails = [{"position":'Managerial/Professional','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Decision Maker','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Technical','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Administrative','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Auditors Name','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Category Code','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Technical Expert','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Inspectors Name','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Category Code','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Islamic Affairs Expert','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Others','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''}];
-
-    this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,
+    //undertaking_confirmTop3: false,
+    this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirm1:false,
     undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,
     undertaking_confirm7:false,undertaking_confirm8:false,undertaking_confirm9:false,undertaking_confirm10:false};
     this.loadAppInfo();
@@ -1074,22 +1074,37 @@ addSchemeRow(obj: any = [],index: number){
 
   loadTermsConditions(){
     let post: any = {};
-    post['service_page_id'] = 2; // IB
+    post['service_page_id'] = 9; // IB
     this.Service.post(this.Service.apiServerUrl+"/" + 'terms-and-conditions/', post)
       .subscribe(
         res => {
           console.log(res,'Terms data');
           let getData: any = res;
           if(getData){
-            
-            this.termsGeneral = getData.data[0];
-            this.termsILA     = getData.data[1];
+              // if(getData.data[0] != undefined && getData.data[0].title == "Accreditation Agreement"){
+              // this.termsGeneral = getData.data[0];
+              // }
+              // if(getData.data[0] != undefined && getData.data[0].title == "IAF-EIAC Agreement with CB"){
+              // this.termsILA     = getData.data[1];
+              // }
+            //this.termsGeneral = getData.data[0];
+            //this.termsILA     = getData.data[1];
+            getData.data.forEach(item =>{
+              if(item.title != undefined && item.title == "Accreditation Agreement"){
+                this.termsGeneral = item;
+              }
+              // if(item.title != undefined && item.title == "EIAC ILAC MRA Mark Agreement with CAB"){
+              //   this.termsILA = item;
+              // }
+            })
+
+
             if(this.termsGeneral != undefined && this.termsGeneral != ''){
               this.authorizationListTerms1 = this.termsGeneral.term_id;
             }
-            if(this.termsILA != undefined && this.termsILA != ''){
-              this.authorizationListTerms2 = this.termsILA.term_id;
-            }
+            // if(this.termsILA != undefined && this.termsILA != ''){
+            //   this.authorizationListTerms2 = this.termsILA.term_id;
+            // }
 
 
             //console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
@@ -1694,7 +1709,7 @@ addSchemeRow(obj: any = [],index: number){
     }
         
   
-    if(this.authorizationStatus && checkCount == 13){
+    if(this.authorizationStatus && checkCount == 12){
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;
@@ -3079,7 +3094,7 @@ getMatchScheme(scId: any, scopeData: any){
           checkCount++;
         }    
       }
-      if(this.authorizationStatus && checkCount == 13){
+      if(this.authorizationStatus && checkCount == 12){
         this.authorizationStatus = true;
       }else{
         this.authorizationStatus = false;
