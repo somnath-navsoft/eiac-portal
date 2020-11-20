@@ -11,19 +11,19 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class MessageDetailComponent implements OnInit {
 
-  userType:any;
-  userEmail:any;
+  userType: any;
+  userEmail: any;
+  
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
+  constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) { }
 
   ngOnInit() {
     this.userType = sessionStorage.getItem('type');
     this.userEmail = sessionStorage.getItem('email');
 
     this.userType = sessionStorage.getItem('type');
-    if(this.userType != 'operations')
-    {
-      var landUrl = '/dashboard'+this.userType+'/home'
+    if (this.userType != 'operations') {
+      var landUrl = '/dashboard' + this.userType + '/home'
       this.router.navigateByUrl(landUrl);
     }
   }

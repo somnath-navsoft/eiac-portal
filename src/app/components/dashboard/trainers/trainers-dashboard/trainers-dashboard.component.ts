@@ -31,4 +31,8 @@ export class TrainersDashboardComponent implements OnInit {
         });
   }
 
+  getUserDetails(user){
+    sessionStorage.setItem('messageUserDetails', JSON.stringify(user));
+  }
+
 }

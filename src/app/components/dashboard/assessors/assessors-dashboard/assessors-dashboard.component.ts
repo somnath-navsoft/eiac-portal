@@ -30,5 +30,8 @@ export class AssessorsDashboardComponent implements OnInit {
           // console.log(res['data'].message_list);
         });
   }
+  getUserDetails(user){
+    sessionStorage.setItem('messageUserDetails', JSON.stringify(user));
+  }
 
 }
