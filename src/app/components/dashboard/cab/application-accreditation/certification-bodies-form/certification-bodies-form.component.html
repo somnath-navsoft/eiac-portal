@@ -1486,7 +1486,7 @@
                                             <li>
                                                 <mat-checkbox name="authorization_confirm2" [disableRipple]="true"
                                                 (click)="$event.preventDefault()" [(ngModel)]="authorizationList.authorization_confirm2" >
-                                                I acknowledge that I have read and understood and confirm to abide by the Accreditation Agreement and request to provide us with a word agreement form for signature.<span class="required_input">*</span>
+                                                I acknowledge that I have read and understood and confirm to abide by the Accreditation Agreement.<span class="required_input">*</span>
                                                 </mat-checkbox>
                                             </li>
                                         </ul>
@@ -1562,7 +1562,7 @@
                                                     </div>
                                                     <span class="confirm">of the year</span>
                                                     <div class="recommend-year">
-                                                        <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step5Data.recommend_year" required>
+                                                        <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step5Data.recommend_year" required [ngStyle]="{'width':'75px'}">
                                                             <mat-option [value]="item.value" *ngFor="let item of recommendYearValues; let k=index;">{{item.title}}</mat-option>
                                                         </mat-select>
                                                     </div>

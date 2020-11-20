@@ -189,6 +189,8 @@ export class TestingCalibrationFormComponent implements OnInit {
   isApplicationSubmitted: boolean = false;
   termsGeneral: any;
   termsILA: any;
+  authorizationListTerms1: any;
+  authorizationListTerms2: any;
 
   //declare scope type
   scopeFamilyNull: boolean = false;
@@ -1462,11 +1464,26 @@ getCriteria(value, secInd: any){
     this.Service.post(this.Service.apiServerUrl+"/" + 'terms-and-conditions/', post)
       .subscribe(
         res => {
-          ////console.log(res,'Terms data');
+          console.log(res,'Terms data');
           let getData: any = res;
           if(getData){
-            this.termsGeneral = getData.data[0];
-            this.termsILA     = getData.data[1];
+            //this.termsGeneral = getData.data[0];
+            //this.termsILA     = getData.data[1];
+            getData.data.forEach(item =>{
+              if(item.title != undefined && item.title == "Accreditation Agreement"){
+                this.termsGeneral = item;
+              }
+              if(item.title != undefined && item.title == "EIAC ILAC MRA Mark Agreement with CAB"){
+                this.termsILA = item;
+              }
+            })
+
+            if(this.termsGeneral != undefined && this.termsGeneral != ''){
+              this.authorizationListTerms1 = this.termsGeneral.term_id;
+            }
+            if(this.termsILA != undefined && this.termsILA != ''){
+              this.authorizationListTerms2 = this.termsILA.term_id;
+            }
 
            // ////console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
           }
@@ -1537,10 +1554,10 @@ getCriteria(value, secInd: any){
       title:'profciency_testing_participation', desc:'2. Profciency Testing Participation', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
-      title:'personal_information', desc:'3. Personal Information', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
+      title:'personal_information', desc:'3. Personnel Information', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
       },
       {
-      title:'information_audit_management', desc:'4. Internal Audit & Management', activeStep:false, stepComp:false, icon:'icon-task', activeClass:''
+      title:'information_audit_management', desc:'4. Internal Audit & MRM Date', activeStep:false, stepComp:false, icon:'icon-task', activeClass:''
       },
       // {
       // title:'perlim_visit', desc:'5. Perlim Visit', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
@@ -2064,7 +2081,7 @@ getCriteria(value, secInd: any){
         this.Service.getwithoutData(url2)
         .subscribe(
           res => {
-            ////console.log(res,'urlVal')
+            console.log(res,'urlVal')
             this.loader = true;
             let saveStep: number;
             let getData: any = res;
@@ -2256,9 +2273,17 @@ getCriteria(value, secInd: any){
                 }
 
                 //Step 6
-                if(res['data'].is_prelim_visit != null){
+                if(res['data'].prelim_visit_date != null && res['data'].prelim_visit_time != null){
+                  this.step6Data.prelim_visit_val = "1"; 
+                }else{
+                  
+                  this.step6Data.prelim_visit_val = "0";
+                  //alert(">>> "+this.step6Data.prelim_visit_val);
+                }
+                //if(res['data'].is_prelim_visit != null){
+                if(res['data'].prelim_visit_date != null && res['data'].prelim_visit_time != null){
                   //this.step6Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
-                  this.step6Data.prelim_visit_val = (res['data'].is_prelim_visit) ? "1" : "0";
+                  //this.step6Data.prelim_visit_val = (res['data'].is_prelim_visit) ? "1" : "0";
                   this.step6Data.prelim_visit_date = res['data'].prelim_visit_date;
                   this.step6Data.prelim_visit_time = res['data'].prelim_visit_time;
                 }
@@ -2474,9 +2499,16 @@ getCriteria(value, secInd: any){
           this.loader = true;
           this.isApplicationSubmitted = false;
           // ////console.log(res,'res')
+          let data: any = res;
           if(res['status'] == true) {
             // this.toastr.success(res['msg'], '');
-            this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
+            if(data.application_id != undefined && data.application_id > 0){
+              this.formApplicationId = data.application_id;
+              sessionStorage.setItem('applicationId',data.application_id);
+              ////////console.log(this.formApplicationId,'App id assigned')
+            }
+
+            //(this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
             this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
@@ -2689,7 +2721,8 @@ getCriteria(value, secInd: any){
         recomVisit[item.name.toString()] = item.checked;
       })
       this.step7Data.recommend = recomVisit;//this.recomendVisit;
-
+      this.testingCalForm.step7.terms1 = this.authorizationListTerms1;
+      this.testingCalForm.step7.terms2 = this.authorizationListTerms2;
       //check check status
       this.step7Data.is_draft = true;
       this.testingCalForm.saved_step = '7';
@@ -3623,6 +3656,8 @@ onSubmitStep5(ngForm: any, type?: any, rowInd?:any) {
   onSubmitStep6(ngForm6: any){
     //this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
     this.isPrelimSubmitted = true;
+    //console.log(">>> ",ngForm6.form.valid, " :: ", ngForm6.form );
+    //return;
     if(ngForm6.form.valid) {
       this.testingCalForm = {};
       this.testingCalForm.step6 = {};
@@ -3748,8 +3783,11 @@ onSubmitStep5(ngForm: any, type?: any, rowInd?:any) {
     this.step7Data.recommend = recomVisit;
     this.step7Data.is_draft = false;
     this.step7Data.application_date = new Date();
+    
 
     this.testingCalForm.step7 = this.step7Data;
+    this.testingCalForm.step7.terms1 = this.authorizationListTerms1;
+    this.testingCalForm.step7.terms2 = this.authorizationListTerms2;
     ////console.log(">>> valid status: ", ngForm7.form);
   // else if(this.step7Data.recommend_visit == ''){
   //   this.isSubmit = false;

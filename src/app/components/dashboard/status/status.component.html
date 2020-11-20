@@ -173,7 +173,13 @@
                                 {{item.applicantName}}
                             </td>
                             <td>
-                                {{item.criteria_request}}
+                                <ng-container *ngIf="item.form_meta == 'halal_conformity_bodies' || item.form_meta == 'certification_bodies'">
+                                    Not Applicable
+                                </ng-container>
+                                <ng-container *ngIf="item.form_meta != 'halal_conformity_bodies' && item.form_meta != 'certification_bodies'">
+                                    {{item.criteria_request}}
+                                </ng-container>
+                                
                             </td>
                             <td>
                                 <span *ngIf="item.form_meta == 'testing_calibration'">Testing Calibration</span>
