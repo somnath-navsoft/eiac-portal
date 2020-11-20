@@ -115,8 +115,8 @@ export class MessageReplyComponent implements OnInit {
   }
 
   getFileName(file) {
-    let spliefile = file.split('/');
-    return spliefile[4];
+    return file.split('/')[-1];
+    
   }
 
 }
