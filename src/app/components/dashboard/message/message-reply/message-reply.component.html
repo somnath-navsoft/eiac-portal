@@ -5,8 +5,7 @@
             <h3 *ngIf="userType!='operations'">Admin</h3>
         </div>
         <div class="message_wrapper">
-
-            <div class="messaging_chat" *ngFor="let msg of messageList; let i = index;">
+            <div class="messaging_chat" [ngClass]="{'msg_client' : msg.message_by_name!='You'}" *ngFor="let msg of messageList; let i = index;">
                 <div class="message_user">
                     <span
                         *ngIf="msg.message_by_name=='You' || msg.message_by_name=='Admin'">{{msg.message_by_name}}</span>
