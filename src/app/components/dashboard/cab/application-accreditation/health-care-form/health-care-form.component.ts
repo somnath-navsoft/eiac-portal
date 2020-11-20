@@ -815,8 +815,16 @@ scrollForm(data?:any){
           console.log(res,'Terms data');
           let getData: any = res;
           if(getData){
-            this.termsGeneral = getData.data[0];
-            this.termsILA     = getData.data[1];
+            // this.termsGeneral = getData.data[0];
+            // this.termsILA     = getData.data[1];
+            getData.data.forEach(item =>{
+              if(item.title != undefined && item.title == "Accreditation Agreement"){
+                this.termsGeneral = item;
+              }
+              if(item.title != undefined && item.title == "EIAC ILAC MRA Mark Agreement with CAB"){
+                this.termsILA = item;
+              }
+            })
 
             if(this.termsGeneral != undefined && this.termsGeneral != ''){
               this.authorizationListTerms1 = this.termsGeneral.term_id;

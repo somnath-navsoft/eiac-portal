@@ -60,9 +60,9 @@ export class AppService {
     public dialog: MatDialog,public snackBar: MatSnackBar, private store: Store<AppState>) { 
       // this.dynamicVal = new Subject<any>();
       //initilize input type regex
-      this.regExName = /^[a-zA-Z0-9(/\\),.:@#$%^&*!\s]*$/;///^[a-zA-Z\s]*$/;
+      this.regExName = /^[a-zA-Z0-9(-/\\),.:_@#$%^&*!\s]*$/;///^[a-zA-Z\s]*$/;
       this.regExEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-      this.regExCont = /^[a-zA-Z0-9(/\\),.:@#$%^&*!\s]*$/;
+      this.regExCont = /^[a-zA-Z0-9(-/\\),.:_@#$%^&*!\s]*$/;
       this.regExAlphaNum = /^[a-zA-Z0-9,.:@#$&\s]*$/;
       this.regExNumb = /^[0-9]*$/;
       this.regExUrl = '/(\w*\W*)?\w*(\.(\w)+)+(\W\d+)?(\/\w*(\W*\w)*)*/';

@@ -119,18 +119,18 @@
                                 <div class="usr-mobile">
                                     <mat-form-field class="cab-data mobile-code mr-2">
                                         <mat-label>code</mat-label>
-                                        <!-- <input matInput name="code" required [(ngModel)]="userData.code" placeholder=""> -->
-                                        <mat-select placeholder="Select" name="code"  [(ngModel)]="userData.code" required>
+                                        <input matInput name="code" required [(ngModel)]="userData.code" placeholder="Code">
+                                        <!-- <mat-select placeholder="Select" name="code"  [(ngModel)]="userData.code" required>
                                             <mat-option value="">Select</mat-option>
                                             <mat-option value="+91">+91</mat-option>
                                             <mat-option value="+92">+92</mat-option>
                                             <mat-option value="+93">+93</mat-option>
                                             <mat-option value="+94">+94</mat-option>
-                                        </mat-select>
+                                        </mat-select> -->
                                     </mat-form-field>
                                     <mat-form-field class="cab-data">
                                         <mat-label>Mobile Number</mat-label>
-                                        <input matInput maxlength="15" minlength="10"  maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" name="mobile" required [(ngModel)]="userData.mobile" placeholder="Mobile Number">
+                                        <input matInput (keypress)="Service.IsNumeric($event)" name="mobile" required [(ngModel)]="userData.mobile" placeholder="Mobile Number">
                                         <mat-error class="error" *ngIf="userData.mobile && !Service.checkInput('onlyNumber',userData.mobile)">Please Enter Only Number</mat-error>
                                     </mat-form-field>
                                      
@@ -184,21 +184,21 @@
                                     <input matInput name="mobile" [(ngModel)]="userData.mobile" required placeholder="">
                                 </mat-form-field> -->
 
-                                <div class="sort-data">
+                                <!-- <div class="sort-data"> -->
                                     <!-- <label for="sort" >Reason For Registration :</label> -->
 
-                                    <mat-form-field class="cab-data">
-                                        <mat-label>Reason For Registration :</mat-label>
-                                        <mat-select placeholder="Select" name="userType"  [(ngModel)]="userData.userType" required>
-                                            <mat-option value="">Select</mat-option>
-                                            <mat-option value="cab_client">Client - CAB</mat-option>
-                                            <mat-option value="candidate">Candidate</mat-option>
-                                            <mat-option value="trainers">Trainers</mat-option>
-                                            <mat-option value="assessors">Assessors</mat-option>
-                                            <mat-option value="operations">Internal Operations</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
+                                <mat-form-field class="cab-data mobile-code mr-2">
+                                    <mat-label>Reason For Registration :</mat-label>
+                                    <mat-select placeholder="Select" name="userType"  [(ngModel)]="userData.userType" required>
+                                        <mat-option value="">Select</mat-option>
+                                        <mat-option value="cab_client">Client - CAB</mat-option>
+                                        <mat-option value="candidate">Candidate</mat-option>
+                                        <mat-option value="trainers">Trainers</mat-option>
+                                        <mat-option value="assessors">Assessors</mat-option>
+                                        <mat-option value="operations">Internal Operations</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <!-- </div> -->
 
                             </div>
                             <div class="remembr-pwd rem-sigup">

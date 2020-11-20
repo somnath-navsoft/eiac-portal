@@ -396,7 +396,8 @@
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Land Line Phone No.</mat-label>
-                                                            <input matInput (keypress)="Service.IsNumeric($event)" placeholder="Land Line Phone No." name="phone_no_{{i}}" [(ngModel)]="managingDirector[i].phone_no" required>
+
+                                                            <input matInput (keypress)="Service.IsNumeric($event)" placeholder="Land Line Phone No." name="telephone_no_{{i}}" [(ngModel)]="managingDirector[i].telephone_no" required>
                                                         </mat-form-field>
                                                     </div>
 
@@ -729,9 +730,9 @@
 
                                                             <td>
                                                                 <mat-form-field class="cab-data">
-                                                                    <input readonly="true" (click)="Service._openCalendar(initial_date)" matInput [matDatepicker]="initial_date" readonly="true" placeholder="Selectd" name="initial_date_{{i}}" (dateChange)="setexDate(accreditationInfo[i].initial_date)" [(ngModel)]="accreditationInfo[i].initial_accr_date" required>
-                                                                    <mat-datepicker-toggle matSuffix [for]="initial_date"></mat-datepicker-toggle>
-                                                                    <mat-datepicker #initial_date  disabled="false"></mat-datepicker>
+                                                                    <input readonly="true" (click)="Service._openCalendar(initial_accr_date)" matInput [matDatepicker]="initial_accr_date" readonly="true" placeholder="Selectd" name="initial_accr_date_{{i}}" (dateChange)="setexDate(accreditationInfo[i].initial_accr_date)" [(ngModel)]="accreditationInfo[i].initial_accr_date" required>
+                                                                    <mat-datepicker-toggle matSuffix [for]="initial_accr_date"></mat-datepicker-toggle>
+                                                                    <mat-datepicker #initial_accr_date  disabled="false"></mat-datepicker>
                                                                 </mat-form-field>
                                                             </td>
 
@@ -1774,7 +1775,8 @@
                                             </li>
                                             
                                             <li class="terms-condition"  (scroll)="scrollHandler($event)" #mydiv style="height:500px;overflow:auto">
-                                                <div class="tnc">
+                                                <div class="tnc" [innerHTML]="(termsGeneral != undefined && termsGeneral.content != undefined) ? termsGeneral.content : ''"></div>
+                                                <!-- <div class="tnc">
                                                     <h3>Terms & Conditions</h3>
                                                     <ol>
                                                         <li class="tnc-sub"><h5>FIRST PARTY OBLIGATION</h5>
@@ -1893,20 +1895,19 @@
                                                             </ul>
                                                         </li>
                                                     </ol>
-                                                </div>
+                                                </div> -->
                                             </li>
                                         
                                             <li>
                                                 <mat-checkbox name="authorization_confirm2" [disableRipple]="true"
-                                                (click)="$event.preventDefault()" [(ngModel)]="authorizationList.authorization_confirm2" >I acknowledge that I have read and understood and confirm to abide by the Accreditation 
-                                                Agreement and request to provide us with a word agreement form for signature.</mat-checkbox>
+                                                (click)="$event.preventDefault()" [(ngModel)]="authorizationList.authorization_confirm2" >I acknowledge that I have read and understood and confirm to abide by the Accreditation Agreement.</mat-checkbox>
                                             </li>
                                         </ul>
                                         <p class="error" *ngIf="!readTermsCond  && isApplicationSubmitted == true">Read the Terms and Conditions</p>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="authData">
+                                            <!-- <div class="authData">
                                                 
                                                 <mat-checkbox name="undertaking_confirmTop3"  (change)="authorizeCheckCount($event)"
                                                 [(ngModel)]="authorizationList.undertaking_confirmTop3" required>Do you require ILA MRA Mark Laboratories</mat-checkbox>
@@ -1914,7 +1915,7 @@
 
                                             <div class="terms-condition" style="height:500px;overflow:auto" *ngIf="authorizationList.undertaking_confirmTop3">
                                                 <div class="tnc" [innerHTML]="(termsILA != undefined && termsILA.content != undefined) ? termsILA.content : ''"></div>
-                                            </div>
+                                            </div> -->
 
                                             <div class="authData">I confirm that the below documents are available and will be furnished once requested by EIAC:</div>
                                             <div class="auth-details">
@@ -1976,7 +1977,7 @@
                                                     </div> 
                                                     <span class="confirm">quarter of the year</span>
                                                     <div class="recommend-year">
-                                                        <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step6Data.recommend_year" required>
+                                                        <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step6Data.recommend_year" required [ngStyle]="{'width':'75px'}">
                                                             <mat-option [value]="item.value" *ngFor="let item of recommendYearValues; let k=index;">{{item.title}}</mat-option>
                                                         </mat-select>
                                                     </div>

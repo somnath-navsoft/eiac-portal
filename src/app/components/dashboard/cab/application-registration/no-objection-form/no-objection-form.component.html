@@ -564,7 +564,7 @@
                                     <div class="row mt-3">
                                         <div class="col-12 p-0">
                                             <div class="form-subheader-data">
-                                                <h5>FOR TESTING LAB : (ISO / IEC 17025)</h5>
+                                                <h5>FOR TESTING LAB : (ISO / IEC 17025) <span class="required_input">*</span></h5>
                                             </div>
                                         </div>
                                     </div>
@@ -659,7 +659,7 @@
                                     <div class="row mt-3">
                                         <div class="col-12 p-0">
                                             <div class="form-subheader-data">
-                                                <h5>FOR CALIBRATION LAB : (ISO / IEC 17025)</h5>
+                                                <h5>FOR CALIBRATION LAB : (ISO / IEC 17025) <span class="required_input">*</span></h5>
                                             </div>
                                         </div>
                                     </div>
@@ -777,19 +777,19 @@
                                     <div class="row mt-3"> 
                                         @{{certificationBodiesCheckboxesForProducts}}
                                         <mat-checkbox class="col-md-12"  name="scope_options" 
-                                        [(ngModel)]="certificationBodiesCheckboxesForProducts" 
+                                        [(ngModel)]="step3Data.certificationBodiesCheckboxesForProducts" 
                                         [ngModelOptions]="{standalone: true}">ISO/ IEC 17065 (CERTIFICATION OF PRODUCTS, PROCESES AND SERVICES )</mat-checkbox>
                                     </div>
                                     <div class="row mt-3"> 
                                         @{{certificationBodiesCheckboxesForPersons}}
                                         <mat-checkbox class="col-md-12"  name="scope_options" 
-                                        [(ngModel)]="certificationBodiesCheckboxesForPersons" 
+                                        [(ngModel)]="step3Data.certificationBodiesCheckboxesForPersons" 
                                         [ngModelOptions]="{standalone: true}">ISO/ IEC 17024 (CERTIFICATION OF PERSONS)</mat-checkbox>
                                     </div>
                                     <div class="row mt-3"> 
                                         @{{certificationBodiesCheckboxesForInspection}}
                                         <mat-checkbox class="col-md-12"  name="scope_options" 
-                                        [(ngModel)]="certificationBodiesCheckboxesForInspection" 
+                                        [(ngModel)]="step3Data.certificationBodiesCheckboxesForInspection" 
                                         [ngModelOptions]="{standalone: true}">FOR INSPECTION BODIES: (ISO/IEC 17020)</mat-checkbox>
                                     </div>
                                     <div class="row  mt-3">
@@ -844,28 +844,30 @@
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                                    matInput placeholder="" name="task_type_{{i}}" [(ngModel)]="certificationBodiesInfo[i].task_type" required> 
+                                                                    matInput placeholder="" name="task_type_cb_{{i}}" [(ngModel)]="certificationBodiesInfo[i].task_type" required> 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                                    matInput placeholder="" name="product_{{i}}" [(ngModel)]="certificationBodiesInfo[i].product" required> 
+                                                                    matInput placeholder="" name="product_cb_{{i}}" [(ngModel)]="certificationBodiesInfo[i].product" required> 
                                                                 </mat-form-field>
                                                                 
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="task_name_{{i}}" 
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" 
+                                                                    name="task_name_cb_{{i}}" 
                                                                     [(ngModel)]="certificationBodiesInfo[i].task_name" required> 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="method_{{i}}"
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" 
+                                                                    name="method_cb_{{i}}"
                                                                      [(ngModel)]="certificationBodiesInfo[i].method" required> 
                                                                 </mat-form-field>
                                                             </td>

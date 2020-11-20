@@ -119,7 +119,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Phone (with Area Code)</mat-label>
-                                                <input matInput [(ngModel)]="step1Data.phone_with_area" name="phone_with_area" placeholder="" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" required>
+                                                <input matInput [(ngModel)]="step1Data.phone_with_area" name="phone_with_area" placeholder="" (keypress)="Service.IsNumeric($event)" required>
                                             </mat-form-field>
                                             <p class="error" *ngIf="step1Data.phone_with_area && !Service.checkInput('onlyNumberWithPlus',step1Data.phone_with_area)">Please Enter Only Number</p> 
                                         </div>

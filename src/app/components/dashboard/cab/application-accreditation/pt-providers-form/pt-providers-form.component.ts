@@ -222,23 +222,32 @@ export class PtProvidersFormComponent implements OnInit {
 
   loadTermsConditions(){
     let post: any = {};
-    post['service_page_id'] = 1; // Medical / healthcare
+    post['service_page_id'] = 10; // Medical / healthcare
     this.Service.post(this.Service.apiServerUrl+"/" + 'terms-and-conditions/', post)
       .subscribe(
         res => {
           console.log(res,'Terms data');
           let getData: any = res;
           if(getData){
-            this.termsGeneral = getData.data[0];
-            this.termsILA     = getData.data[1];
+            // if(getData.data[0] != undefined && getData.data[0].title == "Accreditation Agreement"){
+            //   this.termsGeneral = getData.data[0];
+            // }
+            getData.data.forEach(item =>{
+              if(item.title != undefined && item.title == "Accreditation Agreement"){
+                this.termsGeneral = item;
+              }
+            })
+            
+            //this.termsILA     = getData.data[1];
+             
 
             if(this.termsGeneral != undefined && this.termsGeneral != ''){
               this.authorizationListTerms1 = this.termsGeneral.term_id;
             }
-            if(this.termsILA != undefined && this.termsILA != ''){
-              this.authorizationListTerms2 = this.termsILA.term_id;
-            }
-
+            // if(this.termsILA != undefined && this.termsILA != ''){
+            //   this.authorizationListTerms2 = this.termsILA.term_id;
+            // }
+ 
             //console.log(">>> ", this.termsGeneral.content, " -- ", this.termsILA.content);
           }
           
@@ -1549,7 +1558,16 @@ onSubmitStep1(ngForm1: any){
         if(res['status'] == true) {
           this.loader = false;
           // this.toastr.success(res['msg'], '');
-          this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
+          let data: any = {};
+            data = res;
+             ////////console.log(res,'Data')
+            if(data.application_id != undefined && data.application_id > 0){
+              this.formApplicationId = data.application_id;
+              sessionStorage.setItem('applicationId',data.application_id);
+              ////////console.log(this.formApplicationId,'App id assigned')
+            }
+          
+            //this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
           this.Service.moveSteps('application_information', 'personal_information', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
@@ -1673,6 +1691,7 @@ savedraftStep(stepCount) {
         }
       });
   }
+  
 
 
   if(stepCount == 'step5') {
@@ -1906,6 +1925,9 @@ onSubmitStep3(ngForm3: any){
     this.ptProvidersForm.userType = this.userType;
     this.ptProvidersForm.step3 = this.step3Data;
     // this.step4DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
+
+    //console.log(">>> data: ", this.step3Data, " :: ", this.ptProvidersForm)
+    //return;
     this.loader = true;
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
@@ -2153,6 +2175,7 @@ getMatchScheme(scId: any, scopeData: any){
 
 updateScopeData = async(rowInd: number) => {
   let getId= (this.formApplicationId);
+  console.log(this.formApplicationId);
   let url = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+getId;
   let getScheme: any  = this.schemeRows[rowInd].id;
 
@@ -2168,7 +2191,8 @@ updateScopeData = async(rowInd: number) => {
           jsonObject[getScheme]['scope_value'].reverse();
         }
 
-        this.editScopeData = jsonObject;
+        this.toastr.success('Scope Data added successfully!','Success',{timeOut:2300});
+        this.editScopeData = jsonObject;  
       }
   });
 }

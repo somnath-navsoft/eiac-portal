@@ -823,7 +823,7 @@
                                     <div class="button-content">
                                         <a class="cancel-bttn" href="javascript:void(0)" type="button" 
                                         (click)="Service.headerStepMove('personal_information',headerSteps,'menu','information_audit_management')">BACK</a> 
-                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step4')">SAVE AS DRAFT</button>
+                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step3')">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >CONTINUE</button>
                                 </div>
@@ -1307,8 +1307,7 @@
                                         
                                             <li>
                                                 <mat-checkbox name="authorization_confirm2" [disableRipple]="true"
-                                                (click)="$event.preventDefault()" [(ngModel)]="authorizationList.authorization_confirm2" >I acknowledge that I have read and understood and confirm to abide by the Accreditation 
-                                                Agreement and request to provide us with a word agreement form for signature.</mat-checkbox>
+                                                (click)="$event.preventDefault()" [(ngModel)]="authorizationList.authorization_confirm2" >I acknowledge that I have read and understood and confirm to abide by the Accreditation Agreement.</mat-checkbox>
                                             </li>
                                         </ul>
                                         <p class="error" *ngIf="!readTermsCond   && isApplicationSubmitted == true">Read the Terms and Conditions</p>
@@ -1403,12 +1402,12 @@
                                                         </mat-radio-group> -->
                                                         <ng-container >
                                                             <mat-checkbox  name="recommend_visit" [ngModelOptions]="{standalone: true}" *ngFor="let item of recomendVisit; let k=index;" required
-                                                        [(ngModel)]="item.checked">{{item.label}}</mat-checkbox> 
+                                                        [(ngModel)]="item.checked">{{item.label}}</mat-checkbox>  
                                                         </ng-container>
                                                     </div>
                                                     <span class="confirm">quarter of the year</span>
                                                     <div class="recommend-year">
-                                                        <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step7Data.recommend_year" required>
+                                                        <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step7Data.recommend_year" required [ngStyle]="{'width':'75px'}">
                                                             <mat-option [value]="item.value" *ngFor="let item of recommendYearValues; let k=index;">{{item.title}}</mat-option>
                                                         </mat-select>
                                                     </div>                                                    

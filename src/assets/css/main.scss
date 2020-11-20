@@ -1,5 +1,5 @@
 @import "~@angular/material/theming";
-
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @include mat-core();
 $my-app-primary: mat-palette($mat-red, 900);
 $my-app-accent: mat-palette($mat-red, 800);
@@ -1071,7 +1071,7 @@ ul.bill-details li:first-child { border-right: 1px solid #C9C9C9; }
 .mat-select-arrow-wrapper .mat-select-arrow { border: solid #797979;
   border-width: 0 2px 2px 0;
   display: inline-block;
-  padding: 7px;
+  padding: 5px;
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
 }
@@ -1288,9 +1288,9 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 }
 .message_chat .message_cnt { background: #EFEFEF; color: #656565; font-family: 'Dubai Regular'; font-size: 16px; padding: 10px 20px; margin-bottom: 5px; border-radius: 5px; }
 .message_chat .message_time { font-size: 14px; color: #444444; display: flex; justify-content: flex-start; }
-.message_wrapper .messaging_chat:nth-child(even) { flex-direction: row-reverse; }
-.message_wrapper .messaging_chat:nth-child(even) .message_user { margin-left: 20px; }
-.messaging_chat:nth-child(even) .message_chat .message_time { justify-content: flex-end; }
+.message_wrapper .messaging_chat.msg_client { flex-direction: row-reverse; }
+.message_wrapper .messaging_chat.msg_client .message_user { margin-left: 20px; }
+.messaging_chat.msg_client .message_chat .message_time { justify-content: flex-end; }
 
 //==================RESPONSIVE==================//
 @media(max-width: 1500px) {

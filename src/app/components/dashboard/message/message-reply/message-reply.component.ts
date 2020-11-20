@@ -26,6 +26,7 @@ export class MessageReplyComponent implements OnInit {
   attachedFile: string;
   documentName: any = '';
   localUrl: string;
+  userDetails: any;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) { }
 
@@ -37,6 +38,9 @@ export class MessageReplyComponent implements OnInit {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.userId = sessionStorage.getItem('userId');
+    this.userDetails =JSON.parse(sessionStorage.getItem('messageUserDetails'));
+    console.log(this.userDetails);
+    
     this.getMessage();
   }
 
@@ -91,6 +95,7 @@ export class MessageReplyComponent implements OnInit {
         .subscribe(
           res => {
             if (res['status'] == true) {
+              this.documentName = '';
               this.chatMessage.message = '';
               this.chatMessage.upload_message = '';
               this.loader = true;
@@ -103,6 +108,15 @@ export class MessageReplyComponent implements OnInit {
 
   showFile() {
     window.open(this.localUrl, '_blank');
+  }
+
+  getShortName(fullName) { 
+    return fullName.split(' ').map(n => n[0]).join('');
+  }
+
+  getFileName(file) {
+    return file.split('/')[-1];
+    
   }
 
 }

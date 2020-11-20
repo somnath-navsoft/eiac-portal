@@ -32,6 +32,7 @@ export class MessageComponent implements OnInit {
   document: any = '';
   documentName: any = '';
   localUrl: any;
+  button_disable: any = true;
 
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) { }
@@ -158,7 +159,7 @@ export class MessageComponent implements OnInit {
     // window.open(fileEvent.target.value, '_blank');
     this.localUrl = window.URL.createObjectURL(fileEvent.target.files[0]);
     this.document = fileEvent.target.files[0];
-    var file_name = fileEvent.target.files[0].name;    
+    var file_name = fileEvent.target.files[0].name;
     var file_exe = file_name.substring(file_name.lastIndexOf('.') + 1, file_name.length);
     var ex_type = ['pdf'];
     var ex_check = this.Service.isInArray(file_exe, ex_type);
@@ -225,13 +226,16 @@ export class MessageComponent implements OnInit {
         .subscribe(
           res => {
             if (res['status'] == true) {
+              this.setField('CAB Name');
+              this.documentName = '';
+              this.selectedUserId = '';
               this.chatMessage.message = '';
               this.chatMessage.upload_message = '';
               this.loader = true;
               this.toastr.success(res['msg'], '');
               // this.getMessage();
             }
-          },err=>{
+          }, err => {
             this.loader = true;
           })
     }
@@ -239,11 +243,16 @@ export class MessageComponent implements OnInit {
 
   getValue(value) {
     this.selectedUserId = value;
+    this.button_disable = this.selectedUserId != '' ? false : true;
 
   }
 
   showFile() {
     window.open(this.localUrl, '_blank');
+  }
+
+  getUserDetails(user) {
+    sessionStorage.setItem('messageUserDetails', JSON.stringify(user));
   }
 
 }

@@ -51,8 +51,8 @@
                                             <div class="ass-data">
                                                 <h3>{{row.title}}</h3>
                                                 <div class="date_wrapper">
-                                                    <p>{{row.user?.date_joined | date}}</p>
-                                                    <div class="reply_msg" *ngIf="row.meta_title != 'user_registration'"
+                                                    <p>{{row.created | date}}</p>
+                                                    <div class="reply_msg" (click)="getUserDetails(row.user)" *ngIf="row.meta_title != 'user_registration'"
                                                         routerLink="/dashboard/message-reply/{{row.id}}">
                                                         <span class="icon-chat"></span>
                                                         Reply
@@ -92,18 +92,9 @@
                                             </div>
 
                                             <div class="ass-details" *ngIf="row.meta_title != 'user_registration'">
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                                    eiusmod tempor incididunt
-                                                    ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-                                                    nostrud exercitation ullamco
-                                                    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                                                    dolor in reprehenderit in
-                                                    voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                                    Excepteur sint occaecat cupidatat non
-                                                    proident, sunt in culpa qui officia deserunt mollit anim id est
-                                                    laborum. </p>
-                                                <div class="attach-cnt">
-                                                    <a href="javascript:void(0)" class="attachment-cnt"><span
+                                                <p>{{row.message}}</p>
+                                                <div class="attach-cnt" *ngIf="row.document!=null">
+                                                    <a href="{{constant.mediaPath+row.document}}" target="_blank" class="attachment-cnt"><span
                                                             class="icon-attach"></span>Accreditation Application for PTP
                                                         Provider.xlsx</a>
                                                 </div>
@@ -170,7 +161,7 @@
                                         <div class="cmnt-content">
                                             <form #ngForm="ngForm" (ngSubmit)="onOperationSubmit(ngForm)">
                                                 <div class="row">
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-">
                                                         <mat-form-field appearance="fill" class="cab-data">
                                                             <mat-label>Select</mat-label>
                                                             <mat-select required [(ngModel)]="selectedField"
@@ -247,7 +238,7 @@
                                                 <div class="row mt-4">
                                                     <div class="col-md-12">
                                                         <div class="bttns-appln mb-0">
-                                                            <button class="submit-bttn">SEND MESSAGE</button>
+                                                            <button class="submit-bttn"  [disabled]="button_disable">SEND MESSAGE</button>
                                                         </div>
                                                     </div>
                                                 </div>
