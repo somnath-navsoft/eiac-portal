@@ -78,7 +78,7 @@ export class InternalOperationsProfileComponent implements OnInit {
           this.eiacStaff.personal_phone_with_area = res['data']['user_data'][0].contact;
           if(res['data'].step1 != '') {
             var step1 = res['data'].step1[0];
-            this.eiacStaff.date_of_birth = new Date(step1.dob);
+            // this.eiacStaff.date_of_birth = new Date(step1.dob);
             this.eiacStaff.department = step1.department;
             this.eiacStaff.company_email = step1.office_email;
             this.eiacStaff.company_phone_with_area = step1.office_tel_no;
@@ -103,7 +103,7 @@ export class InternalOperationsProfileComponent implements OnInit {
       this.eiacStaff.first_name = this.eiacStaff.title+' '+this.eiacStaff.firstName;
       this.eiacStaffFormFile.append('data',JSON.stringify(this.eiacStaff));
       this.loader = false;
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.eiacStaffFormFile)
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.eiacStaffFormFile)
         .subscribe(
           res => {
             if(res['status'] == true) {

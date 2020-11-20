@@ -94,7 +94,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Personal Email ID</mat-label>
-                                                <input matInput [(ngModel)]="eiacStaff.personal_email" name="personal_email" placeholder="" required>
+                                                <input matInput [(ngModel)]="eiacStaff.personal_email" readonly name="personal_email" placeholder="" required>
                                             </mat-form-field>
 
                                             <p class="error" *ngIf="eiacStaff.personal_email && !Service.checkInput('email',eiacStaff.personal_email)">Please Enter Correct Email Id</p>
@@ -103,7 +103,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Company Mobile no. (with Area Code)</mat-label>
-                                                <input matInput [(ngModel)]="eiacStaff.company_phone_with_area" name="company_phone_with_area" placeholder="" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" required>
+                                                <input matInput [(ngModel)]="eiacStaff.company_phone_with_area" name="company_phone_with_area" placeholder="" (keypress)="Service.IsNumeric($event)" required>
                                             </mat-form-field>
                                             <p class="error" *ngIf="eiacStaff.company_phone_with_area && !Service.checkInput('onlyNumberWithPlus',eiacStaff.company_phone_with_area)">Please Enter Only Number</p> 
                                         </div>
@@ -113,7 +113,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Personal Mobile no. (with Area Code)</mat-label>
-                                                <input matInput [(ngModel)]="eiacStaff.personal_phone_with_area" name="personal_phone_with_area" placeholder="" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" required>
+                                                <input matInput [(ngModel)]="eiacStaff.personal_phone_with_area" name="personal_phone_with_area" placeholder="" (keypress)="Service.IsNumeric($event)" required>
                                             </mat-form-field>
                                             <p class="error" *ngIf="eiacStaff.personal_phone_with_area && !Service.checkInput('onlyNumberWithPlus',eiacStaff.personal_phone_with_area)">Please Enter Only Number</p> 
                                         </div>
