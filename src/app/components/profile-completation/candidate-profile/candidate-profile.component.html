@@ -154,7 +154,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Fax (with Area Code)</mat-label>
-                                                <input matInput [(ngModel)]="step1Data.fax_with_area" name="fax_with_area" placeholder="" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)">
+                                                <input matInput [(ngModel)]="step1Data.fax_with_area" name="fax_with_area" placeholder="" (keypress)="Service.IsNumeric($event)">
                                             </mat-form-field>
                                             <p class="error" *ngIf="step1Data.fax_with_area && !Service.checkInput('onlyNumberWithPlus',step1Data.fax_with_area)">Please Enter Only Number</p>
                                         </div>
@@ -226,7 +226,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Fax (with Area Code)</mat-label>
-                                                <input matInput [(ngModel)]="step1Data.applicant_fax_with_area" name="applicant_fax_with_area" placeholder="" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)" readonly="{{readOnly}}" required>
+                                                <input matInput [(ngModel)]="step1Data.applicant_fax_with_area" name="applicant_fax_with_area" placeholder="" (keypress)="Service.IsNumeric($event)" readonly="{{readOnly}}" required>
                                             </mat-form-field>
                                             <p class="error" *ngIf="step1Data.fax_with_area && !Service.checkInput('onlyNumberWithPlus',step1Data.fax_with_area)">Please Enter Only Number</p>
                                         </div>
