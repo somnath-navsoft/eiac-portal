@@ -64,6 +64,7 @@ export class HalalConformityFormComponent implements OnInit {
   getCountryLists:any;
   // version = VERSION;
   public minDate;
+  public minChangeDate;
 
   afterSubmit: boolean = false;
 
@@ -815,6 +816,11 @@ addSchemeRow(obj: any = [],index: number){
      }
      this._customModal.closeDialog();
  }
+
+ closeDialog(){
+  this.modalService.dismissAll();
+}
+
  getSubType(typeId: number){
      if(typeId){
        let typeData: any = this.subTypeMaster.find(rec => rec.service_page.id == typeId);
@@ -1624,6 +1630,15 @@ addSchemeRow(obj: any = [],index: number){
   setexDate(date){
     let cdate = date;
     this.minDate = new Date(cdate  + (60*60*24*1000));
+    // console.log(this.minDate);
+  }
+
+  setexDynamicsDate(date,index){
+    let cdate = date;
+    // var newDate = index;
+    index = new Date(cdate  + (60*60*24*1000));
+    this.minChangeDate = index;
+    console.log(this.minChangeDate);
   }
 
   validateFile(fileEvent: any,fileName?:any) {
@@ -2124,7 +2139,7 @@ addSchemeRow(obj: any = [],index: number){
         // this.step6Data.authorizationList = this.authorizationList;
         this.step6Data.authorization_list_json = this.authorizationList;
         this.step6Data.recommend = this.recommend;
-        this.step6Data.is_draft = false;
+        this.step6Data.is_draft = true;
         this.step6Data.application_date = new Date();
       
         let recomVisit: any = {
@@ -2153,15 +2168,7 @@ addSchemeRow(obj: any = [],index: number){
             this.loader = true;
             if(res['status'] == true) {
               // this.toastr.success(res['msg'], '');
-              if(this.paymentFilePath != ''){
-                this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
-              }
-              else{
-                this.toastr.success("Application Submitted Successfully");
-                    setTimeout(() => {
-                      this.router.navigateByUrl('/dashboard/status/all');
-                    }, 5000)
-              }
+              this.toastr.success('Save Draft Successfully', '');
             }else{
               this.toastr.warning(res['msg'], '');
             }
