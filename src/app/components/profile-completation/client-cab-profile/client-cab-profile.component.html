@@ -161,7 +161,7 @@
                                             <div class="col-md-4">
                                                 <mat-form-field class="cab-data">
                                                     <mat-label>Fax (with Area Code)</mat-label>
-                                                    <input matInput [(ngModel)]="step1Data.fax_with_area" name="fax_with_area" placeholder="" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)">
+                                                    <input matInput [(ngModel)]="step1Data.fax_with_area" name="fax_with_area" placeholder="" (keypress)="Service.IsNumeric($event)">
                                                 </mat-form-field>
                                                 <p class="error" *ngIf="step1Data.fax_with_area && !Service.checkInput('onlyNumberWithPlus',step1Data.fax_with_area)">Please Enter Only Number</p>
                                             </div>
@@ -235,7 +235,7 @@
                                     <div class="col-md-4">
                                         <mat-form-field class="cab-data">
                                             <mat-label>PO Box No./ZIP Code</mat-label>
-                                            <input onpaste="return false" (keypress)="Service.IsNumeric($event)" matInput autocomplete="off" placeholder="PO BOX NO./Zip Code" name="zip" [(ngModel)]="step2Data.zip" required>
+                                            <input (keypress)="Service.IsNumeric($event)" matInput autocomplete="off" placeholder="PO BOX NO./Zip Code" name="zip" [(ngModel)]="step2Data.zip" required>
                                             <mat-error></mat-error> 
                                         </mat-form-field>
                                         <p class="error" *ngIf="step2Data.zip && !Service.checkInput('onlyNumberWithPlus',step2Data.zip)">Please Enter Correct Zip Code</p> 
@@ -246,7 +246,7 @@
                                     <div class="col-md-6">
                                         <mat-form-field class="cab-data">
                                             <mat-label>Registered Physical Location Address</mat-label>
-                                            <input matInput onpaste="return false" (keyup)="getPlaceName($event)" [matAutocomplete] = "auto" placeholder="Location Latitude/Longitude" name="location_latitude" [(ngModel)]="step2Data.applicant_location" required>
+                                            <input matInput (keyup)="getPlaceName($event)" [matAutocomplete] = "auto" placeholder="Location Latitude/Longitude" name="location_latitude" [(ngModel)]="step2Data.applicant_location" required>
                                             <mat-autocomplete #auto = "matAutocomplete" >
                                                 <mat-option *ngFor = "let searchCountryList of searchCountryLists" [value] = "searchCountryList.place_name">
                                                 {{searchCountryList.place_name}}
@@ -305,7 +305,7 @@
                                     <div class="col-md-4">
                                         <mat-form-field class="cab-data">
                                             <mat-label>Fax No.</mat-label>
-                                            <input matInput [(ngModel)]="step2Data.applicant_fax_with_area" name="applicant_fax_with_area" placeholder="" maxlength="15" minlength="10" (keypress)="Service.IsNumeric($event)">
+                                            <input matInput [(ngModel)]="step2Data.applicant_fax_with_area" name="applicant_fax_with_area" placeholder="" (keypress)="Service.IsNumeric($event)">
                                         </mat-form-field>
                                         <p class="error" *ngIf="step2Data.applicant_fax_with_area && !Service.checkInput('onlyNumberWithPlus',step2Data.applicant_fax_with_area)">Please Enter Only Number</p>
                                     </div>
