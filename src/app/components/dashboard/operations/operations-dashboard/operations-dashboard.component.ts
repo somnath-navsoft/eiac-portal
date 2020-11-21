@@ -46,7 +46,6 @@ export class OperationsDashboardComponent implements OnInit {
   localUrl: any;
   button_disable: any = true;
   selectedUser: any = [];
-
   @ViewChild('fruitInput', { static: false }) fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
 
@@ -55,6 +54,7 @@ export class OperationsDashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.getUserType = 'cab_client';
     this.select_field = [
       { field: 'CAB Name', value: 'CAB Name' },
@@ -128,6 +128,7 @@ export class OperationsDashboardComponent implements OnInit {
 
   setField(value) {
     // this.search(this.searchTerm);
+    this.selectedUser = [];
     this.loader = false;
     this.searchDetails = [];
     this.selectSearch = [];
@@ -212,7 +213,7 @@ export class OperationsDashboardComponent implements OnInit {
 
   onOperationSubmit(ngForm) {
 
-    if (ngForm.form.valid && this.selectedUserId!='') {
+    if (ngForm.form.valid && this.selectedUserId != '') {
       let formdata = new FormData();
       formdata.append('message_by', this.userId);
       formdata.append('user_id', this.selectedUserId);
@@ -242,19 +243,20 @@ export class OperationsDashboardComponent implements OnInit {
   }
 
   getValue(value, data) {
+    this.fruitInput.nativeElement.blur();
     this.selectedUser = [];
     this.selectedUserId = value.id;
     this.button_disable = this.selectedUserId != '' ? false : true;
-    if(data=='username'){
+    if (data == 'username') {
       this.selectedUser.push(value.username);
-    }else{
+    } else {
       this.selectedUser.push(value.email);
     }
-    
-
     this.fruitInput.nativeElement.value = '';
-    
+
+
   }
+
 
   showFile() {
     window.open(this.localUrl, '_blank');
@@ -265,28 +267,16 @@ export class OperationsDashboardComponent implements OnInit {
   }
 
   add(event: MatChipInputEvent): void {
-    // const input = event.input;
-    // const value = event.value;
-    // // this.selectSearch = [];
-
-    // // Add our fruit
-    // if ((value || '').trim()) {
-    //   this.selectedUser.push(value.trim());
-    // }
-
-    // // Reset the input value
-    // if (input) {
-    //   input.value = '';
-    // }
 
   }
 
   remove(fruit: any): void {
+    this.button_disable = true;
     this.selectedUser = [];
   }
 
-
-
-
+  getFileName(file) {
+    return file.split('/')[-1];
+  }
 
 }
