@@ -103,7 +103,7 @@ export class InternalOperationsProfileComponent implements OnInit {
       this.eiacStaff.first_name = this.eiacStaff.title+' '+this.eiacStaff.firstName;
       this.eiacStaffFormFile.append('data',JSON.stringify(this.eiacStaff));
       this.loader = false;
-      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcareForm,this.eiacStaffFormFile)
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.eiacStaffFormFile)
         .subscribe(
           res => {
             if(res['status'] == true) {
