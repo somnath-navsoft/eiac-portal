@@ -1002,10 +1002,10 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
                     console.log("find rows family: ", familyRows);
                     let familyData: any = getTypeData.familyData.find(item => item.scope_family == typeFamily);
                     familyName = familyData.title;
-                    //getTypeData.scopeFamilyRows[secInd] = {};
+                    //getTypeData.scopeFamilyRows[secInd] = {};  
                     if(familyRows){
                       let updRow: any = {
-                        id: value, familyId: typeFamily, familyName: familyName
+                        sid: value, id:typeFamily, familyId: typeFamily, familyName: familyName
                       }
                       getTypeData.scopeFamilyRows[secInd] = updRow;
                     }
