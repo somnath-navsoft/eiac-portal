@@ -414,7 +414,7 @@
                                 <form #ngForm="ngForm" (ngSubmit)="onOperationSubmit(ngForm)">
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <mat-form-field appearance="fill" class="cab-data">
+                                            <mat-form-field  class="cab-data">
                                                 <mat-label>Select</mat-label>
                                                 <mat-select required [(ngModel)]="selectedField"
                                                     [ngModelOptions]="{standalone: true}"
@@ -489,7 +489,7 @@
                                                           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                                           (matChipInputTokenEnd)="add($event)" (input)="search($event.target.value)">
                                                       </mat-chip-list>
-                                                <mat-autocomplete #auto="matAutocomplete">
+                                                <mat-autocomplete #auto="matAutocomplete" >
                                                     <mat-option (onSelectionChange)="getValue(option, 'email')"
                                                         *ngFor="let option of selectSearch" [value]="option.email">
                                                         {{option.email}}

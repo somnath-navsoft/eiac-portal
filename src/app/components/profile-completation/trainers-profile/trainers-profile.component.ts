@@ -170,7 +170,7 @@ export class TrainersProfileComponent implements OnInit {
 
 
           // var other_course = res['data'].step2['all_data'][0].other_course && res['data'].step2['all_data'][0].other_course != null ? JSON.parse(res['data'].step2['all_data'][0].other_course) : '';
-          var education = res['data'].step2['all_data'][0].education != null ? JSON.parse(res['data'].step2['all_data'][0].education) : '';
+          var education = res['data'].step2['all_data'] && res['data'].step2['all_data'][0].education && res['data'].step2['all_data'][0].education != null ? JSON.parse(res['data'].step2['all_data'][0].education) : null;
 
           if(res['data'].step1 && res['data'].step1 != '' && res['data'].step1[0] && res['data']['user_data'][0].first_name != "" && res['data'].step1[0].office_email != "" && res['data'].step1[0].dob != "null" && res['data'].step1[0].mailing_address != "" && res['data'].step1[0].phone != "" && res['data'].step1[0].office != "" && res['data'].step1[0].designation != "" && res['data'].step1[0].office_address != "" && res['data'].step1[0].office_tel_no != "") {
             this.progressValue = 40;
@@ -207,8 +207,8 @@ export class TrainersProfileComponent implements OnInit {
             //   this.step2Data.completeProfileFrom = new Date(other_course.from);
             //   this.step2Data.completeProfileTill = new Date(other_course.to);
             // }
-            this.whichLanguage = res['data'].step2.language && res['data'].step2.language.length > 0 ? res['data'].step2.language : [{}];
-            this.whichForum = res['data'].step2.which_forum && res['data'].step2.which_forum.length > 0 ? res['data'].step2.which_forum : [{}];
+            this.whichLanguage = res['data'].step2.language && res['data'].step2.language.length > 0 ? res['data'].step2.language : [{language:'',read:0,write:0,speak:0}];
+            this.whichForum = res['data'].step2.which_forum && res['data'].step2.which_forum.length > 0 ? res['data'].step2.which_forum : [{organization:'',date_from:'',date_to:''}];
 
             if(education != null) {
               this.step2Data.qualification_degree = education.qualification;
@@ -460,6 +460,7 @@ export class TrainersProfileComponent implements OnInit {
       this.trainersProfile.step2 = {};
 
       this.trainersProfile.step2 = this.step2Data;
+      this.trainersProfile.isDraft = 1;
       this.trainersProfile.email = this.userEmail;
       this.trainersProfile.userType = this.userType;
       this.trainersProfile.step2['whichLanguage'] = [];
@@ -470,7 +471,7 @@ export class TrainersProfileComponent implements OnInit {
       if(this.whichForum){
         this.trainersProfile.step2['whichForum'] = this.whichForum;
       }
-
+      // console.log(this.trainersProfile);
       this.loader = false;
       this.step2DataBodyFormFile.append('data',JSON.stringify(this.trainersProfile));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step2DataBodyFormFile)

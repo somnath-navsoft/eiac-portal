@@ -59,8 +59,8 @@ export class AssessorsProfileComponent implements OnInit {
   searchCountryLists:any[] = [];
   userId:any;
   criteriaList:any[] = [];
-  whichForum:any[] = [{}];
-  whichLanguage:any[] = [{}];
+  whichForum:any[] = [{organization:'',date_from:'',date_to:''}];
+  whichLanguage:any[] = [{language:'',read:0,write:0,speak:0}];
   languageArr:any = [];
   file_validation_listAuditor:boolean = true;
 
@@ -853,17 +853,23 @@ export class AssessorsProfileComponent implements OnInit {
           this.loader = true;
         });
     }else if(stepCount == 'step2') {
-      this.assessorsProfile = {};
-      this.assessorsProfile.step2 = {};
-      
-      this.step2Data.arabic = this.arabic;
-      this.step2Data.english = this.english;
-      this.step2Data.others = this.others;
-
-      this.assessorsProfile.step2 = this.step2Data;
-      this.assessorsProfile.email = this.userEmail;
-      this.assessorsProfile.userType = this.userType;
-      this.assessorsProfile.isDraft = 1;
+        this.assessorsProfile = {};
+        this.assessorsProfile.step2 = {};
+        this.assessorsProfile.step2 = this.step2Data;
+        this.assessorsProfile.email = this.userEmail;
+        this.assessorsProfile.userType = this.userType;
+        this.assessorsProfile.isDraft = 1;
+        this.assessorsProfile.step2['whichLanguage'] = [];
+        this.assessorsProfile.step2['whichForum'] = [];
+        // this.step2Data.arabic = this.arabic;
+        // this.step2Data.english = this.english;
+        // this.step2Data.others = this.others;
+        if(this.whichLanguage){
+          this.assessorsProfile.step2['whichLanguage'] = this.whichLanguage;
+        }
+        if(this.whichForum){
+          this.assessorsProfile.step2['whichForum'] = this.whichForum;
+        }
       this.loader = false;
       this.step2DataBodyFormFile.append('data',JSON.stringify(this.assessorsProfile));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step2DataBodyFormFile)
