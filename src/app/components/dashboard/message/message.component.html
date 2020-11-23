@@ -160,7 +160,7 @@
                                         <div class="cmnt-content">
                                             <form #ngForm="ngForm" (ngSubmit)="onOperationSubmit(ngForm)">
                                                 <div class="row">
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-">
                                                         <mat-form-field appearance="fill" class="cab-data">
                                                             <mat-label>Select</mat-label>
                                                             <mat-select required [(ngModel)]="selectedField"
@@ -237,7 +237,7 @@
                                                 <div class="row mt-4">
                                                     <div class="col-md-12">
                                                         <div class="bttns-appln mb-0">
-                                                            <button class="submit-bttn">SEND MESSAGE</button>
+                                                            <button class="submit-bttn"  [disabled]="button_disable">SEND MESSAGE</button>
                                                         </div>
                                                     </div>
                                                 </div>

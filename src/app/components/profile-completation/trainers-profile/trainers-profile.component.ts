@@ -169,14 +169,14 @@ export class TrainersProfileComponent implements OnInit {
           this.step1Data.personal_email = res['data']['user_data'][0].email;
 
 
-          var other_course = res['data'].step2['all_data'][0].other_course != null ? JSON.parse(res['data'].step2['all_data'][0].other_course) : '';
+          // var other_course = res['data'].step2['all_data'][0].other_course && res['data'].step2['all_data'][0].other_course != null ? JSON.parse(res['data'].step2['all_data'][0].other_course) : '';
           var education = res['data'].step2['all_data'][0].education != null ? JSON.parse(res['data'].step2['all_data'][0].education) : '';
 
           if(res['data'].step1 && res['data'].step1 != '' && res['data'].step1[0] && res['data']['user_data'][0].first_name != "" && res['data'].step1[0].office_email != "" && res['data'].step1[0].dob != "null" && res['data'].step1[0].mailing_address != "" && res['data'].step1[0].phone != "" && res['data'].step1[0].office != "" && res['data'].step1[0].designation != "" && res['data'].step1[0].office_address != "" && res['data'].step1[0].office_tel_no != "") {
             this.progressValue = 40;
             this.Service.moveSteps('personal_details','educational_information', this.headerSteps);
             // this.headerSteps[1].stepComp = true;
-          }if(res['data'].step2 && res['data'].step2 != '' && res['data'].step2['all_data'][0] && education != null && education.qualification != '' && education.institute != '' && education.specialization != '' && res['data'].step2['all_data'][0].qualification_file != null && res['data'].step2['all_data'][0].specialization_file != null && res['data'].step2['language'].length > 0  && res['data'].step2['which_forum'].length > 0) {
+          }if(res['data'].step2 && res['data'].step2 != '' && res['data'].step2['all_data'][0] && education != null && education.qualification != '' && education.institute != '' && education.specialization != '' && res['data'].step2['all_data'][0].qualification_file != null && res['data'].step2['all_data'][0].specialization_file != null && res['data'].step2['language'] && res['data'].step2['language'].length > 0 && res['data'].step2['which_forum'] && res['data'].step2['which_forum'].length > 0) {
             this.progressValue = 80;
             this.Service.moveSteps('educational_information','applicant_trainer', this.headerSteps);
             // this.headerSteps[2].stepComp = true;
@@ -207,8 +207,8 @@ export class TrainersProfileComponent implements OnInit {
             //   this.step2Data.completeProfileFrom = new Date(other_course.from);
             //   this.step2Data.completeProfileTill = new Date(other_course.to);
             // }
-            this.whichLanguage = res['data'].step2.language.length > 0 ? res['data'].step2.language : [{}];
-            this.whichForum = res['data'].step2.which_forum.length > 0 ? res['data'].step2.which_forum : [{}];
+            this.whichLanguage = res['data'].step2.language && res['data'].step2.language.length > 0 ? res['data'].step2.language : [{}];
+            this.whichForum = res['data'].step2.which_forum && res['data'].step2.which_forum.length > 0 ? res['data'].step2.which_forum : [{}];
 
             if(education != null) {
               this.step2Data.qualification_degree = education.qualification;
@@ -458,15 +458,19 @@ export class TrainersProfileComponent implements OnInit {
     }else if(stepCount == 'step2') {
       this.trainersProfile = {};
       this.trainersProfile.step2 = {};
-      
-      this.step2Data.arabic = this.arabic;
-      this.step2Data.english = this.english;
-      this.step2Data.others = this.others;
-      this.trainersProfile.isDraft = 1;
 
       this.trainersProfile.step2 = this.step2Data;
       this.trainersProfile.email = this.userEmail;
       this.trainersProfile.userType = this.userType;
+      this.trainersProfile.step2['whichLanguage'] = [];
+      this.trainersProfile.step2['whichForum'] = [];
+      if(this.whichLanguage){
+        this.trainersProfile.step2['whichLanguage'] = this.whichLanguage;
+      }
+      if(this.whichForum){
+        this.trainersProfile.step2['whichForum'] = this.whichForum;
+      }
+
       this.loader = false;
       this.step2DataBodyFormFile.append('data',JSON.stringify(this.trainersProfile));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService,this.step2DataBodyFormFile)

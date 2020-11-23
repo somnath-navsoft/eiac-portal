@@ -114,4 +114,9 @@ export class MessageReplyComponent implements OnInit {
     return fullName.split(' ').map(n => n[0]).join('');
   }
 
+  getFileName(file) {
+    return file.split('/')[-1];
+    
+  }
+
 }

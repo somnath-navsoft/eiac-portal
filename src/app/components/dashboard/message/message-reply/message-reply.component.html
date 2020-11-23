@@ -15,8 +15,8 @@
                     <div class="message_cnt">
                         <span>{{msg.message}}</span>
                         <br />
-                        <a *ngIf="msg.document" [href]="constant.mediaPath+msg.document" target="_blank"
-                            class="attachment-cnt"><span class="icon-attach"></span></a>
+                        <a *ngIf="msg.document!=null" [href]="constant.mediaPath+msg.document" target="_blank"
+                            class="attachment-cnt"><span class="icon-attach"></span>{{ getFileName(msg.document)}}</a>
                     </div>
                     <!-- <div class="attach-cnt" *ngIf="msg.document">
                     <a [href]="constant.mediaPath+msg.document" target="_blank" class="attachment-cnt"><span class="icon-attach"></span></a>

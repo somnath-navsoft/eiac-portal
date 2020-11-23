@@ -66,7 +66,7 @@ export class ClientCabProfileComponent implements OnInit {
 
   ngOnInit() {
     this.stepDefaultValue();
-    this.step2Data.is_bod = '0';
+    // this.step2Data.is_bod = '0';
     this.addMinutesToTime = this.Service.addMinutesToTime();
 
     this.userEmail = sessionStorage.getItem('email');
@@ -123,9 +123,9 @@ export class ClientCabProfileComponent implements OnInit {
     this.step2Data.contact_person_mobile = '';
     this.step2Data.authorised_contact = '';
     this.step2Data.trade_license_name = '';
-    this.step2Data.date_issue = new Date();
-    this.step2Data.date_expire = new Date();
-    this.step2Data.date_establishment = new Date();
+    this.step2Data.date_issue = '';
+    this.step2Data.date_expire = '';
+    this.step2Data.date_establishment = '';
     this.step2Data.zip = '';
     this.step2Data.country = '';
     this.step2Data.state = '';
@@ -507,6 +507,11 @@ export class ClientCabProfileComponent implements OnInit {
       this.clientCabForm.email = this.userEmail;
       this.clientCabForm.userType = this.userType;
       this.clientCabForm.isDraft = 1;
+
+      this.step2Data.date_issue = this.step2Data.date_issue != '' ? this.step2Data.date_issue : new Date();
+      this.step2Data.date_expire = this.step2Data.date_expire != '' ? this.step2Data.date_expire : new Date();
+      this.step2Data.date_establishment = this.step2Data.date_establishment != '' ? this.step2Data.date_establishment : new Date();
+
       this.clientCabForm.step2 = this.step2Data;
 
       this.clientCabForm.step2['nameOftheOwner'] = [];
