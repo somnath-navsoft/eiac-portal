@@ -73,16 +73,15 @@ export class AccountUploadComponent implements OnInit {
         this._trainerService.accountPaymentSave((this.voucherFile))
         .subscribe(
             result => {
-              this.loader = true;
               let data: any = result;
               ////console.log("submit voucher: ", data);
               if(data.status){
                 setTimeout(() => {                    
                   // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
                   // this.toaster.success('Data save successfully','');
-                  this.toaster.warning(data.msg,'');
+                  this.toaster.success(data.msg,'');
                 },3500)
-                
+                this.loader = true;
               }else{
                 this.toaster.warning(data.msg,'');
               }
