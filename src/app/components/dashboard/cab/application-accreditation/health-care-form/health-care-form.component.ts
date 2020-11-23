@@ -696,6 +696,17 @@ export class HealthCareFormComponent implements OnInit {
             }
           }
       }
+      let scopeCollections: any = this.editScopeData;
+      for(var p in scopeCollections){
+        if(scopeCollections[p]){
+            let getDetails: any = scopeCollections[p]['scope_value'];
+            //console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
+            if(getDetails.length == 0){
+              //console.log(">>>Empty values: ", p, " deleting");
+              delete scopeCollections[p];
+            }
+        }
+      }
 
       //save to server at time
       this.healthCareForm = {};      
@@ -2707,16 +2718,16 @@ saveScope(rowInd: number){
 
   //filter scope collections
   //console.log(">> Fileter collection...", scopeCollections);
-  for(var p in scopeCollections){
-    if(scopeCollections[p]){
-        let getDetails: any = scopeCollections[p]['scope_value'];
-        //console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
-        if(getDetails.length == 0){
-          //console.log(">>>Empty values: ", p, " deleting");
-          delete scopeCollections[p];
-        }
-    }
-  }
+  // for(var p in scopeCollections){
+  //   if(scopeCollections[p]){
+  //       let getDetails: any = scopeCollections[p]['scope_value'];
+  //       //console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
+  //       if(getDetails.length == 0){
+  //         //console.log(">>>Empty values: ", p, " deleting");
+  //         delete scopeCollections[p];
+  //       }
+  //   }
+  // }
 
 
   console.log("#Updated Scope after edit: ", scopeCollections, " -- ", this.editScopeData);
@@ -2753,6 +2764,7 @@ updateScopeData = async(rowInd: number) => {
       if(getData.data.scopeDetails != undefined && !this.Service.isObjectEmpty(getData.data.scopeDetails)){
         let jsonObject: any = getData.data.scopeDetails;
         this.editScopeData = jsonObject;
+        this.toastr.success('Scope Data added successfully!','Success',{timeOut:2300});
       }
   });
 }

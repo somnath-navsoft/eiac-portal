@@ -872,6 +872,23 @@ addSchemeRow(obj: any = [],index: number){
            }
          }          
      }
+      //let type: any;
+      let scopeCollections: any = this.editScopeData;
+      for(let type in scopeCollections){
+        //console.log(">>> browse Type: ", type, " :: ", scopeCollections[type]);
+          //if(type > 0){
+            for(var p in scopeCollections[type]){
+              if(scopeCollections[type][p]){
+                  let getDetails: any = scopeCollections[type][p]['scope_value'];
+                  //console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
+                  if(getDetails.length == 0){
+                    //console.log(">>>Empty values: ", p, " deleting");
+                    delete scopeCollections[type][p];
+                  }
+              }
+            }
+          //}
+      } 
      //save to server at time 
           this.publicHalalConformityForm = {};
           this.publicHalalConformityForm.step3 = {};  
@@ -2362,6 +2379,7 @@ addSchemeRow(obj: any = [],index: number){
         if(getData.data.scopeDetails != undefined && !this.Service.isObjectEmpty(getData.data.scopeDetails)){
           let jsonObject: any = getData.data.scopeDetails;
           this.editScopeData = jsonObject;
+          this.toastr.success('Scope Data added successfully!','Success',{timeOut:2300});
         }
     });
   }  
@@ -2772,22 +2790,22 @@ saveScope(rowInd:  number,typeScopeId: number){
             }
       //filter scope collections
       //console.log(">> Fileter collection...", scopeCollections);
-      var type: any;
-      for(type in scopeCollections){
-        //console.log(">>> browse Type: ", type, " :: ", scopeCollections[type]);
-          if(type > 0){
-            for(var p in scopeCollections[type]){
-              if(scopeCollections[type][p]){
-                  let getDetails: any = scopeCollections[type][p]['scope_value'];
-                  //console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
-                  if(getDetails.length == 0){
-                    //console.log(">>>Empty values: ", p, " deleting");
-                    delete scopeCollections[type][p];
-                  }
-              }
-            }
-          }
-      }                
+      // var type: any;
+      // for(type in scopeCollections){
+      //   //console.log(">>> browse Type: ", type, " :: ", scopeCollections[type]);
+      //     if(type > 0){
+      //       for(var p in scopeCollections[type]){
+      //         if(scopeCollections[type][p]){
+      //             let getDetails: any = scopeCollections[type][p]['scope_value'];
+      //             //console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
+      //             if(getDetails.length == 0){
+      //               //console.log(">>>Empty values: ", p, " deleting");
+      //               delete scopeCollections[type][p];
+      //             }
+      //         }
+      //       }
+      //     }
+      // }                
   }
 
 
