@@ -688,6 +688,7 @@ loadScopeDataHalal(){
           }
 
           this.recommendVisit = JSON.parse(result['data'].recommend_visit);
+          console.log(this.recommendVisit);
           this.authorizationList = JSON.parse(result['data'].authorization_list);
           // let checkCount = 0;
           for(let key in this.authorizationList) {

@@ -802,51 +802,6 @@
                           </div>
                       </ng-container>
                   </ng-container>
-
-                  <ng-container *ngIf="serviceDetail?.form_meta == 'inspection_body' && editScopeData != undefined && editScopeData != null">
-                    <!-- <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-subheader-data">
-                                <h5>SCOPE DATA</h5>
-                            </div>
-                        </div>
-                    </div> -->
-                    <ng-container *ngFor="let item of editScopeData | keyvalue">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="table-appln scope-data">
-                                      <!-- @{{item.value.scope_heading | json}} || {{item.key}} || {{item.value.scope_heading.length}} -->
-                                    <div class="sub-header">
-                                        <h5 [innerHTML]="getSchme(item.key)"></h5>
-                                    </div>
-                                    <table>
-                                        <tr>
-                                            <th *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
-                                            <!-- <th>Action</th> -->
-                                        </tr>
-                                        <ng-container *ngIf="item.value.scope_value.length > 0">
-                                            <tr *ngFor="let item2 of (item.value.scope_value) | keyvalue; let i4 = index;">
-                                                <td *ngFor="let item3 of item2.value | keyvalue;">
-                                                    <span [innerHTML]="(item3.value)"></span>
-                                                </td>
-                                                <!-- <td>
-                                                <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item.key)"></span>
-                                                </td> -->
-                                              </tr>
-                                        </ng-container>
-                                        <ng-container *ngIf="item.value.scope_value.length == 0">
-                                            <tr>
-                                                <td [attr.colspan]="Service.getObjectLength(item.value.scope_heading)+1">
-                                                    No Data
-                                                </td>
-                                            </tr>
-                                        </ng-container>
-                                    </table>  
-                                </div>
-                            </div>
-                        </div>
-                    </ng-container>
-                </ng-container>
                 
                   <ng-container *ngIf="serviceDetail?.form_meta == 'pt_providers' && editScopeData != undefined && editScopeData != null">
                       <!-- <div class="row">
@@ -1463,7 +1418,7 @@
                       <tr>
                           <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td> 
                           <td class="authData">
-                            <a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled in Document Review Checklist</a> (for 1st submission only)
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled in Document Review Checklist</a> (for 1st submission only)
                           </td>
                       </tr>
                       <tr>
@@ -1683,9 +1638,15 @@
                     <span class="confirm">I recommend the visit to be conducted in the 
                       <a href="javascript:void(0)" [ngStyle]="{'cursor':'none'}">
                         <ng-container *ngIf="recommendVisit?.first == true">1st</ng-container>
-                        <ng-container *ngIf="recommendVisit?.second == true">, 2nd </ng-container>
-                        <ng-container *ngIf="recommendVisit?.third == true">, 3rd</ng-container>
-                        <ng-container *ngIf="recommendVisit?.fourth == true">, 4th</ng-container>
+                        <ng-container *ngIf="recommendVisit?.first == true && (recommendVisit?.second == true || recommendVisit?.third == true || recommendVisit?.fourth == true)">,</ng-container>
+
+                        <ng-container *ngIf="recommendVisit?.second == true">2nd </ng-container>
+                        <ng-container *ngIf="recommendVisit?.second == true && (recommendVisit?.third == true || recommendVisit?.fourth == true)">, </ng-container>
+
+                        <ng-container *ngIf="recommendVisit?.third == true">3rd</ng-container>
+                        <ng-container *ngIf="recommendVisit?.third == true && recommendVisit?.fourth == true">, </ng-container>
+
+                        <ng-container *ngIf="recommendVisit?.fourth == true">4th</ng-container>
                       </a> quarter of the year {{serviceDetail?.recommend_year}}.</span>
                   </div>
                   <div class="date_undertake" *ngIf="applicantDetails != undefined && applicantDetails.application_date != undefined">
