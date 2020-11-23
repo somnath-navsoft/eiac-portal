@@ -34,10 +34,10 @@
           <div class="row appl-cnt">
             <div class="col">
               <div class="appln-data">
-                <h5>Date of Birth</h5>
+                <h5>Company Email</h5>
               </div>
               <div class="appln-details">
-                <span>{{cabStep1?.dob | date}}</span>
+                <span>{{cabStep1?.office_email}}</span>
               </div>
             </div>
             <div class="col border-left-dash">
@@ -50,15 +50,7 @@
             </div>
             <div class="col border-left-dash">
               <div class="appln-data">
-                <h5>Nationality</h5>
-              </div>
-              <div class="appln-details">
-                <span>{{cabStep1?.nationality}}</span>
-              </div>
-            </div>
-            <div class="col border-left-dash">
-              <div class="appln-data">
-                <h5>Phone Number</h5>
+                <h5>Personal Mobile</h5>
               </div>
               <div class="appln-details">
                 <span>{{cabUserDetails?.contact}}</span>
@@ -66,17 +58,26 @@
             </div>
             <div class="col border-left-dash">
               <div class="appln-data">
-                <h5>Fax Number</h5>
+                <h5>Office Mobile</h5>
               </div>
               <div class="appln-details">
-                <span>{{cabStep1?.fax_no}}</span>
+                <span>{{cabStep1?.office_tel_no}}</span>
+              </div>
+            </div>
+            <div class="col border-left-dash">
+              <div class="appln-data">
+                <h5>Department</h5>
+              </div>
+              <div class="appln-details">
+                <span>{{cabStep1?.department}}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="row m-0">
+
+      <!-- <div class="row m-0">
         <div class="col-md-6">
           <div class="row appln-cnt-data ">
             <div class="col-md-12 p-0">
@@ -84,7 +85,6 @@
                 <div class="col-md-12">
                   <div class="appln-subhdr">
                     <h5>OFFICE DETAILS</h5>
-                    <!-- <hr> -->
                   </div>
                 </div>
               </div>
@@ -120,47 +120,6 @@
           </div>
         </div>
 
-        <!-- <div class="col-md-6">
-                <div class="row">
-                    <div class="col-md-12">
-                    <div class="appln-subhdr">
-                        <h5>TRADE LICENSE DETAILS</h5>                        
-                    </div>
-                    </div>
-                </div>
-                <div class="row msg-det">
-                    <div class="col-md-12">
-                        <div class="table-appln messg-tbl">
-                            <table>
-                            <tr>
-                                <td>Legal- professional Commercial/Trade License Number</td>
-                                <td>{{cabStep1?.trade_license_number}}</td>
-                            </tr>
-                            <tr>
-                                <td>Upload Trade License</td>
-                                <td>
-                                <div class="data-main-attach">
-                                    <div class="data-attach">
-                                    <h5>
-                                        <a href="javascript:void(0)">{{tradeLicenseText}}</a>
-                                    </h5>
-                                    </div>
-                                    <div class="icn-appln">
-                                    <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(constant.mediaPath,cabStep1.trade_license)">
-                                        <span class="icon-eye"></span>
-                                    </a>
-                                    <a target="_blank" [href]="tradeLicenseFile">
-                                        <span class="icon-download"></span>
-                                    </a>
-                                    </div>
-                                </div>
-                                </td>
-                            </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
         <div class="col-md-6">
           <div class="row appln-cnt-data ">
             <div class="col-md-12 p-0">
@@ -225,7 +184,6 @@
                 <div class="col-md-12">
                   <div class="appln-subhdr">
                     <h5>APPLICANT INFORMATION</h5>
-                    <!-- <hr> -->
                   </div>
                 </div>
               </div>
@@ -284,7 +242,6 @@
                 <div class="col-md-12">
                   <div class="appln-subhdr">
                     <h5>#{{i+1}} OWNERSHIP OF THE ORGANIZATION</h5>
-                    <!-- <hr> -->
                   </div>
                 </div>
               </div>
@@ -327,7 +284,6 @@
                 <div class="col-md-12">
                   <div class="appln-subhdr">
                     <h5>#{{i2+1}} DOES THE COMPANY HAVE BOARD MEMBERS ?</h5>
-                    <!-- <hr> -->
                   </div>
                 </div>
               </div>
@@ -362,7 +318,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="row">
         <div class="col-md-12">
