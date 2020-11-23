@@ -253,6 +253,7 @@ export class OperationsDashboardComponent implements OnInit {
       this.selectedUser.push(value.email);
     }
     this.fruitInput.nativeElement.value = '';
+    this.fruitInput.nativeElement.blur();
 
 
   }
