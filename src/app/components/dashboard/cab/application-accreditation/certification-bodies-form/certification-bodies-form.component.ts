@@ -857,6 +857,22 @@ ngOnInit() {
             }
           }          
       }
+      let scopeCollections: any = this.editScopeData;
+      for(let type in scopeCollections){
+        //console.log(">>> browse Type: ", type, " :: ", scopeCollections[type]);
+          //if(type > 0){
+            for(var p in scopeCollections[type]){
+              if(scopeCollections[type][p]){
+                  let getDetails: any = scopeCollections[type][p]['scope_value'];
+                  //console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
+                  if(getDetails.length == 0){
+                    //console.log(">>>Empty values: ", p, " deleting");
+                    delete scopeCollections[type][p];
+                  }
+              }
+            }
+          //}
+      } 
 
       //this.certificationBodiesForm.step3.is_draft = false;
       //this.certificationBodiesForm.saved_step = 3;
@@ -1917,6 +1933,7 @@ updateScopeData = async() => {
       if(getData.data.scopeDetails != undefined && !this.Service.isObjectEmpty(getData.data.scopeDetails)){
         let jsonObject: any = getData.data.scopeDetails;
         this.editScopeData = jsonObject;
+        this.toastr.success('Scope Data added successfully!','Success',{timeOut:2300});
       }
   });
 }

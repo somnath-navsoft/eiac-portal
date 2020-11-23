@@ -377,7 +377,17 @@ deleteScopeData(schemId: any, deleteIndex: number){
         }
       }
   }
-  
+  let scopeCollections: any = this.editScopeData;
+  for(var p in scopeCollections){
+    if(scopeCollections[p]){
+        let getDetails: any = scopeCollections[p]['scope_value'];
+        console.log(">>>Value: ", p, " -- ", getDetails, " -- ");
+        if(getDetails != undefined && getDetails.length == 0){
+          //////console.log(">>>Empty values: ", p, " deleting");
+          delete scopeCollections[p];
+        }
+    }
+  }
       
       //save to server at time
       this.step5Data = {};
@@ -2126,16 +2136,16 @@ saveScope(rowInd: any){
   }
   //filter scope collections
   //////console.log(">> Fileter collection...", scopeCollections);
-  for(var p in scopeCollections){
-    if(scopeCollections[p]){
-        let getDetails: any = scopeCollections[p]['scope_value'];
-        console.log(">>>Value: ", p, " -- ", getDetails, " -- ");
-        if(getDetails != undefined && getDetails.length == 0){
-          //////console.log(">>>Empty values: ", p, " deleting");
-          delete scopeCollections[p];
-        }
-    }
-  }
+  // for(var p in scopeCollections){
+  //   if(scopeCollections[p]){
+  //       let getDetails: any = scopeCollections[p]['scope_value'];
+  //       console.log(">>>Value: ", p, " -- ", getDetails, " -- ");
+  //       if(getDetails != undefined && getDetails.length == 0){
+  //         //////console.log(">>>Empty values: ", p, " deleting");
+  //         delete scopeCollections[p];
+  //       }
+  //   }
+  // }
   console.log("#Updated Scope after edit: ", scopeCollections, " -- ", this.editScopeData);
   this.step4Data['scopeDetails']    = scopeCollections;
 }
