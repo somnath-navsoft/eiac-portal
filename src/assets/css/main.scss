@@ -194,6 +194,7 @@ input { font-family: 'Dubai Regular'; }
 
 //==================PROFILE COMPLETION==================//
 .form-wrapper-pro { padding: 50px; margin-top: 70px; }
+.form-wrapper-pro.form_wrapper { padding: 0; }
 .complete-usr h1 { font-size: 60px; }
 .progress-br { padding: 30px 0; display: flex; }
 .progress-br .mat-progress-bar { height: 10px; border-radius: 5px; }
@@ -741,7 +742,7 @@ a:hover { text-decoration: none; }
 .form-subheader-data h5 { background: #E7E7E7; color: #AA9777; font-size: 20px; font-family: "Dubai Bold"; padding: 10px 25px; margin: 0; }
 .ownr-details { background: #F9F9F9; padding: 20px; margin: 20px 0; border-radius: 5px; }
 .remove-clss { text-align: right; color: #B54150; }
-.add-new a { font-size: 22px; color: #B54150; letter-spacing: 3px; font-family: "Dubai Regular"; padding: 15px 0; display: block; }
+.add-new a { display: inline-block; font-size: 22px; color: #B54150; letter-spacing: 3px; font-family: "Dubai Regular"; padding: 15px 0; }
 .add-new a:hover { color: #B54150; text-decoration: none; }
 .form-subhdr { margin: 0 -15px; }
 .form-subheader-data { margin: 0 -15px;}
@@ -1078,7 +1079,7 @@ ul.bill-details li:first-child { border-right: 1px solid #C9C9C9; }
 .mat-form-field .mat-select.mat-select-invalid .mat-select-arrow { border: solid #f44336;   border-width: 0 2px 2px 0;}
 // .mat-form-field { width: auto !important; }
 .mat-select-value { max-width: 100%; width: auto; }  
-
+.cab-data .mat-select-value { font-size: 16px; }
 .modal-header button:focus { outline: none; }
 .modal_head { display: flex; justify-content: space-between; }
 .authData a { color: #AA9777; text-decoration: underline; }

@@ -649,6 +649,17 @@ export class InspectionBodiesFormComponent implements OnInit {
             }
           }
       }
+      let scopeCollections: any = this.editScopeData;
+      for(var p in scopeCollections){
+        if(scopeCollections[p]){
+            let getDetails: any = scopeCollections[p]['scope_value'];
+            console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
+            if(getDetails.length == 0){
+              //////console.log(">>>Empty values: ", p, " deleting");
+              delete scopeCollections[p];
+            }
+        }
+      }
 
       //save to server at time
       this.inspectionBodyForm = {};      
@@ -1723,9 +1734,16 @@ export class InspectionBodiesFormComponent implements OnInit {
 
         //Step 6
         if(getData.data.is_prelim_visit != null){
-          this.step6Data.prelim_visit_val = (getData.data.is_prelim_visit) ? "1" : "0";
+
+          if(getData.data.is_prelim_visit == true && getData.data.prelim_visit_date != null && getData.data.prelim_visit_date != null){
+            this.step6Data.prelim_visit_val = '1';
+          }else if(getData.data.is_prelim_visit == false){
+            this.step6Data.prelim_visit_val = '0';
+          }
+
+          // this.step6Data.prelim_visit_val = (getData.data.is_prelim_visit) ? "1" : "0";
           this.step6Data.prelim_visit_select_date = getData.data.prelim_visit_date;
-        this.step6Data.prelim_visit_select_time = getData.data.prelim_visit_time;
+          this.step6Data.prelim_visit_select_time = getData.data.prelim_visit_time;
         }
         //Step 7
         if(getData.data.onBehalfApplicantDetails != null && getData.data.onBehalfApplicantDetails != undefined){
@@ -3759,17 +3777,17 @@ findObjectKeyValues(object: any, value: string){
   //filter scope collections
   //////console.log(">> Fileter collection...", scopeCollections);
   //https://stackoverflow.com/questions/45266543/checking-of-duplicate-value-in-json-object-array
-  for(var p in scopeCollections){
-    if(scopeCollections[p]){
-        let getDetails: any = scopeCollections[p]['scope_value'];
-        console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
-        if(getDetails.length == 0){
-          //////console.log(">>>Empty values: ", p, " deleting");
-          delete scopeCollections[p];
-        }
-    }
-  }
-  ////console.log("#Updated Scope after edit: ", scopeCollections, " -- ", this.editScopeData);
+  // for(var p in scopeCollections){
+  //   if(scopeCollections[p]){
+  //       let getDetails: any = scopeCollections[p]['scope_value'];
+  //       console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
+  //       if(getDetails.length == 0){
+  //         //////console.log(">>>Empty values: ", p, " deleting");
+  //         delete scopeCollections[p];
+  //       }
+  //   }
+  // }
+  console.log("#Updated Scope after edit: ", scopeCollections, " -- ", this.editScopeData);
   this.step5Data['scopeDetails']    = scopeCollections;
   this.getScopeData = scopeCollections;
 }
@@ -3808,6 +3826,7 @@ updateScopeData = async(rowInd: number) => {
           if(getData.data.scopeDetails != undefined && !this.Service.isObjectEmpty(getData.data.scopeDetails)){
             let jsonObject: any = getData.data.scopeDetails;
             this.editScopeData = jsonObject;
+            this.toastr.success('Scope Data added successfully!','Success',{timeOut:2300});
           }
       });
 }

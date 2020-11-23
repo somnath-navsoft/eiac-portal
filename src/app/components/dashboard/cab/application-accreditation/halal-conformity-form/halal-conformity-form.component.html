@@ -550,7 +550,7 @@
                                     <div class="row">
                                         <div class="col-md-10 p-0">
                                             <div class="form-subheader-data">
-                                                <h5>IF HCAB HAVE OTHER LOCATION(S) OTHER THAN THE MAIN/HEAD OFFICE OR BRANCHES WHERE KEY ACTIVITIES TAKE PLACE</h5>
+                                                <h5>IF HCAB HAVE ANY OTHER LOCATION(S) OTHER THAN THE MAIN/HEAD OFFICE OR BRANCHES WHERE KEY ACTIVITIES TAKE PLACE</h5>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
@@ -626,7 +626,7 @@
                                     <div class="row">
                                         <div class="col-md-10 p-0">
                                             <div class="form-subheader-data">
-                                                <h5>DOES HCAB CURRENTLY HOLD ANT OTHER CURRENT OR PREVIOUS ACCREDITATION (S) ?</h5>
+                                                <h5>DOES HCAB CURRENTLY HOLD ANY OTHER CURRENT OR PREVIOUS ACCREDITATION (S) ?</h5>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
@@ -730,7 +730,7 @@
 
                                                             <td>
                                                                 <mat-form-field class="cab-data">
-                                                                    <input readonly="true" (click)="Service._openCalendar(initial_accr_date)" matInput [matDatepicker]="initial_accr_date" readonly="true" placeholder="Selectd" name="initial_accr_date_{{i}}" (dateChange)="setexDate(accreditationInfo[i].initial_accr_date)" [(ngModel)]="accreditationInfo[i].initial_accr_date" required>
+                                                                    <input readonly="true" (click)="Service._openCalendar(initial_accr_date)" matInput [matDatepicker]="initial_accr_date" readonly="true" placeholder="Select Date" name="initial_accr_date_{{i}}" (dateChange)="setexDate(accreditationInfo[i].initial_accr_date)" [(ngModel)]="accreditationInfo[i].initial_accr_date" required>
                                                                     <mat-datepicker-toggle matSuffix [for]="initial_accr_date"></mat-datepicker-toggle>
                                                                     <mat-datepicker #initial_accr_date  disabled="false"></mat-datepicker>
                                                                 </mat-form-field>
@@ -738,7 +738,7 @@
 
                                                             <td>
                                                                 <mat-form-field class="cab-data">
-                                                                    <input readonly="true" (keypress)="Service.inputFilter($event, Service.regExName)" matInput [matDatepicker]="expiry_date" readonly="true" [min]="minDate" placeholder="Selectd" name="expiry_date_{{i}}" (click)="Service._openCalendar(expiry_date)" [(ngModel)]="accreditationInfo[i].expiry_date" required>
+                                                                    <input readonly="true" (keypress)="Service.inputFilter($event, Service.regExName)" matInput [matDatepicker]="expiry_date" readonly="true" [min]="minDate" placeholder="Select Date" name="expiry_date_{{i}}" (click)="Service._openCalendar(expiry_date)" [(ngModel)]="accreditationInfo[i].expiry_date" required>
                                                                     <mat-datepicker-toggle matSuffix [for]="expiry_date"></mat-datepicker-toggle>
                                                                     <mat-datepicker #expiry_date  disabled="false"></mat-datepicker>
                                                                 </mat-form-field>
@@ -1513,7 +1513,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th>Name of the Authorized Persons</th>
-                                                            <th>Signature Spesimen</th>
+                                                            <th>Signature Specimen</th>
                                                             <th>Contact Details(Tel,Mobile No. and Email)</th>
                                                         </tr>
                                                     </thead>
@@ -2112,10 +2112,19 @@
                         </ng-template>
                         <ng-template #checklistView let-modal>
                         <div class="modal-header">
-                            <h4 class="modal-title" id="modal-basic-title">CHECKLIST</h4>
+                            <!-- <h4 class="modal-title" id="modal-basic-title">CHECKLIST</h4>
                             <button type="button" class="close" aria-label="Close" (click)="closeChecklistDialog()">
                             <span aria-hidden="true">&times;</span>
-                            </button>
+                            </button> -->
+
+                            <h4 class="modal-title" id="modal-basic-title">CHECKLIST
+                                <a [href]="pathPDF" target="_blank" [ngStyle]="{'color': '#000'}">
+                                    <span class="icon-download-diff"></span>
+                                </a>       
+                            </h4>
+                              <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
                         </div>
                         <div class="modal-body"> 
                             <app-loader *ngIf="loaderPdf"></app-loader>

@@ -150,7 +150,7 @@
                                                 <div class="col-md-4">
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Office Phone (with Area Code)</mat-label>
-                                                        <input matInput [(ngModel)]="step1Data.officephone_with_area" name="officephone_with_area" placeholder="" required>
+                                                        <input matInput [(ngModel)]="step1Data.officephone_with_area" name="officephone_with_area" (keypress)="Service.IsNumeric($event)" placeholder="" required>
                                                     </mat-form-field>
                                                     <p class="error" *ngIf="step1Data.officephone_with_area && !Service.checkInput('onlyNumberWithPlus',step1Data.officephone_with_area)">Please Enter Only Number</p>
                                                 </div>
@@ -482,7 +482,7 @@
                                             <div class="row">
                                                 <div class="col-md-12 p-0">
                                                     <div class="form-subhdr">
-                                                        <h5>APPLICANT ASSESSOR</h5>
+                                                        <h5>APPLICANT TRAINER</h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -527,6 +527,19 @@
 
                                         </div>
                                     </div>
+
+                                    <span id="openAppDialog" (click)="openView(appComp)"></span>
+                                    <ng-template #appComp let-modal>
+                                        <div class="main_pop">
+                                            <div class="pop_close" (click)="closeChecklistDialog()">
+                                                <span class="icon-close"></span>
+                                            </div>
+                                            <div class="pop_thanks">
+                                                <h5>Thank you</h5>
+                                                <p>Your Complete Profile has been submitted successfully and is under review. We will get back you soon.</p>
+                                            </div>
+                                        </div>
+                                    </ng-template>
                                 </div>
 
                                 <div class="row">
