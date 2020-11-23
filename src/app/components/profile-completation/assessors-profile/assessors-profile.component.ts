@@ -4,6 +4,7 @@ import { Constants } from 'src/app/services/constant.service';
 import { AppService } from 'src/app/services/app.service';
 import { ToastrService } from 'ngx-toastr';
 import { MatStepper } from '@angular/material';
+import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-assessors-profile',
@@ -63,10 +64,12 @@ export class AssessorsProfileComponent implements OnInit {
   whichLanguage:any[] = [{language:'',read:0,write:0,speak:0}];
   languageArr:any = [];
   file_validation_listAuditor:boolean = true;
-
+  modalOptions:NgbModalOptions;
+  closeResult: string;
+  
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) {
+  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,private modalService: NgbModal) {
     this.today.setDate(this.today.getDate());
    }
 
@@ -253,7 +256,7 @@ export class AssessorsProfileComponent implements OnInit {
             this.progressValue = 22;
             this.Service.moveSteps('personal_details','educational_information', this.headerSteps);
           }
-          if(res['data'].step2 != '' && res['data'].step2['education'] && res['data'].step2['education'][0].qualification_file != null && res['data'].step2['education'][0].specialization_file != null && res['data'].step2['education'][0].detail && res['data'].step2['education'][0].organization && res['data'].step2['education'][0].specialization && res['data'].step2['language'].length > 0 && res['data'].step2['which_forum'].length > 0) {
+          if(res['data'].step2 != '' && res['data'].step2['education'] && res['data'].step2['education'][0].qualification_file != null && res['data'].step2['education'][0].detail && res['data'].step2['education'][0].organization && res['data'].step2['education'][0].specialization && res['data'].step2['language'].length > 0 && res['data'].step2['which_forum'].length > 0) {
             this.progressValue = 44;
             this.Service.moveSteps('educational_information','employment', this.headerSteps);
           }
@@ -657,11 +660,12 @@ export class AssessorsProfileComponent implements OnInit {
       {
         this.file_validation1 = false;
         this.toastr.warning('Please Fill required field','');
-      }else if(this.tradeLicensedValidation2 == false)
-      {
-        this.file_validation2 = false;
-        this.toastr.warning('Please Fill required field','');
       }
+      // else if(this.tradeLicensedValidation2 == false)
+      // {
+      //   this.file_validation2 = false;
+      //   this.toastr.warning('Please Fill required field','');
+      // }
       else if(ngForm2.form.valid) {
         this.assessorsProfile = {};
         this.assessorsProfile.step2 = {};
@@ -820,6 +824,16 @@ export class AssessorsProfileComponent implements OnInit {
               this.toastr.success(res['msg'], '');
               this.progressValue == 88 || this.progressValue < 100 ? this.progressValue = 100 : this.progressValue = this.progressValue ;
               // this.router.navigateByUrl('/sign-in');
+
+              if(sessionStorage.getItem('profileComplete') == '0') {
+                setTimeout(()=>{
+                  let elem = document.getElementById('openAppDialog');
+                  //console.log("App dialog hash....", elem);
+                  if(elem){
+                    elem.click();
+                  }
+                }, 100)
+              }
             }else{
               this.toastr.warning(res['msg'], '');
             }
@@ -828,6 +842,38 @@ export class AssessorsProfileComponent implements OnInit {
       }
     }else{
       this.toastr.warning('Please Fill required field','');
+    }
+  }
+
+  openView(content, type:string) {
+    
+    this.modalService.open(content, this.modalOptions).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      //////console.log("Closed: ", this.closeResult);
+      //this.courseViewData['courseDuration'] = '';
+      //this.courseViewData['courseFees'] = '';
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  closeChecklistDialog(){
+    this.modalService.dismissAll();
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      //////console.log("Closed with ESC ");
+      
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      //////console.log("Closed with CLOSE ICON ");
+     
+      return 'by clicking on a backdrop';
+    } else {
+      //////console.log("Closed ",`with: ${reason}`);
+      
+      return  `with: ${reason}`;
     }
   }
 

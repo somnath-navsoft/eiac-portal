@@ -7,6 +7,7 @@ import { MatStepper } from '@angular/material';
 import { async } from '@angular/core/testing';
 // import * as data from '../../../../assets/csc-json/cities.json';
 // import SampleJson from './cities.json';
+import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-client-cab-profile',
@@ -57,10 +58,12 @@ export class ClientCabProfileComponent implements OnInit {
   step2SaveDraft:any;
   personalEmailReadonly:any;
   userId:any;
+  modalOptions:NgbModalOptions;
+  closeResult: string;
   
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { 
+  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,private modalService: NgbModal) { 
     this.today.setDate(this.today.getDate());
   }
 
@@ -465,6 +468,15 @@ export class ClientCabProfileComponent implements OnInit {
               this.toastr.success(res['msg'], '');
               this.progressValue == 50 ? this.progressValue = 100 : this.progressValue = this.progressValue ;
               // this.router.navigateByUrl('/sign-in');
+              if(sessionStorage.getItem('profileComplete') == '0') {
+                setTimeout(()=>{
+                  let elem = document.getElementById('openAppDialog');
+                  //console.log("App dialog hash....", elem);
+                  if(elem){
+                    elem.click();
+                  }
+                }, 100)
+              }
             }else{
               
               this.toastr.warning(res['msg'], '');
@@ -476,6 +488,38 @@ export class ClientCabProfileComponent implements OnInit {
       this.toastr.warning('Please Fill required field','');
     }else{
       this.toastr.warning('Please Fill required field','');
+    }
+  }
+
+  openView(content, type:string) {
+    
+    this.modalService.open(content, this.modalOptions).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      //////console.log("Closed: ", this.closeResult);
+      //this.courseViewData['courseDuration'] = '';
+      //this.courseViewData['courseFees'] = '';
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  closeChecklistDialog(){
+    this.modalService.dismissAll();
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      //////console.log("Closed with ESC ");
+      
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      //////console.log("Closed with CLOSE ICON ");
+     
+      return 'by clicking on a backdrop';
+    } else {
+      //////console.log("Closed ",`with: ${reason}`);
+      
+      return  `with: ${reason}`;
     }
   }
 

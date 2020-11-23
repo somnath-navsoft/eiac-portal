@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Constants } from 'src/app/services/constant.service';
 import { AppService } from 'src/app/services/app.service';
 import { ToastrService } from 'ngx-toastr';
+import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-candidate-profile',
@@ -33,8 +34,10 @@ export class CandidateProfileComponent implements OnInit {
   loader:boolean = true;
   readOnly:boolean = false;
   userId:any;
+  modalOptions:NgbModalOptions;
+  closeResult: string;
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { 
+  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,private modalService: NgbModal) { 
     this.today.setDate(this.today.getDate());
   }
 
@@ -312,6 +315,15 @@ export class CandidateProfileComponent implements OnInit {
               this.toastr.success(res['msg'], '');
               this.progressValue == 50 ? this.progressValue = 100 : this.progressValue = this.progressValue ;
               // this.router.navigateByUrl('/sign-in');
+              if(sessionStorage.getItem('profileComplete') == '0') {
+                setTimeout(()=>{
+                  let elem = document.getElementById('openAppDialog');
+                  //console.log("App dialog hash....", elem);
+                  if(elem){
+                    elem.click();
+                  }
+                }, 100)
+              }
             }else{
               this.toastr.warning(res['msg'], '');
             }
@@ -322,6 +334,38 @@ export class CandidateProfileComponent implements OnInit {
     }
   }
 
+  openView(content, type:string) {
+    
+    this.modalService.open(content, this.modalOptions).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      //////console.log("Closed: ", this.closeResult);
+      //this.courseViewData['courseDuration'] = '';
+      //this.courseViewData['courseFees'] = '';
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  closeChecklistDialog(){
+    this.modalService.dismissAll();
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      //////console.log("Closed with ESC ");
+      
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      //////console.log("Closed with CLOSE ICON ");
+     
+      return 'by clicking on a backdrop';
+    } else {
+      //////console.log("Closed ",`with: ${reason}`);
+      
+      return  `with: ${reason}`;
+    }
+  }
+  
   savedraftStep(stepCount) {
     if(stepCount == 'step1') {
       this.candidateProfile = {};
