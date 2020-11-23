@@ -4,6 +4,7 @@ import { Constants } from 'src/app/services/constant.service';
 import { AppService } from 'src/app/services/app.service';
 import { ToastrService } from 'ngx-toastr';
 import { MatStepper } from '@angular/material';
+import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-trainers-profile',
@@ -45,10 +46,12 @@ export class TrainersProfileComponent implements OnInit {
   whichForum:any[] = [{}];
   whichLanguage:any[] = [{}];
   languageArr:any = [];
+  modalOptions:NgbModalOptions;
+  closeResult: string;
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) {
+  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,private modalService: NgbModal) {
     this.today.setDate(this.today.getDate());
    }
 
@@ -346,11 +349,12 @@ export class TrainersProfileComponent implements OnInit {
       {
         this.file_validation1 = false;
         this.toastr.warning('Please Fill required field','');
-      }else if(this.tradeLicensedValidation2 == false)
-      {
-        this.file_validation2 = false;
-        this.toastr.warning('Please Fill required field','');
       }
+      // else if(this.tradeLicensedValidation2 == false)
+      // {
+      //   this.file_validation2 = false;
+      //   this.toastr.warning('Please Fill required field','');
+      // }
       else if(ngForm2.form.valid) {
 
       this.trainersProfile = {};
@@ -421,6 +425,15 @@ export class TrainersProfileComponent implements OnInit {
               this.toastr.success(res['msg'], '');
               this.progressValue == 80 || this.progressValue < 100 ? this.progressValue = 100 : this.progressValue = this.progressValue ;
               this.loader = true;
+              if(sessionStorage.getItem('profileComplete') == '0') {
+                setTimeout(()=>{
+                  let elem = document.getElementById('openAppDialog');
+                  //console.log("App dialog hash....", elem);
+                  if(elem){
+                    elem.click();
+                  }
+                }, 100)
+              }
               // this.router.navigateByUrl('/sign-in');
             }else{
               
@@ -430,6 +443,38 @@ export class TrainersProfileComponent implements OnInit {
       }
     }else{
       this.toastr.warning('Please Fill required field','');
+    }
+  }
+
+  openView(content, type:string) {
+    
+    this.modalService.open(content, this.modalOptions).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      //////console.log("Closed: ", this.closeResult);
+      //this.courseViewData['courseDuration'] = '';
+      //this.courseViewData['courseFees'] = '';
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  closeChecklistDialog(){
+    this.modalService.dismissAll();
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      //////console.log("Closed with ESC ");
+      
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      //////console.log("Closed with CLOSE ICON ");
+     
+      return 'by clicking on a backdrop';
+    } else {
+      //////console.log("Closed ",`with: ${reason}`);
+      
+      return  `with: ${reason}`;
     }
   }
 
