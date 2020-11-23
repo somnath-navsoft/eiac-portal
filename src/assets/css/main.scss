@@ -1078,7 +1078,7 @@ ul.bill-details li:first-child { border-right: 1px solid #C9C9C9; }
 .mat-form-field .mat-select.mat-select-invalid .mat-select-arrow { border: solid #f44336;   border-width: 0 2px 2px 0;}
 // .mat-form-field { width: auto !important; }
 .mat-select-value { max-width: 100%; width: auto; }  
-
+.cab-data .mat-select-value { font-size: 16px; }
 .modal-header button:focus { outline: none; }
 .modal_head { display: flex; justify-content: space-between; }
 .authData a { color: #AA9777; text-decoration: underline; }
