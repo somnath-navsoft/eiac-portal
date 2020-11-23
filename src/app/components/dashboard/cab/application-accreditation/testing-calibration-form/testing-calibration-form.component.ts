@@ -2085,7 +2085,7 @@ getCriteria(value, secInd: any){
         let getData: any = res;
         let data: any;
         //, getData.data.step1, " -- ", getData.data.step2
-
+        console.log(">>> proff: ", res);
         if(getData.data.step1.length){
             data = getData.data['step1'][0];
             /////////console.log('data enter...1', data);
