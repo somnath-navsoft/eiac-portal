@@ -176,7 +176,7 @@ export class TrainersProfileComponent implements OnInit {
             this.progressValue = 40;
             this.Service.moveSteps('personal_details','educational_information', this.headerSteps);
             // this.headerSteps[1].stepComp = true;
-          }if(res['data'].step2 && res['data'].step2 != '' && res['data'].step2['all_data'][0] && education != null && education.qualification != '' && education.institute != '' && education.specialization != '' && res['data'].step2['all_data'][0].qualification_file != null && res['data'].step2['all_data'][0].specialization_file != null && res['data'].step2['language'].length > 0  && res['data'].step2['which_forum'].length > 0) {
+          }if(res['data'].step2 && res['data'].step2 != '' && res['data'].step2['all_data'][0] && education != null && education.qualification != '' && education.institute != '' && education.specialization != '' && res['data'].step2['all_data'][0].qualification_file != null && res['data'].step2['all_data'][0].specialization_file != null && res['data'].step2['language'] && res['data'].step2['language'].length > 0 && res['data'].step2['which_forum'] && res['data'].step2['which_forum'].length > 0) {
             this.progressValue = 80;
             this.Service.moveSteps('educational_information','applicant_trainer', this.headerSteps);
             // this.headerSteps[2].stepComp = true;
@@ -207,8 +207,8 @@ export class TrainersProfileComponent implements OnInit {
             //   this.step2Data.completeProfileFrom = new Date(other_course.from);
             //   this.step2Data.completeProfileTill = new Date(other_course.to);
             // }
-            this.whichLanguage = res['data'].step2.language.length > 0 ? res['data'].step2.language : [{}];
-            this.whichForum = res['data'].step2.which_forum.length > 0 ? res['data'].step2.which_forum : [{}];
+            this.whichLanguage = res['data'].step2.language && res['data'].step2.language.length > 0 ? res['data'].step2.language : [{}];
+            this.whichForum = res['data'].step2.which_forum && res['data'].step2.which_forum.length > 0 ? res['data'].step2.which_forum : [{}];
 
             if(education != null) {
               this.step2Data.qualification_degree = education.qualification;

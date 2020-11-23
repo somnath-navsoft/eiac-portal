@@ -66,7 +66,7 @@ export class ClientCabProfileComponent implements OnInit {
 
   ngOnInit() {
     this.stepDefaultValue();
-    this.step2Data.is_bod = '0';
+    // this.step2Data.is_bod = '0';
     this.addMinutesToTime = this.Service.addMinutesToTime();
 
     this.userEmail = sessionStorage.getItem('email');
