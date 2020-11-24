@@ -341,7 +341,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
         //postObject['payment_status'] = this.selectPaymentStatus;
         //postObject['fees_per_trainee'] = (this.selectFees == '') ? 0.00 : this.selectFees;
         
-        //console.log(">>>POST: ", postObject);
+        //console.log(">>>POST: ", postObject); 
 
         if(postObject){
           this.subscriptions.push(this._trainerService.searchCourse((postObject))
@@ -350,7 +350,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
                let data: any = result;
                 ////console.log("search results: ", result);
                 if(data != undefined && typeof data === 'object' && data.records.length){
-                    //console.log(">>> Data: ", data.records);
+                    console.log(">>> Data: ", data.records);
                     this.pageCurrentNumber = 1;
                     this.dataLoad = true;
                     this.trainerdata = data.records;
@@ -498,7 +498,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
               let data: any = result;
               let dataRec: any=[];
               this.dataLoad = true;
-              // console.log('loading...', data.records);
+              console.log('loading...', data.records);
               // console.log(">>>List: ", data);
               this.trainerdata = data.records;
               dataRec = data.records;
