@@ -140,6 +140,7 @@ import { CabTrainingInpremiseDetailComponent } from './components/dashboard/cab/
 import { CabTrainingInpremiseFormComponent } from './components/dashboard/cab/cab-training-inpremise-form/cab-training-inpremise-form.component';
 import { MessageReplyComponent } from './components/dashboard/message/message-reply/message-reply.component';
 import {TimeAgoPipe} from 'time-ago-pipe';
+import { OperationsRegistrationServiceListComponent } from './components/dashboard/operations/operations-registration-service-list/operations-registration-service-list.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -188,7 +189,8 @@ export const MY_FORMATS = {
     CabTrainingInpremiseDetailComponent,
     CabTrainingInpremiseFormComponent,
     MessageReplyComponent,
-    TimeAgoPipe
+    TimeAgoPipe,
+    OperationsRegistrationServiceListComponent
   ],
   imports: [
     CommonModule,
