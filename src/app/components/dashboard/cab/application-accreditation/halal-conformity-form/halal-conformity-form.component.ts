@@ -13,6 +13,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { TrainerService } from '../../../../../services/trainer.service';
 import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
 declare let paypal: any;
+import {MatChipInputEvent} from '@angular/material/chips';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-halal-conformity-form',
@@ -238,6 +240,21 @@ export class HalalConformityFormComponent implements OnInit {
    hcabLogon2:any;
    hcabLogon3:any;
    termsGeneral: any;
+   users: any[] = [];
+   separatorKeysCodes: number[] = [ENTER, COMMA];
+   managerialProfessional: any[] = [];
+   decisionMaker	: any[] = [];
+   technical: any[] = [];
+   administrative: any[] = [];
+   auditorsName: any[] = [];
+   categoryCode: any[] = [];
+   technicalExpert	: any[] = [];
+   inspectorsName	: any[] = [];
+   categoryCode2	: any[] = [];
+   islamicAffairsExpert	: any[] = [];
+   others	: any[] = [];
+   selectable = true;
+   removable = true;
   
   @ViewChild('captchaRef',{static:true}) captchaRef: RecaptchaComponent;
 
@@ -1924,6 +1941,34 @@ addSchemeRow(obj: any = [],index: number){
       }
       }, '#paypalPayment');
     });
+    }
+  }
+
+  addUser(event: MatChipInputEvent,type): void {
+    const input = event.input;
+    const value = event.value;
+    if(this.users.length >=5){
+        this.toastr.warning("Maximum users(5) exceeds.");
+        return;
+    }
+    // Add our fruit
+    if (type == 'Managerial' && (value || '').trim()) {
+      this.managerialProfessional.push(value.trim());
+    }
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+  }
+  removeUser(index,type): void {
+    
+    // if(this.users.length == 1){
+    //   this.toastr.warning("At least one user required.");
+    //   return;
+    // }
+    if (type == 'Managerial') {
+      // const index = this.managerialProfessional.indexOf(user);
+      this.managerialProfessional.splice(index, 1);
     }
   }
 
