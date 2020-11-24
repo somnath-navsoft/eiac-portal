@@ -1424,6 +1424,23 @@ loadData(){
                 }
               }
 
+              if(getData.data.saved_step == 3 && getData.data.accredation_criteria == 2){
+                  saveStep = 4;
+              }
+              if(getData.data.cab_type != 'Healthcare' && getData.data.cab_type != 'Medical' &&
+              getData.data.cab_type != 'Sample Collection'){
+                if(getData.data.accredation_criteria == 1){
+                  if(getData.data.saved_step == 4){
+                    saveStep = 5;
+                  }
+                }
+                if(getData.data.accredation_criteria == 2){
+                  if(getData.data.saved_step == 3 || getData.data.saved_step == 4){
+                    saveStep = 5;
+                  }
+                }
+              }
+
               var cityList =  this.Service.getCity();
 
               this.step1Data.country = getData.data.country;
@@ -2352,7 +2369,7 @@ onSubmitStep3(ngForm3: any){
         this.loader = true;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
-
+          console.log(">>>> select CAB: ", this.step1Data.cab_type);
           if(this.step1Data.accredation_criteria == 1){
             //Intial
             this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
@@ -2382,6 +2399,14 @@ onSubmitStep3(ngForm3: any){
                 console.log(">>step select: 22222 ", this.headerSteps);
                 this.Service.moveSteps('personal_information', 'perlim_visit', this.headerSteps);
               }else{
+                console.log(">>> Passing....skip....");
+                let stepData1: any = this.headerSteps.find(item => item.title == 'information_audit_management');
+                console.log(">>step select: 5555 ", stepData1);
+                if(stepData1){
+                  console.log(">>>...class reset information_audit_management");
+                  stepData1.activeClass = '';
+                  stepData1.stepComp = true;
+                }
                 this.Service.moveSteps('personal_information', 'scope_accreditation', this.headerSteps);
               }                
           }

@@ -593,7 +593,7 @@
                                             
                                                 </div>
                                             </mat-radio-group>
-                                            <div class="col-md-6 p-0" [ngStyle]="{'margin-top':'5px'}">
+                                            <div class="col-md-12 p-0" [ngStyle]="{'margin-top':'5px'}">
                                                 <p class="error" *ngIf="isApplicationSubmitted == true && selectInspecActivity.errors?.required">Please select anyone option</p>
                                             </div>
                                         </div>
@@ -617,7 +617,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <div class="form-sub" [ngStyle]="{'width': '362px'}">
+                                            <div class="form-sub">
                                                     <span>Does CAB currently hold any accreditation(s) ? <span class="required_input">*</span></span>
                                             </div>
                                         </div>
@@ -638,7 +638,7 @@
                                             
                                                 </div>
                                             </mat-radio-group>
-                                            <div class="col-md-6 p-0" [ngStyle]="{'margin-top':'5px'}">
+                                            <div class="col-md-12 p-0" [ngStyle]="{'margin-top':'5px'}">
                                                 <p class="error" *ngIf="isApplicationSubmitted == true && selectAccredHold.errors?.required">Please select anyone option</p>
                                             </div>
                                         </div>
@@ -1002,96 +1002,6 @@
                                     <!-- View scope data -->
                                     <div class="row mt-3">
                                         <div class="col-md-12">
-                                            <!-- <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey, selectDeleteFamilyKey)" [parent]="this" [modalType]="'delete'"></custom-modal>
-                                            <ng-container *ngIf="editScopeData != undefined && editScopeData != null">
-                                                <div class="row">
-                                                    <div class="col-md-12 p-0">
-                                                        <div class="form-subheader-data">
-                                                            <h5>SCOPE DATA</h5> 
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteIndex, selectDeleteFamilyKey)" [parent]="this" [modalType]="'delete'"></custom-modal>
-                                                <ng-container *ngFor="let item of editScopeData | keyvalue">
-                                                    <div class="row"> 
-                                                        <div class="col-md-12">
-                                                            <div class="sub-header">
-                                                                <h5 [innerHTML]="getSchme(item.key)"></h5>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <ng-container *ngIf="item.value != null && item.value != undefined">
-                                                        <ng-container *ngFor="let item5 of (item.value) | keyvalue;">
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <div class="table-appln scope-data">
-                                                                        <div class="sub-header">
-                                                                            <h5 [innerHTML]="getFamilySchme(item.key, item5.key)"></h5>
-                                                                        </div>
-                                                                        <table>
-                                                                            <tr>
-                                                                                <th *ngFor="let item6 of (item5.value.scope_heading) | keyvalue;">{{item6.value}}</th>
-                                                                                <th>Action</th>
-                                                                            </tr>
-                                                                            <ng-container *ngIf="item5.value.scope_value.length > 0">
-                                                                                <tr *ngFor="let item2 of (item5.value.scope_value) | keyvalue; let i4 = index;">
-                                                                                    <td *ngFor="let item3 of item2.value | keyvalue;">
-                                                                                        <span [innerHTML]="(item3.value)"></span> 
-                                                                                    </td>
-                                                                                    <td>
-                                                                                    <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item.key, item5.key )"></span>
-                                                                                    </td>                                                                
-                                                                                </tr>
-                                                                            </ng-container>
-                                                                            <ng-container *ngIf="item5.value.scope_value.length == 0">
-                                                                                <tr>
-                                                                                    <td [attr.colspan]="Service.getObjectLength(item5.value.scope_heading)+1">
-                                                                                        No Data
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </ng-container>
-                                                                        </table>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </ng-container>
-                                                    </ng-container>                                                    
-                                                </ng-container>
-                                            </ng-container> -->
-                                            
-                                            <!-- old <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="table-appln scope-data">
-                                                                <div class="sub-header">
-                                                                    {{item | json}}
-                                                                    <h5 [innerHTML]="getSchme(item.key)"></h5>
-                                                                </div> -->
-                                                                <!-- <table>
-                                                                    <tr>
-                                                                        <th *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
-                                                                        <th>Action</th>
-                                                                    </tr>
-                                                                    <ng-container *ngIf="item.value.scope_value.length > 0">
-                                                                        <tr *ngFor="let item2 of (item.value.scope_value) | keyvalue; let i4 = index;">
-                                                                            <td *ngFor="let item3 of item2.value | keyvalue;">
-                                                                                <span [innerHTML]="(item3.value)"></span>
-                                                                            </td>
-                                                                            <td>
-                                                                            <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item.key)"></span>
-                                                                            </td>                                                                
-                                                                        </tr>
-                                                                    </ng-container>
-                                                                    <ng-container *ngIf="item.value.scope_value.length == 0">
-                                                                        <tr>
-                                                                            <td [attr.colspan]="Service.getObjectLength(item.value.scope_heading)+1">
-                                                                                No Data
-                                                                            </td>
-                                                                        </tr>
-                                                                    </ng-container>
-                                                                </table>   -->
-                                                            <!-- </div>
-                                                        </div>
-                                                    </div> -->
                                     
                                             <ng-container *ngFor="let item of schemeRows; let i = index;">
                                                 <div class="row">
@@ -1130,7 +1040,7 @@
                                                         <div class="row mt-3">
                                                             <!-- @{{typeFamily.id}} == {{typeFamily.scopeFamilyRows[k].id}} -->
                                                             <div class="col-md-9 col-sm-9">
-                                                                @{{typeFamily.scopeFamilyRows[k].id}}
+                                                                <!-- @{{typeFamily.scopeFamilyRows[k].id}} -->
                                                                 <!-- @index - {{k}} -- @{{typeFamily.scopeFamilyRows[k].id}} -->
                                                                 <mat-form-field class="cab-data">
                                                                     
@@ -1313,7 +1223,7 @@
                                                 </div>
                                                         <!-- ///////////////////// -->
                                                         
-                                                        <div class="row" *ngIf="typeFamily.scopeFamilyRows.length">
+                                                        <div class="row" *ngIf="typeFamily.isFamily">
                                                         <div class="col-12" *ngFor="let scope of typeFamily.scopeFamilyRows; let i1 = index;">
                                                             <div class="row" *ngIf="typeFamily.isFamily && scope.familyId > 0">
                                                             <div class="col-md-12 p-0">
@@ -1946,7 +1856,11 @@
                       </ng-template>
                       <ng-template #checklistView let-modal>
                         <div class="modal-header">
-                          <h4 class="modal-title" id="modal-basic-title">CHECKLIST</h4>
+                            <h4 class="modal-title" id="modal-basic-title">CHECKLIST
+                                <a [href]="pathPDF" target="_blank" [ngStyle]="{'color': '#000'}">
+                                    <span class="icon-download-diff"></span>
+                                </a>       
+                            </h4>
                           <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
                             <span aria-hidden="true">&times;</span>
                           </button>
