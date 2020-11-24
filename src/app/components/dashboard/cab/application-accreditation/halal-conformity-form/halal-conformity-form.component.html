@@ -956,8 +956,21 @@
 
                                                             <td>
                                                                 <mat-form-field class="cab-data">
-                                                                    <mat-label>Type Here</mat-label>
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput name="fulltime_emp_name_{{i}}" [(ngModel)]="summaryDetails[i].fulltime_emp_name" placeholder="">
+                                                                    <mat-chip-list #chipList aria-label="Fruit selection">
+                                                                        <mat-chip
+                                                                            *ngFor="let user of managerialProfessional; let i2 = index;"
+                                                                            [selectable]="selectable"
+                                                                            [removable]="removable"
+                                                                            (removed)="removeUser(i2,'Managerial')">
+                                                                            {{user}}
+                                                                            <mat-icon matChipRemove *ngIf="removable">X</mat-icon>
+                                                                        </mat-chip>
+                                                                        
+                                                                        <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput name="fulltime_emp_name_{{i}}" [(ngModel)]="summaryDetails[i].fulltime_emp_name" placeholder="Type Here" [matAutocomplete]="auto"
+                                                                        [matChipInputFor]="chipList"
+                                                                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                                        (matChipInputTokenEnd)="addUser($event,'Managerial')">
+                                                                    </mat-chip-list>
                                                                 </mat-form-field>  
                                                             </td>
 
