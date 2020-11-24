@@ -1307,7 +1307,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       ////console.log(">>> get URL Id: ", this.urlVal);
       let getId= (this.urlVal);
       url = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+getId;
-      ////console.log(">>>Get url and ID: ", url, " :: ", getId);
+      console.log(">>>APP Data: ", url, " :: ", getId);
       this.Service.getwithoutData(url)
       .subscribe(
       res => {
@@ -1869,7 +1869,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         let getData: any = res;
         let data: any;
         //, getData.data.step1, " -- ", getData.data.step2
-        //console.log(getData,"Profile info >>> ");
+        console.log(getData,"Profile info >>> ");
 
         if(getData.data.step1.length){
           data = getData.data['step1'][0];
