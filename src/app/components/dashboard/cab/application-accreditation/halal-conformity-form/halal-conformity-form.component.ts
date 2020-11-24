@@ -380,19 +380,35 @@ export class HalalConformityFormComponent implements OnInit {
     }
     )
 
+    /*
+    this.summaryDetails = [
+      {"position":'Managerial/Professional','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Decision Maker','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Technical','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Administrative','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Auditors Name','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Category Code','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Technical Expert','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Inspectors Name','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Category Code','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Islamic Affairs Expert','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Others','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''}
+    ];
+
+    */
 
     this.summaryDetails = [
-      {"position":'Managerial/Professional','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''},
-      {'position':'Decision Maker','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''},
-      {'position':'Technical','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''},
-      {'position':'Administrative','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''},
-      {'position':'Auditors Name','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''},
-      {'position':'Category Code','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''},
-      {'position':'Technical Expert','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''},
-      {'position':'Inspectors Name','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''},
-      {'position':'Category Code','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''},
-      {'position':'Islamic Affairs Expert','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''},
-      {'position':'Others','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''}
+      {"position":'Managerial/Professional','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+      {'position':'Decision Maker','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+      {'position':'Technical','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+      {'position':'Administrative','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+      {'position':'Auditors Name','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+      {'position':'Category Code','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+      {'position':'Technical Expert','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+      {'position':'Inspectors Name','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+      {'position':'Category Code','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+      {'position':'Islamic Affairs Expert','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+      {'position':'Others','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0}
     ];
 
     console.log(">>>Summary details: ", this.summaryDetails);
@@ -1960,30 +1976,71 @@ addSchemeRow(obj: any = [],index: number){
   }
 
   //addUser(event: MatChipInputEvent,type): void {
-    addUser(event: MatChipInputEvent,Object: any, index: number): void {
+    addEntry(event: MatChipInputEvent,Object: any, index: number, type: string): void {
     const input = event.input;
     const value = event.value;
 
     let empRecord: any;
+    let fullTimeCount: number = 0;
+    let partTimeCount: number = 0;
     console.log(">>>> Data: ", index, " :: ", Object[index].total_no);
     let empTotalNumb: number = 0;
     empTotalNumb = Object[index].total_no;
       if(empTotalNumb == 0){
         this.toastr.warning("Please enter Total Number ");
         return;
-      }
+      }    
+
       
       for(let key in Object){
-        console.log(">>> ", key);
+        //console.log(">>> ", key);
         if(parseInt(key) == index){
-          console.log(">> found...", Object[key]);
-          empTotalNumb = 
-          empRecord = Object[key].record;
-          if(empRecord.length >=empTotalNumb){
-              this.toastr.warning("Maximum users(5) exceeds.");
-              return;
-          }
-          empRecord.push(value.trim());
+          //console.log(">> found...", Object[key]);
+          // if(type != '' && type == 'full'){
+          //   empRecord = Object[key].recordFulltime;
+          //   fullTimeCount = empRecord.length;
+          //   //Object[key].fullTimeCount = fullTimeCount;
+          // }
+          // if(type != '' && type == 'part'){
+          //   empRecord = Object[key].recordParttime;
+          //   partTimeCount = empRecord.length;
+          //   //Object[key].partTimeCount = partTimeCount;
+          // }          
+          // console.log(empTotalNumb," -- ", Object[key].recordFulltime.length, " -- ", Object[key].recordParttime.length);
+          // console.log("Full/Part count: ", Object[key].fullTimeCount ," :: ", Object[key].partTimeCount);
+          // let totalCount: number = (fullTimeCount + partTimeCount)
+          // //if(empRecord.length >= empTotalNumb){
+          // if(totalCount >= empTotalNumb){
+          //     this.toastr.warning("Maximum Number of Entry exceeds.");
+          //     return;
+          // }
+
+          
+          setTimeout(() => {
+            console.log("@@@@@Full/Part count: ", this.summaryDetails[0]);
+
+          },20)
+          
+         let retCount: any =  this.checkCount(Object, index, empTotalNumb);
+         console.log(">>> check status: ", retCount);
+
+          if(input.value != ''){
+            setTimeout(() => {
+              let num: number = Object[key].fullTimeCount + Object[key].partTimeCount;
+              //if(empTotalNumb < num){
+                if(type != '' && type == 'full'){
+                  Object[key].recordFulltime.push(value.trim())
+                }
+                if(type != '' && type == 'part'){
+                  Object[key].recordParttime.push(value.trim())
+                }
+              //}
+              
+            },33)
+            
+            //empRecord.push(value.trim());
+          } 
+                 
         }
       }
 
@@ -2000,16 +2057,83 @@ addSchemeRow(obj: any = [],index: number){
       input.value = '';
     }
   }
-  removeUser(index,type): void {
-    
+
+  checkCount(Object: any, index: number, totalNum: number){
+     let fullTimeCount: number = 0;// Object[index].recordFulltime.length;
+     let partTimeCount: number = 0;// Object[index].recordParttime.length;
+     let totalCount: number = 0;
+     //console.log("details data: ", this.summaryDetails, " -- ", index, " :: ", totalNum);
+
+     if(this.summaryDetails.length){
+        let data: any = this.summaryDetails;
+        for(let key in data){
+          if(parseInt(key) == index){
+            
+            let tempObj: any = data[key];
+            console.log(">>> ", data[key], " == ", tempObj, " === ", tempObj.recordFulltime);
+            if(tempObj.recordFulltime != undefined && typeof tempObj.recordFulltime == 'object'){
+              setTimeout(() => {                
+                fullTimeCount = tempObj.recordFulltime.length;
+                console.log("@Enter full...", tempObj.recordFulltime, " == ", fullTimeCount);
+              }, 0)              
+            }
+            if(tempObj.recordParttime != undefined && typeof tempObj.recordParttime == 'object'){
+              setTimeout(() => {
+                partTimeCount = tempObj.recordParttime.length;
+                console.log("@Enter part...", tempObj.recordParttime, " == ", partTimeCount);
+              }, 0)              
+            }
+            if(data[key].total_no != undefined && data[key].total_no > 0){
+              totalCount = data[key].total_no;
+            }
+            setTimeout(()=>{
+             // console.log("Full/Part count: ", fullTimeCount, " :: ", partTimeCount, " -- ", totalCount);
+              data[key].fullTimeCount = fullTimeCount;
+              data[key].partTimeCount = partTimeCount;
+              let calCount: number = fullTimeCount + partTimeCount;
+
+              if(calCount >= totalCount){
+                return true;
+              // this.toastr.warning("Maximum Number of Entry exceeds.");
+              // return;
+              }else{
+                return false;
+              }
+            },10)           
+          }           
+        }
+     }
+
+     //console.log("@Full/Part count: ", Object[index].fullTimeCount ," :: ", Object[index].partTimeCount);
+  }
+  removeUser(Object: any, index: number, parentIndex: number, type: string): void {
+    let empRecord: any;
+    for(let key in Object){
+      //console.log(">>> ", key);
+      if(parseInt(key) == parentIndex){
+        console.log(">> found...", Object[key]);
+        //empRecord = Object[key].record;  
+        if(type != '' && type == 'full'){
+          empRecord = Object[key].recordFulltime;
+        }
+        if(type != '' && type == 'part'){
+          empRecord = Object[key].recordParttime;
+        }      
+        if(empRecord.length == 1){
+          this.toastr.warning("At least one entry required.");
+          return;
+        }
+        empRecord.splice(index, 1);
+      }
+    }
     // if(this.users.length == 1){
     //   this.toastr.warning("At least one user required.");
     //   return;
     // }
-    if (type == 'Managerial') {
-      // const index = this.managerialProfessional.indexOf(user);
-      this.managerialProfessional.splice(index, 1);
-    }
+    // if (type == 'Managerial') {
+    //   // const index = this.managerialProfessional.indexOf(user);
+    //   this.managerialProfessional.splice(index, 1);
+    // }
   }
 
   getPlaceName(i)

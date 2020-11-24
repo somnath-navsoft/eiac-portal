@@ -956,32 +956,57 @@
                                                             </td>
 
                                                             <td>
+                                                                @{{item.recordFulltime.length}}
                                                                 <mat-form-field class="cab-data">
-                                                                    <mat-chip-list #chipList aria-label="Fruit selection">
+                                                                    <mat-chip-list #chipList1 aria-label="Fruit selection">
                                                                         <mat-chip
-                                                                            *ngFor="let user of item.record; let k = index;"
+                                                                            *ngFor="let user of item.recordFulltime; let k = index;"
                                                                             [selectable]="selectable"
                                                                             [removable]="removable"
-                                                                            (removed)="removeUser(k,'Managerial')">
+                                                                            (removed)="removeUser(summaryDetails,k, i, 'full')">
                                                                             {{user}}
                                                                             <mat-icon matChipRemove *ngIf="removable">X</mat-icon>
                                                                         </mat-chip>
-                                                                        
-                                                                        <input (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                                        matInput name="fulltime_emp_name_{{i}}" [(ngModel)]="summaryDetails[i].fulltime_emp_name" 
+                                                                        <!-- [(ngModel)]="summaryDetails[i].fulltime_emp_name"  name="fulltime_emp_name_{{i}}"-->
+                                                                        <input 
+                                                                        (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                                        matInput [(ngModel)]="summaryDetails[i].fulltime_emp_name"
                                                                         placeholder="Type Here" [matAutocomplete]="auto"
-                                                                        [matChipInputFor]="chipList"
+                                                                        [matChipInputFor]="chipList1" [ngModelOptions]="{standalone: true}"
                                                                         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                                                        (matChipInputTokenEnd)="addUser($event,summaryDetails,i)">
+                                                                        (matChipInputTokenEnd)="addEntry($event,summaryDetails,i, 'full')">
                                                                     </mat-chip-list>
                                                                 </mat-form-field>  
                                                             </td>
 
                                                             <td>
+                                                                <!-- [(ngModel)]="summaryDetails[i].parttime_emp_name" -->
+                                                                @{{item.recordParttime.length}}
                                                                 <mat-form-field class="cab-data">
-                                                                    <mat-label>Type Here</mat-label>
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput name="parttime_emp_name_{{i}}" [(ngModel)]="summaryDetails[i].parttime_emp_name" placeholder="">
+                                                                    <mat-chip-list #chipList2 aria-label="Fruit selection">
+                                                                        <mat-chip
+                                                                            *ngFor="let user of item.recordParttime; let p = index;"
+                                                                            [selectable]="selectable"
+                                                                            [removable]="removable"
+                                                                            (removed)="removeUser(summaryDetails,p, i, 'part')">
+                                                                            {{user}}
+                                                                            <mat-icon matChipRemove *ngIf="removable">X</mat-icon>
+                                                                        </mat-chip>
+                                                                        
+                                                                        <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                                        matInput name="parttime_emp_name_{{i}}"  
+                                                                        placeholder="Type Here" [matAutocomplete]="auto"
+                                                                        [matChipInputFor]="chipList2" ngModelOptions="{'standalone':true}"
+                                                                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                                        (matChipInputTokenEnd)="addEntry($event,summaryDetails,i, 'part')">
+                                                                    </mat-chip-list>
                                                                 </mat-form-field>
+                                                                <!-- <mat-form-field class="cab-data">
+                                                                    <mat-label>Type Here</mat-label>
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                                    matInput name="parttime_emp_name_{{i}}" 
+                                                                    [(ngModel)]="summaryDetails[i].parttime_emp_name" placeholder="">
+                                                                </mat-form-field> -->
                                                             </td>
                                                         </tr>
                                                         
