@@ -950,7 +950,8 @@
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input (keypress)="Service.IsNumeric($event)" matInput name="total_no_{{i}}" [(ngModel)]="summaryDetails[i].total_no" placeholder="">
+                                                                    <input (keypress)="Service.IsNumeric($event)" matInput name="total_no_{{i}}" 
+                                                                    [(ngModel)]="summaryDetails[i].total_no" placeholder="">
                                                                 </mat-form-field>  
                                                             </td>
 
@@ -958,18 +959,20 @@
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-chip-list #chipList aria-label="Fruit selection">
                                                                         <mat-chip
-                                                                            *ngFor="let user of managerialProfessional; let i2 = index;"
+                                                                            *ngFor="let user of item.record; let k = index;"
                                                                             [selectable]="selectable"
                                                                             [removable]="removable"
-                                                                            (removed)="removeUser(i2,'Managerial')">
+                                                                            (removed)="removeUser(k,'Managerial')">
                                                                             {{user}}
                                                                             <mat-icon matChipRemove *ngIf="removable">X</mat-icon>
                                                                         </mat-chip>
                                                                         
-                                                                        <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput name="fulltime_emp_name_{{i}}" [(ngModel)]="summaryDetails[i].fulltime_emp_name" placeholder="Type Here" [matAutocomplete]="auto"
+                                                                        <input (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                                        matInput name="fulltime_emp_name_{{i}}" [(ngModel)]="summaryDetails[i].fulltime_emp_name" 
+                                                                        placeholder="Type Here" [matAutocomplete]="auto"
                                                                         [matChipInputFor]="chipList"
                                                                         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                                                        (matChipInputTokenEnd)="addUser($event,'Managerial')">
+                                                                        (matChipInputTokenEnd)="addUser($event,summaryDetails,i)">
                                                                     </mat-chip-list>
                                                                 </mat-form-field>  
                                                             </td>

@@ -381,7 +381,22 @@ export class HalalConformityFormComponent implements OnInit {
     )
 
 
-    this.summaryDetails = [{"position":'Managerial/Professional','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Decision Maker','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Technical','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Administrative','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Auditors Name','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Category Code','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Technical Expert','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Inspectors Name','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Category Code','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Islamic Affairs Expert','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Others','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''}];
+    this.summaryDetails = [
+      {"position":'Managerial/Professional','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Decision Maker','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Technical','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Administrative','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Auditors Name','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Category Code','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Technical Expert','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Inspectors Name','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Category Code','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Islamic Affairs Expert','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Others','total_no' : '',record:[],'fulltime_emp_name' : '','parttime_emp_name' : ''}
+    ];
+
+    console.log(">>>Summary details: ", this.summaryDetails);
+
     //undertaking_confirmTop3: false,
     this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirm1:false,
     undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,
@@ -1944,17 +1959,42 @@ addSchemeRow(obj: any = [],index: number){
     }
   }
 
-  addUser(event: MatChipInputEvent,type): void {
+  //addUser(event: MatChipInputEvent,type): void {
+    addUser(event: MatChipInputEvent,Object: any, index: number): void {
     const input = event.input;
     const value = event.value;
-    if(this.users.length >=5){
-        this.toastr.warning("Maximum users(5) exceeds.");
+
+    let empRecord: any;
+    console.log(">>>> Data: ", index, " :: ", Object[index].total_no);
+    let empTotalNumb: number = 0;
+    empTotalNumb = Object[index].total_no;
+      if(empTotalNumb == 0){
+        this.toastr.warning("Please enter Total Number ");
         return;
-    }
+      }
+      
+      for(let key in Object){
+        console.log(">>> ", key);
+        if(parseInt(key) == index){
+          console.log(">> found...", Object[key]);
+          empTotalNumb = 
+          empRecord = Object[key].record;
+          if(empRecord.length >=empTotalNumb){
+              this.toastr.warning("Maximum users(5) exceeds.");
+              return;
+          }
+          empRecord.push(value.trim());
+        }
+      }
+
+    // if(this.users.length >=5){
+    //     this.toastr.warning("Maximum users(5) exceeds.");
+    //     return;
+    // }
     // Add our fruit
-    if (type == 'Managerial' && (value || '').trim()) {
-      this.managerialProfessional.push(value.trim());
-    }
+    // if (type == 'Managerial' && (value || '').trim()) {
+    //   this.managerialProfessional.push(value.trim());
+    // }
     // Reset the input value
     if (input) {
       input.value = '';
