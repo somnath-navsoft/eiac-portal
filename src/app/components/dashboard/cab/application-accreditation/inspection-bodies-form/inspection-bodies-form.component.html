@@ -97,7 +97,7 @@
                                                     </mat-radio-group>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-12">
                                                         <p class="error" *ngIf="isApplicationSubmitted == true && selectAccrdCriteria.errors?.required">Please select anyone option</p>
                                                     </div>
                                                 </div>
@@ -377,7 +377,7 @@
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>List the Companies name of BOD members</mat-label>
                                                                     <input matInput readonly="true" placeholder="List the Companies name of BOD members"  (keypress)="Service.inputFilter($event, Service.regExName)" name="list_comp_{{i}}" 
-                                                                    [(ngModel)]="ownOrgMembInfo[i].bod_company">
+                                                                    [(ngModel)]="(ownOrgMembInfo[i].company_list) ? ownOrgMembInfo[i].bod_company : ownOrgMembInfo[i].bod_company ">
                                                                 </mat-form-field>
                                                             </div>
                                                         </div>
@@ -542,7 +542,7 @@
                                                 
                                                     </div>
                                                 </mat-radio-group>
-                                                <div class="col-md-6 p-0" [ngStyle]="{'margin-top':'5px'}">
+                                                <div class="col-md-12 p-0" [ngStyle]="{'margin-top':'5px'}">
                                                     <p class="error" *ngIf="isApplicationSubmitted == true && selectInspecActivity.errors?.required">Please select anyone option</p>
                                                 </div>
                                             </div>
@@ -598,7 +598,7 @@
                                                         </div>                                         
                                                     </div>
                                                 </mat-radio-group>
-                                                <div class="col-md-6 p-0" [ngStyle]="{'margin-top':'5px'}">
+                                                <div class="col-md-12 p-0" [ngStyle]="{'margin-top':'5px'}">
                                                     <p class="error" *ngIf="isApplicationSubmitted == true && selectAccredHold.errors?.required">Please select anyone option</p>
                                                 </div>
                                             </div>
