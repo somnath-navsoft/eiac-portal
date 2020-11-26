@@ -903,7 +903,7 @@ addSchemeRow(obj: any = [],index: number){
      if(typeId){
        let typeData: any = this.subTypeMaster.find(rec => rec.service_page.id == typeId);
        if(typeData){
-         return 'Accreditation SubType For: ' + typeData.title;
+         return 'Accreditation Sub Type For: ' + typeData.title;
        }
      }
  }
@@ -958,15 +958,22 @@ addSchemeRow(obj: any = [],index: number){
             for(var p in scopeCollections[type]){
               if(scopeCollections[type][p]){
                   let getDetails: any = scopeCollections[type][p]['scope_value'];
-                  //console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
+                  console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
                   if(getDetails.length == 0){
                     //console.log(">>>Empty values: ", p, " deleting");
-                    delete scopeCollections[type][p];
+                    delete scopeCollections[type];
+                    //delete scopeCollections[type][p];
                   }
               }
             }
           //}
-      } 
+      }
+      this.editScopeData = scopeCollections;
+      if(this.Service.isObjectEmpty(this.editScopeData)){
+          console.log("obj empt...");
+          this.editScopeData = null;
+      }
+      console.log("@updated scope dada: ", this.editScopeData); 
      //save to server at time 
           this.publicHalalConformityForm = {};
           this.publicHalalConformityForm.step3 = {};  
@@ -989,7 +996,7 @@ addSchemeRow(obj: any = [],index: number){
               scopeOptionsValues['checkItemsOthers'].push({value: this.scope_options_others});
             }            
           }
-          this.step3Data.scopeOptionsCheckDetails = scopeOptionsValues;
+          this.step3Data.scopeOptionsCheckDetails = scopeOptionsValues;  
           this.step3Data.is_draft = false;
           this.publicHalalConformityForm.step3 = this.step3Data;
           console.log(">>> Step3 submit step : ", this.publicHalalConformityForm)  
@@ -2673,10 +2680,10 @@ addSchemeRow(obj: any = [],index: number){
              let partTimeCount: number = this.summaryDetails[key].parttime_emp_name.length;
 
              let totalCount: number = (fullTimeCount + partTimeCount);
-             console.log(">>> For position: ", totalCount, " : Entered Total: ", totalNumb);
+             //console.log(">>> For position: ", totalCount, " : Entered Total: ", totalNumb);
              if(totalCount < totalNumb){
-               let alertMsg: string = "Please check Summary Entry for Position - " + positionNmae;
-              this.toastr.warning(alertMsg,'Summary Position Validation',{timeOut:3300});
+               let alertMsg: string = "Please check Total Number Of Employee - " + positionNmae;
+              this.toastr.warning(alertMsg,'',{timeOut:3300});
               return false;
              }
           }
@@ -3468,8 +3475,19 @@ getMatchScheme(scId: any, scopeData: any){
       }
   
       //console.log(">>> Check status count: ", checkCount);
+      let recomVisit: any = {
+        'first':false,'second':false, 'third': false, 'fourth':false
+      };
+      let recomCheckCount = 0;
+          this.recomendVisit.forEach((item,index) => {
+            if(item.checked == true){
+              recomCheckCount++;
+            }
+        recomVisit[item.name.toString()] = item.checked;
+      })
+      this.step6Data.recommend = recomVisit;
   
-  if(ngForm6.form.valid && this.authorizationStatus == true){
+  if(ngForm6.form.valid && this.authorizationStatus == true && recomCheckCount > 0 ){
   
     this.publicHalalConformityForm = {};
     this.publicHalalConformityForm.step6 = {};
@@ -3482,21 +3500,12 @@ getMatchScheme(scId: any, scopeData: any){
     this.publicHalalConformityForm.step6.terms2 = this.authorizationListTerms2;
     // this.step6Data.authorizationList = this.authorizationList;
     this.step6Data.authorization_list_json = this.authorizationList;
-    this.step6Data.recommend = this.recommend;
+    //this.step6Data.recommend = this.recommend;
+    
     this.step6Data.is_draft = false;
     this.step6Data.application_date = new Date();
   
-    let recomVisit: any = {
-      'first':false,'second':false, 'third': false, 'fourth':false
-    };
-    let recomCheckCount = 0;
-        this.recomendVisit.forEach((item,index) => {
-          if(item.checked == true){
-            recomCheckCount++;
-          }
-      recomVisit[item.name.toString()] = item.checked;
-    })
-    this.step6Data.recommend = recomVisit;//this.recomendVisit;
+    
 
     this.publicHalalConformityForm.step6 = this.step6Data;
     // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
@@ -3519,7 +3528,7 @@ getMatchScheme(scId: any, scopeData: any){
             this.toastr.success("Application Submitted Successfully");
                 setTimeout(() => {
                   this.router.navigateByUrl('/dashboard/status/all');
-                }, 5000)
+                }, 2500)
           }
         }else{
           this.toastr.warning(res['msg'], '');

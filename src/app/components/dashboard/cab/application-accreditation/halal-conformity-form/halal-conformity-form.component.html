@@ -87,8 +87,8 @@
                                         
                                         <div class="col-md-6 col-sm-6 align-self-end mt-3"> 
                                             <mat-form-field class="cab-data">
-                                                <mat-label>Certification Body's Name</mat-label>
-                                                <input readonly (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Certification Body's Name" name="official_commercial_name" [(ngModel)]="step1Data.official_commercial_name"  required>
+                                                <mat-label>Halal Conformity Assessment Body (HCAB) Commercial & Official name</mat-label>
+                                                <input readonly (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Halal Conformity Assessment Body (HCAB) Commercial & Official name" name="official_commercial_name" [(ngModel)]="step1Data.official_commercial_name"  required>
                                                 <mat-error></mat-error>      
                                             </mat-form-field>
                                         </div>
@@ -369,6 +369,13 @@
                                     <div class="row" *ngFor="let item of managingDirector; let i = index;">
                                         <div class="col-12">
                                             <div class="ownr-details">
+                                                <div class="row" *ngIf="i >= 1">
+                                                    <div class="col-12">
+                                                        <div class="remove-clss">
+                                                            <span class="icon-close-round" [ngStyle]="{'cursor': 'pointer'}" (click)="removeRow(managingDirector, i)"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
@@ -389,7 +396,7 @@
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Mobile Phone No.</mat-label>
-                                                            <input matInput placeholder="Mobile Phone No." name="managing_mobile_no_{{i}}" [(ngModel)]="managingDirector[i].mobile_no" (keypress)="Service.IsNumeric($event)">
+                                                            <input matInput placeholder="Mobile Phone No." name="managing_mobile_no_{{i}}" [(ngModel)]="managingDirector[i].mobile_no" (keypress)="Service.IsNumeric($event)" required>
                                                         </mat-form-field>
                                                     </div>
 
@@ -546,14 +553,42 @@
                                         </div>
                                     </div>
 
-
+                                    <!-- <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr form_subhdr">
+                                                <h5>1. APPLICANT INFORMATION</h5>
+                                                <span>*If you want the certificate issued on a different address please update below</span>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div> -->
                                     <div class="row">
-                                        <div class="col-md-10 p-0">
-                                            <div class="form-subheader-data">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subheader-data form_subhdr">
                                                 <h5>IF HCAB HAVE ANY OTHER LOCATION(S) OTHER THAN THE MAIN/HEAD OFFICE OR BRANCHES WHERE KEY ACTIVITIES TAKE PLACE</h5>
+                                                <div class="form-subheader-data">
+                                                        <mat-radio-group name="hcab_other_loc" #hcabOtherLoc="ngModel" [(ngModel)]="step1Data.hcab_other_loc" 
+                                                    #selectAccredHold="ngModel" required>
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <label class="check-rdo">
+                                                                    <mat-radio-button value="1" [ngStyle]="{'padding-right': '5px'}">Yes </mat-radio-button>
+                                                                </label>
+                                                            </div>  
+                                                            <div class="col-md-4">
+                                                                <label class="check-rdo">
+                                                                    <mat-radio-button value="0"  [ngStyle]="{'padding-left': '15px'}">No </mat-radio-button>
+                                                                </label>
+                                                            </div>                                            
+                                                        </div>
+                                                    </mat-radio-group>
+                                                    <div class="col-md-12" [ngStyle]="{'margin-top':'5px'}">
+                                                        <p class="error" *ngIf="isApplicationSubmitted == true && hcabOtherLoc.errors?.required">Please select anyone option</p>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <!-- <div class="col-md-2 form-subheader-data">
                                             <mat-radio-group name="hcab_other_loc" #hcabOtherLoc="ngModel" [(ngModel)]="step1Data.hcab_other_loc" 
                                             #selectAccredHold="ngModel" required>
                                                 <div class="row">
@@ -573,8 +608,7 @@
                                             <div class="col-md-12" [ngStyle]="{'margin-top':'5px'}">
                                                 <p class="error" *ngIf="isApplicationSubmitted == true && hcabOtherLoc.errors?.required">Please select anyone option</p>
                                             </div>
-                                        </div>
-
+                                        </div> -->
                                     </div>
 
                                     <div class="row" id="hcab_other_location" *ngIf="step1Data.hcab_other_loc == '1'">
@@ -622,14 +656,42 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row mt-3" *ngIf="step1Data.hcab_other_loc == '1'">
+                                        <div class="col-md-12 col-sm-3">
+                                            <p>
+                                                (*)as example of the key activities include: policy formulation, process and/or procedure development, proceedings of safeguarding impartiality committee/scheme committee, approval of auditors/examiners/inspectors, application & contract review, selection of auditors/examiners/inspectors, handling of contractual agreements with auditors/examiners/inspectors, monitoring of auditors/examiners/inspectors, planning of audits/examinations/inspections, review, approval and decision on the results of audits/examinations/inspections and preparation, release and control of certificates, Final decision on appeals and complaints.
+                                              </p>
+                                        </div>                                       
+                                    </div>
 
-                                    <div class="row">
+                                    <div class="row mt-5">
                                         <div class="col-md-10 p-0">
-                                            <div class="form-subheader-data">
+                                            <div class="form-subheader-data form_subhdr">
                                                 <h5>DOES HCAB CURRENTLY HOLD ANY OTHER CURRENT OR PREVIOUS ACCREDITATION (S) ?</h5>
+                                                    <div class="form-subheader-data">
+                                                        <mat-radio-group name="is_hold_other_accr" #hcabCurrentlyHold="ngModel" [(ngModel)]="step1Data.is_hold_other_accr" 
+                                                        #selectAccredHold="ngModel" required>
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <label class="check-rdo">
+                                                                        <mat-radio-button value="1"  [ngStyle]="{'padding-right': '5px'}">Yes </mat-radio-button>
+                                                                    </label>
+                                                                </div>  
+                                                                <div class="col-md-4">
+                                                                    <label class="check-rdo">
+                                                                        <mat-radio-button value="0"  [ngStyle]="{'padding-left': '15px'}">No </mat-radio-button>
+                                                                    </label>
+                                                                </div>  
+                                                        
+                                                            </div>
+                                                        </mat-radio-group>
+                                                    <div class="col-md-12" [ngStyle]="{'margin-top':'5px'}">
+                                                        <p class="error" *ngIf="isApplicationSubmitted == true && hcabCurrentlyHold.errors?.required">Please select anyone option</p>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <!-- <div class="col-md-2">
                                             <mat-radio-group name="is_hold_other_accr" #hcabCurrentlyHold="ngModel" [(ngModel)]="step1Data.is_hold_other_accr" 
                                             #selectAccredHold="ngModel" required>
                                                 <div class="row">
@@ -649,7 +711,7 @@
                                             <div class="col-md-12" [ngStyle]="{'margin-top':'5px'}">
                                                 <p class="error" *ngIf="isApplicationSubmitted == true && hcabCurrentlyHold.errors?.required">Please select anyone option</p>
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                     </div>
 
@@ -977,7 +1039,7 @@
                                                                             <mat-icon matChipRemove *ngIf="removable">X</mat-icon>
                                                                         </mat-chip>  
                                                                         <input 
-                                                                        (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                                        (keypress)="Service.inputFilter($event, Service.nameOnly)" 
                                                                         matInput required
                                                                         placeholder="Type Here" [matAutocomplete]="auto"
                                                                         [matChipInputFor]="chipList1" 
@@ -1000,7 +1062,7 @@
                                                                             <mat-icon matChipRemove *ngIf="removable">X</mat-icon>
                                                                         </mat-chip>
                                                                         
-                                                                        <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                                        <input  (keypress)="Service.inputFilter($event, Service.nameOnly)" 
                                                                         matInput name="parttime_emp_name_{{i}}"  required
                                                                         placeholder="Type Here" [matAutocomplete]="auto"
                                                                         [matChipInputFor]="chipList2" ngModelOptions="{'standalone':true}"
@@ -1398,7 +1460,7 @@
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr">
-                                                <h5>OTHER HCAB DETAILS</h5>
+                                                <h5>4. OTHER HCAB DETAILS</h5>
                                             </div>
                                             <hr>
                                         </div>
@@ -1509,7 +1571,7 @@
                                                         <tr>
                                                             <th>Name of the Authorized Persons</th>
                                                             <th>Signature Specimen</th>
-                                                            <th>Contact Details(Tel,Mobile No. and Email)</th>
+                                                            <th>Contact Details(Tel, Mobile No. and Email)</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -1667,7 +1729,7 @@
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr">
-                                                <h5>PERLIM VISIT</h5>
+                                                <h5>5. PRELIM VISIT</h5> 
                                             </div>
                                             <hr>
                                         </div>
@@ -1677,7 +1739,7 @@
                                             <div class="row m-0">
                                                 <div class="col-md-6">
                                                     <div class="request-subhdr">
-                                                        <h5>Request for perlim visit</h5>
+                                                        <h5>Request for prelim visit</h5>
                                                     </div>
                                                 </div>
                                                 <!-- @@{{inspectionBodyForm.perlim_visit_val |  json}} -->
@@ -1847,7 +1909,7 @@
                                             <div class="recommend my-3">
                                                 <div class="recommend-main">
                                                     <div class="recommend-quarter">
-                                                        <span class="confirm">I recommend the visit to be conducted in the</span>
+                                                        <span class="confirm">I recommend the visit to be conducted in the<span class="required_input">*</span></span>
                                                             <mat-checkbox  name="recommend_visit"  *ngFor="let item of recomendVisit; let k=index;"
                                                             [(ngModel)]="item.checked" [ngModelOptions]="{standalone: true}" required>{{item.label}}</mat-checkbox>
                                                     </div> 
@@ -2167,7 +2229,7 @@
                                             <h5>Thank you</h5>
                                             <p>Your Application has been submitted successfully and is under review. Please check the status and your dashboard for updates.</p>
                                             <button class="submit-bttn" (click)="closeChecklistDialog()" 
-                                            routerLink="/dashboard/cab_client/status/all">Return to Status</button>
+                                            routerLink="/dashboard/status/all">Return to Status</button>
                                         </div>
                                     </div>
                                 </ng-template>

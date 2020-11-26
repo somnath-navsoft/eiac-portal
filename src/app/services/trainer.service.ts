@@ -61,6 +61,13 @@ export class TrainerService {
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
 
+  registrationDetailsService(id) {
+    let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.registrationDetailsServ+id; 
+    //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
+    //console.log("GET Event URL: ", url, " -- ", this._service.getReqHeaders());
+    return this.http.get(url, this._service.getReqHeaders());
+  }
+
   paymentVoucherSave(postData: any){
     const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.paymentDetailsSave;
     return this.http.post(url, postData, this._service.getReqHeadersUpload());

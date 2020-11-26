@@ -21,6 +21,7 @@ export class Constants{
 		trainerAccredServList: 'accrediation-service-status/',
 		registrationServList: 'registration-list/',
 		trainerAccredDetailsServ: 'accrediation-details-show/',
+		registrationDetailsServ: 'registration-details-show/',
 		trainerAttendanceList:'trainer/attendance-list/',
 		trainerAgendaList:'trainer/agenda-list/',
 		trainerCourseByID: 'trainer/custom-course-dtls/',
