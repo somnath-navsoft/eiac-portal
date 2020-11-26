@@ -57,7 +57,7 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
 
   loadPageData(){
     this.loader = false;
-    this.subscriptions.push(this._trainerService.getAccreditationServiceList()
+    this.subscriptions.push(this._trainerService.getRegistratationServiceList()
       .subscribe(
         result => {
           this.loader = true;
@@ -246,8 +246,9 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
           this.voucherFile.append('amount',this.voucherSentData['amount']);
           this.voucherFile.append('voucher_date',dtFormat);
           this.voucherFile.append('accreditation',this.voucherSentData['accreditation']);
+          this.voucherFile.append('registration','2');
 
-          this.subscriptions.push(this._trainerService.courseVoucherSave((this.voucherFile))
+          this.subscriptions.push(this._trainerService.registrationVoucherSave((this.voucherFile))
           .subscribe(
              result => {
                let data: any = result;
