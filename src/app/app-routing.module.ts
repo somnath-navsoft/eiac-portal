@@ -89,6 +89,7 @@ import { CabTrainingInpremiseDetailComponent } from './components/dashboard/cab/
 import { CabTrainingInpremiseFormComponent } from './components/dashboard/cab/cab-training-inpremise-form/cab-training-inpremise-form.component';
 import { MessageReplyComponent } from './components/dashboard/message/message-reply/message-reply.component';
 import { OperationsRegistrationServiceListComponent } from './components/dashboard/operations/operations-registration-service-list/operations-registration-service-list.component';
+import { OperationsRegistrationServiceDetailsComponent } from './components/dashboard/operations/operations-registration-service-details/operations-registration-service-details.component';
 
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
@@ -134,7 +135,8 @@ const routes: Routes = [
           { path: 'training-service', component:OperationsTrainerServiceListComponent, canActivate: [AuthGuard] },
           { path: 'accreditation-service-list', component:OperationsAccreditationServiceListComponent, canActivate: [AuthGuard] },
           { path: 'accreditation-service-details/:id', component:OperationsAccreditationServiceDetailsComponent, canActivate: [AuthGuard] },
-          { path: 'registrationtation-service-list', component:OperationsRegistrationServiceListComponent, canActivate: [AuthGuard] },
+          { path: 'registration-service-list', component:OperationsRegistrationServiceListComponent, canActivate: [AuthGuard] },
+          { path: 'registration-service-details/:id', component:OperationsRegistrationServiceDetailsComponent, canActivate: [AuthGuard] },
           { path: 'message', component:OperationMessageComponent, canActivate: [AuthGuard] },
           { path: 'message-detail/:id', component:OperationsMessageDetailsComponent, canActivate: [AuthGuard] },
         ] 
