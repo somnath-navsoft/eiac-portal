@@ -2756,7 +2756,7 @@ addSchemeRow(obj: any = [],index: number){
           if(this.checkItemOthers){
             if(this.scope_options_others != '' && this.scope_options_others != undefined){
               scopeOptionsValues['checkItemsOthers'].push({value: this.scope_options_others});
-              scopeOptionsCheckOthersCount++;
+              scopeOptionsCheckCount++;
             }            
           }
           this.step3Data.scopeOptionsCheckDetails = scopeOptionsValues;
