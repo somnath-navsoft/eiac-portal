@@ -88,6 +88,11 @@ export class StatusComponent implements OnInit {
         typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.accr_status == 'complete'){
         return true;
       }
+      if(item.saved_step != null && item.saved_step < 7 && item.is_draft == false && 
+        item.paymentDetails != undefined && item.paymentDetails != false && 
+        typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.accr_status == 'complete'){
+        return true;
+      }
       if(item.saved_step != null && item.saved_step == 9 && (item.is_draft == false || item.is_draft == true) && 
         item.paymentDetails != undefined && item.accr_status !== 'complete'){
         return false;

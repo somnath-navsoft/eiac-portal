@@ -251,9 +251,22 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
       });
 }
 
+loadSchmePTP(){
+  this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.pt_provider)
+      .subscribe( 
+        res => {
+          console.log("@Load Accreditation criteria PTP....", res);         
+          this.criteriaMaster = res['data']['schemes'];  
+        },
+        error => {
+        
+    })
+
+}
+
  getSchme(sid: number){
   let getSchemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id == sid);
-  //////console.log("data: ", getSchemeData);
+  console.log("data: ", getSchemeData, " -- ", this.criteriaMaster);
   if(getSchemeData){
     return getSchemeData.title; 
   }
@@ -523,6 +536,11 @@ loadScopeDataHalal(){
             if(otherCopy.length > 0){
               this.otherStandards = otherCopy;
               delete this.editScopeData['others'];
+            }
+
+            if(result['data'].form_meta == 'pt_providers'){
+              console.log("@PTP scheme loading....");
+              this.loadSchmePTP();
             }
 
             if(result['data'].form_meta == 'testing_calibration'){
