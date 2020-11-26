@@ -958,15 +958,22 @@ addSchemeRow(obj: any = [],index: number){
             for(var p in scopeCollections[type]){
               if(scopeCollections[type][p]){
                   let getDetails: any = scopeCollections[type][p]['scope_value'];
-                  //console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
+                  console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
                   if(getDetails.length == 0){
                     //console.log(">>>Empty values: ", p, " deleting");
-                    delete scopeCollections[type][p];
+                    delete scopeCollections[type];
+                    //delete scopeCollections[type][p];
                   }
               }
             }
           //}
-      } 
+      }
+      this.editScopeData = scopeCollections;
+      if(this.Service.isObjectEmpty(this.editScopeData)){
+          console.log("obj empt...");
+          this.editScopeData = null;
+      }
+      console.log("@updated scope dada: ", this.editScopeData); 
      //save to server at time 
           this.publicHalalConformityForm = {};
           this.publicHalalConformityForm.step3 = {};  
