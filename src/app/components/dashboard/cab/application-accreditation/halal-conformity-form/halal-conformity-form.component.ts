@@ -67,6 +67,7 @@ export class HalalConformityFormComponent implements OnInit {
   // version = VERSION;
   public minDate;
   public minChangeDate;
+  public minDates: any[] =[];;
 
   afterSubmit: boolean = false;
 
@@ -172,7 +173,9 @@ export class HalalConformityFormComponent implements OnInit {
   accreditationInfo:any[] = [{}];
   managingDirector:any[] = [{}];
   hcabOtherLocation:any[] = [{}];
+  //summaryDetails:any[] = [{}];
   summaryDetails:any[] = [{}];
+
   scopeofHalalConformity:any[] = [{}];
   authorizedPersonforSigning:any[] = [{}];
   file_validation_listAuditor:boolean = true;
@@ -397,18 +400,32 @@ export class HalalConformityFormComponent implements OnInit {
 
     */
 
+    // this.summaryDetails = [
+    //   {"position":'Managerial/Professional','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+    //   {'position':'Decision Maker','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+    //   {'position':'Technical','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+    //   {'position':'Administrative','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+    //   {'position':'Auditors Name','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+    //   {'position':'Category Code','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+    //   {'position':'Technical Expert','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+    //   {'position':'Inspectors Name','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+    //   {'position':'Category Code','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+    //   {'position':'Islamic Affairs Expert','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+    //   {'position':'Others','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0}
+    // ];
+
     this.summaryDetails = [
-      {"position":'Managerial/Professional','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
-      {'position':'Decision Maker','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
-      {'position':'Technical','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
-      {'position':'Administrative','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
-      {'position':'Auditors Name','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
-      {'position':'Category Code','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
-      {'position':'Technical Expert','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
-      {'position':'Inspectors Name','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
-      {'position':'Category Code','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
-      {'position':'Islamic Affairs Expert','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
-      {'position':'Others','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0}
+      {position:'Managerial/Professional',    total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]}, 
+      {position:'Decision Maker',             total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]}, 
+      {position:'Technical',                  total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]}, 
+      {position:'Administrative',             total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]}, 
+      {position:'Auditors Name',              total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]}, 
+      {position:'Category Code',              total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]}, 
+      {position:'Technical Expert',           total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]}, 
+      {position:'Inspectors Name',            total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]}, 
+      {position:'Category Code',              total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]}, 
+      {position:'Islamic Affairs Expert',     total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]},
+      {position:'Others',                     total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]}
     ];
 
     console.log(">>>Summary details: ", this.summaryDetails);
@@ -941,15 +958,22 @@ addSchemeRow(obj: any = [],index: number){
             for(var p in scopeCollections[type]){
               if(scopeCollections[type][p]){
                   let getDetails: any = scopeCollections[type][p]['scope_value'];
-                  //console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
+                  console.log(">>>Value: ", p, " -- ", getDetails, " -- ", getDetails.length);
                   if(getDetails.length == 0){
                     //console.log(">>>Empty values: ", p, " deleting");
-                    delete scopeCollections[type][p];
+                    delete scopeCollections[type];
+                    //delete scopeCollections[type][p];
                   }
               }
             }
           //}
-      } 
+      }
+      this.editScopeData = scopeCollections;
+      if(this.Service.isObjectEmpty(this.editScopeData)){
+          console.log("obj empt...");
+          this.editScopeData = null;
+      }
+      console.log("@updated scope dada: ", this.editScopeData); 
      //save to server at time 
           this.publicHalalConformityForm = {};
           this.publicHalalConformityForm.step3 = {};  
@@ -1539,8 +1563,58 @@ addSchemeRow(obj: any = [],index: number){
                 }
 
                 if(res['data'].summaryOfPersonnel != undefined && res['data'].summaryOfPersonnel.length > 0){
+                  console.log(res['data'].summaryOfPersonnel);
+                  let tempDetails: any[] =[];
                   this.summaryDetails = res['data'].summaryOfPersonnel;
+                  this.summaryDetails.forEach((item) => {
+                    if(item.fulltime_emp_name != undefined && typeof item.fulltime_emp_name == 'string'){
+                      let fulltimeAr = JSON.parse(item.fulltime_emp_name);
+                      console.log(fulltimeAr, " -- ", fulltimeAr.length);
+                      item.fulltime_emp_name = fulltimeAr;
+                    }
+                    if(item.parttime_emp_name != undefined && typeof item.parttime_emp_name == 'string'){
+                      let parttimeAr = JSON.parse(item.parttime_emp_name);
+                      console.log(parttimeAr, " -- ", parttimeAr.length);
+                      item.parttime_emp_name = parttimeAr;
+                    }
+
+                  });
+                  // this.summaryDetails.forEach((item) => {
+                  //   console.log(">> ", item);
+                  //   if(item.fulltime_emp_name != undefined && typeof item.fulltime_emp_name == 'string'){
+                  //     let conAR: any[] = [];
+                  //     // if(item.fulltime_emp_name.toString().indexOf("]")){
+
+                  //     // }
+                  //     let temp: any = item.fulltime_emp_name.toString().replace(/'/g,'');
+                  //     let pp = JSON.parse(temp);
+                  //     console.log(pp);
+                  //     //let filterStr = item.fulltime_emp_name.substr(1).slice(0, -1); ;//item.fulltime_emp_name.substr(1)
+                  //     //console.log(">>Filter 1 ", filterStr.replace(/'/g,''));
+                  //       // if(filterStr){
+                  //       //   conAR = filterStr.replace(/'/g,'').trim().split(',')
+                  //       //   console.log(conAR);
+                  //       //   if(conAR.length){
+                  //       //     item.fulltime_emp_name = conAR;
+                  //       //   }
+                  //       // }
+                  //   }
+                  //   if(item.parttime_emp_name != undefined && typeof item.parttime_emp_name == 'string'){
+                  //     let conAR: any[] = [];
+                  //     let filterStr = item.parttime_emp_name.substr(1).slice(0, -1); ;//item.fulltime_emp_name.substr(1)
+                  //     console.log(">>Filter 1 ", filterStr.replace(/'/g,''));
+                  //       if(filterStr){
+                  //         conAR = filterStr.replace(/'/g,'').split(',')
+                  //         if(conAR.length){
+                  //           item.parttime_emp_name = conAR;
+                  //         }
+                  //       }
+                  //   }
+                  // })
+                  console.log(">>>Updated dafa: ", this.summaryDetails);
                 }
+
+                //return;
   
                 //step3
                 //scope type options
@@ -1636,7 +1710,7 @@ addSchemeRow(obj: any = [],index: number){
                   authList = getData.data.authorization_list;
                   // console.log("@ Auth checked status: ", authList);
                   this.authorizationList = JSON.parse(authList);
-                  // console.log("# Auth checked status: ", this.authorizationList);
+                  console.log("# Auth checked status: ", this.authorizationList);
 
                   //check read ters check
                   if(this.authorizationList.authorization_confirm2){
@@ -1705,10 +1779,19 @@ addSchemeRow(obj: any = [],index: number){
   //   }
   // }
 
-  setexDate(date){
+  setexDateMin(date, index){
     let cdate = date;
-    this.minDate = new Date(cdate  + (60*60*24*1000));
-    // console.log(this.minDate);
+    // this.minDate = new Date(cdate  + (60*60*24*1000));
+    let mdate: any =  new Date(cdate  + (60*60*24*1000));
+    //this.minDates[i] = new Date(cdate  + (60*60*24*1000));
+    this.minDates[index] = mdate;
+    //this.minDates.push(mdate)
+    console.log(this.minDates);
+  }
+
+  setexDate(date, index){
+    let cdate = date;
+    this.minDate = new Date(cdate  + (60*60*24*1000));   
   }
 
   setexDynamicsDate(date,index){
@@ -1800,14 +1883,14 @@ addSchemeRow(obj: any = [],index: number){
         }    
       }
     }
-        
+    console.log(">>> Check status count: ", checkCount);
   
     if(this.authorizationStatus && checkCount == 12){
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;
     }
-    //console.log(">>> Check status count: ", checkCount);
+    
   }
 
   agreeView(){
@@ -1975,7 +2058,11 @@ addSchemeRow(obj: any = [],index: number){
     }
   }
 
-  //addUser(event: MatChipInputEvent,type): void {
+  chechDup(data: any){
+    new Set(data).size !== data.length;
+  }
+
+    //addUser(event: MatChipInputEvent,type): void {
     addEntry(event: MatChipInputEvent,Object: any, index: number, type: string): void {
     const input = event.input;
     const value = event.value;
@@ -1983,82 +2070,67 @@ addSchemeRow(obj: any = [],index: number){
     let empRecord: any;
     let fullTimeCount: number = 0;
     let partTimeCount: number = 0;
-    console.log(">>>> Data: ", index, " :: ", Object[index].total_no);
-    let empTotalNumb: number = 0;
-    empTotalNumb = Object[index].total_no;
+    let cloneDettails: any;
+    let dupCheck: boolean = false;
+
+      console.log(">>>> Data: ", index, " :: ", Object[index].total_no);
+      let empTotalNumb: number = 0;
+      empTotalNumb = Object[index].total_no;
       if(empTotalNumb == 0){
         this.toastr.warning("Please enter Total Number ");
         return;
-      }    
-
-      
+      }
+     // console.log("###Full/Part count: ", this.summaryDetails[0].recordFulltime.length, " == ", empTotalNumb);
       for(let key in Object){
         //console.log(">>> ", key);
+        dupCheck = false;
         if(parseInt(key) == index){
-          //console.log(">> found...", Object[key]);
-          // if(type != '' && type == 'full'){
-          //   empRecord = Object[key].recordFulltime;
-          //   fullTimeCount = empRecord.length;
-          //   //Object[key].fullTimeCount = fullTimeCount;
-          // }
-          // if(type != '' && type == 'part'){
-          //   empRecord = Object[key].recordParttime;
-          //   partTimeCount = empRecord.length;
-          //   //Object[key].partTimeCount = partTimeCount;
-          // }          
-          // console.log(empTotalNumb," -- ", Object[key].recordFulltime.length, " -- ", Object[key].recordParttime.length);
-          // console.log("Full/Part count: ", Object[key].fullTimeCount ," :: ", Object[key].partTimeCount);
-          // let totalCount: number = (fullTimeCount + partTimeCount)
-          // //if(empRecord.length >= empTotalNumb){
-          // if(totalCount >= empTotalNumb){
-          //     this.toastr.warning("Maximum Number of Entry exceeds.");
-          //     return;
-          // }
-
-          
-          setTimeout(() => {
-            console.log("@@@@@Full/Part count: ", this.summaryDetails[0]);
-
-          },20)
-          
-         let retCount: any =  this.checkCount(Object, index, empTotalNumb);
-         console.log(">>> check status: ", retCount);
+          let theObj: any = this.summaryDetails;
+          console.log("......>The details:  ", theObj);
+         // console.log(">>> check status: ", Object[key].recordFulltime.length , " == ", Object[key].recordParttime.length);
 
           if(input.value != ''){
-            setTimeout(() => {
-              let num: number = Object[key].fullTimeCount + Object[key].partTimeCount;
-              //if(empTotalNumb < num){
+              // if(type != '' && type == 'full'){                
+              //   let arr :any[] =[];
+              //   arr = Object[key].recordFulltime;
+              //   console.log("<><><><>< ", arr);
+              //   let checkDup: any = this.chechDup(arr);
+              //   console.log(">>> Ful time dup check: ", checkDup);
+              // }
+
+              let num: number = (Object[key].fulltime_emp_name.length + Object[key].parttime_emp_name.length);
+              if(num < (empTotalNumb)){
                 if(type != '' && type == 'full'){
-                  Object[key].recordFulltime.push(value.trim())
+                  Object[key].fulltime_emp_name.push(value.trim()) 
                 }
                 if(type != '' && type == 'part'){
-                  Object[key].recordParttime.push(value.trim())
+                  Object[key].parttime_emp_name.push(value.trim())
                 }
-              //}
-              
-            },33)
-            
-            //empRecord.push(value.trim());
-          } 
-                 
-        }
-      }
-
-    // if(this.users.length >=5){
-    //     this.toastr.warning("Maximum users(5) exceeds.");
-    //     return;
-    // }
-    // Add our fruit
-    // if (type == 'Managerial' && (value || '').trim()) {
-    //   this.managerialProfessional.push(value.trim());
-    // }
+              }else{
+                this.toastr.warning("Total Number exceeds.");
+                input.value = '';
+                return;
+              }
+          }                 
+        }       
+      }   
+      console.log("Updated Data: ", this.summaryDetails);   
     // Reset the input value
     if (input) {
       input.value = '';
     }
   }
-
-  checkCount(Object: any, index: number, totalNum: number){
+/*
+  loadCount(dataObj: any, index: number){
+    //console.log(">>> Data count: ", dataObj, " == ", dataObj.length);
+    for(let key in dataObj){
+        //console.log(">>> Key: ", );
+        return;
+    }
+  }
+  */
+  /*
+  checkCount(index: number) : number{
      let fullTimeCount: number = 0;// Object[index].recordFulltime.length;
      let partTimeCount: number = 0;// Object[index].recordParttime.length;
      let totalCount: number = 0;
@@ -2070,6 +2142,24 @@ addSchemeRow(obj: any = [],index: number){
           if(parseInt(key) == index){
             
             let tempObj: any = data[key];
+            let totalCount:  number = 3;
+            var counts = {};
+            let arr = tempObj.recordFulltime;
+            for (var i = 0; i < arr.length; i++) {
+              var num = arr[i];
+              counts[num] = counts[num] ? counts[num] + 1 : 1;
+            }
+
+            console.log(">>>Ar count: ", counts);
+
+            for(let key in tempObj.recordFulltime){
+              console.log("K: ", key);
+            }
+
+            if(tempObj.recordFulltime != undefined && typeof tempObj.recordFulltime == 'object'){
+              console.log("@Enter Full time count...", tempObj.recordFulltime, " == ", tempObj.recordFulltime.length);
+            }
+            
             console.log(">>> ", data[key], " == ", tempObj, " === ", tempObj.recordFulltime);
             if(tempObj.recordFulltime != undefined && typeof tempObj.recordFulltime == 'object'){
               setTimeout(() => {                
@@ -2099,41 +2189,35 @@ addSchemeRow(obj: any = [],index: number){
               }else{
                 return false;
               }
-            },10)           
+            },10)      
+            return totalCount;     
           }           
         }
      }
 
      //console.log("@Full/Part count: ", Object[index].fullTimeCount ," :: ", Object[index].partTimeCount);
   }
-  removeUser(Object: any, index: number, parentIndex: number, type: string): void {
+  */
+  removeEntry(Object: any, index: number, parentIndex: number, type: string): void {
     let empRecord: any;
     for(let key in Object){
-      //console.log(">>> ", key);
       if(parseInt(key) == parentIndex){
-        console.log(">> found...", Object[key]);
-        //empRecord = Object[key].record;  
         if(type != '' && type == 'full'){
-          empRecord = Object[key].recordFulltime;
+          empRecord = Object[key].fulltime_emp_name;
         }
         if(type != '' && type == 'part'){
-          empRecord = Object[key].recordParttime;
-        }      
-        if(empRecord.length == 1){
+          empRecord = Object[key].parttime_emp_name;
+        }        
+        let totalLen: number = 0;
+        totalLen = (Object[key].fulltime_emp_name.length + Object[key].parttime_emp_name.length);  
+        console.log(">>> Total Len: ", totalLen);  
+          if(totalLen == 1){
           this.toastr.warning("At least one entry required.");
           return;
         }
         empRecord.splice(index, 1);
       }
     }
-    // if(this.users.length == 1){
-    //   this.toastr.warning("At least one user required.");
-    //   return;
-    // }
-    // if (type == 'Managerial') {
-    //   // const index = this.managerialProfessional.indexOf(user);
-    //   this.managerialProfessional.splice(index, 1);
-    // }
   }
 
   getPlaceName(i)
@@ -2169,6 +2253,15 @@ addSchemeRow(obj: any = [],index: number){
       this.newRow     =   {};
       obj.push(this.newRow);
     }
+
+    //Reset min dates array
+    if(this.accreditationInfo){
+      console.log(this.minDates);
+      this.accreditationInfo.forEach((item, index) => {
+        console.log(index, " :: ", item);
+      })
+    }
+
       
     return true;
   }
@@ -2177,6 +2270,10 @@ addSchemeRow(obj: any = [],index: number){
     if(type === '' || type == undefined){
       obj.splice(index, 1);
     }    
+    if(this.minDates.length){
+      this.minDates.splice(index, 1);
+    }
+    console.log(">>> after delet: ", this.minDates);
     return true;
   }
 
@@ -2397,7 +2494,8 @@ addSchemeRow(obj: any = [],index: number){
         // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
       
         // this.step4DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
-        // //console.log(this.publicHalalConformityForm,'publicHalalConformityForm');
+        //console.log(this.publicHalalConformityForm,'publicHalalConformityForm');
+        //return;
         this.loader = false;
         this.step6DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
         this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step6DataBodyFormFile)
@@ -2416,7 +2514,7 @@ addSchemeRow(obj: any = [],index: number){
     }
   }
 
-  onSubmitStep1(ngForm1: any){
+  onSubmitStep1(ngForm: any){
     //this.Service.moveSteps('application_information', 'personal_information', this.headerSteps);
     // //console.log(this.ownOrgMembInfo,'ownOrgMembInfo');
   
@@ -2448,8 +2546,10 @@ addSchemeRow(obj: any = [],index: number){
       this.is_main_activity_note_entry = false;
       this.isNoteSubmit = true;
     }
-  
-    if(ngForm1.form.valid  && this.isNoteSubmit == true) {
+
+    console.log(">> Submit: ", ngForm.form.valid, " -- ", ngForm.form);
+    //return;
+    if(ngForm.form.valid  && this.isNoteSubmit == true) {
       this.publicHalalConformityForm = {};
       this.publicHalalConformityForm.step1 = {};
       this.publicHalalConformityForm.email = this.userEmail;
@@ -2567,9 +2667,31 @@ addSchemeRow(obj: any = [],index: number){
   
       this.publicHalalConformityForm.step2.is_draft = false;
       this.publicHalalConformityForm.saved_step = 2;
+
+
+      //Check validation of summary details
+      if(this.summaryDetails){
+          for(let key in this.summaryDetails){
+             let totalNumb: number = this.summaryDetails[key].total_no;
+             let positionNmae: any = this.summaryDetails[key].position;
+             let fullTimeCount: number = this.summaryDetails[key].fulltime_emp_name.length;
+             let partTimeCount: number = this.summaryDetails[key].parttime_emp_name.length;
+
+             let totalCount: number = (fullTimeCount + partTimeCount);
+             console.log(">>> For position: ", totalCount, " : Entered Total: ", totalNumb);
+             if(totalCount < totalNumb){
+               let alertMsg: string = "Please check Summary Entry for Position - " + positionNmae;
+              this.toastr.warning(alertMsg,'Summary Position Validation',{timeOut:3300});
+              return false;
+             }
+          }
+      }
+
+      //return;
+
       // this.publicHalalConformityForm.step3 = this.step3Data;
       this.loader = false;
-      //console.log(this.publicHalalConformityForm,'publicHalalConformityForm');
+      console.log(this.publicHalalConformityForm,':: Submit step 3 ::');
       this.step2DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step2DataBodyFormFile)
       .subscribe(
@@ -2625,6 +2747,8 @@ addSchemeRow(obj: any = [],index: number){
         let getData: any  =res;
         console.log(">>>. Data: ", getData);
         let scopeOptionsCheckCount: number = 0;
+        let scopeOptionsCheckOthersCount: number = 0;
+
           let scopeOptionsValues: any = {};
           scopeOptionsValues['checkItems'] = [];
           scopeOptionsValues['checkItemsOthers'] = [];
@@ -2718,7 +2842,7 @@ addSchemeRow(obj: any = [],index: number){
   
           //this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.publicHalalConformityForm,this.publicHalalConformityForm)
           this.step3DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
-          if(scopeOptionsCheckCount > 0){
+          if(this.checkItemOthers &&scopeOptionsCheckCount > 0){
             this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step3DataBodyFormFile)
             .subscribe(
               res => {
