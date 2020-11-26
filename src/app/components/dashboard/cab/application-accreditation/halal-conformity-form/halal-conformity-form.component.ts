@@ -13,6 +13,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { TrainerService } from '../../../../../services/trainer.service';
 import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
 declare let paypal: any;
+import {MatChipInputEvent} from '@angular/material/chips';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-halal-conformity-form',
@@ -65,6 +67,7 @@ export class HalalConformityFormComponent implements OnInit {
   // version = VERSION;
   public minDate;
   public minChangeDate;
+  public minDates: any[] =[];;
 
   afterSubmit: boolean = false;
 
@@ -170,7 +173,9 @@ export class HalalConformityFormComponent implements OnInit {
   accreditationInfo:any[] = [{}];
   managingDirector:any[] = [{}];
   hcabOtherLocation:any[] = [{}];
+  //summaryDetails:any[] = [{}];
   summaryDetails:any[] = [{}];
+
   scopeofHalalConformity:any[] = [{}];
   authorizedPersonforSigning:any[] = [{}];
   file_validation_listAuditor:boolean = true;
@@ -238,6 +243,21 @@ export class HalalConformityFormComponent implements OnInit {
    hcabLogon2:any;
    hcabLogon3:any;
    termsGeneral: any;
+   users: any[] = [];
+   separatorKeysCodes: number[] = [ENTER, COMMA];
+   managerialProfessional: any[] = [];
+   decisionMaker	: any[] = [];
+   technical: any[] = [];
+   administrative: any[] = [];
+   auditorsName: any[] = [];
+   categoryCode: any[] = [];
+   technicalExpert	: any[] = [];
+   inspectorsName	: any[] = [];
+   categoryCode2	: any[] = [];
+   islamicAffairsExpert	: any[] = [];
+   others	: any[] = [];
+   selectable = true;
+   removable = true;
   
   @ViewChild('captchaRef',{static:true}) captchaRef: RecaptchaComponent;
 
@@ -363,8 +383,53 @@ export class HalalConformityFormComponent implements OnInit {
     }
     )
 
+    /*
+    this.summaryDetails = [
+      {"position":'Managerial/Professional','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Decision Maker','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Technical','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Administrative','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Auditors Name','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Category Code','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Technical Expert','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Inspectors Name','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Category Code','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Islamic Affairs Expert','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},
+      {'position':'Others','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''}
+    ];
 
-    this.summaryDetails = [{"position":'Managerial/Professional','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Decision Maker','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Technical','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Administrative','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Auditors Name','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Category Code','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Technical Expert','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Inspectors Name','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Category Code','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Islamic Affairs Expert','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''},{'position':'Others','total_no' : '','fulltime_emp_name' : '','parttime_emp_name' : ''}];
+    */
+
+    // this.summaryDetails = [
+    //   {"position":'Managerial/Professional','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+    //   {'position':'Decision Maker','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+    //   {'position':'Technical','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+    //   {'position':'Administrative','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+    //   {'position':'Auditors Name','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+    //   {'position':'Category Code','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+    //   {'position':'Technical Expert','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+    //   {'position':'Inspectors Name','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+    //   {'position':'Category Code','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+    //   {'position':'Islamic Affairs Expert','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0},
+    //   {'position':'Others','total_no' : '',recordFulltime:[],recordParttime:[], fullTimeCount:0, partTimeCount: 0}
+    // ];
+
+    this.summaryDetails = [
+      {position:'Managerial/Professional',    total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]}, 
+      {position:'Decision Maker',             total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]}, 
+      {position:'Technical',                  total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]}, 
+      {position:'Administrative',             total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]}, 
+      {position:'Auditors Name',              total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]}, 
+      {position:'Category Code',              total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]}, 
+      {position:'Technical Expert',           total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]}, 
+      {position:'Inspectors Name',            total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]}, 
+      {position:'Category Code',              total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]}, 
+      {position:'Islamic Affairs Expert',     total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]},
+      {position:'Others',                     total_no : '',  fulltime_emp_name:[],  parttime_emp_name:[]}
+    ];
+
+    console.log(">>>Summary details: ", this.summaryDetails);
+
     //undertaking_confirmTop3: false,
     this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirm1:false,
     undertaking_confirm2:false,undertaking_confirm3:false,undertaking_confirm4:false,undertaking_confirm5:false,undertaking_confirm6:false,
@@ -472,12 +537,13 @@ getCriteria(value, secInd: any, typeTitle: any){
 
            let scopeName: string = '';
            let scopeTitle: string ='';
+           let scopeID: number = 0;
            let getData = this.criteriaMaster.find(rec => rec.scope_accridiation.id == value);
            ////console.log(">>> Fined Scheme: ", getData);
            if(getData){
              scopeName   = getData.title;
              scopeTitle  = getData.title.toString().toLowerCase().split(" ").join('_');
-
+             scopeID = value;
              //check already existing scheme...
              if((findType.scopeRows.length)){
               //console.log("@Existing scheme....1");
@@ -500,12 +566,12 @@ getCriteria(value, secInd: any, typeTitle: any){
              // this.dynamicScopeFieldType[scopeTitle] = [];
              // this.dynamicScopeModel[scopeTitle] = {};
 
-             this.dynamicScopeFieldColumns[findType.id] = [];
-             this.dynamicScopeFieldColumns[findType.id][scopeTitle] = [];
-             this.dynamicScopeFieldType[findType.id] = [];
-             this.dynamicScopeFieldType[findType.id][scopeTitle] = [];
-             this.dynamicScopeModel[findType.id] = {};
-             this.dynamicScopeModel[findType.id][scopeTitle] = {};
+             //this.dynamicScopeFieldColumns[findType.id] = [];
+             this.dynamicScopeFieldColumns[findType.id][scopeID] = [];
+             //this.dynamicScopeFieldType[findType.id] = [];
+             this.dynamicScopeFieldType[findType.id][scopeID] = [];
+             //this.dynamicScopeModel[findType.id] = {};
+             this.dynamicScopeModel[findType.id][scopeID] = {};
 
              //console.log("@Model struct: ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
              //return;
@@ -544,14 +610,14 @@ getCriteria(value, secInd: any, typeTitle: any){
                     inputType: rec.scope.input_type,
                     defValue: rec.scope.default_value
                  }
-                 this.dynamicScopeFieldType[findType.id][scopeTitle].push(fieldType);
+                 this.dynamicScopeFieldType[findType.id][scopeID].push(fieldType);
              }
              
              customKey = rec.title.toString().toLowerCase().split(' ').join('_');
-             this.dynamicScopeFieldColumns[findType.id][scopeTitle][key] = [];
+             this.dynamicScopeFieldColumns[findType.id][scopeID][key] = [];
 
              fieldTitleValue[key] = [];
-             this.dynamicScopeModel[findType.id][scopeTitle]['fieldLines'] = [];
+             this.dynamicScopeModel[findType.id][scopeID]['fieldLines'] = [];
 
              if(dataScope.firstColumnData != undefined && dataScope.firstColumnData.length > 0){
                defLine['firstFieldValues'] = dataScope.firstColumnData;
@@ -562,7 +628,7 @@ getCriteria(value, secInd: any, typeTitle: any){
 
              let colObj: any ={};
              colObj = {title: fieldTitle, values:fieldValues, name: rec.title, idVal: filedId};
-             this.dynamicScopeFieldColumns[findType.id][scopeTitle][key].push(colObj);
+             this.dynamicScopeFieldColumns[findType.id][scopeID][key].push(colObj);
              defLine[fieldValues] = [];
              ////console.log(">>> Field values: ", fieldValues, " -- ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeModel.fieldLines);
              if(defLine['firstFieldValues'] != undefined && defLine['firstFieldValues'].length > 0  && key == 0){
@@ -572,27 +638,27 @@ getCriteria(value, secInd: any, typeTitle: any){
                  fieldTitleValue[key].push({title: fieldTitle, defValue: getValue, secName: customKey});
                }
                //Default load next column 
-               if(key == 0){
-                 this.onChangeScopeOption(getValue,scopeTitle,findType.id,key,key,'initLoad');
+               if(key == 0 && dataScope.firstColumnData.length == 1){
+                 this.onChangeScopeOption(getValue,scopeID,findType.id,key,key,'initLoad');
                } 
                setTimeout(()=>{
-                 if(getValue != undefined && getValue > 0){  
+                 if(getValue != undefined && getValue > 0 && dataScope.firstColumnData.length == 1){  
                    let fSelValues: any = {};
                    //fSelValues[]                    
-                   this.dynamicScopeModel[findType.id][scopeTitle]['fieldLines'][0][this.dynamicScopeFieldColumns[findType.id][scopeTitle][0][0].values] = [defLine['firstFieldValues'][0]];
-                   this.dynamicScopeModel[findType.id][scopeTitle].fieldLines[key][this.dynamicScopeFieldColumns[findType.id][scopeTitle][key][0].title] = getValue;
+                   this.dynamicScopeModel[findType.id][scopeID]['fieldLines'][0][this.dynamicScopeFieldColumns[findType.id][scopeID][0][0].values] = [defLine['firstFieldValues'][0]];
+                   this.dynamicScopeModel[findType.id][scopeID].fieldLines[key][this.dynamicScopeFieldColumns[findType.id][scopeID][key][0].title] = getValue;
                  }
                },0)                                
                
              }              
              //Load first field value default by selecting first item
-             this.dynamicScopeModel[findType.id][scopeTitle].fieldLines.push(defLine);
+             this.dynamicScopeModel[findType.id][scopeID].fieldLines.push(defLine);
            });
 
            //console.log("@@@@Update Model: ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeFieldType, " -- ", this.dynamicScopeModel);
 
          }
-         //////console.log(">>>> ", this.dynamicScopeModel, " --- ", this.dynamicScopeFieldColumns, " ::-> ",this.fullScope);
+         console.log(">>>> ", this.dynamicScopeModel, " --- ", this.dynamicScopeFieldColumns, " ::-> ",this.fullScope);
     })
  }
 }
@@ -647,10 +713,18 @@ onChangeScopeOption(getValues: any,secIndex: any,typeTitle: any, lineIndex: numb
            let getSelValue = 0; 
            if(typeof record['scopeValue'][0] === 'object'){                  
              getSelValue = record['scopeValue'][0].field_value.id;
-             //console.log(">>assigning scope default value: ", getSelValue);
+             console.log(">>assigning scope default value: ", getSelValue, " == ", this.dynamicScopeFieldColumns[typeTitle][secIndex][nextColumnIndex][0].title);
              this.dynamicScopeModel[typeTitle][secIndex].fieldLines[lineIndex][this.dynamicScopeFieldColumns[typeTitle][secIndex][nextColumnIndex][0].title] = getSelValue;
              this.onChangeScopeOption(getSelValue,secIndex,typeTitle,lineIndex,nextColumnIndex,'initLoad');
            }
+       }else{
+        console.log("Prev value: ", this.dynamicScopeModel[typeTitle][secIndex].fieldLines[lineIndex][this.dynamicScopeFieldColumns[typeTitle][secIndex][nextColumnIndex][0].title]);
+        console.log(">>> Not set value>> ", this.dynamicScopeFieldColumns[typeTitle][secIndex][nextColumnIndex][0].title);
+         let oldSelValue: any = this.dynamicScopeModel[typeTitle][secIndex].fieldLines[lineIndex][this.dynamicScopeFieldColumns[typeTitle][secIndex][nextColumnIndex][0].title];
+         if(oldSelValue != undefined && oldSelValue > 0){
+          this.dynamicScopeModel[typeTitle][secIndex].fieldLines[lineIndex][this.dynamicScopeFieldColumns[typeTitle][secIndex][nextColumnIndex][0].title] = '';
+         }
+         console.log(">>> After set value>> ", this.dynamicScopeFieldColumns[typeTitle][secIndex][nextColumnIndex][0].title);
        }
        if(nextColumnIndex > 0 && nextColumnIndex < totSecColumn){
            //Get ridge of the values
@@ -698,6 +772,10 @@ getTypeScheme(typeId: number, secInd: number){
          //this.fullTypeScope[typeTitle] = {};
          this.criteriaMaster = findType.scheme_list;
          //schme rows depends on type selected
+
+          this.dynamicScopeFieldColumns[typeId] = [];
+          this.dynamicScopeFieldType[typeId] = [];
+          this.dynamicScopeModel[typeId] = {};
 
          if(this.fullTypeScope.length){
            //console.log("@Existing scheme....1");
@@ -1480,8 +1558,58 @@ addSchemeRow(obj: any = [],index: number){
                 }
 
                 if(res['data'].summaryOfPersonnel != undefined && res['data'].summaryOfPersonnel.length > 0){
+                  console.log(res['data'].summaryOfPersonnel);
+                  let tempDetails: any[] =[];
                   this.summaryDetails = res['data'].summaryOfPersonnel;
+                  this.summaryDetails.forEach((item) => {
+                    if(item.fulltime_emp_name != undefined && typeof item.fulltime_emp_name == 'string'){
+                      let fulltimeAr = JSON.parse(item.fulltime_emp_name);
+                      console.log(fulltimeAr, " -- ", fulltimeAr.length);
+                      item.fulltime_emp_name = fulltimeAr;
+                    }
+                    if(item.parttime_emp_name != undefined && typeof item.parttime_emp_name == 'string'){
+                      let parttimeAr = JSON.parse(item.parttime_emp_name);
+                      console.log(parttimeAr, " -- ", parttimeAr.length);
+                      item.parttime_emp_name = parttimeAr;
+                    }
+
+                  });
+                  // this.summaryDetails.forEach((item) => {
+                  //   console.log(">> ", item);
+                  //   if(item.fulltime_emp_name != undefined && typeof item.fulltime_emp_name == 'string'){
+                  //     let conAR: any[] = [];
+                  //     // if(item.fulltime_emp_name.toString().indexOf("]")){
+
+                  //     // }
+                  //     let temp: any = item.fulltime_emp_name.toString().replace(/'/g,'');
+                  //     let pp = JSON.parse(temp);
+                  //     console.log(pp);
+                  //     //let filterStr = item.fulltime_emp_name.substr(1).slice(0, -1); ;//item.fulltime_emp_name.substr(1)
+                  //     //console.log(">>Filter 1 ", filterStr.replace(/'/g,''));
+                  //       // if(filterStr){
+                  //       //   conAR = filterStr.replace(/'/g,'').trim().split(',')
+                  //       //   console.log(conAR);
+                  //       //   if(conAR.length){
+                  //       //     item.fulltime_emp_name = conAR;
+                  //       //   }
+                  //       // }
+                  //   }
+                  //   if(item.parttime_emp_name != undefined && typeof item.parttime_emp_name == 'string'){
+                  //     let conAR: any[] = [];
+                  //     let filterStr = item.parttime_emp_name.substr(1).slice(0, -1); ;//item.fulltime_emp_name.substr(1)
+                  //     console.log(">>Filter 1 ", filterStr.replace(/'/g,''));
+                  //       if(filterStr){
+                  //         conAR = filterStr.replace(/'/g,'').split(',')
+                  //         if(conAR.length){
+                  //           item.parttime_emp_name = conAR;
+                  //         }
+                  //       }
+                  //   }
+                  // })
+                  console.log(">>>Updated dafa: ", this.summaryDetails);
                 }
+
+                //return;
   
                 //step3
                 //scope type options
@@ -1577,7 +1705,7 @@ addSchemeRow(obj: any = [],index: number){
                   authList = getData.data.authorization_list;
                   // console.log("@ Auth checked status: ", authList);
                   this.authorizationList = JSON.parse(authList);
-                  // console.log("# Auth checked status: ", this.authorizationList);
+                  console.log("# Auth checked status: ", this.authorizationList);
 
                   //check read ters check
                   if(this.authorizationList.authorization_confirm2){
@@ -1646,10 +1774,19 @@ addSchemeRow(obj: any = [],index: number){
   //   }
   // }
 
-  setexDate(date){
+  setexDateMin(date, index){
     let cdate = date;
-    this.minDate = new Date(cdate  + (60*60*24*1000));
-    // console.log(this.minDate);
+    // this.minDate = new Date(cdate  + (60*60*24*1000));
+    let mdate: any =  new Date(cdate  + (60*60*24*1000));
+    //this.minDates[i] = new Date(cdate  + (60*60*24*1000));
+    this.minDates[index] = mdate;
+    //this.minDates.push(mdate)
+    console.log(this.minDates);
+  }
+
+  setexDate(date, index){
+    let cdate = date;
+    this.minDate = new Date(cdate  + (60*60*24*1000));   
   }
 
   setexDynamicsDate(date,index){
@@ -1741,14 +1878,14 @@ addSchemeRow(obj: any = [],index: number){
         }    
       }
     }
-        
+    console.log(">>> Check status count: ", checkCount);
   
     if(this.authorizationStatus && checkCount == 12){
       this.authorizationStatus = true;
     }else{
       this.authorizationStatus = false;
     }
-    //console.log(">>> Check status count: ", checkCount);
+    
   }
 
   agreeView(){
@@ -1916,6 +2053,168 @@ addSchemeRow(obj: any = [],index: number){
     }
   }
 
+  chechDup(data: any){
+    new Set(data).size !== data.length;
+  }
+
+    //addUser(event: MatChipInputEvent,type): void {
+    addEntry(event: MatChipInputEvent,Object: any, index: number, type: string): void {
+    const input = event.input;
+    const value = event.value;
+
+    let empRecord: any;
+    let fullTimeCount: number = 0;
+    let partTimeCount: number = 0;
+    let cloneDettails: any;
+    let dupCheck: boolean = false;
+
+      console.log(">>>> Data: ", index, " :: ", Object[index].total_no);
+      let empTotalNumb: number = 0;
+      empTotalNumb = Object[index].total_no;
+      if(empTotalNumb == 0){
+        this.toastr.warning("Please enter Total Number ");
+        return;
+      }
+     // console.log("###Full/Part count: ", this.summaryDetails[0].recordFulltime.length, " == ", empTotalNumb);
+      for(let key in Object){
+        //console.log(">>> ", key);
+        dupCheck = false;
+        if(parseInt(key) == index){
+          let theObj: any = this.summaryDetails;
+          console.log("......>The details:  ", theObj);
+         // console.log(">>> check status: ", Object[key].recordFulltime.length , " == ", Object[key].recordParttime.length);
+
+          if(input.value != ''){
+              // if(type != '' && type == 'full'){                
+              //   let arr :any[] =[];
+              //   arr = Object[key].recordFulltime;
+              //   console.log("<><><><>< ", arr);
+              //   let checkDup: any = this.chechDup(arr);
+              //   console.log(">>> Ful time dup check: ", checkDup);
+              // }
+
+              let num: number = (Object[key].fulltime_emp_name.length + Object[key].parttime_emp_name.length);
+              if(num < (empTotalNumb)){
+                if(type != '' && type == 'full'){
+                  Object[key].fulltime_emp_name.push(value.trim()) 
+                }
+                if(type != '' && type == 'part'){
+                  Object[key].parttime_emp_name.push(value.trim())
+                }
+              }else{
+                this.toastr.warning("Total Number exceeds.");
+                input.value = '';
+                return;
+              }
+          }                 
+        }       
+      }   
+      console.log("Updated Data: ", this.summaryDetails);   
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+  }
+/*
+  loadCount(dataObj: any, index: number){
+    //console.log(">>> Data count: ", dataObj, " == ", dataObj.length);
+    for(let key in dataObj){
+        //console.log(">>> Key: ", );
+        return;
+    }
+  }
+  */
+  /*
+  checkCount(index: number) : number{
+     let fullTimeCount: number = 0;// Object[index].recordFulltime.length;
+     let partTimeCount: number = 0;// Object[index].recordParttime.length;
+     let totalCount: number = 0;
+     //console.log("details data: ", this.summaryDetails, " -- ", index, " :: ", totalNum);
+
+     if(this.summaryDetails.length){
+        let data: any = this.summaryDetails;
+        for(let key in data){
+          if(parseInt(key) == index){
+            
+            let tempObj: any = data[key];
+            let totalCount:  number = 3;
+            var counts = {};
+            let arr = tempObj.recordFulltime;
+            for (var i = 0; i < arr.length; i++) {
+              var num = arr[i];
+              counts[num] = counts[num] ? counts[num] + 1 : 1;
+            }
+
+            console.log(">>>Ar count: ", counts);
+
+            for(let key in tempObj.recordFulltime){
+              console.log("K: ", key);
+            }
+
+            if(tempObj.recordFulltime != undefined && typeof tempObj.recordFulltime == 'object'){
+              console.log("@Enter Full time count...", tempObj.recordFulltime, " == ", tempObj.recordFulltime.length);
+            }
+            
+            console.log(">>> ", data[key], " == ", tempObj, " === ", tempObj.recordFulltime);
+            if(tempObj.recordFulltime != undefined && typeof tempObj.recordFulltime == 'object'){
+              setTimeout(() => {                
+                fullTimeCount = tempObj.recordFulltime.length;
+                console.log("@Enter full...", tempObj.recordFulltime, " == ", fullTimeCount);
+              }, 0)              
+            }
+            if(tempObj.recordParttime != undefined && typeof tempObj.recordParttime == 'object'){
+              setTimeout(() => {
+                partTimeCount = tempObj.recordParttime.length;
+                console.log("@Enter part...", tempObj.recordParttime, " == ", partTimeCount);
+              }, 0)              
+            }
+            if(data[key].total_no != undefined && data[key].total_no > 0){
+              totalCount = data[key].total_no;
+            }
+            setTimeout(()=>{
+             // console.log("Full/Part count: ", fullTimeCount, " :: ", partTimeCount, " -- ", totalCount);
+              data[key].fullTimeCount = fullTimeCount;
+              data[key].partTimeCount = partTimeCount;
+              let calCount: number = fullTimeCount + partTimeCount;
+
+              if(calCount >= totalCount){
+                return true;
+              // this.toastr.warning("Maximum Number of Entry exceeds.");
+              // return;
+              }else{
+                return false;
+              }
+            },10)      
+            return totalCount;     
+          }           
+        }
+     }
+
+     //console.log("@Full/Part count: ", Object[index].fullTimeCount ," :: ", Object[index].partTimeCount);
+  }
+  */
+  removeEntry(Object: any, index: number, parentIndex: number, type: string): void {
+    let empRecord: any;
+    for(let key in Object){
+      if(parseInt(key) == parentIndex){
+        if(type != '' && type == 'full'){
+          empRecord = Object[key].fulltime_emp_name;
+        }
+        if(type != '' && type == 'part'){
+          empRecord = Object[key].parttime_emp_name;
+        }        
+        let totalLen: number = 0;
+        totalLen = (Object[key].fulltime_emp_name.length + Object[key].parttime_emp_name.length);  
+        console.log(">>> Total Len: ", totalLen);  
+          if(totalLen == 1){
+          this.toastr.warning("At least one entry required.");
+          return;
+        }
+        empRecord.splice(index, 1);
+      }
+    }
+  }
+
   getPlaceName(i)
   {
     // console.log(this.scopeofHalalConformity[i].location);
@@ -1949,6 +2248,15 @@ addSchemeRow(obj: any = [],index: number){
       this.newRow     =   {};
       obj.push(this.newRow);
     }
+
+    //Reset min dates array
+    if(this.accreditationInfo){
+      console.log(this.minDates);
+      this.accreditationInfo.forEach((item, index) => {
+        console.log(index, " :: ", item);
+      })
+    }
+
       
     return true;
   }
@@ -1957,6 +2265,10 @@ addSchemeRow(obj: any = [],index: number){
     if(type === '' || type == undefined){
       obj.splice(index, 1);
     }    
+    if(this.minDates.length){
+      this.minDates.splice(index, 1);
+    }
+    console.log(">>> after delet: ", this.minDates);
     return true;
   }
 
@@ -2177,7 +2489,8 @@ addSchemeRow(obj: any = [],index: number){
         // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
       
         // this.step4DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
-        // //console.log(this.publicHalalConformityForm,'publicHalalConformityForm');
+        //console.log(this.publicHalalConformityForm,'publicHalalConformityForm');
+        //return;
         this.loader = false;
         this.step6DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
         this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step6DataBodyFormFile)
@@ -2196,7 +2509,7 @@ addSchemeRow(obj: any = [],index: number){
     }
   }
 
-  onSubmitStep1(ngForm1: any){
+  onSubmitStep1(ngForm: any){
     //this.Service.moveSteps('application_information', 'personal_information', this.headerSteps);
     // //console.log(this.ownOrgMembInfo,'ownOrgMembInfo');
   
@@ -2228,8 +2541,10 @@ addSchemeRow(obj: any = [],index: number){
       this.is_main_activity_note_entry = false;
       this.isNoteSubmit = true;
     }
-  
-    if(ngForm1.form.valid  && this.isNoteSubmit == true) {
+
+    console.log(">> Submit: ", ngForm.form.valid, " -- ", ngForm.form);
+    //return;
+    if(ngForm.form.valid  && this.isNoteSubmit == true) {
       this.publicHalalConformityForm = {};
       this.publicHalalConformityForm.step1 = {};
       this.publicHalalConformityForm.email = this.userEmail;
@@ -2256,7 +2571,7 @@ addSchemeRow(obj: any = [],index: number){
       if(this.ownOrgBasicInfo) {
         this.publicHalalConformityForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
       }
-      if(this.ownOrgMembInfo) {
+      if(this.managingDirector) {
         this.publicHalalConformityForm.step1['managingDirector'] = this.managingDirector;
       }
       if(this.ownOrgMembInfo) {
@@ -2347,9 +2662,31 @@ addSchemeRow(obj: any = [],index: number){
   
       this.publicHalalConformityForm.step2.is_draft = false;
       this.publicHalalConformityForm.saved_step = 2;
+
+
+      //Check validation of summary details
+      if(this.summaryDetails){
+          for(let key in this.summaryDetails){
+             let totalNumb: number = this.summaryDetails[key].total_no;
+             let positionNmae: any = this.summaryDetails[key].position;
+             let fullTimeCount: number = this.summaryDetails[key].fulltime_emp_name.length;
+             let partTimeCount: number = this.summaryDetails[key].parttime_emp_name.length;
+
+             let totalCount: number = (fullTimeCount + partTimeCount);
+             console.log(">>> For position: ", totalCount, " : Entered Total: ", totalNumb);
+             if(totalCount < totalNumb){
+               let alertMsg: string = "Please check Summary Entry for Position - " + positionNmae;
+              this.toastr.warning(alertMsg,'Summary Position Validation',{timeOut:3300});
+              return false;
+             }
+          }
+      }
+
+      //return;
+
       // this.publicHalalConformityForm.step3 = this.step3Data;
       this.loader = false;
-      //console.log(this.publicHalalConformityForm,'publicHalalConformityForm');
+      console.log(this.publicHalalConformityForm,':: Submit step 3 ::');
       this.step2DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step2DataBodyFormFile)
       .subscribe(
@@ -2369,7 +2706,7 @@ addSchemeRow(obj: any = [],index: number){
 
   //Scope Save functions
 
-  updateScopeData = async() => {
+  updateScopeData = async() => { 
     let getId= (this.formApplicationId);
     let url = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+getId;
     console.log(">>>Get url and ID: ", url, " :: ", getId, " -- ");
@@ -2405,6 +2742,8 @@ addSchemeRow(obj: any = [],index: number){
         let getData: any  =res;
         console.log(">>>. Data: ", getData);
         let scopeOptionsCheckCount: number = 0;
+        let scopeOptionsCheckOthersCount: number = 0;
+
           let scopeOptionsValues: any = {};
           scopeOptionsValues['checkItems'] = [];
           scopeOptionsValues['checkItemsOthers'] = [];
@@ -2498,7 +2837,7 @@ addSchemeRow(obj: any = [],index: number){
   
           //this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.publicHalalConformityForm,this.publicHalalConformityForm)
           this.step3DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
-          if(scopeOptionsCheckCount > 0){
+          if(this.checkItemOthers &&scopeOptionsCheckCount > 0){
             this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step3DataBodyFormFile)
             .subscribe(
               res => {
@@ -2584,9 +2923,9 @@ saveScope(rowInd:  number,typeScopeId: number){
             
             scopeCollections[typeScope.id][selectScheme] = {};
             scopeCollections[typeScope.id][selectScheme]['scope_heading'] = {};
-                  for(var key in this.dynamicScopeFieldColumns[typeScope.id][scopeTitle]){
+                  for(var key in this.dynamicScopeFieldColumns[typeScope.id][selectScheme]){
                         ////console.log(">>> ", key, " :: ", this.dynamicScopeFieldColumns[key]);
-                        let tempData: any = this.dynamicScopeFieldColumns[typeScope.id][scopeTitle];
+                        let tempData: any = this.dynamicScopeFieldColumns[typeScope.id][selectScheme];
                         if(typeof tempData === 'object'){
                           tempData.forEach((item,key) => {
                                 ////console.log(">>>> Col items: ",item);
@@ -2642,9 +2981,9 @@ saveScope(rowInd:  number,typeScopeId: number){
               tempDataRow = {};
 
               //Scope data population
-              for(var key in this.dynamicScopeModel[typeScope.id][scopeTitle]){
+              for(var key in this.dynamicScopeModel[typeScope.id][selectScheme]){
                 if(key == 'fieldLines'){
-                  let rowLen = this.dynamicScopeModel[typeScope.id][scopeTitle][key].length;
+                  let rowLen = this.dynamicScopeModel[typeScope.id][selectScheme][key].length;
                   // Browse rows
                   let getDataValues: any;
                   let getSelectValues: any;
@@ -2664,7 +3003,7 @@ saveScope(rowInd:  number,typeScopeId: number){
                     tempDataRow = {};
                     //resultTempAr[k] = {};
 
-                    this.dynamicScopeFieldColumns[typeScope.id][scopeTitle].forEach((colItem,colIndex) => {
+                    this.dynamicScopeFieldColumns[typeScope.id][selectScheme].forEach((colItem,colIndex) => {
                         //console.log("...Col>>> ",colIndex, " :: ", colItem[0], " -- ", this.dynamicScopeModel[typeScope.id][scopeTitle][key][k])
                         let colData: any = colItem[0];
                         let optionNameAr: any = [];
@@ -2673,8 +3012,8 @@ saveScope(rowInd:  number,typeScopeId: number){
                           //first coloumn row values - firstFieldValues
                           //console.log(">>>> First column: ");
                           let selTitle: any       = colItem[0].title;
-                          let selTitleValues: any = this.dynamicScopeModel[typeScope.id][scopeTitle][key][k]['firstFieldValues'];
-                          let fvalue: any         = this.dynamicScopeModel[typeScope.id][scopeTitle][key][k][selTitle];
+                          let selTitleValues: any = this.dynamicScopeModel[typeScope.id][selectScheme][key][k]['firstFieldValues'];
+                          let fvalue: any         = this.dynamicScopeModel[typeScope.id][selectScheme][key][k][selTitle];
                           let getVal: any         = selTitleValues.find(data => data.field_value.id == fvalue)
                           //console.log("<><><><> ", getVal);
                           if(getVal){                  
@@ -2689,9 +3028,9 @@ saveScope(rowInd:  number,typeScopeId: number){
                             
                           let selTitle: any       = colItem[0].title;
                           let selTitleVal: any    = colItem[0].values;
-                          let selTitleValues: any = this.dynamicScopeModel[typeScope.id][scopeTitle][key][k][selTitleVal];
+                          let selTitleValues: any = this.dynamicScopeModel[typeScope.id][selectScheme][key][k][selTitleVal];
                           //console.log("@fetching col index Data: ", colIndex, " -- ", selTitle, " -- ", selTitleVal, " -- ", selTitleValues);
-                          let fvalue: any         = this.dynamicScopeModel[typeScope.id][scopeTitle][key][k][selTitle];
+                          let fvalue: any         = this.dynamicScopeModel[typeScope.id][selectScheme][key][k][selTitle];
                           //console.log(">>>Type of FVAL: ", typeof fvalue);
                           if(typeof fvalue === 'object'){
                             if(fvalue.length){
@@ -2909,17 +3248,17 @@ getMatchScheme(scId: any, scopeData: any){
               if(getData){
                 scopeTitle = getData.title.toString().toLowerCase().split(" ").join('_');
               }
-              for(var key in this.dynamicScopeModel[typeScope.id][scopeTitle]){
+              for(var key in this.dynamicScopeModel[typeScope.id][selectScheme]){
                 if(key == 'fieldLines'){
-                  let rowLen = this.dynamicScopeModel[typeScope.id][scopeTitle][key].length;
+                  let rowLen = this.dynamicScopeModel[typeScope.id][selectScheme][key].length;
                   // Browse rows
                   ////console.log("Section: ", scopeTitle, " -- ", rowLen)                
                   for(var k=0; k<rowLen; k++){
-                      this.dynamicScopeFieldColumns[typeScope.id][scopeTitle].forEach((colItem,colIndex) => {
+                      this.dynamicScopeFieldColumns[typeScope.id][selectScheme].forEach((colItem,colIndex) => {
                             let fieldSelValue: any;
                             let selTitle: any       = colItem[0].title;
-                            fieldSelValue         = this.dynamicScopeModel[typeScope.id][scopeTitle][key][k][selTitle];
-                            ////console.log(">>> ", scopeTitle, " :: ", selTitle, " -- ", fieldSelValue);
+                            fieldSelValue         = this.dynamicScopeModel[typeScope.id][selectScheme][key][k][selTitle];
+                            console.log(">>> ", scopeTitle, " :: ", selTitle, " -- ", fieldSelValue);
                             if(fieldSelValue === undefined || fieldSelValue == ''){
                               errorScope = true;
                             }
@@ -2936,6 +3275,7 @@ getMatchScheme(scId: any, scopeData: any){
       this.toastr.warning('Please Fill required field','Validation Error');
       return false;    
     }
+    //return;
     //Check dynamic model column fields validation
 
     //alert(">>>> calling.....3");
