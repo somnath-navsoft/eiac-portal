@@ -2476,7 +2476,7 @@ addSchemeRow(obj: any = [],index: number){
       if(this.ownOrgBasicInfo) {
         this.publicHalalConformityForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
       }
-      if(this.ownOrgMembInfo) {
+      if(this.managingDirector) {
         this.publicHalalConformityForm.step1['managingDirector'] = this.managingDirector;
       }
       if(this.ownOrgMembInfo) {
