@@ -182,6 +182,9 @@ export class PtProvidersFormComponent implements OnInit {
 
   aboutSubContractors:Array<any> = [{}];
 
+
+  errorLoader :  boolean = false;
+
   constructor(public Service: AppService, public constant:Constants, private _customModal: CustomModalComponent,
     public router: Router,public toastr: ToastrService,private modalService: NgbModal,public sanitizer:DomSanitizer,public _trainerService:TrainerService) { }
 
@@ -196,6 +199,11 @@ export class PtProvidersFormComponent implements OnInit {
     }
     closeDialog(){
       this.modalService.dismissAll();
+    }
+    onError(error: any) {
+      // do anything
+      //////////console.log('PDF Error: ', error)
+      this.errorLoader = true;
     }
 
    loadData(){
