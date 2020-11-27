@@ -15,6 +15,7 @@ import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
 declare let paypal: any;
 import {MatChipInputEvent} from '@angular/material/chips';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { iif } from 'rxjs';
 
 @Component({
   selector: 'app-halal-conformity-form',
@@ -127,6 +128,7 @@ export class HalalConformityFormComponent implements OnInit {
   paymentFile:any = false;
   isApplicationSubmitted:any = false;
   public isNoteSubmit:boolean = false;
+  public isNoteSubmitHcab:boolean = false;
   termsILA: any;
   
 
@@ -1402,7 +1404,7 @@ addSchemeRow(obj: any = [],index: number){
               }else{
                 if(parseInt(getData.data.saved_step) == 9){
                   
-                  saveStep = parseInt(getData.data.saved_step) - 1;
+                  saveStep = parseInt(getData.data.saved_step) - 2;
                 }else{
                   
                 saveStep = parseInt(getData.data.saved_step);
@@ -1749,8 +1751,10 @@ addSchemeRow(obj: any = [],index: number){
                     this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
                     this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
   
-                    this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
-                    this.paymentReceiptValidation = true;
+                    this.paymentFile = (res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null) ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
+                    if(this.paymentFile != ''){
+                      this.paymentReceiptValidation = true;
+                    }                    
                 }
               }
           });
@@ -2210,11 +2214,11 @@ addSchemeRow(obj: any = [],index: number){
         }        
         let totalLen: number = 0;
         totalLen = (Object[key].fulltime_emp_name.length + Object[key].parttime_emp_name.length);  
-        console.log(">>> Total Len: ", totalLen);  
-          if(totalLen == 1){
-          this.toastr.warning("At least one entry required.");
-          return;
-        }
+        // console.log(">>> Total Len: ", totalLen);  
+        //   if(totalLen == 1){
+        //   this.toastr.warning("At least one entry required.");
+        //   return;
+        // }
         empRecord.splice(index, 1);
       }
     }
@@ -2547,9 +2551,38 @@ addSchemeRow(obj: any = [],index: number){
       this.isNoteSubmit = true;
     }
 
-    console.log(">> Submit: ", ngForm.form.valid, " -- ", ngForm.form);
+    //Activity note check for HCAB
+    if(this.step1Data.is_staff_ownership_note == undefined){
+      this.step1Data.is_staff_ownership_note = '';
+    }
+    
+    let str1 = this.step1Data.is_staff_ownership_note; 
+  
+    ////console.log("nite enen: ", this.step1Data.is_main_activity_note, " -- ", this.step1Data.is_main_activity, " :: ", (!str || 0 === str.length));
+    
+    if(this.step1Data.is_staff_ownership == 'true' && this.step1Data.is_staff_ownership != ''){
+      this.step1Data.is_staff_ownership_note = '';
+    }
+    if(this.step1Data.is_main_activity == 'true'){
+      this.isNoteSubmitHcab = true;
+    }
+  
+    if((!str1 || 0 === str1.length) && this.step1Data.is_staff_ownership == 'false'){
+      ////console.log(">>> Note is required...");
+      //this.is_main_activity_note_entry = true;
+      this.isNoteSubmitHcab = false;
+    }
+    if(this.step1Data.is_staff_ownership == 'false' && this.step1Data.is_staff_ownership_note != ''){
+      ////console.log(">>> Note is ebnterd.....");
+      //this.is_main_activity_note_entry = false;
+      this.isNoteSubmitHcab = true;
+    }
+
+
+
+    console.log(">> Submit: ", ngForm.form.valid, " -- ", this.isNoteSubmit, " -- ", this.isNoteSubmitHcab);
     //return;
-    if(ngForm.form.valid  && this.isNoteSubmit == true) {
+    if(ngForm.form.valid  && this.isNoteSubmit == true && this.isNoteSubmitHcab == true) {
       this.publicHalalConformityForm = {};
       this.publicHalalConformityForm.step1 = {};
       this.publicHalalConformityForm.email = this.userEmail;
@@ -3507,9 +3540,9 @@ getMatchScheme(scId: any, scopeData: any){
 
     this.publicHalalConformityForm.step6 = this.step6Data;
     // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
-  
+    console.log(this.publicHalalConformityForm,'@@@Submit step');
     // this.step4DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
-    // //console.log(this.publicHalalConformityForm,'publicHalalConformityForm');
+    console.log(this.publicHalalConformityForm,'publicHalalConformityForm');
     this.loader = false;
     this.step6DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step6DataBodyFormFile)
@@ -3603,7 +3636,11 @@ onSubmitStep7(ngForm7: any) {
   // this.voucherFile.append('application_id',this.formApplicationId);
       
   this.loader = false;
-  if(ngForm8.form.valid && this.paymentReceiptValidation != false) {
+
+  console.log(">>>> saveing...", this.paymentReceiptValidation);
+  //return;  
+
+  if(ngForm8.form.valid && (this.paymentReceiptValidation != false && this.paymentReceiptValidation != undefined)) {
     // //console.log(this.voucherFile);
       this._trainerService.paymentVoucherSave((this.voucherFile))
       .subscribe(
@@ -3649,6 +3686,7 @@ onSubmitStep7(ngForm7: any) {
   }
   else{
     this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    this.loader = true;
   }
   
   }

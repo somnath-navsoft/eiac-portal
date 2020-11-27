@@ -25,8 +25,9 @@
                                             <span [ngClass]="(item.activeClass === 'user-done') ? 'icon-tick' : item.icon"></span>
                                         </div>
                                         <!-- (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}" -->
+                                        <!-- (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}" -->
                                         <div class="user-details-pending" 
-                                        id="course_header" (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}">
+                                        id="course_header" >
                                             <span [innerHTML]="item.desc"></span>
                                         </div>
                                     </div>
@@ -315,14 +316,14 @@
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Name</mat-label>
-                                                            <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off"  placeholder="Name"  maxlength="20" name="ownership_name_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].name" required>
+                                                            <input (keypress)="Service.inputFilter($event, Service.nameOnly)" matInput autocomplete="off"  placeholder="Name"  maxlength="20" name="ownership_name_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].name" required>
                                                             <mat-error></mat-error>    
                                                         </mat-form-field>
                                                     </div>
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Designation</mat-label>
-                                                            <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" required placeholder="Designation" name="ownership_designation_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].designation" required>
+                                                            <input (keypress)="Service.inputFilter($event, Service.nameOnly)" matInput autocomplete="off" required placeholder="Designation" name="ownership_designation_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].designation" required>
                                                             <mat-error></mat-error> 
                                                         </mat-form-field>
                                                     </div>
@@ -380,14 +381,14 @@
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Authorized Contact Person Name</mat-label>
-                                                            <input matInput (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name the members of Board of Directors (BOD)"  name="managing_name_{{i}}" [(ngModel)]="managingDirector[i].name"  required>
+                                                            <input matInput (keypress)="Service.inputFilter($event, Service.nameOnly)" placeholder="Name the members of Board of Directors (BOD)"  name="managing_name_{{i}}" [(ngModel)]="managingDirector[i].name"  required>
                                                         </mat-form-field>
                                                     </div>
 
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Designation</mat-label>
-                                                            <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="managing_designation_{{i}}" [(ngModel)]="managingDirector[i].designation" required>
+                                                            <input (keypress)="Service.inputFilter($event, Service.nameOnly)" matInput placeholder="Designation" name="managing_designation_{{i}}" [(ngModel)]="managingDirector[i].designation" required>
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
@@ -443,14 +444,14 @@
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Name the HCAB member of Board of Directors</mat-label>
-                                                            <input matInput (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name the members of Board of Directors (BOD)"  name="bod_directors_name_{{i}}" [(ngModel)]="ownOrgMembInfo[i].name"  required>
+                                                            <input matInput (keypress)="Service.inputFilter($event, Service.nameOnly)" placeholder="Name the members of Board of Directors (BOD)"  name="bod_directors_name_{{i}}" [(ngModel)]="ownOrgMembInfo[i].name"  required>
                                                         </mat-form-field>
                                                     </div>
 
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Designation</mat-label>
-                                                            <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="bod_designation_{{i}}" [(ngModel)]="ownOrgMembInfo[i].designation" required>
+                                                            <input (keypress)="Service.inputFilter($event, Service.nameOnly)" matInput placeholder="Designation" name="bod_designation_{{i}}" [(ngModel)]="ownOrgMembInfo[i].designation" required>
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
@@ -490,7 +491,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                            <mat-radio-group name="is_main_activity" #selectInspecActivity="ngModel" [(ngModel)]="step1Data.is_main_activity" required>
+                                            <mat-radio-group name="is_main_activity"  #selectInspecActivity="ngModel" [(ngModel)]="step1Data.is_main_activity" required>
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <label class="check-rdo">
@@ -512,7 +513,7 @@
                                         <div class="col-md-6" *ngIf="step1Data.is_main_activity == 'false'">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>(If No, indicate what are other activities related to the organization)</mat-label>
-                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" [ngModelOptions]="{standalone: true}"
                                                 matInput placeholder="" name="indication" [(ngModel)]="step1Data.is_main_activity_note">
                                             </mat-form-field>
                                         </div>
@@ -547,7 +548,7 @@
                                         <div class="col-md-6" *ngIf="step1Data.is_staff_ownership == 'false'">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>(If No, indicate what are other activities related to the organization)</mat-label>
-                                                <input matInput placeholder="" name="indication" [(ngModel)]="step1Data.is_staff_ownership_note">
+                                                <input matInput placeholder=""   name="indication" [(ngModel)]="step1Data.is_staff_ownership_note">
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -561,14 +562,14 @@
                                             <hr>
                                         </div>
                                     </div> -->
-                                    <div class="row">
+                                    <div class="row mt-4">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subheader-data form_subhdr">
                                                 <h5>IF HCAB HAVE ANY OTHER LOCATION(S) OTHER THAN THE MAIN/HEAD OFFICE OR BRANCHES WHERE KEY ACTIVITIES TAKE PLACE</h5>
                                                 <div class="form-subheader-data">
                                                         <mat-radio-group name="hcab_other_loc" #hcabOtherLoc="ngModel" [(ngModel)]="step1Data.hcab_other_loc" 
                                                     #selectAccredHold="ngModel" required>
-                                                        <div class="row">
+                                                        <div class="row form_right_data">
                                                             <div class="col-md-4">
                                                                 <label class="check-rdo">
                                                                     <mat-radio-button value="1" [ngStyle]="{'padding-right': '5px'}">Yes </mat-radio-button>
@@ -612,13 +613,13 @@
 
                                     <div class="row" id="hcab_other_location" *ngIf="step1Data.hcab_other_loc == '1'">
                                         <div class="col-md-12">
-                                            <div class="table-content-health">
+                                            <div class="table-content-health table_padd">
                                                 <table>
                                                     <thead>
                                                         <tr>
-                                                            <th>Location Type(such of Regional Off)</th>
-                                                            <th>Address/City/Country</th>
-                                                            <th>*Key Activities carried out at this Location</th>
+                                                            <th width="30%">Location Type(such of Regional Off)</th>
+                                                            <th width="20%">Address/City/Country</th>
+                                                            <th width="50%">*Key Activities carried out at this Location</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -657,20 +658,20 @@
                                     </div>
                                     <div class="row mt-3" *ngIf="step1Data.hcab_other_loc == '1'">
                                         <div class="col-md-12 col-sm-3">
-                                            <p>
+                                            <p class="desc_table">
                                                 (*)as example of the key activities include: policy formulation, process and/or procedure development, proceedings of safeguarding impartiality committee/scheme committee, approval of auditors/examiners/inspectors, application & contract review, selection of auditors/examiners/inspectors, handling of contractual agreements with auditors/examiners/inspectors, monitoring of auditors/examiners/inspectors, planning of audits/examinations/inspections, review, approval and decision on the results of audits/examinations/inspections and preparation, release and control of certificates, Final decision on appeals and complaints.
                                               </p>
                                         </div>                                       
                                     </div>
 
-                                    <div class="row mt-5">
-                                        <div class="col-md-10 p-0">
+                                    <div class="row my-4">
+                                        <div class="col-md-12 p-0">
                                             <div class="form-subheader-data form_subhdr">
                                                 <h5>DOES HCAB CURRENTLY HOLD ANY OTHER CURRENT OR PREVIOUS ACCREDITATION (S) ?</h5>
                                                     <div class="form-subheader-data">
                                                         <mat-radio-group name="is_hold_other_accr" #hcabCurrentlyHold="ngModel" [(ngModel)]="step1Data.is_hold_other_accr" 
                                                         #selectAccredHold="ngModel" required>
-                                                            <div class="row">
+                                                            <div class="row form_right_data">
                                                                 <div class="col-md-4">
                                                                     <label class="check-rdo">
                                                                         <mat-radio-button value="1"  [ngStyle]="{'padding-right': '5px'}">Yes </mat-radio-button>
@@ -684,8 +685,10 @@
                                                         
                                                             </div>
                                                         </mat-radio-group>
-                                                    <div class="col-md-12" [ngStyle]="{'margin-top':'5px'}">
-                                                        <p class="error" *ngIf="isApplicationSubmitted == true && hcabCurrentlyHold.errors?.required">Please select anyone option</p>
+                                                    <div class="row">
+                                                        <div class="col-md-12" [ngStyle]="{'margin-top':'5px'}">
+                                                            <p class="error" *ngIf="isApplicationSubmitted == true && hcabCurrentlyHold.errors?.required">Please select anyone option</p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -716,7 +719,7 @@
 
                                     <div class="row" id="is_hold_other_accreditations" *ngIf="step1Data.is_hold_other_accr == '1'">
                                         <div class="col-md-12">
-                                            <div class="table-content-health">
+                                            <div class="table-content-health table_padd">
                                                 <table>
                                                     <thead>
                                                         <tr>
@@ -753,7 +756,7 @@
                                                             </td>
                                                             
                                                             <td>
-                                                                <div class="matupload position-relative view_file">
+                                                                <div class="matupload position-relative view_file mat_small">
                                                                     <mat-form-field  class="lng-data">
                                                                         <input matInput readonly="true" name="scope_accreditation_file_name_{{i}}" [(ngModel)]="accreditationInfo[i].list_auditor_upload"  placeholder="Upload Document">
             
@@ -867,13 +870,13 @@
                                         <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Name</mat-label>
-                                                <input matInput  (keypress)="Service.inputFilter($event, Service.regExName)" [(ngModel)]="step2Data.name" placeholder="" name="name_technical" required>
+                                                <input matInput  (keypress)="Service.inputFilter($event, Service.nameOnly)" [(ngModel)]="step2Data.name" placeholder="" name="name_technical" required>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Designation</mat-label>
-                                                <input matInput  (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="" [(ngModel)]="step2Data.designation" name="designation_technical" required>
+                                                <input matInput  (keypress)="Service.inputFilter($event, Service.nameOnly)" placeholder="" [(ngModel)]="step2Data.designation" name="designation_technical" required>
                                             </mat-form-field>
                                         </div>
                                         
@@ -912,13 +915,13 @@
                                         <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Name</mat-label>
-                                                <input matInput (keypress)="Service.inputFilter($event, Service.regExName)" [(ngModel)]="step2Data.islamic_name" placeholder="" name="name_islamic" required>
+                                                <input matInput (keypress)="Service.inputFilter($event, Service.nameOnly)" [(ngModel)]="step2Data.islamic_name" placeholder="" name="name_islamic" required>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Designation</mat-label>
-                                                <input matInput (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="" [(ngModel)]="step2Data.islamic_designation" name="designation_islamic" required>
+                                                <input matInput (keypress)="Service.inputFilter($event, Service.nameOnly)" placeholder="" [(ngModel)]="step2Data.islamic_designation" name="designation_islamic" required>
                                             </mat-form-field>
                                         </div>
                                         
@@ -957,13 +960,13 @@
                                         <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Name</mat-label>
-                                                <input matInput  (keypress)="Service.inputFilter($event, Service.regExName)"  placeholder="" [(ngModel)]="step2Data.management_name" name="quality_manager_name" required>
+                                                <input matInput  (keypress)="Service.inputFilter($event, Service.nameOnly)"  placeholder="" [(ngModel)]="step2Data.management_name" name="quality_manager_name" required>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Designation</mat-label>
-                                                <input matInput  (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="" [(ngModel)]="step2Data.management_designation" name="quality_manager_designation" required>
+                                                <input matInput  (keypress)="Service.inputFilter($event, Service.nameOnly)" placeholder="" [(ngModel)]="step2Data.management_designation" name="quality_manager_designation" required>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -1006,10 +1009,10 @@
                                                 <table>
                                                     <thead>
                                                         <tr>
-                                                            <th width="25%">Position</th>
-                                                            <th>Total No</th>
-                                                            <th>Full Time Direct Employees Name</th>
-                                                            <th>Contracted Full or Part Time Employees Name</th>
+                                                            <th width="20%">Position</th>
+                                                            <th width="10%">Total No</th>
+                                                            <th width="35%">Full Time Direct Employees Name</th>
+                                                            <th width="35%">Contracted Full or Part Time Employees Name</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -1035,8 +1038,10 @@
                                                                             [removable]="removable"
                                                                             (removed)="removeEntry(summaryDetails,k, i, 'full')">
                                                                            {{user}}
-                                                                            <mat-icon matChipRemove *ngIf="removable">X</mat-icon>
+                                                                            <!-- <mat-icon matChipRemove *ngIf="removable">x</mat-icon> -->
+                                                                            <span matChipRemove *ngIf="removable" class="chip-cross">x</span>
                                                                         </mat-chip>  
+                                                                        <!--  class="close-icon" -->
                                                                         <input 
                                                                         (keypress)="Service.inputFilter($event, Service.nameOnly)" 
                                                                         matInput required
@@ -1058,7 +1063,8 @@
                                                                             [removable]="removable"
                                                                             (removed)="removeEntry(summaryDetails,p, i, 'part')">
                                                                             {{user}}
-                                                                            <mat-icon matChipRemove *ngIf="removable">X</mat-icon>
+                                                                            <!-- <mat-icon matChipRemove *ngIf="removable">X</mat-icon> -->
+                                                                            <span matChipRemove *ngIf="removable" class="chip-cross">x</span>
                                                                         </mat-chip>
                                                                         
                                                                         <input  (keypress)="Service.inputFilter($event, Service.nameOnly)" 
@@ -1121,7 +1127,7 @@
                                         <div class="row  mt-3">
                                         <div class="col-md-12 col-sm-12">
 
-                                            <ul [ngStyle]="{'list-style':'none'}">
+                                            <ul class="scope_list">
                                                 <ng-container *ngFor="let item of scopeCheckboxes; let k=index;">
                                                     <li>
                                                         <mat-checkbox  name="scope_options" (change)="checkItemClick($event)" 
@@ -1143,13 +1149,10 @@
                                                     </ng-container>
                                                 </li>
                                             </ul>
-                                            
-                                             
-
                                         </div>
                                         </div>
                                     <!-- SCOPE SECTION START -->
-                                    <div class="row  mt-3">
+                                    <div class="row">
                                         <!-- @{{editScopeData | json}} Chaitali!1991-->
                                         
 
@@ -1485,6 +1488,7 @@
                                                             <th>Location/Distance</th>
                                                             <th>Product Category</th>
                                                             <th>Products</th>
+                                                            <th></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -1571,6 +1575,7 @@
                                                             <th>Name of the Authorized Persons</th>
                                                             <th>Signature Specimen</th>
                                                             <th>Contact Details(Tel, Mobile No. and Email)</th>
+                                                            <th></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -1791,7 +1796,8 @@
                                 <div class="bttns-health bttn-staff">
                                     <!--  (click)="onSubmitPerlimVisit()" -->
                                     <div class="button-content">
-                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','perlim_visit')">BACK</a>
+                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" 
+                                        (click)="Service.headerStepMove('other_hcab_details',headerSteps,'menu','perlim_visit')">BACK</a>
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step5')">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health">CONTINUE</button>
@@ -2212,7 +2218,8 @@
                                                 (change)="validateFileVoucher($event, 'payment_receipt')" required>
                                                 <span class="icon-attach attach-data"></span>
                                             </span>
-                                            <p class="error" *ngIf="paymentReceiptValidation == false">Please Upload a valid file (ex: pdf)</p>
+                                            <a class="image_file_link" *ngIf="paymentFile != false && paymentFile != true" target="_blank" [href]="paymentFile">Link</a>
+                                            <p class="error" *ngIf="paymentReceiptValidation == false || paymentReceiptValidation == undefined">Please Upload a valid file (ex: pdf)</p>
                                         </div>
 
                                     </div>
@@ -2221,7 +2228,8 @@
                                 <span id="openAppDialog" (click)="openView(appComp)"></span>
                                 <ng-template #appComp let-modal>
                                     <div class="main_pop">
-                                        <div class="pop_close" (click)="closeChecklistDialog()">
+                                        <!--  (click)="closeChecklistDialog()" -->
+                                        <div class="pop_close">
                                             <span class="icon-close"></span>
                                         </div>
                                         <div class="pop_thanks">
