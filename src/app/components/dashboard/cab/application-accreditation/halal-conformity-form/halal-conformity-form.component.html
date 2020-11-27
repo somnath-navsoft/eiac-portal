@@ -1037,8 +1037,10 @@
                                                                             [removable]="removable"
                                                                             (removed)="removeEntry(summaryDetails,k, i, 'full')">
                                                                            {{user}}
-                                                                            <mat-icon matChipRemove *ngIf="removable" class="close-icon"></mat-icon>
+                                                                            <!-- <mat-icon matChipRemove *ngIf="removable">x</mat-icon> -->
+                                                                            <span matChipRemove *ngIf="removable" class="chip-cross">x</span>
                                                                         </mat-chip>  
+                                                                        <!--  class="close-icon" -->
                                                                         <input 
                                                                         (keypress)="Service.inputFilter($event, Service.nameOnly)" 
                                                                         matInput required
@@ -1060,7 +1062,8 @@
                                                                             [removable]="removable"
                                                                             (removed)="removeEntry(summaryDetails,p, i, 'part')">
                                                                             {{user}}
-                                                                            <mat-icon matChipRemove *ngIf="removable">X</mat-icon>
+                                                                            <!-- <mat-icon matChipRemove *ngIf="removable">X</mat-icon> -->
+                                                                            <span matChipRemove *ngIf="removable" class="chip-cross">x</span>
                                                                         </mat-chip>
                                                                         
                                                                         <input  (keypress)="Service.inputFilter($event, Service.nameOnly)" 
@@ -1792,7 +1795,8 @@
                                 <div class="bttns-health bttn-staff">
                                     <!--  (click)="onSubmitPerlimVisit()" -->
                                     <div class="button-content">
-                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('scope_accreditation',headerSteps,'menu','perlim_visit')">BACK</a>
+                                        <a class="cancel-bttn" href="javascript:void(0)" type="button" 
+                                        (click)="Service.headerStepMove('other_hcab_details',headerSteps,'menu','perlim_visit')">BACK</a>
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step5')">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health">CONTINUE</button>
@@ -2213,7 +2217,8 @@
                                                 (change)="validateFileVoucher($event, 'payment_receipt')" required>
                                                 <span class="icon-attach attach-data"></span>
                                             </span>
-                                            <p class="error" *ngIf="paymentReceiptValidation == false">Please Upload a valid file (ex: pdf)</p>
+                                            <a class="image_file_link" *ngIf="paymentFile != false && paymentFile != true" target="_blank" [href]="paymentFile">Link</a>
+                                            <p class="error" *ngIf="paymentReceiptValidation == false || paymentReceiptValidation == undefined">Please Upload a valid file (ex: pdf)</p>
                                         </div>
 
                                     </div>

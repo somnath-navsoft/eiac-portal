@@ -15,6 +15,7 @@ import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
 declare let paypal: any;
 import {MatChipInputEvent} from '@angular/material/chips';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { iif } from 'rxjs';
 
 @Component({
   selector: 'app-halal-conformity-form',
@@ -1750,8 +1751,10 @@ addSchemeRow(obj: any = [],index: number){
                     this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
                     this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
   
-                    this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
-                    this.paymentReceiptValidation = true;
+                    this.paymentFile = (res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null) ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
+                    if(this.paymentFile != ''){
+                      this.paymentReceiptValidation = true;
+                    }                    
                 }
               }
           });
@@ -3633,7 +3636,11 @@ onSubmitStep7(ngForm7: any) {
   // this.voucherFile.append('application_id',this.formApplicationId);
       
   this.loader = false;
-  if(ngForm8.form.valid && this.paymentReceiptValidation != false) {
+
+  console.log(">>>> saveing...", this.paymentReceiptValidation);
+  //return;  
+
+  if(ngForm8.form.valid && (this.paymentReceiptValidation != false && this.paymentReceiptValidation != undefined)) {
     // //console.log(this.voucherFile);
       this._trainerService.paymentVoucherSave((this.voucherFile))
       .subscribe(
@@ -3679,6 +3686,7 @@ onSubmitStep7(ngForm7: any) {
   }
   else{
     this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    this.loader = true;
   }
   
   }

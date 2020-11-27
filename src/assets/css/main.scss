@@ -1302,6 +1302,8 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .message_wrapper .messaging_chat.msg_client { flex-direction: row-reverse; }
 .message_wrapper .messaging_chat.msg_client .message_user { margin-left: 20px; }
 .messaging_chat.msg_client .message_chat .message_time { justify-content: flex-end; }
+.table-content-health td span.chip-cross { font-size: 17px; }
+// .chip-cross { line-height: 1; font-size: 10px; }
 
 //==================RESPONSIVE==================//
 @media(max-width: 1500px) {
