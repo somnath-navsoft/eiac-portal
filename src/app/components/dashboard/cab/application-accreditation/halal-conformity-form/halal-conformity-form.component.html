@@ -315,14 +315,14 @@
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Name</mat-label>
-                                                            <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off"  placeholder="Name"  maxlength="20" name="ownership_name_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].name" required>
+                                                            <input (keypress)="Service.inputFilter($event, Service.nameOnly)" matInput autocomplete="off"  placeholder="Name"  maxlength="20" name="ownership_name_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].name" required>
                                                             <mat-error></mat-error>    
                                                         </mat-form-field>
                                                     </div>
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Designation</mat-label>
-                                                            <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" required placeholder="Designation" name="ownership_designation_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].designation" required>
+                                                            <input (keypress)="Service.inputFilter($event, Service.nameOnly)" matInput autocomplete="off" required placeholder="Designation" name="ownership_designation_{{i}}" [(ngModel)]="ownOrgBasicInfo[i].designation" required>
                                                             <mat-error></mat-error> 
                                                         </mat-form-field>
                                                     </div>
@@ -380,14 +380,14 @@
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Authorized Contact Person Name</mat-label>
-                                                            <input matInput (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name the members of Board of Directors (BOD)"  name="managing_name_{{i}}" [(ngModel)]="managingDirector[i].name"  required>
+                                                            <input matInput (keypress)="Service.inputFilter($event, Service.nameOnly)" placeholder="Name the members of Board of Directors (BOD)"  name="managing_name_{{i}}" [(ngModel)]="managingDirector[i].name"  required>
                                                         </mat-form-field>
                                                     </div>
 
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Designation</mat-label>
-                                                            <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="managing_designation_{{i}}" [(ngModel)]="managingDirector[i].designation" required>
+                                                            <input (keypress)="Service.inputFilter($event, Service.nameOnly)" matInput placeholder="Designation" name="managing_designation_{{i}}" [(ngModel)]="managingDirector[i].designation" required>
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
@@ -443,14 +443,14 @@
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Name the HCAB member of Board of Directors</mat-label>
-                                                            <input matInput (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name the members of Board of Directors (BOD)"  name="bod_directors_name_{{i}}" [(ngModel)]="ownOrgMembInfo[i].name"  required>
+                                                            <input matInput (keypress)="Service.inputFilter($event, Service.nameOnly)" placeholder="Name the members of Board of Directors (BOD)"  name="bod_directors_name_{{i}}" [(ngModel)]="ownOrgMembInfo[i].name"  required>
                                                         </mat-form-field>
                                                     </div>
 
                                                     <div class="col-md-6 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Designation</mat-label>
-                                                            <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="bod_designation_{{i}}" [(ngModel)]="ownOrgMembInfo[i].designation" required>
+                                                            <input (keypress)="Service.inputFilter($event, Service.nameOnly)" matInput placeholder="Designation" name="bod_designation_{{i}}" [(ngModel)]="ownOrgMembInfo[i].designation" required>
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
@@ -490,7 +490,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                            <mat-radio-group name="is_main_activity" #selectInspecActivity="ngModel" [(ngModel)]="step1Data.is_main_activity" required>
+                                            <mat-radio-group name="is_main_activity"  #selectInspecActivity="ngModel" [(ngModel)]="step1Data.is_main_activity" required>
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <label class="check-rdo">
@@ -512,7 +512,7 @@
                                         <div class="col-md-6" *ngIf="step1Data.is_main_activity == 'false'">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>(If No, indicate what are other activities related to the organization)</mat-label>
-                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                <input  (keypress)="Service.inputFilter($event, Service.regExName)" [ngModelOptions]="{standalone: true}"
                                                 matInput placeholder="" name="indication" [(ngModel)]="step1Data.is_main_activity_note">
                                             </mat-form-field>
                                         </div>
@@ -547,7 +547,7 @@
                                         <div class="col-md-6" *ngIf="step1Data.is_staff_ownership == 'false'">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>(If No, indicate what are other activities related to the organization)</mat-label>
-                                                <input matInput placeholder="" name="indication" [(ngModel)]="step1Data.is_staff_ownership_note">
+                                                <input matInput placeholder=""   name="indication" [(ngModel)]="step1Data.is_staff_ownership_note">
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -619,6 +619,7 @@
                                                             <th>Location Type(such of Regional Off)</th>
                                                             <th>Address/City/Country</th>
                                                             <th>*Key Activities carried out at this Location</th>
+                                                            <th></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -867,13 +868,13 @@
                                         <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Name</mat-label>
-                                                <input matInput  (keypress)="Service.inputFilter($event, Service.regExName)" [(ngModel)]="step2Data.name" placeholder="" name="name_technical" required>
+                                                <input matInput  (keypress)="Service.inputFilter($event, Service.nameOnly)" [(ngModel)]="step2Data.name" placeholder="" name="name_technical" required>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Designation</mat-label>
-                                                <input matInput  (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="" [(ngModel)]="step2Data.designation" name="designation_technical" required>
+                                                <input matInput  (keypress)="Service.inputFilter($event, Service.nameOnly)" placeholder="" [(ngModel)]="step2Data.designation" name="designation_technical" required>
                                             </mat-form-field>
                                         </div>
                                         
@@ -912,13 +913,13 @@
                                         <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Name</mat-label>
-                                                <input matInput (keypress)="Service.inputFilter($event, Service.regExName)" [(ngModel)]="step2Data.islamic_name" placeholder="" name="name_islamic" required>
+                                                <input matInput (keypress)="Service.inputFilter($event, Service.nameOnly)" [(ngModel)]="step2Data.islamic_name" placeholder="" name="name_islamic" required>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Designation</mat-label>
-                                                <input matInput (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="" [(ngModel)]="step2Data.islamic_designation" name="designation_islamic" required>
+                                                <input matInput (keypress)="Service.inputFilter($event, Service.nameOnly)" placeholder="" [(ngModel)]="step2Data.islamic_designation" name="designation_islamic" required>
                                             </mat-form-field>
                                         </div>
                                         
@@ -957,13 +958,13 @@
                                         <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Name</mat-label>
-                                                <input matInput  (keypress)="Service.inputFilter($event, Service.regExName)"  placeholder="" [(ngModel)]="step2Data.management_name" name="quality_manager_name" required>
+                                                <input matInput  (keypress)="Service.inputFilter($event, Service.nameOnly)"  placeholder="" [(ngModel)]="step2Data.management_name" name="quality_manager_name" required>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-6 col-sm-12">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Designation</mat-label>
-                                                <input matInput  (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="" [(ngModel)]="step2Data.management_designation" name="quality_manager_designation" required>
+                                                <input matInput  (keypress)="Service.inputFilter($event, Service.nameOnly)" placeholder="" [(ngModel)]="step2Data.management_designation" name="quality_manager_designation" required>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -1485,6 +1486,7 @@
                                                             <th>Location/Distance</th>
                                                             <th>Product Category</th>
                                                             <th>Products</th>
+                                                            <th></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -1571,6 +1573,7 @@
                                                             <th>Name of the Authorized Persons</th>
                                                             <th>Signature Specimen</th>
                                                             <th>Contact Details(Tel, Mobile No. and Email)</th>
+                                                            <th></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
