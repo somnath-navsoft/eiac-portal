@@ -561,14 +561,14 @@
                                             <hr>
                                         </div>
                                     </div> -->
-                                    <div class="row">
+                                    <div class="row mt-4">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subheader-data form_subhdr">
                                                 <h5>IF HCAB HAVE ANY OTHER LOCATION(S) OTHER THAN THE MAIN/HEAD OFFICE OR BRANCHES WHERE KEY ACTIVITIES TAKE PLACE</h5>
                                                 <div class="form-subheader-data">
                                                         <mat-radio-group name="hcab_other_loc" #hcabOtherLoc="ngModel" [(ngModel)]="step1Data.hcab_other_loc" 
                                                     #selectAccredHold="ngModel" required>
-                                                        <div class="row">
+                                                        <div class="row form_right_data">
                                                             <div class="col-md-4">
                                                                 <label class="check-rdo">
                                                                     <mat-radio-button value="1" [ngStyle]="{'padding-right': '5px'}">Yes </mat-radio-button>
@@ -612,14 +612,13 @@
 
                                     <div class="row" id="hcab_other_location" *ngIf="step1Data.hcab_other_loc == '1'">
                                         <div class="col-md-12">
-                                            <div class="table-content-health">
+                                            <div class="table-content-health table_padd">
                                                 <table>
                                                     <thead>
                                                         <tr>
-                                                            <th>Location Type(such of Regional Off)</th>
-                                                            <th>Address/City/Country</th>
-                                                            <th>*Key Activities carried out at this Location</th>
-                                                            <th></th>
+                                                            <th width="30%">Location Type(such of Regional Off)</th>
+                                                            <th width="20%">Address/City/Country</th>
+                                                            <th width="50%">*Key Activities carried out at this Location</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -658,20 +657,20 @@
                                     </div>
                                     <div class="row mt-3" *ngIf="step1Data.hcab_other_loc == '1'">
                                         <div class="col-md-12 col-sm-3">
-                                            <p>
+                                            <p class="desc_table">
                                                 (*)as example of the key activities include: policy formulation, process and/or procedure development, proceedings of safeguarding impartiality committee/scheme committee, approval of auditors/examiners/inspectors, application & contract review, selection of auditors/examiners/inspectors, handling of contractual agreements with auditors/examiners/inspectors, monitoring of auditors/examiners/inspectors, planning of audits/examinations/inspections, review, approval and decision on the results of audits/examinations/inspections and preparation, release and control of certificates, Final decision on appeals and complaints.
                                               </p>
                                         </div>                                       
                                     </div>
 
-                                    <div class="row mt-5">
-                                        <div class="col-md-10 p-0">
+                                    <div class="row my-4">
+                                        <div class="col-md-12 p-0">
                                             <div class="form-subheader-data form_subhdr">
                                                 <h5>DOES HCAB CURRENTLY HOLD ANY OTHER CURRENT OR PREVIOUS ACCREDITATION (S) ?</h5>
                                                     <div class="form-subheader-data">
                                                         <mat-radio-group name="is_hold_other_accr" #hcabCurrentlyHold="ngModel" [(ngModel)]="step1Data.is_hold_other_accr" 
                                                         #selectAccredHold="ngModel" required>
-                                                            <div class="row">
+                                                            <div class="row form_right_data">
                                                                 <div class="col-md-4">
                                                                     <label class="check-rdo">
                                                                         <mat-radio-button value="1"  [ngStyle]="{'padding-right': '5px'}">Yes </mat-radio-button>
@@ -685,8 +684,10 @@
                                                         
                                                             </div>
                                                         </mat-radio-group>
-                                                    <div class="col-md-12" [ngStyle]="{'margin-top':'5px'}">
-                                                        <p class="error" *ngIf="isApplicationSubmitted == true && hcabCurrentlyHold.errors?.required">Please select anyone option</p>
+                                                    <div class="row">
+                                                        <div class="col-md-12" [ngStyle]="{'margin-top':'5px'}">
+                                                            <p class="error" *ngIf="isApplicationSubmitted == true && hcabCurrentlyHold.errors?.required">Please select anyone option</p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -717,7 +718,7 @@
 
                                     <div class="row" id="is_hold_other_accreditations" *ngIf="step1Data.is_hold_other_accr == '1'">
                                         <div class="col-md-12">
-                                            <div class="table-content-health">
+                                            <div class="table-content-health table_padd">
                                                 <table>
                                                     <thead>
                                                         <tr>
@@ -754,7 +755,7 @@
                                                             </td>
                                                             
                                                             <td>
-                                                                <div class="matupload position-relative view_file">
+                                                                <div class="matupload position-relative view_file mat_small">
                                                                     <mat-form-field  class="lng-data">
                                                                         <input matInput readonly="true" name="scope_accreditation_file_name_{{i}}" [(ngModel)]="accreditationInfo[i].list_auditor_upload"  placeholder="Upload Document">
             
@@ -1007,10 +1008,10 @@
                                                 <table>
                                                     <thead>
                                                         <tr>
-                                                            <th width="25%">Position</th>
-                                                            <th>Total No</th>
-                                                            <th>Full Time Direct Employees Name</th>
-                                                            <th>Contracted Full or Part Time Employees Name</th>
+                                                            <th width="20%">Position</th>
+                                                            <th width="10%">Total No</th>
+                                                            <th width="35%">Full Time Direct Employees Name</th>
+                                                            <th width="35%">Contracted Full or Part Time Employees Name</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -1036,7 +1037,7 @@
                                                                             [removable]="removable"
                                                                             (removed)="removeEntry(summaryDetails,k, i, 'full')">
                                                                            {{user}}
-                                                                            <mat-icon matChipRemove *ngIf="removable">X</mat-icon>
+                                                                            <mat-icon matChipRemove *ngIf="removable" class="close-icon"></mat-icon>
                                                                         </mat-chip>  
                                                                         <input 
                                                                         (keypress)="Service.inputFilter($event, Service.nameOnly)" 

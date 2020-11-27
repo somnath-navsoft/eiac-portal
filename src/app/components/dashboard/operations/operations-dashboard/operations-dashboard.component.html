@@ -452,8 +452,7 @@
                                                       placeholder="{{selectedField}}"
                                                       #fruitInput                                                      
                                                       [matAutocomplete]="auto"
-                                                      [matChipInputFor]="chipList"
-                                                      [matChipInputAddOnBlur]="addOnBlur"
+                                                      [matChipInputFor]="chipList"                                                      
                                                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                                       (matChipInputTokenEnd)="add($event)" (input)="search($event.target.value)">
                                                   </mat-chip-list>
