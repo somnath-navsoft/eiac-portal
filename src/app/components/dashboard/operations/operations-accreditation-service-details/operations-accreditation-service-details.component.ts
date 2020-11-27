@@ -497,6 +497,7 @@ loadScopeDataHalal(){
           if(result['data'].summaryOfPersonnel != undefined && result['data'].summaryOfPersonnel.length > 0){
             // console.log(result['data'].summaryOfPersonnel);
             this.summaryDetails = result['data'].summaryOfPersonnel;
+            console.log(this.summaryDetails,'summaryOfPersonnel');
             this.summaryDetails.forEach((item) => {
               if(item.fulltime_emp_name != undefined && typeof item.fulltime_emp_name == 'string'){
                 let fulltimeAr = JSON.parse(item.fulltime_emp_name);
