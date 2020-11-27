@@ -1123,7 +1123,7 @@
                                         <div class="row  mt-3">
                                         <div class="col-md-12 col-sm-12">
 
-                                            <ul [ngStyle]="{'list-style':'none'}">
+                                            <ul class="scope_list">
                                                 <ng-container *ngFor="let item of scopeCheckboxes; let k=index;">
                                                     <li>
                                                         <mat-checkbox  name="scope_options" (change)="checkItemClick($event)" 
@@ -1145,13 +1145,10 @@
                                                     </ng-container>
                                                 </li>
                                             </ul>
-                                            
-                                             
-
                                         </div>
                                         </div>
                                     <!-- SCOPE SECTION START -->
-                                    <div class="row  mt-3">
+                                    <div class="row">
                                         <!-- @{{editScopeData | json}} Chaitali!1991-->
                                         
 
