@@ -15,6 +15,9 @@ export class OperationsRegistrationServiceDetailsComponent implements OnInit {
   loader:boolean = false; 
   subscriptions: Subscription[] = [];
   routeId:any;
+  serviceDetail:any;
+  ownershipOfOrg:any;
+  ownOrgMembInfo:any;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService) { }
@@ -30,6 +33,10 @@ export class OperationsRegistrationServiceDetailsComponent implements OnInit {
     this.subscriptions.push(this._trainerService.registrationDetailsService(this.routeId)
       .subscribe(
         result => {
+          this.loader = true;
+          this.serviceDetail = result['data'];
+          this.ownershipOfOrg = result['data']['ownershipOfOrg']
+          this.ownOrgMembInfo = result['data']['bodMember'];
         })
     )
   }

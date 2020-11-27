@@ -87,7 +87,8 @@
                   <span *ngIf="serviceDetail?.form_meta == 'testing_calibration'">Testing Calibration</span>
                   <span *ngIf="serviceDetail?.form_meta == 'health_care'">Health Care</span>
                   <span *ngIf="serviceDetail?.form_meta == 'certification_bodies'">Certification Bodies</span>
-                  <span *ngIf="serviceDetail?.form_meta == 'pt_providers'">Certification Bodies</span>
+                  <span *ngIf="serviceDetail?.form_meta == 'pt_providers'">Proficiency Testing Provider</span>
+                  <span *ngIf="serviceDetail?.form_meta == 'halal_conformity_bodies'">Halal Conformity Bodies</span>
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -149,8 +150,16 @@
                     <tr>
                       <td>Type of Accreditation</td>
                       <td>{{(serviceDetail?.accredation_criteria == 1) ? 'Initial' : 'Extension' }}</td>
-                      <td *ngIf="serviceDetail?.criteria_request != null">Criteria for which Acc. is Requested</td>
-                      <td *ngIf="serviceDetail?.criteria_request != null">{{serviceDetail?.criteria_request}}</td>
+
+                      <ng-container *ngIf="serviceDetail?.form_meta != 'halal_conformity_bodies'">
+                        <td *ngIf="serviceDetail?.criteria_request != null">Criteria for which Acc. is Requested</td>
+                        <td *ngIf="serviceDetail?.criteria_request != null">{{serviceDetail?.criteria_request}}</td>
+                      </ng-container>
+
+                      <ng-container *ngIf="serviceDetail?.form_meta == 'halal_conformity_bodies'">
+                        <td *ngIf="serviceDetail?.criteria_request != null">Criteria for which Acc. is Requested</td>
+                        <td *ngIf="serviceDetail?.criteria_request != null">Not Applicable</td>
+                      </ng-container>
                     </tr>
                     <tr>
                       <td>Registered Address</td>
@@ -698,6 +707,68 @@
           </div>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="table-content-health">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="25%">Position</th>
+                            <th>Total No</th>
+                            <th>Full Time Direct Employees Name</th>
+                            <th>Contracted Full or Part Time Employees Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- @{{summaryDetails | json}} -->
+                        <tr *ngFor="let item of summaryDetails; let i = index;">
+                            <td>{{item['position']}}</td>
+                            <td>
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Type Here</mat-label>
+                                    <input (keypress)="Service.IsNumeric($event)" matInput name="total_no_{{i}}" 
+                                    [(ngModel)]="summaryDetails[i].total_no" readonly placeholder="">
+                                </mat-form-field>  
+                            </td>
+
+                            <td>
+                                <!-- @{{item.recordFulltime.length}} -->
+                                <mat-form-field class="cab-data">
+                                    <!-- @{{item.fulltime_emp_name | json}} -->
+                                    <mat-chip-list #chipList1 aria-label="Fruit selection">
+                                        <mat-chip
+                                            *ngFor="let user of item.fulltime_emp_name; let k = index;"
+                                            [selectable]="selectable">
+                                           {{user}}
+                                            <!-- <mat-icon matChipRemove *ngIf="removable">X</mat-icon> -->
+                                        </mat-chip>  
+                                        
+                                    </mat-chip-list>
+                                </mat-form-field>  
+                            </td>
+
+                            <td>
+                                <!-- @{{item.recordParttime.length}} -->
+                                <mat-form-field class="cab-data">
+                                    <mat-chip-list #chipList2 aria-label="Fruit selection">
+                                        <mat-chip readonly 
+                                            *ngFor="let user of item.parttime_emp_name; let p = index;"
+                                            [selectable]="selectable">
+                                            {{user}}
+                                            <!-- <mat-icon matChipRemove *ngIf="removable">X</mat-icon> -->
+                                        </mat-chip>
+                                    </mat-chip-list>
+                                </mat-form-field>
+                                <!-- {{loadCount(item, i)}} -->
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
       <div class="row m-0" *ngIf="serviceDetail?.audit_date != '' && serviceDetail?.audit_date != null">
         <div class="col-md-12">
