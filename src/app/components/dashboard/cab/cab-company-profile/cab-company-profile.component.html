@@ -1,0 +1,320 @@
+<app-loader *ngIf="!loader"></app-loader>
+<!-- <app-header-after-login></app-header-after-login>
+<div class="side-data-cont">
+    <app-sidebar-after-login></app-sidebar-after-login>
+</div> -->
+<div class="main-detail">
+    <div class="conatiner-fluid">
+      <div class="main-dashboard-cnt">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="dashbrd-hdr">
+              <div class="dash-wrap">
+                <h3>{{cabUserDetails?.first_name}} {{cabUserDetails?.last_name}}</h3>
+                <p>{{cabStep1?.designation}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="tab-data">
+                <!-- <mat-tab-group>
+                    <mat-tab label="First"> Content 1 </mat-tab>
+                    <mat-tab label="Second"> Content 2 </mat-tab>
+                </mat-tab-group> -->
+                <!-- <ul>
+                  <li><a href="javascript:void(0)" id="personal_details" (click)="tabClick('personal_details')">PERSONAL DETAILS</a></li>
+                  <li><a href="javascript:void(0)" id="application_info" (click)="tabClick('application_info')" class="tab-active">APPLICATION INFO</a></li>
+                </ul> -->
+            </div>
+          </div>
+        </div>
+  
+        <div class="row m-0">
+            <div class="col-md-12 message-det">
+                <div class="row appl-cnt">
+                    <div class="col">
+                        <div class="appln-data">
+                            <h5>Date of Birth</h5>
+                        </div>
+                        <div class="appln-details">
+                            <span>{{cabStep1?.dob | date}}</span>
+                        </div>
+                    </div>
+                    <div class="col border-left-dash">
+                        <div class="appln-data">
+                            <h5>Personal Email</h5>
+                        </div>
+                        <div class="appln-details">
+                            <span>{{cabUserDetails?.email}}</span>
+                        </div>
+                    </div>
+                    <div class="col border-left-dash">
+                        <div class="appln-data">
+                            <h5>Nationality</h5>
+                        </div>
+                        <div class="appln-details">
+                            <span>{{cabStep1?.nationality}}</span>
+                        </div>
+                    </div>
+                    <div class="col border-left-dash">
+                        <div class="appln-data">
+                            <h5>Phone Number</h5>
+                        </div>
+                        <div class="appln-details">
+                            <span>{{cabUserDetails?.contact}}</span>
+                        </div>
+                    </div>
+                    <div class="col border-left-dash">
+                        <div class="appln-data">
+                            <h5>Fax Number</h5>
+                        </div>
+                        <div class="appln-details">
+                            <span>{{cabStep1?.fax_no}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+  
+        <div class="row m-0">
+            <div class="col-md-6">
+                <div class="row appln-cnt-data ">
+                <div class="col-md-12 p-0">
+                    <div class="row">
+                    <div class="col-md-12">
+                        <div class="appln-subhdr">
+                        <h5>OFFICE DETAILS</h5>
+                        <!-- <hr> -->
+                        </div>
+                    </div>
+                    </div>
+                    <div class="row msg-det">
+                    <div class="col-md-12">
+                        <div class="table-appln">
+                        <table>
+                            <tr>
+                            <td>Office/Institution</td>
+                            <td>{{cabStep1?.office}}</td>
+                            </tr>
+                            <tr>
+                            <td>Office Address</td>
+                            <td>{{cabStep1?.office_address}}</td>
+                            </tr>
+                            <tr>
+                            <td>Company Mail</td>
+                            <td>{{cabStep1?.official_email}}</td>
+                            </tr>
+                            <tr>
+                            <td>Office Phone</td>
+                            <td>{{cabStep1?.office_tel_no}}</td>
+                            </tr>
+                            <tr>
+                            <td>P.o. Box Mailing Address</td>
+                            <td>{{cabStep1?.mailing_address}}</td>
+                            </tr>
+                        </table>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-12">
+                    <div class="appln-subhdr">
+                        <h5>TRADE LICENSE DETAILS</h5>
+                        <!-- <hr> -->
+                    </div>
+                    </div>
+                </div>
+                <div class="row msg-det">
+                    <div class="col-md-12">
+                        <div class="table-appln messg-tbl">
+                            <table>
+                            <tr>
+                                <td>Legal- professional Commercial/Trade License Number</td>
+                                <td>{{cabStep1?.trade_license_number}}</td>
+                            </tr>
+                            <tr>
+                                <td>Upload Trade License</td>
+                                <td>
+                                <div class="data-main-attach">
+                                    <div class="data-attach">
+                                    <h5>
+                                        <a href="javascript:void(0)">{{tradeLicenseText}}</a>
+                                    </h5>
+                                    </div>
+                                    <div class="icn-appln">
+                                    <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(constant.mediaPath,cabStep1.trade_license)">
+                                        <span class="icon-eye"></span>
+                                    </a>
+                                    <a target="_blank" [href]="tradeLicenseFile">
+                                        <span class="icon-download"></span>
+                                    </a>
+                                    </div>
+                                </div>
+                                </td>
+                            </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+  
+        <div class="row m-0">
+            <div class="col-md-12">
+                <div class="row appln-cnt-data ">
+                <div class="col-md-12 p-0">
+                    <div class="row">
+                    <div class="col-md-12">
+                        <div class="appln-subhdr">
+                        <h5>APPLICANT INFORMATION</h5>
+                        <!-- <hr> -->
+                        </div>
+                    </div>
+                    </div>
+                    <div class="row msg-det">
+                    <div class="col-md-12">
+                        <div class="table-appln">
+                        <table>
+                            <tr>
+                            <td>Entity Commercial Name</td>
+                            <td>{{cabStep1?.cab_name}}</td>
+                            </tr>
+                            <tr>
+                            <td>Location</td>
+                            <td>{{cabStep1?.applicant_location}}</td>
+                            </tr>
+                            <tr>
+                            <td>Mailing Address</td>
+                            <td>{{cabStep1?.applicant_address}}</td>
+                            </tr>
+                            <tr>
+                            <td>Phone (with Area Code)</td>
+                            <td>{{cabStep1?.applicant_tel_no}}</td>
+                            </tr>
+                            <tr>
+                            <td>Fax (with Area Code)</td>
+                            <td>{{cabStep1?.applicant_fax_no}}</td>
+                            </tr>
+                            <tr>
+                            <td>Official Email Address</td>
+                            <td>{{cabStep1?.applicant_email}}</td>
+                            </tr>
+                            <tr>
+                            <td>Official Website</td>
+                            <td>{{cabStep1?.applicant_website}}</td>
+                            </tr>
+                            <tr>
+                              <td>Date Of Issue</td>
+                              <td>{{cabStep1?.date_of_issue | date}}</td>
+                            </tr>
+                            <tr>
+                              <td>Date Of Expired</td>
+                              <td>{{cabStep1?.date_of_expiry | date}}</td>
+                            </tr>
+                        </table>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row m-0">
+            <div class="col-md-6">
+              <div class="row appln-cnt-data" *ngIf="cabStep2?.cabOwnerData != ''">
+                <div class="col-md-12 p-0" *ngFor="let row of cabStep2?.cabOwnerData; let i = index;">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="appln-subhdr">
+                        <h5>#{{i+1}}  OWNERSHIP OF THE ORGANIZATION</h5>
+                        <!-- <hr> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row msg-det">
+                    <div class="col-md-12">
+                      <div class="table-appln">
+                        <table>
+                          <tr>
+                            <td>Name</td>
+                            <td>{{row.name}}</td>
+                          </tr>
+                          <tr>
+                            <td>Designation</td>
+                            <td>{{row.designation}}</td>
+                          </tr>
+                          <tr>
+                            <td>Mobile No.</td>
+                            <td>{{row.mobile_no}}</td>
+                          </tr>
+                          <tr>
+                            <td>Land Line Phone No.</td>
+                            <td>{{row.phone_no}}</td>
+                          </tr>
+                          <tr>
+                            <td>Email Address</td>
+                            <td>{{row.email}}</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="row appln-cnt-data" *ngIf="cabStep2?.cabBodData != ''">
+                <div class="col-md-12 p-0" *ngFor="let row2 of cabStep2?.cabBodData; let i2 = index;">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="appln-subhdr">
+                        <h5>#{{i2+1}}  DOES THE COMPANY HAVE BOARD MEMBERS ?</h5>
+                        <!-- <hr> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row msg-det">
+                    <div class="col-md-12">
+                      <div class="table-appln">
+                        <table>
+                          <tr>
+                            <td>Name the members of the board of directors(BOD)</td>
+                            <td>{{row2.name}}</td>
+                          </tr>
+                          <tr>
+                            <td>List the company name of BOD members</td>
+                            <td>{{row2.bod_company}}</td>
+                          </tr>
+                          <tr>
+                            <td>Authorized Contact Person Name</td>
+                            <td>{{row2.authorized_contact_person}}</td>
+                          </tr>
+                          <tr>
+                            <td>Designation</td>
+                            <td>{{row2.designation}}</td>
+                          </tr>
+                          <tr>
+                            <td>Mobile No.</td>
+                            <td>{{row2.mobile_no}}</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+

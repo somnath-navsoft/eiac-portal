@@ -10,7 +10,7 @@ import { AppService } from '../../../services/app.service';
 })
 export class SidebarComponent implements OnInit {
 
-  dashMenu: any[]   = [];
+  dashMenu: any[]   = []; 
   userType: string  = '';
   userEmail:any;
   currentTitle:any;
@@ -34,7 +34,7 @@ export class SidebarComponent implements OnInit {
     .subscribe(
       res => {
         this.dashMenu = res['menu'];
-        // console.log(this.dashMenu,'dashMenu');
+        console.log(this.dashMenu,'dashMenu');
         // let getTypeMenu = this.dashMenu.find(rec => rec.type === this.userType);
         // this.dashMenu = getTypeMenu;
       })
@@ -76,7 +76,7 @@ export class SidebarComponent implements OnInit {
   }
 
   goToLink(link: any){
-    if(link !== '#'){
+    if(link !== '#'){      
       this._router.navigateByUrl(link);
     }
   }
