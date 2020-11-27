@@ -667,6 +667,14 @@ onChangeScopeOption(getValues: any,secIndex: any,familyId: any, lineIndex: numbe
               this.dynamicScopeModel[secIndex][familyId].fieldLines[lineIndex][this.dynamicScopeFieldColumns[secIndex][familyId][nextColumnIndex][0].title] = getSelValue;
               this.onChangeScopeOption(getSelValue,secIndex,familyId,lineIndex,nextColumnIndex,'initLoad');
             }
+        }else{
+          console.log("Prev value: ", this.dynamicScopeModel[secIndex][familyId].fieldLines[lineIndex][this.dynamicScopeFieldColumns[secIndex][familyId][nextColumnIndex][0].title]);
+        console.log(">>> Not set value>> ", this.dynamicScopeFieldColumns[secIndex][familyId][nextColumnIndex][0].title);
+         let oldSelValue: any = this.dynamicScopeModel[secIndex][familyId].fieldLines[lineIndex][this.dynamicScopeFieldColumns[secIndex][familyId][nextColumnIndex][0].title];
+         if(oldSelValue != undefined && oldSelValue > 0){
+          this.dynamicScopeModel[secIndex][familyId].fieldLines[lineIndex][this.dynamicScopeFieldColumns[secIndex][familyId][nextColumnIndex][0].title] = '';
+         }
+         console.log(">>> After set value>> ", this.dynamicScopeFieldColumns[secIndex][familyId][nextColumnIndex][0].title);
         }
 
         //
@@ -944,7 +952,7 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
 
                     if(typeTitle != undefined){
                       getTypeData = this.fullTypeFamily.find(item => item.title == typeTitle);
-                      ////console.log("Type data: ", getTypeData);
+                      console.log("Type data: ", getTypeData);
                       schemeId = getTypeData.id;
                     }
                     if(getTypeData){
@@ -956,17 +964,29 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
                             familyId = typeFamily;
                           }
 
+                          console.log(">>> Family Name: ", familyName);
+
                           //check already existing scheme...
-                          if(getTypeData.scopeRows != undefined){
-                            getTypeData.scopeRows.forEach((item, index) => {
+                          if(getTypeData.scopeFamilyRows != undefined){
+                            getTypeData.scopeFamilyRows.forEach((item, index) => {
                               //console.log(item.SchemeTitle, " :: ", typeTitle);
-                              if(item.SchemeTitle == typeTitle){
+                              if(item.familyName == familyName){
                                 duplicateFamily = true;
-                                //this.toastr.warning("Duplicate Family! ","Validation")
-                                //return;
+                                this.toastr.warning("Duplicate Family! ","Validation")
+                                return;
                               }
                             })
                           }
+                          // if(getTypeData.scopeRows != undefined){
+                          //   getTypeData.scopeRows.forEach((item, index) => {
+                          //     //console.log(item.SchemeTitle, " :: ", typeTitle);
+                          //     if(item.SchemeTitle == typeTitle){
+                          //       duplicateFamily = true;
+                          //       this.toastr.warning("Duplicate Family! ","Validation")
+                          //       return;
+                          //     }
+                          //   })
+                          // }
                               
                           if(!duplicateFamily){
 
@@ -991,25 +1011,41 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
                                   SchemeTitle: typeTitle, id: getTypeData.id, name:getTypeData.name, familyTitle: familyTitle, familyId: familyId, familyName: familyName,familyFound: true
                                 });
                               }
+
+                              if(getTypeData.scopeFamilyRows.length){
+                                let familyName: string;
+                                let familyRows: any = getTypeData.scopeFamilyRows.find(item => item.id == typeFamily);
+                                console.log("find rows family: ", familyRows);
+                                let familyData: any = getTypeData.familyData.find(item => item.scope_family == typeFamily);
+                                familyName = familyData.title;
+                                //getTypeData.scopeFamilyRows[secInd] = {};  
+                                if(familyRows){
+                                  let updRow: any = {
+                                    sid: value, id:typeFamily, familyId: typeFamily, familyName: familyName
+                                  }
+                                  getTypeData.scopeFamilyRows[secInd] = updRow;
+                                }
+                              }
                         
                             }
+                            
                     }
 
                   
-                  if(getTypeData.scopeFamilyRows.length){
-                    let familyName: string;
-                    let familyRows: any = getTypeData.scopeFamilyRows.find(item => item.id == typeFamily);
-                    console.log("find rows family: ", familyRows);
-                    let familyData: any = getTypeData.familyData.find(item => item.scope_family == typeFamily);
-                    familyName = familyData.title;
-                    //getTypeData.scopeFamilyRows[secInd] = {};
-                    if(familyRows){
-                      let updRow: any = {
-                        id: value, familyId: typeFamily, familyName: familyName
-                      }
-                      getTypeData.scopeFamilyRows[secInd] = updRow;
-                    }
-                  }
+                  // if(getTypeData.scopeFamilyRows.length){
+                  //   let familyName: string;
+                  //   let familyRows: any = getTypeData.scopeFamilyRows.find(item => item.id == typeFamily);
+                  //   console.log("find rows family: ", familyRows);
+                  //   let familyData: any = getTypeData.familyData.find(item => item.scope_family == typeFamily);
+                  //   familyName = familyData.title;
+                  //   //getTypeData.scopeFamilyRows[secInd] = {};  
+                  //   if(familyRows){
+                  //     let updRow: any = {
+                  //       sid: value, id:typeFamily, familyId: typeFamily, familyName: familyName
+                  //     }
+                  //     getTypeData.scopeFamilyRows[secInd] = updRow;
+                  //   }
+                  // }
                   console.log("@Before Updated Family ID: ", familyId, " :: ", this.fullTypeFamily, " :: ", getTypeData.scopeFamilyRows);
                   //
                     //this.dynamicScopeFieldColumns[schemeId] = [];
@@ -2085,7 +2121,7 @@ getCriteria(value, secInd: any){
         let getData: any = res;
         let data: any;
         //, getData.data.step1, " -- ", getData.data.step2
-
+        console.log(">>> proff: ", res);
         if(getData.data.step1.length){
             data = getData.data['step1'][0];
             /////////console.log('data enter...1', data);

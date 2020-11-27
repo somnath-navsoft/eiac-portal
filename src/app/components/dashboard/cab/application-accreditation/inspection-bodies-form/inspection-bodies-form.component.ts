@@ -1307,7 +1307,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       ////console.log(">>> get URL Id: ", this.urlVal);
       let getId= (this.urlVal);
       url = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+getId;
-      ////console.log(">>>Get url and ID: ", url, " :: ", getId);
+      console.log(">>>APP Data: ", url, " :: ", getId);
       this.Service.getwithoutData(url)
       .subscribe(
       res => {
@@ -1734,9 +1734,16 @@ export class InspectionBodiesFormComponent implements OnInit {
 
         //Step 6
         if(getData.data.is_prelim_visit != null){
-          this.step6Data.prelim_visit_val = (getData.data.is_prelim_visit) ? "1" : "0";
+
+          if(getData.data.is_prelim_visit == true && getData.data.prelim_visit_date != null && getData.data.prelim_visit_date != null){
+            this.step6Data.prelim_visit_val = '1';
+          }else if(getData.data.is_prelim_visit == false){
+            this.step6Data.prelim_visit_val = '0';
+          }
+
+          // this.step6Data.prelim_visit_val = (getData.data.is_prelim_visit) ? "1" : "0";
           this.step6Data.prelim_visit_select_date = getData.data.prelim_visit_date;
-        this.step6Data.prelim_visit_select_time = getData.data.prelim_visit_time;
+          this.step6Data.prelim_visit_select_time = getData.data.prelim_visit_time;
         }
         //Step 7
         if(getData.data.onBehalfApplicantDetails != null && getData.data.onBehalfApplicantDetails != undefined){
@@ -1869,7 +1876,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         let getData: any = res;
         let data: any;
         //, getData.data.step1, " -- ", getData.data.step2
-        //console.log(getData,"Profile info >>> ");
+        console.log(getData,"Profile info >>> ");
 
         if(getData.data.step1.length){
           data = getData.data['step1'][0];

@@ -77,19 +77,70 @@ export class StatusComponent implements OnInit {
 
   editVisible(item: any){
     //console.log(">>> Item data: ", object);
+
+    /*
+
+if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_conformity_bodies') && (item.is_draft == true || item.is_draft == false)){
+        console.log("@Enter....3.1: ",item.id);
+        return true;  
+      }
+    */
     
     if(item){
 
-      if(item.saved_step != null && item.saved_step < 7 && (item.is_draft == true || item.is_draft == false)){
+      
+      if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_conformity_bodies') && 
+      (item.is_draft == true || item.is_draft == false) && item.paymentDetails != undefined && item.paymentDetails == false){
+        console.log("@Enter....3.1: ",item.id); 
+        return true;  
+      }
+      if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_conformity_bodies') && item.is_draft == false && 
+        item.paymentDetails != undefined && item.paymentDetails != false && item.paymentDetails != false && 
+        typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
+          console.log("@Enter....2222");
         return false;
       }
+      if((item.saved_step != null && item.saved_step == 5 && item.form_meta == 'certification_bodies') && 
+      (item.is_draft == true || item.is_draft == false) && item.paymentDetails != undefined && item.paymentDetails == false){
+        console.log("@Enter....3.11: ",item.id); 
+        return true;  
+      }
+      if((item.saved_step != null && item.saved_step == 5 && item.form_meta == 'certification_bodies') && item.is_draft == false && 
+        item.paymentDetails != undefined && item.paymentDetails != false && item.paymentDetails != false && 
+        typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
+          console.log("@Enter....4444");
+        return false;
+      }
+      
+      if(item.saved_step != null && item.saved_step < 7 && (item.is_draft == true || item.is_draft == false)){
+        console.log("@Enter....3");
+        return false;
+      }
+
+      if(item.saved_step != null && item.saved_step == 7 && item.form_meta == 'certification_bodies'  && item.is_draft == false && 
+        item.paymentDetails != undefined && item.paymentDetails != false &&  typeof item.paymentDetails == 'object' && 
+        item.paymentDetails.voucher_invoice != '' && item.accr_status == 'complete'){
+        return true;
+       }
+       if(item.saved_step != null && item.saved_step == 8 && item.form_meta == 'halal_conformity_bodies'  && item.is_draft == false && 
+        item.paymentDetails != undefined && item.paymentDetails != false &&  typeof item.paymentDetails == 'object' && 
+        item.paymentDetails.voucher_invoice != '' && item.accr_status == 'complete'){
+        return true;
+       }
+      
        if(item.saved_step != null && item.saved_step > 7 && item.is_draft == false && 
+        item.paymentDetails != undefined && item.paymentDetails != false && 
+        typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.accr_status == 'complete'){
+        return true;
+       }
+      if(item.saved_step != null && item.saved_step < 7 && item.is_draft == false && 
         item.paymentDetails != undefined && item.paymentDetails != false && 
         typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.accr_status == 'complete'){
         return true;
       }
       if(item.saved_step != null && item.saved_step == 9 && (item.is_draft == false || item.is_draft == true) && 
         item.paymentDetails != undefined && item.accr_status !== 'complete'){
+          console.log("@Enter....1");
         return false;
       }
 
@@ -100,6 +151,7 @@ export class StatusComponent implements OnInit {
        if(item.saved_step != null && item.saved_step == 7 && item.is_draft == false && 
         item.paymentDetails != undefined && item.paymentDetails != false && item.paymentDetails != false && 
         typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
+          console.log("@Enter....2");
         return false;
       }
     }

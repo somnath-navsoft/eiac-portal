@@ -639,7 +639,7 @@ export class NoObjectionFormComponent implements OnInit {
           this.step1Data.po_box = data.po_box;          
           this.step1Data.telephone = data.applicant_tel_no;
         }
-      })
+      }) 
   
       if(this.urlVal && this.urlVal != '') {
   

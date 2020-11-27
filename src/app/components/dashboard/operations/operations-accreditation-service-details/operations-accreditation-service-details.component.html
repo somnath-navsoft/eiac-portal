@@ -802,51 +802,6 @@
                           </div>
                       </ng-container>
                   </ng-container>
-
-                  <ng-container *ngIf="serviceDetail?.form_meta == 'inspection_body' && editScopeData != undefined && editScopeData != null">
-                    <!-- <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-subheader-data">
-                                <h5>SCOPE DATA</h5>
-                            </div>
-                        </div>
-                    </div> -->
-                    <ng-container *ngFor="let item of editScopeData | keyvalue">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="table-appln scope-data">
-                                      <!-- @{{item.value.scope_heading | json}} || {{item.key}} || {{item.value.scope_heading.length}} -->
-                                    <div class="sub-header">
-                                        <h5 [innerHTML]="getSchme(item.key)"></h5>
-                                    </div>
-                                    <table>
-                                        <tr>
-                                            <th *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
-                                            <!-- <th>Action</th> -->
-                                        </tr>
-                                        <ng-container *ngIf="item.value.scope_value.length > 0">
-                                            <tr *ngFor="let item2 of (item.value.scope_value) | keyvalue; let i4 = index;">
-                                                <td *ngFor="let item3 of item2.value | keyvalue;">
-                                                    <span [innerHTML]="(item3.value)"></span>
-                                                </td>
-                                                <!-- <td>
-                                                <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item.key)"></span>
-                                                </td> -->
-                                              </tr>
-                                        </ng-container>
-                                        <ng-container *ngIf="item.value.scope_value.length == 0">
-                                            <tr>
-                                                <td [attr.colspan]="Service.getObjectLength(item.value.scope_heading)+1">
-                                                    No Data
-                                                </td>
-                                            </tr>
-                                        </ng-container>
-                                    </table>  
-                                </div>
-                            </div>
-                        </div>
-                    </ng-container>
-                </ng-container>
                 
                   <ng-container *ngIf="serviceDetail?.form_meta == 'pt_providers' && editScopeData != undefined && editScopeData != null">
                       <!-- <div class="row">
@@ -866,7 +821,7 @@
                                         </div>
                                         <table>
                                             <tr>
-                                                <th *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
+                                                <th width="33%" *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
                                                 <!-- <th>Action</th> -->
                                             </tr>
                                             <ng-container *ngIf="item.value.scope_value != undefined && item.value.scope_value.length > 0">
@@ -967,12 +922,29 @@
                         <div class="row"> 
                             <div class="col-md-12">
                                 <div class="sub-header">
-                                    <ng-container *ngIf="!loadTCScheme">
+                                  <!-- .....@{{item.key}}<br>#{{getSchemeTitles[item.key][0].title}} -->
+                                  <!-- {{getSchmeTC(item.key)}} -->
+                                  <!-- <h5 [innerHTML]="getSchmeTC(item.key)"></h5> -->
+                                  <!-- {{getSchemeTitles | json}} -->
+                                  <!-- {{getSchemeTitles[item.key][0].title}} -->
+                                  <h5>
+                                  <ng-container *ngIf="getSchemeTitles[item.key][0].title != undefined">
+                                    {{getSchemeTitles[item.key][0].title}}
+                                </ng-container>
+                              </h5>
+                                  <!-- <ng-container *ngIf="item.key != undefined && item.key > 0">
+                                    <ng-container *ngIf="getSchemeTitles[item.key] != undefined">
+                                        <ng-container *ngIf="getSchemeTitles[item.key][0] != undefined && getSchemeTitles[item.key][0].title != undefined">
+                                            
+                                        </ng-container>                                                                        
+                                    </ng-container>
+                                </ng-container> -->
+                                    <!-- <ng-container *ngIf="!loadTCScheme">
                                       {{getSchmeTC(item.key)}}
                                     </ng-container>
                                     <ng-container *ngIf="loadTCScheme">
                                       <h5><strong>Accreditation Scope for {{TCSchmeData.title}} </strong></h5>
-                                    </ng-container>
+                                    </ng-container> -->
                                 </div>
                             </div>
                         </div>
@@ -983,12 +955,19 @@
                                         <div class="table-appln scope-data">
                                             <div class="sub-header">
                                                 <h5>
-                                                  <ng-container *ngIf="!getFamilyName">
+                                                  <ng-container *ngIf="item5.key != undefined && item5.key > 0">
+                                                    <ng-container *ngIf="getFamilyTitles[item.key][item5.key] != undefined">
+                                                        <ng-container *ngIf="getFamilyTitles[item.key][item5.key][0] != undefined && getFamilyTitles[item.key][item5.key][0].title != undefined">
+                                                            {{getFamilyTitles[item.key][item5.key][0].title}}
+                                                        </ng-container>                                                                        
+                                                    </ng-container>
+                                                </ng-container>
+                                                  <!-- <ng-container *ngIf="!getFamilyName">
                                                     {{getFamilySchmeTC(item.key, item5.key)}}
                                                   </ng-container>                     
                                                   <ng-container *ngIf="getFamilyName && findFamily != undefined">
                                                       Accreditation Family Scope for  {{findFamily.title}}
-                                                  </ng-container>
+                                                  </ng-container> -->
                                                 </h5>
                                             </div>
                                             <table *ngIf="item5.value.scope_value != undefined">
@@ -1051,7 +1030,7 @@
                                               </div>
                                               <table>
                                                   <tr>
-                                                      <th *ngFor="let item1 of (item5.value.scope_heading) | keyvalue;">{{item1.value}}</th>
+                                                      <th width="20%" *ngFor="let item1 of (item5.value.scope_heading) | keyvalue;">{{item1.value}}</th>
                                                       <!-- <th>Action</th> -->
                                                   </tr>
                                                   <ng-container *ngIf="item5.value.scope_value.length > 0">
@@ -1079,15 +1058,21 @@
                           </ng-container>
                       </ng-container>
                       <!-- Other standard -->
-                      <div class="row" *ngIf="serviceDetail?.form_meta == 'certification_bodies' && cbOtherStandards != ''">
+                      <!-- <div class="row" *ngIf="serviceDetail?.form_meta == 'certification_bodies' && cbOtherStandards != ''">
                         <div class="col-md-12">
                             <div class="appln-subhdr">
-                                <h5>OTHER CERTIFICATION STANDARDS</h5>
+                                <h5>@OTHER CERTIFICATION STANDARDS</h5>
                             </div>
                             <hr>
                         </div>
+                    </div> -->
+                    <!-- <div class="row" *ngIf="serviceDetail?.form_meta == 'certification_bodies' && cbOtherStandards != ''">
+                      <div class="col-md-12">
+                        <div class="appln-subhdr">
+                            <h5>@OTHER CERTIFICATION STANDARDS</h5>
+                        </div>
+                        <hr>
                     </div>
-                    <div class="row" *ngIf="serviceDetail?.form_meta == 'certification_bodies' && cbOtherStandards != ''">
                         <div class="col-md-12">
                             <div class="table-content-health">
                                 <table>
@@ -1116,10 +1101,10 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                   </ng-container>
                   <!-- other activity -->
-                  <div class="row" *ngIf="serviceDetail?.form_meta == 'certification_bodies' && cbsOtherActivity != ''">
+                  <!-- <div class="row" *ngIf="serviceDetail?.form_meta == 'certification_bodies' && cbsOtherActivity != ''">
                     <div class="col-md-12">
                         <div class="appln-subhdr">
                             <h5>CB'S OTHER ACTIVITY LOCATIONS</h5>
@@ -1156,9 +1141,9 @@
                           </table>
                       </div>
                   </div>
-              </div>
+              </div> -->
                   <!-- name of country -->
-                  <div class="row" *ngIf="serviceDetail?.form_meta == 'certification_bodies' && cbnameOfCountry != ''">
+                  <!-- <div class="row" *ngIf="serviceDetail?.form_meta == 'certification_bodies' && cbnameOfCountry != ''">
                     <div class="col-md-12">
                         <div class="appln-subhdr">
                             <h5>PLEASE LIST DOWN THE NAME(S) OF COUNTRIES WHERE CERTIFICATION BODY INTENDS TO PROVIDE EIAC ACCREDITED CERTIFICATIONS</h5>
@@ -1186,7 +1171,7 @@
                               </table>
                           </div>
                       </div>
-                  </div>
+                  </div> -->
 
                   </div>
                 </div>
@@ -1315,9 +1300,9 @@
                   <div class="table-appln pt-0">
                     <table>
                       <tr>
-                        <th>Category</th>
-                        <th>Standard</th>
-                        <th>Scope/Scheme</th>
+                        <th width="33%">Category</th>
+                        <th width="33%">Standard</th>
+                        <th width="33%">Scope/Scheme</th>
                       </tr>
                         <tr *ngFor="let item of otherStandards;">
                             <td>{{item.category}}</td>
@@ -1350,9 +1335,9 @@
                   <div class="table-appln pt-0">
                     <table>
                       <tr>
-                        <th>Location Type(such as Regional office,Branch)</th>
-                        <th>City & Countries</th>
-                        <th>Activities carried out at this Location</th>
+                        <th width="33%">Location Type(such as Regional office,Branch)</th>
+                        <th width="33%">City & Countries</th>
+                        <th width="33%">Activities carried out at this Location</th>
                       </tr>
                         <tr *ngFor="let item of cbsOtherActivity;">
                             <td>{{item.location_type}}</td>
@@ -1433,7 +1418,7 @@
                       <tr>
                           <td><span class="icon-tick" [ngStyle]="{'color':'#B54150'}"></span></td> 
                           <td class="authData">
-                            <a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled in Document Review Checklist</a> (for 1st submission only)
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled in Document Review Checklist</a> (for 1st submission only)
                           </td>
                       </tr>
                       <tr>
@@ -1653,9 +1638,15 @@
                     <span class="confirm">I recommend the visit to be conducted in the 
                       <a href="javascript:void(0)" [ngStyle]="{'cursor':'none'}">
                         <ng-container *ngIf="recommendVisit?.first == true">1st</ng-container>
-                        <ng-container *ngIf="recommendVisit?.second == true">, 2nd </ng-container>
-                        <ng-container *ngIf="recommendVisit?.third == true">, 3rd</ng-container>
-                        <ng-container *ngIf="recommendVisit?.fourth == true">, 4th</ng-container>
+                        <ng-container *ngIf="recommendVisit?.first == true && (recommendVisit?.second == true || recommendVisit?.third == true || recommendVisit?.fourth == true)">,</ng-container>
+
+                        <ng-container *ngIf="recommendVisit?.second == true">2nd </ng-container>
+                        <ng-container *ngIf="recommendVisit?.second == true && (recommendVisit?.third == true || recommendVisit?.fourth == true)">, </ng-container>
+
+                        <ng-container *ngIf="recommendVisit?.third == true">3rd</ng-container>
+                        <ng-container *ngIf="recommendVisit?.third == true && recommendVisit?.fourth == true">, </ng-container>
+
+                        <ng-container *ngIf="recommendVisit?.fourth == true">4th</ng-container>
                       </a> quarter of the year {{serviceDetail?.recommend_year}}.</span>
                   </div>
                   <div class="date_undertake" *ngIf="applicantDetails != undefined && applicantDetails.application_date != undefined">

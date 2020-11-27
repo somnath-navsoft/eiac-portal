@@ -87,6 +87,8 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   findFamily: any;
   loadTCScheme: boolean = false;
   TCSchmeData: any;
+  getFamilyTitles: any = {};
+  getSchemeTitles: any = {};
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, public sanitizer: DomSanitizer,private modalService: NgbModal,public uiDialog: UiDialogService) { }
@@ -249,11 +251,24 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
       });
 }
 
+loadSchmePTP(){
+  this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.pt_provider)
+      .subscribe( 
+        res => {
+          console.log("@Load Accreditation criteria PTP....", res);         
+          this.criteriaMaster = res['data']['schemes'];  
+        },
+        error => {
+        
+    })
+
+}
+
  getSchme(sid: number){
   let getSchemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id == sid);
-  //////console.log("data: ", getSchemeData);
+  console.log("data: ", getSchemeData, " -- ", this.criteriaMaster);
   if(getSchemeData){
-    return getSchemeData.title;
+    return getSchemeData.title; 
   }
 }
 getSchmeHalal(sid: number, typeId: number){
@@ -278,7 +293,7 @@ getSchmeTC(sid: number){
           async res => {
             console.log("@Load scheme....", res);
             //////console.log(">>sele schme Type: ", this.step1Data.cab_type);
-
+            this.getSchemeTitles[sid] = [];
             let schemeData: any = res['data']['schemes']
             let schemeMaster: any;
             if(typeof schemeData === 'object'){
@@ -297,6 +312,7 @@ getSchmeTC(sid: number){
                 if(this.criteriaMaster.length){
                   let getSchemeData: any = this.criteriaMaster.find(item => item.scope_accridiation.id == sid);
                 console.log("data: ", getSchemeData, " -- ");
+                this.getSchemeTitles[sid].push({title: getSchemeData.title});
                 if(getSchemeData){
                   console.log('reteteete.')
                   this.loadTCScheme = true;
@@ -307,7 +323,7 @@ getSchmeTC(sid: number){
                 
                 
             }
-            console.log(">>>schcriteria master ", this.criteriaMaster);
+            console.log(">>>schcriteria master ", this.criteriaMaster, " -- ", this.getSchemeTitles);
           },
           error => {      
       })
@@ -521,6 +537,54 @@ loadScopeDataHalal(){
               this.otherStandards = otherCopy;
               delete this.editScopeData['others'];
             }
+
+            if(result['data'].form_meta == 'pt_providers'){
+              console.log("@PTP scheme loading....");
+              this.loadSchmePTP();
+            }
+
+            if(result['data'].form_meta == 'testing_calibration'){
+              console.log("@TCL found.....");
+              for(let key in this.editScopeData){
+                console.log(">>> scheme: ", key);
+                //get scheme data;:
+
+                this.getSchmeTC(parseInt(key));
+
+                if(typeof this.editScopeData[key] === 'object'){
+                  for(let key1 in this.editScopeData[key]){
+                    console.log(">>> family: ", key1);
+                    let fid: number = parseInt(key1);
+                    this.getFamilyTitles[key] = {};
+                    this.getFamilyTitles[key][key1] = [];
+                    if(fid > 0){
+                      let apiURL = this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.testing_cal_form_basic_data+"?scheme="+key;
+                      this._service.getwithoutData(apiURL).subscribe(
+                        async record => {
+                        ////console.log('Fullscope: ', record, " -- ");
+                        let data: any = record;
+                        if(data && data.data.scopeFamily != undefined && data.data.scopeFamily.length > 0){
+                          let getFamilydata = data.data.scopeFamily.find(item => item.scope_family == key1);
+                          //console.log(">>> family: 1 ", this.findFamily);
+                          if(getFamilydata){
+                            console.log(">>> family namem: ", getFamilydata.title);
+                            this.getFamilyTitles[key][key1].push({title: getFamilydata.title});
+                          }
+                        }
+                      });
+                    }                         
+
+                  }
+                }
+            }
+            console.log(">>> Family Name data: ", this.getFamilyTitles);
+
+            }
+
+            if(result['data'].form_meta == 'testing_calibration'){
+
+            }
+
             
             //
             //console.log(">>> scope entry: ", this.editScopeData, " == ", otherCopy);
@@ -637,9 +701,12 @@ loadScopeDataHalal(){
               this.cbnameOfCountry = tempNameCountry;
               }
 
+              console.log("update scope: ", this.editScopeData);
+
           }
 
           this.recommendVisit = JSON.parse(result['data'].recommend_visit);
+          console.log(this.recommendVisit);
           this.authorizationList = JSON.parse(result['data'].authorization_list);
           // let checkCount = 0;
           for(let key in this.authorizationList) {
