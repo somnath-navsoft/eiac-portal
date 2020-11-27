@@ -160,10 +160,15 @@ input { font-family: 'Dubai Regular'; }
 .remembr-pwd .mat-checkbox-frame { border-color: rgba(153, 153, 153, 1);  border-width: 1px;  border-radius: 0;  width: 20px;  height: 20px; }
 .remembr-pwd .mat-checkbox-inner-container { height: 20px; width: 20px;}
 .visible-pwd { position: absolute; right: 5px; color: #6c6c6c; }
-
+.matupload .visible-pwd { right: 25px; }
 .cab-data { width: 100%; }
 .cab-data .mat-form-field-label { color: #3F3F3F; font-family: 'Dubai Regular';}
 .mat-form-field-label { font-size: 18px; }
+.scope_list {
+  list-style: none;
+  margin: 0;
+  padding: 0; 
+}
 
 //==================VERIFY AND FORGOT SCREEN==================//
 .support-cont { text-align: center; }
