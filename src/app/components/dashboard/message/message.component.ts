@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Router } from '@angular/router';
 import { Constants } from 'src/app/services/constant.service';
 import { AppService } from 'src/app/services/app.service';
@@ -6,6 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
+import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
 
 @Component({
   selector: 'app-message',
@@ -33,11 +36,24 @@ export class MessageComponent implements OnInit {
   documentName: any = '';
   localUrl: any;
   button_disable: any = true;
+  visible = true;
+  selectable = true;
+  removable = true;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  fruitCtrl = new FormControl();
+  filteredFruits: Observable<string[]>;
+  fruits: string[] = [];
+  allFruits: string[] = [];
+  addOnBlur = true;  
+  selectedUser: any = [];
+  @ViewChild('fruitInput', { static: false }) fruitInput: ElementRef<HTMLInputElement>;
+  @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
 
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) { }
 
   ngOnInit() {
+
     this.getUserType = 'cab_client';
     this.select_field = [
       { field: 'CAB Name', value: 'CAB Name' },
@@ -58,26 +74,22 @@ export class MessageComponent implements OnInit {
 
     this.loader = false;
     this.Service.getwithoutData(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.messageList + '?id=' + this.userId)
-      .subscribe(
-        res => {
-          this.messageList = res['data'].message_list;
-          // console.log(this.messageList);
+    .subscribe(
+      res => {
+        this.messageList = res['data'].message_list;
+        this.loader = true;
+      });
 
-          this.loader = true;
-          // console.log(res['data'].message_list);
-        });
-
-    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=cab_client&searchKey=S')
-      .subscribe(
-        res => {
-          this.searchDetails = [];
-          // this.selectSearch = [];
-          this.searchDetails = res['data'].user_list;
-          // this.selectSearch = res['data'].user_list;
-        }, err => {
-          this.loader = true;
-        });
-
+  this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=cab_client&searchKey=S')
+    .subscribe(
+      res => {
+        this.searchDetails = [];
+        // this.selectSearch = [];
+        this.searchDetails = res['data'].user_list;
+        // this.selectSearch = res['data'].user_list;
+      }, err => {
+        this.loader = true;
+      });
   }
 
   search(query: string) {
@@ -114,6 +126,7 @@ export class MessageComponent implements OnInit {
 
   setField(value) {
     // this.search(this.searchTerm);
+    this.selectedUser = [];
     this.loader = false;
     this.searchDetails = [];
     this.selectSearch = [];
@@ -154,6 +167,7 @@ export class MessageComponent implements OnInit {
   getRouteId(routeId) {
     sessionStorage.setItem('routeId', routeId);
   }
+
 
   validateFile(fileEvent: any) {
     // window.open(fileEvent.target.value, '_blank');
@@ -197,23 +211,8 @@ export class MessageComponent implements OnInit {
   }
 
   onOperationSubmit(ngForm) {
-    // console.log(ngForm);
 
-    // if (ngForm.form.valid) {
-    //   this.chatMessage.email = this.userEmail;
-    //   this.chatMessage.userType = this.userType;
-    //   this.loader = false;
-    //   this.chatMessageFile.append('data', JSON.stringify(this.chatMessage));
-    //   this.Service.post(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.profileService, this.chatMessageFile)
-    //     .subscribe(
-    //       res => {
-    //         if (res['status'] == true) {
-    //           this.loader = true;
-    //           this.toastr.success(res['msg'], '');
-    //         }
-    //       })
-    // }
-    if (ngForm.form.valid) {
+    if (ngForm.form.valid && this.selectedUserId != '') {
       let formdata = new FormData();
       formdata.append('message_by', this.userId);
       formdata.append('user_id', this.selectedUserId);
@@ -229,6 +228,7 @@ export class MessageComponent implements OnInit {
               this.setField('CAB Name');
               this.documentName = '';
               this.selectedUserId = '';
+              this.selectedUser = [];
               this.chatMessage.message = '';
               this.chatMessage.upload_message = '';
               this.loader = true;
@@ -241,11 +241,22 @@ export class MessageComponent implements OnInit {
     }
   }
 
-  getValue(value) {
-    this.selectedUserId = value;
+  getValue(value, data) {
+    this.fruitInput.nativeElement.blur();
+    this.selectedUser = [];
+    this.selectedUserId = value.id;
     this.button_disable = this.selectedUserId != '' ? false : true;
+    if (data == 'username') {
+      this.selectedUser.push(value.username);
+    } else {
+      this.selectedUser.push(value.email);
+    }
+    this.fruitInput.nativeElement.value = '';
+    this.fruitInput.nativeElement.blur();
+    
 
   }
+
 
   showFile() {
     window.open(this.localUrl, '_blank');
@@ -253,6 +264,19 @@ export class MessageComponent implements OnInit {
 
   getUserDetails(user) {
     sessionStorage.setItem('messageUserDetails', JSON.stringify(user));
+  }
+
+  add(event: MatChipInputEvent): void {
+
+  }
+
+  remove(fruit: any): void {
+    this.button_disable = true;
+    this.selectedUser = [];
+  }
+
+  getFileName(file) {
+    return file.split('/')[-1];
   }
 
 }
