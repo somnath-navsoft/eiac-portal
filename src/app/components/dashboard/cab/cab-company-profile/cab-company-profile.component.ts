@@ -40,7 +40,7 @@ export class CabCompanyProfileComponent implements OnInit {
     //   var landUrl = '/dashboard'+this.userType+'/home'
     //   this.router.navigateByUrl(landUrl);
     // }
-    //alert(">>>>>");
+    //alert(">>>>>"); 
     this.loadData()
   }
 

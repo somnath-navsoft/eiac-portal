@@ -477,7 +477,11 @@ loadScopeDataHalal(){
           //alert(this.step1Data.cab_type + " -- "+ getData.data.cab_type);
           if(getData.data.form_meta == 'halal_conformity_bodies'){
             console.log(">>> Load halal types......");
+            this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/checklists/Document%20Review%20Checklist%20Halal%20Certification%20UAE.S%202055-2.pdf');
             this.loadScopeDataHalal();
+          }
+          if(getData.data.form_meta == 'pt_providers'){
+            this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/checklists/Document%20review%20checklist%20for%20ISO%2022870-%20Point%20of%20Care%20Testing.pdf');
           }
           if(this.serviceDetail.onBehalfApplicantDetails ){
             this.applicantDetails = this.serviceDetail.onBehalfApplicantDetails;
