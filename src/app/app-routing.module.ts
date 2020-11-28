@@ -150,6 +150,7 @@ const routes: Routes = [
         { path: 'training-apply', component:CabTrainerServiceComponent, canActivate: [AuthGuard] },
         { path: 'training-apply/:id', component:CabTrainerServiceComponent, canActivate: [AuthGuard] },
         { path: 'training-course', component:CabTrainingApplicationComponent, canActivate: [AuthGuard] },
+        { path: 'training-public-course-form', component:CabTrainingPublicCourseComponent, canActivate: [AuthGuard] },
         { path: 'training-public-course-form/:id', component:CabTrainingPublicCourseComponent, canActivate: [AuthGuard] },
         { path: 'training-inpremise-form/:id', component:CabTrainingInpremiseFormComponent, canActivate: [AuthGuard] },
         { path: 'training-public-course-list', component:CabTrainingPublicCourseListComponent, canActivate: [AuthGuard] },
