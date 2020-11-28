@@ -310,8 +310,8 @@ export class PtProvidersFormComponent implements OnInit {
   //  this.setting();
 
   this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');
-    this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Document%20review%20Checklist-%20ISO%2017020-%202012_Inspection%20Bodies.pdf');
-    
+   // this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Document%20review%20Checklist-%20ISO%2017020-%202012_Inspection%20Bodies.pdf');
+   this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/checklists/Document%20review%20checklist%20for%20ISO%2022870-%20Point%20of%20Care%20Testing.pdf');
     // this.loader = false;
     this.headerSteps.push(
       {
