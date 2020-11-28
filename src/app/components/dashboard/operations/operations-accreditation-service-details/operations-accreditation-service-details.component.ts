@@ -89,6 +89,7 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   TCSchmeData: any;
   getFamilyTitles: any = {};
   getSchemeTitles: any = {};
+  summaryDetails:any[] = [{}];
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, public sanitizer: DomSanitizer,private modalService: NgbModal,public uiDialog: UiDialogService) { }
@@ -492,6 +493,26 @@ loadScopeDataHalal(){
           this.paymentDetails = result['data'].paymentDetails;
           this.editScopeData = result['data']['scopeDetails'];
           this.aboutSubContractors = result['data']['aboutSubContractors'];
+
+          if(result['data'].summaryOfPersonnel != undefined && result['data'].summaryOfPersonnel.length > 0){
+            // console.log(result['data'].summaryOfPersonnel);
+            this.summaryDetails = result['data'].summaryOfPersonnel;
+            console.log(this.summaryDetails,'summaryOfPersonnel');
+            this.summaryDetails.forEach((item) => {
+              if(item.fulltime_emp_name != undefined && typeof item.fulltime_emp_name == 'string'){
+                let fulltimeAr = JSON.parse(item.fulltime_emp_name);
+                // console.log(fulltimeAr, " -- ", fulltimeAr.length);
+                item.fulltime_emp_name = fulltimeAr;
+              }
+              if(item.parttime_emp_name != undefined && typeof item.parttime_emp_name == 'string'){
+                let parttimeAr = JSON.parse(item.parttime_emp_name);
+                // console.log(parttimeAr, " -- ", parttimeAr.length);
+                item.parttime_emp_name = parttimeAr;
+              }
+
+            });
+            // console.log(">>>Updated dafa: ", this.summaryDetails);
+          }
 
           if(result['data'].otherActivityLocations) {
             let getActivity: any =  result['data'].otherActivityLocations;

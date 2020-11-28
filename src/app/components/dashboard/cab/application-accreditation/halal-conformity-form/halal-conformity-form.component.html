@@ -1881,8 +1881,9 @@
                                                         <td><mat-checkbox name="undertaking_confirm2" [disableRipple]="true"
                                                             (click)="$event.preventDefault()" [(ngModel)]="authorizationList.undertaking_confirm2"></mat-checkbox></td>
                                                         <td><span><a href="javascript:void(0)"  (click)="openView(checklistView, 'checklist')">Filled In  Document Review Checklist</a></span>(Related to applied accreditation standard  e.g. UAE 2055-2, SMIIC-2 and for 1st submission only)<br/>
-                                                            <p class="error" *ngIf="!readReviewChecklist  && isApplicationSubmitted == true">Please review the checklist</p>                                                            
-                                                        </td>
+                                                            <!--   && isApplicationSubmitted == true -->
+                                                            <p class="error" *ngIf="!readReviewChecklist && !authorizationList.undertaking_confirm2">Please review the checklist</p>                                                            
+                                                        </td> 
                                                     </tr>
                                                     <tr>
                                                         <td><mat-checkbox  (change)="authorizeCheckCount($event)" name="undertaking_confirm3" [(ngModel)]="authorizationList.undertaking_confirm3"></mat-checkbox></td>
@@ -2260,9 +2261,11 @@
                                         (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</a>
                                     </ng-container> -->
                                     <div class="button-content">
+                                        <ng-container *ngIf="!paymentStepComp">
                                         <a href="javascript:void(0)" class="cancel-bttn" type="button" 
                                             (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK
                                         </a>
+                                    </ng-container>
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step8')">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >SUBMIT</button>

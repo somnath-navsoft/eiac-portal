@@ -1354,7 +1354,8 @@
                                                             (click)="$event.preventDefault()" [(ngModel)]="authorizationList.undertaking_confirm2"></mat-checkbox></td>
 
                                                         <td><a href="javascript:void(0)" title="Please review the checklist" alt="Please review the checklist" (click)="openView(checklistView, 'checklist')">Filled In Document Review Checklist based on the related standard </a>(for 1st submission only)<br/>
-                                                            <p class="error" *ngIf="!readReviewChecklist  && isApplicationSubmitted == true">Please review the checklist</p>                                                            
+                                                            <!-- isApplicationSubmitted == true -->
+                                                            <p class="error" *ngIf="!readReviewChecklist  && !authorizationList.undertaking_confirm2">Please review the checklist</p>                                                            
                                                         </td>
                                                     </tr>
                                                     <tr>

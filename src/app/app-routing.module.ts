@@ -90,7 +90,7 @@ import { CabTrainingInpremiseFormComponent } from './components/dashboard/cab/ca
 import { MessageReplyComponent } from './components/dashboard/message/message-reply/message-reply.component';
 import { OperationsRegistrationServiceListComponent } from './components/dashboard/operations/operations-registration-service-list/operations-registration-service-list.component';
 import { OperationsRegistrationServiceDetailsComponent } from './components/dashboard/operations/operations-registration-service-details/operations-registration-service-details.component';
-
+import { CabCompanyProfileComponent } from './components/dashboard/cab/cab-company-profile/cab-company-profile.component';
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
   //component:DashboardComponent, canActivate: [AuthGuard],
@@ -176,6 +176,7 @@ const routes: Routes = [
         { path: 'pt-providers-form', component:PtProvidersFormComponent, canActivate: [AuthGuard] },
         { path: 'pt-providers-form/:id', component:PtProvidersFormComponent, canActivate: [AuthGuard] },
         { path: 'message-detail/:id', component:CabMessageDetailsComponent, canActivate: [AuthGuard] },
+        { path: 'company-profile', component:CabCompanyProfileComponent, canActivate: [AuthGuard] },
       ]
     },
 

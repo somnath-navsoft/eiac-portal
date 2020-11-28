@@ -369,7 +369,7 @@
                                     <div class="button-content">
                                         <a href="javascript:void(0)" class="cancel-bttn"  type="button" routerLink="/dashboard/cab_client/application-accreditation">CANCEL</a> 
                                         <!-- onSubmitApplication(ngForm1, true) -->
-                                        <button class="cancel-bttn" type="button" (click)="step1SaveADraft()">SAVE AS DRAFT</button>
+                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step1')">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health">CONTINUE</button>
                                     <!-- </ng-container> -->
@@ -425,7 +425,7 @@
                                     <div class="button-content">
                                         <a href="javascript:void(0)" class="cancel-bttn"  type="button" routerLink="/dashboard/cab_client/application-accreditation">CANCEL</a> 
                                         <!-- onSubmitApplication(ngForm1, true) -->
-                                        <button class="cancel-bttn" type="button" (click)="step1SaveADraft()">SAVE AS DRAFT</button>
+                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step2')">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health">CONTINUE</button>
                                     <!-- </ng-container> -->
@@ -569,7 +569,7 @@
                                     <div class="button-content">
                                         <a href="javascript:void(0)" class="cancel-bttn"  type="button" routerLink="/dashboard/cab_client/application-accreditation">CANCEL</a> 
                                         <!-- onSubmitApplication(ngForm1, true) -->
-                                        <button class="cancel-bttn" type="button" (click)="step1SaveADraft()">SAVE AS DRAFT</button>
+                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step3')">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health">CONTINUE</button>
                                     <!-- </ng-container> -->
@@ -689,7 +689,7 @@
                                     <div class="button-content">
                                         <a href="javascript:void(0)" class="cancel-bttn"  type="button" routerLink="/dashboard/cab_client/application-accreditation">CANCEL</a> 
                                         <!-- onSubmitApplication(ngForm1, true) -->
-                                        <button class="cancel-bttn" type="button" (click)="step1SaveADraft()">SAVE AS DRAFT</button>
+                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step4')">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health">CONTINUE</button>
                                     <!-- </ng-container> -->
@@ -735,7 +735,6 @@
                                         <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice(ngForm8, true)">SAVE AS DRAFT</button> -->
                                         <!-- <button class="submit-bttn submit-health" (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)">CONTINUE</button> -->
                                     </div>
-                                    @{{transactions.length}}
                                     <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button>
                                     <ng-container *ngIf="transactions.length">
                                         <div id="paypalPayment"></div>
@@ -830,7 +829,7 @@
                                         <div class="col-md-6">
                                             <span class="fileupload">
                                                 <input type="file" name="payment_receipt"                                
-                                                (change)="validateFileVoucher($event, 'payment_receipt')" required>
+                                                (change)="validateFile1($event, 'payment_receipt')" required>
                                                 <span class="icon-attach attach-data"></span>
                                             </span>
                                             <p class="error" *ngIf="paymentReceiptValidation == false">Please Upload a valid file (ex: pdf)</p>

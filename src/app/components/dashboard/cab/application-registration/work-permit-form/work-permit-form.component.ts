@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { Constants } from 'src/app/services/constant.service';
 import { AppService } from 'src/app/services/app.service';
@@ -6,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 declare let paypal: any;
 // import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import { TrainerService } from '../../../../../services/trainer.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-work-permit-form',
@@ -101,8 +103,10 @@ export class WorkPermitFormComponent implements OnInit {
   selectTradeLicName :string = ''; 
   selectTradeLicPath :string = '';
   userId:any;
+  paymentFilePath :string = '';
+  subscriptions: Subscription[] = [];
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,public _trainerService:TrainerService) { }
+  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,public _trainerService:TrainerService,public sanitizer:DomSanitizer) { }
 
   ngOnInit() {
     this.getWorkPermitId = sessionStorage.getItem('workPermitId');
@@ -141,29 +145,29 @@ export class WorkPermitFormComponent implements OnInit {
       },
     );
 
-    this.workPermitForm.name_of_cab = '';
-    this.workPermitForm.address = '';
-    this.workPermitForm.cab_license_no = '';
-    this.workPermitForm.cab_issue_date = null;
-    this.workPermitForm.applicant_name = '';
-    this.workPermitForm.designation = '';
-    this.workPermitForm.tel_no = '';
-    this.workPermitForm.email_address = '';
-    this.workPermitForm.activity_section = '';
-    this.workPermitForm.scopes_to_be_authorized = '';
-    this.workPermitForm.license_no = '';
-    this.workPermitForm.date_of_issue = null;
-    this.workPermitForm.date_of_expiry = null; 
+    // this.workPermitForm.name_of_cab = '';
+    // this.workPermitForm.address = '';
+    // this.workPermitForm.cab_license_no = '';
+    // this.workPermitForm.cab_issue_date = null;
+    // this.workPermitForm.applicant_name = '';
+    // this.workPermitForm.designation = '';
+    // this.workPermitForm.tel_no = '';
+    // this.workPermitForm.email_address = '';
+    // this.workPermitForm.activity_section = '';
+    // this.workPermitForm.scopes_to_be_authorized = '';
+    // this.workPermitForm.license_no = '';
+    // this.workPermitForm.date_of_issue = null;
+    // this.workPermitForm.date_of_expiry = null; 
 
-    this.workPermitFormData.append('licence_document_file','');
-    this.workPermitFormData.append('quality_manual_file','');
-    this.workPermitFormData.append('work_instruction_file','');
-    this.workPermitFormData.append('check_list_file','');
+    // this.workPermitFormData.append('licence_document_file','');
+    // this.workPermitFormData.append('quality_manual_file','');
+    // this.workPermitFormData.append('work_instruction_file','');
+    // this.workPermitFormData.append('check_list_file','');
 
-    this.workPermitForm.organization_name = '';
-    this.workPermitForm.representative_name = '';
-    this.workPermitForm.behalf_designation = '';
-    this.workPermitForm.digital_signature = '';
+    // this.workPermitForm.organization_name = '';
+    // this.workPermitForm.representative_name = '';
+    // this.workPermitForm.behalf_designation = '';
+    // this.workPermitForm.digital_signature = '';
   }
 
   statelistById = async(country_id) => {
@@ -290,75 +294,231 @@ export class WorkPermitFormComponent implements OnInit {
           this.step1Data.telephone = data.applicant_tel_no;
         }
       })
+
   }
  
+  getSantizeUrl(url : string) { 
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url); 
+  }
+
   loadData() {
     // let url2 = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+this.urlVal;
     if(this.getWorkPermitId != 'undefined') {
-      
-      this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.workPermitform+this.getWorkPermitId)
-      .subscribe(
-        res => {
-          // console.log(res['data'],'res');
-          var allData = res['data'];
-          this.workPermitForm.name_of_cab = allData.name_of_cab;
-          this.workPermitForm.address = allData.address;
-          this.workPermitForm.cab_license_no = allData.cab_license_no;
-          this.workPermitForm.cab_issue_date = new Date(allData.cab_issue_date);
-          this.workPermitForm.applicant_name = allData.applicant_name;
-          this.workPermitForm.designation = allData.designation;
-          this.workPermitForm.tel_no = allData.tel_no;
-          this.workPermitForm.email_address = allData.email_address;
-          this.workPermitForm.activity_section = allData.activity_section;
-          this.workPermitForm.scopes_to_be_authorized = allData.scopes_to_be_authorized;
-          this.workPermitForm.license_no = allData.applicant_licence_no;
-          this.workPermitForm.date_of_issue = allData.date_of_issue;
-          this.workPermitForm.date_of_expiry = allData.date_of_expiry;
 
-          var recognized_logo1 = allData.licence_document_file;
-          if(recognized_logo1 != ''){
-            let getFile =recognized_logo1.toString().split('/');
-            if(getFile.length){
-              this.workPermitForm.licence_document = getFile[4].toString().split('.')[0];
-              this.licence_document_path = this.constant.mediaPath + recognized_logo1.toString();
+        let url2 = this.Service.apiServerUrl+"/"+'registration-details-show/'+this.getWorkPermitId;
+        this.Service.getwithoutData(url2)
+        .subscribe(
+          res => {
+            console.log(res);
+
+            if(res['data'].id != undefined && res['data'].id > 0){
+              this.formApplicationId = res['data'].id;
             }
-          }
 
-          var quality_manual1 = allData.quality_manual_file;
-          if(quality_manual1 != ''){
-            let getFile = quality_manual1.toString().split('/');
-            if(getFile.length){
-              this.workPermitForm.quality_manual = getFile[4].toString().split('.')[0];
-              this.quality_manual_path = this.constant.mediaPath + quality_manual1.toString();
+            let saveStep: number;
+            //check steps
+            if(res['data'].is_draft){
+
+              saveStep = parseInt(res['data'].saved_step) - 1;
+            }else{
+              if(parseInt(res['data'].saved_step) == 9){
+                
+                saveStep = parseInt(res['data'].saved_step) - 1;
+              }else{
+                
+              saveStep = parseInt(res['data'].saved_step);
+              }
             }
-          }
 
-          var work_instruction1 = allData.work_instruction_file;
-          if(work_instruction1 != ''){
-            let getFile = work_instruction1.toString().split('/');
-            if(getFile.length){
-              this.workPermitForm.work_instruction = getFile[4].toString().split('.')[0];
-              this.work_instruction_path = this.constant.mediaPath + work_instruction1.toString();
+            // //console.log(res['data'].saved_step,"@saved step assign....");
+            if(res['data'].saved_step  != null){
+              //let saveStep = res['data'].saved_step;
+              //open step
+              this.headerSteps.forEach((item, key) => {
+                    ///////console.log(item, " --- ", key);
+                    if(key < saveStep){
+                      //////console.log('moving steps....');
+                      let curStep: any = item;
+                      curStep.stepComp = true;
+                      let nextStep: any = this.headerSteps[key+1];
+                      this.Service.moveSteps(curStep.title, nextStep.title, this.headerSteps);
+                    }
+                    if(key == saveStep){
+                      let curStep: any = this.headerSteps[key];
+                      ///////console.log('found steps....',curStep);
+                      curStep.stepComp = true;
+                      this.Service.headerStepMove(item.title, this.headerSteps,'menu')
+                    }
+              })
+              //////console.log("#Step data: ", this.headerSteps);
             }
-          }
 
-          var check_list1 = allData.check_list_file;
-          if(check_list1 != ''){
-            let getFile = check_list1.toString().split('/');
-            if(getFile.length){
-              this.workPermitForm.check_list = getFile[4].toString().split('.')[0];
-              this.check_list_path = this.constant.mediaPath + check_list1.toString();
+            var wapdata = res['data'].wapData;
+            this.step2Data.activity_section = wapdata.activity_section != null ? wapdata.activity_section : '';
+            this.step2Data.scopes_to_be_authorized = wapdata.scopes_to_be_authorized != null ? wapdata.scopes_to_be_authorized : '';
+            this.step3Data.license_no = '';
+            this.step3Data.date_of_issue = '';
+            this.step3Data.date_of_expiry = '';
+
+            let pathData: any;
+            let filePath: string;
+
+            if(!this.Service.isObjectEmpty(res['data'].paymentDetails)){
+            
+              if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''){
+                filePath = this.constant.mediaPath + '/media/' + res['data'].paymentDetails.voucher_invoice;
+                pathData = this.getSantizeUrl(filePath);
+                this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
+              }
+              //////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
             }
-          }
 
-          this.workPermitForm.organization_name = allData['onBehalfApplicant'][0].organization_name;
-          this.workPermitForm.representative_name = allData['onBehalfApplicant'][0].representative_name;
-          this.workPermitForm.behalf_designation = allData['onBehalfApplicant'][0].designation;
-          this.workPermitForm.digital_signature = allData['onBehalfApplicant'][0].digital_signature;
-      });
-    }
+
+            var recognized_logo1 = wapdata.licence_document_file;
+            if(recognized_logo1 != ''){
+              let getFile =recognized_logo1.toString().split('/');
+              if(getFile.length){
+                this.workPermitForm.licence_document = getFile[4].toString().split('.')[0];
+                this.licence_document_path = this.constant.mediaPath + recognized_logo1.toString();
+              }
+            }
+
+            var quality_manual1 = wapdata.quality_manual_file;
+            if(quality_manual1 != ''){
+              let getFile = quality_manual1.toString().split('/');
+              if(getFile.length){
+                this.workPermitForm.quality_manual = getFile[4].toString().split('.')[0];
+                this.quality_manual_path = this.constant.mediaPath + quality_manual1.toString();
+              }
+            }
+
+            var work_instruction1 = wapdata.work_instruction_file;
+            if(work_instruction1 != ''){
+              let getFile = work_instruction1.toString().split('/');
+              if(getFile.length){
+                this.workPermitForm.work_instruction = getFile[4].toString().split('.')[0];
+                this.work_instruction_path = this.constant.mediaPath + work_instruction1.toString();
+              }
+            }
+
+            var check_list1 = wapdata.check_list_file;
+            if(check_list1 != ''){
+              let getFile = check_list1.toString().split('/');
+              if(getFile.length){
+                this.workPermitForm.check_list = getFile[4].toString().split('.')[0];
+                this.check_list_path = this.constant.mediaPath + check_list1.toString();
+              }
+            }
+
+            this.step4Data.organization_name = res['data'].onBehalfApplicantDetails.organization_name;
+            this.step4Data.representative_name = res['data'].onBehalfApplicantDetails.representative_name;
+            this.step4Data.behalf_designation = res['data'].onBehalfApplicantDetails.designation;
+            this.step4Data.digital_signature = res['data'].onBehalfApplicantDetails.digital_signature;
+
+            // if(res['data'].paymentDetails != null && typeof res['data'].paymentDetails === 'object'){
+            //   // //console.log(">>>payment details...show");
+            //     this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
+            //     this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
+            //     this.voucherSentData.amount           = res['data'].paymentDetails.amount;
+            //     this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
+            //     this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
+            //     this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
+            //     this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+
+            //     // this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
+            //     // this.paymentReceiptValidation = true;
+            // }
+          })
+      }
   }
   
+
+  voucherSentSubmit(theForm){
+     
+    let postObject: any = {};
+    let is_valid: boolean = false;
+    if(this.voucherSentData['voucher_no'] != undefined && this.voucherSentData['amount'] != undefined &&
+     this.voucherSentData['voucher_date'] != undefined){
+       is_valid = true;
+     }
+     //console.log("Valid/Invalid: ", theForm.form.valid, " -- "," --", is_valid, " --", this.voucherSentData);
+
+   //return false;
+    if(is_valid == true && this.paymentReceiptValidation === true){ 
+         let dtFormat: string = '';;
+         if(this.voucherSentData['voucher_date'] != undefined && 
+         this.voucherSentData['voucher_date']._i != undefined){
+           var dtData = this.voucherSentData['voucher_date']._i;
+           var year = dtData.year;
+           var month = dtData.month + 1;
+           var date = dtData.date;
+           dtFormat = year + "-" + month + "-" + date;
+         }
+
+         //console.log(">>> Date: ", (dtFormat), " -- ", this.voucherSentData['voucher_date'], " -- ", this.voucherSentData['voucher_date']._i);
+         //console.log("@accred ID: ", this.voucherSentData['accreditation'])
+         this.voucherFile.append('voucher_no',this.voucherSentData['voucher_no']);
+         this.voucherFile.append('amount',this.voucherSentData['amount']);
+         this.voucherFile.append('voucher_date',dtFormat);
+         this.voucherFile.append('accreditation',this.voucherSentData['accreditation']);
+         this.voucherFile.append('registration','2');
+
+         this.subscriptions.push(this._trainerService.registrationVoucherSave((this.voucherFile))
+         .subscribe(
+            result => {
+              let data: any = result;
+              if(data.status){
+                //this.voucherFile = new FormData();
+                //this.voucherSentData = {};
+                //this.toastr.success("Your form has been successfully submitted and it is under review.We will update you shortly.",'THANK YOU');
+                setTimeout(()=>{
+                  let elem = document.getElementById('openAppDialog');
+                  //console.log("App dialog hash....", elem);
+                  if(elem){
+                    elem.click();
+                  }
+                }, 100)
+                //this.openView('appComp','');
+                setTimeout(() => {                    
+                  // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+                  this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+                },3500)
+                
+              }else{
+                this.toastr.warning(data.msg,'');
+              }
+            }
+           )
+         )
+
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
+
+    // else if(theForm.form.valid && (this.paymentReceiptValidation == false || this.paymentReceiptValidation == null)){
+    //  this._toaster.warning('Please Upload Valid Files','Upload Error',{timeOut:5000});
+    // }
+    // else{
+    //  this._toaster.warning('Please Fill required fields','Validation Error',{timeOut:5000});
+    // }
+ }
+
+ validateFile1(fileEvent: any, type?: any) {
+   var file_name = fileEvent.target.files[0].name;
+   var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
+   var ex_type = ['pdf', 'PDF'];
+   var ex_check = this.Service.isInArray(file_exe,ex_type);
+   if(ex_check){
+     this.paymentReceiptValidation = true;
+     //if(type == undefined){
+       this.voucherFile.append('voucher_invoice',fileEvent.target.files[0]);
+     //}
+   }else{
+     this.paymentReceiptValidation = false;
+   }
+ }
+
+
   validateFile(fileEvent: any,fileName?:any) {
     // console.log(fileName,'fileName')
     var file_name = fileEvent.target.files[0].name;
@@ -408,7 +568,7 @@ export class WorkPermitFormComponent implements OnInit {
   }
 
   onSubmit1(ngForm1) {
-    this.Service.moveSteps('application_information', 'activities_scope', this.headerSteps);
+    // this.Service.moveSteps('application_information', 'activities_scope', this.headerSteps);
     if(ngForm1.form.valid) {
       this.workPermitForm = {};
       this.workPermitForm.step1 = {};
@@ -459,7 +619,7 @@ export class WorkPermitFormComponent implements OnInit {
   }
 
   onSubmit2(ngForm2) {
-    this.Service.moveSteps('activities_scope', 'documents_tobe_attached', this.headerSteps);
+    // this.Service.moveSteps('activities_scope', 'documents_tobe_attached', this.headerSteps);
     if(ngForm2.form.valid) {
       this.workPermitForm = {};
       this.workPermitForm.step2 = {};
@@ -782,27 +942,59 @@ export class WorkPermitFormComponent implements OnInit {
     }
   }
 
-  savedraftStep(){
-    this.workPermitForm.is_draft = true;
-    if(this.getWorkPermitId != 'undefined') {
-      this.workPermitForm.application_id = this.getWorkPermitId;
+  savedraftStep(steps){
+    if(steps == 'step1') {
+      this.workPermitForm = {};
+      this.workPermitForm.step1 = {};
+      this.workPermitForm.email = this.userEmail;
+      this.workPermitForm.userType = this.userType;
+      this.workPermitForm.saved_step = '1';
+      this.step1Data.is_draft = true;
+      if(this.formApplicationId > 0){
+        this.step1Data.application_id = this.formApplicationId;
+      }
+
+      this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
+      // this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accr == '0' ? false : true;
+
+      this.workPermitForm.step1.is_draft = false;
+      this.workPermitForm.step1 = this.step1Data;
+
+      this.workPermitForm.step1['ownOrgBasicInfo'] = [];
+      this.workPermitForm.step1['ownOrgMembInfo'] = [];
+      
+      if(this.ownOrgBasicInfo) {
+        this.workPermitForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
+      }
+      if(this.ownOrgMembInfo) {
+        this.workPermitForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
+      }
+
+      // this.loader = false;
+
+      this.step1DataBodyFormFile.append('data',JSON.stringify(this.workPermitForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.workPermitform,this.step1DataBodyFormFile)
+      .subscribe(
+        res => {
+          this.loader = true;
+          let getData: any = res;
+          if(res['status'] == true) {
+
+            this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['id']);
+            
+            this.Service.moveSteps('application_information', 'activities_scope', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+
+    }else if(steps == 'step2') {
+      
+    }else if(steps == 'step3') {
+      
+    }else if(steps == 'step4') {
+      
     }
-    this.workPermitFormData.append('data',JSON.stringify(this.workPermitForm));
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.workPermitform,this.workPermitFormData)
-    .subscribe(
-      res => {
-        if(res['status']==true){
-          this.toastr.success('Save Draft Successfully', '');
-          this.router.navigate(['application-form/service/work_permit']);
-        }
-        else{
-          this.toastr.error(res['msg'],'')
-        }
-      },
-      error => {
-        this.toastr.error('Something went wrong','')
-    }
-    )
   }
 
 }
