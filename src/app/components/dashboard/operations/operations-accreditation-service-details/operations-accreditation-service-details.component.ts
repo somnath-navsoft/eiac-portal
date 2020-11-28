@@ -89,6 +89,8 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   TCSchmeData: any;
   getFamilyTitles: any = {};
   getSchemeTitles: any = {};
+  summaryDetails:any[] = [{}];
+  newSummaryDetails:any[] = [];
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, public sanitizer: DomSanitizer,private modalService: NgbModal,public uiDialog: UiDialogService) { }
@@ -475,7 +477,11 @@ loadScopeDataHalal(){
           //alert(this.step1Data.cab_type + " -- "+ getData.data.cab_type);
           if(getData.data.form_meta == 'halal_conformity_bodies'){
             console.log(">>> Load halal types......");
+            this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/checklists/Document%20Review%20Checklist%20Halal%20Certification%20UAE.S%202055-2.pdf');
             this.loadScopeDataHalal();
+          }
+          if(getData.data.form_meta == 'pt_providers'){
+            this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/checklists/Document%20review%20checklist%20for%20ISO%2022870-%20Point%20of%20Care%20Testing.pdf');
           }
           if(this.serviceDetail.onBehalfApplicantDetails ){
             this.applicantDetails = this.serviceDetail.onBehalfApplicantDetails;
@@ -492,6 +498,37 @@ loadScopeDataHalal(){
           this.paymentDetails = result['data'].paymentDetails;
           this.editScopeData = result['data']['scopeDetails'];
           this.aboutSubContractors = result['data']['aboutSubContractors'];
+
+          if(result['data'].summaryOfPersonnel != undefined && result['data'].summaryOfPersonnel.length > 0){
+            // console.log(result['data'].summaryOfPersonnel);
+            this.summaryDetails = result['data'].summaryOfPersonnel;
+            console.log(this.summaryDetails,'summaryOfPersonnel');
+
+            
+
+            this.summaryDetails.forEach((item,key) => {
+              var newArr = {};
+            
+              if(this.summaryDetails[key].total_no != "") {
+                newArr['position'] = this.summaryDetails[key].position;
+                newArr['total_no'] = this.summaryDetails[key].total_no;
+                if(this.summaryDetails[key].fulltime_emp_name != undefined && typeof this.summaryDetails[key].fulltime_emp_name == 'string'){
+                  let fulltimeAr = JSON.parse(this.summaryDetails[key].fulltime_emp_name);
+                  // console.log(fulltimeAr, " -- ", fulltimeAr.length);
+                  newArr['fulltime_emp_name'] = fulltimeAr;
+                }
+                if(this.summaryDetails[key].parttime_emp_name != undefined && typeof this.summaryDetails[key].parttime_emp_name == 'string'){
+                  let parttimeAr = JSON.parse(this.summaryDetails[key].parttime_emp_name);
+                  // console.log(parttimeAr, " -- ", parttimeAr.length);
+                  newArr['parttime_emp_name'] = parttimeAr;
+                }
+                this.newSummaryDetails.push(newArr);
+              }
+              // console.log(this.summaryDetails,'summaryDetails');
+
+            });
+            // console.log(">>>Updated dafa: ", this.newSummaryDetails);
+          }
 
           if(result['data'].otherActivityLocations) {
             let getActivity: any =  result['data'].otherActivityLocations;

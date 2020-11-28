@@ -160,10 +160,15 @@ input { font-family: 'Dubai Regular'; }
 .remembr-pwd .mat-checkbox-frame { border-color: rgba(153, 153, 153, 1);  border-width: 1px;  border-radius: 0;  width: 20px;  height: 20px; }
 .remembr-pwd .mat-checkbox-inner-container { height: 20px; width: 20px;}
 .visible-pwd { position: absolute; right: 5px; color: #6c6c6c; }
-
+.matupload .visible-pwd { right: 25px; }
 .cab-data { width: 100%; }
 .cab-data .mat-form-field-label { color: #3F3F3F; font-family: 'Dubai Regular';}
 .mat-form-field-label { font-size: 18px; }
+.scope_list {
+  list-style: none;
+  margin: 0;
+  padding: 0; 
+}
 
 //==================VERIFY AND FORGOT SCREEN==================//
 .support-cont { text-align: center; }
@@ -755,6 +760,7 @@ a:hover { text-decoration: none; }
 .form-subheader-desc .mat-radio-label { margin: 0; }
 .bttns-health { padding: 40px 0; font-family: "Dubai Bold"; font-size: 20px; }
 .form-subheader { display: flex; align-items: center; height: 100%; }
+.form_right_data { background: #E7E7E7; align-items: center; height: 100%; }
 
 //==================TRAINERS DASHBOARD==================//
 .main-dashboard { padding: 20px; background: #EEF3F5; }
@@ -978,7 +984,8 @@ ul.bill-details li:first-child { border-right: 1px solid #C9C9C9; }
 .acc-apply a { width: 200px; color: #fff; font-size: 18px; font-family: 'Dubai Bold'; background: rgba(181, 65, 80, 1); padding: 10px 25px; letter-spacing: 1px; border-radius: 5px; }
 .acc-apply a:hover { text-decoration: none; color: #fff; background: #AA9777; }
 .save_draft { margin-top: 15px; }
-.view_file .mat-form-field-infix .mat-form-field-label { font-size: 16px; } 
+.view_file .mat-form-field-infix .mat-form-field-label { font-size: 17px; font-family: 'Dubai Regular'; }
+.desc_table { font-size: 15px; color: #474747; }
 
 // ================FORMS================== //
 .table-content-health { margin-bottom: 30px; overflow: auto; }
@@ -987,10 +994,13 @@ ul.bill-details li:first-child { border-right: 1px solid #C9C9C9; }
 .table-content-health td { padding: 25px 10px 20px; background: #F9F9F9; border: 1px solid #DCDAD5;}
 .table-content-health td input:focus { outline: none;}
 .table-content-health td span{ font-size: 22px;}
+.table_padd td{ padding-bottom: 0; }
 .form-subheader-desc { background: #E7E7E7; margin: 0 -15px; height: 100%; display: flex; align-items: center; justify-content: flex-end; }
 .form-subheader-desc .mat-radio-button { padding: 0 15px; }
 .form-subheader-desc .mat-radio-label { margin: 0; }
 .qualifi-att { padding: 12px; }
+.table_padd .mat_small .mat-form-field-infix .mat-form-field-label { font-size: 20px; }
+// .matupload .mat-form-field-infix { padding-bottom: 0; }
 
 
 // MAT-FORM
@@ -1292,6 +1302,8 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .message_wrapper .messaging_chat.msg_client { flex-direction: row-reverse; }
 .message_wrapper .messaging_chat.msg_client .message_user { margin-left: 20px; }
 .messaging_chat.msg_client .message_chat .message_time { justify-content: flex-end; }
+.table-content-health td span.chip-cross { font-size: 17px; }
+// .chip-cross { line-height: 1; font-size: 10px; }
 
 //==================RESPONSIVE==================//
 @media(max-width: 1500px) {

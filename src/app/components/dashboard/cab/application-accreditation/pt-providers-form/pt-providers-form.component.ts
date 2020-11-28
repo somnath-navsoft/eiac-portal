@@ -179,6 +179,9 @@ export class PtProvidersFormComponent implements OnInit {
   deleteRowConfirm: boolean = false;
   aboutSubContractors:Array<any> = [{}];
 
+
+  errorLoader :  boolean = false;
+
   constructor(public Service: AppService, public constant:Constants, private _customModal: CustomModalComponent,
     public router: Router,public toastr: ToastrService,private modalService: NgbModal,public sanitizer:DomSanitizer,public _trainerService:TrainerService) { }
 
@@ -193,6 +196,11 @@ export class PtProvidersFormComponent implements OnInit {
     }
     closeDialog(){
       this.modalService.dismissAll();
+    }
+    onError(error: any) {
+      // do anything
+      //////////console.log('PDF Error: ', error)
+      this.errorLoader = true;
     }
 
    loadData(){
@@ -295,8 +303,8 @@ export class PtProvidersFormComponent implements OnInit {
   //  this.setting();
 
   this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');
-    this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Document%20review%20Checklist-%20ISO%2017020-%202012_Inspection%20Bodies.pdf');
-    
+   // this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Document%20review%20Checklist-%20ISO%2017020-%202012_Inspection%20Bodies.pdf');
+   this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/checklists/Document%20review%20checklist%20for%20ISO%2022870-%20Point%20of%20Care%20Testing.pdf');
     // this.loader = false;
     this.headerSteps.push(
       {

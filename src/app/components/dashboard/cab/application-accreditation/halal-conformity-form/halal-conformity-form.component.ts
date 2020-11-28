@@ -15,6 +15,7 @@ import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
 declare let paypal: any;
 import {MatChipInputEvent} from '@angular/material/chips';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { iif } from 'rxjs';
 
 @Component({
   selector: 'app-halal-conformity-form',
@@ -127,6 +128,7 @@ export class HalalConformityFormComponent implements OnInit {
   paymentFile:any = false;
   isApplicationSubmitted:any = false;
   public isNoteSubmit:boolean = false;
+  public isNoteSubmitHcab:boolean = false;
   termsILA: any;
   
 
@@ -162,6 +164,7 @@ export class HalalConformityFormComponent implements OnInit {
   public loaderPdf: boolean = false;
   public completeLoaded: boolean = false;
   paymentFilePath: string = '';
+  paymentStepComp: boolean = false;
   auditorsExaminerJson:any = {};
   auditorsExaminerJsonParttime:any = {};
   staticPosition:any = {};
@@ -306,7 +309,9 @@ export class HalalConformityFormComponent implements OnInit {
     this.addMinutesToTime = this.Service.addMinutesToTime();
 
     this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');
-    this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Document%20review%20Checklist-%20ISO%2017020-%202012_Inspection%20Bodies.pdf');
+    //this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Document%20review%20Checklist-%20ISO%2017020-%202012_Inspection%20Bodies.pdf');
+    
+    this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/checklists/Document%20Review%20Checklist%20Halal%20Certification%20UAE.S%202055-2.pdf');
     this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
@@ -320,7 +325,7 @@ export class HalalConformityFormComponent implements OnInit {
       this.recommendYearValues.push({title: k.toString(), value: k});
     }
     this.step6Data.recommend_year = yr;
-
+    window.scrollTo(0,0);
     this.headerSteps.push(
       {
       title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
@@ -1401,8 +1406,8 @@ addSchemeRow(obj: any = [],index: number){
                 saveStep = parseInt(getData.data.saved_step) - 1;
               }else{
                 if(parseInt(getData.data.saved_step) == 9){
-                  
-                  saveStep = parseInt(getData.data.saved_step) - 1;
+                  this.paymentStepComp = true;
+                  saveStep = parseInt(getData.data.saved_step) - 2;
                 }else{
                   
                 saveStep = parseInt(getData.data.saved_step);
@@ -1744,13 +1749,21 @@ addSchemeRow(obj: any = [],index: number){
                     this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
                     this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
                     this.voucherSentData.amount           = res['data'].paymentDetails.amount;
-                    this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
-                    this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
-                    this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
-                    this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+
+                    this.voucherSentData.transaction_no   = (res['data'].paymentDetails.transaction_no != 'null') ? res['data'].paymentDetails.transaction_no : '';
+                    this.voucherSentData.payment_method   = (res['data'].paymentDetails.payment_method != 'null') ? res['data'].paymentDetails.payment_method : '';
+                    this.voucherSentData.payment_made_by  = (res['data'].paymentDetails.payment_made_by != 'null') ? res['data'].paymentDetails.payment_made_by : '';
+                    this.voucherSentData.mobile_no        = (res['data'].paymentDetails.mobile_no != 'null') ? res['data'].paymentDetails.mobile_no : '';
+
+                    // this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
+                    // this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
+                    // this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
+                    // this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
   
-                    this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
-                    this.paymentReceiptValidation = true;
+                    this.paymentFile = (res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null) ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
+                    if(this.paymentFile != ''){
+                      this.paymentReceiptValidation = true;
+                    }                    
                 }
               }
           });
@@ -2210,11 +2223,11 @@ addSchemeRow(obj: any = [],index: number){
         }        
         let totalLen: number = 0;
         totalLen = (Object[key].fulltime_emp_name.length + Object[key].parttime_emp_name.length);  
-        console.log(">>> Total Len: ", totalLen);  
-          if(totalLen == 1){
-          this.toastr.warning("At least one entry required.");
-          return;
-        }
+        // console.log(">>> Total Len: ", totalLen);  
+        //   if(totalLen == 1){
+        //   this.toastr.warning("At least one entry required.");
+        //   return;
+        // }
         empRecord.splice(index, 1);
       }
     }
@@ -2323,6 +2336,9 @@ addSchemeRow(obj: any = [],index: number){
       }
       this.loader = false;
       // this.step1DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
+
+      console.log(">>>> submit draft JSON: ", this.publicHalalConformityForm);
+
       this.step1DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step1DataBodyFormFile)
       .subscribe(
@@ -2547,9 +2563,38 @@ addSchemeRow(obj: any = [],index: number){
       this.isNoteSubmit = true;
     }
 
-    console.log(">> Submit: ", ngForm.form.valid, " -- ", ngForm.form);
+    //Activity note check for HCAB
+    if(this.step1Data.is_staff_ownership_note == undefined){
+      this.step1Data.is_staff_ownership_note = '';
+    }
+    
+    let str1 = this.step1Data.is_staff_ownership_note; 
+  
+    ////console.log("nite enen: ", this.step1Data.is_main_activity_note, " -- ", this.step1Data.is_main_activity, " :: ", (!str || 0 === str.length));
+    
+    if(this.step1Data.is_staff_ownership == 'true' && this.step1Data.is_staff_ownership != ''){
+      this.step1Data.is_staff_ownership_note = '';
+    }
+    if(this.step1Data.is_main_activity == 'true'){
+      this.isNoteSubmitHcab = true;
+    }
+  
+    if((!str1 || 0 === str1.length) && this.step1Data.is_staff_ownership == 'false'){
+      ////console.log(">>> Note is required...");
+      //this.is_main_activity_note_entry = true;
+      this.isNoteSubmitHcab = false;
+    }
+    if(this.step1Data.is_staff_ownership == 'false' && this.step1Data.is_staff_ownership_note != ''){
+      ////console.log(">>> Note is ebnterd.....");
+      //this.is_main_activity_note_entry = false;
+      this.isNoteSubmitHcab = true;
+    }
+
+
+
+    console.log(">> Submit: ", ngForm.form.valid, " -- ", this.isNoteSubmit, " -- ", this.isNoteSubmitHcab);
     //return;
-    if(ngForm.form.valid  && this.isNoteSubmit == true) {
+    if(ngForm.form.valid  && this.isNoteSubmit == true && this.isNoteSubmitHcab == true) {
       this.publicHalalConformityForm = {};
       this.publicHalalConformityForm.step1 = {};
       this.publicHalalConformityForm.email = this.userEmail;
@@ -2836,13 +2881,13 @@ addSchemeRow(obj: any = [],index: number){
           this.publicHalalConformityForm.step3 = this.step3Data;
           this.publicHalalConformityForm.saved_step = 3;
           this.publicHalalConformityForm.step3.is_draft = false;
-          
   
           console.log(">>> Step3 submit step : ", this.publicHalalConformityForm);
   
           //this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.publicHalalConformityForm,this.publicHalalConformityForm)
           this.step3DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
-          if(this.checkItemOthers &&scopeOptionsCheckCount > 0){
+          //this.checkItemOthers &&
+          if(scopeOptionsCheckCount > 0){
             this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step3DataBodyFormFile)
             .subscribe(
               res => {
@@ -3507,9 +3552,9 @@ getMatchScheme(scId: any, scopeData: any){
 
     this.publicHalalConformityForm.step6 = this.step6Data;
     // this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
-  
+    console.log(this.publicHalalConformityForm,'@@@Submit step');
     // this.step4DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
-    // //console.log(this.publicHalalConformityForm,'publicHalalConformityForm');
+    console.log(this.publicHalalConformityForm,'publicHalalConformityForm');
     this.loader = false;
     this.step6DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step6DataBodyFormFile)
@@ -3598,12 +3643,22 @@ onSubmitStep7(ngForm7: any) {
   this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
   this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
   this.voucherFile.append('voucher_date',dtFormat);
+  this.voucherFile.append('application_id', this.formApplicationId);
   this.voucherFile.append('accreditation',this.formApplicationId);
-  this.voucherFile.append('is_draft', false);
+  if(!type){
+    this.voucherFile.append('is_draft', false);
+  }else{
+    this.voucherFile.append('is_draft', true);
+  }
+ 
   // this.voucherFile.append('application_id',this.formApplicationId);
       
   this.loader = false;
-  if(ngForm8.form.valid && this.paymentReceiptValidation != false) {
+
+  console.log(">>>> saveing...", this.paymentReceiptValidation);
+  //return;  
+
+  if(ngForm8.form.valid && (this.paymentReceiptValidation != false && this.paymentReceiptValidation != undefined)) {
     // //console.log(this.voucherFile);
       this._trainerService.paymentVoucherSave((this.voucherFile))
       .subscribe(
@@ -3634,21 +3689,38 @@ onSubmitStep7(ngForm7: any) {
           }
         )
   }else if(type != undefined && type == true && this.paymentReceiptValidation != false){
-    this.publicHalalConformityForm.step9.is_draft = true;
-    this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.publicHalalConformityForm)
-    .subscribe(
-    res => {
-      ////console.log(res,'res')
-      if(res['status'] == true) {
-        this.toastr.success(res['msg'], '');
-        //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
-      }else{
-        this.toastr.warning(res['msg'], '');
-      }
-    });
+    //this.publicHalalConformityForm.step8.is_draft = true;
+    //this.voucherFile.append('is_draft', true);
+    this._trainerService.paymentVoucherSave((this.voucherFile))
+      .subscribe(
+          result => {
+            this.loader = true;
+            let data: any = result;
+            ////console.log("submit voucher: ", data);
+            if(data.status){
+              this.toastr.success("Save as draft successfully", '');              
+            }else{
+              this.toastr.warning(data.msg,'');
+            }
+          }
+        )
+
+    // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.publicHalalConformityForm)
+    // .subscribe(
+    // res => {
+    //   ////console.log(res,'res')
+    //   if(res['status'] == true) {
+    //     //this.toastr.success(res['msg'], '');
+    //     this.toastr.success("Save as draft successfully", '');
+    //     //this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+    //   }else{
+    //     this.toastr.warning(res['msg'], '');
+    //   }
+    // });
   }
   else{
     this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    this.loader = true;
   }
   
   }
