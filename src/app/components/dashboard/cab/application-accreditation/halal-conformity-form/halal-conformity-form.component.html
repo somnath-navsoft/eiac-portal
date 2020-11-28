@@ -2147,7 +2147,7 @@
                                             <hr>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row  mt-3">
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Voucher Code</mat-label>
@@ -2258,7 +2258,8 @@
                                             (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK
                                         </a>
                                     </ng-container>
-                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step8')">SAVE AS DRAFT</button>
+                                    <!-- savedraftStep('step8') -->
+                                        <button class="cancel-bttn" type="button" (click)="onSubmitPaymentInformation(ngForm8, true);">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >SUBMIT</button>
                                 </div>
