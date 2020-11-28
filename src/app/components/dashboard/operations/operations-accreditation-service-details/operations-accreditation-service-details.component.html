@@ -722,12 +722,14 @@
                     </thead>
                     <tbody>
                         <!-- @{{summaryDetails | json}} -->
-                        <tr *ngFor="let item of summaryDetails; let i = index;">
+
+                        <tr *ngFor="let item of newSummaryDetails; let i = index;">
                             <td>{{item['position']}}</td>
                             <td>
                                 <mat-form-field class="cab-data">
                                     <input (keypress)="Service.IsNumeric($event)" matInput name="total_no_{{i}}" 
-                                    [(ngModel)]="summaryDetails[i].total_no" readonly>
+
+                                    [(ngModel)]="newSummaryDetails[i].total_no" readonly>
                                 </mat-form-field>  
                             </td>
 

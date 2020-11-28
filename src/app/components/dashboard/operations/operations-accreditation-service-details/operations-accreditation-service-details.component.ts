@@ -91,6 +91,8 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   getSchemeTitles: any = {};
   summaryDetails:any[] = [{}];
 
+  newSummaryDetails:any[] = [];
+
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, public sanitizer: DomSanitizer,private modalService: NgbModal,public uiDialog: UiDialogService) { }
 
@@ -498,20 +500,29 @@ loadScopeDataHalal(){
             // console.log(result['data'].summaryOfPersonnel);
             this.summaryDetails = result['data'].summaryOfPersonnel;
             console.log(this.summaryDetails,'summaryOfPersonnel');
-            this.summaryDetails.forEach((item) => {
-              if(item.fulltime_emp_name != undefined && typeof item.fulltime_emp_name == 'string'){
-                let fulltimeAr = JSON.parse(item.fulltime_emp_name);
-                // console.log(fulltimeAr, " -- ", fulltimeAr.length);
-                item.fulltime_emp_name = fulltimeAr;
+
+            this.summaryDetails.forEach((item,key) => {
+              var newArr = {};
+            
+              if(this.summaryDetails[key].total_no != "") {
+                newArr['position'] = this.summaryDetails[key].position;
+                newArr['total_no'] = this.summaryDetails[key].total_no;
+                if(this.summaryDetails[key].fulltime_emp_name != undefined && typeof this.summaryDetails[key].fulltime_emp_name == 'string'){
+                  let fulltimeAr = JSON.parse(this.summaryDetails[key].fulltime_emp_name);
+                  // console.log(fulltimeAr, " -- ", fulltimeAr.length);
+                  newArr['fulltime_emp_name'] = fulltimeAr;
+                }
+                if(this.summaryDetails[key].parttime_emp_name != undefined && typeof this.summaryDetails[key].parttime_emp_name == 'string'){
+                  let parttimeAr = JSON.parse(this.summaryDetails[key].parttime_emp_name);
+                  // console.log(parttimeAr, " -- ", parttimeAr.length);
+                  newArr['parttime_emp_name'] = parttimeAr;
+                }
+                this.newSummaryDetails.push(newArr);
               }
-              if(item.parttime_emp_name != undefined && typeof item.parttime_emp_name == 'string'){
-                let parttimeAr = JSON.parse(item.parttime_emp_name);
-                // console.log(parttimeAr, " -- ", parttimeAr.length);
-                item.parttime_emp_name = parttimeAr;
-              }
+              // console.log(this.summaryDetails,'summaryDetails');
 
             });
-            // console.log(">>>Updated dafa: ", this.summaryDetails);
+            // console.log(">>>Updated dafa: ", this.newSummaryDetails);
           }
 
           if(result['data'].otherActivityLocations) {
