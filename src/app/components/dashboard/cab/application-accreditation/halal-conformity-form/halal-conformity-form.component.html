@@ -623,6 +623,7 @@
                                                             <th width="30%">Location Type(such of Regional Off)</th>
                                                             <th width="20%">Address/City/Country</th>
                                                             <th width="50%">*Key Activities carried out at this Location</th>
+                                                            <th></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -1269,7 +1270,7 @@
                                                                                                 [matTooltip]="getFieldTooltip(dynamicScopeModel[typeScope.id][scope.id].fieldLines[k][dynamicScopeFieldColumns[typeScope.id][scope.id][i1][p].title], dynamicScopeModel[typeScope.id][scope.id].fieldLines[k].firstFieldValues)" matTooltipPosition='above'
                                                                                                 [(ngModel)]="dynamicScopeModel[typeScope.id][scope.id].fieldLines[k][dynamicScopeFieldColumns[typeScope.id][scope.id][p][0].title]" 
                                                                                                 name="dynamicScopeFieldColumns[typeScope.id][scope.id][p][0].title" [ngModelOptions]="{standalone: true}" 
-                                                                                                (selectionChange)="onChangeScopeOption($event,scope.id,typeScope.id,k,p)">
+                                                                                                (selectionChange)="onChangeScopeOption($event,scope.id,typeScope.id,k,p)" required="true">
                                                                                                     <mat-option *ngFor="let j1 of dynamicScopeModel[typeScope.id][scope.id].fieldLines[k].firstFieldValues" [value]='j1.field_value.id' [matTooltip]="j1.value">
                                                                                                     {{j1.value}}
                                                                                                     </mat-option>
@@ -1284,7 +1285,7 @@
                                                                                                     [matTooltip]="getFieldTooltip(dynamicScopeModel[typeScope.id][scope.id].fieldLines[k][dynamicScopeFieldColumns[typeScope.id][scope.id][i1][p].title], dynamicScopeModel[typeScope.id][scope.id].fieldLines[k].firstFieldValues)" matTooltipPosition='above'
                                                                                                     [(ngModel)]="dynamicScopeModel[typeScope.id][scope.id].fieldLines[k][dynamicScopeFieldColumns[typeScope.id][scope.id][p][0].title]" 
                                                                                                     name="dynamicScopeFieldColumns[typeScope.id][scope.id][p][0].title" [ngModelOptions]="{standalone: true}" multiple
-                                                                                                    (selectionChange)="onChangeScopeOption($event,scope.id,typeScope.id,k,p)">
+                                                                                                    (selectionChange)="onChangeScopeOption($event,scope.id,typeScope.id,k,p)" required="true">
                                                                                                         <mat-option *ngFor="let j1 of dynamicScopeModel[typeScope.id][scope.id].fieldLines[k].firstFieldValues" [value]='j1.field_value.id' [matTooltip]="j1.value">
                                                                                                         {{j1.value}}
                                                                                                         </mat-option>
@@ -1313,7 +1314,7 @@
                                                                                                 matTooltipPosition='above' 
                                                                                                 [(ngModel)]="dynamicScopeModel[typeScope.id][scope.id].fieldLines[k][dynamicScopeFieldColumns[typeScope.id][scope.id][p][0].title]"
                                                                                                 name="dynamicScopeFieldColumns[typeScope.id][scope.id][p][0].title" 
-                                                                                                (selectionChange)="onChangeScopeOption($event,scope.id,typeScope.id,k,p)" [ngModelOptions]="{standalone: true}" >
+                                                                                                (selectionChange)="onChangeScopeOption($event,scope.id,typeScope.id,k,p)" [ngModelOptions]="{standalone: true}" required="true">
                                                                                                     <mat-option *ngFor="let j2 of dynamicScopeModel[typeScope.id][scope.id].fieldLines[k][dynamicScopeFieldColumns[typeScope.id][scope.id][p][0].values]" [value]='j2.field_value.id' [matTooltip]="j2.value">
                                                                                                     {{j2.value}}
                                                                                                     </mat-option>

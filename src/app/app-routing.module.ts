@@ -91,6 +91,8 @@ import { MessageReplyComponent } from './components/dashboard/message/message-re
 import { OperationsRegistrationServiceListComponent } from './components/dashboard/operations/operations-registration-service-list/operations-registration-service-list.component';
 import { OperationsRegistrationServiceDetailsComponent } from './components/dashboard/operations/operations-registration-service-details/operations-registration-service-details.component';
 import { CabCompanyProfileComponent } from './components/dashboard/cab/cab-company-profile/cab-company-profile.component';
+import { CabMessage } from './components/dashboard/cab/cab-message/cab-message.component';
+
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
   //component:DashboardComponent, canActivate: [AuthGuard],
@@ -150,6 +152,7 @@ const routes: Routes = [
         { path: 'training-apply', component:CabTrainerServiceComponent, canActivate: [AuthGuard] },
         { path: 'training-apply/:id', component:CabTrainerServiceComponent, canActivate: [AuthGuard] },
         { path: 'training-course', component:CabTrainingApplicationComponent, canActivate: [AuthGuard] },
+        { path: 'training-public-course-form', component:CabTrainingPublicCourseComponent, canActivate: [AuthGuard] },
         { path: 'training-public-course-form/:id', component:CabTrainingPublicCourseComponent, canActivate: [AuthGuard] },
         { path: 'training-inpremise-form/:id', component:CabTrainingInpremiseFormComponent, canActivate: [AuthGuard] },
         { path: 'training-public-course-list', component:CabTrainingPublicCourseListComponent, canActivate: [AuthGuard] },
@@ -177,6 +180,7 @@ const routes: Routes = [
         { path: 'pt-providers-form/:id', component:PtProvidersFormComponent, canActivate: [AuthGuard] },
         { path: 'message-detail/:id', component:CabMessageDetailsComponent, canActivate: [AuthGuard] },
         { path: 'company-profile', component:CabCompanyProfileComponent, canActivate: [AuthGuard] },
+        { path: 'onboarding-message-list', component:CabMessage, canActivate: [AuthGuard] },
       ]
     },
 
