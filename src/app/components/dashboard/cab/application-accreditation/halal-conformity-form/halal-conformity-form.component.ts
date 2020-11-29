@@ -1692,7 +1692,7 @@ addSchemeRow(obj: any = [],index: number){
 
                 //step5
                 if(res['data'].is_prelim_visit != null){
-                  this.step5Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
+                  this.step5Data.prelim_visit_val = (res['data'].is_prelim_visit) ? "1" : "0";
                   this.step5Data.prelim_visit_date = res['data'].prelim_visit_date;
                   this.step5Data.prelim_visit_time = res['data'].prelim_visit_time;
                 }
@@ -3475,7 +3475,7 @@ getMatchScheme(scId: any, scopeData: any){
       this.publicHalalConformityForm.userType = this.userType;
       var applicationId = sessionStorage.getItem('applicationId');
       this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-      this.step5Data.is_prelim_visit = this.step5Data.is_prelim_visit == 0 ? false : true;
+      this.step5Data.is_prelim_visit = this.step5Data.prelim_visit_val == 0 ? false : true;
       this.step5Data.is_draft = false;
       this.publicHalalConformityForm.step5 = this.step5Data;
   
