@@ -59,6 +59,7 @@ export class HalalConformityFormComponent implements OnInit {
   public file_validation2:boolean = true;
   public file_validation3:boolean = true;
   public file_validation4:boolean = true;
+  isPrelimSubmitted: boolean = false;
   
   public authorizationList:any;
   public authorizationStatus: boolean = false;
@@ -2460,6 +2461,11 @@ addSchemeRow(obj: any = [],index: number){
       var applicationId = sessionStorage.getItem('applicationId');
       this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step5Data.is_prelim_visit = this.step5Data.prelim_visit_val == 0 ? false : true;
+      if(!this.step5Data.is_prelim_visit){
+        console.log(">>> value: ");
+        this.step5Data.prelim_visit_date = null;
+        this.step5Data.prelim_visit_time = null;
+      }
       this.step5Data.is_draft = true;
       this.publicHalalConformityForm.saved_step = '5';
       this.publicHalalConformityForm.step5 = this.step5Data;
@@ -3467,6 +3473,7 @@ getMatchScheme(scId: any, scopeData: any){
 
   onSubmitStep5(ngForm5: any){
     //this.Service.moveSteps('perlim_visit', 'undertaking_applicant', this.headerSteps);
+    this.isPrelimSubmitted = true;
     if(ngForm5.form.valid) {
       this.publicHalalConformityForm = {};
       this.publicHalalConformityForm.step5 = {};
@@ -3476,17 +3483,25 @@ getMatchScheme(scId: any, scopeData: any){
       var applicationId = sessionStorage.getItem('applicationId');
       this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step5Data.is_prelim_visit = this.step5Data.prelim_visit_val == 0 ? false : true;
+      console.log("vaue: ", this.step5Data.is_prelim_visit, " -- ", this.step5Data.prelim_visit_val);
+      if(!this.step5Data.is_prelim_visit){
+        console.log(">>> value: ");
+        this.step5Data.prelim_visit_date = null;
+        this.step5Data.prelim_visit_time = null;
+      }
       this.step5Data.is_draft = false;
       this.publicHalalConformityForm.step5 = this.step5Data;
   
-      //console.log(this.publicHalalConformityForm);
+      console.log(this.publicHalalConformityForm);
       // this.step5DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
       this.loader = false;
       this.step5DataBodyFormFile.append('data',JSON.stringify(this.publicHalalConformityForm));
+      //return false;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halalConfirmity,this.step5DataBodyFormFile)
       .subscribe(
         res => {
           // //console.log(res,'res')
+          this.isPrelimSubmitted = false;
           this.loader = true;
           if(res['status'] == true) {
             // this.toastr.success(res['msg'], '');
