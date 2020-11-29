@@ -1,0 +1,146 @@
+<div class="comments-section">
+  <div class="row m-0">
+      <div class="col-md-12">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="tra_events">
+                      <div class="trainer_head">
+                          <h4>Communication</h4>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <h5 *ngIf="recordsTotal==0">No New Message</h5>
+          <div class="ass-name-det" *ngFor="let row of messageList; let i = index;">
+              <div class="row"  *ngIf="row.meta_title != 'user_registration'">
+                  <div class="col-md-12">
+                      <div class="ass-data">
+                          <h3>{{row.title}}</h3>
+                          <div class="date_wrapper">
+                              <p>{{row.created | date}}</p>
+                              <div class="reply_msg" (click)="getUserDetails(row.user)" *ngIf="row.meta_title != 'user_registration'"
+                                  routerLink="/dashboard/message-reply/{{row.id}}">
+                                  <span class="icon-chat"></span>
+                                  Reply
+                              </div>
+                          </div>
+                      </div>
+                      <hr>
+                  </div>
+              </div>
+              <div class="row"  *ngIf="row.meta_title != 'user_registration'">
+                  <div class="col-md-12">
+                      <div class="assess-doc">
+                          <div class="data-attach">
+                              <h5>{{row.message}}</h5>                                        
+                          </div>
+                      </div>
+
+                      <div class="ass-details" *ngIf="row.meta_title != 'user_registration'">
+                          <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                              eiusmod tempor incididunt
+                              ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+                              nostrud exercitation ullamco
+                              laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                              dolor in reprehenderit in
+                              voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                              Excepteur sint occaecat cupidatat non
+                              proident, sunt in culpa qui officia deserunt mollit anim id est
+                              laborum. </p> -->
+                          <div class="attach-cnt" *ngIf="row.document!=null">
+                              <a href="{{constant.mediaPath+row.document}}" target="_blank" class="attachment-cnt"><span
+                                      class="icon-attach"></span></a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!-- <div class="hdr-sec">
+              <div class="row">
+                  <div class="col-md-12">
+                      <div class="trainer_head">
+                          <h4>Write A Comment</h4>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="cmnt-content">
+                      <div class="row">
+                          <div class="col-md-4">
+                              <mat-form-field class="cab-data">
+                                  <mat-label>Name</mat-label>
+                                  <input  matInput autocomplete="off" placeholder="Name">
+                                  <mat-error></mat-error>      
+                              </mat-form-field>
+                          </div>
+                          <div class="col-md-8">
+                              <mat-form-field class="cab-data">
+                                  <mat-label>Message</mat-label>
+                                  <input  matInput autocomplete="off" placeholder="Message">
+                                  <mat-error></mat-error>      
+                              </mat-form-field>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-md-4">
+                              <div class="matupload position-relative">
+                                  <mat-form-field  class="cab-data">
+                                      <input matInput name="trade_license_name" placeholder="Upload Document" >
+                                  </mat-form-field>
+                                  <span class="fileupload">
+                                      <input type="file" required>
+                                      <span class="icon-attach attach-data"></span>
+                                  </span>
+                              </div>
+                              <span class="place_holder_doc">Only PDF, below 2 MB</span>
+                          </div>
+                          <div class="col-md-4">
+                              <div class="row message_detail">
+                                  <div class="col-md-6">
+                                      <div class="form-subheader">
+                                          <span>Message Type</span>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <div class="cab-data">
+                                          <div class="row">
+                                              <div class="col-md-6">
+                                                  <div class="initial_data">
+                                                      <mat-radio-button value="1" >Public</mat-radio-button>
+                                                  </div>
+                                              </div>
+                                              <div class="col-md-6">
+                                                  <div class="initial_data">
+                                                      <mat-radio-button value="2">Private</mat-radio-button>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-md-4">
+                              <mat-form-field class="cab-data">
+                                  <mat-label>Notify Team</mat-label>
+                                  <mat-select placeholder="">
+                                      <mat-option>1</mat-option>
+                                  </mat-select>
+                                  <mat-error></mat-error>      
+                              </mat-form-field>
+                          </div>
+                      </div>
+                      <div class="row mt-4">
+                          <div class="col-md-12">
+                              <div class="bttns-appln mb-0">
+                                  <button class="submit-bttn">SEND MESSAGE</button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div> -->
+      </div>
+  </div>
+</div>

@@ -77,6 +77,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   formApplicationId:any
   trainingDuration:any[] = [];
   closeResult: string;
+  trainingPublicCourseid:any;
 
   constructor(private Service: AppService, private http: HttpClient,
     public _toaster: ToastrService, private _router: Router, private _route: ActivatedRoute,
@@ -84,6 +85,12 @@ export class CabTrainingPublicCourseComponent implements OnInit {
 
   ngOnInit() {
     this.publicCourseId = sessionStorage.getItem('publicCourseId');
+
+    var publicCourseid = sessionStorage.getItem('trainingPublicCourse');
+    var splitId = publicCourseid.split('=');
+    this.trainingPublicCourseid = splitId[1];
+    // console.log(this.trainingPublicCourseid,'trainingPublicCourseid');
+
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
 
