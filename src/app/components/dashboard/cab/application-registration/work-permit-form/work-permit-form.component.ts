@@ -105,13 +105,14 @@ export class WorkPermitFormComponent implements OnInit {
   userId:any;
   paymentFilePath :string = '';
   subscriptions: Subscription[] = [];
+  public minDate;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,public _trainerService:TrainerService,public sanitizer:DomSanitizer) { }
 
   ngOnInit() {
     this.getWorkPermitId = sessionStorage.getItem('workPermitId');
     this.checkCaptchaValidation = true;
-    this.authorizationList = {authorization_confirm1:false};
+    this.authorizationList = {authorization_confirm:false};
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
@@ -379,7 +380,7 @@ export class WorkPermitFormComponent implements OnInit {
               let getFile =recognized_logo1.toString().split('/');
               if(getFile.length){
                 this.workPermitForm.licence_document = getFile[4].toString().split('.')[0];
-                this.licence_document_path = this.constant.mediaPath + recognized_logo1.toString();
+                this.licence_document_path = this.constant.mediaPath +'/'+ recognized_logo1.toString();
               }
             }
 
@@ -388,7 +389,7 @@ export class WorkPermitFormComponent implements OnInit {
               let getFile = quality_manual1.toString().split('/');
               if(getFile.length){
                 this.workPermitForm.quality_manual = getFile[4].toString().split('.')[0];
-                this.quality_manual_path = this.constant.mediaPath + quality_manual1.toString();
+                this.quality_manual_path = this.constant.mediaPath +'/'+ quality_manual1.toString();
               }
             }
 
@@ -397,7 +398,7 @@ export class WorkPermitFormComponent implements OnInit {
               let getFile = work_instruction1.toString().split('/');
               if(getFile.length){
                 this.workPermitForm.work_instruction = getFile[4].toString().split('.')[0];
-                this.work_instruction_path = this.constant.mediaPath + work_instruction1.toString();
+                this.work_instruction_path = this.constant.mediaPath +'/'+ work_instruction1.toString();
               }
             }
 
@@ -406,7 +407,7 @@ export class WorkPermitFormComponent implements OnInit {
               let getFile = check_list1.toString().split('/');
               if(getFile.length){
                 this.workPermitForm.check_list = getFile[4].toString().split('.')[0];
-                this.check_list_path = this.constant.mediaPath + check_list1.toString();
+                this.check_list_path = this.constant.mediaPath +'/'+ check_list1.toString();
               }
             }
 
@@ -414,6 +415,11 @@ export class WorkPermitFormComponent implements OnInit {
             this.step4Data.representative_name = res['data'].onBehalfApplicantDetails.representative_name;
             this.step4Data.behalf_designation = res['data'].onBehalfApplicantDetails.designation;
             this.step4Data.digital_signature = res['data'].onBehalfApplicantDetails.digital_signature;
+
+            if(res['data'].onBehalfApplicantDetails.organization_name && res['data'].onBehalfApplicantDetails.representative_name && res['data'].onBehalfApplicantDetails.designation && res['data'].onBehalfApplicantDetails.digital_signature){
+              this.authorizationList.authorization_confirm = true;
+            }
+            
 
             // if(res['data'].paymentDetails != null && typeof res['data'].paymentDetails === 'object'){
             //   // //console.log(">>>payment details...show");
@@ -690,7 +696,8 @@ export class WorkPermitFormComponent implements OnInit {
   onSubmit4(ngForm4) {
     // this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
 
-    if(ngForm4.form.valid) {
+    // console.log(this.authorizationList.authorization_confirm);
+    if(ngForm4.form.valid && this.authorizationList.authorization_confirm == true) {
       this.workPermitForm = {};
       this.workPermitForm.step4 = {};
       this.workPermitForm.email = this.userEmail;
@@ -714,11 +721,13 @@ export class WorkPermitFormComponent implements OnInit {
           let getData: any = res;
           if(res['status'] == true) {
             
-            this.Service.moveSteps('documents_tobe_attached', 'authorization_ofthe_application', this.headerSteps);
+            this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
           }
         });
+    }else if(ngForm4.form.valid && this.authorizationList.authorization_confirm == false) {
+      this.toastr.warning('Please select authorization box', '');
     }
     
   }
@@ -964,6 +973,11 @@ export class WorkPermitFormComponent implements OnInit {
   //     this.toastr.warning('Please Fill required field','')
   //   }
   // }
+
+  setexDate(date, index){
+    let cdate = date;
+    this.minDate = new Date(cdate  + (60*60*24*1000));   
+  }
 
   savedraftStep(steps){
     if(steps == 'step1') {

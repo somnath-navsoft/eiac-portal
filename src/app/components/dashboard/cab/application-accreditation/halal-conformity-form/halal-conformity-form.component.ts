@@ -3630,7 +3630,7 @@ onSubmitStep7(ngForm7: any) {
       this.voucherSentData['payment_date']._i != undefined){
       var dtData = this.voucherSentData['payment_date']._i;
       var year = dtData.year;
-      var month = dtData.month;
+      var month = dtData.month+1;
       var date = dtData.date;
       dtFormat = year + "-" + month + "-" + date;
     }
