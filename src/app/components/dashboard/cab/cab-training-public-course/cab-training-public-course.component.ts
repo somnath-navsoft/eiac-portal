@@ -78,6 +78,12 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   trainingDuration:any[] = [];
   closeResult: string;
   trainingPublicCourseid:any;
+  tutionFees:any;
+  taxVat:any;
+  knowledgeFees:any;
+  innovationFees:any;
+  noofParticipants:any;
+  subTotal:any;
 
   constructor(private Service: AppService, private http: HttpClient,
     public _toaster: ToastrService, private _router: Router, private _route: ActivatedRoute,
@@ -131,7 +137,13 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     this.loadDetailsPage();
     this.trainingDuration = [{key:1,title:'1 Day'},{key:2,title:'2 Days'},{key:3,title:'3 Days'},{key:4,title:'4 Days'},{key:5,title:'5 Days'},{key:6,title:'6 Days'},{key:7,title:'7 Days'},{key:8,title:'8 Days'},{key:9,title:'9 Days'},{key:10,title:'10 Days'}];
 
-    console.log(this.participantTraineeDetails.length);
+    // console.log(this.participantTraineeDetails.length);
+    // tutionFees:any;
+    // taxVat:any;
+    // knowledgeFees:any;
+    // innovationFees:any;
+    // noofParticipants:any;
+    
   }
 
   addRow(obj) {
@@ -140,14 +152,27 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   }
 
   loadDetailsPage() {
-    this.Service.getwithoutData(this.Service.apiServerUrl+'/'+this._constant.API_ENDPOINT.course_details+this.publicCourseId+'?data=1')
-    .subscribe(
-      res => {
-        var courseDetails = res['courseDetails'];
-        this.step3Data.training_course_title = courseDetails.course;
-        this.step3Data.training_duration = courseDetails.training_days;
-        console.log(courseDetails.training_days,'training_days');
-      })
+    if(this.trainingPublicCourseid != '' && this.trainingPublicCourseid != undefined) {
+      this.Service.getwithoutData(this.Service.apiServerUrl+'/'+this._constant.API_ENDPOINT.course_details+this.trainingPublicCourseid+'?data=1')
+        .subscribe(
+          res => {
+            var courseDetails = res['courseDetails'];
+            this.step3Data.training_course_title = courseDetails.course;
+            this.step3Data.training_duration = courseDetails.training_days;
+            // console.log(courseDetails.training_days,'training_days');
+
+            var training_duration_current = this.step3Data.training_duration;
+            this.noofParticipants = this.participantTraineeDetails.length;
+            this.tutionFees = 1000 * parseInt(this.noofParticipants) * parseInt(training_duration_current);
+            console.log(this.noofParticipants);
+            console.log(training_duration_current);
+            console.log(this.tutionFees);
+            this.taxVat = 0.5 * this.tutionFees;
+            this.knowledgeFees = 10 * this.noofParticipants;
+            this.innovationFees = 10 * this.noofParticipants;
+            this.subTotal = this.tutionFees + this.knowledgeFees + this.innovationFees;
+          });
+    }
   }
 
   loadCountryStateCity = async() => {

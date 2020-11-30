@@ -106,6 +106,7 @@ export class WorkPermitFormComponent implements OnInit {
   paymentFilePath :string = '';
   subscriptions: Subscription[] = [];
   public minDate;
+  activitySectionArr:any[] = [];
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,public _trainerService:TrainerService,public sanitizer:DomSanitizer) { }
 
@@ -169,6 +170,7 @@ export class WorkPermitFormComponent implements OnInit {
     // this.workPermitForm.representative_name = '';
     // this.workPermitForm.behalf_designation = '';
     // this.workPermitForm.digital_signature = '';
+    // this.activitySectionArr.length > 0 ? 
   }
 
   statelistById = async(country_id) => {
@@ -466,8 +468,8 @@ export class WorkPermitFormComponent implements OnInit {
          this.voucherFile.append('voucher_no',this.voucherSentData['voucher_no']);
          this.voucherFile.append('amount',this.voucherSentData['amount']);
          this.voucherFile.append('voucher_date',dtFormat);
-         this.voucherFile.append('accreditation',this.voucherSentData['accreditation']);
-         this.voucherFile.append('registration','2');
+        //  this.voucherFile.append('accreditation',this.formApplicationId);
+         this.voucherFile.append('registration',this.formApplicationId);
 
          this.subscriptions.push(this._trainerService.registrationVoucherSave((this.voucherFile))
          .subscribe(
@@ -626,6 +628,8 @@ export class WorkPermitFormComponent implements OnInit {
 
   onSubmit2(ngForm2) {
     // this.Service.moveSteps('activities_scope', 'documents_tobe_attached', this.headerSteps);
+    // this.step2Data.activity_section = this.activitySectionArr;
+    // console.log(this.activitySectionArr);
     if(ngForm2.form.valid) {
       this.workPermitForm = {};
       this.workPermitForm.step2 = {};
@@ -637,6 +641,7 @@ export class WorkPermitFormComponent implements OnInit {
       this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
 
       this.step2Data.is_draft = false;
+      this.step2Data.activity_section = this.activitySectionArr;
       this.workPermitForm.step2 = this.step2Data;
 
       // this.loader = false;
@@ -654,6 +659,8 @@ export class WorkPermitFormComponent implements OnInit {
             this.toastr.warning(res['msg'], '');
           }
         });
+    }else {
+      this.toastr.warning('Please Fill required field','');
     }
     
   }
@@ -689,6 +696,8 @@ export class WorkPermitFormComponent implements OnInit {
             this.toastr.warning(res['msg'], '');
           }
         });
+    }else {
+      this.toastr.warning('Please Fill required field','');
     }
     
   }
@@ -728,6 +737,8 @@ export class WorkPermitFormComponent implements OnInit {
         });
     }else if(ngForm4.form.valid && this.authorizationList.authorization_confirm == false) {
       this.toastr.warning('Please select authorization box', '');
+    }else {
+      this.toastr.warning('Please Fill required field','');
     }
     
   }
@@ -940,7 +951,9 @@ export class WorkPermitFormComponent implements OnInit {
               }
             }
           )
-      
+    }
+    else {
+      this.toastr.warning('Please Fill required field','');
     }
   }
 

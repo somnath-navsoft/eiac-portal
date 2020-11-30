@@ -1,23 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { AppService } from '../../../../services/app.service';
-import { TrainerService } from '../../../../services/trainer.service';
-import { Constants } from '../../../../services/constant.service';
+import { AppService } from '../../../services/app.service';
+import { TrainerService } from '../../../services/trainer.service';
+import { Constants } from '../../../services/constant.service';
 import { ToastrService, Overlay, OverlayContainer } from 'ngx-toastr';
-import {CustomModalComponent} from '../../../utility/custom-modal/custom-modal.component';
-import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-operations-registration-service-list',
-  templateUrl: './operations-registration-service-list.component.html',
-  styleUrls: ['./operations-registration-service-list.component.scss'],
-  providers: [CustomModalComponent, ToastrService, Overlay, OverlayContainer]
+  selector: 'app-registration-status',
+  templateUrl: './registration-status.component.html',
+  styleUrls: ['./registration-status.component.scss']
 })
-export class OperationsRegistrationServiceListComponent implements OnInit {
+export class RegistrationStatusComponent implements OnInit {
 
-  //Observable subscription
   subscriptions: Subscription[] = [];
-  modalOptions:NgbModalOptions;
   voucherSentData: any = {};
   voucherFile:any = new FormData();
   paymentReceiptValidation: boolean = true;
@@ -37,12 +32,7 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
   dataLoad: boolean = false;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
-    private _trainerService: TrainerService, private modalService: NgbModal) { 
-      this.modalOptions = {
-        backdrop:'static',
-        backdropClass:'customBackdrop'
-      }
-    }
+    private _trainerService: TrainerService) { }
 
   ngOnInit() {
     this.loadPageData();
@@ -177,113 +167,6 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
            this.trainerdata = array;
          }
        }        
-    }
-  }
-
-  serviceStatus(index,id){
-    this.loader = false;
-
-    this.subscriptions.push(this._trainerService.updateStatus(id)
-      .subscribe(
-        result => {
-          this.loader = true;
-          // console.log(result,'result');
-          this.trainerdata[index].accr_status = 'complete';
-          this._toaster.success("Payment Completed Successfully",'');
-      })
-    );
-
-  }
-
-  open(content, id: number) {
-    //this.voucherSentData = {};
-    if(id){
-      console.log(">>ID: ", id);
-      this.voucherSentData['accreditation'] = id;
-    }
-    this.paymentReceiptValidation = null;
-    this.modalService.open(content, this.modalOptions).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
-  }
-
-  voucherSentSubmit(theForm){
-     
-     let postObject: any = {};
-     let is_valid: boolean = false;
-     if(this.voucherSentData['voucher_no'] != undefined && this.voucherSentData['amount'] != undefined &&
-      this.voucherSentData['voucher_date'] != undefined){
-        is_valid = true;
-      }
-      //console.log("Valid/Invalid: ", theForm.form.valid, " -- "," --", is_valid, " --", this.voucherSentData);
-
-    //return false;
-     if(is_valid == true && this.paymentReceiptValidation === true){ 
-          let dtFormat: string = '';;
-          if(this.voucherSentData['voucher_date'] != undefined && 
-          this.voucherSentData['voucher_date']._i != undefined){
-            var dtData = this.voucherSentData['voucher_date']._i;
-            var year = dtData.year;
-            var month = dtData.month + 1;
-            var date = dtData.date;
-            dtFormat = year + "-" + month + "-" + date;
-          }
-
-          //console.log(">>> Date: ", (dtFormat), " -- ", this.voucherSentData['voucher_date'], " -- ", this.voucherSentData['voucher_date']._i);
-          //console.log("@accred ID: ", this.voucherSentData['accreditation'])
-          this.voucherFile.append('voucher_no',this.voucherSentData['voucher_no']);
-          this.voucherFile.append('amount',this.voucherSentData['amount']);
-          this.voucherFile.append('voucher_date',dtFormat);
-          // this.voucherFile.append('accreditation',this.voucherSentData['accreditation']);
-          this.voucherFile.append('registration',this.voucherSentData['accreditation']);
-
-          this.subscriptions.push(this._trainerService.registrationVoucherSave((this.voucherFile))
-          .subscribe(
-             result => {
-               let data: any = result;
-                if(data.status){
-                  this.voucherFile = new FormData();
-                  this.voucherSentData = {};
-                  this.modalService.dismissAll();
-                  this._toaster.success("Invoice Uploaded Successfully",'Upload');
-                }else{
-                  this._toaster.warning(data.msg,'');
-                }
-             }
-            )
-          )
-
-     }else if(theForm.form.valid && (this.paymentReceiptValidation == false || this.paymentReceiptValidation == null)){
-      this._toaster.warning('Please Upload Valid Files','Upload Error',{timeOut:5000});
-     }
-     else{
-      this._toaster.warning('Please Fill required fields','Validation Error',{timeOut:5000});
-     }
-  }
-
-  validateFile(fileEvent: any, type?: any) {
-    var file_name = fileEvent.target.files[0].name;
-    var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
-    var ex_type = ['pdf', 'PDF'];
-    var ex_check = this._service.isInArray(file_exe,ex_type);
-    if(ex_check){
-      this.paymentReceiptValidation = true;
-      //if(type == undefined){
-        this.voucherFile.append('voucher_invoice',fileEvent.target.files[0]);
-      //}
-    }else{
-      this.paymentReceiptValidation = false;
     }
   }
 }

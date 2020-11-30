@@ -2629,11 +2629,6 @@ this.ptProvidersForm.step9 = {};
     var date = dtData.date;
     dtFormat = year + "-" + month + "-" + date;
   }
-  //     
-console.log(dtFormat,'dtFormat');
-console.log(dtFormat,'dtFormat');
-console.log(dtFormat,'dtFormat');
-console.log(dtFormat,'dtFormat');
 
   let is_valid: boolean = false;
 this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);

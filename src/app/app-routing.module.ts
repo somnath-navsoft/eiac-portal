@@ -92,6 +92,8 @@ import { OperationsRegistrationServiceListComponent } from './components/dashboa
 import { OperationsRegistrationServiceDetailsComponent } from './components/dashboard/operations/operations-registration-service-details/operations-registration-service-details.component';
 import { CabCompanyProfileComponent } from './components/dashboard/cab/cab-company-profile/cab-company-profile.component';
 import { CabMessage } from './components/dashboard/cab/cab-message/cab-message.component';
+import { RegistrationStatusComponent } from './components/dashboard/registration-status/registration-status.component';
+import { TrainingStatusComponent } from './components/dashboard/training-status/training-status.component';
 
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
@@ -102,6 +104,8 @@ const routes: Routes = [
       //Trainers
       { path: 'onboarding-message-list', component: MessageComponent, canActivate: [AuthGuard] },
       { path: 'status/:id', component: StatusComponent, canActivate: [AuthGuard] }, 
+      { path: 'registration-status', component: RegistrationStatusComponent, canActivate: [AuthGuard] }, 
+      { path: 'training-status', component: TrainingStatusComponent, canActivate: [AuthGuard] }, 
       { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard] },
       { path: 'account-details/:id', component: AccountDetailsComponent, canActivate: [AuthGuard] },
       { path: 'account-upload/:id', component: AccountUploadComponent, canActivate: [AuthGuard] },

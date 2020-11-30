@@ -362,41 +362,41 @@
                                                             <td>Tuition Fees</td>
                                                             <td>{{fee_day_pertime1}}</td>
                                                             <td>
-                                                                <input type="text" class="fee-inp" name="no_of_participants1" [disabled]="!editable" [(ngModel)]="participant_trainee">
+                                                                <input type="text" class="fee-inp" name="no_of_participants1" [disabled]="!editable" [(ngModel)]="noofParticipants">
                                                             </td>
-                                                            <td>{{amount1}}</td>
+                                                            <td>{{tutionFees}}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>2</td>
                                                             <td>TAX (VAT)</td>
                                                             <td>{{fee_day_pertime2}}</td>
                                                             <td>
-                                                                <input type="text" class="fee-inp" name="no_of_participants2" [disabled]="!editable" [(ngModel)]="participant_trainee">
+                                                                <input type="text" class="fee-inp" name="no_of_participants2" [disabled]="!editable" [(ngModel)]="noofParticipants">
                                                             </td>
-                                                            <td>{{amount2}}</td>
+                                                            <td>{{taxVat}}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>3</td>
                                                             <td>Knowledge Fees - Per Participant درهم المعرفة</td>
                                                             <td>{{fee_day_pertime3}}</td>
                                                             <td>
-                                                                <input type="text" class="fee-inp" name="no_of_participants3" [disabled]="!editable" [(ngModel)]="participant_trainee">
+                                                                <input type="text" class="fee-inp" name="no_of_participants3" [disabled]="!editable" [(ngModel)]="noofParticipants">
                                                             </td>
-                                                            <td>{{amount3}}</td>
+                                                            <td>{{knowledgeFees}}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>4</td>
-                                                            <td>Knowledge Fees - Per Participant درهم الابتكار</td>
+                                                            <td>Innovetion Fees - Per Participant درهم الابتكار</td>
                                                             <td>{{fee_day_pertime4}}</td>
                                                             <td>
-                                                                <input type="text" class="fee-inp" name="no_of_participants4" [disabled]="!editable" [(ngModel)]="participant_trainee">
+                                                                <input type="text" class="fee-inp" name="no_of_participants4" [disabled]="!editable" [(ngModel)]="noofParticipants">
                                                             </td>
-                                                            <td>{{amount4}}</td>
+                                                            <td>{{innovationFees}}</td>
                                                         </tr>
                                                         <tr>
                                                             <td></td>
                                                             <td colspan="3"><b>Total</b></td>
-                                                            <td><b>{{total}}</b></td>
+                                                            <td><b>{{subTotal}}</b></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>

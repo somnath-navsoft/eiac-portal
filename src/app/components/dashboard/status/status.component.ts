@@ -71,7 +71,7 @@ export class StatusComponent implements OnInit {
   }
 
   setIB(id: any){
-    console.log(">>>url id set...", id);
+    // console.log(">>>url id set...", id);
     sessionStorage.setItem('ibUrlId', id);
   }
 
@@ -91,29 +91,29 @@ if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_
       
       if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_conformity_bodies') && 
       (item.is_draft == true || item.is_draft == false) && item.paymentDetails != undefined && item.paymentDetails == false){
-        console.log("@Enter....3.1: ",item.id); 
+        // console.log("@Enter....3.1: ",item.id); 
         return true;  
       }
       if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_conformity_bodies') && item.is_draft == false && 
         item.paymentDetails != undefined && item.paymentDetails != false && item.paymentDetails != false && 
         typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
-          console.log("@Enter....2222");
+          // console.log("@Enter....2222");
         return false;
       }
       if((item.saved_step != null && item.saved_step == 5 && item.form_meta == 'certification_bodies') && 
       (item.is_draft == true || item.is_draft == false) && item.paymentDetails != undefined && item.paymentDetails == false){
-        console.log("@Enter....3.11: ",item.id); 
+        // console.log("@Enter....3.11: ",item.id); 
         return true;  
       }
       if((item.saved_step != null && item.saved_step == 5 && item.form_meta == 'certification_bodies') && item.is_draft == false && 
         item.paymentDetails != undefined && item.paymentDetails != false && item.paymentDetails != false && 
         typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
-          console.log("@Enter....4444");
+          // console.log("@Enter....4444");
         return false;
       }
       
       if(item.saved_step != null && item.saved_step < 7 && (item.is_draft == true || item.is_draft == false)){
-        console.log("@Enter....3");
+        // console.log("@Enter....3");
         return false;
       }
 
@@ -140,7 +140,7 @@ if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_
       }
       if(item.saved_step != null && item.saved_step == 9 && (item.is_draft == false || item.is_draft == true) && 
         item.paymentDetails != undefined && item.accr_status !== 'complete'){
-          console.log("@Enter....1");
+          // console.log("@Enter....1");
         return false;
       }
 
@@ -151,7 +151,7 @@ if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_
        if(item.saved_step != null && item.saved_step == 7 && item.is_draft == false && 
         item.paymentDetails != undefined && item.paymentDetails != false && item.paymentDetails != false && 
         typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
-          console.log("@Enter....2");
+          // console.log("@Enter....2");
         return false;
       }
     }
@@ -167,7 +167,7 @@ if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_
           let data: any = result;
           let dataRec: any=[];
           this.dataLoad = true;
-          console.log('Data load...', data.records);
+          // console.log('Data load...', data.records);
           
           this.trainerdata = data.records;
           dataRec = data.records;

@@ -400,14 +400,15 @@
                                         <div class="col-md-6">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Activity Section</mat-label>
-                                                <mat-select placeholder="Select" name="activity_section" [(ngModel)]="step2Data.activity_section" required>
-                                                    <mat-option value="Yes">Yes</mat-option>
-                                                    <mat-option value="No">No</mat-option>
+                                                <mat-select placeholder="Select" name="activity_section" multiple [(ngModel)]="activitySectionArr" required>
+                                                    <mat-option value="Laboratory">Laboratory</mat-option>
+                                                    <mat-option value="Inspection Body">Inspection Body</mat-option>
+                                                    <mat-option value="Certification Body">Certification Body</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
                                         </div>
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" *ngIf="activitySectionArr.length > 0">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Scope to be Authorized</mat-label>
                                                 <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Scope to be Authorized" name="scopes_to_be_authorized" [(ngModel)]="step2Data.scopes_to_be_authorized">
@@ -677,7 +678,7 @@
                                         <div class="col-md-6">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Date</mat-label>
-                                                <input matInput placeholder="Date" name="onbehalf_representative_date" 
+                                                <input matInput placeholder="Date" [matDatepicker]="onbehalf_representative_date" name="onbehalf_representative_date" 
                                                 [(ngModel)]="step4Data.application_date" [value]="Service.returnCurrentDate()">
                                             </mat-form-field>
                                         </div>
