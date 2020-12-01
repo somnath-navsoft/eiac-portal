@@ -1304,6 +1304,9 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .messaging_chat.msg_client .message_chat .message_time { justify-content: flex-end; }
 .table-content-health td span.chip-cross { font-size: 17px; }
 // .chip-cross { line-height: 1; font-size: 10px; }
+.activity_wrapper { display: flex; width: 100%; justify-content: space-between; }
+.check_data_activities { display: flex; justify-content: space-around; width: 85%; }
+.confirm.activity_wrapper .mat-checkbox-layout .mat-checkbox-label { font-size: 18px; font-family: 'Dubai Regular'; }
 
 //==================RESPONSIVE==================//
 @media(max-width: 1500px) {

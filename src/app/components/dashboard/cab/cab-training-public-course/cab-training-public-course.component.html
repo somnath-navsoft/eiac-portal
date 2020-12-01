@@ -496,7 +496,7 @@
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
                                         <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('fees_details',headerSteps,'menu','authorization')">BACK</a> 
-                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step3')">SAVE AS DRAFT</button>
+                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step5')">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >CONTINUE</button>
                                 </div>
@@ -552,7 +552,7 @@
                 </div>
 
                 <div class="cust-stepper" id="payment_update" [ngStyle]="{'display':'none'}">
-                    <form #ngForm7="ngForm" (ngSubmit)="onSubmitStep7(ngForm7)" autocomplete="off">
+                    <form #ngForm7="ngForm" (ngSubmit)="onSubmitPaymentInformation(ngForm7)" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <!--  (ngSubmit)="onSubmitPaymentInformation(ngForm8)" -->
@@ -665,7 +665,7 @@
                                         <ng-container *ngIf="!paymentStepComp">
                                         <a class="cancel-bttn" type="button" (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK</a>
                                         </ng-container>
-                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step9')">SAVE AS DRAFT</button>
+                                        <button class="cancel-bttn" type="button" (click)="onSubmitPaymentInformation(ngForm7, true)">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >SUBMIT</button>
                                 </div>

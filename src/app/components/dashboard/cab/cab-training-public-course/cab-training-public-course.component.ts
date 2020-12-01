@@ -84,6 +84,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   innovationFees:any;
   noofParticipants:any;
   subTotal:any;
+  voucherFile:any = new FormData();
+  paymentReceiptValidation:boolean
 
   constructor(private Service: AppService, private http: HttpClient,
     public _toaster: ToastrService, private _router: Router, private _route: ActivatedRoute,
@@ -160,17 +162,6 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             this.step3Data.training_course_title = courseDetails.course;
             this.step3Data.training_duration = courseDetails.training_days;
             // console.log(courseDetails.training_days,'training_days');
-
-            var training_duration_current = this.step3Data.training_duration;
-            this.noofParticipants = this.participantTraineeDetails.length;
-            this.tutionFees = 1000 * parseInt(this.noofParticipants) * parseInt(training_duration_current);
-            console.log(this.noofParticipants);
-            console.log(training_duration_current);
-            console.log(this.tutionFees);
-            this.taxVat = 0.5 * this.tutionFees;
-            this.knowledgeFees = 10 * this.noofParticipants;
-            this.innovationFees = 10 * this.noofParticipants;
-            this.subTotal = this.tutionFees + this.knowledgeFees + this.innovationFees;
           });
     }
   }
@@ -347,6 +338,17 @@ export class CabTrainingPublicCourseComponent implements OnInit {
 
       this.publicTrainingForm.step3 = this.step3Data;
 
+      var training_duration_current = this.step3Data.training_duration;
+      this.noofParticipants = this.participantTraineeDetails.length;
+      this.tutionFees = 1000 * parseInt(this.noofParticipants) * parseInt(training_duration_current);
+      // console.log(this.noofParticipants);
+      // console.log(training_duration_current);
+      // console.log(this.tutionFees);
+      this.taxVat = 0.5 * this.tutionFees;
+      this.knowledgeFees = 10 * this.noofParticipants;
+      this.innovationFees = 10 * this.noofParticipants;
+      this.subTotal = this.tutionFees + this.taxVat + this.knowledgeFees + this.innovationFees;
+
       // console.log(this.publicTrainingForm);
       this.step3DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this._constant.API_ENDPOINT.publicTrainingForm,this.step3DataBodyFormFile)
@@ -419,22 +421,248 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   }
 
   onSubmitStep6(ngForm6) {
-    this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+    // this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+    this.transactionsItem['amount']               = {};
+    this.transactionsItem['amount']['total']      = 0.00;
+    this.transactionsItem['amount']['currency']   = 'USD';
+    this.transactionsItem['amount']['details']    = {};
+    this.transactionsItem['amount']['details']['subtotal'] = 0.00;
+    //declare Items data
+    this.transactionsItem['item_list']            = {};
+    this.transactionsItem['item_list']['items']   = [];
+    // let custPrice: any = 0.01;
+    // this.total = 0.05;
+    let custPrice: any = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;
+    this.total = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//0.05;
+    this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity: 1, price: custPrice, currency: 'USD'});
+    this.total = 1;
+    custPrice = 0.1;
+      if(this.total > 0){
+        ////console.log("Calculate price: ", calcPrice);
+        this.transactionsItem['amount']['total'] = custPrice.toFixed(2);
+        this.transactionsItem['amount']['details']['subtotal'] = custPrice.toFixed(2);
+        this.transactions.push(this.transactionsItem);
+        //console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
+      }
+      setTimeout(() => {
+        this.createPaymentButton(this.transactionsItem, this.publicTrainingForm, this);
+        let elem = document.getElementsByClassName('paypal-button-logo');
+        //console.log("button creting...");
+        if(elem){
+          //console.log("button creted...");
+        }else{
+          //console.log("Loding button...");
+        }
+      }, 100)
   }
 
-  onSubmitStep7(ngForm7) {
-    setTimeout(()=>{
-      let elem = document.getElementById('openAppDialog');
-      //console.log("App dialog hash....", elem);
-      if(elem){
-        elem.click();
+  createPaymentButton(itemData: any, formObj?:any, compObj?:any){
+    ////console.log("creating....buttons...", this.paymentReview, " :: ", this.paymentReview.length, " -- ",this.transactionsItem, " --- ", this.transactions);
+   //AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl = das.abhishek77@gmail.com
+   //Get transaction ID - https://uateloper.paypal.com/docs/checkout/reference/server-integration/get-transaction/#on-the-server
+    if(this.transactions.length){
+      //console.log('Paypal');
+      this.loadExternalScript("https://www.paypalobjects.com/api/checkout.js").then(() => {
+      paypal.Button.render({
+        env: 'sandbox',
+        client: {
+          sandbox: 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
+        },
+        commit: true,
+        payment: function (data, actions) {
+          //console.log("@Paypal payment actionms: ", actions, " -- ", data, " --- ", itemData);        
+          return actions.payment.create({
+            payment: {
+              transactions: [itemData]
+            }
+          })
+        },
+        onAuthorize: function(data, actions) {
+          //console.log("@Paypal onAuthorize actionms: ", actions, " -- ", data);
+          return actions.payment.execute().then(function(payment) {
+            //console.log(">>>Success: ", payment);
+            formObj.paypalReturn = payment;
+            formObj.paypalStatus = 'success';
+            //console.log("<<<Review obj: ", formObj, " :: ", compObj);
+            compObj.saveInspectopnAfterPayment(formObj);
+          })
+        },
+        onCancel: (data, actions) => {
+          //console.log('OnCancel', data, actions);
+          //this.showCancel = true;
+          formObj.paypalReturn = data;
+          formObj.paypalStatus = 'cancel';
+          this._toaster.warning("You have cancelled payment, Continue next step please complete payment process again.", 'Paypal>>',{timeOut:6500});
+      },
+      onError: err => {
+          //console.log('OnError', err);
+          formObj.paypalReturn = err;
+          formObj.paypalStatus = 'error';
+          //compObj.saveCourseAfterPayment(formObj);
+          this._toaster.error("Paypal transaction error has occured, please try again", 'Payment Return'); 
+      },
+      onClick: (data, actions) => {
+          //console.log('onClick', data, actions);
+          //this.resetStatus();
       }
-    }, 100)
-    //this.openView('appComp','');
-    setTimeout(() => {                    
+      }, '#paypalPayment');
+    });
+    }
+  }
+
+  private loadExternalScript(scriptUrl: string) {
+    return new Promise((resolve, reject) => {
+      const scriptElement = document.createElement('script')
+      scriptElement.src = scriptUrl
+      scriptElement.onload = resolve
+      ////console.log("load script...");
+      document.body.appendChild(scriptElement)
+    })
+  }
+  
+  saveInspectopnAfterPayment(theData: any){
+    ////console.log(">>> The Data: ", theData);
+    this.transactions = [];
+    this._toaster.success('Payment Success, Thank you.','Paypal>>',{timeOut:2000});
+    setTimeout(()=> {
       // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-      this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
-    },3500)
+      //////console.log("moving...");
+      this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+    }, 1000)      
+    //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+  }
+
+  onSubmitPaymentInformation(ngForm6: any, type?: boolean){
+    ////console.log("payment submitting.....");
+    this.publicTrainingForm = {};
+    this.publicTrainingForm.step6 = {};
+    
+      let dtFormat: string = '';
+      if(this.voucherSentData['payment_date'] != undefined && 
+        this.voucherSentData['payment_date']._i != undefined){
+        var dtData = this.voucherSentData['payment_date']._i;
+        var year = dtData.year;
+        var month = dtData.month;
+        var date = dtData.date;
+        dtFormat = year + "-" + month + "-" + date;
+      }
+      //     
+    
+      this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
+      this.voucherFile.append('amount',this.voucherSentData['amount']);
+      this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
+      this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
+      this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
+      this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
+      this.voucherFile.append('voucher_date',dtFormat);
+      this.voucherFile.append('accreditation',this.formApplicationId);
+      this.voucherFile.append('is_draft', false);
+      // this.voucherFile.append('application_id',this.formApplicationId);
+          
+      this.loader = false;
+      if(ngForm6.form.valid && this.paymentReceiptValidation != false) {
+        // //console.log(this.voucherFile);
+          this._trainerService.paymentVoucherSave((this.voucherFile))
+          .subscribe(
+              result => {
+                this.loader = true;
+                let data: any = result;
+                ////console.log("submit voucher: ", data);
+                if(data.status){
+                  //this.voucherFile = new FormData();
+                  //this.voucherSentData = {};
+                  //this.toastr.success("Your form has been successfully submitted and it is under review.We will update you shortly.",'THANK YOU');
+                  setTimeout(()=>{
+                    let elem = document.getElementById('openAppDialog');
+                    //console.log("App dialog hash....", elem);
+                    if(elem){
+                      elem.click();
+                    }
+                  }, 100)
+                  //this.openView('appComp','');
+                  setTimeout(() => {                    
+                    // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+                    this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+                  },3500)
+                  
+                }else{
+                  this._toaster.warning(data.msg,'');
+                }
+              }
+            )
+      }else if(type != undefined && type == true && this.paymentReceiptValidation != false){
+        
+        this.publicTrainingForm = {};
+        this.publicTrainingForm.step6 = {};
+        
+          let dtFormat: string = '';
+          if(this.voucherSentData['payment_date'] != undefined && 
+            this.voucherSentData['payment_date']._i != undefined){
+            var dtData = this.voucherSentData['payment_date']._i;
+            var year = dtData.year;
+            var month = dtData.month;
+            var date = dtData.date;
+            dtFormat = year + "-" + month + "-" + date;
+          }
+          //     
+        
+        this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
+        this.voucherFile.append('amount',this.voucherSentData['amount']);
+        this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
+        this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
+        this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
+        this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
+        this.voucherFile.append('voucher_date',dtFormat);
+        this.voucherFile.append('accreditation',this.formApplicationId);
+        this.voucherFile.append('is_draft', true);
+        // this.voucherFile.append('application_id',this.formApplicationId);
+            
+          // //console.log(this.voucherFile);
+        this._trainerService.paymentVoucherSave((this.voucherFile))
+        .subscribe(
+            result => {
+              this.loader = true;
+              let data: any = result;
+              ////console.log("submit voucher: ", data);
+              if(data.status){
+                this._toaster.success('Save Draft Successfully', '');
+              }
+            }
+          )
+    }
+    else {
+      this._toaster.warning('Please Fill required field','');
+    }
+  }
+
+  savedraftStep(steps) {
+    if(steps == 'step1') {
+      this.publicTrainingForm = {};
+      this.publicTrainingForm.step1 = {};
+      this.publicTrainingForm.email = this.userEmail;
+      this.publicTrainingForm.userType = this.userType;
+      this.publicTrainingForm.saved_step = '1';
+      this.step1Data.is_draft = false;
+      this.step1Data.training_form_type = 'public_training';
+
+      this.publicTrainingForm.step1 = this.step1Data;
+
+      // console.log(this.publicTrainingForm);
+      this.loader = false;
+      this.step1DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this._constant.API_ENDPOINT.publicTrainingForm,this.step1DataBodyFormFile)
+      .subscribe(
+        res => {
+          this.loader = true;
+          if(res['status'] == true) {
+            this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['id']);
+            // this.Service.moveSteps('application_information', 'participant', this.headerSteps);
+          // console.log(res);
+          }else{
+            this._toaster.warning(res['msg'], '');
+          }
+        })
+    }
   }
 }
 
