@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
 @Injectable()
 export class AppService {
   currentlatitude: any;
-  
+  dashBoardPagination: any = 5;
 
   // public apiServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
   // public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';

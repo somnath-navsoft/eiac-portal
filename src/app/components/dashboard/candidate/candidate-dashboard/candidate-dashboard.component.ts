@@ -19,7 +19,7 @@ export class CandidateDashboardComponent implements OnInit {
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
     this.config = {
-      itemsPerPage: 5,
+      itemsPerPage: this.Service.dashBoardPagination,
       currentPage: 1,
     };
   }
