@@ -7,7 +7,13 @@ import {FormControl} from '@angular/forms';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Observable} from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
+import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
+import { TrainerService } from '../../../../../services/trainer.service';
 
+
+declare let paypal: any; 
 @Component({
   selector: 'app-no-objection-form',
   templateUrl: './no-objection-form.component.html',
@@ -116,6 +122,9 @@ export class NoObjectionFormComponent implements OnInit {
   halalCabCheckItemOthersInput: any;
 
   //STEP 4
+  listOfIntEquip: any[] = [{}];
+  // step 5
+  listOfStaff: any[] = [{}];
 
 
   //Add multiple input items
@@ -126,7 +135,19 @@ export class NoObjectionFormComponent implements OnInit {
   users: string[] = [];
   userItems: any;
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
+  paymentFilePath: string = '';
+  transactions: any[] =[];
+  transactionsItem: any={};
+  total: any = 0;
+
+  public loaderPdf: boolean = false;
+  public completeLoaded: boolean = false;
+  public errorLoader: boolean = false;
+  closeResult: string;
+  modalOptions:NgbModalOptions;
+  
+  constructor(public Service: AppService, public constant:Constants, public sanitizer: DomSanitizer , public router: Router,
+    public toastr: ToastrService, private modalService: NgbModal, private _trainerService: TrainerService,) { }
 
   ngOnInit() { 
     //this.meta.addTag({name: 'title', content: 'Angular Project, Create Angular Project'});
@@ -135,6 +156,17 @@ export class NoObjectionFormComponent implements OnInit {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.userId = sessionStorage.getItem('userId');
+
+    this.step2Data.cabTypeLaboratory_testing = false;
+    this.step2Data.cabTypeLaboratory_calibration = false;
+    this.step2Data.cabTypeInspectionBody_engineering_ib = false;
+    this.step2Data.cabTypeInspectionBody_sustainability_ib = false;
+    this.step2Data.cabTypeCertificationBody_management_system_cb = false;
+    this.step2Data.cabTypeCertificationBody_personal_cb = false;
+    this.step2Data.cabTypeCertificationBody_product_cb = false;
+    this.step2Data.cabTypeHalal_lab =false;
+    this.step2Data.cabTypeHalal_ib = false;
+    this.step2Data.cabTypeHalal_cb = false;
 
     console.log(">>> URL value: ", this.urlVal);
     this.loadCountryStateCity();
@@ -530,8 +562,7 @@ export class NoObjectionFormComponent implements OnInit {
         this.voucherFile.append('payment_receipt',fileEvent.target.files[0]);
     }else{
       //////console.log("...voucher file...3: ", ex_check);
-        this.paymentReceiptValidation = false;
-        
+        this.paymentReceiptValidation = false;        
     }
   }
 
@@ -980,6 +1011,41 @@ export class NoObjectionFormComponent implements OnInit {
   }
 
 
+  openView(content, type:string) {
+    let pathData: any;
+    ////console.log(">>>pop up...", content);   
+  
+    ////console.log(">>> open view", this.pathPDF, " -- ",  this.pathPDF);
+  
+    this.modalService.open(content, this.modalOptions).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      //////console.log("Closed: ", this.closeResult);
+      //this.courseViewData['courseDuration'] = '';
+      //this.courseViewData['courseFees'] = '';
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      //////console.log("Closed with ESC ");
+      
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      //////console.log("Closed with CLOSE ICON ");
+     
+      return 'by clicking on a backdrop';
+    } else {
+      //////console.log("Closed ",`with: ${reason}`);
+      
+      return  `with: ${reason}`;
+    }
+  }
+
+  closeDialog(){
+    this.modalService.dismissAll();
+  }
+
   /*******************************
    * 
    * Application Submit Functions
@@ -990,13 +1056,18 @@ export class NoObjectionFormComponent implements OnInit {
   onSubmitApplicationInformation(theForm: any, type?: any){
     //this.Service.moveSteps('application_information', 'cab_information', this.headerSteps);
 
+    let postData: any =new FormData();
+
+    this.noObjectionBodyForm = {};
+    this.noObjectionBodyForm.step1 = {};
+    this.noObjectionBodyForm.step1['ownOrgBasicInfo'] = [];
+    this.noObjectionBodyForm.step1['ownOrgMembInfo'] = [];
 
     if(theForm.form.valid && type == undefined){
-      this.noObjectionBodyForm = {};      
+            
       this.noObjectionBodyForm.saved_step = 1;      
       this.noObjectionBodyForm.step1 = this.step1Data;
-      this.noObjectionBodyForm.step1['ownOrgBasicInfo'] = [];
-      this.noObjectionBodyForm.step1['ownOrgMembInfo'] = [];
+     
       if(this.ownOrgBasicInfo) {
         this.noObjectionBodyForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
       }
@@ -1009,32 +1080,53 @@ export class NoObjectionFormComponent implements OnInit {
       this.noObjectionBodyForm.step1.is_draft = false;
       console.log(">> Submit Form: ", this.step1Data, " -- ", this.noObjectionBodyForm);
 
-      this.Service.moveSteps('application_information', 'cab_information', this.headerSteps);
+      postData.append("data", JSON.stringify(this.noObjectionBodyForm))
 
-      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
-      // .subscribe(
-      //   res => {
-      //     ////////console.log(res,'Step1 Submit...')
-      //     if(res['status'] == true) {
-      //       let data: any = {};
-      //       //this.isApplicationSubmitted = false;
-      //        data = res;
-      //       if(data.application_id != undefined && data.application_id > 0){
-      //         this.formApplicationId = data.application_id;
-      //       }
-      //       //this.toastr.success(res['msg'],);
-      //       this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
-      //     }else{
-      //       this.toastr.warning(res['msg'], '');
-      //     }
-      //   });
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.noc_submit_form + "/", postData)
+      .subscribe(
+        res => {
+          console.log(res,'Step1 Submit...')
+          if(res['status'] == true) {
+            let data: any = {};
+            //this.isApplicationSubmitted = false;
+             data = res;
+            if(data.id != undefined && data.id > 0){
+              this.formApplicationId = data.id;
+            }
+            //this.toastr.success(res['msg'],);
+            this.Service.moveSteps('application_information', 'cab_information', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
 
-    }else if(type != undefined && type == true){
-      this.noObjectionBodyForm = {};
+    }else if(type != undefined && type == true){      
       this.noObjectionBodyForm.saved_step = 1;      
       this.noObjectionBodyForm.step1 = this.step1Data;
+      if(this.ownOrgBasicInfo) {
+        this.noObjectionBodyForm.step1['ownOrgBasicInfo'] = this.ownOrgBasicInfo;
+      }
+      if((this.ownOrgMembInfo)) {
+        this.noObjectionBodyForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
+      }
       this.noObjectionBodyForm.step1.is_draft = true;
       console.log(">> Submit Save draft: ", this.step1Data, " -- ", this.noObjectionBodyForm);
+      postData.append("data", JSON.stringify(this.noObjectionBodyForm))
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.noc_submit_form + "/", postData)
+      .subscribe(
+        res => {
+          console.log(res,'Save Draft Submit...')
+          if(res['status'] == true) {
+            let data: any = {};
+             data = res;   
+             if(data.id != undefined && data.id > 0){
+              this.formApplicationId = data.id;
+            }   
+            this.toastr.success('Save Draft Successfully: '+this.formApplicationId,);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
 
     }else{
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
@@ -1043,46 +1135,123 @@ export class NoObjectionFormComponent implements OnInit {
   }
 
   onSubmitCabInformation(theForm: any, type?: any){
-    //this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
+   //this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
+    console.log(">>>>>");
+   //return;
+   let postData: any =new FormData();
     this.isFormSubmitted = true;
-    if(theForm.form.valid && type == undefined){
+    let checkLaboratory: boolean = true;
+    let checkInspection: boolean = true;
+    let checkCertification: boolean = true;
+    let checkHalal: boolean = true;
+    console.log(this.step2Data.cabTypeLaboratory_testing,  " -- ", this.step2Data.cabTypeLaboratory_calibration);
+    let cabTypes: any = {};
+    cabTypes['lab'] = [];
+    cabTypes['IB'] = [];
+    cabTypes['CB'] = [];
+    cabTypes['HCAB'] = [];
+    //Check Laboratory
+    if((this.step2Data.cabTypeLaboratory_testing == undefined || this.step2Data.cabTypeLaboratory_testing == false) &&
+      (this.step2Data.cabTypeLaboratory_calibration == undefined || this.step2Data.cabTypeLaboratory_calibration == false)){
+      checkLaboratory = false;
+    }
+    //Check Inspection
+    if((this.step2Data.cabTypeInspectionBody_engineering_ib == undefined || this.step2Data.cabTypeInspectionBody_engineering_ib == false) &&
+      (this.step2Data.cabTypeInspectionBody_sustainability_ib == undefined || this.step2Data.cabTypeInspectionBody_sustainability_ib == false)){
+      checkInspection = false;
+    }
+
+    //Check Certification
+    if((this.step2Data.cabTypeCertificationBody_management_system_cb == undefined || this.step2Data.cabTypeCertificationBody_management_system_cb == false) && 
+      (this.step2Data.cabTypeCertificationBody_personal_cb == undefined || this.step2Data.cabTypeCertificationBody_personal_cb == false) && 
+      (this.step2Data.cabTypeCertificationBody_product_cb == undefined || this.step2Data.cabTypeCertificationBody_product_cb == false)){
+      checkCertification = false;
+    }
+
+    //Check Halal
+    if((this.step2Data.cabTypeHalal_lab == undefined || this.step2Data.cabTypeHalal_lab == false) &&
+      (this.step2Data.cabTypeHalal_ib == undefined || this.step2Data.cabTypeHalal_ib == false) &&
+      (this.step2Data.cabTypeHalal_cb == undefined || this.step2Data.cabTypeHalal_cb == false)){
+      checkHalal = false;
+    }
+
+    cabTypes['lab'].push({
+      'cabTypeLaboratory_testing':this.step2Data.cabTypeLaboratory_testing,
+      'cabTypeLaboratory_calibration':this.step2Data.cabTypeLaboratory_calibration
+    });
+    cabTypes['IB'].push({
+      'cabTypeInspectionBody_engineering_ib':this.step2Data.cabTypeInspectionBody_engineering_ib,
+      'cabTypeInspectionBody_sustainability_ib':this.step2Data.cabTypeInspectionBody_sustainability_ib
+    });
+    cabTypes['CB'].push({
+      'cabTypeCertificationBody_management_system_cb':this.step2Data.cabTypeCertificationBody_management_system_cb,
+      'cabTypeCertificationBody_personal_cb':this.step2Data.cabTypeCertificationBody_personal_cb,
+      'cabTypeCertificationBody_product_cb':this.step2Data.cabTypeCertificationBody_product_cb,
+    });
+    cabTypes['HCAB'].push({
+      'cabTypeHalal_lab':this.step2Data.cabTypeHalal_lab,
+      'cabTypeHalal_ib':this.step2Data.cabTypeHalal_ib,
+      'cabTypeHalal_cb':this.step2Data.cabTypeHalal_cb,
+    });
+    this.step2Data.cab_type = JSON.stringify(cabTypes);
+    console.log(">>>form status: ",theForm.form.valid ," -- ", this.step2Data);
+
+    //return; 
+
+    if((checkLaboratory == true && checkInspection == true && checkCertification == true && checkHalal == true) && type == undefined){
       this.noObjectionBodyForm = {};      
-      this.noObjectionBodyForm.saved_step = 2;      
+      this.noObjectionBodyForm.saved_step = 2;    
+      this.noObjectionBodyForm.step2 = {};  
       this.noObjectionBodyForm.step2 = this.step2Data;
       this.noObjectionBodyForm.step2.application_id = this.formApplicationId;
       this.noObjectionBodyForm.step2.is_draft = false;
       console.log(">> Submit Form: ", this.step1Data, " -- ", this.noObjectionBodyForm);
-
-      this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
-      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
-      // .subscribe(
-      //   res => {
-      //     if(res['status'] == true) {
-      //       let data: any = {};
-      //       this.isFormSubmitted = false;
-      //        data = res;               
-      //       //this.toastr.success(res['msg'],);
-      //       this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
-      //     }else{
-      //       this.toastr.warning(res['msg'], '');
-      //     }
-      //   });
+      postData.append("data", JSON.stringify(this.noObjectionBodyForm))
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.noc_submit_form + "/", postData)
+      .subscribe(
+        res => {
+          console.log(">>>Submit step: ", res);
+          if(res['status'] == true) {
+            let data: any = {};
+            this.isFormSubmitted = false;
+             data = res;               
+            //this.toastr.success(res['msg'],);
+            this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
 
     }else if(type != undefined && type == true){
       this.noObjectionBodyForm = {};
-      this.noObjectionBodyForm.saved_step = 2;      
+      this.noObjectionBodyForm.step2 = {};
+      this.noObjectionBodyForm.saved_step = 2;   
+      this.noObjectionBodyForm.step2.application_id = this.formApplicationId;   
       this.noObjectionBodyForm.step2 = this.step2Data;
       this.noObjectionBodyForm.step2.is_draft = true;
       console.log(">> Submit Save draft: ", this.step1Data, " -- ", this.noObjectionBodyForm);
+      postData.append("data", JSON.stringify(this.noObjectionBodyForm))
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.noc_submit_form + "/", postData)
+      .subscribe(
+        res => {
+          console.log(res,'Save Draft Submit...')
+          if(res['status'] == true) {
+            let data: any = {};
+             data = res;      
+            this.toastr.success('Save Draft Successfully',);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
 
     }else{
-      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:1500});
     }
     
   }
 
   onSubmitListServiceScope(theForm: any, type?: any){
-    //this.Service.moveSteps('list_service_scope', 'list_instrument_equipment', this.headerSteps);
+   this.Service.moveSteps('list_service_scope', 'list_instrument_equipment', this.headerSteps);
 
       //For testing lab checkboxes
       let testingLabCheckCount = 0;
@@ -1200,15 +1369,13 @@ export class NoObjectionFormComponent implements OnInit {
     if(theForm.form.valid && type == undefined && testingLabCheckCount > 0 && 
         calibrationLabCheckCount > 0 && certificationCheckCountFirst > 0 && certificationCheckCountSecond > 0 && halalLabCheckCount > 0){
       this.noObjectionBodyForm = {};      
-      this.noObjectionBodyForm.saved_step = 3; 
-      
-
+      this.noObjectionBodyForm.saved_step = 3;
       this.noObjectionBodyForm.step3 = this.step3Data;
       this.noObjectionBodyForm.step3.application_id = this.formApplicationId;
       this.noObjectionBodyForm.step3.is_draft = false;
       console.log(">> Submit Form: ", this.step3Data, " -- ", this.noObjectionBodyForm);
 
-      this.Service.moveSteps('list_service_scope', 'list_instrument_equipment', this.headerSteps);
+      //this.Service.moveSteps('list_service_scope', 'list_instrument_equipment', this.headerSteps);
       // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
       // .subscribe(
       //   res => {
@@ -1229,6 +1396,18 @@ export class NoObjectionFormComponent implements OnInit {
       this.noObjectionBodyForm.step3 = this.step3Data;
       this.noObjectionBodyForm.step3.is_draft = true;
       console.log(">> Submit Save draft: ", this.step3Data, " -- ", this.noObjectionBodyForm);
+      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
+      // .subscribe(
+      //   res => {
+      //     //console.log(res,'Save Draft Submit...')
+      //     if(res['status'] == true) {
+      //       let data: any = {};
+      //        data = res;      
+      //       this.toastr.success('Save Draft Successfully',);
+      //     }else{
+      //       this.toastr.warning(res['msg'], '');
+      //     }
+      //   });
 
     }else{
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
@@ -1239,25 +1418,413 @@ export class NoObjectionFormComponent implements OnInit {
 
   onSubmitListInstrumentEquipment(theForm: any, type?: any){
     this.Service.moveSteps('list_instrument_equipment', 'list_staff', this.headerSteps);
+
+    if(theForm.form.valid && type == undefined){
+      this.noObjectionBodyForm = {};      
+      this.noObjectionBodyForm.saved_step = 4;  
+
+      this.step4Data['listOfIntEquip'] = [];
+      if(this.listOfIntEquip != undefined && !this.Service.isObjectEmpty(this.listOfIntEquip)){
+        this.step4Data['listOfIntEquip'] = this.listOfIntEquip;
+      }    
+      this.noObjectionBodyForm.step4 = this.step4Data;
+      this.noObjectionBodyForm.step4.application_id = this.formApplicationId;
+      this.noObjectionBodyForm.step4.is_draft = false;
+      console.log(">> Submit Form: "," -- ", this.noObjectionBodyForm);
+
+      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
+      // .subscribe(
+      //   res => {
+      //     if(res['status'] == true) {
+      //       let data: any = {};
+      //       //this.isFormSubmitted = false;
+      //        data = res;               
+      //       //this.toastr.success(res['msg'],);
+      //       this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
+      //     }else{
+      //       this.toastr.warning(res['msg'], '');
+      //     }
+      //   });
+
+    }else if(type != undefined && type == true){
+      this.noObjectionBodyForm = {};
+      this.noObjectionBodyForm.saved_step = 4;      
+      this.step4Data['listOfIntEquip'] = [];
+      if(this.listOfIntEquip != undefined && !this.Service.isObjectEmpty(this.listOfIntEquip)){
+        this.step4Data['listOfIntEquip'] = this.listOfIntEquip;
+      }    
+      this.noObjectionBodyForm.step4 = this.step4Data;
+      this.noObjectionBodyForm.step4.is_draft = true;
+      console.log(">> Submit Save draft: "," -- ", this.noObjectionBodyForm);
+      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
+      // .subscribe(
+      //   res => {
+      //     //console.log(res,'Save Draft Submit...')
+      //     if(res['status'] == true) {
+      //       let data: any = {};
+      //        data = res;      
+      //       this.toastr.success('Save Draft Successfully',);
+      //     }else{
+      //       this.toastr.warning(res['msg'], '');
+      //     }
+      //   });
+
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
   }
 
   onSubmitListStaff(theForm: any, type?: any){
     this.Service.moveSteps('list_staff', 'authorization_application', this.headerSteps);
+    if(theForm.form.valid && type == undefined){
+      this.noObjectionBodyForm = {};      
+      this.noObjectionBodyForm.saved_step = 5;  
+
+      this.step5Data['listOfStaff'] = [];
+      if(this.listOfStaff != undefined && !this.Service.isObjectEmpty(this.listOfStaff)){
+        this.step5Data['listOfStaff'] = this.listOfStaff;
+      }    
+      this.noObjectionBodyForm.step5 = this.step5Data;
+      this.noObjectionBodyForm.step5.application_id = this.formApplicationId;
+      this.noObjectionBodyForm.step5.is_draft = false;
+      console.log(">> Submit Form: "," -- ", this.noObjectionBodyForm);
+
+      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
+      // .subscribe(
+      //   res => {
+      //     if(res['status'] == true) {
+      //       let data: any = {};
+      //       //this.isFormSubmitted = false;
+      //        data = res;               
+      //       //this.toastr.success(res['msg'],);
+      //       this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
+      //     }else{
+      //       this.toastr.warning(res['msg'], '');
+      //     }
+      //   });
+
+    }else if(type != undefined && type == true){
+      this.noObjectionBodyForm = {};
+      this.noObjectionBodyForm.saved_step = 5;      
+      this.step5Data['listOfStaff'] = [];
+      if(this.listOfStaff != undefined && !this.Service.isObjectEmpty(this.listOfStaff)){
+        this.step5Data['listOfStaff'] = this.listOfStaff;
+      }    
+      this.noObjectionBodyForm.step5 = this.step5Data;
+      this.noObjectionBodyForm.step5.is_draft = true;
+      console.log(">> Submit Save draft: ", this.step1Data, " -- ", this.noObjectionBodyForm);
+      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
+      // .subscribe(
+      //   res => {
+      //     //console.log(res,'Save Draft Submit...')
+      //     if(res['status'] == true) {
+      //       let data: any = {};
+      //        data = res;      
+      //       this.toastr.success('Save Draft Successfully',);
+      //     }else{
+      //       this.toastr.warning(res['msg'], '');
+      //     }
+      //   });
+
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
   }
 
   onSubmitAuthorizeApplication(theForm: any, type?: any){
-    this.Service.moveSteps('authorization_application', 'proforma_invoice', this.headerSteps);
+    //this.Service.moveSteps('authorization_application', 'proforma_invoice', this.headerSteps);
+
+    let postData: any = new FormData();
+    this.noObjectionBodyForm = {}; 
+    this.noObjectionBodyForm.step6 = {}; 
+    console.log(">>>TSEP 6 SUBMIT: ", this.step6Data);
+
+    if(theForm.form.valid && this.step6Data.authorization_confirm1 == true && type == undefined){
+      //this.noObjectionBodyForm = {};      
+      this.noObjectionBodyForm.saved_step = 6;  
+      this.step6Data.authorization_list_json = {'authorization_confirm1' : this.step6Data.authorization_confirm1};
+      this.noObjectionBodyForm.step4 = this.step6Data;
+      
+      this.noObjectionBodyForm.step4.application_id = this.formApplicationId;
+      this.noObjectionBodyForm.step4.is_draft = false;
+      console.log(">> Submit Form: "," -- ", this.noObjectionBodyForm);
+      postData.append("data", JSON.stringify(this.noObjectionBodyForm))
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.noc_submit_form + "/", postData)
+      .subscribe(
+        res => {
+          if(res['status'] == true) {
+            let data: any = {};
+            //this.isFormSubmitted = false;
+             data = res;               
+            //this.toastr.success(res['msg'],);
+
+            if(this.paymentFilePath != ''){
+              this.Service.moveSteps('authorization_application', 'proforma_invoice', this.headerSteps);
+            }
+            else{
+              setTimeout(()=>{
+                let elem = document.getElementById('openPayDialog');
+                //////console.log("App dialog hash....", elem);
+                if(elem){
+                  elem.click();
+                }
+              }, 100)
+              setTimeout(() => {                    
+                // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+                //this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+              },1500)
+            }
+            //this.Service.moveSteps('authorization_application', 'proforma_invoice', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+
+    }else if(type != undefined && type == true){
+      //this.noObjectionBodyForm = {};
+      this.noObjectionBodyForm.saved_step = 6;   
+      this.step6Data.authorization_list_json = {'authorization_confirm1' : this.step6Data.authorization_confirm1};
+      this.noObjectionBodyForm.step4 = this.step6Data;
+      this.noObjectionBodyForm.step4.application_id = this.formApplicationId;
+      this.noObjectionBodyForm.step4.is_draft = true;
+      console.log(">> Submit Save draft: ", " -- ", this.noObjectionBodyForm);
+      postData.append("data", JSON.stringify(this.noObjectionBodyForm))
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.noc_submit_form + "/", postData)
+      .subscribe(
+        res => {
+          //console.log(res,'Save Draft Submit...')
+          if(res['status'] == true) {
+            let data: any = {};
+             data = res;      
+            this.toastr.success('Save Draft Successfully',);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
+
+    }else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
   }
 
-  onSubmitProformaInvoice(theForm: any, type?: any){
-    this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+  //Paypal Button creation
+  private loadExternalScript(scriptUrl: string) {
+    return new Promise((resolve, reject) => {
+      const scriptElement = document.createElement('script')
+      scriptElement.src = scriptUrl
+      scriptElement.onload = resolve
+      //////////console.log("load script...");
+      document.body.appendChild(scriptElement)
+    })
   }
+
+  saveInspectopnAfterPayment(theForm: any){
+    this.transactions = [];
+    this.toastr.success('Payment Success, Thank you.','Paypal>>',{timeOut:2000});
+    setTimeout(()=> {
+      // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+      //////console.log("moving...");
+      this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+    }, 1000)
+  }
+
+  createPaymentButton(itemData: any, formObj?:any, compObj?:any){
+    ////console.log("creating....buttons...", " -- ",this.transactionsItem, " --- ", this.transactions);
+   //AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl = das.abhishek77@gmail.com
+   //Get transaction ID - https://uateloper.paypal.com/docs/checkout/reference/server-integration/get-transaction/#on-the-server
+    if(this.transactions.length){
+      this.loadExternalScript("https://www.paypalobjects.com/api/checkout.js").then(() => {
+      paypal.Button.render({
+        env: 'sandbox',
+        client: {
+          sandbox: 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
+        },
+        commit: true,
+        payment: function (data, actions) {
+          ////////console.log("@Paypal payment actionms: ", actions, " -- ", data, " --- ", itemData);        
+          return actions.payment.create({
+            payment: {
+              transactions: [itemData]
+            }
+          })
+        },
+        onAuthorize: function(data, actions) {
+          ////////console.log("@Paypal onAuthorize actionms: ", actions, " -- ", data);
+          return actions.payment.execute().then(function(payment) {
+            ////////console.log(">>>Success: ", payment);
+            formObj.paypalReturn = payment;
+            formObj.paypalStatus = 'success';
+            ////////console.log("<<<Review obj: ", formObj, " :: ", compObj);
+            compObj.saveInspectopnAfterPayment(formObj);
+          })
+        },
+        onCancel: (data, actions) => {
+          ////////console.log('OnCancel', data, actions);
+          //this.showCancel = true;
+          formObj.paypalReturn = data;
+          formObj.paypalStatus = 'cancel';
+          this.toastr.warning("You have cancelled payment, Continue next step please complete payment process again.", 'Paypal>>',{timeOut:6500}); 
+  
+      },
+      onError: err => {
+          ////////console.log('OnError', err);
+          formObj.paypalReturn = err;
+          formObj.paypalStatus = 'error';
+          //compObj.saveCourseAfterPayment(formObj);
+          this.toastr.error("Paypal transaction error has occured, please try again", 'Payment Return'); 
+      },
+      onClick: (data, actions) => {
+          ////////console.log('onClick', data, actions);
+          //this.resetStatus();
+      }
+      }, '#paypalPayment');
+    });
+    }
+  }
+  onSubmitProformaInvoice(theForm: any, type?: any){
+    //this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+
+  this.transactionsItem['amount']               = {};
+  this.transactionsItem['amount']['total']      = 0.00;
+  this.transactionsItem['amount']['currency']   = 'USD';
+  this.transactionsItem['amount']['details']    = {};
+  this.transactionsItem['amount']['details']['subtotal'] = 0.00;
+  //declare Items data
+  this.transactionsItem['item_list']            = {};
+  this.transactionsItem['item_list']['items']   = [];
+  let custPrice: any = 5;//(this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;
+  this.total = 5;//(this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//520;
+    this.transactionsItem['item_list']['items'].push({name: 'Inspection Body Application', quantity: 1, price: custPrice, currency: 'USD'});
+      if(this.total > 0){
+        //////////console.log("Calculate price: ", calcPrice);
+        this.transactionsItem['amount']['total'] = custPrice.toFixed(2);
+        this.transactionsItem['amount']['details']['subtotal'] = custPrice.toFixed(2);
+        this.transactions.push(this.transactionsItem);
+        //////////console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
+      }
+      setTimeout(() => {
+        console.log("Button...........");
+        this.createPaymentButton(this.transactionsItem, this.noObjectionBodyForm, this);
+        let elem = document.getElementsByClassName('paypal-button-logo');
+        console.log("button creting...", elem);
+        if(elem){
+          ////console.log("button creted...");          
+        }
+      }, 100)
+
+  }
+
+  
 
   onSubmitPaymentUpdate(theForm: any, type?: any){
     this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+
+    this.noObjectionBodyForm = {};
+    this.noObjectionBodyForm.step8 = {};
+    let is_valid: boolean = false;
+
+    let dtFormat: string = '';
+    if(this.voucherSentData['payment_date'] != undefined && 
+      this.voucherSentData['payment_date']._i != undefined){
+      var dtData = this.voucherSentData['payment_date']._i;
+      var year = dtData.year;
+      var month = dtData.month;
+      var date = dtData.date;
+      dtFormat = year + "-" + month + "-" + date;
+    }
+
+    console.log(">>> Date: ", dtFormat);
+
+      this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
+      this.voucherFile.append('amount',this.voucherSentData['amount']);
+      this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
+      this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
+      this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
+      this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
+      this.voucherFile.append('voucher_date', dtFormat);
+      this.voucherFile.append('accreditation',this.formApplicationId);
+      this.voucherFile.append('application_id',this.formApplicationId);
+      this.voucherFile.append('saved_step', 8);
+
+      console.log(">>> Data: ", this.voucherSentData);
+      if(this.voucherSentData['transaction_no'] != '' && this.voucherSentData['payment_method'] != '' && this.voucherSentData['payment_made_by'] &&
+        this.voucherSentData['mobile_no'] != ''){
+          is_valid = true;
+        }
+
+        if(is_valid == true && type == undefined && this.paymentReceiptValidation != false) {
+          //this.noObjectionBodyForm.saved_step = 8;      
+          //this.noObjectionBodyForm.step8 = this.step6Data;
+          //this.noObjectionBodyForm.step8.application_id = this.formApplicationId;
+          this.noObjectionBodyForm.step8.is_draft = false;
+          console.log(">> Submit Form: "," -- ", this.noObjectionBodyForm);
+
+          this._trainerService.paymentVoucherSave((this.voucherFile))
+          .subscribe(
+             result => {
+               let data: any = result;
+                ////////console.log("submit voucher: ", data);
+                if(data.status){
+                  //this.openView('appComp');
+                  setTimeout(()=>{
+                    let elem = document.getElementById('openAppDialog');
+                    //////console.log("App dialog hash....", elem);
+                    if(elem){
+                      elem.click();
+                    }
+                  }, 100)
+                  setTimeout(() => {                    
+                    // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+                    this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+                  },3500)
+                  
+                }else{
+                  this.toastr.warning(data.msg,'');
+                }
+          })   
+    
+        }else if(type != undefined && type == true){
+          //this.noObjectionBodyForm.saved_step = 6;   
+          //this.noObjectionBodyForm.step6 = this.step6Data;
+          this.noObjectionBodyForm.step8.is_draft = true;
+          console.log(">> Submit Save draft: ", " -- ", this.noObjectionBodyForm);
+
+          this._trainerService.paymentVoucherSave((this.voucherFile))
+          .subscribe(
+             result => {
+               let data: any = result;
+                console.log("submit voucher draft: ", data);
+                if(data.status){
+                  this.toastr.success("Save Draft Successfully",'');                  
+                }else{
+                  this.toastr.warning(data.msg,'');
+                }
+          })    
+        }else{
+          this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+        }
   }
 
+  onError(error: any) {
+    // do anything
+    //////////console.log('PDF Error: ', error)
+    this.errorLoader = true;
+  }
 
+  completeLoadPDF(pdfLoad: PDFDocumentProxy){
+    //////////console.log("Completed Load PDF :: ", pdfLoad);
+    this.loaderPdf = false;
+    this.completeLoaded = true;
+  }
+
+  onProgress(progressData: PDFProgressData){
+   //////////console.log("Loding Pdf :: ", progressData);
+    this.loaderPdf = true;
+  }
+
+  getSantizeUrl(url : string) { 
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url); 
+  }
 
 /*
   onSubmit(ngForm){
