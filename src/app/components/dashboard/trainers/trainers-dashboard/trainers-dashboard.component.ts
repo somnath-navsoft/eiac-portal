@@ -15,8 +15,14 @@ export class TrainersDashboardComponent implements OnInit {
   userId: any;
   loader: boolean = true;
   recordsTotal: any;
-
-  constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) { }
+  config: any;
+  
+  constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
+    this.config = {
+      itemsPerPage: 5,
+      currentPage: 1,
+    };
+  }
 
   ngOnInit() {
     this.userId = sessionStorage.getItem('userId');
@@ -27,12 +33,16 @@ export class TrainersDashboardComponent implements OnInit {
         res => {
           this.messageList = res['data'].message_list;
           this.recordsTotal = res['data'].recordsTotal;
-          this.loader = true;          
+          this.loader = true;
         });
   }
 
-  getUserDetails(user){
+  getUserDetails(user) {
     sessionStorage.setItem('messageUserDetails', JSON.stringify(user));
+  }
+
+  pageChanged(event) {
+    this.config.currentPage = event;
   }
 
 }
