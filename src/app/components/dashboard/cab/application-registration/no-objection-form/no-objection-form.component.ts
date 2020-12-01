@@ -12,6 +12,7 @@ import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-b
 import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
 import { TrainerService } from '../../../../../services/trainer.service';
 
+
 declare let paypal: any; 
 @Component({
   selector: 'app-no-objection-form',
@@ -134,7 +135,7 @@ export class NoObjectionFormComponent implements OnInit {
   users: string[] = [];
   userItems: any;
 
-  paymentFilePath: boolean =false;
+  paymentFilePath: string = '';
   transactions: any[] =[];
   transactionsItem: any={};
   total: any = 0;
@@ -142,9 +143,11 @@ export class NoObjectionFormComponent implements OnInit {
   public loaderPdf: boolean = false;
   public completeLoaded: boolean = false;
   public errorLoader: boolean = false;
-
+  closeResult: string;
+  modalOptions:NgbModalOptions;
+  
   constructor(public Service: AppService, public constant:Constants, public sanitizer: DomSanitizer , public router: Router,
-    public toastr: ToastrService, private _trainerService: TrainerService,) { }
+    public toastr: ToastrService, private modalService: NgbModal, private _trainerService: TrainerService,) { }
 
   ngOnInit() { 
     //this.meta.addTag({name: 'title', content: 'Angular Project, Create Angular Project'});
@@ -1008,6 +1011,41 @@ export class NoObjectionFormComponent implements OnInit {
   }
 
 
+  openView(content, type:string) {
+    let pathData: any;
+    ////console.log(">>>pop up...", content);   
+  
+    ////console.log(">>> open view", this.pathPDF, " -- ",  this.pathPDF);
+  
+    this.modalService.open(content, this.modalOptions).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      //////console.log("Closed: ", this.closeResult);
+      //this.courseViewData['courseDuration'] = '';
+      //this.courseViewData['courseFees'] = '';
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      //////console.log("Closed with ESC ");
+      
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      //////console.log("Closed with CLOSE ICON ");
+     
+      return 'by clicking on a backdrop';
+    } else {
+      //////console.log("Closed ",`with: ${reason}`);
+      
+      return  `with: ${reason}`;
+    }
+  }
+
+  closeDialog(){
+    this.modalService.dismissAll();
+  }
+
   /*******************************
    * 
    * Application Submit Functions
@@ -1097,16 +1135,21 @@ export class NoObjectionFormComponent implements OnInit {
   }
 
   onSubmitCabInformation(theForm: any, type?: any){
-   this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
+   //this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
     console.log(">>>>>");
-   return;
+   //return;
+   let postData: any =new FormData();
     this.isFormSubmitted = true;
     let checkLaboratory: boolean = true;
     let checkInspection: boolean = true;
     let checkCertification: boolean = true;
     let checkHalal: boolean = true;
     console.log(this.step2Data.cabTypeLaboratory_testing,  " -- ", this.step2Data.cabTypeLaboratory_calibration);
-
+    let cabTypes: any = {};
+    cabTypes['lab'] = [];
+    cabTypes['IB'] = [];
+    cabTypes['CB'] = [];
+    cabTypes['HCAB'] = [];
     //Check Laboratory
     if((this.step2Data.cabTypeLaboratory_testing == undefined || this.step2Data.cabTypeLaboratory_testing == false) &&
       (this.step2Data.cabTypeLaboratory_calibration == undefined || this.step2Data.cabTypeLaboratory_calibration == false)){
@@ -1132,53 +1175,77 @@ export class NoObjectionFormComponent implements OnInit {
       checkHalal = false;
     }
 
-    console.log(">>>form status: ",theForm.form.valid ," -- ",theForm.form, " == ", this.step2Data);
+    cabTypes['lab'].push({
+      'cabTypeLaboratory_testing':this.step2Data.cabTypeLaboratory_testing,
+      'cabTypeLaboratory_calibration':this.step2Data.cabTypeLaboratory_calibration
+    });
+    cabTypes['IB'].push({
+      'cabTypeInspectionBody_engineering_ib':this.step2Data.cabTypeInspectionBody_engineering_ib,
+      'cabTypeInspectionBody_sustainability_ib':this.step2Data.cabTypeInspectionBody_sustainability_ib
+    });
+    cabTypes['CB'].push({
+      'cabTypeCertificationBody_management_system_cb':this.step2Data.cabTypeCertificationBody_management_system_cb,
+      'cabTypeCertificationBody_personal_cb':this.step2Data.cabTypeCertificationBody_personal_cb,
+      'cabTypeCertificationBody_product_cb':this.step2Data.cabTypeCertificationBody_product_cb,
+    });
+    cabTypes['HCAB'].push({
+      'cabTypeHalal_lab':this.step2Data.cabTypeHalal_lab,
+      'cabTypeHalal_ib':this.step2Data.cabTypeHalal_ib,
+      'cabTypeHalal_cb':this.step2Data.cabTypeHalal_cb,
+    });
+    this.step2Data.cab_type = JSON.stringify(cabTypes);
+    console.log(">>>form status: ",theForm.form.valid ," -- ", this.step2Data);
 
     //return; 
 
     if((checkLaboratory == true && checkInspection == true && checkCertification == true && checkHalal == true) && type == undefined){
       this.noObjectionBodyForm = {};      
-      this.noObjectionBodyForm.saved_step = 2;      
+      this.noObjectionBodyForm.saved_step = 2;    
+      this.noObjectionBodyForm.step2 = {};  
       this.noObjectionBodyForm.step2 = this.step2Data;
       this.noObjectionBodyForm.step2.application_id = this.formApplicationId;
       this.noObjectionBodyForm.step2.is_draft = false;
       console.log(">> Submit Form: ", this.step1Data, " -- ", this.noObjectionBodyForm);
-
-      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
-      // .subscribe(
-      //   res => {
-      //     if(res['status'] == true) {
-      //       let data: any = {};
-      //       this.isFormSubmitted = false;
-      //        data = res;               
-      //       //this.toastr.success(res['msg'],);
-      //       this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
-      //     }else{
-      //       this.toastr.warning(res['msg'], '');
-      //     }
-      //   });
+      postData.append("data", JSON.stringify(this.noObjectionBodyForm))
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.noc_submit_form + "/", postData)
+      .subscribe(
+        res => {
+          console.log(">>>Submit step: ", res);
+          if(res['status'] == true) {
+            let data: any = {};
+            this.isFormSubmitted = false;
+             data = res;               
+            //this.toastr.success(res['msg'],);
+            this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
 
     }else if(type != undefined && type == true){
       this.noObjectionBodyForm = {};
-      this.noObjectionBodyForm.saved_step = 2;      
+      this.noObjectionBodyForm.step2 = {};
+      this.noObjectionBodyForm.saved_step = 2;   
+      this.noObjectionBodyForm.step2.application_id = this.formApplicationId;   
       this.noObjectionBodyForm.step2 = this.step2Data;
       this.noObjectionBodyForm.step2.is_draft = true;
       console.log(">> Submit Save draft: ", this.step1Data, " -- ", this.noObjectionBodyForm);
-      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
-      // .subscribe(
-      //   res => {
-      //     //console.log(res,'Save Draft Submit...')
-      //     if(res['status'] == true) {
-      //       let data: any = {};
-      //        data = res;      
-      //       this.toastr.success('Save Draft Successfully',);
-      //     }else{
-      //       this.toastr.warning(res['msg'], '');
-      //     }
-      //   });
+      postData.append("data", JSON.stringify(this.noObjectionBodyForm))
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.noc_submit_form + "/", postData)
+      .subscribe(
+        res => {
+          console.log(res,'Save Draft Submit...')
+          if(res['status'] == true) {
+            let data: any = {};
+             data = res;      
+            this.toastr.success('Save Draft Successfully',);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
 
     }else{
-      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:1500});
     }
     
   }
@@ -1465,49 +1532,75 @@ export class NoObjectionFormComponent implements OnInit {
   }
 
   onSubmitAuthorizeApplication(theForm: any, type?: any){
-    this.Service.moveSteps('authorization_application', 'proforma_invoice', this.headerSteps);
+    //this.Service.moveSteps('authorization_application', 'proforma_invoice', this.headerSteps);
 
-    if(theForm.form.valid && type == undefined){
-      this.noObjectionBodyForm = {};      
+    let postData: any = new FormData();
+    this.noObjectionBodyForm = {}; 
+    this.noObjectionBodyForm.step6 = {}; 
+    console.log(">>>TSEP 6 SUBMIT: ", this.step6Data);
+
+    if(theForm.form.valid && this.step6Data.authorization_confirm1 == true && type == undefined){
+      //this.noObjectionBodyForm = {};      
       this.noObjectionBodyForm.saved_step = 6;  
-
-      this.noObjectionBodyForm.step6 = this.step6Data;
-      this.noObjectionBodyForm.step6.application_id = this.formApplicationId;
-      this.noObjectionBodyForm.step6.is_draft = false;
+      this.step6Data.authorization_list_json = {'authorization_confirm1' : this.step6Data.authorization_confirm1};
+      this.noObjectionBodyForm.step4 = this.step6Data;
+      
+      this.noObjectionBodyForm.step4.application_id = this.formApplicationId;
+      this.noObjectionBodyForm.step4.is_draft = false;
       console.log(">> Submit Form: "," -- ", this.noObjectionBodyForm);
+      postData.append("data", JSON.stringify(this.noObjectionBodyForm))
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.noc_submit_form + "/", postData)
+      .subscribe(
+        res => {
+          if(res['status'] == true) {
+            let data: any = {};
+            //this.isFormSubmitted = false;
+             data = res;               
+            //this.toastr.success(res['msg'],);
 
-      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
-      // .subscribe(
-      //   res => {
-      //     if(res['status'] == true) {
-      //       let data: any = {};
-      //       //this.isFormSubmitted = false;
-      //        data = res;               
-      //       //this.toastr.success(res['msg'],);
-      //       this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
-      //     }else{
-      //       this.toastr.warning(res['msg'], '');
-      //     }
-      //   });
+            if(this.paymentFilePath != ''){
+              this.Service.moveSteps('authorization_application', 'proforma_invoice', this.headerSteps);
+            }
+            else{
+              setTimeout(()=>{
+                let elem = document.getElementById('openPayDialog');
+                //////console.log("App dialog hash....", elem);
+                if(elem){
+                  elem.click();
+                }
+              }, 100)
+              setTimeout(() => {                    
+                // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+                //this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+              },1500)
+            }
+            //this.Service.moveSteps('authorization_application', 'proforma_invoice', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
 
     }else if(type != undefined && type == true){
-      this.noObjectionBodyForm = {};
+      //this.noObjectionBodyForm = {};
       this.noObjectionBodyForm.saved_step = 6;   
-      this.noObjectionBodyForm.step6 = this.step6Data;
-      this.noObjectionBodyForm.step6.is_draft = true;
+      this.step6Data.authorization_list_json = {'authorization_confirm1' : this.step6Data.authorization_confirm1};
+      this.noObjectionBodyForm.step4 = this.step6Data;
+      this.noObjectionBodyForm.step4.application_id = this.formApplicationId;
+      this.noObjectionBodyForm.step4.is_draft = true;
       console.log(">> Submit Save draft: ", " -- ", this.noObjectionBodyForm);
-      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
-      // .subscribe(
-      //   res => {
-      //     //console.log(res,'Save Draft Submit...')
-      //     if(res['status'] == true) {
-      //       let data: any = {};
-      //        data = res;      
-      //       this.toastr.success('Save Draft Successfully',);
-      //     }else{
-      //       this.toastr.warning(res['msg'], '');
-      //     }
-      //   });
+      postData.append("data", JSON.stringify(this.noObjectionBodyForm))
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.noc_submit_form + "/", postData)
+      .subscribe(
+        res => {
+          //console.log(res,'Save Draft Submit...')
+          if(res['status'] == true) {
+            let data: any = {};
+             data = res;      
+            this.toastr.success('Save Draft Successfully',);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
 
     }else{
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
@@ -1523,6 +1616,16 @@ export class NoObjectionFormComponent implements OnInit {
       //////////console.log("load script...");
       document.body.appendChild(scriptElement)
     })
+  }
+
+  saveInspectopnAfterPayment(theForm: any){
+    this.transactions = [];
+    this.toastr.success('Payment Success, Thank you.','Paypal>>',{timeOut:2000});
+    setTimeout(()=> {
+      // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+      //////console.log("moving...");
+      this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+    }, 1000)
   }
 
   createPaymentButton(itemData: any, formObj?:any, compObj?:any){
@@ -1552,7 +1655,7 @@ export class NoObjectionFormComponent implements OnInit {
             formObj.paypalReturn = payment;
             formObj.paypalStatus = 'success';
             ////////console.log("<<<Review obj: ", formObj, " :: ", compObj);
-            //compObj.saveInspectopnAfterPayment(formObj);
+            compObj.saveInspectopnAfterPayment(formObj);
           })
         },
         onCancel: (data, actions) => {
@@ -1579,7 +1682,7 @@ export class NoObjectionFormComponent implements OnInit {
     }
   }
   onSubmitProformaInvoice(theForm: any, type?: any){
-    this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+    //this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
 
   this.transactionsItem['amount']               = {};
   this.transactionsItem['amount']['total']      = 0.00;
@@ -1589,8 +1692,8 @@ export class NoObjectionFormComponent implements OnInit {
   //declare Items data
   this.transactionsItem['item_list']            = {};
   this.transactionsItem['item_list']['items']   = [];
-  let custPrice: any = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;
-  this.total = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//520;
+  let custPrice: any = 5;//(this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;
+  this.total = 5;//(this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//520;
     this.transactionsItem['item_list']['items'].push({name: 'Inspection Body Application', quantity: 1, price: custPrice, currency: 'USD'});
       if(this.total > 0){
         //////////console.log("Calculate price: ", calcPrice);
@@ -1600,9 +1703,10 @@ export class NoObjectionFormComponent implements OnInit {
         //////////console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
       }
       setTimeout(() => {
+        console.log("Button...........");
         this.createPaymentButton(this.transactionsItem, this.noObjectionBodyForm, this);
         let elem = document.getElementsByClassName('paypal-button-logo');
-        ////console.log("button creting...", elem);
+        console.log("button creting...", elem);
         if(elem){
           ////console.log("button creted...");          
         }

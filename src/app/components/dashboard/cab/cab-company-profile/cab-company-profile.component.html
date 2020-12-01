@@ -12,13 +12,18 @@
               <div class="col-md-3">
                 <div class="main_app_wrap">
                   <div class="appln-data">
-                    <h3>{{cabUserDetails?.first_name}}</h3>
+                    <h3>{{cabUserDetails?.first_name}} {{cabUserDetails?.last_name}}</h3>
                     <span>{{cabUserDetails?.designation}}</span>
                   </div>
                 </div>
               </div>
-              <div class="col-md-9"> 
+              <div class="col-md-6"> 
                 %percentage
+              </div>
+              <div class="col-md-3"> 
+                <a routerLink="/profile-completion">
+                <span class="icon-edit"></span>
+              </a>
               </div>
             </div>
         </div>
