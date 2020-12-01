@@ -105,13 +105,15 @@ export class WorkPermitFormComponent implements OnInit {
   userId:any;
   paymentFilePath :string = '';
   subscriptions: Subscription[] = [];
+  public minDate;
+  activitySectionArr:any[] = [];
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,public _trainerService:TrainerService,public sanitizer:DomSanitizer) { }
 
   ngOnInit() {
     this.getWorkPermitId = sessionStorage.getItem('workPermitId');
     this.checkCaptchaValidation = true;
-    this.authorizationList = {authorization_confirm1:false};
+    this.authorizationList = {authorization_confirm:false};
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
@@ -168,6 +170,7 @@ export class WorkPermitFormComponent implements OnInit {
     // this.workPermitForm.representative_name = '';
     // this.workPermitForm.behalf_designation = '';
     // this.workPermitForm.digital_signature = '';
+    // this.activitySectionArr.length > 0 ? 
   }
 
   statelistById = async(country_id) => {
@@ -379,7 +382,7 @@ export class WorkPermitFormComponent implements OnInit {
               let getFile =recognized_logo1.toString().split('/');
               if(getFile.length){
                 this.workPermitForm.licence_document = getFile[4].toString().split('.')[0];
-                this.licence_document_path = this.constant.mediaPath + recognized_logo1.toString();
+                this.licence_document_path = this.constant.mediaPath +'/'+ recognized_logo1.toString();
               }
             }
 
@@ -388,7 +391,7 @@ export class WorkPermitFormComponent implements OnInit {
               let getFile = quality_manual1.toString().split('/');
               if(getFile.length){
                 this.workPermitForm.quality_manual = getFile[4].toString().split('.')[0];
-                this.quality_manual_path = this.constant.mediaPath + quality_manual1.toString();
+                this.quality_manual_path = this.constant.mediaPath +'/'+ quality_manual1.toString();
               }
             }
 
@@ -397,7 +400,7 @@ export class WorkPermitFormComponent implements OnInit {
               let getFile = work_instruction1.toString().split('/');
               if(getFile.length){
                 this.workPermitForm.work_instruction = getFile[4].toString().split('.')[0];
-                this.work_instruction_path = this.constant.mediaPath + work_instruction1.toString();
+                this.work_instruction_path = this.constant.mediaPath +'/'+ work_instruction1.toString();
               }
             }
 
@@ -406,7 +409,7 @@ export class WorkPermitFormComponent implements OnInit {
               let getFile = check_list1.toString().split('/');
               if(getFile.length){
                 this.workPermitForm.check_list = getFile[4].toString().split('.')[0];
-                this.check_list_path = this.constant.mediaPath + check_list1.toString();
+                this.check_list_path = this.constant.mediaPath +'/'+ check_list1.toString();
               }
             }
 
@@ -414,6 +417,11 @@ export class WorkPermitFormComponent implements OnInit {
             this.step4Data.representative_name = res['data'].onBehalfApplicantDetails.representative_name;
             this.step4Data.behalf_designation = res['data'].onBehalfApplicantDetails.designation;
             this.step4Data.digital_signature = res['data'].onBehalfApplicantDetails.digital_signature;
+
+            if(res['data'].onBehalfApplicantDetails.organization_name && res['data'].onBehalfApplicantDetails.representative_name && res['data'].onBehalfApplicantDetails.designation && res['data'].onBehalfApplicantDetails.digital_signature){
+              this.authorizationList.authorization_confirm = true;
+            }
+            
 
             // if(res['data'].paymentDetails != null && typeof res['data'].paymentDetails === 'object'){
             //   // //console.log(">>>payment details...show");
@@ -460,8 +468,8 @@ export class WorkPermitFormComponent implements OnInit {
          this.voucherFile.append('voucher_no',this.voucherSentData['voucher_no']);
          this.voucherFile.append('amount',this.voucherSentData['amount']);
          this.voucherFile.append('voucher_date',dtFormat);
-         this.voucherFile.append('accreditation',this.voucherSentData['accreditation']);
-         this.voucherFile.append('registration','2');
+        //  this.voucherFile.append('accreditation',this.formApplicationId);
+         this.voucherFile.append('registration',this.formApplicationId);
 
          this.subscriptions.push(this._trainerService.registrationVoucherSave((this.voucherFile))
          .subscribe(
@@ -620,6 +628,8 @@ export class WorkPermitFormComponent implements OnInit {
 
   onSubmit2(ngForm2) {
     // this.Service.moveSteps('activities_scope', 'documents_tobe_attached', this.headerSteps);
+    // this.step2Data.activity_section = this.activitySectionArr;
+    // console.log(this.activitySectionArr);
     if(ngForm2.form.valid) {
       this.workPermitForm = {};
       this.workPermitForm.step2 = {};
@@ -631,6 +641,7 @@ export class WorkPermitFormComponent implements OnInit {
       this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
 
       this.step2Data.is_draft = false;
+      this.step2Data.activity_section = this.activitySectionArr;
       this.workPermitForm.step2 = this.step2Data;
 
       // this.loader = false;
@@ -648,6 +659,8 @@ export class WorkPermitFormComponent implements OnInit {
             this.toastr.warning(res['msg'], '');
           }
         });
+    }else {
+      this.toastr.warning('Please Fill required field','');
     }
     
   }
@@ -683,6 +696,8 @@ export class WorkPermitFormComponent implements OnInit {
             this.toastr.warning(res['msg'], '');
           }
         });
+    }else {
+      this.toastr.warning('Please Fill required field','');
     }
     
   }
@@ -690,7 +705,8 @@ export class WorkPermitFormComponent implements OnInit {
   onSubmit4(ngForm4) {
     // this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
 
-    if(ngForm4.form.valid) {
+    // console.log(this.authorizationList.authorization_confirm);
+    if(ngForm4.form.valid && this.authorizationList.authorization_confirm == true) {
       this.workPermitForm = {};
       this.workPermitForm.step4 = {};
       this.workPermitForm.email = this.userEmail;
@@ -714,11 +730,15 @@ export class WorkPermitFormComponent implements OnInit {
           let getData: any = res;
           if(res['status'] == true) {
             
-            this.Service.moveSteps('documents_tobe_attached', 'authorization_ofthe_application', this.headerSteps);
+            this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
           }
         });
+    }else if(ngForm4.form.valid && this.authorizationList.authorization_confirm == false) {
+      this.toastr.warning('Please select authorization box', '');
+    }else {
+      this.toastr.warning('Please Fill required field','');
     }
     
   }
@@ -931,7 +951,9 @@ export class WorkPermitFormComponent implements OnInit {
               }
             }
           )
-      
+    }
+    else {
+      this.toastr.warning('Please Fill required field','');
     }
   }
 
@@ -964,6 +986,11 @@ export class WorkPermitFormComponent implements OnInit {
   //     this.toastr.warning('Please Fill required field','')
   //   }
   // }
+
+  setexDate(date, index){
+    let cdate = date;
+    this.minDate = new Date(cdate  + (60*60*24*1000));   
+  }
 
   savedraftStep(steps){
     if(steps == 'step1') {

@@ -71,7 +71,7 @@ export class LayoutComponent implements OnInit {
         var splitForverifyAccount = wholeUrl.split('?');
         // this.dynamicsVar = '4';
         // this._service.addDynamicsVal(this.dynamicsVar);
-        console.log(splitForverifyAccount,'splitForverifyAccount');
+        // console.log(splitForverifyAccount,'splitForverifyAccount');
         if(splitUrl[2] == 'account-details') {
           // this._service.setValueUrl(splitUrl[3]);
           sessionStorage.setItem('accountDetailId', splitUrl[3]);
