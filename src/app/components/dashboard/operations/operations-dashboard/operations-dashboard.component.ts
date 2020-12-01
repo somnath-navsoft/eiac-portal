@@ -48,9 +48,14 @@ export class OperationsDashboardComponent implements OnInit {
   selectedUser: any = [];
   @ViewChild('fruitInput', { static: false }) fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
+  config: any;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
 
+    this.config = {
+      itemsPerPage: this.Service.dashBoardPagination,
+      currentPage: 1,
+    };
   }
 
   ngOnInit() {
@@ -254,7 +259,7 @@ export class OperationsDashboardComponent implements OnInit {
     }
     this.fruitInput.nativeElement.value = '';
     this.fruitInput.nativeElement.blur();
-    
+
 
   }
 
@@ -278,6 +283,10 @@ export class OperationsDashboardComponent implements OnInit {
 
   getFileName(file) {
     return file.split('/')[-1];
+  }
+
+  pageChanged(event) {
+    this.config.currentPage = event;
   }
 
 }

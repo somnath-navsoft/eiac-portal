@@ -14,9 +14,15 @@ export class AssessorsDashboardComponent implements OnInit {
   messageList: any;
   userId: any;
   loader: boolean = true;
-  recordsTotal:any;
+  recordsTotal: any;
+  config: any;
 
-  constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) { }
+  constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
+    this.config = {
+      itemsPerPage: this.Service.dashBoardPagination,
+      currentPage: 1,
+    };
+  }
 
   ngOnInit() {
     this.userId = sessionStorage.getItem('userId');
@@ -32,8 +38,12 @@ export class AssessorsDashboardComponent implements OnInit {
           // console.log(res['data'].message_list);
         });
   }
-  getUserDetails(user){
+  getUserDetails(user) {
     sessionStorage.setItem('messageUserDetails', JSON.stringify(user));
+  }
+  
+  pageChanged(event) {
+    this.config.currentPage = event;
   }
 
 }
