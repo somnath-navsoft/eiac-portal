@@ -367,7 +367,7 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" routerLink="/dashboard/cab_client/application-accreditation">CANCEL</a> 
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" routerLink="/dashboard/cab_client/application-registration">CANCEL</a> 
                                         <!-- onSubmitApplication(ngForm1, true) -->
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step1')">SAVE AS DRAFT</button>
                                     </div>
@@ -400,14 +400,15 @@
                                         <div class="col-md-6">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Activity Section</mat-label>
-                                                <mat-select placeholder="Select" name="activity_section" [(ngModel)]="step2Data.activity_section" required>
-                                                    <mat-option value="Yes">Yes</mat-option>
-                                                    <mat-option value="No">No</mat-option>
+                                                <mat-select placeholder="Select" name="activity_section" multiple [(ngModel)]="activitySectionArr" required>
+                                                    <mat-option value="Laboratory">Laboratory</mat-option>
+                                                    <mat-option value="Inspection Body">Inspection Body</mat-option>
+                                                    <mat-option value="Certification Body">Certification Body</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
                                         </div>
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" *ngIf="activitySectionArr.length > 0">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Scope to be Authorized</mat-label>
                                                 <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Scope to be Authorized" name="scopes_to_be_authorized" [(ngModel)]="step2Data.scopes_to_be_authorized">
@@ -423,7 +424,7 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" routerLink="/dashboard/cab_client/application-accreditation">CANCEL</a> 
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="Service.headerStepMove('application_information',headerSteps,'menu','activities_scope')">BACK</a> 
                                         <!-- onSubmitApplication(ngForm1, true) -->
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step2')">SAVE AS DRAFT</button>
                                     </div>
@@ -476,7 +477,7 @@
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Date of Expiry</mat-label>
                                                 <input readonly matInput [matDatepicker]="date_of_expiry" [max]="today" 
-                                                  placeholder="Issued Date" (click)="Service._openCalendar(date_of_expiry)" name="date_of_expiry" [(ngModel)]="step3Data.date_of_expiry">
+                                                  placeholder="Issued Date" (click)="Service._openCalendar(date_of_expiry)" name="date_of_expiry" [min]="minDate" [(ngModel)]="step3Data.date_of_expiry">
                                                 <mat-datepicker-toggle matSuffix [for]="date_of_expiry"></mat-datepicker-toggle>
                                                 <mat-datepicker #date_of_expiry disabled="false"></mat-datepicker>
                                             </mat-form-field>
@@ -567,7 +568,7 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" routerLink="/dashboard/cab_client/application-accreditation">CANCEL</a> 
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="Service.headerStepMove('activities_scope',headerSteps,'menu','documents_tobe_attached')">BACK</a> 
                                         <!-- onSubmitApplication(ngForm1, true) -->
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step3')">SAVE AS DRAFT</button>
                                     </div>
@@ -598,6 +599,9 @@
 
                                     <div class="auth">
                                         <ul>
+                                            <li>
+                                                <mat-checkbox name="authorization_confirm" [(ngModel)]="authorizationList.authorization_confirm" >I confirm that the information provided in this application form is true and correct.</mat-checkbox>
+                                            </li>
                                             <p>
                                                 I, the undersigned confirm that the above-mentioned Conformity Assessment Body have been processed in accordance with Law No. 2/ 2010 regarding organizing work of conformity assessment bodies operating in the emirate of Dubai, and pledge to abide by the application requirements described below:
                                             </p>
@@ -674,7 +678,7 @@
                                         <div class="col-md-6">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Date</mat-label>
-                                                <input matInput placeholder="Date" name="onbehalf_representative_date" 
+                                                <input matInput placeholder="Date" [matDatepicker]="onbehalf_representative_date" name="onbehalf_representative_date" 
                                                 [(ngModel)]="step4Data.application_date" [value]="Service.returnCurrentDate()">
                                             </mat-form-field>
                                         </div>
@@ -687,7 +691,7 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" routerLink="/dashboard/cab_client/application-accreditation">CANCEL</a> 
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="Service.headerStepMove('documents_tobe_attached',headerSteps,'menu','authorization_ofthe_application')">BACK</a> 
                                         <!-- onSubmitApplication(ngForm1, true) -->
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step4')">SAVE AS DRAFT</button>
                                     </div>
@@ -731,7 +735,7 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice')">BACK</a> 
+                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('authorization_ofthe_application',headerSteps,'menu','proforma_invoice')">BACK</a> 
                                         <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice(ngForm8, true)">SAVE AS DRAFT</button> -->
                                         <!-- <button class="submit-bttn submit-health" (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)">CONTINUE</button> -->
                                     </div>
@@ -859,9 +863,9 @@
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
                                         <a href="javascript:void(0)" class="cancel-bttn" type="button" 
-                                            (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK
+                                        (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK
                                         </a>
-                                        <button class="cancel-bttn" type="button" (click)="savedraftStep('step6')">SAVE AS DRAFT</button>
+                                        <button class="cancel-bttn" type="button" (click)="onSubmitPaymentInformation(ngForm6, true)">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >SUBMIT</button>
                                 </div>

@@ -100,7 +100,7 @@
                     <div class="col-md-6">
                         <div class="course-bttn">
                             <div class="course-btn ">
-                                <a class="curs-apply" routerLink = "/dashboard/cab_client/training-public-course-form/{{routeId}}">Apply Now</a>
+                                <a class="curs-apply" [routerLink]="['/dashboard/cab_client/training-public-course-form']" [queryParams]="{courseid: routeId}">Apply Now</a>
                             </div>
                         </div>
                     </div>

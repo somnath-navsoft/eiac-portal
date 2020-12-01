@@ -2618,16 +2618,18 @@ onSubmitPaymentInformation(ngForm9: any, type?: boolean){
 this.ptProvidersForm = {};
 this.ptProvidersForm.step9 = {};
 
+// console.log(this.voucherSentData.payment_date,'payment_date');
+// console.log(this.voucherSentData['payment_date'],'payment_date');
   let dtFormat: string = '';
   if(this.voucherSentData['payment_date'] != undefined && 
     this.voucherSentData['payment_date']._i != undefined){
     var dtData = this.voucherSentData['payment_date']._i;
     var year = dtData.year;
-    var month = dtData.month;
+    var month = dtData.month+1;
     var date = dtData.date;
     dtFormat = year + "-" + month + "-" + date;
   }
-  //     
+
   let is_valid: boolean = false;
 this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
 this.voucherFile.append('amount',this.voucherSentData['amount']);
@@ -2645,7 +2647,7 @@ this.voucherSentData['mobile_no'] != ''){
 }
     
 this.loader = true;
-console.log(">>> File: ", this.paymentReceiptValidation);
+// console.log(">>> File: ", this.paymentReceiptValidation);
 //if(ngForm9.form.valid && this.paymentReceiptValidation != false) {
   //return;
 if(is_valid == true &&  this.paymentReceiptValidation != false) {

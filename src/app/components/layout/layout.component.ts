@@ -71,7 +71,7 @@ export class LayoutComponent implements OnInit {
         var splitForverifyAccount = wholeUrl.split('?');
         // this.dynamicsVar = '4';
         // this._service.addDynamicsVal(this.dynamicsVar);
-        //console.log(splitUrl,'splitUrl');
+        // console.log(splitForverifyAccount,'splitForverifyAccount');
         if(splitUrl[2] == 'account-details') {
           // this._service.setValueUrl(splitUrl[3]);
           sessionStorage.setItem('accountDetailId', splitUrl[3]);
@@ -119,6 +119,8 @@ export class LayoutComponent implements OnInit {
         {
           this.currentState = 'reset-password';
           this.pageId = splitForverifyAccount[1];
+        }else if(splitForverifyAccount[0] == '/dashboard/cab_client/training-public-course-form'){
+          sessionStorage.setItem('trainingPublicCourse', splitForverifyAccount[1]);
         }else if(splitForverifyAccount[0] == '/verify-account')
         {
           this.currentState = 'verify-account';

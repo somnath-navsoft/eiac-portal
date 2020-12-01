@@ -104,10 +104,14 @@
                                
                                 <div class="row">
                                     <div class="col-md-4">
+
                                         <mat-form-field class="cab-data">
                                             <mat-label>Select Date</mat-label>
-                                            <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Select Date" name="select_date" [(ngModel)]="inPremiseForm.select_date">
-                                            <mat-error></mat-error>  
+                                            <input matInput [matDatepicker]="select_date" 
+                                            (click)="_service._openCalendar(select_date)" name="select_date" 
+                                            [(ngModel)]="inPremiseForm.select_date" placeholder="Select Date" required>
+                                            <mat-datepicker-toggle matSuffix [for]="select_date"></mat-datepicker-toggle>
+                                            <mat-datepicker #select_date disabled="false"></mat-datepicker>
                                         </mat-form-field>
                                     </div>
 
@@ -215,7 +219,7 @@
                                         </div>
                                         <div class="col-lg-4 border-left-dash">
                                             <div class="train_det_bttn">
-                                                <a style="text-decoration:none" routerLink="/training-course-detail/{{row2.id}}" href="javascript:void(0)" class="training_btn">DETAILS</a>
+                                                <a style="text-decoration:none" routerLink="/dashboard/cab_client/training-course-details/{{row2.id}}" href="javascript:void(0)" class="training_btn">DETAILS</a>
                                             </div>
                                         </div>
                                     </div>

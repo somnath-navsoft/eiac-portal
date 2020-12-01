@@ -63,7 +63,7 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
 
   loadTrainingData() {
     this.loaderData = false;
-    this._service.getwithoutData(this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.training_course_list+'all/0')
+    this._service.getwithoutData(this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.training_course_list+'all/0?data=1')
     .subscribe(
       res => {
         this.loaderData = true;
