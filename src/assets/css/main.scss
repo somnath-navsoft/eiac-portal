@@ -1323,7 +1323,10 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .activity_wrapper { display: flex; width: 100%; justify-content: space-between; }
 .check_data_activities { display: flex; justify-content: space-around; width: 85%; }
 .confirm.activity_wrapper .mat-checkbox-layout .mat-checkbox-label { font-size: 18px; font-family: 'Dubai Regular'; }
-
+.activity_wrapper.cab_info { justify-content: flex-start; }
+// .activity_wrapper.cab_info .activity_head { width: 50%; }
+.activity_wrapper.cab_info .check_data_activities .mat-checkbox { padding: 0 15px; }
+.activity_wrapper.cab_info .check_data_activities { justify-content: flex-start; width: initial; }
 .message-det .appln-data h5 { color: #b19782; }
 .appln-details.license_no span { color: #B54150; text-decoration: underline; }
 .status-det { margin-bottom: 20px; }
@@ -1396,7 +1399,8 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .appln-details.complete span { color: #fff; }
 .appln-data h5 { margin: 0; }
 .message-det .appln-data.status_hdr h5 { color: #606060; font-size: 16px; font-family: 'Dubai Medium'; font-size: 14px; }
-
+.other_data .mat-form-field-infix { border-top: 0; }
+.other_data { margin-left: 20px; }
 .edit_data { display: flex; justify-content: flex-end; }
 .edit_data a { display: inline-block; padding: 10px; background: #B54150; color: #fff; border-radius: 50%; line-height: 1; }
 
