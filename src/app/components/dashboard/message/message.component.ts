@@ -53,7 +53,7 @@ export class MessageComponent implements OnInit {
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
     this.config = {
-      itemsPerPage: this.Service.dashBoardPagination,
+      itemsPerPage: this.Service.messagePagination,
       currentPage: 1,
     };
   }

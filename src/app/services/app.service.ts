@@ -21,6 +21,7 @@ import { Router } from '@angular/router';
 export class AppService {
   currentlatitude: any;
   dashBoardPagination: any = 5;
+  messagePagination: any = 10;
 
   // public apiServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
   // public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
