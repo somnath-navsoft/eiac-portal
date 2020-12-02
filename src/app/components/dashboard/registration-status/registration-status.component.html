@@ -151,9 +151,9 @@
                             </td>
                            
                             <td>
-                                <span *ngIf="item.form_meta == 'work_activity'">Work Permit</span>
+                                <span *ngIf="item.form_meta == 'work_activity'">Work Activity Permit</span>
                             </td>
-                            <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review':item.payment_status === null }">
+                            <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review':item.payment_status === null , 'under-review':item.payment_status === 'pending'}">
                                 <span *ngIf="item.payment_status == 'paid'">Paid</span>
                                 <span *ngIf="item.payment_status == 'pending'">Unpaid</span>
                                 <span *ngIf="item.payment_status == null">Unpaid</span>
