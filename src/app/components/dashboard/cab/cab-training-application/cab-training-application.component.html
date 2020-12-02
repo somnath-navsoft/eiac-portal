@@ -15,7 +15,7 @@
               <div class="acc-main">
                 <div class="accreditation-img">
                   <img [src]="_constant.mediaPath + item.page_path.image_file" alt="">
-                  <div class="acc-hov acc-apply">
+                  <!-- <div class="acc-hov acc-apply">
                     <ng-container *ngIf="item.page_path.path != '' && item.page_path.path == 'public_training'">
                         <a routerLink="/dashboard/cab_client/training-public-course-list">
                             <h4>Apply Now</h4>
@@ -26,10 +26,28 @@
                         <h4>Apply Now</h4>
                         </a>
                     </ng-container>
-                  </div>
+                  </div> -->
                 </div>                
-                <div class="accreditation-desc">
-                  <p>{{item.page_title}}</p>
+                <div class="accreditation-desc training_acc">
+                  <div class="accred_name">
+                      <p>{{item.page_title}}</p>
+                  </div>
+                  <div class="accred_opts">
+                    <p>Request Course</p>
+                    <p>
+                      <ng-container *ngIf="item.page_path.path != '' && item.page_path.path == 'public_training'">
+                        <a routerLink="/dashboard/cab_client/training-public-course-list">
+                            <h4>Apply Now</h4>
+                        </a>
+                    </ng-container>
+                    
+                    <ng-container *ngIf="item.page_path.path != '' && item.page_path.path == 'in_premise_training'">
+                        <a routerLink="/dashboard/cab_client/training-inpremise-course">
+                        <h4>Apply Now</h4>
+                        </a>
+                    </ng-container>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
