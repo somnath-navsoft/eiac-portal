@@ -159,7 +159,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
         .subscribe(
           res => {
             var courseDetails = res['courseDetails'];
-            this.step3Data.training_course_title = courseDetails.course;
+            this.step3Data.course_title = courseDetails.course;
             this.step3Data.training_duration = courseDetails.training_days;
             // console.log(courseDetails.training_days,'training_days');
           });
@@ -256,7 +256,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   }
 
   onSubmitStep1(ngForm1){
-    this.Service.moveSteps('application_information', 'participant', this.headerSteps);
+    // this.Service.moveSteps('application_information', 'participant', this.headerSteps);
     if(ngForm1.form.valid) {
       this.publicTrainingForm = {};
       this.publicTrainingForm.step1 = {};
@@ -298,6 +298,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       // this.step2Data.application_id = applicationId;
       this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step2Data.is_draft = false;
+      this.step2Data.training_form_type = 'public_training';
 
       this.publicTrainingForm.step2 = this.step2Data;
 
@@ -334,8 +335,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
 
       var applicationId = sessionStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
-      this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-
+      this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+      this.step3Data.training_form_type = 'public_training';
       this.publicTrainingForm.step3 = this.step3Data;
 
       var training_duration_current = this.step3Data.training_duration;
@@ -376,7 +377,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
 
       var applicationId = sessionStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
-      this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+      this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+      this.step4Data.training_form_type = 'public_training';
 
       this.publicTrainingForm.step4 = this.step4Data;
 
@@ -403,6 +405,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.publicTrainingForm.userType = this.userType;
       this.publicTrainingForm.saved_step = '5';
       this.step5Data.is_draft = false;
+      this.step5Data.training_form_type = 'public_training';
 
       this.publicTrainingForm.step5 = this.step5Data;
 
