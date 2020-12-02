@@ -1146,14 +1146,19 @@
                                         <div class="auth">
                                             <ul>
                                                 <li>
-                                                    {{step6Data.authorization_confirm1}}
+                                                    <span>
+                                                        I have read and been informed about the content &clauses of Law No. 2 for 2010.I have received a copy of the Law and agree to abide by the content & clauses as a Conformity Assessment Body working in the emirate of Dubai.
+I, the undersigned , confirm that I will not engage in any activity of a Conformity Assessment Body prior to obtaining a permit to act form from Emirates International Accreditation Centre, within six months from the date of issuance the Professional Trade License
+Please read Law No. 2 for 2010  carefully to ensure that you understand the policy before signing this document.
+                                                    </span>
+                                                    <!-- {{step6Data.authorization_confirm1}} -->
                                                     <!-- (change)="authorizeCheckCount($event)" -->
-                                                    <mat-checkbox   name="authorization_confirm1" 
+                                                    <!-- <mat-checkbox   name="authorization_confirm1" 
                                                     [(ngModel)]="step6Data.authorization_confirm1" >
                                                     I have read and been informed about the content &clauses of Law No. 2 for 2010.I have received a copy of the Law and agree to abide by the content & clauses as a Conformity Assessment Body working in the emirate of Dubai.
 I, the undersigned , confirm that I will not engage in any activity of a Conformity Assessment Body prior to obtaining a permit to act form from Emirates International Accreditation Centre, within six months from the date of issuance the Professional Trade License
 Please read Law No. 2 for 2010  carefully to ensure that you understand the policy before signing this document.
-                                                </mat-checkbox>
+                                                </mat-checkbox> -->
                                                 </li>
                                             </ul>
                                             <p class="error" *ngIf="!readTermsCond  && isApplicationSubmitted == true">Read the Terms and Conditions</p>
@@ -1201,7 +1206,8 @@ Please read Law No. 2 for 2010  carefully to ensure that you understand the poli
                                                     <mat-form-field class="cab-data">
                                                         <mat-label>Designation</mat-label>
                                                         <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                        matInput placeholder="Designation" name="designation" [(ngModel)]="step6Data.designation" required>
+                                                        matInput placeholder="Designation" name="designation" 
+                                                        [(ngModel)]="step6Data.behalf_designation" required>
                                                     </mat-form-field>
                                                 </div>
                                             </div>
@@ -1251,7 +1257,7 @@ Please read Law No. 2 for 2010  carefully to ensure that you understand the poli
                                             <p>Your Application has been received, please wait for the Proforma Invoice to be generated, to proceed with 
                                                 payment</p>
                                             <button class="submit-bttn" (click)="closeDialog()"
-                                            routerLink="/dashboard/status/all">Return to Status</button>
+                                            routerLink="/dashboard/registration-status">Return to Status</button>
                                         </div>
                                     </div>
                                 </ng-template>
@@ -1292,7 +1298,7 @@ Please read Law No. 2 for 2010  carefully to ensure that you understand the poli
                                         (click)="Service.headerStepMove('authorization_application',headerSteps,'menu','proforma_invoice')">BACK</a>
                                         <!-- <button class="cancel-bttn" (click)="onSubmitProformaInvoice(ngForm7, true)" type="button">SAVE AS DRAFT</button> -->
                                     </div>
-                                    @{{transactions |  json}}
+                                    <!-- @{{transactions |  json}} -->
                                     <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button>
                                     <ng-container *ngIf="transactions.length">
                                         <div id="paypalPayment"></div>
@@ -1403,8 +1409,8 @@ Please read Law No. 2 for 2010  carefully to ensure that you understand the poli
                                         <div class="pop_thanks">
                                             <h5>Thank you</h5>
                                             <p>Your Application has been submitted successfully and is under review. Please check the status and your dashboard for updates.</p>
-                                            <button class="submit-bttn"  
-                                            routerLink="/dashboard/status/all">Return to Status</button>
+                                            <button class="submit-bttn"  (click)="closeDialog()"
+                                            routerLink="/dashboard/registration-status">Return to Status</button>
                                         </div>
                                     </div>
                                 </ng-template>

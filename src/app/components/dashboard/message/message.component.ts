@@ -44,13 +44,19 @@ export class MessageComponent implements OnInit {
   filteredFruits: Observable<string[]>;
   fruits: string[] = [];
   allFruits: string[] = [];
-  addOnBlur = true;  
+  addOnBlur = true;
   selectedUser: any = [];
+  config: any;
   @ViewChild('fruitInput', { static: false }) fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
 
 
-  constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) { }
+  constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
+    this.config = {
+      itemsPerPage: this.Service.messagePagination,
+      currentPage: 1,
+    };
+  }
 
   ngOnInit() {
 
@@ -74,22 +80,22 @@ export class MessageComponent implements OnInit {
 
     this.loader = false;
     this.Service.getwithoutData(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.messageList + '?id=' + this.userId)
-    .subscribe(
-      res => {
-        this.messageList = res['data'].message_list;
-        this.loader = true;
-      });
+      .subscribe(
+        res => {
+          this.messageList = res['data'].message_list;
+          this.loader = true;
+        });
 
-  this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=cab_client&searchKey=S')
-    .subscribe(
-      res => {
-        this.searchDetails = [];
-        // this.selectSearch = [];
-        this.searchDetails = res['data'].user_list;
-        // this.selectSearch = res['data'].user_list;
-      }, err => {
-        this.loader = true;
-      });
+    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=cab_client&searchKey=S')
+      .subscribe(
+        res => {
+          this.searchDetails = [];
+          // this.selectSearch = [];
+          this.searchDetails = res['data'].user_list;
+          // this.selectSearch = res['data'].user_list;
+        }, err => {
+          this.loader = true;
+        });
   }
 
   search(query: string) {
@@ -253,7 +259,7 @@ export class MessageComponent implements OnInit {
     }
     this.fruitInput.nativeElement.value = '';
     this.fruitInput.nativeElement.blur();
-    
+
 
   }
 
@@ -277,6 +283,9 @@ export class MessageComponent implements OnInit {
 
   getFileName(file) {
     return file.split('/')[-1];
+  }
+  pageChanged(event) {
+    this.config.currentPage = event;
   }
 
 }

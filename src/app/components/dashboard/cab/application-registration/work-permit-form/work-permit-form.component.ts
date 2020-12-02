@@ -122,7 +122,7 @@ export class WorkPermitFormComponent implements OnInit {
   ngOnInit() {
     this.getWorkPermitId = sessionStorage.getItem('workPermitId');
     this.checkCaptchaValidation = true;
-    this.authorizationList = {authorization_confirm:false};
+    // this.authorizationList = {authorization_confirm1:false};
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
@@ -181,6 +181,7 @@ export class WorkPermitFormComponent implements OnInit {
     // this.workPermitForm.digital_signature = '';
     // this.activitySectionArr.length > 0 ? 
     this.activitySection = {laboratory:false,inspection_body:false,certification_body:false};
+    // this.authorizationList = {authorization_confirm1:false};
   }
 
   statelistById = async(country_id) => {
@@ -352,7 +353,7 @@ export class WorkPermitFormComponent implements OnInit {
 
               saveStep = parseInt(res['data'].saved_step) - 1;
             }else{
-              if(parseInt(res['data'].saved_step) == 9){
+              if(parseInt(res['data'].saved_step) == 6){
                 
                 saveStep = parseInt(res['data'].saved_step) - 1;
               }else{
@@ -376,7 +377,7 @@ export class WorkPermitFormComponent implements OnInit {
                     }
                     if(key == saveStep){
                       let curStep: any = this.headerSteps[key];
-                      ///////console.log('found steps....',curStep);
+                      console.log('found steps....',curStep);
                       curStep.stepComp = true;
                       this.Service.headerStepMove(item.title, this.headerSteps,'menu')
                     }
@@ -387,7 +388,9 @@ export class WorkPermitFormComponent implements OnInit {
             var wapdata = res['data'].wapData;
             this.step2Data.activity_section = wapdata.activity_section != null ? wapdata.activity_section : '';
             this.step2Data.scopes_to_be_authorized = wapdata.scopes_to_be_authorized != null ? wapdata.scopes_to_be_authorized : '';
-            this.activitySection = JSON.parse(res['data'].wapData.activity_section);
+            if(res['data'].wapData.activity_section != null) {
+              this.activitySection = JSON.parse(res['data'].wapData.activity_section);
+            }
             // console.log(this.activitySection,'activitySectionactivitySectionactivitySectionactivitySection');
 
             
@@ -445,17 +448,19 @@ export class WorkPermitFormComponent implements OnInit {
               }
             }
 
-            this.step4Data.organization_name = res['data'].onBehalfApplicantDetails.organization_name;
-            this.step4Data.representative_name = res['data'].onBehalfApplicantDetails.representative_name;
-            this.step4Data.behalf_designation = res['data'].onBehalfApplicantDetails.designation;
-            this.step4Data.digital_signature = res['data'].onBehalfApplicantDetails.digital_signature;
+            if(res['data'].onBehalfApplicantDetails != null) {
+              this.step4Data.organization_name = res['data'].onBehalfApplicantDetails.organization_name;
+              this.step4Data.representative_name = res['data'].onBehalfApplicantDetails.representative_name;
+              this.step4Data.behalf_designation = res['data'].onBehalfApplicantDetails.designation;
+              this.step4Data.digital_signature = res['data'].onBehalfApplicantDetails.digital_signature;
 
-            if(res['data'].onBehalfApplicantDetails.organization_name && res['data'].onBehalfApplicantDetails.representative_name && res['data'].onBehalfApplicantDetails.designation && res['data'].onBehalfApplicantDetails.digital_signature){
-              this.authorizationList.authorization_confirm = true;
+              // if(res['data'].onBehalfApplicantDetails.organization_name && res['data'].onBehalfApplicantDetails.representative_name && res['data'].onBehalfApplicantDetails.designation && res['data'].onBehalfApplicantDetails.digital_signature){
+              //   this.authorizationList.authorization_confirm1 = true;
+              // }
             }
             
 
-            if(res['data'].paymentDetails != null && typeof res['data'].paymentDetails === 'object'){
+            if(res['data'].paymentDetails != null){
               // //console.log(">>>payment details...show");
                 this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
                 this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
@@ -467,6 +472,7 @@ export class WorkPermitFormComponent implements OnInit {
 
                 this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
                 this.paymentReceiptValidation = true;
+                console.log(this.paymentFile,'paymentFile');
             }
           })
       }
@@ -776,12 +782,13 @@ export class WorkPermitFormComponent implements OnInit {
     // this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
 
     // console.log(this.authorizationList.authorization_confirm);
-    if(ngForm4.form.valid && this.authorizationList.authorization_confirm == true) {
+    if(ngForm4.form.valid) {
       this.workPermitForm = {};
       this.workPermitForm.step4 = {};
       this.workPermitForm.email = this.userEmail;
       this.workPermitForm.userType = this.userType;
       this.workPermitForm.saved_step = '4';
+      this.step4Data.authorization_list_json = {'authorization_confirm1' : this.step4Data.authorization_confirm1};
       var applicationId = sessionStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
@@ -805,9 +812,11 @@ export class WorkPermitFormComponent implements OnInit {
             this.toastr.warning(res['msg'], '');
           }
         });
-    }else if(ngForm4.form.valid && this.authorizationList.authorization_confirm == false) {
-      this.toastr.warning('Please select authorization box', '');
-    }else {
+    }
+    // else if(ngForm4.form.valid && this.authorizationList.authorization_confirm1 == false) {
+    //   this.toastr.warning('Please select authorization box', '');
+    // }
+    else {
       this.toastr.warning('Please Fill required field','');
     }
     
@@ -924,6 +933,9 @@ export class WorkPermitFormComponent implements OnInit {
     //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
   }
 
+  closeChecklistDialog(){
+    this.modalService.dismissAll();
+  }
   onSubmitPaymentInformation(ngForm6: any, type?: boolean){
       ////console.log("payment submitting.....");
       this.workPermitForm = {};
@@ -960,8 +972,9 @@ export class WorkPermitFormComponent implements OnInit {
       this.voucherFile.append('is_draft', false);
       // this.voucherFile.append('application_id',this.formApplicationId);
           
-      this.loader = false;
-      if(ngForm6.form.valid && this.paymentReceiptValidation != false) {
+      
+      if(ngForm6.form.valid && this.paymentReceiptValidation != false && type == false) {
+        this.loader = false;
         // //console.log(this.voucherFile);
           this._trainerService.paymentVoucherSaveWap((this.voucherFile))
           .subscribe(
@@ -1205,6 +1218,7 @@ export class WorkPermitFormComponent implements OnInit {
       this.workPermitForm.email = this.userEmail;
       this.workPermitForm.userType = this.userType;
       this.workPermitForm.saved_step = '4';
+      this.step4Data.authorization_list_json = {'authorization_confirm1' : this.step4Data.authorization_confirm1};
       var applicationId = sessionStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;

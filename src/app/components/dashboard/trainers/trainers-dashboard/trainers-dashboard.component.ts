@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class TrainersDashboardComponent implements OnInit {
 
-  messageList: any;
+  messageList: any = [];
   userId: any;
   loader: boolean = true;
   recordsTotal: any;
