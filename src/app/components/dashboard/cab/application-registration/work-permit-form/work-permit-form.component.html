@@ -762,9 +762,11 @@
                                         <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice(ngForm8, true)">SAVE AS DRAFT</button> -->
                                         <!-- <button class="submit-bttn submit-health" (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)">CONTINUE</button> -->
                                     </div>
-                                    <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button>
-                                    <ng-container *ngIf="transactions.length">
-                                        <div id="paypalPayment"></div>
+                                    <ng-container *ngIf="paymentDetailsChk != null">
+                                        <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button>
+                                        <ng-container *ngIf="transactions.length">
+                                            <div id="paypalPayment"></div>
+                                        </ng-container>
                                     </ng-container>
                                 </div>
                             </div>
@@ -876,7 +878,7 @@
                                             <h5>Thank you</h5>
                                             <p>Your Application has been submitted successfully and is under review. Please check the status and your dashboard for updates.</p>
                                             <button class="submit-bttn" (click)="closeChecklistDialog()" 
-                                            routerLink="/dashboard/cab_client/status/all">Return to Status</button>
+                                            routerLink="/dashboard/registration-status">Return to Status</button>
                                         </div>
                                     </div>
                                 </ng-template>
