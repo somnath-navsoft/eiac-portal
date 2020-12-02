@@ -157,7 +157,7 @@ export class RegistrationStatusComponent implements OnInit {
             break;
         }
     }
-  }
+  } 
 
   loadPageData(){
     this.loader = false;

@@ -623,7 +623,7 @@
                                     <div class="auth">
                                         <ul>
                                             <li>
-                                                <mat-checkbox name="authorization_confirm" [(ngModel)]="authorizationList.authorization_confirm" >I confirm that the information provided in this application form is true and correct.</mat-checkbox>
+                                                I confirm that the information provided in this application form is true and correct.
                                             </li>
                                             <p>
                                                 I, the undersigned confirm that the above-mentioned Conformity Assessment Body have been processed in accordance with Law No. 2/ 2010 regarding organizing work of conformity assessment bodies operating in the emirate of Dubai, and pledge to abide by the application requirements described below:
@@ -775,7 +775,7 @@
                 </div>
 
                 <div class="cust-stepper" id="payment_update" [ngStyle]="{'display':'none'}">
-                    <form #ngForm6="ngForm" (ngSubmit)="onSubmitPaymentInformation(ngForm6)" autocomplete="off">
+                    <form #ngForm6="ngForm" (ngSubmit)="onSubmitPaymentInformation(ngForm6,false)" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <!--  (ngSubmit)="onSubmitPaymentInformation(ngForm8)" -->

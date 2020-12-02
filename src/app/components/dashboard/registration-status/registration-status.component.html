@@ -7,23 +7,23 @@
             <div class="row mb-4">
                 <div class="col-md-8">                    
                     <div class="dashbrd-hdr">
-                        <h3>Registration Service</h3>  
+                        <h3>Registration Status</h3>  
                     </div>
                 </div>
-                <div class="col-md-4"> 
+                <!-- <div class="col-md-4"> 
                     <div class="tbl-filter-data">
                         <ul>
                             <li>
                                 <div class="filter">
-                                    <!-- <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a>
-                                    <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a> -->
+                                    <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a>
+                                    <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a>
                                 </div>
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> -->
             </div>
-            <ng-container *ngIf="advSearch" class="tbl-filter-data">
+            <!-- <ng-container *ngIf="advSearch" class="tbl-filter-data">
                 <div class="filter-dash">
                     <div class="close-bttn">
                         <span class="icon-close" (click)="filterSearchSec()"></span>
@@ -92,7 +92,7 @@
                 </div>
                 </div>
                 
-            </ng-container>
+            </ng-container> -->
             
         
         <div class="table-dashboard-cont">
@@ -120,7 +120,7 @@
                                 </a>
                             </th>
                             
-                            <th>Accreditation Type
+                            <th>Registration Type
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'form_meta', curSortDir.form_meta)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.form_meta"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.form_meta"></span>
@@ -143,13 +143,16 @@
                             <td>
                                 {{item.created | date :'dd-MMM-yyyy' }}
                             </td>
-                            <td [ngClass]="{'pending': (item.application_status === 'pending' || item.application_status == 'draft' || item.application_status == 'application_process'), 'under-review':item.application_status === null || item.application_status === 'under_review', 'complete': item.application_status === 'complete'}">
-                                <span *ngIf="item.application_status == 'pending' || item.application_status == 'draft'">Pending</span>
+                            <td [ngClass]="{'pending': (item.application_status === 'pending' || item.application_status === 'payment_pending' || item.application_status == 'application_process'  || item.application_status == 'under_process'), 'under-review':item.application_status === null || item.application_status === 'under_review', 'complete': item.application_status === 'complete', 'draft': item.application_status === 'draft' }">
+                                <span *ngIf="item.application_status == 'pending'">Pending</span>
+                                <span *ngIf="item.application_status == 'draft'">Draft</span>
                                 <span *ngIf="item.application_status == 'application_process'">Application Process</span>
+                                <span *ngIf="item.application_status == 'under_process'">Under Process</span>
+                                <span *ngIf="item.application_status == 'payment_pending'">Payment Pending</span>
                                 <span *ngIf="item.application_status == null || item.application_status === 'under_review'">Under Review</span>
                                 <span *ngIf="item.application_status == 'complete'">Complete</span>
                             </td>
-                           
+                            
                             <td>
                                 <span *ngIf="item.form_meta == 'work_permit'">Work Permit</span>
                                 <span *ngIf="item.form_meta == 'no_objection'">No Objection Certificate</span>

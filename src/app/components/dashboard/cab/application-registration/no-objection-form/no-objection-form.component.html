@@ -274,7 +274,7 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    <ng-container *ngIf="step1Data.is_bod == '1'">
                                     <div class="row"  id="ownOrgBasicInfos">
                                         <div class="col-12 p-0">
                                             <div class="form-subheader-data">
@@ -282,54 +282,57 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     
-                                    <div class="row" *ngFor="let item of ownOrgMembInfo; let i = index;">
-                                        <div class="col-12"  *ngIf="step1Data.is_bod == '1'" >
-                                            <div class="ownr-details">
-                                                <div class="row">
-                                                    <div class="col-md-4 col-sm-12">
-                                                        <mat-form-field class="cab-data">
-                                                            <mat-label>Name the members of Board of Directors (BOD) (if any)</mat-label>
-                                                            <input matInput readonly="true"  (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name the members of Board of Directors (BOD)"  name="bod_directors_name_{{i}}" [(ngModel)]="ownOrgMembInfo[i].name"  >
-                                                        </mat-form-field>
+                                        <div class="row" *ngFor="let item of ownOrgMembInfo; let i = index;">
+                                            <div class="col-12">
+                                                <div class="ownr-details">
+                                                    <div class="row">
+                                                        <div class="col-md-4 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Name the members of Board of Directors (BOD) (if any)</mat-label>
+                                                                <input matInput readonly="true"  (keypress)="Service.inputFilter($event, Service.regExName)" placeholder="Name the members of Board of Directors (BOD)"  name="bod_directors_name_{{i}}" [(ngModel)]="ownOrgMembInfo[i].name"  >
+                                                            </mat-form-field>
+                                                        </div>
+        
+                                                        <div class="col-md-8 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>List the companies name of BOD members</mat-label>
+                                                                <input matInput readonly="true" placeholder="List the companies name of BOD members"  (keypress)="Service.inputFilter($event, Service.regExName)" name="company_name_bod_{{i}}" [(ngModel)]="ownOrgMembInfo[i].bod_company"  >
+                                                            </mat-form-field>
+                                                        </div>
                                                     </div>
-    
-                                                    <div class="col-md-8 col-sm-12">
-                                                        <mat-form-field class="cab-data">
-                                                            <mat-label>List the companies name of BOD members</mat-label>
-                                                            <input matInput readonly="true" placeholder="List the companies name of BOD members"  (keypress)="Service.inputFilter($event, Service.regExName)" name="company_name_bod_{{i}}" [(ngModel)]="ownOrgMembInfo[i].bod_company"  >
-                                                        </mat-form-field>
-                                                    </div>
-                                                </div>
-    
-                                                <div class="row">
-                                                    <div class="col-md-4 col-sm-12">
-                                                        <mat-form-field class="cab-data">
-                                                            <mat-label>Authorized Contact Person Name</mat-label>
-                                                            <input matInput readonly="true" placeholder="Authorized Contact Person Name"   name="authorized_contact_person_{{i}}" [(ngModel)]="ownOrgMembInfo[i].authorized_contact_person"  (keypress)="Service.inputFilter($event, Service.regExName)" >
-                                                        </mat-form-field>
-                                                    </div>
-    
-                                                    <div class="col-md-4 col-sm-12">
-                                                        <mat-form-field class="cab-data">
-                                                            <mat-label>Designation</mat-label>
-                                                            <input  readonly="true" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="bod_designation_{{i}}" [(ngModel)]="ownOrgMembInfo[i].designation" >
-                                                        </mat-form-field>
-                                                    </div>
-    
-                                                    <div class="col-md-4 col-sm-12">
-                                                        <mat-form-field class="cab-data">
-                                                            <mat-label>Mobile Phone No.</mat-label>
-                                                            <input  readonly="true" type="text" maxlength="15" minlength="10" 
-                                                            (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." 
-                                                            name="bod_mobile_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].mobile_no" >
-                                                        </mat-form-field>
-                                                        <p class="error" *ngIf="ownOrgMembInfo[i].mobile_no && !Service.checkInput('onlyNumberWithPlus',ownOrgMembInfo[i].mobile_no)">Please Enter Correct Telephone Number</p> 
+        
+                                                    <div class="row">
+                                                        <div class="col-md-4 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Authorized Contact Person Name</mat-label>
+                                                                <input matInput readonly="true" placeholder="Authorized Contact Person Name"   name="authorized_contact_person_{{i}}" [(ngModel)]="ownOrgMembInfo[i].authorized_contact_person"  (keypress)="Service.inputFilter($event, Service.regExName)" >
+                                                            </mat-form-field>
+                                                        </div>
+        
+                                                        <div class="col-md-4 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Designation</mat-label>
+                                                                <input  readonly="true" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="Designation" name="bod_designation_{{i}}" [(ngModel)]="ownOrgMembInfo[i].designation" >
+                                                            </mat-form-field>
+                                                        </div>
+        
+                                                        <div class="col-md-4 col-sm-12">
+                                                            <mat-form-field class="cab-data">
+                                                                <mat-label>Mobile Phone No.</mat-label>
+                                                                <input  readonly="true" type="text" maxlength="15" minlength="10" 
+                                                                (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." 
+                                                                name="bod_mobile_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].mobile_no" >
+                                                            </mat-form-field>
+                                                            <p class="error" *ngIf="ownOrgMembInfo[i].mobile_no && !Service.checkInput('onlyNumberWithPlus',ownOrgMembInfo[i].mobile_no)">Please Enter Correct Telephone Number</p> 
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>                                  
+                                        </div> 
+                                    </ng-container>
+                                                                     
                                 </div>
                             </div>
                         </div>
@@ -370,186 +373,186 @@
                                     </div>
 
                                     <!-- Add Options -->
-                                    <div class="row"> 
-                                        <div class="col-md-6 col-sm-6 ">                                            
-                                            <div class="form-subheader">
-                                                <span><strong>a) Laboratory:</strong></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 col-sm-6 p-0 pt-4">
-                                            <div class="cab-data">
-                                                <!-- <mat-checkbox-group name="cab_type_laboratory"> -->
-                                                <mat-checkbox  name="testing_laboratory" 
-                                            [(ngModel)]="step2Data.cabTypeLaboratory_testing" [ngModelOptions]="{standalone: true}" required>
-                                                Testing Laboratory
-                                                </mat-checkbox>
-                                                <mat-checkbox  name="calibration_laboratory" 
-                                            [(ngModel)]="step2Data.cabTypeLaboratory_calibration" [ngModelOptions]="{standalone: true}" required>
-                                                Calibration Laboratory
-                                                </mat-checkbox>
-                                                <!-- </mat-checkbox-group> -->
-                                                <!-- <mat-radio-group name="cab_type_laboratory" 
-                                                [(ngModel)]="step2Data.cabTypeLaboratory" #selectCabLab="ngModel" required>
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="initial_data">
-                                                            <mat-radio-button value="testing_laboratory">Testing Laboratory</mat-radio-button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="initial_data">
-                                                            <mat-radio-button value="calibration_laboratory">Calibration Laboratory</mat-radio-button>
-                                                        </div>
-                                                    </div>
+                                    <div class="row mt-4"> 
+                                        <div class="col-md-6 col-sm-6">
+                                            <div class="activity_wrapper confirm cab_info">                                           
+                                                <div class="activity_head">
+                                                    a) Laboratory:<span class="required_input">*</span>
                                                 </div>
-                                                </mat-radio-group> -->
-                                            </div>
-                                            <!-- <div class="row">
-                                                <div class="col-md-6">
-                                                    <p class="error" *ngIf="isFormSubmitted == true && selectCabLab.errors?.required">Please select anyone option</p>
-                                                </div>
-                                            </div> -->
-                                        </div>
-                                        <div class="col-md-6 col-sm-6 ">                                            
-                                            <div class="form-subheader">
-                                                <span><strong>b) Inspection Body:</strong></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 col-sm-6 p-0 pt-4">
-                                            <div class="cab-data">
-                                                <!-- <mat-checkbox-group name="cab_type_inspection"> -->
-                                                    <mat-checkbox  name="engineering_ib" 
-                                                [(ngModel)]="step2Data.cabTypeInspectionBody_engineering_ib" [ngModelOptions]="{standalone: true}" required>
-                                                    Engineering IB
+                                                <div class="check_data_activities">
+                                                    <!-- <mat-checkbox-group name="cab_type_laboratory"> -->
+                                                    <mat-checkbox  name="testing_laboratory" 
+                                                [(ngModel)]="step2Data.cabTypeLaboratory_testing" [ngModelOptions]="{standalone: true}" required>
+                                                    Testing Laboratory
                                                     </mat-checkbox>
-                                                    <mat-checkbox  name="sustainability_ib" 
-                                                [(ngModel)]="step2Data.cabTypeInspectionBody_sustainability_ib" [ngModelOptions]="{standalone: true}" required>
-                                                    Sustainability IB
+                                                    <mat-checkbox  name="calibration_laboratory" 
+                                                [(ngModel)]="step2Data.cabTypeLaboratory_calibration" [ngModelOptions]="{standalone: true}" required>
+                                                    Calibration Laboratory
                                                     </mat-checkbox>
-                                                <!-- </mat-checkbox-group> -->
-                                                <!-- <mat-radio-group name="cab_type_inspection" 
-                                                [(ngModel)]="step2Data.cabTypeInspectionBody" #selectCabInspection="ngModel" required>
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="initial_data">
-                                                            <mat-radio-button value="engineering_ib">Engineering IB</mat-radio-button>
+                                                    <!-- </mat-checkbox-group> -->
+                                                    <!-- <mat-radio-group name="cab_type_laboratory" 
+                                                    [(ngModel)]="step2Data.cabTypeLaboratory" #selectCabLab="ngModel" required>
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="initial_data">
+                                                                <mat-radio-button value="testing_laboratory">Testing Laboratory</mat-radio-button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="initial_data">
+                                                                <mat-radio-button value="calibration_laboratory">Calibration Laboratory</mat-radio-button>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
-                                                        <div class="initial_data">
-                                                            <mat-radio-button value="sustainability_ib">Sustainability IB</mat-radio-button>
-                                                        </div>
+                                                    </mat-radio-group> -->
+                                                    <!-- <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="error" *ngIf="isFormSubmitted == true && selectCabLab.errors?.required">Please select anyone option</p>
                                                     </div>
+                                                </div> -->
                                                 </div>
-                                                </mat-radio-group> -->
                                             </div>
-                                            <!-- <div class="row">
-                                                <div class="col-md-6">
-                                                    <p class="error" *ngIf="isFormSubmitted == true && selectCabInspection.errors?.required">Please select anyone option</p>
+                                        </div>
+                                        <div class="col-md-4 col-sm-6">
+                                            <div class="activity_wrapper confirm cab_info">
+                                                <div class="activity_head">
+                                                    b) Inspection Body:<span class="required_input">*</span>
                                                 </div>
-                                            </div> -->
+                                                <div class="check_data_activities">
+                                                    <!-- <mat-checkbox-group name="cab_type_inspection"> -->
+                                                        <mat-checkbox  name="engineering_ib" 
+                                                    [(ngModel)]="step2Data.cabTypeInspectionBody_engineering_ib" [ngModelOptions]="{standalone: true}" required>
+                                                        Engineering IB
+                                                        </mat-checkbox>
+                                                        <mat-checkbox  name="sustainability_ib" 
+                                                    [(ngModel)]="step2Data.cabTypeInspectionBody_sustainability_ib" [ngModelOptions]="{standalone: true}" required>
+                                                        Sustainability IB
+                                                        </mat-checkbox>
+                                                    <!-- </mat-checkbox-group> -->
+                                                    <!-- <mat-radio-group name="cab_type_inspection" 
+                                                    [(ngModel)]="step2Data.cabTypeInspectionBody" #selectCabInspection="ngModel" required>
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="initial_data">
+                                                                <mat-radio-button value="engineering_ib">Engineering IB</mat-radio-button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="initial_data">
+                                                                <mat-radio-button value="sustainability_ib">Sustainability IB</mat-radio-button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </mat-radio-group> -->
+                                                </div>
+                                                <!-- <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="error" *ngIf="isFormSubmitted == true && selectCabInspection.errors?.required">Please select anyone option</p>
+                                                    </div>
+                                                </div> -->
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div class="row"> 
-                                        <div class="col-md-6 col-sm-6 ">                                            
-                                            <div class="form-subheader">
-                                                <span><strong>c) Certification Body:</strong></span>
+                                    <div class="row mt-4"> 
+                                        <div class="col-md-6 col-sm-6 ">
+                                            <div class="activity_wrapper confirm cab_info">
+                                                <div class="activity_head">
+                                                    c) Certification Body:<span class="required_input">*</span>
+                                                </div>
+                                                <div class="check_data_activities">
+
+                                                    <!-- <mat-checkbox-group name="cab_type_certification"> -->
+                                                        <mat-checkbox  name="management_system_cb" 
+                                                    [(ngModel)]="step2Data.cabTypeCertificationBody_management_system_cb" [ngModelOptions]="{standalone: true}" required>
+                                                        Management System CB
+                                                        </mat-checkbox>
+                                                        <mat-checkbox  name="personal_cb" 
+                                                    [(ngModel)]="step2Data.cabTypeCertificationBody_personal_cb" [ngModelOptions]="{standalone: true}" required>
+                                                        Personal CB
+                                                        </mat-checkbox>
+                                                        <mat-checkbox  name="product_cb" 
+                                                    [(ngModel)]="step2Data.cabTypeCertificationBody_product_cb" [ngModelOptions]="{standalone: true}" required>
+                                                        Product CB
+                                                        </mat-checkbox>
+                                                    <!-- </mat-checkbox-group> -->
+
+                                                    <!-- <mat-radio-group name="cab_type_certification" 
+                                                    [(ngModel)]="step2Data.cabTypeCertificationBody" #selectCabCB="ngModel" required>
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="initial_data">
+                                                                <mat-radio-button value="management_system_cb">Management System CB</mat-radio-button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="initial_data">
+                                                                <mat-radio-button value="personal_cb">Personal CB</mat-radio-button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="initial_data">
+                                                                <mat-radio-button value="product_cb">Product CB</mat-radio-button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </mat-radio-group> -->
+                                                </div>
+                                                <!-- <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="error" *ngIf="isFormSubmitted == true && selectCabCB.errors?.required">Please select anyone option</p>
+                                                    </div>
+                                                </div> -->
                                             </div>
                                         </div>
-                                        <div class="col-md-6 col-sm-6 p-0 pt-4">
-                                            <div class="cab-data">
+                                        <div class="col-md-6 col-sm-6"> 
+                                            <div class="activity_wrapper confirm cab_info">
+                                                <div class="activity_head">
+                                                    d) Halal CAB:<span class="required_input">*</span>
+                                                </div>
+                                                <div class="check_data_activities">
 
-                                                <!-- <mat-checkbox-group name="cab_type_certification"> -->
-                                                    <mat-checkbox  name="management_system_cb" 
-                                                [(ngModel)]="step2Data.cabTypeCertificationBody_management_system_cb" [ngModelOptions]="{standalone: true}" required>
-                                                    Management System CB
-                                                    </mat-checkbox>
-                                                    <mat-checkbox  name="personal_cb" 
-                                                [(ngModel)]="step2Data.cabTypeCertificationBody_personal_cb" [ngModelOptions]="{standalone: true}" required>
-                                                    Personal CB
-                                                    </mat-checkbox>
-                                                    <mat-checkbox  name="product_cb" 
-                                                [(ngModel)]="step2Data.cabTypeCertificationBody_product_cb" [ngModelOptions]="{standalone: true}" required>
-                                                    Product CB
-                                                    </mat-checkbox>
-                                                <!-- </mat-checkbox-group> -->
-
-                                                <!-- <mat-radio-group name="cab_type_certification" 
-                                                [(ngModel)]="step2Data.cabTypeCertificationBody" #selectCabCB="ngModel" required>
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="initial_data">
-                                                            <mat-radio-button value="management_system_cb">Management System CB</mat-radio-button>
+                                                    <!-- <mat-checkbox-group name="cab_type_halal"> -->
+                                                        <mat-checkbox  name="cabTypeHalal_lab" 
+                                                    [(ngModel)]="step2Data.cabTypeHalal_lab" [ngModelOptions]="{standalone: true}" required>
+                                                        Lab
+                                                        </mat-checkbox>
+                                                        <mat-checkbox  name="cabTypeHalal_ib" 
+                                                    [(ngModel)]="step2Data.cabTypeHalal_ib" [ngModelOptions]="{standalone: true}" required>
+                                                        IB
+                                                        </mat-checkbox>
+                                                        <mat-checkbox  name="cabTypeHalal_cb" 
+                                                    [(ngModel)]="step2Data.cabTypeHalal_cb" [ngModelOptions]="{standalone: true}" required>
+                                                        CB
+                                                        </mat-checkbox>
+                                                    <!-- </mat-checkbox-group> -->
+                                                    <!-- <mat-radio-group name="cab_type_halal" 
+                                                    [(ngModel)]="step2Data.cabTypeHalal" #selectCabHalal="ngModel" required>
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="initial_data">
+                                                                <mat-radio-button value="lab">Lab</mat-radio-button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="initial_data">
+                                                                <mat-radio-button value="ib">IB</mat-radio-button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="initial_data">
+                                                                <mat-radio-button value="cb">CB</mat-radio-button>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
-                                                        <div class="initial_data">
-                                                            <mat-radio-button value="personal_cb">Personal CB</mat-radio-button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="initial_data">
-                                                            <mat-radio-button value="product_cb">Product CB</mat-radio-button>
-                                                        </div>
-                                                    </div>
+                                                    </mat-radio-group> -->
                                                 </div>
-                                                </mat-radio-group> -->
+                                                <!-- <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="error" *ngIf="isFormSubmitted == true && selectCabHalal.errors?.required">Please select anyone option</p>
+                                                    </div>
+                                                </div> -->
                                             </div>
-                                            <!-- <div class="row">
-                                                <div class="col-md-6">
-                                                    <p class="error" *ngIf="isFormSubmitted == true && selectCabCB.errors?.required">Please select anyone option</p>
-                                                </div>
-                                            </div> -->
-                                        </div>
-                                        <div class="col-md-6 col-sm-6 ">                                            
-                                            <div class="form-subheader">
-                                                <span><strong>d) Halal CAB:</strong></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 col-sm-6 p-0 pt-4">
-                                            <div class="cab-data">
-
-                                                <!-- <mat-checkbox-group name="cab_type_halal"> -->
-                                                    <mat-checkbox  name="cabTypeHalal_lab" 
-                                                [(ngModel)]="step2Data.cabTypeHalal_lab" [ngModelOptions]="{standalone: true}" required>
-                                                    Lab
-                                                    </mat-checkbox>
-                                                    <mat-checkbox  name="cabTypeHalal_ib" 
-                                                [(ngModel)]="step2Data.cabTypeHalal_ib" [ngModelOptions]="{standalone: true}" required>
-                                                    IB
-                                                    </mat-checkbox>
-                                                    <mat-checkbox  name="cabTypeHalal_cb" 
-                                                [(ngModel)]="step2Data.cabTypeHalal_cb" [ngModelOptions]="{standalone: true}" required>
-                                                    CB
-                                                    </mat-checkbox>
-                                                <!-- </mat-checkbox-group> -->
-                                                <!-- <mat-radio-group name="cab_type_halal" 
-                                                [(ngModel)]="step2Data.cabTypeHalal" #selectCabHalal="ngModel" required>
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <div class="initial_data">
-                                                            <mat-radio-button value="lab">Lab</mat-radio-button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="initial_data">
-                                                            <mat-radio-button value="ib">IB</mat-radio-button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="initial_data">
-                                                            <mat-radio-button value="cb">CB</mat-radio-button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                </mat-radio-group> -->
-                                            </div>
-                                            <!-- <div class="row">
-                                                <div class="col-md-6">
-                                                    <p class="error" *ngIf="isFormSubmitted == true && selectCabHalal.errors?.required">Please select anyone option</p>
-                                                </div>
-                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -591,7 +594,7 @@
                                         </div>
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-md-12 col-sm-6">
+                                        <div class="col-md-12 col-sm-6 p-0">
                                             <div class="cab-data">
                                                 <!-- FOR TESTING LAB -->
                                                 <ul [ngStyle]="{'list-style':'none'}">
@@ -608,7 +611,7 @@
                                                     </li>
                                                     <li>
                                                         <ng-container *ngIf="testingLabCheckItemOthers">
-                                                            <mat-form-field class="cab-data">
+                                                            <mat-form-field class="cab-data other_data">
                                                                 <mat-label>Type Other</mat-label>
                                                                 <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
                                                                 matInput name="testingLabCheckItemOtherInput" 
@@ -640,14 +643,14 @@
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                                    matInput placeholder="" name="task_type_{{i}}" [(ngModel)]="testingLabInfo[i].task_type" required> 
+                                                                    matInput placeholder="" name="task_type_{{i}}" [(ngModel)]="testingLabInfo[i].task_type" > 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                                    matInput placeholder="" name="product_{{i}}" [(ngModel)]="testingLabInfo[i].product" required> 
+                                                                    matInput placeholder="" name="product_{{i}}" [(ngModel)]="testingLabInfo[i].product" > 
                                                                 </mat-form-field>
                                                                 
                                                             </td>
@@ -655,14 +658,14 @@
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="task_name_{{i}}" 
-                                                                    [(ngModel)]="testingLabInfo[i].task_name" required> 
+                                                                    [(ngModel)]="testingLabInfo[i].task_name" > 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="method_{{i}}"
-                                                                     [(ngModel)]="testingLabInfo[i].method" required> 
+                                                                     [(ngModel)]="testingLabInfo[i].method" > 
                                                                 </mat-form-field>
                                                                 </td>
                                                             <td class="content-icn">
@@ -686,7 +689,7 @@
                                         </div>
                                     </div>
                                     <div class="row  mt-3">
-                                        <div class="col-md-12 col-sm-6">
+                                        <div class="col-md-12 col-sm-6 p-0">
                                             <div class="cab-data">
                                                 <!-- FOR TESTING LAB -->
                                                 <ul [ngStyle]="{'list-style':'none'}">
@@ -703,7 +706,7 @@
                                                     </li>
                                                     <li>
                                                         <ng-container *ngIf="calibrationLabCheckItemOthers">
-                                                            <mat-form-field class="cab-data">
+                                                            <mat-form-field class="cab-data other_data">
                                                                 <mat-label>Type Other</mat-label>
                                                                 <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
                                                                 matInput name="calibrationLabCheckItemOtherInput" 
@@ -733,14 +736,14 @@
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                                    matInput placeholder="" name="measured_quantity_{{i}}" [(ngModel)]="calibrationLabInfo[i].measured_quantity" required> 
+                                                                    matInput placeholder="" name="measured_quantity_{{i}}" [(ngModel)]="calibrationLabInfo[i].measured_quantity" > 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                                    matInput placeholder="" name="methods_{{i}}" [(ngModel)]="calibrationLabInfo[i].methods" required> 
+                                                                    matInput placeholder="" name="methods_{{i}}" [(ngModel)]="calibrationLabInfo[i].methods" > 
                                                                 </mat-form-field>
                                                                 
                                                             </td>                                                            
@@ -761,12 +764,12 @@
                                     <div class="row mt-3">
                                         <div class="col-12 p-0">
                                             <div class="form-subheader-data">
-                                                <h5>FOR CERTIFICATION BODIES : ISO / IEC 17021 (CERTIFICATION OF MANAGEMENT SYSTEMS) :</h5>
+                                                <h5>FOR CERTIFICATION BODIES : ISO / IEC 17021 (CERTIFICATION OF MANAGEMENT SYSTEMS) :<span class="required_input">*</span></h5>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row  mt-3">
-                                        <div class="col-md-12 col-sm-6">
+                                    <div class="row mt-3">
+                                        <div class="col-md-12 col-sm-6 p-0">
                                             <div class="cab-data">
                                                 <!-- FOR CB -->
                                                 <ul [ngStyle]="{'list-style':'none'}">
@@ -784,7 +787,7 @@
                                                     </li>
                                                     <li>
                                                         <ng-container *ngIf="certificationBodiesCheckItemOthersFirst">
-                                                            <mat-form-field class="cab-data">
+                                                            <mat-form-field class="cab-data other_data">
                                                                 <mat-label>Type Other</mat-label>
                                                                 <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
                                                                 matInput name="certificationBodiesCheckItemOthersFirstInput" 
@@ -797,25 +800,43 @@
                                         </div>
                                     </div>
                                     <div class="row mt-3"> 
-                                        <!-- @{{certificationBodiesCheckboxesForProducts}} -->
-                                        <mat-checkbox class="col-md-12"  name="scope_options" 
-                                        [(ngModel)]="step3Data.certificationBodiesCheckboxesForProducts" 
-                                        [ngModelOptions]="{standalone: true}">ISO/ IEC 17065 (CERTIFICATION OF PRODUCTS, PROCESES AND SERVICES )</mat-checkbox>
+                                        <div class="col-md-12 p-0">
+                                            <div class="cab-data">
+                                                <!-- @{{certificationBodiesCheckboxesForProducts}} -->
+                                                <mat-checkbox class="col-md-12"  name="scope_options" 
+                                                [(ngModel)]="step3Data.certificationBodiesCheckboxesForProducts" 
+                                                [ngModelOptions]="{standalone: true}">ISO/ IEC 17065 (CERTIFICATION OF PRODUCTS, PROCESES AND SERVICES )</mat-checkbox>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="row mt-3"> 
-                                        <!-- @{{certificationBodiesCheckboxesForPersons}} -->
-                                        <mat-checkbox class="col-md-12"  name="scope_options" 
-                                        [(ngModel)]="step3Data.certificationBodiesCheckboxesForPersons" 
-                                        [ngModelOptions]="{standalone: true}">ISO/ IEC 17024 (CERTIFICATION OF PERSONS)</mat-checkbox>
+                                    <div class="row mt-3">
+                                        <div class="col-md-12 p-0">
+                                            <div class="cab-data">
+                                                <!-- @{{certificationBodiesCheckboxesForPersons}} -->
+                                                <mat-checkbox class="col-md-12"  name="scope_options" 
+                                                [(ngModel)]="step3Data.certificationBodiesCheckboxesForPersons" 
+                                                [ngModelOptions]="{standalone: true}">ISO/ IEC 17024 (CERTIFICATION OF PERSONS)</mat-checkbox>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="row mt-3"> 
-                                        <!-- @{{certificationBodiesCheckboxesForInspection}} -->
-                                        <mat-checkbox class="col-md-12"  name="scope_options" 
-                                        [(ngModel)]="step3Data.certificationBodiesCheckboxesForInspection" 
-                                        [ngModelOptions]="{standalone: true}">FOR INSPECTION BODIES: (ISO/IEC 17020)</mat-checkbox>
+                                    <!-- <div class="row mt-3">
+                                        <div class="col-md-12 p-0">
+                                            <div class="cab-data">
+                                                <mat-checkbox class="col-md-12"  name="scope_options" 
+                                                [(ngModel)]="step3Data.certificationBodiesCheckboxesForInspection" 
+                                                [ngModelOptions]="{standalone: true}">FOR INSPECTION BODIES: (ISO/IEC 17020)</mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                    <div class="row mt-3">
+                                        <div class="col-12 p-0">
+                                            <div class="form-subheader-data">
+                                                <h5>FOR INSPECTION BODIES: (ISO/IEC 17020) :<span class="required_input">*</span></h5>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row  mt-3">
-                                        <div class="col-md-12 col-sm-6">
+                                        <div class="col-md-12 col-sm-6 p-0">
                                             <div class="cab-data">
                                                 <!-- FOR CB -->
                                                 <ul [ngStyle]="{'list-style':'none'}">
@@ -833,7 +854,7 @@
                                                     </li>
                                                     <li>
                                                         <ng-container *ngIf="certificationBodiesCheckItemOthersSecond">
-                                                            <mat-form-field class="cab-data">
+                                                            <mat-form-field class="cab-data other_data">
                                                                 <mat-label>Type Other</mat-label>
                                                                 <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
                                                                 matInput name="certificationBodiesCheckItemOthersSecondInput" 
@@ -866,14 +887,14 @@
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                                    matInput placeholder="" name="task_type_cb_{{i}}" [(ngModel)]="certificationBodiesInfo[i].task_type" required> 
+                                                                    matInput placeholder="" name="task_type_cb_{{i}}" [(ngModel)]="certificationBodiesInfo[i].task_type" > 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                                    matInput placeholder="" name="product_cb_{{i}}" [(ngModel)]="certificationBodiesInfo[i].product" required> 
+                                                                    matInput placeholder="" name="product_cb_{{i}}" [(ngModel)]="certificationBodiesInfo[i].product" > 
                                                                 </mat-form-field>
                                                                 
                                                             </td>
@@ -882,7 +903,7 @@
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" 
                                                                     name="task_name_cb_{{i}}" 
-                                                                    [(ngModel)]="certificationBodiesInfo[i].task_name" required> 
+                                                                    [(ngModel)]="certificationBodiesInfo[i].task_name" > 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
@@ -890,7 +911,7 @@
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" 
                                                                     name="method_cb_{{i}}"
-                                                                     [(ngModel)]="certificationBodiesInfo[i].method" required> 
+                                                                     [(ngModel)]="certificationBodiesInfo[i].method" > 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td class="content-icn">
@@ -909,12 +930,12 @@
                                     <div class="row mt-3">
                                         <div class="col-12 p-0">
                                             <div class="form-subheader-data">
-                                                <h5>FOR HALAL CAB :</h5>
+                                                <h5>FOR HALAL CAB :<span class="required_input">*</span></h5>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row  mt-3"> 
-                                        <div class="col-md-12 col-sm-6">
+                                    <div class="row mt-3"> 
+                                        <div class="col-md-12 col-sm-6 p-0">
                                             <div class="cab-data">
                                                 <!-- FOR TESTING LAB -->
                                                 <ul [ngStyle]="{'list-style':'none'}">
@@ -931,7 +952,7 @@
                                                     </li>
                                                     <li>
                                                         <ng-container *ngIf="halalCabCheckItemOthers">
-                                                            <mat-form-field class="cab-data">
+                                                            <mat-form-field class="cab-data other_data">
                                                                 <mat-label>Type Other</mat-label>
                                                                 <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
                                                                 matInput name="halalCabCheckItemOthersInput" 
@@ -1123,6 +1144,7 @@
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-md-12">
+                                    <div class="col-12">
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr form_subhdr">
@@ -1152,6 +1174,9 @@ Please read Law No. 2 for 2010  carefully to ensure that you understand the poli
                                             <p class="error" *ngIf="!readTermsCond  && isApplicationSubmitted == true">Read the Terms and Conditions</p>
                                         </div>
                                     </div>
+                                </div>
+
+
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="row">

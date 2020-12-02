@@ -31,7 +31,7 @@
                   <div [ngClass]="{'complete': serviceDetail?.payment_status == 'paid', 'under-review':serviceDetail?.payment_status == 'pending', 'under-review':serviceDetail?.payment_status == null }">
                     <!-- <span>{{(serviceDetail?.payment_status == "paid") ? 'Paid' : 'Unpaid'}}</span> -->
                     <span *ngIf="serviceDetail?.payment_status == 'pending'">Unpaid</span>
-                    <span *ngIf="serviceDetail?.paymentDetails?.doc_review_payment_status != null">Paid</span>
+                    <span *ngIf="serviceDetail?.payment_status == 'paid'">Paid</span>
                   </div>
                 </div>
               </div>
@@ -82,7 +82,7 @@
                 </div>
                 <div class="appln-details">
                   <span *ngIf="serviceDetail?.form_meta == 'work_activity'">Work Activity Permit</span>
-                  <!-- <span *ngIf="serviceDetail?.form_meta == 'testing_calibration'">Testing Calibration</span> -->
+                  <span *ngIf="serviceDetail?.form_meta == 'no_objection'">No Objection Certificate</span>
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -221,14 +221,14 @@
         
       </div>
       
-      <div class="row m-0" *ngIf="serviceDetail?.form_meta != 'work_activity'">
+      <div class="row m-0">
         <div class="col-md-12">
           <div class="row status-det-wrapper">
             <div class="col-md-12 p-0">
               <div class="row">
                 <div class="col-md-12">
                   <div class="appln-subhdr">
-                    <h5>BOARD MEMBERS OF THE COMPANY</h5>
+                    <h5>BOARD MEMBERS</h5>
                   </div>
                   <hr>
                 </div>
@@ -251,6 +251,10 @@
           </div>
         </div>
       </div>
+
+      <!-- NOC Details -->
+
+
       
       <div class="row m-0 appn-cnt-data" *ngIf="paymentDetails && paymentDetails!= null">
         <div class="col-md-12">
@@ -281,7 +285,7 @@
                       <td>Payment Method</td>
                       <td>{{paymentDetails?.payment_method}}</td>
                       <td>Payment Made By</td>
-                      <td>{{paymentDetails?.payment_method}}</td>
+                      <td>{{paymentDetails?.payment_made_by}}</td>
                     </tr>
                     <tr>
                       <td>Mobile Number</td>
