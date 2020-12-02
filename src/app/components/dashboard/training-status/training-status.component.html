@@ -1,1 +1,201 @@
-<p>training-status works!</p>
+<!-- <p>trainer-service-list works!</p> -->
+<app-loader *ngIf="!loader"></app-loader>
+<div class="main-detail">
+    <div class="container-fluid p-0">
+        <div class="main-dashboard-table">
+            <flash-messages></flash-messages>
+            <div class="row mb-4">
+                <div class="col-md-8">                    
+                    <div class="dashbrd-hdr">
+                        <h3>Registration Service</h3>  
+                    </div>
+                </div>
+                <div class="col-md-4"> 
+                    <div class="tbl-filter-data">
+                        <ul>
+                            <li>
+                                <div class="filter">
+                                    <!-- <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a>
+                                    <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a> -->
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <ng-container *ngIf="advSearch" class="tbl-filter-data">
+                <div class="filter-dash">
+                    <div class="close-bttn">
+                        <span class="icon-close" (click)="filterSearchSec()"></span>
+                    </div>
+                <div class="row m-0">
+                    <div class="col-md-4">
+                        <div class="user-details">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Search by Course ID</mat-label> 
+                            <input type="text" matInput [(ngModel)]="selectCode" placeholder="Search by CODE">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="user-details">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Search by Fees</mat-label> 
+                            <input matInput type="number" [(ngModel)]="selectFees" placeholder="Search by Fees">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="user-details">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Select Course Type</mat-label>                             
+                                <mat-select placeholder="Select" 
+                                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectCustomCourse" required>
+                                    <mat-option *ngFor="let item of selectCustomCourses;" [value]="item.value">{{item.title}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-0" >
+                    <div class="col-md-4">
+                        <div class="user-details">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Select Agreement Status</mat-label>                             
+                                <mat-select placeholder="Select Status" 
+                                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectAgreementStatus" required>
+                                    <mat-option *ngFor="let item of agreementStatus;" [value]="item.value">{{item.title}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="user-details">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Select Payment Status</mat-label>                             
+                                <mat-select placeholder="Select Status" 
+                                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectPaymentStatus" required>
+                                    <mat-option *ngFor="let item of paymentStatus;" [value]="item.value">{{item.title}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-0">
+                    <div class="col-md-12"> 
+                        <div class="filter-search">
+                            <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
+                            <a href="javascript:void(0)" (click)="filterSearchReset()">RESET</a>
+                        </div>         
+                    </div>
+                    
+                </div>
+                </div>
+                
+            </ng-container>
+            
+        
+        <div class="table-dashboard-cont">
+            <div class="row m-0">
+                <div class="col-md-12 p-0">
+                    
+                    <table>
+                        <tr>
+                            <th>Application No
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'id', curSortDir.id)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.id"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.id"></span>
+                                </a>
+                            </th>
+                            <th>Application Date
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'created_date', curSortDir.created_date)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.created_date"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.created_date"></span>
+                                </a>
+                            </th>
+                            <th width="15%">Status
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'accr_status', curSortDir.accr_status)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.accr_status"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.accr_status"></span>
+                                </a>
+                            </th>
+                            
+                            <th>Registration Type
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'form_meta', curSortDir.form_meta)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.form_meta"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.form_meta"></span>
+                                </a>
+                            </th>
+                            <th>Payment Status
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'payment_status', curSortDir.payment_status)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.payment_status"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.payment_status"></span>
+                                </a>
+                            </th>
+                            
+                            <th>Action</th>
+                        </tr>
+                    <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
+                        <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
+                            <td class="fnt-clr">
+                                <a href="javascript:void(0)" routerLink="/dashboard/operations/training-service-details/{{item.id}}" title="View" alt="View">
+                                {{item.id}}</a></td>
+                            <td>
+                                {{item.created | date :'dd-MMM-yyyy' }}
+                            </td>
+                            <td [ngClass]="{'pending': (item.accr_status === 'pending' || item.accr_status == 'draft' || item.accr_status == 'application_process'), 'under-review':item.accr_status === null || item.accr_status === 'under_review', 'complete': item.accr_status === 'complete'}">
+                                <span *ngIf="item.accr_status == 'pending' || item.accr_status == 'draft'">Pending</span>
+                                <span *ngIf="item.accr_status == 'application_process'">Application Process</span>
+                                <span *ngIf="item.accr_status == null || item.accr_status === 'under_review'">Under Review</span>
+                                <span *ngIf="item.accr_status == 'complete'">Complete</span>
+                            </td>
+                           
+                            <td>
+                                <span *ngIf="item.form_meta == 'work_activity' || item.form_meta == 'work_permit'">Work Permit</span>
+                                <span *ngIf="item.form_meta == 'no_objection'">No Objection Certificate</span>
+                                <!-- <span *ngIf="item.form_meta == 'work_activity'">Work Activity Permit</span> -->
+                            </td>
+                            <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review':item.payment_status === null , 'under-review':item.payment_status === 'pending'}">
+                                <span *ngIf="item.payment_status == 'paid'">Paid</span>
+                                <span *ngIf="item.payment_status == 'pending'">Unpaid</span>
+                                <span *ngIf="item.payment_status == null">Unpaid</span>
+                            </td>                            
+                            <td class="action fnt-clr">
+                                <ng-container *ngIf="item.form_meta == 'work_activity' || item.form_meta == 'work_permit'">
+                                    <a href="javascript:void(0)" [hidden]="editVisible(item)" alt="Edit" routerLink="/dashboard/cab_client/work-permit-form/{{item.id}}"><span class="icon-edit"></span></a>
+                                </ng-container>
+                                <ng-container *ngIf="item.form_meta == 'no_objection'">
+                                    <a href="javascript:void(0)" [hidden]="editVisible(item)" alt="Edit" routerLink="/dashboard/cab_client/no-objection-certificate-form/{{item.id}}"><span class="icon-edit"></span></a>
+                                </ng-container>
+                                <!-- <ng-container *ngIf="item.form_meta == 'work_activity'">
+                                    <a href="javascript:void(0)" alt="Edit" routerLink="/dashboard/cab_client/work-permit-form/{{item.id}}"><span class="icon-edit"></span></a>
+                                </ng-container> -->
+                            </td>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="dataLoad && trainerdata.length == 0">
+                        <tr>
+                            <td colspan="5">
+                                No Records
+                            </td>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="!dataLoad">
+                        <tr>
+                            <td colspan="7" align="center">
+                                Loading...
+                            </td>
+                        </tr>
+                    </ng-container>
+                    </table>
+                    <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
+                        <pagination-controls (pageChange)="pageCurrentNumber = $event"></pagination-controls>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+       
+    </div>
+    </div>
+</div>

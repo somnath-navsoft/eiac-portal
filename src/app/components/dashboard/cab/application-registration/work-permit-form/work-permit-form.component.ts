@@ -472,7 +472,6 @@ export class WorkPermitFormComponent implements OnInit {
 
                 this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
                 this.paymentReceiptValidation = true;
-                console.log(this.paymentFile,'paymentFile');
             }
           })
       }
