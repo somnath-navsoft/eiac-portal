@@ -48,7 +48,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   selectCustomCourses: any[] = [];
   transactions: any[] =[];
   transactionsItem: any={};
-  publicCourseId:any;
+  traningPublicId:any;
   step1Data:any = {};
   step2Data:any = {};
   step3Data:any = {};
@@ -85,14 +85,15 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   noofParticipants:any;
   subTotal:any;
   voucherFile:any = new FormData();
-  paymentReceiptValidation:boolean
+  paymentReceiptValidation:boolean;
+  paymentFile:any;
 
   constructor(private Service: AppService, private http: HttpClient,
     public _toaster: ToastrService, private _router: Router, private _route: ActivatedRoute,
     private _trainerService: TrainerService, private _constant: Constants,public sanitizer:DomSanitizer,private modalService: NgbModal) { }
 
   ngOnInit() {
-    this.publicCourseId = sessionStorage.getItem('publicCourseId');
+    this.traningPublicId = sessionStorage.getItem('publicFormId');
 
     var publicCourseid = sessionStorage.getItem('trainingPublicCourse');
     var splitId = publicCourseid.split('=');
@@ -163,6 +164,94 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             this.step3Data.training_duration = courseDetails.training_days;
             // console.log(courseDetails.training_days,'training_days');
           });
+    }
+
+    if(this.traningPublicId != undefined) {
+      let url2 = this.Service.apiServerUrl+"/"+'registration-details-show/'+this.traningPublicId;
+        this.Service.getwithoutData(url2)
+        .subscribe(
+          res => {
+            if(res['data'].id != undefined && res['data'].id > 0){
+              this.formApplicationId = res['data'].id;
+            }
+
+            let saveStep: number;
+            //check steps
+            if(res['data'].is_draft){
+
+              saveStep = parseInt(res['data'].saved_step) - 1;
+            }else{
+              if(parseInt(res['data'].saved_step) == 7){
+                
+                saveStep = parseInt(res['data'].saved_step) - 1;
+              }else{
+                
+              saveStep = parseInt(res['data'].saved_step);
+              }
+            }
+
+            if(res['data'].saved_step  != null){
+              //let saveStep = res['data'].saved_step;
+              //open step
+              this.headerSteps.forEach((item, key) => {
+                    ///////console.log(item, " --- ", key);
+                    if(key < saveStep){
+                      //////console.log('moving steps....');
+                      let curStep: any = item;
+                      curStep.stepComp = true;
+                      let nextStep: any = this.headerSteps[key+1];
+                      this.Service.moveSteps(curStep.title, nextStep.title, this.headerSteps);
+                    }
+                    if(key == saveStep){
+                      let curStep: any = this.headerSteps[key];
+                      console.log('found steps....',curStep);
+                      curStep.stepComp = true;
+                      this.Service.headerStepMove(item.title, this.headerSteps,'menu')
+                    }
+              })
+              //////console.log("#Step data: ", this.headerSteps);
+            }
+
+            this.step1Data.organization_name = '';
+            this.step1Data.mailing_address = '';
+            this.step1Data.zip_code = '';
+            this.step1Data.country = '';
+            this.step1Data.state = '';
+            this.step1Data.city = '';
+            this.step1Data.telephone_number = '';
+            this.step1Data.fax_no = '';
+            this.step1Data.official_email = '';
+            this.step1Data.official_website = '';
+            this.step1Data.authorized_contact_person = '';
+            this.step1Data.designation = '';
+            this.step1Data.mobile_phone_number = '';
+
+            this.participantTraineeDetails = [{}];
+
+            this.step1Data.course_title = '';
+            this.step1Data.training_duration = '';
+
+            if(res['data'].onBehalfApplicantDetails != null) {
+              this.step4Data.organization_name = res['data'].onBehalfApplicantDetails.organization_name;
+              this.step4Data.representative_name = res['data'].onBehalfApplicantDetails.representative_name;
+              this.step4Data.behalf_designation = res['data'].onBehalfApplicantDetails.designation;
+              this.step4Data.digital_signature = res['data'].onBehalfApplicantDetails.digital_signature;
+            }
+
+            if(res['data'].paymentDetails != null){
+              // //console.log(">>>payment details...show");
+                this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
+                this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
+                this.voucherSentData.amount           = res['data'].paymentDetails.amount;
+                this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
+                this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
+                this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
+                this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+
+                this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this._constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
+                this.paymentReceiptValidation = true;
+            }
+          })
     }
   }
 

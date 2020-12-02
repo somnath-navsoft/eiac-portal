@@ -103,12 +103,16 @@ export class LayoutComponent implements OnInit {
           sessionStorage.setItem('routeId', splitUrl[4]);
         }else if(splitUrl[3] == 'registration-service-details') {
           sessionStorage.setItem('registrationId', splitUrl[4]);
+        }else if(splitUrl[3] == 'training-service-details') {
+          sessionStorage.setItem('trainingId', splitUrl[4]);
         }else if(splitUrl[3] == 'work-permit-form') {
           sessionStorage.setItem('workPermitId', splitUrl[4]);
         }else if(splitUrl[3] == 'training-course-details') {
           sessionStorage.setItem('courseDetailId', splitUrl[4]);
         }else if(splitUrl[3] == 'training-public-course-form') {
-          sessionStorage.setItem('publicCourseId', splitUrl[4]);
+          sessionStorage.setItem('publicFormId', splitUrl[4]);
+        }else if(splitUrl[3] == 'training-inpremise-form') {
+          sessionStorage.setItem('inpremiseFormId', splitUrl[4]);
         }else if(splitUrl[3] == 'training-inpremise-details') {
           sessionStorage.setItem('inpremiseCourseId', splitUrl[4]);
         }else{
