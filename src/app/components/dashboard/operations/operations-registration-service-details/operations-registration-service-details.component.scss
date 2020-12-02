@@ -1,0 +1,82 @@
+.message-det .appln-data h5 { color: #b19782; }
+.appln-details.license_no span { color: #B54150; text-decoration: underline; }
+.status-det { margin-bottom: 20px; }
+.status-det .table-appln { padding: 0; }
+.status-det .table-appln td:first-child { border-left: 0; }
+.status-det .table-appln td:last-child { border-right: 0; }
+.status-det .table-appln td:nth-child(odd) { background: #F3F4F6; color: #454545; }
+.status-det .table-appln td:nth-child(even) { background: #EFEFEF; color: #000000; }
+.status-main-details { padding: 17px 14px; background: #EFEFEF; }
+.status-data { margin-bottom: 8px; }
+.status-data p { margin: 0; color: #444444; font-family: 'Dubai Medium'; font-size: 18px; display: inline-block; }
+.status-data span { color: #727272; font-size: 16px; font-family: 'Dubai Regular'; margin-left: 5px; }
+.status-subdata { display: flex; justify-content: flex-start; }
+.status_details { color: #000000; font-size: 14px; font-family: 'Dubai Regular'; padding-right: 20px; }
+.status_details span { color: #A1A1A1; font-size: 17px; margin-right: 10px; vertical-align: middle; }
+.status_sub_table .table-appln td:first-child { width: 25%; }
+.members_details { margin: 10px 5px 5px; border: 1px solid #D3D3D3; background: #F3F4F6; padding: 8px 15px; margin-left: 10px; }
+.status_main .members_details.members_last { margin-right: 10px; margin-left: 5px; }
+.members_details h4 { font-size: 18px; color: #444444; font-family: 'Dubai Medium'; margin-bottom: 5px; }
+.members_details p { color: #727272; font-size: 16px; margin-bottom: 3px; font-family: 'Dubai Regular'; }
+.members_details span { color: #000; font-size: 15px; font-family: 'Dubai Regular'; }
+.status-det-wrapper { background: #EFEFEF; margin: 0; margin-bottom: 20px; }
+.form-subheader-desc.form_org_data { background: #EFEFEF; }
+.form-subheader-desc.form_org_data .mat-radio-label { font-family: 'Dubai Regular'; font-size: 14px; }
+.org_hdr { display: flex; align-items: center; height: 100%; }
+.org_hdr p { margin: 0; font-size: 14px; color: #454545; font-family: 'Dubai Regular'; }
+.main-dashboard-cnt hr { margin: 0; }
+.auth-details td span { text-decoration: none; }
+.auth_wrapper { padding: 10px 0; }
+.authData { padding: 0; font-size: 18px; }
+.authData a { color: #AA9777; text-decoration: underline; }
+.auth-details td:first-child { font-size: 14px; }
+.auth-details td:first-child span { color: #B14A56; }
+.auth-details td:last-child { font-size: 18px; }
+.auth-details td:last-child a { text-decoration: underline; color: #AA9777; }
+.undertaking-last { display: flex; justify-content: space-between; align-items: center; }
+.recommend { font-size: 18px; display: flex; align-items: center; align-content: center; font-family: 'Dubai regular'; }
+.recommend a { color: #AA9777; }
+.signature_under { border-bottom: 1px solid #9B9B9B; padding: 40px 50px 10px; font-family: 'Sign Regular'; font-size: 22px; }
+.date_undertake span { color: #222222; font-size: 18px; font-family: 'Dubai Regular'; }
+.sign_name { text-align: center; }
+.sign_name h5 { color: #222222; font-size: 20px; font-family: 'Dubai Regular'; margin-top: 10px; margin-bottom: 0; }
+.sign_name p { font-size: 16px; font-family: 'Dubai Regular'; color: #717171; }
+.wrapper_name { display: flex; flex-flow: column; align-items: center; }
+.status_bttn a {
+  width: inherit;
+  display: inline-block;
+  padding: 10px 40px;
+  line-height: inherit;
+  text-transform: uppercase;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  margin-top: 50px;
+  background: #B14A56;
+  border-radius: 5px;
+  color: #fff;
+}
+.status_bttn a:hover {
+  background: #AA9777;
+  text-decoration: none;
+  color: #fff;
+}
+.status_bttn { display: flex; justify-content: flex-start; }
+.main_app_wrap { display: flex; justify-content: space-between; height: 100%; align-items: center; }
+.main_app_wrap .appln-data { text-align: left; }
+.qr_code { max-height: 76px; border: 1px solid #4444; max-width: 76px; }
+.appln-data h3 { font-size: 26px; margin: 0; }
+.appln-details.complete span { color: #fff; }
+.appln-data h5 { margin: 0; }
+.message-det .appln-data.status_hdr h5 { color: #606060; font-size: 16px; font-family: 'Dubai Medium'; font-size: 14px; }
+
+@media(max-width: 1500px) {
+  // .main_app_wrap { flex-direction: column; }
+  .appln-data h3 { font-size: 22px; }
+  .appln-details span { font-size: 13px; }
+  .status_details { padding-right: 10px; }
+  .status_details span { margin-right: 5px; }
+  .main_app_wrap { margin: 0 -5px; }
+  .complete span { padding: 0 5px; }
+}
