@@ -81,7 +81,7 @@
                   <h5>Application Type</h5>
                 </div>
                 <div class="appln-details">
-                  <span *ngIf="serviceDetail?.form_meta == 'work_permit'">Work Activity Permit</span>
+                  <span *ngIf="serviceDetail?.form_meta == 'work_activity'">Work Activity Permit</span>
                   <!-- <span *ngIf="serviceDetail?.form_meta == 'testing_calibration'">Testing Calibration</span> -->
                 </div>
               </div>
@@ -221,7 +221,7 @@
         
       </div>
       
-      <div class="row m-0" *ngIf="serviceDetail?.form_meta != 'halal_conformity_bodies'">
+      <div class="row m-0" *ngIf="serviceDetail?.form_meta != 'work_activity'">
         <div class="col-md-12">
           <div class="row status-det-wrapper">
             <div class="col-md-12 p-0">

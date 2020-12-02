@@ -73,6 +73,11 @@ export class TrainerService {
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
 
+  paymentVoucherSaveWap(postData: any){
+    const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.registrationPaymentDetails;
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
+  }
+
   //proforma-step-accr/
   proformaAccrSave(postData: any){
     const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.proformaAccrSave;

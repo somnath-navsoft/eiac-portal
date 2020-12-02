@@ -231,6 +231,16 @@
                                         </div>
 
 
+                                        <div class="row">
+                                            <div class="col-md-12 p-0">
+                                                <div class="form-subhdr form_subhdr">
+                                                    <h5>APPLICATION INFORMATION</h5>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                            
+                                        </div>
+
                                         <div class="row"  id="ownOrgBasicInfos">
                                             <div class="col-12 p-0">
                                                 <div class="form-subheader-data">
@@ -396,19 +406,32 @@
                                         
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <mat-form-field class="cab-data">
+                                    <div class="row mt-3">
+                                        <div class="col-md-12">
+                                            <!-- <mat-form-field class="cab-data">
                                                 <mat-label>Activity Section</mat-label>
                                                 <mat-select placeholder="Select" name="activity_section" multiple [(ngModel)]="activitySectionArr" required>
                                                     <mat-option value="Laboratory">Laboratory</mat-option>
                                                     <mat-option value="Inspection Body">Inspection Body</mat-option>
                                                     <mat-option value="Certification Body">Certification Body</mat-option>
                                                 </mat-select>
-                                            </mat-form-field>
+                                            </mat-form-field> -->
+                                            <!-- <mat-form-field class="cab-data">
+                                                <mat-label>Activity Section: </mat-label>
+                                            </mat-form-field> -->
+                                            <div class="activity_wrapper confirm">
+                                                <div class="activity_head">
+                                                    Activity Section:
+                                                </div>
+                                            <div class="check_data_activities">
+                                                <mat-checkbox name="laboratory" [(ngModel)]="activitySection.laboratory">Laboratory</mat-checkbox>
+                                                <mat-checkbox name="inspection_body" [(ngModel)]="activitySection.inspection_body">Inspection Body</mat-checkbox>
+                                                <mat-checkbox name="certification_body" [(ngModel)]="activitySection.certification_body">Certification Body</mat-checkbox>
+                                            </div>
+                                            </div>
                                         </div>
 
-                                        <div class="col-md-6" *ngIf="activitySectionArr.length > 0">
+                                        <div class="col-md-12" *ngIf="activitySection.laboratory == true || activitySection.inspection_body == true || activitySection.certification_body == true">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Scope to be Authorized</mat-label>
                                                 <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Scope to be Authorized" name="scopes_to_be_authorized" [(ngModel)]="step2Data.scopes_to_be_authorized">
@@ -458,7 +481,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>License No.</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="License No." name="license_no" [(ngModel)]="step3Data.license_no">
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="License No." readonly name="license_no" [(ngModel)]="step3Data.license_no">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
@@ -466,8 +489,8 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Date of Issue</mat-label>
-                                                <input readonly matInput [matDatepicker]="date_of_issue" [max]="today" 
-                                                  placeholder="Issued Date" (click)="Service._openCalendar(date_of_issue)" name="date_of_issue" [(ngModel)]="step3Data.date_of_issue">
+                                                <input readonly matInput [matDatepicker]="date_of_issue" 
+                                                  placeholder="Issued Date" (click)="Service._openCalendar(date_of_issue)" name="date_of_issue" [(ngModel)]="step3Data.date_of_issue" (dateChange)="setexDate(step3Data.date_of_issue)">
                                                 <mat-datepicker-toggle matSuffix [for]="date_of_issue"></mat-datepicker-toggle>
                                                 <mat-datepicker #date_of_issue disabled="false"></mat-datepicker>
                                             </mat-form-field>
@@ -476,7 +499,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Date of Expiry</mat-label>
-                                                <input readonly matInput [matDatepicker]="date_of_expiry" [max]="today" 
+                                                <input readonly matInput [matDatepicker]="date_of_expiry" 
                                                   placeholder="Issued Date" (click)="Service._openCalendar(date_of_expiry)" name="date_of_expiry" [min]="minDate" [(ngModel)]="step3Data.date_of_expiry">
                                                 <mat-datepicker-toggle matSuffix [for]="date_of_expiry"></mat-datepicker-toggle>
                                                 <mat-datepicker #date_of_expiry disabled="false"></mat-datepicker>
@@ -739,9 +762,11 @@
                                         <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice(ngForm8, true)">SAVE AS DRAFT</button> -->
                                         <!-- <button class="submit-bttn submit-health" (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)">CONTINUE</button> -->
                                     </div>
-                                    <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button>
-                                    <ng-container *ngIf="transactions.length">
-                                        <div id="paypalPayment"></div>
+                                    <ng-container *ngIf="paymentDetailsChk != null">
+                                        <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button>
+                                        <ng-container *ngIf="transactions.length">
+                                            <div id="paypalPayment"></div>
+                                        </ng-container>
                                     </ng-container>
                                 </div>
                             </div>
@@ -836,7 +861,8 @@
                                                 (change)="validateFile1($event, 'payment_receipt')" required>
                                                 <span class="icon-attach attach-data"></span>
                                             </span>
-                                            <p class="error" *ngIf="paymentReceiptValidation == false">Please Upload a valid file (ex: pdf)</p>
+                                            <a class="image_file_link" *ngIf="paymentFile != false && paymentFile != true" target="_blank" [href]="paymentFile">Link</a>
+                                            <p class="error" *ngIf="paymentReceiptValidation == false || paymentReceiptValidation == undefined">Please Upload a valid file (ex: pdf)</p>
                                         </div>
 
                                     </div>
@@ -852,7 +878,7 @@
                                             <h5>Thank you</h5>
                                             <p>Your Application has been submitted successfully and is under review. Please check the status and your dashboard for updates.</p>
                                             <button class="submit-bttn" (click)="closeChecklistDialog()" 
-                                            routerLink="/dashboard/cab_client/status/all">Return to Status</button>
+                                            routerLink="/dashboard/registration-status">Return to Status</button>
                                         </div>
                                     </div>
                                 </ng-template>
