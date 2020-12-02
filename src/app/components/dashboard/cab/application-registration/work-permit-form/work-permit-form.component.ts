@@ -8,6 +8,8 @@ declare let paypal: any;
 // import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import { TrainerService } from '../../../../../services/trainer.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
+import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-work-permit-form',
@@ -63,6 +65,7 @@ export class WorkPermitFormComponent implements OnInit {
   step6Data:any = {};
   step7Data:any = {};
   fileAny:any;
+  modalOptions:NgbModalOptions;
 
   step1DataBodyFormFile:any = new FormData();
   step2DataBodyFormFile:any = new FormData();
@@ -107,8 +110,14 @@ export class WorkPermitFormComponent implements OnInit {
   subscriptions: Subscription[] = [];
   public minDate;
   activitySectionArr:any[] = [];
+  activitySection:any;
+  public errorLoader: boolean = false;
+  public loaderPdf: boolean = false;
+  public completeLoaded: boolean = false;
+  paymentFile:any;
+  paymentDetailsChk:any;
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,public _trainerService:TrainerService,public sanitizer:DomSanitizer) { }
+  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,public _trainerService:TrainerService,public sanitizer:DomSanitizer,private modalService: NgbModal) { }
 
   ngOnInit() {
     this.getWorkPermitId = sessionStorage.getItem('workPermitId');
@@ -171,6 +180,7 @@ export class WorkPermitFormComponent implements OnInit {
     // this.workPermitForm.behalf_designation = '';
     // this.workPermitForm.digital_signature = '';
     // this.activitySectionArr.length > 0 ? 
+    this.activitySection = {laboratory:false,inspection_body:false,certification_body:false};
   }
 
   statelistById = async(country_id) => {
@@ -280,6 +290,7 @@ export class WorkPermitFormComponent implements OnInit {
           this.step1Data.official_email = data.applicant_email;
           this.step1Data.official_website = data.applicant_website;
           this.ownOrgBasicInfo = step2['cabOwnerData'];
+          this.step3Data.license_no = data.trade_license_number;
           
           // step2['cabBodData'].forEach((res,key) => {
           //   step2['cabBodData'][key].name = res.name;
@@ -298,6 +309,23 @@ export class WorkPermitFormComponent implements OnInit {
         }
       })
 
+  }
+
+  onError(error: any) {
+    // do anything
+    //////console.log('PDF Error: ', error)
+    this.errorLoader = true;
+  }
+  
+  completeLoadPDF(pdfLoad: PDFDocumentProxy){
+    //////console.log("Completed Load PDF :: ", pdfLoad);
+    this.loaderPdf = false;
+    this.completeLoaded = true;
+  }
+  
+  onProgress(progressData: PDFProgressData){
+   //////console.log("Loding Pdf :: ", progressData);
+    this.loaderPdf = true;
   }
  
   getSantizeUrl(url : string) { 
@@ -359,30 +387,34 @@ export class WorkPermitFormComponent implements OnInit {
             var wapdata = res['data'].wapData;
             this.step2Data.activity_section = wapdata.activity_section != null ? wapdata.activity_section : '';
             this.step2Data.scopes_to_be_authorized = wapdata.scopes_to_be_authorized != null ? wapdata.scopes_to_be_authorized : '';
-            this.step3Data.license_no = '';
-            this.step3Data.date_of_issue = '';
-            this.step3Data.date_of_expiry = '';
+            this.activitySection = JSON.parse(res['data'].wapData.activity_section);
+            // console.log(this.activitySection,'activitySectionactivitySectionactivitySectionactivitySection');
+
+            
+            this.step3Data.date_of_issue = res['data'].date_of_issue;
+            this.step3Data.date_of_expiry = res['data'].date_of_expiry;
 
             let pathData: any;
             let filePath: string;
 
             if(!this.Service.isObjectEmpty(res['data'].paymentDetails)){
-            
+              this.paymentDetailsChk = res['data'].paymentDetails;
               if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''){
                 filePath = this.constant.mediaPath + '/media/' + res['data'].paymentDetails.voucher_invoice;
                 pathData = this.getSantizeUrl(filePath);
                 this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
               }
+            // console.log(this.paymentFilePath,'activitySectionactivitySectionactivitySectionactivitySection');
+
               //////console.log(">>>> payment details upload: ", getData.data.paymentDetails, " -- ", this.paymentFilePath, " :: ", filePath);
             }
-
 
             var recognized_logo1 = wapdata.licence_document_file;
             if(recognized_logo1 != ''){
               let getFile =recognized_logo1.toString().split('/');
               if(getFile.length){
                 this.workPermitForm.licence_document = getFile[4].toString().split('.')[0];
-                this.licence_document_path = this.constant.mediaPath +'/'+ recognized_logo1.toString();
+                this.licence_document_path = this.constant.mediaPath +'/media/'+ recognized_logo1.toString();
               }
             }
 
@@ -391,7 +423,7 @@ export class WorkPermitFormComponent implements OnInit {
               let getFile = quality_manual1.toString().split('/');
               if(getFile.length){
                 this.workPermitForm.quality_manual = getFile[4].toString().split('.')[0];
-                this.quality_manual_path = this.constant.mediaPath +'/'+ quality_manual1.toString();
+                this.quality_manual_path = this.constant.mediaPath +'/media/'+ quality_manual1.toString();
               }
             }
 
@@ -400,7 +432,7 @@ export class WorkPermitFormComponent implements OnInit {
               let getFile = work_instruction1.toString().split('/');
               if(getFile.length){
                 this.workPermitForm.work_instruction = getFile[4].toString().split('.')[0];
-                this.work_instruction_path = this.constant.mediaPath +'/'+ work_instruction1.toString();
+                this.work_instruction_path = this.constant.mediaPath +'/media/'+ work_instruction1.toString();
               }
             }
 
@@ -409,7 +441,7 @@ export class WorkPermitFormComponent implements OnInit {
               let getFile = check_list1.toString().split('/');
               if(getFile.length){
                 this.workPermitForm.check_list = getFile[4].toString().split('.')[0];
-                this.check_list_path = this.constant.mediaPath +'/'+ check_list1.toString();
+                this.check_list_path = this.constant.mediaPath +'/media/'+ check_list1.toString();
               }
             }
 
@@ -423,19 +455,19 @@ export class WorkPermitFormComponent implements OnInit {
             }
             
 
-            // if(res['data'].paymentDetails != null && typeof res['data'].paymentDetails === 'object'){
-            //   // //console.log(">>>payment details...show");
-            //     this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
-            //     this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
-            //     this.voucherSentData.amount           = res['data'].paymentDetails.amount;
-            //     this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
-            //     this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
-            //     this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
-            //     this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+            if(res['data'].paymentDetails != null && typeof res['data'].paymentDetails === 'object'){
+              // //console.log(">>>payment details...show");
+                this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
+                this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
+                this.voucherSentData.amount           = res['data'].paymentDetails.amount;
+                this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
+                this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
+                this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
+                this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
 
-            //     // this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
-            //     // this.paymentReceiptValidation = true;
-            // }
+                this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
+                this.paymentReceiptValidation = true;
+            }
           })
       }
   }
@@ -575,6 +607,35 @@ export class WorkPermitFormComponent implements OnInit {
     return array.indexOf(value) > -1;
   }
 
+  checkboxChecking(theEvent) {
+    // console.log(type,'type');
+    // this.activitySection[type] = true;
+    console.log(this.activitySection,'type');
+
+    // Object.keys(this.activitySection).forEach(key => {
+    //   // if(this.activitySection[])
+    //   if(this.activitySection.key == type){
+
+    //   }
+    // })
+
+    var checkCount = 0;
+    if(theEvent.checked){
+      for(let key in this.activitySection) {
+        ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
+        if(this.activitySection[key]) {  
+          checkCount++;
+        }    
+      }
+    }
+
+    if(checkCount > 0){
+      this.authorizationStatus = true;
+    }else{
+      this.authorizationStatus = false;
+    }
+  }
+
   onSubmit1(ngForm1) {
     // this.Service.moveSteps('application_information', 'activities_scope', this.headerSteps);
     if(ngForm1.form.valid) {
@@ -630,7 +691,16 @@ export class WorkPermitFormComponent implements OnInit {
     // this.Service.moveSteps('activities_scope', 'documents_tobe_attached', this.headerSteps);
     // this.step2Data.activity_section = this.activitySectionArr;
     // console.log(this.activitySectionArr);
-    if(ngForm2.form.valid) {
+    var checkCount = 0;
+    for(let key in this.activitySection) {
+      ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
+      if(this.activitySection[key]) {  
+        checkCount++;
+      }
+    }
+    // console.log(checkCount);
+    
+    if(checkCount > 0) {
       this.workPermitForm = {};
       this.workPermitForm.step2 = {};
       this.workPermitForm.email = this.userEmail;
@@ -641,7 +711,7 @@ export class WorkPermitFormComponent implements OnInit {
       this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
 
       this.step2Data.is_draft = false;
-      this.step2Data.activity_section = this.activitySectionArr;
+      this.step2Data.activity_section = this.activitySection;
       this.workPermitForm.step2 = this.step2Data;
 
       // this.loader = false;
@@ -660,7 +730,7 @@ export class WorkPermitFormComponent implements OnInit {
           }
         });
     }else {
-      this.toastr.warning('Please Fill required field','');
+      this.toastr.warning('Please Checked ANy Filled','');
     }
     
   }
@@ -757,8 +827,8 @@ export class WorkPermitFormComponent implements OnInit {
     let custPrice: any = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;
     this.total = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//0.05;
     this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity: 1, price: custPrice, currency: 'USD'});
-    this.total = 1;
-    custPrice = 0.1;
+    // this.total = 1;
+    // custPrice = 0.1;
       if(this.total > 0){
         ////console.log("Calculate price: ", calcPrice);
         this.transactionsItem['amount']['total'] = custPrice.toFixed(2);
@@ -859,16 +929,25 @@ export class WorkPermitFormComponent implements OnInit {
       this.workPermitForm = {};
       this.workPermitForm.step6 = {};
       
+      // console.log(this.voucherSentData['payment_date'],'payment_date');
+      // console.log(this.voucherSentData['payment_date']._i,'payment_dati');
         let dtFormat: string = '';
         if(this.voucherSentData['payment_date'] != undefined && 
           this.voucherSentData['payment_date']._i != undefined){
           var dtData = this.voucherSentData['payment_date']._i;
           var year = dtData.year;
-          var month = dtData.month;
+          var month = dtData.month + 1;
           var date = dtData.date;
           dtFormat = year + "-" + month + "-" + date;
+        }else{
+          var nFdate = new Date(this.voucherSentData['payment_date']);
+          var nMonth = nFdate.getMonth();
+          var nDate = nFdate.getDate();
+          var nYear = nFdate.getFullYear();
+          dtFormat = nYear + "-" + nMonth + "-" + nDate;
         }
-        //     
+        //
+      // console.log(dtFormat,'dtFormat');
       
       this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
       this.voucherFile.append('amount',this.voucherSentData['amount']);
@@ -877,14 +956,14 @@ export class WorkPermitFormComponent implements OnInit {
       this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
       this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
       this.voucherFile.append('voucher_date',dtFormat);
-      this.voucherFile.append('accreditation',this.formApplicationId);
+      this.voucherFile.append('application_id',this.formApplicationId);
       this.voucherFile.append('is_draft', false);
       // this.voucherFile.append('application_id',this.formApplicationId);
           
       this.loader = false;
       if(ngForm6.form.valid && this.paymentReceiptValidation != false) {
         // //console.log(this.voucherFile);
-          this._trainerService.paymentVoucherSave((this.voucherFile))
+          this._trainerService.paymentVoucherSaveWap((this.voucherFile))
           .subscribe(
               result => {
                 this.loader = true;
@@ -925,6 +1004,12 @@ export class WorkPermitFormComponent implements OnInit {
             var month = dtData.month;
             var date = dtData.date;
             dtFormat = year + "-" + month + "-" + date;
+          }else{
+            var nFdate = new Date(this.voucherSentData['payment_date']);
+            var nMonth = nFdate.getMonth();
+            var nDate = nFdate.getDate();
+            var nYear = nFdate.getFullYear();
+            dtFormat = nYear + "-" + nMonth + "-" + nDate;
           }
           //     
         
@@ -935,12 +1020,12 @@ export class WorkPermitFormComponent implements OnInit {
         this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
         this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
         this.voucherFile.append('voucher_date',dtFormat);
-        this.voucherFile.append('accreditation',this.formApplicationId);
+        this.voucherFile.append('application_id',this.formApplicationId);
         this.voucherFile.append('is_draft', true);
         // this.voucherFile.append('application_id',this.formApplicationId);
             
           // //console.log(this.voucherFile);
-        this._trainerService.paymentVoucherSave((this.voucherFile))
+        this._trainerService.paymentVoucherSaveWap((this.voucherFile))
         .subscribe(
             result => {
               this.loader = true;
@@ -957,6 +1042,33 @@ export class WorkPermitFormComponent implements OnInit {
     }
   }
 
+  openView(content, type:string) {
+  
+    this.modalService.open(content, this.modalOptions).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      //////console.log("Closed: ", this.closeResult);
+      //this.courseViewData['courseDuration'] = '';
+      //this.courseViewData['courseFees'] = '';
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      //////console.log("Closed with ESC ");
+      
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      //////console.log("Closed with CLOSE ICON ");
+     
+      return 'by clicking on a backdrop';
+    } else {
+      //////console.log("Closed ",`with: ${reason}`);
+      
+      return  `with: ${reason}`;
+    }
+  }
   // onSubmit(ngForm1){
     
   //   if(ngForm1.form.valid && this.isSubmit) {

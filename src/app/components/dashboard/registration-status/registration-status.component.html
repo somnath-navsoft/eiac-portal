@@ -151,16 +151,16 @@
                             </td>
                            
                             <td>
-                                <span *ngIf="item.form_meta == 'work_permit'">Work Permit</span>
+                                <span *ngIf="item.form_meta == 'work_activity'">Work Activity Permit</span>
                             </td>
-                            <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review':item.payment_status === null }">
+                            <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review':item.payment_status === null , 'under-review':item.payment_status === 'pending'}">
                                 <span *ngIf="item.payment_status == 'paid'">Paid</span>
                                 <span *ngIf="item.payment_status == 'pending'">Unpaid</span>
                                 <span *ngIf="item.payment_status == null">Unpaid</span>
                             </td> 
                             
                             <td class="action fnt-clr">
-                                <ng-container *ngIf="item.form_meta == 'work_permit'">
+                                <ng-container *ngIf="item.form_meta == 'work_activity'">
                                     <a href="javascript:void(0)" alt="Edit" routerLink="/dashboard/cab_client/work-permit-form/{{item.id}}"><span class="icon-edit"></span></a>
                                 </ng-container>
                             </td>
