@@ -146,6 +146,8 @@ import { OperationsTrainingServiceListComponent } from './components/dashboard/o
 import { OperationsTrainingServiceDetailsComponent } from './components/dashboard/operations/operations-training-service-details/operations-training-service-details.component';
 import { CabCompanyProfileComponent } from './components/dashboard/cab/cab-company-profile/cab-company-profile.component';
 import { CabMessage } from './components/dashboard/cab/cab-message/cab-message.component';
+import { RegistrationStatusComponent } from './components/dashboard/registration-status/registration-status.component';
+import { TrainingStatusComponent } from './components/dashboard/training-status/training-status.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -200,7 +202,9 @@ export const MY_FORMATS = {
     OperationsTrainingServiceListComponent,
     OperationsTrainingServiceDetailsComponent,
     CabCompanyProfileComponent,
-    CabMessage
+    CabMessage,
+    RegistrationStatusComponent,
+    TrainingStatusComponent
   ],
   imports: [
     CommonModule,

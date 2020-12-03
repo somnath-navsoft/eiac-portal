@@ -47,7 +47,7 @@
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr form_subhdr">
-                                                <h5>APPLICANT INFORMATION</h5>
+                                                <h5>1. APPLICANT INFORMATION</h5>
                                                 <!-- <span>*If you want the certificate issued on a different address please update below</span> -->
                                             </div>
                                             <hr>
@@ -231,6 +231,16 @@
                                         </div>
 
 
+                                        <!-- <div class="row">
+                                            <div class="col-md-12 p-0">
+                                                <div class="form-subhdr form_subhdr">
+                                                    <h5>APPLICATION INFORMATION</h5>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                            
+                                        </div> -->
+
                                         <div class="row"  id="ownOrgBasicInfos">
                                             <div class="col-12 p-0">
                                                 <div class="form-subheader-data">
@@ -297,7 +307,7 @@
                                             <div class="row" id="ownOrgBasicInfos">
                                                 <div class="col-12 p-0">
                                                     <div class="form-subheader-data">
-                                                        <h5>DOES THE COMPANY HAVE BOARD MEMBERS ?</h5>
+                                                        <h5>BOARD MEMBERS</h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -347,7 +357,7 @@
                                                                 <div class="col-md-6 col-sm-12">
                                                                     <mat-form-field class="cab-data">
                                                                         <mat-label>Mobile Phone No.</mat-label>
-                                                                        <input readonly="true" type="text"maxlength="13"  (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="mobile_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].mobile_no">
+                                                                        <input readonly="true" type="text" maxlength="13" (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="mobile_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].mobile_no">
                                                                     </mat-form-field>
                                                                     <p class="error" *ngIf="ownOrgMembInfo[i].mobile_no && !Service.checkInput('onlyNumberWithPlus',ownOrgMembInfo[i].mobile_no)">Please Enter Correct Telephone Number</p> 
                                                                 </div>
@@ -367,7 +377,7 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" routerLink="/dashboard/cab_client/application-accreditation">CANCEL</a> 
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" routerLink="/dashboard/cab_client/application-registration">CANCEL</a> 
                                         <!-- onSubmitApplication(ngForm1, true) -->
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step1')">SAVE AS DRAFT</button>
                                     </div>
@@ -388,7 +398,7 @@
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr form_subhdr">
-                                                <h5>Activities & Scope</h5>
+                                                <h5>2. Activities & Scope</h5>
                                                 <!-- <span>*If you want the certificate issued on a different address please update below</span> -->
                                             </div>
                                             <hr>
@@ -396,18 +406,32 @@
                                         
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <mat-form-field class="cab-data">
+                                    <div class="row mt-3">
+                                        <div class="col-md-12">
+                                            <!-- <mat-form-field class="cab-data">
                                                 <mat-label>Activity Section</mat-label>
-                                                <mat-select placeholder="Select" name="activity_section" [(ngModel)]="step2Data.activity_section" required>
-                                                    <mat-option value="Yes">Yes</mat-option>
-                                                    <mat-option value="No">No</mat-option>
+                                                <mat-select placeholder="Select" name="activity_section" multiple [(ngModel)]="activitySectionArr" required>
+                                                    <mat-option value="Laboratory">Laboratory</mat-option>
+                                                    <mat-option value="Inspection Body">Inspection Body</mat-option>
+                                                    <mat-option value="Certification Body">Certification Body</mat-option>
                                                 </mat-select>
-                                            </mat-form-field>
+                                            </mat-form-field> -->
+                                            <!-- <mat-form-field class="cab-data">
+                                                <mat-label>Activity Section: </mat-label>
+                                            </mat-form-field> -->
+                                            <div class="activity_wrapper confirm">
+                                                <div class="activity_head">
+                                                    Activity Section:<span class="required_input">*</span>
+                                                </div>
+                                            <div class="check_data_activities">
+                                                <mat-checkbox name="laboratory" [(ngModel)]="activitySection.laboratory">Laboratory</mat-checkbox>
+                                                <mat-checkbox name="inspection_body" [(ngModel)]="activitySection.inspection_body">Inspection Body</mat-checkbox>
+                                                <mat-checkbox name="certification_body" [(ngModel)]="activitySection.certification_body">Certification Body</mat-checkbox>
+                                            </div>
+                                            </div>
                                         </div>
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-12" *ngIf="activitySection.laboratory == true || activitySection.inspection_body == true || activitySection.certification_body == true">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Scope to be Authorized</mat-label>
                                                 <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Scope to be Authorized" name="scopes_to_be_authorized" [(ngModel)]="step2Data.scopes_to_be_authorized">
@@ -423,7 +447,7 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" routerLink="/dashboard/cab_client/application-accreditation">CANCEL</a> 
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="Service.headerStepMove('application_information',headerSteps,'menu','activities_scope')">BACK</a> 
                                         <!-- onSubmitApplication(ngForm1, true) -->
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step2')">SAVE AS DRAFT</button>
                                     </div>
@@ -445,7 +469,7 @@
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr form_subhdr">
-                                                <h5>DOCUMENTS ATTACHED TO THE APPLICATION</h5>
+                                                <h5>3. DOCUMENTS ATTACHED TO THE APPLICATION</h5>
                                                 <!-- <span>*If you want the certificate issued on a different address please update below</span> -->
                                             </div>
                                             <hr>
@@ -457,7 +481,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>License No.</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="License No." name="license_no" [(ngModel)]="step3Data.license_no">
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="License No." readonly name="license_no" [(ngModel)]="step3Data.license_no">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
@@ -465,8 +489,8 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Date of Issue</mat-label>
-                                                <input readonly matInput [matDatepicker]="date_of_issue" [max]="today" 
-                                                  placeholder="Issued Date" (click)="Service._openCalendar(date_of_issue)" name="date_of_issue" [(ngModel)]="step3Data.date_of_issue">
+                                                <input readonly matInput [matDatepicker]="date_of_issue" 
+                                                  placeholder="Issued Date" readonly (click)="Service._openCalendar(date_of_issue)" name="date_of_issue" [(ngModel)]="step3Data.date_of_issue" (dateChange)="setexDate(step3Data.date_of_issue)">
                                                 <mat-datepicker-toggle matSuffix [for]="date_of_issue"></mat-datepicker-toggle>
                                                 <mat-datepicker #date_of_issue disabled="false"></mat-datepicker>
                                             </mat-form-field>
@@ -475,8 +499,8 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Date of Expiry</mat-label>
-                                                <input readonly matInput [matDatepicker]="date_of_expiry" [max]="today" 
-                                                  placeholder="Issued Date" (click)="Service._openCalendar(date_of_expiry)" name="date_of_expiry" [(ngModel)]="step3Data.date_of_expiry">
+                                                <input readonly matInput [matDatepicker]="date_of_expiry" 
+                                                  placeholder="Issued Date" readonly (click)="Service._openCalendar(date_of_expiry)" name="date_of_expiry" [min]="minDate" [(ngModel)]="step3Data.date_of_expiry">
                                                 <mat-datepicker-toggle matSuffix [for]="date_of_expiry"></mat-datepicker-toggle>
                                                 <mat-datepicker #date_of_expiry disabled="false"></mat-datepicker>
                                             </mat-form-field>
@@ -494,7 +518,7 @@
                                                     </a>
                                                 </mat-form-field>
                                         
-                                                <span class="fileupload">
+                                                <span class="fileupload" [ngStyle]="{'padding-bottom': '17px'}"> 
                                                     <input type="file" name="id_issuedEsma" [(ngModel)]="licence_document_file" (change)="validateFile($event,'licence_document_file')">
                                                     <span class="icon-attach attach-data"></span>
                                                 </span>
@@ -512,11 +536,12 @@
                                                     </a>
                                                 </mat-form-field>
                                         
-                                                <span class="fileupload">
+                                                <span class="fileupload" [ngStyle]="{'padding-bottom': '17px'}">
                                                     <input type="file" name="id_issuedEsma" [(ngModel)]="quality_manual_file" (change)="validateFile($event,'quality_manual_file')">
                                                     <span class="icon-attach attach-data"></span>
                                                 </span>
                                                 <p class="error" *ngIf="!quality_manual_validation">Please Upload a valid file (ex: pdf)</p>
+                                                <!-- <p class="error" *ngIf="!quality_manual_validation">Please Upload a valid file (ex: pdf)</p> -->
                                             </div>
                                         </div>
                                     </div>
@@ -532,7 +557,7 @@
                                                     </a>
                                                 </mat-form-field>
                                         
-                                                <span class="fileupload">
+                                                <span class="fileupload" [ngStyle]="{'padding-bottom': '17px'}">
                                                     <input type="file" name="id_issuedEsma" [(ngModel)]="work_instruction_file" (change)="validateFile($event,'work_instruction_file')">
                                                     <span class="icon-attach attach-data"></span>
                                                 </span>
@@ -550,11 +575,12 @@
                                                     </a>
                                                 </mat-form-field>
                                         
-                                                <span class="fileupload">
+                                                <span class="fileupload" [ngStyle]="{'padding-bottom': '17px'}">
                                                     <input type="file" name="id_issuedEsma" [(ngModel)]="check_list_file" (change)="validateFile($event,'check_list_file')">
                                                     <span class="icon-attach attach-data"></span>
                                                 </span>
                                                 <p class="error" *ngIf="!check_list_validation">Please Upload a valid file (ex: pdf)</p>
+                                               
                                             </div>
                                         </div>
 
@@ -567,7 +593,7 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" routerLink="/dashboard/cab_client/application-accreditation">CANCEL</a> 
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="Service.headerStepMove('activities_scope',headerSteps,'menu','documents_tobe_attached')">BACK</a> 
                                         <!-- onSubmitApplication(ngForm1, true) -->
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step3')">SAVE AS DRAFT</button>
                                     </div>
@@ -588,7 +614,7 @@
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr form_subhdr">
-                                                <h5>AUTHORIZATION OF THE APPLICATION</h5>
+                                                <h5>4. AUTHORIZATION OF THE APPLICATION</h5>
                                                 <!-- <span>*If you want the certificate issued on a different address please update below</span> -->
                                             </div>
                                             <hr>
@@ -598,6 +624,9 @@
 
                                     <div class="auth">
                                         <ul>
+                                            <li>
+                                                I confirm that the information provided in this application form is true and correct.
+                                            </li>
                                             <p>
                                                 I, the undersigned confirm that the above-mentioned Conformity Assessment Body have been processed in accordance with Law No. 2/ 2010 regarding organizing work of conformity assessment bodies operating in the emirate of Dubai, and pledge to abide by the application requirements described below:
                                             </p>
@@ -640,7 +669,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Organization Name</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Organization Name" name="organization_name" [(ngModel)]="step4Data.organization_name">
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" required placeholder="Organization Name" name="organization_name" [(ngModel)]="step4Data.organization_name">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
@@ -648,7 +677,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Full Name of Authorized Representative</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Full Name of Authorized Representative" name="representative_name" [(ngModel)]="step4Data.representative_name">
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput required autocomplete="off" placeholder="Full Name of Authorized Representative" name="representative_name" [(ngModel)]="step4Data.representative_name">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
@@ -656,7 +685,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Behalf Designation</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Behalf Designation" name="behalf_designation" [(ngModel)]="step4Data.behalf_designation">
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput required autocomplete="off" placeholder="Behalf Designation" name="behalf_designation" [(ngModel)]="step4Data.behalf_designation">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
@@ -666,7 +695,7 @@
                                         <div class="col-md-6">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Digital Signature</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Digital Signature" name="digital_signature" [(ngModel)]="step4Data.digital_signature">
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" required placeholder="Digital Signature" name="digital_signature" [(ngModel)]="step4Data.digital_signature">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
@@ -674,7 +703,7 @@
                                         <div class="col-md-6">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Date</mat-label>
-                                                <input matInput placeholder="Date" name="onbehalf_representative_date" 
+                                                <input matInput placeholder="Date" [matDatepicker]="onbehalf_representative_date" name="onbehalf_representative_date" 
                                                 [(ngModel)]="step4Data.application_date" [value]="Service.returnCurrentDate()">
                                             </mat-form-field>
                                         </div>
@@ -687,7 +716,7 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" routerLink="/dashboard/cab_client/application-accreditation">CANCEL</a> 
+                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" (click)="Service.headerStepMove('documents_tobe_attached',headerSteps,'menu','authorization_ofthe_application')">BACK</a> 
                                         <!-- onSubmitApplication(ngForm1, true) -->
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step4')">SAVE AS DRAFT</button>
                                     </div>
@@ -696,6 +725,25 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row"> 
+                            <span id="openPayDialog" (click)="openView(payComp)"></span>
+                            <ng-template #payComp let-modal>
+                                <div class="main_pop">
+                                    <div class="pop_close">
+                                        <span class="icon-close"></span>
+                                    </div>
+                                    <div class="pop_thanks">
+                                        <h5>Thank you</h5>
+                                        <p>Your Application has been received, please wait for the Proforma Invoice to be generated, to proceed with 
+                                            payment</p>
+                                        <button class="submit-bttn" (click)="closeDialog()"
+                                        routerLink="/dashboard/registration-status">Return to Status</button>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </div>
+
                     </form>
                 </div>
 
@@ -731,13 +779,15 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice')">BACK</a> 
+                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('authorization_ofthe_application',headerSteps,'menu','proforma_invoice')">BACK</a> 
                                         <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice(ngForm8, true)">SAVE AS DRAFT</button> -->
                                         <!-- <button class="submit-bttn submit-health" (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)">CONTINUE</button> -->
                                     </div>
-                                    <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button>
-                                    <ng-container *ngIf="transactions.length">
-                                        <div id="paypalPayment"></div>
+                                    <ng-container *ngIf="paymentDetailsChk != null">
+                                        <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button>
+                                        <ng-container *ngIf="transactions.length">
+                                            <div id="paypalPayment"></div>
+                                        </ng-container>
                                     </ng-container>
                                 </div>
                             </div>
@@ -746,7 +796,7 @@
                 </div>
 
                 <div class="cust-stepper" id="payment_update" [ngStyle]="{'display':'none'}">
-                    <form #ngForm6="ngForm" (ngSubmit)="onSubmitPaymentInformation(ngForm6)" autocomplete="off">
+                    <form #ngForm6="ngForm" (ngSubmit)="onSubmitPaymentInformation(ngForm6,false)" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <!--  (ngSubmit)="onSubmitPaymentInformation(ngForm8)" -->
@@ -755,7 +805,7 @@
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr">
-                                                <h5>9. Payment Update</h5>
+                                                <h5>6. Payment Update</h5>
                                             </div>
                                             <hr>
                                         </div>
@@ -821,7 +871,7 @@
                                         <div class="col-md-6">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mobile Number</mat-label>
-                                                <input type="text" [ngModelOptions]="{standalone: true}" required="true"
+                                                <input type="text" [ngModelOptions]="{standalone: true}" (keypress)="Service.IsNumeric($event)" required="true"
                                                 matInput placeholder="Mobile Number" 
                                                 [(ngModel)]="voucherSentData.mobile_no" required>
                                             </mat-form-field>
@@ -832,7 +882,8 @@
                                                 (change)="validateFile1($event, 'payment_receipt')" required>
                                                 <span class="icon-attach attach-data"></span>
                                             </span>
-                                            <p class="error" *ngIf="paymentReceiptValidation == false">Please Upload a valid file (ex: pdf)</p>
+                                            <a class="image_file_link" *ngIf="paymentFile != false && paymentFile != true" target="_blank" [href]="paymentFile">Link</a>
+                                            <p class="error" *ngIf="paymentReceiptValidation == false || paymentReceiptValidation == undefined">Please Upload a valid file (ex: pdf)</p>
                                         </div>
 
                                     </div>
@@ -848,7 +899,7 @@
                                             <h5>Thank you</h5>
                                             <p>Your Application has been submitted successfully and is under review. Please check the status and your dashboard for updates.</p>
                                             <button class="submit-bttn" (click)="closeChecklistDialog()" 
-                                            routerLink="/dashboard/cab_client/status/all">Return to Status</button>
+                                            routerLink="/dashboard/registration-status">Return to Status</button>
                                         </div>
                                     </div>
                                 </ng-template>
@@ -859,7 +910,7 @@
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
                                         <a href="javascript:void(0)" class="cancel-bttn" type="button" 
-                                            (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK
+                                        (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK
                                         </a>
                                         <button class="cancel-bttn" type="button" (click)="onSubmitPaymentInformation(ngForm6, true)">SAVE AS DRAFT</button>
                                     </div>

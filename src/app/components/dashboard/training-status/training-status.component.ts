@@ -1,22 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { AppService } from '../../../../services/app.service';
-import { TrainerService } from '../../../../services/trainer.service';
-import { Constants } from '../../../../services/constant.service';
+import { AppService } from '../../../services/app.service'; 
+import { TrainerService } from '../../../services/trainer.service';
+import { Constants } from '../../../services/constant.service';
 import { ToastrService, Overlay, OverlayContainer } from 'ngx-toastr';
-import {CustomModalComponent} from '../../../utility/custom-modal/custom-modal.component';
-import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-operations-training-service-list',
-  templateUrl: './operations-training-service-list.component.html',
-  styleUrls: ['./operations-training-service-list.component.scss'],
-  providers: [CustomModalComponent, ToastrService, Overlay, OverlayContainer]
+  selector: 'app-training-status',
+  templateUrl: './training-status.component.html',
+  styleUrls: ['./training-status.component.scss']
 })
-export class OperationsTrainingServiceListComponent implements OnInit {
+export class TrainingStatusComponent implements OnInit {
 
   subscriptions: Subscription[] = [];
-  modalOptions:NgbModalOptions;
   voucherSentData: any = {};
   voucherFile:any = new FormData();
   paymentReceiptValidation: boolean = true;
@@ -36,12 +32,7 @@ export class OperationsTrainingServiceListComponent implements OnInit {
   dataLoad: boolean = false;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
-    private _trainerService: TrainerService, private modalService: NgbModal) {
-      this.modalOptions = {
-        backdrop:'static',
-        backdropClass:'customBackdrop'
-      }
-    }
+    private _trainerService: TrainerService) { }
 
   ngOnInit() {
     this.loadPageData();
@@ -49,21 +40,100 @@ export class OperationsTrainingServiceListComponent implements OnInit {
     this.curSortDir['created_date']       = false;
     this.curSortDir['accr_status']        = false;
     this.curSortDir['prelim_status']      = false;
-    this.curSortDir['form_meta']          = false;
+    this.curSortDir['training_form_type']          = false;
     this.curSortDir['payment_status']     = false;
     this.curSortDir['applicant']          = false;
   }
 
+  editVisible(item: any){
+    if(item){
+        switch(item.training_form_type.toString()){
+
+            case 'work_permit':
+              console.log("work permit....", item);
+              if(item.saved_step != null && item.saved_step < 4 && (item.is_draft == true || item.is_draft == false)){
+                // console.log("@Enter....3");
+                return false;
+              }
+              if(item.saved_step != null && item.saved_step > 4 && item.is_draft == false && 
+                item.paymentDetails != undefined && item.paymentDetails != false && 
+                typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
+                return true;
+               }
+              if(item.saved_step != null && item.saved_step < 4 && item.is_draft == false && 
+                item.paymentDetails != undefined && item.paymentDetails != false && 
+                typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
+                return true;
+              }
+              if(item.saved_step != null && item.saved_step == 6 && (item.is_draft == false || item.is_draft == true) && 
+                item.paymentDetails != undefined && item.application_status !== 'complete'){
+                  // console.log("@Enter....1");
+                return false;
+              }
+        
+               if(item.saved_step != null && item.saved_step == 4 && item.is_draft == false && 
+                  item.paymentDetails != undefined && item.paymentDetails == false){
+                return true;
+              }
+               if(item.saved_step != null && item.saved_step == 4 && item.is_draft == false && 
+                item.paymentDetails != undefined && item.paymentDetails != false && item.paymentDetails != false && 
+                typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
+                  // console.log("@Enter....2");
+                return false;
+              }
+            break;
+
+            case 'no_objection':
+              // console.log("No Objection....", item);
+              if(item.saved_step != null && item.saved_step < 6 && (item.is_draft == true || item.is_draft == false)){
+                // console.log("@Enter....3");
+                return false;
+              }
+              if(item.saved_step != null && item.saved_step > 6 && item.is_draft == false && 
+                item.paymentDetails != undefined && item.paymentDetails != "NA" && 
+                typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
+                return true;
+               }
+              if(item.saved_step != null && item.saved_step < 6 && item.is_draft == false && 
+                item.paymentDetails != undefined && item.paymentDetails != "NA" && 
+                typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
+                return true;
+              }             
+        
+               if(item.saved_step != null && item.saved_step == 6 && item.is_draft == false && 
+                  item.paymentDetails != undefined && item.paymentDetails == "NA"){
+                    console.log("@@@@@@@ ", item.id);
+                return true;
+              }
+              if(item.saved_step != null && item.saved_step == 8 && (item.is_draft == false || item.is_draft == true) && 
+                item.paymentDetails != undefined && item.application_status !== 'complete'){
+                  console.log("@Enter....1", item.id);
+                return false;
+              }
+               if(item.saved_step != null && item.saved_step == 6 && item.is_draft == false && 
+                item.paymentDetails != undefined && item.paymentDetails != "NA" && item.paymentDetails != false && 
+                typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
+                  // console.log("@Enter....2");
+                return false;
+              }
+            break;
+
+            default:
+            break;
+        }
+    }
+  }
+
   loadPageData(){
     this.loader = false;
-    this.subscriptions.push(this._trainerService.getRegistratationServiceList()
+    this.subscriptions.push(this._trainerService.getTrainingServiceList()
       .subscribe(
         result => {
           this.loader = true;
           let data: any = result;
           let dataRec: any=[];
           this.dataLoad = true;
-          console.log('loading...', data.records);
+          // console.log('loading...', data.records);
           // console.log(">>>List: ", data);
           this.trainerdata = data.records;
           dataRec = data.records;
@@ -135,17 +205,17 @@ export class OperationsTrainingServiceListComponent implements OnInit {
            this.trainerdata = array;
          }
        }
-       //By form_meta
-       if(sortBy == 'form_meta'){
-         this.curSortDir.form_meta = !sortDir;
+       //By training_form_type
+       if(sortBy == 'training_form_type'){
+         this.curSortDir.training_form_type = !sortDir;
          //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
-         if(this.curSortDir.form_meta){
-           let array = data.slice().sort((a, b) => (a.form_meta > b.form_meta) ? 1 : -1)
+         if(this.curSortDir.training_form_type){
+           let array = data.slice().sort((a, b) => (a.training_form_type > b.training_form_type) ? 1 : -1)
            this.trainerdata = array;
            //console.log("after:: ", array, " :: ", this.trainerdata);
          }
-         if(!this.curSortDir.form_meta){
-           let array = data.slice().sort((a, b) => (a.form_meta < b.form_meta) ? 1 : -1)
+         if(!this.curSortDir.training_form_type){
+           let array = data.slice().sort((a, b) => (a.training_form_type < b.training_form_type) ? 1 : -1)
            this.trainerdata = array;
          }
        }
@@ -178,112 +248,4 @@ export class OperationsTrainingServiceListComponent implements OnInit {
        }        
     }
   }
-
-  serviceStatus(index,id){
-    this.loader = false;
-
-    this.subscriptions.push(this._trainerService.updateStatus(id)
-      .subscribe(
-        result => {
-          this.loader = true;
-          // console.log(result,'result');
-          this.trainerdata[index].accr_status = 'complete';
-          this._toaster.success("Payment Completed Successfully",'');
-      })
-    );
-
-  }
-
-  open(content, id: number) {
-    //this.voucherSentData = {};
-    if(id){
-      console.log(">>ID: ", id);
-      this.voucherSentData['accreditation'] = id;
-    }
-    this.paymentReceiptValidation = null;
-    this.modalService.open(content, this.modalOptions).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
-  }
-
-  voucherSentSubmit(theForm){
-     
-     let postObject: any = {};
-     let is_valid: boolean = false;
-     if(this.voucherSentData['voucher_no'] != undefined && this.voucherSentData['amount'] != undefined &&
-      this.voucherSentData['voucher_date'] != undefined){
-        is_valid = true;
-      }
-      //console.log("Valid/Invalid: ", theForm.form.valid, " -- "," --", is_valid, " --", this.voucherSentData);
-
-    //return false;
-     if(is_valid == true && this.paymentReceiptValidation === true){ 
-          let dtFormat: string = '';;
-          if(this.voucherSentData['voucher_date'] != undefined && 
-          this.voucherSentData['voucher_date']._i != undefined){
-            var dtData = this.voucherSentData['voucher_date']._i;
-            var year = dtData.year;
-            var month = dtData.month + 1;
-            var date = dtData.date;
-            dtFormat = year + "-" + month + "-" + date;
-          }
-
-          //console.log(">>> Date: ", (dtFormat), " -- ", this.voucherSentData['voucher_date'], " -- ", this.voucherSentData['voucher_date']._i);
-          //console.log("@accred ID: ", this.voucherSentData['accreditation'])
-          this.voucherFile.append('voucher_no',this.voucherSentData['voucher_no']);
-          this.voucherFile.append('amount',this.voucherSentData['amount']);
-          this.voucherFile.append('voucher_date',dtFormat);
-          // this.voucherFile.append('accreditation',this.voucherSentData['accreditation']);
-          this.voucherFile.append('registration',this.voucherSentData['accreditation']);
-
-          this.subscriptions.push(this._trainerService.registrationVoucherSave((this.voucherFile))
-          .subscribe(
-             result => {
-               let data: any = result;
-                if(data.status){
-                  this.voucherFile = new FormData();
-                  this.voucherSentData = {};
-                  this.modalService.dismissAll();
-                  this._toaster.success("Invoice Uploaded Successfully",'Upload');
-                }else{
-                  this._toaster.warning(data.msg,'');
-                }
-             }
-            )
-          )
-
-     }else if(theForm.form.valid && (this.paymentReceiptValidation == false || this.paymentReceiptValidation == null)){
-      this._toaster.warning('Please Upload Valid Files','Upload Error',{timeOut:5000});
-     }
-     else{
-      this._toaster.warning('Please Fill required fields','Validation Error',{timeOut:5000});
-     }
-  }
-
-  validateFile(fileEvent: any, type?: any) {
-    var file_name = fileEvent.target.files[0].name;
-    var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
-    var ex_type = ['pdf', 'PDF'];
-    var ex_check = this._service.isInArray(file_exe,ex_type);
-    if(ex_check){
-      this.paymentReceiptValidation = true;
-      //if(type == undefined){
-        this.voucherFile.append('voucher_invoice',fileEvent.target.files[0]);
-      //}
-    }else{
-      this.paymentReceiptValidation = false;
-    }
-  }
-  
 }

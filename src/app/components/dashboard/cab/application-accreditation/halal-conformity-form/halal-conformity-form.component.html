@@ -1148,7 +1148,7 @@
                                                 </li>
                                                 <li>
                                                     <ng-container *ngIf="checkItemOthers">
-                                                        <mat-form-field class="cab-data">
+                                                        <mat-form-field class="cab-data other_data">
                                                             <mat-label>Type Other</mat-label>
                                                             <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
                                                             matInput name="scope_options_others" 
@@ -2170,13 +2170,11 @@
                                         </div>
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
-                                                <!-- (click)="Service._openCalendar(payment_date)"  [min]="minDate"-->
                                                 <mat-label>Payment Date</mat-label>
                                                 <input matInput [matDatepicker]="payment_date" 
-                                                readonly="true"
-                                                 name="payment_date" 
+                                                (click)="Service._openCalendar(payment_date)" name="payment_date" 
                                                 [(ngModel)]="voucherSentData.payment_date" placeholder="Payment Date" required>
-                                                <!-- <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle> -->
+                                                <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle>
                                                 <mat-datepicker #payment_date disabled="false"></mat-datepicker>
                                             </mat-form-field>
                                         </div>

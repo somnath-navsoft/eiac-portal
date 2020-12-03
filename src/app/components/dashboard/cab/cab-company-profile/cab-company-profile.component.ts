@@ -16,6 +16,7 @@ export class CabCompanyProfileComponent implements OnInit {
   userEmail:any;
   routeId:any;
   cabUserDetails:any;
+  serviceDetail: any;
   cabStep1:any;
   cabStep2:any;
   tabId:any = 'personal_details';
@@ -54,6 +55,7 @@ export class CabCompanyProfileComponent implements OnInit {
       res => {
           console.log("Dta: ", res);
         this.loader = true;
+        this.serviceDetail = res['data'];
         this.cabUserDetails = res['data']['user_data'][0];
         this.approveRejectStatus = res['data']['user_data'][0].approved;
         this.cabStep1 = res['data']['step1'][0];

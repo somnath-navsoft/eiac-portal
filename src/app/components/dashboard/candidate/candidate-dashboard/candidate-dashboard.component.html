@@ -304,7 +304,7 @@
                         </div>
                     </div>
                     <h5 *ngIf="recordsTotal==0">No New Message</h5>
-                    <div class="ass-name-det" *ngFor="let row of messageList; let i = index;">
+                    <div class="ass-name-det" *ngFor="let row of messageList | paginate: config; let i = index;">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="ass-data">
@@ -339,6 +339,7 @@
                             </div>
                         </div>
                     </div>
+                    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
                 </div>
             </div>
         </div>

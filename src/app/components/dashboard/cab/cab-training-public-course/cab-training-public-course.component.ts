@@ -48,7 +48,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   selectCustomCourses: any[] = [];
   transactions: any[] =[];
   transactionsItem: any={};
-  publicCourseId:any;
+  traningPublicId:any;
   step1Data:any = {};
   step2Data:any = {};
   step3Data:any = {};
@@ -78,18 +78,31 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   trainingDuration:any[] = [];
   closeResult: string;
   trainingPublicCourseid:any;
+  tutionFees:any;
+  taxVat:any;
+  knowledgeFees:any;
+  innovationFees:any;
+  noofParticipants:any;
+  subTotal:any;
+  voucherFile:any = new FormData();
+  paymentReceiptValidation:boolean;
+  paymentFile:any;
+  paymentDetailsChk:any;
+  paymentFilePath:any;
 
   constructor(private Service: AppService, private http: HttpClient,
     public _toaster: ToastrService, private _router: Router, private _route: ActivatedRoute,
     private _trainerService: TrainerService, private _constant: Constants,public sanitizer:DomSanitizer,private modalService: NgbModal) { }
 
   ngOnInit() {
-    this.publicCourseId = sessionStorage.getItem('publicCourseId');
+    this.traningPublicId = sessionStorage.getItem('publicFormId');
 
     var publicCourseid = sessionStorage.getItem('trainingPublicCourse');
-    var splitId = publicCourseid.split('=');
-    this.trainingPublicCourseid = splitId[1];
-    // console.log(this.trainingPublicCourseid,'trainingPublicCourseid');
+    if(publicCourseid && publicCourseid != undefined) {
+      var splitId = publicCourseid.split('=');
+      this.trainingPublicCourseid = splitId[1];
+      // console.log(this.trainingPublicCourseid,'trainingPublicCourseid');
+    }
 
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
@@ -131,7 +144,13 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     this.loadDetailsPage();
     this.trainingDuration = [{key:1,title:'1 Day'},{key:2,title:'2 Days'},{key:3,title:'3 Days'},{key:4,title:'4 Days'},{key:5,title:'5 Days'},{key:6,title:'6 Days'},{key:7,title:'7 Days'},{key:8,title:'8 Days'},{key:9,title:'9 Days'},{key:10,title:'10 Days'}];
 
-    console.log(this.participantTraineeDetails.length);
+    // console.log(this.participantTraineeDetails.length);
+    // tutionFees:any;
+    // taxVat:any;
+    // knowledgeFees:any;
+    // innovationFees:any;
+    // noofParticipants:any;
+    
   }
 
   addRow(obj) {
@@ -140,14 +159,117 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   }
 
   loadDetailsPage() {
-    this.Service.getwithoutData(this.Service.apiServerUrl+'/'+this._constant.API_ENDPOINT.course_details+this.publicCourseId+'?data=1')
-    .subscribe(
-      res => {
-        var courseDetails = res['courseDetails'];
-        this.step3Data.training_course_title = courseDetails.course;
-        this.step3Data.training_duration = courseDetails.training_days;
-        console.log(courseDetails.training_days,'training_days');
-      })
+    if(this.trainingPublicCourseid != '' && this.trainingPublicCourseid != undefined) {
+      this.Service.getwithoutData(this.Service.apiServerUrl+'/'+this._constant.API_ENDPOINT.course_details+this.trainingPublicCourseid+'?data=1')
+        .subscribe(
+          res => {
+            var courseDetails = res['courseDetails'];
+            this.step3Data.course_title = courseDetails.course;
+            this.step3Data.training_duration = courseDetails.training_days;
+            // console.log(courseDetails.training_days,'training_days');
+          });
+    }
+
+    if(this.traningPublicId != undefined) {
+      let url2 = this.Service.apiServerUrl+"/"+'training-details-show/'+this.traningPublicId;
+        this.Service.getwithoutData(url2)
+        .subscribe(
+          res => {
+            if(res['data'].id != undefined && res['data'].id > 0){
+              this.formApplicationId = res['data'].id;
+            }
+
+            let saveStep: number;
+            //check steps
+            if(res['data'].is_draft){
+
+              saveStep = parseInt(res['data'].saved_step) - 1;
+            }else{
+              if(parseInt(res['data'].saved_step) == 7){
+                
+                saveStep = parseInt(res['data'].saved_step) - 1;
+              }else{
+                
+              saveStep = parseInt(res['data'].saved_step);
+              }
+            }
+
+            if(res['data'].saved_step  != null){
+              //let saveStep = res['data'].saved_step;
+              //open step
+              this.headerSteps.forEach((item, key) => {
+                    ///////console.log(item, " --- ", key);
+                    if(key < saveStep){
+                      //////console.log('moving steps....');
+                      let curStep: any = item;
+                      curStep.stepComp = true;
+                      let nextStep: any = this.headerSteps[key+1];
+                      this.Service.moveSteps(curStep.title, nextStep.title, this.headerSteps);
+                    }
+                    if(key == saveStep){
+                      let curStep: any = this.headerSteps[key];
+                      console.log('found steps....',curStep);
+                      curStep.stepComp = true;
+                      this.Service.headerStepMove(item.title, this.headerSteps,'menu')
+                    }
+              })
+              //////console.log("#Step data: ", this.headerSteps);
+            }
+
+            this.step1Data.organization_name = res['data'].organization_name;
+            this.step1Data.mailing_address = res['data'].mailing_address;
+            this.step1Data.zip_code = res['data'].zip_code;
+            this.step1Data.country = res['data'].country;
+            this.step1Data.state = res['data'].state;
+            this.step1Data.city = res['data'].city;
+            this.step1Data.telephone_number = res['data'].tel_no;
+            this.step1Data.fax_no = res['data'].fax_no;
+            this.step1Data.official_email = res['data'].official_email;
+            this.step1Data.official_website = res['data'].official_website;
+            this.step1Data.authorized_contact_person = res['data'].authorized_contact_person;
+            this.step1Data.designation = res['data'].designation;
+            this.step1Data.mobile_phone_number = res['data'].mobile_phone_number;
+
+            this.participantTraineeDetails = [{}];
+
+            this.step1Data.course_title = '';
+            this.step1Data.training_duration = '';
+
+            if(res['data'].onBehalfApplicantDetails != null) {
+              this.step4Data.organization_name = res['data'].onBehalfApplicantDetails.organization_name;
+              this.step4Data.representative_name = res['data'].onBehalfApplicantDetails.representative_name;
+              this.step4Data.behalf_designation = res['data'].onBehalfApplicantDetails.designation;
+              this.step4Data.digital_signature = res['data'].onBehalfApplicantDetails.digital_signature;
+            }
+
+            if(res['data'].paymentDetails != null){
+              // //console.log(">>>payment details...show");
+                this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
+                this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
+                this.voucherSentData.amount           = res['data'].paymentDetails.amount;
+                this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
+                this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
+                this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
+                this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+
+                this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this._constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
+                this.paymentReceiptValidation = true;
+            }
+
+            let pathData: any;
+            let filePath: string;
+
+            if(!this.Service.isObjectEmpty(res['data'].paymentDetails)){
+              this.paymentDetailsChk = res['data'].paymentDetails;
+              if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''){
+                filePath = this._constant.mediaPath + '/media/' + res['data'].paymentDetails.voucher_invoice;
+                pathData = this.getSantizeUrl(filePath);
+                this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
+              }
+            }
+            
+          })
+    }
   }
 
   loadCountryStateCity = async() => {
@@ -240,7 +362,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   }
 
   onSubmitStep1(ngForm1){
-    this.Service.moveSteps('application_information', 'participant', this.headerSteps);
+    // this.Service.moveSteps('application_information', 'participant', this.headerSteps);
     if(ngForm1.form.valid) {
       this.publicTrainingForm = {};
       this.publicTrainingForm.step1 = {};
@@ -282,6 +404,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       // this.step2Data.application_id = applicationId;
       this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step2Data.is_draft = false;
+      this.step2Data.training_form_type = 'public_training';
 
       this.publicTrainingForm.step2 = this.step2Data;
 
@@ -318,9 +441,20 @@ export class CabTrainingPublicCourseComponent implements OnInit {
 
       var applicationId = sessionStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
-      this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-
+      this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+      this.step3Data.training_form_type = 'public_training';
       this.publicTrainingForm.step3 = this.step3Data;
+
+      var training_duration_current = this.step3Data.training_duration;
+      this.noofParticipants = this.participantTraineeDetails.length;
+      this.tutionFees = 1000 * parseInt(this.noofParticipants) * parseInt(training_duration_current);
+      // console.log(this.noofParticipants);
+      // console.log(training_duration_current);
+      // console.log(this.tutionFees);
+      this.taxVat = 0.5 * this.tutionFees;
+      this.knowledgeFees = 10 * this.noofParticipants;
+      this.innovationFees = 10 * this.noofParticipants;
+      this.subTotal = this.tutionFees + this.taxVat + this.knowledgeFees + this.innovationFees;
 
       // console.log(this.publicTrainingForm);
       this.step3DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
@@ -338,8 +472,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   }
 
   onSubmitStep4(ngForm4){
-    this.Service.moveSteps('fees_details', 'authorization', this.headerSteps);
-    if(ngForm4.form.valid) {
+    // this.Service.moveSteps('fees_details', 'authorization', this.headerSteps);
+    if(this.subTotal > 0) {
       this.publicTrainingForm = {};
       this.publicTrainingForm.step4 = {};
       this.publicTrainingForm.email = this.userEmail;
@@ -349,7 +483,9 @@ export class CabTrainingPublicCourseComponent implements OnInit {
 
       var applicationId = sessionStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
-      this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+      this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+      this.step4Data.training_form_type = 'public_training';
+      this.step4Data.fees_to_pay = this.subTotal;
 
       this.publicTrainingForm.step4 = this.step4Data;
 
@@ -364,6 +500,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             this._toaster.warning(res['msg'], '');
           }
         })
+    } else {
+      this._toaster.warning('Sub total could be greater than zero', '');
     }
   }
 
@@ -376,6 +514,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.publicTrainingForm.userType = this.userType;
       this.publicTrainingForm.saved_step = '5';
       this.step5Data.is_draft = false;
+      this.step5Data.training_form_type = 'public_training';
 
       this.publicTrainingForm.step5 = this.step5Data;
 
@@ -384,8 +523,24 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       .subscribe(
         res => {
           if(res['status'] == true) {
-            this.Service.moveSteps('fees_details', 'authorization', this.headerSteps);
+            // this.Service.moveSteps('fees_details', 'authorization', this.headerSteps);
             // console.log(res);
+            if(this.paymentFilePath != ''){
+              this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
+            }
+            else{
+              setTimeout(()=>{
+                let elem = document.getElementById('openPayDialog');
+                //////console.log("App dialog hash....", elem);
+                if(elem){
+                  elem.click();
+                }
+              }, 100)
+              setTimeout(() => {                    
+                // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+                //this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+              },1500)
+            }
           }else{
             this._toaster.warning(res['msg'], '');
           }
@@ -394,22 +549,248 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   }
 
   onSubmitStep6(ngForm6) {
-    this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+    // this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+    this.transactionsItem['amount']               = {};
+    this.transactionsItem['amount']['total']      = 0.00;
+    this.transactionsItem['amount']['currency']   = 'USD';
+    this.transactionsItem['amount']['details']    = {};
+    this.transactionsItem['amount']['details']['subtotal'] = 0.00;
+    //declare Items data
+    this.transactionsItem['item_list']            = {};
+    this.transactionsItem['item_list']['items']   = [];
+    // let custPrice: any = 0.01;
+    // this.total = 0.05;
+    let custPrice: any = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;
+    this.total = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//0.05;
+    this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity: 1, price: custPrice, currency: 'USD'});
+    this.total = 1;
+    custPrice = 0.1;
+      if(this.total > 0){
+        ////console.log("Calculate price: ", calcPrice);
+        this.transactionsItem['amount']['total'] = custPrice.toFixed(2);
+        this.transactionsItem['amount']['details']['subtotal'] = custPrice.toFixed(2);
+        this.transactions.push(this.transactionsItem);
+        //console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
+      }
+      setTimeout(() => {
+        this.createPaymentButton(this.transactionsItem, this.publicTrainingForm, this);
+        let elem = document.getElementsByClassName('paypal-button-logo');
+        //console.log("button creting...");
+        if(elem){
+          //console.log("button creted...");
+        }else{
+          //console.log("Loding button...");
+        }
+      }, 100)
   }
 
-  onSubmitStep7(ngForm7) {
-    setTimeout(()=>{
-      let elem = document.getElementById('openAppDialog');
-      //console.log("App dialog hash....", elem);
-      if(elem){
-        elem.click();
+  createPaymentButton(itemData: any, formObj?:any, compObj?:any){
+    ////console.log("creating....buttons...", this.paymentReview, " :: ", this.paymentReview.length, " -- ",this.transactionsItem, " --- ", this.transactions);
+   //AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl = das.abhishek77@gmail.com
+   //Get transaction ID - https://uateloper.paypal.com/docs/checkout/reference/server-integration/get-transaction/#on-the-server
+    if(this.transactions.length){
+      //console.log('Paypal');
+      this.loadExternalScript("https://www.paypalobjects.com/api/checkout.js").then(() => {
+      paypal.Button.render({
+        env: 'sandbox',
+        client: {
+          sandbox: 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
+        },
+        commit: true,
+        payment: function (data, actions) {
+          //console.log("@Paypal payment actionms: ", actions, " -- ", data, " --- ", itemData);        
+          return actions.payment.create({
+            payment: {
+              transactions: [itemData]
+            }
+          })
+        },
+        onAuthorize: function(data, actions) {
+          //console.log("@Paypal onAuthorize actionms: ", actions, " -- ", data);
+          return actions.payment.execute().then(function(payment) {
+            //console.log(">>>Success: ", payment);
+            formObj.paypalReturn = payment;
+            formObj.paypalStatus = 'success';
+            //console.log("<<<Review obj: ", formObj, " :: ", compObj);
+            compObj.saveInspectopnAfterPayment(formObj);
+          })
+        },
+        onCancel: (data, actions) => {
+          //console.log('OnCancel', data, actions);
+          //this.showCancel = true;
+          formObj.paypalReturn = data;
+          formObj.paypalStatus = 'cancel';
+          this._toaster.warning("You have cancelled payment, Continue next step please complete payment process again.", 'Paypal>>',{timeOut:6500});
+      },
+      onError: err => {
+          //console.log('OnError', err);
+          formObj.paypalReturn = err;
+          formObj.paypalStatus = 'error';
+          //compObj.saveCourseAfterPayment(formObj);
+          this._toaster.error("Paypal transaction error has occured, please try again", 'Payment Return'); 
+      },
+      onClick: (data, actions) => {
+          //console.log('onClick', data, actions);
+          //this.resetStatus();
       }
-    }, 100)
-    //this.openView('appComp','');
-    setTimeout(() => {                    
+      }, '#paypalPayment');
+    });
+    }
+  }
+
+  private loadExternalScript(scriptUrl: string) {
+    return new Promise((resolve, reject) => {
+      const scriptElement = document.createElement('script')
+      scriptElement.src = scriptUrl
+      scriptElement.onload = resolve
+      ////console.log("load script...");
+      document.body.appendChild(scriptElement)
+    })
+  }
+  
+  saveInspectopnAfterPayment(theData: any){
+    ////console.log(">>> The Data: ", theData);
+    this.transactions = [];
+    this._toaster.success('Payment Success, Thank you.','Paypal>>',{timeOut:2000});
+    setTimeout(()=> {
       // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
-      this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
-    },3500)
+      //////console.log("moving...");
+      this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
+    }, 1000)      
+    //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
+  }
+
+  onSubmitPaymentInformation(ngForm6: any, type?: boolean){
+    ////console.log("payment submitting.....");
+    this.publicTrainingForm = {};
+    this.publicTrainingForm.step6 = {};
+    
+      let dtFormat: string = '';
+      if(this.voucherSentData['payment_date'] != undefined && 
+        this.voucherSentData['payment_date']._i != undefined){
+        var dtData = this.voucherSentData['payment_date']._i;
+        var year = dtData.year;
+        var month = dtData.month;
+        var date = dtData.date;
+        dtFormat = year + "-" + month + "-" + date;
+      }
+      //     
+    
+      this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
+      this.voucherFile.append('amount',this.voucherSentData['amount']);
+      this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
+      this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
+      this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
+      this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
+      this.voucherFile.append('voucher_date',dtFormat);
+      this.voucherFile.append('accreditation',this.formApplicationId);
+      this.voucherFile.append('is_draft', false);
+      // this.voucherFile.append('application_id',this.formApplicationId);
+          
+      this.loader = false;
+      if(ngForm6.form.valid && this.paymentReceiptValidation != false) {
+        // //console.log(this.voucherFile);
+          this._trainerService.paymentVoucherSave((this.voucherFile))
+          .subscribe(
+              result => {
+                this.loader = true;
+                let data: any = result;
+                ////console.log("submit voucher: ", data);
+                if(data.status){
+                  //this.voucherFile = new FormData();
+                  //this.voucherSentData = {};
+                  //this.toastr.success("Your form has been successfully submitted and it is under review.We will update you shortly.",'THANK YOU');
+                  setTimeout(()=>{
+                    let elem = document.getElementById('openAppDialog');
+                    //console.log("App dialog hash....", elem);
+                    if(elem){
+                      elem.click();
+                    }
+                  }, 100)
+                  //this.openView('appComp','');
+                  setTimeout(() => {                    
+                    // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+                    this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+                  },3500)
+                  
+                }else{
+                  this._toaster.warning(data.msg,'');
+                }
+              }
+            )
+      }else if(type != undefined && type == true && this.paymentReceiptValidation != false){
+        
+        this.publicTrainingForm = {};
+        this.publicTrainingForm.step6 = {};
+        
+          let dtFormat: string = '';
+          if(this.voucherSentData['payment_date'] != undefined && 
+            this.voucherSentData['payment_date']._i != undefined){
+            var dtData = this.voucherSentData['payment_date']._i;
+            var year = dtData.year;
+            var month = dtData.month;
+            var date = dtData.date;
+            dtFormat = year + "-" + month + "-" + date;
+          }
+          //     
+        
+        this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
+        this.voucherFile.append('amount',this.voucherSentData['amount']);
+        this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
+        this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
+        this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
+        this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
+        this.voucherFile.append('voucher_date',dtFormat);
+        this.voucherFile.append('accreditation',this.formApplicationId);
+        this.voucherFile.append('is_draft', true);
+        // this.voucherFile.append('application_id',this.formApplicationId);
+            
+          // //console.log(this.voucherFile);
+        this._trainerService.paymentVoucherSave((this.voucherFile))
+        .subscribe(
+            result => {
+              this.loader = true;
+              let data: any = result;
+              ////console.log("submit voucher: ", data);
+              if(data.status){
+                this._toaster.success('Save Draft Successfully', '');
+              }
+            }
+          )
+    }
+    else {
+      this._toaster.warning('Please Fill required field','');
+    }
+  }
+
+  savedraftStep(steps) {
+    if(steps == 'step1') {
+      this.publicTrainingForm = {};
+      this.publicTrainingForm.step1 = {};
+      this.publicTrainingForm.email = this.userEmail;
+      this.publicTrainingForm.userType = this.userType;
+      this.publicTrainingForm.saved_step = '1';
+      this.step1Data.is_draft = false;
+      this.step1Data.training_form_type = 'public_training';
+
+      this.publicTrainingForm.step1 = this.step1Data;
+
+      // console.log(this.publicTrainingForm);
+      this.loader = false;
+      this.step1DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this._constant.API_ENDPOINT.publicTrainingForm,this.step1DataBodyFormFile)
+      .subscribe(
+        res => {
+          this.loader = true;
+          if(res['status'] == true) {
+            this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['id']);
+            // this.Service.moveSteps('application_information', 'participant', this.headerSteps);
+          // console.log(res);
+          }else{
+            this._toaster.warning(res['msg'], '');
+          }
+        })
+    }
   }
 }
 
