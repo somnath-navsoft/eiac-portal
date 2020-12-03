@@ -121,9 +121,9 @@
                             </th>
                             
                             <th>Registration Type
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'form_meta', curSortDir.form_meta)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.form_meta"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.form_meta"></span>
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'training_form_type', curSortDir.training_form_type)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.training_form_type"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.training_form_type"></span>
                                 </a>
                             </th>
                             <th>Payment Status
@@ -153,7 +153,7 @@
                             <td>
                                 <span *ngIf="item.training_form_type == 'public_training'">Public Training</span>
                                 <span *ngIf="item.training_form_type == 'inprimise'">In Premise</span>
-                                <!-- <span *ngIf="item.form_meta == 'work_activity'">Work Activity Permit</span> -->
+                                <!-- <span *ngIf="item.training_form_type == 'work_activity'">Work Activity Permit</span> -->
                             </td>
                             <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review':item.payment_status === null , 'under-review':item.payment_status === 'pending'}">
                                 <span *ngIf="item.payment_status == 'paid'">Paid</span>
@@ -167,7 +167,7 @@
                                 <ng-container *ngIf="item.training_form_type == 'inprimise'">
                                     <a href="javascript:void(0)" [hidden]="editVisible(item)" alt="Edit" routerLink="/dashboard/cab_client/training-inpremise-form/{{item.id}}"><span class="icon-edit"></span></a>
                                 </ng-container>
-                                <!-- <ng-container *ngIf="item.form_meta == 'work_activity'">
+                                <!-- <ng-container *ngIf="item.training_form_type == 'work_activity'">
                                     <a href="javascript:void(0)" alt="Edit" routerLink="/dashboard/cab_client/work-permit-form/{{item.id}}"><span class="icon-edit"></span></a>
                                 </ng-container> -->
                             </td>
