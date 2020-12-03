@@ -40,14 +40,14 @@ export class TrainingStatusComponent implements OnInit {
     this.curSortDir['created_date']       = false;
     this.curSortDir['accr_status']        = false;
     this.curSortDir['prelim_status']      = false;
-    this.curSortDir['form_meta']          = false;
+    this.curSortDir['training_form_type']          = false;
     this.curSortDir['payment_status']     = false;
     this.curSortDir['applicant']          = false;
   }
 
   editVisible(item: any){
     if(item){
-        switch(item.form_meta.toString()){
+        switch(item.training_form_type.toString()){
 
             case 'work_permit':
               console.log("work permit....", item);
@@ -84,7 +84,7 @@ export class TrainingStatusComponent implements OnInit {
             break;
 
             case 'no_objection':
-              console.log("No Objection....", item);
+              // console.log("No Objection....", item);
               if(item.saved_step != null && item.saved_step < 6 && (item.is_draft == true || item.is_draft == false)){
                 // console.log("@Enter....3");
                 return false;
@@ -205,17 +205,17 @@ export class TrainingStatusComponent implements OnInit {
            this.trainerdata = array;
          }
        }
-       //By form_meta
-       if(sortBy == 'form_meta'){
-         this.curSortDir.form_meta = !sortDir;
+       //By training_form_type
+       if(sortBy == 'training_form_type'){
+         this.curSortDir.training_form_type = !sortDir;
          //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
-         if(this.curSortDir.form_meta){
-           let array = data.slice().sort((a, b) => (a.form_meta > b.form_meta) ? 1 : -1)
+         if(this.curSortDir.training_form_type){
+           let array = data.slice().sort((a, b) => (a.training_form_type > b.training_form_type) ? 1 : -1)
            this.trainerdata = array;
            //console.log("after:: ", array, " :: ", this.trainerdata);
          }
-         if(!this.curSortDir.form_meta){
-           let array = data.slice().sort((a, b) => (a.form_meta < b.form_meta) ? 1 : -1)
+         if(!this.curSortDir.training_form_type){
+           let array = data.slice().sort((a, b) => (a.training_form_type < b.training_form_type) ? 1 : -1)
            this.trainerdata = array;
          }
        }

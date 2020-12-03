@@ -87,6 +87,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   voucherFile:any = new FormData();
   paymentReceiptValidation:boolean;
   paymentFile:any;
+  paymentDetailsChk:any;
+  paymentFilePath:any;
 
   constructor(private Service: AppService, private http: HttpClient,
     public _toaster: ToastrService, private _router: Router, private _route: ActivatedRoute,
@@ -96,9 +98,11 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     this.traningPublicId = sessionStorage.getItem('publicFormId');
 
     var publicCourseid = sessionStorage.getItem('trainingPublicCourse');
-    var splitId = publicCourseid.split('=');
-    this.trainingPublicCourseid = splitId[1];
-    // console.log(this.trainingPublicCourseid,'trainingPublicCourseid');
+    if(publicCourseid && publicCourseid != undefined) {
+      var splitId = publicCourseid.split('=');
+      this.trainingPublicCourseid = splitId[1];
+      // console.log(this.trainingPublicCourseid,'trainingPublicCourseid');
+    }
 
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
@@ -167,7 +171,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     }
 
     if(this.traningPublicId != undefined) {
-      let url2 = this.Service.apiServerUrl+"/"+'registration-details-show/'+this.traningPublicId;
+      let url2 = this.Service.apiServerUrl+"/"+'training-details-show/'+this.traningPublicId;
         this.Service.getwithoutData(url2)
         .subscribe(
           res => {
@@ -212,19 +216,19 @@ export class CabTrainingPublicCourseComponent implements OnInit {
               //////console.log("#Step data: ", this.headerSteps);
             }
 
-            this.step1Data.organization_name = '';
-            this.step1Data.mailing_address = '';
-            this.step1Data.zip_code = '';
-            this.step1Data.country = '';
-            this.step1Data.state = '';
-            this.step1Data.city = '';
-            this.step1Data.telephone_number = '';
-            this.step1Data.fax_no = '';
-            this.step1Data.official_email = '';
-            this.step1Data.official_website = '';
-            this.step1Data.authorized_contact_person = '';
-            this.step1Data.designation = '';
-            this.step1Data.mobile_phone_number = '';
+            this.step1Data.organization_name = res['data'].organization_name;
+            this.step1Data.mailing_address = res['data'].mailing_address;
+            this.step1Data.zip_code = res['data'].zip_code;
+            this.step1Data.country = res['data'].country;
+            this.step1Data.state = res['data'].state;
+            this.step1Data.city = res['data'].city;
+            this.step1Data.telephone_number = res['data'].tel_no;
+            this.step1Data.fax_no = res['data'].fax_no;
+            this.step1Data.official_email = res['data'].official_email;
+            this.step1Data.official_website = res['data'].official_website;
+            this.step1Data.authorized_contact_person = res['data'].authorized_contact_person;
+            this.step1Data.designation = res['data'].designation;
+            this.step1Data.mobile_phone_number = res['data'].mobile_phone_number;
 
             this.participantTraineeDetails = [{}];
 
@@ -251,6 +255,19 @@ export class CabTrainingPublicCourseComponent implements OnInit {
                 this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this._constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
                 this.paymentReceiptValidation = true;
             }
+
+            let pathData: any;
+            let filePath: string;
+
+            if(!this.Service.isObjectEmpty(res['data'].paymentDetails)){
+              this.paymentDetailsChk = res['data'].paymentDetails;
+              if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''){
+                filePath = this._constant.mediaPath + '/media/' + res['data'].paymentDetails.voucher_invoice;
+                pathData = this.getSantizeUrl(filePath);
+                this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
+              }
+            }
+            
           })
     }
   }
@@ -455,8 +472,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   }
 
   onSubmitStep4(ngForm4){
-    this.Service.moveSteps('fees_details', 'authorization', this.headerSteps);
-    if(ngForm4.form.valid) {
+    // this.Service.moveSteps('fees_details', 'authorization', this.headerSteps);
+    if(this.subTotal > 0) {
       this.publicTrainingForm = {};
       this.publicTrainingForm.step4 = {};
       this.publicTrainingForm.email = this.userEmail;
@@ -483,6 +500,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             this._toaster.warning(res['msg'], '');
           }
         })
+    } else {
+      this._toaster.warning('Sub total could be greater than zero', '');
     }
   }
 
@@ -504,8 +523,24 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       .subscribe(
         res => {
           if(res['status'] == true) {
-            this.Service.moveSteps('fees_details', 'authorization', this.headerSteps);
+            // this.Service.moveSteps('fees_details', 'authorization', this.headerSteps);
             // console.log(res);
+            if(this.paymentFilePath != ''){
+              this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
+            }
+            else{
+              setTimeout(()=>{
+                let elem = document.getElementById('openPayDialog');
+                //////console.log("App dialog hash....", elem);
+                if(elem){
+                  elem.click();
+                }
+              }, 100)
+              setTimeout(() => {                    
+                // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+                //this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+              },1500)
+            }
           }else{
             this._toaster.warning(res['msg'], '');
           }
