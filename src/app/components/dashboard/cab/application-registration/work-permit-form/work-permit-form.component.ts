@@ -802,7 +802,7 @@ export class WorkPermitFormComponent implements OnInit {
             
             // this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
             if(this.paymentFilePath != ''){
-              this.Service.moveSteps('authorization_application', 'proforma_invoice', this.headerSteps);
+              this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
             }
             else{
               setTimeout(()=>{
