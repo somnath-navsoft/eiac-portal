@@ -35,10 +35,10 @@ export class WorkPermitFormComponent implements OnInit {
   public file_validation2:boolean = true;
   public file_validation3:boolean = true;
   public file_validation4:boolean = true;
-  licence_document_validation:boolean = true;
-  quality_manual_validation:boolean = true;
-  work_instruction_validation:boolean = true;
-  check_list_validation:boolean = true;
+  licence_document_validation:boolean = false;
+  quality_manual_validation:boolean = false;
+  work_instruction_validation:boolean = false;
+  check_list_validation:boolean = false;
   licence_document_file:any;
   quality_manual_file:any;
   work_instruction_file:any;
@@ -574,7 +574,8 @@ export class WorkPermitFormComponent implements OnInit {
     var file_name = fileEvent.target.files[0].name;
     console.log(file_name,'file_name')
     var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
-    var ex_type = ['doc','odt','pdf','rtf','docx','xlsx'];
+    //var ex_type = ['doc','odt','pdf','rtf','docx','xlsx'];
+    var ex_type = ['pdf'];
     var ex_check = this.Service.isInArray(file_exe,ex_type);
 
     if(ex_check && fileName == 'licence_document_file'){

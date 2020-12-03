@@ -518,7 +518,7 @@
                                                     </a>
                                                 </mat-form-field>
                                         
-                                                <span class="fileupload">
+                                                <span class="fileupload" [ngStyle]="{'padding-bottom': '17px'}"> 
                                                     <input type="file" name="id_issuedEsma" [(ngModel)]="licence_document_file" (change)="validateFile($event,'licence_document_file')">
                                                     <span class="icon-attach attach-data"></span>
                                                 </span>
@@ -536,11 +536,12 @@
                                                     </a>
                                                 </mat-form-field>
                                         
-                                                <span class="fileupload">
+                                                <span class="fileupload" [ngStyle]="{'padding-bottom': '17px'}">
                                                     <input type="file" name="id_issuedEsma" [(ngModel)]="quality_manual_file" (change)="validateFile($event,'quality_manual_file')">
                                                     <span class="icon-attach attach-data"></span>
                                                 </span>
                                                 <p class="error" *ngIf="!quality_manual_validation">Please Upload a valid file (ex: pdf)</p>
+                                                <!-- <p class="error" *ngIf="!quality_manual_validation">Please Upload a valid file (ex: pdf)</p> -->
                                             </div>
                                         </div>
                                     </div>
@@ -556,7 +557,7 @@
                                                     </a>
                                                 </mat-form-field>
                                         
-                                                <span class="fileupload">
+                                                <span class="fileupload" [ngStyle]="{'padding-bottom': '17px'}">
                                                     <input type="file" name="id_issuedEsma" [(ngModel)]="work_instruction_file" (change)="validateFile($event,'work_instruction_file')">
                                                     <span class="icon-attach attach-data"></span>
                                                 </span>
@@ -574,11 +575,12 @@
                                                     </a>
                                                 </mat-form-field>
                                         
-                                                <span class="fileupload">
+                                                <span class="fileupload" [ngStyle]="{'padding-bottom': '17px'}">
                                                     <input type="file" name="id_issuedEsma" [(ngModel)]="check_list_file" (change)="validateFile($event,'check_list_file')">
                                                     <span class="icon-attach attach-data"></span>
                                                 </span>
                                                 <p class="error" *ngIf="!check_list_validation">Please Upload a valid file (ex: pdf)</p>
+                                               
                                             </div>
                                         </div>
 
