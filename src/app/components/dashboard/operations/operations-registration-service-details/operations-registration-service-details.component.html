@@ -277,10 +277,217 @@
       </div>
 
       <!-- NOC Details -->
+      <ng-container *ngIf="serviceDetail?.form_meta == 'no_objection'">
+        <div class="row m-0 appn-cnt-data">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="appln-subhdr">
+                  <h5>CAB INFORMATION</h5>
+                </div>
+              </div>
+            </div> 
+            <div class="row status-det">
+              <div class="col-md-12">
+                <div class="table-appln">
+                  <table>
+                    <tr>
+                      <td width="25%">Laboratory</td>
+                      <td>
+                        <ng-container *ngIf="nocCabTypeData['lab'].length">
+                           <ng-container  *ngFor="let item of nocCabTypeData['lab']; let k = index">                                
+                                <span>{{item}}</span><ng-container *ngIf="k < nocCabTypeData['lab'].length-1">,</ng-container>
+                           </ng-container>
+                        </ng-container>
+                      </td>                      
+                    </tr>
+                    <tr>
+                      <td>Inspection Body</td>
+                      <td>
+                      <ng-container *ngIf="nocCabTypeData['ib'].length">
+                        <ng-container  *ngFor="let item of nocCabTypeData['ib']; let k = index">
+                          <span>{{item}}</span><ng-container *ngIf="k < nocCabTypeData['ib'].length-1">,</ng-container>
+                        </ng-container>
+                     </ng-container>  
+                    </td>                 
+                    </tr>
+                    <tr>
+                      <td>Certification Body</td>
+                      <td>
+                      <ng-container *ngIf="nocCabTypeData['cb'].length">
+                        <ng-container  *ngFor="let item of nocCabTypeData['cb']; let k = index">
+                          <span>{{item}}</span><ng-container *ngIf="k < nocCabTypeData['cb'].length-1">,</ng-container>
+                        </ng-container>
+                     </ng-container>   
+                    </td>                   
+                    </tr>
+                    <tr>
+                      <td>Halal CAB</td>
+                      <td>
+                      <ng-container *ngIf="nocCabTypeData['hcab'].length">
+                        <ng-container  *ngFor="let item of nocCabTypeData['hcab']; let k = index">
+                          <span>{{item}}</span><ng-container *ngIf="k < nocCabTypeData['hcab'].length-1">,</ng-container>
+                        </ng-container>
+                     </ng-container> 
+                    </td>                    
+                    </tr>                    
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>          
+        </div>
+
+        <div class="row m-0 appn-cnt-data">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="appln-subhdr">
+                  <h5>LIST OF INSTRUMENTS AND EQUIPMENTS</h5>
+                </div>
+              </div>
+            </div>
+            <div class="row" [ngStyle]="{'padding-left': '15px'}">
+              <div class="row">
+                <div class="col-md-12">
+                    <div class="table-appln scope-data" *ngIf="nocTableScopeData.listOfIntEquip.length"  [ngStyle]="{'width': '651px'}">                        
+                        <table width="100%">
+                        <tr>
+                            <th>Name Of Instrument / Equipment</th>
+                            <th>Usage Of Instrument / Equipment</th>
+                        </tr>
+                        <tr *ngFor="let item of nocTableScopeData.listOfIntEquip;">
+                            <td>{{item.name_od_equip}}</td>
+                            <td>{{item.usage_of_equip}}</td>
+                        </tr>
+                      </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row m-0 appn-cnt-data">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="appln-subhdr">
+                  <h5>LIST OF STAFF</h5>
+                </div>
+              </div>
+            </div>
+            <div class="row" [ngStyle]="{'padding-left': '15px'}">
+              <div class="row">
+                <div class="col-md-12">
+                    <div class="table-appln scope-data" *ngIf="nocTableScopeData.listOfStaff.length" [ngStyle]="{'width': '650px'}">                        
+                        <table width="100%">
+                        <tr>
+                            <th>Job Title</th>
+                            <th>Qualification</th>
+                            <th>Experience</th>
+                        </tr>
+                        <tr *ngFor="let item of nocTableScopeData.listOfStaff;">
+                            <td>{{item.job_title}}</td>
+                            <td>{{item.qualification}}</td>
+                            <td>{{item.experience}}</td>
+                        </tr>
+                      </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row m-0">
+          <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="appln-subhdr">
+                        <h5>AUTHORIZATION OF THE APPLICATION</h5>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+            <div class="row status-det">
+              <div class="col-md-12">
+                <div class="table-appln">
+                  <table>
+                    <tr>
+                      <td width="25%">Organization Name</td>
+                      <td>
+                        <span>{{serviceDetail?.onBehalfApplicantDetails.organization_name}}</span>
+                      </td>                      
+                    </tr>
+                    <tr>
+                      <td>Representative Name</td>
+                      <td>
+                        <span>{{serviceDetail?.onBehalfApplicantDetails.representative_name}}</span>
+                      </td>                 
+                    </tr>
+                    <tr>
+                      <td>Designation</td>
+                      <td>
+                        <span>{{serviceDetail?.onBehalfApplicantDetails.designation}}</span>
+                      </td>                   
+                    </tr>
+                    <tr>
+                      <td>Digital SIgnature</td>
+                      <td>
+                        <span>{{serviceDetail?.onBehalfApplicantDetails.digital_signature}}</span>
+                      </td>                    
+                    </tr> 
+                    <tr>
+                      <td>Application Date</td>
+                      <td>
+                        <span>{{serviceDetail?.onBehalfApplicantDetails.application_date | date:'dd-MM-yyyy'}}</span>
+                      </td>                    
+                    </tr>                    
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
 
+
+        <!-- CAB INFORMATION END -->
+        <div class="row m-0 appn-cnt-data">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="appln-subhdr">
+                  <h5>List Of Services Scope</h5>
+                </div>
+              </div>
+            </div> 
+            <div class="row status-det">
+              <div class="col-md-12">
+                  <ng-container *ngIf="nocTableScopeData != null">
+                    <ng-container *ngFor="let item of nocTableScopeData | keyvalue">
+                      <!-- {{item.key}}:{{item.value | json}} -->
+                      <ng-container *ngIf="item.key != null && item.key === 'calibration_lab'">
+                            <ng-container *ngFor="let item1 of item.value | keyvalue">
+                              <!-- ...{{item1.key}}:{{item1.value | json}}
+                              +++{{item1.key}} -->
+                                 <ng-container *ngIf="item1.key != null">
+                                  <ng-container *ngFor="let item2 of item1.value | keyvalue">
+                                       {{item2.key}} :: {{item2.value | json}}
+                                  </ng-container>
+                                 </ng-container>
+                            </ng-container>
+                      </ng-container>
+                    </ng-container>
+                  </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </ng-container>
       
-      <div class="row m-0 appn-cnt-data" *ngIf="paymentDetails && paymentDetails!= null">
+      <div class="row m-0 appn-cnt-data" *ngIf="serviceDetail?.paymentDetails && serviceDetail?.paymentDetails!= null">
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-12">
@@ -295,21 +502,21 @@
                   <table>
                     <tr>
                       <td>Voucher Code</td>
-                      <td>{{paymentDetails?.voucher_no}}</td>
+                      <td>{{serviceDetail?.paymentDetails?.voucher_no}}</td>
                       <td>Payment Date</td>
-                      <td>{{paymentDetails?.voucher_date | date:'dd-MM-yyyy'}}</td>
+                      <td>{{serviceDetail?.paymentDetails?.voucher_date | date:'dd-MM-yyyy'}}</td>
                     </tr>
                     <tr>
                       <td>Payment Amount</td>
-                      <td>AED {{paymentDetails?.amount}}</td>
+                      <td>AED {{serviceDetail?.paymentDetails?.amount}}</td>
                       <td>Transaction No</td>
-                      <td>{{paymentDetails?.transaction_no}}</td>
+                      <td>{{serviceDetail?.paymentDetails?.transaction_no}}</td>
                     </tr>
                     <tr>
                       <td>Payment Method</td>
-                      <td>{{paymentDetails?.payment_method}}</td>
+                      <td>{{serviceDetail?.paymentDetails?.payment_method}}</td>
                       <td>Payment Made By</td>
-                      <td>{{paymentDetails?.payment_made_by}}</td>
+                      <td>{{serviceDetail?.paymentDetails?.payment_made_by}}</td>
                     </tr>
                     <tr>
                       <td>Mobile Number</td>

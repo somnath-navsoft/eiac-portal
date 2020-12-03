@@ -672,6 +672,7 @@ export class NoObjectionFormComponent implements OnInit {
           this.step1Data.physical_location_address = data.applicant_location;
           this.step1Data.po_box = data.po_box;          
           this.step1Data.telephone = data.applicant_tel_no;
+          this.step1Data.trade_license_number = data.trade_license_number;
         }
       }) 
   
@@ -1176,7 +1177,8 @@ export class NoObjectionFormComponent implements OnInit {
             //this.toastr.success(res['msg'],);
             this.Service.moveSteps('application_information', 'cab_information', this.headerSteps);
           }else{
-            this.toastr.warning(res['msg'], '');
+            //this.toastr.warning(res['msg'], '');
+            this.Service.moveSteps('application_information', 'cab_information', this.headerSteps);
           }
         });
 
