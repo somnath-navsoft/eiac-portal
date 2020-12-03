@@ -31,7 +31,7 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
 
   loadData() {
     this.loader = false;
-    this.subscriptions.push(this._trainerService.registrationDetailsService(this.routeId)
+    this.subscriptions.push(this._trainerService.trainingDetailsServ(this.routeId)
       .subscribe(
         result => {
           this.loader = true;

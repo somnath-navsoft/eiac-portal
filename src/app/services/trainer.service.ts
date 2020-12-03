@@ -69,6 +69,13 @@ export class TrainerService {
     return this.http.get(url, this._service.getReqHeaders());
   }
 
+  trainingDetailsServ(id) {
+    let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.registrationDetailsServ+id; 
+    //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
+    //console.log("GET Event URL: ", url, " -- ", this._service.getReqHeaders());
+    return this.http.get(url, this._service.getReqHeaders());
+  }
+
   paymentVoucherSave(postData: any){
     const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.paymentDetailsSave;
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
@@ -188,6 +195,13 @@ export class TrainerService {
 
 getRegistratationServiceList(){
   let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.registrationServList+"all"; 
+  //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
+  //console.log("GET Event URL: ", url, " -- ", this._service.getReqHeaders());
+  return this.http.get(url, this._service.getReqHeaders());
+}
+
+getTrainingServiceList(){
+  let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.trainingServList+"all"; 
   //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
   //console.log("GET Event URL: ", url, " -- ", this._service.getReqHeaders());
   return this.http.get(url, this._service.getReqHeaders());

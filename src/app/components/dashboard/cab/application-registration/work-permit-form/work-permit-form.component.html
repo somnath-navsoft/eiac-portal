@@ -357,7 +357,7 @@
                                                                 <div class="col-md-6 col-sm-12">
                                                                     <mat-form-field class="cab-data">
                                                                         <mat-label>Mobile Phone No.</mat-label>
-                                                                        <input readonly="true" type="text"maxlength="13"  (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="mobile_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].mobile_no">
+                                                                        <input readonly="true" type="text" maxlength="13" (keypress)="Service.IsNumeric($event)" matInput placeholder="Mobile Phone No." name="mobile_no_{{i}}" [(ngModel)]="ownOrgMembInfo[i].mobile_no">
                                                                     </mat-form-field>
                                                                     <p class="error" *ngIf="ownOrgMembInfo[i].mobile_no && !Service.checkInput('onlyNumberWithPlus',ownOrgMembInfo[i].mobile_no)">Please Enter Correct Telephone Number</p> 
                                                                 </div>
@@ -490,7 +490,7 @@
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Date of Issue</mat-label>
                                                 <input readonly matInput [matDatepicker]="date_of_issue" 
-                                                  placeholder="Issued Date" (click)="Service._openCalendar(date_of_issue)" name="date_of_issue" [(ngModel)]="step3Data.date_of_issue" (dateChange)="setexDate(step3Data.date_of_issue)">
+                                                  placeholder="Issued Date" readonly (click)="Service._openCalendar(date_of_issue)" name="date_of_issue" [(ngModel)]="step3Data.date_of_issue" (dateChange)="setexDate(step3Data.date_of_issue)">
                                                 <mat-datepicker-toggle matSuffix [for]="date_of_issue"></mat-datepicker-toggle>
                                                 <mat-datepicker #date_of_issue disabled="false"></mat-datepicker>
                                             </mat-form-field>
@@ -500,7 +500,7 @@
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Date of Expiry</mat-label>
                                                 <input readonly matInput [matDatepicker]="date_of_expiry" 
-                                                  placeholder="Issued Date" (click)="Service._openCalendar(date_of_expiry)" name="date_of_expiry" [min]="minDate" [(ngModel)]="step3Data.date_of_expiry">
+                                                  placeholder="Issued Date" readonly (click)="Service._openCalendar(date_of_expiry)" name="date_of_expiry" [min]="minDate" [(ngModel)]="step3Data.date_of_expiry">
                                                 <mat-datepicker-toggle matSuffix [for]="date_of_expiry"></mat-datepicker-toggle>
                                                 <mat-datepicker #date_of_expiry disabled="false"></mat-datepicker>
                                             </mat-form-field>
@@ -667,7 +667,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Organization Name</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Organization Name" name="organization_name" [(ngModel)]="step4Data.organization_name">
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" required placeholder="Organization Name" name="organization_name" [(ngModel)]="step4Data.organization_name">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
@@ -675,7 +675,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Full Name of Authorized Representative</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Full Name of Authorized Representative" name="representative_name" [(ngModel)]="step4Data.representative_name">
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput required autocomplete="off" placeholder="Full Name of Authorized Representative" name="representative_name" [(ngModel)]="step4Data.representative_name">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
@@ -683,7 +683,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Behalf Designation</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Behalf Designation" name="behalf_designation" [(ngModel)]="step4Data.behalf_designation">
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput required autocomplete="off" placeholder="Behalf Designation" name="behalf_designation" [(ngModel)]="step4Data.behalf_designation">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
@@ -693,7 +693,7 @@
                                         <div class="col-md-6">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Digital Signature</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Digital Signature" name="digital_signature" [(ngModel)]="step4Data.digital_signature">
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" required placeholder="Digital Signature" name="digital_signature" [(ngModel)]="step4Data.digital_signature">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
@@ -723,6 +723,25 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row"> 
+                            <span id="openPayDialog" (click)="openView(payComp)"></span>
+                            <ng-template #payComp let-modal>
+                                <div class="main_pop">
+                                    <div class="pop_close">
+                                        <span class="icon-close"></span>
+                                    </div>
+                                    <div class="pop_thanks">
+                                        <h5>Thank you</h5>
+                                        <p>Your Application has been received, please wait for the Proforma Invoice to be generated, to proceed with 
+                                            payment</p>
+                                        <button class="submit-bttn" (click)="closeDialog()"
+                                        routerLink="/dashboard/registration-status">Return to Status</button>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </div>
+
                     </form>
                 </div>
 
@@ -850,7 +869,7 @@
                                         <div class="col-md-6">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mobile Number</mat-label>
-                                                <input type="text" [ngModelOptions]="{standalone: true}" required="true"
+                                                <input type="text" [ngModelOptions]="{standalone: true}" (keypress)="Service.IsNumeric($event)" required="true"
                                                 matInput placeholder="Mobile Number" 
                                                 [(ngModel)]="voucherSentData.mobile_no" required>
                                             </mat-form-field>
