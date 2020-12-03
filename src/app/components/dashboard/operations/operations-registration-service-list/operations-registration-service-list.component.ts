@@ -13,7 +13,7 @@ import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-b
   styleUrls: ['./operations-registration-service-list.component.scss'],
   providers: [CustomModalComponent, ToastrService, Overlay, OverlayContainer]
 })
-export class OperationsRegistrationServiceListComponent implements OnInit {
+export class OperationsRegistrationServiceListComponent implements OnInit { 
 
   //Observable subscription
   subscriptions: Subscription[] = [];
@@ -183,12 +183,12 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
   serviceStatus(index,id){
     this.loader = false;
 
-    this.subscriptions.push(this._trainerService.updateStatus(id)
+    this.subscriptions.push(this._trainerService.updateStatusReg(id)
       .subscribe(
         result => {
           this.loader = true;
           // console.log(result,'result');
-          this.trainerdata[index].accr_status = 'complete';
+          this.trainerdata[index].accr_status = 'Complete';
           this._toaster.success("Payment Completed Successfully",'');
       })
     );

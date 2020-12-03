@@ -50,6 +50,40 @@ export class RegistrationStatusComponent implements OnInit {
     if(item){
         switch(item.form_meta.toString()){
 
+          case 'work_activity':
+            console.log("work activity....", item);
+            if(item.saved_step != null && item.saved_step < 4 && (item.is_draft == true || item.is_draft == false)){
+              // console.log("@Enter....3");
+              return false;
+            }
+            if(item.saved_step != null && item.saved_step > 4 && item.is_draft == false && 
+              item.paymentDetails != undefined && item.paymentDetails != "NA" && 
+              typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
+              return true;
+             }
+            if(item.saved_step != null && item.saved_step < 4 && item.is_draft == false && 
+              item.paymentDetails != undefined && item.paymentDetails != "NA" && 
+              typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
+              return true;
+            }
+            if(item.saved_step != null && item.saved_step == 6 && (item.is_draft == false || item.is_draft == true) && 
+              item.paymentDetails != undefined && item.application_status !== 'complete'){
+                // console.log("@Enter....1");
+              return false;
+            }
+      
+             if(item.saved_step != null && item.saved_step == 4 && item.is_draft == false && 
+                item.paymentDetails != undefined && item.paymentDetails == "NA"){
+              return true;
+            }
+             if(item.saved_step != null && item.saved_step == 4 && item.is_draft == false && 
+              item.paymentDetails != undefined && item.paymentDetails != "NA" && item.paymentDetails != false && 
+              typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
+                // console.log("@Enter....2");
+              return false;
+            }
+          break;
+
             case 'work_permit':
               console.log("work permit....", item);
               if(item.saved_step != null && item.saved_step < 4 && (item.is_draft == true || item.is_draft == false)){
@@ -57,12 +91,12 @@ export class RegistrationStatusComponent implements OnInit {
                 return false;
               }
               if(item.saved_step != null && item.saved_step > 4 && item.is_draft == false && 
-                item.paymentDetails != undefined && item.paymentDetails != false && 
+                item.paymentDetails != undefined && item.paymentDetails != "NA" && 
                 typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
                 return true;
                }
               if(item.saved_step != null && item.saved_step < 4 && item.is_draft == false && 
-                item.paymentDetails != undefined && item.paymentDetails != false && 
+                item.paymentDetails != undefined && item.paymentDetails != "NA" && 
                 typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
                 return true;
               }
@@ -73,11 +107,11 @@ export class RegistrationStatusComponent implements OnInit {
               }
         
                if(item.saved_step != null && item.saved_step == 4 && item.is_draft == false && 
-                  item.paymentDetails != undefined && item.paymentDetails == false){
+                  item.paymentDetails != undefined && item.paymentDetails == "NA"){
                 return true;
               }
                if(item.saved_step != null && item.saved_step == 4 && item.is_draft == false && 
-                item.paymentDetails != undefined && item.paymentDetails != false && item.paymentDetails != false && 
+                item.paymentDetails != undefined && item.paymentDetails != "NA" && item.paymentDetails != false && 
                 typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
                   // console.log("@Enter....2");
                 return false;
@@ -123,7 +157,7 @@ export class RegistrationStatusComponent implements OnInit {
             break;
         }
     }
-  }
+  } 
 
   loadPageData(){
     this.loader = false;

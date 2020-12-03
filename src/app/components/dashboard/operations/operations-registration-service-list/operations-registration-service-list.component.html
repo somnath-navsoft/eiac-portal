@@ -10,20 +10,20 @@
                         <h3>Registration Service</h3> 
                     </div>
                 </div>
-                <div class="col-md-4"> 
+                <!-- <div class="col-md-4"> 
                     <div class="tbl-filter-data">
                         <ul>
                             <li>
                                 <div class="filter">
-                                    <!-- <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a>
-                                    <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a> -->
+                                    <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a>
+                                    <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a>
                                 </div>
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> -->
             </div>
-            <ng-container *ngIf="advSearch" class="tbl-filter-data">
+            <!-- <ng-container *ngIf="advSearch" class="tbl-filter-data">
                 <div class="filter-dash">
                     <div class="close-bttn">
                         <span class="icon-close" (click)="filterSearchSec()"></span>
@@ -88,7 +88,7 @@
                             <a href="javascript:void(0)" (click)="filterSearchReset()">RESET</a>
                         </div>         
                     </div>
-                    <!-- <div class="col-md-4"> 
+                    <div class="col-md-4"> 
                         
                         <div class="add-data">
                             <a href="javascript:void(0)" (click)="filterSearchSubmit()">SEARCH</a>
@@ -96,11 +96,11 @@
                         <div class="add-data">
                             <a href="javascript:void(0)" (click)="filterSearchReset()">RESET</a>
                         </div>                    
-                    </div> -->
+                    </div>
                 </div>
                 </div>
                 
-            </ng-container>
+            </ng-container> -->
             
         
         <div class="table-dashboard-cont">
@@ -122,9 +122,9 @@
                                 </a>
                             </th>
                             <th width="15%">Status
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'accr_status', curSortDir.accr_status)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.accr_status"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.accr_status"></span>
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'application_status', curSortDir.application_status)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.application_status"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.application_status"></span>
                                 </a>
                             </th>
                             <!-- <th>Prelim Visit
@@ -163,20 +163,25 @@
                             <td>
                                 {{item.created | date :'dd-MMM-yyyy' }}
                             </td>
-                            <td [ngClass]="{'pending': (item.accr_status === 'pending' || item.accr_status == 'draft' || item.accr_status == 'application_process'), 'under-review':item.accr_status === null || item.accr_status === 'under_review', 'complete': item.accr_status === 'complete'}">
-                                <span *ngIf="item.accr_status == 'pending' || item.accr_status == 'draft'">Pending</span>
-                                <span *ngIf="item.accr_status == 'application_process'">Application Process</span>
-                                <span *ngIf="item.accr_status == null || item.accr_status === 'under_review'">Under Review</span>
-                                <span *ngIf="item.accr_status == 'complete'">Complete</span>
+                            <td [ngClass]="{'pending': (item.application_status === 'pending' || item.application_status == 'application_process' || item.application_status == 'under_process'), 'under-review':item.application_status === null || item.application_status === 'under_review', 'complete': item.application_status === 'complete', 'draft': item.application_status == 'draft'}">
+                                <span *ngIf="item.application_status == 'pending'">Pending</span>
+                                <span *ngIf="item.application_status == 'draft'">Draft</span>
+                                <span *ngIf="item.application_status == 'application_process'">Application Process</span>
+                                <span *ngIf="item.application_status == 'under_process'">Under Process</span>
+                                <span *ngIf="item.application_status == null || item.application_status === 'under_review'">Under Review</span>
+                                <span *ngIf="item.application_status == 'complete'">Complete</span>
                             </td>
                             <!-- <td [ngClass]="{'complete': item.is_prelim_visit == true, 'under-review':item.is_prelim_visit == false }">
                                 <span *ngIf="item.is_prelim_visit == true">Yes</span>
                                 <span *ngIf="item.is_prelim_visit == false">No</span>
                             </td> -->
                             <td>
+                                <span *ngIf="item.form_meta == 'work_permit'">Work Permit</span>
+                                <span *ngIf="item.form_meta == 'no_objection'">No Objection Certificate</span>
                                 <span *ngIf="item.form_meta == 'work_activity'">Work Activity Permit</span>
+
                             </td>
-                            <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review':item.payment_status === null }">
+                            <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review':(item.payment_status === null || item.payment_status === 'pending') }">
                                 <span *ngIf="item.payment_status == 'paid'">Paid</span>
                                 <span *ngIf="item.payment_status == 'pending'">Unpaid</span>
                                 <span *ngIf="item.payment_status == null">Unpaid</span>
@@ -185,10 +190,10 @@
                                 {{item.applicantName}}
                             </td> -->
                             <td class="action fnt-clr">
-                                <!-- *ngIf="(item.accr_status == null && item.accr_status === 'under_review')" -->
-                                <a href="javascript:void(0)" *ngIf="(item.payment_status == 'paid' && item.accr_status != 'complete')" (click)="serviceStatus(i2,item.id)" alt="Delete"><span class="icon-tick"></span></a>
-                                <!-- <a href="javascript:void(0)" *ngIf="item.accr_status == 'complete'" alt="Delete"><span class="icon-tick"></span></a> -->
-                                <a href="javascript:void(0)" *ngIf="(item.accr_status == null || item.accr_status == 'application_process' || item.accr_status === 'under_review' || item.accr_status == 'pending' || item.accr_status == 'draft') && item.payment_status != 'paid'" (click)="open(courseVoucher, item.id)" alt="Upload Proforma Invoice" title="Upload Proforma Invoice"><span class="icon-document-pen"></span></a>
+                                <!-- *ngIf="(item.application_status == null && item.application_status === 'under_review')" -->
+                                <a href="javascript:void(0)" *ngIf="(item.payment_status == 'paid' && item.application_status != 'complete')" (click)="serviceStatus(i2,item.id)" alt="Delete"><span class="icon-tick"></span></a>
+                                <!-- <a href="javascript:void(0)" *ngIf="item.application_status == 'complete'" alt="Delete"><span class="icon-tick"></span></a> -->
+                                <a href="javascript:void(0)" *ngIf="(item.application_status == null || item.application_status == 'application_process' || item.application_status == 'under_process' || item.application_status === 'under_review' || item.application_status == 'pending' || item.application_status == 'draft') && item.payment_status != 'paid'" (click)="open(courseVoucher, item.id)" alt="Upload Proforma Invoice" title="Upload Proforma Invoice"><span class="icon-document-pen"></span></a>
                                
                             </td>
                         </tr>

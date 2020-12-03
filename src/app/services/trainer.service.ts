@@ -55,13 +55,21 @@ export class TrainerService {
     const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.trainerCourseVoucherSave;
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
-
+  //webservice/reg_status_change/2
   registrationVoucherSave(postData: any){
     const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.trainerCourseVoucherSave;
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
+  
 
   registrationDetailsService(id) {
+    let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.registrationDetailsServ+id; 
+    //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
+    //console.log("GET Event URL: ", url, " -- ", this._service.getReqHeaders());
+    return this.http.get(url, this._service.getReqHeaders());
+  }
+
+  trainingDetailsServ(id) {
     let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.registrationDetailsServ+id; 
     //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
     //console.log("GET Event URL: ", url, " -- ", this._service.getReqHeaders());
@@ -126,6 +134,13 @@ export class TrainerService {
     return this.http.put(url, postData, this._service.getReqHeaders());
   }
 
+  updateStatusReg(postId: number){  
+    var postData = ''
+    const url = `${this._service.apiServerUrl}`+"/"+this._constants.API_ENDPOINT.accrStatusReg + postId;
+    //console.log("Update URL: ", url);
+    return this.http.put(url, postData, this._service.getReqHeaders());
+  }
+
   /******************************
   * Search Section
   * Start
@@ -180,6 +195,13 @@ export class TrainerService {
 
 getRegistratationServiceList(){
   let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.registrationServList+"all"; 
+  //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
+  //console.log("GET Event URL: ", url, " -- ", this._service.getReqHeaders());
+  return this.http.get(url, this._service.getReqHeaders());
+}
+
+getTrainingServiceList(){
+  let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.trainingServList+"all"; 
   //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
   //console.log("GET Event URL: ", url, " -- ", this._service.getReqHeaders());
   return this.http.get(url, this._service.getReqHeaders());

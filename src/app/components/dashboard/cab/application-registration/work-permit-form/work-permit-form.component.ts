@@ -35,10 +35,10 @@ export class WorkPermitFormComponent implements OnInit {
   public file_validation2:boolean = true;
   public file_validation3:boolean = true;
   public file_validation4:boolean = true;
-  licence_document_validation:boolean = true;
-  quality_manual_validation:boolean = true;
-  work_instruction_validation:boolean = true;
-  check_list_validation:boolean = true;
+  licence_document_validation:boolean = false;
+  quality_manual_validation:boolean = false;
+  work_instruction_validation:boolean = false;
+  check_list_validation:boolean = false;
   licence_document_file:any;
   quality_manual_file:any;
   work_instruction_file:any;
@@ -134,7 +134,7 @@ export class WorkPermitFormComponent implements OnInit {
 
     this.headerSteps.push(
       {
-      title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
+      title:'application_information', desc:'1. Applicant Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
       },
       {
       title:'activities_scope', desc:'2. Activities & Scope', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
@@ -293,6 +293,9 @@ export class WorkPermitFormComponent implements OnInit {
           this.ownOrgBasicInfo = step2['cabOwnerData'];
           this.step3Data.license_no = data.trade_license_number;
           
+          this.step3Data.date_of_issue = new Date(data.date_of_expiry);
+          this.step3Data.date_of_expiry = new Date(data.date_of_issue);
+          
           // step2['cabBodData'].forEach((res,key) => {
           //   step2['cabBodData'][key].name = res.name;
           //   step2['cabBodData'][key].designation = res.designation;
@@ -393,9 +396,6 @@ export class WorkPermitFormComponent implements OnInit {
             }
             // console.log(this.activitySection,'activitySectionactivitySectionactivitySectionactivitySection');
 
-            
-            this.step3Data.date_of_issue = res['data'].date_of_issue;
-            this.step3Data.date_of_expiry = res['data'].date_of_expiry;
 
             let pathData: any;
             let filePath: string;
@@ -465,14 +465,18 @@ export class WorkPermitFormComponent implements OnInit {
                 this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
                 this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
                 this.voucherSentData.amount           = res['data'].paymentDetails.amount;
-                this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
-                this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
-                this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
-                this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+                // this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
+                // this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
+                // this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
+                // this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+
+                this.voucherSentData.transaction_no   = (res['data'].paymentDetails.transaction_no != 'null') ? res['data'].paymentDetails.transaction_no : '';
+                this.voucherSentData.payment_method   = (res['data'].paymentDetails.payment_method != 'null') ? res['data'].paymentDetails.payment_method : '';
+                this.voucherSentData.payment_made_by  = (res['data'].paymentDetails.payment_made_by != 'null') ? res['data'].paymentDetails.payment_made_by : '';
+                this.voucherSentData.mobile_no        = (res['data'].paymentDetails.mobile_no != 'null') ? res['data'].paymentDetails.mobile_no : '';
 
                 this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
                 this.paymentReceiptValidation = true;
-                console.log(this.paymentFile,'paymentFile');
             }
           })
       }
@@ -570,7 +574,8 @@ export class WorkPermitFormComponent implements OnInit {
     var file_name = fileEvent.target.files[0].name;
     console.log(file_name,'file_name')
     var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
-    var ex_type = ['doc','odt','pdf','rtf','docx','xlsx'];
+    //var ex_type = ['doc','odt','pdf','rtf','docx','xlsx'];
+    var ex_type = ['pdf'];
     var ex_check = this.Service.isInArray(file_exe,ex_type);
 
     if(ex_check && fileName == 'licence_document_file'){
@@ -614,17 +619,6 @@ export class WorkPermitFormComponent implements OnInit {
   }
 
   checkboxChecking(theEvent) {
-    // console.log(type,'type');
-    // this.activitySection[type] = true;
-    console.log(this.activitySection,'type');
-
-    // Object.keys(this.activitySection).forEach(key => {
-    //   // if(this.activitySection[])
-    //   if(this.activitySection.key == type){
-
-    //   }
-    // })
-
     var checkCount = 0;
     if(theEvent.checked){
       for(let key in this.activitySection) {
@@ -689,7 +683,7 @@ export class WorkPermitFormComponent implements OnInit {
           }
         });
     }else {
-      this.toastr.warning('Please Fill required field','');
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
   }
 
@@ -736,7 +730,7 @@ export class WorkPermitFormComponent implements OnInit {
           }
         });
     }else {
-      this.toastr.warning('Please Checked ANy Filled','');
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
     
   }
@@ -773,7 +767,7 @@ export class WorkPermitFormComponent implements OnInit {
           }
         });
     }else {
-      this.toastr.warning('Please Fill required field','');
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
     
   }
@@ -807,7 +801,23 @@ export class WorkPermitFormComponent implements OnInit {
           let getData: any = res;
           if(res['status'] == true) {
             
-            this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
+            // this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
+            if(this.paymentFilePath != ''){
+              this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
+            }
+            else{
+              setTimeout(()=>{
+                let elem = document.getElementById('openPayDialog');
+                //////console.log("App dialog hash....", elem);
+                if(elem){
+                  elem.click();
+                }
+              }, 100)
+              setTimeout(() => {                    
+                // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+                //this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+              },1500)
+            }
           }else{
             this.toastr.warning(res['msg'], '');
           }
@@ -817,7 +827,7 @@ export class WorkPermitFormComponent implements OnInit {
     //   this.toastr.warning('Please select authorization box', '');
     // }
     else {
-      this.toastr.warning('Please Fill required field','');
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
     
   }
@@ -1051,7 +1061,7 @@ export class WorkPermitFormComponent implements OnInit {
           )
     }
     else {
-      this.toastr.warning('Please Fill required field','');
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
   }
 
@@ -1172,6 +1182,8 @@ export class WorkPermitFormComponent implements OnInit {
       this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
 
       this.step2Data.is_draft = true;
+      this.step2Data.activity_section = this.activitySection;
+
       this.workPermitForm.step2 = this.step2Data;
 
       // this.loader = false;

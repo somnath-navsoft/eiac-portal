@@ -94,6 +94,8 @@ import { CabCompanyProfileComponent } from './components/dashboard/cab/cab-compa
 import { CabMessage } from './components/dashboard/cab/cab-message/cab-message.component';
 import { RegistrationStatusComponent } from './components/dashboard/registration-status/registration-status.component';
 import { TrainingStatusComponent } from './components/dashboard/training-status/training-status.component';
+import { OperationsTrainingServiceListComponent } from './components/dashboard/operations/operations-training-service-list/operations-training-service-list.component';
+import { OperationsTrainingServiceDetailsComponent } from './components/dashboard/operations/operations-training-service-details/operations-training-service-details.component';
 
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
@@ -143,6 +145,8 @@ const routes: Routes = [
           { path: 'accreditation-service-details/:id', component:OperationsAccreditationServiceDetailsComponent, canActivate: [AuthGuard] },
           { path: 'registration-service-list', component:OperationsRegistrationServiceListComponent, canActivate: [AuthGuard] },
           { path: 'registration-service-details/:id', component:OperationsRegistrationServiceDetailsComponent, canActivate: [AuthGuard] },
+          { path: 'training-service-list', component:OperationsTrainingServiceListComponent, canActivate: [AuthGuard] },
+          { path: 'training-service-details/:id', component:OperationsTrainingServiceDetailsComponent, canActivate: [AuthGuard] },
           { path: 'message', component:OperationMessageComponent, canActivate: [AuthGuard] },
           { path: 'message-detail/:id', component:OperationsMessageDetailsComponent, canActivate: [AuthGuard] },
         ] 
@@ -158,6 +162,7 @@ const routes: Routes = [
         { path: 'training-course', component:CabTrainingApplicationComponent, canActivate: [AuthGuard] },
         { path: 'training-public-course-form', component:CabTrainingPublicCourseComponent, canActivate: [AuthGuard] },
         { path: 'training-public-course-form/:id', component:CabTrainingPublicCourseComponent, canActivate: [AuthGuard] },
+        { path: 'training-inpremise-form', component:CabTrainingInpremiseFormComponent, canActivate: [AuthGuard] },
         { path: 'training-inpremise-form/:id', component:CabTrainingInpremiseFormComponent, canActivate: [AuthGuard] },
         { path: 'training-public-course-list', component:CabTrainingPublicCourseListComponent, canActivate: [AuthGuard] },
         { path: 'training-course-details/:id', component:CabTrainingDetailComponent, canActivate: [AuthGuard] },
