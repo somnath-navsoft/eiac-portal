@@ -468,6 +468,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       // this.step2Data.application_id = applicationId;
       this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step4Data.training_form_type = 'public_training';
+      this.step4Data.fees_to_pay = this.subTotal;
 
       this.publicTrainingForm.step4 = this.step4Data;
 

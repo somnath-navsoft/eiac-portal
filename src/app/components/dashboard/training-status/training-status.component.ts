@@ -126,14 +126,14 @@ export class TrainingStatusComponent implements OnInit {
 
   loadPageData(){
     this.loader = false;
-    this.subscriptions.push(this._trainerService.getRegistratationServiceList()
+    this.subscriptions.push(this._trainerService.getTrainingServiceList()
       .subscribe(
         result => {
           this.loader = true;
           let data: any = result;
           let dataRec: any=[];
           this.dataLoad = true;
-          console.log('loading...', data.records);
+          // console.log('loading...', data.records);
           // console.log(">>>List: ", data);
           this.trainerdata = data.records;
           dataRec = data.records;

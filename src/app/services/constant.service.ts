@@ -22,6 +22,7 @@ export class Constants{
 		registrationServList: 'registration-list/',
 		trainerAccredDetailsServ: 'accrediation-details-show/',
 		registrationDetailsServ: 'registration-details-show/',
+		trainingDetailsServ: 'training-details-show/',
 		registrationPaymentDetails: 'webservice/reg-payment-details-save/',
 		trainerAttendanceList:'trainer/attendance-list/',
 		trainerAgendaList:'trainer/agenda-list/',
@@ -30,6 +31,7 @@ export class Constants{
 		trainerCourseVoucherSave: 'webservice/proforma-details-save/',
 		trainerCoursePageDetails : 'trainer/training-page-details/',
 		trainerCourseTypeDetails: 'trainer/training-course-type/',
+		trainingServList: 'training-list/',
 
 		paymentDetailsSave: 'webservice/payment-details-save/',
 		proformaAccrSave: 'webservice/proforma-step-accr/',

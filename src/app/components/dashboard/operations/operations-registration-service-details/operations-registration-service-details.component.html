@@ -219,11 +219,11 @@
           </div>
         </div>
 
-        <!-- <div class="col-md-6">
+        <div class="col-md-6" *ngIf="serviceDetail.form_meta == 'work_activity'">
           <div class="row">
             <div class="col-md-12">
               <div class="appln-subhdr">
-                <h5>WORKING TIME</h5>
+                <h5>ACTIVITIES & SCOPE</h5>
               </div>
               <hr>
             </div>
@@ -234,14 +234,26 @@
               <div class="table-appln">
                 <table>
                     <tr>
-                        <td></td>
-                        <td colspan="2">{{serviceDetail?.is_main_activity_note}}</td>
+                        <td>Activity Section:</td>
+                        <td colspan="2">
+                          <ng-container *ngIf="activitySection?.laboratory == true">Laboratory</ng-container>
+                          <ng-container *ngIf="activitySection?.laboratory == true && (activitySection?.inspection_body == true || activitySection?.certification_body == true)">, </ng-container>
+
+                          <ng-container *ngIf="activitySection?.inspection_body == true">Inspection Body</ng-container>
+                          <ng-container *ngIf="activitySection?.inspection_body == true && (activitySection?.certification_body == true )">, </ng-container>
+
+                          <ng-container *ngIf="activitySection?.certification_body == true">Certification Body</ng-container>
+                        </td>
+                    </tr>
+                    <tr *ngIf="scopes_to_be_authorized">
+                        <td>Scopes To Be Authorized:</td>
+                        <td colspan="2">{{scopes_to_be_authorized}}</td>
                     </tr>
                 </table>
               </div>
             </div>
           </div>
-        </div> -->
+        </div>
         
       </div>
       
@@ -278,7 +290,41 @@
 
       <!-- NOC Details -->
 
-
+      <div class="row m-0 appn-cnt-data" *ngIf="onBehalfApplicantDetails && onBehalfApplicantDetails!= null">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="appln-subhdr">
+                <h5>ON THE BEHALF OF THE APPLICANT COMPANY</h5>
+              </div>
+            </div>
+          </div>
+          <div class="row status-det">
+              <div class="col-md-12">
+                <div class="table-appln">
+                  <table>
+                    <tr>
+                      <td>Organization Name</td>
+                      <td>{{onBehalfApplicantDetails?.organization_name}}</td>
+                      <td>Payment Date</td>
+                      <td>{{onBehalfApplicantDetails?.application_date | date:'dd-MM-yyyy'}}</td>
+                    </tr>
+                    <tr>
+                      <td>Representative Name</td>
+                      <td>{{onBehalfApplicantDetails?.representative_name}}</td>
+                      <td>Transaction No</td>
+                      <td>{{onBehalfApplicantDetails?.designation}}</td>
+                    </tr>
+                    <tr>
+                      <td>Digital Signature</td>
+                      <td>{{onBehalfApplicantDetails?.digital_signature}}</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
       
       <div class="row m-0 appn-cnt-data" *ngIf="paymentDetails && paymentDetails!= null">
         <div class="col-md-12">
