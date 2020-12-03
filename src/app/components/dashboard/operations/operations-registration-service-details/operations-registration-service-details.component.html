@@ -465,7 +465,7 @@
 
 
         <!-- CAB INFORMATION END -->
-        <div class="row m-0 appn-cnt-data">
+        <!-- <div class="row m-0 appn-cnt-data">
           <div class="col-md-12">
             <div class="row">
               <div class="col-md-12">
@@ -478,16 +478,26 @@
               <div class="col-md-12">
                   <ng-container *ngIf="nocTableScopeData != null">
                     <ng-container *ngFor="let item of nocTableScopeData | keyvalue">
-                      <!-- {{item.key}}:{{item.value | json}} -->
                       <ng-container *ngIf="item.key != null && item.key === 'calibration_lab'">
                             <ng-container *ngFor="let item1 of item.value | keyvalue">
-                              <!-- ...{{item1.key}}:{{item1.value | json}}
-                              +++{{item1.key}} -->
-                                 <ng-container *ngIf="item1.key != null">
+                              {{item1.key}}
+                                 <ng-container *ngIf="item1.key != null && item1.key === 'calibrationLabCheckDetails'">
+                                   1111 = {{item1.value | json}}
                                   <ng-container *ngFor="let item2 of item1.value | keyvalue">
-                                       <!-- {{item2.key}} :: {{item2.value | json}} -->
+                                       ........  {{item2.key}} ::  {{item2.value.length }}
+                                       <ng-container *ngIf="item2.key != null && item2.key === 'checkItems' && item2.value.length > 0">
+                                            items...
+                                       </ng-container>
+                                       <ng-container *ngIf="item2.key != null && item2.key === 'checkItemsOthers' && item2.value.length > 0">
+                                            otheres
+                                       </ng-container>
                                   </ng-container>
                                  </ng-container>
+                                 <ng-container *ngIf="item1.key != null && item1.key === 'calibrationLabInformation'">
+
+                                 </ng-container>
+
+
                             </ng-container>
                       </ng-container>
                     </ng-container>
@@ -495,7 +505,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
       </ng-container>
 
