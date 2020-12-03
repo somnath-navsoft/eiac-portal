@@ -134,9 +134,9 @@
                                 </a>
                             </th> -->
                             <th>Accreditation Type
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'form_meta', curSortDir.form_meta)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.form_meta"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.form_meta"></span>
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'training_form_type', curSortDir.training_form_type)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.training_form_type"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.training_form_type"></span>
                                 </a>
                             </th>
                             <th>Payment Status
@@ -174,7 +174,8 @@
                                 <span *ngIf="item.is_prelim_visit == false">No</span>
                             </td> -->
                             <td>
-                                <span *ngIf="item.form_meta == 'work_activity'">Work Activity Permit</span>
+                                <span *ngIf="item.training_form_type == 'public_training'">Public Training</span>
+                                <span *ngIf="item.training_form_type == 'inprimise'">In Premise</span>
                             </td>
                             <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review':item.payment_status === null }">
                                 <span *ngIf="item.payment_status == 'paid'">Paid</span>

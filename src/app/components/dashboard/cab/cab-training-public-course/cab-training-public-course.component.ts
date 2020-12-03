@@ -216,6 +216,27 @@ export class CabTrainingPublicCourseComponent implements OnInit {
               //////console.log("#Step data: ", this.headerSteps);
             }
 
+            var stateList =  this.Service.getState();
+            var cityList =  this.Service.getCity();
+            stateList.subscribe( result => {
+              for(let key in result['states']) {
+                if(result['states'][key]['name'] == res['data'].state )
+                {
+                  this.allStateList.push(result['states'][key]);
+                }
+              }
+            });
+    
+            cityList.subscribe( result => {
+              for(let key in result['cities']) {
+                if(result['cities'][key]['name'] == res['data'].city )
+                {
+                  this.allCityList.push(result['cities'][key]);
+                }
+              }
+            });
+
+            // step1
             this.step1Data.organization_name = res['data'].organization_name;
             this.step1Data.mailing_address = res['data'].mailing_address;
             this.step1Data.zip_code = res['data'].zip_code;
@@ -230,11 +251,16 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             this.step1Data.designation = res['data'].designation;
             this.step1Data.mobile_phone_number = res['data'].mobile_phone_number;
 
-            this.participantTraineeDetails = [{}];
+            // step2
+            if(res['data'].participantTraineeDetails != null) {
+              this.participantTraineeDetails = res['data'].participantTraineeDetails;
+            }
 
-            this.step1Data.course_title = '';
-            this.step1Data.training_duration = '';
+            // step3
+            this.step3Data.course_title = res['data'].course_title;
+            this.step3Data.training_duration = res['data'].training_duration;
 
+            // step5
             if(res['data'].onBehalfApplicantDetails != null) {
               this.step4Data.organization_name = res['data'].onBehalfApplicantDetails.organization_name;
               this.step4Data.representative_name = res['data'].onBehalfApplicantDetails.representative_name;
@@ -242,15 +268,20 @@ export class CabTrainingPublicCourseComponent implements OnInit {
               this.step4Data.digital_signature = res['data'].onBehalfApplicantDetails.digital_signature;
             }
 
+            // step7
             if(res['data'].paymentDetails != null){
               // //console.log(">>>payment details...show");
                 this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
                 this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
                 this.voucherSentData.amount           = res['data'].paymentDetails.amount;
-                this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
-                this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
-                this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
-                this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+                // this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
+                // this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
+                // this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
+                // this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+                this.voucherSentData.transaction_no   = (res['data'].paymentDetails.transaction_no != 'null') ? res['data'].paymentDetails.transaction_no : '';
+                this.voucherSentData.payment_method   = (res['data'].paymentDetails.payment_method != 'null') ? res['data'].paymentDetails.payment_method : '';
+                this.voucherSentData.payment_made_by  = (res['data'].paymentDetails.payment_made_by != 'null') ? res['data'].paymentDetails.payment_made_by : '';
+                this.voucherSentData.mobile_no        = (res['data'].paymentDetails.mobile_no != 'null') ? res['data'].paymentDetails.mobile_no : '';
 
                 this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this._constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
                 this.paymentReceiptValidation = true;
@@ -389,11 +420,13 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             this._toaster.warning(res['msg'], '');
           }
         })
+    }else {
+      this._toaster.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
   }
 
   onSubmitStep2(ngForm2){
-    this.Service.moveSteps('participant', 'training_details', this.headerSteps);
+    // this.Service.moveSteps('participant', 'training_details', this.headerSteps);
     if(ngForm2.form.valid) {
       this.publicTrainingForm = {};
       this.publicTrainingForm.step2 = {};
@@ -426,11 +459,13 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             this._toaster.warning(res['msg'], '');
           }
         })
+    }else {
+      this._toaster.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
   }
 
   onSubmitStep3(ngForm3){
-    this.Service.moveSteps('training_details', 'fees_details', this.headerSteps);
+    // this.Service.moveSteps('training_details', 'fees_details', this.headerSteps);
     if(ngForm3.form.valid) {
       this.publicTrainingForm = {};
       this.publicTrainingForm.step3 = {};
@@ -468,6 +503,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             this._toaster.warning(res['msg'], '');
           }
         })
+    }else {
+      this._toaster.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
   }
 
@@ -506,7 +543,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   }
 
   onSubmitStep5(ngForm5){
-    this.Service.moveSteps('authorization', 'proforma_invoice', this.headerSteps);
+    // this.Service.moveSteps('authorization', 'proforma_invoice', this.headerSteps);
     if(ngForm5.form.valid) {
       this.publicTrainingForm = {};
       this.publicTrainingForm.step5 = {};
@@ -545,6 +582,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             this._toaster.warning(res['msg'], '');
           }
         })
+    }else {
+      this._toaster.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
   }
 
@@ -673,6 +712,12 @@ export class CabTrainingPublicCourseComponent implements OnInit {
         var month = dtData.month;
         var date = dtData.date;
         dtFormat = year + "-" + month + "-" + date;
+      }else{
+        var nFdate = new Date(this.voucherSentData['payment_date']);
+        var nMonth = nFdate.getMonth();
+        var nDate = nFdate.getDate();
+        var nYear = nFdate.getFullYear();
+        dtFormat = nYear + "-" + nMonth + "-" + nDate;
       }
       //     
     
@@ -683,14 +728,14 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
       this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
       this.voucherFile.append('voucher_date',dtFormat);
-      this.voucherFile.append('accreditation',this.formApplicationId);
+      this.voucherFile.append('application_id',this.formApplicationId);
       this.voucherFile.append('is_draft', false);
       // this.voucherFile.append('application_id',this.formApplicationId);
           
       this.loader = false;
       if(ngForm6.form.valid && this.paymentReceiptValidation != false) {
         // //console.log(this.voucherFile);
-          this._trainerService.paymentVoucherSave((this.voucherFile))
+          this._trainerService.paymentVoucherSaveTrainers((this.voucherFile))
           .subscribe(
               result => {
                 this.loader = true;
@@ -731,6 +776,12 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             var month = dtData.month;
             var date = dtData.date;
             dtFormat = year + "-" + month + "-" + date;
+          }else{
+            var nFdate = new Date(this.voucherSentData['payment_date']);
+            var nMonth = nFdate.getMonth();
+            var nDate = nFdate.getDate();
+            var nYear = nFdate.getFullYear();
+            dtFormat = nYear + "-" + nMonth + "-" + nDate;
           }
           //     
         
@@ -741,12 +792,12 @@ export class CabTrainingPublicCourseComponent implements OnInit {
         this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
         this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
         this.voucherFile.append('voucher_date',dtFormat);
-        this.voucherFile.append('accreditation',this.formApplicationId);
+        this.voucherFile.append('application_id',this.formApplicationId);
         this.voucherFile.append('is_draft', true);
         // this.voucherFile.append('application_id',this.formApplicationId);
             
           // //console.log(this.voucherFile);
-        this._trainerService.paymentVoucherSave((this.voucherFile))
+        this._trainerService.paymentVoucherSaveTrainers((this.voucherFile))
         .subscribe(
             result => {
               this.loader = true;
@@ -786,6 +837,124 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['id']);
             // this.Service.moveSteps('application_information', 'participant', this.headerSteps);
           // console.log(res);
+          this._toaster.success('Save Draft Successfully', '');
+          }else{
+            this._toaster.warning(res['msg'], '');
+          }
+        })
+    }else if(steps == 'step2') {
+      this.publicTrainingForm = {};
+      this.publicTrainingForm.step2 = {};
+      this.publicTrainingForm.email = this.userEmail;
+      this.publicTrainingForm.userType = this.userType;
+      this.publicTrainingForm.saved_step = '2';
+      var applicationId = sessionStorage.getItem('applicationId');
+      // this.step2Data.application_id = applicationId;
+      this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+      this.step2Data.is_draft = true;
+      this.step2Data.training_form_type = 'public_training';
+
+      this.publicTrainingForm.step2 = this.step2Data;
+
+      this.publicTrainingForm.step2['trainee_details'] = [];
+    
+      if(this.participantTraineeDetails) {
+        this.publicTrainingForm.step2['trainee_details'] = this.participantTraineeDetails;
+      }
+
+      // console.log(this.publicTrainingForm);
+      this.step2DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this._constant.API_ENDPOINT.publicTrainingForm,this.step2DataBodyFormFile)
+      .subscribe(
+        res => {
+          if(res['status'] == true) {
+            this._toaster.success('Save Draft Successfully', '');
+            // console.log(res);
+          }else{
+            this._toaster.warning(res['msg'], '');
+          }
+        })
+    }else if(steps == 'step3') {
+      this.publicTrainingForm = {};
+      this.publicTrainingForm.step3 = {};
+      this.publicTrainingForm.email = this.userEmail;
+      this.publicTrainingForm.userType = this.userType;
+      this.publicTrainingForm.saved_step = '3';
+      this.step3Data.is_draft = true;
+
+      var applicationId = sessionStorage.getItem('applicationId');
+      // this.step2Data.application_id = applicationId;
+      this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+      this.step3Data.training_form_type = 'public_training';
+      this.publicTrainingForm.step3 = this.step3Data;
+
+      var training_duration_current = this.step3Data.training_duration;
+      this.noofParticipants = this.participantTraineeDetails.length;
+      this.tutionFees = 1000 * parseInt(this.noofParticipants) * parseInt(training_duration_current);
+      // console.log(this.noofParticipants);
+      // console.log(training_duration_current);
+      // console.log(this.tutionFees);
+      this.taxVat = 0.5 * this.tutionFees;
+      this.knowledgeFees = 10 * this.noofParticipants;
+      this.innovationFees = 10 * this.noofParticipants;
+      this.subTotal = this.tutionFees + this.taxVat + this.knowledgeFees + this.innovationFees;
+
+      // console.log(this.publicTrainingForm);
+      this.step3DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this._constant.API_ENDPOINT.publicTrainingForm,this.step3DataBodyFormFile)
+      .subscribe(
+        res => {
+          if(res['status'] == true) {
+            this._toaster.success('Save Draft Successfully', '');
+            // console.log(res);
+          }else{
+            this._toaster.warning(res['msg'], '');
+          }
+        })
+    }else if(steps == 'step4') {
+      this.publicTrainingForm = {};
+      this.publicTrainingForm.step4 = {};
+      this.publicTrainingForm.email = this.userEmail;
+      this.publicTrainingForm.userType = this.userType;
+      this.publicTrainingForm.saved_step = '4';
+      this.step4Data.is_draft = true;
+
+      var applicationId = sessionStorage.getItem('applicationId');
+      // this.step2Data.application_id = applicationId;
+      this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+      this.step4Data.training_form_type = 'public_training';
+      this.step4Data.fees_to_pay = this.subTotal;
+
+      this.publicTrainingForm.step4 = this.step4Data;
+
+      this.step4DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this._constant.API_ENDPOINT.publicTrainingForm,this.step4DataBodyFormFile)
+      .subscribe(
+        res => {
+          if(res['status'] == true) {
+            this._toaster.success('Save Draft Successfully', '');
+            // console.log(res);
+          }else{
+            this._toaster.warning(res['msg'], '');
+          }
+        })
+    }else if(steps == 'step5') {
+      this.publicTrainingForm = {};
+      this.publicTrainingForm.step5 = {};
+      this.publicTrainingForm.email = this.userEmail;
+      this.publicTrainingForm.userType = this.userType;
+      this.publicTrainingForm.saved_step = '5';
+      this.step5Data.is_draft = true;
+      this.step5Data.training_form_type = 'public_training';
+
+      this.publicTrainingForm.step5 = this.step5Data;
+
+      this.step5DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
+      this.Service.post(this.Service.apiServerUrl+"/"+this._constant.API_ENDPOINT.publicTrainingForm,this.step5DataBodyFormFile)
+      .subscribe(
+        res => {
+          if(res['status'] == true) {
+            this._toaster.success('Save Draft Successfully', '');
           }else{
             this._toaster.warning(res['msg'], '');
           }
