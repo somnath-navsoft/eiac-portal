@@ -134,7 +134,7 @@ export class WorkPermitFormComponent implements OnInit {
 
     this.headerSteps.push(
       {
-      title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
+      title:'application_information', desc:'1. Applicant Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
       },
       {
       title:'activities_scope', desc:'2. Activities & Scope', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
@@ -688,7 +688,7 @@ export class WorkPermitFormComponent implements OnInit {
           }
         });
     }else {
-      this.toastr.warning('Please Fill required field','');
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
   }
 
@@ -735,7 +735,7 @@ export class WorkPermitFormComponent implements OnInit {
           }
         });
     }else {
-      this.toastr.warning('Please Checked ANy Filled','');
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
     
   }
@@ -772,7 +772,7 @@ export class WorkPermitFormComponent implements OnInit {
           }
         });
     }else {
-      this.toastr.warning('Please Fill required field','');
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
     
   }
@@ -816,7 +816,7 @@ export class WorkPermitFormComponent implements OnInit {
     //   this.toastr.warning('Please select authorization box', '');
     // }
     else {
-      this.toastr.warning('Please Fill required field','');
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
     
   }
@@ -1050,7 +1050,7 @@ export class WorkPermitFormComponent implements OnInit {
           )
     }
     else {
-      this.toastr.warning('Please Fill required field','');
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
   }
 

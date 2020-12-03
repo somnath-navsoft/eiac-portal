@@ -178,7 +178,7 @@ export class NoObjectionFormComponent implements OnInit {
     //Step initializer
     this.headerSteps.push(
       {
-      title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
+      title:'application_information', desc:'1. Applicant Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
       },
       {
       title:'cab_information', desc:'2. CAB Information', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
