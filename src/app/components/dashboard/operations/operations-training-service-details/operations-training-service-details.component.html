@@ -85,7 +85,7 @@
                   <span *ngIf="serviceDetail?.training_form_type == 'inprimise'">In Premise</span>
                 </div>
               </div>
-              <!-- <div class="col border-left-dash">
+              <div class="col border-left-dash">
                 <div class="appln-data">
                   <h5>Establishment Name</h5>
                 </div>
@@ -96,18 +96,18 @@
               </div>
               <div class="col border-left-dash">
                 <div class="appln-data">
-                  <h5>Date of Establishment</h5>
+                  <h5>Training Duration</h5>
                 </div>
                 <div class="appln-details">
-                  <span *ngIf="serviceDetail?.date_of_establishment">{{serviceDetail?.date_of_establishment | date:'dd-MM-yyyy'}}</span>
+                  <span *ngIf="serviceDetail?.date_of_establishment">{{serviceDetail?.training_duration}}</span>
                 </div>
               </div>
               <div class="col border-left-dash">
                 <div class="appln-data">
-                  <h5>Location</h5>
+                  <h5>Course Title</h5>
                 </div>
                 <div class="appln-details">
-                  <span *ngIf="serviceDetail?.physical_location_address">{{serviceDetail?.physical_location_address}}</span>
+                  <span *ngIf="serviceDetail?.physical_location_address">{{serviceDetail?.course_title}}</span>
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -118,7 +118,7 @@
                   <span *ngIf="serviceDetail?.trade_license_number != null">{{serviceDetail?.trade_license_number}}</span>
                   <span *ngIf="serviceDetail?.trade_license_number == null">N/A</span>
                 </div>
-              </div> -->
+              </div>
             </div>
         </div>
       </div>
@@ -183,7 +183,7 @@
         </div>
       </div>
       
-      <div class="row m-0" *ngIf="ptParticipation != '' && ptParticipation != null">
+      <div class="row m-0" *ngIf="participantTraineeDetails != '' && participantTraineeDetails != null">
         <div class="col-md-12">
           <div class="row status-det-wrapper">
             <div class="col-md-12 p-0">
