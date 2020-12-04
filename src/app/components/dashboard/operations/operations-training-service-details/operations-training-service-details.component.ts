@@ -19,13 +19,22 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
   ownershipOfOrg:any;
   ownOrgMembInfo:any;
   paymentDetails:any;
+  participantTraineeDetails:any[] = [];
+  noofParticipants:any;
+  tutionFees:any;
+  taxVat:any;
+  knowledgeFees:any;
+  innovationFees:any;
+  subTotal:any;
+  training_duration:any;
+  course_title:any;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService) { }
 
   ngOnInit() {
     this.loader = true;
-    this.routeId = sessionStorage.getItem('registrationId');
+    this.routeId = sessionStorage.getItem('trainingId');
     this.loadData();
   }
 
@@ -36,9 +45,26 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
         result => {
           this.loader = true;
           this.serviceDetail = result['data'];
-          this.ownershipOfOrg = result['data']['ownershipOfOrg'];
-          this.ownOrgMembInfo = result['data']['bodMember'];
+          // this.ownershipOfOrg = result['data']['ownershipOfOrg'];
+          // this.ownOrgMembInfo = result['data']['bodMember'];
           this.paymentDetails = result['data'].paymentDetails;
+          this.participantTraineeDetails = result['data']['eventParticipant'];
+
+          this.training_duration = result['data'].training_duration;
+          this.course_title = result['data'].course_title;
+          console.log(this.training_duration);
+          console.log(this.course_title);
+
+          var training_duration_current = this.serviceDetail.training_duration;
+          this.noofParticipants = this.participantTraineeDetails.length;
+          this.tutionFees = 1000 * parseInt(this.noofParticipants) * parseInt(training_duration_current);
+          // console.log(this.noofParticipants);
+          // console.log(training_duration_current);
+          // console.log(this.tutionFees);
+          this.taxVat = 0.5 * this.tutionFees;
+          this.knowledgeFees = 10 * this.noofParticipants;
+          this.innovationFees = 10 * this.noofParticipants;
+          this.subTotal = this.tutionFees + this.taxVat + this.knowledgeFees + this.innovationFees;
         })
     )
   }

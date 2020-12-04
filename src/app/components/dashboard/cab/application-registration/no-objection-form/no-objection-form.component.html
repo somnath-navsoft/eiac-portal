@@ -375,10 +375,10 @@
 
                                     <!-- Add Options -->
                                     <div class="row mt-4"> 
-                                        <div class="col-md-6 col-sm-6">
+                                        <div class="col-md-12 col-sm-12">
                                             <div class="activity_wrapper confirm cab_info">                                           
                                                 <div class="activity_head">
-                                                    a) Laboratory:<span class="required_input">*</span>
+                                                    a) Laboratory:
                                                 </div>
                                                 <div class="check_data_activities">
                                                     <!-- <mat-checkbox-group name="cab_type_laboratory"> -->
@@ -414,10 +414,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 col-sm-6">
+                                        <div class="col-md-12 col-sm-12">
                                             <div class="activity_wrapper confirm cab_info">
                                                 <div class="activity_head">
-                                                    b) Inspection Body:<span class="required_input">*</span>
+                                                    b) Inspection Body:
                                                 </div>
                                                 <div class="check_data_activities">
                                                     <!-- <mat-checkbox-group name="cab_type_inspection"> -->
@@ -455,11 +455,11 @@
                                         </div>
                                     </div>
 
-                                    <div class="row mt-4"> 
-                                        <div class="col-md-6 col-sm-6 ">
+                                    <div class="row"> 
+                                        <div class="col-md-12 col-sm-12">
                                             <div class="activity_wrapper confirm cab_info">
                                                 <div class="activity_head">
-                                                    c) Certification Body:<span class="required_input">*</span>
+                                                    c) Certification Body:
                                                 </div>
                                                 <div class="check_data_activities">
 
@@ -506,10 +506,10 @@
                                                 </div> -->
                                             </div>
                                         </div>
-                                        <div class="col-md-6 col-sm-6"> 
+                                        <div class="col-md-12 col-sm-12"> 
                                             <div class="activity_wrapper confirm cab_info">
                                                 <div class="activity_head">
-                                                    d) Halal CAB:<span class="required_input">*</span>
+                                                    d) Halal CAB:
                                                 </div>
                                                 <div class="check_data_activities">
 
@@ -581,7 +581,7 @@
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-12 p-0">
-                                            <div class="form-subhdr form_subhdr">
+                                            <div class="form-subhdr">
                                                 <h5>3. LIST OF SERVICES SCOPE</h5>
                                             </div>
                                         </div>
@@ -590,7 +590,7 @@
                                     <div class="row mt-3">
                                         <div class="col-12 p-0">
                                             <div class="form-subheader-data">
-                                                <h5>FOR TESTING LAB : (ISO / IEC 17025) <span class="required_input">*</span></h5>
+                                                <h5>FOR TESTING LAB : (ISO / IEC 17025) </h5>
                                             </div>
                                         </div>
                                     </div>
@@ -607,7 +607,7 @@
                                                     </ng-container>
                                                     <li>
                                                 <!-- other check -->
-                                                <mat-checkbox  name="testingLabCheckItemOthers" (change)="checkOthersItemClick($event, 'testing_lab')" 
+                                                <mat-checkbox class="col-md-3" name="testingLabCheckItemOthers" (change)="checkOthersItemClick($event, 'testing_lab')" 
                                                 [(ngModel)]="testingLabCheckItemOthers">Others</mat-checkbox>
                                                     </li>
                                                     <li>
@@ -685,7 +685,7 @@
                                     <div class="row mt-3">
                                         <div class="col-12 p-0">
                                             <div class="form-subheader-data">
-                                                <h5>FOR CALIBRATION LAB : (ISO / IEC 17025) <span class="required_input">*</span></h5>
+                                                <h5>FOR CALIBRATION LAB : (ISO / IEC 17025) </h5>
                                             </div>
                                         </div>
                                     </div>
@@ -702,7 +702,7 @@
                                                     </ng-container>
                                                     <li>
                                                 <!-- other check -->
-                                                <mat-checkbox  name="calibrationLabCheckItemOthers" (change)="checkOthersItemClick($event, 'calibration_lab')" 
+                                                <mat-checkbox  class="col-md-3" name="calibrationLabCheckItemOthers" (change)="checkOthersItemClick($event, 'calibration_lab')" 
                                                 [(ngModel)]="calibrationLabCheckItemOthers">Others</mat-checkbox>
                                                     </li>
                                                     <li>
@@ -765,7 +765,7 @@
                                     <div class="row mt-3">
                                         <div class="col-12 p-0">
                                             <div class="form-subheader-data">
-                                                <h5>FOR CERTIFICATION BODIES : ISO / IEC 17021 (CERTIFICATION OF MANAGEMENT SYSTEMS) :<span class="required_input">*</span></h5>
+                                                <h5>FOR CERTIFICATION BODIES : ISO / IEC 17021 (CERTIFICATION OF MANAGEMENT SYSTEMS) :</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -782,7 +782,7 @@
                                                     </ng-container>
                                                     <li>
                                                 <!-- other check -->
-                                                <mat-checkbox  name="certificationBodiesCheckItemOthersFirst" 
+                                                <mat-checkbox  class="col-md-3" name="certificationBodiesCheckItemOthersFirst" 
                                                 (change)="checkOthersItemClick($event, 'certification_body_first')" 
                                                 [(ngModel)]="certificationBodiesCheckItemOthersFirst">Others</mat-checkbox>
                                                     </li>
@@ -832,7 +832,7 @@
                                     <div class="row mt-3">
                                         <div class="col-12 p-0">
                                             <div class="form-subheader-data">
-                                                <h5>FOR INSPECTION BODIES: (ISO/IEC 17020) :<span class="required_input">*</span></h5>
+                                                <h5>FOR INSPECTION BODIES: (ISO/IEC 17020) : </h5>
                                             </div>
                                         </div>
                                     </div>
@@ -849,7 +849,7 @@
                                                     </ng-container>
                                                     <li>
                                                 <!-- other check -->
-                                                <mat-checkbox  name="certificationBodiesCheckItemOthersSecond" 
+                                                <mat-checkbox  class="col-md-3" name="certificationBodiesCheckItemOthersSecond" 
                                                 (change)="checkOthersItemClick($event, 'certification_body_second')" 
                                                 [(ngModel)]="certificationBodiesCheckItemOthersSecond">Others</mat-checkbox>
                                                     </li>
@@ -931,7 +931,7 @@
                                     <div class="row mt-3">
                                         <div class="col-12 p-0">
                                             <div class="form-subheader-data">
-                                                <h5>FOR HALAL CAB :<span class="required_input">*</span></h5>
+                                                <h5>FOR HALAL CAB :</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -948,7 +948,7 @@
                                                     </ng-container>
                                                     <li>
                                                 <!-- other check -->
-                                                <mat-checkbox  name="halalCabCheckItemOthers" (change)="checkOthersItemClick($event, 'halal_cab')" 
+                                                <mat-checkbox  class="col-md-3" name="halalCabCheckItemOthers" (change)="checkOthersItemClick($event, 'halal_cab')" 
                                                 [(ngModel)]="halalCabCheckItemOthers">Others</mat-checkbox>
                                                     </li>
                                                     <li>
@@ -1018,14 +1018,14 @@
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                                    matInput placeholder="" name="name_od_equip_{{i}}" [(ngModel)]="listOfIntEquip[i].name_od_equip" required> 
+                                                                    matInput placeholder="" name="name_od_equip_{{i}}" [(ngModel)]="listOfIntEquip[i].name_od_equip" > 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                                    matInput placeholder="" name="usage_of_equip_{{i}}" [(ngModel)]="listOfIntEquip[i].usage_of_equip" required> 
+                                                                    matInput placeholder="" name="usage_of_equip_{{i}}" [(ngModel)]="listOfIntEquip[i].usage_of_equip" > 
                                                                 </mat-form-field>                                                                
                                                             </td>                                                            
                                                             <td class="content-icn">
@@ -1093,21 +1093,21 @@
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                                    matInput placeholder="" name="job_title_{{i}}" [(ngModel)]="listOfStaff[i].job_title" required> 
+                                                                    matInput placeholder="" name="job_title_{{i}}" [(ngModel)]="listOfStaff[i].job_title" > 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                                    matInput placeholder="" name="qualification_{{i}}" [(ngModel)]="listOfStaff[i].qualification" required> 
+                                                                    matInput placeholder="" name="qualification_{{i}}" [(ngModel)]="listOfStaff[i].qualification" > 
                                                                 </mat-form-field>                                                                
                                                             </td>    
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                                    matInput placeholder="" name="experience_{{i}}" [(ngModel)]="listOfStaff[i].experience" required> 
+                                                                    matInput placeholder="" name="experience_{{i}}" [(ngModel)]="listOfStaff[i].experience" > 
                                                                 </mat-form-field>                                                                
                                                             </td>                                                        
                                                             <td class="content-icn">
@@ -1145,22 +1145,21 @@
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
                                 <div class="col-md-12">
-                                    <div class="col-12">
                                     <div class="row">
                                         <div class="col-md-12 p-0">
-                                            <div class="form-subhdr form_subhdr">
+                                            <div class="form-subhdr">
                                                 <h5>6. AUTHORIZE OF THE APPLICATION</h5>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="auth">
+                                        <div class="auth_details">
                                             <ul>
                                                 <li>
-                                                    <span>
+                                                    <span class="auth_content">
                                                         I have read and been informed about the content &clauses of Law No. 2 for 2010.I have received a copy of the Law and agree to abide by the content & clauses as a Conformity Assessment Body working in the emirate of Dubai.
-I, the undersigned , confirm that I will not engage in any activity of a Conformity Assessment Body prior to obtaining a permit to act form from Emirates International Accreditation Centre, within six months from the date of issuance the Professional Trade License
-Please read Law No. 2 for 2010  carefully to ensure that you understand the policy before signing this document.
+                                                        I, the undersigned , confirm that I will not engage in any activity of a Conformity Assessment Body prior to obtaining a permit to act form from Emirates International Accreditation Centre, within six months from the date of issuance the Professional Trade License
+                                                        Please read Law No. 2 for 2010  carefully to ensure that you understand the policy before signing this document.
                                                     </span>
                                                     <!-- {{step6Data.authorization_confirm1}} -->
                                                     <!-- (change)="authorizeCheckCount($event)" -->
@@ -1176,8 +1175,12 @@ Please read Law No. 2 for 2010  carefully to ensure that you understand the poli
                                         </div>
                                     </div>
                                 </div>
-
-
+                            </div>
+                        </div>
+                        <div class="row form-bdy m-0 mt-4">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="row">
@@ -1388,7 +1391,7 @@ Please read Law No. 2 for 2010  carefully to ensure that you understand the poli
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Payment Made By</mat-label>
                                                 <input type="text" [ngModelOptions]="{standalone: true}" required="true"
-                                                matInput placeholder="Payment Made By" 
+                                                matInput placeholder="Payment Made By"  (keypress)="Service.inputFilter($event, Service.nameOnly)"
                                                 [(ngModel)]="voucherSentData.payment_made_by">
                                             </mat-form-field>
                                         </div>
@@ -1398,7 +1401,7 @@ Please read Law No. 2 for 2010  carefully to ensure that you understand the poli
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mobile Number</mat-label>
                                                 <input type="text" [ngModelOptions]="{standalone: true}" required="true"
-                                                matInput placeholder="Mobile Number" 
+                                                matInput placeholder="Mobile Number" (keypress)="Service.IsNumeric($event)"
                                                 [(ngModel)]="voucherSentData.mobile_no" required>
                                             </mat-form-field>
                                         </div>
@@ -1409,7 +1412,8 @@ Please read Law No. 2 for 2010  carefully to ensure that you understand the poli
                                                 <span class="icon-attach attach-data"></span>
                                             </span>
                                             <p class="error" *ngIf="paymentReceiptValidation == false || paymentReceiptValidation == undefined">Please Upload a valid file (ex: pdf)</p>
-                                            <a class="image_file_link" *ngIf="paymentFile != false && paymentFile != true" target="_blank" [href]="paymentFile">Link</a>
+                                            <!-- <a class="image_file_link" *ngIf="paymentFile != false && paymentFile != true" target="_blank" [href]="paymentFile">Link</a> -->
+                                            <a class="image_file_link" *ngIf="paymentFile != ''" target="_blank" [href]="paymentFile">Link</a>
                                         </div>
 
                                     </div>

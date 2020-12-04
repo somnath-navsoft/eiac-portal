@@ -684,6 +684,7 @@ export class NoObjectionFormComponent implements OnInit {
         .subscribe(
           res => {
             console.log(res,'urlVal')
+            //return;
             this.loader = true;
             
             if(res['data'].id && res['data'].id != '') {
@@ -1211,7 +1212,7 @@ export class NoObjectionFormComponent implements OnInit {
         });
 
     }else{
-      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+      this.toastr.warning('Please Fill required field','',{timeOut:5000});
     }
 
   }
@@ -1280,7 +1281,7 @@ export class NoObjectionFormComponent implements OnInit {
 
     //return; 
 
-    if((checkLaboratory == true && checkInspection == true && checkCertification == true && checkHalal == true) && type == undefined){
+    if((checkLaboratory == true || checkInspection == true || checkCertification == true || checkHalal == true) && type == undefined){
       this.noObjectionBodyForm = {};      
       this.noObjectionBodyForm.saved_step = 2;    
       this.noObjectionBodyForm.step2 = {};  
@@ -1327,7 +1328,7 @@ export class NoObjectionFormComponent implements OnInit {
         });
 
     }else{
-      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:1500});
+      this.toastr.warning('Please Fill required field','',{timeOut:1500});
     }
     
   }
@@ -1485,8 +1486,8 @@ export class NoObjectionFormComponent implements OnInit {
       this.step3Data.halal_lab = tempObj;
 
 
-    if(theForm.form.valid && type == undefined && testingLabCheckCount > 0 && 
-        calibrationLabCheckCount > 0 && certificationCheckCountFirst > 0 && certificationCheckCountSecond > 0 && halalLabCheckCount > 0){
+    if(theForm.form.valid && type == undefined && (testingLabCheckCount > 0 || 
+        calibrationLabCheckCount > 0 || certificationCheckCountFirst > 0 || certificationCheckCountSecond > 0 || halalLabCheckCount > 0)){
       this.noObjectionBodyForm = {};      
       this.noObjectionBodyForm.saved_step = 3;
       this.noObjectionBodyForm.step3 = this.step3Data;
@@ -1535,7 +1536,7 @@ export class NoObjectionFormComponent implements OnInit {
         });
 
     }else{
-      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+      this.toastr.warning('Please Fill required field','',{timeOut:5000});
     }
   }
 
@@ -1947,7 +1948,7 @@ export class NoObjectionFormComponent implements OnInit {
                 }
           })    
         }else{
-          this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+          this.toastr.warning('Please Fill required field','',{timeOut:5000});
         }
   }
 

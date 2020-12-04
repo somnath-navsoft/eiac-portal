@@ -70,7 +70,7 @@ export class TrainerService {
   }
 
   trainingDetailsServ(id) {
-    let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.registrationDetailsServ+id; 
+    let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.trainingDetailsServ+id; 
     //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
     //console.log("GET Event URL: ", url, " -- ", this._service.getReqHeaders());
     return this.http.get(url, this._service.getReqHeaders());
@@ -81,13 +81,19 @@ export class TrainerService {
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
 
+  paymentVoucherSaveTrainers(postData: any){
+    const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.trainingPaymentDetails;
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
+  }
+
   paymentVoucherNOCSave(postData: any){
     const url = `${this.BASE_REQ_URL}` + "webservice/reg-payment-details-save/";
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
 
   paymentVoucherSaveWap(postData: any){
-    const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.registrationPaymentDetails;
+    //const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.registrationPaymentDetails;
+    const url = `${this.BASE_REQ_URL}` + "webservice/reg-payment-details-save/";
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
 

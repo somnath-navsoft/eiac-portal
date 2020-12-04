@@ -81,8 +81,8 @@
                   <h5>Application Type</h5>
                 </div>
                 <div class="appln-details">
-                  <span *ngIf="serviceDetail?.form_meta == 'work_activity'">Work Activity Permit</span>
-                  <span *ngIf="serviceDetail?.form_meta == 'no_objection'">No Objection Certificate</span>
+                  <span *ngIf="serviceDetail?.training_form_type == 'public_training'">Public Training</span>
+                  <span *ngIf="serviceDetail?.training_form_type == 'inprimise'">In Premise</span>
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -96,18 +96,18 @@
               </div>
               <div class="col border-left-dash">
                 <div class="appln-data">
-                  <h5>Date of Establishment</h5>
+                  <h5>Training Duration</h5>
                 </div>
                 <div class="appln-details">
-                  <span *ngIf="serviceDetail?.date_of_establishment">{{serviceDetail?.date_of_establishment | date:'dd-MM-yyyy'}}</span>
+                  <span>{{training_duration}} days</span>
                 </div>
               </div>
               <div class="col border-left-dash">
                 <div class="appln-data">
-                  <h5>Location</h5>
+                  <h5>Course Title</h5>
                 </div>
                 <div class="appln-details">
-                  <span *ngIf="serviceDetail?.physical_location_address">{{serviceDetail?.physical_location_address}}</span>
+                  <span>{{course_title}}</span>
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -136,12 +136,12 @@
               <div class="col-md-12">
                 <div class="table-appln">
                   <table>
-                    <tr>
+                    <!-- <tr>
                       <td>Date of Issue</td>
                       <td *ngIf="serviceDetail?.date_of_issue">{{serviceDetail?.date_of_issue | date: 'dd-MM-yyyy'}}</td>
                       <td>Date of expiry</td>
                       <td *ngIf="serviceDetail?.date_of_expiry">{{serviceDetail?.date_of_expiry | date: 'dd-MM-yyyy'}}</td>
-                    </tr>
+                    </tr> -->
                     <!-- <tr>
                       <td>Type of Accreditation</td>
                       <td>{{(serviceDetail?.accredation_criteria == 1) ? 'Initial' : 'Extension' }}</td>
@@ -161,8 +161,8 @@
                     <tr>
                       <td>Mailing Address</td>
                       <td *ngIf="serviceDetail?.mailing_address">{{serviceDetail?.mailing_address}}</td>
-                      <td>PO Box No./ZIP Code</td>
-                      <td *ngIf="serviceDetail?.po_box">{{serviceDetail?.po_box}}</td>
+                      <!-- <td>PO Box No./ZIP Code</td>
+                      <td *ngIf="serviceDetail?.po_box">{{serviceDetail?.po_box}}</td> -->
                     </tr>
                     <tr>
                       <td>Official E-mail Address</td>
@@ -172,7 +172,7 @@
                     </tr>
                     <tr>
                       <td>Telephone Number</td>
-                      <td *ngIf="serviceDetail?.telephone">{{_service.removePlus(serviceDetail?.telephone)}}</td>
+                      <td *ngIf="serviceDetail?.telephone_number">{{_service.removePlus(serviceDetail?.telephone_number)}}</td>
                       <td>Fax Number</td>
                       <td *ngIf="serviceDetail?.fax_no">{{serviceDetail?.fax_no}}</td>
                     </tr>
@@ -182,99 +182,151 @@
             </div>
         </div>
       </div>
-
-      <div class="row m-0">
-        <div class="col-md-6" *ngFor="let row of ownershipOfOrg; let i = index;">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="appln-subhdr">
-                <h5>#{{i+1}}  OWNERSHIP OF THE ORGANIZATION</h5>
-              </div>
-              <hr>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12 mb-4">
-              <div class="status-main-details">
-                <div class="status-data">
-                  <p>{{row.name}}, </p>
-                  <span>{{row.designation}}</span>
-                </div>
-                <div class="status-subdata">
-                  <span class="status_details">
-                    <span class="icon-mobile"></span>
-                    {{_service.removePlus(row.mobile_no)}}
-                  </span>
-                  <span class="status_details">
-                    <span class="icon-call-data icon-call-2"></span>
-                    {{_service.removePlus(row.telephone_no)}}
-                  </span>
-                  <span class="status_details">
-                    <span class="icon-email"></span>
-                    {{row.email}}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- <div class="col-md-6">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="appln-subhdr">
-                <h5>WORKING TIME</h5>
-              </div>
-              <hr>
-            </div>
-          </div>
-
-          <div class="row status-det status_sub_table">
-            <div class="col-md-12">
-              <div class="table-appln">
-                <table>
-                    <tr>
-                        <td></td>
-                        <td colspan="2">{{serviceDetail?.is_main_activity_note}}</td>
-                    </tr>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div> -->
-        
-      </div>
       
-      <div class="row m-0">
+      <div class="row m-0" *ngIf="participantTraineeDetails != '' && participantTraineeDetails != null">
         <div class="col-md-12">
           <div class="row status-det-wrapper">
             <div class="col-md-12 p-0">
               <div class="row">
                 <div class="col-md-12">
                   <div class="appln-subhdr">
-                    <h5>BOARD MEMBERS OF THE COMPANY</h5>
+                    <h5>PARTICIPANT/TRAINEES DETAILS</h5>
                   </div>
                   <hr>
                 </div>
               </div>
-              <div class="status_main">
-                <div class="row m-0">
-                  <div class="col-md-6 p-0" *ngFor="let row2 of ownOrgMembInfo; let i1 = index;">
-                    <div class="members_details">
-                      <h4>{{row2.name}}</h4>
-                      <p class="address_details">{{row2.bod_company}}</p>
-                      <span class="personal_details">{{row2.contact_person}}</span>
-                      <span *ngIf="row2.designation">, {{row2.designation}}</span>
-                      <span *ngIf="row2.mobile_no">, Mobile : {{row2.mobile_no}}</span>
+              
+              <div class="row" >
+                <div class="col-md-12">
+                    <div class="table-content-health">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Participant/Trainee Name</th>
+                                    <th>E-mail Address</th>
+                                    <th>Phone Number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of participantTraineeDetails; let i = index;">
+                                    <td>
+                                        <div class="participant_trainee">
+                                            <mat-form-field class="cab-data mr-2">
+                                                <mat-label>First Name</mat-label>
+                                                <input matInput placeholder="" name="first_name_{{i}}" [(ngModel)]="participantTraineeDetails[i].first_name" readonly> 
+                                            </mat-form-field>
+
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Last Name</mat-label>
+                                                <input matInput placeholder="" name="last_name_{{i}}" [(ngModel)]="participantTraineeDetails[i].last_name" readonly> 
+                                            </mat-form-field>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Type Here</mat-label>
+                                            <input matInput placeholder="" name="email_address_{{i}}" [(ngModel)]="participantTraineeDetails[i].email_address" readonly> 
+                                        </mat-form-field>
+                                        
+                                    </td>
+
+                                    <td>
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Type Here</mat-label>
+                                            <input matInput name="phone_number_{{i}}" [(ngModel)]="participantTraineeDetails[i].phone_number" readonly> 
+                                        </mat-form-field>
+                                    </td>
+                                    
+                                </tr>
+                            
+                            </tbody>
+                        </table>
                     </div>
-                  </div>
                 </div>
-                
-              </div>
+            </div>
+
             </div>
           </div>
         </div>
       </div>
+
+      <div class="row form-bdy m-0">
+        <div class="wrapper">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12 p-0">
+                        <div class="form-subhdr">
+                            <h5>FEES DETAILS</h5>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-training">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Program Name</th>
+                                        <th>Fee/Day Per Trainee</th>
+                                        <th>No. of Participants</th>
+                                        <th>Amount (AED)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="fee">
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Tuition Fees</td>
+                                        <td>{{fee_day_pertime1}}</td>
+                                        <td>
+                                            <input type="text" class="fee-inp" name="no_of_participants1" [disabled]="!editable" [(ngModel)]="noofParticipants">
+                                        </td>
+                                        <td>{{tutionFees}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>TAX (VAT)</td>
+                                        <td>{{fee_day_pertime2}}</td>
+                                        <td>
+                                            <input type="text" class="fee-inp" name="no_of_participants2" [disabled]="!editable" [(ngModel)]="noofParticipants">
+                                        </td>
+                                        <td>{{taxVat}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Knowledge Fees - Per Participant درهم المعرفة</td>
+                                        <td>{{fee_day_pertime3}}</td>
+                                        <td>
+                                            <input type="text" class="fee-inp" name="no_of_participants3" [disabled]="!editable" [(ngModel)]="noofParticipants">
+                                        </td>
+                                        <td>{{knowledgeFees}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>Innovetion Fees - Per Participant درهم الابتكار</td>
+                                        <td>{{fee_day_pertime4}}</td>
+                                        <td>
+                                            <input type="text" class="fee-inp" name="no_of_participants4" [disabled]="!editable" [(ngModel)]="noofParticipants">
+                                        </td>
+                                        <td>{{innovationFees}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="3"><b>Total</b></td>
+                                        <td><b>{{subTotal}}</b></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
       
       <div class="row m-0 appn-cnt-data" *ngIf="paymentDetails && paymentDetails!= null">
         <div class="col-md-12">

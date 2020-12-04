@@ -24,6 +24,7 @@ export class Constants{
 		registrationDetailsServ: 'registration-details-show/',
 		trainingDetailsServ: 'training-details-show/',
 		registrationPaymentDetails: 'webservice/reg-payment-details-save/',
+		trainingPaymentDetails: 'webservice/training-payment-details-save/',
 		trainerAttendanceList:'trainer/attendance-list/',
 		trainerAgendaList:'trainer/agenda-list/',
 		trainerCourseByID: 'trainer/custom-course-dtls/',

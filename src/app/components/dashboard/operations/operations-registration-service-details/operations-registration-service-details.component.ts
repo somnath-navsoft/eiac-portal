@@ -27,6 +27,14 @@ export class OperationsRegistrationServiceDetailsComponent implements OnInit {
   nocTableScopeData: any;
   nocTableListEquip: any;
   nocTableListStaff: any;
+  check_list_path:any;
+  work_instruction_path:any;
+  quality_manual_path:any;
+  licence_document_path:any;
+  licence_document:any;
+  quality_manual:any;
+  check_list:any;
+  work_instruction:any;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService) { }
@@ -119,9 +127,8 @@ export class OperationsRegistrationServiceDetailsComponent implements OnInit {
             //Services Scope
             if(getData.data.nocTableData != undefined && typeof getData.data.nocTableData == 'object'){
               this.nocTableScopeData = getData.data.nocTableData;
-
-              this.nocTableListStaff = '';
-              this.nocTableListEquip = '';
+              console.log(">>>Table scope: ", this.nocTableScopeData);
+              
 
             }
 
@@ -136,11 +143,47 @@ export class OperationsRegistrationServiceDetailsComponent implements OnInit {
 
           var newwapdata = result['data'].wapData;
           // this.activity_section = wapdata.activity_section != null ? wapdata.activity_section : '';
+          if(newwapdata != null && newwapdata != undefined){
+            if(newwapdata.activity_section != null) {
+              this.activitySection = JSON.parse(newwapdata.activity_section);
+            }
+            this.scopes_to_be_authorized = newwapdata.scopes_to_be_authorized != null ? newwapdata.scopes_to_be_authorized : '';
+          }
 
-          this.scopes_to_be_authorized = newwapdata.scopes_to_be_authorized != null ? newwapdata.scopes_to_be_authorized : '';
+          var recognized_logo1 = this.serviceDetail.wapData.licence_document_file;
+          if(recognized_logo1 != ''){
+            let getFile =recognized_logo1.toString().split('/');
+            if(getFile.length){
+              this.licence_document = getFile[4].toString().split('.')[0];
+              this.licence_document_path = this._constant.mediaPath +'/media/'+ recognized_logo1.toString();
+            }
+          }
 
-          if(newwapdata.activity_section != null) {
-            this.activitySection = JSON.parse(newwapdata.activity_section);
+          var quality_manual1 = this.serviceDetail.wapData.quality_manual_file;
+          if(quality_manual1 != ''){
+            let getFile = quality_manual1.toString().split('/');
+            if(getFile.length){
+              this.quality_manual = getFile[4].toString().split('.')[0];
+              this.quality_manual_path = this._constant.mediaPath +'/media/'+ quality_manual1.toString();
+            }
+          }
+
+          var work_instruction1 = this.serviceDetail.wapData.work_instruction_file;
+          if(work_instruction1 != ''){
+            let getFile = work_instruction1.toString().split('/');
+            if(getFile.length){
+              this.work_instruction = getFile[4].toString().split('.')[0];
+              this.work_instruction_path = this._constant.mediaPath +'/media/'+ work_instruction1.toString();
+            }
+          }
+
+          var check_list1 = this.serviceDetail.wapData.check_list_file;
+          if(check_list1 != ''){
+            let getFile = check_list1.toString().split('/');
+            if(getFile.length){
+              this.check_list = getFile[4].toString().split('.')[0];
+              this.check_list_path = this._constant.mediaPath +'/media/'+ check_list1.toString();
+            }
           }
         })
     )

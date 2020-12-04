@@ -98,6 +98,7 @@ export class WorkPermitFormComponent implements OnInit {
   voucherFile:any = new FormData();
   pathPDF: any;
   closeResult: string;
+  paymentStepComp: boolean = false;
   // modalOptions:NgbModalOptions;
   accredAgreemFile: any;
   checklistDocFile: any;
@@ -357,7 +358,7 @@ export class WorkPermitFormComponent implements OnInit {
               saveStep = parseInt(res['data'].saved_step) - 1;
             }else{
               if(parseInt(res['data'].saved_step) == 6){
-                
+                this.paymentStepComp = true;
                 saveStep = parseInt(res['data'].saved_step) - 1;
               }else{
                 
@@ -476,7 +477,9 @@ export class WorkPermitFormComponent implements OnInit {
                 this.voucherSentData.mobile_no        = (res['data'].paymentDetails.mobile_no != 'null') ? res['data'].paymentDetails.mobile_no : '';
 
                 this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
-                this.paymentReceiptValidation = true;
+                if(this.paymentFile != ''){
+                  this.paymentReceiptValidation = true;
+                }                
             }
           })
       }
@@ -553,6 +556,8 @@ export class WorkPermitFormComponent implements OnInit {
     // }
  }
 
+
+
  validateFile1(fileEvent: any, type?: any) {
    var file_name = fileEvent.target.files[0].name;
    var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
@@ -561,7 +566,7 @@ export class WorkPermitFormComponent implements OnInit {
    if(ex_check){
      this.paymentReceiptValidation = true;
      //if(type == undefined){
-       this.voucherFile.append('voucher_invoice',fileEvent.target.files[0]);
+       this.voucherFile.append('payment_receipt',fileEvent.target.files[0]);
      //}
    }else{
      this.paymentReceiptValidation = false;
@@ -695,7 +700,7 @@ export class WorkPermitFormComponent implements OnInit {
     for(let key in this.activitySection) {
       ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
       if(this.activitySection[key]) {  
-        checkCount++;
+        checkCount++; 
       }
     }
     // console.log(checkCount);
@@ -946,7 +951,107 @@ export class WorkPermitFormComponent implements OnInit {
   closeChecklistDialog(){
     this.modalService.dismissAll();
   }
-  onSubmitPaymentInformation(ngForm6: any, type?: boolean){
+
+  onSubmitPaymentInformation(theForm: any, type?: any){
+    //this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+
+    let is_valid: boolean = false;
+
+    let dtFormat: string = '';
+    // if(this.voucherSentData['payment_date'] != undefined && 
+    //   this.voucherSentData['payment_date']._i != undefined){
+    //   var dtData = this.voucherSentData['payment_date']._i;
+    //   var year = dtData.year;
+    //   var month = dtData.month;
+    //   var date = dtData.date;
+    //   dtFormat = year + "-" + month + "-" + date;
+    // }else{
+    if(this.voucherSentData['payment_date'] != undefined){
+      var nFdate = new Date(this.voucherSentData['payment_date']);
+      var nMonth = nFdate.getMonth() + 1;
+      var nDate = nFdate.getDate();
+      var nYear = nFdate.getFullYear();
+      dtFormat = nYear + "-" + nMonth + "-" + nDate;
+    }
+
+    console.log(">>> Date: ", dtFormat, " -- ", this.voucherSentData);
+
+      this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
+      this.voucherFile.append('amount',this.voucherSentData['amount']);
+      this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
+      this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
+      this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
+      this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
+      this.voucherFile.append('voucher_date', dtFormat);
+      this.voucherFile.append('accreditation',this.formApplicationId);
+      this.voucherFile.append('application_id',this.formApplicationId);
+      this.voucherFile.append('saved_step', 8);
+      if(!type){
+        this.voucherFile.append('is_draft', false);
+      }else{
+        this.voucherFile.append('is_draft', true);
+      }
+
+      console.log(">>> Data: ", this.voucherSentData);
+      if(this.voucherSentData['transaction_no'] != '' && this.voucherSentData['payment_method'] != '' && this.voucherSentData['payment_made_by'] &&
+        this.voucherSentData['mobile_no'] != ''){
+          is_valid = true;
+        }
+
+        if(is_valid == true && type == undefined && this.paymentReceiptValidation != false) {
+          //this.noObjectionBodyForm.saved_step = 8;      
+          //this.noObjectionBodyForm.step8 = this.step6Data;
+          //this.noObjectionBodyForm.step8.application_id = this.formApplicationId;
+          //this.noObjectionBodyForm.step8.is_draft = false;
+          console.log(">> Submit Form: "," -- ", this.voucherSentData);
+
+          this._trainerService.paymentVoucherNOCSave((this.voucherFile))
+          .subscribe(
+             result => {
+               let data: any = result;
+                ////////console.log("submit voucher: ", data);
+                if(data.status){
+                  //this.openView('appComp');
+                  setTimeout(()=>{
+                    let elem = document.getElementById('openAppDialog');
+                    //////console.log("App dialog hash....", elem);
+                    if(elem){
+                      elem.click();
+                    }
+                  }, 100)
+                  setTimeout(() => {                    
+                    // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+                    this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+                  },3500)
+                  
+                }else{
+                  this.toastr.warning(data.msg,'');
+                }
+          })   
+    
+        }else if(type != undefined && type == true){
+          //this.noObjectionBodyForm.saved_step = 6;   
+          //this.noObjectionBodyForm.step6 = this.step6Data;
+         // this.noObjectionBodyForm.step8.is_draft = true;
+          console.log(">> Submit Save draft: ", " -- ", this.voucherSentData);
+
+          this._trainerService.paymentVoucherNOCSave((this.voucherFile))
+          .subscribe(
+             result => {
+               let data: any = result;
+                console.log("submit voucher draft: ", data);
+                if(data.status){
+                  this.toastr.success("Save Draft Successfully",'');                  
+                }else{
+                  this.toastr.warning(data.msg,'');
+                }
+          })    
+        }else{
+          this.toastr.warning('Please Fill required field','',{timeOut:5000});
+        }
+  }
+
+  onSubmitPaymentInformation123(ngForm6: any, type?: boolean){
       ////console.log("payment submitting.....");
       this.workPermitForm = {};
       this.workPermitForm.step6 = {};
@@ -986,7 +1091,7 @@ export class WorkPermitFormComponent implements OnInit {
       if(ngForm6.form.valid && this.paymentReceiptValidation != false && type == false) {
         this.loader = false;
         // //console.log(this.voucherFile);
-          this._trainerService.paymentVoucherSaveWap((this.voucherFile))
+          this._trainerService.paymentVoucherNOCSave((this.voucherFile))
           .subscribe(
               result => {
                 this.loader = true;
@@ -1048,7 +1153,7 @@ export class WorkPermitFormComponent implements OnInit {
         // this.voucherFile.append('application_id',this.formApplicationId);
             
           // //console.log(this.voucherFile);
-        this._trainerService.paymentVoucherSaveWap((this.voucherFile))
+        this._trainerService.paymentVoucherNOCSave((this.voucherFile))
         .subscribe(
             result => {
               this.loader = true;
