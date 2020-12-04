@@ -45,6 +45,12 @@ export class OperationsRegistrationServiceDetailsComponent implements OnInit {
     this.loadData();
   }
 
+  getFile(file: string){
+    let fname: string = file.split('/')[1].split('.')[0];
+    console.log(fname);
+    return fname;
+  }
+
   loadData() {
     this.loader = false;
     this.subscriptions.push(this._trainerService.registrationDetailsService(this.routeId)
@@ -149,42 +155,52 @@ export class OperationsRegistrationServiceDetailsComponent implements OnInit {
             }
             this.scopes_to_be_authorized = newwapdata.scopes_to_be_authorized != null ? newwapdata.scopes_to_be_authorized : '';
           }
+          if(this.serviceDetail.wapData != undefined){
+            if(this.serviceDetail.wapData.licence_document_file != null){
+              var recognized_logo1 = this.serviceDetail.wapData.licence_document_file;
+              if(recognized_logo1 != ''){
+                let getFile =recognized_logo1.toString().split('/');
+                if(getFile.length){
+                  this.licence_document = getFile[4].toString().split('.')[0];
+                  this.licence_document_path = this._constant.mediaPath +'/media/'+ recognized_logo1.toString();
+                }
+              }
+            }
+            if(this.serviceDetail.wapData.quality_manual_file != null){
 
-          var recognized_logo1 = this.serviceDetail.wapData.licence_document_file;
-          if(recognized_logo1 != ''){
-            let getFile =recognized_logo1.toString().split('/');
-            if(getFile.length){
-              this.licence_document = getFile[4].toString().split('.')[0];
-              this.licence_document_path = this._constant.mediaPath +'/media/'+ recognized_logo1.toString();
+            var quality_manual1 = this.serviceDetail.wapData.quality_manual_file;
+            if(quality_manual1 != ''){
+              let getFile = quality_manual1.toString().split('/');
+              if(getFile.length){
+                this.quality_manual = getFile[4].toString().split('.')[0];
+                this.quality_manual_path = this._constant.mediaPath +'/media/'+ quality_manual1.toString();
+              }
+            }
+            }
+            if(this.serviceDetail.wapData.work_instruction_file != null){
+              var work_instruction1 = this.serviceDetail.wapData.work_instruction_file;
+              if(work_instruction1 != ''){
+                let getFile = work_instruction1.toString().split('/');
+                if(getFile.length){
+                  this.work_instruction = getFile[4].toString().split('.')[0];
+                  this.work_instruction_path = this._constant.mediaPath +'/media/'+ work_instruction1.toString();
+                }
+              }
+            }
+            if(this.serviceDetail.wapData.check_list_file != null){
+              var check_list1 = this.serviceDetail.wapData.check_list_file;
+              if(check_list1 != ''){
+                let getFile = check_list1.toString().split('/');
+                if(getFile.length){
+                  this.check_list = getFile[4].toString().split('.')[0];
+                  this.check_list_path = this._constant.mediaPath +'/media/'+ check_list1.toString();
+                }
+              }
             }
           }
+            
 
-          var quality_manual1 = this.serviceDetail.wapData.quality_manual_file;
-          if(quality_manual1 != ''){
-            let getFile = quality_manual1.toString().split('/');
-            if(getFile.length){
-              this.quality_manual = getFile[4].toString().split('.')[0];
-              this.quality_manual_path = this._constant.mediaPath +'/media/'+ quality_manual1.toString();
-            }
-          }
 
-          var work_instruction1 = this.serviceDetail.wapData.work_instruction_file;
-          if(work_instruction1 != ''){
-            let getFile = work_instruction1.toString().split('/');
-            if(getFile.length){
-              this.work_instruction = getFile[4].toString().split('.')[0];
-              this.work_instruction_path = this._constant.mediaPath +'/media/'+ work_instruction1.toString();
-            }
-          }
-
-          var check_list1 = this.serviceDetail.wapData.check_list_file;
-          if(check_list1 != ''){
-            let getFile = check_list1.toString().split('/');
-            if(getFile.length){
-              this.check_list = getFile[4].toString().split('.')[0];
-              this.check_list_path = this._constant.mediaPath +'/media/'+ check_list1.toString();
-            }
-          }
         })
     )
   }
