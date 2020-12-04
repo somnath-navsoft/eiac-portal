@@ -981,13 +981,13 @@ ul.bill-details li:first-child { border-right: 1px solid #C9C9C9; }
 .accreditation-container { border-radius: 5px; border: 1px solid #DFDFDF; background: #F9F9F9; text-align: center; font-size: 20px; font-family: 'Dubai Medium'; color: #3A3A3A; margin-bottom: 25px; }
 .accreditation-container .acc-main { position: relative; }
 .accreditation-desc .accred_name p { margin: 0; padding: 20px; }
-.accreditation-desc.training_acc:hover .accred_name { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -45%); color: #fff; font-size: 24px; }
+.accreditation-container:hover .accreditation-desc.training_acc .accred_name { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -45%); color: #fff; font-size: 24px; }
 .accreditation-desc.training_acc .accred_opts { display: none; }
-.accreditation-desc.training_acc:hover  .accred_opts { display: block; }
+.accreditation-container:hover .accreditation-desc.training_acc  .accred_opts { display: block; }
 // .accreditation-desc .accred_opts:hover { padding: 20px; margin: 0; }
-.accreditation-desc.training_acc:hover .accred_opts { display: flex; width: 100%; }
-.accreditation-desc.training_acc:hover .accred_opts p { width: 50%; padding: 20px; margin: 0; }
-.accreditation-desc.training_acc:hover .accred_opts p:first-child { border-right: 1px solid #DFDFDF; }
+.accreditation-container:hover .accreditation-desc.training_acc .accred_opts { display: flex; width: 100%; }
+.accreditation-container:hover .accreditation-desc.training_acc .accred_opts p { width: 50%; padding: 20px; margin: 0; }
+.accreditation-container:hover .accreditation-desc.training_acc .accred_opts p:first-child { border-right: 1px solid #DFDFDF; }
 .accred_opts p  a { color: #3A3A3A; }
 .acc-hov { display: none; }
 .accreditation-img { position: relative; border-bottom: 1px solid  #DFDFDF; height: 330px; overflow: hidden;}
@@ -1333,6 +1333,7 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .check_data_activities { display: flex; justify-content: space-around; width: 85%; }
 .confirm.activity_wrapper .mat-checkbox-layout .mat-checkbox-label { font-size: 18px; font-family: 'Dubai Regular'; }
 .activity_wrapper.cab_info { justify-content: flex-start; }
+.activity_wrapper.cab_info .activity_head { width: 25%; }
 // .activity_wrapper.cab_info .activity_head { width: 50%; }
 .activity_wrapper.cab_info .check_data_activities .mat-checkbox { padding: 0 15px; }
 .activity_wrapper.cab_info .check_data_activities { justify-content: flex-start; width: initial; }
@@ -1443,6 +1444,9 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
   .table-content-health td { font-size: 15px; }
   .main-dashboard-cnt .user-steps { width: 1300px; }
   .main-content .mat-radio-label-content { font-size: 15px; }
+  .confirm.activity_wrapper .mat-checkbox-layout .mat-checkbox-label { font-size: 16px; }
+  .activity_wrapper.cab_info .activity_head { font-size: 16px; }
+  .activity_wrapper.cab_info .activity_head { width: 30%; }
 }
 
 
