@@ -125,6 +125,8 @@ export class LayoutComponent implements OnInit {
           this.pageId = splitForverifyAccount[1];
         }else if(splitForverifyAccount[0] == '/dashboard/cab_client/training-public-course-form'){
           sessionStorage.setItem('trainingPublicCourse', splitForverifyAccount[1]);
+        }else if(splitForverifyAccount[0] == '/dashboard/cab_client/training-inpremise-form'){
+          sessionStorage.setItem('trainingInpremiseCourse', splitForverifyAccount[1]);
         }else if(splitForverifyAccount[0] == '/verify-account')
         {
           this.currentState = 'verify-account';

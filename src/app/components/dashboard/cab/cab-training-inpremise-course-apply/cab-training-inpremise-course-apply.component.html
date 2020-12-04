@@ -123,7 +123,7 @@
                                                 <mat-label>Select Location</mat-label>
                                                 <input (keyup)="getPlaceName($event)" [matAutocomplete] = "auto" 
                                                 (keypress)="_service.inputFilter($event, _service.regExName)" 
-                                                matInput  placeholder="Select Location" name="select_location" [(ngModel)]="inPremiseForm.select_location" required>
+                                                matInput  placeholder="Select Location" name="select_location" [(ngModel)]="inPremiseForm.select_location">
                                                 <mat-autocomplete #auto = "matAutocomplete" >
                                                     <mat-option *ngFor = "let searchCountryList of searchCountryLists" [value] = "searchCountryList.place_name">
                                                     {{searchCountryList.place_name}}
@@ -136,7 +136,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>No. of Candidate</mat-label>
-                                                <input (keypress)="_service.inputFilter($event, _service.regExNumb)" matInput autocomplete="off" placeholder="No. of Candidate" name="no_of_candidate" [(ngModel)]="inPremiseForm.no_of_candidate" required>
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="No. of Candidate" name="no_of_candidate" [(ngModel)]="inPremiseForm.no_of_candidate">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
@@ -160,7 +160,7 @@
                     <div class="col-md-12">
                         <div class="ourcourse-data">
                             <div class="progs-course">
-                                <h4>Select a Course or Multiple Course from Below to request an Event</h4>
+                                <h4>Event</h4>
                             </div>
                             <div class="sort-data">
                                  <label for="sort">Sort By :</label>
@@ -178,13 +178,15 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="allCourseTraining == ''">
+                <div *ngIf="allCourseTraining.length == 0">
                     <div class="col-md-12">
                         <div class="scheduled-prog">
                             No Data Found
                         </div>
                     </div>
                 </div>
+                @{{allCourseTraining |  json}}
+                <ng-container *ngIf="allCourseTraining.length > 0">
                 <div class="row" *ngFor="let row2 of allCourseTraining; let i=index;">
                     <div class="col-md-12">
                         <div class="scheduled_wrapper scheduled_data">
@@ -237,9 +239,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="content-icn scheduled_add">
+                            <!-- <div class="content-icn scheduled_add">
                                 <a href="javascript:void(0)" class="icon-add" (click)="addTraining(allCourseTraining,i,row2.id)"></a>
-                            </div>
+                            </div> -->
                         </div>
                         
                     </div>
@@ -249,6 +251,7 @@
                 <div class="load-more-dir">
                     <a href="javascript:void(0)" *ngIf="allCourses?.length > totalRow" (click)="load_more('1')">Load More...</a>
                 </div>
+                </ng-container>
 
             </div>
         </div>
