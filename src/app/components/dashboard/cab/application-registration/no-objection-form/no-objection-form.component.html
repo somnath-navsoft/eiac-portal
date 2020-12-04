@@ -375,7 +375,7 @@
 
                                     <!-- Add Options -->
                                     <div class="row mt-4"> 
-                                        <div class="col-md-6 col-sm-6">
+                                        <div class="col-md-12 col-sm-12">
                                             <div class="activity_wrapper confirm cab_info">                                           
                                                 <div class="activity_head">
                                                     a) Laboratory:
@@ -414,7 +414,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 col-sm-12">
+                                        <div class="col-md-12 col-sm-12">
                                             <div class="activity_wrapper confirm cab_info">
                                                 <div class="activity_head">
                                                     b) Inspection Body:
@@ -455,8 +455,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="row mt-4"> 
-                                        <div class="col-md-6 col-sm-6 ">
+                                    <div class="row"> 
+                                        <div class="col-md-12 col-sm-12">
                                             <div class="activity_wrapper confirm cab_info">
                                                 <div class="activity_head">
                                                     c) Certification Body:
@@ -506,7 +506,7 @@
                                                 </div> -->
                                             </div>
                                         </div>
-                                        <div class="col-md-6 col-sm-6"> 
+                                        <div class="col-md-12 col-sm-12"> 
                                             <div class="activity_wrapper confirm cab_info">
                                                 <div class="activity_head">
                                                     d) Halal CAB:
@@ -581,7 +581,7 @@
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-12 p-0">
-                                            <div class="form-subhdr form_subhdr">
+                                            <div class="form-subhdr">
                                                 <h5>3. LIST OF SERVICES SCOPE</h5>
                                             </div>
                                         </div>
@@ -607,7 +607,7 @@
                                                     </ng-container>
                                                     <li>
                                                 <!-- other check -->
-                                                <mat-checkbox  name="testingLabCheckItemOthers" (change)="checkOthersItemClick($event, 'testing_lab')" 
+                                                <mat-checkbox class="col-md-3" name="testingLabCheckItemOthers" (change)="checkOthersItemClick($event, 'testing_lab')" 
                                                 [(ngModel)]="testingLabCheckItemOthers">Others</mat-checkbox>
                                                     </li>
                                                     <li>
@@ -702,7 +702,7 @@
                                                     </ng-container>
                                                     <li>
                                                 <!-- other check -->
-                                                <mat-checkbox  name="calibrationLabCheckItemOthers" (change)="checkOthersItemClick($event, 'calibration_lab')" 
+                                                <mat-checkbox  class="col-md-3" name="calibrationLabCheckItemOthers" (change)="checkOthersItemClick($event, 'calibration_lab')" 
                                                 [(ngModel)]="calibrationLabCheckItemOthers">Others</mat-checkbox>
                                                     </li>
                                                     <li>
@@ -782,7 +782,7 @@
                                                     </ng-container>
                                                     <li>
                                                 <!-- other check -->
-                                                <mat-checkbox  name="certificationBodiesCheckItemOthersFirst" 
+                                                <mat-checkbox  class="col-md-3" name="certificationBodiesCheckItemOthersFirst" 
                                                 (change)="checkOthersItemClick($event, 'certification_body_first')" 
                                                 [(ngModel)]="certificationBodiesCheckItemOthersFirst">Others</mat-checkbox>
                                                     </li>
@@ -849,7 +849,7 @@
                                                     </ng-container>
                                                     <li>
                                                 <!-- other check -->
-                                                <mat-checkbox  name="certificationBodiesCheckItemOthersSecond" 
+                                                <mat-checkbox  class="col-md-3" name="certificationBodiesCheckItemOthersSecond" 
                                                 (change)="checkOthersItemClick($event, 'certification_body_second')" 
                                                 [(ngModel)]="certificationBodiesCheckItemOthersSecond">Others</mat-checkbox>
                                                     </li>
@@ -948,7 +948,7 @@
                                                     </ng-container>
                                                     <li>
                                                 <!-- other check -->
-                                                <mat-checkbox  name="halalCabCheckItemOthers" (change)="checkOthersItemClick($event, 'halal_cab')" 
+                                                <mat-checkbox  class="col-md-3" name="halalCabCheckItemOthers" (change)="checkOthersItemClick($event, 'halal_cab')" 
                                                 [(ngModel)]="halalCabCheckItemOthers">Others</mat-checkbox>
                                                     </li>
                                                     <li>
@@ -1147,19 +1147,19 @@
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-12 p-0">
-                                            <div class="form-subhdr form_subhdr">
+                                            <div class="form-subhdr">
                                                 <h5>6. AUTHORIZE OF THE APPLICATION</h5>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="auth">
+                                        <div class="auth_details">
                                             <ul>
                                                 <li>
-                                                    <span>
+                                                    <span class="auth_content">
                                                         I have read and been informed about the content &clauses of Law No. 2 for 2010.I have received a copy of the Law and agree to abide by the content & clauses as a Conformity Assessment Body working in the emirate of Dubai.
-I, the undersigned , confirm that I will not engage in any activity of a Conformity Assessment Body prior to obtaining a permit to act form from Emirates International Accreditation Centre, within six months from the date of issuance the Professional Trade License
-Please read Law No. 2 for 2010  carefully to ensure that you understand the policy before signing this document.
+                                                        I, the undersigned , confirm that I will not engage in any activity of a Conformity Assessment Body prior to obtaining a permit to act form from Emirates International Accreditation Centre, within six months from the date of issuance the Professional Trade License
+                                                        Please read Law No. 2 for 2010  carefully to ensure that you understand the policy before signing this document.
                                                     </span>
                                                     <!-- {{step6Data.authorization_confirm1}} -->
                                                     <!-- (change)="authorizeCheckCount($event)" -->
@@ -1174,8 +1174,13 @@ Please read Law No. 2 for 2010  carefully to ensure that you understand the poli
                                             <p class="error" *ngIf="!readTermsCond  && isApplicationSubmitted == true">Read the Terms and Conditions</p>
                                         </div>
                                     </div>
-
-
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-bdy m-0 mt-4">
+                            <div class="wrapper">
+                                <div class="col-md-12">
+                                    
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="row">

@@ -184,7 +184,7 @@
       </div>
 
       <div class="row m-0">
-        <div class="col-md-6" *ngFor="let row of ownershipOfOrg; let i = index;">
+        <div class="col-md-12" *ngFor="let row of ownershipOfOrg; let i = index;">
           <div class="row">
             <div class="col-md-12">
               <div class="appln-subhdr">
@@ -219,7 +219,7 @@
           </div>
         </div>
 
-        <div class="col-md-6" *ngIf="serviceDetail?.form_meta == 'work_activity'">
+        <div class="col-md-6" *ngIf="serviceDetail.form_meta == 'work_activity'">
           <div class="row">
             <div class="col-md-12">
               <div class="appln-subhdr">
@@ -249,136 +249,6 @@
                         <td>Scopes To Be Authorized:</td>
                         <td colspan="2">{{scopes_to_be_authorized}}</td>
                     </tr>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6" *ngIf="serviceDetail?.form_meta == 'work_activity'">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="appln-subhdr">
-                <h5>DOCUMENT ATTACHED TO THE APPLICATION</h5>
-              </div>
-              <hr>
-            </div>
-          </div>
-
-          <div class="row status-det status_sub_table">
-            <div class="col-md-12">
-              <div class="table-appln">
-                <table>
-                    <tr *ngIf="licence_document_path">
-                        <td>Upload License Documents:</td>
-                        <td>
-                          <div class="data-main-attach">
-                              <div class="data-attach">
-                                <h5>
-                                    <a href="javascript:void(0)">{{licence_document}}</a>
-                                </h5>
-                              </div>
-                              <div class="icn-appln">
-                                <!-- <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(licence_document_path)">
-                                    <span class="icon-eye"></span>
-                                </a> -->
-                                <a target="_blank" [href]="licence_document_path"> 
-                                    <span class="icon-download"></span>
-                                </a>
-                              </div>
-                          </div>
-                        </td>
-                    </tr>
-
-                    <tr *ngIf="quality_manual_path">
-                      <td>Upload Quality Manual:</td>
-                      <td>
-                        <div class="data-main-attach">
-                            <div class="data-attach">
-                              <h5>
-                                  <a href="javascript:void(0)">{{quality_manual}}</a>
-                              </h5>
-                            </div>
-                            <div class="icn-appln">
-                              <!-- <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(quality_manual_path)">
-                                  <span class="icon-eye"></span>
-                              </a> -->
-                              <a target="_blank" [href]="quality_manual_path"> 
-                                  <span class="icon-download"></span>
-                              </a>
-                            </div>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr *ngIf="work_instruction_path">
-                      <td>Upload Internal Procedures & Work Instruction:</td>
-                      <td>
-                        <div class="data-main-attach">
-                            <div class="data-attach">
-                              <h5>
-                                  <a href="javascript:void(0)">{{work_instruction}}</a>
-                              </h5>
-                            </div>
-                            <div class="icn-appln">
-                              <!-- <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(work_instruction_path)">
-                                  <span class="icon-eye"></span>
-                              </a> -->
-                              <a target="_blank" [href]="work_instruction_path"> 
-                                  <span class="icon-download"></span>
-                              </a>
-                            </div>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr *ngIf="check_list_path">
-                      <td>Upload Checklkist related to the International Standard:</td>
-                      <td>
-                        <div class="data-main-attach">
-                            <div class="data-attach">
-                              <h5>
-                                  <a href="javascript:void(0)">{{check_list}}</a>
-                              </h5>
-                            </div>
-                            <div class="icn-appln">
-                              <!-- <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(check_list_path)">
-                                  <span class="icon-eye"></span>
-                              </a> -->
-                              <a target="_blank" [href]="check_list_path"> 
-                                  <span class="icon-download"></span>
-                              </a>
-                            </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <!-- <tr>
-                        <td>Upload License Documents:</td>
-                        <td colspan="2">
-                          
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Upload Quality Manual:</td>
-                        <td colspan="2">
-                          
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Upload Internal Procedures & Work Instruction:</td>
-                        <td colspan="2">
-                          
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Upload Checklkist related to the International Standard:</td>
-                        <td colspan="2">
-                          
-                        </td>
-                    </tr> -->
                 </table>
               </div>
             </div>
@@ -491,7 +361,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="table-appln scope-data" [ngStyle]="{'width': '100%'}">                        
+                    <div class="table-appln scope-data-table" [ngStyle]="{'width': '100%'}">                        
                         <table width="100%">
                         <tr>
                             <th>Name Of Instrument / Equipment</th>
@@ -518,7 +388,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="table-appln scope-data" [ngStyle]="{'width': '100%'}">                        
+                    <div class="table-appln scope-data-table" [ngStyle]="{'width': '100%'}">                        
                         <table width="100%">
                         <tr>
                             <th>Job Title</th>
@@ -616,7 +486,7 @@
                               </div>
                               <ng-container *ngFor="let item2 of item1.value | keyvalue">
                                    <ng-container *ngIf="item2.key != null && item2.key === 'checkItems' && item2.value.length > 0">
-                                    <div class="table-appln scope-data">                        
+                                    <div class="table-appln scope-data-table">                        
                                       <table width="100%">
                                       <!-- <tr>
                                           <th>Items</th>
@@ -632,7 +502,7 @@
                                     </div>
                                    </ng-container>
                                    <ng-container *ngIf="item2.key != null && item2.key === 'checkItemsOthers' && item2.value.length > 0">
-                                    <div class="table-appln scope-data">                        
+                                    <div class="table-appln scope-data-table">                        
                                       <table width="100%">
                                       <!-- <tr>
                                           <th>Others</th>
@@ -656,8 +526,8 @@
                                   </div>
                                 </div> -->
                                 <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="table-appln scope-data" *ngIf="item1.value.length  && !_service.isObjectEmpty(item1.value[0])"> 
+                                    <div class="col-md-12 p-0">
+                                        <div class="table-appln scope-data-table" *ngIf="item1.value.length  && !_service.isObjectEmpty(item1.value[0])"> 
                                             <table width="100%">
                                             <tr>
                                                 <th>Type of task	</th>
@@ -693,7 +563,7 @@
                               </div>
                               <ng-container *ngFor="let item2 of item1.value | keyvalue">
                                    <ng-container *ngIf="item2.key != null && item2.key === 'checkItems' && item2.value.length > 0">
-                                    <div class="table-appln scope-data">                        
+                                    <div class="table-appln scope-data-table">                        
                                       <table width="100%">
                                       <!-- <tr>
                                           <th>Items</th>
@@ -709,7 +579,7 @@
                                     </div>
                                    </ng-container>
                                    <ng-container *ngIf="item2.key != null && item2.key === 'checkItemsOthers' && item2.value.length > 0">
-                                    <div class="table-appln scope-data">                        
+                                    <div class="table-appln scope-data-table">                        
                                       <table width="100%">
                                       <!-- <tr>
                                           <th>Others</th>
@@ -735,7 +605,7 @@
                               </div>
                               <ng-container *ngFor="let item2 of item1.value | keyvalue">
                                    <ng-container *ngIf="item2.key != null && item2.key === 'checkItems' && item2.value.length > 0">
-                                    <div class="table-appln scope-data">                        
+                                    <div class="table-appln scope-data-table">                        
                                       <table width="100%">
                                       <!-- <tr>
                                           <th>Items</th>
@@ -751,7 +621,7 @@
                                     </div>
                                    </ng-container>
                                    <ng-container *ngIf="item2.key != null && item2.key === 'checkItemsOthers' && item2.value.length > 0">
-                                    <div class="table-appln scope-data">                        
+                                    <div class="table-appln scope-data-table">                        
                                       <table width="100%">
                                       <!-- <tr>
                                           <th>Others</th>
@@ -777,8 +647,8 @@
                                 <div class="row">
                                     <!-- Len: {{item1.value.length}} == {{item1.value[0]}}
                                     @{{_service.isObjectEmpty(item1.value[0])}} -->
-                                    <div class="col-md-12">
-                                        <div class="table-appln scope-data" *ngIf="item1.value.length && !_service.isObjectEmpty(item1.value[0])"> 
+                                    <div class="col-md-12 p-0">
+                                        <div class="table-appln scope-data-table" *ngIf="item1.value.length && !_service.isObjectEmpty(item1.value[0])"> 
                                             <table width="100%">
                                             <tr>
                                                 <th>Type of task	</th>
@@ -815,7 +685,7 @@
                               </div>
                               <ng-container *ngFor="let item2 of item1.value | keyvalue">
                                    <ng-container *ngIf="item2.key != null && item2.key === 'checkItems' && item2.value.length > 0">
-                                    <div class="table-appln scope-data">                        
+                                    <div class="table-appln scope-data-table">                        
                                       <table width="100%">
                                       <!-- <tr>
                                           <th>Items</th>
@@ -831,7 +701,7 @@
                                     </div>
                                    </ng-container>
                                    <ng-container *ngIf="item2.key != null && item2.key === 'checkItemsOthers' && item2.value.length > 0">
-                                    <div class="table-appln scope-data">                        
+                                    <div class="table-appln scope-data-table">                        
                                       <table width="100%">
                                       <!-- <tr>
                                           <th>Others</th>
@@ -849,7 +719,7 @@
                         
                       </ng-container>
                       <ng-container *ngIf="item.key != null && (item.key == 'cb_product' || item.key == 'cb_person' )">
-                        <div class="table-appln scope-data" [ngStyle]="{'width': '100%'}">                        
+                        <div class="table-appln scope-data-table" [ngStyle]="{'width': '100%'}">                        
                           <table width="100%">
                           <tr *ngIf="item.value == true">
                             <td width="50%"  [ngStyle]="{'text-align': 'left'}">
@@ -865,7 +735,7 @@
                         </div>
                       </ng-container>
                       <!-- <ng-container *ngIf="item.key != null && item.key == 'cb_person'">
-                        <div class="table-appln scope-data"  [ngStyle]="{'width': '650px'}">                        
+                        <div class="table-appln scope-data-table"  [ngStyle]="{'width': '650px'}">                        
                           <table  width="100%">
                           <tr *ngIf="item.value == true">
                             <td  width="50%" [ngStyle]="{'text-align': 'left'}">ISO/ IEC 17024 (CERTIFICATION OF PERSONS)</td>                            
@@ -885,7 +755,7 @@
                                   <ng-container *ngFor="let item2 of item1.value | keyvalue">
                                        <!-- ........  {{item2.key}} ::  {{item2.value.length }} -->
                                        <ng-container *ngIf="item2.key != null && item2.key === 'checkItems' && item2.value.length > 0">
-                                        <div class="table-appln scope-data">                        
+                                        <div class="table-appln scope-data-table">                        
                                           <table width="100%">
                                           <!-- <tr>
                                               <th>Items</th>
@@ -901,7 +771,7 @@
                                         </div>
                                        </ng-container>
                                        <ng-container *ngIf="item2.key != null && item2.key === 'checkItemsOthers' && item2.value.length > 0">
-                                        <div class="table-appln scope-data">                        
+                                        <div class="table-appln scope-data-table">                        
                                           <table width="100%">
                                           <!-- <tr>
                                               <th>Others</th>
@@ -925,7 +795,7 @@
                                     </div> -->
                                     <div class="row">
                                       <div class="col-md-12">
-                                          <div class="table-appln scope-data" *ngIf="item1.value.length  && !_service.isObjectEmpty(item1.value[0])">                        
+                                          <div class="table-appln scope-data-table" *ngIf="item1.value.length  && !_service.isObjectEmpty(item1.value[0])">                        
                                               <table width="100%">
                                               <tr>
                                                   <th>Calibration Field/Measured Quantity</th>
