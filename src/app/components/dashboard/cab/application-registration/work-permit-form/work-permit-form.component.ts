@@ -98,6 +98,7 @@ export class WorkPermitFormComponent implements OnInit {
   voucherFile:any = new FormData();
   pathPDF: any;
   closeResult: string;
+  paymentStepComp: boolean = false;
   // modalOptions:NgbModalOptions;
   accredAgreemFile: any;
   checklistDocFile: any;
@@ -357,7 +358,7 @@ export class WorkPermitFormComponent implements OnInit {
               saveStep = parseInt(res['data'].saved_step) - 1;
             }else{
               if(parseInt(res['data'].saved_step) == 6){
-                
+                this.paymentStepComp = true;
                 saveStep = parseInt(res['data'].saved_step) - 1;
               }else{
                 
@@ -476,7 +477,9 @@ export class WorkPermitFormComponent implements OnInit {
                 this.voucherSentData.mobile_no        = (res['data'].paymentDetails.mobile_no != 'null') ? res['data'].paymentDetails.mobile_no : '';
 
                 this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
-                this.paymentReceiptValidation = true;
+                if(this.paymentFile != ''){
+                  this.paymentReceiptValidation = true;
+                }                
             }
           })
       }
@@ -687,6 +690,10 @@ export class WorkPermitFormComponent implements OnInit {
     }
   }
 
+  closeDialog(){
+    this.modalService.dismissAll();
+  }
+
   onSubmit2(ngForm2) {
     // this.Service.moveSteps('activities_scope', 'documents_tobe_attached', this.headerSteps);
     // this.step2Data.activity_section = this.activitySectionArr;
@@ -695,7 +702,7 @@ export class WorkPermitFormComponent implements OnInit {
     for(let key in this.activitySection) {
       ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
       if(this.activitySection[key]) {  
-        checkCount++;
+        checkCount++; 
       }
     }
     // console.log(checkCount);

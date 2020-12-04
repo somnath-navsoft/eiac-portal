@@ -378,7 +378,7 @@
                                         <div class="col-md-6 col-sm-6">
                                             <div class="activity_wrapper confirm cab_info">                                           
                                                 <div class="activity_head">
-                                                    a) Laboratory:<span class="required_input">*</span>
+                                                    a) Laboratory:
                                                 </div>
                                                 <div class="check_data_activities">
                                                     <!-- <mat-checkbox-group name="cab_type_laboratory"> -->
@@ -417,7 +417,7 @@
                                         <div class="col-md-4 col-sm-6">
                                             <div class="activity_wrapper confirm cab_info">
                                                 <div class="activity_head">
-                                                    b) Inspection Body:<span class="required_input">*</span>
+                                                    b) Inspection Body:
                                                 </div>
                                                 <div class="check_data_activities">
                                                     <!-- <mat-checkbox-group name="cab_type_inspection"> -->
@@ -459,7 +459,7 @@
                                         <div class="col-md-6 col-sm-6 ">
                                             <div class="activity_wrapper confirm cab_info">
                                                 <div class="activity_head">
-                                                    c) Certification Body:<span class="required_input">*</span>
+                                                    c) Certification Body:
                                                 </div>
                                                 <div class="check_data_activities">
 
@@ -509,7 +509,7 @@
                                         <div class="col-md-6 col-sm-6"> 
                                             <div class="activity_wrapper confirm cab_info">
                                                 <div class="activity_head">
-                                                    d) Halal CAB:<span class="required_input">*</span>
+                                                    d) Halal CAB:
                                                 </div>
                                                 <div class="check_data_activities">
 
@@ -590,7 +590,7 @@
                                     <div class="row mt-3">
                                         <div class="col-12 p-0">
                                             <div class="form-subheader-data">
-                                                <h5>FOR TESTING LAB : (ISO / IEC 17025) <span class="required_input">*</span></h5>
+                                                <h5>FOR TESTING LAB : (ISO / IEC 17025) </h5>
                                             </div>
                                         </div>
                                     </div>
@@ -685,7 +685,7 @@
                                     <div class="row mt-3">
                                         <div class="col-12 p-0">
                                             <div class="form-subheader-data">
-                                                <h5>FOR CALIBRATION LAB : (ISO / IEC 17025) <span class="required_input">*</span></h5>
+                                                <h5>FOR CALIBRATION LAB : (ISO / IEC 17025) </h5>
                                             </div>
                                         </div>
                                     </div>
@@ -765,7 +765,7 @@
                                     <div class="row mt-3">
                                         <div class="col-12 p-0">
                                             <div class="form-subheader-data">
-                                                <h5>FOR CERTIFICATION BODIES : ISO / IEC 17021 (CERTIFICATION OF MANAGEMENT SYSTEMS) :<span class="required_input">*</span></h5>
+                                                <h5>FOR CERTIFICATION BODIES : ISO / IEC 17021 (CERTIFICATION OF MANAGEMENT SYSTEMS) :</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -832,7 +832,7 @@
                                     <div class="row mt-3">
                                         <div class="col-12 p-0">
                                             <div class="form-subheader-data">
-                                                <h5>FOR INSPECTION BODIES: (ISO/IEC 17020) :<span class="required_input">*</span></h5>
+                                                <h5>FOR INSPECTION BODIES: (ISO/IEC 17020) : </h5>
                                             </div>
                                         </div>
                                     </div>
@@ -931,7 +931,7 @@
                                     <div class="row mt-3">
                                         <div class="col-12 p-0">
                                             <div class="form-subheader-data">
-                                                <h5>FOR HALAL CAB :<span class="required_input">*</span></h5>
+                                                <h5>FOR HALAL CAB :</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -1018,14 +1018,14 @@
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                                    matInput placeholder="" name="name_od_equip_{{i}}" [(ngModel)]="listOfIntEquip[i].name_od_equip" required> 
+                                                                    matInput placeholder="" name="name_od_equip_{{i}}" [(ngModel)]="listOfIntEquip[i].name_od_equip" > 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                                    matInput placeholder="" name="usage_of_equip_{{i}}" [(ngModel)]="listOfIntEquip[i].usage_of_equip" required> 
+                                                                    matInput placeholder="" name="usage_of_equip_{{i}}" [(ngModel)]="listOfIntEquip[i].usage_of_equip" > 
                                                                 </mat-form-field>                                                                
                                                             </td>                                                            
                                                             <td class="content-icn">
@@ -1093,21 +1093,21 @@
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                                    matInput placeholder="" name="job_title_{{i}}" [(ngModel)]="listOfStaff[i].job_title" required> 
+                                                                    matInput placeholder="" name="job_title_{{i}}" [(ngModel)]="listOfStaff[i].job_title" > 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                                    matInput placeholder="" name="qualification_{{i}}" [(ngModel)]="listOfStaff[i].qualification" required> 
+                                                                    matInput placeholder="" name="qualification_{{i}}" [(ngModel)]="listOfStaff[i].qualification" > 
                                                                 </mat-form-field>                                                                
                                                             </td>    
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                                    matInput placeholder="" name="experience_{{i}}" [(ngModel)]="listOfStaff[i].experience" required> 
+                                                                    matInput placeholder="" name="experience_{{i}}" [(ngModel)]="listOfStaff[i].experience" > 
                                                                 </mat-form-field>                                                                
                                                             </td>                                                        
                                                             <td class="content-icn">
@@ -1388,7 +1388,7 @@ Please read Law No. 2 for 2010  carefully to ensure that you understand the poli
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Payment Made By</mat-label>
                                                 <input type="text" [ngModelOptions]="{standalone: true}" required="true"
-                                                matInput placeholder="Payment Made By" 
+                                                matInput placeholder="Payment Made By"  (keypress)="Service.inputFilter($event, Service.nameOnly)"
                                                 [(ngModel)]="voucherSentData.payment_made_by">
                                             </mat-form-field>
                                         </div>
@@ -1398,7 +1398,7 @@ Please read Law No. 2 for 2010  carefully to ensure that you understand the poli
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mobile Number</mat-label>
                                                 <input type="text" [ngModelOptions]="{standalone: true}" required="true"
-                                                matInput placeholder="Mobile Number" 
+                                                matInput placeholder="Mobile Number" (keypress)="Service.IsNumeric($event)"
                                                 [(ngModel)]="voucherSentData.mobile_no" required>
                                             </mat-form-field>
                                         </div>

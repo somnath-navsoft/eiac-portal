@@ -1280,7 +1280,7 @@ export class NoObjectionFormComponent implements OnInit {
 
     //return; 
 
-    if((checkLaboratory == true && checkInspection == true && checkCertification == true && checkHalal == true) && type == undefined){
+    if((checkLaboratory == true || checkInspection == true || checkCertification == true || checkHalal == true) && type == undefined){
       this.noObjectionBodyForm = {};      
       this.noObjectionBodyForm.saved_step = 2;    
       this.noObjectionBodyForm.step2 = {};  
@@ -1485,8 +1485,8 @@ export class NoObjectionFormComponent implements OnInit {
       this.step3Data.halal_lab = tempObj;
 
 
-    if(theForm.form.valid && type == undefined && testingLabCheckCount > 0 && 
-        calibrationLabCheckCount > 0 && certificationCheckCountFirst > 0 && certificationCheckCountSecond > 0 && halalLabCheckCount > 0){
+    if(theForm.form.valid && type == undefined && (testingLabCheckCount > 0 || 
+        calibrationLabCheckCount > 0 || certificationCheckCountFirst > 0 || certificationCheckCountSecond > 0 || halalLabCheckCount > 0)){
       this.noObjectionBodyForm = {};      
       this.noObjectionBodyForm.saved_step = 3;
       this.noObjectionBodyForm.step3 = this.step3Data;

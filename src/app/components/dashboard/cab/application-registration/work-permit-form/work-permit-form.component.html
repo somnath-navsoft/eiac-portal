@@ -862,7 +862,7 @@
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Payment Made By</mat-label>
                                                 <input type="text" [ngModelOptions]="{standalone: true}" required="true"
-                                                matInput placeholder="Payment Made By" 
+                                                matInput placeholder="Payment Made By" (keypress)="Service.inputFilter($event, Service.nameOnly)"
                                                 [(ngModel)]="voucherSentData.payment_made_by">
                                             </mat-form-field>
                                         </div>
@@ -882,8 +882,8 @@
                                                 (change)="validateFile1($event, 'payment_receipt')" required>
                                                 <span class="icon-attach attach-data"></span>
                                             </span>
-                                            <a class="image_file_link" *ngIf="paymentFile != false && paymentFile != true" target="_blank" [href]="paymentFile">Link</a>
                                             <p class="error" *ngIf="paymentReceiptValidation == false || paymentReceiptValidation == undefined">Please Upload a valid file (ex: pdf)</p>
+                                            <a class="image_file_link" *ngIf="paymentFile != false && paymentFile != true" target="_blank" [href]="paymentFile">Link</a>
                                         </div>
 
                                     </div>
@@ -892,13 +892,13 @@
                                 <span id="openAppDialog" (click)="openView(appComp)"></span>
                                 <ng-template #appComp let-modal>
                                     <div class="main_pop">
-                                        <div class="pop_close" (click)="closeChecklistDialog()">
+                                        <div class="pop_close">
                                             <span class="icon-close"></span>
                                         </div>
                                         <div class="pop_thanks">
                                             <h5>Thank you</h5>
                                             <p>Your Application has been submitted successfully and is under review. Please check the status and your dashboard for updates.</p>
-                                            <button class="submit-bttn" (click)="closeChecklistDialog()" 
+                                            <button class="submit-bttn" (click)="closeDialog()" 
                                             routerLink="/dashboard/registration-status">Return to Status</button>
                                         </div>
                                     </div>
@@ -909,9 +909,11 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
+                                        <ng-container *ngIf="!paymentStepComp">
                                         <a href="javascript:void(0)" class="cancel-bttn" type="button" 
                                         (click)="Service.headerStepMove('proforma_invoice',headerSteps,'menu','payment_update')">BACK
                                         </a>
+                                    </ng-container>
                                         <button class="cancel-bttn" type="button" (click)="onSubmitPaymentInformation(ngForm6, true)">SAVE AS DRAFT</button>
                                     </div>
                                     <button class="submit-bttn submit-health" >SUBMIT</button>
