@@ -111,11 +111,11 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
 
-    this.amount1 = 1 * this.fee_day_pertime1 * this.publicTrainingForm.training_duration;
-    this.amount2 = 0.5 * this.amount1;
-    this.amount3 = 0 * 1;
-    this.amount4 = 0 * 1;
-    this.total = this.amount1 + this.amount2 + this.amount3 + this.amount4;
+    // this.amount1 = 1 * this.fee_day_pertime1 * this.publicTrainingForm.training_duration;
+    // this.amount2 = 0.5 * this.amount1;
+    // this.amount3 = 0 * 1;
+    // this.amount4 = 0 * 1;
+    // this.total = this.amount1 + this.amount2 + this.amount3 + this.amount4;
 
     this.headerSteps.push(
       {
@@ -169,7 +169,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
           res => {
             var courseDetails = res['courseDetails'];
             this.step3Data.course_title = courseDetails.course;
-            this.step3Data.training_duration = courseDetails.training_days;
+            this.step3Data.training_duration = parseInt(courseDetails.training_days);
             // console.log(courseDetails.training_days,'training_days');
           });
     }
@@ -262,7 +262,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
 
             // step3
             this.step3Data.course_title = res['data'].course_title;
-            this.step3Data.training_duration = res['data'].training_duration;
+            this.step3Data.training_duration = parseInt(res['data'].training_duration);
 
             // step5
             if(res['data'].onBehalfApplicantDetails != null) {

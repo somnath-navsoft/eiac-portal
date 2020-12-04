@@ -564,7 +564,7 @@ export class WorkPermitFormComponent implements OnInit {
    if(ex_check){
      this.paymentReceiptValidation = true;
      //if(type == undefined){
-       this.voucherFile.append('voucher_invoice',fileEvent.target.files[0]);
+       this.voucherFile.append('payment_receipt',fileEvent.target.files[0]);
      //}
    }else{
      this.paymentReceiptValidation = false;
