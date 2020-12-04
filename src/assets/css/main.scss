@@ -1180,15 +1180,17 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .auth { line-height: 35px; }
 .auth .mat-checkbox-layout .mat-checkbox-label { font-size: 24px; font-family: "Dubai Medium"; color: #222222; }
 .auth .acc-auth { color: #AA9777; text-decoration: underline; }
-
+.auth_content { font-size: 15px; color: #777777; }
 .auth .acc-auth { color: #AA9777; }
 .auth ul { margin: 0; padding: 0; list-style-type: none;}
+.auth_details ul { margin: 0; padding: 0; list-style-type: none;}
 .auth .mat-checkbox-layout .mat-checkbox-label { font-size: 18px; font-family: "Dubai Medium"; color: #222222; }
 .authData { color: #222222; font-family: "Dubai Medium"; font-size: 18px; padding: 10px 0; }
 .authData .error { font-size: 17px; padding-left: 30px; }
 
 .image_file_link { display: inline-block; margin: 15px 10px; color: #121212; }
 .scope-data { padding: 15px 0; }
+.table-appln.scope-data-table { padding: 0 0 15px; }
 .scope-data .sub-header h5 { color: #B14A56; font-family: "Dubai Medium"; font-size: 20px; margin-bottom: 10px; }
 .scope-data table td:last-child { text-align: center; }
 

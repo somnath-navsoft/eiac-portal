@@ -127,9 +127,8 @@ export class OperationsRegistrationServiceDetailsComponent implements OnInit {
             //Services Scope
             if(getData.data.nocTableData != undefined && typeof getData.data.nocTableData == 'object'){
               this.nocTableScopeData = getData.data.nocTableData;
-
-              this.nocTableListStaff = '';
-              this.nocTableListEquip = '';
+              console.log(">>>Table scope: ", this.nocTableScopeData);
+              
 
             }
 
@@ -144,11 +143,11 @@ export class OperationsRegistrationServiceDetailsComponent implements OnInit {
 
           var newwapdata = result['data'].wapData;
           // this.activity_section = wapdata.activity_section != null ? wapdata.activity_section : '';
-
-          this.scopes_to_be_authorized = newwapdata.scopes_to_be_authorized != null ? newwapdata.scopes_to_be_authorized : '';
-
-          if(newwapdata.activity_section != null) {
-            this.activitySection = JSON.parse(newwapdata.activity_section);
+          if(newwapdata != null && newwapdata != undefined){
+            if(newwapdata.activity_section != null) {
+              this.activitySection = JSON.parse(newwapdata.activity_section);
+            }
+            this.scopes_to_be_authorized = newwapdata.scopes_to_be_authorized != null ? newwapdata.scopes_to_be_authorized : '';
           }
 
           var recognized_logo1 = this.serviceDetail.wapData.licence_document_file;

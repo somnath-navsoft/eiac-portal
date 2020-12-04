@@ -51,7 +51,7 @@ export class RegistrationStatusComponent implements OnInit {
         switch(item.form_meta.toString()){
 
           case 'work_activity':
-            console.log("work activity....", item);
+            //console.log("work activity....", item);
             if(item.saved_step != null && item.saved_step < 4 && (item.is_draft == true || item.is_draft == false)){
               // console.log("@Enter....3");
               return false;
@@ -85,7 +85,7 @@ export class RegistrationStatusComponent implements OnInit {
           break;
 
             case 'work_permit':
-              console.log("work permit....", item);
+              //console.log("work permit....", item);
               if(item.saved_step != null && item.saved_step < 4 && (item.is_draft == true || item.is_draft == false)){
                 // console.log("@Enter....3");
                 return false;
@@ -137,12 +137,12 @@ export class RegistrationStatusComponent implements OnInit {
         
                if(item.saved_step != null && item.saved_step == 6 && item.is_draft == false && 
                   item.paymentDetails != undefined && item.paymentDetails == "NA"){
-                    console.log("@@@@@@@ ", item.id);
+                    //console.log("@@@@@@@ ", item.id);
                 return true;
               }
               if(item.saved_step != null && item.saved_step == 8 && (item.is_draft == false || item.is_draft == true) && 
                 item.paymentDetails != undefined && item.application_status !== 'complete'){
-                  console.log("@Enter....1", item.id);
+                  //console.log("@Enter....1", item.id);
                 return false;
               }
                if(item.saved_step != null && item.saved_step == 6 && item.is_draft == false && 
