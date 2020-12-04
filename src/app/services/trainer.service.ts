@@ -92,7 +92,8 @@ export class TrainerService {
   }
 
   paymentVoucherSaveWap(postData: any){
-    const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.registrationPaymentDetails;
+    //const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.registrationPaymentDetails;
+    const url = `${this.BASE_REQ_URL}` + "webservice/reg-payment-details-save/";
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
 

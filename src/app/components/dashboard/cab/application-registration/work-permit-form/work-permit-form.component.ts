@@ -564,7 +564,7 @@ export class WorkPermitFormComponent implements OnInit {
    if(ex_check){
      this.paymentReceiptValidation = true;
      //if(type == undefined){
-       this.voucherFile.append('voucher_invoice',fileEvent.target.files[0]);
+       this.voucherFile.append('payment_receipt',fileEvent.target.files[0]);
      //}
    }else{
      this.paymentReceiptValidation = false;
@@ -779,10 +779,6 @@ export class WorkPermitFormComponent implements OnInit {
     
   }
 
-  closeDialog(){
-    this.modalService.dismissAll();
-  }
-
   onSubmit4(ngForm4) {
     // this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
 
@@ -813,7 +809,7 @@ export class WorkPermitFormComponent implements OnInit {
           if(res['status'] == true) {
             
             // this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
-            if(this.paymentFilePath != '' && this.paymentFilePath != undefined){
+            if(this.paymentFilePath != ''){
               this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
             }
             else{
@@ -997,7 +993,7 @@ export class WorkPermitFormComponent implements OnInit {
       if(ngForm6.form.valid && this.paymentReceiptValidation != false && type == false) {
         this.loader = false;
         // //console.log(this.voucherFile);
-          this._trainerService.paymentVoucherSaveWap((this.voucherFile))
+          this._trainerService.paymentVoucherNOCSave((this.voucherFile))
           .subscribe(
               result => {
                 this.loader = true;
@@ -1059,7 +1055,7 @@ export class WorkPermitFormComponent implements OnInit {
         // this.voucherFile.append('application_id',this.formApplicationId);
             
           // //console.log(this.voucherFile);
-        this._trainerService.paymentVoucherSaveWap((this.voucherFile))
+        this._trainerService.paymentVoucherNOCSave((this.voucherFile))
         .subscribe(
             result => {
               this.loader = true;
