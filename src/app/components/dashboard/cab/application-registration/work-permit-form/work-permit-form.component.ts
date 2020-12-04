@@ -337,6 +337,10 @@ export class WorkPermitFormComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url); 
   }
 
+  closeDialog(){
+    this.modalService.dismissAll();
+  }
+  
   loadData() {
     // let url2 = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+this.urlVal;
     if(this.getWorkPermitId != 'undefined') {
