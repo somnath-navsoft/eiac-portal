@@ -556,6 +556,8 @@ export class WorkPermitFormComponent implements OnInit {
     // }
  }
 
+
+
  validateFile1(fileEvent: any, type?: any) {
    var file_name = fileEvent.target.files[0].name;
    var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
@@ -949,7 +951,107 @@ export class WorkPermitFormComponent implements OnInit {
   closeChecklistDialog(){
     this.modalService.dismissAll();
   }
-  onSubmitPaymentInformation(ngForm6: any, type?: boolean){
+
+  onSubmitPaymentInformation(theForm: any, type?: any){
+    //this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+
+    let is_valid: boolean = false;
+
+    let dtFormat: string = '';
+    // if(this.voucherSentData['payment_date'] != undefined && 
+    //   this.voucherSentData['payment_date']._i != undefined){
+    //   var dtData = this.voucherSentData['payment_date']._i;
+    //   var year = dtData.year;
+    //   var month = dtData.month;
+    //   var date = dtData.date;
+    //   dtFormat = year + "-" + month + "-" + date;
+    // }else{
+    if(this.voucherSentData['payment_date'] != undefined){
+      var nFdate = new Date(this.voucherSentData['payment_date']);
+      var nMonth = nFdate.getMonth() + 1;
+      var nDate = nFdate.getDate();
+      var nYear = nFdate.getFullYear();
+      dtFormat = nYear + "-" + nMonth + "-" + nDate;
+    }
+
+    console.log(">>> Date: ", dtFormat, " -- ", this.voucherSentData);
+
+      this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
+      this.voucherFile.append('amount',this.voucherSentData['amount']);
+      this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
+      this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
+      this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
+      this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
+      this.voucherFile.append('voucher_date', dtFormat);
+      this.voucherFile.append('accreditation',this.formApplicationId);
+      this.voucherFile.append('application_id',this.formApplicationId);
+      this.voucherFile.append('saved_step', 8);
+      if(!type){
+        this.voucherFile.append('is_draft', false);
+      }else{
+        this.voucherFile.append('is_draft', true);
+      }
+
+      console.log(">>> Data: ", this.voucherSentData);
+      if(this.voucherSentData['transaction_no'] != '' && this.voucherSentData['payment_method'] != '' && this.voucherSentData['payment_made_by'] &&
+        this.voucherSentData['mobile_no'] != ''){
+          is_valid = true;
+        }
+
+        if(is_valid == true && type == undefined && this.paymentReceiptValidation != false) {
+          //this.noObjectionBodyForm.saved_step = 8;      
+          //this.noObjectionBodyForm.step8 = this.step6Data;
+          //this.noObjectionBodyForm.step8.application_id = this.formApplicationId;
+          //this.noObjectionBodyForm.step8.is_draft = false;
+          console.log(">> Submit Form: "," -- ", this.voucherSentData);
+
+          this._trainerService.paymentVoucherNOCSave((this.voucherFile))
+          .subscribe(
+             result => {
+               let data: any = result;
+                ////////console.log("submit voucher: ", data);
+                if(data.status){
+                  //this.openView('appComp');
+                  setTimeout(()=>{
+                    let elem = document.getElementById('openAppDialog');
+                    //////console.log("App dialog hash....", elem);
+                    if(elem){
+                      elem.click();
+                    }
+                  }, 100)
+                  setTimeout(() => {                    
+                    // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+                    this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+                  },3500)
+                  
+                }else{
+                  this.toastr.warning(data.msg,'');
+                }
+          })   
+    
+        }else if(type != undefined && type == true){
+          //this.noObjectionBodyForm.saved_step = 6;   
+          //this.noObjectionBodyForm.step6 = this.step6Data;
+         // this.noObjectionBodyForm.step8.is_draft = true;
+          console.log(">> Submit Save draft: ", " -- ", this.voucherSentData);
+
+          this._trainerService.paymentVoucherNOCSave((this.voucherFile))
+          .subscribe(
+             result => {
+               let data: any = result;
+                console.log("submit voucher draft: ", data);
+                if(data.status){
+                  this.toastr.success("Save Draft Successfully",'');                  
+                }else{
+                  this.toastr.warning(data.msg,'');
+                }
+          })    
+        }else{
+          this.toastr.warning('Please Fill required field','',{timeOut:5000});
+        }
+  }
+
+  onSubmitPaymentInformation123(ngForm6: any, type?: boolean){
       ////console.log("payment submitting.....");
       this.workPermitForm = {};
       this.workPermitForm.step6 = {};
