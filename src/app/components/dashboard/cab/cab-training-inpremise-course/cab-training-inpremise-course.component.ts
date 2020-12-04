@@ -48,7 +48,7 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
   selectCustomCourses: any[] = [];
   transactions: any[] =[];
   transactionsItem: any={};
-  traningPublicId:any;
+  inpremiseFormId:any;
   step1Data:any = {};
   step2Data:any = {};
   step3Data:any = {};
@@ -77,7 +77,7 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
   formApplicationId:any
   trainingDuration:any[] = [];
   closeResult: string;
-  trainingPublicCourseid:any;
+  traininginpremiseCourseid:any;
   tutionFees:any;
   taxVat:any;
   knowledgeFees:any;
@@ -98,12 +98,12 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
     private _trainerService: TrainerService, private _constant: Constants,public sanitizer:DomSanitizer,private modalService: NgbModal) { }
 
     ngOnInit() {
-      this.traningPublicId = sessionStorage.getItem('publicFormId');
+      this.inpremiseFormId = sessionStorage.getItem('inpremiseFormId');
   
-      var publicCourseid = sessionStorage.getItem('trainingPublicCourse');
-      if(publicCourseid && publicCourseid != undefined) {
-        var splitId = publicCourseid.split('=');
-        this.trainingPublicCourseid = splitId[1];
+      var inpremiseCourseid = sessionStorage.getItem('trainingInpremiseCourse');
+      if(inpremiseCourseid && inpremiseCourseid != undefined) {
+        var splitId = inpremiseCourseid.split('=');
+        this.traininginpremiseCourseid = splitId[1];
         // console.log(this.trainingPublicCourseid,'trainingPublicCourseid');
       }
   
@@ -145,7 +145,7 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
   
       this.loadCountryStateCity();
       this.loadDetailsPage();
-      this.traningPublicId != '' && this.traningPublicId != undefined ? '' : this.loadCourseDetailsPage();
+      this.inpremiseFormId != '' && this.inpremiseFormId != undefined ? '' : this.loadCourseDetailsPage();
       this.trainingDuration = [{key:1,title:'1 Day'},{key:2,title:'2 Days'},{key:3,title:'3 Days'},{key:4,title:'4 Days'},{key:5,title:'5 Days'},{key:6,title:'6 Days'},{key:7,title:'7 Days'},{key:8,title:'8 Days'},{key:9,title:'9 Days'},{key:10,title:'10 Days'}];
   
       // console.log(this.participantTraineeDetails.length);
@@ -163,8 +163,8 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
     }
   
     loadCourseDetailsPage() {
-      if(this.trainingPublicCourseid != '' && this.trainingPublicCourseid != undefined) {
-        this.Service.getwithoutData(this.Service.apiServerUrl+'/'+this._constant.API_ENDPOINT.course_details+this.trainingPublicCourseid+'?data=1')
+      if(this.traininginpremiseCourseid != '' && this.traininginpremiseCourseid != undefined) {
+        this.Service.getwithoutData(this.Service.apiServerUrl+'/'+this._constant.API_ENDPOINT.course_details+this.traininginpremiseCourseid+'?data=1')
           .subscribe(
             res => {
               var courseDetails = res['courseDetails'];
@@ -177,8 +177,8 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
   
     loadDetailsPage() {
   
-      if(this.traningPublicId != undefined) {
-        let url2 = this.Service.apiServerUrl+"/"+'training-details-show/'+this.traningPublicId;
+      if(this.inpremiseFormId != undefined) {
+        let url2 = this.Service.apiServerUrl+"/"+'training-details-show/'+this.inpremiseFormId;
           this.Service.getwithoutData(url2)
           .subscribe(
             res => {
