@@ -7,7 +7,7 @@
             <div class="row mb-4">
                 <div class="col-md-8">                    
                     <div class="dashbrd-hdr">
-                        <h3>Registration Service</h3> 
+                        <h3>Registration Service</h3>  
                     </div>
                 </div>
                 <div class="col-md-4"> 
@@ -88,15 +88,7 @@
                             <a href="javascript:void(0)" (click)="filterSearchReset()">RESET</a>
                         </div>         
                     </div>
-                    <!-- <div class="col-md-4"> 
-                        
-                        <div class="add-data">
-                            <a href="javascript:void(0)" (click)="filterSearchSubmit()">SEARCH</a>
-                        </div>   
-                        <div class="add-data">
-                            <a href="javascript:void(0)" (click)="filterSearchReset()">RESET</a>
-                        </div>                    
-                    </div> -->
+                    
                 </div>
                 </div>
                 
@@ -106,7 +98,7 @@
         <div class="table-dashboard-cont">
             <div class="row m-0">
                 <div class="col-md-12 p-0">
-                    <!-- @{{trainerdata | json}} -->
+                    
                     <table>
                         <tr>
                             <th>Application No
@@ -127,13 +119,8 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.accr_status"></span>
                                 </a>
                             </th>
-                            <!-- <th>Prelim Visit
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'prelim_visit', curSortDir.prelim_visit)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.prelim_visit"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.prelim_visit"></span>
-                                </a>
-                            </th> -->
-                            <th>Accreditation Type
+                            
+                            <th>Registration Type
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'training_form_type', curSortDir.training_form_type)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.training_form_type"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.training_form_type"></span>
@@ -146,15 +133,8 @@
                                 </a>
                             </th>
                             
-                            <!-- <th>Applicant
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'applicant', curSortDir.applicant)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.applicant"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.applicant"></span>
-                                </a>
-                            </th> -->
                             <th>Action</th>
                         </tr>
-                        <!-- trainerdata.records != undefined && -->
                     <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
                         <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
                             <td class="fnt-clr">
@@ -169,28 +149,27 @@
                                 <span *ngIf="item.accr_status == null || item.accr_status === 'under_review'">Under Review</span>
                                 <span *ngIf="item.accr_status == 'complete'">Complete</span>
                             </td>
-                            <!-- <td [ngClass]="{'complete': item.is_prelim_visit == true, 'under-review':item.is_prelim_visit == false }">
-                                <span *ngIf="item.is_prelim_visit == true">Yes</span>
-                                <span *ngIf="item.is_prelim_visit == false">No</span>
-                            </td> -->
+                           
                             <td>
                                 <span *ngIf="item.training_form_type == 'public_training'">Public Training</span>
                                 <span *ngIf="item.training_form_type == 'inprimise'">In Premise</span>
+                                <!-- <span *ngIf="item.training_form_type == 'work_activity'">Work Activity Permit</span> -->
                             </td>
-                            <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review':item.payment_status === null }">
+                            <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review':item.payment_status === null , 'under-review':item.payment_status === 'pending'}">
                                 <span *ngIf="item.payment_status == 'paid'">Paid</span>
                                 <span *ngIf="item.payment_status == 'pending'">Unpaid</span>
                                 <span *ngIf="item.payment_status == null">Unpaid</span>
-                            </td> 
-                            <!-- <td>
-                                {{item.applicantName}}
-                            </td> -->
+                            </td>                            
                             <td class="action fnt-clr">
-                                <!-- *ngIf="(item.accr_status == null && item.accr_status === 'under_review')" -->
-                                <a href="javascript:void(0)" *ngIf="(item.payment_status == 'paid' && item.accr_status != 'complete')" (click)="serviceStatus(i2,item.id)" alt="Delete"><span class="icon-tick"></span></a>
-                                <!-- <a href="javascript:void(0)" *ngIf="item.accr_status == 'complete'" alt="Delete"><span class="icon-tick"></span></a> -->
-                                <a href="javascript:void(0)" *ngIf="(item.accr_status == null || item.accr_status == 'application_process' || item.accr_status === 'under_review' || item.accr_status == 'pending' || item.accr_status == 'draft') && item.payment_status != 'paid'" (click)="open(courseVoucher, item.id)" alt="Upload Proforma Invoice" title="Upload Proforma Invoice"><span class="icon-document-pen"></span></a>
-                               
+                                <ng-container *ngIf="item.training_form_type == 'public_training'">
+                                    <a href="javascript:void(0)" [hidden]="editVisible(item)" alt="Edit" routerLink="/dashboard/cab_client/training-public-course-form/{{item.id}}"><span class="icon-edit"></span></a>
+                                </ng-container>
+                                <ng-container *ngIf="item.training_form_type == 'inprimise'">
+                                    <a href="javascript:void(0)" [hidden]="editVisible(item)" alt="Edit" routerLink="/dashboard/cab_client/training-inpremise-form/{{item.id}}"><span class="icon-edit"></span></a>
+                                </ng-container>
+                                <!-- <ng-container *ngIf="item.training_form_type == 'work_activity'">
+                                    <a href="javascript:void(0)" alt="Edit" routerLink="/dashboard/cab_client/work-permit-form/{{item.id}}"><span class="icon-edit"></span></a>
+                                </ng-container> -->
                             </td>
                         </tr>
                     </ng-container>
@@ -216,67 +195,6 @@
             </div>
         </div>
         <!-- Modal -->
-        <ng-template #courseVoucher let-modal>
-            <div class="modal-header course-pop">
-              <h4 class="modal-title" id="modal-basic-title">UPLOAD PROFORMA INVOICE</h4>
-              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-                <span class="icon-close"></span>
-              </button>
-            </div>
-            <div class="modal-body">                 
-                <form #voucherForm="ngForm">
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <mat-form-field class="cab-data">
-                                <mat-label>Voucher Number</mat-label>
-                                <input type="number" [ngModelOptions]="{standalone: true}"
-                                matInput placeholder="Voucher Number" 
-                                [(ngModel)]="voucherSentData.voucher_no" required>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-6">
-                            <mat-form-field class="cab-data">
-                                <mat-label>Voucher Date</mat-label>
-                                <input matInput [matDatepicker]="voucher_date"  readonly="true" placeholder="Voucher Date" 
-                                name="voucher_date" (click)="_service._openCalendar(voucher_date)" 
-                                [(ngModel)]="voucherSentData.voucher_date" required>
-                                <mat-datepicker-toggle matSuffix [for]="voucher_date"></mat-datepicker-toggle>
-                                <mat-datepicker #voucher_date  disabled="false"></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <mat-form-field class="cab-data">
-                                <mat-label>Amount</mat-label>
-                                <input type="number" [ngModelOptions]="{standalone: true}" 
-                                matInput placeholder="Amount" 
-                                [(ngModel)]="voucherSentData.amount" required>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="col-md-6">
-                            <span class="fileupload">
-                                <input type="file" name="voucher_invoice"                                
-                                (change)="validateFile($event, 'voucher_invoice')" required>
-                                <span class="icon-attach attach-data"></span>
-                            </span>
-                            <p class="error" *ngIf="paymentReceiptValidation == false">Please Upload a valid file (ex: pdf)</p>
-                        </div>
-                    </div>
-                    <div class="row" [ngStyle]="{'margin-top': '10px'}">
-                        <div class="col-md-12">
-                            <div class="bttns-health">
-                                <button type="submit" (click)="voucherSentSubmit(voucherForm)" class="cancel-bttn">SUBMIT</button>
-                                <button type="button" class="submit-bttn submit-health" (click)="modal.close('Cancel click')">CANCEL</button>
-                            </div>
-                            
-                        </div>
-                    </div>                    
-                </form>
-            </div>
-        </ng-template>
        
     </div>
     </div>

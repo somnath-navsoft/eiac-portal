@@ -11,7 +11,7 @@ import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-b
   templateUrl: './assessors-profile.component.html',
   styleUrls: ['./assessors-profile.component.scss']
 })
-export class AssessorsProfileComponent implements OnInit {
+export class AssessorsProfileComponent implements OnInit {  
 
   isProfileData: boolean = true;
   assessorsProfile:any = {};

@@ -58,10 +58,10 @@ export class OperationsMessageDetailsComponent implements OnInit {
         this.approveRejectStatus = res['data']['user_data'][0].approved;
         this.cabStep1 = res['data']['step1'][0];
         this.cabStep2 = res['data']['step2'];
-        this.tradeLicenseFile = this.constant.mediaPath+this.cabStep1.trade_license
+        this.tradeLicenseFile = this.constant.mediaPath+this.cabStep1.trade_license;
         var tradeLicenseField = this.cabStep1.trade_license != null ? this.cabStep1.trade_license.split('/') : '';
         this.tradeLicenseText = tradeLicenseField[4];
-        console.log(this.cabStep1);
+        console.log(res);
         
     });
   }

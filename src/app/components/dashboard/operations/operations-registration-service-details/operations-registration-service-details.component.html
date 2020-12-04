@@ -31,7 +31,7 @@
                   <div [ngClass]="{'complete': serviceDetail?.payment_status == 'paid', 'under-review':serviceDetail?.payment_status == 'pending', 'under-review':serviceDetail?.payment_status == null }">
                     <!-- <span>{{(serviceDetail?.payment_status == "paid") ? 'Paid' : 'Unpaid'}}</span> -->
                     <span *ngIf="serviceDetail?.payment_status == 'pending'">Unpaid</span>
-                    <span *ngIf="serviceDetail?.paymentDetails?.doc_review_payment_status != null">Paid</span>
+                    <span *ngIf="serviceDetail?.payment_status == 'paid'">Paid</span>
                   </div>
                 </div>
               </div>
@@ -81,8 +81,8 @@
                   <h5>Application Type</h5>
                 </div>
                 <div class="appln-details">
-                  <span *ngIf="serviceDetail?.form_meta == 'work_permit'">Work Activity Permit</span>
-                  <!-- <span *ngIf="serviceDetail?.form_meta == 'testing_calibration'">Testing Calibration</span> -->
+                  <span *ngIf="serviceDetail?.form_meta == 'work_activity'">Work Activity Permit</span>
+                  <span *ngIf="serviceDetail?.form_meta == 'no_objection'">No Objection Certificate</span>
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -218,17 +218,157 @@
             </div>
           </div>
         </div>
+
+        <div class="col-md-6" *ngIf="serviceDetail?.form_meta == 'work_activity'">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="appln-subhdr">
+                <h5>ACTIVITIES & SCOPE</h5>
+              </div>
+              <hr>
+            </div>
+          </div>
+
+          <div class="row status-det status_sub_table">
+            <div class="col-md-12">
+              <div class="table-appln">
+                <table>
+                    <tr>
+                        <td>Activity Section:</td>
+                        <td colspan="2">
+                          <ng-container *ngIf="activitySection?.laboratory == true">Laboratory</ng-container>
+                          <ng-container *ngIf="activitySection?.laboratory == true && (activitySection?.inspection_body == true || activitySection?.certification_body == true)">, </ng-container>
+
+                          <ng-container *ngIf="activitySection?.inspection_body == true">Inspection Body</ng-container>
+                          <ng-container *ngIf="activitySection?.inspection_body == true && (activitySection?.certification_body == true )">, </ng-container>
+
+                          <ng-container *ngIf="activitySection?.certification_body == true">Certification Body</ng-container>
+                        </td>
+                    </tr>
+                    <tr *ngIf="scopes_to_be_authorized">
+                        <td>Scopes To Be Authorized:</td>
+                        <td colspan="2">{{scopes_to_be_authorized}}</td>
+                    </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6" *ngIf="serviceDetail?.form_meta == 'work_activity'">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="appln-subhdr">
+                <h5>DOCUMENT ATTACHED TO THE APPLICATION</h5>
+              </div>
+              <hr>
+            </div>
+          </div>
+
+          <div class="row status-det status_sub_table">
+            <div class="col-md-12">
+              <div class="table-appln">
+                <table>
+                    <tr *ngIf="licence_document_path">
+                        <td>License Documents:</td>
+                        <td>
+                          <div class="data-main-attach">
+                              <div class="data-attach">
+                                <h5>
+                                    <a href="javascript:void(0)">{{licence_document}}</a>
+                                </h5>
+                              </div>
+                              <div class="icn-appln">
+                                <!-- <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(licence_document_path)">
+                                    <span class="icon-eye"></span>
+                                </a> -->
+                                <a target="_blank" [href]="licence_document_path"> 
+                                    <span class="icon-download"></span>
+                                </a>
+                              </div>
+                          </div>
+                        </td>
+                    </tr>
+
+                    <tr *ngIf="quality_manual_path">
+                      <td>Quality Manual:</td>
+                      <td>
+                        <div class="data-main-attach">
+                            <div class="data-attach">
+                              <h5>
+                                  <a href="javascript:void(0)">{{quality_manual}}</a>
+                              </h5>
+                            </div>
+                            <div class="icn-appln">
+                              <!-- <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(quality_manual_path)">
+                                  <span class="icon-eye"></span>
+                              </a> -->
+                              <a target="_blank" [href]="quality_manual_path"> 
+                                  <span class="icon-download"></span>
+                              </a>
+                            </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr *ngIf="work_instruction_path">
+                      <td>Internal Procedures & Work Instruction:</td>
+                      <td>
+                        <div class="data-main-attach">
+                            <div class="data-attach">
+                              <h5>
+                                  <a href="javascript:void(0)">{{work_instruction}}</a>
+                              </h5>
+                            </div>
+                            <div class="icn-appln">
+                              <!-- <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(work_instruction_path)">
+                                  <span class="icon-eye"></span>
+                              </a> -->
+                              <a target="_blank" [href]="work_instruction_path"> 
+                                  <span class="icon-download"></span>
+                              </a>
+                            </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr *ngIf="check_list_path">
+                      <td>Checklkist related to the International Standard:</td>
+                      <td>
+                        <div class="data-main-attach">
+                            <div class="data-attach">
+                              <h5>
+                                  <a href="javascript:void(0)">{{check_list}}</a>
+                              </h5>
+                            </div>
+                            <div class="icn-appln">
+                              <!-- <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(check_list_path)">
+                                  <span class="icon-eye"></span>
+                              </a> -->
+                              <a target="_blank" [href]="check_list_path"> 
+                                  <span class="icon-download"></span>
+                              </a>
+                            </div>
+                        </div>
+                      </td>
+                    </tr>
+                    
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
         
       </div>
       
-      <div class="row m-0" *ngIf="serviceDetail?.form_meta != 'halal_conformity_bodies'">
+      <div class="row m-0">
         <div class="col-md-12">
           <div class="row status-det-wrapper">
             <div class="col-md-12 p-0">
               <div class="row">
                 <div class="col-md-12">
                   <div class="appln-subhdr">
-                    <h5>BOARD MEMBERS OF THE COMPANY</h5>
+                    <h5>BOARD MEMBERS</h5>
                   </div>
                   <hr>
                 </div>
@@ -251,8 +391,409 @@
           </div>
         </div>
       </div>
+
+      <!-- NOC Details -->
+      <ng-container *ngIf="serviceDetail?.form_meta == 'no_objection'">
+        <div class="row m-0 appn-cnt-data">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="appln-subhdr">
+                  <h5>CAB INFORMATION</h5>
+                </div>
+              </div>
+            </div> 
+            <div class="row status-det">
+              <div class="col-md-12">
+                <div class="table-appln">
+                  <table>
+                    <tr>
+                      <td width="25%">Laboratory</td>
+                      <td>
+                        <ng-container *ngIf="nocCabTypeData['lab'].length">
+                           <ng-container  *ngFor="let item of nocCabTypeData['lab']; let k = index">                                
+                                <span>{{item}}</span><ng-container *ngIf="k < nocCabTypeData['lab'].length-1">,</ng-container>
+                           </ng-container>
+                        </ng-container>
+                      </td>                      
+                    </tr>
+                    <tr>
+                      <td>Inspection Body</td>
+                      <td>
+                      <ng-container *ngIf="nocCabTypeData['ib'].length">
+                        <ng-container  *ngFor="let item of nocCabTypeData['ib']; let k = index">
+                          <span>{{item}}</span><ng-container *ngIf="k < nocCabTypeData['ib'].length-1">,</ng-container>
+                        </ng-container>
+                     </ng-container>  
+                    </td>                 
+                    </tr>
+                    <tr>
+                      <td>Certification Body</td>
+                      <td>
+                      <ng-container *ngIf="nocCabTypeData['cb'].length">
+                        <ng-container  *ngFor="let item of nocCabTypeData['cb']; let k = index">
+                          <span>{{item}}</span><ng-container *ngIf="k < nocCabTypeData['cb'].length-1">,</ng-container>
+                        </ng-container>
+                     </ng-container>   
+                    </td>                   
+                    </tr>
+                    <tr>
+                      <td>Halal CAB</td>
+                      <td>
+                      <ng-container *ngIf="nocCabTypeData['hcab'].length">
+                        <ng-container  *ngFor="let item of nocCabTypeData['hcab']; let k = index">
+                          <span>{{item}}</span><ng-container *ngIf="k < nocCabTypeData['hcab'].length-1">,</ng-container>
+                        </ng-container>
+                     </ng-container> 
+                    </td>                    
+                    </tr>                    
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>          
+        </div>
+
+        <div class="row m-0 appn-cnt-data">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="appln-subhdr">
+                  <h5>LIST OF INSTRUMENTS AND EQUIPMENTS</h5>
+                </div>
+              </div>
+            </div>
+            <div class="row" [ngStyle]="{'padding-left': '15px'}">
+              <div class="row">
+                <div class="col-md-12">
+                    <div class="table-appln scope-data" *ngIf="nocTableScopeData.listOfIntEquip.length"  [ngStyle]="{'width': '651px'}">                        
+                        <table width="100%">
+                        <tr>
+                            <th>Name Of Instrument / Equipment</th>
+                            <th>Usage Of Instrument / Equipment</th>
+                        </tr>
+                        <tr *ngFor="let item of nocTableScopeData.listOfIntEquip;">
+                            <td>{{item.name_od_equip}}</td>
+                            <td>{{item.usage_of_equip}}</td>
+                        </tr>
+                      </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row m-0 appn-cnt-data">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="appln-subhdr">
+                  <h5>LIST OF STAFF</h5>
+                </div>
+              </div>
+            </div>
+            <div class="row" [ngStyle]="{'padding-left': '15px'}">
+              <div class="row">
+                <div class="col-md-12">
+                    <div class="table-appln scope-data" *ngIf="nocTableScopeData.listOfStaff.length" [ngStyle]="{'width': '650px'}">                        
+                        <table width="100%">
+                        <tr>
+                            <th>Job Title</th>
+                            <th>Qualification</th>
+                            <th>Experience</th>
+                        </tr>
+                        <tr *ngFor="let item of nocTableScopeData.listOfStaff;">
+                            <td>{{item.job_title}}</td>
+                            <td>{{item.qualification}}</td>
+                            <td>{{item.experience}}</td>
+                        </tr>
+                      </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row m-0" *ngIf="serviceDetail?.form_meta == 'no_objection'">
+          <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="appln-subhdr">
+                        <h5>AUTHORIZATION OF THE APPLICATION</h5>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+            <div class="row status-det">
+              <div class="col-md-12">
+                <div class="table-appln">
+                  <table>
+                    <tr>
+                      <td width="25%">Organization Name</td>
+                      <td>
+                        <span>{{serviceDetail?.onBehalfApplicantDetails.organization_name}}</span>
+                      </td>                      
+                    </tr>
+                    <tr>
+                      <td>Representative Name</td>
+                      <td>
+                        <span>{{serviceDetail?.onBehalfApplicantDetails.representative_name}}</span>
+                      </td>                 
+                    </tr>
+                    <tr>
+                      <td>Designation</td>
+                      <td>
+                        <span>{{serviceDetail?.onBehalfApplicantDetails.designation}}</span>
+                      </td>                   
+                    </tr>
+                    <tr>
+                      <td>Digital SIgnature</td>
+                      <td>
+                        <span>{{serviceDetail?.onBehalfApplicantDetails.digital_signature}}</span>
+                      </td>                    
+                    </tr> 
+                    <tr>
+                      <td>Application Date</td>
+                      <td>
+                        <span>{{serviceDetail?.onBehalfApplicantDetails.application_date | date:'dd-MM-yyyy'}}</span>
+                      </td>                    
+                    </tr>                    
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        <!-- CAB INFORMATION END -->
+        <div class="row m-0 appn-cnt-data">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="appln-subhdr">
+                  <h5>List Of Services Scope</h5>
+                </div>
+              </div>
+            </div> 
+            <div class="row status-det">
+              <div class="col-md-12">
+                  <ng-container *ngIf="nocTableScopeData != null">
+                    <ng-container *ngFor="let item of nocTableScopeData | keyvalue">
+
+                      <!-- For Testing -->
+                      <ng-container *ngIf="item.key != null && item.key === 'testing_lab'">
+                        <ng-container *ngFor="let item1 of item.value | keyvalue">
+                            <!-- {{item1.key}} -->
+                             <ng-container *ngIf="item1.key != null && item1.key === 'testingLabCheckDetails'">
+                              <div class="appln-subhdr mt-3">
+                                <h5>FOR TESTING LAB : (ISO / IEC 17025)</h5>
+                              </div>
+                               <!-- 1111 = {{item1.value | json}} -->
+                              <ng-container *ngFor="let item2 of item1.value | keyvalue">
+                                   <!-- ........  {{item2.key}} ::  {{item2.value.length }} -->
+                                   <ng-container *ngIf="item2.key != null && item2.key === 'checkItems' && item2.value.length > 0">
+                                    <div class="table-appln scope-data">                        
+                                      <table width="100%">
+                                      <tr>
+                                          <th>Items</th>
+                                      </tr>
+                                      <tr>
+                                          <td [ngStyle]="{'text-align': 'left'}">
+                                            <ng-container *ngFor="let item3 of item2.value;let k = index;">
+                                              {{item3.value}} <ng-container *ngIf="k < item2.value.length-1">,</ng-container>
+                                            </ng-container>
+                                          </td>
+                                      </tr>
+                                    </table>
+                                    </div>
+                                   </ng-container>
+                                   <ng-container *ngIf="item2.key != null && item2.key === 'checkItemsOthers' && item2.value.length > 0">
+                                    <div class="table-appln scope-data">                        
+                                      <table width="100%">
+                                      <tr>
+                                          <th>Others</th>
+                                      </tr>
+                                      <tr *ngFor="let item3 of item2.value;">
+                                          <td [ngStyle]="{'text-align': 'left'}">{{item3.value}}</td>
+                                      </tr>
+                                    </table>
+                                    </div>                                          
+                                   </ng-container>
+                              </ng-container>
+                             </ng-container>
+                             <ng-container *ngIf="item1.key != null && item1.key === 'testingLabInformation'">
+                              <div class="col-md-12">
+                                <div class="row"  >
+                                  <!-- @{{item1.value | json}} -->
+                                  <div class="col-md-12" [ngStyle]="{'padding': '0'}">
+                                    <div class="appln-subhdr">
+                                      <h5>Table Data</h5>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-appln scope-data" *ngIf="item1.value.length"> 
+                                          <!-- @@@{{item1.value | json}} -->
+                                            <table width="100%">
+                                            <tr>
+                                                <th>Type of task	</th>
+                                                <th>Material/Products	</th>
+                                                <th>Task Name</th>
+                                                <th>Standard Method</th>
+                                            </tr>
+                                            <ng-container *ngIf="item1.value.length > 0">
+                                            <tr *ngFor="let item4 of item1.value;">
+                                                <td>{{item4.task_type}}</td>
+                                                <td>{{item4.product}}</td>
+                                                <td>{{item4.task_name}}</td>
+                                                <td>{{item4.method}}</td>
+                                            </tr>                                            
+                                          </ng-container>
+                                          <ng-container *ngIf="item1.value.length == 0">
+                                            <td colspan="4">No Records</td>
+                                          </ng-container>
+                                          </table>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                             </ng-container>
+                        </ng-container>
+                  </ng-container>
+                      <!-- For Calibration -->
+                      <ng-container *ngIf="item.key != null && item.key === 'calibration_lab'">
+                            <ng-container *ngFor="let item1 of item.value | keyvalue">
+                                <!-- {{item1.key}} -->
+                                 <ng-container *ngIf="item1.key != null && item1.key === 'calibrationLabCheckDetails'">
+                                  <div class="appln-subhdr mt-3">
+                                    <h5>FOR CALIBRATION LAB : (ISO / IEC 17025)</h5>
+                                  </div>
+                                   <!-- 1111 = {{item1.value | json}} -->
+                                  <ng-container *ngFor="let item2 of item1.value | keyvalue">
+                                       <!-- ........  {{item2.key}} ::  {{item2.value.length }} -->
+                                       <ng-container *ngIf="item2.key != null && item2.key === 'checkItems' && item2.value.length > 0">
+                                        <div class="table-appln scope-data">                        
+                                          <table width="100%">
+                                          <tr>
+                                              <th>Items</th>
+                                          </tr>
+                                          <tr>
+                                              <td [ngStyle]="{'text-align': 'left'}">
+                                                <ng-container *ngFor="let item3 of item2.value;let k = index;">
+                                                  {{item3.value}} <ng-container *ngIf="k < item2.value.length-1">,</ng-container>
+                                                </ng-container>
+                                              </td>
+                                          </tr>
+                                        </table>
+                                        </div>
+                                       </ng-container>
+                                       <ng-container *ngIf="item2.key != null && item2.key === 'checkItemsOthers' && item2.value.length > 0">
+                                        <div class="table-appln scope-data">                        
+                                          <table width="100%">
+                                          <tr>
+                                              <th>Others</th>
+                                          </tr>
+                                          <tr *ngFor="let item3 of item2.value;">
+                                              <td [ngStyle]="{'text-align': 'left'}">{{item3.value}}</td>
+                                          </tr>
+                                        </table>
+                                        </div>                                          
+                                       </ng-container>
+                                  </ng-container>
+                                 </ng-container>
+                                 <ng-container *ngIf="item1.key != null && item1.key === 'calibrationLabInformation'">
+                                  <div class="col-md-12">
+                                    <div class="row"  >
+                                      <div class="col-md-12" [ngStyle]="{'padding': '0'}">
+                                        <div class="appln-subhdr">
+                                          <h5>Table Data</h5>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-appln scope-data" *ngIf="item1.value.length">                        
+                                                <table width="100%">
+                                                <tr>
+                                                    <th>Calibration Field/Measured Quantity</th>
+                                                    <th>Calibration Methods</th>
+                                                </tr>
+                                                <ng-container *ngIf="item1.value.length > 0">
+                                                <tr *ngFor="let item4 of item1.value;">
+                                                    <td>{{item4.measured_quantity}}</td>
+                                                    <td>{{item4.methods}}</td>
+                                                </tr>
+                                              </ng-container>
+                                                <ng-container *ngIf="item1.value.length == 0">
+                                                  <td colspan="4">No Records</td>
+                                                </ng-container>
+                                              </table>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                 </ng-container>
+
+
+                            </ng-container>
+                      </ng-container>
+                      
+                    </ng-container>
+                  </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </ng-container>
+
+      <ng-container *ngIf="serviceDetail?.form_meta == 'work_activity'">
+        <div class="row m-0 appn-cnt-data" *ngIf="onBehalfApplicantDetails && onBehalfApplicantDetails!= null">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="appln-subhdr">
+                  <h5>ON THE BEHALF OF THE APPLICANT COMPANY</h5>
+                </div>
+              </div>
+            </div>
+            <div class="row status-det">
+                <div class="col-md-12">
+                  <div class="table-appln">
+                    <table>
+                      <tr>
+                        <td>Organization Name</td>
+                        <td>{{onBehalfApplicantDetails?.organization_name}}</td>
+                        <td>Payment Date</td>
+                        <td>{{onBehalfApplicantDetails?.application_date | date:'dd-MM-yyyy'}}</td>
+                      </tr>
+                      <tr>
+                        <td>Representative Name</td>
+                        <td>{{onBehalfApplicantDetails?.representative_name}}</td>
+                        <td>Transaction No</td>
+                        <td>{{onBehalfApplicantDetails?.designation}}</td>
+                      </tr>
+                      <tr>
+                        <td>Digital Signature</td>
+                        <td>{{onBehalfApplicantDetails?.digital_signature}}</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </ng-container>
       
-      <div class="row m-0 appn-cnt-data" *ngIf="paymentDetails && paymentDetails!= null">
+      <div class="row m-0 appn-cnt-data" *ngIf="serviceDetail?.paymentDetails && serviceDetail?.paymentDetails!= null">
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-12">
@@ -267,21 +808,21 @@
                   <table>
                     <tr>
                       <td>Voucher Code</td>
-                      <td>{{paymentDetails?.voucher_no}}</td>
+                      <td>{{serviceDetail?.paymentDetails?.voucher_no}}</td>
                       <td>Payment Date</td>
-                      <td>{{paymentDetails?.voucher_date | date:'dd-MM-yyyy'}}</td>
+                      <td>{{serviceDetail?.paymentDetails?.voucher_date | date:'dd-MM-yyyy'}}</td>
                     </tr>
                     <tr>
                       <td>Payment Amount</td>
-                      <td>AED {{paymentDetails?.amount}}</td>
+                      <td>AED {{serviceDetail?.paymentDetails?.amount}}</td>
                       <td>Transaction No</td>
-                      <td>{{paymentDetails?.transaction_no}}</td>
+                      <td>{{serviceDetail?.paymentDetails?.transaction_no}}</td>
                     </tr>
                     <tr>
                       <td>Payment Method</td>
-                      <td>{{paymentDetails?.payment_method}}</td>
+                      <td>{{serviceDetail?.paymentDetails?.payment_method}}</td>
                       <td>Payment Made By</td>
-                      <td>{{paymentDetails?.payment_method}}</td>
+                      <td>{{serviceDetail?.paymentDetails?.payment_made_by}}</td>
                     </tr>
                     <tr>
                       <td>Mobile Number</td>

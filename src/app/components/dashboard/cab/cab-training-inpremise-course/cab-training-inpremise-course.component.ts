@@ -11,7 +11,7 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class CabTrainingInpremiseCourseComponent implements OnInit {
 
-  subscriptions: Subscription[] = [];
+  subscriptions: Subscription[] = []; 
   loaderData: boolean = true;
   allCourseTraining:any[] = [];
   totalRow:any = 5;
@@ -26,11 +26,28 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
   inPremiseForm:any = {};
   trainingCartArr:any[] = []; 
 
+  searchCountryLists: any[] =[];
+
   constructor(public _service: AppService, public _constant:Constants, public _trainerService: TrainerService) { }
 
   ngOnInit() {
     this.loadTrainingData();
   }
+
+  getPlaceName()
+   {
+     if(typeof this.inPremiseForm.select_location != 'undefined')
+     {
+       this._service.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.inPremiseForm.select_location+'.json?access_token='+this._service.mapboxToken+'','')
+         .subscribe(res => {
+             ////console.log(res['features']);
+             this.searchCountryLists = res['features'];
+           },
+           error => {
+           
+       })
+     }
+   }
 
   addTraining(obj,index,id) {
     // console.log(obj);
