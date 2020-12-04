@@ -81,8 +81,8 @@
                   <h5>Application Type</h5>
                 </div>
                 <div class="appln-details">
-                  <span *ngIf="serviceDetail?.form_meta == 'work_activity'">Work Activity Permit</span>
-                  <span *ngIf="serviceDetail?.form_meta == 'no_objection'">No Objection Certificate</span>
+                  <span *ngIf="serviceDetail?.training_form_type == 'public_training'">Public Training</span>
+                  <span *ngIf="serviceDetail?.training_form_type == 'inprimise'">In Premise</span>
                 </div>
               </div>
               <div class="col border-left-dash">

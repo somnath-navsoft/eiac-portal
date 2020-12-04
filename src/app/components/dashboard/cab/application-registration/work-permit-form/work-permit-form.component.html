@@ -529,7 +529,7 @@
                                         <div class="col-md-6">
                                             <div class="matupload position-relative view_file">
                                                 <mat-form-field  class="lng-data">
-                                                    <input matInput readonly="true" name="quality_manual" [(ngModel)]="step3Data.quality_manual" placeholder="Upload License Documents">
+                                                    <input matInput readonly="true" name="quality_manual" [(ngModel)]="step3Data.quality_manual" placeholder="Upload Quality Manual">
                                         
                                                     <a *ngIf="quality_manual_path" href="{{quality_manual_path}}" target="_blank">
                                                         <span class="icon-eye visible-pwd"></span>
@@ -550,7 +550,7 @@
                                         <div class="col-md-6">
                                             <div class="matupload position-relative view_file">
                                                 <mat-form-field  class="lng-data">
-                                                    <input matInput readonly="true" name="work_instruction" [(ngModel)]="step3Data.work_instruction" placeholder="Upload License Documents">
+                                                    <input matInput readonly="true" name="work_instruction" [(ngModel)]="step3Data.work_instruction" placeholder="Upload Internal Procedures & Work Instruction">
                                         
                                                     <a *ngIf="work_instruction_path" href="{{work_instruction_path}}" target="_blank">
                                                         <span class="icon-eye visible-pwd"></span>
@@ -568,7 +568,7 @@
                                         <div class="col-md-6">
                                             <div class="matupload position-relative view_file">
                                                 <mat-form-field  class="lng-data">
-                                                    <input matInput readonly="true" name="check_list" [(ngModel)]="step3Data.check_list" placeholder="Upload License Documents">
+                                                    <input matInput readonly="true" name="check_list" [(ngModel)]="step3Data.check_list" placeholder="Upload Checklkist related to the International Standard">
                                         
                                                     <a *ngIf="check_list_path" href="{{check_list_path}}" target="_blank">
                                                         <span class="icon-eye visible-pwd"></span>
@@ -684,8 +684,8 @@
 
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
-                                                <mat-label>Behalf Designation</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput required autocomplete="off" placeholder="Behalf Designation" name="behalf_designation" [(ngModel)]="step4Data.behalf_designation">
+                                                <mat-label>Designation</mat-label>
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput required autocomplete="off" placeholder="Designation" name="behalf_designation" [(ngModel)]="step4Data.behalf_designation">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
