@@ -99,7 +99,7 @@
                   <h5>Training Duration</h5>
                 </div>
                 <div class="appln-details">
-                  <span *ngIf="serviceDetail?.date_of_establishment">{{serviceDetail?.training_duration}}</span>
+                  <span>{{training_duration}} days</span>
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -107,7 +107,7 @@
                   <h5>Course Title</h5>
                 </div>
                 <div class="appln-details">
-                  <span *ngIf="serviceDetail?.physical_location_address">{{serviceDetail?.course_title}}</span>
+                  <span>{{course_title}}</span>
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -136,12 +136,12 @@
               <div class="col-md-12">
                 <div class="table-appln">
                   <table>
-                    <tr>
+                    <!-- <tr>
                       <td>Date of Issue</td>
                       <td *ngIf="serviceDetail?.date_of_issue">{{serviceDetail?.date_of_issue | date: 'dd-MM-yyyy'}}</td>
                       <td>Date of expiry</td>
                       <td *ngIf="serviceDetail?.date_of_expiry">{{serviceDetail?.date_of_expiry | date: 'dd-MM-yyyy'}}</td>
-                    </tr>
+                    </tr> -->
                     <!-- <tr>
                       <td>Type of Accreditation</td>
                       <td>{{(serviceDetail?.accredation_criteria == 1) ? 'Initial' : 'Extension' }}</td>
@@ -161,8 +161,8 @@
                     <tr>
                       <td>Mailing Address</td>
                       <td *ngIf="serviceDetail?.mailing_address">{{serviceDetail?.mailing_address}}</td>
-                      <td>PO Box No./ZIP Code</td>
-                      <td *ngIf="serviceDetail?.po_box">{{serviceDetail?.po_box}}</td>
+                      <!-- <td>PO Box No./ZIP Code</td>
+                      <td *ngIf="serviceDetail?.po_box">{{serviceDetail?.po_box}}</td> -->
                     </tr>
                     <tr>
                       <td>Official E-mail Address</td>
@@ -250,6 +250,83 @@
           </div>
         </div>
       </div>
+
+      <div class="row form-bdy m-0">
+        <div class="wrapper">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12 p-0">
+                        <div class="form-subhdr">
+                            <h5>FEES DETAILS</h5>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-training">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Program Name</th>
+                                        <th>Fee/Day Per Trainee</th>
+                                        <th>No. of Participants</th>
+                                        <th>Amount (AED)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="fee">
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Tuition Fees</td>
+                                        <td>{{fee_day_pertime1}}</td>
+                                        <td>
+                                            <input type="text" class="fee-inp" name="no_of_participants1" [disabled]="!editable" [(ngModel)]="noofParticipants">
+                                        </td>
+                                        <td>{{tutionFees}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>TAX (VAT)</td>
+                                        <td>{{fee_day_pertime2}}</td>
+                                        <td>
+                                            <input type="text" class="fee-inp" name="no_of_participants2" [disabled]="!editable" [(ngModel)]="noofParticipants">
+                                        </td>
+                                        <td>{{taxVat}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Knowledge Fees - Per Participant درهم المعرفة</td>
+                                        <td>{{fee_day_pertime3}}</td>
+                                        <td>
+                                            <input type="text" class="fee-inp" name="no_of_participants3" [disabled]="!editable" [(ngModel)]="noofParticipants">
+                                        </td>
+                                        <td>{{knowledgeFees}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>Innovetion Fees - Per Participant درهم الابتكار</td>
+                                        <td>{{fee_day_pertime4}}</td>
+                                        <td>
+                                            <input type="text" class="fee-inp" name="no_of_participants4" [disabled]="!editable" [(ngModel)]="noofParticipants">
+                                        </td>
+                                        <td>{{innovationFees}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="3"><b>Total</b></td>
+                                        <td><b>{{subTotal}}</b></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
       
       <div class="row m-0 appn-cnt-data" *ngIf="paymentDetails && paymentDetails!= null">
         <div class="col-md-12">
