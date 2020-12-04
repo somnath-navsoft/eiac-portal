@@ -19,6 +19,7 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
   ownershipOfOrg:any;
   ownOrgMembInfo:any;
   paymentDetails:any;
+  participantTraineeDetails:any[] = [];
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService) { }
@@ -36,9 +37,10 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
         result => {
           this.loader = true;
           this.serviceDetail = result['data'];
-          this.ownershipOfOrg = result['data']['ownershipOfOrg'];
-          this.ownOrgMembInfo = result['data']['bodMember'];
+          // this.ownershipOfOrg = result['data']['ownershipOfOrg'];
+          // this.ownOrgMembInfo = result['data']['bodMember'];
           this.paymentDetails = result['data'].paymentDetails;
+          this.participantTraineeDetails = result['data']['eventParticipant'];
         })
     )
   }

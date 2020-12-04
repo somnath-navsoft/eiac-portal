@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, Subscription } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
 
 declare let paypal: any;
 @Component({
@@ -89,6 +90,9 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   paymentFile:any;
   paymentDetailsChk:any;
   paymentFilePath:any;
+  public errorLoader: boolean = false;
+  public loaderPdf: boolean = false;
+  public completeLoaded: boolean = false;
 
   constructor(private Service: AppService, private http: HttpClient,
     public _toaster: ToastrService, private _router: Router, private _route: ActivatedRoute,
@@ -243,7 +247,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             this.step1Data.country = res['data'].country;
             this.step1Data.state = res['data'].state;
             this.step1Data.city = res['data'].city;
-            this.step1Data.telephone_number = res['data'].tel_no;
+            this.step1Data.telephone_number = res['data'].telephone_number;
             this.step1Data.fax_no = res['data'].fax_no;
             this.step1Data.official_email = res['data'].official_email;
             this.step1Data.official_website = res['data'].official_website;
@@ -264,7 +268,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             if(res['data'].onBehalfApplicantDetails != null) {
               this.step5Data.organization_name = res['data'].onBehalfApplicantDetails.organization_name;
               this.step5Data.representative_name = res['data'].onBehalfApplicantDetails.representative_name;
-              this.step5Data.behalf_designation = res['data'].onBehalfApplicantDetails.designation;
+              this.step5Data.designation = res['data'].onBehalfApplicantDetails.designation;
               this.step5Data.digital_signature = res['data'].onBehalfApplicantDetails.digital_signature;
             }
 
@@ -301,6 +305,10 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             
           })
     }
+  }
+
+  removeRow(obj,index) {
+    obj.splice(index,1);
   }
 
   loadCountryStateCity = async() => {
@@ -548,7 +556,39 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   closeDialog(){
     this.modalService.dismissAll();
   }
+
+  onError(error: any) {
+    // do anything
+    //////console.log('PDF Error: ', error)
+    this.errorLoader = true;
+  }
   
+  completeLoadPDF(pdfLoad: PDFDocumentProxy){
+    //////console.log("Completed Load PDF :: ", pdfLoad);
+    this.loaderPdf = false;
+    this.completeLoaded = true;
+  }
+  
+  onProgress(progressData: PDFProgressData){
+   //////console.log("Loding Pdf :: ", progressData);
+    this.loaderPdf = true;
+  }
+
+  validateFile1(fileEvent: any, type?: any) {
+    var file_name = fileEvent.target.files[0].name;
+    var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
+    var ex_type = ['pdf', 'PDF'];
+    var ex_check = this.Service.isInArray(file_exe,ex_type);
+    if(ex_check){
+      this.paymentReceiptValidation = true;
+      //if(type == undefined){
+        this.voucherFile.append('voucher_invoice',fileEvent.target.files[0]);
+      //}
+    }else{
+      this.paymentReceiptValidation = false;
+    }
+  }
+
   onSubmitStep5(ngForm5){
     // this.Service.moveSteps('authorization', 'proforma_invoice', this.headerSteps);
     if(ngForm5.form.valid) {
@@ -613,8 +653,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     let custPrice: any = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;
     this.total = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//0.05;
     this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity: 1, price: custPrice, currency: 'USD'});
-    this.total = 1;
-    custPrice = 0.1;
+    // this.total = 1;
+    // custPrice = 0.1;
       if(this.total > 0){
         ////console.log("Calculate price: ", calcPrice);
         this.transactionsItem['amount']['total'] = custPrice.toFixed(2);
@@ -710,10 +750,10 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
   }
 
-  onSubmitPaymentInformation(ngForm6: any, type?: boolean){
+  onSubmitPaymentInformation(ngForm7: any, type?: boolean){
     ////console.log("payment submitting.....");
     this.publicTrainingForm = {};
-    this.publicTrainingForm.step6 = {};
+    this.publicTrainingForm.step7 = {};
     
       let dtFormat: string = '';
       if(this.voucherSentData['payment_date'] != undefined && 
@@ -744,7 +784,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       // this.voucherFile.append('application_id',this.formApplicationId);
           
       this.loader = false;
-      if(ngForm6.form.valid && this.paymentReceiptValidation != false) {
+      if(ngForm7.form.valid && this.paymentReceiptValidation != false) {
         // //console.log(this.voucherFile);
           this._trainerService.paymentVoucherSaveTrainers((this.voucherFile))
           .subscribe(
@@ -777,7 +817,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       }else if(type != undefined && type == true && this.paymentReceiptValidation != false){
         
         this.publicTrainingForm = {};
-        this.publicTrainingForm.step6 = {};
+        this.publicTrainingForm.step7 = {};
         
           let dtFormat: string = '';
           if(this.voucherSentData['payment_date'] != undefined && 

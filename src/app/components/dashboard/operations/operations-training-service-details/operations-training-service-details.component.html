@@ -85,7 +85,7 @@
                   <span *ngIf="serviceDetail?.training_form_type == 'inprimise'">In Premise</span>
                 </div>
               </div>
-              <div class="col border-left-dash">
+              <!-- <div class="col border-left-dash">
                 <div class="appln-data">
                   <h5>Establishment Name</h5>
                 </div>
@@ -118,7 +118,7 @@
                   <span *ngIf="serviceDetail?.trade_license_number != null">{{serviceDetail?.trade_license_number}}</span>
                   <span *ngIf="serviceDetail?.trade_license_number == null">N/A</span>
                 </div>
-              </div>
+              </div> -->
             </div>
         </div>
       </div>
@@ -172,7 +172,7 @@
                     </tr>
                     <tr>
                       <td>Telephone Number</td>
-                      <td *ngIf="serviceDetail?.telephone">{{_service.removePlus(serviceDetail?.telephone)}}</td>
+                      <td *ngIf="serviceDetail?.telephone_number">{{_service.removePlus(serviceDetail?.telephone_number)}}</td>
                       <td>Fax Number</td>
                       <td *ngIf="serviceDetail?.fax_no">{{serviceDetail?.fax_no}}</td>
                     </tr>
@@ -183,6 +183,73 @@
         </div>
       </div>
       
+      <div class="row m-0" *ngIf="ptParticipation != '' && ptParticipation != null">
+        <div class="col-md-12">
+          <div class="row status-det-wrapper">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="appln-subhdr">
+                    <h5>PARTICIPANT/TRAINEES DETAILS</h5>
+                  </div>
+                  <hr>
+                </div>
+              </div>
+              
+              <div class="row" >
+                <div class="col-md-12">
+                    <div class="table-content-health">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Participant/Trainee Name</th>
+                                    <th>E-mail Address</th>
+                                    <th>Phone Number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of participantTraineeDetails; let i = index;">
+                                    <td>
+                                        <div class="participant_trainee">
+                                            <mat-form-field class="cab-data mr-2">
+                                                <mat-label>First Name</mat-label>
+                                                <input matInput placeholder="" name="first_name_{{i}}" [(ngModel)]="participantTraineeDetails[i].first_name" readonly> 
+                                            </mat-form-field>
+
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Last Name</mat-label>
+                                                <input matInput placeholder="" name="last_name_{{i}}" [(ngModel)]="participantTraineeDetails[i].last_name" readonly> 
+                                            </mat-form-field>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Type Here</mat-label>
+                                            <input matInput placeholder="" name="email_address_{{i}}" [(ngModel)]="participantTraineeDetails[i].email_address" readonly> 
+                                        </mat-form-field>
+                                        
+                                    </td>
+
+                                    <td>
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Type Here</mat-label>
+                                            <input matInput name="phone_number_{{i}}" [(ngModel)]="participantTraineeDetails[i].phone_number" readonly> 
+                                        </mat-form-field>
+                                    </td>
+                                    
+                                </tr>
+                            
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
       
       <div class="row m-0 appn-cnt-data" *ngIf="paymentDetails && paymentDetails!= null">
         <div class="col-md-12">
