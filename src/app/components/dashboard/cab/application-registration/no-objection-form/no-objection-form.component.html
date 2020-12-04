@@ -1409,7 +1409,8 @@ Please read Law No. 2 for 2010  carefully to ensure that you understand the poli
                                                 <span class="icon-attach attach-data"></span>
                                             </span>
                                             <p class="error" *ngIf="paymentReceiptValidation == false || paymentReceiptValidation == undefined">Please Upload a valid file (ex: pdf)</p>
-                                            <a class="image_file_link" *ngIf="paymentFile != false && paymentFile != true" target="_blank" [href]="paymentFile">Link</a>
+                                            <!-- <a class="image_file_link" *ngIf="paymentFile != false && paymentFile != true" target="_blank" [href]="paymentFile">Link</a> -->
+                                            <a class="image_file_link" *ngIf="paymentFile != ''" target="_blank" [href]="paymentFile">Link</a>
                                         </div>
 
                                     </div>

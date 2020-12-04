@@ -477,6 +477,7 @@
                     <ng-container *ngFor="let item of nocTableScopeData | keyvalue">
                       <!-- @{{item.key}} : {{item.value}} -->
                       <!-- For Testing -->
+                     
                       <ng-container *ngIf="item.key != null && item.key === 'testing_lab'">
                         <ng-container *ngFor="let item1 of item.value | keyvalue">
                              <ng-container *ngIf="item1.key != null && item1.key === 'testingLabCheckDetails'">
@@ -553,7 +554,6 @@
                              </ng-container>
                         </ng-container>
                       </ng-container>
-
                       <!-- Halal CAB -->
                       <ng-container *ngIf="item.key != null && item.key === 'halal_lab'">
                         <ng-container *ngFor="let item1 of item.value | keyvalue">
@@ -867,7 +867,8 @@
         </div>
       </ng-container>
       
-      <div class="row m-0 appn-cnt-data" *ngIf="serviceDetail?.paymentDetails && serviceDetail?.paymentDetails!= null">
+      <ng-container *ngIf="serviceDetail.form_meta == 'work_activity'">
+      <div class="row m-0 appn-cnt-data" *ngIf="serviceDetail.paymentDetails && serviceDetail.paymentDetails!= null && serviceDetail.saved_step == 6 && serviceDetail.is_draft == false">
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-12">
@@ -903,10 +904,18 @@
                       <td *ngIf="paymentDetails?.mobile_no != null" colspan="3">{{_service.removePlus(paymentDetails?.mobile_no)}}</td>
                     </tr>
                     <tr>
-                      <td>Payment Receipt Document</td>
+                      <td>Proforma Receipt Document</td>
                       <td *ngIf="paymentDetails?.voucher_invoice != null" colspan="3">
                         <a [href]="_constant.mediaPath+'/media/'+paymentDetails?.voucher_invoice" target="_blank">
                           {{_service.getFileName(paymentDetails?.voucher_invoice)}}
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Payment Receipt Document</td>
+                      <td *ngIf="paymentDetails?.payment_receipt != ''" colspan="3">
+                        <a [href]="_constant.mediaPath+'/media/'+paymentDetails?.payment_receipt" target="_blank">
+                          {{_service.getFileName(paymentDetails?.payment_receipt)}}
                         </a>
                       </td>
                     </tr>
@@ -916,6 +925,67 @@
             </div>
         </div>
       </div>
+    </ng-container>
+    <ng-container *ngIf="serviceDetail?.form_meta == 'no_objection'">
+      <div class="row m-0 appn-cnt-data" *ngIf="serviceDetail?.paymentDetails && serviceDetail?.paymentDetails!= null && serviceDetail?.saved_step == 8 && serviceDetail?.is_draft == false">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="appln-subhdr">
+                <h5>PAYMENT INFORMATION</h5>
+              </div>
+            </div>
+          </div>
+          <div class="row status-det">
+              <div class="col-md-12">
+                <div class="table-appln">
+                  <table>
+                    <tr>
+                      <td>Voucher Code</td>
+                      <td>{{serviceDetail?.paymentDetails?.voucher_no}}</td>
+                      <td>Payment Date</td>
+                      <td>{{serviceDetail?.paymentDetails?.voucher_date | date:'dd-MM-yyyy'}}</td>
+                    </tr>
+                    <tr>
+                      <td>Payment Amount</td>
+                      <td>AED {{serviceDetail?.paymentDetails?.amount}}</td>
+                      <td>Transaction No</td>
+                      <td>{{serviceDetail?.paymentDetails?.transaction_no}}</td>
+                    </tr>
+                    <tr>
+                      <td>Payment Method</td>
+                      <td>{{serviceDetail?.paymentDetails?.payment_method}}</td>
+                      <td>Payment Made By</td>
+                      <td>{{serviceDetail?.paymentDetails?.payment_made_by}}</td>
+                    </tr>
+                    <tr>
+                      <td>Mobile Number</td>
+                      <td *ngIf="paymentDetails?.mobile_no != null" colspan="3">{{_service.removePlus(paymentDetails?.mobile_no)}}</td>
+                    </tr>
+                    <tr>
+                      <td>Proforma Receipt Document</td>
+                      <td *ngIf="paymentDetails?.voucher_invoice != null" colspan="3">
+                        <a [href]="_constant.mediaPath+'/media/'+paymentDetails?.voucher_invoice" target="_blank">
+                          {{_service.getFileName(paymentDetails?.voucher_invoice)}}
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Payment Receipt Document</td>
+                      <td *ngIf="paymentDetails?.payment_receipt != ''" colspan="3">
+                        <a [href]="_constant.mediaPath+'/media/'+paymentDetails?.payment_receipt" target="_blank">
+                          {{_service.getFileName(paymentDetails?.payment_receipt)}}
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </ng-container>
+
       <div class="row m-0">
         <div class="col-md-12">
           <div class="bttns-health bttn-staff">

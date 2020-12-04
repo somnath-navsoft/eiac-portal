@@ -684,6 +684,7 @@ export class NoObjectionFormComponent implements OnInit {
         .subscribe(
           res => {
             console.log(res,'urlVal')
+            //return;
             this.loader = true;
             
             if(res['data'].id && res['data'].id != '') {
@@ -1211,7 +1212,7 @@ export class NoObjectionFormComponent implements OnInit {
         });
 
     }else{
-      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+      this.toastr.warning('Please Fill required field','',{timeOut:5000});
     }
 
   }
@@ -1327,7 +1328,7 @@ export class NoObjectionFormComponent implements OnInit {
         });
 
     }else{
-      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:1500});
+      this.toastr.warning('Please Fill required field','',{timeOut:1500});
     }
     
   }
@@ -1535,7 +1536,7 @@ export class NoObjectionFormComponent implements OnInit {
         });
 
     }else{
-      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+      this.toastr.warning('Please Fill required field','',{timeOut:5000});
     }
   }
 
@@ -1947,7 +1948,7 @@ export class NoObjectionFormComponent implements OnInit {
                 }
           })    
         }else{
-          this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+          this.toastr.warning('Please Fill required field','',{timeOut:5000});
         }
   }
 
