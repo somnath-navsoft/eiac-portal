@@ -779,6 +779,10 @@ export class WorkPermitFormComponent implements OnInit {
     
   }
 
+  closeDialog(){
+    this.modalService.dismissAll();
+  }
+
   onSubmit4(ngForm4) {
     // this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
 
@@ -809,7 +813,7 @@ export class WorkPermitFormComponent implements OnInit {
           if(res['status'] == true) {
             
             // this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
-            if(this.paymentFilePath != ''){
+            if(this.paymentFilePath != '' && this.paymentFilePath != undefined){
               this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
             }
             else{

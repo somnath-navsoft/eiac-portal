@@ -219,7 +219,7 @@
           </div>
         </div>
 
-        <div class="col-md-6" *ngIf="serviceDetail.form_meta == 'work_activity'">
+        <div class="col-md-6" *ngIf="serviceDetail?.form_meta == 'work_activity'">
           <div class="row">
             <div class="col-md-12">
               <div class="appln-subhdr">
@@ -249,6 +249,136 @@
                         <td>Scopes To Be Authorized:</td>
                         <td colspan="2">{{scopes_to_be_authorized}}</td>
                     </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6" *ngIf="serviceDetail?.form_meta == 'work_activity'">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="appln-subhdr">
+                <h5>DOCUMENT ATTACHED TO THE APPLICATION</h5>
+              </div>
+              <hr>
+            </div>
+          </div>
+
+          <div class="row status-det status_sub_table">
+            <div class="col-md-12">
+              <div class="table-appln">
+                <table>
+                    <tr *ngIf="licence_document_path">
+                        <td>Upload License Documents:</td>
+                        <td>
+                          <div class="data-main-attach">
+                              <div class="data-attach">
+                                <h5>
+                                    <a href="javascript:void(0)">{{licence_document}}</a>
+                                </h5>
+                              </div>
+                              <div class="icn-appln">
+                                <!-- <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(licence_document_path)">
+                                    <span class="icon-eye"></span>
+                                </a> -->
+                                <a target="_blank" [href]="licence_document_path"> 
+                                    <span class="icon-download"></span>
+                                </a>
+                              </div>
+                          </div>
+                        </td>
+                    </tr>
+
+                    <tr *ngIf="quality_manual_path">
+                      <td>Upload Quality Manual:</td>
+                      <td>
+                        <div class="data-main-attach">
+                            <div class="data-attach">
+                              <h5>
+                                  <a href="javascript:void(0)">{{quality_manual}}</a>
+                              </h5>
+                            </div>
+                            <div class="icn-appln">
+                              <!-- <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(quality_manual_path)">
+                                  <span class="icon-eye"></span>
+                              </a> -->
+                              <a target="_blank" [href]="quality_manual_path"> 
+                                  <span class="icon-download"></span>
+                              </a>
+                            </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr *ngIf="work_instruction_path">
+                      <td>Upload Internal Procedures & Work Instruction:</td>
+                      <td>
+                        <div class="data-main-attach">
+                            <div class="data-attach">
+                              <h5>
+                                  <a href="javascript:void(0)">{{work_instruction}}</a>
+                              </h5>
+                            </div>
+                            <div class="icn-appln">
+                              <!-- <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(work_instruction_path)">
+                                  <span class="icon-eye"></span>
+                              </a> -->
+                              <a target="_blank" [href]="work_instruction_path"> 
+                                  <span class="icon-download"></span>
+                              </a>
+                            </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr *ngIf="check_list_path">
+                      <td>Upload Checklkist related to the International Standard:</td>
+                      <td>
+                        <div class="data-main-attach">
+                            <div class="data-attach">
+                              <h5>
+                                  <a href="javascript:void(0)">{{check_list}}</a>
+                              </h5>
+                            </div>
+                            <div class="icn-appln">
+                              <!-- <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(check_list_path)">
+                                  <span class="icon-eye"></span>
+                              </a> -->
+                              <a target="_blank" [href]="check_list_path"> 
+                                  <span class="icon-download"></span>
+                              </a>
+                            </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <!-- <tr>
+                        <td>Upload License Documents:</td>
+                        <td colspan="2">
+                          
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Upload Quality Manual:</td>
+                        <td colspan="2">
+                          
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Upload Internal Procedures & Work Instruction:</td>
+                        <td colspan="2">
+                          
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Upload Checklkist related to the International Standard:</td>
+                        <td colspan="2">
+                          
+                        </td>
+                    </tr> -->
                 </table>
               </div>
             </div>
