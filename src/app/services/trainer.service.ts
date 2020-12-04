@@ -70,7 +70,7 @@ export class TrainerService {
   }
 
   trainingDetailsServ(id) {
-    let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.registrationDetailsServ+id; 
+    let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.trainingDetailsServ+id; 
     //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
     //console.log("GET Event URL: ", url, " -- ", this._service.getReqHeaders());
     return this.http.get(url, this._service.getReqHeaders());

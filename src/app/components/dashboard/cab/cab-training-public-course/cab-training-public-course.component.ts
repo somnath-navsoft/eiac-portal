@@ -252,8 +252,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             this.step1Data.mobile_phone_number = res['data'].mobile_phone_number;
 
             // step2
-            if(res['data'].participantTraineeDetails != null) {
-              this.participantTraineeDetails = res['data'].participantTraineeDetails;
+            if(res['data'].eventParticipant != null) {
+              this.participantTraineeDetails = res['data'].eventParticipant;
             }
 
             // step3
@@ -262,10 +262,10 @@ export class CabTrainingPublicCourseComponent implements OnInit {
 
             // step5
             if(res['data'].onBehalfApplicantDetails != null) {
-              this.step4Data.organization_name = res['data'].onBehalfApplicantDetails.organization_name;
-              this.step4Data.representative_name = res['data'].onBehalfApplicantDetails.representative_name;
-              this.step4Data.behalf_designation = res['data'].onBehalfApplicantDetails.designation;
-              this.step4Data.digital_signature = res['data'].onBehalfApplicantDetails.digital_signature;
+              this.step5Data.organization_name = res['data'].onBehalfApplicantDetails.organization_name;
+              this.step5Data.representative_name = res['data'].onBehalfApplicantDetails.representative_name;
+              this.step5Data.behalf_designation = res['data'].onBehalfApplicantDetails.designation;
+              this.step5Data.digital_signature = res['data'].onBehalfApplicantDetails.digital_signature;
             }
 
             // step7
@@ -402,6 +402,9 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.publicTrainingForm.saved_step = '1';
       this.step1Data.is_draft = false;
       this.step1Data.training_form_type = 'public_training';
+      if(this.formApplicationId > 0){
+        this.step1Data.application_id = this.formApplicationId;
+      }
 
       this.publicTrainingForm.step1 = this.step1Data;
 
@@ -542,6 +545,10 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     }
   }
 
+  closeDialog(){
+    this.modalService.dismissAll();
+  }
+  
   onSubmitStep5(ngForm5){
     // this.Service.moveSteps('authorization', 'proforma_invoice', this.headerSteps);
     if(ngForm5.form.valid) {
@@ -553,6 +560,10 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.step5Data.is_draft = false;
       this.step5Data.training_form_type = 'public_training';
 
+      var applicationId = sessionStorage.getItem('applicationId');
+      // this.step2Data.application_id = applicationId;
+      this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
+
       this.publicTrainingForm.step5 = this.step5Data;
 
       this.step5DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
@@ -561,9 +572,9 @@ export class CabTrainingPublicCourseComponent implements OnInit {
         res => {
           if(res['status'] == true) {
             // this.Service.moveSteps('fees_details', 'authorization', this.headerSteps);
-            // console.log(res);
-            if(this.paymentFilePath != ''){
-              this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
+            // console.log(this.paymentFilePath);
+            if(this.paymentFilePath != '' && this.paymentFilePath != undefined){
+              this.Service.moveSteps('authorization', 'proforma_invoice', this.headerSteps);
             }
             else{
               setTimeout(()=>{

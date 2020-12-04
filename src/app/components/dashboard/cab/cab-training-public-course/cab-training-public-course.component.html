@@ -236,7 +236,7 @@
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExAlphaNum)" matInput placeholder="" name="email_address_{{i}}" [(ngModel)]="participantTraineeDetails[i].email_address" required> 
                                                                 </mat-form-field>
-                                                                <p class="error" *ngIf="participantTraineeDetails[i].email_address && !Service.checkInput('email',ownOrgBasicInfo[i].email_address)">Please Enter Correct Email Id</p>
+                                                                <p class="error" *ngIf="participantTraineeDetails[i].email_address && !Service.checkInput('email',participantTraineeDetails[i].email_address)">Please Enter Correct Email Id</p>
                                                             </td>
 
                                                             <td>
@@ -466,7 +466,7 @@
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Designation</mat-label>
                                                 <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
-                                                matInput placeholder="Designation" name="designation" [(ngModel)]="step5Data.designation" required>
+                                                matInput placeholder="Designation" name="behalf_designation" [(ngModel)]="step5Data.behalf_designation" required>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -516,7 +516,7 @@
                                         <p>Your Application has been received, please wait for the Proforma Invoice to be generated, to proceed with 
                                             payment</p>
                                         <button class="submit-bttn" (click)="closeDialog()"
-                                        routerLink="/dashboard/registration-status">Return to Status</button>
+                                        routerLink="/dashboard/training-status">Return to Status</button>
                                     </div>
                                 </div>
                             </ng-template>
