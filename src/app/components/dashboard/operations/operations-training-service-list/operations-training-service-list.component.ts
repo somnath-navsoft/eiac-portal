@@ -49,14 +49,14 @@ export class OperationsTrainingServiceListComponent implements OnInit {
     this.curSortDir['created_date']       = false;
     this.curSortDir['accr_status']        = false;
     this.curSortDir['prelim_status']      = false;
-    this.curSortDir['form_meta']          = false;
+    this.curSortDir['training_form_type']          = false;
     this.curSortDir['payment_status']     = false;
     this.curSortDir['applicant']          = false;
   }
 
   loadPageData(){
     this.loader = false;
-    this.subscriptions.push(this._trainerService.getRegistratationServiceList()
+    this.subscriptions.push(this._trainerService.getTrainingServiceList()
       .subscribe(
         result => {
           this.loader = true;
@@ -135,17 +135,17 @@ export class OperationsTrainingServiceListComponent implements OnInit {
            this.trainerdata = array;
          }
        }
-       //By form_meta
-       if(sortBy == 'form_meta'){
-         this.curSortDir.form_meta = !sortDir;
+       //By training_form_type
+       if(sortBy == 'training_form_type'){
+         this.curSortDir.training_form_type = !sortDir;
          //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
-         if(this.curSortDir.form_meta){
-           let array = data.slice().sort((a, b) => (a.form_meta > b.form_meta) ? 1 : -1)
+         if(this.curSortDir.training_form_type){
+           let array = data.slice().sort((a, b) => (a.training_form_type > b.training_form_type) ? 1 : -1)
            this.trainerdata = array;
            //console.log("after:: ", array, " :: ", this.trainerdata);
          }
-         if(!this.curSortDir.form_meta){
-           let array = data.slice().sort((a, b) => (a.form_meta < b.form_meta) ? 1 : -1)
+         if(!this.curSortDir.training_form_type){
+           let array = data.slice().sort((a, b) => (a.training_form_type < b.training_form_type) ? 1 : -1)
            this.trainerdata = array;
          }
        }
@@ -245,9 +245,9 @@ export class OperationsTrainingServiceListComponent implements OnInit {
           this.voucherFile.append('amount',this.voucherSentData['amount']);
           this.voucherFile.append('voucher_date',dtFormat);
           // this.voucherFile.append('accreditation',this.voucherSentData['accreditation']);
-          this.voucherFile.append('registration',this.voucherSentData['accreditation']);
+          this.voucherFile.append('training',this.voucherSentData['accreditation']);
 
-          this.subscriptions.push(this._trainerService.registrationVoucherSave((this.voucherFile))
+          this.subscriptions.push(this._trainerService.courseVoucherSave((this.voucherFile))
           .subscribe(
              result => {
                let data: any = result;

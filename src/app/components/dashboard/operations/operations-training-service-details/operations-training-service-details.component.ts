@@ -25,7 +25,7 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.loader = true;
-    this.routeId = sessionStorage.getItem('registrationId');
+    this.routeId = sessionStorage.getItem('trainingId');
     this.loadData();
   }
 
