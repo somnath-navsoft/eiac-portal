@@ -2,15 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Constants } from 'src/app/services/constant.service';
 import { AppService } from 'src/app/services/app.service';
 import { TrainerService } from '../../../../services/trainer.service';
-import { iif, Observable, Subscription } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-cab-training-inpremise-course',
-  templateUrl: './cab-training-inpremise-course.component.html',
-  styleUrls: ['./cab-training-inpremise-course.component.scss']
+  selector: 'app-cab-training-inpremise-course-apply',
+  templateUrl: './cab-training-inpremise-course-apply.component.html',
+  styleUrls: ['./cab-training-inpremise-course-apply.component.scss']
 })
-export class CabTrainingInpremiseCourseComponent implements OnInit {
+export class CabTrainingInpremiseCourseApplyComponent implements OnInit {
 
   subscriptions: Subscription[] = []; 
   loaderData: boolean = true;
@@ -29,7 +28,7 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
 
   searchCountryLists: any[] =[];
 
-  constructor(public _service: AppService, public _constant:Constants, public _trainerService: TrainerService, public _toastr: ToastrService) { }
+  constructor(public _service: AppService, public _constant:Constants, public _trainerService: TrainerService) { }
 
   ngOnInit() {
     this.loadTrainingData();
@@ -81,12 +80,15 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
 
   loadTrainingData() {
     this.loaderData = false;
-    this._service.getwithoutData(this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.training_course_list+'all/0?data=1')
+    let url = this._service.apiServerUrl+'/'+'cust-course-event-list'
+    //this._service.getwithoutData(this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.training_course_list+'all/0?data=1')
+    this._service.getwithoutData(url)
     .subscribe(
       res => {
         this.loaderData = true;
 
-        var targatedAudianceCourse = res['targatedAudianceCourse'];
+        var targatedAudianceCourse = res['records'];
+        console.log(">>> ", targatedAudianceCourse)
         //this.trainingList = res['targatedAudianceCourse'];
         
         // for(let key in targatedAudianceCourse)
@@ -103,18 +105,18 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
 
         for(let key in targatedAudianceCourse)
         {
-          if(targatedAudianceCourse[key].event && targatedAudianceCourse[key].event.tutor != '')
+          if(targatedAudianceCourse[key].event_type)
           {
             this.trainingList.push(targatedAudianceCourse[key]);
-            if(this.audienceId == '0')
-            {
+            //if(this.audienceId == '0')
+           // {
               this.trainingList = this.getUnique(this.trainingList);
-            }
+            //}
             // //console.log(targatedAudianceCourse[key],'targatedAudianceCourse');
           }
         }
         // //console.log(this.trainingList,'trainingList');
-        this.allCourses = res['courseList'];
+        this.allCourses = res['records'];
         //console.log(this.allCourses,'allCourses')
        
         for(let i=0; i<= this.rowCount*4; i++){
@@ -125,7 +127,7 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
         
         // console.log(this.allCourseTraining,'allCourseTraining');
         
-        this.targated_aud_name = res['targatedAudName'];
+        //this.targated_aud_name = res['targatedAudName'];
       });
   }
 
@@ -153,44 +155,6 @@ getmainArray(uniqueArray){
   }
   return allData;
 }
-//webservice/cust-course-save/
-//{"course_id_arr":["69","70"],"course_type":"custom_course","event_start_date_time":"2020-08-21T18:30:00.000Z","custom_location":"15, Topsia Road","agreement_status":"accepted"}
-
-onSubmit(theForm: any){
-  
-  if(theForm.form.valid){
-    let courseIdAr: any[] =[];
-    this.trainingCartArr.forEach(item => {
-      courseIdAr.push(item.id);
-    })
-    let postData: any = {};
-    postData['course_type'] = "custom_course";
-    postData['event_start_date_time'] = new Date(this.inPremiseForm.select_date);
-    postData['custom_location'] = this.inPremiseForm.select_location;
-    postData['agreement_status'] = "accepted";
-    postData['course_id_arr'] = courseIdAr;
-    let urlPost: string = this._service.apiServerUrl+"/"+'cust-course-save/';
-    console.log(">>>submitting....", postData, " -- ", urlPost, " == ", this.trainingCartArr);
-    this._service.post(urlPost, postData)
-      .subscribe(
-        res => {
-          console.log(">>>Submit post: ", res);
-          if(res['status'] == 200) {
-            let data: any = {};
-             data = res;               
-            this._toastr.success(res['msg'],'');
-            this.trainingCartArr = [];
-          }else{
-            this._toastr.warning(res['msg'], '');
-          }
-        });    
-
-  }else{
-    this._toastr.warning("Please Fill Required Fields.", '', {timeOut: 2500})
-  }
-
-}
-
 
 shortProgramListing(section:any) {
     // console.log('event');
