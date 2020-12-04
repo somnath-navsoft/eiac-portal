@@ -690,10 +690,6 @@ export class WorkPermitFormComponent implements OnInit {
     }
   }
 
-  closeDialog(){
-    this.modalService.dismissAll();
-  }
-
   onSubmit2(ngForm2) {
     // this.Service.moveSteps('activities_scope', 'documents_tobe_attached', this.headerSteps);
     // this.step2Data.activity_section = this.activitySectionArr;
