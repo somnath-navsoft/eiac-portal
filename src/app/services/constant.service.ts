@@ -9,7 +9,6 @@ export class Constants{
 
 	public apiUrl: string 					= '';
 
-	//public mediaPath: string 				= 'https://dev-service.eiac.gov.ae';
 	public mediaPath: string 				= 'https://uat-service.eiac.gov.ae';
 	//trainerAPI: '/trainer',
 	//all_services: this.apiUrl + 'service_page/', 
