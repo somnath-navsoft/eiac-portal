@@ -106,6 +106,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       var splitId = publicCourseid.split('=');
       this.trainingPublicCourseid = splitId[1];
       // console.log(this.trainingPublicCourseid,'trainingPublicCourseid');
+      sessionStorage.setItem('publicFormId','');
     }
 
     this.userEmail = sessionStorage.getItem('email');
@@ -146,6 +147,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
 
     this.loadCountryStateCity();
     this.loadDetailsPage();
+    this.traningPublicId != '' && this.traningPublicId != undefined ? '' : this.loadCourseDetailsPage();
     this.trainingDuration = [{key:1,title:'1 Day'},{key:2,title:'2 Days'},{key:3,title:'3 Days'},{key:4,title:'4 Days'},{key:5,title:'5 Days'},{key:6,title:'6 Days'},{key:7,title:'7 Days'},{key:8,title:'8 Days'},{key:9,title:'9 Days'},{key:10,title:'10 Days'}];
 
     // console.log(this.participantTraineeDetails.length);
@@ -162,7 +164,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     obj.push(newObj);
   }
 
-  loadDetailsPage() {
+  loadCourseDetailsPage() {
     if(this.trainingPublicCourseid != '' && this.trainingPublicCourseid != undefined) {
       this.Service.getwithoutData(this.Service.apiServerUrl+'/'+this._constant.API_ENDPOINT.course_details+this.trainingPublicCourseid+'?data=1')
         .subscribe(
@@ -173,6 +175,9 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             // console.log(courseDetails.training_days,'training_days');
           });
     }
+  }
+
+  loadDetailsPage() {
 
     if(this.traningPublicId != undefined) {
       let url2 = this.Service.apiServerUrl+"/"+'training-details-show/'+this.traningPublicId;
@@ -302,6 +307,17 @@ export class CabTrainingPublicCourseComponent implements OnInit {
                 this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
               }
             }
+
+            var training_duration_current = this.step3Data.training_duration;
+            this.noofParticipants = this.participantTraineeDetails.length;
+            this.tutionFees = 1000 * parseInt(this.noofParticipants) * parseInt(training_duration_current);
+            // console.log(this.noofParticipants);
+            // console.log(training_duration_current);
+            // console.log(this.tutionFees);
+            this.taxVat = 0.5 * this.tutionFees;
+            this.knowledgeFees = 10 * this.noofParticipants;
+            this.innovationFees = 10 * this.noofParticipants;
+            this.subTotal = this.tutionFees + this.taxVat + this.knowledgeFees + this.innovationFees;
             
           })
     }
@@ -582,7 +598,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     if(ex_check){
       this.paymentReceiptValidation = true;
       //if(type == undefined){
-        this.voucherFile.append('voucher_invoice',fileEvent.target.files[0]);
+        this.voucherFile.append('payment_receipt',fileEvent.target.files[0]);
       //}
     }else{
       this.paymentReceiptValidation = false;
@@ -750,7 +766,106 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
   }
 
-  onSubmitPaymentInformation(ngForm7: any, type?: boolean){
+  onSubmitPaymentInformation(theForm: any, type?: any){
+    //this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+
+    let is_valid: boolean = false;
+
+    let dtFormat: string = '';
+    // if(this.voucherSentData['payment_date'] != undefined && 
+    //   this.voucherSentData['payment_date']._i != undefined){
+    //   var dtData = this.voucherSentData['payment_date']._i;
+    //   var year = dtData.year;
+    //   var month = dtData.month;
+    //   var date = dtData.date;
+    //   dtFormat = year + "-" + month + "-" + date;
+    // }else{
+    if(this.voucherSentData['payment_date'] != undefined){
+      var nFdate = new Date(this.voucherSentData['payment_date']);
+      var nMonth = nFdate.getMonth() + 1;
+      var nDate = nFdate.getDate();
+      var nYear = nFdate.getFullYear();
+      dtFormat = nYear + "-" + nMonth + "-" + nDate;
+    }
+
+    // console.log(">>> Date: ", dtFormat, " -- ", this.voucherSentData);
+
+      this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
+      this.voucherFile.append('amount',this.voucherSentData['amount']);
+      this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
+      this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
+      this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
+      this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
+      this.voucherFile.append('voucher_date', dtFormat);
+      this.voucherFile.append('accreditation',this.formApplicationId);
+      this.voucherFile.append('application_id',this.formApplicationId);
+      this.voucherFile.append('saved_step', 7);
+      if(!type){
+        this.voucherFile.append('is_draft', false);
+      }else{
+        this.voucherFile.append('is_draft', true);
+      }
+
+      // console.log(">>> Data: ", this.voucherSentData);
+      if(this.voucherSentData['transaction_no'] != '' && this.voucherSentData['payment_method'] != '' && this.voucherSentData['payment_made_by'] &&
+        this.voucherSentData['mobile_no'] != ''){
+          is_valid = true;
+        }
+
+        if(is_valid == true && type == undefined && this.paymentReceiptValidation != false) {
+          //this.noObjectionBodyForm.saved_step = 8;      
+          //this.noObjectionBodyForm.step8 = this.step6Data;
+          //this.noObjectionBodyForm.step8.application_id = this.formApplicationId;
+          //this.noObjectionBodyForm.step8.is_draft = false;
+          // console.log(">> Submit Form: "," -- ", this.voucherSentData);
+
+          this._trainerService.paymentVoucherSaveTrainers((this.voucherFile))
+          .subscribe(
+             result => {
+               let data: any = result;
+                ////////console.log("submit voucher: ", data);
+                if(data.status){
+                  //this.openView('appComp');
+                  setTimeout(()=>{
+                    let elem = document.getElementById('openAppDialog');
+                    //////console.log("App dialog hash....", elem);
+                    if(elem){
+                      elem.click();
+                    }
+                  }, 100)
+                  setTimeout(() => {                    
+                    // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+                    this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+                  },3500)
+                  
+                }else{
+                  this._toaster.warning(data.msg,'');
+                }
+          })   
+    
+        }else if(type != undefined && type == true){
+          //this.noObjectionBodyForm.saved_step = 6;   
+          //this.noObjectionBodyForm.step6 = this.step6Data;
+         // this.noObjectionBodyForm.step8.is_draft = true;
+          // console.log(">> Submit Save draft: ", " -- ", this.voucherSentData);
+
+          this._trainerService.paymentVoucherSaveTrainers((this.voucherFile))
+          .subscribe(
+             result => {
+               let data: any = result;
+                // console.log("submit voucher draft: ", data);
+                if(data.status){
+                  this._toaster.success("Save Draft Successfully",'');                  
+                }else{
+                  this._toaster.warning(data.msg,'');
+                }
+          })    
+        }else{
+          this._toaster.warning('Please Fill required field','',{timeOut:5000});
+        }
+  }
+
+  onSubmitPaymentInformation123(ngForm7: any, type?: boolean){
     ////console.log("payment submitting.....");
     this.publicTrainingForm = {};
     this.publicTrainingForm.step7 = {};

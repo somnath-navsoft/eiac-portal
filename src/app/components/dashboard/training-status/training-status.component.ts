@@ -44,73 +44,74 @@ export class TrainingStatusComponent implements OnInit {
     this.curSortDir['payment_status']     = false;
     this.curSortDir['applicant']          = false;
   }
-
-  editVisible(item: any){
+  
+    editVisible(item: any){
     if(item){
+        console.log(item);
         switch(item.training_form_type.toString()){
 
-            case 'work_permit':
-              console.log("work permit....", item);
-              if(item.saved_step != null && item.saved_step < 4 && (item.is_draft == true || item.is_draft == false)){
+            case 'inprimise':
+              console.log("inpremise....", item);
+              if(item.saved_step != null && item.saved_step < 5 && (item.is_draft == true || item.is_draft == false)){
                 // console.log("@Enter....3");
                 return false;
               }
-              if(item.saved_step != null && item.saved_step > 4 && item.is_draft == false && 
-                item.paymentDetails != undefined && item.paymentDetails != false && 
+              if(item.saved_step != null && item.saved_step > 5 && item.is_draft == false && 
+                item.paymentDetails != undefined && item.paymentDetails != "NA" && 
                 typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
                 return true;
                }
-              if(item.saved_step != null && item.saved_step < 4 && item.is_draft == false && 
-                item.paymentDetails != undefined && item.paymentDetails != false && 
+              if(item.saved_step != null && item.saved_step < 5 && item.is_draft == false && 
+                item.paymentDetails != undefined && item.paymentDetails != "NA" && 
                 typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
                 return true;
               }
-              if(item.saved_step != null && item.saved_step == 6 && (item.is_draft == false || item.is_draft == true) && 
+              if(item.saved_step != null && item.saved_step == 7 && (item.is_draft == false || item.is_draft == true) && 
                 item.paymentDetails != undefined && item.application_status !== 'complete'){
                   // console.log("@Enter....1");
                 return false;
               }
         
-               if(item.saved_step != null && item.saved_step == 4 && item.is_draft == false && 
-                  item.paymentDetails != undefined && item.paymentDetails == false){
+               if(item.saved_step != null && item.saved_step == 5 && item.is_draft == false && 
+                  item.paymentDetails != undefined && item.paymentDetails == "NA"){
                 return true;
               }
-               if(item.saved_step != null && item.saved_step == 4 && item.is_draft == false && 
-                item.paymentDetails != undefined && item.paymentDetails != false && item.paymentDetails != false && 
+               if(item.saved_step != null && item.saved_step == 5 && item.is_draft == false && 
+                item.paymentDetails != undefined && item.paymentDetails != "NA" && item.paymentDetails != false && 
                 typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
                   // console.log("@Enter....2");
                 return false;
               }
             break;
 
-            case 'no_objection':
+            case 'public_training':
               // console.log("No Objection....", item);
-              if(item.saved_step != null && item.saved_step < 6 && (item.is_draft == true || item.is_draft == false)){
+              if(item.saved_step != null && item.saved_step < 5 && (item.is_draft == true || item.is_draft == false)){
                 // console.log("@Enter....3");
                 return false;
               }
-              if(item.saved_step != null && item.saved_step > 6 && item.is_draft == false && 
+              if(item.saved_step != null && item.saved_step > 5 && item.is_draft == false && 
                 item.paymentDetails != undefined && item.paymentDetails != "NA" && 
                 typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
                 return true;
                }
-              if(item.saved_step != null && item.saved_step < 6 && item.is_draft == false && 
+              if(item.saved_step != null && item.saved_step < 5 && item.is_draft == false && 
                 item.paymentDetails != undefined && item.paymentDetails != "NA" && 
                 typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
                 return true;
               }             
         
-               if(item.saved_step != null && item.saved_step == 6 && item.is_draft == false && 
+               if(item.saved_step != null && item.saved_step == 5 && item.is_draft == false && 
                   item.paymentDetails != undefined && item.paymentDetails == "NA"){
                     console.log("@@@@@@@ ", item.id);
                 return true;
               }
-              if(item.saved_step != null && item.saved_step == 8 && (item.is_draft == false || item.is_draft == true) && 
+              if(item.saved_step != null && item.saved_step == 7 && (item.is_draft == false || item.is_draft == true) && 
                 item.paymentDetails != undefined && item.application_status !== 'complete'){
                   console.log("@Enter....1", item.id);
                 return false;
               }
-               if(item.saved_step != null && item.saved_step == 6 && item.is_draft == false && 
+               if(item.saved_step != null && item.saved_step == 5 && item.is_draft == false && 
                 item.paymentDetails != undefined && item.paymentDetails != "NA" && item.paymentDetails != false && 
                 typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
                   // console.log("@Enter....2");
