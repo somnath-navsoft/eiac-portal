@@ -34,6 +34,7 @@ export class OperationsTrainingServiceListComponent implements OnInit {
   pageTotal: number = 0;
   curSortDir: any = {};
   dataLoad: boolean = false;
+  public minDate;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal) {
@@ -52,6 +53,13 @@ export class OperationsTrainingServiceListComponent implements OnInit {
     this.curSortDir['training_form_type']          = false;
     this.curSortDir['payment_status']     = false;
     this.curSortDir['applicant']          = false;
+    // var cdate = new Date();
+    this.minDate = new Date();
+  }
+
+  setexDate(date, index){
+    let cdate = date;
+    this.minDate = new Date(cdate  + (60*60*24*1000));   
   }
 
   loadPageData(){
