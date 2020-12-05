@@ -52,8 +52,8 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
 
           this.training_duration = result['data'].training_duration;
           this.course_title = result['data'].course_title;
-          console.log(this.training_duration);
-          console.log(this.course_title);
+          // console.log(this.training_duration);
+          // console.log(this.course_title);
 
           var training_duration_current = this.serviceDetail.training_duration;
           this.noofParticipants = this.participantTraineeDetails.length;

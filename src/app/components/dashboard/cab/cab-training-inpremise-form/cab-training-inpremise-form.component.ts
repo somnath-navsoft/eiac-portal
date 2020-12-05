@@ -92,6 +92,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
   public errorLoader: boolean = false;
   public loaderPdf: boolean = false;
   public completeLoaded: boolean = false;
+  public minDate;
 
   constructor(private Service: AppService, private http: HttpClient,
     public _toaster: ToastrService, private _router: Router, private _route: ActivatedRoute,
@@ -157,6 +158,11 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
       
     }
   
+    setexDate(date, index){
+      let cdate = date;
+      this.minDate = new Date(cdate  + (60*60*24*1000));   
+    }
+
     addRow(obj) {
       var newObj = [];
       obj.push(newObj);
