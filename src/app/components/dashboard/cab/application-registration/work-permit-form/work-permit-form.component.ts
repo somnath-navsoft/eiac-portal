@@ -294,8 +294,8 @@ export class WorkPermitFormComponent implements OnInit {
           this.ownOrgBasicInfo = step2['cabOwnerData'];
           this.step3Data.license_no = data.trade_license_number;
           
-          this.step3Data.date_of_issue = new Date(data.date_of_expiry);
-          this.step3Data.date_of_expiry = new Date(data.date_of_issue);
+          this.step3Data.date_of_issue = new Date(data.date_of_issue);
+          this.step3Data.date_of_expiry = new Date(data.date_of_expiry);
           
           // step2['cabBodData'].forEach((res,key) => {
           //   step2['cabBodData'][key].name = res.name;
@@ -978,7 +978,7 @@ export class WorkPermitFormComponent implements OnInit {
       dtFormat = nYear + "-" + nMonth + "-" + nDate;
     }
 
-    console.log(">>> Date: ", dtFormat, " -- ", this.voucherSentData);
+    // console.log(">>> Date: ", dtFormat, " -- ", this.voucherSentData);
 
       this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
       this.voucherFile.append('amount',this.voucherSentData['amount']);
@@ -996,7 +996,7 @@ export class WorkPermitFormComponent implements OnInit {
         this.voucherFile.append('is_draft', true);
       }
 
-      console.log(">>> Data: ", this.voucherSentData);
+      // console.log(">>> Data: ", this.voucherSentData);
       if(this.voucherSentData['transaction_no'] != '' && this.voucherSentData['payment_method'] != '' && this.voucherSentData['payment_made_by'] &&
         this.voucherSentData['mobile_no'] != ''){
           is_valid = true;
@@ -1007,7 +1007,7 @@ export class WorkPermitFormComponent implements OnInit {
           //this.noObjectionBodyForm.step8 = this.step6Data;
           //this.noObjectionBodyForm.step8.application_id = this.formApplicationId;
           //this.noObjectionBodyForm.step8.is_draft = false;
-          console.log(">> Submit Form: "," -- ", this.voucherSentData);
+          // console.log(">> Submit Form: "," -- ", this.voucherSentData);
 
           this._trainerService.paymentVoucherNOCSave((this.voucherFile))
           .subscribe(
@@ -1037,7 +1037,7 @@ export class WorkPermitFormComponent implements OnInit {
           //this.noObjectionBodyForm.saved_step = 6;   
           //this.noObjectionBodyForm.step6 = this.step6Data;
          // this.noObjectionBodyForm.step8.is_draft = true;
-          console.log(">> Submit Save draft: ", " -- ", this.voucherSentData);
+          // console.log(">> Submit Save draft: ", " -- ", this.voucherSentData);
 
           this._trainerService.paymentVoucherNOCSave((this.voucherFile))
           .subscribe(
