@@ -99,6 +99,8 @@ import { RegistrationStatusComponent } from './components/dashboard/registration
 import { TrainingStatusComponent } from './components/dashboard/training-status/training-status.component';
 import { OperationsTrainingServiceListComponent } from './components/dashboard/operations/operations-training-service-list/operations-training-service-list.component';
 import { OperationsTrainingServiceDetailsComponent } from './components/dashboard/operations/operations-training-service-details/operations-training-service-details.component';
+import { InpremiseApprovalListComponent } from './components/dashboard/operations/inpremise-approval-list/inpremise-approval-list.component';
+import { InpremiseApprovalDetailsComponent } from './components/dashboard/operations/inpremise-approval-details/inpremise-approval-details.component';
 
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
@@ -152,6 +154,8 @@ const routes: Routes = [
           { path: 'training-service-details/:id', component:OperationsTrainingServiceDetailsComponent, canActivate: [AuthGuard] },
           { path: 'message', component:OperationMessageComponent, canActivate: [AuthGuard] },
           { path: 'message-detail/:id', component:OperationsMessageDetailsComponent, canActivate: [AuthGuard] },
+          { path: 'inpremise-approve', component:InpremiseApprovalListComponent, canActivate: [AuthGuard] },
+          { path: 'inpremise-approve-detail/:id', component:InpremiseApprovalDetailsComponent, canActivate: [AuthGuard] },
         ] 
     }, 
 
