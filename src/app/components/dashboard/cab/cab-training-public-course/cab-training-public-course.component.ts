@@ -19,7 +19,7 @@ declare let paypal: any;
   styleUrls: ['./cab-training-public-course.component.scss'],
   providers: [Constants, AppService, ToastrService, Overlay, OverlayContainer] 
 })
-export class CabTrainingPublicCourseComponent implements OnInit {
+export class CabTrainingPublicCourseComponent implements OnInit { 
 
   subscriptions: Subscription[] = [];
   headerSteps: any[] = [];
@@ -149,6 +149,12 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     this.loadDetailsPage();
     this.traningPublicId != '' && this.traningPublicId != undefined ? '' : this.loadCourseDetailsPage();
     this.trainingDuration = [{key:1,title:'1 Day'},{key:2,title:'2 Days'},{key:3,title:'3 Days'},{key:4,title:'4 Days'},{key:5,title:'5 Days'},{key:6,title:'6 Days'},{key:7,title:'7 Days'},{key:8,title:'8 Days'},{key:9,title:'9 Days'},{key:10,title:'10 Days'}];
+
+    // let durationAr: any =[];
+    // for(let k=0; k<100; k++){
+
+    // }
+
 
     // console.log(this.participantTraineeDetails.length);
     // tutionFees:any;

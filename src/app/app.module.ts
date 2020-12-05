@@ -138,6 +138,7 @@ import { AccountDetailsComponent } from './components/dashboard/accounts/account
 import { AccountUploadComponent } from './components/dashboard/accounts/account-upload/account-upload.component';
 import { CabTrainingDetailComponent } from './components/dashboard/cab/cab-training-detail/cab-training-detail.component';
 import { CabTrainingInpremiseDetailComponent } from './components/dashboard/cab/cab-training-inpremise-detail/cab-training-inpremise-detail.component';
+import { CabTrainingInpremiseEventDetailsComponent } from './components/dashboard/cab/cab-training-inpremise-event-details/cab-training-inpremise-event-details.component';
 import { CabTrainingInpremiseFormComponent } from './components/dashboard/cab/cab-training-inpremise-form/cab-training-inpremise-form.component';
 import { MessageReplyComponent } from './components/dashboard/message/message-reply/message-reply.component';
 import { TimeAgoPipe } from 'time-ago-pipe';
@@ -196,6 +197,7 @@ export const MY_FORMATS = {
     AccountUploadComponent,
     CabTrainingDetailComponent,
     CabTrainingInpremiseDetailComponent,
+    CabTrainingInpremiseEventDetailsComponent,
     CabTrainingInpremiseFormComponent,
     MessageReplyComponent,
     TimeAgoPipe,
