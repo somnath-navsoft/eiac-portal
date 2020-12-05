@@ -86,11 +86,12 @@ export class CabTrainingInpremiseCourseApplyComponent implements OnInit {
     .subscribe(
       res => {
         this.loaderData = true;
+        let getData: any = res;
 
-        var targatedAudianceCourse = res['records'];
-        console.log(">>> ", targatedAudianceCourse)
+       // var targatedAudianceCourse = res['records'];
+        console.log(">>> ", getData.records[0].course)
         //this.trainingList = res['targatedAudianceCourse'];
-        
+        this.trainingList = getData.records[0].course;
         // for(let key in targatedAudianceCourse)
         // {
         //   if(targatedAudianceCourse[key].event && targatedAudianceCourse[key].event.tutor != '')
@@ -102,7 +103,7 @@ export class CabTrainingInpremiseCourseApplyComponent implements OnInit {
         //     // //console.log(targatedAudianceCourse[key],'targatedAudianceCourse');
         //   }
         // }
-
+        /*
         for(let key in targatedAudianceCourse)
         {
           if(targatedAudianceCourse[key].event_type)
@@ -123,7 +124,7 @@ export class CabTrainingInpremiseCourseApplyComponent implements OnInit {
           if(this.allCourses[i]){
             this.allCourseTraining.push(this.allCourses[i]);
           }
-        }
+        }*/
         
         // console.log(this.allCourseTraining,'allCourseTraining');
         
