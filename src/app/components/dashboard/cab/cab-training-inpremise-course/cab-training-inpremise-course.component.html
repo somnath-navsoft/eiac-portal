@@ -71,7 +71,7 @@
                                                         <span>Rates</span>
                                                     </div>
                                                     <div class="training_type">
-                                                        <span>AED 200.00</span>
+                                                        <span>{{row2.fees_per_trainee}}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -109,8 +109,8 @@
     
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Select Date</mat-label>
-                                                <input matInput [matDatepicker]="select_date" 
-                                                (click)="_service._openCalendar(select_date)" name="select_date" 
+                                                <input matInput [matDatepicker]="select_date"  (change)="setexDate()"
+                                                (click)="_service._openCalendar(select_date)" name="select_date" [min]="minDate"
                                                 [(ngModel)]="inPremiseForm.select_date" placeholder="Select Date" required>
                                                 <mat-datepicker-toggle matSuffix [for]="select_date"></mat-datepicker-toggle>
                                                 <mat-datepicker #select_date disabled="false"></mat-datepicker>
@@ -228,7 +228,7 @@
                                                     <span>Rates</span>
                                                 </div>
                                                 <div class="training_type">
-                                                    <span>AED 2500.00</span>
+                                                    <span>{{row2.fees_per_trainee}}</span>
                                                 </div>
                                             </div>
                                         </div>

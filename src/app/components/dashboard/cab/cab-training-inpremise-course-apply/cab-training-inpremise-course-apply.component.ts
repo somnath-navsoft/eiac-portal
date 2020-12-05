@@ -80,7 +80,9 @@ export class CabTrainingInpremiseCourseApplyComponent implements OnInit {
 
   loadTrainingData() {
     this.loaderData = false;
-    let url = this._service.apiServerUrl+'/'+'cust-course-event-list'
+
+    let courseList:any[] = [];
+    let url = this._service.apiServerUrl+'/'+'cust-course-event-list/unapproved'
     //this._service.getwithoutData(this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.training_course_list+'all/0?data=1')
     this._service.getwithoutData(url)
     .subscribe(
@@ -89,9 +91,22 @@ export class CabTrainingInpremiseCourseApplyComponent implements OnInit {
         let getData: any = res;
 
        // var targatedAudianceCourse = res['records'];
-        console.log(">>> ", getData.records[0].course)
+        console.log(">>> ", getData.records)
         //this.trainingList = res['targatedAudianceCourse'];
-        this.trainingList = getData.records[0].course;
+
+        // getData.records.forEach(item => {
+        //       if(item.course != undefined && item.course.length > 0){
+        //         item.course.forEach((rec) => {
+        //           courseList.push(rec);
+        //         })
+        //       }
+        // })
+
+        // console.log("Total course: ", courseList);
+        // this.trainingList = courseList;
+
+
+        this.trainingList = getData.records[0]['course'];
         // for(let key in targatedAudianceCourse)
         // {
         //   if(targatedAudianceCourse[key].event && targatedAudianceCourse[key].event.tutor != '')
