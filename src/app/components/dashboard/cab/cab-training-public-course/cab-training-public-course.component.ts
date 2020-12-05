@@ -93,6 +93,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   public errorLoader: boolean = false;
   public loaderPdf: boolean = false;
   public completeLoaded: boolean = false;
+  trainingDurationSelectbox:any;
 
   constructor(private Service: AppService, private http: HttpClient,
     public _toaster: ToastrService, private _router: Router, private _route: ActivatedRoute,
@@ -181,6 +182,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             var courseDetails = res['courseDetails'];
             this.step3Data.course_title = courseDetails.course;
             this.step3Data.training_duration = parseInt(courseDetails.training_days);
+            this.trainingDurationSelectbox = this.step3Data.training_duration != '' && this.step3Data.training_duration != undefined ? true : false;
             // console.log(courseDetails.training_days,'training_days');
           });
     }
@@ -188,7 +190,48 @@ export class CabTrainingPublicCourseComponent implements OnInit {
 
   loadDetailsPage() {
 
-    if(this.traningPublicId != undefined) {
+    let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
+    this.Service.getwithoutData(url)
+    .subscribe(
+      res => {
+        this.step1Data.organization_name = res['data']['step1'][0].cab_name;
+        this.step1Data.mailing_address = res['data']['step1'][0].mailing_address;
+        this.step1Data.zip_code = res['data']['step1'][0].po_box;
+
+        var stateList =  this.Service.getState();
+        var cityList =  this.Service.getCity();
+        stateList.subscribe( result => {
+          for(let key in result['states']) {
+            if(result['states'][key]['name'] == res['data']['step1'][0].state )
+            {
+              this.allStateList.push(result['states'][key]);
+            }
+          }
+        });
+
+        cityList.subscribe( result => {
+          for(let key in result['cities']) {
+            if(result['cities'][key]['name'] == res['data']['step1'][0].city )
+            {
+              this.allCityList.push(result['cities'][key]);
+            }
+          }
+        });
+
+        this.step1Data.country = res['data']['step1'][0].country;
+        this.step1Data.state = res['data']['step1'][0].state;
+        this.step1Data.city = res['data']['step1'][0].city;
+        this.step1Data.telephone_number = res['data']['step1'][0].tel_no;
+        this.step1Data.fax_no = res['data']['step1'][0].applicant_fax_no;
+        this.step1Data.official_email = res['data']['step1'][0].applicant_email;
+        this.step1Data.official_website = res['data']['step1'][0].official_website;
+        this.step1Data.authorized_contact_person = res['data']['step2']['cabOwnerData'][0].name;
+        this.step1Data.designation = res['data']['step1'][0].designation;
+        this.step1Data.mobile_phone_number = res['data']['step1'][0].applicant_tel_no;
+      })
+    
+
+    if(this.traningPublicId != '' && this.traningPublicId != undefined) {
       let url2 = this.Service.apiServerUrl+"/"+'training-details-show/'+this.traningPublicId;
         this.Service.getwithoutData(url2)
         .subscribe(
@@ -277,6 +320,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             // step3
             this.step3Data.course_title = res['data'].course_title;
             this.step3Data.training_duration = parseInt(res['data'].training_duration);
+            this.trainingDurationSelectbox = this.step3Data.training_duration != '' && this.step3Data.training_duration != undefined ? true : false;
 
             // step5
             if(res['data'].onBehalfApplicantDetails != null) {
