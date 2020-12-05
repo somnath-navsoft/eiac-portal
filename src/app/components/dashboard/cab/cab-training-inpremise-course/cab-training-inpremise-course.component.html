@@ -136,7 +136,10 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>No. of Candidate</mat-label>
-                                                <input (keypress)="_service.inputFilter($event, _service.regExNumb)" matInput autocomplete="off" placeholder="No. of Candidate" name="no_of_candidate" [(ngModel)]="inPremiseForm.no_of_candidate" required>
+                                                <input (keypress)="_service.inputFilter($event, _service.regExNumb)" 
+                                                
+                                                matInput autocomplete="off" placeholder="No. of Candidate" name="no_of_candidate" 
+                                                [(ngModel)]="inPremiseForm.no_of_candidate" required>
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>

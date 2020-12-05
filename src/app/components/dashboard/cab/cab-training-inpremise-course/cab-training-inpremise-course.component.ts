@@ -35,6 +35,19 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
     this.loadTrainingData();
   }
 
+  checkMin(theEvt: any, range: number){
+    console.log(theEvt, " -- ", range);
+    if(theEvt){
+      console.log('.....', range)
+        if(!isNaN(theEvt.key) && theEvt.key < range){
+          console.log("...less number");
+          //this.inPremiseForm.no_of_candidate = '';
+          theEvt.preventDefault()
+          return false;
+        }
+    }
+  }
+
   getPlaceName()
    {
      if(typeof this.inPremiseForm.select_location != 'undefined')
@@ -163,6 +176,12 @@ onSubmit(theForm: any){
     this.trainingCartArr.forEach(item => {
       courseIdAr.push(item.id);
     })
+
+    if(this.inPremiseForm.no_of_candidate < 10){
+      this._toastr.warning("Please enter candidate minimum 10", '', {timeOut: 1000})
+      return false;
+    }
+
     let postData: any = {};
     postData['course_type'] = "custom_course";
     postData['event_start_date_time'] = new Date(this.inPremiseForm.select_date);

@@ -168,15 +168,15 @@ shortProgramListing(section:any) {
       if(this.programEvent == 'coursename')
       {
         // this.allCourseTraining = ;
-          this.allCourseTraining.sort((a,b) => (a.course.name > b.course.name) ? 1 : -1);
+          this.trainingList.sort((a,b) => (a.course.name > b.course.name) ? 1 : -1);
           // console.log()
       }else if(this.programEvent == 'audience')
       {
-          this.allCourseTraining.sort((a,b) => (a.target_audiance > b.target_audiance) ? 1 : -1);
+          this.trainingList.sort((a,b) => (a.target_audiance > b.target_audiance) ? 1 : -1);
 
       }else if(this.programEvent == 'days')
       {
-          this.allCourseTraining.sort((a,b) => (a.course.training_course.training_days > b.course.training_course.training_days) ? 1 : -1);
+          this.trainingList.sort((a,b) => (a.course.training_course.training_days > b.course.training_course.training_days) ? 1 : -1);
       }
       
     }else if(section == 'schedule_program_listing')
