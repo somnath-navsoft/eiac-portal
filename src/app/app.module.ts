@@ -150,6 +150,8 @@ import { CabCompanyProfileComponent } from './components/dashboard/cab/cab-compa
 import { CabMessage } from './components/dashboard/cab/cab-message/cab-message.component';
 import { RegistrationStatusComponent } from './components/dashboard/registration-status/registration-status.component';
 import { TrainingStatusComponent } from './components/dashboard/training-status/training-status.component';
+import { InpremiseApprovalListComponent } from './components/dashboard/operations/inpremise-approval-list/inpremise-approval-list.component';
+import { InpremiseApprovalDetailsComponent } from './components/dashboard/operations/inpremise-approval-details/inpremise-approval-details.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -208,7 +210,9 @@ export const MY_FORMATS = {
     CabCompanyProfileComponent,
     CabMessage,
     RegistrationStatusComponent,
-    TrainingStatusComponent
+    TrainingStatusComponent,
+    InpremiseApprovalListComponent,
+    InpremiseApprovalDetailsComponent
   ],
   imports: [
     CommonModule,
