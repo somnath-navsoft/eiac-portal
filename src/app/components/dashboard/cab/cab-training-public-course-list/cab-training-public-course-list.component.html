@@ -64,7 +64,7 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="trainingList == ''">
+                <div *ngIf="trainingList !+ undefined && trainingList.length == 0">
                     <div class="col-md-12">
                         <div class="scheduled-prog">
                             No Data Found
@@ -133,9 +133,7 @@
                                                 <span>Availability of Seats</span>
                                             </div>
                                             <div class="training_type">
-                                               @ {{trainingCourse.capacity}}
-                                               #{{trainingCourse.course_type}}
-                                                <span *ngIf="trainingCourse.capacity != ''">{{trainingCourse.capacity}}</span>
+                                                <span *ngIf="trainingCourse.course.training_course.capacity != ''">{{trainingCourse.course.training_course.capacity}}</span>
                                             </div>
                                         </div>
                                     </div>

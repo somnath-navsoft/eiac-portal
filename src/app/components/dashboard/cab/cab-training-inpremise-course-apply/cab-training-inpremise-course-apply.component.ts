@@ -82,7 +82,7 @@ export class CabTrainingInpremiseCourseApplyComponent implements OnInit {
     this.loaderData = false;
 
     let courseList:any[] = [];
-    let url = this._service.apiServerUrl+'/'+'cust-course-event-list/unapproved'
+    let url = this._service.apiServerUrl+'/'+'cust-course-event-list/approved'
     //this._service.getwithoutData(this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.training_course_list+'all/0?data=1')
     this._service.getwithoutData(url)
     .subscribe(

@@ -79,6 +79,10 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
         console.log(this.trainingCartArr);
     }else{
       var checkId = this.trainingCartArr.find(res => res.id == id);
+      if(checkId != undefined){
+        this._toastr.warning('Course already added','',{timeOut:1500})
+        return false;
+      }
       if(!checkId || typeof checkId == undefined) {
         var findElem = obj.find((res,key) => key == index);
         
@@ -87,6 +91,7 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
       }
     }
     this._toastr.success('Course has been added','',{timeOut:1500})
+    window.scrollTo(0,0);
 
   }
 
@@ -186,7 +191,7 @@ onSubmit(theForm: any){
     })
 
     if(this.inPremiseForm.no_of_candidate < 10){
-      this._toastr.warning("Please enter candidate minimum 10", '', {timeOut: 1000})
+      this._toastr.warning("Number of candidate should be minimum 10", '', {timeOut: 2300})
       return false;
     }
 

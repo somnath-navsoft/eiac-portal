@@ -64,6 +64,7 @@ export class CabTrainingPublicCourseListComponent implements OnInit {
       res => {
         this.loaderData = true;
         var targatedAudianceCourse = res['targatedAudianceCourse'];
+        console.log(res['targatedAudianceCourse'])
         //this.trainingList = res['targatedAudianceCourse'];
         
         for(let key in targatedAudianceCourse)
