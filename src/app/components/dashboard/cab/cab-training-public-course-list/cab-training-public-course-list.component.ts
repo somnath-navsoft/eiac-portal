@@ -57,41 +57,82 @@ export class CabTrainingPublicCourseListComponent implements OnInit {
   //   ));
   // }
 
+  getTargetAudNames(audData: any){
+      let audname: any[] = [];
+      if(audData && audData.length){
+          audData.forEach(item => {
+              if(item.target_aud_name != undefined){
+                audname.push(item.target_aud_name.title);
+              }
+          })
+      }
+      if(audname.length){
+        let strAud: string = audname.join(', ');
+        return strAud;
+      }
+  }
+
   loadTrainingData() {
     this.loaderData = false;
-    this._service.getwithoutData(this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.training_course_list+'all/0?data=1')
+    //this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.training_course_list+'all/0?data=1'
+    let url: string = this._service.apiServerUrl+'/'+'public-course-event-list/';
+    this._service.getwithoutData(url)
     .subscribe(
       res => {
         this.loaderData = true;
-        var targatedAudianceCourse = res['targatedAudianceCourse'];
-        console.log(res['targatedAudianceCourse'])
+        let targatedAudianceCourse: any = res['allEventData']; 
+        console.log(res['allEventData'])
         //this.trainingList = res['targatedAudianceCourse'];
+        let listCourse: any[] =[];
+        targatedAudianceCourse.forEach(item => {
+          let tempObj: any = {};
+          if(item.public_course != undefined  ){
+            let pcourse: any = item.public_course;
+
+            tempObj['courseName'] = pcourse.course;
+            tempObj['courseID'] = item.id;
+            tempObj['courseCapacity'] = item.capacity;
+            tempObj['courseAvailability'] = item.seat_availability;
+            tempObj['courseDuration'] = pcourse.training_days;
+            tempObj['courseDate'] = new Date(item.event_start_date_time);
+            tempObj['courseLocation'] = (pcourse.location != '' && pcourse.location == 'eiac_training_center') ? "EIAC Training Center" : '';
+            tempObj['courseAudience'] = (pcourse.allTargatedAud != undefined && pcourse.allTargatedAud.length > 0) ? this.getTargetAudNames(pcourse.allTargatedAud) : '';
+            listCourse.push(tempObj);
+          }
+            //console.log()
+
+        })
+
+        this.trainingList = listCourse;
+
+        console.log("List course...", listCourse);
+
         
-        for(let key in targatedAudianceCourse)
-        {
-          if(targatedAudianceCourse[key].event && targatedAudianceCourse[key].event.tutor != '')
-          {
-            this.trainingList.push(targatedAudianceCourse[key]);
-            if(this.audienceId == '0')
-            {
-              this.trainingList = this.getUnique(this.trainingList);
-            }
-            // //console.log(targatedAudianceCourse[key],'targatedAudianceCourse');
-          }
-        }
+        // for(let key in targatedAudianceCourse)
+        // {
+        //   if(targatedAudianceCourse[key].event && targatedAudianceCourse[key].event.tutor != '')
+        //   {
+        //     this.trainingList.push(targatedAudianceCourse[key]);
+        //     if(this.audienceId == '0')
+        //     {
+        //       this.trainingList = this.getUnique(this.trainingList);
+        //     }
+        //     // //console.log(targatedAudianceCourse[key],'targatedAudianceCourse');
+        //   }
+        // }
         // //console.log(this.trainingList,'trainingList');
-        this.allCourses = res['courseList'];
-        //console.log(this.allCourses,'allCourses')
+        // this.allCourses = res['courseList'];
+        // //console.log(this.allCourses,'allCourses')
        
-        for(let i=0; i<= this.rowCount*4; i++){
-          if(this.allCourses[i]){
-            this.allCourseTraining.push(this.allCourses[i]);
-          }
-        }
+        // for(let i=0; i<= this.rowCount*4; i++){
+        //   if(this.allCourses[i]){
+        //     this.allCourseTraining.push(this.allCourses[i]);
+        //   }
+        // }
         
         // console.log(this.allCourseTraining,'allCourseTraining');
         
-        this.targated_aud_name = res['targatedAudName'];
+        //this.targated_aud_name = res['targatedAudName'];
     })
   }
 

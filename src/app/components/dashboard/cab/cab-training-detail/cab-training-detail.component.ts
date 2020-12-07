@@ -29,6 +29,7 @@ export class CabTrainingDetailComponent implements OnInit {
       res => {
         this.loaderData = true;
         this.courseDetails = res['courseDetails'];
+        console.log(this.courseDetails);
       })
   }
 }
