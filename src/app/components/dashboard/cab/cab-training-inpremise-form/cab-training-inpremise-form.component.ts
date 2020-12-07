@@ -107,6 +107,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
         var splitId = inpremiseCourseid.split('=');
         this.traininginpremiseCourseid = splitId[1];
         // console.log(this.trainingPublicCourseid,'trainingPublicCourseid');
+        sessionStorage.setItem('inpremiseFormId','');
       }
   
       this.userEmail = sessionStorage.getItem('email');
