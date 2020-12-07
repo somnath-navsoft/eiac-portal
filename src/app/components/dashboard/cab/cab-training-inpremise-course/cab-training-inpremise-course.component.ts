@@ -27,6 +27,8 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
   inPremiseForm:any = {};
   trainingCartArr:any[] = []; 
 
+  minDate: any = new Date();
+
   searchCountryLists: any[] =[];
 
   constructor(public _service: AppService, public _constant:Constants, public _trainerService: TrainerService, public _toastr: ToastrService) { }
@@ -77,6 +79,10 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
         console.log(this.trainingCartArr);
     }else{
       var checkId = this.trainingCartArr.find(res => res.id == id);
+      if(checkId != undefined){
+        this._toastr.warning('Course already added','',{timeOut:1500})
+        return false;
+      }
       if(!checkId || typeof checkId == undefined) {
         var findElem = obj.find((res,key) => key == index);
         
@@ -84,11 +90,14 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
         console.log(this.trainingCartArr);
       }
     }
+    this._toastr.success('Course has been added','',{timeOut:1500})
+    window.scrollTo(0,0);
 
   }
 
   removeTraining(obj,index) {
     this.trainingCartArr.splice(index,1);
+    this._toastr.success('Course has been removed','');
      return true;
   }
 
@@ -169,6 +178,10 @@ getmainArray(uniqueArray){
 //webservice/cust-course-save/
 //{"course_id_arr":["69","70"],"course_type":"custom_course","event_start_date_time":"2020-08-21T18:30:00.000Z","custom_location":"15, Topsia Road","agreement_status":"accepted"}
 
+setexDate(){
+  this.minDate.setDate(this.minDate.getDate());
+}
+
 onSubmit(theForm: any){
   
   if(theForm.form.valid){
@@ -178,7 +191,7 @@ onSubmit(theForm: any){
     })
 
     if(this.inPremiseForm.no_of_candidate < 10){
-      this._toastr.warning("Please enter candidate minimum 10", '', {timeOut: 1000})
+      this._toastr.warning("Number of candidate should be minimum 10", '', {timeOut: 2300})
       return false;
     }
 
