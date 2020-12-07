@@ -143,10 +143,12 @@
                             <td>
                                 {{item.created | date :'dd-MMM-yyyy' }}
                             </td>
-                            <td [ngClass]="{'pending': (item.application_status === 'pending' || item.application_status == 'draft' || item.application_status == 'application_process' || item.application_status == 'under_process'), 'under-review':item.application_status === null || item.application_status === 'under_review', 'complete': item.application_status === 'complete'}">
-                                <span *ngIf="item.application_status == 'pending' || item.application_status == 'draft'">Pending</span>
+                            <td [ngClass]="{'pending': (item.application_status === 'pending' || item.application_status === 'payment_pending' || item.application_status == 'application_process' || item.application_status == 'under_process'), 'under-review':item.application_status === null || item.application_status === 'under_review', 'complete': item.application_status === 'complete','draft': item.application_status === 'draft' }">
+                                <span *ngIf="item.application_status == 'pending'">Pending</span>
+                                <span *ngIf="item.application_status == 'draft'">Draft</span>
                                 <span *ngIf="item.application_status == 'application_process'">Application Process</span>
                                 <span *ngIf="item.application_status == 'under_process'">Under Process</span>
+                                <span *ngIf="item.application_status == 'payment_pending'">Payment Pending</span>
                                 <span *ngIf="item.application_status == null || item.application_status === 'under_review'">Under Review</span>
                                 <span *ngIf="item.application_status == 'complete'">Complete</span>
                             </td>
