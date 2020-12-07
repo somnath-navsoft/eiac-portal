@@ -90,8 +90,8 @@
                   <h5>Establishment Name</h5>
                 </div>
                 <div class="appln-details">
-                  <span *ngIf="!serviceDetail?.official_commercial_name">None</span>
-                  <span *ngIf="serviceDetail?.official_commercial_name">{{serviceDetail?.official_commercial_name}}</span>
+                  <span *ngIf="!serviceDetail?.organization_name">None</span>
+                  <span *ngIf="serviceDetail?.organization_name">{{serviceDetail?.organization_name}}</span>
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -110,7 +110,7 @@
                   <span>{{course_title}}</span>
                 </div>
               </div>
-              <div class="col border-left-dash">
+              <!-- <div class="col border-left-dash">
                 <div class="appln-data">
                   <h5>Trade License No.</h5>
                 </div>
@@ -118,7 +118,7 @@
                   <span *ngIf="serviceDetail?.trade_license_number != null">{{serviceDetail?.trade_license_number}}</span>
                   <span *ngIf="serviceDetail?.trade_license_number == null">N/A</span>
                 </div>
-              </div>
+              </div> -->
             </div>
         </div>
       </div>
@@ -149,8 +149,8 @@
                       <td *ngIf="serviceDetail?.criteria_request != null">{{serviceDetail?.criteria_request}}</td>
                     </tr> -->
                     <tr>
-                      <td>Registered Address</td>
-                      <td colspan="3" *ngIf="serviceDetail?.physical_location_address">{{serviceDetail?.physical_location_address}}</td>
+                      <td>State</td>
+                      <td colspan="3" *ngIf="serviceDetail?.state">{{serviceDetail?.state}}</td>
                     </tr>
                     <tr>
                       <td>City</td>
@@ -162,7 +162,7 @@
                       <td>Mailing Address</td>
                       <td *ngIf="serviceDetail?.mailing_address">{{serviceDetail?.mailing_address}}</td>
                       <td>PO Box No./ZIP Code</td>
-                      <td *ngIf="serviceDetail?.po_box">{{serviceDetail?.po_box}}</td>
+                      <td *ngIf="serviceDetail?.zip_code">{{serviceDetail?.zip_code}}</td>
                     </tr>
                     <tr>
                       <td>Official E-mail Address</td>
