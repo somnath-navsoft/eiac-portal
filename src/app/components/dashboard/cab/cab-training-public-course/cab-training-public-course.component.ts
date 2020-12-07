@@ -170,7 +170,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   }
 
   addRow(obj) {
-    var newObj = [];
+    var newObj = {};
     obj.push(newObj);
   }
 
@@ -181,8 +181,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
           res => {
             var courseDetails = res['courseDetails'];
             this.step3Data.course_title = courseDetails.course;
-            this.step3Data.training_duration = parseInt(courseDetails.training_days);
-            this.trainingDurationSelectbox = this.step3Data.training_duration != '' && this.step3Data.training_duration != undefined ? true : false;
+            this.step3Data.training_duration = isNaN(parseInt(courseDetails.training_days)) ? courseDetails.training_days : parseInt(courseDetails.training_days);
+            this.trainingDurationSelectbox = this.step3Data.training_duration != null && this.step3Data.training_duration != undefined ? true : false;
             // console.log(courseDetails.training_days,'training_days');
           });
     }
@@ -228,6 +228,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
         this.step1Data.authorized_contact_person = res['data']['step2']['cabOwnerData'][0].name;
         this.step1Data.designation = res['data']['step1'][0].designation;
         this.step1Data.mobile_phone_number = res['data']['step1'][0].applicant_tel_no;
+
+        this.step5Data.organization_name = res['data']['step1'][0].cab_name;
       })
     
 
@@ -319,8 +321,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
 
             // step3
             this.step3Data.course_title = res['data'].course_title;
-            this.step3Data.training_duration = parseInt(res['data'].training_duration);
-            this.trainingDurationSelectbox = this.step3Data.training_duration != '' && this.step3Data.training_duration != undefined ? true : false;
+            this.step3Data.training_duration = isNaN(parseInt(res['data'].training_duration)) ? res['data'].training_duration : parseInt(res['data'].training_duration);
+            this.trainingDurationSelectbox = this.step3Data.training_duration != null && this.step3Data.training_duration != undefined ? true : false;
 
             // step5
             if(res['data'].onBehalfApplicantDetails != null) {
@@ -566,7 +568,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       // console.log(this.noofParticipants);
       // console.log(training_duration_current);
       // console.log(this.tutionFees);
-      this.taxVat = 0.5 * this.tutionFees;
+      this.taxVat = 0.05 * this.tutionFees;
       this.knowledgeFees = 10 * this.noofParticipants;
       this.innovationFees = 10 * this.noofParticipants;
       this.subTotal = this.tutionFees + this.taxVat + this.knowledgeFees + this.innovationFees;
@@ -1040,7 +1042,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.publicTrainingForm.email = this.userEmail;
       this.publicTrainingForm.userType = this.userType;
       this.publicTrainingForm.saved_step = '1';
-      this.step1Data.is_draft = false;
+      this.step1Data.is_draft = true;
       this.step1Data.training_form_type = 'public_training';
 
       this.publicTrainingForm.step1 = this.step1Data;
@@ -1077,9 +1079,17 @@ export class CabTrainingPublicCourseComponent implements OnInit {
 
       this.publicTrainingForm.step2['trainee_details'] = [];
     
-      if(this.participantTraineeDetails) {
+      // if(this.participantTraineeDetails) {
         this.publicTrainingForm.step2['trainee_details'] = this.participantTraineeDetails;
-      }
+      // }
+      // else{
+      //   this.publicTrainingForm.step2['trainee_details'] = [{
+      //     first_name:this.participantTraineeDetails.first_name,
+      //     last_name:this.participantTraineeDetails.last_name,
+      //     email_address:this.participantTraineeDetails.email_address,
+      //     phone_number:this.participantTraineeDetails.phone_number,
+      //   }];
+      // }
 
       // console.log(this.publicTrainingForm);
       this.step2DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
@@ -1165,7 +1175,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.publicTrainingForm.saved_step = '5';
       this.step5Data.is_draft = true;
       this.step5Data.training_form_type = 'public_training';
-
+      this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.publicTrainingForm.step5 = this.step5Data;
 
       this.step5DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));

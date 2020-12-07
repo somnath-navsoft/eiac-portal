@@ -220,6 +220,13 @@ getAccreditationStatusList(id) {
   return this.http.get(url, this._service.getReqHeaders());
 }
 
+getApprovedList() {
+  let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.approved_list; 
+  //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
+  //console.log("GET Event URL: ", url, " -- ", this._service.getReqHeaders());
+  return this.http.get(url, this._service.getReqHeaders());
+}
+
 getAccountLists() {
   let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.accountLists; 
   //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
