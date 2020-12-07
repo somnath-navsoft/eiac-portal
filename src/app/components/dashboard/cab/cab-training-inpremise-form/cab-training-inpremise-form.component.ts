@@ -148,7 +148,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
       this.loadCountryStateCity();
       this.loadDetailsPage();
       this.inpremiseFormId != '' && this.inpremiseFormId != undefined ? '' : this.loadCourseDetailsPage();
-      this.trainingDuration = [{key:1,title:'1 Day'},{key:2,title:'2 Days'},{key:3,title:'3 Days'},{key:4,title:'4 Days'},{key:5,title:'5 Days'},{key:6,title:'6 Days'},{key:7,title:'7 Days'},{key:8,title:'8 Days'},{key:9,title:'9 Days'},{key:10,title:'10 Days'}];
+      // this.trainingDuration = [{key:1,title:'1 Day'},{key:2,title:'2 Days'},{key:3,title:'3 Days'},{key:4,title:'4 Days'},{key:5,title:'5 Days'},{key:6,title:'6 Days'},{key:7,title:'7 Days'},{key:8,title:'8 Days'},{key:9,title:'9 Days'},{key:10,title:'10 Days'}];
   
       // console.log(this.participantTraineeDetails.length);
       // tutionFees:any;
@@ -156,6 +156,16 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
       // knowledgeFees:any;
       // innovationFees:any;
       // noofParticipants:any;
+
+      let durationAr: any =[];
+      for(let k=0; k<100; k++){
+          let tempObj: any ={};
+          tempObj['key'] = (k+1);
+          tempObj['title'] = (k+1) + ' Day';
+          durationAr.push(tempObj);
+      }
+      //console.log('<<< Duratioh: ', durationAr);
+      this.trainingDuration = durationAr;
       
     }
   
