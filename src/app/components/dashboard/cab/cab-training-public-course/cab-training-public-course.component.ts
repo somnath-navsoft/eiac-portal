@@ -224,7 +224,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
         this.step1Data.telephone_number = res['data']['step1'][0].tel_no;
         this.step1Data.fax_no = res['data']['step1'][0].applicant_fax_no;
         this.step1Data.official_email = res['data']['step1'][0].applicant_email;
-        this.step1Data.official_website = res['data']['step1'][0].official_website;
+        this.step1Data.official_website = res['data']['step1'][0].applicant_website;
         this.step1Data.authorized_contact_person = res['data']['step2']['cabOwnerData'][0].name;
         this.step1Data.designation = res['data']['step1'][0].designation;
         this.step1Data.mobile_phone_number = res['data']['step1'][0].applicant_tel_no;
