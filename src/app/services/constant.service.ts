@@ -60,6 +60,7 @@ export class Constants{
 		testing_cal_form_basic_data: 'testing_calibration_form_management/',
 		inspection_form_basic_data: 'inspection_body_form_management/',
 		halal_conformity_form_management: 'halal_conformity_form_management/',
+		approved_list: 'cust-course-event-list/all',
 
 		criteriaIdByScope: this.apiUrl + 'criteria_wise_scope/',
 		criteriaScope: this.apiUrl + 'inspection_body_form_management/?scheme=',

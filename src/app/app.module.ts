@@ -138,6 +138,7 @@ import { AccountDetailsComponent } from './components/dashboard/accounts/account
 import { AccountUploadComponent } from './components/dashboard/accounts/account-upload/account-upload.component';
 import { CabTrainingDetailComponent } from './components/dashboard/cab/cab-training-detail/cab-training-detail.component';
 import { CabTrainingInpremiseDetailComponent } from './components/dashboard/cab/cab-training-inpremise-detail/cab-training-inpremise-detail.component';
+import { CabTrainingInpremiseEventDetailsComponent } from './components/dashboard/cab/cab-training-inpremise-event-details/cab-training-inpremise-event-details.component';
 import { CabTrainingInpremiseFormComponent } from './components/dashboard/cab/cab-training-inpremise-form/cab-training-inpremise-form.component';
 import { MessageReplyComponent } from './components/dashboard/message/message-reply/message-reply.component';
 import { TimeAgoPipe } from 'time-ago-pipe';
@@ -149,6 +150,8 @@ import { CabCompanyProfileComponent } from './components/dashboard/cab/cab-compa
 import { CabMessage } from './components/dashboard/cab/cab-message/cab-message.component';
 import { RegistrationStatusComponent } from './components/dashboard/registration-status/registration-status.component';
 import { TrainingStatusComponent } from './components/dashboard/training-status/training-status.component';
+import { InpremiseApprovalListComponent } from './components/dashboard/operations/inpremise-approval-list/inpremise-approval-list.component';
+import { InpremiseApprovalDetailsComponent } from './components/dashboard/operations/inpremise-approval-details/inpremise-approval-details.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -196,6 +199,7 @@ export const MY_FORMATS = {
     AccountUploadComponent,
     CabTrainingDetailComponent,
     CabTrainingInpremiseDetailComponent,
+    CabTrainingInpremiseEventDetailsComponent,
     CabTrainingInpremiseFormComponent,
     MessageReplyComponent,
     TimeAgoPipe,
@@ -206,7 +210,9 @@ export const MY_FORMATS = {
     CabCompanyProfileComponent,
     CabMessage,
     RegistrationStatusComponent,
-    TrainingStatusComponent
+    TrainingStatusComponent,
+    InpremiseApprovalListComponent,
+    InpremiseApprovalDetailsComponent
   ],
   imports: [
     CommonModule,
