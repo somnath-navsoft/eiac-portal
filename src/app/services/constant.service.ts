@@ -70,6 +70,7 @@ export class Constants{
 		profileApproval: this.apiUrl + 'profile-approval/',
 		accrStatus: this.apiUrl + 'accr_status/',
 		accrStatusReg: this.apiUrl + 'reg_status_change/',
+		accrStatusTraining: this.apiUrl + 'training_status_change/',
 		testingCalibration: this.apiUrl + 'testing_calibration_form_management/',
 		certificationBodies: this.apiUrl + 'certification_bodies/',
 		halalConfirmity: this.apiUrl + 'halal-conformity-form/',
