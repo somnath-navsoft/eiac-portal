@@ -41,6 +41,11 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
     this.routeId = sessionStorage.getItem('trainingId');
     this.loadData();
   }
+  getFile(file: string){
+    let fname: string = file.split('/')[1].split('.')[0];
+    console.log(fname);
+    return fname;
+  }
 
   loadData() {
     this.loader = false;
