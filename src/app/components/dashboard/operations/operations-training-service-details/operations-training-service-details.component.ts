@@ -28,6 +28,10 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
   subTotal:any;
   training_duration:any;
   course_title:any;
+  fee_day_pertime1:any = 1000;
+  fee_day_pertime2:any = '5%';
+  fee_day_pertime3:any = 10;
+  fee_day_pertime4:any = 10;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService) { }
