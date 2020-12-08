@@ -84,11 +84,12 @@ export class Constants{
 		accrediationCsv: this.apiUrl + 'accrediation-csv/',
 		workPermitform: this.apiUrl + 'workpermit_form/',
 		training_course_list: this.apiUrl + 'training-course-list/',
-		course_details: this.apiUrl + 'course-details/',
+		course_details: this.apiUrl + 'public-course-event-details-show/',
 		publicTrainingForm: 'training_request_form/',
 		noc_submit_form : 'noc_form'		
 		// webservice/training_request_form/
 	}
+	//course_details: this.apiUrl + 'course-details/',
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."
 	public loggedIn													=	new Subject<any>();
 	public logType: string 											=	'';
