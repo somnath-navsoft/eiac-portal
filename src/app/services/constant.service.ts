@@ -70,6 +70,7 @@ export class Constants{
 		profileApproval: this.apiUrl + 'profile-approval/',
 		accrStatus: this.apiUrl + 'accr_status/',
 		accrStatusReg: this.apiUrl + 'reg_status_change/',
+		accrStatusTraining: this.apiUrl + 'training_status_change/',
 		testingCalibration: this.apiUrl + 'testing_calibration_form_management/',
 		certificationBodies: this.apiUrl + 'certification_bodies/',
 		halalConfirmity: this.apiUrl + 'halal-conformity-form/',
@@ -84,7 +85,7 @@ export class Constants{
 		accrediationCsv: this.apiUrl + 'accrediation-csv/',
 		workPermitform: this.apiUrl + 'workpermit_form/',
 		training_course_list: this.apiUrl + 'training-course-list/',
-		course_details: this.apiUrl + 'public-course-event-details-show/',
+		course_details_publicForm: this.apiUrl + 'public-course-event-details-show/',
 		publicTrainingForm: 'training_request_form/',
 		noc_submit_form : 'noc_form'		
 		// webservice/training_request_form/

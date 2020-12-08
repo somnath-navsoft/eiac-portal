@@ -148,7 +148,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
 
     this.loadCountryStateCity();
     this.loadDetailsPage();
-    this.traningPublicId != '' && this.traningPublicId != undefined ? '' : this.loadCourseDetailsPage();
+    this.traningPublicId != '' && this.traningPublicId != undefined ? '' : this.loadCourseDetailsPage(this.trainingPublicCourseid);
     //this.trainingDuration = [{key:1,title:'1 Day'},{key:2,title:'2 Days'},{key:3,title:'3 Days'},{key:4,title:'4 Days'},{key:5,title:'5 Days'},{key:6,title:'6 Days'},{key:7,title:'7 Days'},{key:8,title:'8 Days'},{key:9,title:'9 Days'},{key:10,title:'10 Days'}];
 
     let durationAr: any =[];
@@ -174,15 +174,16 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     obj.push(newObj);
   }
 
-  loadCourseDetailsPage() {
-    if(this.trainingPublicCourseid != '' && this.trainingPublicCourseid != undefined) {
-      this.Service.getwithoutData(this.Service.apiServerUrl+'/'+this._constant.API_ENDPOINT.course_details+this.trainingPublicCourseid+'?data=1')
+  loadCourseDetailsPage(trainingPublicCourseid) {
+    if(trainingPublicCourseid != '' && trainingPublicCourseid != undefined) {
+      this.Service.getwithoutData(this.Service.apiServerUrl+'/'+this._constant.API_ENDPOINT.course_details_publicForm+trainingPublicCourseid)
         .subscribe(
           res => {
-            var courseDetails = res['courseDetails'];
+            var courseDetails = res['eventData'].public_course;
             this.step3Data.course_title = courseDetails.course;
             this.step3Data.training_duration = isNaN(parseInt(courseDetails.training_days)) ? courseDetails.training_days : parseInt(courseDetails.training_days);
             this.trainingDurationSelectbox = this.step3Data.training_duration != null && this.step3Data.training_duration != undefined ? true : false;
+            this.step1Data.event_management = trainingPublicCourseid;
             // console.log(courseDetails.training_days,'training_days');
           });
     }
@@ -313,6 +314,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             this.step1Data.authorized_contact_person = res['data'].authorized_contact_person;
             this.step1Data.designation = res['data'].designation;
             this.step1Data.mobile_phone_number = res['data'].mobile_phone_number;
+            this.step1Data.event_management = res['data'].event_management;
+            this.step1Data.event_management != '' && this.step1Data.event_management != null ? this.loadCourseDetailsPage(res['data'].event_management) : '';
 
             // step2
             if(res['data'].eventParticipant != null) {
@@ -369,7 +372,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             // console.log(this.noofParticipants);
             // console.log(training_duration_current);
             // console.log(this.tutionFees);
-            this.taxVat = 0.5 * this.tutionFees;
+            this.taxVat = 0.05 * this.tutionFees;
             this.knowledgeFees = 10 * this.noofParticipants;
             this.innovationFees = 10 * this.noofParticipants;
             this.subTotal = this.tutionFees + this.taxVat + this.knowledgeFees + this.innovationFees;
@@ -480,6 +483,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.publicTrainingForm.userType = this.userType;
       this.publicTrainingForm.saved_step = '1';
       this.step1Data.is_draft = false;
+      // this.step1Data.event_management_id = false;
       this.step1Data.training_form_type = 'public_training';
       if(this.formApplicationId > 0){
         this.step1Data.application_id = this.formApplicationId;
@@ -1123,7 +1127,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       // console.log(this.noofParticipants);
       // console.log(training_duration_current);
       // console.log(this.tutionFees);
-      this.taxVat = 0.5 * this.tutionFees;
+      this.taxVat = 0.05 * this.tutionFees;
       this.knowledgeFees = 10 * this.noofParticipants;
       this.innovationFees = 10 * this.noofParticipants;
       this.subTotal = this.tutionFees + this.taxVat + this.knowledgeFees + this.innovationFees;
