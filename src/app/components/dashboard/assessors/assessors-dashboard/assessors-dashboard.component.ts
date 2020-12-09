@@ -16,6 +16,11 @@ export class AssessorsDashboardComponent implements OnInit {
   loader: boolean = true;
   recordsTotal: any;
   config: any;
+  userDetails:any;
+  userEmail:any;
+  userType:any;
+  step1Data:any;
+  step2Data:any;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
     this.config = {
@@ -25,6 +30,21 @@ export class AssessorsDashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userEmail = sessionStorage.getItem('email');
+    this.userType = sessionStorage.getItem('type');
+    this.userId = sessionStorage.getItem('userId');
+    this.loader = false;
+    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.profileService + '?userType=' + this.userType + '&email=' + this.userEmail)
+    .subscribe(
+      res => {
+        this.loader = true;
+        this.userDetails = res['data']['user_data'][0];
+        this.step1Data = res['data']['step1'][0];
+        this.step1Data = res['data']['step1'][0];
+        this.step2Data = res['data']['step2']['education'][0];
+        // console.log(res,'res');
+      });
+        
     this.userId = sessionStorage.getItem('userId');
 
     this.loader = false;
