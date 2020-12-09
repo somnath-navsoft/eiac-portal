@@ -1,0 +1,138 @@
+<app-loader *ngIf="!loader"></app-loader>
+
+
+
+<div class="main-detail">
+  <div class="container-fluid p-0">
+    <div class="main-dashboard-cnt">
+      
+      <div class="row m-0">
+        <div class="col-md-12 message-det">
+            <div class="row mt-3">
+              <div class="col-md-3">
+                <div class="main_app_wrap">
+                  <div class="appln-data">
+                    <h3>{{cabUserDetails?.first_name}} {{cabUserDetails?.last_name}}</h3>
+                    <span>{{cabUserDetails?.designation}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">  
+                <div class="progress_wrapper">
+                  <div class="progress_head">
+                      <span class="complete">Complete</span>
+                      <span>{{progressValue}}%</span>
+                    </div>
+                  <div class="progress-br">
+                    <mat-progress-bar mode="determinate" value="{{progressValue}}"></mat-progress-bar>
+                </div>
+              </div>
+              </div>
+              <div class="col-md-5"> 
+                <div class="edit_data">
+                  <a routerLink="/profile-completion">
+                    <span class="icon-edit"></span>
+                  </a>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <!-- <div class="row m-0">
+        <div class="col-md-12 message-det">
+            <div class="row appl-cnt">
+              <div class="col">
+                <div class="appln-data">
+                  <h5>Date of Birth</h5>
+                </div>
+                <div class="appln-details">
+                  <span *ngIf="cabStep1?.dob != ''">{{cabStep1?.dob | date: 'dd-MM-yyyy'}}</span>                  
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="appln-data">
+                  <h5>Personal Email</h5>
+                </div>
+                <div class="appln-details">
+                  <span *ngIf="cabStep1?.applicant_email != ''">{{cabStep1?.applicant_email}}</span>
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="appln-data">
+                  <h5>Nationality</h5>
+                </div>
+                <div class="appln-details">
+                  <span *ngIf="cabStep1?.nationality != ''">{{cabStep1?.nationality}}</span>
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="appln-data">
+                  <h5>Phone Number</h5>
+                </div>
+                <div class="appln-details">
+                  <span *ngIf="cabStep1?.applicant_tel_no != ''">{{cabStep1?.applicant_tel_no}}</span> 
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="appln-data">
+                  <h5>Fax Number</h5>
+                </div>
+                <div class="appln-details license_no">
+                  <span *ngIf="cabStep1?.applicant_fax_no != null">{{cabStep1?.applicant_fax_no}}</span>
+                  <span *ngIf="cabStep1?.applicant_fax_no == null">N/A</span>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div> -->
+      <div class="row m-0 mt-5">
+        <div class="col-md-12">
+          <div class="row appln-cnt-data">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="appln-subhdr">
+                    <h5>PERSONAL DETAILS</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="row msg-det">
+                <div class="col-md-12">
+                  <div class="table-appln">
+                    <table>
+                      <tr>
+                        <td>Company Email ID</td>
+                        <td *ngIf="cabStep1?.office_email">{{cabStep1?.office_email}}</td>
+                      </tr>
+                      <tr>
+                        <td width="30%">Personal Email ID</td>
+                        <td *ngIf="cabUserDetails?.email">{{cabUserDetails?.email}}</td>
+                      </tr>
+                      <tr>
+                        <td>Company Mobile No.</td>
+                        <td *ngIf="cabStep1?.office_tel_no">{{cabStep1?.office_tel_no}}</td>
+                      </tr>
+                      <tr>
+                        <td>Personal Mobile No.</td>
+                        <td *ngIf="cabUserDetails?.contact">{{cabUserDetails?.contact}}</td>
+                      </tr>
+                      <tr>
+                        <td>Department</td>
+                        <td *ngIf="cabStep1?.department">{{cabStep1?.department}}</td>
+                      </tr>
+                      
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
