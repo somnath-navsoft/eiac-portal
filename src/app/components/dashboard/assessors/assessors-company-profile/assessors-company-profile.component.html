@@ -39,7 +39,7 @@
         </div>
       </div>
       <div class="row m-0">
-        <div class="col-md-12 message-det">
+        <div class="col-md-12 message-det p-0">
             <div class="row appl-cnt">
               <div class="col">
                 <div class="appln-data">
@@ -86,11 +86,11 @@
         </div>
       </div>
       <div class="row m-0">
-        <div class="col-md-12">
+        <div class="col-md-12 p-0">
           <div class="row appln-cnt-data">
-            <div class="col-md-12 p-0">
+            <div class="col-md-12">
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 p-0">
                   <div class="appln-subhdr">
                     <h5>OFFICE DETAILS</h5>
                   </div>
@@ -132,11 +132,11 @@
      
       <!-- Education -->
       <div class="row m-0">
-        <div class="col-md-12">
+        <div class="col-md-12 p-0">
           <div class="row appln-cnt-data">
-            <div class="col-md-12 p-0">
+            <div class="col-md-12">
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 p-0">
                   <div class="appln-subhdr">
                     <h5>EDUCATIONAL INFORMATION</h5> 
                   </div>
@@ -176,9 +176,9 @@
         </div>
       </div>
       <div class="row m-0">
-        <div class="col-md-12">
+        <div class="col-md-12 p-0">
           <div class="row appln-cnt-data">
-            <div class="col-md-12 p-0">
+            <div class="col-md-12">
               <div class="row p-0">
                 <div class="col-md-12">
                   <div class="form-subheader-data">
@@ -187,7 +187,7 @@
                 </div>
               </div>
               <div class="row msg-det">
-                <div class="col-md-12">
+                <div class="col-md-12 p-0">
                   <div class="table-appln">
                     <table>
                       <ng-container *ngFor="let item of assessorEduDetails?.which_forum">
@@ -209,9 +209,9 @@
         </div>
       </div>
       <div class="row m-0">
-        <div class="col-md-12">
+        <div class="col-md-12 p-0">
           <div class="row appln-cnt-data">
-            <div class="col-md-12 p-0">
+            <div class="col-md-12">
               <div class="row p-0">
                 <div class="col-md-12">
                   <div class="form-subheader-data">
@@ -220,7 +220,7 @@
                 </div>
               </div>
               <div class="row msg-det">
-                <div class="col-md-12">
+                <div class="col-md-12 p-0">
                   <div class="table-appln">
                     <table>
                       <ng-container *ngFor="let item of assessorEduDetails?.language">
@@ -244,11 +244,11 @@
 
       <!-- EMPLOYMENT -->
       <div class="row m-0">
-        <div class="col-md-12">
+        <div class="col-md-12 p-0">
           <div class="row appln-cnt-data">
-            <div class="col-md-12 p-0">
+            <div class="col-md-12">
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 p-0">
                   <div class="appln-subhdr">
                     <h5>EMPLOYMENT</h5> 
                   </div>
@@ -268,7 +268,7 @@
                     </div>
                   </div>
                   <div class="row msg-det">
-                    <div class="col-md-12">
+                    <div class="col-md-12 p-0">
                       <div class="table-appln">
                         <table>
                           <tr>
@@ -311,7 +311,7 @@
                     </div>
                   </div>
                   <div class="row msg-det">
-                    <div class="col-md-12">
+                    <div class="col-md-12 p-0">
                       <div class="table-appln">
                         <table>
                           <tr>
@@ -348,7 +348,7 @@
                     </div>
                   </div>
                   <div class="row msg-det">
-                    <div class="col-md-12">
+                    <div class="col-md-12 p-0">
                       <div class="table-appln">
                         <table>
                           <tr>
@@ -383,7 +383,7 @@
                     </div>
                   </div>
                   <div class="row msg-det">
-                    <div class="col-md-12">
+                    <div class="col-md-12 p-0">
                       <div class="table-appln">
                         <table>
                           <tr>
@@ -420,7 +420,7 @@
       <!-- Knowledge -->
       <div class="row m-0">
         <div class="col-md-12">
-              <div class="row appln-cnt-data">
+              <!-- <div class="row appln-cnt-data">
                 <div class="col-md-12 p-0">
                   <div class="row">
                     <div class="col-md-12">
@@ -430,61 +430,73 @@
                     </div>
                   </div>              
                 </div>
+              </div> -->
+              <div class="row m-0 form-bdy mt-3">
+                <div class="wrapper">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12 p-0">
+                                <div class="form-subhdr">
+                                    <h5>KNOWLEDGE AND EXPERIENCE</h5>
+                                </div>
+                            </div>
+                        </div>
+
+              <!-- <div class="row">
+                <div class="col-md-12"> -->
+                        <ng-container *ngFor="let row of assessorsKnowledge; let j = index;">
+                          <div class="row mt-3">
+                              <div class="col-md-11 col-sm-6 p-0">
+                                  <div class="form-subheader-data">
+                                      <h5>{{row.title}}</h5>
+                                  </div>
+                              </div>
+                              <div class="col-md-1 col-sm-6 p-0">
+                                  <div class="open-cls">                              
+                                      <tr>
+                                          <th class="manage-first" colspan="8" *ngIf="row['technical_fields']" >
+                                              <a *ngIf="isdDynamicsopenClose == row.id" href="javascript:void(0)" (click)="dynamicsopenClose(row.id,'close')"><span class="icon-minus"></span></a>
+                                              
+                                              <a (click)="dynamicsopenClose(row.id,'open')" *ngIf="isdDynamicsopenClose != row.id" href="javascript:void(0)" ><span class="icon-add"></span></a>
+                                          </th>
+                                          <th class="manage-first" colspan="8"></th>
+                                      </tr>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <div class="row" *ngIf="isdDynamicsopenClose == row.id">
+                              <div class="col-md-12">
+                                  <div class="table-content-health">
+                                      <table>
+
+                                          <tr>
+                                              <th>Field</th>
+                                              <th>Years of Experience</th>
+                                          </tr>
+                                          
+                                          <tr *ngFor="let item of row['technical_fields']; let i = index;">
+                                              <td>{{item.title}}</td>
+                                              <td>
+                                                  <mat-radio-group name="knowledge_experienced_{{item.field_mgmt}}" [(ngModel)]="row['technical_fields'][i].knowledge_experienced">
+                                                      <div class="desc-content-prof">
+                                                          <mat-radio-button value="1" disabled>From 5-10 Years</mat-radio-button>
+                                                          <mat-radio-button value="2" disabled>From 11-15 Years</mat-radio-button>
+                                                          <mat-radio-button value="3" disabled>Above 16 Years</mat-radio-button>
+                                                      </div>
+                                                  </mat-radio-group>
+                                              </td>
+                                          </tr>
+                                          
+                                      </table>
+                                  </div>
+                              </div>
+                          </div>
+                        </ng-container>
+            <!-- </div>
+              </div> -->
               </div>
-
-              <div class="row">
-                <div class="col-md-12">
-                <ng-container *ngFor="let row of assessorsKnowledge; let j = index;">
-                  <div class="row mt-3">
-                      <div class="col-md-11 col-sm-6 p-0">
-                          <div class="form-subheader-data">
-                              <h5>{{row.title}}</h5>
-                          </div>
-                      </div>
-                      <div class="col-md-1 col-sm-6 p-0">
-                          <div class="open-cls">                              
-                              <tr>
-                                  <th class="manage-first" colspan="8" *ngIf="row['technical_fields']" >
-                                      <a *ngIf="isdDynamicsopenClose == row.id" href="javascript:void(0)" (click)="dynamicsopenClose(row.id,'close')"><span class="icon-minus"></span></a>
-                                      
-                                      <a (click)="dynamicsopenClose(row.id,'open')" *ngIf="isdDynamicsopenClose != row.id" href="javascript:void(0)" ><span class="icon-add"></span></a>
-                                  </th>
-                                  <th class="manage-first" colspan="8"></th>
-                              </tr>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <div class="row" *ngIf="isdDynamicsopenClose == row.id">
-                      <div class="col-md-12">
-                          <div class="table-content-health">
-                              <table>
-
-                                  <tr>
-                                      <th>Field</th>
-                                      <th>Years of Experience</th>
-                                  </tr>
-                                  
-                                  <tr *ngFor="let item of row['technical_fields']; let i = index;">
-                                      <td>{{item.title}}</td>
-                                      <td>
-                                          <mat-radio-group name="knowledge_experienced_{{item.field_mgmt}}" [(ngModel)]="row['technical_fields'][i].knowledge_experienced">
-                                              <div class="desc-content-prof">
-                                                  <mat-radio-button value="1" disabled>From 5-10 Years</mat-radio-button>
-                                                  <mat-radio-button value="2" disabled>From 11-15 Years</mat-radio-button>
-                                                  <mat-radio-button value="3" disabled>Above 16 Years</mat-radio-button>
-                                              </div>
-                                          </mat-radio-group>
-                                      </td>
-                                  </tr>
-                                  
-                              </table>
-                          </div>
-                      </div>
-                  </div>
-              </ng-container>
-            </div>
-
+                </div>
               </div>
         </div>
       </div>
