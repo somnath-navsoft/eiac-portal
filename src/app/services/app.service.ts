@@ -73,6 +73,12 @@ export class AppService {
       //this.userData = this.userDataSource.asObservable();
     }
 
+    getFileName(fileName: string){
+      let fname: any = fileName.split('/')[1].split('.')[0];
+      console.log(fname);
+      return fname;
+    }
+
 /*
 function getFeesPerTrainee(training_days){
     // alert("val = "+training_days);

@@ -1,0 +1,155 @@
+<app-loader *ngIf="!loaderData"></app-loader>
+<section>
+    <div class="main-menu-dir">
+        <div class="pub-wrapper">
+            <div class="container-fluid p-0">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-main">
+                            <!-- <h1>PROGRAM LISTING</h1> -->
+                            <!-- <h1>{{pageHeading}}</h1> -->
+                        </div>
+                    </div>
+                </div>
+
+                
+
+                <!-- <div *ngIf="trainingCartArr == ''">
+                    <div class="col-md-12">
+                        <div class="scheduled-prog">
+                            No Data Found
+                        </div>
+                    </div>
+                </div> -->
+                
+                
+
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <div class="ourcourse-data">
+                            <div class="progs-course">
+                                <h4>Event</h4>
+                            </div>
+                            <div class="sort-data">
+                                 <label for="sort">Sort By :</label>
+
+                                <mat-form-field appearance="fill">
+                                    <mat-select (selectionChange)="shortProgramListing('schedule_program_listing')" [(value)]="scheduleProgramSection">
+                                    <mat-option value="">Select</mat-option>
+                                        <mat-option value="coursename">Course Name</mat-option>
+                                        <mat-option value="audience">Audience</mat-option>
+                                        <mat-option value="date">Date</mat-option>
+                                        <mat-option value="days">Days</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="trainingList.length == 0">
+                    <div class="col-md-12">
+                        <div class="scheduled-prog">
+                            No Data Found
+                        </div>
+                    </div>
+                </div>
+                <!-- @{{trainingList | json}} -->
+                <ng-container *ngIf="trainingList.length > 0">
+                <div class="row" *ngFor="let row2 of trainingList; let i=index;">
+                    <div class="col-md-12">
+                        <div class="scheduled_wrapper scheduled_data">
+                            <div class="scheduled-prog">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="training-data">
+                                            @{{row2.id}}
+                                            <h4>{{row2.public_course_dtls.course}}</h4>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="training-details">
+                                    <div class="row">
+                                        <div class="col-lg-2 border-left-dash">
+                                            <div class="training-main-details">
+                                                <div class="training_det">
+                                                    <span>Audience</span>
+                                                </div>
+                                                <div class="training_type">
+                                                    <ng-container *ngIf="row2.public_course_dtls.allTargatedAud.length > 0">
+                                                        <span>{{row2.public_course_dtls.allTargatedAud[0].target_aud_name.title}}</span>
+                                                    </ng-container>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 border-left-dash">
+                                            <div class="training-main-details">
+                                                <div class="training_det">
+                                                    <span>Duration</span>
+                                                </div>
+                                                <div class="training_type">
+                                                    <span>{{row2.public_course_dtls.training_days}} Days</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 border-left-dash">
+                                            <div class="training-main-details">
+                                                <div class="training_det">
+                                                    <span>Date</span>
+                                                </div>
+                                                <div class="training_type">
+                                                    <span>{{row2.public_course_dtls.created | date:'MM-dd-yy'}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 border-left-dash">
+                                            <div class="training-main-details">
+                                                <div class="training_det">
+                                                    <span>Location</span>
+                                                </div>
+                                                <div class="training_type">
+                                                    <span>{{row2.public_course_dtls.location}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 border-left-dash">
+                                            <div class="training-main-details">
+                                                <div class="training_det">
+                                                    <span>No. Of Candidate</span>
+                                                </div>
+                                                <div class="training_type">
+                                                    <span>{{row2.public_course_dtls.capacity}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 border-left-dash">
+                                            <div class="training-main-details">
+                                            <div class="train_det_bttn">
+                                                <!-- routerLink="/dashboard/cab_client/training-inpremise-event-details/{{row2.id}}" -->
+                                                <a style="text-decoration:none" 
+                                                 href="javascript:void(0)" class="training_btn">DETAILS</a>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="content-icn scheduled_add">
+                                <a href="javascript:void(0)" class="icon-add" (click)="addTraining(allCourseTraining,i,row2.id)"></a>
+                            </div> -->
+                        </div>
+                        
+                    </div>
+
+
+                </div>
+                <div class="load-more-dir">
+                    <a href="javascript:void(0)" *ngIf="allCourses?.length > totalRow" (click)="load_more('1')">Load More...</a>
+                </div>
+                </ng-container>
+
+            </div>
+        </div>
+    </div>
+</section>

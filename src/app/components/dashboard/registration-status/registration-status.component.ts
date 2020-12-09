@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { AppService } from '../../../services/app.service';
+import { AppService } from '../../../services/app.service'; 
 import { TrainerService } from '../../../services/trainer.service';
 import { Constants } from '../../../services/constant.service';
 import { ToastrService, Overlay, OverlayContainer } from 'ngx-toastr';
@@ -44,6 +44,120 @@ export class RegistrationStatusComponent implements OnInit {
     this.curSortDir['payment_status']     = false;
     this.curSortDir['applicant']          = false;
   }
+  //"no_objection"
+
+  editVisible(item: any){
+    if(item){
+        switch(item.form_meta.toString()){
+
+          case 'work_activity':
+            //console.log("work activity....", item);
+            if(item.saved_step != null && item.saved_step < 4 && (item.is_draft == true || item.is_draft == false)){
+              // console.log("@Enter....3");
+              return false;
+            }
+            if(item.saved_step != null && item.saved_step > 4 && item.is_draft == false && 
+              item.paymentDetails != undefined && item.paymentDetails != "NA" && 
+              typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
+              return true;
+             }
+            if(item.saved_step != null && item.saved_step < 4 && item.is_draft == false && 
+              item.paymentDetails != undefined && item.paymentDetails != "NA" && 
+              typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
+              return true;
+            }
+            if(item.saved_step != null && item.saved_step == 6 && (item.is_draft == false || item.is_draft == true) && 
+              item.paymentDetails != undefined && item.application_status !== 'complete'){
+                // console.log("@Enter....1");
+              return false;
+            }
+      
+             if(item.saved_step != null && item.saved_step == 4 && item.is_draft == false && 
+                item.paymentDetails != undefined && item.paymentDetails == "NA"){
+              return true;
+            }
+             if(item.saved_step != null && item.saved_step == 4 && item.is_draft == false && 
+              item.paymentDetails != undefined && item.paymentDetails != "NA" && item.paymentDetails != false && 
+              typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
+                // console.log("@Enter....2");
+              return false;
+            }
+          break;
+
+            case 'work_permit':
+              //console.log("work permit....", item);
+              if(item.saved_step != null && item.saved_step < 4 && (item.is_draft == true || item.is_draft == false)){
+                // console.log("@Enter....3");
+                return false;
+              }
+              if(item.saved_step != null && item.saved_step > 4 && item.is_draft == false && 
+                item.paymentDetails != undefined && item.paymentDetails != "NA" && 
+                typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
+                return true;
+               }
+              if(item.saved_step != null && item.saved_step < 4 && item.is_draft == false && 
+                item.paymentDetails != undefined && item.paymentDetails != "NA" && 
+                typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
+                return true;
+              }
+              if(item.saved_step != null && item.saved_step == 6 && (item.is_draft == false || item.is_draft == true) && 
+                item.paymentDetails != undefined && item.application_status !== 'complete'){
+                  // console.log("@Enter....1");
+                return false;
+              }
+        
+               if(item.saved_step != null && item.saved_step == 4 && item.is_draft == false && 
+                  item.paymentDetails != undefined && item.paymentDetails == "NA"){
+                return true;
+              }
+               if(item.saved_step != null && item.saved_step == 4 && item.is_draft == false && 
+                item.paymentDetails != undefined && item.paymentDetails != "NA" && item.paymentDetails != false && 
+                typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
+                  // console.log("@Enter....2");
+                return false;
+              }
+            break;
+
+            case 'no_objection':
+              console.log("No Objection....", item);
+              if(item.saved_step != null && item.saved_step < 6 && (item.is_draft == true || item.is_draft == false)){
+                // console.log("@Enter....3");
+                return false;
+              }
+              if(item.saved_step != null && item.saved_step > 6 && item.is_draft == false && 
+                item.paymentDetails != undefined && item.paymentDetails != "NA" && 
+                typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
+                return true;
+               }
+              if(item.saved_step != null && item.saved_step < 6 && item.is_draft == false && 
+                item.paymentDetails != undefined && item.paymentDetails != "NA" && 
+                typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
+                return true;
+              }             
+        
+               if(item.saved_step != null && item.saved_step == 6 && item.is_draft == false && 
+                  item.paymentDetails != undefined && item.paymentDetails == "NA"){
+                    //console.log("@@@@@@@ ", item.id);
+                return true;
+              }
+              if(item.saved_step != null && item.saved_step == 8 && (item.is_draft == false || item.is_draft == true) && 
+                item.paymentDetails != undefined && item.application_status !== 'complete'){
+                  //console.log("@Enter....1", item.id);
+                return false;
+              }
+               if(item.saved_step != null && item.saved_step == 6 && item.is_draft == false && 
+                item.paymentDetails != undefined && item.paymentDetails != "NA" && item.paymentDetails != false && 
+                typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
+                  // console.log("@Enter....2");
+                return false;
+              }
+            break;
+
+            default:
+            break;
+        }
+    }
+  } 
 
   loadPageData(){
     this.loader = false;

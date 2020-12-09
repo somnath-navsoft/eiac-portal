@@ -1,1 +1,470 @@
-<p>operations-training-service-details works!</p>
+<app-loader *ngIf="!loader"></app-loader>
+<!-- <app-header-after-login></app-header-after-login>
+<div class="side-data-cont">
+    <app-sidebar-after-login></app-sidebar-after-login>
+</div> -->
+<div class="main-detail">
+  <div class="container-fluid p-0">
+    <div class="main-dashboard-cnt">
+
+      <div class="row m-0">
+        <div class="col-md-12 message-det">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="main_app_wrap">
+                  <div class="appln-data">
+                    <h3>Application No. {{routeId}}</h3>
+                  </div>
+                  <!-- <div class="appln-details">
+                    <span>
+                      <img class="qr_code" src="../../../../../../assets/images/qr_code.png" />
+                    </span>
+                  </div> -->
+                </div>
+              </div>
+
+              <div class="col border-left-dash">
+                <div class="main_app_wrap">
+                  <div class="appln-data status_hdr">
+                    <h5>Application Fees :</h5>
+                  </div>
+                  <div [ngClass]="{'complete': serviceDetail?.payment_status == 'paid', 'under-review':serviceDetail?.payment_status == 'pending', 'under-review':serviceDetail?.payment_status == null }">
+                    <!-- <span>{{(serviceDetail?.payment_status == "paid") ? 'Paid' : 'Unpaid'}}</span> -->
+                    <span *ngIf="serviceDetail?.payment_status == 'pending'">Unpaid</span>
+                    <span *ngIf="serviceDetail?.payment_status == 'paid'">Paid</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col border-left-dash">
+                <div class="main_app_wrap">
+                  <div class="appln-data status_hdr">
+                    <h5>Document Review :</h5>
+                  </div>
+                  <div [ngClass]="{'complete': serviceDetail?.paymentDetails?.doc_review_payment_status != null, 'under-review':serviceDetail?.paymentDetails?.doc_review_payment_status == null,'under-review': !serviceDetail?.paymentDetails?.doc_review_payment_status }">
+                    <span *ngIf="serviceDetail?.paymentDetails?.doc_review_payment_status == null || !serviceDetail?.paymentDetails?.doc_review_payment_status">Unpaid</span>
+                    <span *ngIf="serviceDetail?.paymentDetails?.doc_review_payment_status != null">Paid</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col border-left-dash">
+                <div class="main_app_wrap">
+                  <div class="appln-data status_hdr">
+                    <h5>Assessment :</h5>
+                  </div>
+                  <div [ngClass]="{'complete': serviceDetail?.paymentDetails?.doc_review_payment_status != null, 'under-review':serviceDetail?.paymentDetails?.doc_review_payment_status == null }">
+                    <span>{{(serviceDetail?.paymentDetails?.assessment_payment_status == null) ? 'Unpaid' : 'Paid'}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col border-left-dash">
+                <div class="main_app_wrap">
+                  <div class="appln-data status_hdr">
+                    <h5>Certification :</h5>
+                  </div>
+                  <div [ngClass]="{'complete': serviceDetail?.paymentDetails?.certification_payment_status != null, 'under-review':serviceDetail?.paymentDetails?.certification_payment_status == null }">
+                    <span>{{(serviceDetail?.paymentDetails?.certification_payment_status == null) ? 'Unpaid' : 'Paid'}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+
+      <div class="row m-0">
+        <div class="col-md-12 message-det">
+            <div class="row appl-cnt">
+              <div class="col">
+                <div class="appln-data">
+                  <h5>Application Type</h5>
+                </div>
+                <div class="appln-details">
+                  <span *ngIf="serviceDetail?.training_form_type == 'public_training'">Public Training</span>
+                  <span *ngIf="serviceDetail?.training_form_type == 'inprimise'">In Premise</span>
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="appln-data">
+                  <h5>Establishment Name</h5>
+                </div>
+                <div class="appln-details">
+                  <span *ngIf="!serviceDetail?.organization_name">None</span>
+                  <span *ngIf="serviceDetail?.organization_name">{{serviceDetail?.organization_name}}</span>
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="appln-data">
+                  <h5>Training Duration</h5>
+                </div>
+                <div class="appln-details">
+                  <span>{{training_duration}} days</span>
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="appln-data">
+                  <h5>Course Title</h5>
+                </div>
+                <div class="appln-details">
+                  <span>{{course_title}}</span>
+                </div>
+              </div>
+              <!-- <div class="col border-left-dash">
+                <div class="appln-data">
+                  <h5>Trade License No.</h5>
+                </div>
+                <div class="appln-details license_no">
+                  <span *ngIf="serviceDetail?.trade_license_number != null">{{serviceDetail?.trade_license_number}}</span>
+                  <span *ngIf="serviceDetail?.trade_license_number == null">N/A</span>
+                </div>
+              </div> -->
+            </div>
+        </div>
+      </div>
+
+      <div class="row m-0 appn-cnt-data">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="appln-subhdr">
+                <h5>APPLICANT INFORMATION</h5>
+              </div>
+            </div>
+          </div> 
+          <div class="row status-det">
+              <div class="col-md-12">
+                <div class="table-appln">
+                  <table>
+                    <!-- <tr>
+                      <td>Date of Issue</td>
+                      <td *ngIf="serviceDetail?.date_of_issue">{{serviceDetail?.date_of_issue | date: 'dd-MM-yyyy'}}</td>
+                      <td>Date of expiry</td>
+                      <td *ngIf="serviceDetail?.date_of_expiry">{{serviceDetail?.date_of_expiry | date: 'dd-MM-yyyy'}}</td>
+                    </tr> -->
+                    <!-- <tr>
+                      <td>Type of Accreditation</td>
+                      <td>{{(serviceDetail?.accredation_criteria == 1) ? 'Initial' : 'Extension' }}</td>
+                      <td *ngIf="serviceDetail?.criteria_request != null">Criteria for which Acc. is Requested</td>
+                      <td *ngIf="serviceDetail?.criteria_request != null">{{serviceDetail?.criteria_request}}</td>
+                    </tr> -->
+                    <tr>
+                      <td>State</td>
+                      <td colspan="3" *ngIf="serviceDetail?.state">{{serviceDetail?.state}}</td>
+                    </tr>
+                    <tr>
+                      <td>City</td>
+                      <td *ngIf="serviceDetail?.city">{{serviceDetail?.city}}</td>
+                      <td>Country</td>
+                      <td *ngIf="serviceDetail?.country">{{serviceDetail?.country}}</td>
+                    </tr>
+                    <tr>
+                      <td>Mailing Address</td>
+                      <td *ngIf="serviceDetail?.mailing_address">{{serviceDetail?.mailing_address}}</td>
+                      <td>PO Box No./ZIP Code</td>
+                      <td *ngIf="serviceDetail?.zip_code">{{serviceDetail?.zip_code}}</td>
+                    </tr>
+                    <tr>
+                      <td>Official E-mail Address</td>
+                      <td *ngIf="serviceDetail?.official_email">{{serviceDetail?.official_email}}</td>
+                      <td>Official Website</td>
+                      <td *ngIf="serviceDetail?.official_website">{{serviceDetail?.official_website}}</td>
+                    </tr>
+                    <tr>
+                      <td>Telephone Number</td>
+                      <td *ngIf="serviceDetail?.telephone_number">{{_service.removePlus(serviceDetail?.telephone_number)}}</td>
+                      <td>Fax Number</td>
+                      <td *ngIf="serviceDetail?.fax_no">{{serviceDetail?.fax_no}}</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      
+      <div class="row m-0" *ngIf="participantTraineeDetails != '' && participantTraineeDetails != null">
+        <div class="col-md-12">
+          <div class="row status-det-wrapper">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="appln-subhdr">
+                    <h5>PARTICIPANT/TRAINEES DETAILS</h5>
+                  </div>
+                  <hr>
+                </div>
+              </div>
+              
+              <div class="row" >
+                <div class="col-md-12">
+                    <div class="table-content-health">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Participant/Trainee Name</th>
+                                    <th>E-mail Address</th>
+                                    <th>Phone Number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of participantTraineeDetails; let i = index;">
+                                    <td>
+                                        <div class="participant_trainee">
+                                            <mat-form-field class="cab-data mr-2">
+                                                <mat-label>First Name</mat-label>
+                                                <input matInput placeholder="" name="first_name_{{i}}" [(ngModel)]="participantTraineeDetails[i].first_name" readonly> 
+                                            </mat-form-field>
+
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Last Name</mat-label>
+                                                <input matInput placeholder="" name="last_name_{{i}}" [(ngModel)]="participantTraineeDetails[i].last_name" readonly> 
+                                            </mat-form-field>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Type Here</mat-label>
+                                            <input matInput placeholder="" name="email_address_{{i}}" [(ngModel)]="participantTraineeDetails[i].email_address" readonly> 
+                                        </mat-form-field>
+                                        
+                                    </td>
+
+                                    <td>
+                                        <mat-form-field class="cab-data">
+                                            <mat-label>Type Here</mat-label>
+                                            <input matInput name="phone_number_{{i}}" [(ngModel)]="participantTraineeDetails[i].phone_number" readonly> 
+                                        </mat-form-field>
+                                    </td>
+                                    
+                                </tr>
+                            
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row form-bdy m-0">
+        <div class="wrapper">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12 p-0">
+                        <div class="form-subhdr">
+                            <h5>FEES DETAILS</h5>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-training">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Program Name</th>
+                                        <th>Fee/Day Per Trainee</th>
+                                        <th>No. of Participants</th>
+                                        <th>Amount (AED)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="fee">
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Tuition Fees</td>
+                                        <td>{{fee_day_pertime1}}</td>
+                                        <td>
+                                            <input type="text" class="fee-inp" name="no_of_participants1" [disabled]="!editable" [(ngModel)]="noofParticipants">
+                                        </td>
+                                        <td>{{tutionFees}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>TAX (VAT)</td>
+                                        <td>{{fee_day_pertime2}}</td>
+                                        <td>
+                                            <input type="text" class="fee-inp" name="no_of_participants2" [disabled]="!editable" [(ngModel)]="noofParticipants">
+                                        </td>
+                                        <td>{{taxVat}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Knowledge Fees - Per Participant درهم المعرفة</td>
+                                        <td>{{fee_day_pertime3}}</td>
+                                        <td>
+                                            <input type="text" class="fee-inp" name="no_of_participants3" [disabled]="!editable" [(ngModel)]="noofParticipants">
+                                        </td>
+                                        <td>{{knowledgeFees}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>Innovetion Fees - Per Participant درهم الابتكار</td>
+                                        <td>{{fee_day_pertime4}}</td>
+                                        <td>
+                                            <input type="text" class="fee-inp" name="no_of_participants4" [disabled]="!editable" [(ngModel)]="noofParticipants">
+                                        </td>
+                                        <td>{{innovationFees}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="3"><b>Total</b></td>
+                                        <td><b>{{subTotal}}</b></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+      
+      <div class="row m-0 appn-cnt-data" *ngIf="paymentDetails && paymentDetails!= null">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="appln-subhdr">
+                <h5>PAYMENT INFORMATION</h5>
+              </div>
+            </div>
+          </div>
+          <div class="row status-det">
+              <div class="col-md-12">
+                <div class="table-appln">
+                  <table>
+                    <tr>
+                      <td>Voucher Code</td>
+                      <td>{{paymentDetails?.voucher_no}}</td>
+                      <td>Payment Date</td>
+                      <td>{{paymentDetails?.voucher_date | date:'dd-MM-yyyy'}}</td>
+                    </tr>
+                    <tr>
+                      <td>Payment Amount</td>
+                      <td>AED {{paymentDetails?.amount}}</td>
+                      <td>Transaction No</td>
+                      <td>{{paymentDetails?.transaction_no}}</td>
+                    </tr>
+                    <tr>
+                      <td>Payment Method</td>
+                      <td>{{paymentDetails?.payment_method}}</td>
+                      <td>Payment Made By</td>
+                      <td>{{paymentDetails?.payment_method}}</td>
+                    </tr>
+                    <tr>
+                      <td>Mobile Number</td>
+                      <td *ngIf="paymentDetails?.mobile_no != null" colspan="3">{{_service.removePlus(paymentDetails?.mobile_no)}}</td>
+                    </tr>
+                    <tr *ngIf="paymentDetails?.voucher_invoice != ''">
+                      <td>Voucher Receipt File</td>                      
+                      <td *ngIf="paymentDetails?.voucher_invoice != ''" colspan="3">
+                        <a [href]="_constant.mediaPath+'/media/'+paymentDetails?.voucher_invoice" target="_blank">
+                        {{getFile(paymentDetails?.voucher_invoice)}}
+                        </a>
+                      </td>
+                    </tr>
+                    <tr *ngIf="paymentDetails?.payment_receipt != ''">
+                      <td>Payment Receipt File</td>
+                      <td *ngIf="paymentDetails?.payment_receipt != null" colspan="3">
+                        <a [href]="_constant.mediaPath+'/media/'+paymentDetails?.payment_receipt" target="_blank">
+                          {{getFile(paymentDetails?.payment_receipt)}}
+                          </a>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="row m-0">
+        <div class="col-md-12">
+          <div class="bttns-health bttn-staff">
+            <div *ngIf="paymentDetails && paymentDetails!= null" class="button-content">
+              <button class="cancel-bttn" (click)="uiDialog.openPDFViewer(_constant.mediaPath,serviceDetail.form_pdf)"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button>
+
+              <button class="cancel-bttn" (click)="downloadCsv()"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD CSV</button>
+            </div>
+            <!-- <a *ngIf="!paymentDetails && userType == 'operations'" class="submit-bttn submit-health" href="javascript:void(0)" (click)="open(courseVoucher, routeId)">PROFORMA UPLOAD</a> -->
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<ng-template #courseVoucher let-modal>
+  <div class="modal-header course-pop">
+    <h4 class="modal-title" id="modal-basic-title">UPLOAD PROFORMA INVOICE</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span class="icon-close"></span>
+    </button>
+  </div>
+  <div class="modal-body">                 
+      <form #voucherForm="ngForm">
+
+          <div class="row">
+              <div class="col-md-6">
+                  <mat-form-field class="cab-data">
+                      <mat-label>Voucher Number</mat-label>
+                      <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                      matInput placeholder="Voucher Number" 
+                      [(ngModel)]="voucherSentData.voucher_no">
+                  </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                  <mat-form-field class="cab-data">
+                      <mat-label>Voucher Date</mat-label>
+                      <input matInput [matDatepicker]="voucher_date" 
+                      (click)="_service._openCalendar(voucher_date)" 
+                      readonly="true" 
+                      [min]="minDate" name="voucher_date" 
+                      [(ngModel)]="voucherSentData.voucher_date" placeholder="Voucher Date" required>
+                      <mat-datepicker-toggle matSuffix [for]="voucher_date"></mat-datepicker-toggle>
+                      <mat-datepicker #voucher_date disabled="false"></mat-datepicker>
+                  </mat-form-field>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-6">
+                  <mat-form-field class="cab-data">
+                      <mat-label>Amount</mat-label>
+                      <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                      matInput placeholder="Voucher Number" 
+                      [(ngModel)]="voucherSentData.amount">
+                  </mat-form-field>
+              </div>
+
+              <div class="col-md-6">
+                  <span class="fileupload">
+                      <input type="file" name="voucher_invoice"                                
+                      (change)="validateFile($event, 'voucher_invoice')" required>
+                      <span class="icon-attach attach-data"></span>
+                  </span>
+                  <p class="error" *ngIf="paymentReceiptValidation == false">Please Upload a valid file (ex: pdf)</p>
+              </div>
+          </div>
+          <div class="row" [ngStyle]="{'margin-top': '10px'}">
+              <div class="col-md-12">
+                  <div class="bttns-health">
+                      <button type="submit" (click)="voucherSentSubmit(voucherForm)" class="cancel-bttn">SUBMIT</button>
+                      <button type="button" class="submit-bttn submit-health" (click)="modal.close('Cancel click')">CANCEL</button>
+                  </div>
+                  
+              </div>
+          </div>                    
+      </form>
+  </div>
+  <!-- <div class="modal-footer">
+  </div> -->
+</ng-template>

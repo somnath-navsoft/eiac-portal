@@ -35,10 +35,10 @@ export class WorkPermitFormComponent implements OnInit {
   public file_validation2:boolean = true;
   public file_validation3:boolean = true;
   public file_validation4:boolean = true;
-  licence_document_validation:boolean = true;
-  quality_manual_validation:boolean = true;
-  work_instruction_validation:boolean = true;
-  check_list_validation:boolean = true;
+  licence_document_validation:boolean = false;
+  quality_manual_validation:boolean = false;
+  work_instruction_validation:boolean = false;
+  check_list_validation:boolean = false;
   licence_document_file:any;
   quality_manual_file:any;
   work_instruction_file:any;
@@ -98,6 +98,7 @@ export class WorkPermitFormComponent implements OnInit {
   voucherFile:any = new FormData();
   pathPDF: any;
   closeResult: string;
+  paymentStepComp: boolean = false;
   // modalOptions:NgbModalOptions;
   accredAgreemFile: any;
   checklistDocFile: any;
@@ -122,7 +123,7 @@ export class WorkPermitFormComponent implements OnInit {
   ngOnInit() {
     this.getWorkPermitId = sessionStorage.getItem('workPermitId');
     this.checkCaptchaValidation = true;
-    this.authorizationList = {authorization_confirm:false};
+    // this.authorizationList = {authorization_confirm1:false};
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
@@ -134,7 +135,7 @@ export class WorkPermitFormComponent implements OnInit {
 
     this.headerSteps.push(
       {
-      title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
+      title:'application_information', desc:'1. Applicant Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
       },
       {
       title:'activities_scope', desc:'2. Activities & Scope', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
@@ -181,6 +182,7 @@ export class WorkPermitFormComponent implements OnInit {
     // this.workPermitForm.digital_signature = '';
     // this.activitySectionArr.length > 0 ? 
     this.activitySection = {laboratory:false,inspection_body:false,certification_body:false};
+    // this.authorizationList = {authorization_confirm1:false};
   }
 
   statelistById = async(country_id) => {
@@ -292,6 +294,9 @@ export class WorkPermitFormComponent implements OnInit {
           this.ownOrgBasicInfo = step2['cabOwnerData'];
           this.step3Data.license_no = data.trade_license_number;
           
+          this.step3Data.date_of_issue = new Date(data.date_of_issue);
+          this.step3Data.date_of_expiry = new Date(data.date_of_expiry);
+          
           // step2['cabBodData'].forEach((res,key) => {
           //   step2['cabBodData'][key].name = res.name;
           //   step2['cabBodData'][key].designation = res.designation;
@@ -332,6 +337,10 @@ export class WorkPermitFormComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url); 
   }
 
+  closeDialog(){
+    this.modalService.dismissAll();
+  }
+  
   loadData() {
     // let url2 = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+this.urlVal;
     if(this.getWorkPermitId != 'undefined') {
@@ -352,8 +361,8 @@ export class WorkPermitFormComponent implements OnInit {
 
               saveStep = parseInt(res['data'].saved_step) - 1;
             }else{
-              if(parseInt(res['data'].saved_step) == 9){
-                
+              if(parseInt(res['data'].saved_step) == 6){
+                this.paymentStepComp = true;
                 saveStep = parseInt(res['data'].saved_step) - 1;
               }else{
                 
@@ -376,7 +385,7 @@ export class WorkPermitFormComponent implements OnInit {
                     }
                     if(key == saveStep){
                       let curStep: any = this.headerSteps[key];
-                      ///////console.log('found steps....',curStep);
+                      console.log('found steps....',curStep);
                       curStep.stepComp = true;
                       this.Service.headerStepMove(item.title, this.headerSteps,'menu')
                     }
@@ -387,12 +396,11 @@ export class WorkPermitFormComponent implements OnInit {
             var wapdata = res['data'].wapData;
             this.step2Data.activity_section = wapdata.activity_section != null ? wapdata.activity_section : '';
             this.step2Data.scopes_to_be_authorized = wapdata.scopes_to_be_authorized != null ? wapdata.scopes_to_be_authorized : '';
-            this.activitySection = JSON.parse(res['data'].wapData.activity_section);
+            if(res['data'].wapData.activity_section != null) {
+              this.activitySection = JSON.parse(res['data'].wapData.activity_section);
+            }
             // console.log(this.activitySection,'activitySectionactivitySectionactivitySectionactivitySection');
 
-            
-            this.step3Data.date_of_issue = res['data'].date_of_issue;
-            this.step3Data.date_of_expiry = res['data'].date_of_expiry;
 
             let pathData: any;
             let filePath: string;
@@ -445,28 +453,37 @@ export class WorkPermitFormComponent implements OnInit {
               }
             }
 
-            this.step4Data.organization_name = res['data'].onBehalfApplicantDetails.organization_name;
-            this.step4Data.representative_name = res['data'].onBehalfApplicantDetails.representative_name;
-            this.step4Data.behalf_designation = res['data'].onBehalfApplicantDetails.designation;
-            this.step4Data.digital_signature = res['data'].onBehalfApplicantDetails.digital_signature;
+            if(res['data'].onBehalfApplicantDetails != null) {
+              this.step4Data.organization_name = res['data'].onBehalfApplicantDetails.organization_name;
+              this.step4Data.representative_name = res['data'].onBehalfApplicantDetails.representative_name;
+              this.step4Data.behalf_designation = res['data'].onBehalfApplicantDetails.designation;
+              this.step4Data.digital_signature = res['data'].onBehalfApplicantDetails.digital_signature;
 
-            if(res['data'].onBehalfApplicantDetails.organization_name && res['data'].onBehalfApplicantDetails.representative_name && res['data'].onBehalfApplicantDetails.designation && res['data'].onBehalfApplicantDetails.digital_signature){
-              this.authorizationList.authorization_confirm = true;
+              // if(res['data'].onBehalfApplicantDetails.organization_name && res['data'].onBehalfApplicantDetails.representative_name && res['data'].onBehalfApplicantDetails.designation && res['data'].onBehalfApplicantDetails.digital_signature){
+              //   this.authorizationList.authorization_confirm1 = true;
+              // }
             }
             
 
-            if(res['data'].paymentDetails != null && typeof res['data'].paymentDetails === 'object'){
+            if(res['data'].paymentDetails != null){
               // //console.log(">>>payment details...show");
                 this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
                 this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
                 this.voucherSentData.amount           = res['data'].paymentDetails.amount;
-                this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
-                this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
-                this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
-                this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+                // this.voucherSentData.transaction_no   = res['data'].paymentDetails.transaction_no;
+                // this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
+                // this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
+                // this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+
+                this.voucherSentData.transaction_no   = (res['data'].paymentDetails.transaction_no != 'null') ? res['data'].paymentDetails.transaction_no : '';
+                this.voucherSentData.payment_method   = (res['data'].paymentDetails.payment_method != 'null') ? res['data'].paymentDetails.payment_method : '';
+                this.voucherSentData.payment_made_by  = (res['data'].paymentDetails.payment_made_by != 'null') ? res['data'].paymentDetails.payment_made_by : '';
+                this.voucherSentData.mobile_no        = (res['data'].paymentDetails.mobile_no != 'null') ? res['data'].paymentDetails.mobile_no : '';
 
                 this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
-                this.paymentReceiptValidation = true;
+                if(this.paymentFile != ''){
+                  this.paymentReceiptValidation = true;
+                }                
             }
           })
       }
@@ -543,6 +560,8 @@ export class WorkPermitFormComponent implements OnInit {
     // }
  }
 
+
+
  validateFile1(fileEvent: any, type?: any) {
    var file_name = fileEvent.target.files[0].name;
    var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
@@ -551,7 +570,7 @@ export class WorkPermitFormComponent implements OnInit {
    if(ex_check){
      this.paymentReceiptValidation = true;
      //if(type == undefined){
-       this.voucherFile.append('voucher_invoice',fileEvent.target.files[0]);
+       this.voucherFile.append('payment_receipt',fileEvent.target.files[0]);
      //}
    }else{
      this.paymentReceiptValidation = false;
@@ -564,7 +583,8 @@ export class WorkPermitFormComponent implements OnInit {
     var file_name = fileEvent.target.files[0].name;
     console.log(file_name,'file_name')
     var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
-    var ex_type = ['doc','odt','pdf','rtf','docx','xlsx'];
+    //var ex_type = ['doc','odt','pdf','rtf','docx','xlsx'];
+    var ex_type = ['pdf'];
     var ex_check = this.Service.isInArray(file_exe,ex_type);
 
     if(ex_check && fileName == 'licence_document_file'){
@@ -608,17 +628,6 @@ export class WorkPermitFormComponent implements OnInit {
   }
 
   checkboxChecking(theEvent) {
-    // console.log(type,'type');
-    // this.activitySection[type] = true;
-    console.log(this.activitySection,'type');
-
-    // Object.keys(this.activitySection).forEach(key => {
-    //   // if(this.activitySection[])
-    //   if(this.activitySection.key == type){
-
-    //   }
-    // })
-
     var checkCount = 0;
     if(theEvent.checked){
       for(let key in this.activitySection) {
@@ -683,7 +692,7 @@ export class WorkPermitFormComponent implements OnInit {
           }
         });
     }else {
-      this.toastr.warning('Please Fill required field','');
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
   }
 
@@ -695,7 +704,7 @@ export class WorkPermitFormComponent implements OnInit {
     for(let key in this.activitySection) {
       ////console.log("authorize checklist: ", key, " --", this.authorizationList[key]);
       if(this.activitySection[key]) {  
-        checkCount++;
+        checkCount++; 
       }
     }
     // console.log(checkCount);
@@ -730,7 +739,7 @@ export class WorkPermitFormComponent implements OnInit {
           }
         });
     }else {
-      this.toastr.warning('Please Checked ANy Filled','');
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
     
   }
@@ -767,7 +776,7 @@ export class WorkPermitFormComponent implements OnInit {
           }
         });
     }else {
-      this.toastr.warning('Please Fill required field','');
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
     
   }
@@ -776,12 +785,13 @@ export class WorkPermitFormComponent implements OnInit {
     // this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
 
     // console.log(this.authorizationList.authorization_confirm);
-    if(ngForm4.form.valid && this.authorizationList.authorization_confirm == true) {
+    if(ngForm4.form.valid) {
       this.workPermitForm = {};
       this.workPermitForm.step4 = {};
       this.workPermitForm.email = this.userEmail;
       this.workPermitForm.userType = this.userType;
       this.workPermitForm.saved_step = '4';
+      this.step4Data.authorization_list_json = {'authorization_confirm1' : this.step4Data.authorization_confirm1};
       var applicationId = sessionStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
@@ -800,15 +810,33 @@ export class WorkPermitFormComponent implements OnInit {
           let getData: any = res;
           if(res['status'] == true) {
             
-            this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
+            // this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
+            if(this.paymentFilePath != ''){
+              this.Service.moveSteps('authorization_ofthe_application', 'proforma_invoice', this.headerSteps);
+            }
+            else{
+              setTimeout(()=>{
+                let elem = document.getElementById('openPayDialog');
+                //////console.log("App dialog hash....", elem);
+                if(elem){
+                  elem.click();
+                }
+              }, 100)
+              setTimeout(() => {                    
+                // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+                //this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+              },1500)
+            }
           }else{
             this.toastr.warning(res['msg'], '');
           }
         });
-    }else if(ngForm4.form.valid && this.authorizationList.authorization_confirm == false) {
-      this.toastr.warning('Please select authorization box', '');
-    }else {
-      this.toastr.warning('Please Fill required field','');
+    }
+    // else if(ngForm4.form.valid && this.authorizationList.authorization_confirm1 == false) {
+    //   this.toastr.warning('Please select authorization box', '');
+    // }
+    else {
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
     
   }
@@ -924,7 +952,110 @@ export class WorkPermitFormComponent implements OnInit {
     //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
   }
 
-  onSubmitPaymentInformation(ngForm6: any, type?: boolean){
+  closeChecklistDialog(){
+    this.modalService.dismissAll();
+  }
+
+  onSubmitPaymentInformation(theForm: any, type?: any){
+    //this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+
+    let is_valid: boolean = false;
+
+    let dtFormat: string = '';
+    // if(this.voucherSentData['payment_date'] != undefined && 
+    //   this.voucherSentData['payment_date']._i != undefined){
+    //   var dtData = this.voucherSentData['payment_date']._i;
+    //   var year = dtData.year;
+    //   var month = dtData.month;
+    //   var date = dtData.date;
+    //   dtFormat = year + "-" + month + "-" + date;
+    // }else{
+    if(this.voucherSentData['payment_date'] != undefined){
+      var nFdate = new Date(this.voucherSentData['payment_date']);
+      var nMonth = nFdate.getMonth() + 1;
+      var nDate = nFdate.getDate();
+      var nYear = nFdate.getFullYear();
+      dtFormat = nYear + "-" + nMonth + "-" + nDate;
+    }
+
+    // console.log(">>> Date: ", dtFormat, " -- ", this.voucherSentData);
+
+      this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
+      this.voucherFile.append('amount',this.voucherSentData['amount']);
+      this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
+      this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
+      this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
+      this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
+      this.voucherFile.append('voucher_date', dtFormat);
+      this.voucherFile.append('accreditation',this.formApplicationId);
+      this.voucherFile.append('application_id',this.formApplicationId);
+      this.voucherFile.append('saved_step', 8);
+      if(!type){
+        this.voucherFile.append('is_draft', false);
+      }else{
+        this.voucherFile.append('is_draft', true);
+      }
+
+      // console.log(">>> Data: ", this.voucherSentData);
+      if(this.voucherSentData['transaction_no'] != '' && this.voucherSentData['payment_method'] != '' && this.voucherSentData['payment_made_by'] &&
+        this.voucherSentData['mobile_no'] != ''){
+          is_valid = true;
+        }
+
+        if(is_valid == true && type == undefined && this.paymentReceiptValidation != false) {
+          //this.noObjectionBodyForm.saved_step = 8;      
+          //this.noObjectionBodyForm.step8 = this.step6Data;
+          //this.noObjectionBodyForm.step8.application_id = this.formApplicationId;
+          //this.noObjectionBodyForm.step8.is_draft = false;
+          // console.log(">> Submit Form: "," -- ", this.voucherSentData);
+
+          this._trainerService.paymentVoucherNOCSave((this.voucherFile))
+          .subscribe(
+             result => {
+               let data: any = result;
+                ////////console.log("submit voucher: ", data);
+                if(data.status){
+                  //this.openView('appComp');
+                  setTimeout(()=>{
+                    let elem = document.getElementById('openAppDialog');
+                    //////console.log("App dialog hash....", elem);
+                    if(elem){
+                      elem.click();
+                    }
+                  }, 100)
+                  setTimeout(() => {                    
+                    // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+                    this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+                  },3500)
+                  
+                }else{
+                  this.toastr.warning(data.msg,'');
+                }
+          })   
+    
+        }else if(type != undefined && type == true){
+          //this.noObjectionBodyForm.saved_step = 6;   
+          //this.noObjectionBodyForm.step6 = this.step6Data;
+         // this.noObjectionBodyForm.step8.is_draft = true;
+          // console.log(">> Submit Save draft: ", " -- ", this.voucherSentData);
+
+          this._trainerService.paymentVoucherNOCSave((this.voucherFile))
+          .subscribe(
+             result => {
+               let data: any = result;
+                console.log("submit voucher draft: ", data);
+                if(data.status){
+                  this.toastr.success("Save Draft Successfully",'');                  
+                }else{
+                  this.toastr.warning(data.msg,'');
+                }
+          })    
+        }else{
+          this.toastr.warning('Please Fill required field','',{timeOut:5000});
+        }
+  }
+
+  onSubmitPaymentInformation123(ngForm6: any, type?: boolean){
       ////console.log("payment submitting.....");
       this.workPermitForm = {};
       this.workPermitForm.step6 = {};
@@ -960,10 +1091,11 @@ export class WorkPermitFormComponent implements OnInit {
       this.voucherFile.append('is_draft', false);
       // this.voucherFile.append('application_id',this.formApplicationId);
           
-      this.loader = false;
-      if(ngForm6.form.valid && this.paymentReceiptValidation != false) {
+      
+      if(ngForm6.form.valid && this.paymentReceiptValidation != false && type == false) {
+        this.loader = false;
         // //console.log(this.voucherFile);
-          this._trainerService.paymentVoucherSaveWap((this.voucherFile))
+          this._trainerService.paymentVoucherNOCSave((this.voucherFile))
           .subscribe(
               result => {
                 this.loader = true;
@@ -1025,7 +1157,7 @@ export class WorkPermitFormComponent implements OnInit {
         // this.voucherFile.append('application_id',this.formApplicationId);
             
           // //console.log(this.voucherFile);
-        this._trainerService.paymentVoucherSaveWap((this.voucherFile))
+        this._trainerService.paymentVoucherNOCSave((this.voucherFile))
         .subscribe(
             result => {
               this.loader = true;
@@ -1038,7 +1170,7 @@ export class WorkPermitFormComponent implements OnInit {
           )
     }
     else {
-      this.toastr.warning('Please Fill required field','');
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
   }
 
@@ -1159,6 +1291,8 @@ export class WorkPermitFormComponent implements OnInit {
       this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
 
       this.step2Data.is_draft = true;
+      this.step2Data.activity_section = this.activitySection;
+
       this.workPermitForm.step2 = this.step2Data;
 
       // this.loader = false;
@@ -1205,6 +1339,7 @@ export class WorkPermitFormComponent implements OnInit {
       this.workPermitForm.email = this.userEmail;
       this.workPermitForm.userType = this.userType;
       this.workPermitForm.saved_step = '4';
+      this.step4Data.authorization_list_json = {'authorization_confirm1' : this.step4Data.authorization_confirm1};
       var applicationId = sessionStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;

@@ -97,7 +97,7 @@ if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_
       if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_conformity_bodies') && item.is_draft == false && 
         item.paymentDetails != undefined && item.paymentDetails != false && item.paymentDetails != false && 
         typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
-          // console.log("@Enter....2222");
+          // console.log("@Enter....2222"); 
         return false;
       }
       if((item.saved_step != null && item.saved_step == 5 && item.form_meta == 'certification_bodies') && 

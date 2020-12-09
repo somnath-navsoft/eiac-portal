@@ -71,6 +71,7 @@ export class NoObjectionFormComponent implements OnInit {
   voucherFile:any = new FormData();
   voucherSentData: any = {};
   paymentReceiptValidation: boolean = false;
+  paymentFile: any;
 
 
   searchCountryLists: any[] =[];
@@ -172,10 +173,12 @@ export class NoObjectionFormComponent implements OnInit {
     this.loadCountryStateCity();
     this.loadAppInfo();
 
+    this.step6Data.authorization_confirm1 = false;
+
     //Step initializer
     this.headerSteps.push(
       {
-      title:'application_information', desc:'1. Application Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
+      title:'application_information', desc:'1. Applicant Information', activeStep:true, stepComp:false, icon:'icon-doc-edit', activeClass:'user-present'
       },
       {
       title:'cab_information', desc:'2. CAB Information', activeStep:false, stepComp:false, icon:'icon-user', activeClass:''
@@ -669,19 +672,21 @@ export class NoObjectionFormComponent implements OnInit {
           this.step1Data.physical_location_address = data.applicant_location;
           this.step1Data.po_box = data.po_box;          
           this.step1Data.telephone = data.applicant_tel_no;
+          this.step1Data.trade_license_number = data.trade_license_number;
         }
       }) 
   
       if(this.urlVal && this.urlVal != '') {
   
         this.loader = false;
-        let url2 = this.Service.apiServerUrl+"/"+'accrediation-details-show/'+this.urlVal;
+        let url2 = this.Service.apiServerUrl+"/"+'registration-details-show/'+this.urlVal;
         this.Service.getwithoutData(url2)
         .subscribe(
           res => {
             console.log(res,'urlVal')
+            //return;
             this.loader = true;
-            /*
+            
             if(res['data'].id && res['data'].id != '') {
                 let pathData: any;
                 let filePath: string;
@@ -707,15 +712,16 @@ export class NoObjectionFormComponent implements OnInit {
                 //   }else{
                 //   saveStep = parseInt(getData.data.saved_step);
                 //   }
+                // if(parseInt(getData.data.saved_step) == 9){
+                //   saveStep = parseInt(getData.data.saved_step) - 1;
+                //   this.paymentStepComp = true;
+                // }else
                 // }
                 if(getData.data.is_draft){
                   saveStep = parseInt(getData.data.saved_step) - 1;
                 }else{
-                  if(parseInt(getData.data.saved_step) == 9){
+                   if(parseInt(getData.data.saved_step) == 8){
                     saveStep = parseInt(getData.data.saved_step) - 1;
-                    this.paymentStepComp = true;
-                  }else if(parseInt(getData.data.saved_step) == 8){
-                    saveStep = parseInt(getData.data.saved_step);
                     this.paymentStepComp = true;
                   }else{
                     saveStep = parseInt(getData.data.saved_step);
@@ -768,21 +774,14 @@ export class NoObjectionFormComponent implements OnInit {
                           this.Service.headerStepMove(item.title, this.headerSteps,'menu')
                         }
                   })
-                  if(getData.data.accredation_criteria == 2){
-                      let stepData: any = this.headerSteps.find(item => item.title == 'information_audit_management');
-                      console.log(">>step select: 1 ", stepData);
-                      if(stepData){
-                        stepData.activeClass = '';
-                        stepData.stepComp = true;
-                      }
-                  }
+                 
                   //////console.log("#Step data: ", this.headerSteps);
                 }
   
                 if(res['data'].id != undefined && res['data'].id > 0){
                   this.formApplicationId = res['data'].id;
-                  this.formDraftsaved = res['data'].is_draft;
-                  this.formAccrStatus = res['data'].accr_status;
+                  //this.formDraftsaved = res['data'].is_draft;
+                  //this.formAccrStatus = res['data'].accr_status;
                 }
                 // //console.log(this.formApplicationId);
                 //step1
@@ -813,65 +812,160 @@ export class NoObjectionFormComponent implements OnInit {
                 // }
   
                 //step2
+                console.log("<<< ", getData.data.nocData);
+                if(getData.data.nocData != null && getData.data.nocData.cab_type != ''){
+                  console.log(">>>Get tyepe.....");
+                   let getType: any = JSON.parse((getData.data.nocData.cab_type));
+                   console.log(">>>> ", getType);
+                   if(typeof getType == 'object'){
+                      if(getType.lab != undefined && getType.lab.length > 0){
+                        console.log("....lab addding....");
+                        this.step2Data.cabTypeLaboratory_testing = getType.lab[0].cabTypeLaboratory_testing;
+                        this.step2Data.cabTypeLaboratory_calibration = getType.lab[0].cabTypeLaboratory_calibration;
+                      }
+                      if(getType.IB != undefined && getType.IB.length > 0){
+                        console.log("....IB addding....");
+                        this.step2Data.cabTypeInspectionBody_engineering_ib = getType.IB[0].cabTypeInspectionBody_engineering_ib;
+                        this.step2Data.cabTypeInspectionBody_sustainability_ib = getType.IB[0].cabTypeInspectionBody_sustainability_ib;
+                      }
+                      if(getType.CB != undefined && getType.CB.length > 0){
+                        console.log("....CB addding....");
+                        this.step2Data.cabTypeCertificationBody_management_system_cb = getType.CB[0].cabTypeCertificationBody_management_system_cb;
+                        this.step2Data.cabTypeCertificationBody_personal_cb = getType.CB[0].cabTypeCertificationBody_personal_cb;
+                        this.step2Data.cabTypeCertificationBody_product_cb = getType.CB[0].cabTypeCertificationBody_product_cb;
+                      }
+                      if(getType.HCAB != undefined && getType.HCAB.length > 0){
+                        console.log("....CB addding....");
+                        this.step2Data.cabTypeHalal_lab = getType.HCAB[0].cabTypeHalal_lab;
+                        this.step2Data.cabTypeHalal_ib = getType.HCAB[0].cabTypeHalal_ib;
+                        this.step2Data.cabTypeHalal_cb = getType.HCAB[0].cabTypeHalal_cb;
+                      }
+                   }
+                }
+                
+                //Step 4
+                if(getData.data.nocTableData != undefined && typeof getData.data.nocTableData == 'object'){
+                    let nocData: any = getData.data.nocTableData;
 
-                // var ptProvider = res['data']['ptParticipation'];
-                // this.proficiencyTesting = ptProvider && ptProvider != '' ? ptProvider : [{}];
-  
-                // //step3
-                // if(res['data'].technicalManager != undefined && res['data'].technicalManager.length > 0){
-                //   let getTechData: any = res['data'].technicalManager[0];
-                //   this.step3Data.name = getTechData.name;
-                //   this.step3Data.designation = getTechData.designation;
-                //   this.step3Data.mobile_no = getTechData.mobile_no;
-                //   this.step3Data.email = getTechData.email;
-                //   this.step3Data.relevent_experience = getTechData.relevent_experience;
-                // }
-                // if(res['data'].managementManager != undefined && res['data'].managementManager.length > 0){
-                //   let getMangData: any = res['data'].managementManager[0];
-                //   this.step3Data.management_name = getMangData.name;
-                //   this.step3Data.management_designation = getMangData.designation;
-                //   this.step3Data.management_mobile_no = getMangData.mobile_no;
-                //   this.step3Data.management_email = getMangData.email;
-                //   this.step3Data.management_relevent_experience = getMangData.relevent_experience;
-                // }
-  
-                //step4
-                // if(res['data'].audit_date != null){
-                //   //console.log(">>> audit data...", res['data'].audit_date);
-                //   this.step4Data.audit_date = new Date(res['data'].audit_date);
-                // }
-                // if(res['data'].mrm_date != null){
-                //   //console.log(">>> mRM data...", res['data'].mrm_date);
-                //   this.step4Data.mrm_date = new Date(res['data'].mrm_date);
-                // }
-  
-                //step 5
-                if(res['data'].scopeDetails != undefined && !this.Service.isObjectEmpty(res['data'].scopeDetails)){
-                  //console.log(">>> ", res['data'].scopeDetails);
-                  //let jsonStrting = '{"18":{"scope_heading":{"43":"Inspection Category","45":"Inspection field","47":"Range of inspection","49":"Stage of the inspection","51":"Inspection criteria","53":"Inspection Activity Type"},"scope_value":[{"43":"Product","45":"Mechanical Engineering of Lifting Equipment","47":"Lever hoist","49":"In-service","51":"BS EN 13157","53":"A"},{"43":"Product","45":"Mechanical, Electrical and Structural Engineering of Lifting Equipment","47":"Mobile crane","49":"In-service","51":"BS 7121-2-1,BS 7121-2-3","53":"B,C"},{"43":"Product","45":"Mechanical Engineering of Lifting Equipment – Earth Moving","47":"Backhoe Loader","49":"In-service","51":"BS EN 474-4","53":"A,B"}]},"105":{"scope_heading":{"55":"Inspection Category","57":"Inspection field","59":"Range of inspection","61":"Stage of the inspection","63":"Inspection criteria","65":"Inspection Activity Type"},"scope_value":[{"55":"Product","57":"Mechanical Engineering of Lifting Accessories","59":"Hook","61":"In-service","63":"Welcome","65":"Hello"},{"55":"Product","57":"Mechanical Engineering of Lifting Accessories","59":"Chain sling","61":"In-service","63":"bbb","65":"aaa"}]}}';
-                  //let jsonStrting = getData.data.scopeDetails.toString();
-                  
+                    if(nocData.testing_lab != undefined && typeof nocData.testing_lab == 'object'){
+                      let testingLabCheckboxes: any = nocData.testing_lab.testingLabCheckDetails;
+                      console.log(">>>>>Testing Lab ", testingLabCheckboxes, " == ", nocData.testing_lab);
+                      if(testingLabCheckboxes.checkItems.length){
+                           this.testingLabCheckboxes.forEach(item => {
+                              let findText: any = testingLabCheckboxes.checkItems.find(rec => rec.value == item.label);
+                              if(findText){
+                                item.checked = true;
+                              }
+                           })
+                      }
+                      if(testingLabCheckboxes.checkItemsOthers.length){
+                        this.testingLabCheckItemOthers = true;
+                        this.testingLabCheckItemOtherInput = testingLabCheckboxes.checkItemsOthers[0].value;
+                      }
+                      if(nocData.testing_lab.testingLabInformation.length){
+                        this.testingLabInfo = nocData.testing_lab.testingLabInformation;
+                      }
+                    }
+                    //calibration Lab
+                    if(nocData.calibration_lab != undefined && typeof nocData.calibration_lab == 'object'){
+                      let calibrationLabCheckboxes: any = nocData.calibration_lab.calibrationLabCheckDetails;
+                      console.log(">>>>>calibration Lab ", calibrationLabCheckboxes, " == ", nocData.calibration_lab);
+                      if(calibrationLabCheckboxes.checkItems.length){
+                           this.calibrationLabCheckboxes.forEach(item => {
+                              let findText: any = calibrationLabCheckboxes.checkItems.find(rec => rec.value == item.label);
+                              if(findText){
+                                item.checked = true;
+                              }
+                           })
+                      }
+                      if(calibrationLabCheckboxes.checkItemsOthers.length){
+                        this.calibrationLabCheckItemOthers = true;
+                        this.calibrationLabCheckItemOtherInput = calibrationLabCheckboxes.checkItemsOthers[0].value;
+                      }
+                      if(nocData.calibration_lab.calibrationLabInformation.length){
+                        this.calibrationLabInfo = nocData.calibration_lab.calibrationLabInformation;
+                      }
+                    }
+                    //Certification body
+                    if(nocData.cb_management != undefined && typeof nocData.cb_management == 'object'){
+                      let certificationBodyCheckboxes: any = nocData.cb_management.certificationCheckDetails;
+                      console.log(">>>>>cerrtification ", certificationBodyCheckboxes, " == ", nocData.cb_management);
+                      if(certificationBodyCheckboxes.checkItems.length){
+                           this.certificationBodiesCheckboxesFirst.forEach(item => {
+                              let findText: any = certificationBodyCheckboxes.checkItems.find(rec => rec.value == item.label);
+                              if(findText){
+                                item.checked = true;
+                              }
+                           })
+                      }
+                      if(certificationBodyCheckboxes.checkItemsOthers.length){
+                        this.certificationBodiesCheckItemOthersFirst = true;
+                        this.certificationBodiesCheckItemOthersFirstInput = certificationBodyCheckboxes.checkItemsOthers[0].value;
+                      }
+                    }
+                    this.step3Data.certificationBodiesCheckboxesForProducts = nocData.cb_product;
+                    this.step3Data.certificationBodiesCheckboxesForPersons  = nocData.cb_person;
+
+                    //inspection body
+                    if(nocData.inspection_body != undefined && typeof nocData.inspection_body == 'object'){
+                      let inspectionCheckboxes: any = nocData.inspection_body.inspectionCheckDetails;
+                      console.log(">>>>>Inspection bodies ", inspectionCheckboxes, " == ", nocData.inspection_body);
+                      if(inspectionCheckboxes.checkItems.length){
+                           this.certificationBodiesCheckboxesSecond.forEach(item => {
+                              let findText: any = inspectionCheckboxes.checkItems.find(rec => rec.value == item.label);
+                              if(findText){
+                                item.checked = true;
+                              }
+                           })
+                      }
+                      if(inspectionCheckboxes.checkItemsOthers.length){
+                        this.certificationBodiesCheckItemOthersSecond = true;
+                        this.certificationBodiesCheckItemOthersSecondInput = inspectionCheckboxes.checkItemsOthers[0].value;
+                      }
+                      if(nocData.inspection_body.inspectionInfo.length){
+                        this.certificationBodiesInfo = nocData.inspection_body.inspectionInfo;
+                      }
+                    }
+
+                    //Halal Lab
+                    if(nocData.halal_lab != undefined && typeof nocData.halal_lab == 'object'){
+                      let halalCheckboxes: any = nocData.halal_lab.halalLabCheckDetails;
+                      console.log(">>>>>halal Lab ", halalCheckboxes, " == ", nocData.halal_lab);
+                      if(halalCheckboxes.checkItems.length){
+                           this.halalCabCheckboxes.forEach(item => {
+                              let findText: any = halalCheckboxes.checkItems.find(rec => rec.value == item.label);
+                              if(findText){
+                                item.checked = true;
+                              }
+                           })
+                      }
+                      if(halalCheckboxes.checkItemsOthers.length){
+                        this.halalCabCheckItemOthers = true;
+                        this.halalCabCheckItemOthersInput = halalCheckboxes.checkItemsOthers[0].value;
+                      }
+                    }
+
+                    if(nocData.listOfIntEquip != undefined && nocData.listOfIntEquip.length >0){
+                        this.listOfIntEquip = nocData.listOfIntEquip;
+                    }
+                    if(nocData.listOfStaff != undefined && nocData.listOfStaff.length >0){
+                      this.listOfStaff = nocData.listOfStaff;
+                  }
                 }
   
   
                 //Step 6
-                // if(res['data'].is_prelim_visit != null){
-                //   //this.step6Data.is_prelim_visit = (res['data'].is_prelim_visit) ? "1" : "0";
-                //   this.step6Data.prelim_visit_val = (getData.data.is_prelim_visit) ? "1" : "0";
-  
-                //   this.step6Data.prelim_visit_date = res['data'].prelim_visit_date;
-                //   this.step6Data.prelim_visit_time = res['data'].prelim_visit_time;
-                // }
-
-                //Step 7
                 if(res['data'].onBehalfApplicantDetails && res['data'].onBehalfApplicantDetails != null && res['data'].onBehalfApplicantDetails != undefined){
                   let getAuthData = res['data'].onBehalfApplicantDetails;
                   ////console.log(">>> Auth data: ", getAuthData);
-                  // this.step7Data.organization_name        = getAuthData.organization_name;
-                  // this.step7Data.representative_name      = getAuthData.representative_name;
-                  // this.step7Data.designation              = getAuthData.designation;
-                  // this.step7Data.digital_signature        = getAuthData.digital_signature;
-                  // this.step7Data.application_date         = getAuthData.application_date;
+                  this.step6Data.organization_name        = getAuthData.organization_name;
+                  this.step6Data.representative_name      = getAuthData.representative_name;
+                  this.step6Data.behalf_designation       = getAuthData.designation;
+                  this.step6Data.digital_signature        = getAuthData.digital_signature;
+                  this.step6Data.application_date         = getAuthData.application_date;
+
+                  // let authCheck: any = JSON.parse(getData.data.authorization_list);
+                  // this.step6Data.authorization_confirm1 = authCheck.authorization_confirm1;
   
                   // Object.keys(this.authorizationList).forEach( key => { 
                   //   this.authorizationList[key] = true;
@@ -895,48 +989,30 @@ export class NoObjectionFormComponent implements OnInit {
               //          }
               //       }
               // })
-              // console.log("@recommend visit: ", this.recomendVisit, " -- ", getData.data.recommend_visit);
-              // this.step7Data.recommend_visit = this.recomendVisit;//(getData.data.recommend_visit);
   
-              //      let authList: any;
-              //     authList = getData.data.authorization_list;
-              //     console.log("@ Auth checked status: ", authList);
-              //     this.authorizationList = JSON.parse(authList);
-              //     console.log("# Auth checked status: ", this.authorizationList);
+                //Step 8
+                if(res['data'].paymentDetails != null && typeof res['data'].paymentDetails === 'object'){
+                  console.log(">>>payment details...show ", res['data'].paymentDetails);
+                    this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
+                    this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
+                    this.voucherSentData.amount           = res['data'].paymentDetails.amount;
   
-              //     //check read ters check
-              //     if(this.authorizationList.authorization_confirm2){
-              //       this.readTermsCond       = true;
-              //     }
-              //     //check review checklist checked
-              //     if(this.authorizationList.undertaking_confirm2){
-              //       this.readReviewChecklist       = true;
-              //     }
-              //   }
+                    this.voucherSentData.transaction_no   = (res['data'].paymentDetails.transaction_no != 'null') ? res['data'].paymentDetails.transaction_no : '';
+                    this.voucherSentData.payment_method   = (res['data'].paymentDetails.payment_method != 'null') ? res['data'].paymentDetails.payment_method : '';
+                    this.voucherSentData.payment_made_by  = (res['data'].paymentDetails.payment_made_by != 'null') ? res['data'].paymentDetails.payment_made_by : '';
+                    this.voucherSentData.mobile_no        = (res['data'].paymentDetails.mobile_no != 'null') ? res['data'].paymentDetails.mobile_no : '';
   
-                //Step 9
-                // if(res['data'].paymentDetails != null && typeof res['data'].paymentDetails === 'object'){
-                //   console.log(">>>payment details...show ", res['data'].paymentDetails);
-                //     this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
-                //     this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
-                //     this.voucherSentData.amount           = res['data'].paymentDetails.amount;
-  
-                //     this.voucherSentData.transaction_no   = (res['data'].paymentDetails.transaction_no != 'null') ? res['data'].paymentDetails.transaction_no : '';
-                //     this.voucherSentData.payment_method   = (res['data'].paymentDetails.payment_method != 'null') ? res['data'].paymentDetails.payment_method : '';
-                //     this.voucherSentData.payment_made_by  = (res['data'].paymentDetails.payment_made_by != 'null') ? res['data'].paymentDetails.payment_made_by : '';
-                //     this.voucherSentData.mobile_no        = (res['data'].paymentDetails.mobile_no != 'null') ? res['data'].paymentDetails.mobile_no : '';
-  
-                //     this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
-                //     if(this.paymentFile != undefined && this.paymentFile != ''){
-                //       this.paymentReceiptValidation = true;
-                //     }  
-                // }
+                    this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
+                    if(this.paymentFile != undefined && this.paymentFile != ''){
+                      this.paymentReceiptValidation = true;
+                    }  
+                }
               }
           
           
             
             }
-            */
+            
           
             });
       }
@@ -1065,7 +1141,13 @@ export class NoObjectionFormComponent implements OnInit {
 
     if(theForm.form.valid && type == undefined){
             
-      this.noObjectionBodyForm.saved_step = 1;      
+      this.noObjectionBodyForm.saved_step = 1; 
+      if(this.ownOrgMembInfo.length > 0){
+        this.step1Data.is_bod = true;
+      }else{
+        this.step1Data.is_bod = false;
+      }
+          
       this.noObjectionBodyForm.step1 = this.step1Data;
      
       if(this.ownOrgBasicInfo) {
@@ -1096,7 +1178,8 @@ export class NoObjectionFormComponent implements OnInit {
             //this.toastr.success(res['msg'],);
             this.Service.moveSteps('application_information', 'cab_information', this.headerSteps);
           }else{
-            this.toastr.warning(res['msg'], '');
+            //this.toastr.warning(res['msg'], '');
+            this.Service.moveSteps('application_information', 'cab_information', this.headerSteps);
           }
         });
 
@@ -1129,7 +1212,7 @@ export class NoObjectionFormComponent implements OnInit {
         });
 
     }else{
-      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+      this.toastr.warning('Please Fill required field','',{timeOut:5000});
     }
 
   }
@@ -1193,19 +1276,19 @@ export class NoObjectionFormComponent implements OnInit {
       'cabTypeHalal_ib':this.step2Data.cabTypeHalal_ib,
       'cabTypeHalal_cb':this.step2Data.cabTypeHalal_cb,
     });
-    this.step2Data.cab_type = JSON.stringify(cabTypes);
+    this.step2Data.cab_type = cabTypes;//JSON.stringify(cabTypes);
     console.log(">>>form status: ",theForm.form.valid ," -- ", this.step2Data);
 
     //return; 
 
-    if((checkLaboratory == true && checkInspection == true && checkCertification == true && checkHalal == true) && type == undefined){
+    if((checkLaboratory == true || checkInspection == true || checkCertification == true || checkHalal == true) && type == undefined){
       this.noObjectionBodyForm = {};      
       this.noObjectionBodyForm.saved_step = 2;    
       this.noObjectionBodyForm.step2 = {};  
       this.noObjectionBodyForm.step2 = this.step2Data;
       this.noObjectionBodyForm.step2.application_id = this.formApplicationId;
       this.noObjectionBodyForm.step2.is_draft = false;
-      console.log(">> Submit Form: ", this.step1Data, " -- ", this.noObjectionBodyForm);
+      console.log(">> Submit Form: ", " -- ", this.noObjectionBodyForm);
       postData.append("data", JSON.stringify(this.noObjectionBodyForm))
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.noc_submit_form + "/", postData)
       .subscribe(
@@ -1225,11 +1308,11 @@ export class NoObjectionFormComponent implements OnInit {
     }else if(type != undefined && type == true){
       this.noObjectionBodyForm = {};
       this.noObjectionBodyForm.step2 = {};
-      this.noObjectionBodyForm.saved_step = 2;   
-      this.noObjectionBodyForm.step2.application_id = this.formApplicationId;   
+      this.noObjectionBodyForm.saved_step = 2;        
       this.noObjectionBodyForm.step2 = this.step2Data;
+      this.noObjectionBodyForm.step2.application_id = this.formApplicationId; 
       this.noObjectionBodyForm.step2.is_draft = true;
-      console.log(">> Submit Save draft: ", this.step1Data, " -- ", this.noObjectionBodyForm);
+      console.log(">> Submit Save draft: ", this.step2Data, " -- ", this.noObjectionBodyForm);
       postData.append("data", JSON.stringify(this.noObjectionBodyForm))
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.noc_submit_form + "/", postData)
       .subscribe(
@@ -1245,13 +1328,24 @@ export class NoObjectionFormComponent implements OnInit {
         });
 
     }else{
-      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:1500});
+      this.toastr.warning('Please Fill required field','',{timeOut:1500});
     }
     
   }
 
   onSubmitListServiceScope(theForm: any, type?: any){
-   this.Service.moveSteps('list_service_scope', 'list_instrument_equipment', this.headerSteps);
+   //this.Service.moveSteps('list_service_scope', 'list_instrument_equipment', this.headerSteps);
+
+
+
+      let scopeCollections: any = {};
+      let postData: any = new FormData();
+      scopeCollections['testingLab'] = {};
+      scopeCollections['calibrationLab'] = {};
+      scopeCollections['certificationBodies'] = {};
+      scopeCollections['inspectionBodies'] = {};
+      scopeCollections['halalCab'] = {};
+      let tempObj: any ={};
 
       //For testing lab checkboxes
       let testingLabCheckCount = 0;
@@ -1274,10 +1368,16 @@ export class NoObjectionFormComponent implements OnInit {
           testingLabCheckValues['checkItemsOthers'].push({value: this.testingLabCheckItemOtherInput});
         }            
       }
-      this.step3Data.testingLabCheckDetails = testingLabCheckValues;
-      this.step3Data.testingLabInformation = this.testingLabInfo;
+     // this.step3Data.testingLabCheckDetails = testingLabCheckValues;
+      //this.step3Data.testingLabInformation = this.testingLabInfo;
+      tempObj['testingLabCheckDetails'] = testingLabCheckValues;
+      tempObj['testingLabInformation'] = this.testingLabInfo;
+      //scopeCollections['testingLab'] = tempObj;
+      this.step3Data.testing_lab = tempObj;
+
 
       //For calibration lab checkboxes
+      tempObj = {};
       let calibrationLabCheckCount = 0;
       let calibrationLabCheckValues: any = {};
       
@@ -1297,8 +1397,12 @@ export class NoObjectionFormComponent implements OnInit {
           calibrationLabCheckValues['checkItemsOthers'].push({value: this.calibrationLabCheckItemOtherInput});
         }            
       }
-      this.step3Data.calibrationLabCheckDetails = calibrationLabCheckValues;
-      this.step3Data.calibrationLabInformation = this.calibrationLabInfo;
+      //this.step3Data.calibrationLabCheckDetails = calibrationLabCheckValues;
+      //this.step3Data.calibrationLabInformation = this.calibrationLabInfo;
+      tempObj['calibrationLabCheckDetails'] = calibrationLabCheckValues;
+      tempObj['calibrationLabInformation'] = this.calibrationLabInfo;
+      //scopeCollections['calibrationLab'] = tempObj;
+      this.step3Data.calibration_lab = tempObj;
 
       //For certification bodies checkboxes
       let certificationCheckCountFirst = 0;
@@ -1319,7 +1423,13 @@ export class NoObjectionFormComponent implements OnInit {
           certificationCheckValuesFirst['checkItemsOthers'].push({value: this.certificationBodiesCheckItemOthersFirstInput});
         }            
       }
-      this.step3Data.certificationCheckDetailsFirst = certificationCheckValuesFirst;
+      //this.step3Data.certificationCheckDetailsFirst = certificationCheckValuesFirst;
+      tempObj = {};
+      tempObj['certificationCheckDetails'] = certificationCheckValuesFirst;
+      //scopeCollections['certificationBodies'] = tempObj;
+      this.step3Data.cb_management = tempObj;
+      this.step3Data.cb_product = (this.step3Data.certificationBodiesCheckboxesForProducts == undefined) ? false : this.step3Data.certificationBodiesCheckboxesForProducts;
+      this.step3Data.cb_person = (this.step3Data.certificationBodiesCheckboxesForPersons == undefined ) ? false : this.step3Data.certificationBodiesCheckboxesForPersons;
 
       let certificationCheckCountSecond = 0;
       let certificationCheckValuesSecond: any = {};
@@ -1339,8 +1449,14 @@ export class NoObjectionFormComponent implements OnInit {
           certificationCheckValuesSecond['checkItemsOthers'].push({value: this.certificationBodiesCheckItemOthersSecondInput});
         }            
       }
-      this.step3Data.certificationCheckDetailsSecond = certificationCheckValuesSecond;
-      this.step3Data.certificationInformation = this.certificationBodiesInfo;
+      //this.step3Data.certificationCheckDetailsSecond = certificationCheckValuesSecond;
+      //this.step3Data.certificationInformation = this.certificationBodiesInfo;
+      tempObj = {};
+      tempObj['inspectionCheckDetails'] = certificationCheckValuesSecond;
+      tempObj['inspectionInfo'] = this.certificationBodiesInfo;
+      //scopeCollections['inspectionBodies'] = tempObj;
+     this.step3Data.inspection_body = tempObj;
+    
 
       //Hall Lab checkboxes
       let halalLabCheckCount = 0;
@@ -1362,63 +1478,72 @@ export class NoObjectionFormComponent implements OnInit {
           halalLabCheckValues['checkItemsOthers'].push({value: this.halalCabCheckItemOthersInput});
         }            
       }
-      this.step3Data.halalLabCheckDetails = halalLabCheckValues;
+      //this.step3Data.halalLabCheckDetails = halalLabCheckValues;
+      tempObj = {};
+      tempObj['halalLabCheckDetails'] = halalLabCheckValues;
+      //this.step3Data.calibration_lab = tempObj;
+      //scopeCollections['halalCab'] = tempObj;
+      this.step3Data.halal_lab = tempObj;
 
 
-
-    if(theForm.form.valid && type == undefined && testingLabCheckCount > 0 && 
-        calibrationLabCheckCount > 0 && certificationCheckCountFirst > 0 && certificationCheckCountSecond > 0 && halalLabCheckCount > 0){
+    if(theForm.form.valid && type == undefined && (testingLabCheckCount > 0 || 
+        calibrationLabCheckCount > 0 || certificationCheckCountFirst > 0 || certificationCheckCountSecond > 0 || halalLabCheckCount > 0)){
       this.noObjectionBodyForm = {};      
       this.noObjectionBodyForm.saved_step = 3;
       this.noObjectionBodyForm.step3 = this.step3Data;
       this.noObjectionBodyForm.step3.application_id = this.formApplicationId;
       this.noObjectionBodyForm.step3.is_draft = false;
-      console.log(">> Submit Form: ", this.step3Data, " -- ", this.noObjectionBodyForm);
+      console.log(">> Submit Form: ", this.step3Data, " -- ", this.noObjectionBodyForm, " == ", scopeCollections);
 
       //this.Service.moveSteps('list_service_scope', 'list_instrument_equipment', this.headerSteps);
-      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
-      // .subscribe(
-      //   res => {
-      //     if(res['status'] == true) {
-      //       let data: any = {};
-      //       this.isFormSubmitted = false;
-      //        data = res;               
-      //       //this.toastr.success(res['msg'],);
-      //       this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
-      //     }else{
-      //       this.toastr.warning(res['msg'], '');
-      //     }
-      //   });
+      //this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
+      postData.append("data", JSON.stringify(this.noObjectionBodyForm))
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.noc_submit_form + "/", postData)
+      .subscribe(
+        res => {
+          console.log(">>>>POST submit: ", res);
+          if(res['status'] == true) {
+            let data: any = {};
+            //this.isFormSubmitted = false;
+             data = res;               
+            //this.toastr.success(res['msg'],);
+            this.Service.moveSteps('list_service_scope', 'list_instrument_equipment', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
 
     }else if(type != undefined && type == true){
       this.noObjectionBodyForm = {};
       this.noObjectionBodyForm.saved_step = 3;      
       this.noObjectionBodyForm.step3 = this.step3Data;
+      this.noObjectionBodyForm.step3.application_id = this.formApplicationId;
       this.noObjectionBodyForm.step3.is_draft = true;
+      
       console.log(">> Submit Save draft: ", this.step3Data, " -- ", this.noObjectionBodyForm);
-      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
-      // .subscribe(
-      //   res => {
-      //     //console.log(res,'Save Draft Submit...')
-      //     if(res['status'] == true) {
-      //       let data: any = {};
-      //        data = res;      
-      //       this.toastr.success('Save Draft Successfully',);
-      //     }else{
-      //       this.toastr.warning(res['msg'], '');
-      //     }
-      //   });
+      postData.append("data", JSON.stringify(this.noObjectionBodyForm))
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.noc_submit_form + "/", postData)
+      .subscribe(
+        res => {
+          //console.log(res,'Save Draft Submit...')
+          if(res['status'] == true) {
+            let data: any = {};
+             data = res;      
+            this.toastr.success('Save Draft Successfully',);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
 
     }else{
-      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+      this.toastr.warning('Please Fill required field','',{timeOut:5000});
     }
-
-
   }
 
   onSubmitListInstrumentEquipment(theForm: any, type?: any){
-    this.Service.moveSteps('list_instrument_equipment', 'list_staff', this.headerSteps);
+    //this.Service.moveSteps('list_instrument_equipment', 'list_staff', this.headerSteps);
 
+    let postData: any = new FormData();
     if(theForm.form.valid && type == undefined){
       this.noObjectionBodyForm = {};      
       this.noObjectionBodyForm.saved_step = 4;  
@@ -1432,19 +1557,19 @@ export class NoObjectionFormComponent implements OnInit {
       this.noObjectionBodyForm.step4.is_draft = false;
       console.log(">> Submit Form: "," -- ", this.noObjectionBodyForm);
 
-      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
-      // .subscribe(
-      //   res => {
-      //     if(res['status'] == true) {
-      //       let data: any = {};
-      //       //this.isFormSubmitted = false;
-      //        data = res;               
-      //       //this.toastr.success(res['msg'],);
-      //       this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
-      //     }else{
-      //       this.toastr.warning(res['msg'], '');
-      //     }
-      //   });
+      postData.append("data", JSON.stringify(this.noObjectionBodyForm))
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.noc_submit_form + "/", postData)
+      .subscribe(
+        res => {
+          if(res['status'] == true) {
+            let data: any = {};
+             data = res;               
+            //this.toastr.success(res['msg'],);
+            this.Service.moveSteps('list_instrument_equipment', 'list_staff', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
 
     }else if(type != undefined && type == true){
       this.noObjectionBodyForm = {};
@@ -1454,20 +1579,22 @@ export class NoObjectionFormComponent implements OnInit {
         this.step4Data['listOfIntEquip'] = this.listOfIntEquip;
       }    
       this.noObjectionBodyForm.step4 = this.step4Data;
+      this.noObjectionBodyForm.step4.application_id = this.formApplicationId;
       this.noObjectionBodyForm.step4.is_draft = true;
       console.log(">> Submit Save draft: "," -- ", this.noObjectionBodyForm);
-      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
-      // .subscribe(
-      //   res => {
-      //     //console.log(res,'Save Draft Submit...')
-      //     if(res['status'] == true) {
-      //       let data: any = {};
-      //        data = res;      
-      //       this.toastr.success('Save Draft Successfully',);
-      //     }else{
-      //       this.toastr.warning(res['msg'], '');
-      //     }
-      //   });
+      postData.append("data", JSON.stringify(this.noObjectionBodyForm))
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.noc_submit_form + "/", postData)
+      .subscribe(
+        res => {
+          //console.log(res,'Save Draft Submit...')
+          if(res['status'] == true) {
+            let data: any = {};
+             data = res;      
+            this.toastr.success('Save Draft Successfully',);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
 
     }else{
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
@@ -1475,7 +1602,9 @@ export class NoObjectionFormComponent implements OnInit {
   }
 
   onSubmitListStaff(theForm: any, type?: any){
-    this.Service.moveSteps('list_staff', 'authorization_application', this.headerSteps);
+    //this.Service.moveSteps('list_staff', 'authorization_application', this.headerSteps);
+
+    let postData: any =  new FormData();
     if(theForm.form.valid && type == undefined){
       this.noObjectionBodyForm = {};      
       this.noObjectionBodyForm.saved_step = 5;  
@@ -1489,19 +1618,20 @@ export class NoObjectionFormComponent implements OnInit {
       this.noObjectionBodyForm.step5.is_draft = false;
       console.log(">> Submit Form: "," -- ", this.noObjectionBodyForm);
 
-      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
-      // .subscribe(
-      //   res => {
-      //     if(res['status'] == true) {
-      //       let data: any = {};
-      //       //this.isFormSubmitted = false;
-      //        data = res;               
-      //       //this.toastr.success(res['msg'],);
-      //       this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
-      //     }else{
-      //       this.toastr.warning(res['msg'], '');
-      //     }
-      //   });
+      postData.append("data", JSON.stringify(this.noObjectionBodyForm))
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.noc_submit_form + "/", postData)
+      .subscribe(
+        res => {
+          if(res['status'] == true) {
+            let data: any = {};
+            //this.isFormSubmitted = false;
+             data = res;               
+            //this.toastr.success(res['msg'],);
+            this.Service.moveSteps('list_staff', 'authorization_application', this.headerSteps);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
 
     }else if(type != undefined && type == true){
       this.noObjectionBodyForm = {};
@@ -1511,20 +1641,24 @@ export class NoObjectionFormComponent implements OnInit {
         this.step5Data['listOfStaff'] = this.listOfStaff;
       }    
       this.noObjectionBodyForm.step5 = this.step5Data;
+      this.noObjectionBodyForm.step5.application_id = this.formApplicationId;
       this.noObjectionBodyForm.step5.is_draft = true;
       console.log(">> Submit Save draft: ", this.step1Data, " -- ", this.noObjectionBodyForm);
-      // this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.inspection_form_basic_data,this.noObjectionBodyForm)
-      // .subscribe(
-      //   res => {
-      //     //console.log(res,'Save Draft Submit...')
-      //     if(res['status'] == true) {
-      //       let data: any = {};
-      //        data = res;      
-      //       this.toastr.success('Save Draft Successfully',);
-      //     }else{
-      //       this.toastr.warning(res['msg'], '');
-      //     }
-      //   });
+
+
+      postData.append("data", JSON.stringify(this.noObjectionBodyForm))
+      this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.noc_submit_form + "/", postData)
+      .subscribe(
+        res => {
+          //console.log(res,'Save Draft Submit...')
+          if(res['status'] == true) {
+            let data: any = {};
+             data = res;      
+            this.toastr.success('Save Draft Successfully',);
+          }else{
+            this.toastr.warning(res['msg'], '');
+          }
+        });
 
     }else{
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
@@ -1538,15 +1672,16 @@ export class NoObjectionFormComponent implements OnInit {
     this.noObjectionBodyForm = {}; 
     this.noObjectionBodyForm.step6 = {}; 
     console.log(">>>TSEP 6 SUBMIT: ", this.step6Data);
+    //this.step6Data.authorization_confirm1 == true
 
-    if(theForm.form.valid && this.step6Data.authorization_confirm1 == true && type == undefined){
+    if(theForm.form.valid && type == undefined){
       //this.noObjectionBodyForm = {};      
       this.noObjectionBodyForm.saved_step = 6;  
       this.step6Data.authorization_list_json = {'authorization_confirm1' : this.step6Data.authorization_confirm1};
-      this.noObjectionBodyForm.step4 = this.step6Data;
+      this.noObjectionBodyForm.step6 = this.step6Data;
       
-      this.noObjectionBodyForm.step4.application_id = this.formApplicationId;
-      this.noObjectionBodyForm.step4.is_draft = false;
+      this.noObjectionBodyForm.step6.application_id = this.formApplicationId;
+      this.noObjectionBodyForm.step6.is_draft = false;
       console.log(">> Submit Form: "," -- ", this.noObjectionBodyForm);
       postData.append("data", JSON.stringify(this.noObjectionBodyForm))
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.noc_submit_form + "/", postData)
@@ -1580,13 +1715,13 @@ export class NoObjectionFormComponent implements OnInit {
           }
         });
 
-    }else if(type != undefined && type == true){
+    }else if(type != undefined && type == true){ 
       //this.noObjectionBodyForm = {};
       this.noObjectionBodyForm.saved_step = 6;   
       this.step6Data.authorization_list_json = {'authorization_confirm1' : this.step6Data.authorization_confirm1};
-      this.noObjectionBodyForm.step4 = this.step6Data;
-      this.noObjectionBodyForm.step4.application_id = this.formApplicationId;
-      this.noObjectionBodyForm.step4.is_draft = true;
+      this.noObjectionBodyForm.step6 = this.step6Data;
+      this.noObjectionBodyForm.step6.application_id = this.formApplicationId;
+      this.noObjectionBodyForm.step6.is_draft = true;
       console.log(">> Submit Save draft: ", " -- ", this.noObjectionBodyForm);
       postData.append("data", JSON.stringify(this.noObjectionBodyForm))
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.noc_submit_form + "/", postData)
@@ -1692,8 +1827,8 @@ export class NoObjectionFormComponent implements OnInit {
   //declare Items data
   this.transactionsItem['item_list']            = {};
   this.transactionsItem['item_list']['items']   = [];
-  let custPrice: any = 5;//(this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;
-  this.total = 5;//(this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//520;
+  let custPrice: any = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;
+  this.total = (this.voucherSentData.amount != undefined && this.voucherSentData.amount > 0) ? this.voucherSentData.amount : 0;//520;
     this.transactionsItem['item_list']['items'].push({name: 'Inspection Body Application', quantity: 1, price: custPrice, currency: 'USD'});
       if(this.total > 0){
         //////////console.log("Calculate price: ", calcPrice);
@@ -1717,23 +1852,30 @@ export class NoObjectionFormComponent implements OnInit {
   
 
   onSubmitPaymentUpdate(theForm: any, type?: any){
-    this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+    //this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
 
     this.noObjectionBodyForm = {};
     this.noObjectionBodyForm.step8 = {};
     let is_valid: boolean = false;
 
     let dtFormat: string = '';
-    if(this.voucherSentData['payment_date'] != undefined && 
-      this.voucherSentData['payment_date']._i != undefined){
-      var dtData = this.voucherSentData['payment_date']._i;
-      var year = dtData.year;
-      var month = dtData.month;
-      var date = dtData.date;
-      dtFormat = year + "-" + month + "-" + date;
+    // if(this.voucherSentData['payment_date'] != undefined && 
+    //   this.voucherSentData['payment_date']._i != undefined){
+    //   var dtData = this.voucherSentData['payment_date']._i;
+    //   var year = dtData.year;
+    //   var month = dtData.month;
+    //   var date = dtData.date;
+    //   dtFormat = year + "-" + month + "-" + date;
+    // }else{
+    if(this.voucherSentData['payment_date'] != undefined){
+      var nFdate = new Date(this.voucherSentData['payment_date']);
+      var nMonth = nFdate.getMonth() + 1;
+      var nDate = nFdate.getDate();
+      var nYear = nFdate.getFullYear();
+      dtFormat = nYear + "-" + nMonth + "-" + nDate;
     }
 
-    console.log(">>> Date: ", dtFormat);
+    console.log(">>> Date: ", dtFormat, " -- ", this.voucherSentData);
 
       this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
       this.voucherFile.append('amount',this.voucherSentData['amount']);
@@ -1745,6 +1887,11 @@ export class NoObjectionFormComponent implements OnInit {
       this.voucherFile.append('accreditation',this.formApplicationId);
       this.voucherFile.append('application_id',this.formApplicationId);
       this.voucherFile.append('saved_step', 8);
+      if(!type){
+        this.voucherFile.append('is_draft', false);
+      }else{
+        this.voucherFile.append('is_draft', true);
+      }
 
       console.log(">>> Data: ", this.voucherSentData);
       if(this.voucherSentData['transaction_no'] != '' && this.voucherSentData['payment_method'] != '' && this.voucherSentData['payment_made_by'] &&
@@ -1756,10 +1903,10 @@ export class NoObjectionFormComponent implements OnInit {
           //this.noObjectionBodyForm.saved_step = 8;      
           //this.noObjectionBodyForm.step8 = this.step6Data;
           //this.noObjectionBodyForm.step8.application_id = this.formApplicationId;
-          this.noObjectionBodyForm.step8.is_draft = false;
-          console.log(">> Submit Form: "," -- ", this.noObjectionBodyForm);
+          //this.noObjectionBodyForm.step8.is_draft = false;
+          console.log(">> Submit Form: "," -- ", this.voucherSentData);
 
-          this._trainerService.paymentVoucherSave((this.voucherFile))
+          this._trainerService.paymentVoucherNOCSave((this.voucherFile))
           .subscribe(
              result => {
                let data: any = result;
@@ -1786,10 +1933,10 @@ export class NoObjectionFormComponent implements OnInit {
         }else if(type != undefined && type == true){
           //this.noObjectionBodyForm.saved_step = 6;   
           //this.noObjectionBodyForm.step6 = this.step6Data;
-          this.noObjectionBodyForm.step8.is_draft = true;
-          console.log(">> Submit Save draft: ", " -- ", this.noObjectionBodyForm);
+         // this.noObjectionBodyForm.step8.is_draft = true;
+          console.log(">> Submit Save draft: ", " -- ", this.voucherSentData);
 
-          this._trainerService.paymentVoucherSave((this.voucherFile))
+          this._trainerService.paymentVoucherNOCSave((this.voucherFile))
           .subscribe(
              result => {
                let data: any = result;
@@ -1801,7 +1948,7 @@ export class NoObjectionFormComponent implements OnInit {
                 }
           })    
         }else{
-          this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+          this.toastr.warning('Please Fill required field','',{timeOut:5000});
         }
   }
 

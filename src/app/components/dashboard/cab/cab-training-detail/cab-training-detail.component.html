@@ -71,14 +71,16 @@
                                 </div>
 
                                 <div class="course-info">
-                                    <h5>Location : <span *ngIf="courseDetails?.event.location == 'eiac_training_center'">EIAC Training Center</span>
-                                    <span *ngIf="courseDetails?.event.location != '' && courseDetails?.event.location != 'eiac_training_center'">N/A</span>
+                                    <h5>Location : <span *ngIf="courseDetails?.location == 'eiac_training_center'">EIAC Training Center</span>
+                                    <span *ngIf="courseDetails?.location != '' && courseDetails?.location != 'eiac_training_center'">N/A</span>
                                     </h5>
                                 </div>
 
                                 <div class="course-info">
-                                    <h5>Audience : <span *ngIf="courseDetails?.allTargatedAud && courseDetails?.allTargatedAud[0].target_aud_name.title">{{courseDetails?.allTargatedAud[0].target_aud_name.title}}</span>
-                                    <span *ngIf="!courseDetails?.allTargatedAud && !courseDetails?.allTargatedAud[0].target_aud_name.title">{{courseDetails?.allTargatedAud[0].target_aud_name.title}}</span>
+                                    <h5>Audience : 
+                                        <!-- <span *ngIf="courseDetails?.allTargatedAud && courseDetails?.allTargatedAud[0].target_aud_name.title">{{courseDetails?.allTargatedAud[0].target_aud_name.title}}</span> -->
+                                    <!-- <span *ngIf="!courseDetails?.allTargatedAud && !courseDetails?.allTargatedAud[0].target_aud_name.title">{{courseDetails?.allTargatedAud[0].target_aud_name.title}}</span> -->
+                                      <span *ngIf="audienceData != ''">{{audienceData}}</span>
                                     </h5>
                                 </div>
                                 
@@ -95,7 +97,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <!-- <ng-container *ngIf="curCourseAvailable > 0"> -->
+                    <div class="row">
                     <div class="col-md-6"></div>
                     <div class="col-md-6">
                         <div class="course-bttn">
@@ -105,6 +108,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- </ng-container>-->
             </div>
         </div>
     </section>

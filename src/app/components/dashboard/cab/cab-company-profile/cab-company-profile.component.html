@@ -8,7 +8,7 @@
       
       <div class="row m-0">
         <div class="col-md-12 message-det">
-            <div class="row">
+            <div class="row mt-3">
               <div class="col-md-3">
                 <div class="main_app_wrap">
                   <div class="appln-data">
@@ -17,13 +17,23 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-6"> 
-                %percentage
+              <div class="col-md-4"> 
+                <div class="progress_wrapper">
+                  <div class="progress_head">
+                      <span class="complete">Complete</span>
+                      <span>{{progressValue}}%</span>
+                    </div>
+                  <div class="progress-br">
+                    <mat-progress-bar mode="determinate" value="{{progressValue}}"></mat-progress-bar>
+                </div>
               </div>
-              <div class="col-md-3"> 
-                <a routerLink="/profile-completion">
-                <span class="icon-edit"></span>
-              </a>
+              </div>
+              <div class="col-md-5"> 
+                <div class="edit_data">
+                  <a routerLink="/profile-completion">
+                    <span class="icon-edit"></span>
+                  </a>
+                </div>
               </div>
             </div>
         </div>
@@ -60,7 +70,7 @@
                   <h5>Phone Number</h5>
                 </div>
                 <div class="appln-details">
-                  <span *ngIf="cabStep1?.office_tel_no != ''">{{cabStep1?.office_tel_no}}</span>
+                  <span *ngIf="cabStep1?.applicant_tel_no != ''">{{cabStep1?.applicant_tel_no}}</span> 
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -68,148 +78,171 @@
                   <h5>Fax Number</h5>
                 </div>
                 <div class="appln-details license_no">
-                  <span *ngIf="cabStep1?.office_fax_no != null">{{cabStep1?.office_fax_no}}</span>
-                  <span *ngIf="cabStep1?.office_fax_no == null">N/A</span>
-                </div>
-              </div>
-            </div>
-        </div>
-      </div>
-      <div class="row m-0 appn-cnt-data">
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="appln-subhdr">
-                <h5>OFFICE DETAILS</h5>
-              </div>
-              <div class="table-appln">
-                <table>
-                  <tr>
-                    <td>Office/Institution</td>
-                    <td *ngIf="cabStep1?.office">{{cabStep1?.office}}</td>
-                  </tr>
-                  <tr>
-                    <td width="30%">Office Address</td>
-                    <td *ngIf="cabStep1?.office_address">{{cabStep1?.office_address}}</td>
-                  </tr>
-                  <tr>
-                    <td>Company Email</td>
-                    <td *ngIf="cabStep1?.applicant_email">{{cabStep1?.applicant_email}}</td>
-                  </tr>
-                  <tr>
-                    <td>Office Phone</td>
-                    <td *ngIf="cabStep1?.office_tel_no">{{cabStep1?.office_tel_no}}</td>
-                  </tr>
-                  <tr>
-                    <td>P.O.Box Mailing Address</td>
-                    <td *ngIf="cabStep1?.po_box">{{cabStep1?.po_box}},{{cabStep1?.mailing_address}}</td>
-                  </tr>
-                 
-                </table>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="appln-subhdr">
-                <h5>TRADE LICENSE DETAILS</h5>
-              </div>
-              <div class="table-appln">
-                <table>
-                  <tr>
-                    <td  width="40%">Legal-Professional Commercial/Trade License No.</td>
-                    <td *ngIf="cabStep1?.trade_license_number">{{cabStep1?.trade_license_number}}</td>
-                  </tr>
-                  <tr>
-                    <td>Upload Trade License</td>
-                    <td *ngIf="cabStep1?.trade_license">
-                      <!-- {{cabStep1?.trade_license}} -->
-                      <div class="data-main-attach">
-                        <div class="data-attach">
-                        <h5>
-                            <a href="javascript:void(0)">{{tradeLicenseText}}</a>
-                        </h5>
-                        </div>
-                        <div class="icn-appln">
-                        <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(constant.mediaPath,cabStep1.trade_license)">
-                            <span class="icon-eye"></span>
-                        </a>
-                        <a target="_blank" [href]="tradeLicenseFile"> 
-                            <span class="icon-download"></span>
-                        </a>
-                        </div>
-                    </div>
-
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Trade License Date of Issue</td>
-                    <td *ngIf="cabStep1?.date_of_issue">{{cabStep1?.date_of_issue | date: 'dd-MM-yyyy'}}</td>
-                  </tr>
-                  <tr>
-                    <td>Trade License Date of Expiry</td>
-                    <td *ngIf="cabStep1?.date_of_expiry">{{cabStep1?.date_of_expiry | date: 'dd-MM-yyyy'}}</td>
-                  </tr>
-                                  
-                </table>
-              </div>
-            </div>
-          </div> 
-        </div>
-      </div>
-      <div class="row m-0 appn-cnt-data">
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="appln-subhdr">
-                <h5>APPLICANT INFORMATION</h5>
-              </div>
-            </div>
-          </div> 
-          <div class="row status-det">
-              <div class="col-md-12">
-                <div class="table-appln">
-                  <table>
-                    <tr>
-                      <td width="30%">CAB Name Official and Commercial Name</td>
-                      <td *ngIf="cabStep1?.cab_name">{{cabStep1?.cab_name}}</td>
-                      <td width="15%">Date of Establishment</td>
-                      <td  *ngIf="cabStep1?.date_of_establisment">{{cabStep1?.date_of_establisment | date: 'dd-MM-yyyy'}}</td>
-                    </tr>
-                    <tr>
-                      <td>Registered Address</td>
-                      <td colspan="3" *ngIf="cabStep1?.registered_address">{{cabStep1?.registered_address}}</td>
-                    </tr>
-                    <tr>
-                      <td>City</td>
-                      <td *ngIf="cabStep1?.city">{{cabStep1?.city}}</td>
-                      <td>Country</td>
-                      <td *ngIf="cabStep1?.country">{{cabStep1?.country}}</td>
-                    </tr>
-                    <tr>
-                      <td>Mailing Address</td>
-                      <td *ngIf="cabStep1?.mailing_address">{{cabStep1?.mailing_address}}</td>
-                      <td>PO Box No./ZIP Code</td>
-                      <td *ngIf="cabStep1?.po_box">{{cabStep1?.po_box}}</td>
-                    </tr>
-                    <tr>
-                      <td>Official E-mail Address</td>
-                      <td *ngIf="cabStep1?.official_email">{{cabStep1?.official_email}}</td>
-                      <td>Official Website</td>
-                      <td *ngIf="cabStep1?.official_website">{{cabStep1?.official_website}}</td>
-                    </tr>
-                    <tr>
-                      <td>Telephone Number</td>
-                      <td *ngIf="cabStep1?.tel_no">{{Service.removePlus(cabStep1?.tel_no)}}</td>
-                      <td>Fax Number</td>
-                      <td *ngIf="cabStep1?.fax_no">{{cabStep1?.fax_no}}</td>
-                    </tr>
-                  </table>
+                  <span *ngIf="cabStep1?.applicant_fax_no != null">{{cabStep1?.applicant_fax_no}}</span>
+                  <span *ngIf="cabStep1?.applicant_fax_no == null">N/A</span>
                 </div>
               </div>
             </div>
         </div>
       </div>
       <div class="row m-0">
-        <div class="col-md-6" *ngFor="let row of cabStep2?.cabOwnerData; let i = index;">
+        <div class="col-md-6">
+          <div class="row appln-cnt-data">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="appln-subhdr">
+                    <h5>OFFICE DETAILS</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="row msg-det">
+                <div class="col-md-12">
+                  <div class="table-appln">
+                    <table>
+                      <tr>
+                        <td>Office/Institution</td>
+                        <td *ngIf="cabStep1?.office">{{cabStep1?.office}}</td>
+                      </tr>
+                      <tr>
+                        <td width="30%">Office Address</td>
+                        <td *ngIf="cabStep1?.office_address">{{cabStep1?.office_address}}</td>
+                      </tr>
+                      <tr>
+                        <td>Company Email</td>
+                        <td *ngIf="cabStep1?.applicant_email">{{cabStep1?.applicant_email}}</td>
+                      </tr>
+                      <tr>
+                        <td>Office Phone</td>
+                        <td *ngIf="cabStep1?.office_tel_no">{{cabStep1?.office_tel_no}}</td>
+                      </tr>
+                      <tr>
+                        <td>P.O.Box Mailing Address</td>
+                        <td *ngIf="cabStep1?.po_box">{{cabStep1?.po_box}},{{cabStep1?.mailing_address}}</td>
+                      </tr>
+                      
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row appln-cnt-data">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="appln-subhdr">
+                    <h5>TRADE LICENSE DETAILS</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="row msg-det">
+                <div class="col-md-12">
+                  <div class="table-appln messg-tbl">
+                    <table>
+                      <tr>
+                        <td  width="40%">Legal-Professional Commercial/Trade License No.</td>
+                        <td *ngIf="cabStep1?.trade_license_number">{{cabStep1?.trade_license_number}}</td>
+                      </tr>
+                      <tr>
+                        <td>Upload Trade License</td>
+                        <td *ngIf="cabStep1?.trade_license">
+                          <!-- {{cabStep1?.trade_license}} -->
+                          <div class="data-main-attach">
+                            <div class="data-attach">
+                            <h5>
+                                <a href="javascript:void(0)">{{tradeLicenseText}}</a>
+                            </h5>
+                            </div>
+                            <div class="icn-appln">
+                            <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(constant.mediaPath,cabStep1.trade_license)">
+                                <span class="icon-eye"></span>
+                            </a>
+                            <a target="_blank" [href]="tradeLicenseFile"> 
+                                <span class="icon-download"></span>
+                            </a>
+                            </div>
+                        </div>
+    
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Trade License Date of Issue</td>
+                        <td *ngIf="cabStep1?.date_of_issue">{{cabStep1?.date_of_issue | date: 'dd-MM-yyyy'}}</td>
+                      </tr>
+                      <tr>
+                        <td>Trade License Date of Expiry</td>
+                        <td *ngIf="cabStep1?.date_of_expiry">{{cabStep1?.date_of_expiry | date: 'dd-MM-yyyy'}}</td>
+                      </tr>              
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row m-0">
+        <div class="col-md-12">
+          <div class="row appln-cnt-data">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="appln-subhdr">
+                    <h5>APPLICANT INFORMATION</h5>
+                  </div>
+                </div>
+              </div> 
+              <div class="row msg-det">
+                <div class="col-md-12">
+                  <div class="table-appln">
+                    <table>
+                      <tr>
+                        <td width="30%">CAB Name Official and Commercial Name</td>
+                        <td *ngIf="cabStep1?.cab_name">{{cabStep1?.cab_name}}</td>
+                        <td width="15%">Date of Establishment</td>
+                        <td  *ngIf="cabStep1?.date_of_establisment">{{cabStep1?.date_of_establisment | date: 'dd-MM-yyyy'}}</td>
+                      </tr>
+                      <tr>
+                        <td>Registered Address</td>
+                        <td colspan="3" *ngIf="cabStep1?.registered_address">{{cabStep1?.registered_address}}</td>
+                      </tr>
+                      <tr>
+                        <td>City</td>
+                        <td *ngIf="cabStep1?.city">{{cabStep1?.city}}</td>
+                        <td>Country</td>
+                        <td *ngIf="cabStep1?.country">{{cabStep1?.country}}</td>
+                      </tr>
+                      <tr>
+                        <td>Mailing Address</td>
+                        <td *ngIf="cabStep1?.mailing_address">{{cabStep1?.mailing_address}}</td>
+                        <td>PO Box No./ZIP Code</td>
+                        <td *ngIf="cabStep1?.po_box">{{cabStep1?.po_box}}</td>
+                      </tr>
+                      <tr>
+                        <td>Official E-mail Address</td>
+                        <td *ngIf="cabStep1?.official_email">{{cabStep1?.official_email}}</td>
+                        <td>Official Website</td>
+                        <td *ngIf="cabStep1?.official_website">{{cabStep1?.official_website}}</td>
+                      </tr>
+                      <tr>
+                        <td>Telephone Number</td>
+                        <td *ngIf="cabStep1?.tel_no">{{Service.removePlus(cabStep1?.tel_no)}}</td>
+                        <td>Fax Number</td>
+                        <td *ngIf="cabStep1?.fax_no">{{cabStep1?.fax_no}}</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row m-0">
+        <div class="col-md-12" *ngFor="let row of cabStep2?.cabOwnerData; let i = index;">
           <div class="row">
             <div class="col-md-12">
               <div class="appln-subhdr">
@@ -280,329 +313,4 @@
   </div>
 </div>
 
-<!-- <div class="main-detail">
-    <div class="conatiner-fluid">
-      <div class="main-dashboard-cnt">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="dashbrd-hdr">
-              <div class="dash-wrap">
-                <h3>{{cabUserDetails?.first_name}} {{cabUserDetails?.last_name}}</h3>
-                <p>{{cabStep1?.designation}}</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="tab-data">
-            </div>
-          </div>
-        </div>
-  
-        <div class="row m-0">
-            <div class="col-md-12 message-det">
-                <div class="row appl-cnt">
-                    <div class="col">
-                        <div class="appln-data">
-                            <h5>Date of Birth</h5>
-                        </div>
-                        <div class="appln-details">
-                            <span>{{cabStep1?.dob | date}}</span>
-                        </div>
-                    </div>
-                    <div class="col border-left-dash">
-                        <div class="appln-data">
-                            <h5>Personal Email</h5>
-                        </div>
-                        <div class="appln-details">
-                            <span>{{cabUserDetails?.email}}</span>
-                        </div>
-                    </div>
-                    <div class="col border-left-dash">
-                        <div class="appln-data">
-                            <h5>Nationality</h5>
-                        </div>
-                        <div class="appln-details">
-                            <span>{{cabStep1?.nationality}}</span>
-                        </div>
-                    </div>
-                    <div class="col border-left-dash">
-                        <div class="appln-data">
-                            <h5>Phone Number</h5>
-                        </div>
-                        <div class="appln-details">
-                            <span>{{cabUserDetails?.contact}}</span>
-                        </div>
-                    </div>
-                    <div class="col border-left-dash">
-                        <div class="appln-data">
-                            <h5>Fax Number</h5>
-                        </div>
-                        <div class="appln-details">
-                            <span>{{cabStep1?.fax_no}}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-  
-        <div class="row m-0">
-            <div class="col-md-6">
-                <div class="row appln-cnt-data ">
-                <div class="col-md-12 p-0">
-                    <div class="row">
-                    <div class="col-md-12">
-                        <div class="appln-subhdr">
-                        <h5>OFFICE DETAILS</h5>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="row msg-det">
-                    <div class="col-md-12">
-                        <div class="table-appln">
-                        <table>
-                            <tr>
-                            <td>Office/Institution</td>
-                            <td>{{cabStep1?.office}}</td>
-                            </tr>
-                            <tr>
-                            <td>Office Address</td>
-                            <td>{{cabStep1?.office_address}}</td>
-                            </tr>
-                            <tr>
-                            <td>Company Mail</td>
-                            <td>{{cabStep1?.official_email}}</td>
-                            </tr>
-                            <tr>
-                            <td>Office Phone</td>
-                            <td>{{cabStep1?.office_tel_no}}</td>
-                            </tr>
-                            <tr>
-                            <td>P.o. Box Mailing Address</td>
-                            <td>{{cabStep1?.mailing_address}}</td>
-                            </tr>
-                        </table>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="row">
-                    <div class="col-md-12">
-                    <div class="appln-subhdr">
-                        <h5>TRADE LICENSE DETAILS</h5>
-                    </div>
-                    </div>
-                </div>
-                <div class="row msg-det">
-                    <div class="col-md-12">
-                        <div class="table-appln messg-tbl">
-                            <table>
-                            <tr>
-                                <td>Legal- professional Commercial/Trade License Number</td>
-                                <td>{{cabStep1?.trade_license_number}}</td>
-                            </tr>
-                            <tr>
-                                <td>Upload Trade License</td>
-                                <td>
-                                <div class="data-main-attach">
-                                    <div class="data-attach">
-                                    <h5>
-                                        <a href="javascript:void(0)">{{tradeLicenseText}}</a>
-                                    </h5>
-                                    </div>
-                                    <div class="icn-appln">
-                                    <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(constant.mediaPath,cabStep1.trade_license)">
-                                        <span class="icon-eye"></span>
-                                    </a>
-                                    <a target="_blank" [href]="tradeLicenseFile">
-                                        <span class="icon-download"></span>
-                                    </a>
-                                    </div>
-                                </div>
-                                </td>
-                            </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-  
-        <div class="row m-0">
-            <div class="col-md-12">
-                <div class="row appln-cnt-data ">
-                <div class="col-md-12 p-0">
-                    <div class="row">
-                    <div class="col-md-12">
-                        <div class="appln-subhdr">
-                        <h5>APPLICANT INFORMATION</h5>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="row msg-det">
-                    <div class="col-md-12">
-                        <div class="table-appln">
-                        <table>
-                            <tr>
-                            <td>Entity Commercial Name</td>
-                            <td>{{cabStep1?.cab_name}}</td>
-                            </tr>
-                            <tr>
-                            <td>Location</td>
-                            <td>{{cabStep1?.applicant_location}}</td>
-                            </tr>
-                            <tr>
-                            <td>Mailing Address</td>
-                            <td>{{cabStep1?.applicant_address}}</td>
-                            </tr>
-                            <tr>
-                            <td>Phone (with Area Code)</td>
-                            <td>{{cabStep1?.applicant_tel_no}}</td>
-                            </tr>
-                            <tr>
-                            <td>Fax (with Area Code)</td>
-                            <td>{{cabStep1?.applicant_fax_no}}</td>
-                            </tr>
-                            <tr>
-                            <td>Official Email Address</td>
-                            <td>{{cabStep1?.applicant_email}}</td>
-                            </tr>
-                            <tr>
-                            <td>Official Website</td>
-                            <td>{{cabStep1?.applicant_website}}</td>
-                            </tr>
-                            <tr>
-                              <td>Date Of Issue</td>
-                              <td>{{cabStep1?.date_of_issue | date}}</td>
-                            </tr>
-                            <tr>
-                              <td>Date Of Expired</td>
-                              <td>{{cabStep1?.date_of_expiry | date}}</td>
-                            </tr>
-                        </table>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row m-0">
-          <div class="col-md-6" *ngFor="let row of cabStep2?.cabOwnerData; let i = index;">
-            <div class="row">
-              <div class="col-md-12">
-                <div class="appln-subhdr">
-                  <h5>OWNERSHIP OF THE ORGANIZATION</h5>
-                </div>
-                <hr>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12 mb-4">
-                <div class="status-main-details">
-                  <div class="status-data">
-                    <p>{{row.name}}, </p>
-                    <span>{{row.designation}}</span>
-                  </div>
-                  <div class="status-subdata">
-                    <span class="status_details">
-                      <span class="icon-mobile"></span>
-                      {{Service.removePlus(row.mobile_no)}}
-                    </span>
-                    <span class="status_details">
-                      <span class="icon-call-data icon-call-2"></span>
-                      {{Service.removePlus(row.phone_no)}} 
-                    </span>
-                    <span class="status_details">
-                      <span class="icon-email"></span>
-                      {{row.email}}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row m-0">
-            <div class="col-md-12">
-              <div class="row appln-cnt-data" *ngIf="cabStep2?.cabOwnerData != ''">
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="appln-subhdr">
-                      <h5>OWNERSHIP OF THE ORGANIZATION</h5>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-12 p-0" *ngFor="let row of cabStep2?.cabOwnerData; let i = index;">
-                  
-                  <div class="row msg-det">
-                    <div class="col-md-12">
-                      <div class="table-appln">
-                        <table>
-                          <tr>
-                            <td>Name</td>
-                            <td>{{row.name}}</td>
-                          </tr>
-                          <tr>
-                            <td>Designation</td>
-                            <td>{{row.designation}}</td>
-                          </tr>
-                          <tr>
-                            <td>Mobile No.</td>
-                            <td>{{row.mobile_no}}</td>
-                          </tr>
-                          <tr>
-                            <td>Land Line Phone No.</td>
-                            <td>{{row.phone_no}}</td>
-                          </tr>
-                          <tr>
-                            <td>Email Address</td>
-                            <td>{{row.email}}</td>
-                          </tr>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-        </div>
-        <div class="row m-0">
-          <div class="col-md-12">
-            <div class="row status-det-wrapper">
-              <div class="col-md-12 p-0">
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="appln-subhdr">
-                      <h5>BOARD MEMBERS OF THE COMPANY</h5>
-                    </div>
-                    <hr>
-                  </div>
-                </div>
-                <div class="status_main">
-                  <div class="row m-0">
-                    <div class="col-md-6 p-0" *ngFor="let row2 of cabStep2?.cabBodData; let i1 = index;">
-                      <div class="members_details">
-                        <h4>{{row2.name}}</h4>
-                        <p class="address_details">{{row2.bod_company}}</p>
-                        <span class="personal_details">{{row2.authorized_contact_person}}</span>
-                        <span *ngIf="row2.designation">, {{row2.designation}}</span>
-                        <span *ngIf="row2.mobile_no">, Mobile : {{row2.mobile_no}}</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
 
