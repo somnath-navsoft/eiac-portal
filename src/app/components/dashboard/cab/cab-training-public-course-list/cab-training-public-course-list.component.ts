@@ -38,6 +38,7 @@ export class CabTrainingPublicCourseListComponent implements OnInit {
 
   ngOnInit() {
     // this.loadData();
+  
     this.loadTrainingData();
   }
   // ngOnDestroy(){
@@ -72,6 +73,10 @@ export class CabTrainingPublicCourseListComponent implements OnInit {
       }
   }
 
+  setCourseAvailability(available: number){
+      sessionStorage.setItem("courseAvailable", available.toString());
+  }
+
   loadTrainingData() {
     this.loaderData = false;
     //this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.training_course_list+'all/0?data=1'
@@ -81,7 +86,7 @@ export class CabTrainingPublicCourseListComponent implements OnInit {
       res => {
         this.loaderData = true;
         let targatedAudianceCourse: any = res['allEventData']; 
-        console.log(res['allEventData'])
+        //console.log(res['allEventData'])
         //this.trainingList = res['targatedAudianceCourse'];
         let listCourse: any[] =[];
         targatedAudianceCourse.forEach(item => {
@@ -92,20 +97,19 @@ export class CabTrainingPublicCourseListComponent implements OnInit {
             tempObj['courseName'] = pcourse.course;
             tempObj['courseID'] = item.id;
             tempObj['courseCapacity'] = item.capacity;
+            // if(item.id == 60 || item.id ==63){
+            //   item.seat_availability = 0;
+            // }
             tempObj['courseAvailability'] = item.seat_availability;
-            tempObj['courseDuration'] = pcourse.training_days;
-            tempObj['courseDate'] = new Date(item.event_start_date_time);
-            tempObj['courseLocation'] = (pcourse.location != '' && pcourse.location == 'eiac_training_center') ? "EIAC Training Center" : '';
-            tempObj['courseAudience'] = (pcourse.allTargatedAud != undefined && pcourse.allTargatedAud.length > 0) ? this.getTargetAudNames(pcourse.allTargatedAud) : '';
+            tempObj['courseDuration']     = pcourse.training_days;
+            tempObj['courseDate']         = new Date(item.event_start_date_time);
+            tempObj['courseLocation']     = (pcourse.location != '' && pcourse.location == 'eiac_training_center') ? "EIAC Training Center" : '';
+            tempObj['courseAudience']     = (pcourse.allTargatedAud != undefined && pcourse.allTargatedAud.length > 0) ? this.getTargetAudNames(pcourse.allTargatedAud) : '';
             listCourse.push(tempObj);
           }
-            //console.log()
-
         })
-
         this.trainingList = listCourse;
-
-        console.log("List course...", listCourse);
+        //console.log("List course...", listCourse);
 
         
         // for(let key in targatedAudianceCourse)

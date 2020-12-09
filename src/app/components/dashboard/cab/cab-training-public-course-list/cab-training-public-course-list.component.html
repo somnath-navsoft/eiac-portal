@@ -134,7 +134,7 @@
                                                 <span>Availability of Seats</span>
                                             </div>
                                             <div class="training_type">
-                                                <span *ngIf="trainingCourse.courseCapacity != '' && trainingCourse.courseAvailability != ''">
+                                                <span *ngIf="trainingCourse.courseCapacity != ''">
                                                     {{trainingCourse.courseAvailability}} out of {{trainingCourse.courseCapacity}}
                                                 </span>
                                                 <!-- <span *ngIf="trainingCourse.course.training_course.capacity != ''">{{trainingCourse.course.training_course.capacity}}</span> -->
@@ -143,7 +143,12 @@
                                     </div>
                                     <div class="col-lg-2 border-left-dash">
                                         <div class="train_det_bttn">
-                                            <a style="text-decoration:none" routerLink="/dashboard/cab_client/training-course-details/{{trainingCourse.courseID}}" href="javascript:void(0)" class="training_btn">DETAILS</a>
+                                            <!-- <ng-container *ngIf="trainingCourse.courseAvailability > 0">
+                                                <a style="text-decoration:none" routerLink="/dashboard/cab_client/training-course-details/{{trainingCourse.courseID}}" href="javascript:void(0)" class="training_btn">DETAILS</a>
+                                            </ng-container>
+                                            <ng-container *ngIf="trainingCourse.courseAvailability == 0"> -->
+                                                <a style="text-decoration:none" routerLink="/dashboard/cab_client/training-course-details/{{trainingCourse.courseID}}" href="javascript:void(0)" class="training_btn">DETAILS</a>
+                                            <!-- </ng-container> -->
                                         </div>
                                     </div>
                                 </div>

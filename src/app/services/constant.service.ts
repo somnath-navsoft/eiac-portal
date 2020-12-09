@@ -90,6 +90,7 @@ export class Constants{
 		noc_submit_form : 'noc_form'		
 		// webservice/training_request_form/
 	}
+	//course_details: this.apiUrl + 'course-details/',
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."
 	public loggedIn													=	new Subject<any>();
 	public logType: string 											=	'';

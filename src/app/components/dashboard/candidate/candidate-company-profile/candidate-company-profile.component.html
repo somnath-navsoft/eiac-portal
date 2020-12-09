@@ -54,7 +54,7 @@
                   <h5>Personal Email</h5>
                 </div>
                 <div class="appln-details">
-                  <span *ngIf="cabStep1?.applicant_email != ''">{{cabStep1?.applicant_email}}</span>
+                  <span *ngIf="cabUserDetails?.email != ''">{{cabUserDetails?.email}}</span>
                 </div>
               </div>
               <div class="col border-left-dash">
@@ -110,7 +110,7 @@
                       </tr>
                       <tr>
                         <td>Company Email</td>
-                        <td *ngIf="cabStep1?.applicant_email">{{cabStep1?.applicant_email}}</td>
+                        <td *ngIf="cabStep1?.office_email">{{cabStep1?.office_email}}</td>
                       </tr>
                       <tr>
                         <td>Office Phone</td>
@@ -118,7 +118,7 @@
                       </tr>
                       <tr>
                         <td>P.O.Box Mailing Address</td>
-                        <td *ngIf="cabStep1?.po_box">{{cabStep1?.po_box}},{{cabStep1?.mailing_address}}</td>
+                        <td *ngIf="cabStep1?.mailing_address">{{cabStep1?.mailing_address}}</td>
                       </tr>
                       
                     </table>
@@ -149,7 +149,6 @@
                       <tr>
                         <td>Upload Trade License</td>
                         <td *ngIf="cabStep1?.trade_license">
-                          <!-- {{cabStep1?.trade_license}} -->
                           <div class="data-main-attach">
                             <div class="data-attach">
                             <h5>
@@ -199,37 +198,41 @@
                 <div class="col-md-12">
                   <div class="table-appln">
                     <table>
-                      <tr>
+                      <!-- <tr>
                         <td width="30%">CAB Name Official and Commercial Name</td>
-                        <td *ngIf="cabStep1?.cab_name">{{cabStep1?.cab_name}}</td>
+                        <td *ngIf="cabStep1?.cab_name">{{cabStep1?.cab_name}}</td>                        
+                      </tr> -->                      
+                      <tr>
+                        <td>Office Address</td>
+                        <td colspan="3" *ngIf="cabStep1?.applicant_office_address">{{cabStep1?.applicant_office_address}}</td>
+                      </tr>
+                      <tr>
                         <td width="15%">Date of Establishment</td>
                         <td  *ngIf="cabStep1?.date_of_establisment">{{cabStep1?.date_of_establisment | date: 'dd-MM-yyyy'}}</td>
                       </tr>
-                      <tr>
-                        <td>Registered Address</td>
-                        <td colspan="3" *ngIf="cabStep1?.registered_address">{{cabStep1?.registered_address}}</td>
-                      </tr>
-                      <tr>
+                      <!-- <tr>
                         <td>City</td>
                         <td *ngIf="cabStep1?.city">{{cabStep1?.city}}</td>
                         <td>Country</td>
                         <td *ngIf="cabStep1?.country">{{cabStep1?.country}}</td>
-                      </tr>
+                      </tr> -->
                       <tr>
                         <td>Mailing Address</td>
                         <td *ngIf="cabStep1?.mailing_address">{{cabStep1?.mailing_address}}</td>
-                        <td>PO Box No./ZIP Code</td>
-                        <td *ngIf="cabStep1?.po_box">{{cabStep1?.po_box}}</td>
+                        <!-- <td>PO Box No./ZIP Code</td>
+                        <td *ngIf="cabStep1?.po_box">{{cabStep1?.po_box}}</td> -->
                       </tr>
-                      <tr>
+                      <!-- <tr>
                         <td>Official E-mail Address</td>
-                        <td *ngIf="cabStep1?.official_email">{{cabStep1?.official_email}}</td>
+                        <td *ngIf="cabStep1?.office_email">{{cabStep1?.office_email}}</td>
                         <td>Official Website</td>
                         <td *ngIf="cabStep1?.official_website">{{cabStep1?.official_website}}</td>
-                      </tr>
+                      </tr> -->
                       <tr>
                         <td>Telephone Number</td>
                         <td *ngIf="cabStep1?.tel_no">{{Service.removePlus(cabStep1?.tel_no)}}</td>
+                      </tr>
+                      <tr>
                         <td>Fax Number</td>
                         <td *ngIf="cabStep1?.fax_no">{{cabStep1?.fax_no}}</td>
                       </tr>
@@ -242,7 +245,7 @@
         </div>
       </div>
       <div class="row m-0">
-        <div class="col-md-12" *ngFor="let row of cabStep2?.cabOwnerData; let i = index;">
+        <div class="col-md-12" *ngFor="let row of cabStep2?.candidateOwnerData; let i = index;">
           <div class="row">
             <div class="col-md-12">
               <div class="appln-subhdr">
@@ -279,21 +282,21 @@
        
       </div>
       
-      <div class="row m-0" *ngIf="cabStep2?.cabBodData.length > 0">
+      <div class="row m-0" *ngIf="cabStep2?.candidateBodData.length > 0">
         <div class="col-md-12">
           <div class="row status-det-wrapper">
             <div class="col-md-12 p-0">
               <div class="row">
                 <div class="col-md-12">
                   <div class="appln-subhdr">
-                    <h5>BOARD MEMBERS OF THE COMPANY</h5>
+                    <h5>BOARD MEMBERS</h5>
                   </div>
                   <hr>
                 </div>
               </div>
               <div class="status_main">
                 <div class="row m-0">
-                  <div class="col-md-6 p-0" *ngFor="let row2 of cabStep2?.cabBodData; let i1 = index;">
+                  <div class="col-md-6 p-0" *ngFor="let row2 of cabStep2?.candidateBodData; let i1 = index;">
                     <div class="members_details">
                       <h4>{{row2.name}}</h4>
                       <p class="address_details">{{row2.bod_company}}</p>
