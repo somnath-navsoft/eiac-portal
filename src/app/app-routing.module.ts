@@ -93,10 +93,13 @@ import { CabTrainingInpremiseFormComponent } from './components/dashboard/cab/ca
 import { MessageReplyComponent } from './components/dashboard/message/message-reply/message-reply.component';
 import { OperationsRegistrationServiceListComponent } from './components/dashboard/operations/operations-registration-service-list/operations-registration-service-list.component';
 import { OperationsRegistrationServiceDetailsComponent } from './components/dashboard/operations/operations-registration-service-details/operations-registration-service-details.component';
+
 import { CabCompanyProfileComponent } from './components/dashboard/cab/cab-company-profile/cab-company-profile.component';
 import { AssessorsCompanyProfileComponent } from './components/dashboard/assessors/assessors-company-profile/assessors-company-profile.component';
 import { TrainerCompanyProfileComponent } from './components/dashboard/trainers/trainer-company-profile/trainer-company-profile.component';
 import { CandidateCompanyProfileComponent } from './components/dashboard/candidate/candidate-company-profile/candidate-company-profile.component';
+import { OperationsCompanyProfileComponent } from './components/dashboard/operations/operations-company-profile/operations-company-profile.component';
+
 
 import { CabMessage } from './components/dashboard/cab/cab-message/cab-message.component';
 import { RegistrationStatusComponent } from './components/dashboard/registration-status/registration-status.component';
@@ -149,6 +152,7 @@ const routes: Routes = [
         children:[
           { path: '', redirectTo:'home', pathMatch:'full'},
           { path: 'home', component:OperationsDashboardComponent, canActivate: [AuthGuard]},
+          { path: 'company-profile', component:OperationsCompanyProfileComponent, canActivate: [AuthGuard] },
           { path: 'training-apply/:id', component:OperationsTrainerServiceComponent, canActivate: [AuthGuard] },
           { path: 'training-service', component:OperationsTrainerServiceListComponent, canActivate: [AuthGuard] },
           { path: 'accreditation-service-list', component:OperationsAccreditationServiceListComponent, canActivate: [AuthGuard] },
