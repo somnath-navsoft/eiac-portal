@@ -108,6 +108,9 @@ import { OperationsTrainingServiceListComponent } from './components/dashboard/o
 import { OperationsTrainingServiceDetailsComponent } from './components/dashboard/operations/operations-training-service-details/operations-training-service-details.component';
 import { InpremiseApprovalListComponent } from './components/dashboard/operations/inpremise-approval-list/inpremise-approval-list.component';
 import { InpremiseApprovalDetailsComponent } from './components/dashboard/operations/inpremise-approval-details/inpremise-approval-details.component';
+import { SchemeListComponent } from './components/dashboard/cab/scheme-list/scheme-list.component';
+import { EventListsComponent } from './components/dashboard/cab/event-lists/event-lists.component';
+import { CertificationRecordsComponent } from './components/dashboard/cab/certification-records/certification-records.component';
 
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
@@ -210,6 +213,9 @@ const routes: Routes = [
         { path: 'message-detail/:id', component:CabMessageDetailsComponent, canActivate: [AuthGuard] },
         { path: 'company-profile', component:CabCompanyProfileComponent, canActivate: [AuthGuard] },
         { path: 'onboarding-message-list', component:CabMessage, canActivate: [AuthGuard] },
+        { path: 'scheme-list', component:SchemeListComponent, canActivate: [AuthGuard] },
+        { path: 'event-list', component:EventListsComponent, canActivate: [AuthGuard] },
+        { path: 'certification-records', component:CertificationRecordsComponent, canActivate: [AuthGuard] },
       ]
     },
 

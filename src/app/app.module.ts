@@ -158,6 +158,9 @@ import { RegistrationStatusComponent } from './components/dashboard/registration
 import { TrainingStatusComponent } from './components/dashboard/training-status/training-status.component';
 import { InpremiseApprovalListComponent } from './components/dashboard/operations/inpremise-approval-list/inpremise-approval-list.component';
 import { InpremiseApprovalDetailsComponent } from './components/dashboard/operations/inpremise-approval-details/inpremise-approval-details.component';
+import { SchemeListComponent } from './components/dashboard/cab/scheme-list/scheme-list.component';
+import { EventListsComponent } from './components/dashboard/cab/event-lists/event-lists.component';
+import { CertificationRecordsComponent } from './components/dashboard/cab/certification-records/certification-records.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -222,7 +225,10 @@ export const MY_FORMATS = {
     RegistrationStatusComponent,
     TrainingStatusComponent,
     InpremiseApprovalListComponent,
-    InpremiseApprovalDetailsComponent
+    InpremiseApprovalDetailsComponent,
+    SchemeListComponent,
+    EventListsComponent,
+    CertificationRecordsComponent
   ],
   imports: [
     CommonModule,
