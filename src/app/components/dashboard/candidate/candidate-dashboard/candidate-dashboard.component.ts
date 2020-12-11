@@ -158,7 +158,7 @@ export class CandidateDashboardComponent implements OnInit {
         this.loader = true;
         this.userDetails = res['data']['user_data'][0];
         this.step1Data = res['data']['step1'][0];
-        this.step2Data = res['data']['step2']['education'][0];
+        // this.step2Data = res['data']['step2']['education'][0];
         // console.log(res,'res');
       });
 
