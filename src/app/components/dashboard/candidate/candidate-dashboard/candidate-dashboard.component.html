@@ -35,7 +35,7 @@
                             <span>Qualification</span>
                         </div>
                         <div class="trainer-type-data">
-                            <span>{{step1Data.office}}<span class="icon-checkmark"></span></span>
+                            <span>{{step1Data?.office}}<span class="icon-checkmark"></span></span>
                         </div>
                     </div>
                 </div>
@@ -49,9 +49,15 @@
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
                                 <span>Profile</span>
+
                             </div>
                             <div class="trainer-maindata trainer-update">
-                                <span>Update<span class="icon-right-arrow"></span></span>
+                                <span>Update 
+                                    <a routerLink="/dashboard/{{userType}}/company-profile">
+                                        <span [ngStyle]="{'color': '#FFF', 'font-size':'31px'}">></span>
+                                    </a>
+                                </span>
+                                <!-- <span>Update<span class="icon-right-arrow"></span></span> -->
                             </div>
                         </div>
                     </div>
@@ -105,7 +111,7 @@
         </div>
         <div class="dashboard-events">
             <div class="row m-0">
-                <div class="col-md-6">
+                <!-- <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="tra_events">
@@ -140,8 +146,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6">
+                </div> -->
+                <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="tra_events">
@@ -151,7 +157,25 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
+                        <div class="col-md-12">
+                            <div class="event_timings">
+                                
+                                <div class="date-cnt">
+                                    <span>Last Activity</span>
+                                </div>
+                                <div class="activity-details">
+                                    <ul>
+                                        <ng-container *ngFor = "let item of dashboardRecentUpdates">
+                                        <li>{{item.title}}<span> on {{item.date | date}} at {{item.time}}</span></li>
+                                        </ng-container>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="row">
                         <div class="col-md-12">
                             <div class="event_timings">
                                 <div class="date-cnt">
@@ -186,7 +210,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
