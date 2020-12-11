@@ -990,6 +990,7 @@ export class WorkPermitFormComponent implements OnInit {
       this.voucherFile.append('accreditation',this.formApplicationId);
       this.voucherFile.append('application_id',this.formApplicationId);
       this.voucherFile.append('saved_step', 8);
+      this.voucherFile.append('payment_status', 'paid');
       if(!type){
         this.voucherFile.append('is_draft', false);
       }else{

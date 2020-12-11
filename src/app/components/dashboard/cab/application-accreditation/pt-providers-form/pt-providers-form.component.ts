@@ -1819,6 +1819,7 @@ savedraftStep(stepCount) {
     this.voucherFile.append('voucher_date',dtFormat);
     this.voucherFile.append('accreditation',this.formApplicationId);
     this.voucherFile.append('is_draft', true);
+    this.voucherFile.append('payment_status', 'paid');
     // this.voucherFile.append('application_id',this.formApplicationId);
         
     this.loader = true;
@@ -2640,6 +2641,7 @@ this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
 this.voucherFile.append('voucher_date',dtFormat);
 this.voucherFile.append('accreditation',this.formApplicationId);
 this.voucherFile.append('is_draft', false);
+this.voucherFile.append('payment_status', 'paid');
 // this.voucherFile.append('application_id',this.formApplicationId);
 if(this.voucherSentData['transaction_no'] != '' && this.voucherSentData['payment_method'] != '' && this.voucherSentData['payment_made_by'] &&
 this.voucherSentData['mobile_no'] != ''){

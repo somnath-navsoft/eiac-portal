@@ -2941,6 +2941,7 @@ getCriteria(value, secInd: any){
       this.voucherFile.append('voucher_date',dtFormat);
       this.voucherFile.append('accreditation',this.formApplicationId);
       this.voucherFile.append('is_draft',true);
+      this.voucherFile.append('payment_status', 'paid');
       // this.voucherFile.append('application_id',this.formApplicationId);
           
       this.loader = false;
@@ -4171,6 +4172,7 @@ onSubmitPaymentInformation(ngForm9: any, type?: boolean){
   this.voucherFile.append('voucher_date',dtFormat);
   this.voucherFile.append('accreditation',this.formApplicationId);
   this.voucherFile.append('is_draft',false);
+  this.voucherFile.append('payment_status', 'paid');
   // this.voucherFile.append('application_id',this.formApplicationId); 
       //////console.log(">>> form status: ", ngForm9.form.valid, " -- ", this.voucherSentData['mobile_no']);
       //return false;
