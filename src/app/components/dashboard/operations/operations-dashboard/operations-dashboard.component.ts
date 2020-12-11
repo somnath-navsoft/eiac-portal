@@ -20,7 +20,7 @@ export class OperationsDashboardComponent implements OnInit {
   visible = true;
   selectable = true;
   removable = true;
-  separatorKeysCodes: number[] = [ENTER, COMMA];
+  separatorKeysCodes: number[] = [ENTER, COMMA]; 
   fruitCtrl = new FormControl();
   filteredFruits: Observable<string[]>;
   fruits: string[] = [];
@@ -49,6 +49,7 @@ export class OperationsDashboardComponent implements OnInit {
   @ViewChild('fruitInput', { static: false }) fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
   config: any;
+  selectDepartment: string;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
 
