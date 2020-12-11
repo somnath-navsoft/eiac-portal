@@ -21,7 +21,7 @@ export class EventListsComponent implements OnInit {
   pageConfigData: any = {};
   pageData: any = {};
   pageTotal: number = 0;
-  eventData:any;
+  eventData:any[] = [];
   curSortDir: any = {};
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService, public _trainerService:TrainerService) { }
