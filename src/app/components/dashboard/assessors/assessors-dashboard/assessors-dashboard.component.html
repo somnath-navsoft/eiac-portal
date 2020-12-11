@@ -51,7 +51,13 @@
                                 <span>Profile</span>
                             </div>
                             <div class="trainer-maindata trainer-update">
-                                <span>Update<span class="icon-right-arrow"></span></span>
+                                <span>Update 
+                                    <a routerLink="/dashboard/{{userType}}/company-profile">
+                                        <span [ngStyle]="{'color': '#FFF', 'font-size':'31px'}">></span>
+                                    <!-- <span class="icon-right-arrow"></span> -->
+                                    </a>
+                                </span>
+                                <!-- <span>Update<span class="icon-right-arrow"></span></span> -->
                             </div>
                         </div>
                     </div>
@@ -63,7 +69,7 @@
                         </div>
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
-                                <span>Schedule</span>
+                                <span>Events</span>
                             </div>
                             <div class="trainer-maindata">
                                 <span>12</span>
@@ -78,7 +84,7 @@
                         </div>
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
-                                <span>Completed</span>
+                                <span>Technical Fields</span>
                             </div>
                             <div class="trainer-maindata">
                                 <span>05</span>
@@ -91,12 +97,20 @@
                         <div class="user-icons">
                             <span class="icon-options"></span>
                         </div>
-                        <div class="trainer-data-det">
+                        <div class="trainer-data-det" [ngStyle]="{'width': '50%', 'border-right': '1px solid','border-right-color': '#FFF','margin-right': '18px'  }">
                             <div class="trainer-pro">
-                                <span>Profile</span>
+                                <span>Date Appointed</span>
                             </div>
                             <div class="trainer-maindata">
                                 <span>02</span>
+                            </div>
+                        </div>
+                        <div class="trainer-data-det" [ngStyle]="{'width': '50%'}">
+                            <div class="trainer-pro">
+                                <span>Years in Service</span>
+                            </div>
+                            <div class="trainer-maindata">
+                                <span>04</span>
                             </div>
                         </div>
                     </div>
@@ -105,7 +119,7 @@
         </div>
         <div class="dashboard-events">
             <div class="row m-0">
-                <div class="col-md-6">
+                <!-- <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="tra_events">
@@ -140,8 +154,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6">
+                </div> -->
+                <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="tra_events">
@@ -154,34 +168,15 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="event_timings">
+                                
                                 <div class="date-cnt">
-                                    <span>20/01/2020</span>
+                                    <span>Last Activity</span>
                                 </div>
                                 <div class="activity-details">
                                     <ul>
-                                        <li><span class=""></span> Lorem ipsum dolor sit amet, consectetur adipiscing
-                                            elit, sed do eiusmod tempor.<span>05:25 PM</span></li>
-                                        <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                                            eu.<span>05:21 PM</span></li>
-                                        <li>On the other hand, we denounce with righteous indignation and dislike men
-                                            who.<span>05:25 PM</span></li>
-                                        <li>These cases are perfectly simple and easy to distinguish.<span>05:21
-                                                PM</span></li>
-                                    </ul>
-                                </div>
-                                <div class="date-cnt">
-                                    <span>20/01/2020</span>
-                                </div>
-                                <div class="activity-details">
-                                    <ul>
-                                        <li><span class=""></span> Lorem ipsum dolor sit amet, consectetur adipiscing
-                                            elit, sed do eiusmod tempor.<span>05:25 PM</span></li>
-                                        <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                                            eu.<span>05:21 PM</span></li>
-                                        <li>On the other hand, we denounce with righteous indignation and dislike men
-                                            who.<span>05:25 PM</span></li>
-                                        <li>These cases are perfectly simple and easy to distinguish.<span>05:21
-                                                PM</span></li>
+                                        <ng-container *ngFor = "let item of dashboardRecentUpdates">
+                                        <li>{{item.title}}<span> on {{item.date | date}} at {{item.time}}</span></li>
+                                        </ng-container>
                                     </ul>
                                 </div>
                             </div>
@@ -197,7 +192,7 @@
                         <div class="col-md-12">
                             <div class="tra_events">
                                 <div class="trainer_head">
-                                    <h4>Event Details</h4>
+                                    <h4>Events</h4>
                                 </div>
                             </div>
                         </div>

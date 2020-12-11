@@ -12,9 +12,9 @@
                             </div>
                         </div>
                         <div class="trainer-detail">
-                            <span class="trainer-data"><span class="icon-company"></span>Navigators Software Pvt. Ltd.</span>
-                            <span class="trainer-data"><span class="icon-Page"></span>robert.williams01@gmail.com</span>
-                            <span class="trainer-data"><span class="icon-call"></span>+971 254-3269</span>
+                            <span class="trainer-data"><span class="icon-company"></span>{{step1Data?.office_address}}</span>
+                            <span class="trainer-data"><span class="icon-Page"></span>{{step1Data?.office_email}}</span>
+                            <span class="trainer-data"><span class="icon-call"></span>{{step1Data?.office_tel_no}}</span>
                         </div>
                     </div>
                 </div>
@@ -23,8 +23,8 @@
                         <div class="trainer-type">
                             <span>Type</span>
                         </div>
-                        <div class="trainer-type-data">
-                            <span>Account</span>
+                        <div class="trainer-type-data"> 
+                            <span>{{step1Data?.designation}}</span>
                         </div>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                             <span>Qualification</span>
                         </div>
                         <div class="trainer-type-data">
-                            <span>5 Years<span class="icon-checkmark"></span></span>
+                            <span>{{step1Data?.qualification}}</span>
                         </div>
                     </div>
                 </div>
@@ -104,7 +104,7 @@
         </div>
         <div class="dashboard-events">
             <div class="row m-0">
-                <div class="col-md-6">
+                <!-- <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="tra_events">
@@ -128,13 +128,13 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6">
+                </div> -->
+                <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="tra_events">
                                 <div class="trainer_head">
-                                    <h4>Activity (Recent Updates)</h4>
+                                    <h4>Recent Updates</h4>
                                 </div>
                             </div>
                         </div>
@@ -177,7 +177,7 @@
                         <div class="col-md-12">
                             <div class="tra_events">
                                 <div class="trainer_head">
-                                    <h4>Event Details</h4>
+                                    <h4>Events</h4>
                                 </div>
                             </div>
                         </div>

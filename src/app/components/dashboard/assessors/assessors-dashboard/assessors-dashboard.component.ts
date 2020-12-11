@@ -9,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './assessors-dashboard.component.html',
   styleUrls: ['./assessors-dashboard.component.scss']
 })
-export class AssessorsDashboardComponent implements OnInit {
+export class AssessorsDashboardComponent implements OnInit { 
 
   messageList: any = [];
   userId: any;
@@ -22,6 +22,14 @@ export class AssessorsDashboardComponent implements OnInit {
   step1Data:any;
   step2Data:any;
 
+  dashboardItemData: any = {};
+  dashboardRecentUpdates: any[] = [];
+  dashboardTradeLicFile: any;
+  dashboardTradeLicExDate: any;
+  dashboardTradeLicExStatus: boolean = false;
+  licence_document_file: string;
+  licence_document_path: string;
+
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
     this.config = {
       itemsPerPage: this.Service.dashBoardPagination,
@@ -29,11 +37,53 @@ export class AssessorsDashboardComponent implements OnInit {
     };
   }
 
+  
+  //Load Dashboatd data
+  loadDashData(){
+    this.loader = false;
+    let getURL: string =this.Service.apiServerUrl + "/" + 'assessor-dashboard/' ;
+    this.Service.getwithoutData(getURL)
+      .subscribe(
+        res => {
+          this.loader = true;
+          let getData: any = {};
+          getData = res;
+          // console.log(res,'res');
+          if(res['status'] == 200){
+            this.dashboardItemData = res['dashBoardData'];
+
+            console.log(">>>>> ", res['dashBoardData'], " == ", getData);
+            //Get recent updates
+            if(this.dashboardItemData.lastLogin != undefined){
+              let datePart: any = this.dashboardItemData.lastLogin.toString().split(" ");
+              let date = datePart[0];
+              let time1 = datePart[1];
+              let time1Ar = time1.split(":");
+              console.log(">>>>... ", time1Ar, " -- ", time1Ar.length);
+              if(time1Ar.length == 1){
+                time1 = time1 +":00";
+              }
+              let time2 = datePart[2];
+              let time = time1 +" "+ time2;
+              console.log(datePart, " == ", date, " -- ",time);  
+              this.dashboardRecentUpdates.push({title: "Assessor Last Login",date:date, time: time});
+            }
+            
+          }
+          console.log(">>>> Load Data: ", res, " == ", this.dashboardRecentUpdates);
+
+        });
+  }
+
   ngOnInit() {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.userId = sessionStorage.getItem('userId');
     this.loader = false;
+
+
+    this.loadDashData();
+
     this.Service.getwithoutData(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.profileService + '?userType=' + this.userType + '&email=' + this.userEmail)
     .subscribe(
       res => {
@@ -44,6 +94,8 @@ export class AssessorsDashboardComponent implements OnInit {
         this.step2Data = res['data']['step2']['education'][0];
         // console.log(res,'res');
       });
+
+      
         
     this.userId = sessionStorage.getItem('userId');
 
