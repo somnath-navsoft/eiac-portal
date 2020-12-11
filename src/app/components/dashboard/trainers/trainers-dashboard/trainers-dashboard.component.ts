@@ -26,6 +26,7 @@ export class TrainersDashboardComponent implements OnInit {
   dashboardRecentUpdates: any[] = [];
   dashboardTradeLicFile: any;
   dashboardTradeLicExDate: any;
+  dashboardEvents: any = [];
   dashboardTradeLicExStatus: boolean = false;
   licence_document_file: string;
   licence_document_path: string;
@@ -49,6 +50,12 @@ export class TrainersDashboardComponent implements OnInit {
           if(res['status'] == 200){
             this.dashboardItemData = res['dashBoardData'];
 
+            //dashboardEvents
+            if(this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0){
+                this.dashboardEvents = this.dashboardItemData.eventDetails;
+                console.log(">>>Events: ", this.dashboardEvents);
+            }
+
             //Get recent updates
             if(this.dashboardItemData.lastLogin != undefined){
               // let dt = new Date(this.dashboardItemData.lastLogin);
@@ -65,7 +72,7 @@ export class TrainersDashboardComponent implements OnInit {
               let time2 = datePart[2];
               let time = time1 +" "+ time2;
               console.log(datePart, " == ", date, " -- ",time);
-              this.dashboardRecentUpdates.push({title: "CAB Last Login",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Trainer Last Login",date:date, time: time});
             }
             if(this.dashboardItemData.lastAccrApplied != undefined){
               let datePart: any = this.dashboardItemData.lastAccrApplied.toString().split(" ");
@@ -77,7 +84,7 @@ export class TrainersDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 +" "  + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Accreditation Applied",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Trainer Accreditation Applied",date:date, time: time});
             }
             if(this.dashboardItemData.lastRegApplied != undefined){
               let datePart: any = this.dashboardItemData.lastRegApplied.toString().split(" ");
@@ -89,7 +96,7 @@ export class TrainersDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 +" "  + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Registration Applied",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Trainer Registration Applied",date:date, time: time});
             }
             if(this.dashboardItemData.lastTrainingApplied != undefined){
               let datePart: any = this.dashboardItemData.lastTrainingApplied.toString().split(" ");
@@ -101,7 +108,7 @@ export class TrainersDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 +" " + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Training Applied",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Trainer Training Applied",date:date, time: time});
             }
             if(this.dashboardItemData.lastAccrPayment != undefined){
               let datePart: any = this.dashboardItemData.lastAccrPayment.toString().split(" ");
@@ -113,7 +120,7 @@ export class TrainersDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 +" "  + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Accreditation Payment",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Trainer Accreditation Payment",date:date, time: time});
             }
             if(this.dashboardItemData.lastRegPayment != undefined){
               let datePart: any = this.dashboardItemData.lastRegPayment.toString().split(" ");
@@ -125,7 +132,7 @@ export class TrainersDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 +" "  + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Registration Payment",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Trainer Registration Payment",date:date, time: time});
             }
             if(this.dashboardItemData.lastTrainingPayment != undefined){
               let datePart: any = this.dashboardItemData.lastTrainingPayment.toString().split(" ");
@@ -137,7 +144,7 @@ export class TrainersDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 +" "  + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Training Payment",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Trainer Training Payment",date:date, time: time});
             }
           }
           console.log(">>>> Load Data: ", res, " == ", this.dashboardRecentUpdates);
