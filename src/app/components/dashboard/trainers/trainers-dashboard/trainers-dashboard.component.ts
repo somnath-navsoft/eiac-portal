@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Constants } from 'src/app/services/constant.service';
 import { AppService } from 'src/app/services/app.service';
 import { ToastrService } from 'ngx-toastr';
+import { MatAccordion } from '@angular/material';
 
 @Component({
   selector: 'app-trainers-dashboard',
@@ -30,6 +31,8 @@ export class TrainersDashboardComponent implements OnInit {
   dashboardTradeLicExStatus: boolean = false;
   licence_document_file: string;
   licence_document_path: string;
+  @ViewChild('accordion',{static:true}) Accordion: MatAccordion
+  panelOpenState = false;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
     this.config = {
@@ -53,7 +56,7 @@ export class TrainersDashboardComponent implements OnInit {
             //dashboardEvents
             if(this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0){
                 this.dashboardEvents = this.dashboardItemData.eventDetails;
-                console.log(">>>Events: ", this.dashboardEvents);
+                // console.log(">>>Events: ", this.dashboardEvents);
             }
 
             //Get recent updates

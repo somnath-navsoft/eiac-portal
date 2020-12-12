@@ -25,20 +25,23 @@
                             <div class="table-appln pt-0">
                                 <table>
                                 <tr>
-                                    <th>Name of Scheme</th>
-                                    <th>Name of Accreditation Body</th>
-                                    <th>Scope of Accreditation & Certificate No</th>
-                                    <th>Expiry Date of Certificate</th>
+                                    <th>Index</th>
+                                    <th>Title</th>
+                                    <th>Service Name</th>
+                                    <th>Sub Service Name</th>
+                                    <th>Creation Date</th>
                                 </tr>
-                                <ng-container *ngIf="otherAccr != null">
-                                    <ng-container *ngFor="let othr_accr of schemedata; let i3 = index;">
-                                        <tr *ngFor="let item of jsonParse(othr_accr.value);">
-                                            <td>{{item.scheme_name}}</td>
-                                            <td>{{item.acccreditation_body_name}}</td>
-                                            <td>{{item.acccreditation_scope}}</td>
-                                            <td>{{item.converted_date | date:'dd-MM-yyyy'}}</td>
+                                <ng-container *ngIf="allScheme && allScheme.length > 0">
+                                    <!-- <ng-container *ngFor="let othr_accr of schemedata; let i3 = index;"> -->
+                                        <tr *ngFor="let item of allScheme; let i3 = index;">
+                                            <td>{{i3+1}}</td>
+                                            <td>{{item.title}}</td>
+                                            <td>{{item.scope_accridiation.service_name}}</td>
+                                            <td *ngIf="item.scope_accridiation.sub_service_name != ''">{{item.scope_accridiation.sub_service_name}}</td>
+                                            <td *ngIf="item.scope_accridiation.sub_service_name == ''">N/A</td>
+                                            <td>{{item.scope_accridiation.created | date:'dd-MM-yyyy'}}</td>
                                         </tr>
-                                    </ng-container>
+                                    <!-- </ng-container> -->
                                 </ng-container>
                                 </table>
                             </div>

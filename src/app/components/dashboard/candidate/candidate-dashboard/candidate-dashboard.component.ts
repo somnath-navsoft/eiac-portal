@@ -29,6 +29,7 @@ export class CandidateDashboardComponent implements OnInit {
   dashboardTradeLicExStatus: boolean = false;
   licence_document_file: string;
   licence_document_path: string;
+  dashboardEvents: any = [];
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
     this.config = {
@@ -49,6 +50,11 @@ export class CandidateDashboardComponent implements OnInit {
           if(res['status'] == 200){
             this.dashboardItemData = res['dashBoardData'];
 
+            //dashboardEvents
+            if(this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0){
+              this.dashboardEvents = this.dashboardItemData.eventDetails;
+              // console.log(">>>Events: ", this.dashboardEvents);
+            }
             //Get recent updates
             if(this.dashboardItemData.lastLogin != undefined){
               // let dt = new Date(this.dashboardItemData.lastLogin);
