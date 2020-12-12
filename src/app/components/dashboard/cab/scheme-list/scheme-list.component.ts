@@ -15,34 +15,26 @@ export class SchemeListComponent implements OnInit {
   loader:boolean = true;
   subscriptions: Subscription[] = [];
   schemedata:any;
+  allScheme:any;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService) { }
 
   ngOnInit() {
-
+    this.loadPageData();
   }
 
   loadPageData() { 
     this.loader = false;
-    var id = 'all';
-    this.subscriptions.push(this._trainerService.getAccreditationStatusList(id)
+    let getURL: string =this._service.apiServerUrl + "/" + 'cab-dashboard/' ;
+    this._service.getwithoutData(getURL)
       .subscribe(
-        result => {
+        res => {
           this.loader = true;
-          let data: any = result;
-          let dataRec: any=[];
-          // this.dataLoad = true;
-          // console.log('Data load...', data.records);
-          
-          this.schemedata = data.records;
-          // dataRec = data.records;
-          // this.pageTotal = data.records.length;
-        },
-        ()=>{
-          // console.log('comp...');
-        }
-      )          
-    )
+          // console.log(res,'res');
+          if(res['status'] == 200){
+            this.allScheme = res['dashBoardData']['allScheme'];
+          }
+        });
   }
 }

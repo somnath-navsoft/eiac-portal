@@ -162,7 +162,7 @@
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash">Type</p>
-                                            <p class="sub-head-dash">IB</p>
+                                            <p class="sub-head-dash">{{dashboardItemData.lastApplication}}</p>
                                         </div>
                                         <div class="view-all">
                                             <p>View all type<span class="icon-right-arrow"></span></p> 
@@ -180,7 +180,7 @@
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash">Scheme</p>
-                                            <p class="sub-head-dash">25</p>
+                                            <p class="sub-head-dash">{{dashboardItemData['allScheme']?.length}}</p>
                                         </div>
                                         <div class="view-all">
                                             <p>View all type<a href="javascript:void(0)" routerLink="/dashboard/cab_client/scheme-list">
