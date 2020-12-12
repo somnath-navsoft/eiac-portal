@@ -56,7 +56,7 @@ export class TrainersDashboardComponent implements OnInit {
             //dashboardEvents
             if(this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0){
                 this.dashboardEvents = this.dashboardItemData.eventDetails;
-                console.log(">>>Events: ", this.dashboardEvents);
+                // console.log(">>>Events: ", this.dashboardEvents);
             }
 
             //Get recent updates
