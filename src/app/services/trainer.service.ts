@@ -147,6 +147,13 @@ export class TrainerService {
     return this.http.put(url, postData, this._service.getReqHeaders());
   }
 
+  updateStatusTraining(postId: number){  
+    var postData = ''
+    const url = `${this._service.apiServerUrl}`+"/"+this._constants.API_ENDPOINT.accrStatusTraining + postId;
+    //console.log("Update URL: ", url);
+    return this.http.put(url, postData, this._service.getReqHeaders());
+  }
+
   /******************************
   * Search Section
   * Start
@@ -215,6 +222,13 @@ getTrainingServiceList(){
 
 getAccreditationStatusList(id) {
   let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.trainerAccredStaList+id; 
+  //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
+  //console.log("GET Event URL: ", url, " -- ", this._service.getReqHeaders());
+  return this.http.get(url, this._service.getReqHeaders());
+}
+
+getApprovedList() {
+  let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.approved_list; 
   //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
   //console.log("GET Event URL: ", url, " -- ", this._service.getReqHeaders());
   return this.http.get(url, this._service.getReqHeaders());

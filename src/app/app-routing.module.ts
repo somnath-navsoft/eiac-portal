@@ -88,16 +88,29 @@ import { AccountDetailsComponent } from './components/dashboard/accounts/account
 import { AccountUploadComponent } from './components/dashboard/accounts/account-upload/account-upload.component';
 import { CabTrainingDetailComponent } from './components/dashboard/cab/cab-training-detail/cab-training-detail.component';
 import { CabTrainingInpremiseDetailComponent } from './components/dashboard/cab/cab-training-inpremise-detail/cab-training-inpremise-detail.component';
+import { CabTrainingInpremiseEventDetailsComponent } from './components/dashboard/cab/cab-training-inpremise-event-details/cab-training-inpremise-event-details.component';
 import { CabTrainingInpremiseFormComponent } from './components/dashboard/cab/cab-training-inpremise-form/cab-training-inpremise-form.component';
 import { MessageReplyComponent } from './components/dashboard/message/message-reply/message-reply.component';
 import { OperationsRegistrationServiceListComponent } from './components/dashboard/operations/operations-registration-service-list/operations-registration-service-list.component';
 import { OperationsRegistrationServiceDetailsComponent } from './components/dashboard/operations/operations-registration-service-details/operations-registration-service-details.component';
+
 import { CabCompanyProfileComponent } from './components/dashboard/cab/cab-company-profile/cab-company-profile.component';
+import { AssessorsCompanyProfileComponent } from './components/dashboard/assessors/assessors-company-profile/assessors-company-profile.component';
+import { TrainerCompanyProfileComponent } from './components/dashboard/trainers/trainer-company-profile/trainer-company-profile.component';
+import { CandidateCompanyProfileComponent } from './components/dashboard/candidate/candidate-company-profile/candidate-company-profile.component';
+import { OperationsCompanyProfileComponent } from './components/dashboard/operations/operations-company-profile/operations-company-profile.component';
+
+
 import { CabMessage } from './components/dashboard/cab/cab-message/cab-message.component';
 import { RegistrationStatusComponent } from './components/dashboard/registration-status/registration-status.component';
 import { TrainingStatusComponent } from './components/dashboard/training-status/training-status.component';
 import { OperationsTrainingServiceListComponent } from './components/dashboard/operations/operations-training-service-list/operations-training-service-list.component';
 import { OperationsTrainingServiceDetailsComponent } from './components/dashboard/operations/operations-training-service-details/operations-training-service-details.component';
+import { InpremiseApprovalListComponent } from './components/dashboard/operations/inpremise-approval-list/inpremise-approval-list.component';
+import { InpremiseApprovalDetailsComponent } from './components/dashboard/operations/inpremise-approval-details/inpremise-approval-details.component';
+import { SchemeListComponent } from './components/dashboard/cab/scheme-list/scheme-list.component';
+import { EventListsComponent } from './components/dashboard/cab/event-lists/event-lists.component';
+import { CertificationRecordsComponent } from './components/dashboard/cab/certification-records/certification-records.component';
 
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
@@ -119,6 +132,7 @@ const routes: Routes = [
       { path: 'trainers', component: TrainersComponent, canActivate: [AuthGuard],
         children: [
             { path: 'home', component:TrainersDashboardComponent, canActivate: [AuthGuard]},
+            { path: 'company-profile', component:TrainerCompanyProfileComponent, canActivate: [AuthGuard] },
             { path: '', redirectTo:'home', pathMatch:'full'},
             { path: 'add', component:TrainersAddComponent, canActivate: [AuthGuard]},
             { path: 'edit/:id', component:TrainersEditComponent, canActivate: [AuthGuard]},
@@ -141,6 +155,7 @@ const routes: Routes = [
         children:[
           { path: '', redirectTo:'home', pathMatch:'full'},
           { path: 'home', component:OperationsDashboardComponent, canActivate: [AuthGuard]},
+          { path: 'company-profile', component:OperationsCompanyProfileComponent, canActivate: [AuthGuard] },
           { path: 'training-apply/:id', component:OperationsTrainerServiceComponent, canActivate: [AuthGuard] },
           { path: 'training-service', component:OperationsTrainerServiceListComponent, canActivate: [AuthGuard] },
           { path: 'accreditation-service-list', component:OperationsAccreditationServiceListComponent, canActivate: [AuthGuard] },
@@ -151,6 +166,8 @@ const routes: Routes = [
           { path: 'training-service-details/:id', component:OperationsTrainingServiceDetailsComponent, canActivate: [AuthGuard] },
           { path: 'message', component:OperationMessageComponent, canActivate: [AuthGuard] },
           { path: 'message-detail/:id', component:OperationsMessageDetailsComponent, canActivate: [AuthGuard] },
+          { path: 'inpremise-approve', component:InpremiseApprovalListComponent, canActivate: [AuthGuard] },
+          { path: 'inpremise-approve-detail/:id', component:InpremiseApprovalDetailsComponent, canActivate: [AuthGuard] },
         ] 
     }, 
 
@@ -169,6 +186,8 @@ const routes: Routes = [
         { path: 'training-public-course-list', component:CabTrainingPublicCourseListComponent, canActivate: [AuthGuard] },
         { path: 'training-course-details/:id', component:CabTrainingDetailComponent, canActivate: [AuthGuard] },
         { path: 'training-inpremise-details/:id', component:CabTrainingInpremiseDetailComponent, canActivate: [AuthGuard] },
+        { path: 'training-inpremise-event-details/:id', component:CabTrainingInpremiseEventDetailsComponent, canActivate: [AuthGuard] },
+
         { path: 'training-inpremise-course', component:CabTrainingInpremiseCourseComponent, canActivate: [AuthGuard] },
         { path: 'training-inpremise-course-apply', component:CabTrainingInpremiseCourseApplyComponent, canActivate: [AuthGuard] },
         
@@ -194,6 +213,9 @@ const routes: Routes = [
         { path: 'message-detail/:id', component:CabMessageDetailsComponent, canActivate: [AuthGuard] },
         { path: 'company-profile', component:CabCompanyProfileComponent, canActivate: [AuthGuard] },
         { path: 'onboarding-message-list', component:CabMessage, canActivate: [AuthGuard] },
+        { path: 'scheme-list', component:SchemeListComponent, canActivate: [AuthGuard] },
+        { path: 'event-list', component:EventListsComponent, canActivate: [AuthGuard] },
+        { path: 'certification-records', component:CertificationRecordsComponent, canActivate: [AuthGuard] },
       ]
     },
 
@@ -203,10 +225,10 @@ const routes: Routes = [
         { path: '', redirectTo:'home', pathMatch:'full'},
         { path: 'home', component:AssessorsDashboardComponent, canActivate: [AuthGuard]},
         { path: 'message-detail/:id', component:MessageDetailsComponent, canActivate: [AuthGuard] },
+        { path: 'company-profile', component:AssessorsCompanyProfileComponent, canActivate: [AuthGuard] },
       ]
     },
     //Candidate
-    //, 
     { path: 'candidate',component: CandidateComponent, canActivate: [AuthGuard],
       children:[
         { path: '', redirectTo:'home', pathMatch:'full'},
@@ -219,6 +241,7 @@ const routes: Routes = [
         { path: 'training-public-course', component:CandidateTrainingPublicCourseComponent, canActivate: [AuthGuard]},
         { path: 'training-course', component:CandidateTrainingApplicationComponent, canActivate: [AuthGuard] },
         { path: 'message-detail/:id', component:CandidateMessageDetailsComponent, canActivate: [AuthGuard] },
+        { path: 'company-profile', component:CandidateCompanyProfileComponent, canActivate: [AuthGuard] },
       ]
     },
 

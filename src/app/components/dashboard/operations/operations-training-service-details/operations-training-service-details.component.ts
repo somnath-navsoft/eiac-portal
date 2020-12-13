@@ -28,6 +28,10 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
   subTotal:any;
   training_duration:any;
   course_title:any;
+  fee_day_pertime1:any = 1000;
+  fee_day_pertime2:any = '5%';
+  fee_day_pertime3:any = 10;
+  fee_day_pertime4:any = 10;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService) { }
@@ -36,6 +40,11 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
     this.loader = true;
     this.routeId = sessionStorage.getItem('trainingId');
     this.loadData();
+  }
+  getFile(file: string){
+    let fname: string = file.split('/')[1].split('.')[0];
+    console.log(fname);
+    return fname;
   }
 
   loadData() {
@@ -61,7 +70,7 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
           // console.log(this.noofParticipants);
           // console.log(training_duration_current);
           // console.log(this.tutionFees);
-          this.taxVat = 0.5 * this.tutionFees;
+          this.taxVat = 0.05 * this.tutionFees;
           this.knowledgeFees = 10 * this.noofParticipants;
           this.innovationFees = 10 * this.noofParticipants;
           this.subTotal = this.tutionFees + this.taxVat + this.knowledgeFees + this.innovationFees;

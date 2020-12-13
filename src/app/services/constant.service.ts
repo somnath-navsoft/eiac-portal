@@ -60,6 +60,7 @@ export class Constants{
 		testing_cal_form_basic_data: 'testing_calibration_form_management/',
 		inspection_form_basic_data: 'inspection_body_form_management/',
 		halal_conformity_form_management: 'halal_conformity_form_management/',
+		approved_list: 'cust-course-event-list/all',
 
 		criteriaIdByScope: this.apiUrl + 'criteria_wise_scope/',
 		criteriaScope: this.apiUrl + 'inspection_body_form_management/?scheme=',
@@ -69,6 +70,7 @@ export class Constants{
 		profileApproval: this.apiUrl + 'profile-approval/',
 		accrStatus: this.apiUrl + 'accr_status/',
 		accrStatusReg: this.apiUrl + 'reg_status_change/',
+		accrStatusTraining: this.apiUrl + 'training_status_change/',
 		testingCalibration: this.apiUrl + 'testing_calibration_form_management/',
 		certificationBodies: this.apiUrl + 'certification_bodies/',
 		halalConfirmity: this.apiUrl + 'halal-conformity-form/',
@@ -83,11 +85,12 @@ export class Constants{
 		accrediationCsv: this.apiUrl + 'accrediation-csv/',
 		workPermitform: this.apiUrl + 'workpermit_form/',
 		training_course_list: this.apiUrl + 'training-course-list/',
-		course_details: this.apiUrl + 'course-details/',
+		course_details_publicForm: this.apiUrl + 'public-course-event-details-show/',
 		publicTrainingForm: 'training_request_form/',
 		noc_submit_form : 'noc_form'		
 		// webservice/training_request_form/
 	}
+	//course_details: this.apiUrl + 'course-details/',
 	public unhandledExceptionError: string 							=  "Unhandled Exception. Please Try Again Or Contact Support."
 	public loggedIn													=	new Subject<any>();
 	public logType: string 											=	'';

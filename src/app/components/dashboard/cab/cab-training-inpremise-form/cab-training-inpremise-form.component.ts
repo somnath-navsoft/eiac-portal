@@ -93,6 +93,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
   public loaderPdf: boolean = false;
   public completeLoaded: boolean = false;
   public minDate;
+  trainingDurationSelectbox:any;
 
   constructor(private Service: AppService, private http: HttpClient,
     public _toaster: ToastrService, private _router: Router, private _route: ActivatedRoute,
@@ -106,6 +107,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
         var splitId = inpremiseCourseid.split('=');
         this.traininginpremiseCourseid = splitId[1];
         // console.log(this.trainingPublicCourseid,'trainingPublicCourseid');
+        sessionStorage.setItem('inpremiseFormId','');
       }
   
       this.userEmail = sessionStorage.getItem('email');
@@ -146,8 +148,8 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
   
       this.loadCountryStateCity();
       this.loadDetailsPage();
-      this.inpremiseFormId != '' && this.inpremiseFormId != undefined ? '' : this.loadCourseDetailsPage();
-      this.trainingDuration = [{key:1,title:'1 Day'},{key:2,title:'2 Days'},{key:3,title:'3 Days'},{key:4,title:'4 Days'},{key:5,title:'5 Days'},{key:6,title:'6 Days'},{key:7,title:'7 Days'},{key:8,title:'8 Days'},{key:9,title:'9 Days'},{key:10,title:'10 Days'}];
+      this.inpremiseFormId != '' && this.inpremiseFormId != undefined ? '' : this.loadCourseDetailsPage(this.traininginpremiseCourseid);
+      // this.trainingDuration = [{key:1,title:'1 Day'},{key:2,title:'2 Days'},{key:3,title:'3 Days'},{key:4,title:'4 Days'},{key:5,title:'5 Days'},{key:6,title:'6 Days'},{key:7,title:'7 Days'},{key:8,title:'8 Days'},{key:9,title:'9 Days'},{key:10,title:'10 Days'}];
   
       // console.log(this.participantTraineeDetails.length);
       // tutionFees:any;
@@ -155,6 +157,16 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
       // knowledgeFees:any;
       // innovationFees:any;
       // noofParticipants:any;
+
+      let durationAr: any =[];
+      for(let k=0; k<100; k++){
+          let tempObj: any ={};
+          tempObj['key'] = (k+1);
+          tempObj['title'] = (k+1) + ' Day';
+          durationAr.push(tempObj);
+      }
+      //console.log('<<< Duratioh: ', durationAr);
+      this.trainingDuration = durationAr;
       
     }
   
@@ -164,26 +176,70 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
     }
 
     addRow(obj) {
-      var newObj = [];
+      var newObj = {};
       obj.push(newObj);
     }
   
-    loadCourseDetailsPage() {
-      if(this.traininginpremiseCourseid != '' && this.traininginpremiseCourseid != undefined) {
-        this.Service.getwithoutData(this.Service.apiServerUrl+'/'+this._constant.API_ENDPOINT.course_details+this.traininginpremiseCourseid+'?data=1')
+    loadCourseDetailsPage(traininginpremiseCourseid) {
+      if(traininginpremiseCourseid != '' && traininginpremiseCourseid != undefined) {
+        this.Service.getwithoutData(this.Service.apiServerUrl+'/'+this._constant.API_ENDPOINT.course_details+traininginpremiseCourseid+'?data=1')
           .subscribe(
             res => {
               var courseDetails = res['courseDetails'];
               this.step3Data.course_title = courseDetails.course;
               this.step3Data.training_duration = parseInt(courseDetails.training_days);
+              this.trainingDurationSelectbox = this.step3Data.training_duration != '' && this.step3Data.training_duration != undefined ? true : false;
               // console.log(courseDetails.training_days,'training_days');
+              this.step1Data.event_management = traininginpremiseCourseid;
             });
       }
     }
   
     loadDetailsPage() {
+
+      let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
+      this.Service.getwithoutData(url)
+      .subscribe(
+        res => {
+          this.step1Data.organization_name = res['data']['step1'][0].cab_name;
+          this.step1Data.mailing_address = res['data']['step1'][0].mailing_address;
+          this.step1Data.zip_code = res['data']['step1'][0].po_box;
+
+          var stateList =  this.Service.getState();
+          var cityList =  this.Service.getCity();
+          stateList.subscribe( result => {
+            for(let key in result['states']) {
+              if(result['states'][key]['name'] == res['data']['step1'][0].state )
+              {
+                this.allStateList.push(result['states'][key]);
+              }
+            }
+          });
+
+          cityList.subscribe( result => {
+            for(let key in result['cities']) {
+              if(result['cities'][key]['name'] == res['data']['step1'][0].city )
+              {
+                this.allCityList.push(result['cities'][key]);
+              }
+            }
+          });
+
+          this.step1Data.country = res['data']['step1'][0].country;
+          this.step1Data.state = res['data']['step1'][0].state;
+          this.step1Data.city = res['data']['step1'][0].city;
+          this.step1Data.telephone_number = res['data']['step1'][0].tel_no;
+          this.step1Data.fax_no = res['data']['step1'][0].applicant_fax_no;
+          this.step1Data.official_email = res['data']['step1'][0].applicant_email;
+          this.step1Data.official_website = res['data']['step1'][0].applicant_website;
+          this.step1Data.authorized_contact_person = res['data']['step2']['cabOwnerData'][0].name;
+          this.step1Data.designation = res['data']['step1'][0].designation;
+          this.step1Data.mobile_phone_number = res['data']['step1'][0].applicant_tel_no;
+
+        this.step5Data.organization_name = res['data']['step1'][0].cab_name;
+        })
   
-      if(this.inpremiseFormId != undefined) {
+      if(this.inpremiseFormId != '' && this.inpremiseFormId != undefined) {
         let url2 = this.Service.apiServerUrl+"/"+'training-details-show/'+this.inpremiseFormId;
           this.Service.getwithoutData(url2)
           .subscribe(
@@ -263,6 +319,8 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
               this.step1Data.authorized_contact_person = res['data'].authorized_contact_person;
               this.step1Data.designation = res['data'].designation;
               this.step1Data.mobile_phone_number = res['data'].mobile_phone_number;
+              this.step1Data.event_management = res['data'].event_management;
+              this.step1Data.event_management != '' && this.step1Data.event_management != null ? this.loadCourseDetailsPage(res['data'].event_management) : '';
   
               // step2
               if(res['data'].eventParticipant != null) {
@@ -272,6 +330,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
               // step3
               this.step3Data.course_title = res['data'].course_title;
               this.step3Data.training_duration = parseInt(res['data'].training_duration);
+              this.trainingDurationSelectbox = this.step3Data.training_duration != '' && this.step3Data.training_duration != undefined ? true : false;
   
               // step5
               if(res['data'].onBehalfApplicantDetails != null) {
@@ -318,7 +377,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
               // console.log(this.noofParticipants);
               // console.log(training_duration_current);
               // console.log(this.tutionFees);
-              this.taxVat = 0.5 * this.tutionFees;
+              this.taxVat = 0.05 * this.tutionFees;
               this.knowledgeFees = 10 * this.noofParticipants;
               this.innovationFees = 10 * this.noofParticipants;
               this.subTotal = this.tutionFees + this.taxVat + this.knowledgeFees + this.innovationFees;
@@ -517,7 +576,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
         // console.log(this.noofParticipants);
         // console.log(training_duration_current);
         // console.log(this.tutionFees);
-        this.taxVat = 0.5 * this.tutionFees;
+        this.taxVat = 0.05 * this.tutionFees;
         this.knowledgeFees = 10 * this.noofParticipants;
         this.innovationFees = 10 * this.noofParticipants;
         this.subTotal = this.tutionFees + this.taxVat + this.knowledgeFees + this.innovationFees;
@@ -804,6 +863,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
         this.voucherFile.append('accreditation',this.formApplicationId);
         this.voucherFile.append('application_id',this.formApplicationId);
         this.voucherFile.append('saved_step', 7);
+        this.voucherFile.append('payment_status', 'paid');
         if(!type){
           this.voucherFile.append('is_draft', false);
         }else{
@@ -949,7 +1009,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
         // console.log(this.noofParticipants);
         // console.log(training_duration_current);
         // console.log(this.tutionFees);
-        this.taxVat = 0.5 * this.tutionFees;
+        this.taxVat = 0.05 * this.tutionFees;
         this.knowledgeFees = 10 * this.noofParticipants;
         this.innovationFees = 10 * this.noofParticipants;
         this.subTotal = this.tutionFees + this.taxVat + this.knowledgeFees + this.innovationFees;
@@ -1000,6 +1060,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
         this.publicTrainingForm.userType = this.userType;
         this.publicTrainingForm.saved_step = '5';
         this.step5Data.is_draft = true;
+        this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
         this.step5Data.training_form_type = 'inprimise';
   
         this.publicTrainingForm.step5 = this.step5Data;

@@ -3662,6 +3662,7 @@ onSubmitStep7(ngForm7: any) {
   this.voucherFile.append('voucher_date',dtFormat);
   this.voucherFile.append('application_id', this.formApplicationId);
   this.voucherFile.append('accreditation',this.formApplicationId);
+  this.voucherFile.append('payment_status', 'paid');
   if(!type){
     this.voucherFile.append('is_draft', false);
   }else{

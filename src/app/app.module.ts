@@ -138,6 +138,7 @@ import { AccountDetailsComponent } from './components/dashboard/accounts/account
 import { AccountUploadComponent } from './components/dashboard/accounts/account-upload/account-upload.component';
 import { CabTrainingDetailComponent } from './components/dashboard/cab/cab-training-detail/cab-training-detail.component';
 import { CabTrainingInpremiseDetailComponent } from './components/dashboard/cab/cab-training-inpremise-detail/cab-training-inpremise-detail.component';
+import { CabTrainingInpremiseEventDetailsComponent } from './components/dashboard/cab/cab-training-inpremise-event-details/cab-training-inpremise-event-details.component';
 import { CabTrainingInpremiseFormComponent } from './components/dashboard/cab/cab-training-inpremise-form/cab-training-inpremise-form.component';
 import { MessageReplyComponent } from './components/dashboard/message/message-reply/message-reply.component';
 import { TimeAgoPipe } from 'time-ago-pipe';
@@ -145,10 +146,21 @@ import { OperationsRegistrationServiceListComponent } from './components/dashboa
 import { OperationsRegistrationServiceDetailsComponent } from './components/dashboard/operations/operations-registration-service-details/operations-registration-service-details.component';
 import { OperationsTrainingServiceListComponent } from './components/dashboard/operations/operations-training-service-list/operations-training-service-list.component';
 import { OperationsTrainingServiceDetailsComponent } from './components/dashboard/operations/operations-training-service-details/operations-training-service-details.component';
+
 import { CabCompanyProfileComponent } from './components/dashboard/cab/cab-company-profile/cab-company-profile.component';
+import { AssessorsCompanyProfileComponent } from './components/dashboard/assessors/assessors-company-profile/assessors-company-profile.component';
+import { TrainerCompanyProfileComponent } from './components/dashboard/trainers/trainer-company-profile/trainer-company-profile.component';
+import { CandidateCompanyProfileComponent } from './components/dashboard/candidate/candidate-company-profile/candidate-company-profile.component';
+import { OperationsCompanyProfileComponent } from './components/dashboard/operations/operations-company-profile/operations-company-profile.component';
+
 import { CabMessage } from './components/dashboard/cab/cab-message/cab-message.component';
 import { RegistrationStatusComponent } from './components/dashboard/registration-status/registration-status.component';
 import { TrainingStatusComponent } from './components/dashboard/training-status/training-status.component';
+import { InpremiseApprovalListComponent } from './components/dashboard/operations/inpremise-approval-list/inpremise-approval-list.component';
+import { InpremiseApprovalDetailsComponent } from './components/dashboard/operations/inpremise-approval-details/inpremise-approval-details.component';
+import { SchemeListComponent } from './components/dashboard/cab/scheme-list/scheme-list.component';
+import { EventListsComponent } from './components/dashboard/cab/event-lists/event-lists.component';
+import { CertificationRecordsComponent } from './components/dashboard/cab/certification-records/certification-records.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -196,6 +208,7 @@ export const MY_FORMATS = {
     AccountUploadComponent,
     CabTrainingDetailComponent,
     CabTrainingInpremiseDetailComponent,
+    CabTrainingInpremiseEventDetailsComponent,
     CabTrainingInpremiseFormComponent,
     MessageReplyComponent,
     TimeAgoPipe,
@@ -204,9 +217,18 @@ export const MY_FORMATS = {
     OperationsTrainingServiceListComponent,
     OperationsTrainingServiceDetailsComponent,
     CabCompanyProfileComponent,
+    AssessorsCompanyProfileComponent,
+    TrainerCompanyProfileComponent,
+    CandidateCompanyProfileComponent,
+    OperationsCompanyProfileComponent,
     CabMessage,
     RegistrationStatusComponent,
-    TrainingStatusComponent
+    TrainingStatusComponent,
+    InpremiseApprovalListComponent,
+    InpremiseApprovalDetailsComponent,
+    SchemeListComponent,
+    EventListsComponent,
+    CertificationRecordsComponent
   ],
   imports: [
     CommonModule,

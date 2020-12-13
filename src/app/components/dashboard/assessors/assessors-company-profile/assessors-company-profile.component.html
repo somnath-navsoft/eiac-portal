@@ -1,0 +1,833 @@
+<app-loader *ngIf="!loader"></app-loader>
+
+
+
+<div class="main-detail">
+  <div class="container-fluid p-0">
+    <div class="main-dashboard-cnt">
+      
+      <div class="row m-0">
+        <div class="col-md-12 message-det">
+            <div class="row mt-3">
+              <div class="col-md-3">
+                <div class="main_app_wrap">
+                  <div class="appln-data">
+                    <h3>{{cabUserDetails?.first_name}} {{cabUserDetails?.last_name}}</h3>
+                    <span>{{cabUserDetails?.designation}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4"> 
+                <div class="progress_wrapper">
+                  <div class="progress_head">
+                      <span class="complete">Complete</span>
+                      <span>{{progressValue}}%</span>
+                    </div>
+                  <div class="progress-br">
+                    <mat-progress-bar mode="determinate" value="{{progressValue}}"></mat-progress-bar>
+                </div>
+              </div>
+              </div>
+              <div class="col-md-5"> 
+                <div class="edit_data">
+                  <a routerLink="/profile-completion">
+                    <span class="icon-edit"></span>
+                  </a>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="row m-0">
+        <div class="col-md-12 message-det p-0">
+            <div class="row appl-cnt">
+              <div class="col">
+                <div class="appln-data">
+                  <h5>Date of Birth</h5>
+                </div>
+                <div class="appln-details">
+                  <span *ngIf="cabStep1?.dob != ''">{{cabStep1?.dob | date: 'dd-MM-yyyy'}}</span>                  
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="appln-data">
+                  <h5>Personal Email</h5>
+                </div>
+                <div class="appln-details">
+                  <span *ngIf="cabStep1?.applicant_email != ''">{{cabStep1?.office_email}}</span>
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="appln-data">
+                  <h5>Nationality</h5>
+                </div>
+                <div class="appln-details">
+                  <span *ngIf="cabStep1?.nationality != ''">{{cabStep1?.nationality}}</span>
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="appln-data">
+                  <h5>Phone Number</h5>
+                </div>
+                <div class="appln-details">
+                  <span *ngIf="cabStep1?.office_tel_no != ''">{{cabStep1?.office_tel_no}}</span> 
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="appln-data">
+                  <h5>Fax Number</h5>
+                </div>
+                <div class="appln-details license_no">
+                  <span *ngIf="cabStep1?.office_fax_no != null">{{cabStep1?.office_fax_no}}</span>
+                  <span *ngIf="cabStep1?.office_fax_no == null">N/A</span>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="row m-0">
+        <div class="col-md-12 p-0">
+          <div class="row appln-cnt-data">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-12 p-0">
+                  <div class="appln-subhdr">
+                    <h5>OFFICE DETAILS</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="row msg-det">
+                <div class="col-md-12">
+                  <div class="table-appln">
+                    <table>
+                      <tr>
+                        <td>Office/Institution</td>
+                        <td *ngIf="cabStep1?.office">{{cabStep1?.office}}</td>
+                      </tr>
+                      <tr>
+                        <td width="30%">Office Address</td>
+                        <td *ngIf="cabStep1?.office_address">{{cabStep1?.office_address}}</td>
+                      </tr>
+                      <tr>
+                        <td>Company Email</td>
+                        <td *ngIf="cabUserDetails?.email">{{cabUserDetails?.email}}</td>
+                      </tr>
+                      <tr>
+                        <td>Office Phone</td>
+                        <td *ngIf="cabStep1?.office_tel_no">{{cabStep1?.office_tel_no}}</td>
+                      </tr>
+                      <tr>
+                        <td>P.O.Box Mailing Address</td>
+                        <td *ngIf="cabStep1?.mailing_address">{{cabStep1?.mailing_address}}</td>
+                      </tr>
+                      
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+     
+      <!-- Education -->
+      <div class="row m-0">
+        <div class="col-md-12 p-0">
+          <div class="row appln-cnt-data">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-12 p-0">
+                  <div class="appln-subhdr">
+                    <h5>EDUCATIONAL INFORMATION</h5> 
+                  </div>
+                </div>
+              </div>
+              <div class="row msg-det">
+                <!-- @{{assessorEduDetails | json}} -->
+                <div class="col-md-12">
+                  <div class="table-appln">
+                    <table>
+                      <tr>
+                        <td>Qualification/Degree</td>
+                        <td *ngIf="assessorEduDetails?.education != undefined && assessorEduDetails?.education.detail != ''">{{assessorEduDetails?.education.detail}}</td>
+                      </tr>
+                      <tr>
+                        <td width="30%">University/College/School</td>
+                        <td *ngIf="assessorEduDetails?.education != undefined">{{assessorEduDetails?.education.organization}}</td>
+                      </tr>
+                      <tr>
+                        <td>Specialization</td>
+                        <td *ngIf="assessorEduDetails?.education != undefined">{{assessorEduDetails?.education.specialization}}</td>
+                      </tr>
+                      <tr>
+                        <td>Further Education</td>
+                        <td >
+                          <span *ngIf="assessorEduDetails?.further_education != undefined && assessorEduDetails?.further_education.detail !='' ">{{assessorEduDetails?.further_education.detail}}</span>
+
+                        </td>
+                      </tr>
+                      
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row m-0">
+        <div class="col-md-12 p-0">
+          <div class="row appln-cnt-data">
+            <div class="col-md-12">
+              <div class="row p-0">
+                <div class="col-md-12">
+                  <div class="form-subheader-data">
+                    <h5>WHICH FORUMS, TECHNICAL AND STANDARDISATION COMMITTEES, WORKING GROUPS OR SIMILAR HAVE YOU WORKED IN?</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="row msg-det">
+                <div class="col-md-12 p-0">
+                  <div class="table-appln">
+                    <table>
+                      <ng-container *ngFor="let item of assessorEduDetails?.which_forum">
+                      <tr>
+                        <td>Name</td>
+                        <td>{{item.organization}}</td>
+                        <td>From</td>
+                        <td>{{item.date_from | date}}</td>
+                        <td>Till</td>
+                        <td>{{item.date_to | date}}</td>
+                      </tr>
+                    </ng-container>                      
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row m-0">
+        <div class="col-md-12 p-0">
+          <div class="row appln-cnt-data">
+            <div class="col-md-12">
+              <div class="row p-0">
+                <div class="col-md-12">
+                  <div class="form-subheader-data">
+                    <h5>WHICH LANGUAGES DO YOU KNOW?</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="row msg-det">
+                <div class="col-md-12 p-0">
+                  <div class="table-appln">
+                    <table>
+                      <ng-container *ngFor="let item of assessorEduDetails?.language">
+                      <tr>
+                        <td>{{item.language}}</td>
+                        <td>
+                         <strong>Read:</strong>&nbsp; <span *ngIf="item.read">Yes</span><span *ngIf="!item.read">No</span>,
+                         <strong> Write:</strong>&nbsp; <span *ngIf="item.write">Yes</span><span *ngIf="!item.write">No</span>,
+                         <strong> Speak:</strong>&nbsp; <span *ngIf="item.speak">Yes</span><span *ngIf="!item.speak">No</span>
+                        </td>
+                      </tr>
+                    </ng-container>                      
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EMPLOYMENT -->
+      <div class="row m-0">
+        <div class="col-md-12 p-0">
+          <div class="row appln-cnt-data">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-12 p-0">
+                  <div class="appln-subhdr">
+                    <h5>EMPLOYMENT</h5> 
+                  </div>
+                </div>
+              </div>              
+            </div>
+          </div>
+          <div class="row m-0" *ngIf="assessorsEmployment.experience_1 != undefined && assessorsEmployment.experience_1.length > 0">
+            <div class="col-md-12">
+              <div class="row appln-cnt-data">
+                <div class="col-md-12 p-0">
+                  <div class="row p-0">
+                    <div class="col-md-12">
+                      <div class="form-subheader-data">
+                        <h5>LIST ANY AUDITOR QUALIFICATION AND TRAINING ATTAINED AND ATTACHED COPIES OF CERTIFICATES AND OTHER EVIDENCE OF ATTACHMENT</h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row msg-det">
+                    <div class="col-md-12 p-0">
+                      <div class="table-appln">
+                        <table>
+                          <tr>
+                            <th>Qualification/Training	</th>
+                            <th>Institution/OrganiSation</th>
+                            <th>Date</th>
+                            <th>Upload File</th>
+                          </tr>
+                          <ng-container *ngFor="let item of assessorsEmployment.experience_1">
+                          <tr>
+                            <td>{{item.detail}}</td>
+                            <td>{{item.organization}}</td>
+                            <td>{{item.date_to | date}}</td>
+                            <td>
+                              <ng-container *ngIf="item.qualification_file != ''">
+                                <a [href]="constant.mediaPath+item.qualification_file" target="_blank">
+                                  {{getFile(item.qualification_file)}}
+                                </a>
+                              </ng-container>
+                            </td>
+                          </tr>
+                        </ng-container>                      
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row m-0" *ngIf="assessorsEmployment.experience_2 != undefined && assessorsEmployment.experience_2.length > 0">
+            <div class="col-md-12">
+              <div class="row appln-cnt-data">
+                <div class="col-md-12 p-0">
+                  <div class="row p-0">
+                    <div class="col-md-12">
+                      <div class="form-subheader-data">
+                        <h5>HAVE YOU BEEN APPOINTED AS ASSESSOR BY OTHER ACCREDITATION BODIES?</h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row msg-det">
+                    <div class="col-md-12 p-0">
+                      <div class="table-appln">
+                        <table>
+                          <tr>
+                            <th>Course</th>
+                            <th>Date From</th>
+                            <th>Date To</th>
+                            <th>Organized By: Institution/Organisation</th>
+                          </tr>
+                          <ng-container *ngFor="let item of assessorsEmployment.experience_2">
+                          <tr>
+                            <td>{{item.detail}}</td>
+                            <td>{{item.date_from | date}}</td>
+                            <td>{{item.date_to | date}}</td>
+                            <td>{{item.organization}}</td>
+                          </tr>
+                        </ng-container>                      
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row m-0" *ngIf="assessorsEmployment.experience_3 != undefined && assessorsEmployment.experience_3.length > 0">
+            <div class="col-md-12">
+              <div class="row appln-cnt-data">
+                <div class="col-md-12 p-0">
+                  <div class="row p-0">
+                    <div class="col-md-12">
+                      <div class="form-subheader-data">
+                        <h5>HAVE YOU ATTENDED ON-THE-JOB TRAINING REGARDING ACCREDITATION?</h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row msg-det">
+                    <div class="col-md-12 p-0">
+                      <div class="table-appln">
+                        <table>
+                          <tr>
+                            <th>Accreditation Body</th>
+                            <th>Date From</th>
+                            <th>Date To</th>
+                          </tr>
+                          <ng-container *ngFor="let item of assessorsEmployment.experience_3">
+                          <tr>
+                            <td>{{item.organization}}</td>
+                            <td>{{item.date_from | date}}</td>
+                            <td>{{item.date_to | date}}</td>
+                          </tr>
+                        </ng-container>                      
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row m-0" *ngIf="assessorsEmployment.experience_4 != undefined && assessorsEmployment.experience_4.length > 0">
+            <div class="col-md-12">
+              <div class="row appln-cnt-data">
+                <div class="col-md-12 p-0">
+                  <div class="row p-0">
+                    <div class="col-md-12">
+                      <div class="form-subheader-data">
+                        <h5>DO YOU HAVE PRACTICAL ASSESSMENT EXPERIENCE?</h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row msg-det">
+                    <div class="col-md-12 p-0">
+                      <div class="table-appln">
+                        <table>
+                          <tr>
+                            <th>From-Till</th>
+                            <th>Standard(s) Used...	</th>
+                            <th>Technical/Quality...	</th>
+                            <th>Role In Assessment	</th>
+                            <th>Commissioned By	</th>
+                            <th>Assessment Type	</th>
+                            <th>Accreditation Acti...	</th>
+                          </tr>
+                          <ng-container *ngFor="let item of assessorsEmployment.experience_4">
+                          <tr>
+                            <td>{{item.date_to | date}}</td>
+                            <td>{{item.standard}}</td>
+                            <td>{{item.technical}}</td>
+                            <td>{{item.role}}</td>
+                            <td>{{item.commissioned_by}}</td>
+                            <td>{{item.assessment_type}}</td>
+                            <td>{{item.accreditation_activity}}</td>
+                          </tr>
+                        </ng-container>                      
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Knowledge -->
+      <div class="row m-0">
+        <div class="col-md-12">
+              <!-- <div class="row appln-cnt-data">
+                <div class="col-md-12 p-0">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="appln-subhdr">
+                        <h5>Knowledge and Experience</h5> 
+                      </div>
+                    </div>
+                  </div>              
+                </div>
+              </div> -->
+              <div class="row m-0 form-bdy mt-3">
+                <div class="wrapper">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12 p-0">
+                                <div class="form-subhdr">
+                                    <h5>KNOWLEDGE AND EXPERIENCE</h5>
+                                </div>
+                            </div>
+                        </div>
+
+              <!-- <div class="row">
+                <div class="col-md-12"> -->
+                        <ng-container *ngFor="let row of assessorsKnowledge; let j = index;">
+                          <div class="row mt-3">
+                              <div class="col-md-11 col-sm-6 p-0">
+                                  <div class="form-subheader-data">
+                                      <h5>{{row.title}}</h5>
+                                  </div>
+                              </div>
+                              <div class="col-md-1 col-sm-6 p-0">
+                                  <div class="open-cls">                              
+                                      <tr>
+                                          <th class="manage-first" colspan="8" *ngIf="row['technical_fields']" >
+                                              <a *ngIf="isdDynamicsopenClose == row.id" href="javascript:void(0)" (click)="dynamicsopenClose(row.id,'close')"><span class="icon-minus"></span></a>
+                                              
+                                              <a (click)="dynamicsopenClose(row.id,'open')" *ngIf="isdDynamicsopenClose != row.id" href="javascript:void(0)" ><span class="icon-add"></span></a>
+                                          </th>
+                                          <th class="manage-first" colspan="8"></th>
+                                      </tr>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <div class="row" *ngIf="isdDynamicsopenClose == row.id">
+                              <div class="col-md-12">
+                                  <div class="table-content-health">
+                                      <table>
+
+                                          <tr>
+                                              <th>Field</th>
+                                              <th>Years of Experience</th>
+                                          </tr>
+                                          
+                                          <tr *ngFor="let item of row['technical_fields']; let i = index;">
+                                              <td>{{item.title}}</td>
+                                              <td>
+                                                  <mat-radio-group name="knowledge_experienced_{{item.field_mgmt}}" [(ngModel)]="row['technical_fields'][i].knowledge_experienced">
+                                                      <div class="desc-content-prof">
+                                                          <mat-radio-button value="1" disabled>From 5-10 Years</mat-radio-button>
+                                                          <mat-radio-button value="2" disabled>From 11-15 Years</mat-radio-button>
+                                                          <mat-radio-button value="3" disabled>Above 16 Years</mat-radio-button>
+                                                      </div>
+                                                  </mat-radio-group>
+                                              </td>
+                                          </tr>
+                                          
+                                      </table>
+                                  </div>
+                              </div>
+                          </div>
+                        </ng-container>
+            <!-- </div>
+              </div> -->
+              </div>
+                </div>
+              </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- <div class="main-detail">
+    <div class="conatiner-fluid">
+      <div class="main-dashboard-cnt">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="dashbrd-hdr">
+              <div class="dash-wrap">
+                <h3>{{cabUserDetails?.first_name}} {{cabUserDetails?.last_name}}</h3>
+                <p>{{cabStep1?.designation}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="tab-data">
+            </div>
+          </div>
+        </div>
+  
+        <div class="row m-0">
+            <div class="col-md-12 message-det">
+                <div class="row appl-cnt">
+                    <div class="col">
+                        <div class="appln-data">
+                            <h5>Date of Birth</h5>
+                        </div>
+                        <div class="appln-details">
+                            <span>{{cabStep1?.dob | date}}</span>
+                        </div>
+                    </div>
+                    <div class="col border-left-dash">
+                        <div class="appln-data">
+                            <h5>Personal Email</h5>
+                        </div>
+                        <div class="appln-details">
+                            <span>{{cabUserDetails?.email}}</span>
+                        </div>
+                    </div>
+                    <div class="col border-left-dash">
+                        <div class="appln-data">
+                            <h5>Nationality</h5>
+                        </div>
+                        <div class="appln-details">
+                            <span>{{cabStep1?.nationality}}</span>
+                        </div>
+                    </div>
+                    <div class="col border-left-dash">
+                        <div class="appln-data">
+                            <h5>Phone Number</h5>
+                        </div>
+                        <div class="appln-details">
+                            <span>{{cabUserDetails?.contact}}</span>
+                        </div>
+                    </div>
+                    <div class="col border-left-dash">
+                        <div class="appln-data">
+                            <h5>Fax Number</h5>
+                        </div>
+                        <div class="appln-details">
+                            <span>{{cabStep1?.fax_no}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+  
+        <div class="row m-0">
+            <div class="col-md-6">
+                <div class="row appln-cnt-data ">
+                <div class="col-md-12 p-0">
+                    <div class="row">
+                    <div class="col-md-12">
+                        <div class="appln-subhdr">
+                        <h5>OFFICE DETAILS</h5>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="row msg-det">
+                    <div class="col-md-12">
+                        <div class="table-appln">
+                        <table>
+                            <tr>
+                            <td>Office/Institution</td>
+                            <td>{{cabStep1?.office}}</td>
+                            </tr>
+                            <tr>
+                            <td>Office Address</td>
+                            <td>{{cabStep1?.office_address}}</td>
+                            </tr>
+                            <tr>
+                            <td>Company Mail</td>
+                            <td>{{cabStep1?.official_email}}</td>
+                            </tr>
+                            <tr>
+                            <td>Office Phone</td>
+                            <td>{{cabStep1?.office_tel_no}}</td>
+                            </tr>
+                            <tr>
+                            <td>P.o. Box Mailing Address</td>
+                            <td>{{cabStep1?.mailing_address}}</td>
+                            </tr>
+                        </table>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-12">
+                    <div class="appln-subhdr">
+                        <h5>TRADE LICENSE DETAILS</h5>
+                    </div>
+                    </div>
+                </div>
+                <div class="row msg-det">
+                    <div class="col-md-12">
+                        <div class="table-appln messg-tbl">
+                            <table>
+                            <tr>
+                                <td>Legal- professional Commercial/Trade License Number</td>
+                                <td>{{cabStep1?.trade_license_number}}</td>
+                            </tr>
+                            <tr>
+                                <td>Upload Trade License</td>
+                                <td>
+                                <div class="data-main-attach">
+                                    <div class="data-attach">
+                                    <h5>
+                                        <a href="javascript:void(0)">{{tradeLicenseText}}</a>
+                                    </h5>
+                                    </div>
+                                    <div class="icn-appln">
+                                    <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(constant.mediaPath,cabStep1.trade_license)">
+                                        <span class="icon-eye"></span>
+                                    </a>
+                                    <a target="_blank" [href]="tradeLicenseFile">
+                                        <span class="icon-download"></span>
+                                    </a>
+                                    </div>
+                                </div>
+                                </td>
+                            </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+  
+        <div class="row m-0">
+            <div class="col-md-12">
+                <div class="row appln-cnt-data ">
+                <div class="col-md-12 p-0">
+                    <div class="row">
+                    <div class="col-md-12">
+                        <div class="appln-subhdr">
+                        <h5>APPLICANT INFORMATION</h5>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="row msg-det">
+                    <div class="col-md-12">
+                        <div class="table-appln">
+                        <table>
+                            <tr>
+                            <td>Entity Commercial Name</td>
+                            <td>{{cabStep1?.cab_name}}</td>
+                            </tr>
+                            <tr>
+                            <td>Location</td>
+                            <td>{{cabStep1?.applicant_location}}</td>
+                            </tr>
+                            <tr>
+                            <td>Mailing Address</td>
+                            <td>{{cabStep1?.applicant_address}}</td>
+                            </tr>
+                            <tr>
+                            <td>Phone (with Area Code)</td>
+                            <td>{{cabStep1?.applicant_tel_no}}</td>
+                            </tr>
+                            <tr>
+                            <td>Fax (with Area Code)</td>
+                            <td>{{cabStep1?.applicant_fax_no}}</td>
+                            </tr>
+                            <tr>
+                            <td>Official Email Address</td>
+                            <td>{{cabStep1?.applicant_email}}</td>
+                            </tr>
+                            <tr>
+                            <td>Official Website</td>
+                            <td>{{cabStep1?.applicant_website}}</td>
+                            </tr>
+                            <tr>
+                              <td>Date Of Issue</td>
+                              <td>{{cabStep1?.date_of_issue | date}}</td>
+                            </tr>
+                            <tr>
+                              <td>Date Of Expired</td>
+                              <td>{{cabStep1?.date_of_expiry | date}}</td>
+                            </tr>
+                        </table>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row m-0">
+          <div class="col-md-6" *ngFor="let row of cabStep2?.cabOwnerData; let i = index;">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="appln-subhdr">
+                  <h5>OWNERSHIP OF THE ORGANIZATION</h5>
+                </div>
+                <hr>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 mb-4">
+                <div class="status-main-details">
+                  <div class="status-data">
+                    <p>{{row.name}}, </p>
+                    <span>{{row.designation}}</span>
+                  </div>
+                  <div class="status-subdata">
+                    <span class="status_details">
+                      <span class="icon-mobile"></span>
+                      {{Service.removePlus(row.mobile_no)}}
+                    </span>
+                    <span class="status_details">
+                      <span class="icon-call-data icon-call-2"></span>
+                      {{Service.removePlus(row.phone_no)}} 
+                    </span>
+                    <span class="status_details">
+                      <span class="icon-email"></span>
+                      {{row.email}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row m-0">
+            <div class="col-md-12">
+              <div class="row appln-cnt-data" *ngIf="cabStep2?.cabOwnerData != ''">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="appln-subhdr">
+                      <h5>OWNERSHIP OF THE ORGANIZATION</h5>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12 p-0" *ngFor="let row of cabStep2?.cabOwnerData; let i = index;">
+                  
+                  <div class="row msg-det">
+                    <div class="col-md-12">
+                      <div class="table-appln">
+                        <table>
+                          <tr>
+                            <td>Name</td>
+                            <td>{{row.name}}</td>
+                          </tr>
+                          <tr>
+                            <td>Designation</td>
+                            <td>{{row.designation}}</td>
+                          </tr>
+                          <tr>
+                            <td>Mobile No.</td>
+                            <td>{{row.mobile_no}}</td>
+                          </tr>
+                          <tr>
+                            <td>Land Line Phone No.</td>
+                            <td>{{row.phone_no}}</td>
+                          </tr>
+                          <tr>
+                            <td>Email Address</td>
+                            <td>{{row.email}}</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="row m-0">
+          <div class="col-md-12">
+            <div class="row status-det-wrapper">
+              <div class="col-md-12 p-0">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="appln-subhdr">
+                      <h5>BOARD MEMBERS OF THE COMPANY</h5>
+                    </div>
+                    <hr>
+                  </div>
+                </div>
+                <div class="status_main">
+                  <div class="row m-0">
+                    <div class="col-md-6 p-0" *ngFor="let row2 of cabStep2?.cabBodData; let i1 = index;">
+                      <div class="members_details">
+                        <h4>{{row2.name}}</h4>
+                        <p class="address_details">{{row2.bod_company}}</p>
+                        <span class="personal_details">{{row2.authorized_contact_person}}</span>
+                        <span *ngIf="row2.designation">, {{row2.designation}}</span>
+                        <span *ngIf="row2.mobile_no">, Mobile : {{row2.mobile_no}}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+

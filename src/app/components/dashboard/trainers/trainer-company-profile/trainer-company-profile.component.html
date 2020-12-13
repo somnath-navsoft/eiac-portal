@@ -1,0 +1,300 @@
+<app-loader *ngIf="!loader"></app-loader>
+
+
+
+<div class="main-detail">
+  <div class="container-fluid p-0">
+    <div class="main-dashboard-cnt">
+      
+      <div class="row m-0">
+        <div class="col-md-12 message-det">
+            <div class="row mt-3">
+              <div class="col-md-3">
+                <div class="main_app_wrap">
+                  <div class="appln-data">
+                    <h3>{{cabUserDetails?.first_name}} {{cabUserDetails?.last_name}}</h3>
+                    <span>{{cabUserDetails?.designation}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4"> 
+                <div class="progress_wrapper">
+                  <div class="progress_head">
+                      <span class="complete">Complete</span>
+                      <span>{{progressValue}}%</span>
+                    </div>
+                  <div class="progress-br">
+                    <mat-progress-bar mode="determinate" value="{{progressValue}}"></mat-progress-bar>
+                </div>
+              </div>
+              </div>
+              <div class="col-md-5"> 
+                <div class="edit_data">
+                  <a routerLink="/profile-completion">
+                    <span class="icon-edit"></span>
+                  </a>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="row m-0">
+        <div class="col-md-12 message-det">
+            <div class="row appl-cnt">
+              <div class="col">
+                <div class="appln-data">
+                  <h5>Date of Birth</h5>
+                </div>
+                <div class="appln-details">
+                  <span *ngIf="cabStep1?.dob != ''">{{cabStep1?.dob | date: 'dd-MM-yyyy'}}</span>                  
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="appln-data">
+                  <h5>Personal Email</h5>
+                </div>
+                <div class="appln-details">
+                  <span *ngIf="cabStep1?.email != ''">{{cabStep1?.email}}</span>
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="appln-data">
+                  <h5>Nationality</h5>
+                </div>
+                <div class="appln-details">
+                  <span *ngIf="cabStep1?.nationality != '' && cabStep1?.nationality != undefined">{{cabStep1?.nationality}}</span>
+                  <span *ngIf="cabStep1?.nationality == '' || cabStep1?.nationality == undefined">N/A</span>
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="appln-data">
+                  <h5>Phone Number</h5>
+                </div>
+                <div class="appln-details">
+                  <span *ngIf="cabStep1?.phone != ''">{{cabStep1?.phone}}</span> 
+                </div>
+              </div>
+              <div class="col border-left-dash">
+                <div class="appln-data">
+                  <h5>Fax Number</h5>
+                </div>
+                <div class="appln-details license_no">
+                  <span *ngIf="cabStep1?.office_fax_no != null">{{cabStep1?.office_fax_no}}</span>
+                  <span *ngIf="cabStep1?.office_fax_no == null">N/A</span>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="row m-0">
+        <div class="col-md-12">
+          <div class="row appln-cnt-data">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="appln-subhdr">
+                    <h5>OFFICE DETAILS</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="row msg-det">
+                <div class="col-md-12">
+                  <div class="table-appln">
+                    <table>
+                      <tr>
+                        <td>Office/Institution</td>
+                        <td *ngIf="cabStep1?.office">{{cabStep1?.office}}</td>
+                      </tr>
+                      <tr>
+                        <td width="30%">Office Address</td>
+                        <td *ngIf="cabStep1?.office_address">{{cabStep1?.office_address}}</td>
+                      </tr>
+                      <tr>
+                        <td>Company Email</td>
+                        <td *ngIf="cabStep1?.office_email">{{cabStep1?.office_email}}</td>
+                      </tr>
+                      <tr>
+                        <td>Office Phone</td>
+                        <td *ngIf="cabStep1?.office_tel_no">{{cabStep1?.office_tel_no}}</td>
+                      </tr>
+                      <tr>
+                        <td>P.O.Box Mailing Address</td>
+                        <td *ngIf="cabStep1?.mailing_address">{{cabStep1?.mailing_address}}</td>
+                      </tr>
+                      
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-md-6">
+          <div class="row appln-cnt-data">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="appln-subhdr">
+                    <h5>TRADE LICENSE DETAILS</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="row msg-det">
+                <div class="col-md-12">
+                  <div class="table-appln messg-tbl">
+                    <table>
+                      <tr>
+                        <td  width="40%">Legal-Professional Commercial/Trade License No.</td>
+                        <td *ngIf="cabStep1?.trade_license_number">{{cabStep1?.trade_license_number}}</td>
+                      </tr>
+                      <tr>
+                        <td>Upload Trade License</td>
+                        <td *ngIf="cabStep1?.trade_license">
+                          <div class="data-main-attach">
+                            <div class="data-attach">
+                            <h5>
+                                <a href="javascript:void(0)">{{tradeLicenseText}}</a>
+                            </h5>
+                            </div>
+                            <div class="icn-appln">
+                            <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(constant.mediaPath,cabStep1.trade_license)">
+                                <span class="icon-eye"></span>
+                            </a>
+                            <a target="_blank" [href]="tradeLicenseFile"> 
+                                <span class="icon-download"></span>
+                            </a>
+                            </div>
+                        </div>
+    
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Trade License Date of Issue</td>
+                        <td *ngIf="cabStep1?.date_of_issue">{{cabStep1?.date_of_issue | date: 'dd-MM-yyyy'}}</td>
+                      </tr>
+                      <tr>
+                        <td>Trade License Date of Expiry</td>
+                        <td *ngIf="cabStep1?.date_of_expiry">{{cabStep1?.date_of_expiry | date: 'dd-MM-yyyy'}}</td>
+                      </tr>              
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+      </div>
+      <div class="row m-0">
+        <div class="col-md-12">
+          <div class="row appln-cnt-data">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="appln-subhdr">
+                    <h5>EDUCATIONAL INFORMATION</h5>
+                  </div>
+                </div>
+              </div> 
+              <div class="row msg-det">
+                <div class="col-md-12">
+                  <div class="table-appln">
+                    <table>
+                      <tr>
+                        <td width="30%">Qualification/Degrees</td>
+                        <td *ngIf="trainerEducation != undefined && trainerEducation.qualification != ''">{{trainerEducation.qualification}}</td>
+                      </tr>
+                      <tr>
+                        <td>University Colege/School</td>
+                        <td colspan="3" *ngIf="trainerEducation != undefined && trainerEducation.institute != ''">{{trainerEducation.institute}}</td>
+                      </tr>
+                      <tr>
+                        <td>Specialization</td>
+                        <td *ngIf="trainerEducation != undefined && trainerEducation.specialization != ''">{{trainerEducation.specialization}}</td>
+                      </tr>
+                      <tr *ngIf="trainerEducation != undefined && trainerEducation.further_education !== ''">
+                        <td>Further Education</td>
+                        <td>{{trainerEducation.further_education}}</td>
+                      </tr>
+                      <!-- <tr *ngIf="trainerEducation != undefined && trainerEducation.other_education_details != ''">
+                        <td>Other Education</td>
+                        <td *ngIf="trainerEducation.other_education_details != ''">{{trainerEducation.other_education_details}}</td>
+                      </tr> -->
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row m-0" *ngIf="trainerForum != undefined && trainerForum.length > 0">
+            <div class="col-md-12">
+              <div class="row appln-cnt-data">
+                <div class="col-md-12 p-0">
+                  <div class="row p-0">
+                    <div class="col-md-12">
+                      <div class="form-subheader-data">
+                        <h5>LIST ANY AUDITOR QUALIFICATION AND TRAINING ATTAINED AND ATTACHED COPIES OF CERTIFICATES AND OTHER EVIDENCE OF ATTACHMENT</h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row msg-det">
+                    <div class="col-md-12 p-0">
+                      <div class="table-appln">
+                        <table>
+                          <ng-container *ngFor="let item of trainerForum">
+                          <tr>
+                            <td>Which</td>
+                            <td>{{item.organization}}</td>
+                            <td>From</td>
+                            <td>{{item.date_from | date}}</td>
+                            <td>To</td>
+                            <td>{{item.date_from | date}}</td>
+                          </tr>
+                        </ng-container>                      
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row m-0" *ngIf="trainerLang != undefined && trainerLang.length > 0">
+            <div class="col-md-12">
+              <div class="row appln-cnt-data">
+                <div class="col-md-12 p-0">
+                  <div class="row p-0">
+                    <div class="col-md-12">
+                      <div class="form-subheader-data">
+                        <h5>WHICH LANGUAGES DO YOU KNOW?</h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row msg-det">
+                    <div class="col-md-12 p-0">
+                      <div class="table-appln">
+                        <table>
+                          <ng-container *ngFor="let item of trainerLang">
+                            <tr>
+                              <td>{{item.language}}</td>
+                              <td>
+                               <strong>Read:</strong>&nbsp; <span *ngIf="item.read">Yes</span><span *ngIf="!item.read">No</span>,
+                               <strong> Write:</strong>&nbsp; <span *ngIf="item.write">Yes</span><span *ngIf="!item.write">No</span>,
+                               <strong> Speak:</strong>&nbsp; <span *ngIf="item.speak">Yes</span><span *ngIf="!item.speak">No</span>
+                              </td>
+                            </tr>
+                          </ng-container>                                              
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

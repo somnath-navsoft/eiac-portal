@@ -183,7 +183,7 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
   serviceStatus(index,id){
     this.loader = false;
 
-    this.subscriptions.push(this._trainerService.updateStatusReg(id)
+    this.subscriptions.push(this._trainerService.updateStatusTraining(id)
       .subscribe(
         result => {
           this.loader = true;

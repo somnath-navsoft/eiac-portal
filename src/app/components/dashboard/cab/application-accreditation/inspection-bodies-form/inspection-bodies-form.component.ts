@@ -4124,6 +4124,7 @@ onSubmitPaymentInformation(ngForm7: any, type?: boolean){
         this.voucherFile.append('accreditation',this.formApplicationId);
         this.voucherFile.append('application_id',this.formApplicationId);
         this.voucherFile.append('saved_step', 9);
+        this.voucherFile.append('payment_status', 'paid');
         // if(!this.paymentReceiptValidation){
         //   var blob = new Blob(['Lorem ipsum'], { type: 'plain/text' });
         //   //formData.append('file', blob,'readme.txt');
