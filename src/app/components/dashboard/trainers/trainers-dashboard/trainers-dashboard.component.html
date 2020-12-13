@@ -154,7 +154,7 @@
                         <div class="col-md-12">
                             <div class="tra_events">
                                 <div class="trainer_head">
-                                    <h4>Activity (Recent Updates)</h4>
+                                    <h4>Recent Updates</h4>
                                 </div>
                             </div>
                         </div>
@@ -232,12 +232,13 @@
                     <div class="ass-name-det">
                         <div class="row">
                             <div class="col-md-12">
+                                
                                 <ng-container *ngIf="dashboardEvents.length > 0">
                                     <mat-accordion>
+
                                         <mat-expansion-panel (opened)="panelOpenState = true"
-                                        (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;">
-                                            <!-- <ng-container *ngFor="let item of dashboardEvents;"> -->
-                                            <mat-expansion-panel-header>
+                                        (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;">                                             
+                                            <mat-expansion-panel-header *ngIf="item.eventDate != undefined && item.eventDate.length > 0 && item.eventDate[0].event_date != null">
                                                 <div class="ass-details" [ngStyle]="{'padding-bottom': '4px'}">
                                                     
                                                     <div class="date_content">
@@ -320,6 +321,7 @@
                                                 </div>
                                             <!-- </ng-container> -->
                                         </mat-expansion-panel>
+
                                     </mat-accordion>
                                 </ng-container>
                                 <ng-container *ngIf="dashboardEvents.length == 0">
