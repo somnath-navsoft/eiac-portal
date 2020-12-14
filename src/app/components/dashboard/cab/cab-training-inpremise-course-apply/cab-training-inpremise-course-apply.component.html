@@ -62,7 +62,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="training-data">
-                                            @{{row2.id}}
+                                            @{{row2.training_course}}
                                             <h4>{{row2.public_course_dtls.course}}</h4>
                                         </div>
                                         <hr>
@@ -76,10 +76,16 @@
                                                     <span>Audience</span>
                                                 </div>
                                                 <div class="training_type">
+                                                <ng-container *ngIf="row2.public_course_dtls.allTargatedAud != undefined">
                                                     <ng-container *ngIf="row2.public_course_dtls.allTargatedAud.length > 0">
-                                                        <span>{{row2.public_course_dtls.allTargatedAud[0].target_aud_name.title}}</span>
+                                                        <ng-container *ngFor="let item of row2.public_course_dtls.allTargatedAud;">
+                                                                <span>{{item.target_aud_name.title}}</span>
+                                                        </ng-container>
                                                     </ng-container>
-                                                    
+                                                </ng-container>
+                                                <ng-container *ngIf="row2.public_course_dtls.allTargatedAud == undefined">
+                                                    NA
+                                                </ng-container>                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -109,7 +115,13 @@
                                                     <span>Location</span>
                                                 </div>
                                                 <div class="training_type">
-                                                    <span>{{row2.public_course_dtls.location}}</span>
+                                                <ng-container *ngIf="row2.public_course_dtls.location != null">
+                                                    <span *ngIf="row2.public_course_dtls.location == 'eiac_training_center'">EIAC Training Center</span>
+                                                    <span *ngIf="row2.public_course_dtls.location == 'client_premisis'">EIAC Client Premises</span>
+                                                </ng-container>
+                                                <ng-container *ngIf="row2.public_course_dtls.location === null || row2.public_course_dtls.location == ''">
+                                                    NA
+                                                </ng-container>
                                                 </div>
                                             </div>
                                         </div>
@@ -127,8 +139,7 @@
                                             <div class="training-main-details">
                                             <div class="train_det_bttn">
                                                 <!-- routerLink="/dashboard/cab_client/training-inpremise-event-details/{{row2.id}}" -->
-                                                <a style="text-decoration:none" 
-                                                 href="javascript:void(0)" class="training_btn">DETAILS</a>
+                                                <a routerLink="/dashboard/cab_client/training-inpremise-details/{{row2.training_course}}" class="training_btn">DETAILS</a>
                                             </div>
                                         </div>
                                         </div>
