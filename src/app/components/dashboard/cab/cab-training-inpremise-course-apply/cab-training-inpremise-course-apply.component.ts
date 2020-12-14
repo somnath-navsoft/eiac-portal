@@ -82,31 +82,32 @@ export class CabTrainingInpremiseCourseApplyComponent implements OnInit {
     this.loaderData = false;
 
     let courseList:any[] = [];
-    let url = this._service.apiServerUrl+'/'+'cust-course-event-list/approved'
+    let url = this._service.apiServerUrl+'/'+'cust-course-event-list/all ';
     //this._service.getwithoutData(this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.training_course_list+'all/0?data=1')
     this._service.getwithoutData(url)
     .subscribe(
       res => {
         this.loaderData = true;
         let getData: any = res;
+        //let couserList: any = [];
 
        // var targatedAudianceCourse = res['records'];
         console.log(">>> ", getData.records)
         //this.trainingList = res['targatedAudianceCourse'];
 
-        // getData.records.forEach(item => {
-        //       if(item.course != undefined && item.course.length > 0){
-        //         item.course.forEach((rec) => {
-        //           courseList.push(rec);
-        //         })
-        //       }
-        // })
+        getData.records.forEach(item => {
+              if(item.course != undefined && item.course.length > 0){
+                item.course.forEach((rec) => {
+                  courseList.push(rec);
+                })
+              }
+        })
 
-        // console.log("Total course: ", courseList);
-        // this.trainingList = courseList;
+        console.log("Total course: ", courseList);
+        this.trainingList = courseList;
 
 
-        this.trainingList = getData.records[0]['course'];
+        //this.trainingList = getData.records[0]['course'];
         // for(let key in targatedAudianceCourse)
         // {
         //   if(targatedAudianceCourse[key].event && targatedAudianceCourse[key].event.tutor != '')
