@@ -17,17 +17,20 @@ export class CabTrainingInpremiseEventDetailsComponent implements OnInit {
   constructor(public _service: AppService, public _constant:Constants, public _trainerService: TrainerService) { }
 
   ngOnInit() {
-    this.routeId = sessionStorage.getItem('inpremiseCourseId');
+    this.routeId = sessionStorage.getItem('inpremiseCourseId'); 
     this.loadData();
   }
 
   loadData() {
     this.loaderData = false;
-    this._service.getwithoutData(this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.course_details+this.routeId+'?data=1')
+    let url: string = this._service.apiServerUrl + "/" + "custom-course-details-show/" + this.routeId;
+    console.log(">>>URL: ", url);
+    //this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.course_details+this.routeId+'?data=1'
+    this._service.getwithoutData(url)
     .subscribe(
       res => {
         this.loaderData = true;
-        this.courseDetails = res['courseDetails'];
+        this.courseDetails = res;
         console.log(">>>>> Details: ", this.courseDetails);
       })
   }
