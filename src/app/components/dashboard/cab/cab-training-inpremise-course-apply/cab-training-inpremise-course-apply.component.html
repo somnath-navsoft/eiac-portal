@@ -77,7 +77,10 @@
                                                 </div>
                                                 <div class="training_type">
                                                     <ng-container *ngIf="row2.courseDetails.allTargatedAud != undefined || row2.courseDetails.allTargatedAud != null">
-                                                        <span>{{row2.courseDetails['allTargatedAud'][0].target_aud_name.title}}</span>
+                                                        
+                                                        <ng-container *ngFor="let item of row2.courseDetails['allTargatedAud'];">
+                                                            <span>{{item.target_aud_name.title}}</span>, 
+                                                        </ng-container>
                                                     </ng-container>
                                                     <ng-container *ngIf="row2.courseDetails.allTargatedAud == undefined || row2.courseDetails.allTargatedAud == null">
                                                         NA
@@ -91,7 +94,7 @@
                                                     <span>Duration</span>
                                                 </div>
                                                 <div class="training_type">
-                                                    <!-- <span>{{row2.public_course_dtls.training_days}} Days</span> -->
+                                                    <span>{{row2.training_days}} Days</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -127,16 +130,16 @@
                                                     <span>No. Of Candidate</span>
                                                 </div>
                                                 <div class="training_type">
-                                                    <span>{{row2.courseDetails.capacity}}</span>
+                                                    <span>{{row2.capacity}}</span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-2 border-left-dash">
                                             <div class="training-main-details">
                                             <div class="train_det_bttn">
-                                                <!-- routerLink="/dashboard/cab_client/training-inpremise-event-details/{{row2.id}}" -->
-                                                <a routerLink="/dashboard/cab_client/training-inpremise-details/{{row2.training_course}}" class="training_btn">DETAILS</a>
-                                            </div>
+                                                <!-- routerLink="/dashboard/cab_client/training-inpremise-event-details/{{row2.id}}" --> 
+                                                <a routerLink="/dashboard/cab_client/training-inpremise-apply-details/{{row2.courseDetails.id}}" class="training_btn">DETAILS</a>
+                                            </div>  
                                         </div>
                                         </div>
                                     </div>

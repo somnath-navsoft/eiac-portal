@@ -244,7 +244,7 @@ shortProgramListing(section:any) {
       if(this.programEvent == 'coursename')
       {
         // this.allCourseTraining = ;
-          this.allCourseTraining.sort((a,b) => (a.course.name > b.course.name) ? 1 : -1);
+          this.allCourseTraining.sort((a,b) => (a.course > b.course) ? 1 : -1);
           // console.log()
       }else if(this.programEvent == 'audience')
       {
@@ -261,7 +261,7 @@ shortProgramListing(section:any) {
       if(this.scheduleProgramSection == 'coursename')
       {
         // this.allCourseTraining = ;
-          this.trainingList.sort((a,b) => (a.course.name > b.course.name) ? 1 : -1);
+          this.trainingList.sort((a,b) => (a.course > b.course) ? 1 : -1);
           // console.log()
       }else if(this.scheduleProgramSection == 'audience')
       {
