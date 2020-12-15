@@ -1786,7 +1786,10 @@
         <div class="col-md-12">
           <div class="bttns-health bttn-staff">
             <div *ngIf="paymentDetails && paymentDetails!= null" class="button-content">
-              <button class="cancel-bttn" (click)="uiDialog.openPDFViewer(_constant.mediaPath,serviceDetail.form_pdf)"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button>
+              <!-- <button class="cancel-bttn" (click)="uiDialog.openPDFViewer(_constant.mediaPath,serviceDetail.form_pdf)"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button> -->
+
+              <button class="cancel-bttn" (click)="downloadApplications()"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button>
+              
 
               <button class="cancel-bttn" (click)="downloadCsv()"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD CSV</button>
             </div>
