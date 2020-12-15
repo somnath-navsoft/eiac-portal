@@ -94,6 +94,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
   public loaderPdf: boolean = false;
   public completeLoaded: boolean = false;
   trainingDurationSelectbox:any;
+  authorizationList:any;
 
   constructor(private Service: AppService, private http: HttpClient,
     public _toaster: ToastrService, private _router: Router, private _route: ActivatedRoute,
@@ -166,7 +167,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     // knowledgeFees:any;
     // innovationFees:any;
     // noofParticipants:any;
-    
+    // this.authorizationList= {undertaking_confirmTop3: true }
   }
 
   addRow(obj) {
@@ -310,7 +311,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             this.step1Data.telephone_number = res['data'].telephone_number;
             this.step1Data.fax_no = res['data'].fax_no;
             this.step1Data.official_email = res['data'].official_email;
-            this.step1Data.official_website = res['data'].official_website;
+            // this.step1Data.official_website = res['data'].official_website;
             this.step1Data.authorized_contact_person = res['data'].authorized_contact_person;
             this.step1Data.designation = res['data'].designation;
             this.step1Data.mobile_phone_number = res['data'].mobile_phone_number;
@@ -373,9 +374,9 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             // console.log(training_duration_current);
             // console.log(this.tutionFees);
             this.taxVat = 0.05 * this.tutionFees;
-            this.knowledgeFees = 10 * this.noofParticipants;
-            this.innovationFees = 10 * this.noofParticipants;
-            this.subTotal = this.tutionFees + this.taxVat + this.knowledgeFees + this.innovationFees;
+            // this.knowledgeFees = 10 * this.noofParticipants;
+            // this.innovationFees = 10 * this.noofParticipants;
+            this.subTotal = this.tutionFees + this.taxVat ;
             
           })
     }
@@ -573,9 +574,9 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       // console.log(training_duration_current);
       // console.log(this.tutionFees);
       this.taxVat = 0.05 * this.tutionFees;
-      this.knowledgeFees = 10 * this.noofParticipants;
-      this.innovationFees = 10 * this.noofParticipants;
-      this.subTotal = this.tutionFees + this.taxVat + this.knowledgeFees + this.innovationFees;
+      // this.knowledgeFees = 10 * this.noofParticipants;
+      // this.innovationFees = 10 * this.noofParticipants;
+      this.subTotal = this.tutionFees + this.taxVat;
 
       // console.log(this.publicTrainingForm);
       this.step3DataBodyFormFile.append('data',JSON.stringify(this.publicTrainingForm));
@@ -1049,7 +1050,9 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.publicTrainingForm.saved_step = '1';
       this.step1Data.is_draft = true;
       this.step1Data.training_form_type = 'public_training';
-
+      if(this.formApplicationId > 0){
+        this.step1Data.application_id = this.formApplicationId;
+      }
       this.publicTrainingForm.step1 = this.step1Data;
 
       // console.log(this.publicTrainingForm);
@@ -1129,8 +1132,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       // console.log(training_duration_current);
       // console.log(this.tutionFees);
       this.taxVat = 0.05 * this.tutionFees;
-      this.knowledgeFees = 10 * this.noofParticipants;
-      this.innovationFees = 10 * this.noofParticipants;
+      // this.knowledgeFees = 10 * this.noofParticipants;
+      // this.innovationFees = 10 * this.noofParticipants;
       this.subTotal = this.tutionFees + this.taxVat + this.knowledgeFees + this.innovationFees;
 
       // console.log(this.publicTrainingForm);

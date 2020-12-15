@@ -47,11 +47,11 @@ export class TrainingStatusComponent implements OnInit {
   
     editVisible(item: any){
     if(item){
-        console.log(item);
+        // console.log(item);
         switch(item.training_form_type.toString()){
 
             case 'inprimise':
-              console.log("inpremise....", item);
+              // console.log("inpremise....", item);
               if(item.saved_step != null && item.saved_step < 5 && (item.is_draft == true || item.is_draft == false)){
                 // console.log("@Enter....3");
                 return false;
@@ -103,12 +103,12 @@ export class TrainingStatusComponent implements OnInit {
         
                if(item.saved_step != null && item.saved_step == 5 && item.is_draft == false && 
                   item.paymentDetails != undefined && item.paymentDetails == "NA"){
-                    console.log("@@@@@@@ ", item.id);
+                    // console.log("@@@@@@@ ", item.id);
                 return true;
               }
               if(item.saved_step != null && item.saved_step == 7 && (item.is_draft == false || item.is_draft == true) && 
                 item.paymentDetails != undefined && item.application_status !== 'complete'){
-                  console.log("@Enter....1", item.id);
+                  // console.log("@Enter....1", item.id);
                 return false;
               }
                if(item.saved_step != null && item.saved_step == 5 && item.is_draft == false && 
