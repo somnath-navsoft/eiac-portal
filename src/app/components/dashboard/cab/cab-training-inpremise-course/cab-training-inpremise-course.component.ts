@@ -114,6 +114,7 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
 
         var targatedAudianceCourse = res['records'];
         //this.trainingList = res['targatedAudianceCourse'];
+        this.allCourseTraining = res['records'];
         
         // for(let key in targatedAudianceCourse)
         // {
@@ -127,27 +128,27 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
         //   }
         // }
 
-        for(let key in targatedAudianceCourse)
-        {
-          if(targatedAudianceCourse[key].event && targatedAudianceCourse[key].event.tutor != '')
-          {
-            this.trainingList.push(targatedAudianceCourse[key]);
-            if(this.audienceId == '0')
-            {
-              this.trainingList = this.getUnique(this.trainingList);
-            }
-            // //console.log(targatedAudianceCourse[key],'targatedAudianceCourse');
-          }
-        }
-        // //console.log(this.trainingList,'trainingList');
-        this.allCourses = res['courseList'];
-        //console.log(this.allCourses,'allCourses')
+        // for(let key in targatedAudianceCourse)
+        // {
+        //   if(targatedAudianceCourse[key].event && targatedAudianceCourse[key].event.tutor != '')
+        //   {
+        //     this.trainingList.push(targatedAudianceCourse[key]);
+        //     if(this.audienceId == '0')
+        //     {
+        //       this.trainingList = this.getUnique(this.trainingList);
+        //     }
+        //     // //console.log(targatedAudianceCourse[key],'targatedAudianceCourse');
+        //   }
+        // }
+        // // //console.log(this.trainingList,'trainingList');
+        // this.allCourses = res['courseList'];
+        // //console.log(this.allCourses,'allCourses')
        
-        for(let i=0; i<= this.rowCount*4; i++){
-          if(this.allCourses[i]){
-            this.allCourseTraining.push(this.allCourses[i]);
-          }
-        }
+        // for(let i=0; i<= this.rowCount*4; i++){
+        //   if(this.allCourses[i]){
+        //     this.allCourseTraining.push(this.allCourses[i]);
+        //   }
+        // }
         
         // console.log(this.allCourseTraining,'allCourseTraining');
         

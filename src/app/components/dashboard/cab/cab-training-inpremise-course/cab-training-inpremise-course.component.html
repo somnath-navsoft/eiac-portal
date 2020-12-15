@@ -38,7 +38,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="training-data">
-                                                <h4>{{row2.course.name}}</h4>
+                                                <h4>{{row2.course}}</h4>
                                             </div>
                                             <hr>
                                         </div>
@@ -51,7 +51,11 @@
                                                         <span>Audience</span>
                                                     </div>
                                                     <div class="training_type">
-                                                        <span>{{row2.target_audiance}}</span>
+                                                        <ng-container *ngIf="row2.allTargatedAud != undefined && row2.allTargatedAud.length > 0">
+                                                            <ng-container *ngFor="let item of row2.allTargatedAud">
+                                                                <span>{{item.target_aud_name.title}}</span>, 
+                                                            </ng-container>
+                                                        </ng-container>
                                                     </div>
                                                 </div>
                                             </div>
@@ -61,7 +65,7 @@
                                                         <span>Duration</span>
                                                     </div>
                                                     <div class="training_type">
-                                                        <span>{{row2.course.training_course.training_days}} Days</span>
+                                                        <span>{{row2.training_days}} Days</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -181,7 +185,7 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="allCourseTraining == ''">
+                <div *ngIf="allCourseTraining.length == 0">
                     <div class="col-md-12">
                         <div class="scheduled-prog">
                             No Data Found
@@ -195,7 +199,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="training-data">
-                                            <h4>{{row2.course.name}}</h4>
+                                            <h4>{{row2.course}}</h4>
                                         </div>
                                         <hr>
                                     </div>
@@ -208,7 +212,11 @@
                                                     <span>Audience</span>
                                                 </div>
                                                 <div class="training_type">
-                                                    <span>{{row2.target_audiance}}</span>
+                                                    <ng-container *ngIf="row2.allTargatedAud != undefined && row2.allTargatedAud.length > 0">
+                                                        <ng-container *ngFor="let item of row2.allTargatedAud">
+                                                            <span>{{item.target_aud_name.title}}</span>, 
+                                                        </ng-container>
+                                                    </ng-container>
                                                 </div>
                                             </div>
                                         </div>
@@ -218,7 +226,7 @@
                                                     <span>Duration</span>
                                                 </div>
                                                 <div class="training_type">
-                                                    <span>{{row2.course.training_course.training_days}} Days</span>
+                                                    <span>{{row2.training_days}} Days</span>
                                                 </div>
                                             </div>
                                         </div>

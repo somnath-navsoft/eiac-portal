@@ -4,11 +4,11 @@ import { AppService } from 'src/app/services/app.service';
 import { TrainerService } from '../../../../services/trainer.service';
 
 @Component({
-  selector: 'app-cab-training-inpremise-detail',
-  templateUrl: './cab-training-inpremise-detail.component.html',
-  styleUrls: ['./cab-training-inpremise-detail.component.scss']
+  selector: 'app-cab-training-inpremise-apply-detail',
+  templateUrl: './cab-training-inpremise-apply-detail.component.html',
+  styleUrls: ['./cab-training-inpremise-apply-detail.component.scss']
 })
-export class CabTrainingInpremiseDetailComponent implements OnInit {
+export class CabTrainingInpremiseApplyDetailComponent implements OnInit {
 
   loaderData:boolean = true;
   routeId:any;
