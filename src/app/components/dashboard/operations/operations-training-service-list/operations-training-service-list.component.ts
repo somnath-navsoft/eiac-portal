@@ -195,7 +195,7 @@ export class OperationsTrainingServiceListComponent implements OnInit {
         result => {
           this.loader = true;
           // console.log(result,'result');
-          this.trainerdata[index].accr_status = 'complete';
+          this.trainerdata[index].application_status = 'complete';
           this._toaster.success("Payment Completed Successfully",'');
       })
     );
