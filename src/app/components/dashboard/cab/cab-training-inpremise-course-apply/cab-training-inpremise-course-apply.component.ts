@@ -82,7 +82,7 @@ export class CabTrainingInpremiseCourseApplyComponent implements OnInit {
     this.loaderData = false;
 
     let courseList:any[] = [];
-    let url = this._service.apiServerUrl+'/'+'cust-course-event-list/all ';
+    let url = this._service.apiServerUrl+'/'+'inpremise-event-list/';
     //this._service.getwithoutData(this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.training_course_list+'all/0?data=1')
     this._service.getwithoutData(url)
     .subscribe(
@@ -92,19 +92,20 @@ export class CabTrainingInpremiseCourseApplyComponent implements OnInit {
         //let couserList: any = [];
 
        // var targatedAudianceCourse = res['records'];
-        console.log(">>> ", getData.records)
+        console.log(">>> ", getData)
         //this.trainingList = res['targatedAudianceCourse'];
 
-        getData.records.forEach(item => {
-              if(item.course != undefined && item.course.length > 0){
-                item.course.forEach((rec) => {
-                  courseList.push(rec);
-                })
-              }
-        })
+        // getData.records.forEach(item => {
+        //       if(item.course != undefined && item.course.length > 0){
+        //         item.course.forEach((rec) => {
+        //           courseList.push(rec);
+        //         })
+        //       }
+        // })
 
-        console.log("Total course: ", courseList);
-        this.trainingList = courseList;
+        // console.log("Total course: ", courseList);
+        this.trainingList = getData['eventData'];
+        console.log("Total course: ", this.trainingList);
 
 
         //this.trainingList = getData.records[0]['course'];
@@ -184,39 +185,44 @@ shortProgramListing(section:any) {
       if(this.programEvent == 'coursename')
       {
         // this.allCourseTraining = ;
-          this.trainingList.sort((a,b) => (a.course.name > b.course.name) ? 1 : -1);
+          this.trainingList.sort((a,b) => (a.courseDetails.course > b.courseDetails.course) ? 1 : -1);
           // console.log()
       }else if(this.programEvent == 'audience')
       {
-          this.trainingList.sort((a,b) => (a.target_audiance > b.target_audiance) ? 1 : -1);
+          this.trainingList.sort((a,b) => (a.courseDetails['allTargatedAud'][0].target_aud_name.title > b.courseDetails['allTargatedAud'][0].target_aud_name.title) ? 1 : -1);
 
+      }else if(this.programEvent == 'date')
+      {
+          this.trainingList.sort((a,b) => (a.event_start_date_time > b.course.event_start_date_time) ? 1 : -1);
       }else if(this.programEvent == 'days')
       {
           this.trainingList.sort((a,b) => (a.course.training_course.training_days > b.course.training_course.training_days) ? 1 : -1);
       }
       
-    }else if(section == 'schedule_program_listing')
-    {
-      // this.scheduleProgramSection = section;
-      if(this.scheduleProgramSection == 'coursename')
-      {
-        // this.allCourseTraining = ;
-          this.trainingList.sort((a,b) => (a.course.name > b.course.name) ? 1 : -1);
-          // console.log()
-      }else if(this.scheduleProgramSection == 'audience')
-      {
-          this.trainingList.sort((a,b) => (a.target_audiance > b.target_audiance) ? 1 : -1);
-
-      }else if(this.scheduleProgramSection == 'date')
-      {
-          this.trainingList.sort((a,b) => (a.event.eventDates[0].event_date > b.event.eventDates[0].event_date) ? 1 : -1);
-
-      }else if(this.scheduleProgramSection == 'days')
-      {
-          this.trainingList.sort((a,b) => (a.course.training_course.training_days > b.course.training_course.training_days) ? 1 : -1);
-      }
-      
     }
+    
+    // else if(section == 'schedule_program_listing')
+    // {
+    //   // this.scheduleProgramSection = section;
+    //   if(this.scheduleProgramSection == 'coursename')
+    //   {
+    //     // this.allCourseTraining = ;
+    //       this.trainingList.sort((a,b) => (a.course.name > b.course.name) ? 1 : -1);
+    //       // console.log()
+    //   }else if(this.scheduleProgramSection == 'audience')
+    //   {
+    //       this.trainingList.sort((a,b) => (a.target_audiance > b.target_audiance) ? 1 : -1);
+
+    //   }else if(this.scheduleProgramSection == 'date')
+    //   {
+    //       this.trainingList.sort((a,b) => (a.event.eventDates[0].event_date > b.event.eventDates[0].event_date) ? 1 : -1);
+
+    //   }else if(this.scheduleProgramSection == 'days')
+    //   {
+    //       this.trainingList.sort((a,b) => (a.course.training_course.training_days > b.course.training_course.training_days) ? 1 : -1);
+    //   }
+      
+    // }
     
   }
 

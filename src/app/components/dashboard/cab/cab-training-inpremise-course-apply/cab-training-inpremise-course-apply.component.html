@@ -34,7 +34,7 @@
                                  <label for="sort">Sort By :</label>
 
                                 <mat-form-field appearance="fill">
-                                    <mat-select (selectionChange)="shortProgramListing('schedule_program_listing')" [(value)]="scheduleProgramSection">
+                                    <mat-select (selectionChange)="shortProgramListing('program_listing')" [(value)]="programEvent">
                                     <mat-option value="">Select</mat-option>
                                         <mat-option value="coursename">Course Name</mat-option>
                                         <mat-option value="audience">Audience</mat-option>
@@ -62,8 +62,8 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="training-data">
-                                            @{{row2.training_course}}
-                                            <h4>{{row2.public_course_dtls.course}}</h4>
+                                            <!-- {{row2.courseDetails.course}} -->
+                                            <h4>{{row2.courseDetails.course}}</h4>
                                         </div>
                                         <hr>
                                     </div>
@@ -76,16 +76,12 @@
                                                     <span>Audience</span>
                                                 </div>
                                                 <div class="training_type">
-                                                <ng-container *ngIf="row2.public_course_dtls.allTargatedAud != undefined">
-                                                    <ng-container *ngIf="row2.public_course_dtls.allTargatedAud.length > 0">
-                                                        <ng-container *ngFor="let item of row2.public_course_dtls.allTargatedAud;">
-                                                                <span>{{item.target_aud_name.title}}</span>
-                                                        </ng-container>
+                                                    <ng-container *ngIf="row2.courseDetails.allTargatedAud != undefined || row2.courseDetails.allTargatedAud != null">
+                                                        <span>{{row2.courseDetails['allTargatedAud'][0].target_aud_name.title}}</span>
                                                     </ng-container>
-                                                </ng-container>
-                                                <ng-container *ngIf="row2.public_course_dtls.allTargatedAud == undefined">
-                                                    NA
-                                                </ng-container>                                                    
+                                                    <ng-container *ngIf="row2.courseDetails.allTargatedAud == undefined || row2.courseDetails.allTargatedAud == null">
+                                                        NA
+                                                    </ng-container>
                                                 </div>
                                             </div>
                                         </div>
@@ -95,7 +91,7 @@
                                                     <span>Duration</span>
                                                 </div>
                                                 <div class="training_type">
-                                                    <span>{{row2.public_course_dtls.training_days}} Days</span>
+                                                    <!-- <span>{{row2.public_course_dtls.training_days}} Days</span> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -105,7 +101,7 @@
                                                     <span>Date</span>
                                                 </div>
                                                 <div class="training_type">
-                                                    <span>{{row2.public_course_dtls.created | date:'MM-dd-yy'}}</span>
+                                                    <span>{{row2.event_start_date_time | date }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -115,11 +111,11 @@
                                                     <span>Location</span>
                                                 </div>
                                                 <div class="training_type">
-                                                <ng-container *ngIf="row2.public_course_dtls.location != null">
-                                                    <span *ngIf="row2.public_course_dtls.location == 'eiac_training_center'">EIAC Training Center</span>
-                                                    <span *ngIf="row2.public_course_dtls.location == 'client_premisis'">EIAC Client Premises</span>
+                                                <ng-container *ngIf="row2.location != null">
+                                                    <span *ngIf="row2.location == 'eiac_training_center'">EIAC Training Center</span>
+                                                    <span *ngIf="row2.location == 'client_premisis'">EIAC Client Premises</span>
                                                 </ng-container>
-                                                <ng-container *ngIf="row2.public_course_dtls.location === null || row2.public_course_dtls.location == ''">
+                                                <ng-container *ngIf="row2.location === null || row2.location == ''">
                                                     NA
                                                 </ng-container>
                                                 </div>
@@ -131,7 +127,7 @@
                                                     <span>No. Of Candidate</span>
                                                 </div>
                                                 <div class="training_type">
-                                                    <span>{{row2.public_course_dtls.capacity}}</span>
+                                                    <span>{{row2.courseDetails.capacity}}</span>
                                                 </div>
                                             </div>
                                         </div>

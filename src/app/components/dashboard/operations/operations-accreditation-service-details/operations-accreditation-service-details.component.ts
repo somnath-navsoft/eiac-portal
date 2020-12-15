@@ -890,6 +890,10 @@ loadScopeDataHalal(){
     window.open(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.accrediationCsv+this.routeId, '_blank');
   }
 
+  downloadApplications() {
+    window.open(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.accrediationPdf+this.routeId, '_blank');
+  }
+
   voucherSentSubmit(theForm){
      console.log("Valid/Invalid: ", theForm.form, " -- ", this.voucherSentData);
      let postObject: any = {};
