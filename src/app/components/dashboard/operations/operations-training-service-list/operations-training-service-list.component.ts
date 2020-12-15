@@ -15,7 +15,7 @@ import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-b
 })
 export class OperationsTrainingServiceListComponent implements OnInit {
 
-  subscriptions: Subscription[] = [];
+  subscriptions: Subscription[] = []; 
   modalOptions:NgbModalOptions;
   voucherSentData: any = {};
   voucherFile:any = new FormData();
@@ -195,7 +195,7 @@ export class OperationsTrainingServiceListComponent implements OnInit {
         result => {
           this.loader = true;
           // console.log(result,'result');
-          this.trainerdata[index].accr_status = 'complete';
+          this.trainerdata[index].application_status = 'complete';
           this._toaster.success("Payment Completed Successfully",'');
       })
     );

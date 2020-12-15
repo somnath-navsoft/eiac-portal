@@ -195,8 +195,13 @@ export class SignUpComponent implements OnInit {
               this.toastr.success(res['msg'], '');
               this.router.navigateByUrl('/sign-in');
             }else{
-              
-              this.toastr.warning(res['msg'], '');
+              let getMsg = res['msg'];
+              //alert(getMsg);
+              if(getMsg == 'Sorry! this email-id alreadty exist'){
+                this.toastr.warning("Email ID already exists", '');
+              }else{
+                this.toastr.warning(res['msg'], '');
+              }
             }
           });
       ////console.log("validation done...resetting password...");

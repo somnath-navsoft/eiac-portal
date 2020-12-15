@@ -339,6 +339,11 @@ getSchmeTC(sid: number){
   //   return '<strong>Accreditation Scope for ' + getSchemeData.title+'</strong>';
   // }
 }
+getFile(file: string){
+  let fname: string = file.split('/')[1].split('.')[0];
+  console.log(fname);
+  return fname;
+}
 getFamilySchmeTC = (sid: number, fid: number) =>{
   //console.log(">>> Family Data: ", sid," :: ", fid, " -- ", familyData)
   if(fid > 0){

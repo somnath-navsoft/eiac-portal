@@ -34,9 +34,12 @@ export class CabTrainingInpremiseDetailComponent implements OnInit {
         let getData: any = res;
         let audAr: any ={};
         console.log(">>>>data: ", getData);
-        this.courseDetails = getData.records[0].course;
+        //this.courseDetails = getData.records[0].course[0];
 
-        this.courseDetails.forEach((item, key) => {
+        let tempCourse: any =[];
+        tempCourse.push(getData.records[0].course[0]);
+
+        tempCourse.forEach((item, key) => {
           audAr[key] = {};
           audAr[key]['audience'] = '';
           let tempAr: any =[];
@@ -49,13 +52,13 @@ export class CabTrainingInpremiseDetailComponent implements OnInit {
             if(tempAr.length > 0){
               audAr[key]['audience'] = tempAr.join(', ')
             }
-            //audAr[key]['audience'].push(item.public_course_dtls.allTargatedAud);
           }
         })
 
         console.log("@Aud ar: ", audAr);
         this.audienceData = audAr;
         console.log("#Aud ar: ", this.audienceData, " -- ", this.audienceData[0]);
+        this.courseDetails = tempCourse;
         
         // if(getData.records[0].course.public_course[0].allTargatedAud != undefined && getData.records[0].course[0].public_course.allTargatedAud.length > 0){
         //   getData.records[0].course[0].public_course.allTargatedAud.forEach(item => {
