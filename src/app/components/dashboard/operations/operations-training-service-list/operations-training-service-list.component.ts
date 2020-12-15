@@ -15,7 +15,7 @@ import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-b
 })
 export class OperationsTrainingServiceListComponent implements OnInit {
 
-  subscriptions: Subscription[] = [];
+  subscriptions: Subscription[] = []; 
   modalOptions:NgbModalOptions;
   voucherSentData: any = {};
   voucherFile:any = new FormData();

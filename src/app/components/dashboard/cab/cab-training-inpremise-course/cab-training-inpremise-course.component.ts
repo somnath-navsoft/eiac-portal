@@ -103,12 +103,16 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
 
   loadTrainingData() {
     this.loaderData = false;
-    this._service.getwithoutData(this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.training_course_list+'all/0?data=1')
+    let url: any = this._service.apiServerUrl+'/'+'public-course-list';
+    //this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.training_course_list+'all/0?data=1'
+    this._service.getwithoutData(url)
     .subscribe(
       res => {
         this.loaderData = true;
 
-        var targatedAudianceCourse = res['targatedAudianceCourse'];
+        console.log(">>> ", res);
+
+        var targatedAudianceCourse = res['records'];
         //this.trainingList = res['targatedAudianceCourse'];
         
         // for(let key in targatedAudianceCourse)
@@ -195,12 +199,16 @@ onSubmit(theForm: any){
       return false;
     }
 
+    //{"course_id_arr":["69","70"],"course_type":"custom_course","event_start_date_time":"2020-08-21T18:30:00.000Z",
+    //"capacity":"20","custom_location":"7 nG Kolkata","agreement_status":"accepted"}
+
     let postData: any = {};
-    postData['course_type'] = "custom_course";
+    postData['course_type']           = "custom_course";
+    postData['capacity']              = this.inPremiseForm.no_of_candidate;
     postData['event_start_date_time'] = new Date(this.inPremiseForm.select_date);
-    postData['custom_location'] = this.inPremiseForm.select_location;
-    postData['agreement_status'] = "accepted";
-    postData['course_id_arr'] = courseIdAr;
+    postData['custom_location']       = this.inPremiseForm.select_location;
+    postData['agreement_status']      = "accepted";
+    postData['course_id_arr']         = courseIdAr;
     let urlPost: string = this._service.apiServerUrl+"/"+'cust-course-save/';
     console.log(">>>submitting....", postData, " -- ", urlPost, " == ", this.trainingCartArr);
     this._service.post(urlPost, postData)
