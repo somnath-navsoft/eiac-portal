@@ -8,13 +8,8 @@ import { Subject} from 'rxjs';
 export class Constants{
 
 	public apiUrl: string 					= '';
-<<<<<<< HEAD
 
 	public mediaPath: string 				= 'https://uat-service.eiac.gov.ae';
-=======
-	public mediaPath: string 				= 'https://dev-service.eiac.gov.ae';
-	//public mediaPath: string 				= 'https://uat-service.eiac.gov.ae';
->>>>>>> development
 	//trainerAPI: '/trainer',
 	//all_services: this.apiUrl + 'service_page/', 
 	public myvalue: any;
