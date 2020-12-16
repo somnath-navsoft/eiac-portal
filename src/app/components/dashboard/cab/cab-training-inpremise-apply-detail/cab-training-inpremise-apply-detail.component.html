@@ -7,7 +7,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="dashbrd-hdr">
-                            <h3>Apply In Premise course</h3>
+                            <h3>Apply InPremise course</h3>
                         </div>
                     </div>
                 </div>
@@ -22,12 +22,10 @@
                     <div class="row"> 
                         <div class="col-lg-6 ">
                             <div class="course-list">
-                                <!-- {{trainingDetails.courseType |  json}} ||
-                                {{_constant.mediaPath}} -->
-                                <div class="description-course" *ngIf="trainingDetails.courseType != undefined && trainingDetails.courseType.length > 0">
-                                    <img src="{{_constant.mediaPath}}/media/{{trainingDetails.courseType[0].course_type_img}}" [alt] = "trainingDetails.course[0].new_custom_course.name"
+                                <!-- <div class="description-course" *ngIf="trainingDetails.course_image != '' && trainingDetails.course_image != null">
+                                    <img src="{{_constant.mediaPath}}{{trainingDetails.course_image}}" [alt] = "trainingDetails.course[0].new_custom_course.name"
                                     [title] = "trainingDetails.course[0].new_custom_course.name">
-                                </div>
+                                </div> -->
 
                                 <ng-container *ngIf="trainingDetails.courseDetails?.course_type != '' && trainingDetails.courseDetails?.course_type != null">
                                     <div class="description-course">
