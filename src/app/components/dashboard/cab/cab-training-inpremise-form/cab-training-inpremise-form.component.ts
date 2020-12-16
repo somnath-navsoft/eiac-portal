@@ -184,14 +184,14 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
   
     loadCourseDetailsPage(traininginpremiseCourseid) {
       if(traininginpremiseCourseid != '' && traininginpremiseCourseid != undefined) {
-        this.Service.getwithoutData(this.Service.apiServerUrl+'/custom-course-details-show/'+traininginpremiseCourseid)
+        this.Service.getwithoutData(this.Service.apiServerUrl+'/eventid-course-details-show/'+traininginpremiseCourseid)
           .subscribe(
             res => {
-              var courseDetails = res['records'][0];
-              this.step3Data.course_title = courseDetails.course[0].new_custom_course.name;
+              var courseDetails = res['allEventData'][0].courseDetails;
+              this.step3Data.course_title = courseDetails.course;
               this.step3Data.training_duration = parseInt(courseDetails.training_days);
               this.trainingDurationSelectbox = courseDetails.training_days != '' && courseDetails.training_days != '' ? true : false;
-              console.log(courseDetails.course[0].new_custom_course.name,'training_days');
+              console.log(courseDetails.course,'training_days');
               console.log(courseDetails.training_days,'training_days');
               this.step1Data.event_management = traininginpremiseCourseid;
             });
