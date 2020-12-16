@@ -233,6 +233,27 @@ onSubmit(theForm: any){
 }
 
 
+sortByList(field: any){
+  console.log(">>> Get field: ", field);
+  if(field != undefined && field.value == 'course'){
+    console.log(">> sort by course: ", field);
+    this.allCourseTraining.sort((a,b) => (a.course > b.course) ? 1 : -1);
+  }
+  // if(field != undefined && field.value == 'course'){
+  //   console.log(">> sort by course: ", field);
+  //   this.allCourseTraining.sort((a,b) => (a.course > b.course) ? 1 : -1);
+  // }
+  if(field != undefined && field.value == 'rate'){
+    console.log(">> sort by course: ", field);
+    this.allCourseTraining.sort((a,b) => (a.fees_per_trainee > b.fees_per_trainee) ? 1 : -1);
+  }
+  if(field != undefined && field.value == 'days'){
+    console.log(">> sort by course: ", field);
+    this.allCourseTraining.sort((a,b) => (a.training_days > b.training_days) ? 1 : -1);
+  }
+}
+
+
 shortProgramListing(section:any) {
     // console.log('event');
     // console.log(this.programEvent,'programEvent');
