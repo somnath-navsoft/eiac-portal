@@ -14,9 +14,9 @@
                 <!-- <ng-container *ngFor="let item of courseDetails; let k = index;"> -->
                     <div class="row">
                         <div class="col-md-12">
-                            <!-- <ng-container *ngIf="trainingDetails.course != undefined && trainingDetails.course != null && trainingDetails.course.length > 0">
-                                <h1>{{trainingDetails.course[0].new_custom_course.name}}</h1>
-                            </ng-container>                             -->
+                            <ng-container *ngIf="trainingDetails.main_course != undefined && trainingDetails.main_course != null">
+                                <h1>{{trainingDetails.main_course.name}}</h1>
+                            </ng-container>                            
                         </div>
                     </div>
                     <div class="row"> 
@@ -37,20 +37,26 @@
                                     <div class="course-info">
                                         <div class="course-det">
                                             <h5>Date : 
-                                                <div  *ngIf="trainingDetails.eventDate; then Dateshow else Datehide" ></div>
+                                                <!-- <div  *ngIf="trainingDetails.eventDate; then Dateshow else Datehide" ></div>
                                                 <ng-template #Dateshow>
                                                     <span>{{trainingDetails?.eventDate[0].event_date | date}}</span>
                                                 </ng-template>
                                                 <ng-template #Datehide>
                                                     <span>N/A</span>
-                                                </ng-template>
-                                                <!-- <div  *ngIf="trainingDetails.eventDates && courseDetails?.event.eventDates[0].event_date; then Dateshow else Datehide" ></div>
+                                                </ng-template> -->
+                                                <!-- <div  *ngIf="trainingDetails.eventDate && courseDetails?.eventDate[0].event_date; then Dateshow else Datehide" ></div>
                                                 <ng-template #Dateshow>
-                                                    <span>{{courseDetails?.event.eventDates[0].event_date | date}}</span>
+                                                    <span>{{courseDetails?.eventDate[0].event_date | date}}</span>
                                                 </ng-template>
                                                 <ng-template #Datehide>
                                                     <span>N/A</span>
                                                 </ng-template> -->
+                                                <ng-container *ngIf="trainingDetails.eventDate != undefined && trainingDetails.eventDate.length > 0">
+                                                    <span>{{trainingDetails?.eventDate[0].event_date | date}}</span>
+                                                </ng-container>
+                                                <ng-container *ngIf="trainingDetails.eventDate == undefined || trainingDetails.eventDate == 'NA'">
+                                                    <span>NA</span>
+                                                </ng-container>
                                             </h5>
                                         </div>
                                         
@@ -132,10 +138,12 @@
                         <div class="col-md-12">
                             <div class="progs-up">
                                 <div class="prog-details">
-                                    <ng-container *ngIf="trainingDetails.course != undefined && trainingDetails.course.length > 0">
-                                        <p [innerHtml]="trainingDetails.course[0].new_custom_course.description"></p>
+                                    <ng-container *ngIf="trainingDetails.main_course != undefined && trainingDetails.main_course.description != ''">
+                                        <p [innerHtml]="trainingDetails.main_course.description"></p>
                                     </ng-container>
-                                    
+                                    <ng-container *ngIf="trainingDetails.main_course != undefined && trainingDetails.main_course.description == ''">
+                                        <p></p>
+                                    </ng-container>
                                 </div>                               
                             </div>
                         </div>

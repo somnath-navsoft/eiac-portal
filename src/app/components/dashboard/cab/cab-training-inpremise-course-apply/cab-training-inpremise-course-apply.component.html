@@ -79,7 +79,9 @@
                                                     <span>Duration</span>
                                                 </div>
                                                 <div class="training_type">
-                                                    <span>{{row2.training_days}} Days</span>
+                                                    <span *ngIf="row2.training_days != null">{{row2.training_days}} Days</span>
+                                                    <span *ngIf="row2.training_days == null">0 Day</span>
+                                                    <!-- <span>{{row2.training_days}} Days</span> -->
                                                 </div>
                                             </div>
                                         </div>
