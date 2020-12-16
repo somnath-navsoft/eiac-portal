@@ -79,8 +79,8 @@
                                                     <span>Duration</span>
                                                 </div>
                                                 <div class="training_type">
-                                                    <span *ngIf="row2.training_days != null">{{row2.training_days}} Days</span>
-                                                    <span *ngIf="row2.training_days == null">0 Day</span>
+                                                    <span *ngIf="row2.courseDetails.training_days != null">{{row2.courseDetails.training_days}} Days</span>
+                                                    <span *ngIf="row2.courseDetails.training_days == null">0 Day</span>
                                                     <!-- <span>{{row2.training_days}} Days</span> -->
                                                 </div>
                                             </div>
@@ -90,9 +90,12 @@
                                                 <div class="training_det">
                                                     <span>Date</span>
                                                 </div>
-                                                <div class="training_type">
-                                                    <span>{{row2.event_start_date_time | date }}</span>
+                                                <div class="training_type" *ngIf="row2['eventDate'].length > 0">
+                                                    <span>{{row2['eventDate'][0].event_date | date }}</span>
                                                 </div>
+                                                <!-- <div class="training_type" *ngIf="row2['eventDate'] && row2['eventDate'].length == 0">
+                                                    <span>N/A</span>
+                                                </div> -->
                                             </div>
                                         </div>
                                         <div class="col-lg-2 border-left-dash">
