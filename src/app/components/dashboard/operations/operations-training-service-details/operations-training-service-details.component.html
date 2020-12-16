@@ -374,11 +374,15 @@
                     The programs could include an evaluation exam to evaluate of the course.
                 </li>
             </ul>
+
+            <mat-checkbox name="undertaking_confirmTop3" [disableRipple]="true" 
+              [(ngModel)]="undertaking_confirmTop3">Agree to all terms and conditions</mat-checkbox>
           </div>
 
           <div class="undertaking-last">
             <div class="under_wrapper">
               <div class="date_undertake" *ngIf="applicantDetails != undefined && applicantDetails.application_date != undefined">
+                  <h5>{{applicantDetails?.organization_name}}</h5>
                   <span>Date : {{applicantDetails.application_date | date:'dd-MM-yyyy'}}</span>
               </div>
             </div>
