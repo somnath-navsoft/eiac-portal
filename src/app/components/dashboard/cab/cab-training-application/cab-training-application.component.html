@@ -11,7 +11,7 @@
         </div>
         <div class="row m-0">
           <div class="col-md-6" *ngFor="let item of pageDetails; let i = index;">
-              <div class="accreditation-container" *ngIf="item.page_path.path != '' && item.page_path.path == 'public_training'">
+              <div [ngStyle]="{'float': 'left'}" class="accreditation-container" *ngIf="item.page_path.path != '' && item.page_path.path == 'public_training'">
                 <div class="acc-main">
                   <div class="accreditation-img">
                     <img [src]="_constant.mediaPath + item.page_path.image_file" alt="">

@@ -39,7 +39,19 @@ export class CabTrainingInpremiseDetailComponent implements OnInit {
         //this.courseDetails = getData.records[0].course[0];
         this.trainingDetails = res['records'][0];
         let tempCourse: any =[];
+        let dataRec: any = res['records'];
         //tempCourse.push(getData.records[0].course[0]);
+        let tempAr: any =[];
+        dataRec.forEach((item, key) => {
+          console.log(item, " -- ", );
+            if(item.allTargatedAud != undefined && item.allTargatedAud.length > 0){
+              item.allTargatedAud.forEach(rec => {
+                if(rec.target_aud_name != undefined && rec.target_aud_name.title != ''){
+                  tempAr.push(rec.target_aud_name.title);
+                }
+              });
+            }              
+        });
 
         // tempCourse.forEach((item, key) => {
         //   audAr[key] = {};
@@ -58,8 +70,8 @@ export class CabTrainingInpremiseDetailComponent implements OnInit {
         // })
 
         console.log("@Aud ar: ", audAr);
-        this.audienceData = audAr;
-        console.log("#Aud ar: ", this.audienceData, " -- ", this.audienceData[0]);
+        this.audienceData = tempAr.join(', ');
+        console.log("#Aud ar: ", this.audienceData);
         this.courseDetails = tempCourse;
         
         // if(getData.records[0].course.public_course[0].allTargatedAud != undefined && getData.records[0].course[0].public_course.allTargatedAud.length > 0){
