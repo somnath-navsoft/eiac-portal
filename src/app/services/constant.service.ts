@@ -8,8 +8,13 @@ import { Subject} from 'rxjs';
 export class Constants{
 
 	public apiUrl: string 					= '';
+<<<<<<< HEAD
 
 	public mediaPath: string 				= 'https://uat-service.eiac.gov.ae';
+=======
+	public mediaPath: string 				= 'https://dev-service.eiac.gov.ae';
+	//public mediaPath: string 				= 'https://uat-service.eiac.gov.ae';
+>>>>>>> development
 	//trainerAPI: '/trainer',
 	//all_services: this.apiUrl + 'service_page/', 
 	public myvalue: any;
@@ -83,6 +88,7 @@ export class Constants{
 		accountLists: this.apiUrl + 'accounts/',
 		accountDetails: this.apiUrl + 'account-details-show/',
 		accrediationCsv: this.apiUrl + 'accrediation-csv/',
+		accrediationPdf: this.apiUrl + 'accrediation-pdf/',
 		workPermitform: this.apiUrl + 'workpermit_form/',
 		training_course_list: this.apiUrl + 'training-course-list/',
 		course_details_publicForm: this.apiUrl + 'public-course-event-details-show/',

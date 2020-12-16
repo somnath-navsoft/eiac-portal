@@ -340,6 +340,11 @@ getSchmeTC(sid: number){
   //   return '<strong>Accreditation Scope for ' + getSchemeData.title+'</strong>';
   // }
 }
+getFile(file: string){
+  let fname: string = file.split('/')[1].split('.')[0];
+  console.log(fname);
+  return fname;
+}
 getFamilySchmeTC = (sid: number, fid: number) =>{
   //console.log(">>> Family Data: ", sid," :: ", fid, " -- ", familyData)
   if(fid > 0){
@@ -882,6 +887,10 @@ loadScopeDataHalal(){
     //     console.log(res,'res');
     //   })
     window.open(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.accrediationCsv+this.routeId, '_blank');
+  }
+
+  downloadApplications() {
+    window.open(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.accrediationPdf+this.routeId, '_blank');
   }
 
   voucherSentSubmit(theForm){

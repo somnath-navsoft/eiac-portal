@@ -34,7 +34,12 @@ export class AppService {
   // public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
 
   public countryURL           =   "https://raw.githubusercontent.com/sagarshirbhate/Country-State-City-Database/master/Contries.json";
+<<<<<<< HEAD
   public assetsBasePath       =   "https://uat-portal.eiac.gov.ae/assets/csc-json/";
+=======
+  public assetsBasePath       =   "https://dev-portal.eiac.gov.ae/assets/csc-json/";
+  //https://raw.githubusercontent.com/sagarshirbhate/Country-State-City-Database/master/Contries.json
+>>>>>>> development
 
   public regExName: any;
   public regExUrl: any;
@@ -746,6 +751,10 @@ addMinutesToTime()
         obj[key]['converted_date_second'] = convertedDate;
       }
       return obj;
+    }
+
+    getCSCAll(){
+      return this.http.get(this.countryURL);
     }
 
     getCountry(){

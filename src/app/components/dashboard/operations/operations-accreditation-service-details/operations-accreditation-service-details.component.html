@@ -1778,6 +1778,22 @@
                       <td>Mobile Number</td>
                       <td *ngIf="paymentDetails?.mobile_no != null" colspan="3">{{_service.removePlus(paymentDetails?.mobile_no)}}</td>
                     </tr>
+                    <tr *ngIf="paymentDetails?.voucher_invoice != ''">
+                      <td>Voucher Receipt File</td>                      
+                      <td *ngIf="paymentDetails?.voucher_invoice != ''" colspan="3">
+                        <a [href]="_constant.mediaPath+'/media/'+paymentDetails?.voucher_invoice" target="_blank">
+                        {{getFile(paymentDetails?.voucher_invoice)}}
+                        </a>
+                      </td>
+                    </tr>
+                    <tr *ngIf="paymentDetails?.payment_receipt != ''">
+                      <td>Payment Receipt File</td>
+                      <td *ngIf="paymentDetails?.payment_receipt != null" colspan="3">
+                        <a [href]="_constant.mediaPath+'/media/'+paymentDetails?.payment_receipt" target="_blank">
+                          {{getFile(paymentDetails?.payment_receipt)}}
+                          </a>
+                      </td>
+                    </tr>
                   </table>
                 </div>
               </div>
@@ -1788,7 +1804,10 @@
         <div class="col-md-12">
           <div class="bttns-health bttn-staff">
             <div *ngIf="paymentDetails && paymentDetails!= null" class="button-content">
-              <button class="cancel-bttn" (click)="uiDialog.openPDFViewer(_constant.mediaPath,serviceDetail.form_pdf)"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button>
+              <!-- <button class="cancel-bttn" (click)="uiDialog.openPDFViewer(_constant.mediaPath,serviceDetail.form_pdf)"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button> -->
+
+              <button class="cancel-bttn" (click)="downloadApplications()"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button>
+              
 
               <button class="cancel-bttn" (click)="downloadCsv()"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD CSV</button>
             </div>
