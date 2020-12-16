@@ -107,7 +107,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
       if(inpremiseCourseid && inpremiseCourseid != undefined) {
         var splitId = inpremiseCourseid.split('=');
         this.traininginpremiseCourseid = splitId[1];
-        // console.log(this.trainingPublicCourseid,'trainingPublicCourseid');
+        console.log(this.traininginpremiseCourseid,'traininginpremiseCourseid');
         sessionStorage.setItem('inpremiseFormId','');
       }
   
@@ -184,13 +184,13 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
   
     loadCourseDetailsPage(traininginpremiseCourseid) {
       if(traininginpremiseCourseid != '' && traininginpremiseCourseid != undefined) {
-        this.Service.getwithoutData(this.Service.apiServerUrl+'/'+this._constant.API_ENDPOINT.course_details+traininginpremiseCourseid+'?data=1')
+        this.Service.getwithoutData(this.Service.apiServerUrl+'/custom-course-details-show/'+traininginpremiseCourseid)
           .subscribe(
             res => {
-              var courseDetails = res['courseDetails'];
-              this.step3Data.course_title = courseDetails.course;
+              var courseDetails = res['records'][0];
+              this.step3Data.course_title = courseDetails.course[0].new_custom_course.name;
               this.step3Data.training_duration = parseInt(courseDetails.training_days);
-              this.trainingDurationSelectbox = this.step3Data.training_duration != '' && this.step3Data.training_duration != undefined ? true : false;
+              this.trainingDurationSelectbox = courseDetails.training_days != '' && courseDetails.training_days != '' ? true : false;
               // console.log(courseDetails.training_days,'training_days');
               this.step1Data.event_management = traininginpremiseCourseid;
             });
@@ -359,7 +359,8 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
                   this.voucherSentData.mobile_no        = (res['data'].paymentDetails.mobile_no != 'null') ? res['data'].paymentDetails.mobile_no : '';
   
                   this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this._constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
-                  this.paymentReceiptValidation = true;
+                  // this.paymentReceiptValidation = true;
+                  this.paymentReceiptValidation = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? true : false;
               }
   
               let pathData: any;
@@ -833,6 +834,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
     }
   
   onSubmitPaymentInformation(theForm: any, type?: any){
+    // console.log(this.paymentReceiptValidation,'paymentReceiptValidation');
       //this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
   
       let is_valid: boolean = false;
