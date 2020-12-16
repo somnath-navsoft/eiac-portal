@@ -183,7 +183,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             var courseDetails = res['eventData'].public_course;
             this.step3Data.course_title = courseDetails.course;
             this.step3Data.training_duration = isNaN(parseInt(courseDetails.training_days)) ? courseDetails.training_days : parseInt(courseDetails.training_days);
-            this.trainingDurationSelectbox = this.step3Data.training_duration != null && this.step3Data.training_duration != undefined ? true : false;
+            this.trainingDurationSelectbox = courseDetails.training_days != null && courseDetails.training_days != '' ? true : false;
             this.step1Data.event_management = trainingPublicCourseid;
             // console.log(courseDetails.training_days,'training_days');
           });

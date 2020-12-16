@@ -79,7 +79,9 @@
                                                     <span>Duration</span>
                                                 </div>
                                                 <div class="training_type">
-                                                    <span>{{row2.training_days}} Days</span>
+                                                    <span *ngIf="row2.training_days != null">{{row2.training_days}} Days</span>
+                                                    <span *ngIf="row2.training_days == null">0 Day</span>
+                                                    <!-- <span>{{row2.training_days}} Days</span> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -123,7 +125,7 @@
                                             <div class="training-main-details">
                                             <div class="train_det_bttn">
                                                 <!-- routerLink="/dashboard/cab_client/training-inpremise-event-details/{{row2.id}}" --> 
-                                                <a routerLink="/dashboard/cab_client/training-inpremise-apply-details/{{row2.courseDetails.id}}" class="training_btn">DETAILS</a>
+                                                <a routerLink="/dashboard/cab_client/training-inpremise-apply-details/{{row2.id}}" class="training_btn">DETAILS</a>
                                             </div>  
                                         </div>
                                         </div>

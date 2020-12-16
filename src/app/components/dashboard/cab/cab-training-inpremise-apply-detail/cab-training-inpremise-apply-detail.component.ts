@@ -26,8 +26,8 @@ export class CabTrainingInpremiseApplyDetailComponent implements OnInit {
 
   loadData() {
     this.loaderData = false;
-    let url: string = this._service.apiServerUrl + "/" + "custom-course-details-show/" + this.routeId;
-    console.log(">>> URL: ", url); 
+    let url: string = this._service.apiServerUrl + "/" + "eventid-course-details-show/" + this.routeId;
+    // console.log(">>> URL: ", url); 
     //this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.course_details+this.routeId+'?data=1'
     this._service.getwithoutData(url)
     .subscribe(
@@ -37,7 +37,7 @@ export class CabTrainingInpremiseApplyDetailComponent implements OnInit {
         let audAr: any ={};
         console.log(">>>>data: ", getData);
         //this.courseDetails = getData.records[0].course[0];
-        this.trainingDetails = res['records'][0];
+        this.trainingDetails = res['allEventData'][0];
         let tempCourse: any =[];
         //tempCourse.push(getData.records[0].course[0]);
 
