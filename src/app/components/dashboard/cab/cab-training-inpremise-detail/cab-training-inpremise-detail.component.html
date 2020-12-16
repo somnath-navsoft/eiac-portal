@@ -14,9 +14,9 @@
                 <!-- <ng-container *ngFor="let item of courseDetails; let k = index;"> -->
                     <div class="row">
                         <div class="col-md-12">
-                            <!-- <ng-container *ngIf="trainingDetails.course != undefined && trainingDetails.course != null && trainingDetails.course.length > 0">
-                                <h1>{{trainingDetails.course[0].new_custom_course.name}}</h1>
-                            </ng-container>                             -->
+                            <ng-container *ngIf="trainingDetails.main_course != undefined && trainingDetails.main_course != null">
+                                <h1>{{trainingDetails.main_course.name}}</h1>
+                            </ng-container>                            
                         </div>
                     </div>
                     <div class="row"> 
@@ -132,10 +132,12 @@
                         <div class="col-md-12">
                             <div class="progs-up">
                                 <div class="prog-details">
-                                    <ng-container *ngIf="trainingDetails.course != undefined && trainingDetails.course.length > 0">
-                                        <p [innerHtml]="trainingDetails.course[0].new_custom_course.description"></p>
+                                    <ng-container *ngIf="trainingDetails.main_course != undefined && trainingDetails.main_course.description != ''">
+                                        <p [innerHtml]="trainingDetails.main_course.description"></p>
                                     </ng-container>
-                                    
+                                    <ng-container *ngIf="trainingDetails.main_course != undefined && trainingDetails.main_course.description == ''">
+                                        <p></p>
+                                    </ng-container>
                                 </div>                               
                             </div>
                         </div>

@@ -7,7 +7,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="dashbrd-hdr">
-                            <h3>Apply In Premise course</h3>
+                            <h3>Apply InPremise course</h3>
                         </div>
                     </div>
                 </div>
@@ -22,20 +22,18 @@
                     <div class="row"> 
                         <div class="col-lg-6 ">
                             <div class="course-list">
-                                <!-- {{trainingDetails.courseType |  json}} ||
-                                {{_constant.mediaPath}} -->
-                                <div class="description-course" *ngIf="trainingDetails.courseType != undefined && trainingDetails.courseType.length > 0">
-                                    <img src="{{_constant.mediaPath}}/media/{{trainingDetails.courseType[0].course_type_img}}" [alt] = "trainingDetails.course[0].new_custom_course.name"
+                                <!-- <div class="description-course" *ngIf="trainingDetails.course_image != '' && trainingDetails.course_image != null">
+                                    <img src="{{_constant.mediaPath}}{{trainingDetails.course_image}}" [alt] = "trainingDetails.course[0].new_custom_course.name"
                                     [title] = "trainingDetails.course[0].new_custom_course.name">
-                                </div>
+                                </div> -->
 
-                                <!-- <ng-container *ngIf="trainingDetails.course_image != '' && trainingDetails.course_image != null">
+                                <ng-container *ngIf="trainingDetails.course_image != '' && trainingDetails.course_image != null">
                                     <div class="description-course">
                                         <img src="{{_constant.mediaPath}}{{trainingDetails.course_image}}" [alt]="courseDetails?.public_course.course"
                                         [title]="courseDetails?.public_course.course">                                   
                                     </div>
-                                </ng-container> -->
-                                <ng-container *ngIf="trainingDetails.courseType != undefined && trainingDetails.courseType.length == 0">
+                                </ng-container>
+                                <ng-container *ngIf="trainingDetails.course_image == '' || trainingDetails.course_image == null">
                                     <div class="description-course">
                                         <h3 [ngStyle]="{'text-align': 'center'}">No Image</h3>
                                     </div>
@@ -84,34 +82,21 @@
                                     </div>
 
                                     <div class="course-info">
-                                        <h5>Trainer : &nbsp;
-                                            <span *ngIf="trainingDetails?.tutor != undefined">{{trainingDetails?.tutor.tutor__name}}</span>
-                                            <span *ngIf="trainingDetails?.tutor == undefined || trainingDetails?.tutor == null">NA</span>
-                                        </h5>
+                                        <h5>Trainer : </h5>
                                         <!-- <h5>Trainer : <span *ngIf="courseDetails?.tutor != ''">{{courseDetails?.event.tutor}}</span>
                                         <span *ngIf="courseDetails?.tutor == ''">N/A</span>
                                         </h5> -->
                                     </div>
 
                                     <div class="course-info">
-                                        <h5>Location :&nbsp;&nbsp;<span *ngIf="trainingDetails?.location == 'client_premisis'">EIAC Client Premises</span>
-                                            &nbsp;<span *ngIf="trainingDetails?.location == 'eiac_training_center'">EIAC Training Center</span>
-                                            &nbsp;<span *ngIf="trainingDetails?.location === '' || trainingDetails?.location == null">N/A</span>
+                                        <h5>Location : <span *ngIf="trainingDetails?.location == 'client_premisis'">EIAC Client Premises</span>
+                                        <span *ngIf="trainingDetails?.location == 'eiac_training_center'">EIAC Training Center</span>
+                                        <span *ngIf="trainingDetails?.location === '' || trainingDetails?.location == null">N/A</span>
                                         </h5>
                                     </div>
 
                                     <div class="course-info">
-                                        <h5>Audience:&nbsp;&nbsp;<span>
-                                        <ng-container *ngIf="trainingDetails.allTargatedAud != undefined || trainingDetails.allTargatedAud != null">
-                                            <ng-container *ngFor="let item of trainingDetails.allTargatedAud;">
-                                                <span>{{item.target_aud_name.title}}</span>, 
-                                            </ng-container>
-                                        </ng-container>
-                                        <ng-container *ngIf="trainingDetails.allTargatedAud == undefined || trainingDetails.allTargatedAud == null">
-                                            NA
-                                        </ng-container>
-                                        </span>
-                                        </h5>
+                                        <h5>Audience:</h5>
                                         <!-- <h5>Audience : <span *ngIf="item.public_course?.allTargatedAud && item.public_course?.allTargatedAud[0].target_aud_name.title">{{courseDetails?.allTargatedAud[0].target_aud_name.title}}</span>
                                         <span *ngIf="!courseDetails?.allTargatedAud && !courseDetails?.allTargatedAud[0].target_aud_name.title">{{courseDetails?.allTargatedAud[0].target_aud_name.title}}</span>
                                         </h5> -->
