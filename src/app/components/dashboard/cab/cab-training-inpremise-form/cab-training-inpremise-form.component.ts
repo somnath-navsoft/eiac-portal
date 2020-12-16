@@ -191,7 +191,8 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
               this.step3Data.course_title = courseDetails.course[0].new_custom_course.name;
               this.step3Data.training_duration = parseInt(courseDetails.training_days);
               this.trainingDurationSelectbox = courseDetails.training_days != '' && courseDetails.training_days != '' ? true : false;
-              // console.log(courseDetails.training_days,'training_days');
+              console.log(courseDetails.course[0].new_custom_course.name,'training_days');
+              console.log(courseDetails.training_days,'training_days');
               this.step1Data.event_management = traininginpremiseCourseid;
             });
       }
@@ -241,7 +242,8 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
         this.step5Data.organization_name = res['data']['step1'][0].cab_name;
         })
   
-      if(this.inpremiseFormId != '' && this.inpremiseFormId != undefined) {
+        // console.log(this.inpremiseFormId,'inpremiseFormId');
+      if(this.inpremiseFormId != '' && this.inpremiseFormId != 'undefined') {
         let url2 = this.Service.apiServerUrl+"/"+'training-details-show/'+this.inpremiseFormId;
           this.Service.getwithoutData(url2)
           .subscribe(

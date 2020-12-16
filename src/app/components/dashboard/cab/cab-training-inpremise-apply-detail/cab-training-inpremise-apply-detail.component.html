@@ -14,8 +14,8 @@
                 <!-- <ng-container *ngFor="let item of courseDetails; let k = index;"> -->
                     <div class="row">
                         <div class="col-md-12">
-                            <ng-container *ngIf="trainingDetails?.course != undefined && trainingDetails?.course.length > 0">
-                                <h1>{{trainingDetails?.course[0].new_custom_course.name}}</h1>
+                            <ng-container *ngIf="trainingDetails.courseDetails != ''">
+                                <h1>{{trainingDetails.courseDetails?.course}}</h1>
                             </ng-container>                            
                         </div>
                     </div>
@@ -27,13 +27,13 @@
                                     [title] = "trainingDetails.course[0].new_custom_course.name">
                                 </div> -->
 
-                                <ng-container *ngIf="trainingDetails.course_image != '' && trainingDetails.course_image != null">
+                                <ng-container *ngIf="trainingDetails.courseDetails?.course_type != '' && trainingDetails.courseDetails?.course_type != null">
                                     <div class="description-course">
-                                        <img src="{{_constant.mediaPath}}{{trainingDetails.course_image}}" [alt]="courseDetails?.public_course.course"
-                                        [title]="courseDetails?.public_course.course">                                   
+                                        <img src="{{_constant.mediaPath}}{{trainingDetails.courseDetails.course_type.course_type_img_thumb}}" [alt]="trainingDetails.courseDetails.course"
+                                        [title]="trainingDetails.courseDetails.course">                                   
                                     </div>
                                 </ng-container>
-                                <ng-container *ngIf="trainingDetails.course_image == '' || trainingDetails.course_image == null">
+                                <ng-container *ngIf="trainingDetails.courseDetails.course_type == '' || trainingDetails.courseDetails.course_type == null">
                                     <div class="description-course">
                                         <h3 [ngStyle]="{'text-align': 'center'}">No Image</h3>
                                     </div>
@@ -61,42 +61,48 @@
                                         </div>
                                         
                                         <div class="course-det">
-                                            <h5>Duration : <span *ngIf="trainingDetails?.training_days != ''">{{trainingDetails?.training_days}} Days</span>
-                                                <span *ngIf="trainingDetails?.training_days == ''">N/A</span>
+                                            <h5>Duration : <span *ngIf="trainingDetails.courseDetails.training_days != ''">{{trainingDetails.courseDetails.training_days}} Days</span>
+                                                <span *ngIf="trainingDetails.courseDetails.training_days == ''">N/A</span>
                                             </h5>
                                         </div>
                                     </div>
                                     
                                     <div class="course-info">
                                         <div class="course-det">
-                                            <h5>Fees in AED : <span *ngIf="trainingDetails?.fees_per_trainee != ''">{{trainingDetails?.fees_per_trainee}}</span>
-                                            <span *ngIf="trainingDetails?.fees_per_trainee == ''">N/A</span>
+                                            <h5>Fees in AED : <span *ngIf="trainingDetails.courseDetails.fees_per_trainee != ''">{{trainingDetails.courseDetails.fees_per_trainee}}</span>
+                                            <span *ngIf="trainingDetails.courseDetails.fees_per_trainee == ''">N/A</span>
                                             </h5>
                                         </div>
 
                                         <div class="course-det">
-                                            <h5>Capacity : <span *ngIf="trainingDetails?.capacity != ''">{{trainingDetails?.capacity}}</span>
-                                            <span *ngIf="trainingDetails?.capacity == ''">N/A</span>
+                                            <h5>Capacity : <span *ngIf="trainingDetails.courseDetails.capacity != ''">{{trainingDetails.courseDetails.capacity}}</span>
+                                            <span *ngIf="trainingDetails.courseDetails.capacity == ''">N/A</span>
                                             </h5>
                                         </div>
                                     </div>
 
                                     <div class="course-info">
-                                        <h5>Trainer : </h5>
-                                        <!-- <h5>Trainer : <span *ngIf="courseDetails?.tutor != ''">{{courseDetails?.event.tutor}}</span>
-                                        <span *ngIf="courseDetails?.tutor == ''">N/A</span>
-                                        </h5> -->
-                                    </div>
-
-                                    <div class="course-info">
-                                        <h5>Location : <span *ngIf="trainingDetails?.location == 'client_premisis'">EIAC Client Premises</span>
-                                        <span *ngIf="trainingDetails?.location == 'eiac_training_center'">EIAC Training Center</span>
-                                        <span *ngIf="trainingDetails?.location === '' || trainingDetails?.location == null">N/A</span>
+                                        <!-- <h5>Trainer : </h5> -->
+                                        <h5>Trainer : <span *ngIf="trainingDetails.tutor.name != ''">{{trainingDetails.tutor.name}}</span>
+                                        <span *ngIf="trainingDetails.tutor.name == ''">N/A</span>
                                         </h5>
                                     </div>
 
                                     <div class="course-info">
-                                        <h5>Audience:</h5>
+                                        <h5>Location : <span *ngIf="trainingDetails.courseDetails.location == 'client_premisis'">EIAC Client Premises</span>
+                                        <span *ngIf="trainingDetails.courseDetails.location == 'eiac_training_center'">EIAC Training Center</span>
+                                        <span *ngIf="trainingDetails.courseDetails.location === '' || trainingDetails.courseDetails.location == null">N/A</span>
+                                        </h5>
+                                    </div>
+
+                                    <div class="course-info">
+                                        <h5>Audience:
+                                            <ng-container *ngIf="trainingDetails.courseDetails['allTargatedAud'] != undefined && trainingDetails.courseDetails['allTargatedAud'].length > 0">
+                                                <ng-container *ngFor="let item of trainingDetails.courseDetails['allTargatedAud']">
+                                                    <span>{{item.target_aud_name.title}}</span>, 
+                                                </ng-container>
+                                            </ng-container>
+                                        </h5>
                                         <!-- <h5>Audience : <span *ngIf="item.public_course?.allTargatedAud && item.public_course?.allTargatedAud[0].target_aud_name.title">{{courseDetails?.allTargatedAud[0].target_aud_name.title}}</span>
                                         <span *ngIf="!courseDetails?.allTargatedAud && !courseDetails?.allTargatedAud[0].target_aud_name.title">{{courseDetails?.allTargatedAud[0].target_aud_name.title}}</span>
                                         </h5> -->
@@ -123,8 +129,8 @@
                         <div class="col-md-12">
                             <div class="progs-up">
                                 <div class="prog-details">
-                                    <ng-container *ngIf="trainingDetails.course != undefined && trainingDetails.course.length > 0">
-                                        <p [innerHtml]="trainingDetails.course[0].new_custom_course.description"></p>
+                                    <ng-container *ngIf="trainingDetails.courseDetails.course_description != ''">
+                                        <p [innerHtml]="trainingDetails.courseDetails.course_description"></p>
                                     </ng-container>
                                     
                                 </div>                               
