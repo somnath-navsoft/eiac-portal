@@ -193,10 +193,10 @@ shortProgramListing(section:any) {
 
       }else if(this.programEvent == 'date')
       {
-          this.trainingList.sort((a,b) => (a.event_start_date_time > b.event_start_date_time) ? 1 : -1);
+          this.trainingList.sort((a,b) => (a['eventDate'][0] > b['eventDate'][0]) ? 1 : -1);
       }else if(this.programEvent == 'days')
       {
-          this.trainingList.sort((a,b) => (a.training_days > b.training_days) ? 1 : -1);
+          this.trainingList.sort((a,b) => (a.courseDetails.training_days > b.courseDetails.training_days) ? 1 : -1);
       }
       
     }

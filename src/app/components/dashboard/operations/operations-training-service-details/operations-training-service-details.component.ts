@@ -33,6 +33,7 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
   fee_day_pertime3:any = 10;
   fee_day_pertime4:any = 10;
   applicantDetails:any;
+  undertaking_confirmTop3:boolean = true;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService) { }
@@ -41,6 +42,7 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
     this.loader = true;
     this.routeId = sessionStorage.getItem('trainingId');
     this.loadData();
+    // this.undertaking_confirmTop3 = true;
   }
   getFile(file: string){
     let fname: string = file.split('/')[1].split('.')[0];
