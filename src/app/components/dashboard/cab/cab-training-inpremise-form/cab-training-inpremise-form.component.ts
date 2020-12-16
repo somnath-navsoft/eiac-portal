@@ -676,7 +676,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
   
     onSubmitStep5(ngForm5){
       // this.Service.moveSteps('authorization', 'proforma_invoice', this.headerSteps);
-      if(ngForm5.form.valid) {
+      if(ngForm5.form.valid && this.authorizationList.undertaking_confirmTop3 == true) {
         this.publicTrainingForm = {};
         this.publicTrainingForm.step5 = {};
         this.publicTrainingForm.email = this.userEmail;
