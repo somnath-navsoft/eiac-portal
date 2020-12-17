@@ -26,6 +26,7 @@ export class EventListsComponent implements OnInit {
   curSortDir: any = {};
   modalOptions:NgbModalOptions;
   closeResult: string;
+  participantsTempList:any[] = [{}]
   participantsList:any[] = [{}]
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService, public _trainerService:TrainerService, private modalService: NgbModal) { }
@@ -39,7 +40,7 @@ export class EventListsComponent implements OnInit {
     this.curSortDir['form_meta']             = false;
     this.curSortDir['location']             = false;
 
-    this.participantsList = [{'name':'Test test','email':'test@test.com','phone':89898989},{'name':'Test2 test2','email':'test2@test2.com','phone':56756756657},{'name':'Test3 test','email':'test3@test3.com','phone':787686778}]
+    this.participantsTempList = [{'name':'Test test','email':'test@test.com','phone':89898989},{'name':'Test2 test2','email':'test2@test2.com','phone':56756756657},{'name':'Test3 test','email':'test3@test3.com','phone':787686778}];
   }
 
   loadPageData() {
@@ -182,7 +183,7 @@ export class EventListsComponent implements OnInit {
     }
   }
 
-  open(content) {
+  open(content,arr:any[]) {
     // console.log(key)
     //this.voucherSentData = {};
     // if(id){
@@ -192,6 +193,8 @@ export class EventListsComponent implements OnInit {
     //   this.voucherIndex = key
     // }
     // this.paymentReceiptValidation = null;
+    this.participantsList = arr;
+
     this.modalService.open(content, this.modalOptions).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
