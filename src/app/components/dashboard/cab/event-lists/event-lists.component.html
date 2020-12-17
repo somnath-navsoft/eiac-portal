@@ -135,6 +135,7 @@
                                 </th>
                             </tr>
                             <!-- eventData.records != undefined && -->  
+                            <a href="javascript:void(0);" (click)="open(eventdetails)">Click</a>
                         <ng-container *ngIf="eventData != undefined && eventData.length > 0">
                             <tr *ngFor="let item of eventData | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
                                 <td>
@@ -175,6 +176,39 @@
                     </div>
                 </div>
             </div>
+
+
+        <!-- Modal -->
+        <ng-template #eventdetails let-modal>
+            <div class="modal-header course-pop">
+              <h4 class="modal-title" id="modal-basic-title">EVENT DETAILS</h4>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span class="icon-close"></span>
+              </button>
+            </div>
+            <div class="modal-body">                 
+                <div class="table-dashboard-cont">
+                    <div class="row m-0">
+                        <div class="col-md-12 p-0">
+                            
+                            <table>
+                                <tr>
+                                    <th>Participants Name</th>
+                                    <th>Email Address</th>
+                                    <th>Phone Number</th>
+                                </tr>
+
+                                <tr *ngFor="let row of participantsList; let i = index;">
+                                    <td>{{row.name}}</td>
+                                    <td>{{row.email}}</td>
+                                    <td>{{row.phone}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
         
         </div>
     </div>

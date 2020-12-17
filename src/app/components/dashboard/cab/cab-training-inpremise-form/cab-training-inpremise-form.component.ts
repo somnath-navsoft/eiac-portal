@@ -95,6 +95,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
   public minDate;
   trainingDurationSelectbox:any;
   authorizationList:any;
+  trainingCapacity:any;
 
   constructor(private Service: AppService, private http: HttpClient,
     public _toaster: ToastrService, private _router: Router, private _route: ActivatedRoute,
@@ -187,10 +188,12 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
         this.Service.getwithoutData(this.Service.apiServerUrl+'/eventid-course-details-show/'+traininginpremiseCourseid)
           .subscribe(
             res => {
+              // console.log(res,'allEventData');
               var courseDetails = res['allEventData'][0].courseDetails;
               this.step3Data.course_title = courseDetails.course;
               this.step3Data.training_duration = parseInt(courseDetails.training_days);
               this.trainingDurationSelectbox = courseDetails.training_days != '' && courseDetails.training_days != '' ? true : false;
+              this.trainingCapacity = parseInt(courseDetails.capacity);
               // console.log(courseDetails.course,'training_days');
               // console.log(courseDetails.training_days,'training_days');
               this.step1Data.event_management = traininginpremiseCourseid;
@@ -523,7 +526,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
   
     onSubmitStep2(ngForm2){
       // this.Service.moveSteps('participant', 'training_details', this.headerSteps);
-      if(ngForm2.form.valid) {
+      if(ngForm2.form.valid && this.trainingCapacity == this.participantTraineeDetails.length) {
         this.publicTrainingForm = {};
         this.publicTrainingForm.step2 = {};
         this.publicTrainingForm.email = this.userEmail;
@@ -555,6 +558,8 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
               this._toaster.warning(res['msg'], '');
             }
           })
+      }else if(ngForm2.form.valid && this.trainingCapacity != this.participantTraineeDetails.length) {
+        this._toaster.warning('Number of participents should be Identical','Validation Error',{timeOut:5000});
       }else {
         this._toaster.warning('Please Fill required field','Validation Error',{timeOut:5000});
       }
