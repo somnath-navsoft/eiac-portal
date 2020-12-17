@@ -2361,7 +2361,7 @@ addSchemeRow(obj: any = [],index: number){
   }
 
   filePathVreateDynamics(filePath) {
-    return this.constant.mediaPath+'/media/'+filePath;
+    return this.constant.mediaPath+'/media/'+filePath; 
   }
 
 
