@@ -135,7 +135,7 @@
                                 </th>
                             </tr>
                             <!-- eventData.records != undefined && -->  
-                            <a href="javascript:void(0);" (click)="open(eventdetails)">Click</a>
+                            <a href="javascript:void(0);" (click)="open(eventdetails,participantsTempList)">Click</a>
                         <ng-container *ngIf="eventData != undefined && eventData.length > 0">
                             <tr *ngFor="let item of eventData | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
                                 <td>
