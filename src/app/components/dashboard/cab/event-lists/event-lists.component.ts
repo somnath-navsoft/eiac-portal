@@ -26,8 +26,9 @@ export class EventListsComponent implements OnInit {
   curSortDir: any = {};
   modalOptions:NgbModalOptions;
   closeResult: string;
-  participantsTempList:any[] = [{}]
-  participantsList:any[] = [{}]
+  participantsTempList:any[] = [{}];
+  participantsList:any[] = [{}];
+  dataLoad: boolean = false;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService, public _trainerService:TrainerService, private modalService: NgbModal) { }
 
@@ -41,15 +42,19 @@ export class EventListsComponent implements OnInit {
     this.curSortDir['location']             = false;
 
     this.participantsTempList = [{'name':'Test test','email':'test@test.com','phone':89898989},{'name':'Test2 test2','email':'test2@test2.com','phone':56756756657},{'name':'Test3 test','email':'test3@test3.com','phone':787686778}];
+
+    this.loadPageData();
   }
 
   loadPageData() {
     this.loader = false;
     var id = 'all';
-    this.subscriptions.push(this._trainerService.getAccreditationStatusList(id)
+    this.subscriptions.push(this._trainerService.getAllEventList()
       .subscribe(
         result => {
           this.loader = true;
+          this.dataLoad = true;
+
           let data: any = result;
           let dataRec: any=[];
           // console.log('Data load...', data.records);

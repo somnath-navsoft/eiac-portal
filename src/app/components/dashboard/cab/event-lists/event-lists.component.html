@@ -135,23 +135,27 @@
                                 </th>
                             </tr>
                             <!-- eventData.records != undefined && -->  
-                            <a href="javascript:void(0);" (click)="open(eventdetails,participantsTempList)">Click</a>
+                            <!-- <a href="javascript:void(0);" (click)="open(eventdetails,participantsTempList)">Click</a> -->
                         <ng-container *ngIf="eventData != undefined && eventData.length > 0">
                             <tr *ngFor="let item of eventData | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
                                 <td>
-                                    {{item.title}}
+                                    {{item.course}}
+                                </td>
+
+                                <td *ngIf="item['eventDates'] && item['eventDates'].length > 0">
+                                    {{item['eventDates'][0].event_date | date}}
+                                </td>
+
+                                <td *ngIf="!item['eventDates'] || item['eventDates'].length == 0">
+                                    N/A
                                 </td>
 
                                 <td>
-                                    {{item.event_date | date}}
+                                    <!-- {{item.event_time}} -->
                                 </td>
 
                                 <td>
-                                    {{item.event_time}}
-                                </td>
-
-                                <td>
-                                    {{item.no_of_participants}}
+                                    <!-- {{item.no_of_participants}} -->
                                 </td>
                             </tr>
                         </ng-container>
