@@ -41,7 +41,7 @@ export class CabDashboardComponent implements OnInit {
   selectedUser: any = [];
 
   selectedField: any = 'Internal Operations';
-  getUserType: string = 'internal_operations';
+  getUserType: string = 'operations';
   document: any = '';
   documentName: any = '';
   searchDetails: any = [];
@@ -193,6 +193,18 @@ export class CabDashboardComponent implements OnInit {
     ];
 
 
+    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=' + this.getUserType + '&searchKey=S')
+      .subscribe(
+        res => {
+          this.searchDetails = res['data'].user_list;
+          this.loader = true;;
+          // this.search(this.searchTerm);
+
+        }, err => {
+          this.loader = true;
+        });
+
+
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.userId = sessionStorage.getItem('userId');
@@ -311,7 +323,7 @@ export class CabDashboardComponent implements OnInit {
       this.getUserType = 'super_admin';
     }
     if (this.selectedField == 'Internal Operations') {
-      this.getUserType = 'internal_operations';
+      this.getUserType = 'operations';
     }
 
     this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=' + this.getUserType + '&searchKey=S')
