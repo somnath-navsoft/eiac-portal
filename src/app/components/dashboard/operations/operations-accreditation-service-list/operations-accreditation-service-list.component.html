@@ -10,21 +10,38 @@
                         <h3>Accreditation Service</h3> 
                     </div>
                 </div>
-                <!-- <div class="col-md-4"> 
+                <div class="col-md-4"> 
                     <div class="tbl-filter-data">
                         <ul>
                             <li>
                                 <div class="filter">
-                                    <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a>
+                                    <!-- <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a> -->
                                     <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a>
                                 </div>
                             </li>
                         </ul>
                     </div>
-                </div> -->
+                </div>
             </div>
+
+            <div class="row m-0">
+                <div class="col-md-4">
+                    <div class="user-details">
+                        <mat-form-field class="cab-data">
+                            <mat-label>Export As</mat-label>                             
+                            <mat-select placeholder="Export" 
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="exportAs" required>
+                                <mat-option value="csv">Export as CSV</mat-option>
+                                <mat-option value="xls">Export as XLS</mat-option>
+                                <mat-option value="pdf">Export as PDF</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
             <ng-container *ngIf="advSearch" class="tbl-filter-data">
-                <div class="filter-dash">
+                <div class="filter-dash filter_certification">
                     <div class="close-bttn">
                         <span class="icon-close" (click)="filterSearchSec()"></span>
                     </div>
@@ -32,23 +49,26 @@
                     <div class="col-md-4">
                         <div class="user-details">
                             <mat-form-field class="cab-data">
-                                <mat-label>Search by Course ID</mat-label> 
-                            <input type="text" matInput [(ngModel)]="selectCode" placeholder="Search by CODE">
+                                <mat-label>Application No</mat-label> 
+                            <input type="text" matInput [(ngModel)]="applicationNo" placeholder="Search by Application No">
                             </mat-form-field>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="user-details">
                             <mat-form-field class="cab-data">
-                                <mat-label>Search by Fees</mat-label> 
-                            <input matInput type="number" [(ngModel)]="selectFees" placeholder="Search by Fees">
+                                <mat-label>Accreditation Type</mat-label>                             
+                                <mat-select placeholder="Select" 
+                                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectCustomCourse" required>
+                                    <mat-option *ngFor="let item of selectCustomCourses;" [value]="item.value">{{item.title}}</mat-option>
+                                </mat-select>
                             </mat-form-field>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="user-details">
                             <mat-form-field class="cab-data">
-                                <mat-label>Select Course Type</mat-label>                             
+                                <mat-label>Payment Status</mat-label>                             
                                 <mat-select placeholder="Select" 
                                 [ngModelOptions]="{standalone: true}" [(ngModel)]="selectCustomCourse" required>
                                     <mat-option *ngFor="let item of selectCustomCourses;" [value]="item.value">{{item.title}}</mat-option>
@@ -57,7 +77,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row m-0" >
+                <!-- <div class="row m-0" >
                     <div class="col-md-4">
                         <div class="user-details">
                             <mat-form-field class="cab-data">
@@ -80,7 +100,8 @@
                             </mat-form-field>
                         </div>
                     </div>
-                </div>
+                </div> -->
+
                 <div class="row m-0">
                     <div class="col-md-12"> 
                         <div class="filter-search">

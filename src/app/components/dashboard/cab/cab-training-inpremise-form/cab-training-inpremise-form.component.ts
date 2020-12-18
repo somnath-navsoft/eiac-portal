@@ -197,6 +197,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
               // console.log(courseDetails.course,'training_days');
               // console.log(courseDetails.training_days,'training_days');
               this.step1Data.event_management = traininginpremiseCourseid;
+              this.step2Data.event_management = traininginpremiseCourseid;
             });
       }
     }

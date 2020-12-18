@@ -5,6 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { ToastrService} from 'ngx-toastr';
 import { TrainerService } from 'src/app/services/trainer.service';
 import * as XLSX from 'xlsx';
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
 @Component({
   selector: 'app-account-details',
@@ -27,8 +28,13 @@ export class AccountDetailsComponent implements OnInit {
   pageData: any = {};
   pageTotal: number = 0;
 
+  exportAsConfig: ExportAsConfig = {
+    type: 'pdf', // the type you want to download
+    elementIdOrContent: 'excel-table', // the id of html/table element
+  }
+  
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
-    private _trainerService: TrainerService) { }
+    private _trainerService: TrainerService, private exportAsService: ExportAsService) { }
 
   ngOnInit() {
     this.fileName = 'acounts.xlsx'
@@ -77,6 +83,17 @@ export class AccountDetailsComponent implements OnInit {
 
     /* save to file */
     XLSX.writeFile(wb, this.fileName);
+  }
+
+  export() {
+    // download the file using old school javascript method
+    this.exportAsService.save(this.exportAsConfig, 'My File Name').subscribe(() => {
+      // save started
+    });
+    // get the data as base64 or json object for json type - this will be helpful in ionic or SSR
+    // this.exportAsService.get(this.exportAsConfig).subscribe(content => {
+    //   console.log(content);
+    // });
   }
   
 }
