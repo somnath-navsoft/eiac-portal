@@ -59,8 +59,8 @@
                             <mat-form-field class="cab-data">
                                 <mat-label>Accreditation Type</mat-label>                             
                                 <mat-select placeholder="Select" 
-                                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectCustomCourse" required>
-                                    <mat-option *ngFor="let item of selectCustomCourses;" [value]="item.value">{{item.title}}</mat-option>
+                                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectAccrTypeValue" required>
+                                    <mat-option *ngFor="let item of selectAccrType;" [value]="item.value">{{item.title}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -70,8 +70,8 @@
                             <mat-form-field class="cab-data">
                                 <mat-label>Payment Status</mat-label>                             
                                 <mat-select placeholder="Select" 
-                                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectCustomCourse" required>
-                                    <mat-option *ngFor="let item of selectCustomCourses;" [value]="item.value">{{item.title}}</mat-option>
+                                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectPaymentType" required>
+                                    <mat-option *ngFor="let item of selectPaymentStatusType;" [value]="item.value">{{item.title}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -126,7 +126,7 @@
         
         <div class="table-dashboard-cont">
             <div class="row m-0">
-                <div class="col-md-12 p-0">
+                <div class="col-md-12 p-0 mt-3">
                     <!-- @{{trainerdata | json}} -->
                     <table id="accreditation-service-export">
                         <tr>

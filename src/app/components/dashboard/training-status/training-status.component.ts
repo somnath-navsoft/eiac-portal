@@ -40,8 +40,9 @@ export class TrainingStatusComponent implements OnInit {
     this.curSortDir['created_date']       = false;
     this.curSortDir['accr_status']        = false;
     this.curSortDir['prelim_status']      = false;
-    this.curSortDir['training_form_type']          = false;
+    this.curSortDir['training_form_type'] = false;
     this.curSortDir['payment_status']     = false;
+    this.curSortDir['cab_code']           = false;
     this.curSortDir['applicant']          = false;
   }
   
@@ -161,17 +162,27 @@ export class TrainingStatusComponent implements OnInit {
          if(!this.curSortDir.id){
            let array = data.slice().sort((a, b) => (a.id < b.id) ? 1 : -1)
            this.trainerdata = array;
-           //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
          }
        }
+       //Cab Name
+      //  if(sortBy === 'cab_code'){
+      //   //console.log(">>>Enter type...");
+      //   this.curSortDir.cab_code = !sortDir;
+      //   if(this.curSortDir.cab_code){
+      //     let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_code > b.cabDetails[0].cab_code) ? 1 : -1)
+      //     this.trainerdata = array;
+      //   }
+      //   if(!this.curSortDir.cab_code){
+      //     let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_code < b.cabDetails[0].cab_code) ? 1 : -1)
+      //     this.trainerdata = array;
+      //   }
+      // }
        //By created_date
        if(sortBy == 'created_date'){
          this.curSortDir.created_date = !sortDir;
-         //console.log(">>>Enter code...", data, " -- ", this.curSortDir.course_code);
          if(this.curSortDir.created_date){
            let array = data.slice().sort((a, b) => (a.created_date > b.created_date) ? 1 : -1)
            this.trainerdata = array;
-           //console.log("after:: ", array, " :: ", this.trainerdata);
          }
          if(!this.curSortDir.created_date){
            let array = data.slice().sort((a, b) => (a.created_date < b.created_date) ? 1 : -1)
@@ -181,11 +192,9 @@ export class TrainingStatusComponent implements OnInit {
        //By accr_status
        if(sortBy == 'accr_status'){
          this.curSortDir.accr_status = !sortDir;
-         //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
          if(this.curSortDir.accr_status){
            let array = data.slice().sort((a, b) => (a.accr_status > b.accr_status) ? 1 : -1)
            this.trainerdata = array;
-           //console.log("after:: ", array, " :: ", this.trainerdata);
          }
          if(!this.curSortDir.accr_status){
            let array = data.slice().sort((a, b) => (a.accr_status < b.accr_status) ? 1 : -1)
@@ -195,11 +204,9 @@ export class TrainingStatusComponent implements OnInit {
        //By Prelim Status
        if(sortBy == 'prelim_status'){
          this.curSortDir.prelim_status = !sortDir;
-         //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
          if(this.curSortDir.prelim_status){
            let array = data.slice().sort((a, b) => (a.prelim_status > b.prelim_status) ? 1 : -1)
            this.trainerdata = array;
-           //console.log("after:: ", array, " :: ", this.trainerdata);
          }
          if(!this.curSortDir.prelim_status){
            let array = data.slice().sort((a, b) => (a.prelim_status < b.prelim_status) ? 1 : -1)
@@ -209,11 +216,9 @@ export class TrainingStatusComponent implements OnInit {
        //By training_form_type
        if(sortBy == 'training_form_type'){
          this.curSortDir.training_form_type = !sortDir;
-         //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
          if(this.curSortDir.training_form_type){
            let array = data.slice().sort((a, b) => (a.training_form_type > b.training_form_type) ? 1 : -1)
            this.trainerdata = array;
-           //console.log("after:: ", array, " :: ", this.trainerdata);
          }
          if(!this.curSortDir.training_form_type){
            let array = data.slice().sort((a, b) => (a.training_form_type < b.training_form_type) ? 1 : -1)
@@ -223,11 +228,9 @@ export class TrainingStatusComponent implements OnInit {
        //By Payment Status
        if(sortBy == 'payment_status'){
          this.curSortDir.payment_status = !sortDir;
-         //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
          if(this.curSortDir.payment_status){
            let array = data.slice().sort((a, b) => (a.payment_status > b.payment_status) ? 1 : -1)
            this.trainerdata = array;
-           //console.log("after:: ", array, " :: ", this.trainerdata);
          }
          if(!this.curSortDir.payment_status){
            let array = data.slice().sort((a, b) => (a.payment_status < b.payment_status) ? 1 : -1)
@@ -236,11 +239,9 @@ export class TrainingStatusComponent implements OnInit {
        }  
        if(sortBy == 'applicant'){
          this.curSortDir.applicant = !sortDir;
-         //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
          if(this.curSortDir.applicant){
            let array = data.slice().sort((a, b) => (a.applicant > b.applicant) ? 1 : -1)
            this.trainerdata = array;
-           //console.log("after:: ", array, " :: ", this.trainerdata);
          }
          if(!this.curSortDir.applicant){
            let array = data.slice().sort((a, b) => (a.applicant < b.applicant) ? 1 : -1)

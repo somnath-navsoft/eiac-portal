@@ -113,6 +113,12 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.created_date"></span>
                                 </a>
                             </th>
+                            <th>CAB Name/CAB Code
+                                <!-- <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'cab_code', curSortDir.cab_name)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.cab_code"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.cab_code"></span>
+                                </a> -->
+                            </th>
                             <th width="15%">Status
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'application_status', curSortDir.application_status)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.application_status"></span>
@@ -142,6 +148,11 @@
                                 {{item.id}}</a></td>
                             <td>
                                 {{item.created | date :'dd-MMM-yyyy' }}
+                            </td>
+                            <td>
+                                <ng-container *ngIf="item.cabDetails != undefined && item.cabDetails.length > 0">
+                                    {{item.cabDetails[0].cab_name}} / {{item.cabDetails[0].cab_code}}
+                                </ng-container>
                             </td>
                             <td [ngClass]="{'pending': (item.application_status === 'pending' || item.application_status === 'payment_pending' || item.application_status == 'application_process' || item.application_status == 'under_process'), 'under-review':item.application_status === null || item.application_status === 'under_review', 'complete': item.application_status === 'complete','draft': item.application_status === 'draft' }">
                                 <span *ngIf="item.application_status == 'pending'">Pending</span>

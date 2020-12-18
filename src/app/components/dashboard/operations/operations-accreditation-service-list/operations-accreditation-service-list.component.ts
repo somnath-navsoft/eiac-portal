@@ -80,6 +80,10 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   deleteConfirm: boolean = false;
   private store: Store<TrainerState>;
   exportAsConfig: ExportAsConfig;
+  selectAccrType: any =[];
+  selectPaymentStatusType: any =[];
+  
+
   
 
   constructor( private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
@@ -293,6 +297,30 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     this.curSortDir['form_meta']          = false;
     this.curSortDir['payment_status']     = false;
     this.curSortDir['applicant']          = false;
+
+    /*
+     <span *ngIf="item.form_meta == 'testing_calibration'">Testing Calibration</span>
+    <span *ngIf="item.form_meta == 'inspection_body'">Inspection Bodies</span>
+    <span *ngIf="item.form_meta == 'health_care'">Health Care</span>
+    <span *ngIf="item.form_meta == 'certification_bodies'">Certification Bodies</span>
+    <span *ngIf="item.form_meta == 'pt_providers'">Proficiency Testing Providers</span>
+    <span *ngIf="item.form_meta == 'halal_conformity_bodies'">Halal Confirmity Bodies</span>
+
+    */
+
+    //Assign Search Type
+    this.selectAccrType = [ 
+    {title: 'Inspection Bodies', value:'inspection_body'},
+    {title: 'Certification Bodies', value:'certification_bodies'},
+    {title: 'Testing Calibration', value:'testing_calibration'},
+    {title: 'Health Care', value:'health_care'},
+    {title: 'Halal Conformity Bodies', value:'halal_conformity_bodies'},
+    {title: 'Proficiency Testing Providers', value:'pt_providers'}      
+    ];
+    this.selectPaymentStatusType = [ 
+      {title: 'Paid', value:'paid'},
+      {title: 'Unpaid', value:'unpaid'}     
+      ];
     
     this.loadPageData();
     // this.selectCustomCourses = [{'key'=>'1','value':"Inspection Bodies"}];
@@ -353,11 +381,6 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
        if(this.selectCustomCourse != ''){
         postObject['training_course_type'] = this.selectCustomCourse;
        }
-        //postObject['training_course_type'] = this.selectCustomCourse;
-        //postObject['course_code'] = this.selectCode;
-        //postObject['agreement_status'] = this.selectAgreementStatus;
-        //postObject['payment_status'] = this.selectPaymentStatus;
-        //postObject['fees_per_trainee'] = (this.selectFees == '') ? 0.00 : this.selectFees;
         
         //console.log(">>>POST: ", postObject); 
 
