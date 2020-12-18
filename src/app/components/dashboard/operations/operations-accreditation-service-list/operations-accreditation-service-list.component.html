@@ -29,11 +29,11 @@
                     <div class="user-details">
                         <mat-form-field class="cab-data">
                             <mat-label>Export As</mat-label>                             
-                            <mat-select placeholder="Export" 
+                            <mat-select placeholder="Export" (selectionChange)="exportFile()"
                             [ngModelOptions]="{standalone: true}" [(ngModel)]="exportAs" required>
                                 <mat-option value="csv">Export as CSV</mat-option>
                                 <mat-option value="xls">Export as XLS</mat-option>
-                                <mat-option value="pdf">Export as PDF</mat-option>
+                                <!-- <mat-option value="pdf">Export as PDF</mat-option> -->
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -128,7 +128,7 @@
             <div class="row m-0">
                 <div class="col-md-12 p-0">
                     <!-- @{{trainerdata | json}} -->
-                    <table>
+                    <table id="accreditation-service-export">
                         <tr>
                             <th>Application No
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'id', curSortDir.id)">
