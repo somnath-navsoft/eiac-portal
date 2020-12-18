@@ -121,12 +121,12 @@
                                         <span class="icon-arrow-up"  *ngIf="curSortDir.created_date"></span>
                                     </a>
                                 </th>
-                                <th width="15%">Time
+                                <!-- <th width="15%">Time
                                     <a href="javascript:void(0)" (click)="sortedList(eventData, 'accr_status', curSortDir.accr_status)">
                                         <span class="icon-arrow-down" *ngIf="!curSortDir.accr_status"></span>
                                         <span class="icon-arrow-up"  *ngIf="curSortDir.accr_status"></span>
                                     </a>
-                                </th>
+                                </th> -->
                                 <th width="15%">No. of Participants
                                     <a href="javascript:void(0)" (click)="sortedList(eventData, 'applicantName', curSortDir.applicantName)">
                                         <span class="icon-arrow-down" *ngIf="!curSortDir.applicantName"></span>
@@ -139,7 +139,7 @@
                         <ng-container *ngIf="eventData != undefined && eventData.length > 0">
                             <tr *ngFor="let item of eventData | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
                                 <td>
-                                    <a href="javascript:void(0);" (click)="open(eventdetails,participantsTempList)"><span>{{item.course}}</span></a>
+                                    <a href="javascript:void(0);" (click)="open(eventdetails,item)"><span>{{item.course}}</span></a>
                                 </td>
 
                                 <td *ngIf="item['eventDates'] && item['eventDates'].length > 0">
@@ -150,12 +150,17 @@
                                     N/A
                                 </td>
 
-                                <td>
-                                    <!-- {{item.event_time}} -->
-                                </td>
+                                <!-- <td>
+                                    {{item.event_time}}
+                                </td> -->
 
-                                <td>
+                                <td *ngIf="item.participants && item.participants.length > 0">
                                     <!-- {{item.no_of_participants}} -->
+                                    {{item.participants.length}}
+                                </td>
+                                <td *ngIf="!item.participants || item.participants.length == 0">
+                                    <!-- {{item.no_of_participants}} -->
+                                    0
                                 </td>
                             </tr>
                         </ng-container>
@@ -194,19 +199,19 @@
                 <div class="event-details">
                     <div class="event-data">
                         <span class="event-head">Event Title</span>
-                        <span>: Lorem ipsum dolor sit amet consectetur elit. Cumque</span>
+                        <span>: {{detailsCourse}}</span>
                     </div>
                     <div class="event-data">
                         <span class="event-head">Date</span>
-                        <span>: 12/07/2020</span>
+                        <span>: {{detailsDate | date}}</span>
                     </div>
-                    <div class="event-data">
+                    <!-- <div class="event-data">
                         <span class="event-head">Time</span>
                         <span>: 11:00 AM - 12:00 PM</span>
-                    </div>
+                    </div> -->
                     <div class="event-data">
                         <span class="event-head">No. of Participants</span>
-                        <span>: 25</span>
+                        <span>: {{noOfParticipants}}</span>
                     </div>
                 </div>                
                 <div class="table-dashboard-cont">
@@ -220,11 +225,21 @@
                                     <th>Phone Number</th>
                                 </tr>
 
-                                <tr *ngFor="let row of participantsList; let i = index;">
-                                    <td>{{row.name}}</td>
-                                    <td>{{row.email}}</td>
-                                    <td>{{row.phone}}</td>
-                                </tr>
+                                <ng-container *ngIf="participantsList.length > 0">
+                                    <tr *ngFor="let row of participantsList; let i = index;">
+                                        <td>{{row.first_name}} {{row.last_name}}</td>
+                                        <td>{{row.email_address}}</td>
+                                        <td>{{row.phone_number}}</td>
+                                    </tr>
+                                </ng-container>
+
+                                <ng-container *ngIf="participantsList.length == 0">
+                                    <tr>
+                                        <td colspan="5">
+                                            No Records
+                                        </td>
+                                    </tr>
+                                </ng-container>
                             </table>
                         </div>
                     </div>

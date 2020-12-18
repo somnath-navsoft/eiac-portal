@@ -6,6 +6,7 @@ import { Constants } from '../../../../services/constant.service';
 import { ToastrService, Overlay, OverlayContainer } from 'ngx-toastr';
 import {CustomModalComponent} from '../../../utility/custom-modal/custom-modal.component';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
 @Component({
   selector: 'app-operations-training-service-list',
@@ -36,9 +37,13 @@ export class OperationsTrainingServiceListComponent implements OnInit {
   dataLoad: boolean = false;
   public minDate;
   voucherIndex:any;
+  exportAsConfig: ExportAsConfig;
+  exportAs:any;
+  advSearch: boolean = false;
+  selectCustomCourses:any[] = [];
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
-    private _trainerService: TrainerService, private modalService: NgbModal) {
+    private _trainerService: TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) {
       this.modalOptions = {
         backdrop:'static',
         backdropClass:'customBackdrop'
@@ -56,6 +61,24 @@ export class OperationsTrainingServiceListComponent implements OnInit {
     this.curSortDir['applicant']          = false;
     // var cdate = new Date();
     this.minDate = new Date();
+    this.selectCustomCourses = [{'value':'In Premise'},{'value':'Public Training'}];
+  }
+
+  exportFile() {
+    // console.log(this.exportAs);
+    this.exportAsConfig = {
+      type: this.exportAs.toString(), // the type you want to download
+      elementIdOrContent: 'accreditation-service-export', // the id of html/table element
+    }
+    // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
+    this.exportAsService.save(this.exportAsConfig, 'report').subscribe(() => {
+      // save started
+    });
+  }
+  
+  filterSearchSec(){
+    this.advSearch = !this.advSearch
+    // console.log(this.advSearch);
   }
 
   setexDate(date, index){

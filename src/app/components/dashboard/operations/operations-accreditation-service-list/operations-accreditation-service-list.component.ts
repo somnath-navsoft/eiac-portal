@@ -65,7 +65,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   selectCode: string='';
   selectFees: string='';
   agreementStatus: any[] =[];
-  paymentStatus: any[] =[];
+  // paymentStatus: any[] =[];
   
   closeResult: string;
   voucherSentData: any = {};
@@ -80,7 +80,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   deleteConfirm: boolean = false;
   private store: Store<TrainerState>;
   exportAsConfig: ExportAsConfig;
-  
+  paymentStatus:any;
 
   constructor( private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent, private exportAsService: ExportAsService) { 
@@ -295,7 +295,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     this.curSortDir['applicant']          = false;
     
     this.loadPageData();
-    // this.selectCustomCourses = [{'key'=>'1','value':"Inspection Bodies"}];
+    this.selectCustomCourses = [{'value':'Inspection Bodies'},{'value':'Certification Bodies'},{'value':'Testing Calibration'},{'value':'Health Care'},{'value':'Proficiency Testing Providers'},{'value':'Halal Confirmity Bodies'}];
   }
 
   exportFile() {
@@ -312,7 +312,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
 
   filterSearchSec(){
     this.advSearch = !this.advSearch
-    console.log(this.advSearch);
+    // console.log(this.advSearch);
   }
 
   filterSearchReset(){
