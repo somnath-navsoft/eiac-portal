@@ -30,6 +30,7 @@ import { ToastrService, Overlay, OverlayContainer } from 'ngx-toastr';
 
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {CustomModalComponent} from '../../../utility/custom-modal/custom-modal.component';
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
 @Component({
   selector: 'app-operations-accreditation-service-list',
@@ -74,11 +75,15 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   voucherFile:any = new FormData();
   paymentReceiptValidation: boolean = true;
   loader:boolean = true;
+  exportAs:any = {};
 
   deleteConfirm: boolean = false;
   private store: Store<TrainerState>;
+  exportAsConfig: ExportAsConfig;
+  
+
   constructor( private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
-    private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent) { 
+    private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent, private exportAsService: ExportAsService) { 
     //this.store.dispatch(new ListingAccredService({}));
     this.modalOptions = {
       backdrop:'static',
@@ -289,12 +294,25 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     this.curSortDir['payment_status']     = false;
     this.curSortDir['applicant']          = false;
     
-
     this.loadPageData();
+    // this.selectCustomCourses = [{'key'=>'1','value':"Inspection Bodies"}];
+  }
+
+  exportFile() {
+    // console.log(this.exportAs);
+    this.exportAsConfig = {
+      type: this.exportAs.toString(), // the type you want to download
+      elementIdOrContent: 'accreditation-service-export', // the id of html/table element
+    }
+    // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
+    this.exportAsService.save(this.exportAsConfig, 'report').subscribe(() => {
+      // save started
+    });
   }
 
   filterSearchSec(){
     this.advSearch = !this.advSearch
+    console.log(this.advSearch);
   }
 
   filterSearchReset(){

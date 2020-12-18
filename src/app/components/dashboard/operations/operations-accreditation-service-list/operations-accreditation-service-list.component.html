@@ -15,7 +15,7 @@
                         <ul>
                             <li>
                                 <div class="filter">
-                                    <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a>
+                                    <!-- <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a> -->
                                     <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a>
                                 </div>
                             </li>
@@ -23,8 +23,25 @@
                     </div>
                 </div>
             </div>
+
+            <div class="row m-0">
+                <div class="col-md-4">
+                    <div class="user-details">
+                        <mat-form-field class="cab-data">
+                            <mat-label>Export As</mat-label>                             
+                            <mat-select placeholder="Export" (selectionChange)="exportFile()"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="exportAs" required>
+                                <mat-option value="csv">Export as CSV</mat-option>
+                                <mat-option value="xls">Export as XLS</mat-option>
+                                <!-- <mat-option value="pdf">Export as PDF</mat-option> -->
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
             <ng-container *ngIf="advSearch" class="tbl-filter-data">
-                <div class="filter-dash">
+                <div class="filter-dash filter_certification">
                     <div class="close-bttn">
                         <span class="icon-close" (click)="filterSearchSec()"></span>
                     </div>
@@ -84,7 +101,7 @@
                         </div>
                     </div>
                 </div> -->
-                
+
                 <div class="row m-0">
                     <div class="col-md-12"> 
                         <div class="filter-search">
@@ -111,7 +128,7 @@
             <div class="row m-0">
                 <div class="col-md-12 p-0">
                     <!-- @{{trainerdata | json}} -->
-                    <table>
+                    <table id="accreditation-service-export">
                         <tr>
                             <th>Application No
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'id', curSortDir.id)">
