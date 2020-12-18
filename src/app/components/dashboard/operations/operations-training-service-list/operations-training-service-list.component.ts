@@ -62,6 +62,7 @@ export class OperationsTrainingServiceListComponent implements OnInit {
     // var cdate = new Date();
     this.minDate = new Date();
     this.selectCustomCourses = [{'value':'In Premise'},{'value':'Public Training'}];
+    
   }
 
   exportFile() {
