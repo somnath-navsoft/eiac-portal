@@ -7,11 +7,12 @@ import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-b
 import {CustomModalComponent} from 'src/app/components/utility/custom-modal/custom-modal.component';
 import { Observable, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
 @Component({
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
-  styleUrls: ['./accounts.component.scss'],
+  styleUrls: ['./accounts.component.scss'], 
   providers: [CustomModalComponent],
 })
 export class AccountsComponent implements OnInit {
@@ -31,7 +32,10 @@ export class AccountsComponent implements OnInit {
   userType:any;
   voucherSentData: any = {};
 
-  constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
+  exportAsConfig: ExportAsConfig;
+  exportAs: any = '';
+
+  constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService, private exportAsService: ExportAsService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent,public router: Router) { }
 
   ngOnInit() {
@@ -52,6 +56,18 @@ export class AccountsComponent implements OnInit {
     }
 
     this.loadPageData();
+  }
+
+  exportFile() {
+    // console.log(this.exportAs);
+    this.exportAsConfig = {
+      type: this.exportAs.toString(), // the type you want to download
+      elementIdOrContent: 'accreditation-service-export', // the id of html/table element
+    }
+    // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
+    this.exportAsService.save(this.exportAsConfig, 'accounts').subscribe(() => {
+      // save started
+    });
   }
 
   loadPageData() {

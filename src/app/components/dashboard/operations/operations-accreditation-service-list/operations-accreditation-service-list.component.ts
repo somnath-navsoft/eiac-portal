@@ -82,6 +82,11 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   exportAsConfig: ExportAsConfig;
   paymentStatus:any;
 
+  selectAccrType: any =[];
+  applicationNo: string = '' || null;
+  paymentStatusValue: string = '' || null;
+  selectAccrTypeValue: string = '' || null;
+
   constructor( private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent, private exportAsService: ExportAsService) { 
     //this.store.dispatch(new ListingAccredService({}));
@@ -210,7 +215,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     }
   }
 
-  voucherSentSubmit(theForm){
+  voucherSentSubmit(theForm){ 
      
      let postObject: any = {};
      let is_valid: boolean = false;
@@ -305,21 +310,21 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     */
 
     //Assign Search Type
-    // this.selectAccrType = [ 
-    // {title: 'Inspection Bodies', value:'inspection_body'},
-    // {title: 'Certification Bodies', value:'certification_bodies'},
-    // {title: 'Testing Calibration', value:'testing_calibration'},
-    // {title: 'Health Care', value:'health_care'},
-    // {title: 'Halal Conformity Bodies', value:'halal_conformity_bodies'},
-    // {title: 'Proficiency Testing Providers', value:'pt_providers'}      
-    // ];
+    this.selectAccrType = [ 
+    {title: 'Inspection Bodies', value:'inspection_body'},
+    {title: 'Certification Bodies', value:'certification_bodies'},
+    {title: 'Testing Calibration', value:'testing_calibration'},
+    {title: 'Health Care', value:'health_care'},
+    {title: 'Halal Conformity Bodies', value:'halal_conformity_bodies'},
+    {title: 'Proficiency Testing Providers', value:'pt_providers'}      
+    ];
     // this.selectPaymentStatusType = [ 
     //   {title: 'Paid', value:'paid'},
     //   {title: 'Unpaid', value:'unpaid'}     
     //   ];
     
     this.loadPageData();
-    this.selectCustomCourses = [{'value':'Inspection Bodies'},{'value':'Certification Bodies'},{'value':'Testing Calibration'},{'value':'Health Care'},{'value':'Proficiency Testing Providers'},{'value':'Halal Confirmity Bodies'}];
+    //this.selectCustomCourses = [{'value':'Inspection Bodies'},{'value':'Certification Bodies'},{'value':'Testing Calibration'},{'value':'Health Care'},{'value':'Proficiency Testing Providers'},{'value':'Halal Confirmity Bodies'}];
   }
 
   exportFile() {
@@ -337,22 +342,21 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   filterSearchSec(){
     this.advSearch = !this.advSearch
     // console.log(this.advSearch);
+    this.filterSearchReset();
   }
 
   filterSearchReset(){
     //Reset serach
-    this.selectCode = '';
-    this.selectFees = '';
-    this.selectAgreementStatus = '';
-    this.selectPaymentStatus = '';
-    this.selectCustomCourse = '';
+    this.applicationNo = '' || null;
+    this.selectAccrTypeValue = '' || null;
+    this.paymentStatusValue = '' || null;
 
-    this.loadPageData();
+    //this.loadPageData();
   }
   
   isValidSearch(){
-    if(this.selectCode === '' && this.selectFees === '' && this.selectAgreementStatus === '' && 
-        this.selectPaymentStatus === '' && this.selectCustomCourse === ''){
+    if((this.applicationNo == '' || this.applicationNo == null) || (this.selectAccrTypeValue == '' || this.selectAccrTypeValue == null) ||
+       (this.paymentStatusValue == '' || this.paymentStatusValue == null)){
       return false;
     }
     return true;
@@ -362,23 +366,17 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
      let postObject: any = {};
      //console.log("Search click....");
      if(this.isValidSearch()){
-       if(this.selectCode != ''){
-        postObject['course_code'] = this.selectCode;
+       if(this.applicationNo != '' && this.applicationNo != null){
+        postObject['applicationNo'] = this.applicationNo;
        }
-       if(this.selectFees != '' && this.selectFees != null){
-        postObject['fees_per_trainee'] = this.selectFees;
+       if(this.selectAccrTypeValue != '' && this.selectAccrTypeValue != null){
+        postObject['form_meta'] = this.selectAccrTypeValue;
        }
-       if(this.selectAgreementStatus != ''){
-        postObject['agreement_status'] = this.selectAgreementStatus;
-       }
-       if(this.selectPaymentStatus != ''){
-        postObject['payment_status'] = this.selectPaymentStatus;
-       }
-       if(this.selectCustomCourse != ''){
-        postObject['training_course_type'] = this.selectCustomCourse;
+       if(this.paymentStatusValue != '' && this.paymentStatusValue != null){
+        postObject['payment_status'] = this.paymentStatusValue;
        }
         
-        //console.log(">>>POST: ", postObject); 
+        console.log(">>>POST: ", postObject); 
 
         if(postObject){
           this.subscriptions.push(this._trainerService.searchCourse((postObject))
@@ -399,7 +397,8 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
         }
 
      }else{
-      this._service.openMessageDialog('Please select search fields properly.', "Validation Error");
+      //this._service.openMessageDialog('Please select search fields properly.', "Validation Error");
+      this._toaster.warning("Please select search fields properly",'')
      }     
   }
 

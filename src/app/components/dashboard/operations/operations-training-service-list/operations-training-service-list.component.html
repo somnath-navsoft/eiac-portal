@@ -51,17 +51,17 @@
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
                                     <mat-label>Application No</mat-label> 
-                                <input type="text" matInput [(ngModel)]="applicationNo" placeholder="Search by Application No">
+                                <input type="text" matInput [(ngModel)]="applicationNo" placeholder="Search by Application No" (keypress)="_service.inputFilter($event, _service.regExNumb)">
                                 </mat-form-field>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
-                                    <mat-label>Registration Type</mat-label>                             
+                                    <mat-label>Training Type</mat-label>                             
                                     <mat-select placeholder="Select" 
-                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="selectCustomCourse" required>
-                                        <mat-option *ngFor="let item of selectCustomCourses;" [value]="item.value">{{item.value}}</mat-option>
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="selectTrainingTypeValue" required>
+                                        <mat-option *ngFor="let item of selectTrainingType;" [value]="item.value">{{item.title}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
@@ -71,7 +71,7 @@
                                 <mat-form-field class="cab-data">
                                     <mat-label>Payment Status</mat-label>                             
                                     <mat-select placeholder="Select" 
-                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="paymentStatus" required>
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="paymentStatusValue" required>
                                         <mat-option value="paid">Paid</mat-option>
                                         <mat-option value="unpaid">Unpaid</mat-option>
                                     </mat-select>
@@ -90,7 +90,7 @@
                     </div>
                 </div>
                 
-            </ng-container>
+            </ng-container> 
             
         
         <div class="table-dashboard-cont">

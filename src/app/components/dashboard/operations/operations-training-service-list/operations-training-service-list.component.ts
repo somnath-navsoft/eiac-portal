@@ -40,7 +40,14 @@ export class OperationsTrainingServiceListComponent implements OnInit {
   exportAsConfig: ExportAsConfig;
   exportAs:any;
   advSearch: boolean = false;
+
+  selectTrainingType: any =[];
   selectCustomCourses:any[] = [];
+
+  
+  applicationNo: string = '' || null;
+  selectTrainingTypeValue: string = '' || null;
+  paymentStatusValue: string = '' || null;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) {
@@ -61,7 +68,8 @@ export class OperationsTrainingServiceListComponent implements OnInit {
     this.curSortDir['applicant']          = false;
     // var cdate = new Date();
     this.minDate = new Date();
-    this.selectCustomCourses = [{'value':'In Premise'},{'value':'Public Training'}];
+    this.selectTrainingType = [{'title':'In Premise', value: 'inprimise'},{'title':'Public Training', value: 'public_training'}];
+    //this.selectCustomCourses = [{'value':'In Premise'},{'value':'Public Training'}];
     
   }
 
@@ -80,6 +88,64 @@ export class OperationsTrainingServiceListComponent implements OnInit {
   filterSearchSec(){
     this.advSearch = !this.advSearch
     // console.log(this.advSearch);
+    this.filterSearchReset();
+  }
+
+  filterSearchReset(){
+    //Reset serach
+    this.applicationNo = '' || null;
+    this.selectTrainingTypeValue = '' || null;
+    this.paymentStatusValue = '' || null;
+
+    //this.loadPageData();
+  }
+  
+  isValidSearch(){
+    if((this.applicationNo == '' || this.applicationNo == null) || (this.selectTrainingTypeValue == '' || this.selectTrainingTypeValue == null) ||
+       (this.paymentStatusValue == '' || this.paymentStatusValue == null)){
+      return false;
+    }
+    return true;
+  }
+
+  filterSearchSubmit(){
+     let postObject: any = {};
+     //console.log("Search click....");
+     if(this.isValidSearch()){
+       if(this.applicationNo != '' && this.applicationNo != null){
+        postObject['applicationNo'] = this.applicationNo;
+       }
+       if(this.selectTrainingTypeValue != '' && this.selectTrainingTypeValue != null){
+        postObject['form_meta'] = this.selectTrainingTypeValue;
+       }
+       if(this.paymentStatusValue != '' && this.paymentStatusValue != null){
+        postObject['payment_status'] = this.paymentStatusValue;
+       }
+        
+        console.log(">>>POST: ", postObject); 
+
+        if(postObject){
+          this.subscriptions.push(this._trainerService.searchCourse((postObject))
+          .subscribe(
+             result => {
+               let data: any = result;
+                ////console.log("search results: ", result);
+                if(data != undefined && typeof data === 'object' && data.records.length){
+                    console.log(">>> Data: ", data.records);
+                    this.pageCurrentNumber = 1;
+                    this.dataLoad = true;
+                    this.trainerdata = data.records;
+                    this.pageTotal = data.records.length;
+                }
+             }
+            )
+          )
+        }
+
+     }else{
+      //this._service.openMessageDialog('Please select search fields properly.', "Validation Error");
+      this._toaster.warning("Please select search fields properly",'')
+     }     
   }
 
   setexDate(date, index){

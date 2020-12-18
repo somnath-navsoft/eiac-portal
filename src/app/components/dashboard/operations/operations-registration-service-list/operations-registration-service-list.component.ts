@@ -40,8 +40,15 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
   paymentStatus:any;
   selectCustomCourse:any;
   selectCustomCourses:any[] = [];
-  exportAsConfig: ExportAsConfig;
+  exportAsConfig: ExportAsConfig; 
   exportAs:any = {};
+
+  selectRegType: any[] =[];
+
+  applicationNo: string = '' || null;
+  selectRegTypeValue: string = '' || null;
+  paymentStatusValue: string = '' || null;
+
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) { 
@@ -60,7 +67,65 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
     this.curSortDir['form_meta']          = false;
     this.curSortDir['payment_status']     = false;
     this.curSortDir['applicant']          = false;
-    this.selectCustomCourses = [{'value':'No Objection Certificate'},{'value':'Work Activity Permit'}];
+    this.selectRegType = [{title:'No Objection Certificate', value: 'no_objection_certificate'},{title:'Work Activity Permit', value:'work_activity'}];
+    //this.selectCustomCourses = [{title:'No Objection Certificate', value: 'no_objection_certificate'},{title:'Work Activity Permit', value:'work_activity'}];
+  }
+
+  filterSearchReset(){
+    //Reset serach
+    this.applicationNo = '' || null;
+    this.selectRegTypeValue = '' || null;
+    this.paymentStatusValue = '' || null;
+
+    //this.loadPageData();
+  }
+  
+  isValidSearch(){
+    if((this.applicationNo == '' || this.applicationNo == null) || (this.selectRegTypeValue == '' || this.selectRegTypeValue == null) ||
+       (this.paymentStatusValue == '' || this.paymentStatusValue == null)){
+      return false;
+    }
+    return true;
+  }
+
+  filterSearchSubmit(){
+     let postObject: any = {};
+     //console.log("Search click....");
+     if(this.isValidSearch()){
+       if(this.applicationNo != '' && this.applicationNo != null){
+        postObject['applicationNo'] = this.applicationNo;
+       }
+       if(this.selectRegTypeValue != '' && this.selectRegTypeValue != null){
+        postObject['form_meta'] = this.selectRegTypeValue;
+       }
+       if(this.paymentStatusValue != '' && this.paymentStatusValue != null){
+        postObject['payment_status'] = this.paymentStatusValue;
+       }
+        
+        console.log(">>>POST: ", postObject); 
+
+        if(postObject){
+          this.subscriptions.push(this._trainerService.searchCourse((postObject))
+          .subscribe(
+             result => {
+               let data: any = result;
+                ////console.log("search results: ", result);
+                if(data != undefined && typeof data === 'object' && data.records.length){
+                    console.log(">>> Data: ", data.records);
+                    this.pageCurrentNumber = 1;
+                    this.dataLoad = true;
+                    this.trainerdata = data.records;
+                    this.pageTotal = data.records.length;
+                }
+             }
+            )
+          )
+        }
+
+     }else{
+      //this._service.openMessageDialog('Please select search fields properly.', "Validation Error");
+      this._toaster.warning("Please select search fields properly",'')
+     }     
   }
 
   exportFile() {
@@ -78,6 +143,7 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
   filterSearchSec(){
     this.advSearch = !this.advSearch
     // console.log(this.advSearch);
+    this.filterSearchReset();
   }
 
   loadPageData(){

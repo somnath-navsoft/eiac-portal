@@ -7,6 +7,7 @@ import { Constants } from 'src/app/services/constant.service';
 import { ToastrService} from 'ngx-toastr';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {CustomModalComponent} from 'src/app/components/utility/custom-modal/custom-modal.component';
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
 @Component({
   selector: 'app-status',
@@ -41,7 +42,7 @@ export class StatusComponent implements OnInit {
   selectPaymentStatus: string='';
   selectCode: string='';
   selectFees: string='';
-  agreementStatus: any[] =[];
+  agreementStatus: any[] =[]; 
   paymentStatus: any[] =[];
   
   closeResult: string;
@@ -54,9 +55,25 @@ export class StatusComponent implements OnInit {
   loader:boolean = true;
 
   deleteConfirm: boolean = false;
+  exportAsConfig: ExportAsConfig;
+  exportAs: any = '';
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
-    private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent) { }
+    private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent, private exportAsService: ExportAsService) { }
+
+    
+
+    exportFile() {
+      // console.log(this.exportAs);
+      this.exportAsConfig = {
+        type: this.exportAs.toString(), // the type you want to download
+        elementIdOrContent: 'accreditation-service-export', // the id of html/table element
+      }
+      // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
+      this.exportAsService.save(this.exportAsConfig, 'report').subscribe(() => {
+        // save started
+      });
+    }
 
   ngOnInit() {
     this.loadPageData();
@@ -67,7 +84,6 @@ export class StatusComponent implements OnInit {
     this.curSortDir['criteria_request']             = false;
     this.curSortDir['form_meta']             = false;
     this.curSortDir['location']             = false;
-    // |  |  |  | 
   }
 
   filterSearchSec(){

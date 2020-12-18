@@ -10,8 +10,23 @@
                     </div>
                 </div>
             </div>
-            <div class="accounts">
-                <table class="accounts_inner_tab">
+            <div class="row m-0">
+                <div class="col-md-4">
+                    <div class="user-details">
+                        <mat-form-field class="cab-data">
+                            <mat-label>Export As</mat-label>                              
+                            <mat-select placeholder="Export" (selectionChange)="exportFile()"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="exportAs" required>
+                                <mat-option value="csv">Export as CSV</mat-option>
+                                <mat-option value="xls">Export as XLS</mat-option>
+                                <!-- <mat-option value="pdf">Export as PDF</mat-option> -->
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="accounts mt-3">
+                <table class="accounts_inner_tab" id="accreditation-service-export">
                     <thead>
                         <tr class="main_acc_tab">
                             <th class="main_tab_head"></th>

@@ -28,7 +28,7 @@
                 <div class="col-md-4">
                     <div class="user-details">
                         <mat-form-field class="cab-data">
-                            <mat-label>Export As</mat-label>                             
+                            <mat-label>Export As</mat-label>                              
                             <mat-select placeholder="Export" (selectionChange)="exportFile()"
                             [ngModelOptions]="{standalone: true}" [(ngModel)]="exportAs" required>
                                 <mat-option value="csv">Export as CSV</mat-option>
@@ -50,7 +50,8 @@
                         <div class="user-details">
                             <mat-form-field class="cab-data">
                                 <mat-label>Application No</mat-label> 
-                            <input type="text" matInput [(ngModel)]="applicationNo" placeholder="Search by Application No">
+                            <input type="text" matInput [(ngModel)]="applicationNo" placeholder="Search by Application No"
+                            (keypress)="_service.inputFilter($event, _service.regExNumb)">
                             </mat-form-field>
                         </div>
                     </div>
@@ -59,8 +60,8 @@
                             <mat-form-field class="cab-data">
                                 <mat-label>Accreditation Type</mat-label>                             
                                 <mat-select placeholder="Select" 
-                                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectCustomCourse" required>
-                                    <mat-option *ngFor="let item of selectCustomCourses;" [value]="item.value">{{item.value}}</mat-option>
+                                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectAccrTypeValue" required>
+                                    <mat-option *ngFor="let item of selectAccrType;" [value]="item.value">{{item.title}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -70,9 +71,9 @@
                             <mat-form-field class="cab-data">
                                 <mat-label>Payment Status</mat-label>                             
                                 <mat-select placeholder="Select" 
-                                [ngModelOptions]="{standalone: true}" [(ngModel)]="paymentStatus" required>
+                                [ngModelOptions]="{standalone: true}" [(ngModel)]="paymentStatusValue" required>
                                     <mat-option value="paid">Paid</mat-option>
-                                    <mat-option value="unpaid">Unpaid</mat-option>
+                                    <mat-option value="pending">Unpaid</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
