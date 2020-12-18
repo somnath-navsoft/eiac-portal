@@ -10,7 +10,7 @@
                         <h3>Accreditation Service</h3> 
                     </div>
                 </div>
-                <!-- <div class="col-md-4"> 
+                <div class="col-md-4"> 
                     <div class="tbl-filter-data">
                         <ul>
                             <li>
@@ -21,7 +21,7 @@
                             </li>
                         </ul>
                     </div>
-                </div> -->
+                </div>
             </div>
             <ng-container *ngIf="advSearch" class="tbl-filter-data">
                 <div class="filter-dash">
@@ -32,23 +32,26 @@
                     <div class="col-md-4">
                         <div class="user-details">
                             <mat-form-field class="cab-data">
-                                <mat-label>Search by Course ID</mat-label> 
-                            <input type="text" matInput [(ngModel)]="selectCode" placeholder="Search by CODE">
+                                <mat-label>Application No</mat-label> 
+                            <input type="text" matInput [(ngModel)]="applicationNo" placeholder="Search by Application No">
                             </mat-form-field>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="user-details">
                             <mat-form-field class="cab-data">
-                                <mat-label>Search by Fees</mat-label> 
-                            <input matInput type="number" [(ngModel)]="selectFees" placeholder="Search by Fees">
+                                <mat-label>Accreditation Type</mat-label>                             
+                                <mat-select placeholder="Select" 
+                                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectCustomCourse" required>
+                                    <mat-option *ngFor="let item of selectCustomCourses;" [value]="item.value">{{item.title}}</mat-option>
+                                </mat-select>
                             </mat-form-field>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="user-details">
                             <mat-form-field class="cab-data">
-                                <mat-label>Select Course Type</mat-label>                             
+                                <mat-label>Payment Status</mat-label>                             
                                 <mat-select placeholder="Select" 
                                 [ngModelOptions]="{standalone: true}" [(ngModel)]="selectCustomCourse" required>
                                     <mat-option *ngFor="let item of selectCustomCourses;" [value]="item.value">{{item.title}}</mat-option>
@@ -57,7 +60,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row m-0" >
+                <!-- <div class="row m-0" >
                     <div class="col-md-4">
                         <div class="user-details">
                             <mat-form-field class="cab-data">
@@ -80,7 +83,8 @@
                             </mat-form-field>
                         </div>
                     </div>
-                </div>
+                </div> -->
+                
                 <div class="row m-0">
                     <div class="col-md-12"> 
                         <div class="filter-search">
