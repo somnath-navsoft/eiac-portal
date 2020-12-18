@@ -33,7 +33,7 @@ export class EventListsComponent implements OnInit {
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService, public _trainerService:TrainerService, private modalService: NgbModal) { }
 
   ngOnInit() {
-    this.curSortDir['id']                       = false;
+    this.curSortDir['course']                       = false;
     this.curSortDir['created_date']             = false;
     this.curSortDir['accr_status']             = false;
     this.curSortDir['applicantName']             = false;
@@ -74,15 +74,15 @@ export class EventListsComponent implements OnInit {
     //true - asc / false - desc
     ////console.log('>>>', data);
     if(data.length){
-        if(sortBy === 'id'){
+        if(sortBy === 'course'){
           //console.log(">>>Enter type...");
-          this.curSortDir.id = !sortDir;
-          if(this.curSortDir.id){
-            let array = data.slice().sort((a, b) => (a.id > b.id) ? 1 : -1)
+          this.curSortDir.course = !sortDir;
+          if(this.curSortDir.course){
+            let array = data.slice().sort((a, b) => (a.course > b.course) ? 1 : -1)
             this.eventData = array;
           }
-          if(!this.curSortDir.id){
-            let array = data.slice().sort((a, b) => (a.id < b.id) ? 1 : -1)
+          if(!this.curSortDir.course){
+            let array = data.slice().sort((a, b) => (a.course < b.course) ? 1 : -1)
             this.eventData = array;
             //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
           }
