@@ -20,7 +20,7 @@ export class OperationsDashboardComponent implements OnInit {
   visible = true;
   selectable = true;
   removable = true;
-  separatorKeysCodes: number[] = [ENTER, COMMA];
+  separatorKeysCodes: number[] = [ENTER, COMMA]; 
   fruitCtrl = new FormControl();
   filteredFruits: Observable<string[]>;
   fruits: string[] = [];
@@ -49,6 +49,25 @@ export class OperationsDashboardComponent implements OnInit {
   @ViewChild('fruitInput', { static: false }) fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
   config: any;
+  selectDepartment: string;
+
+  dashboardItemData: any = {};
+  dashboardRecentUpdates: any[] = [];
+  dashboardTradeLicFile: any;
+  dashboardTradeLicExDate: any;
+  dashboardTradeLicExStatus: boolean = false;
+  licence_document_file: string;
+  licence_document_path: string;
+
+  ioDeartment: any[] =[];
+  totalDeptSchemeCount: number = 0;
+  totalDeptCertificateCount: number = 0;
+  totalDeptCABCount: number = 0;
+  totalDeptDocCount: number = 0;
+
+  totalDeptStatus: any ={};
+  totalDeptSelect: string ='';
+
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
 
@@ -58,7 +77,135 @@ export class OperationsDashboardComponent implements OnInit {
     };
   }
 
+
+  changeDepartmentView(theEvt: any){
+    console.log("> ", this.selectDepartment, " -- ", theEvt);
+    this.loader = false;
+    let departmetnId: any =''
+    if(theEvt && theEvt.value != undefined){
+      departmetnId = theEvt.value;
+          this.loader = false;
+          let getURL: string =this.Service.apiServerUrl + "/" + 'io-dashboard/?department_type='+departmetnId;
+          this.Service.getwithoutData(getURL)
+            .subscribe(
+              res => {
+                this.loader = true;
+                let getData: any = {};
+                getData = res['dashBoardData'];
+                console.log(getData,'::::Department data');
+
+                this.totalDeptSelect = getData.lastApplication;
+                if(getData.allScheme != undefined){
+                  this.totalDeptSchemeCount = getData.allScheme.length;
+                }
+                this.totalDeptDocCount = getData.totalDocCount;
+                this.totalDeptCABCount = getData.totalCabCount;
+                this.totalDeptCertificateCount = getData.all_crtificate_count;
+                if(getData.status_count != undefined){
+                    this.totalDeptStatus.accredatedCount    = getData.status_count.accredatedCount.length;
+                    this.totalDeptStatus.suspendedCount     = getData.status_count.suspendedCount.length;
+                    this.totalDeptStatus.volWithdrawCount   = getData.status_count.volWithdrawCount.length;
+                    this.totalDeptStatus.volSuspendedCount  = getData.status_count.volSuspendedCount.length;
+                    this.totalDeptStatus.withdrawCount      = getData.status_count.withdrawCount.length;
+                    
+                }
+
+
+          });
+    }
+  }
+
+
+  //department view onchange
+  //https://dev-service.eiac.gov.ae/webservice/io-dashboard/?department_type = io roles value
+
+  //Load Dashboatd data
+  loadDashData(){
+    this.loader = false;
+    let getURL: string =this.Service.apiServerUrl + "/" + 'io-dashboard/' ;
+    this.Service.getwithoutData(getURL)
+      .subscribe(
+        res => {
+          this.loader = true;
+          let getData: any = {};
+          getData = res;
+          // console.log(res,'res');
+          if(res['status'] == 200){
+            this.dashboardItemData = res['dashBoardData'];
+
+            console.log(">>>>> ", res['dashBoardData'], " == ", getData); 
+
+            if(this.dashboardItemData.io_roles != undefined && this.dashboardItemData.io_roles.length > 0){
+              this.dashboardItemData.io_roles.forEach(item => {
+                    if(item == 'certification_bodies'){
+                      this.ioDeartment.push({title:'CB', value: item})
+                    }
+                    if(item == "inspection_body"){
+                      this.ioDeartment.push({title:'IB', value: item})
+                    }
+                    if(item == "testing_calibration"){
+                      this.ioDeartment.push({title:'TCL', value: item})
+                    }
+                    if(item == "pt_providers"){
+                      this.ioDeartment.push({title:'PTP', value: item})
+                    }
+                    if(item == "health_care"){
+                      this.ioDeartment.push({title:'HP', value: item})
+                    }
+                    if(item == "halal_conformity_bodies"){
+                      this.ioDeartment.push({title:'HCAB', value: item})
+                    } 
+                    // if(item == "work_permit"){
+                    //   this.ioDeartment.push({title:'WAP', value: item})
+                    // }
+                    // if(item == "no_objection"){
+                    //   this.ioDeartment.push({title:'NOC', value: item})
+                    // }
+              })
+            }
+
+            //Get recent updates
+            if(this.dashboardItemData.lastLogin != undefined){
+              let datePart: any = this.dashboardItemData.lastLogin.toString().split(" ");
+              let date = datePart[0];
+              let time1 = datePart[1];
+              let time1Ar = time1.split(":");
+              console.log(">>>>... ", time1Ar, " -- ", time1Ar.length);
+              if(time1Ar.length == 1){
+                time1 = time1 +":00";
+              }
+              let time2 = datePart[2];
+              let time = time1 +" "+ time2;
+              console.log(datePart, " == ", date, " -- ",time);  
+              this.dashboardRecentUpdates.push({title: "IO Last Login",date:date, time: time});
+            }
+            if(this.dashboardItemData.lastAccrApplied != undefined){
+              let datePart: any = this.dashboardItemData.lastAccrApplied.toString().split(" ");
+              let date = datePart[0];
+              let time1 = datePart[1];
+              let time1Ar = time1.split(":");
+              console.log(">>>>... ", time1Ar, " -- ", time1Ar.length);
+              if(time1Ar.length == 1){
+                time1 = time1 +":00";
+              }
+              let time2 = datePart[2];
+              let time = time1 +" "+ time2;
+              console.log(datePart, " == ", date, " -- ",time);  
+              this.dashboardRecentUpdates.push({title: "IO Last Accreditation Applied",date:date, time: time});
+            }            
+          }
+          console.log(">>>> Load Data: ", res, " == ", this.dashboardRecentUpdates);
+
+        });
+  }
+
   ngOnInit() {
+
+    this.totalDeptStatus['accredatedCount'] = 0;
+    this.totalDeptStatus['suspendedCount'] = 0;
+    this.totalDeptStatus['volWithdrawCount'] = 0;
+    this.totalDeptStatus['volSuspendedCount'] = 0;
+    this.totalDeptStatus['withdrawCount'] = 0;
 
     this.getUserType = 'cab_client';
     this.select_field = [
@@ -72,6 +219,8 @@ export class OperationsDashboardComponent implements OnInit {
     this.userType = sessionStorage.getItem('type');
     this.userEmail = sessionStorage.getItem('email');
     this.userId = sessionStorage.getItem('userId');
+
+    this.loadDashData();
 
     if (this.userType != 'operations') {
       var landUrl = '/dashboard' + this.userType + '/home'

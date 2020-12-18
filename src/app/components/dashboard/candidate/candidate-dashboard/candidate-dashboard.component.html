@@ -1,3 +1,4 @@
+<app-loader *ngIf="!loader"></app-loader>
 <div class="main-detail">
     <div class="container-fluid p-0">
         <div class="main-dashboard">
@@ -5,27 +6,26 @@
                 <div class="col-md-6">
                     <div class="trainer-details">
                         <div class="trainer-name">
-                            <h4>Mr. Chris Jackson Joe</h4>
+                            <h4>{{userDetails?.first_name}} {{userDetails?.last_name}}</h4>
                             <div class="acc_verified">
                                 <span class="icon-check-circle"></span>
                                 <span class="tooltip_data">Account Verified</span>
                             </div>
                         </div>
                         <div class="trainer-detail">
-                            <span class="trainer-data"><span class="icon-company"></span>Navigators Software Pvt.
-                                Ltd.</span>
-                            <span class="trainer-data"><span class="icon-Page"></span>robert.williams01@gmail.com</span>
-                            <span class="trainer-data"><span class="icon-call"></span>+971 254-3269</span>
+                            <span class="trainer-data"><span class="icon-company"></span>{{step1Data?.office_address}}</span>
+                            <span class="trainer-data"><span class="icon-Page"></span>{{step1Data?.office_email}}</span>
+                            <span class="trainer-data"><span class="icon-call"></span>{{step1Data?.office_tel_no}}</span>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="trainer-content">
                         <div class="trainer-type">
-                            <span>Type</span>
+                            <span>Designation</span>
                         </div>
                         <div class="trainer-type-data">
-                            <span>Account</span>
+                            <span>{{step1Data?.designation}}</span>
                         </div>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                             <span>Qualification</span>
                         </div>
                         <div class="trainer-type-data">
-                            <span>5 Years<span class="icon-checkmark"></span></span>
+                            <span>{{step1Data?.office}}<span class="icon-checkmark"></span></span>
                         </div>
                     </div>
                 </div>
@@ -49,9 +49,15 @@
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
                                 <span>Profile</span>
+
                             </div>
                             <div class="trainer-maindata trainer-update">
-                                <span>Update<span class="icon-right-arrow"></span></span>
+                                <span>Update 
+                                    <a routerLink="/dashboard/{{userType}}/company-profile">
+                                        <span [ngStyle]="{'color': '#FFF', 'font-size':'31px'}">></span>
+                                    </a>
+                                </span>
+                                <!-- <span>Update<span class="icon-right-arrow"></span></span> -->
                             </div>
                         </div>
                     </div>
@@ -63,10 +69,12 @@
                         </div>
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
-                                <span>Schedule</span>
+                                <span>Event</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span>12</span>
+                                <span *ngIf="dashboardEvents != undefined"> 
+                                    {{dashboardEvents.length}}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -78,10 +86,10 @@
                         </div>
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
-                                <span>Completed</span>
+                                <span>Course Completed</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span>05</span>
+                                <span>NA</span>
                             </div>
                         </div>
                     </div>
@@ -93,10 +101,10 @@
                         </div>
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
-                                <span>Profile</span>
+                                <span>Course Planned</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span>02</span>
+                                <span>NA</span>
                             </div>
                         </div>
                     </div>
@@ -105,7 +113,7 @@
         </div>
         <div class="dashboard-events">
             <div class="row m-0">
-                <div class="col-md-6">
+                <!-- <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="tra_events">
@@ -140,18 +148,36 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6">
+                </div> -->
+                <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="tra_events">
                                 <div class="trainer_head">
-                                    <h4>Activity (Recent Updates)</h4>
+                                    <h4>Recent Updates</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
+                        <div class="col-md-12">
+                            <div class="event_timings">
+                                
+                                <div class="date-cnt">
+                                    <span>Last Activity</span>
+                                </div>
+                                <div class="activity-details">
+                                    <ul>
+                                        <ng-container *ngFor = "let item of dashboardRecentUpdates">
+                                        <li>{{item.title}}<span> on {{item.date}} at {{item.time}}</span></li>
+                                        </ng-container>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="row">
                         <div class="col-md-12">
                             <div class="event_timings">
                                 <div class="date-cnt">
@@ -186,10 +212,11 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
+        
         <div class="event_data">
             <div class="row m-0">
                 <div class="col-md-12">
@@ -197,7 +224,7 @@
                         <div class="col-md-12">
                             <div class="tra_events">
                                 <div class="trainer_head">
-                                    <h4>Event Details</h4>
+                                    <h4>Events</h4>
                                 </div>
                             </div>
                         </div>
@@ -205,92 +232,106 @@
                     <div class="ass-name-det">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="ass-details">
-                                    <div class="date_content">
-                                        <span class="date-dash">20/01/2020</span>
-                                    </div>
-                                    <div class="row ticket-cnt">
-                                        <div class="col-md-12">
-                                            <div class="status-wrapper-ticket">
-                                                <h3>How do I tell you about a correction you need to make to an article?
-                                                </h3>
-                                                <p>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod
-                                                    tempor incididunt
-                                                    ut labore et dolore magna aliqua. Ut enim ad minim veniam quis
-                                                    nostrud exercitation ullamco
-                                                    laboris nisi ut aliquip ex ea commodo consequat.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row ticket-details m-0">
-                                    <div class="col">
-                                        <div class="doc-data border-right-dash">
-                                            <div class="documents">
-                                                <h5>Time</h5>
-                                            </div>
-                                            <div class="counts">
-                                                <span>11:00 AM - 2:00 PM</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col pl-0">
-                                        <div class="doc-data border-right-dash">
-                                            <div class="documents">
-                                                <h5>Location</h5>
-                                            </div>
-                                            <div class="counts">
-                                                <span>Kolkata, India</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col pl-0">
-                                        <div class="doc-data border-right-dash">
-                                            <div class="documents">
-                                                <h5>Topic</h5>
-                                            </div>
-                                            <div class="counts">
-                                                <span>Kick Off Meeting</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col pl-0">
-                                        <div class="doc-data border-right-dash">
-                                            <div class="documents">
-                                                <h5>Persons</h5>
-                                            </div>
-                                            <div class="counts">
-                                                <span>10</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col pl-0">
-                                        <div class="doc-data">
-                                            <div class="documents">
-                                                <h5>Status</h5>
-                                            </div>
-                                            <div class="counts">
-                                                <span>Pending</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- <div class="col pl-0">
-                                            <div class="doc-data">
-                                                <div class="documents">
-                                                    <h5></h5>
+                                <ng-container *ngIf="dashboardEvents.length > 0">
+                                    <mat-accordion>
+                                        <mat-expansion-panel (opened)="panelOpenState = true"
+                                        (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;">
+                                            <!-- <ng-container *ngFor="let item of dashboardEvents;"> -->
+                                            <mat-expansion-panel-header *ngIf="item.eventDate != undefined && item.eventDate.length > 0 && item.eventDate[0].event_date != null">
+                                                <div class="ass-details" [ngStyle]="{'padding-bottom': '4px'}">
+                                                    
+                                                    <div class="date_content">
+                                                        <span class="date-dash" *ngIf="item.eventDate != undefined && item.eventDate.length > 0">
+                                                            <span>
+                                                                {{item.eventDate[0].event_date | date}}
+                                                            </span>
+                                                        </span>
+                                                        {{item.courseDetails.course}}
+                                                    </div>
                                                 </div>
-                                                <div class="counts">
-                                                    <span></span>
+                                            </mat-expansion-panel-header>
+
+                                            <div class="ass-details">
+                                                
+                                                <div class="row ticket-cnt">
+                                                    <div class="col-md-12">
+                                                        <div class="status-wrapper-ticket" *ngIf="item.courseDetails != undefined">
+                                                            <h3 [ngStyle]="{'font-size': '25px'}">{{item.courseDetails.course}}</h3>
+                                                            <p [innerHTML]="item.courseDetails.course_description"></p>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div> -->
-                                </div>
+
+                                                <div class="row ticket-details m-0">
+                                                    <div class="col">
+                                                            <div class="doc-data border-right-dash">
+                                                                <div class="documents">
+                                                                    <h5>Date</h5>
+                                                                </div>
+                                                                <div class="counts">
+                                                                    <span *ngIf="item.eventDate != undefined && item.eventDate.length > 0">
+                                                                        {{item.eventDate[0].event_date | date}}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col pl-0">
+                                                            <div class="doc-data border-right-dash">
+                                                                <div class="documents">
+                                                                    <h5>Location</h5>
+                                                                </div>
+                                                                <div class="counts">
+                                                                    <span *ngIf="item.courseDetails.location == 'eiac_training_center'">Eiac Training Center</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col pl-0">
+                                                            <div class="doc-data border-right-dash">
+                                                                <div class="documents">
+                                                                    <h5>Tutor</h5>
+                                                                </div>
+                                                                <div class="counts">
+                                                                    <span *ngIf="item.tutor != undefined && item.tutor.name != ''">{{item.tutor.name}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col pl-0">
+                                                            <div class="doc-data border-right-dash">
+                                                                <div class="documents">
+                                                                    <h5>Persons</h5>
+                                                                </div>
+                                                                <div class="counts">
+                                                                    <span *ngIf="item.courseDetails.allTargatedAud != undefined">{{item.courseDetails.allTargatedAud.length}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col pl-0">
+                                                            <div class="doc-data">
+                                                                <div class="documents">
+                                                                    <h5>Status</h5>
+                                                                </div>
+                                                                <div class="counts">
+                                                                    <span *ngIf="item.courseDetails.status != undefined && item.courseDetails.status == true">Active</span>
+                                                                    <span *ngIf="item.courseDetails.status != undefined && item.courseDetails.status == false">InActive</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                            <!-- </ng-container> -->
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+                                </ng-container>
+                                <ng-container *ngIf="dashboardEvents.length == 0">
+                                    <p>No Events</p>
+                                </ng-container>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        
         <div class="comments-section">
             <div class="row m-0">
                 <div class="col-md-12">

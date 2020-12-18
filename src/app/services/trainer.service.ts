@@ -213,6 +213,13 @@ getRegistratationServiceList(){
   return this.http.get(url, this._service.getReqHeaders());
 }
 
+getAllEventList(){
+  let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.event_list; 
+  //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
+  //console.log("GET Event URL: ", url, " -- ", this._service.getReqHeaders());
+  return this.http.get(url, this._service.getReqHeaders());
+}
+
 getTrainingServiceList(){
   let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.trainingServList+"all"; 
   //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 

@@ -82,6 +82,10 @@ export class LayoutComponent implements OnInit {
         }
 
         //alert("...." + splitUrl[3] +" -- " + eval(splitUrl));
+
+        if(sessionStorage.getItem('inpremiseApplyCourseId') != ''){
+          sessionStorage.setItem('inpremiseApplyCourseId','');
+        }
         
         if(splitUrl[3] == 'testing-calibration-form') {
           this._service.setValueUrl(splitUrl[4]);
@@ -93,7 +97,7 @@ export class LayoutComponent implements OnInit {
           this._service.setValueUrl(splitUrl[4]);
         }else if(splitUrl[3] == 'no-objection-certificate-form') {
           this._service.setValueUrl(splitUrl[4]);
-        }else if(splitUrl[3] == 'certification-bodies-form') {
+        }else if(splitUrl[3] == 'certification-bodies-form') { 
           this._service.setValueUrl(splitUrl[4]);
         }else if(splitUrl[3] == 'pt-providers-form') {
           this._service.setValueUrl(splitUrl[4]);
@@ -115,6 +119,8 @@ export class LayoutComponent implements OnInit {
           sessionStorage.setItem('inpremiseFormId', splitUrl[4]);
         }else if(splitUrl[3] == 'training-inpremise-details') {
           sessionStorage.setItem('inpremiseCourseId', splitUrl[4]);
+        }else if(splitUrl[3] == 'training-inpremise-apply-details') {
+          sessionStorage.setItem('inpremiseApplyCourseId', splitUrl[4]);
         }else{
           this._service.setValueUrl('');
         }

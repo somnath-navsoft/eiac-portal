@@ -1,0 +1,56 @@
+<app-loader *ngIf="!loader"></app-loader>
+<!-- <app-header-after-login></app-header-after-login>
+<div class="side-data-cont">
+    <app-sidebar-after-login></app-sidebar-after-login>
+</div> -->
+<div class="main-detail">
+    <div class="container-fluid p-0">
+        <div class="main-dashboard-cnt">
+
+            <div class="row mb-4">
+                <div class="col-md-8">                    
+                    <div class="dashbrd-hdr">
+                        <h3>Scheme Lists</h3> 
+                    </div>
+                </div>
+            </div>
+
+            <div class="row m-0">
+                <div class="col-md-12">
+                <div class="row status-det-wrapper">
+                    <div class="col-md-12 p-0">
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                            <div class="table-appln pt-0">
+                                <table>
+                                <tr>
+                                    <th>Index</th>
+                                    <th>Title</th>
+                                    <th>Service Name</th>
+                                    <th>Sub Service Name</th>
+                                    <th>Creation Date</th>
+                                </tr>
+                                <ng-container *ngIf="allScheme && allScheme.length > 0">
+                                    <!-- <ng-container *ngFor="let othr_accr of schemedata; let i3 = index;"> -->
+                                        <tr *ngFor="let item of allScheme; let i3 = index;">
+                                            <td>{{i3+1}}</td>
+                                            <td>{{item.title}}</td>
+                                            <td>{{item.scope_accridiation.service_name}}</td>
+                                            <td *ngIf="item.scope_accridiation.sub_service_name != ''">{{item.scope_accridiation.sub_service_name}}</td>
+                                            <td *ngIf="item.scope_accridiation.sub_service_name == ''">N/A</td>
+                                            <td>{{item.scope_accridiation.created | date:'dd-MM-yyyy'}}</td>
+                                        </tr>
+                                    <!-- </ng-container> -->
+                                </ng-container>
+                                </table>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

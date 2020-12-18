@@ -11,7 +11,7 @@
         </div>
         <div class="row m-0">
           <div class="col-md-6" *ngFor="let item of pageDetails; let i = index;">
-              <div class="accreditation-container" *ngIf="item.page_path.path != '' && item.page_path.path == 'public_training'">
+              <div [ngStyle]="{'float': 'left'}" class="accreditation-container" *ngIf="item.page_path.path != '' && item.page_path.path == 'public_training'">
                 <div class="acc-main">
                   <div class="accreditation-img">
                     <img [src]="_constant.mediaPath + item.page_path.image_file" alt="">
@@ -24,7 +24,8 @@
                   </div> 
                   <div class="accreditation-desc">
                     <div class="accred_name">
-                        <p>{{item.page_title}}</p>
+                        <!-- <p>{{item.page_title}}</p> -->
+                        <p>PUBLIC COURSE</p>
                     </div>
                   </div>
 
@@ -35,14 +36,14 @@
               <div class="accreditation-container" *ngIf="item.page_path.path != '' && item.page_path.path == 'in_premise_training'">
                 <div class="acc-main">
                   <div class="accreditation-img">
-                    <img [src]="_constant.mediaPath + item.page_path.image_file" alt="">
-                    
+                    <img [src]="_constant.mediaPath + item.page_path.image_file" alt="">                    
                   </div> 
                   
                   
                   <div class="accreditation-desc training_acc">
                     <div class="accred_name">
-                        <p>{{item.page_title}}</p>
+                        <!-- <p>{{item.page_title}}</p> -->
+                        <p>IN PREMISE COURSE</p>
                     </div>
                     <div class="accred_opts">
                         <p><a routerLink="/dashboard/cab_client/training-inpremise-course">Request Course</a></p>

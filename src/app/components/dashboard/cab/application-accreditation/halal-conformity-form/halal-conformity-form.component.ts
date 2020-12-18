@@ -66,6 +66,7 @@ export class HalalConformityFormComponent implements OnInit {
   public isSubmit:boolean = true;
   allCityByCountry: any = [];
   getCountryLists:any;
+  getCountryStateCityAll: any;
   // version = VERSION;
   public minDate;
   public minChangeDate;
@@ -78,6 +79,9 @@ export class HalalConformityFormComponent implements OnInit {
   public recommend:any;
   allStateList: Array<any> = [];
   allCityList: Array<any> = [];
+  allCityTypeList: any = {};
+  allCityTypeLoder: any = {};
+
   step1Data:any = {};
   step2Data:any = {};
   step3Data:any = {};
@@ -307,6 +311,9 @@ export class HalalConformityFormComponent implements OnInit {
     // this.titleService.setTitle('EIAC - Halal Conformity Bodies');
     // this.loadCountryStateCity();
 
+    this.allCityTypeLoder[0] = {};
+    this.allCityTypeLoder[0]['loader'] = false;
+
     this.addMinutesToTime = this.Service.addMinutesToTime();
 
     this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');
@@ -360,17 +367,17 @@ export class HalalConformityFormComponent implements OnInit {
     this.scopeCheckboxes.push({
       name: "UAE_S_2055_2_2016",
       checked: false,
-      label: "UAE.S 2055 - 2:2016"
+      label: "UAE.S 2055 - 2"
     },
     {
       name: "GSO_S_2055_2_2015",
       checked: false,
-      label: "GSO.S 2055 - 2:2015"
+      label: "GSO.S 2055 - 2"
     },
     {
       name: "OIS_SMIIC_2_2011",
       checked: false,
-      label: "OIS/SMIIC - 2:2011"
+      label: "OIS/SMIIC - 2"
     },
     {
       name: "Halal_Inspection_Bodies for providing Halal Products Market Surveillance",
@@ -442,6 +449,8 @@ export class HalalConformityFormComponent implements OnInit {
     undertaking_confirm7:false,undertaking_confirm8:false,undertaking_confirm9:false,undertaking_confirm10:false};
     this.loadAppInfo();
     this.loadCountryStateCity();
+
+    this.loadCountryStateCityAll();
 
     this.loadScopeData();
     this.loadScopeCriteria();
@@ -1257,6 +1266,46 @@ addSchemeRow(obj: any = [],index: number){
     }
     
     );
+  }
+
+  cityByCountryAll(cname: string, index: number){
+      console.log(">>> Get county/index: ", cname, " :: ", index);
+      this.allCityTypeList[index] = [];
+      this.allCityTypeLoder[index] = {};
+      this.allCityTypeLoder[index]['loader'] = false;
+
+      let tempCities: any[] =[];
+      if(cname != ''){
+        let countryFind : any = this.getCountryStateCityAll.find(item => item.CountryName === cname);
+        console.log(">>> found country/city: ", countryFind);
+          if(countryFind != undefined && countryFind.States != undefined && countryFind.States.length > 0){
+            countryFind.States.forEach((item, k) => {
+                  this.allCityTypeLoder[index]['loader'] = true;
+                  if(item.Cities != undefined && item.Cities.length > 0){
+                    item.Cities.forEach(rec => {
+                      tempCities.push({name: rec});
+                    })
+                  }
+            })
+          }
+          if(tempCities.length > 0){
+            this.allCityTypeLoder[index]['loader'] = false;
+          }
+          this.allCityTypeList[index] = tempCities;
+
+         
+          console.log(">>>GET Cities: ", " :: ", tempCities);
+      }
+  }
+
+  loadCountryStateCityAll  = async() =>{
+    let cscLIST = this.Service.getCSCAll();
+    await cscLIST.subscribe(record => {
+      console.log("...> ", record);
+      this.getCountryStateCityAll = record['Countries'];
+      console.log("...>>> ", this.getCountryStateCityAll);
+    });
+    //console.log("ALL CSC: ", this.getCountryStateCityAll);
   }
   
   loadCountryStateCity = async() => {
@@ -2270,7 +2319,7 @@ addSchemeRow(obj: any = [],index: number){
 
     //Reset min dates array
     if(this.accreditationInfo){
-      console.log(this.minDates);
+      //console.log(this.minDates);
       this.accreditationInfo.forEach((item, index) => {
         console.log(index, " :: ", item);
       })
@@ -2283,11 +2332,31 @@ addSchemeRow(obj: any = [],index: number){
 
     if(type === '' || type == undefined){
       obj.splice(index, 1);
-    }    
+    }
+    if(this.allCityTypeList != undefined){
+      //delete this.allCityTypeList[index]
+      //this.allCityTypeList.splice(index, 1)
+    }
     if(this.minDates.length){
       this.minDates.splice(index, 1);
     }
-    console.log(">>> after delet: ", this.minDates);
+    console.log(">>> after delet: ", this.allCityTypeList);
+    //var arr1 = Array.from(this.allCityTypeList);
+    const arr1: any = Object.entries(this.allCityTypeList);
+    arr1.splice(index, 1);
+    //const obj1 = Object.fromEntries(arr1);
+    const obj1= Object.assign({}, arr1);
+    console.log(">>>Conv objects: ", obj1, " == ", JSON.parse(JSON.stringify(arr1)));
+    let countInd: number = 0;
+    let tempDataObj: any ={};
+    for(let key in obj1){
+      console.log(key, " :: ", obj1[key], " -- ", countInd);
+      tempDataObj[countInd.toString()] = obj1[key];
+      countInd++;
+    }
+    this.allCityTypeList = tempDataObj;
+
+    console.log(".......",arr1, " :: ", obj1, " == ", tempDataObj);
     return true;
   }
 
@@ -3660,6 +3729,7 @@ onSubmitStep7(ngForm7: any) {
   this.voucherFile.append('voucher_date',dtFormat);
   this.voucherFile.append('application_id', this.formApplicationId);
   this.voucherFile.append('accreditation',this.formApplicationId);
+  this.voucherFile.append('payment_status', 'paid');
   if(!type){
     this.voucherFile.append('is_draft', false);
   }else{

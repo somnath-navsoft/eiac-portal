@@ -23,17 +23,18 @@ export class AppService {
   dashBoardPagination: any = 5;
   messagePagination: any = 10;
 
-  // public apiServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
-  // public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
+  public apiServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
+  public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
 
-  public apiServerUrl         =   'https://dev-service.eiac.gov.ae/webservice';
-  public apiRequestUrl        =   'https://dev-service.eiac.gov.ae/';
+  // public apiServerUrl         =   'https://dev-service.eiac.gov.ae/webservice';
+  // public apiRequestUrl        =   'https://dev-service.eiac.gov.ae/';
 
   public apiUatServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
   // public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
 
   public countryURL           =   "https://raw.githubusercontent.com/sagarshirbhate/Country-State-City-Database/master/Contries.json";
-  public assetsBasePath       =   "https://dev-portal.eiac.gov.ae/assets/csc-json/";
+  public assetsBasePath       =   "https://uat-portal.eiac.gov.ae/assets/csc-json/";
+  //https://raw.githubusercontent.com/sagarshirbhate/Country-State-City-Database/master/Contries.json
 
   public regExName: any;
   public regExUrl: any;
@@ -744,6 +745,10 @@ addMinutesToTime()
         obj[key]['converted_date_second'] = convertedDate;
       }
       return obj;
+    }
+
+    getCSCAll(){
+      return this.http.get(this.countryURL);
     }
 
     getCountry(){

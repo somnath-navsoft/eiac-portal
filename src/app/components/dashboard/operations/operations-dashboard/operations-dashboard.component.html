@@ -1,3 +1,4 @@
+<app-loader *ngIf="!loader"></app-loader>
 <div class="main-detail">
     <div class="container-fluid p-0">
         <div class="main-dashboard">
@@ -13,13 +14,13 @@
                                     <span>CAB</span>
                                 </div>
                                 <div class="trainer-maindata trainer-update">
-                                    <span>144</span>
+                                    <span>{{dashboardItemData.totalCabCount}}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="date-update">
                             <div class="data-bg">
-                                <h6><span class="icon-arrow-up"></span>22 New since last month</h6>
+                                <h6><span class="icon-arrow-up"></span>{{dashboardItemData.lastMonthCabCount}}New since last month</h6>
                             </div>
                         </div>
                     </div>
@@ -35,13 +36,13 @@
                                     <span>Certificates</span>
                                 </div>
                                 <div class="trainer-maindata trainer-update">
-                                    <span>324</span>
+                                    <span>{{dashboardItemData.totalCabDirectoryCount}}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="date-update update2">
                             <div class="data-bg">
-                                <h6><span class="icon-arrow-up"></span>22 New since last month</h6>
+                                <h6><span class="icon-arrow-up"></span>{{dashboardItemData.lastMonthCabDirectoryCount}} New since last month</h6>
                             </div>
                         </div>
                     </div>
@@ -57,13 +58,13 @@
                                     <span>Documents</span>
                                 </div>
                                 <div class="trainer-maindata trainer-update">
-                                    <span>542</span>
+                                    <span>{{dashboardItemData.totalDocCount}}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="date-update update3">
                             <div class="data-bg">
-                                <h6><span class="icon-arrow-down"></span>22 Expiring since last month</h6>
+                                <h6><span class="icon-arrow-down"></span>{{dashboardItemData.lastMonthDocCount}} Expiring since last month</h6>
                             </div>
                         </div>
                     </div>
@@ -79,19 +80,103 @@
                                     <span>Training Events</span>
                                 </div>
                                 <div class="trainer-maindata trainer-update">
-                                    <span>324</span>
+                                    <span>{{dashboardItemData.totalEventCount}}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="date-update update4">
                             <div class="data-bg">
-                                <h6><span class="icon-arrow-down"></span>22 Completed this year</h6>
+                                <h6><span class="icon-arrow-down"></span>{{dashboardItemData.lastMonthEventCount}} Completed this year</h6>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Application Status -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="trainer_head">
+                    <h4>Application Status</h4>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="dash-main">
+                    <div class="dash-wrap">
+                        <div class="usermain">
+                            <div class="main-status">
+                                <p class="head-dash">Received</p>
+                                <p class="sub-head-dash">{{dashboardItemData.draftAccr}}</p>
+                            </div>
+                            <div class="view-all sub-head-dash">
+                                <!-- <p><span class="active-dash waiting-dash">Waiting</span></p> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dash-logo">
+                        <span class="icon-check-mark"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="dash-main">
+                    <div class="dash-wrap">
+                        <div class="usermain">
+                            <div class="main-status">
+                                <p class="head-dash">Approved</p>
+                                <p class="sub-head-dash">{{dashboardItemData.underReviewAccr}}</p>
+                            </div>
+                            <div class="view-all">
+                                <!-- <p><span class="icon-arrow-up"></span>12 New</p> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dash-logo">
+                        <span class="icon-check-mark"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="dash-main">
+                    <div class="dash-wrap">
+                        <div class="usermain">
+                            <div class="main-status">
+                                <p class="head-dash head-dash-bill">In Processed</p>
+                                <p class="sub-head-dash">{{dashboardItemData.applicationProcessed}}</p>
+                            </div>
+                            <div class="view-all">
+                                <!-- <p><span class="icon-arrow-up"></span>12 New</p> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dash-logo">
+                        <span class="icon-check-mark"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="dash-main">
+                    <div class="dash-wrap">
+                        <div class="usermain">
+                            <div class="main-status">
+                                <p class="head-dash head-dash-bill">Closed</p>
+                                <p class="sub-head-dash">{{dashboardItemData.completeAccr}}</p>
+                            </div>
+                            <div class="view-all">
+                                <!-- <p><span class="icon-arrow-up"></span>12 New</p> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dash-logo">
+                        <span class="icon-check-mark"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <div class="service-links dash_menu_main">
             <div class="row m-0">
@@ -102,6 +187,22 @@
                                 <h4>Department View</h4>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <!-- @{{selectDepartment}} -->
+                            <!-- (selectionChange)="changeDepartmentView($event)" -->
+                            <mat-form-field class="cab-data mt-2">         
+                                                    
+                                <mat-select placeholder="Select Department" (selectionChange)="changeDepartmentView($event)"  name="department_view" 
+                                [(ngModel)]="selectDepartment" required="true">
+                                <mat-option [value]="item.value" *ngFor="let item of ioDeartment">
+                                    {{item.title}}
+                                </mat-option>
+                                <!-- <mat-option value="CB">CB</mat-option>
+                                <mat-option value="HALAL">HALAL</mat-option>  -->
+                                </mat-select>
+                            </mat-form-field>
+                                
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
@@ -110,7 +211,8 @@
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash">CAB</p>
-                                            <p class="sub-head-dash">IB</p>
+                                            <p class="sub-head-dash" *ngIf="totalDeptSelect == ''">NA</p>
+                                            <p class="sub-head-dash" *ngIf="totalDeptSelect != ''">{{totalDeptSelect}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -125,7 +227,7 @@
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash">Scheme</p>
-                                            <p class="sub-head-dash">21</p>
+                                            <p class="sub-head-dash">{{totalDeptSchemeCount}}</p>
                                         </div>
                                         <div class="view-all sub-head-dash">
                                             <p><span class="active-dash">Active</span></p>
@@ -143,7 +245,7 @@
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash">Documents</p>
-                                            <p class="sub-head-dash">04</p>
+                                            <p class="sub-head-dash">{{totalDeptDocCount}}</p>
                                         </div>
                                         <div class="view-all sub-head-dash">
                                             <p><span class="active-dash confirmed-dash">Refference</span></p>
@@ -163,7 +265,7 @@
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash">CAB Approvals</p>
-                                            <p class="sub-head-dash">02</p>
+                                            <p class="sub-head-dash">{{totalDeptCABCount}}</p>
                                         </div>
                                         <div class="view-all sub-head-dash">
                                             <p><span class="active-dash waiting-dash">Waiting</span></p>
@@ -181,11 +283,11 @@
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash">Service Enquiries</p>
-                                            <p class="sub-head-dash">29</p>
+                                            <p class="sub-head-dash">NA</p>
                                         </div>
-                                        <div class="view-all">
+                                        <!-- <div class="view-all">
                                             <p><span class="icon-arrow-up"></span>12 New</p>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="dash-logo">
@@ -209,12 +311,12 @@
                                 <div class="dash-wrap">
                                     <div class="usermain">
                                         <div class="main-status">
-                                            <p class="head-dash head-dash-bill">IB Certificates</p>
-                                            <p class="sub-head-dash">345</p>
+                                            <p class="head-dash head-dash-bill">{{totalDeptSelect}} Certificates</p>
+                                            <p class="sub-head-dash">{{totalDeptCertificateCount}}</p>
                                         </div>
-                                        <div class="view-all">
+                                        <!-- <div class="view-all">
                                             <p><span class="icon-arrow-up"></span>12 New</p>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="dash-logo bill-logo">
@@ -228,7 +330,7 @@
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash head-dash-bill">In Progress</p>
-                                            <p class="sub-head-dash">11</p>
+                                            <p class="sub-head-dash">NA</p>
                                         </div>
                                         <div class="view-all">
                                             <p>From last week</p>
@@ -246,9 +348,11 @@
                                     <div class="usermain">
                                         <div class="main-status long_content">
                                             <p class="head-dash head-dash-bill">Status</p>
-                                            <p class="sub-head-dash">50 <span>Accredited</span></p>
-                                            <p class="sub-head-dash">11 <span>Withdrawn</span></p>
-                                            <p class="sub-head-dash">04 <span>Suspended</span></p>
+                                            <p class="sub-head-dash">{{totalDeptStatus.accredatedCount}}<span>Accredited</span></p>
+                                            <p class="sub-head-dash">{{totalDeptStatus.withdrawCount}} <span>Withdrawn</span></p>
+                                            <p class="sub-head-dash">{{totalDeptStatus.suspendedCount}} <span>Suspended</span></p>
+                                            <p class="sub-head-dash">{{totalDeptStatus.volWithdrawCount}} <span>Voluntary Withdrawn</span></p>
+                                            <p class="sub-head-dash">{{totalDeptStatus.volSuspendedCount}} <span>Voluntary Suspended</span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -263,7 +367,7 @@
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash head-dash-bill">Region</p>
-                                            <p class="sub-head-dash">India</p>
+                                            <p class="sub-head-dash">NA</p>
                                         </div>
                                     </div>
                                 </div>
@@ -285,51 +389,23 @@
                                 <div class="trainer_head">
                                     <h4>Recent Updates</h4>
                                 </div>
-                                <div class="add-data">
+                                <!-- <div class="add-data">
                                     <a href="javascript:void(0)"><span class="icon-close"></span></a>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="event_timings client_timings">
+                            <div class="event_timings">                                
                                 <div class="date-cnt">
-                                    <span>20/01/2020</span>
+                                    <span>Last Activity</span>
                                 </div>
                                 <div class="activity-details">
                                     <ul>
-                                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                            tempor incididunt ut labore et dolore magna aliqua.
-                                            Ut enim ad minim veniam, quis nostrud exercitation.<span>05:25 PM</span>
-                                        </li>
-                                        <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                                            eu fugiat nulla pariatur.<span>05:21 PM</span></li>
-                                        <li>On the other hand, we denounce with righteous indignation and dislike men
-                                            who are so beguiled and demoralized by the charms
-                                            of pleasure of the moment.<span>05:25 PM</span></li>
-                                        <li>These cases are perfectly simple and easy to distinguish. In a free hour,
-                                            when our power of choice is untrammelled and when
-                                            nothing prevents.<span>05:21 PM</span></li>
-                                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                            tempor incididunt ut labore et dolore magna aliqua.
-                                            Ut enim ad minim veniam, quis nostrud exercitation.<span>05:25 PM</span>
-                                        </li>
-                                        <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                                            eu fugiat nulla pariatur.<span>05:21 PM</span></li>
-                                    </ul>
-                                </div>
-                                <div class="date-cnt">
-                                    <span>19/01/2020</span>
-                                </div>
-                                <div class="activity-details">
-                                    <ul>
-                                        <li>On the other hand, we denounce with righteous indignation and dislike men
-                                            who are so beguiled and demoralized
-                                            by the charms of pleasure of the moment.<span>05:25 PM</span></li>
-                                        <li>These cases are perfectly simple and easy to distinguish. In a free hour,
-                                            when our power of choice is
-                                            untrammelled and when nothing prevents.<span>05:21 PM</span></li>
+                                        <ng-container *ngFor = "let item of dashboardRecentUpdates">
+                                        <li>{{item.title}}<span> on {{item.date}} at {{item.time}}</span></li>
+                                        </ng-container>
                                     </ul>
                                 </div>
                             </div>

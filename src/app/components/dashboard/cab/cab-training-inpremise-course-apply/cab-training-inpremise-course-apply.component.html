@@ -3,38 +3,23 @@
     <div class="main-menu-dir">
         <div class="pub-wrapper">
             <div class="container-fluid p-0">
-                <div class="row">
+                <div class="row mt-0">
                     <div class="col-md-12">
                         <div class="form-main">
-                            <!-- <h1>PROGRAM LISTING</h1> -->
-                            <!-- <h1>{{pageHeading}}</h1> -->
                         </div>
                     </div>
                 </div>
-
-                
-
-                <!-- <div *ngIf="trainingCartArr == ''">
-                    <div class="col-md-12">
-                        <div class="scheduled-prog">
-                            No Data Found
-                        </div>
-                    </div>
-                </div> -->
-                
-                
-
-                <div class="row mt-4">
+                <div class="row">
                     <div class="col-md-12">
                         <div class="ourcourse-data">
                             <div class="progs-course">
-                                <h4>Event</h4>
+                                <h4 [ngStyle]="{'color': '#000'}">Event</h4>
                             </div>
                             <div class="sort-data">
                                  <label for="sort">Sort By :</label>
 
                                 <mat-form-field appearance="fill">
-                                    <mat-select (selectionChange)="shortProgramListing('schedule_program_listing')" [(value)]="scheduleProgramSection">
+                                    <mat-select (selectionChange)="shortProgramListing('program_listing')" [(value)]="programEvent">
                                     <mat-option value="">Select</mat-option>
                                         <mat-option value="coursename">Course Name</mat-option>
                                         <mat-option value="audience">Audience</mat-option>
@@ -62,8 +47,8 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="training-data">
-                                            @{{row2.id}}
-                                            <h4>{{row2.public_course_dtls.course}}</h4>
+                                            <!-- {{row2.courseDetails.course}} -->
+                                            <h4>{{row2.courseDetails.course}}</h4>
                                         </div>
                                         <hr>
                                     </div>
@@ -76,10 +61,15 @@
                                                     <span>Audience</span>
                                                 </div>
                                                 <div class="training_type">
-                                                    <ng-container *ngIf="row2.public_course_dtls.allTargatedAud.length > 0">
-                                                        <span>{{row2.public_course_dtls.allTargatedAud[0].target_aud_name.title}}</span>
+                                                    <ng-container *ngIf="row2.courseDetails.allTargatedAud != undefined || row2.courseDetails.allTargatedAud != null">
+                                                        
+                                                        <ng-container *ngFor="let item of row2.courseDetails['allTargatedAud'];">
+                                                            <span>{{item.target_aud_name.title}}</span>, 
+                                                        </ng-container>
                                                     </ng-container>
-                                                    
+                                                    <ng-container *ngIf="row2.courseDetails.allTargatedAud == undefined || row2.courseDetails.allTargatedAud == null">
+                                                        NA
+                                                    </ng-container>
                                                 </div>
                                             </div>
                                         </div>
@@ -89,7 +79,9 @@
                                                     <span>Duration</span>
                                                 </div>
                                                 <div class="training_type">
-                                                    <span>{{row2.public_course_dtls.training_days}} Days</span>
+                                                    <span *ngIf="row2.courseDetails.training_days != null">{{row2.courseDetails.training_days}} Days</span>
+                                                    <span *ngIf="row2.courseDetails.training_days == null">0 Day</span>
+                                                    <!-- <span>{{row2.training_days}} Days</span> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -98,9 +90,12 @@
                                                 <div class="training_det">
                                                     <span>Date</span>
                                                 </div>
-                                                <div class="training_type">
-                                                    <span>{{row2.public_course_dtls.created | date:'MM-dd-yy'}}</span>
+                                                <div class="training_type" *ngIf="row2.event_start_date_time">
+                                                    <span>{{row2.event_start_date_time | date }}</span>
                                                 </div>
+                                                <!-- <div class="training_type" *ngIf="row2['eventDate'] && row2['eventDate'].length == 0">
+                                                    <span>N/A</span>
+                                                </div> -->
                                             </div>
                                         </div>
                                         <div class="col-lg-2 border-left-dash">
@@ -109,7 +104,12 @@
                                                     <span>Location</span>
                                                 </div>
                                                 <div class="training_type">
-                                                    <span>{{row2.public_course_dtls.location}}</span>
+                                                <ng-container *ngIf="row2.custom_location != null">
+                                                    <span>{{row2.custom_location}}</span>
+                                                </ng-container>
+                                                <ng-container *ngIf="row2.location === null || row2.location == ''">
+                                                    NA
+                                                </ng-container>
                                                 </div>
                                             </div>
                                         </div>
@@ -119,17 +119,16 @@
                                                     <span>No. Of Candidate</span>
                                                 </div>
                                                 <div class="training_type">
-                                                    <span>{{row2.public_course_dtls.capacity}}</span>
+                                                    <span>{{row2.capacity}}</span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-2 border-left-dash">
                                             <div class="training-main-details">
                                             <div class="train_det_bttn">
-                                                <!-- routerLink="/dashboard/cab_client/training-inpremise-event-details/{{row2.id}}" -->
-                                                <a style="text-decoration:none" 
-                                                 href="javascript:void(0)" class="training_btn">DETAILS</a>
-                                            </div>
+                                                <!-- routerLink="/dashboard/cab_client/training-inpremise-event-details/{{row2.id}}" --> 
+                                                <a routerLink="/dashboard/cab_client/training-inpremise-apply-details/{{row2.id}}" class="training_btn">DETAILS</a>
+                                            </div>  
                                         </div>
                                         </div>
                                     </div>

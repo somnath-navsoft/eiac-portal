@@ -31,6 +31,12 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
 
   searchCountryLists: any[] =[];
 
+  pageLimit: number = 5;
+  totalListCount: number = 0;
+  totalListData: any[] =[];
+  totalListLen: number =0;
+  sortValue: string ="";
+
   constructor(public _service: AppService, public _constant:Constants, public _trainerService: TrainerService, public _toastr: ToastrService) { }
 
   ngOnInit() {
@@ -101,15 +107,48 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
      return true;
   }
 
+  getPaginateData(limit: number, listData: any) {
+    let pageData: any[];
+    if (listData.length) {
+      pageData = listData.slice(0, limit);
+    }
+    this.allCourseTraining = pageData;
+    //console.log("....sorting....");
+    this.sortByList(this.sortValue);
+    console.log(">>>Page Data: ", pageData);
+  }
+  
+  loadMore() {
+    this.totalListCount = this.totalListCount + 10;
+    this.pageLimit += 10;
+    this.getPaginateData(this.pageLimit, this.totalListData)
+    //
+    
+
+  }
+
   loadTrainingData() {
     this.loaderData = false;
-    this._service.getwithoutData(this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.training_course_list+'all/0?data=1')
+    let url: any = this._service.apiServerUrl+'/'+'public-course-list';
+    //this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.training_course_list+'all/0?data=1'
+    this._service.getwithoutData(url)
     .subscribe(
       res => {
         this.loaderData = true;
 
-        var targatedAudianceCourse = res['targatedAudianceCourse'];
+        console.log(">>> ", res);
+
+        var targatedAudianceCourse = res['records'];
         //this.trainingList = res['targatedAudianceCourse'];
+        this.allCourseTraining = res['records'];
+        if(this.sortValue == ''){
+          //this.sortValue = 'course';
+        }
+        //this.sortByList(this.sortValue);
+        this.totalListLen = this.allCourseTraining.length;
+        this.totalListData = this.allCourseTraining        
+        this.getPaginateData(this.pageLimit, this.totalListData);
+        
         
         // for(let key in targatedAudianceCourse)
         // {
@@ -123,27 +162,27 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
         //   }
         // }
 
-        for(let key in targatedAudianceCourse)
-        {
-          if(targatedAudianceCourse[key].event && targatedAudianceCourse[key].event.tutor != '')
-          {
-            this.trainingList.push(targatedAudianceCourse[key]);
-            if(this.audienceId == '0')
-            {
-              this.trainingList = this.getUnique(this.trainingList);
-            }
-            // //console.log(targatedAudianceCourse[key],'targatedAudianceCourse');
-          }
-        }
-        // //console.log(this.trainingList,'trainingList');
-        this.allCourses = res['courseList'];
-        //console.log(this.allCourses,'allCourses')
+        // for(let key in targatedAudianceCourse)
+        // {
+        //   if(targatedAudianceCourse[key].event && targatedAudianceCourse[key].event.tutor != '')
+        //   {
+        //     this.trainingList.push(targatedAudianceCourse[key]);
+        //     if(this.audienceId == '0')
+        //     {
+        //       this.trainingList = this.getUnique(this.trainingList);
+        //     }
+        //     // //console.log(targatedAudianceCourse[key],'targatedAudianceCourse');
+        //   }
+        // }
+        // // //console.log(this.trainingList,'trainingList');
+        // this.allCourses = res['courseList'];
+        // //console.log(this.allCourses,'allCourses')
        
-        for(let i=0; i<= this.rowCount*4; i++){
-          if(this.allCourses[i]){
-            this.allCourseTraining.push(this.allCourses[i]);
-          }
-        }
+        // for(let i=0; i<= this.rowCount*4; i++){
+        //   if(this.allCourses[i]){
+        //     this.allCourseTraining.push(this.allCourses[i]);
+        //   }
+        // }
         
         // console.log(this.allCourseTraining,'allCourseTraining');
         
@@ -195,12 +234,16 @@ onSubmit(theForm: any){
       return false;
     }
 
+    //{"course_id_arr":["69","70"],"course_type":"custom_course","event_start_date_time":"2020-08-21T18:30:00.000Z",
+    //"capacity":"20","custom_location":"7 nG Kolkata","agreement_status":"accepted"}
+
     let postData: any = {};
-    postData['course_type'] = "custom_course";
+    postData['course_type']           = "custom_course";
+    postData['capacity']              = this.inPremiseForm.no_of_candidate;
     postData['event_start_date_time'] = new Date(this.inPremiseForm.select_date);
-    postData['custom_location'] = this.inPremiseForm.select_location;
-    postData['agreement_status'] = "accepted";
-    postData['course_id_arr'] = courseIdAr;
+    postData['custom_location']       = this.inPremiseForm.select_location;
+    postData['agreement_status']      = "accepted";
+    postData['course_id_arr']         = courseIdAr;
     let urlPost: string = this._service.apiServerUrl+"/"+'cust-course-save/';
     console.log(">>>submitting....", postData, " -- ", urlPost, " == ", this.trainingCartArr);
     this._service.post(urlPost, postData)
@@ -224,6 +267,29 @@ onSubmit(theForm: any){
 }
 
 
+sortByList(field: any){
+  //console.log(">>> Get field: ", field);
+  if(field != undefined && field == 'course'){
+    //console.log(">> sort by course: ", field);
+    this.allCourseTraining.sort((a,b) => (a.course.toString().toLowerCase() > b.course.toString().toLowerCase()) ? 1 : -1);
+  }
+  // if(field != undefined && field.value == 'course'){
+  //   console.log(">> sort by course: ", field);
+  //   this.allCourseTraining.sort((a,b) => (a.course > b.course) ? 1 : -1);
+  // }
+  if(field != undefined && field == 'rate'){
+    //console.log(">> sort by course: ", field);
+    this.allCourseTraining.sort((a,b) => (a.fees_per_trainee > b.fees_per_trainee) ? 1 : -1);
+  }
+  if(field != undefined && field == 'days'){
+    //console.log(">> sort by course: ", field);
+    this.allCourseTraining.sort((a,b) => (a.training_days > b.training_days) ? 1 : -1);
+  }
+}
+
+
+
+
 shortProgramListing(section:any) {
     // console.log('event');
     // console.log(this.programEvent,'programEvent');
@@ -235,7 +301,7 @@ shortProgramListing(section:any) {
       if(this.programEvent == 'coursename')
       {
         // this.allCourseTraining = ;
-          this.allCourseTraining.sort((a,b) => (a.course.name > b.course.name) ? 1 : -1);
+          this.allCourseTraining.sort((a,b) => (a.course > b.course) ? 1 : -1);
           // console.log()
       }else if(this.programEvent == 'audience')
       {
@@ -252,7 +318,7 @@ shortProgramListing(section:any) {
       if(this.scheduleProgramSection == 'coursename')
       {
         // this.allCourseTraining = ;
-          this.trainingList.sort((a,b) => (a.course.name > b.course.name) ? 1 : -1);
+          this.trainingList.sort((a,b) => (a.course > b.course) ? 1 : -1);
           // console.log()
       }else if(this.scheduleProgramSection == 'audience')
       {

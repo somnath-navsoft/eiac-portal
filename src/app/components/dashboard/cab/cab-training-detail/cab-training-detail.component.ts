@@ -26,15 +26,15 @@ export class CabTrainingDetailComponent implements OnInit {
   loadData() {
     //public-course-event-details-show
     this.loaderData = false;
-    this._service.getwithoutData(this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.course_details+this.routeId)
+    this._service.getwithoutData(this._service.apiServerUrl+'/'+this._constant.API_ENDPOINT.course_details_publicForm+this.routeId)
     .subscribe(
       res => {
         let audAr: any[] =[];
-        let getData: any = res['courseDetails'];
+        let getData: any = res['eventData'];
         this.loaderData = true;
         console.log(getData);
-        if(getData.allTargatedAud != undefined && getData.allTargatedAud.length > 0){
-          getData.allTargatedAud.forEach(item => {
+        if(getData.public_course.allTargatedAud != undefined && getData.public_course.allTargatedAud.length > 0){
+          getData.public_course.allTargatedAud.forEach(item => {
                if(item.target_aud_name != undefined && typeof item.target_aud_name == 'object'){
                 audAr.push(item.target_aud_name.title);
                }
@@ -43,7 +43,7 @@ export class CabTrainingDetailComponent implements OnInit {
         if(audAr.length > 0){
           this.audienceData = audAr.join(', ');
         }
-        this.courseDetails = res['courseDetails'];
+        this.courseDetails = res['eventData'];
         console.log(this.courseDetails);
       })
   }

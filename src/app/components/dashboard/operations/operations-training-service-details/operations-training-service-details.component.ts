@@ -32,6 +32,8 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
   fee_day_pertime2:any = '5%';
   fee_day_pertime3:any = 10;
   fee_day_pertime4:any = 10;
+  applicantDetails:any;
+  undertaking_confirmTop3:boolean = true;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService) { }
@@ -40,6 +42,7 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
     this.loader = true;
     this.routeId = sessionStorage.getItem('trainingId');
     this.loadData();
+    // this.undertaking_confirmTop3 = true;
   }
   getFile(file: string){
     let fname: string = file.split('/')[1].split('.')[0];
@@ -57,6 +60,7 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
           // this.ownershipOfOrg = result['data']['ownershipOfOrg'];
           // this.ownOrgMembInfo = result['data']['bodMember'];
           this.paymentDetails = result['data'].paymentDetails;
+          this.applicantDetails = result['data'].onBehalfApplicantDetails;
           this.participantTraineeDetails = result['data']['eventParticipant'];
 
           this.training_duration = result['data'].training_duration;
@@ -71,9 +75,9 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
           // console.log(training_duration_current);
           // console.log(this.tutionFees);
           this.taxVat = 0.05 * this.tutionFees;
-          this.knowledgeFees = 10 * this.noofParticipants;
-          this.innovationFees = 10 * this.noofParticipants;
-          this.subTotal = this.tutionFees + this.taxVat + this.knowledgeFees + this.innovationFees;
+          // this.knowledgeFees = 10 * this.noofParticipants;
+          // this.innovationFees = 10 * this.noofParticipants;
+          this.subTotal = this.tutionFees + this.taxVat ;
         })
     )
   }
