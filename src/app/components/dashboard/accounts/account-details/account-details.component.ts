@@ -29,7 +29,7 @@ export class AccountDetailsComponent implements OnInit {
   pageTotal: number = 0;
 
   exportAsConfig: ExportAsConfig = {
-    type: 'pdf', // the type you want to download
+    type: 'xls', // the type you want to download
     elementIdOrContent: 'excel-table', // the id of html/table element
   }
   
