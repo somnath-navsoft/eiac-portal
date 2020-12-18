@@ -70,6 +70,12 @@ export class StatusComponent implements OnInit {
     // |  |  |  | 
   }
 
+  filterSearchSec(){
+    console.log(">>> sss", this.advSearch);
+    this.advSearch = !this.advSearch;
+    console.log(">>> sss1 ", this.advSearch);
+  }
+
   setIB(id: any){
     // console.log(">>>url id set...", id);
     sessionStorage.setItem('ibUrlId', id);

@@ -2344,19 +2344,28 @@ addSchemeRow(obj: any = [],index: number){
     //var arr1 = Array.from(this.allCityTypeList);
     const arr1: any = Object.entries(this.allCityTypeList);
     arr1.splice(index, 1);
-    //const obj1 = Object.fromEntries(arr1);
+    //const obj1 = Object.fromEntries(arr1);// Deprecated for Convert Array to Object
     const obj1= Object.assign({}, arr1);
     console.log(">>>Conv objects: ", obj1, " == ", JSON.parse(JSON.stringify(arr1)));
     let countInd: number = 0;
     let tempDataObj: any ={};
     for(let key in obj1){
       console.log(key, " :: ", obj1[key], " -- ", countInd);
-      tempDataObj[countInd.toString()] = obj1[key];
-      countInd++;
+      if(typeof obj1[key] == 'object'){
+          let dobj: any = obj1[key];
+          dobj.forEach((item, ind) => {
+              if(typeof item === 'object'){
+                console.log("Found....value: ", item);
+                tempDataObj[countInd.toString()] = item;
+                countInd++;
+              }
+          })
+      }
+      // tempDataObj[countInd.toString()] = obj1[key];
+      // countInd++;
     }
-    this.allCityTypeList = tempDataObj;
-
     console.log(".......",arr1, " :: ", obj1, " == ", tempDataObj);
+    this.allCityTypeList = tempDataObj;    
     return true;
   }
 
