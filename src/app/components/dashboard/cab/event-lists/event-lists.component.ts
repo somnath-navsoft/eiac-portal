@@ -29,6 +29,9 @@ export class EventListsComponent implements OnInit {
   participantsTempList:any[] = [{}];
   participantsList:any[] = [{}];
   dataLoad: boolean = false;
+  detailsCourse:any;
+  detailsDate:any;
+  noOfParticipants:any;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService, public _trainerService:TrainerService, private modalService: NgbModal) { }
 
@@ -188,8 +191,8 @@ export class EventListsComponent implements OnInit {
     }
   }
 
-  open(content,arr:any[]) {
-    // console.log(key)
+  open(content,newObj:any) {
+    console.log(newObj)
     //this.voucherSentData = {};
     // if(id){
     //   console.log(">>ID: ", id);
@@ -198,7 +201,11 @@ export class EventListsComponent implements OnInit {
     //   this.voucherIndex = key
     // }
     // this.paymentReceiptValidation = null;
-    this.participantsList = arr;
+    this.participantsList = newObj.participants != null && newObj.participants.length > 0 ? newObj.participants : [];
+    this.detailsCourse = newObj.course;
+
+    this.detailsDate = newObj.eventDates != null && newObj.eventDates.length > 0 ? newObj.eventDates[0].event_date : '';
+    this.noOfParticipants = newObj.participants != null && newObj.participants.length > 0 ? newObj.participants.length : 0;
 
     this.modalService.open(content, this.modalOptions).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;

@@ -65,7 +65,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   selectCode: string='';
   selectFees: string='';
   agreementStatus: any[] =[];
-  paymentStatus: any[] =[];
+  // paymentStatus: any[] =[];
   
   closeResult: string;
   voucherSentData: any = {};
@@ -80,11 +80,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   deleteConfirm: boolean = false;
   private store: Store<TrainerState>;
   exportAsConfig: ExportAsConfig;
-  selectAccrType: any =[];
-  selectPaymentStatusType: any =[];
-  
-
-  
+  paymentStatus:any;
 
   constructor( private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent, private exportAsService: ExportAsService) { 
@@ -309,21 +305,21 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     */
 
     //Assign Search Type
-    this.selectAccrType = [ 
-    {title: 'Inspection Bodies', value:'inspection_body'},
-    {title: 'Certification Bodies', value:'certification_bodies'},
-    {title: 'Testing Calibration', value:'testing_calibration'},
-    {title: 'Health Care', value:'health_care'},
-    {title: 'Halal Conformity Bodies', value:'halal_conformity_bodies'},
-    {title: 'Proficiency Testing Providers', value:'pt_providers'}      
-    ];
-    this.selectPaymentStatusType = [ 
-      {title: 'Paid', value:'paid'},
-      {title: 'Unpaid', value:'unpaid'}     
-      ];
+    // this.selectAccrType = [ 
+    // {title: 'Inspection Bodies', value:'inspection_body'},
+    // {title: 'Certification Bodies', value:'certification_bodies'},
+    // {title: 'Testing Calibration', value:'testing_calibration'},
+    // {title: 'Health Care', value:'health_care'},
+    // {title: 'Halal Conformity Bodies', value:'halal_conformity_bodies'},
+    // {title: 'Proficiency Testing Providers', value:'pt_providers'}      
+    // ];
+    // this.selectPaymentStatusType = [ 
+    //   {title: 'Paid', value:'paid'},
+    //   {title: 'Unpaid', value:'unpaid'}     
+    //   ];
     
     this.loadPageData();
-    // this.selectCustomCourses = [{'key'=>'1','value':"Inspection Bodies"}];
+    this.selectCustomCourses = [{'value':'Inspection Bodies'},{'value':'Certification Bodies'},{'value':'Testing Calibration'},{'value':'Health Care'},{'value':'Proficiency Testing Providers'},{'value':'Halal Confirmity Bodies'}];
   }
 
   exportFile() {
@@ -340,7 +336,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
 
   filterSearchSec(){
     this.advSearch = !this.advSearch
-    console.log(this.advSearch);
+    // console.log(this.advSearch);
   }
 
   filterSearchReset(){

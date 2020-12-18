@@ -6,6 +6,7 @@ import { Constants } from '../../../../services/constant.service';
 import { ToastrService, Overlay, OverlayContainer } from 'ngx-toastr';
 import {CustomModalComponent} from '../../../utility/custom-modal/custom-modal.component';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
 @Component({
   selector: 'app-operations-registration-service-list',
@@ -35,9 +36,15 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
   pageTotal: number = 0;
   curSortDir: any = {};
   dataLoad: boolean = false;
+  advSearch: boolean = false;
+  paymentStatus:any;
+  selectCustomCourse:any;
+  selectCustomCourses:any[] = [];
+  exportAsConfig: ExportAsConfig;
+  exportAs:any = {};
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
-    private _trainerService: TrainerService, private modalService: NgbModal) { 
+    private _trainerService: TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) { 
       this.modalOptions = {
         backdrop:'static',
         backdropClass:'customBackdrop'
@@ -53,6 +60,24 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
     this.curSortDir['form_meta']          = false;
     this.curSortDir['payment_status']     = false;
     this.curSortDir['applicant']          = false;
+    this.selectCustomCourses = [{'value':'No Objection Certificate'},{'value':'Work Activity Permit'}];
+  }
+
+  exportFile() {
+    // console.log(this.exportAs);
+    this.exportAsConfig = {
+      type: this.exportAs.toString(), // the type you want to download
+      elementIdOrContent: 'accreditation-service-export', // the id of html/table element
+    }
+    // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
+    this.exportAsService.save(this.exportAsConfig, 'report').subscribe(() => {
+      // save started
+    });
+  }
+  
+  filterSearchSec(){
+    this.advSearch = !this.advSearch
+    // console.log(this.advSearch);
   }
 
   loadPageData(){
