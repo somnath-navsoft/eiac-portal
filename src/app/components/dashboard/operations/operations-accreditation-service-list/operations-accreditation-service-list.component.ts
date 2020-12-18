@@ -74,6 +74,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   voucherFile:any = new FormData();
   paymentReceiptValidation: boolean = true;
   loader:boolean = true;
+  exportAs:any = {};
 
   deleteConfirm: boolean = false;
   private store: Store<TrainerState>;
