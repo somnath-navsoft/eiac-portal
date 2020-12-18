@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, Subscription } from 'rxjs';
 import { TrainerService } from 'src/app/services/trainer.service';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
 @Component({
   selector: 'app-event-lists',
@@ -32,8 +33,10 @@ export class EventListsComponent implements OnInit {
   detailsCourse:any;
   detailsDate:any;
   noOfParticipants:any;
+  exportAsConfig: ExportAsConfig;
+  exportAs:any = {};
 
-  constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService, public _trainerService:TrainerService, private modalService: NgbModal) { }
+  constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService, public _trainerService:TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) { }
 
   ngOnInit() {
     this.curSortDir['course']                       = false;
@@ -47,6 +50,18 @@ export class EventListsComponent implements OnInit {
     this.participantsTempList = [{'name':'Test test','email':'test@test.com','phone':89898989},{'name':'Test2 test2','email':'test2@test2.com','phone':56756756657},{'name':'Test3 test','email':'test3@test3.com','phone':787686778}];
 
     this.loadPageData();
+  }
+
+  exportFile() {
+    // console.log(this.exportAs);
+    this.exportAsConfig = {
+      type: this.exportAs.toString(), // the type you want to download
+      elementIdOrContent: 'accreditation-service-export', // the id of html/table element
+    }
+    // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
+    this.exportAsService.save(this.exportAsConfig, 'report').subscribe(() => {
+      // save started
+    });
   }
 
   loadPageData() {
