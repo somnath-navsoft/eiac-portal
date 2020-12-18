@@ -26,13 +26,14 @@ export class EventListsComponent implements OnInit {
   curSortDir: any = {};
   modalOptions:NgbModalOptions;
   closeResult: string;
-  participantsTempList:any[] = [{}]
-  participantsList:any[] = [{}]
+  participantsTempList:any[] = [{}];
+  participantsList:any[] = [{}];
+  dataLoad: boolean = false;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService, public _trainerService:TrainerService, private modalService: NgbModal) { }
 
   ngOnInit() {
-    this.curSortDir['id']                       = false;
+    this.curSortDir['course']                       = false;
     this.curSortDir['created_date']             = false;
     this.curSortDir['accr_status']             = false;
     this.curSortDir['applicantName']             = false;
@@ -41,15 +42,19 @@ export class EventListsComponent implements OnInit {
     this.curSortDir['location']             = false;
 
     this.participantsTempList = [{'name':'Test test','email':'test@test.com','phone':89898989},{'name':'Test2 test2','email':'test2@test2.com','phone':56756756657},{'name':'Test3 test','email':'test3@test3.com','phone':787686778}];
+
+    this.loadPageData();
   }
 
   loadPageData() {
     this.loader = false;
     var id = 'all';
-    this.subscriptions.push(this._trainerService.getAccreditationStatusList(id)
+    this.subscriptions.push(this._trainerService.getAllEventList()
       .subscribe(
         result => {
           this.loader = true;
+          this.dataLoad = true;
+
           let data: any = result;
           let dataRec: any=[];
           // console.log('Data load...', data.records);
@@ -69,15 +74,15 @@ export class EventListsComponent implements OnInit {
     //true - asc / false - desc
     ////console.log('>>>', data);
     if(data.length){
-        if(sortBy === 'id'){
+        if(sortBy === 'course'){
           //console.log(">>>Enter type...");
-          this.curSortDir.id = !sortDir;
-          if(this.curSortDir.id){
-            let array = data.slice().sort((a, b) => (a.id > b.id) ? 1 : -1)
+          this.curSortDir.course = !sortDir;
+          if(this.curSortDir.course){
+            let array = data.slice().sort((a, b) => (a.course > b.course) ? 1 : -1)
             this.eventData = array;
           }
-          if(!this.curSortDir.id){
-            let array = data.slice().sort((a, b) => (a.id < b.id) ? 1 : -1)
+          if(!this.curSortDir.course){
+            let array = data.slice().sort((a, b) => (a.course < b.course) ? 1 : -1)
             this.eventData = array;
             //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
           }

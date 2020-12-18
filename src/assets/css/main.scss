@@ -407,6 +407,7 @@ a:hover { text-decoration: none; }
 .table-dashboard-cont .fnt-clr { color: #B14A56; }
 .table-dashboard-cont .fnt-clr a { color: #B14A56; }
 .table-dashboard-cont td { padding: 5px 15px; font-size: 14px; color: #454545; border: 1px solid #e9e9e9; font-family: "Dubai Regular"; }
+.table-dashboard-cont td a { color: #454545; }
 .table-dashboard-cont a:hover { text-decoration: none; }
 .complete span { background: #047666; color: #ffffff; border-radius: 3px; font-size: 14px; padding: 0 10px; font-family: "Dubai Regular"; }
 .draft span { background: #000bbc; color: #ffffff; border-radius: 3px; font-size: 14px; padding: 0 10px; font-family: "Dubai Regular";}
@@ -1286,8 +1287,12 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .assess-doc { padding: 20px 15px; display: flex; justify-content: space-between; }
 .bttn-details .cancel-bttn { display: block; color: #B54150; font-family: 'Dubai Bold'; }
 .course-pop button:focus { outline: none; }
-.course-pop button span { color: #999999; }
-
+.course-pop button span { color: #999999; font-size: 20px; }
+.course-pop .modal-title { font-size: 24px; color: #C6B8A4; margin: 0; line-height: 1; }
+.event-details { font-size: 16px; font-family: 'Dubai Medium'; color: #191919; }
+.event-data { padding: 5px 0; }
+.event-data .event-head { color: #000; display: inline-block; padding-right: 10px; }
+.event-details span { color: #B14A56; }
 .tnc_inner_cond li:before { content: "("counter(item, lower-alpha)")"; }
 .tnc .tnc_inner_cond li { margin-bottom: 0; }
 .tnc_inner_data li:before {counter-increment: list; content: ""counter(list, lower-roman)")"; }

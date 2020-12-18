@@ -540,6 +540,135 @@
                         </div>
                     </div>
                     <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="cmnt-content">
+                                <form #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <mat-form-field  class="cab-data">
+                                                <mat-label>Select</mat-label>
+                                                <mat-select required [(ngModel)]="selectedField"
+                                                    [ngModelOptions]="{standalone: true}"
+                                                    (ngModelChange)="setField($event)">
+                                                    <mat-option *ngFor="let data of select_field" [value]="data.value">
+                                                        {{data.field}}</mat-option>
+                                                </mat-select>
+                                                <mat-error></mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-6"
+                                            *ngIf="getUserType=='cab_client' || getUserType=='cab_code'">
+                                            <mat-form-field class="cab-data">
+                                                <!-- <input type="text" (click)="search($event.target.value)"
+                                                    (input)="search($event.target.value)"
+                                                    placeholder="{{selectedField}}" matInput required
+                                                    [matAutocomplete]="auto">
+                                                <mat-autocomplete #auto="matAutocomplete">
+                                                    <mat-option (onSelectionChange)="getValue(option.id)"
+                                                        *ngFor="let option of selectSearch" [value]="option.username">
+                                                        {{option.username}}
+                                                    </mat-option>
+                                                </mat-autocomplete> -->
+                                                <mat-chip-list #chipList >
+                                                    <mat-chip
+                                                      *ngFor="let option of selectedUser"
+                                                      [selectable]="selectable"
+                                                      [removable]="removable"
+                                                      (removed)="remove(option)">
+                                                      {{option}}
+                                                      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                                    </mat-chip>
+                                                    <input 
+                                                      placeholder="{{selectedField}}"
+                                                      #fruitInput                                                      
+                                                      [matAutocomplete]="auto"
+                                                      [matChipInputFor]="chipList"                                                      
+                                                      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                      (matChipInputTokenEnd)="add($event)" (input)="search($event.target.value)">
+                                                  </mat-chip-list>
+                                                  <mat-autocomplete #auto="matAutocomplete">
+                                                    <mat-option (onSelectionChange)="getValue(option, 'username')"
+                                                        *ngFor="let option of selectSearch" [value]="option.username">
+                                                        {{option.username}}
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-6"
+                                            *ngIf="getUserType=='trainers' || getUserType=='operations'">
+                                            <mat-form-field class="cab-data" #matForm>
+                                                <!-- <input type="text" (click)="search($event.target.value)"
+                                                    (input)="search($event.target.value)"
+                                                    placeholder="{{selectedField}}" matInput required
+                                                    [matAutocomplete]="auto"> -->
+                                                    <mat-chip-list #chipList >
+                                                        <mat-chip
+                                                          *ngFor="let option of selectedUser"
+                                                          [selectable]="selectable"
+                                                          [removable]="removable"
+                                                          (removed)="remove(option)">
+                                                          {{option}}
+                                                          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                                        </mat-chip>
+                                                        <input 
+                                                          placeholder="{{selectedField}}"
+                                                          #fruitInput                                                      
+                                                          [matAutocomplete]="auto"
+                                                          [matChipInputFor]="chipList"
+                                                          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                          (matChipInputTokenEnd)="add($event)" (input)="search($event.target.value)">
+                                                      </mat-chip-list>
+                                                <mat-autocomplete #auto="matAutocomplete" >
+                                                    <mat-option (onSelectionChange)="getValue(option, 'email')"
+                                                        *ngFor="let option of selectSearch" [value]="option.email">
+                                                        {{option.email}}
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="matupload position-relative">
+                                                <mat-form-field class="lng-data">
+                                                    <input readonly name="upload_message" [(ngModel)]="documentName"
+                                                        matInput name="file" placeholder="Upload Document">
+                                                </mat-form-field>
+                                                <span class="fileupload">
+                                                    <input #file type="file" accept="application/pdf"
+                                                        name="upload_message_file"
+                                                        [(ngModel)]="chatMessage.upload_message_file"
+                                                        (change)="validateFile($event)">
+                                                    <!-- <mat-error class="error" *ngIf="!file_validation">Please Upload a valid file (ex: pdf,xlsx,xlx)</mat-error>  -->
+                                                    <span class="icon-attach attach-data" (click)="file.click()"></span>
+                                                </span>
+                                                <p class="error" *ngIf="!file_validation">Please Upload a
+                                                    valid file (ex: pdf)</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Message</mat-label>
+                                                <input name="message" maxlength="200" required [(ngModel)]="chatMessage.message"
+                                                    matInput autocomplete="off" placeholder="Message">
+                                                <mat-error></mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col-md-12">
+                                            <div class="bttns-appln mb-0">
+                                                <button class="submit-bttn" [disabled]="button_disable">SEND
+                                                    MESSAGE</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     <!-- <div class="hdr-sec">
                         <div class="row">
                             <div class="col-md-12">
