@@ -171,6 +171,7 @@ const routes: Routes = [
           { path: 'message-detail/:id', component:OperationsMessageDetailsComponent, canActivate: [AuthGuard] },
           { path: 'inpremise-approve', component:InpremiseApprovalListComponent, canActivate: [AuthGuard] },
           { path: 'inpremise-approve-detail/:id', component:InpremiseApprovalDetailsComponent, canActivate: [AuthGuard] },
+          { path: 'event-list', component:EventListsComponent, canActivate: [AuthGuard] },
         ] 
     }, 
 
@@ -218,7 +219,6 @@ const routes: Routes = [
         { path: 'company-profile', component:CabCompanyProfileComponent, canActivate: [AuthGuard] },
         { path: 'onboarding-message-list', component:CabMessage, canActivate: [AuthGuard] },
         { path: 'scheme-list', component:SchemeListComponent, canActivate: [AuthGuard] },
-        { path: 'event-list', component:EventListsComponent, canActivate: [AuthGuard] },
         { path: 'certification-records', component:CertificationRecordsComponent, canActivate: [AuthGuard] },
       ]
     },

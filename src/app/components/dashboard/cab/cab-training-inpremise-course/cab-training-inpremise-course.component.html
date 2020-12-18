@@ -171,12 +171,12 @@
                             </div>
                             <div class="sort-data">
                                  <label for="sort">Sort By :</label>
-                                 
+                                
                                 <mat-form-field appearance="fill">
                                     <!-- shortProgramListing('schedule_program_listing') -->
-                                    <mat-select (selectionChange)="sortByList($event)" [(value)]="scheduleProgramSection">
+                                    <mat-select (selectionChange)="sortByList(sortValue)" [(ngModel)] = "sortValue" [(value)]="scheduleProgramSection">
                                     <mat-option value="">Select</mat-option>
-                                        <mat-option value="course">Course</mat-option>
+                                        <mat-option value="course">Course Name</mat-option>
                                         <!-- <mat-option value="audience">Audience</mat-option> -->
                                         <mat-option value="rate">Rate</mat-option>
                                         <mat-option value="days">Days</mat-option>
@@ -260,7 +260,9 @@
 
                 </div>
                 <div class="load-more-dir">
-                    <a href="javascript:void(0)" *ngIf="allCourses?.length > totalRow" (click)="load_more('1')">Load More...</a>
+                    <a href="javascript:void(0)" [hidden]="pageLimit >= totalListLen"
+                        (click)="loadMore()">Load More...</a>
+                    <!-- <a href="javascript:void(0)" *ngIf="allCourses?.length > totalRow" (click)="load_more('1')">Load More...</a> -->
                 </div>
 
             </div>

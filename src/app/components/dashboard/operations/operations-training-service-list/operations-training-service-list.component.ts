@@ -35,6 +35,7 @@ export class OperationsTrainingServiceListComponent implements OnInit {
   curSortDir: any = {};
   dataLoad: boolean = false;
   public minDate;
+  voucherIndex:any;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal) {
@@ -188,25 +189,33 @@ export class OperationsTrainingServiceListComponent implements OnInit {
   }
 
   serviceStatus(index,id){
+
+    // console.log(index);
+    // console.log(this.pageCurrentNumber);
+    var changableIndex = index;
+    var currIndex = 10 * (this.pageCurrentNumber -1) + parseInt(changableIndex);
     this.loader = false;
 
-    this.subscriptions.push(this._trainerService.updateStatus(id)
+    this.subscriptions.push(this._trainerService.updateStatusTraining(id)
       .subscribe(
         result => {
           this.loader = true;
           // console.log(result,'result');
-          this.trainerdata[index].application_status = 'complete';
+          this.trainerdata[currIndex].application_status = 'complete';
           this._toaster.success("Payment Completed Successfully",'');
       })
     );
 
   }
 
-  open(content, id: number) {
+  open(content, id: number,key:any) {
+    // console.log(key)
     //this.voucherSentData = {};
     if(id){
       console.log(">>ID: ", id);
       this.voucherSentData['accreditation'] = id;
+      this.voucherSentData['index'] = key;
+      this.voucherIndex = key
     }
     this.paymentReceiptValidation = null;
     this.modalService.open(content, this.modalOptions).result.then((result) => {
@@ -264,6 +273,11 @@ export class OperationsTrainingServiceListComponent implements OnInit {
                   this.voucherSentData = {};
                   this.modalService.dismissAll();
                   this._toaster.success("Invoice Uploaded Successfully",'Upload');
+                  
+                  var changableIndex = this.voucherIndex;
+                  var currIndex = 10 * (this.pageCurrentNumber -1) + parseInt(changableIndex);
+                  
+                  this.trainerdata[currIndex].application_status = 'payment_pending';
                 }else{
                   this._toaster.warning(data.msg,'');
                 }

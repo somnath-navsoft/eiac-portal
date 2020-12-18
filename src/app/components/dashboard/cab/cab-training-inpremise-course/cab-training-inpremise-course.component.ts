@@ -31,6 +31,12 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
 
   searchCountryLists: any[] =[];
 
+  pageLimit: number = 5;
+  totalListCount: number = 0;
+  totalListData: any[] =[];
+  totalListLen: number =0;
+  sortValue: string ="";
+
   constructor(public _service: AppService, public _constant:Constants, public _trainerService: TrainerService, public _toastr: ToastrService) { }
 
   ngOnInit() {
@@ -101,6 +107,26 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
      return true;
   }
 
+  getPaginateData(limit: number, listData: any) {
+    let pageData: any[];
+    if (listData.length) {
+      pageData = listData.slice(0, limit);
+    }
+    this.allCourseTraining = pageData;
+    //console.log("....sorting....");
+    this.sortByList(this.sortValue);
+    console.log(">>>Page Data: ", pageData);
+  }
+  
+  loadMore() {
+    this.totalListCount = this.totalListCount + 10;
+    this.pageLimit += 10;
+    this.getPaginateData(this.pageLimit, this.totalListData)
+    //
+    
+
+  }
+
   loadTrainingData() {
     this.loaderData = false;
     let url: any = this._service.apiServerUrl+'/'+'public-course-list';
@@ -115,6 +141,14 @@ export class CabTrainingInpremiseCourseComponent implements OnInit {
         var targatedAudianceCourse = res['records'];
         //this.trainingList = res['targatedAudianceCourse'];
         this.allCourseTraining = res['records'];
+        if(this.sortValue == ''){
+          //this.sortValue = 'course';
+        }
+        //this.sortByList(this.sortValue);
+        this.totalListLen = this.allCourseTraining.length;
+        this.totalListData = this.allCourseTraining        
+        this.getPaginateData(this.pageLimit, this.totalListData);
+        
         
         // for(let key in targatedAudianceCourse)
         // {
@@ -234,24 +268,26 @@ onSubmit(theForm: any){
 
 
 sortByList(field: any){
-  console.log(">>> Get field: ", field);
-  if(field != undefined && field.value == 'course'){
-    console.log(">> sort by course: ", field);
-    this.allCourseTraining.sort((a,b) => (a.course > b.course) ? 1 : -1);
+  //console.log(">>> Get field: ", field);
+  if(field != undefined && field == 'course'){
+    //console.log(">> sort by course: ", field);
+    this.allCourseTraining.sort((a,b) => (a.course.toString().toLowerCase() > b.course.toString().toLowerCase()) ? 1 : -1);
   }
   // if(field != undefined && field.value == 'course'){
   //   console.log(">> sort by course: ", field);
   //   this.allCourseTraining.sort((a,b) => (a.course > b.course) ? 1 : -1);
   // }
-  if(field != undefined && field.value == 'rate'){
-    console.log(">> sort by course: ", field);
+  if(field != undefined && field == 'rate'){
+    //console.log(">> sort by course: ", field);
     this.allCourseTraining.sort((a,b) => (a.fees_per_trainee > b.fees_per_trainee) ? 1 : -1);
   }
-  if(field != undefined && field.value == 'days'){
-    console.log(">> sort by course: ", field);
+  if(field != undefined && field == 'days'){
+    //console.log(">> sort by course: ", field);
     this.allCourseTraining.sort((a,b) => (a.training_days > b.training_days) ? 1 : -1);
   }
 }
+
+
 
 
 shortProgramListing(section:any) {
