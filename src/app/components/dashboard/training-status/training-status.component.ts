@@ -4,6 +4,7 @@ import { AppService } from '../../../services/app.service';
 import { TrainerService } from '../../../services/trainer.service';
 import { Constants } from '../../../services/constant.service';
 import { ToastrService, Overlay, OverlayContainer } from 'ngx-toastr';
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
 @Component({
   selector: 'app-training-status',
@@ -31,8 +32,20 @@ export class TrainingStatusComponent implements OnInit {
   curSortDir: any = {};
   dataLoad: boolean = false;
 
+  exportAsConfig: ExportAsConfig;
+  exportAs:any;
+  advSearch: boolean = false;
+
+  selectTrainingType: any =[];
+  selectCustomCourses:any[] = [];
+
+  
+  applicationNo: string = '' || null;
+  selectTrainingTypeValue: string = '' || null;
+  paymentStatusValue: string = '' || null;
+
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
-    private _trainerService: TrainerService) { }
+    private _trainerService: TrainerService, private exportAsService: ExportAsService) { }
 
   ngOnInit() {
     this.loadPageData();
@@ -44,6 +57,83 @@ export class TrainingStatusComponent implements OnInit {
     this.curSortDir['payment_status']     = false;
     this.curSortDir['cab_code']           = false;
     this.curSortDir['applicant']          = false;
+
+    this.selectTrainingType = [{'title':'In Premise', value: 'inprimise'},{'title':'Public Training', value: 'public_training'}];
+  }
+
+  exportFile() {
+    // console.log(this.exportAs);
+    this.exportAsConfig = {
+      type: this.exportAs.toString(), // the type you want to download
+      elementIdOrContent: 'accreditation-service-export', // the id of html/table element
+    }
+    // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
+    this.exportAsService.save(this.exportAsConfig, 'report').subscribe(() => {
+      // save started
+    });
+  }
+  
+  filterSearchSec(){ 
+    this.advSearch = !this.advSearch
+    // console.log(this.advSearch);
+    this.filterSearchReset();
+  }
+
+  filterSearchReset(){
+    //Reset serach
+    this.applicationNo = '' || null;
+    this.selectTrainingTypeValue = '' || null;
+    this.paymentStatusValue = '' || null;
+
+    //this.loadPageData();
+  }
+  
+  isValidSearch(){
+    if((this.applicationNo == '' || this.applicationNo == null) || (this.selectTrainingTypeValue == '' || this.selectTrainingTypeValue == null) ||
+       (this.paymentStatusValue == '' || this.paymentStatusValue == null)){
+      return false;
+    }
+    return true;
+  }
+
+  filterSearchSubmit(){
+     let postObject: any = {};
+     //console.log("Search click....");
+     if(this.isValidSearch()){
+       if(this.applicationNo != '' && this.applicationNo != null){
+        postObject['applicationNo'] = this.applicationNo;
+       }
+       if(this.selectTrainingTypeValue != '' && this.selectTrainingTypeValue != null){
+        postObject['form_meta'] = this.selectTrainingTypeValue;
+       }
+       if(this.paymentStatusValue != '' && this.paymentStatusValue != null){
+        postObject['payment_status'] = this.paymentStatusValue;
+       }
+        
+        console.log(">>>POST: ", postObject); 
+
+        if(postObject){
+          this.subscriptions.push(this._trainerService.searchCourse((postObject))
+          .subscribe(
+             result => {
+               let data: any = result;
+                ////console.log("search results: ", result);
+                if(data != undefined && typeof data === 'object' && data.records.length){
+                    console.log(">>> Data: ", data.records);
+                    this.pageCurrentNumber = 1;
+                    this.dataLoad = true;
+                    this.trainerdata = data.records;
+                    this.pageTotal = data.records.length;
+                }
+             }
+            )
+          )
+        }
+
+     }else{
+      //this._service.openMessageDialog('Please select search fields properly.', "Validation Error");
+      this._toaster.warning("Please select search fields properly",'')
+     }     
   }
   
     editVisible(item: any){

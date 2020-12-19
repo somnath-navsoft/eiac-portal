@@ -57,6 +57,10 @@ export class StatusComponent implements OnInit {
   deleteConfirm: boolean = false;
   exportAsConfig: ExportAsConfig;
   exportAs: any = '';
+  selectAccrType: any =[];
+  applicationNo: string = '' || null;
+  paymentStatusValue: string = '' || null;
+  selectAccrTypeValue: string = '' || null;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent, private exportAsService: ExportAsService) { }
@@ -84,12 +88,79 @@ export class StatusComponent implements OnInit {
     this.curSortDir['criteria_request']             = false;
     this.curSortDir['form_meta']             = false;
     this.curSortDir['location']             = false;
+
+    //Assign Search Type
+    this.selectAccrType = [ 
+      {title: 'Inspection Bodies', value:'inspection_body'},
+      {title: 'Certification Bodies', value:'certification_bodies'},
+      {title: 'Testing Calibration', value:'testing_calibration'},
+      {title: 'Health Care', value:'health_care'},
+      {title: 'Halal Conformity Bodies', value:'halal_conformity_bodies'},
+      {title: 'Proficiency Testing Providers', value:'pt_providers'}      
+      ];
   }
 
   filterSearchSec(){
-    console.log(">>> sss", this.advSearch);
-    this.advSearch = !this.advSearch;
-    console.log(">>> sss1 ", this.advSearch);
+    this.advSearch = !this.advSearch
+    // console.log(this.advSearch);
+    this.filterSearchReset();
+  }
+
+  filterSearchReset(){
+    //Reset serach
+    this.applicationNo = '' || null;
+    this.selectAccrTypeValue = '' || null;
+    this.paymentStatusValue = '' || null;
+
+    //this.loadPageData();
+  }
+  
+  isValidSearch(){
+    if((this.applicationNo == '' || this.applicationNo == null) || (this.selectAccrTypeValue == '' || this.selectAccrTypeValue == null) ||
+       (this.paymentStatusValue == '' || this.paymentStatusValue == null)){
+      return false;
+    }
+    return true;
+  }
+
+  filterSearchSubmit(){
+     let postObject: any = {};
+     //console.log("Search click....");
+     if(this.isValidSearch()){
+       if(this.applicationNo != '' && this.applicationNo != null){
+        postObject['applicationNo'] = this.applicationNo;
+       }
+       if(this.selectAccrTypeValue != '' && this.selectAccrTypeValue != null){
+        postObject['form_meta'] = this.selectAccrTypeValue;
+       }
+       if(this.paymentStatusValue != '' && this.paymentStatusValue != null){
+        postObject['payment_status'] = this.paymentStatusValue;
+       }
+        
+        console.log(">>>POST: ", postObject); 
+
+        if(postObject){
+          this.subscriptions.push(this._trainerService.searchCourse((postObject))
+          .subscribe(
+             result => {
+               let data: any = result;
+                ////console.log("search results: ", result);
+                if(data != undefined && typeof data === 'object' && data.records.length){
+                    console.log(">>> Data: ", data.records);
+                    this.pageCurrentNumber = 1;
+                    this.dataLoad = true;
+                    this.trainerdata = data.records;
+                    this.pageTotal = data.records.length;
+                }
+             }
+            )
+          )
+        }
+
+     }else{
+      //this._service.openMessageDialog('Please select search fields properly.', "Validation Error");
+      this._toaster.warning("Please select search fields properly",'')
+     }     
   }
 
   setIB(id: any){
