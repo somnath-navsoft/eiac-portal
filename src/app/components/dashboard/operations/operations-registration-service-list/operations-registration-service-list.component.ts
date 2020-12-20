@@ -83,7 +83,7 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
   }
   
   isValidSearch(){
-    if((this.applicationNo == '' || this.applicationNo == null) || (this.selectRegTypeValue == '' || this.selectRegTypeValue == null) ||
+    if((this.applicationNo == '' || this.applicationNo == null) && (this.selectRegTypeValue == '' || this.selectRegTypeValue == null) &&
        (this.paymentStatusValue == '' || this.paymentStatusValue == null)){
       return false;
     }

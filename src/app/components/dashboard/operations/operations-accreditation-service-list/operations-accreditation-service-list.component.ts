@@ -357,7 +357,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   }
   
   isValidSearch(){
-    if((this.applicationNo == '' || this.applicationNo == null) || (this.selectAccrTypeValue == '' || this.selectAccrTypeValue == null) ||
+    if((this.applicationNo == '' || this.applicationNo == null) && (this.selectAccrTypeValue == '' || this.selectAccrTypeValue == null) &&
        (this.paymentStatusValue == '' || this.paymentStatusValue == null)){
       return false;
     }
