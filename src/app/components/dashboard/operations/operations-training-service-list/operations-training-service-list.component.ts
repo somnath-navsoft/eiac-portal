@@ -91,17 +91,19 @@ export class OperationsTrainingServiceListComponent implements OnInit {
     this.filterSearchReset();
   }
 
-  filterSearchReset(){
+  filterSearchReset(type?: string){
     //Reset serach
     this.applicationNo = '' || null;
     this.selectTrainingTypeValue = '' || null;
     this.paymentStatusValue = '' || null;
 
-    //this.loadPageData();
+    if(type != undefined && type != ''){
+      this.loadPageData();
+    }
   }
   
   isValidSearch(){
-    if((this.applicationNo == '' || this.applicationNo == null) || (this.selectTrainingTypeValue == '' || this.selectTrainingTypeValue == null) ||
+    if((this.applicationNo == '' || this.applicationNo == null) && (this.selectTrainingTypeValue == '' || this.selectTrainingTypeValue == null) &&
        (this.paymentStatusValue == '' || this.paymentStatusValue == null)){
       return false;
     }
@@ -111,31 +113,36 @@ export class OperationsTrainingServiceListComponent implements OnInit {
   filterSearchSubmit(){
      let postObject: any = {};
      //console.log("Search click....");
+     let postData: any = new FormData();
      if(this.isValidSearch()){
        if(this.applicationNo != '' && this.applicationNo != null){
-        postObject['applicationNo'] = this.applicationNo;
+        postData.append('id', this.applicationNo)
        }
        if(this.selectTrainingTypeValue != '' && this.selectTrainingTypeValue != null){
-        postObject['form_meta'] = this.selectTrainingTypeValue;
+        postData.append('form_meta', this.selectTrainingTypeValue)
        }
        if(this.paymentStatusValue != '' && this.paymentStatusValue != null){
-        postObject['payment_status'] = this.paymentStatusValue;
+        postData.append('payment_status', this.paymentStatusValue)
        }
         
         console.log(">>>POST: ", postObject); 
 
         if(postObject){
-          this.subscriptions.push(this._trainerService.searchCourse((postObject))
+          this.subscriptions.push(this._trainerService.searchTrainingServList((postData))
           .subscribe(
              result => {
                let data: any = result;
                 ////console.log("search results: ", result);
-                if(data != undefined && typeof data === 'object' && data.records.length){
+                if(data != undefined && typeof data === 'object' && data.records.length > 0){
                     console.log(">>> Data: ", data.records);
                     this.pageCurrentNumber = 1;
                     this.dataLoad = true;
                     this.trainerdata = data.records;
                     this.pageTotal = data.records.length;
+                }
+                if(data != undefined && typeof data === 'object' && data.records.length == 0){
+                  this.trainerdata = data.records;
+                  this.pageTotal = data.records.length;
                 }
              }
             )

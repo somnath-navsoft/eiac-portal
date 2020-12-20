@@ -345,13 +345,15 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     this.filterSearchReset();
   }
 
-  filterSearchReset(){
+  filterSearchReset(type?: string){
     //Reset serach
     this.applicationNo = '' || null;
     this.selectAccrTypeValue = '' || null;
     this.paymentStatusValue = '' || null;
 
-    //this.loadPageData();
+    if(type != undefined && type != ''){
+      this.loadPageData();
+    }
   }
   
   isValidSearch(){
@@ -363,33 +365,37 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   }
 
   filterSearchSubmit(){
-     let postObject: any = {};
+     let postObject: any = new FormData();
      //console.log("Search click....");
      if(this.isValidSearch()){
        if(this.applicationNo != '' && this.applicationNo != null){
-        postObject['applicationNo'] = this.applicationNo;
+        postObject.append('id', this.applicationNo);
        }
        if(this.selectAccrTypeValue != '' && this.selectAccrTypeValue != null){
-        postObject['form_meta'] = this.selectAccrTypeValue;
+        postObject.append('form_meta', this.selectAccrTypeValue);
        }
        if(this.paymentStatusValue != '' && this.paymentStatusValue != null){
-        postObject['payment_status'] = this.paymentStatusValue;
+        postObject.append('payment_status', this.paymentStatusValue);
        }
         
         console.log(">>>POST: ", postObject); 
 
         if(postObject){
-          this.subscriptions.push(this._trainerService.searchCourse((postObject))
+          this.subscriptions.push(this._trainerService.searchAccrServList((postObject))
           .subscribe(
              result => {
                let data: any = result;
                 ////console.log("search results: ", result);
-                if(data != undefined && typeof data === 'object' && data.records.length){
+                if(data != undefined && typeof data === 'object' && data.records.length > 0){
                     console.log(">>> Data: ", data.records);
                     this.pageCurrentNumber = 1;
                     this.dataLoad = true;
                     this.trainerdata = data.records;
                     this.pageTotal = data.records.length;
+                }
+                if(data != undefined && typeof data === 'object' && data.records.length == 0){
+                  this.trainerdata = data.records;
+                  this.pageTotal = data.records.length;
                 }
              }
             )

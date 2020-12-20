@@ -60,6 +60,32 @@ export class TrainerService {
     const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.trainerCourseVoucherSave;
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
+
+  searchAccrStatus(postData: any){
+    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-accrediation-service-status/all/';
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
+  }
+  searchRegStatus(postData: any){
+    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-accrediation-service-status/all/';
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
+  }
+  searchTrainerStatus(postData: any){
+    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-accrediation-service-status/all/';
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
+  }
+  //================================
+  searchAccrServList(postData: any){
+    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-accrediation-service-status/all/';
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
+  }
+  searchRegServList(postData: any){
+    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-accrediation-service-status/all/';
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
+  }
+  searchTrainingServList(postData: any){
+    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-accrediation-service-status/all/';
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
+  }
   
 
   registrationDetailsService(id) {

@@ -73,7 +73,7 @@
                                 <mat-select placeholder="Select" 
                                 [ngModelOptions]="{standalone: true}" [(ngModel)]="paymentStatusValue" required>
                                     <mat-option value="paid">Paid</mat-option>
-                                    <mat-option value="unpaid">Unpaid</mat-option>
+                                    <mat-option value="pending">Unpaid</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -84,7 +84,7 @@
                     <div class="col-md-12"> 
                         <div class="filter-search">
                             <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
-                            <a href="javascript:void(0)" (click)="filterSearchReset()">RESET</a>
+                            <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a>
                         </div>         
                     </div>
                 </div>
@@ -93,56 +93,62 @@
             </ng-container>
             
         
-        <div class="table-dashboard-cont">
+        <div class="table-dashboard-cont mt-3">
             <div class="row m-0">
                 <div class="col-md-12 p-0">
                     <!-- @{{trainerdata | json}} -->
                     <table id="accreditation-service-export">
                         <tr>
-                            <th>Application No
+                            <th [ngStyle]="{'font-size':'14px'}">Application No
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'id', curSortDir.id)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.id"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.id"></span>
                                 </a>
                             </th>
-                            <th>Date Submitted
+                            <th [ngStyle]="{'font-size':'14px'}">Date Submitted
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'created_date', curSortDir.created_date)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.created_date"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.created_date"></span>
                                 </a>
                             </th>
-                            <th width="15%">Status
+                            <th width="15%" [ngStyle]="{'font-size':'14px'}">Status
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'accr_status', curSortDir.accr_status)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.accr_status"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.accr_status"></span>
                                 </a>
                             </th>
-                            <th>CAB Name/CAB Code
+                            <th [ngStyle]="{'font-size':'14px'}">CAB Name/CAB Code
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'applicantName', curSortDir.applicantName)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.applicantName"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.applicantName"></span>
                                 </a>
                             </th>
-                            <th>Scope/Scheme
+                            <th [ngStyle]="{'font-size':'14px'}">Scope/Scheme
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'criteria_request', curSortDir.criteria_request)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.criteria_request"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.criteria_request"></span>
                                 </a>
                             </th>
-                            <th>Accreditation Type
+                            <th [ngStyle]="{'font-size':'14px'}">Accreditation Type
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'form_meta', curSortDir.form_meta)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.form_meta"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.form_meta"></span>
                                 </a>
                             </th>
-                            <th>Location
+                            <th [ngStyle]="{'font-size':'14px'}">Payment Status
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'payment_status', curSortDir.payment_status)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.payment_status"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.payment_status"></span>
+                                </a>
+                            </th>
+                            <th [ngStyle]="{'font-size':'14px'}">Location
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'location', curSortDir.location)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.location"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.location"></span>
                                 </a>
                             </th>
                             
-                            <th>Action</th>
+                            <th [ngStyle]="{'font-size':'14px'}">Action</th>
                         </tr>
                         <!-- trainerdata.records != undefined && -->  
                     <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
@@ -180,6 +186,11 @@
                                 <span *ngIf="item.form_meta == 'pt_providers'">Proficiency Testing Providers</span>
                                 <span *ngIf="item.form_meta == 'halal_conformity_bodies'">Halal Confirmity Bodies</span>
                             </td> 
+                            <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review': (item.payment_status == 'pending' || item.payment_status == null)}">
+                                <span *ngIf="item.payment_status == 'paid'">Paid</span>
+                                <span *ngIf="item.payment_status == 'pending'">Unpaid</span>
+                                <span *ngIf="item.payment_status == null">Unpaid</span>
+                            </td>  
                             <td>
                                 {{item.city}},  {{item.country}}
                             </td> 
