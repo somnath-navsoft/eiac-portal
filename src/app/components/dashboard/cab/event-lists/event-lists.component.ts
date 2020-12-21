@@ -35,6 +35,9 @@ export class EventListsComponent implements OnInit {
   noOfParticipants:any;
   exportAsConfig: ExportAsConfig;
   exportAs:any = {};
+  eventTitle:any;
+  show_data:any;
+  advSearch: boolean = false;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService, public _trainerService:TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) { }
 
@@ -50,6 +53,79 @@ export class EventListsComponent implements OnInit {
     this.participantsTempList = [{'name':'Test test','email':'test@test.com','phone':89898989},{'name':'Test2 test2','email':'test2@test2.com','phone':56756756657},{'name':'Test3 test','email':'test3@test3.com','phone':787686778}];
 
     this.loadPageData();
+  }
+
+  showData() {
+    //this.pageLimit = this.show_data;
+    // this.loadPageData();
+    this.pageLimit = this.show_data;
+    this.pageCurrentNumber = 1;
+    this.eventData.slice(0, this.show_data);
+  }
+
+  filterSearchSec(){
+    this.advSearch = !this.advSearch
+    this.filterSearchReset();
+  }
+  
+  filterSearchReset(type?: string){
+    //Reset serach
+    this.eventTitle = '' || null;
+    if(type != undefined && type != ''){
+      this.loadPageData();
+    }
+  }
+
+  paginationReset() {
+    this.exportAs = {};
+  }
+
+  isValidSearch(){
+    if((this.eventTitle == '' || this.eventTitle == null)){
+      return false;
+    }
+    return true;
+  }
+
+  filterSearchSubmit(){
+    this.loader = false;
+    let postObject: any = {};
+    // console.log("Search click....", this.applicationNo, " -- ", this.selectAccrTypeValue, " == ", this.paymentStatusValue);
+    let postData: any = new FormData();
+    if(this.isValidSearch()){
+      if(this.eventTitle != '' && this.eventTitle != null){
+        postData.append('id', this.eventTitle)
+      }
+        
+        console.log(">>>POST: ", JSON.stringify(postData)); 
+
+        if(postObject){
+          this.subscriptions.push(this._trainerService.searchEventlist((postData))
+          .subscribe(
+            result => {
+              let data: any = result;
+                console.log("search results: ", result);
+                this.loader = true;
+                if(data != undefined && typeof data === 'object' && data.records.length > 0){
+                    console.log(">>> Data: ", data.records);
+                    this.pageCurrentNumber = 1;
+                    this.dataLoad = true;
+                    this.eventData = data.records;
+                    this.pageTotal = data.records.length;
+                }
+                if(data != undefined && typeof data === 'object' && data.records.length == 0){
+                  this.eventData = data.records;
+                  this.pageTotal = data.records.length;
+                }
+            }
+            )
+          )
+        }
+
+    }else{
+      //this._service.openMessageDialog('Please select search fields properly.', "Validation Error");
+      this.toastr.warning("Please select search fields properly",'')
+    }     
   }
 
   exportFile() {

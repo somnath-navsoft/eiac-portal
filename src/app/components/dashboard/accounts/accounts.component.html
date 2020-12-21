@@ -9,6 +9,18 @@
                         <h3>Accounts</h3> 
                     </div>
                 </div>
+                <div class="col-md-4"> 
+                    <div class="tbl-filter-data">
+                        <ul>
+                            <li>
+                                <div class="filter">
+                                    <!-- <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a> -->
+                                    <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <div class="row m-0">
                 <div class="col-md-4">
@@ -24,7 +36,52 @@
                         </mat-form-field>
                     </div>
                 </div>
+
+                <div class="col-md-4">
+                    <div class="user-details">
+                        <mat-form-field class="cab-data">
+                            <mat-label>Show</mat-label>                              
+                            <mat-select placeholder="Show" (selectionChange)="showData()"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="show_data" required>
+                                <mat-option value="25">25</mat-option>
+                                <mat-option value="50">50</mat-option>
+                                <mat-option value="75">75</mat-option>
+                                <mat-option value="100">100</mat-option>
+                                <!-- <mat-option value="pdf">Export as PDF</mat-option> -->
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
             </div>
+
+            <ng-container *ngIf="advSearch" class="tbl-filter-data">
+                <div class="filter-dash filter_certification">
+                    <div class="close-bttn">
+                        <span class="icon-close" (click)="filterSearchSec()"></span>
+                    </div>
+                    <div class="row m-0">
+                        <div class="col-md-4">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Event title</mat-label> 
+                                <input type="text" matInput [(ngModel)]="eventTitle" placeholder="Search by Event title">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-0">
+                        <div class="col-md-12"> 
+                            <div class="filter-search">
+                                <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
+                                <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a>
+                            </div>         
+                        </div>
+                    </div>
+                </div>
+                
+            </ng-container>
+
             <div class="accounts mt-3">
                 <table class="accounts_inner_tab">
                     <thead>
@@ -160,7 +217,7 @@
                 </table>
 
                 <ng-container *ngIf="accountsData != undefined && accountsData.length > 5" >
-                    <pagination-controls (pageChange)="pageCurrentNumber = $event"></pagination-controls>
+                    <pagination-controls (click)="paginationReset()" (pageChange)="pageCurrentNumber = $event"></pagination-controls>
                 </ng-container>
 
             </div>

@@ -65,6 +65,17 @@ export class TrainerService {
     const url = `${this.BASE_REQ_URL}` + 'webservice/seach-accrediation-service-status/all/';
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
+
+  searchEventlist(postData: any){
+    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-accrediation-service-status/all/';
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
+  }
+
+  searchAccountlist(postData: any){
+    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-accrediation-service-status/all/';
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
+  }
+
   searchRegStatus(postData: any){
     const url = `${this.BASE_REQ_URL}` + 'webservice/seach-registration-list/all/';
     return this.http.post(url, postData, this._service.getReqHeadersUpload());

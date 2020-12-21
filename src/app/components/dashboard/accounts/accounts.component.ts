@@ -21,7 +21,7 @@ export class AccountsComponent implements OnInit {
   loader:boolean = true;
 
   paginationConfig: any;
-  pageLimit: number = 5;
+  pageLimit: number = 10;
   pageCurrentNumber: number = 1;
   pageConfigData: any = {};
   pageData: any = {};
@@ -33,7 +33,12 @@ export class AccountsComponent implements OnInit {
   voucherSentData: any = {};
 
   exportAsConfig: ExportAsConfig;
-  exportAs: any = '';
+  // exportAs: any = '';
+  exportAs:any = {};
+  eventTitle:any;
+  show_data:any;
+  advSearch: boolean = false;
+  dataLoad: boolean = false;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService, private exportAsService: ExportAsService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent,public router: Router) { }
@@ -68,6 +73,79 @@ export class AccountsComponent implements OnInit {
     this.exportAsService.save(this.exportAsConfig, 'accounts').subscribe(() => {
       // save started
     });
+  }
+
+  showData() {
+    //this.pageLimit = this.show_data;
+    // this.loadPageData();
+    this.pageLimit = this.show_data;
+    this.pageCurrentNumber = 1;
+    this.accountsData.slice(0, this.show_data);
+  }
+
+  filterSearchSec(){
+    this.advSearch = !this.advSearch
+    this.filterSearchReset();
+  }
+  
+  filterSearchReset(type?: string){
+    //Reset serach
+    this.eventTitle = '' || null;
+    if(type != undefined && type != ''){
+      this.loadPageData();
+    }
+  }
+
+  paginationReset() {
+    this.exportAs = {};
+  }
+
+  isValidSearch(){
+    if((this.eventTitle == '' || this.eventTitle == null)){
+      return false;
+    }
+    return true;
+  }
+
+  filterSearchSubmit(){
+    this.loader = false;
+    let postObject: any = {};
+    // console.log("Search click....", this.applicationNo, " -- ", this.selectAccrTypeValue, " == ", this.paymentStatusValue);
+    let postData: any = new FormData();
+    if(this.isValidSearch()){
+      if(this.eventTitle != '' && this.eventTitle != null){
+        postData.append('id', this.eventTitle)
+      }
+        
+        console.log(">>>POST: ", JSON.stringify(postData)); 
+
+        if(postObject){
+          this.subscriptions.push(this._trainerService.searchAccountlist((postData))
+          .subscribe(
+            result => {
+              let data: any = result;
+                console.log("search results: ", result);
+                this.loader = true;
+                if(data != undefined && typeof data === 'object' && data.records.length > 0){
+                    console.log(">>> Data: ", data.records);
+                    this.pageCurrentNumber = 1;
+                    this.dataLoad = true;
+                    this.accountsData = data.records;
+                    this.pageTotal = data.records.length;
+                }
+                if(data != undefined && typeof data === 'object' && data.records.length == 0){
+                  this.accountsData = data.records;
+                  this.pageTotal = data.records.length;
+                }
+            }
+            )
+          )
+        }
+
+    }else{
+      //this._service.openMessageDialog('Please select search fields properly.', "Validation Error");
+      this._toaster.warning("Please select search fields properly",'')
+    }     
   }
 
   loadPageData() {
