@@ -48,6 +48,7 @@ export class OperationsTrainingServiceListComponent implements OnInit {
   applicationNo: string = '' || null;
   selectTrainingTypeValue: string = '' || null;
   paymentStatusValue: string = '' || null;
+  show_data:any;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) {
@@ -73,6 +74,15 @@ export class OperationsTrainingServiceListComponent implements OnInit {
     
   }
 
+  showData() {
+    this.pageLimit = this.show_data;
+    // this.loadPageData();
+  }
+
+  paginationReset() {
+    this.exportAs = {};
+  }
+  
   exportFile() {
     // console.log(this.exportAs);
     this.exportAsConfig = {
@@ -128,9 +138,11 @@ export class OperationsTrainingServiceListComponent implements OnInit {
         console.log(">>>POST: ", postObject); 
 
         if(postObject){
+          this.loader = false;
           this.subscriptions.push(this._trainerService.searchTrainingServList((postData))
           .subscribe(
              result => {
+               this.loader = true;
                let data: any = result;
                 ////console.log("search results: ", result);
                 if(data != undefined && typeof data === 'object' && data.records.length > 0){

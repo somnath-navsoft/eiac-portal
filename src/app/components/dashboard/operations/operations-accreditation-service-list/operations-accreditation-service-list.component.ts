@@ -86,6 +86,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   applicationNo: string = '' || null;
   paymentStatusValue: string = '' || null;
   selectAccrTypeValue: string = '' || null;
+  show_data:any;
 
   constructor( private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent, private exportAsService: ExportAsService) { 
@@ -381,9 +382,11 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
         console.log(">>>POST: ", postObject); 
 
         if(postObject){
+          this.loader = false;
           this.subscriptions.push(this._trainerService.searchAccrServList((postObject))
           .subscribe(
              result => {
+               this.loader = true;
                let data: any = result;
                 ////console.log("search results: ", result);
                 if(data != undefined && typeof data === 'object' && data.records.length > 0){
@@ -513,6 +516,15 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
             }
           }        
       }
+  }
+
+  showData() {
+    this.pageLimit = this.show_data;
+    // this.loadPageData();
+  }
+
+  paginationReset() {
+    this.exportAs = {};
   }
 
   //Load Record

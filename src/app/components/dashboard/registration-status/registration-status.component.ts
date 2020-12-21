@@ -39,7 +39,8 @@ export class RegistrationStatusComponent implements OnInit {
   paymentStatusValue: string = '' || null;
   exportAsConfig: ExportAsConfig; 
   exportAs:any = {};
-  advSearch: boolean = false
+  advSearch: boolean = false;
+  show_data:any;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private exportAsService: ExportAsService) { }
@@ -54,6 +55,15 @@ export class RegistrationStatusComponent implements OnInit {
     this.curSortDir['payment_status']     = false;
     this.curSortDir['applicant']          = false;
     this.selectRegType = [{title:'No Objection Certificate', value: 'no_objection_certificate'},{title:'Work Activity Permit', value:'work_activity'}];
+  }
+
+  showData() {
+    this.pageLimit = this.show_data;
+    // this.loadPageData();
+  }
+
+  paginationReset() {
+    this.exportAs = {};
   }
 
   filterSearchReset(type?: string){
