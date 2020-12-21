@@ -67,12 +67,12 @@ export class TrainerService {
   }
 
   searchEventlist(postData: any){
-    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-accrediation-service-status/all/';
+    const url = `${this.BASE_REQ_URL}` + 'webservice/event-list/';
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
 
   searchAccountlist(postData: any){
-    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-accrediation-service-status/all/';
+    const url = `${this.BASE_REQ_URL}` + 'webservice/accounts/';
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
 

@@ -114,10 +114,10 @@ export class AccountsComponent implements OnInit {
     let postData: any = new FormData();
     if(this.isValidSearch()){
       if(this.eventTitle != '' && this.eventTitle != null){
-        postData.append('id', this.eventTitle)
+        postData.append('cab_name', this.eventTitle)
       }
         
-        console.log(">>>POST: ", JSON.stringify(postData)); 
+        // console.log(">>>POST: ", JSON.stringify(postData)); 
 
         if(postObject){
           this.subscriptions.push(this._trainerService.searchAccountlist((postData))
@@ -127,16 +127,42 @@ export class AccountsComponent implements OnInit {
                 console.log("search results: ", result);
                 this.loader = true;
                 if(data != undefined && typeof data === 'object' && data.records.length > 0){
-                    console.log(">>> Data: ", data.records);
+                    // console.log(">>> Data: ", data.records);
                     this.pageCurrentNumber = 1;
                     this.dataLoad = true;
-                    this.accountsData = data.records;
+                    // this.accountsData = data.records;
+
+                    let data: any = result;
+                    // let dataRec: any=[];
+                    // console.log('loading...', data.records);
+                    
+                    var allRecords = [];
+                    allRecords = data.records
+                    allRecords.forEach((res,key) => {
+                      if(allRecords[key].paymentDetails != false) {
+                        var getDetails = {};
+
+                        getDetails['appNo'] = allRecords[key].id;
+                        getDetails['createdDate'] = allRecords[key].created;
+                        getDetails['cabName'] = allRecords[key].cabDetails.cab_name;
+                        getDetails['appType'] = allRecords[key].form_meta;
+                        getDetails['totalPayment'] = allRecords[key].paymentDetails.length;
+                        
+                        getDetails['prelim_visit'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'prelim_visit');
+                        getDetails['application_fees'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'application_fees');
+                        getDetails['document_review'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'document_review');
+                        getDetails['assessment'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'assessment');
+                        getDetails['certification'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'certification');
+
+                        this.accountsData.push(getDetails);
+                      }
                     this.pageTotal = data.records.length;
-                }
-                if(data != undefined && typeof data === 'object' && data.records.length == 0){
-                  this.accountsData = data.records;
-                  this.pageTotal = data.records.length;
-                }
+                });
+              }
+              if(data != undefined && typeof data === 'object' && data.records.length == 0){
+                this.accountsData = data.records;
+                this.pageTotal = data.records.length;
+              }
             }
             )
           )

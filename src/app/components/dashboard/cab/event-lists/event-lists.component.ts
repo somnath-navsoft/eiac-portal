@@ -38,10 +38,12 @@ export class EventListsComponent implements OnInit {
   eventTitle:any;
   show_data:any;
   advSearch: boolean = false;
+  userType:any;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService, public _trainerService:TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) { }
 
   ngOnInit() {
+    this.userType = sessionStorage.getItem('type');
     this.curSortDir['course']                       = false;
     this.curSortDir['created_date']             = false;
     this.curSortDir['accr_status']             = false;
@@ -94,7 +96,7 @@ export class EventListsComponent implements OnInit {
     let postData: any = new FormData();
     if(this.isValidSearch()){
       if(this.eventTitle != '' && this.eventTitle != null){
-        postData.append('id', this.eventTitle)
+        postData.append('course_title', this.eventTitle)
       }
         
         console.log(">>>POST: ", JSON.stringify(postData)); 
