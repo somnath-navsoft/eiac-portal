@@ -88,7 +88,7 @@
                                     <mat-select placeholder="Select" 
                                     [ngModelOptions]="{standalone: true}" [(ngModel)]="paymentStatusValue" required>
                                         <mat-option value="paid">Paid</mat-option>
-                                        <mat-option value="unpaid">Unpaid</mat-option>
+                                        <mat-option value="pending">Pending</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
@@ -169,7 +169,7 @@
                             </td>
                             <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review':item.payment_status === 'pending' }">
                                 <span *ngIf="item.payment_status == 'paid'">Paid</span>
-                                <span *ngIf="item.payment_status == 'pending'">Pending</span>
+                                <span *ngIf="item.payment_status == 'pending' || item.payment_status == null">Pending</span>
                                 <!-- <span *ngIf="item.payment_status == null">Unpaid</span> -->
                             </td>
                             <td class="action fnt-clr">

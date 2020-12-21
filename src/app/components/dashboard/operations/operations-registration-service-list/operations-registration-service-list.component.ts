@@ -67,7 +67,7 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
     this.curSortDir['form_meta']          = false;
     this.curSortDir['payment_status']     = false;
     this.curSortDir['applicant']          = false;
-    this.selectRegType = [{title:'No Objection Certificate', value: 'no_objection_certificate'},{title:'Work Activity Permit', value:'work_activity'}];
+    this.selectRegType = [{title:'No Objection Certificate', value: 'no_objection'},{title:'Work Activity Permit', value:'work_activity'}];
     //this.selectCustomCourses = [{title:'No Objection Certificate', value: 'no_objection_certificate'},{title:'Work Activity Permit', value:'work_activity'}];
   }
 
@@ -104,7 +104,6 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
         postObject.append('payment_status', this.paymentStatusValue);
        }
         
-        console.log(">>>POST: ", postObject); 
 
         if(postObject){
           this.loader = false;
@@ -155,8 +154,11 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
   }
 
   showData() {
-    this.pageLimit = this.show_data;
+    //this.pageLimit = this.show_data;
     // this.loadPageData();
+    this.pageLimit = this.show_data;
+    this.pageCurrentNumber = 1;
+    this.trainerdata.slice(0, this.show_data);
   }
 
   paginationReset() {

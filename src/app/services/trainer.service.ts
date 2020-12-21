@@ -66,11 +66,11 @@ export class TrainerService {
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
   searchRegStatus(postData: any){
-    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-accrediation-service-status/all/';
+    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-registration-list/all/';
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
   searchTrainerStatus(postData: any){
-    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-accrediation-service-status/all/';
+    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-training-list/all/';
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
   //================================
@@ -79,11 +79,11 @@ export class TrainerService {
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
   searchRegServList(postData: any){
-    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-accrediation-service-status/all/';
+    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-registration-list/all/';
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
   searchTrainingServList(postData: any){
-    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-accrediation-service-status/all/';
+    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-training-list/all/';
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
   

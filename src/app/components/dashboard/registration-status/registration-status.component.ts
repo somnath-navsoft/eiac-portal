@@ -54,12 +54,18 @@ export class RegistrationStatusComponent implements OnInit {
     this.curSortDir['form_meta']          = false;
     this.curSortDir['payment_status']     = false;
     this.curSortDir['applicant']          = false;
-    this.selectRegType = [{title:'No Objection Certificate', value: 'no_objection_certificate'},{title:'Work Activity Permit', value:'work_activity'}];
+    this.selectRegType = [{title:'No Objection Certificate', value: 'no_objection'},{title:'Work Activity Permit', value:'work_activity'}];
   }
 
   showData() {
+    //this.pageLimit = this.show_data;
+    //this.loadPageData();
+    console.log(this.show_data);
+    console.log(">>>1 ", this.trainerdata);
     this.pageLimit = this.show_data;
-    // this.loadPageData();
+    this.pageCurrentNumber = 1;
+    this.trainerdata.slice(0, this.show_data);
+    console.log(">>> ", this.trainerdata);
   }
 
   paginationReset() {
@@ -86,11 +92,12 @@ export class RegistrationStatusComponent implements OnInit {
   }
 
   filterSearchSubmit(){
-     this.loader = false;
+     
      let postObject: any = {};
      //console.log("Search click....");
      let postData: any = new FormData();
      if(this.isValidSearch()){
+      this.loader = false;
        if(this.applicationNo != '' && this.applicationNo != null){
         postData.append('id', this.applicationNo)
        }
@@ -101,10 +108,9 @@ export class RegistrationStatusComponent implements OnInit {
         postData.append('payment_status', this.paymentStatusValue)
        }
         
-        console.log(">>>POST: ", postObject); 
 
-        if(postObject){
-          this.subscriptions.push(this._trainerService.searchRegStatus((postObject))
+        if(postData){
+          this.subscriptions.push(this._trainerService.searchRegStatus((postData))
           .subscribe(
              result => {
                let data: any = result;
