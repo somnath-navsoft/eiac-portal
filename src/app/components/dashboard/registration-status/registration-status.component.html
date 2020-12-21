@@ -44,12 +44,11 @@
                         <mat-form-field class="cab-data">
                             <mat-label>Show</mat-label>                              
                             <mat-select placeholder="Show" (selectionChange)="showData()"
-                            [ngModelOptions]="{standalone: true}" [(ngModel)]="show_data" required>
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="show_data" required>                            
                                 <mat-option value="25">25</mat-option>
                                 <mat-option value="50">50</mat-option>
                                 <mat-option value="75">75</mat-option>
                                 <mat-option value="100">100</mat-option>
-                                <!-- <mat-option value="pdf">Export as PDF</mat-option> -->
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -87,7 +86,7 @@
                                     <mat-select placeholder="Select" 
                                     [ngModelOptions]="{standalone: true}" [(ngModel)]="paymentStatusValue" required>
                                         <mat-option value="paid">Paid</mat-option>
-                                        <mat-option value="unpaid">Unpaid</mat-option>
+                                        <mat-option value="pending">Pending</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
@@ -176,8 +175,8 @@
                             </td>
                             <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review':item.payment_status === null , 'under-review':item.payment_status === 'pending'}">
                                 <span *ngIf="item.payment_status == 'paid'">Paid</span>
-                                <span *ngIf="item.payment_status == 'pending'">Unpaid</span>
-                                <span *ngIf="item.payment_status == null">Unpaid</span>
+                                <span *ngIf="item.payment_status == 'pending'">Pending</span>
+                                <span *ngIf="item.payment_status == null">Pending</span>
                             </td>                            
                             <td class="action fnt-clr">
                                 <ng-container *ngIf="item.form_meta == 'work_permit'">

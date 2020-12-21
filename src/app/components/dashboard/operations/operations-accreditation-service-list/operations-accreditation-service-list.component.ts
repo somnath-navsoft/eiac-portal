@@ -519,8 +519,11 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   }
 
   showData() {
-    this.pageLimit = this.show_data;
+    //this.pageLimit = this.show_data;
     // this.loadPageData();
+    this.pageLimit = this.show_data;
+    this.pageCurrentNumber = 1;
+    this.trainerdata.slice(0, this.show_data);
   }
 
   paginationReset() {

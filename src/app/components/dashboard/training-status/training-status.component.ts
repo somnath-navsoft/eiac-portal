@@ -63,8 +63,11 @@ export class TrainingStatusComponent implements OnInit {
   }
 
   showData() {
-    this.pageLimit = this.show_data;
+    //this.pageLimit = this.show_data;
     // this.loadPageData();
+    this.pageLimit = this.show_data;
+    this.pageCurrentNumber = 1;
+    this.trainerdata.slice(0, this.show_data);
   }
 
   paginationReset() {
@@ -109,11 +112,12 @@ export class TrainingStatusComponent implements OnInit {
   }
 
   filterSearchSubmit(){
-    this.loader = false;
+    
      let postObject: any = {};
      //console.log("Search click....");
      let postData: any = new FormData();
      if(this.isValidSearch()){
+      this.loader = false;
        if(this.applicationNo != '' && this.applicationNo != null){
         postData.append('id', this.applicationNo)
        }
@@ -124,9 +128,8 @@ export class TrainingStatusComponent implements OnInit {
         postData.append('payment_status', this.paymentStatusValue)
        }
         
-        console.log(">>>POST: ", postObject); 
 
-        if(postObject){
+        if(postData){
           this.subscriptions.push(this._trainerService.searchTrainerStatus((postData))
           .subscribe(
              result => {

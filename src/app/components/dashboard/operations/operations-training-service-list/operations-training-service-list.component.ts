@@ -75,8 +75,11 @@ export class OperationsTrainingServiceListComponent implements OnInit {
   }
 
   showData() {
-    this.pageLimit = this.show_data;
+    //this.pageLimit = this.show_data;
     // this.loadPageData();
+    this.pageLimit = this.show_data;
+    this.pageCurrentNumber = 1;
+    this.trainerdata.slice(0, this.show_data);
   }
 
   paginationReset() {
@@ -137,7 +140,7 @@ export class OperationsTrainingServiceListComponent implements OnInit {
         
         console.log(">>>POST: ", postObject); 
 
-        if(postObject){
+        if(postData){
           this.loader = false;
           this.subscriptions.push(this._trainerService.searchTrainingServList((postData))
           .subscribe(
