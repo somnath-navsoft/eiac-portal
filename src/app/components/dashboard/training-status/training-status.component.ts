@@ -97,7 +97,8 @@ export class TrainingStatusComponent implements OnInit {
     this.applicationNo = '' || null;
     this.selectTrainingTypeValue = '' || null;
     this.paymentStatusValue = '' || null;
-
+    this.show_data = this.pageLimit = 10;
+    this.exportAs = null;
     if(type != undefined && type != ''){
       this.loadPageData();
     }
@@ -122,7 +123,7 @@ export class TrainingStatusComponent implements OnInit {
         postData.append('id', this.applicationNo)
        }
        if(this.selectTrainingTypeValue != '' && this.selectTrainingTypeValue != null){
-        postData.append('form_meta', this.selectTrainingTypeValue)
+        postData.append('training_form_type', this.selectTrainingTypeValue)
        }
        if(this.paymentStatusValue != '' && this.paymentStatusValue != null){
         postData.append('payment_status', this.paymentStatusValue)

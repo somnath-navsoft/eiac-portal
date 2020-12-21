@@ -77,7 +77,8 @@ export class RegistrationStatusComponent implements OnInit {
     this.applicationNo = '' || null;
     this.selectRegTypeValue = '' || null;
     this.paymentStatusValue = '' || null;
-
+    this.show_data = this.pageLimit = 10;
+    this.exportAs = null;
     if(type != undefined && type != ''){
       this.loadPageData();
     }

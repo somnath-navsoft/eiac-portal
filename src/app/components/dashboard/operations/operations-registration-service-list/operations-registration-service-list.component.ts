@@ -76,7 +76,8 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
     this.applicationNo = '' || null;
     this.selectRegTypeValue = '' || null;
     this.paymentStatusValue = '' || null;
-
+    this.show_data = this.pageLimit = 10;
+    this.exportAs = null;
     if(type != undefined && type != ''){
       this.loadPageData();
     }    
@@ -275,18 +276,16 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
          }
        }  
        if(sortBy == 'applicant'){
-         this.curSortDir.applicant = !sortDir;
-         //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
-         if(this.curSortDir.applicant){
-           let array = data.slice().sort((a, b) => (a.applicant > b.applicant) ? 1 : -1)
-           this.trainerdata = array;
-           //console.log("after:: ", array, " :: ", this.trainerdata);
-         }
-         if(!this.curSortDir.applicant){
-           let array = data.slice().sort((a, b) => (a.applicant < b.applicant) ? 1 : -1)
-           this.trainerdata = array;
-         }
-       }        
+        this.curSortDir.applicant = !sortDir;
+        if(this.curSortDir.applicant){
+          let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name > b.cabDetails[0].cab_name) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.applicant){
+          let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name < b.cabDetails[0].cab_name) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }        
     }
   }
 

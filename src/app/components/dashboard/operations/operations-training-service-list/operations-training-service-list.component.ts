@@ -109,7 +109,8 @@ export class OperationsTrainingServiceListComponent implements OnInit {
     this.applicationNo = '' || null;
     this.selectTrainingTypeValue = '' || null;
     this.paymentStatusValue = '' || null;
-
+    this.show_data = this.pageLimit = 10;
+    this.exportAs = null;
     if(type != undefined && type != ''){
       this.loadPageData();
     }
@@ -132,7 +133,7 @@ export class OperationsTrainingServiceListComponent implements OnInit {
         postData.append('id', this.applicationNo)
        }
        if(this.selectTrainingTypeValue != '' && this.selectTrainingTypeValue != null){
-        postData.append('form_meta', this.selectTrainingTypeValue)
+        postData.append('training_form_type', this.selectTrainingTypeValue)
        }
        if(this.paymentStatusValue != '' && this.paymentStatusValue != null){
         postData.append('payment_status', this.paymentStatusValue)
@@ -285,18 +286,16 @@ export class OperationsTrainingServiceListComponent implements OnInit {
          }
        }  
        if(sortBy == 'applicant'){
-         this.curSortDir.applicant = !sortDir;
-         //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
-         if(this.curSortDir.applicant){
-           let array = data.slice().sort((a, b) => (a.applicant > b.applicant) ? 1 : -1)
-           this.trainerdata = array;
-           //console.log("after:: ", array, " :: ", this.trainerdata);
-         }
-         if(!this.curSortDir.applicant){
-           let array = data.slice().sort((a, b) => (a.applicant < b.applicant) ? 1 : -1)
-           this.trainerdata = array;
-         }
-       }        
+        this.curSortDir.applicant = !sortDir;
+        if(this.curSortDir.applicant){
+          let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name > b.cabDetails[0].cab_name) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.applicant){
+          let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name < b.cabDetails[0].cab_name) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }        
     }
   }
 

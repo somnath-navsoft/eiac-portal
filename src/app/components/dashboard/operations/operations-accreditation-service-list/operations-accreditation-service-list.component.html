@@ -225,7 +225,9 @@
                                 <span *ngIf="item.payment_status == null || item.payment_status== 'pending'">Pending</span>
                             </td> 
                             <td>
-                                {{item.applicantName}}
+                                <span *ngIf="item.cabDetails != undefined">
+                                    {{item.cabDetails.cab_name}}
+                                </span>
                             </td>                           
                             <td class="action fnt-clr">
                                 <!-- *ngIf="(item.accr_status == null && item.accr_status === 'under_review')" -->
