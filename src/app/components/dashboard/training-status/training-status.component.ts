@@ -44,6 +44,7 @@ export class TrainingStatusComponent implements OnInit {
   selectTrainingTypeValue: string = '' || null;
   paymentStatusValue: string = '' || null;
   show_data:any;
+  userType: string;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private exportAsService: ExportAsService) { }
@@ -58,6 +59,7 @@ export class TrainingStatusComponent implements OnInit {
     this.curSortDir['payment_status']     = false;
     this.curSortDir['cab_code']           = false;
     this.curSortDir['applicant']          = false;
+    this.userType = sessionStorage.getItem('type');
 
     this.selectTrainingType = [{'title':'In Premise', value: 'inprimise'},{'title':'Public Training', value: 'public_training'}];
   }
