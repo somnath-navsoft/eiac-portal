@@ -67,8 +67,26 @@
                         <div class="col-md-4">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
-                                    <mat-label>Event title</mat-label> 
+                                    <mat-label>Event Title</mat-label> 
                                 <input type="text" matInput [(ngModel)]="eventTitle" placeholder="Search by Event title">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="user-details">
+                                <!-- <mat-form-field class="cab-data">
+                                    <mat-label>Event Date</mat-label> 
+                                    <input type="text" matInput [matDatepicker]="event_date" readonly="true" [(ngModel)]="event_date" placeholder="Search by Event title">
+                                    <mat-datepicker-toggle matSuffix [for]="event_date"></mat-datepicker-toggle>
+                                    <mat-datepicker #event_date disabled="false"></mat-datepicker>
+                                </mat-form-field> -->
+
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Event Date</mat-label> 
+                                    <input matInput [matDatepicker]="event_date" name="event_date" [(ngModel)]="searchDateData.event_date" (dateChange)="setexDate(event_date)" readonly="true" (click)="Service._openCalendar(event_date)" placeholder="Date Of Issue" required>
+                                    <mat-datepicker-toggle matSuffix [for]="event_date"></mat-datepicker-toggle>
+                                    <mat-datepicker #event_date disabled="false"></mat-datepicker>
                                 </mat-form-field>
                             </div>
                         </div>
