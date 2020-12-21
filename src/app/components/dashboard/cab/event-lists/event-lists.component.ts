@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, Subscription } from 'rxjs';
 import { TrainerService } from 'src/app/services/trainer.service';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
 @Component({
   selector: 'app-event-lists',
@@ -29,11 +30,21 @@ export class EventListsComponent implements OnInit {
   participantsTempList:any[] = [{}];
   participantsList:any[] = [{}];
   dataLoad: boolean = false;
+  detailsCourse:any;
+  detailsDate:any;
+  noOfParticipants:any;
+  exportAsConfig: ExportAsConfig;
+  exportAs:any = {};
+  eventTitle:any;
+  show_data:any;
+  advSearch: boolean = false;
+  userType:any;
 
-  constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService, public _trainerService:TrainerService, private modalService: NgbModal) { }
+  constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService, public _trainerService:TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) { }
 
   ngOnInit() {
-    this.curSortDir['id']                       = false;
+    this.userType = sessionStorage.getItem('type');
+    this.curSortDir['course']                       = false;
     this.curSortDir['created_date']             = false;
     this.curSortDir['accr_status']             = false;
     this.curSortDir['applicantName']             = false;
@@ -44,6 +55,91 @@ export class EventListsComponent implements OnInit {
     this.participantsTempList = [{'name':'Test test','email':'test@test.com','phone':89898989},{'name':'Test2 test2','email':'test2@test2.com','phone':56756756657},{'name':'Test3 test','email':'test3@test3.com','phone':787686778}];
 
     this.loadPageData();
+  }
+
+  showData() {
+    //this.pageLimit = this.show_data;
+    // this.loadPageData();
+    this.pageLimit = this.show_data;
+    this.pageCurrentNumber = 1;
+    this.eventData.slice(0, this.show_data);
+  }
+
+  filterSearchSec(){
+    this.advSearch = !this.advSearch
+    this.filterSearchReset();
+  }
+  
+  filterSearchReset(type?: string){
+    //Reset serach
+    this.eventTitle = '' || null;
+    if(type != undefined && type != ''){
+      this.loadPageData();
+    }
+  }
+
+  paginationReset() {
+    this.exportAs = {};
+  }
+
+  isValidSearch(){
+    if((this.eventTitle == '' || this.eventTitle == null)){
+      return false;
+    }
+    return true;
+  }
+
+  filterSearchSubmit(){
+    this.loader = false;
+    let postObject: any = {};
+    // console.log("Search click....", this.applicationNo, " -- ", this.selectAccrTypeValue, " == ", this.paymentStatusValue);
+    let postData: any = new FormData();
+    if(this.isValidSearch()){
+      if(this.eventTitle != '' && this.eventTitle != null){
+        postData.append('course_title', this.eventTitle)
+      }
+        
+        console.log(">>>POST: ", JSON.stringify(postData)); 
+
+        if(postObject){
+          this.subscriptions.push(this._trainerService.searchEventlist((postData))
+          .subscribe(
+            result => {
+              let data: any = result;
+                console.log("search results: ", result);
+                this.loader = true;
+                if(data != undefined && typeof data === 'object' && data.records.length > 0){
+                    console.log(">>> Data: ", data.records);
+                    this.pageCurrentNumber = 1;
+                    this.dataLoad = true;
+                    this.eventData = data.records;
+                    this.pageTotal = data.records.length;
+                }
+                if(data != undefined && typeof data === 'object' && data.records.length == 0){
+                  this.eventData = data.records;
+                  this.pageTotal = data.records.length;
+                }
+            }
+            )
+          )
+        }
+
+    }else{
+      //this._service.openMessageDialog('Please select search fields properly.', "Validation Error");
+      this.toastr.warning("Please select search fields properly",'')
+    }     
+  }
+
+  exportFile() {
+    // console.log(this.exportAs);
+    this.exportAsConfig = {
+      type: this.exportAs.toString(), // the type you want to download
+      elementIdOrContent: 'accreditation-service-export', // the id of html/table element
+    }
+    // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
+    this.exportAsService.save(this.exportAsConfig, 'report').subscribe(() => {
+      // save started
+    });
   }
 
   loadPageData() {
@@ -74,15 +170,15 @@ export class EventListsComponent implements OnInit {
     //true - asc / false - desc
     ////console.log('>>>', data);
     if(data.length){
-        if(sortBy === 'id'){
+        if(sortBy === 'course'){
           //console.log(">>>Enter type...");
-          this.curSortDir.id = !sortDir;
-          if(this.curSortDir.id){
-            let array = data.slice().sort((a, b) => (a.id > b.id) ? 1 : -1)
+          this.curSortDir.course = !sortDir;
+          if(this.curSortDir.course){
+            let array = data.slice().sort((a, b) => (a.course > b.course) ? 1 : -1)
             this.eventData = array;
           }
-          if(!this.curSortDir.id){
-            let array = data.slice().sort((a, b) => (a.id < b.id) ? 1 : -1)
+          if(!this.curSortDir.course){
+            let array = data.slice().sort((a, b) => (a.course < b.course) ? 1 : -1)
             this.eventData = array;
             //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
           }
@@ -188,8 +284,8 @@ export class EventListsComponent implements OnInit {
     }
   }
 
-  open(content,arr:any[]) {
-    // console.log(key)
+  open(content,newObj:any) {
+    console.log(newObj)
     //this.voucherSentData = {};
     // if(id){
     //   console.log(">>ID: ", id);
@@ -198,7 +294,11 @@ export class EventListsComponent implements OnInit {
     //   this.voucherIndex = key
     // }
     // this.paymentReceiptValidation = null;
-    this.participantsList = arr;
+    this.participantsList = newObj.participants != null && newObj.participants.length > 0 ? newObj.participants : [];
+    this.detailsCourse = newObj.course;
+
+    this.detailsDate = newObj.eventDates != null && newObj.eventDates.length > 0 ? newObj.eventDates[0].event_date : '';
+    this.noOfParticipants = newObj.participants != null && newObj.participants.length > 0 ? newObj.participants.length : 0;
 
     this.modalService.open(content, this.modalOptions).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;

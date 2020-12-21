@@ -6,6 +6,7 @@ import { Constants } from '../../../../services/constant.service';
 import { ToastrService, Overlay, OverlayContainer } from 'ngx-toastr';
 import {CustomModalComponent} from '../../../utility/custom-modal/custom-modal.component';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
 @Component({
   selector: 'app-operations-registration-service-list',
@@ -35,9 +36,22 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
   pageTotal: number = 0;
   curSortDir: any = {};
   dataLoad: boolean = false;
+  advSearch: boolean = false;
+  paymentStatus:any;
+  selectCustomCourse:any;
+  selectCustomCourses:any[] = [];
+  exportAsConfig: ExportAsConfig; 
+  exportAs:any = {};
+
+  selectRegType: any[] =[];
+
+  applicationNo: string = '' || null;
+  selectRegTypeValue: string = '' || null;
+  paymentStatusValue: string = '' || null;
+  show_data:any;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
-    private _trainerService: TrainerService, private modalService: NgbModal) { 
+    private _trainerService: TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) { 
       this.modalOptions = {
         backdrop:'static',
         backdropClass:'customBackdrop'
@@ -53,6 +67,102 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
     this.curSortDir['form_meta']          = false;
     this.curSortDir['payment_status']     = false;
     this.curSortDir['applicant']          = false;
+    this.selectRegType = [{title:'No Objection Certificate', value: 'no_objection'},{title:'Work Activity Permit', value:'work_activity'}];
+    //this.selectCustomCourses = [{title:'No Objection Certificate', value: 'no_objection_certificate'},{title:'Work Activity Permit', value:'work_activity'}];
+  }
+
+  filterSearchReset(type?: string){
+    //Reset serach
+    this.applicationNo = '' || null;
+    this.selectRegTypeValue = '' || null;
+    this.paymentStatusValue = '' || null;
+
+    if(type != undefined && type != ''){
+      this.loadPageData();
+    }    
+  }
+  
+  isValidSearch(){
+    if((this.applicationNo == '' || this.applicationNo == null) && (this.selectRegTypeValue == '' || this.selectRegTypeValue == null) &&
+       (this.paymentStatusValue == '' || this.paymentStatusValue == null)){
+      return false;
+    }
+    return true;
+  }
+
+  filterSearchSubmit(){
+     let postObject: any = new FormData();
+     //console.log("Search click....");
+     if(this.isValidSearch()){
+       if(this.applicationNo != '' && this.applicationNo != null){
+        postObject.append('id', this.applicationNo);
+       }
+       if(this.selectRegTypeValue != '' && this.selectRegTypeValue != null){
+        postObject.append('form_meta', this.selectRegTypeValue);
+       }
+       if(this.paymentStatusValue != '' && this.paymentStatusValue != null){
+        postObject.append('payment_status', this.paymentStatusValue);
+       }
+        
+
+        if(postObject){
+          this.loader = false;
+          this.subscriptions.push(this._trainerService.searchRegServList((postObject))
+          .subscribe(
+             result => {
+               let data: any = result;
+               this.loader = true;
+                ////console.log("search results: ", result);
+                if(data != undefined && typeof data === 'object' && data.records.length > 0){
+                    console.log(">>> Data: ", data.records);
+                    this.pageCurrentNumber = 1;
+                    this.dataLoad = true;
+                    this.trainerdata = data.records;
+                    this.pageTotal = data.records.length;
+                }
+                if(data != undefined && typeof data === 'object' && data.records.length == 0){
+                  this.trainerdata = data.records;
+                  this.pageTotal = data.records.length;
+                }
+             }
+            )
+          )
+        }
+
+     }else{
+      //this._service.openMessageDialog('Please select search fields properly.', "Validation Error");
+      this._toaster.warning("Please select search fields properly",'')
+     }     
+  }
+
+  exportFile() {
+    // console.log(this.exportAs);
+    this.exportAsConfig = {
+      type: this.exportAs.toString(), // the type you want to download
+      elementIdOrContent: 'accreditation-service-export', // the id of html/table element
+    }
+    // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
+    this.exportAsService.save(this.exportAsConfig, 'report').subscribe(() => {
+      // save started
+    });
+  }
+  
+  filterSearchSec(){
+    this.advSearch = !this.advSearch
+    // console.log(this.advSearch);
+    this.filterSearchReset();
+  }
+
+  showData() {
+    //this.pageLimit = this.show_data;
+    // this.loadPageData();
+    this.pageLimit = this.show_data;
+    this.pageCurrentNumber = 1;
+    this.trainerdata.slice(0, this.show_data);
+  }
+
+  paginationReset() {
+    this.exportAs = {};
   }
 
   loadPageData(){

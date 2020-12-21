@@ -107,8 +107,8 @@
                                                 <ng-container *ngIf="row2.custom_location != null">
                                                     <span>{{row2.custom_location}}</span>
                                                 </ng-container>
-                                                <ng-container *ngIf="row2.location === null || row2.location == ''">
-                                                    NA
+                                                <ng-container *ngIf="row2.custom_location == null">
+                                                    <span>Client Premisis</span>
                                                 </ng-container>
                                                 </div>
                                             </div>

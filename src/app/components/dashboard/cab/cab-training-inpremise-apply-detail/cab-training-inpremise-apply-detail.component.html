@@ -14,9 +14,9 @@
                 <!-- <ng-container *ngFor="let item of courseDetails; let k = index;"> -->
                     <div class="row">
                         <div class="col-md-12">
-                            <ng-container *ngIf="trainingDetails.courseDetails != ''">
+                            <!-- <ng-container *ngIf="trainingDetails.courseDetails?.course != ''"> -->
                                 <h1>{{trainingDetails.courseDetails?.course}}</h1>
-                            </ng-container>                            
+                            <!-- </ng-container>                             -->
                         </div>
                     </div>
                     <div class="row"> 
@@ -90,7 +90,7 @@
 
                                     <div class="course-info">
                                         <h5>Location : <span *ngIf="trainingDetails.custom_location != null">{{trainingDetails.custom_location}}</span>
-                                        <span *ngIf="trainingDetails.custom_location === '' || trainingDetails.courseDetails.location == null">N/A</span>
+                                        <span *ngIf="trainingDetails.custom_location == null">Client Premisis</span>
                                         </h5>
                                     </div>
 

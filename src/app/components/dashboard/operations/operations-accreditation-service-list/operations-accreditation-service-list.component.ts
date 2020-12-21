@@ -30,6 +30,7 @@ import { ToastrService, Overlay, OverlayContainer } from 'ngx-toastr';
 
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {CustomModalComponent} from '../../../utility/custom-modal/custom-modal.component';
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
 @Component({
   selector: 'app-operations-accreditation-service-list',
@@ -64,7 +65,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   selectCode: string='';
   selectFees: string='';
   agreementStatus: any[] =[];
-  paymentStatus: any[] =[];
+  // paymentStatus: any[] =[];
   
   closeResult: string;
   voucherSentData: any = {};
@@ -74,11 +75,21 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   voucherFile:any = new FormData();
   paymentReceiptValidation: boolean = true;
   loader:boolean = true;
+  exportAs:any = {};
 
   deleteConfirm: boolean = false;
   private store: Store<TrainerState>;
+  exportAsConfig: ExportAsConfig;
+  paymentStatus:any;
+
+  selectAccrType: any =[];
+  applicationNo: string = '' || null;
+  paymentStatusValue: string = '' || null;
+  selectAccrTypeValue: string = '' || null;
+  show_data:any;
+
   constructor( private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
-    private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent) { 
+    private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent, private exportAsService: ExportAsService) { 
     //this.store.dispatch(new ListingAccredService({}));
     this.modalOptions = {
       backdrop:'static',
@@ -205,7 +216,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     }
   }
 
-  voucherSentSubmit(theForm){
+  voucherSentSubmit(theForm){ 
      
      let postObject: any = {};
      let is_valid: boolean = false;
@@ -288,73 +299,106 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     this.curSortDir['form_meta']          = false;
     this.curSortDir['payment_status']     = false;
     this.curSortDir['applicant']          = false;
-    
 
+    /*
+     <span *ngIf="item.form_meta == 'testing_calibration'">Testing Calibration</span>
+    <span *ngIf="item.form_meta == 'inspection_body'">Inspection Bodies</span>
+    <span *ngIf="item.form_meta == 'health_care'">Health Care</span>
+    <span *ngIf="item.form_meta == 'certification_bodies'">Certification Bodies</span>
+    <span *ngIf="item.form_meta == 'pt_providers'">Proficiency Testing Providers</span>
+    <span *ngIf="item.form_meta == 'halal_conformity_bodies'">Halal Confirmity Bodies</span>
+
+    */
+
+    //Assign Search Type
+    this.selectAccrType = [ 
+    {title: 'Inspection Bodies', value:'inspection_body'},
+    {title: 'Certification Bodies', value:'certification_bodies'},
+    {title: 'Testing Calibration', value:'testing_calibration'},
+    {title: 'Health Care', value:'health_care'},
+    {title: 'Halal Conformity Bodies', value:'halal_conformity_bodies'},
+    {title: 'Proficiency Testing Providers', value:'pt_providers'}      
+    ];
+    // this.selectPaymentStatusType = [ 
+    //   {title: 'Paid', value:'paid'},
+    //   {title: 'Unpaid', value:'unpaid'}     
+    //   ];
+    
     this.loadPageData();
+    //this.selectCustomCourses = [{'value':'Inspection Bodies'},{'value':'Certification Bodies'},{'value':'Testing Calibration'},{'value':'Health Care'},{'value':'Proficiency Testing Providers'},{'value':'Halal Confirmity Bodies'}];
+  }
+
+  exportFile() {
+    // console.log(this.exportAs);
+    this.exportAsConfig = {
+      type: this.exportAs.toString(), // the type you want to download
+      elementIdOrContent: 'accreditation-service-export', // the id of html/table element
+    }
+    // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
+    this.exportAsService.save(this.exportAsConfig, 'report').subscribe(() => {
+      // save started
+    });
   }
 
   filterSearchSec(){
     this.advSearch = !this.advSearch
+    // console.log(this.advSearch);
+    this.filterSearchReset();
   }
 
-  filterSearchReset(){
+  filterSearchReset(type?: string){
     //Reset serach
-    this.selectCode = '';
-    this.selectFees = '';
-    this.selectAgreementStatus = '';
-    this.selectPaymentStatus = '';
-    this.selectCustomCourse = '';
+    this.applicationNo = '' || null;
+    this.selectAccrTypeValue = '' || null;
+    this.paymentStatusValue = '' || null;
 
-    this.loadPageData();
+    if(type != undefined && type != ''){
+      this.loadPageData();
+    }
   }
   
   isValidSearch(){
-    if(this.selectCode === '' && this.selectFees === '' && this.selectAgreementStatus === '' && 
-        this.selectPaymentStatus === '' && this.selectCustomCourse === ''){
+    if((this.applicationNo == '' || this.applicationNo == null) && (this.selectAccrTypeValue == '' || this.selectAccrTypeValue == null) &&
+       (this.paymentStatusValue == '' || this.paymentStatusValue == null)){
       return false;
     }
     return true;
   }
 
   filterSearchSubmit(){
-     let postObject: any = {};
+     let postObject: any = new FormData();
      //console.log("Search click....");
      if(this.isValidSearch()){
-       if(this.selectCode != ''){
-        postObject['course_code'] = this.selectCode;
+       if(this.applicationNo != '' && this.applicationNo != null){
+        postObject.append('id', this.applicationNo);
        }
-       if(this.selectFees != '' && this.selectFees != null){
-        postObject['fees_per_trainee'] = this.selectFees;
+       if(this.selectAccrTypeValue != '' && this.selectAccrTypeValue != null){
+        postObject.append('form_meta', this.selectAccrTypeValue);
        }
-       if(this.selectAgreementStatus != ''){
-        postObject['agreement_status'] = this.selectAgreementStatus;
+       if(this.paymentStatusValue != '' && this.paymentStatusValue != null){
+        postObject.append('payment_status', this.paymentStatusValue);
        }
-       if(this.selectPaymentStatus != ''){
-        postObject['payment_status'] = this.selectPaymentStatus;
-       }
-       if(this.selectCustomCourse != ''){
-        postObject['training_course_type'] = this.selectCustomCourse;
-       }
-        //postObject['training_course_type'] = this.selectCustomCourse;
-        //postObject['course_code'] = this.selectCode;
-        //postObject['agreement_status'] = this.selectAgreementStatus;
-        //postObject['payment_status'] = this.selectPaymentStatus;
-        //postObject['fees_per_trainee'] = (this.selectFees == '') ? 0.00 : this.selectFees;
         
-        //console.log(">>>POST: ", postObject); 
+        console.log(">>>POST: ", postObject); 
 
         if(postObject){
-          this.subscriptions.push(this._trainerService.searchCourse((postObject))
+          this.loader = false;
+          this.subscriptions.push(this._trainerService.searchAccrServList((postObject))
           .subscribe(
              result => {
+               this.loader = true;
                let data: any = result;
                 ////console.log("search results: ", result);
-                if(data != undefined && typeof data === 'object' && data.records.length){
+                if(data != undefined && typeof data === 'object' && data.records.length > 0){
                     console.log(">>> Data: ", data.records);
                     this.pageCurrentNumber = 1;
                     this.dataLoad = true;
                     this.trainerdata = data.records;
                     this.pageTotal = data.records.length;
+                }
+                if(data != undefined && typeof data === 'object' && data.records.length == 0){
+                  this.trainerdata = data.records;
+                  this.pageTotal = data.records.length;
                 }
              }
             )
@@ -362,7 +406,8 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
         }
 
      }else{
-      this._service.openMessageDialog('Please select search fields properly.', "Validation Error");
+      //this._service.openMessageDialog('Please select search fields properly.', "Validation Error");
+      this._toaster.warning("Please select search fields properly",'')
      }     
   }
 
@@ -471,6 +516,18 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
             }
           }        
       }
+  }
+
+  showData() {
+    //this.pageLimit = this.show_data;
+    // this.loadPageData();
+    this.pageLimit = this.show_data;
+    this.pageCurrentNumber = 1;
+    this.trainerdata.slice(0, this.show_data);
+  }
+
+  paginationReset() {
+    this.exportAs = {};
   }
 
   //Load Record

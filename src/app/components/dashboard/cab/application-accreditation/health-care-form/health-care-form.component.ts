@@ -16,7 +16,7 @@ import {CustomModalComponent} from '../../../../utility/custom-modal/custom-moda
 
 @Component({
   selector: 'app-health-care-form',
-  templateUrl: './health-care-form.component.html',
+  templateUrl: './health-care-form.component.html', 
   styleUrls: ['./health-care-form.component.scss'],
   providers: [CustomModalComponent]
 })
@@ -363,11 +363,11 @@ export class HealthCareFormComponent implements OnInit {
 
 
  getCriteria(value, secInd: any){
-  ////console.log("select Criteris: ", value, " -- ", secInd);
+  console.log("select Criteris: ", value, " -- ", secInd);
   this.scopeDataLoad = true;
-  if(value != undefined && value > 0){
+  if(value != undefined && typeof value == 'object'){
      
-     let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcare_form_basic_data+"?application="+this.formApplicationId+"&family="+value;
+     let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.healthcare_form_basic_data+"?application="+this.formApplicationId+"&family="+value.id;
      console.log(">>>> Load scope:...", apiURL);
      this.Service.getwithoutData(apiURL).subscribe(record => {
           console.log('@Fullscope: ', record);
@@ -382,8 +382,8 @@ export class HealthCareFormComponent implements OnInit {
           }
           let scopeName: string = '';
             let scopeTitle: string ='';
-            let getData = this.criteriaMaster.find(rec => rec.scope_family == value);
-            ////console.log(">>> Fined Scheme: ", getData);
+            let getData = this.criteriaMaster.find(rec => rec.scope_family.id == value.id);
+            console.log(">>> Fined Scheme: ", getData);
             if(getData){
               scopeName   = getData.title;
               scopeTitle  = getData.title.toString().toLowerCase().split(" ").join('_');
@@ -967,7 +967,7 @@ scrollForm(data?:any){
       //this.fullScope   = res['fullScope'];
       //this.criteriaMaster = res['criteriaMaster'];
       this.criteriaMaster = res['data']['schemes'];
-      //////console.log("#Get criteria: ", this.criteriaMaster);
+      console.log("#Get criteria: ", this.criteriaMaster);
 
     },
     error => {
@@ -2560,14 +2560,14 @@ saveScope(rowInd: number){
   
   for(var t=rowInd;t<=rowInd; t++){
 
-    //console.log("Scheme Sec: ", t," -- ", scopeCollections);
-    selectScheme = this.schemeRows[t].id;
+    console.log("Scheme Sec: ", t," -- ", scopeCollections, " == ", this.schemeRows[t]);
+    selectScheme = this.schemeRows[t].id.id;
     if(selectScheme == undefined){
       //console.log(">>Heading scheme notfff....exit", selectScheme);
       break;
     }
-    let getData = this.criteriaMaster.find(rec => rec.scope_family == selectScheme);
-    //console.log("@Scheme Data: ", getData);
+    let getData = this.criteriaMaster.find(rec => rec.scope_family.id == selectScheme);
+    console.log("@Scheme Data: ", getData);
     let scopeTitle: string ='';
     //scopeTitle  = getData.title.toString().toLowerCase().split(" ").join('_');
     if(getData){
@@ -2577,11 +2577,11 @@ saveScope(rowInd: number){
     scopeCollections[selectScheme] = {};
     scopeCollections[selectScheme]['scope_heading'] = {};
           for(var key in this.dynamicScopeFieldColumns[scopeTitle]){
-                ////console.log(">>> ", key, " :: ", this.dynamicScopeFieldColumns[key], " -- ", typeof this.dynamicScopeFieldColumns[key]);
+                console.log(">>> ", key, " :: ", this.dynamicScopeFieldColumns[key], " -- ", typeof this.dynamicScopeFieldColumns[key]);
                 let tempData: any = this.dynamicScopeFieldColumns[scopeTitle];
                 if(typeof tempData === 'object'){
                   tempData.forEach((item,key) => {
-                        ////console.log(item);
+                        console.log("....>>>>",item);
                         let keyIds = item[0].idVal;
                         let name = item[0].name;
                         let tempObj = {};
@@ -2591,7 +2591,7 @@ saveScope(rowInd: number){
                 }
           }
   }
-  //console.log(">>> build scope: ", scopeCollections, " -- ", this.dynamicScopeModel, " -> Scheme: ", this.schemeRows);
+  console.log(">>> build scope: ", scopeCollections, " -- ", this.dynamicScopeModel, " -> Scheme: ", this.schemeRows);
   //return;
 
   let secInd: number = 0;
@@ -2603,8 +2603,8 @@ saveScope(rowInd: number){
 
           //console.log("Scheme Sec: ", t);
           secInd = t;
-          selectScheme = this.schemeRows[t].id;
-          let getData = this.criteriaMaster.find(rec => rec.scope_family == selectScheme);
+          selectScheme = this.schemeRows[t].id.id;
+          let getData = this.criteriaMaster.find(rec => rec.scope_family.id == selectScheme);
           //console.log("@Scheme Data: ", getData);
           if(getData == undefined){
             console.log("scheme not selecting...exit...", selectScheme, " -- ", getData);

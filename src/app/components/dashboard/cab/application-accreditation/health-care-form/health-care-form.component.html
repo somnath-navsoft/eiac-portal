@@ -984,53 +984,7 @@
                                     </div>
                                     <!-- SCOPE SECTION START -->
                                     <div class="row  mt-3">
-                                        <div class="col-md-12">
-                                            <!-- <custom-modal *ngIf="deleteScopeConfirm" (onDeleteAction)="removeScopeLine(selectDeleteIndex, selectDeleteKey)" [parent]="this" [modalType]="'delete'"></custom-modal>
-                                            <ng-container *ngIf="editScopeData != undefined && editScopeData != null">
-                                                <div class="row">
-                                                    <div class="col-md-12 p-0">
-                                                        <div class="form-subheader-data">
-                                                            <h5>SCOPE DATA</h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <custom-modal *ngIf="deleteEditScopeConfirm" (onDeleteAction)="deleteScopeData(selectDeleteKey,selectDeleteIndex)" [parent]="this" [modalType]="'delete'"></custom-modal>
-                                                <ng-container *ngFor="let item of editScopeData | keyvalue">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="table-appln scope-data">
-                                                                <div class="sub-header">
-                                                                    <h5 [innerHTML]="getSchme(item.key)"></h5>
-                                                                </div>
-                                                                <table>
-                                                                    <tr>
-                                                                        <th *ngFor="let item1 of (item.value.scope_heading) | keyvalue;">{{item1.value}}</th>
-                                                                        <th>Action</th>
-                                                                    </tr>
-                                                                    <ng-container *ngIf="item.value.scope_value != undefined && item.value.scope_value.length > 0">
-                                                                        <tr *ngFor="let item2 of (item.value.scope_value) | keyvalue; let i4 = index;">
-                                                                            <td *ngFor="let item3 of item2.value | keyvalue;">
-                                                                                <span [innerHTML]="(item3.value)"></span>
-                                                                            </td>
-                                                                            <td>
-                                                                            <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item.key)"></span>
-                                                                            </td>                                                                
-                                                                        </tr>
-                                                                    </ng-container>
-                                                                    <ng-container *ngIf="item.value.scope_value != undefined && item.value.scope_value.length == 0">
-                                                                        <tr>
-                                                                            <td [attr.colspan]="Service.getObjectLength(item.value.scope_heading)+1">
-                                                                                No Data
-                                                                            </td>
-                                                                        </tr>
-                                                                    </ng-container>
-                                                                </table>  
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </ng-container>
-                                            </ng-container>    -->
-                                            <!-- criteriaMaster.length > 0 &&  -->
+                                        <div class="col-md-12">                                           
                                     <ng-container *ngIf="!scopeFamilyNull">
                                     <ng-container *ngFor="let item of schemeRows; let i = index;"> 
                                             <div class="row mt-3">
@@ -1063,7 +1017,6 @@
                                                     <div class="row">
                                                         <div class="col-md-12 p-0">
                                                             <div class="form-subhdr">
-                                                                <!-- {{step1Data.cab_type}} -->
                                                                 <h5>Accreditation Scope for <span *ngIf="scope.title == '_'">Sample Collection</span> 
                                                                     <span *ngIf="scope.title != '_'">{{scope.title}}</span> 
                                                                     </h5>
@@ -1130,8 +1083,6 @@
                                                                                           
                                                                                     </mat-form-field>
                                                                                     </ng-container>
-                                                                                <!-- @{{dynamicScopeFieldType[i1][p].inputType | json}}<br> -->
-
                                                                                 <ng-container *ngIf="dynamicScopeFieldType[scope.title][p].inputType == 'text'">
                                                                                     <mat-form-field class="cab-data" *ngIf="p > 0 && p <= dynamicScopeFieldColumns[scope.title].length">
                                                                                         <mat-label></mat-label>
@@ -1176,9 +1127,7 @@
                                                                                         </mat-select>
                                                                                     </mat-form-field>  
                                                                                     </ng-container>
-                                                                                <!-- @{{dynamicScopeFieldType[i1][p].inputType | json}}<br>                                                                               -->
                                                                             </td>
-                                                                            <!-- removeScopeLine(k, scope.title) -->
                                                                             <td class="content-icn">
                                                                                 <span *ngIf="k >= 0" class="icon-add" (click)="addScopeLine(k,scope.title, dynamicScopeModel[scope.title].fieldLines)"></span>&nbsp;
                                                                                 <span *ngIf="k >= 1" class="icon-close-round" (click)="openDeleteScopeConfirm(k, scope.title)"></span>

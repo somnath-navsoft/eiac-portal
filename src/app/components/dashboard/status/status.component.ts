@@ -7,6 +7,7 @@ import { Constants } from 'src/app/services/constant.service';
 import { ToastrService} from 'ngx-toastr';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {CustomModalComponent} from 'src/app/components/utility/custom-modal/custom-modal.component';
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
 @Component({
   selector: 'app-status',
@@ -41,7 +42,7 @@ export class StatusComponent implements OnInit {
   selectPaymentStatus: string='';
   selectCode: string='';
   selectFees: string='';
-  agreementStatus: any[] =[];
+  agreementStatus: any[] =[]; 
   paymentStatus: any[] =[];
   
   closeResult: string;
@@ -54,9 +55,30 @@ export class StatusComponent implements OnInit {
   loader:boolean = true;
 
   deleteConfirm: boolean = false;
+  exportAsConfig: ExportAsConfig;
+  exportAs: any = '';
+  selectAccrType: any =[];
+  applicationNo: string = '' || null;
+  paymentStatusValue: string = '' || null;
+  selectAccrTypeValue: string = '' || null;
+  show_data:any;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
-    private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent) { }
+    private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent, private exportAsService: ExportAsService) { }
+
+    
+
+    exportFile() {
+      // console.log(this.exportAs);
+      this.exportAsConfig = {
+        type: this.exportAs.toString(), // the type you want to download
+        elementIdOrContent: 'accreditation-service-export', // the id of html/table element
+      }
+      // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
+      this.exportAsService.save(this.exportAsConfig, 'report').subscribe(() => {
+        // save started
+      });
+    }
 
   ngOnInit() {
     this.loadPageData();
@@ -67,7 +89,98 @@ export class StatusComponent implements OnInit {
     this.curSortDir['criteria_request']             = false;
     this.curSortDir['form_meta']             = false;
     this.curSortDir['location']             = false;
-    // |  |  |  | 
+
+    //Assign Search Type
+    this.selectAccrType = [ 
+      {title: 'Inspection Bodies', value:'inspection_body'},
+      {title: 'Certification Bodies', value:'certification_bodies'},
+      {title: 'Testing Calibration', value:'testing_calibration'},
+      {title: 'Health Care', value:'health_care'},
+      {title: 'Halal Conformity Bodies', value:'halal_conformity_bodies'},
+      {title: 'Proficiency Testing Providers', value:'pt_providers'}      
+      ];
+  }
+
+  filterSearchSec(){
+    this.advSearch = !this.advSearch
+    this.filterSearchReset();
+  }
+
+  filterSearchReset(type?: string){
+    //Reset serach
+    this.applicationNo = '' || null;
+    this.selectAccrTypeValue = '' || null;
+    this.paymentStatusValue = '' || null;
+    if(type != undefined && type != ''){
+      this.loadPageData();
+    }
+  }
+  
+  isValidSearch(){
+    if((this.applicationNo == '' || this.applicationNo == null) && (this.selectAccrTypeValue == '' || this.selectAccrTypeValue == null) &&
+       (this.paymentStatusValue == '' || this.paymentStatusValue == null)){
+      return false;
+    }
+    return true;
+  }
+
+  showData() {
+    //this.pageLimit = this.show_data;
+    // this.loadPageData();
+    this.pageLimit = this.show_data;
+    this.pageCurrentNumber = 1;
+    this.trainerdata.slice(0, this.show_data);
+  }
+
+  paginationReset() {
+    this.exportAs = {};
+  }
+
+  filterSearchSubmit(){
+      this.loader = false;
+     let postObject: any = {};
+     console.log("Search click....", this.applicationNo, " -- ", this.selectAccrTypeValue, " == ", this.paymentStatusValue);
+     let postData: any = new FormData();
+     if(this.isValidSearch()){
+       if(this.applicationNo != '' && this.applicationNo != null){
+        postData.append('id', this.applicationNo)
+       }
+       if(this.selectAccrTypeValue != '' && this.selectAccrTypeValue != null){
+        postData.append('form_meta', this.selectAccrTypeValue)
+       }
+       if(this.paymentStatusValue != '' && this.paymentStatusValue != null){
+        postData.append('payment_status', this.paymentStatusValue)
+       }
+        
+        console.log(">>>POST: ", JSON.stringify(postData)); 
+
+        if(postObject){
+          this.subscriptions.push(this._trainerService.searchAccrStatus((postData))
+          .subscribe(
+             result => {
+               let data: any = result;
+                console.log("search results: ", result);
+                this.loader = true;
+                if(data != undefined && typeof data === 'object' && data.records.length > 0){
+                    console.log(">>> Data: ", data.records);
+                    this.pageCurrentNumber = 1;
+                    this.dataLoad = true;
+                    this.trainerdata = data.records;
+                    this.pageTotal = data.records.length;
+                }
+                if(data != undefined && typeof data === 'object' && data.records.length == 0){
+                  this.trainerdata = data.records;
+                  this.pageTotal = data.records.length;
+                }
+             }
+            )
+          )
+        }
+
+     }else{
+      //this._service.openMessageDialog('Please select search fields properly.', "Validation Error");
+      this._toaster.warning("Please select search fields properly",'')
+     }     
   }
 
   setIB(id: any){
