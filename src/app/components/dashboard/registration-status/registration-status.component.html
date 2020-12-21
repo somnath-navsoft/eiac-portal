@@ -15,7 +15,7 @@
                         <ul>
                             <li>
                                 <div class="filter">
-                                    <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a>
+                                    <!-- <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a> -->
                                     <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a>
                                 </div>
                             </li>
@@ -33,6 +33,22 @@
                             [ngModelOptions]="{standalone: true}" [(ngModel)]="exportAs" required>
                                 <mat-option value="csv">Export as CSV</mat-option>
                                 <mat-option value="xls">Export as XLS</mat-option>
+                                <!-- <mat-option value="pdf">Export as PDF</mat-option> -->
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="user-details">
+                        <mat-form-field class="cab-data">
+                            <mat-label>Show</mat-label>                              
+                            <mat-select placeholder="Show" (selectionChange)="showData()"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="show_data" required>
+                                <mat-option value="25">25</mat-option>
+                                <mat-option value="50">50</mat-option>
+                                <mat-option value="75">75</mat-option>
+                                <mat-option value="100">100</mat-option>
                                 <!-- <mat-option value="pdf">Export as PDF</mat-option> -->
                             </mat-select>
                         </mat-form-field>

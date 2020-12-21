@@ -61,6 +61,7 @@ export class StatusComponent implements OnInit {
   applicationNo: string = '' || null;
   paymentStatusValue: string = '' || null;
   selectAccrTypeValue: string = '' || null;
+  show_data:any;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent, private exportAsService: ExportAsService) { }
@@ -121,6 +122,15 @@ export class StatusComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  showData() {
+    this.pageLimit = this.show_data;
+    // this.loadPageData();
+  }
+
+  paginationReset() {
+    this.exportAs = {};
   }
 
   filterSearchSubmit(){

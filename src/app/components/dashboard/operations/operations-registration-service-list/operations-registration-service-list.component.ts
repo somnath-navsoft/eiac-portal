@@ -48,7 +48,7 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
   applicationNo: string = '' || null;
   selectRegTypeValue: string = '' || null;
   paymentStatusValue: string = '' || null;
-
+  show_data:any;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) { 
@@ -107,10 +107,12 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
         console.log(">>>POST: ", postObject); 
 
         if(postObject){
+          this.loader = false;
           this.subscriptions.push(this._trainerService.searchRegServList((postObject))
           .subscribe(
              result => {
                let data: any = result;
+               this.loader = true;
                 ////console.log("search results: ", result);
                 if(data != undefined && typeof data === 'object' && data.records.length > 0){
                     console.log(">>> Data: ", data.records);
@@ -150,6 +152,15 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
     this.advSearch = !this.advSearch
     // console.log(this.advSearch);
     this.filterSearchReset();
+  }
+
+  showData() {
+    this.pageLimit = this.show_data;
+    // this.loadPageData();
+  }
+
+  paginationReset() {
+    this.exportAs = {};
   }
 
   loadPageData(){

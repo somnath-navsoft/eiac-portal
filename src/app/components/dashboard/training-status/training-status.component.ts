@@ -43,6 +43,7 @@ export class TrainingStatusComponent implements OnInit {
   applicationNo: string = '' || null;
   selectTrainingTypeValue: string = '' || null;
   paymentStatusValue: string = '' || null;
+  show_data:any;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private exportAsService: ExportAsService) { }
@@ -59,6 +60,15 @@ export class TrainingStatusComponent implements OnInit {
     this.curSortDir['applicant']          = false;
 
     this.selectTrainingType = [{'title':'In Premise', value: 'inprimise'},{'title':'Public Training', value: 'public_training'}];
+  }
+
+  showData() {
+    this.pageLimit = this.show_data;
+    // this.loadPageData();
+  }
+
+  paginationReset() {
+    this.exportAs = {};
   }
 
   exportFile() {
