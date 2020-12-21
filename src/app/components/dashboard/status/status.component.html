@@ -26,6 +26,7 @@
 
 
             <div class="row m-0">
+                <ng-container *ngIf="userType == 'operations'">
                 <div class="col-md-4">
                     <div class="user-details">
                         <mat-form-field class="cab-data">
@@ -39,6 +40,7 @@
                         </mat-form-field>
                     </div>
                 </div>
+                </ng-container>
 
                 <div class="col-md-4">
                     <div class="user-details">

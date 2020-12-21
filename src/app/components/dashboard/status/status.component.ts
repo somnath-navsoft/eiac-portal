@@ -63,6 +63,8 @@ export class StatusComponent implements OnInit {
   selectAccrTypeValue: string = '' || null;
   show_data:any;
 
+  userType: string;
+
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent, private exportAsService: ExportAsService) { }
 
@@ -90,6 +92,8 @@ export class StatusComponent implements OnInit {
     this.curSortDir['form_meta']             = false;
     this.curSortDir['location']             = false;
 
+    this.userType = sessionStorage.getItem('type');
+
     //Assign Search Type
     this.selectAccrType = [ 
       {title: 'Inspection Bodies', value:'inspection_body'},
@@ -111,6 +115,8 @@ export class StatusComponent implements OnInit {
     this.applicationNo = '' || null;
     this.selectAccrTypeValue = '' || null;
     this.paymentStatusValue = '' || null;
+    this.show_data = this.pageLimit = 10;
+    this.exportAs = null;
     if(type != undefined && type != ''){
       this.loadPageData();
     }

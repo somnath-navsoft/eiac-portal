@@ -144,6 +144,12 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.payment_status"></span>
                                 </a>
                             </th>
+                            <th>Applicant
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'applicant', curSortDir.applicant)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.applicant"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.applicant"></span>
+                                </a>
+                            </th>
                             <th>Action</th>
                         </tr>
                         <!-- trainerdata.records != undefined && -->
@@ -171,6 +177,11 @@
                                 <span *ngIf="item.payment_status == 'paid'">Paid</span>
                                 <span *ngIf="item.payment_status == 'pending' || item.payment_status == null">Pending</span>
                                 <!-- <span *ngIf="item.payment_status == null">Unpaid</span> -->
+                            </td>
+                            <td>
+                                <span *ngIf="item.cabDetails != undefined && item.cabDetails.length > 0">
+                                        {{item.cabDetails[0].cab_name}}
+                                </span>
                             </td>
                             <td class="action fnt-clr">
                                 <!-- *ngIf="(item.application_status == null && item.application_status === 'under_review')" -->

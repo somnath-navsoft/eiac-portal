@@ -24,6 +24,7 @@
                 </div>
             </div>
             <div class="row m-0">
+                <ng-container *ngIf="userType == 'operations'">
                 <div class="col-md-4">
                     <div class="user-details">
                         <mat-form-field class="cab-data">
@@ -32,11 +33,11 @@
                             [ngModelOptions]="{standalone: true}" [(ngModel)]="exportAs" required>
                                 <mat-option value="csv">Export as CSV</mat-option>
                                 <mat-option value="xls">Export as XLS</mat-option>
-                                <!-- <mat-option value="pdf">Export as PDF</mat-option> -->
                             </mat-select>
                         </mat-form-field>
                     </div>
                 </div>
+                </ng-container>
 
                 <div class="col-md-4">
                     <div class="user-details">
