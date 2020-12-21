@@ -604,7 +604,7 @@ export class NoObjectionFormComponent implements OnInit {
   loadCountryStateCity = async() => {
     let countryList =  this.Service.getCountry();
     await countryList.subscribe(record => {
-      // //console.log(record,'record');
+      console.log(record,'record');
       this.getCountryLists = record['countries'];
     });
     
@@ -964,8 +964,8 @@ export class NoObjectionFormComponent implements OnInit {
                   this.step6Data.digital_signature        = getAuthData.digital_signature;
                   this.step6Data.application_date         = getAuthData.application_date;
 
-                  // let authCheck: any = JSON.parse(getData.data.authorization_list);
-                  // this.step6Data.authorization_confirm1 = authCheck.authorization_confirm1;
+                  let authCheck: any = JSON.parse(getData.data.authorization_list);
+                  this.step6Data.authorization_confirm1 = authCheck.authorization_confirm1;
   
                   // Object.keys(this.authorizationList).forEach( key => { 
                   //   this.authorizationList[key] = true;
@@ -1674,7 +1674,7 @@ export class NoObjectionFormComponent implements OnInit {
     console.log(">>>TSEP 6 SUBMIT: ", this.step6Data);
     //this.step6Data.authorization_confirm1 == true
 
-    if(theForm.form.valid && type == undefined){
+    if(theForm.form.valid && type == undefined && this.step6Data.authorization_confirm1 == true){
       //this.noObjectionBodyForm = {};      
       this.noObjectionBodyForm.saved_step = 6;  
       this.step6Data.authorization_list_json = {'authorization_confirm1' : this.step6Data.authorization_confirm1};

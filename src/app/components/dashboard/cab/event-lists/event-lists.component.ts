@@ -39,6 +39,7 @@ export class EventListsComponent implements OnInit {
   show_data:any;
   advSearch: boolean = false;
   userType:any;
+  event_date: any = null;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService, public _trainerService:TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) { }
 
