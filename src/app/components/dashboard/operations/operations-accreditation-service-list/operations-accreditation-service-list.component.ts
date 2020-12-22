@@ -292,6 +292,24 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     }
   }
 
+  searchableColumn() {
+
+    var myClasses = document.querySelectorAll('.field_show'),
+          i = 0,
+          l = myClasses.length;
+       for (i; i < l; i++) {
+          let elem: any = myClasses[i]
+          elem.style.display = 'none';
+      }
+    if(this.searchValue == 'applicant') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'form_meta') {
+      document.getElementById('accreditation_type').style.display = 'block';
+    }else if(this.searchValue == 'status') {
+      document.getElementById('status').style.display = 'block';
+    }
+  }
+
   ngOnInit() {
     //this.getTrainerCourse = this.store.select(selectTrainerList);
     this.curSortDir['id']                 = false;
@@ -321,6 +339,14 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     {title: 'Halal Conformity Bodies', value:'halal_conformity_bodies'},
     {title: 'Proficiency Testing Providers', value:'pt_providers'}      
     ];
+
+    //Assign Search Type
+    // this.selectAccrType = [ 
+    //   {title: 'Application Process', value:'application_process'},
+    //   {title: 'Under Review	', value:'under_review'},
+    //   {title: 'Complete', value:'complete'}  
+    //   ];
+	
     // this.selectPaymentStatusType = [ 
     //   {title: 'Paid', value:'paid'},
     //   {title: 'Unpaid', value:'unpaid'}     
