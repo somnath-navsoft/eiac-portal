@@ -39,11 +39,14 @@ export class EventListsComponent implements OnInit {
   show_data:any;
   advSearch: boolean = false;
   userType:any;
-  event_date: any = null;
+  event_date:any;
+  minDate:any;
+  searchDateData: any = {};
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService, public _trainerService:TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) { }
 
   ngOnInit() {
+    // console.log(this.event_date);
     this.userType = sessionStorage.getItem('type');
     this.curSortDir['course']                       = false;
     this.curSortDir['created_date']             = false;
@@ -56,6 +59,11 @@ export class EventListsComponent implements OnInit {
     this.participantsTempList = [{'name':'Test test','email':'test@test.com','phone':89898989},{'name':'Test2 test2','email':'test2@test2.com','phone':56756756657},{'name':'Test3 test','email':'test3@test3.com','phone':787686778}];
 
     this.loadPageData();
+  }
+
+  setexDate(date){
+    let cdate = date;
+    this.minDate = new Date(cdate  + (60*60*24*1000));
   }
 
   showData() {
@@ -84,7 +92,7 @@ export class EventListsComponent implements OnInit {
   }
 
   isValidSearch(){
-    if((this.eventTitle == '' || this.eventTitle == null)){
+    if((this.eventTitle == '' || this.eventTitle == null) && (this.searchDateData.event_date == '' || this.searchDateData.event_date == null)){
       return false;
     }
     return true;
@@ -99,7 +107,17 @@ export class EventListsComponent implements OnInit {
       if(this.eventTitle != '' && this.eventTitle != null){
         postData.append('course_title', this.eventTitle)
       }
-        
+
+      let dtFormat = '';
+      if(this.searchDateData.event_date != '' && this.searchDateData.event_date != null){
+        var dtData = this.searchDateData.event_date._i;
+        var year = dtData.year;
+        var month = dtData.month + 1;
+        var date = dtData.date;
+        dtFormat = year + "-" + month + "-" + date;
+        postData.append('event_date', dtFormat);
+      }
+      
         console.log(">>>POST: ", JSON.stringify(postData)); 
 
         if(postObject){
