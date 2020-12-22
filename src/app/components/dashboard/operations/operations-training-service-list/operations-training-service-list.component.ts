@@ -49,6 +49,8 @@ export class OperationsTrainingServiceListComponent implements OnInit {
   selectTrainingTypeValue: string = '' || null;
   paymentStatusValue: string = '' || null;
   show_data:any;
+  searchValue:any;
+  searchText:any;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) {
@@ -89,7 +91,7 @@ export class OperationsTrainingServiceListComponent implements OnInit {
   exportFile() {
     // console.log(this.exportAs);
     this.exportAsConfig = {
-      type: this.exportAs.toString(), // the type you want to download
+      type: 'csv', // the type you want to download
       elementIdOrContent: 'accreditation-service-export', // the id of html/table element
     }
     // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
@@ -117,33 +119,27 @@ export class OperationsTrainingServiceListComponent implements OnInit {
   }
   
   isValidSearch(){
-    if((this.applicationNo == '' || this.applicationNo == null) && (this.selectTrainingTypeValue == '' || this.selectTrainingTypeValue == null) &&
-       (this.paymentStatusValue == '' || this.paymentStatusValue == null)){
+    if((this.searchValue == '' || this.searchValue == null) || (this.searchText == '' || this.searchText == null)){
       return false;
     }
     return true;
   }
 
   filterSearchSubmit(){
-     let postObject: any = {};
+     let postObject: any = new FormData();
      //console.log("Search click....");
-     let postData: any = new FormData();
+    //  let postData: any = new FormData();
      if(this.isValidSearch()){
-       if(this.applicationNo != '' && this.applicationNo != null){
-        postData.append('id', this.applicationNo)
-       }
-       if(this.selectTrainingTypeValue != '' && this.selectTrainingTypeValue != null){
-        postData.append('training_form_type', this.selectTrainingTypeValue)
-       }
-       if(this.paymentStatusValue != '' && this.paymentStatusValue != null){
-        postData.append('payment_status', this.paymentStatusValue)
-       }
+        var appendKey = this.searchValue;
+        if(this.searchValue != '' && this.searchValue != null && this.searchText != '' && this.searchText != null){
+        postObject.append(appendKey, this.searchText);
+        }
         
         console.log(">>>POST: ", postObject); 
 
-        if(postData){
+        if(postObject){
           this.loader = false;
-          this.subscriptions.push(this._trainerService.searchTrainingServList((postData))
+          this.subscriptions.push(this._trainerService.searchTrainingServList((postObject))
           .subscribe(
              result => {
                this.loader = true;
