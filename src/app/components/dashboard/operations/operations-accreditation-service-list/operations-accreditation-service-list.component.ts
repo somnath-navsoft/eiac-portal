@@ -89,6 +89,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   show_data:any;
   searchValue:any;
   searchText:any;
+  selectStatus:any = [];
 
   constructor( private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent, private exportAsService: ExportAsService) { 
@@ -341,11 +342,11 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     ];
 
     //Assign Search Type
-    // this.selectAccrType = [ 
-    //   {title: 'Application Process', value:'application_process'},
-    //   {title: 'Under Review	', value:'under_review'},
-    //   {title: 'Complete', value:'complete'}  
-    //   ];
+    this.selectStatus = [ 
+      {title: 'Application Process', value:'application_process'},
+      {title: 'Under Review	', value:'under_review'},
+      {title: 'Complete', value:'complete'}  
+      ];
 	
     // this.selectPaymentStatusType = [ 
     //   {title: 'Paid', value:'paid'},
