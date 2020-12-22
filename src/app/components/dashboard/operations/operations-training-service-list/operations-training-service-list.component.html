@@ -10,21 +10,21 @@
                         <h3>Training Service</h3> 
                     </div>
                 </div>
-                <div class="col-md-4"> 
+                <!-- <div class="col-md-4"> 
                     <div class="tbl-filter-data">
                         <ul>
                             <li>
                                 <div class="filter">
-                                    <!-- <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a> -->
+                                    <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a>
                                     <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a>
                                 </div>
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> -->
             </div>
             
-            <div class="row m-0">
+            <!-- <div class="row m-0">
                 <div class="col-md-4">
                     <div class="user-details">
                         <mat-form-field class="cab-data">
@@ -33,7 +33,6 @@
                             [ngModelOptions]="{standalone: true}" [(ngModel)]="exportAs" required>
                                 <mat-option value="csv">Export as CSV</mat-option>
                                 <mat-option value="xls">Export as XLS</mat-option>
-                                <!-- <mat-option value="pdf">Export as PDF</mat-option> -->
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -49,7 +48,6 @@
                                 <mat-option value="50">50</mat-option>
                                 <mat-option value="75">75</mat-option>
                                 <mat-option value="100">100</mat-option>
-                                <!-- <mat-option value="pdf">Export as PDF</mat-option> -->
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -65,31 +63,21 @@
                         <div class="col-md-4">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
-                                    <mat-label>Application No</mat-label> 
-                                <input type="text" matInput [(ngModel)]="applicationNo" placeholder="Search by Application No" (keypress)="_service.inputFilter($event, _service.regExNumb)">
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="user-details">
-                                <mat-form-field class="cab-data">
-                                    <mat-label>Training Type</mat-label>                             
-                                    <mat-select placeholder="Select" 
-                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="selectTrainingTypeValue" required>
-                                        <mat-option *ngFor="let item of selectTrainingType;" [value]="item.value">{{item.title}}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="user-details">
-                                <mat-form-field class="cab-data">
                                     <mat-label>Payment Status</mat-label>                             
                                     <mat-select placeholder="Select" 
                                     [ngModelOptions]="{standalone: true}" [(ngModel)]="paymentStatusValue" required>
                                         <mat-option value="paid">Paid</mat-option>
                                         <mat-option value="pending">Pending</mat-option>
                                     </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Search Text</mat-label> 
+                                <input type="text" matInput [(ngModel)]="applicationNo" placeholder="Search by Application No" (keypress)="_service.inputFilter($event, _service.regExNumb)">
                                 </mat-form-field>
                             </div>
                         </div>
@@ -105,7 +93,69 @@
                     </div>
                 </div>
                 
-            </ng-container> 
+            </ng-container> -->
+
+            <ng-container class="tbl-filter-data">
+                <div class="filter-dash filter_certification">
+                    <!-- <div class="close-bttn">
+                        <span class="icon-close" (click)="filterSearchSec()"></span>
+                    </div> -->
+                    <div class="row m-0">
+                        <div class="col-md-4">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Searchable Column</mat-label> 
+                                    <mat-select placeholder="Select" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue">
+                                        <mat-option value="applicant">Applicant</mat-option>
+                                        <mat-option value="status">Status</mat-option>
+                                        <mat-option value="form_meta">Training Type</mat-option>
+                                        <mat-option value="Course_title">Course Title</mat-option>
+                                        <!-- <mat-option value="capacity">Capacity</mat-option> -->
+                                    </mat-select>
+                                </mat-form-field>
+                            </div> 
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                <mat-label>Search Text</mat-label> 
+                                <input type="text" matInput [(ngModel)]="searchText" placeholder="Search Text">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="row m-0">
+                            <div class="col-md-12"> 
+                                <div class="filter-search">
+                                    <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
+                                    <!-- <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a> -->
+                                    <a href="javascript:void(0)" (click)="exportFile()" class="space-left">EXPORT</a>
+                                </div>         
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </ng-container>
+
+            <div class="row m-0">
+                <div class="col-md-2">
+                    <div class="user-details">
+                        <mat-form-field class="cab-data">
+                            <mat-label>Show</mat-label>                              
+                            <mat-select placeholder="Show" (selectionChange)="showData()"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="show_data">
+                                <mat-option value="25">25</mat-option>
+                                <mat-option value="50">50</mat-option>
+                                <mat-option value="75">75</mat-option>
+                                <mat-option value="100">100</mat-option>
+                                <!-- <mat-option value="pdf">Export as PDF</mat-option> -->
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
             
         
         <div class="table-dashboard-cont">
@@ -228,7 +278,7 @@
                         <div class="col-md-6">
                             <mat-form-field class="cab-data">
                                 <mat-label>Voucher Number</mat-label>
-                                <input type="number" [ngModelOptions]="{standalone: true}"
+                                <input type="text" [ngModelOptions]="{standalone: true}"
                                 matInput placeholder="Voucher Number" 
                                 [(ngModel)]="voucherSentData.voucher_no" required>
                             </mat-form-field>

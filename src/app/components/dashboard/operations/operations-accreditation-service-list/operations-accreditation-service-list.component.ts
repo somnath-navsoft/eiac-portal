@@ -87,6 +87,8 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   paymentStatusValue: string = '' || null;
   selectAccrTypeValue: string = '' || null;
   show_data:any;
+  searchValue:any;
+  searchText:any;
 
   constructor( private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent, private exportAsService: ExportAsService) { 
@@ -290,6 +292,24 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     }
   }
 
+  searchableColumn() {
+
+    var myClasses = document.querySelectorAll('.field_show'),
+          i = 0,
+          l = myClasses.length;
+       for (i; i < l; i++) {
+          let elem: any = myClasses[i]
+          elem.style.display = 'none';
+      }
+    if(this.searchValue == 'applicant') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'form_meta') {
+      document.getElementById('accreditation_type').style.display = 'block';
+    }else if(this.searchValue == 'status') {
+      document.getElementById('status').style.display = 'block';
+    }
+  }
+
   ngOnInit() {
     //this.getTrainerCourse = this.store.select(selectTrainerList);
     this.curSortDir['id']                 = false;
@@ -319,6 +339,14 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     {title: 'Halal Conformity Bodies', value:'halal_conformity_bodies'},
     {title: 'Proficiency Testing Providers', value:'pt_providers'}      
     ];
+
+    //Assign Search Type
+    // this.selectAccrType = [ 
+    //   {title: 'Application Process', value:'application_process'},
+    //   {title: 'Under Review	', value:'under_review'},
+    //   {title: 'Complete', value:'complete'}  
+    //   ];
+	
     // this.selectPaymentStatusType = [ 
     //   {title: 'Paid', value:'paid'},
     //   {title: 'Unpaid', value:'unpaid'}     
@@ -331,7 +359,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   exportFile() {
     // console.log(this.exportAs);
     this.exportAsConfig = {
-      type: this.exportAs.toString(), // the type you want to download
+      type: 'csv', // the type you want to download
       elementIdOrContent: 'accreditation-service-export', // the id of html/table element
     }
     // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
@@ -359,8 +387,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   }
   
   isValidSearch(){
-    if((this.applicationNo == '' || this.applicationNo == null) && (this.selectAccrTypeValue == '' || this.selectAccrTypeValue == null) &&
-       (this.paymentStatusValue == '' || this.paymentStatusValue == null)){
+    if((this.searchValue == '' || this.searchValue == null) && (this.searchText == '' || this.searchText == null)){
       return false;
     }
     return true;
@@ -370,14 +397,15 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
      let postObject: any = new FormData();
      //console.log("Search click....");
      if(this.isValidSearch()){
-       if(this.applicationNo != '' && this.applicationNo != null){
-        postObject.append('id', this.applicationNo);
-       }
-       if(this.selectAccrTypeValue != '' && this.selectAccrTypeValue != null){
-        postObject.append('form_meta', this.selectAccrTypeValue);
-       }
-       if(this.paymentStatusValue != '' && this.paymentStatusValue != null){
-        postObject.append('payment_status', this.paymentStatusValue);
+      //  if(this.applicationNo != '' && this.applicationNo != null){
+      //   postObject.append('id', this.applicationNo);
+      //  }
+      //  if(this.selectAccrTypeValue != '' && this.selectAccrTypeValue != null){
+      //   postObject.append('form_meta', this.selectAccrTypeValue);
+      //  }
+      var appendKey = this.searchValue;
+       if(this.searchValue != '' && this.searchValue != null && this.searchText != '' && this.searchText != null){
+        postObject.append(appendKey, this.searchText);
        }
         
         console.log(">>>POST: ", postObject); 
