@@ -294,7 +294,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   }
 
   searchableColumn() {
-
+    this.searchText = '';
     var myClasses = document.querySelectorAll('.field_show'),
           i = 0,
           l = myClasses.length;
@@ -302,11 +302,11 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
           let elem: any = myClasses[i]
           elem.style.display = 'none';
       }
-    if(this.searchValue == 'applicant') {
+    if(this.searchValue == 'cab_name') {
       document.getElementById('applicant').style.display = 'block';
     }else if(this.searchValue == 'form_meta') {
       document.getElementById('accreditation_type').style.display = 'block';
-    }else if(this.searchValue == 'status') {
+    }else if(this.searchValue == 'accr_status') {
       document.getElementById('status').style.display = 'block';
     }
   }
@@ -345,7 +345,9 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     this.selectStatus = [ 
       {title: 'Application Process', value:'application_process'},
       {title: 'Under Review	', value:'under_review'},
-      {title: 'Complete', value:'complete'}  
+      {title: 'Complete', value:'complete'},
+      {title: 'Pending', value:'pending'},
+      {title: 'Draft', value:'draft'}
       ];
 	
     // this.selectPaymentStatusType = [ 

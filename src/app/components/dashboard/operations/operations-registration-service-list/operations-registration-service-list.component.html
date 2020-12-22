@@ -114,20 +114,44 @@
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
                                     <mat-label>Searchable Column</mat-label> 
-                                    <mat-select placeholder="Select" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue">
-                                        <mat-option value="applicant">Applicant</mat-option>
+                                    <mat-select placeholder="Select" (selectionChange)="searchableColumn()" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue">
+                                        <mat-option value="cab_name">Applicant</mat-option>
                                         <mat-option value="form_meta">Accreditation Type</mat-option>
-                                        <mat-option value="status">Status</mat-option>
+                                        <mat-option value="accr_status">Status</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div> 
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-4 field_show" id="applicant">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
                                 <mat-label>Search Text</mat-label> 
                                 <input type="text" matInput [(ngModel)]="searchText" placeholder="Search Text">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 field_show" id="accreditation_type" [ngStyle]="{'display':'none'}">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Accreditation Type</mat-label>                             
+                                    <mat-select placeholder="Select" 
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
+                                        <mat-option *ngFor="let item of selectAccrType;" [value]="item.value">{{item.title}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 field_show" id="status" [ngStyle]="{'display':'none'}">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Status</mat-label>                             
+                                    <mat-select placeholder="Select" 
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
+                                        <mat-option *ngFor="let item of selectStatus;" [value]="item.value">{{item.title}}</mat-option>
+                                    </mat-select>
                                 </mat-form-field>
                             </div>
                         </div>

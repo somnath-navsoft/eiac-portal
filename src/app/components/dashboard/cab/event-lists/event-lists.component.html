@@ -10,21 +10,21 @@
                         <h3>Event Lists</h3> 
                     </div>
                 </div>
-                <div class="col-md-4"> 
+                <!-- <div class="col-md-4"> 
                     <div class="tbl-filter-data">
                         <ul>
                             <li>
                                 <div class="filter">
-                                    <!-- <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a> -->
+                                    <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a>
                                     <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a>
                                 </div>
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> -->
             </div>
 
-            <div class="row m-0">
+            <!-- <div class="row m-0">
                 <ng-container *ngIf="userType == 'operations'">
                     <div class="col-md-4">
                         <div class="user-details">
@@ -34,7 +34,6 @@
                                 [ngModelOptions]="{standalone: true}" [(ngModel)]="exportAs" required>
                                     <mat-option value="csv">Export as CSV</mat-option>
                                     <mat-option value="xls">Export as XLS</mat-option>
-                                    <!-- <mat-option value="pdf">Export as PDF</mat-option> -->
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -51,7 +50,6 @@
                                 <mat-option value="50">50</mat-option>
                                 <mat-option value="75">75</mat-option>
                                 <mat-option value="100">100</mat-option>
-                                <!-- <mat-option value="pdf">Export as PDF</mat-option> -->
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -75,12 +73,6 @@
 
                         <div class="col-md-4">
                             <div class="user-details">
-                                <!-- <mat-form-field class="cab-data">
-                                    <mat-label>Event Date</mat-label> 
-                                    <input type="text" matInput [matDatepicker]="event_date" readonly="true" [(ngModel)]="event_date" placeholder="Search by Event title">
-                                    <mat-datepicker-toggle matSuffix [for]="event_date"></mat-datepicker-toggle>
-                                    <mat-datepicker #event_date disabled="false"></mat-datepicker>
-                                </mat-form-field> -->
 
                                 <mat-form-field class="cab-data">
                                     <mat-label>Event Date</mat-label> 
@@ -102,7 +94,92 @@
                     </div>
                 </div>
                 
+            </ng-container> -->
+
+
+            <ng-container class="tbl-filter-data">
+                <div class="filter-dash filter_certification">
+                    <!-- <div class="close-bttn">
+                        <span class="icon-close" (click)="filterSearchSec()"></span>
+                    </div> -->
+                    <div class="row m-0">
+                        <div class="col-md-4">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Searchable Column</mat-label> 
+                                    <mat-select placeholder="Select" (selectionChange)="searchableColumn()" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue">
+                                        <mat-option value="cab_name">Applicant</mat-option>
+                                        <mat-option value="form_meta">Accreditation Type</mat-option>
+                                        <mat-option value="accr_status">Status</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div> 
+                        </div>
+
+                        <div class="col-md-4 field_show" id="applicant">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                <mat-label>Search Text</mat-label> 
+                                <input type="text" matInput [(ngModel)]="searchText" placeholder="Search Text">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 field_show" id="accreditation_type" [ngStyle]="{'display':'none'}">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Accreditation Type</mat-label>                             
+                                    <mat-select placeholder="Select" 
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
+                                        <mat-option *ngFor="let item of selectAccrType;" [value]="item.value">{{item.title}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 field_show" id="status" [ngStyle]="{'display':'none'}">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Status</mat-label>                             
+                                    <mat-select placeholder="Select" 
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
+                                        <mat-option *ngFor="let item of selectStatus;" [value]="item.value">{{item.title}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="row m-0">
+                            <div class="col-md-12"> 
+                                <div class="filter-search">
+                                    <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
+                                    <!-- <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a> -->
+                                    <a href="javascript:void(0)" (click)="exportFile()" class="space-left">EXPORT</a>
+                                </div>         
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
             </ng-container>
+
+            <div class="row m-0">
+                <div class="col-md-2">
+                    <div class="user-details">
+                        <mat-form-field class="cab-data">
+                            <mat-label>Show</mat-label>                              
+                            <mat-select placeholder="Show" (selectionChange)="showData()"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="show_data">
+                                <mat-option value="25">25</mat-option>
+                                <mat-option value="50">50</mat-option>
+                                <mat-option value="75">75</mat-option>
+                                <mat-option value="100">100</mat-option>
+                                <!-- <mat-option value="pdf">Export as PDF</mat-option> -->
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
             
         
             <div class="table-dashboard-cont">
@@ -118,9 +195,16 @@
                                     </a>
                                 </th>
                                 <th width="15%">Date
-                                    <a href="javascript:void(0)" (click)="sortedList(eventData, 'created_date', curSortDir.created_date)">
+                                    <!-- <a href="javascript:void(0)" (click)="sortedList(eventData, 'created_date', curSortDir.created_date)">
                                         <span class="icon-arrow-down" *ngIf="!curSortDir.created_date"></span>
                                         <span class="icon-arrow-up"  *ngIf="curSortDir.created_date"></span>
+                                    </a> -->
+                                </th>
+
+                                <th width="15%">Capacity
+                                    <a href="javascript:void(0)" (click)="sortedList(eventData, 'capacity', curSortDir.capacity)">
+                                        <span class="icon-arrow-down" *ngIf="!curSortDir.capacity"></span>
+                                        <span class="icon-arrow-up"  *ngIf="curSortDir.capacity"></span>
                                     </a>
                                 </th>
                                 <!-- <th width="15%">Time
@@ -152,9 +236,9 @@
                                     N/A
                                 </td>
 
-                                <!-- <td>
-                                    {{item.event_time}}
-                                </td> -->
+                                <td>
+                                    {{item.capacity}}
+                                </td>
 
                                 <td *ngIf="item.participants && item.participants.length > 0">
                                     <!-- {{item.no_of_participants}} -->

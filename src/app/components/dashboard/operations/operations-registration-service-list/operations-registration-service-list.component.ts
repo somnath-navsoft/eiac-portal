@@ -51,6 +51,8 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
   show_data:any;
   searchValue:any;
   searchText:any;
+  selectAccrType:any = [];
+  selectStatus:any = [];
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) { 
@@ -71,6 +73,21 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
     this.curSortDir['applicant']          = false;
     this.selectRegType = [{title:'No Objection Certificate', value: 'no_objection'},{title:'Work Activity Permit', value:'work_activity'}];
     //this.selectCustomCourses = [{title:'No Objection Certificate', value: 'no_objection_certificate'},{title:'Work Activity Permit', value:'work_activity'}];
+
+    //Assign Search Type
+    this.selectAccrType = [ 
+      {title: 'No Objection Certificate', value:'no_objection_certificate'},
+      {title: 'Work Activity Permit', value:'work_activity_permit'},   
+      ];
+  
+    //Assign Search Type
+    this.selectStatus = [ 
+      {title: 'Application Process', value:'application_process'},
+      {title: 'Under Review	', value:'under_review'},
+      {title: 'Complete', value:'complete'},
+      {title: 'Pending', value:'pending'},
+      {title: 'Draft', value:'draft'}
+      ];
   }
 
   filterSearchReset(type?: string){
@@ -85,6 +102,24 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
     }    
   }
   
+  searchableColumn() {
+    this.searchText = '';
+    var myClasses = document.querySelectorAll('.field_show'),
+          i = 0,
+          l = myClasses.length;
+       for (i; i < l; i++) {
+          let elem: any = myClasses[i]
+          elem.style.display = 'none';
+      }
+    if(this.searchValue == 'cab_name') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'form_meta') {
+      document.getElementById('accreditation_type').style.display = 'block';
+    }else if(this.searchValue == 'accr_status') {
+      document.getElementById('status').style.display = 'block';
+    }
+  }
+
   isValidSearch(){
     if((this.searchValue == '' || this.searchValue == null) || (this.searchText == '' || this.searchText == null)){
       return false;
