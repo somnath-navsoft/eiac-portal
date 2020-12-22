@@ -90,10 +90,10 @@
                                                 <div class="training_det">
                                                     <span>Date</span>
                                                 </div>
-                                                <div class="training_type" *ngIf="row2.event_start_date_time">
-                                                    <span>{{row2.event_start_date_time | date }}</span>
+                                                <div class="training_type" *ngIf="row2['eventDate'].length > 0">
+                                                    <span>{{row2['eventDate'][0].event_date | date }}</span>
                                                 </div>
-                                                <!-- <div class="training_type" *ngIf="row2['eventDate'] && row2['eventDate'].length == 0">
+                                                <!-- <div class="training_type" *ngIf="row2.eventDate == 'NA' || row2['eventDate'].length == 0">
                                                     <span>N/A</span>
                                                 </div> -->
                                             </div>
@@ -108,7 +108,7 @@
                                                     <span>{{row2.custom_location}}</span>
                                                 </ng-container>
                                                 <ng-container *ngIf="row2.custom_location == null">
-                                                    <span>Client Premisis</span>
+                                                    <span>Client Premise</span>
                                                 </ng-container>
                                                 </div>
                                             </div>

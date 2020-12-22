@@ -49,6 +49,10 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
   selectRegTypeValue: string = '' || null;
   paymentStatusValue: string = '' || null;
   show_data:any;
+  searchValue:any;
+  searchText:any;
+  selectAccrType:any = [];
+  selectStatus:any = [];
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) { 
@@ -69,6 +73,21 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
     this.curSortDir['applicant']          = false;
     this.selectRegType = [{title:'No Objection Certificate', value: 'no_objection'},{title:'Work Activity Permit', value:'work_activity'}];
     //this.selectCustomCourses = [{title:'No Objection Certificate', value: 'no_objection_certificate'},{title:'Work Activity Permit', value:'work_activity'}];
+
+    //Assign Search Type
+    this.selectAccrType = [ 
+      {title: 'No Objection Certificate', value:'no_objection_certificate'},
+      {title: 'Work Activity Permit', value:'work_activity_permit'},   
+      ];
+  
+    //Assign Search Type
+    this.selectStatus = [ 
+      {title: 'Application Process', value:'application_process'},
+      {title: 'Under Review	', value:'under_review'},
+      {title: 'Complete', value:'complete'},
+      {title: 'Pending', value:'pending'},
+      {title: 'Draft', value:'draft'}
+      ];
   }
 
   filterSearchReset(type?: string){
@@ -83,9 +102,26 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
     }    
   }
   
+  searchableColumn() {
+    this.searchText = '';
+    var myClasses = document.querySelectorAll('.field_show'),
+          i = 0,
+          l = myClasses.length;
+       for (i; i < l; i++) {
+          let elem: any = myClasses[i]
+          elem.style.display = 'none';
+      }
+    if(this.searchValue == 'cab_name') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'form_meta') {
+      document.getElementById('accreditation_type').style.display = 'block';
+    }else if(this.searchValue == 'accr_status') {
+      document.getElementById('status').style.display = 'block';
+    }
+  }
+
   isValidSearch(){
-    if((this.applicationNo == '' || this.applicationNo == null) && (this.selectRegTypeValue == '' || this.selectRegTypeValue == null) &&
-       (this.paymentStatusValue == '' || this.paymentStatusValue == null)){
+    if((this.searchValue == '' || this.searchValue == null) || (this.searchText == '' || this.searchText == null)){
       return false;
     }
     return true;
@@ -95,15 +131,10 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
      let postObject: any = new FormData();
      //console.log("Search click....");
      if(this.isValidSearch()){
-       if(this.applicationNo != '' && this.applicationNo != null){
-        postObject.append('id', this.applicationNo);
-       }
-       if(this.selectRegTypeValue != '' && this.selectRegTypeValue != null){
-        postObject.append('form_meta', this.selectRegTypeValue);
-       }
-       if(this.paymentStatusValue != '' && this.paymentStatusValue != null){
-        postObject.append('payment_status', this.paymentStatusValue);
-       }
+        var appendKey = this.searchValue;
+        if(this.searchValue != '' && this.searchValue != null && this.searchText != '' && this.searchText != null){
+        postObject.append(appendKey, this.searchText);
+        }
         
 
         if(postObject){
@@ -139,7 +170,7 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
   exportFile() {
     // console.log(this.exportAs);
     this.exportAsConfig = {
-      type: this.exportAs.toString(), // the type you want to download
+      type: 'csv', // the type you want to download
       elementIdOrContent: 'accreditation-service-export', // the id of html/table element
     }
     // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 

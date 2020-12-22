@@ -89,6 +89,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   show_data:any;
   searchValue:any;
   searchText:any;
+  selectStatus:any = [];
 
   constructor( private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent, private exportAsService: ExportAsService) { 
@@ -292,6 +293,24 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     }
   }
 
+  searchableColumn() {
+    this.searchText = '';
+    var myClasses = document.querySelectorAll('.field_show'),
+          i = 0,
+          l = myClasses.length;
+       for (i; i < l; i++) {
+          let elem: any = myClasses[i]
+          elem.style.display = 'none';
+      }
+    if(this.searchValue == 'cab_name') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'form_meta') {
+      document.getElementById('accreditation_type').style.display = 'block';
+    }else if(this.searchValue == 'accr_status') {
+      document.getElementById('status').style.display = 'block';
+    }
+  }
+
   ngOnInit() {
     //this.getTrainerCourse = this.store.select(selectTrainerList);
     this.curSortDir['id']                 = false;
@@ -321,6 +340,16 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     {title: 'Halal Conformity Bodies', value:'halal_conformity_bodies'},
     {title: 'Proficiency Testing Providers', value:'pt_providers'}      
     ];
+
+    //Assign Search Type
+    this.selectStatus = [ 
+      {title: 'Application Process', value:'application_process'},
+      {title: 'Under Review	', value:'under_review'},
+      {title: 'Complete', value:'complete'},
+      {title: 'Pending', value:'pending'},
+      {title: 'Draft', value:'draft'}
+      ];
+	
     // this.selectPaymentStatusType = [ 
     //   {title: 'Paid', value:'paid'},
     //   {title: 'Unpaid', value:'unpaid'}     

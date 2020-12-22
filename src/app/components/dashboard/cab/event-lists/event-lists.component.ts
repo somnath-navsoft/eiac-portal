@@ -42,7 +42,10 @@ export class EventListsComponent implements OnInit {
   event_date:any;
   minDate:any;
   searchDateData: any = {};
-
+  searchText:any;
+  selectStatus:any = [];
+  searchValue:any;
+  
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService, public _trainerService:TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) { }
 
   ngOnInit() {
@@ -185,6 +188,24 @@ export class EventListsComponent implements OnInit {
     )
   }
 
+  searchableColumn() {
+    this.searchText = '';
+    var myClasses = document.querySelectorAll('.field_show'),
+          i = 0,
+          l = myClasses.length;
+       for (i; i < l; i++) {
+          let elem: any = myClasses[i]
+          elem.style.display = 'none';
+      }
+    if(this.searchValue == 'cab_name') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'form_meta') {
+      document.getElementById('accreditation_type').style.display = 'block';
+    }else if(this.searchValue == 'accr_status') {
+      document.getElementById('status').style.display = 'block';
+    }
+  }
+  
   sortedList(data: any, sortBy: string, sortDir: boolean){
     //true - asc / false - desc
     ////console.log('>>>', data);
@@ -202,17 +223,32 @@ export class EventListsComponent implements OnInit {
             //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
           }
         }
+
+        if(sortBy === 'capacity'){
+          //console.log(">>>Enter type...");
+          this.curSortDir.capacity = !sortDir;
+          if(this.curSortDir.capacity){
+            let array = data.slice().sort((a, b) => (a.capacity > b.capacity) ? 1 : -1)
+            this.eventData = array;
+          }
+          if(!this.curSortDir.capacity){
+            let array = data.slice().sort((a, b) => (a.capacity < b.capacity) ? 1 : -1)
+            this.eventData = array;
+            //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
+          }
+        }
+
         //By created_date
         if(sortBy == 'created_date'){
           this.curSortDir.created_date = !sortDir;
           //console.log(">>>Enter code...", data, " -- ", this.curSortDir.course_code);
           if(this.curSortDir.created_date){
-            let array = data.slice().sort((a, b) => (a.created_date > b.created_date) ? 1 : -1)
+            let array = data.slice().sort((a, b) => (a['eventDates'][0].event_date > b['eventDates'][0].event_date) ? 1 : -1)
             this.eventData = array;
             //console.log("after:: ", array, " :: ", this.eventData);
           }
           if(!this.curSortDir.created_date){
-            let array = data.slice().sort((a, b) => (a.created_date < b.created_date) ? 1 : -1)
+            let array = data.slice().sort((a, b) => (a['eventDates'][0].event_date < b['eventDates'][0].event_date) ? 1 : -1)
             this.eventData = array;
           }
         }
