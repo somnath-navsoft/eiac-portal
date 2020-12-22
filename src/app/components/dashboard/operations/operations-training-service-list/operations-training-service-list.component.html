@@ -62,7 +62,7 @@
                         <span class="icon-close" (click)="filterSearchSec()"></span>
                     </div>
                     <div class="row m-0">
-                        <div class="col-md-4">
+                        <!-- <div class="col-md-4">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
                                     <mat-label>Application No</mat-label> 
@@ -80,7 +80,7 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-md-4">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
@@ -90,6 +90,15 @@
                                         <mat-option value="paid">Paid</mat-option>
                                         <mat-option value="pending">Pending</mat-option>
                                     </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Search Text</mat-label> 
+                                <input type="text" matInput [(ngModel)]="applicationNo" placeholder="Search by Application No" (keypress)="_service.inputFilter($event, _service.regExNumb)">
                                 </mat-form-field>
                             </div>
                         </div>
@@ -228,7 +237,7 @@
                         <div class="col-md-6">
                             <mat-form-field class="cab-data">
                                 <mat-label>Voucher Number</mat-label>
-                                <input type="number" [ngModelOptions]="{standalone: true}"
+                                <input type="text" [ngModelOptions]="{standalone: true}"
                                 matInput placeholder="Voucher Number" 
                                 [(ngModel)]="voucherSentData.voucher_no" required>
                             </mat-form-field>
