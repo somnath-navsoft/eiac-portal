@@ -64,6 +64,26 @@ export class EventListsComponent implements OnInit {
     this.loadPageData();
   }
 
+  searchableColumn() {
+    this.searchText = '';
+    var myClasses = document.querySelectorAll('.field_show'),
+          i = 0,
+          l = myClasses.length;
+       for (i; i < l; i++) {
+          let elem: any = myClasses[i]
+          elem.style.display = 'none';
+      }
+    if(this.searchValue == 'course') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'capacity') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'tutor') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'location') {
+      document.getElementById('applicant').style.display = 'block';
+    }
+  }
+
   setexDate(date){
     let cdate = date;
     this.minDate = new Date(cdate  + (60*60*24*1000));
@@ -95,38 +115,33 @@ export class EventListsComponent implements OnInit {
   }
 
   isValidSearch(){
-    if((this.eventTitle == '' || this.eventTitle == null) && (this.searchDateData.event_date == '' || this.searchDateData.event_date == null)){
+    if((this.searchValue == '' || this.searchValue == null) || (this.searchText == '' || this.searchText == null)){
       return false;
     }
     return true;
   }
 
   filterSearchSubmit(){
-    this.loader = false;
-    let postObject: any = {};
-    // console.log("Search click....", this.applicationNo, " -- ", this.selectAccrTypeValue, " == ", this.paymentStatusValue);
-    let postData: any = new FormData();
-    if(this.isValidSearch()){
-      if(this.eventTitle != '' && this.eventTitle != null){
-        postData.append('course_title', this.eventTitle)
-      }
-
-      let dtFormat = '';
-      if(this.searchDateData.event_date != '' && this.searchDateData.event_date != null){
-        var dtData = this.searchDateData.event_date._i;
-        var year = dtData.year;
-        var month = dtData.month + 1;
-        var date = dtData.date;
-        dtFormat = year + "-" + month + "-" + date;
-        postData.append('event_date', dtFormat);
-      }
-      
-        console.log(">>>POST: ", JSON.stringify(postData)); 
+    let postObject: any = new FormData();
+     //console.log("Search click....");
+     if(this.isValidSearch()){
+      //  if(this.applicationNo != '' && this.applicationNo != null){
+      //   postObject.append('id', this.applicationNo);
+      //  }
+      //  if(this.selectAccrTypeValue != '' && this.selectAccrTypeValue != null){
+      //   postObject.append('form_meta', this.selectAccrTypeValue);
+      //  }
+      var appendKey = this.searchValue;
+       if(this.searchValue != '' && this.searchValue != null && this.searchText != '' && this.searchText != null){
+        postObject.append(appendKey, this.searchText);
+       }
 
         if(postObject){
-          this.subscriptions.push(this._trainerService.searchEventlist((postData))
+          this.loader = false;
+          this.subscriptions.push(this._trainerService.searchEventlist((postObject))
           .subscribe(
             result => {
+              this.loader = true;
               let data: any = result;
                 console.log("search results: ", result);
                 this.loader = true;
@@ -186,24 +201,6 @@ export class EventListsComponent implements OnInit {
         }
       )          
     )
-  }
-
-  searchableColumn() {
-    this.searchText = '';
-    var myClasses = document.querySelectorAll('.field_show'),
-          i = 0,
-          l = myClasses.length;
-       for (i; i < l; i++) {
-          let elem: any = myClasses[i]
-          elem.style.display = 'none';
-      }
-    if(this.searchValue == 'cab_name') {
-      document.getElementById('applicant').style.display = 'block';
-    }else if(this.searchValue == 'form_meta') {
-      document.getElementById('accreditation_type').style.display = 'block';
-    }else if(this.searchValue == 'accr_status') {
-      document.getElementById('status').style.display = 'block';
-    }
   }
   
   sortedList(data: any, sortBy: string, sortDir: boolean){
