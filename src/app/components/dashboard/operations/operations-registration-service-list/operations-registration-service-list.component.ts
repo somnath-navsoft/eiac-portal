@@ -53,6 +53,7 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
   searchText:any;
   selectAccrType:any = [];
   selectStatus:any = [];
+  getCountryLists:any = [];
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) { 
@@ -88,6 +89,15 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
       {title: 'Pending', value:'pending'},
       {title: 'Draft', value:'draft'}
       ];
+      this.loadCountryStateCity();
+  }
+
+  loadCountryStateCity = async() => {
+    let countryList =  this._service.getCountry();
+    await countryList.subscribe(record => {
+      // ////console.log(record,'record');
+      this.getCountryLists = record['countries'];
+    });
   }
 
   filterSearchReset(type?: string){
@@ -113,6 +123,10 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
       }
     if(this.searchValue == 'cab_name') {
       document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'cab_code') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'location_city_country') {
+      document.getElementById('location_city_country').style.display = 'block';
     }else if(this.searchValue == 'form_meta') {
       document.getElementById('accreditation_type').style.display = 'block';
     }else if(this.searchValue == 'application_status') {
