@@ -283,10 +283,8 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     var ex_type = ['pdf', 'PDF'];
     var ex_check = this._service.isInArray(file_exe,ex_type);
     if(ex_check){
-      this.paymentReceiptValidation = true;
-      //if(type == undefined){
+        this.paymentReceiptValidation = true;
         this.voucherFile.append('voucher_invoice',fileEvent.target.files[0]);
-      //}
     }else{
         this.paymentReceiptValidation = false;
         

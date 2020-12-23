@@ -77,6 +77,7 @@ export class StatusComponent implements OnInit {
   allCities: any[] =[];
   searchCountryText: string = '';
   searchCityText: string = '';
+  criteria: string = '';
 
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
@@ -101,8 +102,8 @@ export class StatusComponent implements OnInit {
     this.curSortDir['id']                       = false;
     this.curSortDir['created_date']             = false;
     this.curSortDir['accr_status']             = false;
-    this.curSortDir['applicantName']             = false;
-    this.curSortDir['criteria_request']             = false;
+    this.curSortDir['applicantName']           = false;
+    this.curSortDir['criteria_request']        = false;
     this.curSortDir['form_meta']             = false;
     this.curSortDir['location']             = false;
 
@@ -131,7 +132,6 @@ export class StatusComponent implements OnInit {
 
 
   loadCriteriaScheme = async () => {
-      console.log(">>> Multiple Request....");
         let promiseIB: any = this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.inspection_form_basic_data);
         let promiseTC: any = this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.testing_cal_form_basic_data);
         let promiseCB: any = this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.certificationBodies);
@@ -148,10 +148,10 @@ export class StatusComponent implements OnInit {
                 }
               })
           }
-          console.log("@Multiple Results: ", getData, " -- ", this.allSchemeREcord);
+          //console.log("@Multiple Results: ", getData, " -- ", this.allSchemeREcord);
           if(this.allSchemeREcord.length  > 0){
               this.allSchemeREcord.forEach(item => {
-                  console.log("#", item);
+                  //console.log("#", item);
                   if(typeof item == 'object' && item.length > 0){
                       let getItem: any = item;
                       getItem.forEach(rec => {
@@ -268,6 +268,9 @@ loadCountryStateCityAll  = async() =>{
       //  }
        let appendKey = this.searchValue;
        if(this.searchValue != ''  && (this.searchText != '' || this.searchText != null)){
+        postData.append(appendKey, this.searchText);
+       }
+       if(this.searchValue != ''  && (this.criteria != '' || this.criteria != null)){
         postData.append(appendKey, this.searchText);
        }                
 

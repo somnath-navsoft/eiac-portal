@@ -67,7 +67,7 @@
                                         (selectionChange)="changeFilter($event)">
                                         <mat-option value="cab_name">CAB Name</mat-option>
                                         <mat-option value="cab_code">CAB Code</mat-option>
-                                        <mat-option value="accr_status">Status</mat-option>
+                                        <mat-option value="application_status">Status</mat-option>
                                         <mat-option value="form_meta">Accreditation Type</mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -93,7 +93,7 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="col-md-4 slectType" id="accr_status" [ngStyle]="{'display': 'none'}">
+                        <div class="col-md-4 slectType" id="application_status" [ngStyle]="{'display': 'none'}">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
                                     <mat-label>Registration Status</mat-label>                              
@@ -155,7 +155,8 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.created_date"></span>
                                 </a>
                             </th>
-                            <th>CAB Name/CAB Code</th>
+                            <th>CAB Name</th>
+                            <th>CAB Code</th>
                             <th width="15%">Status
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'application_status', curSortDir.application_status)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.application_status"></span>
@@ -188,7 +189,12 @@
                             </td>
                             <td>
                                 <ng-container *ngIf="item.cabDetails != undefined && item.cabDetails.length > 0">
-                                    {{item.cabDetails[0].cab_name}} / {{item.cabDetails[0].cab_code}}
+                                    {{item.cabDetails[0].cab_name}}
+                                </ng-container>
+                            </td>
+                            <td>
+                                <ng-container *ngIf="item.cabDetails != undefined && item.cabDetails.length > 0">
+                                    {{item.cabDetails[0].cab_code}}
                                 </ng-container>
                             </td>
                             <td [ngClass]="{'pending': (item.application_status === 'pending' || item.application_status === 'payment_pending' || item.application_status == 'application_process'  || item.application_status == 'under_process'), 'under-review':item.application_status === null || item.application_status === 'under_review', 'complete': item.application_status === 'complete', 'draft': item.application_status === 'draft' }">

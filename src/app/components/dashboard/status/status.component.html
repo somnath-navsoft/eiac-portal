@@ -39,7 +39,7 @@
                                         <mat-option value="cab_code">CAB Code</mat-option>
                                         <mat-option value="accr_status">Status</mat-option>
                                         <mat-option value="form_meta">Accreditation Type</mat-option>
-                                        <mat-option value="scope">Scope/Scheme</mat-option>
+                                        <mat-option value="criteria">Scope</mat-option>
                                         <mat-option value="location_city_country">Location</mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -50,8 +50,9 @@
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
                                 <mat-label>Search Text</mat-label> 
-                                <input type="text" matInput [(ngModel)]="searchText" placeholder="Search Text">
+                                <input type="text" matInput [(ngModel)]="searchText" placeholder="Search Text">                                
                                 </mat-form-field>
+                                <p *ngIf="searchValue == 'location_city_country'" [ngStyle]="{'font-size':'15px'}">[<b>Hint:</b> Enter City, Country i.e.: Dubai, United Arab Emirates]</p>
                             </div>
                         </div>
                         <!-- <div class="slectType col-md-12" id="location_city_country"  [ngStyle]="{'display': 'none'}">  
@@ -96,7 +97,7 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="col-md-4 slectType" id="scope" [ngStyle]="{'display': 'none'}">
+                        <div class="col-md-4 slectType" id="criteria" [ngStyle]="{'display': 'none'}">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
                                     <mat-label>Scope/Schme</mat-label>                              
@@ -163,12 +164,13 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.accr_status"></span>
                                 </a>
                             </th>
-                            <th [ngStyle]="{'font-size':'14px'}">CAB Name/CAB Code
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'applicantName', curSortDir.applicantName)">
+                            <th [ngStyle]="{'font-size':'14px'}">CAB Name
+                                <!-- <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'applicantName', curSortDir.applicantName)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.applicantName"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.applicantName"></span>
-                                </a>
+                                </a> -->
                             </th>
+                            <th [ngStyle]="{'font-size':'14px'}">CAB Code</th>
                             <th [ngStyle]="{'font-size':'14px'}">Scope/Scheme
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'criteria_request', curSortDir.criteria_request)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.criteria_request"></span>
@@ -196,7 +198,6 @@
                             
                             <th [ngStyle]="{'font-size':'14px'}">Action</th>
                         </tr>
-                        <!-- trainerdata.records != undefined && -->  
                     <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
                         <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
                             <td class="fnt-clr">
@@ -214,7 +215,12 @@
                             </td>
                             <td>
                                 <ng-container *ngIf="item.cabDetails != undefined">
-                                    {{item.cabDetails.cab_name}} / {{item.cabDetails.cab_code}}
+                                    {{item.cabDetails.cab_name}}
+                                </ng-container>
+                            </td>
+                            <td>
+                                <ng-container *ngIf="item.cabDetails != undefined">
+                                    {{item.cabDetails.cab_code}}
                                 </ng-container>
                             </td>
                             <td>
