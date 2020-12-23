@@ -78,7 +78,7 @@ export class OperationsTrainingServiceListComponent implements OnInit {
     
     //Assign Search Type
     this.selectAccrType = [ 
-      {title: 'In Premise', value:'in_premise'},
+      {title: 'In Premise', value:'inprimise'},
       {title: 'Public Training', value:'public_training'},
       ];
   
@@ -152,9 +152,9 @@ export class OperationsTrainingServiceListComponent implements OnInit {
       }
     if(this.searchValue == 'cab_name') {
       document.getElementById('applicant').style.display = 'block';
-    }else if(this.searchValue == 'form_meta') {
+    }else if(this.searchValue == 'training_form_type') {
       document.getElementById('accreditation_type').style.display = 'block';
-    }else if(this.searchValue == 'accr_status') {
+    }else if(this.searchValue == 'application_status') {
       document.getElementById('status').style.display = 'block';
     }else if(this.searchValue == 'course_title') {
       document.getElementById('applicant').style.display = 'block';

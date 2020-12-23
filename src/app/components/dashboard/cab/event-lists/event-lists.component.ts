@@ -170,7 +170,7 @@ export class EventListsComponent implements OnInit {
   exportFile() {
     // console.log(this.exportAs);
     this.exportAsConfig = {
-      type: this.exportAs.toString(), // the type you want to download
+      type: 'csv', // the type you want to download
       elementIdOrContent: 'accreditation-service-export', // the id of html/table element
     }
     // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
