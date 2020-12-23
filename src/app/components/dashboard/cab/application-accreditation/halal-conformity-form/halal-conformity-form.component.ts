@@ -481,7 +481,7 @@ export class HalalConformityFormComponent implements OnInit {
   * @Abhishek
   ********************************/
  loadScopeCriteria(){
-  console.log(">>>> Load scope Criteria List");
+  console.log(">>>> Load scope Criteria List"); 
   this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halal_conformity_form_management)
    .subscribe( 
      res => {

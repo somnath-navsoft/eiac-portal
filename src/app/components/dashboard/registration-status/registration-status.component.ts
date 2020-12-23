@@ -43,8 +43,12 @@ export class RegistrationStatusComponent implements OnInit {
   show_data:any;
   userType: string;
 
+  searchValue: any;
+  searchText: any;
+  selectAccrStatus: any[];
+
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
-    private _trainerService: TrainerService, private exportAsService: ExportAsService) { }
+    private _trainerService: TrainerService, private exportAsService: ExportAsService) { } 
 
   ngOnInit() {
     this.loadPageData();
@@ -57,6 +61,35 @@ export class RegistrationStatusComponent implements OnInit {
     this.curSortDir['applicant']          = false;
     this.userType = sessionStorage.getItem('type');
     this.selectRegType = [{title:'No Objection Certificate', value: 'no_objection'},{title:'Work Activity Permit', value:'work_activity'}];
+    this.selectAccrStatus  = [
+      {title: 'Payment Pending', value:'pending'},
+      {title: 'Pending', value:'payment_pending'},
+      {title: 'Application Process', value:'application_process'},
+      {title: 'Under Review', value:'under_review'},
+      {title: 'Under Process', value:'under_process'},
+      {title: 'Complete', value:'complete'},
+      {title: 'Draft', value:'draft'}
+    ]
+  }
+
+  changeFilter(theEvt: any){
+    console.log("@change: ", theEvt, " :: ", theEvt.value);
+    let getIdValue: string = theEvt.value;
+    this.searchText = '';
+    var myClasses = document.querySelectorAll('.slectType'),i = 0,length = myClasses.length;
+       for (i; i < length; i++) {
+          let elem: any = myClasses[i]
+          console.log("@Elem: ", elem);
+            elem.style.display = 'none';
+            if(getIdValue == 'cab_name' || getIdValue == 'cab_code') {
+                let getElementId = document.getElementById('textType');
+                getElementId.style.display = 'block';
+            }else{
+              if(elem.id === getIdValue){
+                elem.style.display = 'block';
+              }
+            }
+      }
   }
 
   showData() {
@@ -87,8 +120,7 @@ export class RegistrationStatusComponent implements OnInit {
   }
   
   isValidSearch(){
-    if((this.applicationNo == '' || this.applicationNo == null) && (this.selectRegTypeValue == '' || this.selectRegTypeValue == null) &&
-       (this.paymentStatusValue == '' || this.paymentStatusValue == null)){
+    if((this.searchValue == '') || (this.searchText == '' || this.searchText == null)){
       return false;
     }
     return true;
@@ -101,16 +133,20 @@ export class RegistrationStatusComponent implements OnInit {
      let postData: any = new FormData();
      if(this.isValidSearch()){
       this.loader = false;
-       if(this.applicationNo != '' && this.applicationNo != null){
-        postData.append('id', this.applicationNo)
-       }
-       if(this.selectRegTypeValue != '' && this.selectRegTypeValue != null){
-        postData.append('form_meta', this.selectRegTypeValue)
-       }
-       if(this.paymentStatusValue != '' && this.paymentStatusValue != null){
-        postData.append('payment_status', this.paymentStatusValue)
-       }
-        
+      //  if(this.applicationNo != '' && this.applicationNo != null){
+      //   postData.append('id', this.applicationNo)
+      //  }
+      //  if(this.selectRegTypeValue != '' && this.selectRegTypeValue != null){
+      //   postData.append('form_meta', this.selectRegTypeValue)
+      //  }
+      //  if(this.paymentStatusValue != '' && this.paymentStatusValue != null){
+      //   postData.append('payment_status', this.paymentStatusValue)
+      //  }
+
+      let appendKey = this.searchValue;
+      if(this.searchValue != ''  && (this.searchText != '' || this.searchText != null)){
+       postData.append(appendKey, this.searchText);
+      }   
 
         if(postData){
           this.subscriptions.push(this._trainerService.searchRegStatus((postData))
@@ -143,7 +179,7 @@ export class RegistrationStatusComponent implements OnInit {
   exportFile() {
     // console.log(this.exportAs);
     this.exportAsConfig = {
-      type: this.exportAs.toString(), // the type you want to download
+      type: 'csv', // the type you want to download
       elementIdOrContent: 'accreditation-service-export', // the id of html/table element
     }
     // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
