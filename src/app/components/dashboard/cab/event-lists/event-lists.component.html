@@ -108,9 +108,10 @@
                                 <mat-form-field class="cab-data">
                                     <mat-label>Searchable Column</mat-label> 
                                     <mat-select placeholder="Select" (selectionChange)="searchableColumn()" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue">
-                                        <mat-option value="cab_name">Applicant</mat-option>
-                                        <mat-option value="form_meta">Accreditation Type</mat-option>
-                                        <mat-option value="accr_status">Status</mat-option>
+                                        <mat-option value="course">Course</mat-option>
+                                        <mat-option value="capacity">Capacity</mat-option>
+                                        <mat-option value="tutor">Tutor</mat-option>
+                                        <mat-option value="location">Location</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div> 
@@ -125,7 +126,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 field_show" id="accreditation_type" [ngStyle]="{'display':'none'}">
+                        <!-- <div class="col-md-4 field_show" id="accreditation_type" [ngStyle]="{'display':'none'}">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
                                     <mat-label>Accreditation Type</mat-label>                             
@@ -147,7 +148,7 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="row m-0">
                             <div class="col-md-12"> 

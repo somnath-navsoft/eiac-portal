@@ -76,8 +76,8 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
 
     //Assign Search Type
     this.selectAccrType = [ 
-      {title: 'No Objection Certificate', value:'no_objection_certificate'},
-      {title: 'Work Activity Permit', value:'work_activity_permit'},   
+      {title: 'No Objection Certificate', value:'no_objection'},
+      {title: 'Work Activity Permit', value:'work_activity'},   
       ];
   
     //Assign Search Type
@@ -115,7 +115,7 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
       document.getElementById('applicant').style.display = 'block';
     }else if(this.searchValue == 'form_meta') {
       document.getElementById('accreditation_type').style.display = 'block';
-    }else if(this.searchValue == 'accr_status') {
+    }else if(this.searchValue == 'application_status') {
       document.getElementById('status').style.display = 'block';
     }
   }
