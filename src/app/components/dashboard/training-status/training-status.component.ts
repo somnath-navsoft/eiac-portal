@@ -86,7 +86,7 @@ export class TrainingStatusComponent implements OnInit {
           let elem: any = myClasses[i]
           console.log("@Elem: ", elem);
             elem.style.display = 'none';
-            if(getIdValue == 'cab_name' || getIdValue == 'cab_code' || getIdValue == 'course' || getIdValue == 'capacity') {
+            if(getIdValue == 'cab_name' || getIdValue == 'cab_code' || getIdValue == 'course' || getIdValue == 'capacity' || getIdValue == 'application_number') {
                 let getElementId = document.getElementById('textType');
                 getElementId.style.display = 'block';
             }else{

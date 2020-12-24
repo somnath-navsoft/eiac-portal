@@ -75,7 +75,8 @@ export class AccountsComponent implements OnInit {
       {title: 'Proficiency Testing Providers', value:'pt_providers'}      
       ];
     this.selectPaymentStatus  = [
-      {title: 'Payment Pending', value:'pending'}
+      {title: 'Pending', value:'pending'},
+      {title: 'Paid', value:'paid'}
       // {title: 'Application Process', value:'application_process'},
       // {title: 'Under Review', value:'under_review'},
       // {title: 'Complete', value:'complete'},
@@ -92,9 +93,9 @@ export class AccountsComponent implements OnInit {
     var myClasses = document.querySelectorAll('.slectType'),i = 0,length = myClasses.length;
        for (i; i < length; i++) {
           let elem: any = myClasses[i]
-          console.log("@Elem: ", elem);
+            console.log("@Elem: ", elem);
             elem.style.display = 'none';
-            if(getIdValue == 'applicant') {
+            if(getIdValue == 'cab_name' || getIdValue == 'cab_code' || getIdValue == 'application_number'  || getIdValue == 'voucher_no'){
                 let getElementId = document.getElementById('textType');
                 getElementId.style.display = 'block';
             }else{
@@ -118,8 +119,6 @@ export class AccountsComponent implements OnInit {
   }
 
   showData() {
-    //this.pageLimit = this.show_data;
-    // this.loadPageData();
     this.pageLimit = this.show_data;
     this.pageCurrentNumber = 1;
     this.accountsData.slice(0, this.show_data);
@@ -240,6 +239,7 @@ export class AccountsComponent implements OnInit {
               getDetails['appNo'] = allRecords[key].id;
               getDetails['createdDate'] = allRecords[key].created;
               getDetails['cabName'] = allRecords[key].cabDetails.cab_name;
+              getDetails['cabCode'] = allRecords[key].cabDetails.cab_code;
               getDetails['appType'] = allRecords[key].form_meta;
               getDetails['totalPayment'] = allRecords[key].paymentDetails.length;
               

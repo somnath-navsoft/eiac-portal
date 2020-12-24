@@ -46,6 +46,7 @@ export class RegistrationStatusComponent implements OnInit {
   searchValue: any;
   searchText: any;
   selectAccrStatus: any[];
+  getCountryStateCityAll: any[] = [];
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private exportAsService: ExportAsService) { } 
@@ -69,7 +70,18 @@ export class RegistrationStatusComponent implements OnInit {
       {title: 'Under Process', value:'under_process'},
       {title: 'Complete', value:'complete'},
       {title: 'Draft', value:'draft'}
-    ]
+    ];
+    this.loadCountryStateCityAll();
+  }
+
+  loadCountryStateCityAll  = async() =>{
+    let cscLIST = this._service.getCSCAll();
+    await cscLIST.subscribe(record => {
+      console.log("...> ", record);
+      this.getCountryStateCityAll = record['Countries'];
+      console.log("...>>> ", this.getCountryStateCityAll);
+    });
+    //console.log("ALL CSC: ", this.getCountryStateCityAll);
   }
 
   changeFilter(theEvt: any){
@@ -81,7 +93,7 @@ export class RegistrationStatusComponent implements OnInit {
           let elem: any = myClasses[i]
           console.log("@Elem: ", elem);
             elem.style.display = 'none';
-            if(getIdValue == 'cab_name' || getIdValue == 'cab_code') {
+            if(getIdValue == 'cab_name' || getIdValue == 'cab_code' || getIdValue == 'application_number') {
                 let getElementId = document.getElementById('textType');
                 getElementId.style.display = 'block';
             }else{

@@ -32,12 +32,14 @@
                                     <mat-label>Searchable Column</mat-label> 
                                     <mat-select placeholder="Select" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue"
                                       (selectionChange)="changeFilter($event)">
+                                        <mat-option value="application_number">Application Number</mat-option>
                                         <mat-option value="cab_name">CAB Name</mat-option>
                                         <mat-option value="cab_code">CAB Code</mat-option>
                                         <mat-option value="accr_status">Status</mat-option>
-                                        <mat-option value="form_meta">Training Type</mat-option>
-                                        <mat-option value="course">Course Title</mat-option>
+                                        <mat-option value="training_type">Training Type</mat-option>
+                                        <mat-option value="course">Course Name</mat-option>
                                         <mat-option value="capacity">Capacity</mat-option>
+                                        <mat-option value="payment_status">Payment Status</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div> 
@@ -51,10 +53,10 @@
                                 </mat-form-field>
                             </div>                            
                         </div>
-                        <div class="col-md-4 slectType" id="form_meta" [ngStyle]="{'display': 'none'}">
+                        <div class="col-md-4 slectType" id="training_type" [ngStyle]="{'display': 'none'}">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
-                                    <mat-label>Registration Type</mat-label>                              
+                                    <mat-label>Training Type</mat-label>                              
                                     <mat-select placeholder="Acreditation Type" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
                                         <mat-option *ngFor="let item of selectTrainingType;" [value]="item.value">{{item.title}}</mat-option>                                        
                                     </mat-select>
@@ -64,9 +66,20 @@
                         <div class="col-md-4 slectType" id="accr_status" [ngStyle]="{'display': 'none'}">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
-                                    <mat-label>Registration Status</mat-label>                              
+                                    <mat-label>Training Status</mat-label>                              
                                     <mat-select placeholder="Acreditation Status" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
                                         <mat-option *ngFor="let item of selectAccrStatus;" [value]="item.value">{{item.title}}</mat-option>                                        
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-md-4 slectType" id="payment_status" [ngStyle]="{'display': 'none'}">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Payment Status</mat-label>                              
+                                    <mat-select placeholder="Payment Status" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
+                                        <mat-option value="pending">Pending</mat-option>
+                                        <mat-option value="paid">Paid</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
@@ -122,11 +135,12 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.created_date"></span>
                                 </a>
                             </th>
-                            <th>CAB Name/CAB Code</th>
-                            <th>Course Title</th>
+                            <th>CAB Name/Candidate</th>
+                            <th>CAB Code</th>
+                            <th>Course Name</th>
                             <th>Capacity</th>
-                            <th>Trainer</th>
-                            <th>Audience</th>
+                            <!-- <th>Trainer</th>
+                            <th>Audience</th> -->
                             <th width="15%">Status
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'application_status', curSortDir.application_status)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.application_status"></span>
@@ -158,13 +172,18 @@
                             </td>
                             <td>
                                 <ng-container *ngIf="item.cabDetails != undefined && item.cabDetails.length > 0">
-                                    {{item.cabDetails[0].cab_name}} / {{item.cabDetails[0].cab_code}}
+                                    {{item.cabDetails[0].cab_name}}
+                                </ng-container>
+                            </td>
+                            <td>
+                                <ng-container *ngIf="item.cabDetails != undefined && item.cabDetails.length > 0">
+                                    {{item.cabDetails[0].cab_code}}
                                 </ng-container>
                             </td>
                             <td></td>
                             <td></td>
-                            <td></td>
-                            <td></td>
+                            <!-- <td></td>
+                            <td></td> -->
                             <td [ngClass]="{'pending': (item.application_status === 'pending' || item.application_status === 'payment_pending' || item.application_status == 'application_process' || item.application_status == 'under_process'), 'under-review':item.application_status === null || item.application_status === 'under_review', 'complete': item.application_status === 'complete','draft': item.application_status === 'draft' }">
                                 <span *ngIf="item.application_status == 'pending'">Pending</span>
                                 <span *ngIf="item.application_status == 'draft'">Draft</span>
@@ -197,14 +216,14 @@
                     </ng-container>
                     <ng-container *ngIf="dataLoad && trainerdata.length == 0">
                         <tr>
-                            <td colspan="5">
-                                No Records
+                            <td colspan="9">
+                            No Records
                             </td>
                         </tr>
                     </ng-container>
                     <ng-container *ngIf="!dataLoad">
                         <tr>
-                            <td colspan="7" align="center">
+                            <td colspan="9" align="center">
                                 Loading...
                             </td>
                         </tr>

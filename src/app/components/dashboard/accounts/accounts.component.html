@@ -63,8 +63,12 @@
                                     <mat-label>Searchable Column</mat-label> 
                                     <mat-select placeholder="Select" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue"
                                       (selectionChange)="changeFilter($event)">
-                                        <mat-option value="applicant">CAB Name</mat-option>
-                                        <mat-option value="accr_status">Payment Status</mat-option>
+                                        <mat-option value="application_number">Application Number</mat-option>
+                                        <mat-option value="cab_name">CAB Name</mat-option>
+                                        <mat-option value="cab_code">CAB Code</mat-option>
+                                        <mat-option value="voucher_no">Voucher Number</mat-option>
+                                        <mat-option value="voucher_date">Voucher Date</mat-option>
+                                        <mat-option value="payment_status">Status</mat-option>
                                         <mat-option value="form_meta">Application Type</mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -89,11 +93,23 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="col-md-4 slectType" id="accr_status" [ngStyle]="{'display': 'none'}">
+                        
+                        <div class="col-md-4 slectType" id="voucher_date" [ngStyle]="{'display': 'none'}">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                <input matInput readonly="true" [matDatepicker]="payment_date" id="payment_date"  
+                                (click)="_service._openCalendar(payment_date)" placeholder="Payment Date" name="payment_date" 
+                                [(ngModel)]="searchText" required>
+                                <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle>
+                                <mat-datepicker #payment_date disabled="false"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-md-4 slectType" id="payment_status" [ngStyle]="{'display': 'none'}">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
                                     <mat-label>Payment Status</mat-label>                              
-                                    <mat-select placeholder="Acreditation Status" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
+                                    <mat-select placeholder="Payment Status" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
                                         <mat-option *ngFor="let item of selectPaymentStatus;" [value]="item.value">{{item.title}}</mat-option>                                        
                                     </mat-select>
                                 </mat-form-field>
@@ -114,6 +130,22 @@
                     </div>
                 </div>                
             </ng-container>
+            <div class="row m-0">
+                <div class="col-md-4">
+                    <div class="user-details" [ngStyle]="{'width': '100px'}">
+                        <mat-form-field class="cab-data">
+                            <mat-label>Show</mat-label>                              
+                            <mat-select placeholder="Show" (selectionChange)="showData()"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="show_data">
+                                <mat-option value="25">25</mat-option>
+                                <mat-option value="50">50</mat-option>
+                                <mat-option value="75">75</mat-option>
+                                <mat-option value="100">100</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
 
             <div class="accounts mt-3">
                 <table class="accounts_inner_tab">
@@ -136,7 +168,8 @@
                         <tr>
                             <th>App. No.</th>
                             <th>Date</th>
-                            <th>CAB Name/Code</th>
+                            <th>CAB Name</th>
+                            <th>CAB Code</th>
                             <th>Application Type</th>
                             <th>Fees</th>
                             <th>Fees Date</th>
@@ -162,7 +195,7 @@
                                 <td class="fnt-clr"><a href="javascript:void(0)" routerLink="/dashboard/account-details/{{item.appNo}}">{{item.appNo}}</a></td>
                                 <td>{{item.createdDate | date}}</td>
                                 <td>{{item.cabName}}</td>
-
+                                <td>{{item.cabCode}}</td>
                                 <td *ngIf="item.appType == 'testing_calibration'">Testing Calibration</td>
                                 <td *ngIf="item.appType == 'inspection_body'">Inspection Bodies</td>
                                 <td *ngIf="item.appType == 'health_care'">Health Care</td>

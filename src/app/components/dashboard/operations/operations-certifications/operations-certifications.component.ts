@@ -11,11 +11,11 @@ import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
 @Component({
   selector: 'app-status',
-  templateUrl: './status.component.html',
-  styleUrls: ['./status.component.scss'], 
+  templateUrl: './operations-certifications.component.html',
+  styleUrls: ['./operations-certifications.component.scss'], 
   providers: [CustomModalComponent],
 })
-export class StatusComponent implements OnInit {
+export class OperationsCertificationsComponent implements OnInit {
 
   getTrainerCourse: Observable<any>; 
   trainerdata: any[] = [];
