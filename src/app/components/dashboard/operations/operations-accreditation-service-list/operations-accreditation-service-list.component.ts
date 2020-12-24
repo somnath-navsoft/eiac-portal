@@ -313,8 +313,8 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
       document.getElementById('applicant').style.display = 'block';
     }else if(this.searchValue == 'criteria') {
       document.getElementById('criteria').style.display = 'block';
-    }else if(this.searchValue == 'location_city_country') {
-      document.getElementById('location_city_country').style.display = 'block';
+    }else if(this.searchValue == 'country') {
+      document.getElementById('country').style.display = 'block';
     }
   }
 
@@ -349,13 +349,15 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     ];
 
     //Assign Search Type
-    this.selectStatus = [ 
+    this.selectStatus =  [
+      {title: 'Payment Pending', value:'pending'},
+      {title: 'Pending', value:'payment_pending'},
       {title: 'Application Process', value:'application_process'},
-      {title: 'Under Review	', value:'under_review'},
+      {title: 'Under Review', value:'under_review'},
+      {title: 'Under Process', value:'under_process'},
       {title: 'Complete', value:'complete'},
-      {title: 'Pending', value:'pending'},
       {title: 'Draft', value:'draft'}
-      ];
+    ];
 	
     // this.selectPaymentStatusType = [ 
     //   {title: 'Paid', value:'paid'},

@@ -82,13 +82,15 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
       ];
   
     //Assign Search Type
-    this.selectStatus = [ 
+    this.selectStatus =  [
+      {title: 'Payment Pending', value:'pending'},
+      {title: 'Pending', value:'payment_pending'},
       {title: 'Application Process', value:'application_process'},
-      {title: 'Under Review	', value:'under_review'},
+      {title: 'Under Review', value:'under_review'},
+      {title: 'Under Process', value:'under_process'},
       {title: 'Complete', value:'complete'},
-      {title: 'Pending', value:'pending'},
       {title: 'Draft', value:'draft'}
-      ];
+    ];
       this.loadCountryStateCity();
   }
 
@@ -126,7 +128,7 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
     }else if(this.searchValue == 'cab_code') {
       document.getElementById('applicant').style.display = 'block';
     }else if(this.searchValue == 'country') {
-      document.getElementById('location_city_country').style.display = 'block';
+      document.getElementById('country').style.display = 'block';
     }else if(this.searchValue == 'form_meta') {
       document.getElementById('accreditation_type').style.display = 'block';
     }else if(this.searchValue == 'application_status') {

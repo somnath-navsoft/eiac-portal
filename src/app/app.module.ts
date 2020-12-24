@@ -163,6 +163,7 @@ import { SchemeListComponent } from './components/dashboard/cab/scheme-list/sche
 import { EventListsComponent } from './components/dashboard/cab/event-lists/event-lists.component';
 import { CertificationRecordsComponent } from './components/dashboard/cab/certification-records/certification-records.component';
 import { ExportAsModule } from 'ngx-export-as';
+import { OperationRecordsComponent } from './components/dashboard/operations/operation-records/operation-records.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -231,7 +232,8 @@ export const MY_FORMATS = {
     InpremiseApprovalDetailsComponent,
     SchemeListComponent,
     EventListsComponent,
-    CertificationRecordsComponent
+    CertificationRecordsComponent,
+    OperationRecordsComponent
   ],
   imports: [
     CommonModule,
