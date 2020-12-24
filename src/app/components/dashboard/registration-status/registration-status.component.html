@@ -10,19 +10,17 @@
                         <h3>Registration Status</h3>  
                     </div>
                 </div>
-                <div class="col-md-4"> 
+                <!-- <div class="col-md-4"> 
                     <div class="tbl-filter-data">
                         <ul>
                             <li>
                                 <div class="filter">
-                                    <!-- <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a> -->
                                     <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a>
                                 </div>
                             </li>
                         </ul>
                     </div>
-                </div>
-                
+                </div> -->                
             </div>
             <!-- <div class="row m-0">
                 <ng-container *ngIf="userType == 'operations'">
@@ -62,15 +60,15 @@
                         <div class="col-md-4">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
-                                    <mat-label>Searchable Column</mat-label> 
+                                    <mat-label>Filter Column</mat-label> 
                                     <mat-select placeholder="Select" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue" 
                                         (selectionChange)="changeFilter($event)">
-                                        <mat-option value="application_number">Application Number</mat-option>
+                                        <mat-option value="id">Application Number</mat-option>
                                         <mat-option value="cab_name">CAB Name</mat-option>
                                         <mat-option value="cab_code">CAB Code</mat-option>
                                         <mat-option value="application_status">Status</mat-option>
                                         <mat-option value="form_meta">Registration Type</mat-option>
-                                        <mat-option value="location_city_country">Country</mat-option>
+                                        <mat-option value="country">Country</mat-option>
                                         <mat-option value="payment_status">Payment Status</mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -81,13 +79,18 @@
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
                                 <mat-label>Search Text</mat-label> 
-                                <input type="text" matInput [(ngModel)]="searchText" placeholder="Search Text">
+                                <ng-container *ngIf="searchValue !='id'">
+                                    <input type="text" matInput [(ngModel)]="searchText" placeholder="Search Text"  maxlength="50">
+                                </ng-container>
+                                <ng-container *ngIf="searchValue ==='id'">
+                                    <input type="text" matInput  maxlength="15" (keypress)="_service.inputFilter($event, _service.regExNumb)" [(ngModel)]="searchText"  placeholder="Search Text">
+                                </ng-container>
                                 </mat-form-field>
                             </div>
                         </div>
 
                         <div class="col-md-4 slectType" id="form_meta" [ngStyle]="{'display': 'none'}">
-                            <div class="user-details">
+                            <div class="user-details" [ngStyle]="{'width':'75%'}">
                                 <mat-form-field class="cab-data">
                                     <mat-label>Acreditation Type</mat-label>                              
                                     <mat-select placeholder="Acreditation Type" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
@@ -96,9 +99,9 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="slectType col-md-4" id="location_city_country"  [ngStyle]="{'display': 'none'}">  
+                        <div class="slectType col-md-4" id="country"  [ngStyle]="{'display': 'none'}">  
                             <div class="col-md-12"> 
-                                <div class="user-details"> 
+                                <div class="user-details" [ngStyle]="{'width':'75%'}"> 
                                     <mat-form-field class="cab-data">
                                         <mat-label>Country</mat-label>                              
                                         <mat-select placeholder="Acreditation Type" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
@@ -109,7 +112,7 @@
                             </div>
                         </div>
                         <div class="col-md-4 slectType" id="application_status" [ngStyle]="{'display': 'none'}">
-                            <div class="user-details">
+                            <div class="user-details" [ngStyle]="{'width':'75%'}">
                                 <mat-form-field class="cab-data">
                                     <mat-label>Registration Status</mat-label>                              
                                     <mat-select placeholder="Acreditation Status" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
@@ -119,7 +122,7 @@
                             </div>
                         </div>
                         <div class="col-md-4 slectType" id="payment_status" [ngStyle]="{'display': 'none'}">
-                            <div class="user-details">
+                            <div class="user-details" [ngStyle]="{'width':'75%'}">
                                 <mat-form-field class="cab-data">
                                     <mat-label>Payment Status</mat-label>                              
                                     <mat-select placeholder="Payment Status" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
@@ -260,14 +263,14 @@
                     </ng-container>
                     <ng-container *ngIf="dataLoad && trainerdata.length == 0">
                         <tr>
-                            <td colspan="5">
+                            <td colspan="9">
                                 No Records
                             </td>
                         </tr>
                     </ng-container>
                     <ng-container *ngIf="!dataLoad">
                         <tr>
-                            <td colspan="7" align="center">
+                            <td colspan="9" align="center">
                                 Loading...
                             </td>
                         </tr>

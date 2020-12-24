@@ -78,6 +78,7 @@ export class OperationsCertificationsComponent implements OnInit {
   searchCountryText: string = '';
   searchCityText: string = '';
   criteria: string = '';
+  loadCountryLists: any[]= [];
 
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
@@ -227,9 +228,38 @@ loadCountryStateCityAll  = async() =>{
   await cscLIST.subscribe(record => {
     console.log("...> ", record);
     this.getCountryStateCityAll = record['Countries'];
+    this.loadCountryLists = record['Countries'];
     console.log("...>>> ", this.getCountryStateCityAll);
   });
   //console.log("ALL CSC: ", this.getCountryStateCityAll);
+}
+
+searchCountry(theEvt: any){    
+  console.log(">>>> enter: ", theEvt);
+  let query: string = '';
+  if(theEvt){
+    query = theEvt.target.value
+  }
+  console.log(">>> query: ", query, " == ", query.length);
+  let result: any = this.select(query);
+  if(result){
+    this.loadCountryLists = result;
+  }
+}
+select(query: string):any[]{
+  let result: string[] = [];
+  let countryData: any = this.getCountryStateCityAll;
+  //console.log(">>>> country: ", countryData);
+  countryData.forEach(item => {
+    //console.log("@ ", item);
+    let cName: string = item.CountryName;
+    console.log("query value: ", cName.toLowerCase().indexOf(query));
+    //if(cName.toLowerCase().indexOf(query) > -1){
+      if(cName.toLowerCase().indexOf(query) == 0){
+      result.push(item);
+    }
+  })
+  return result;
 }
 
   changeFilter(theEvt: any){
@@ -239,9 +269,9 @@ loadCountryStateCityAll  = async() =>{
     var myClasses = document.querySelectorAll('.slectType'),i = 0,length = myClasses.length;
        for (i; i < length; i++) {
           let elem: any = myClasses[i]
-          console.log("@Elem: ", elem);
+            console.log("@Elem: ", elem);
             elem.style.display = 'none';
-            if(getIdValue == 'cab_name' || getIdValue == 'cab_code' ||  getIdValue == 'id') {
+            if(getIdValue == 'cab_name' || getIdValue == 'cab_code' ||  getIdValue == 'contact'||  getIdValue == 'email') {
                 let getElementId = document.getElementById('textType');
                 getElementId.style.display = 'block';
             }else{

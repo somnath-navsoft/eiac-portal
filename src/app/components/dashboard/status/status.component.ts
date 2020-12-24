@@ -101,11 +101,11 @@ export class StatusComponent implements OnInit {
     this.loadPageData();
     this.curSortDir['id']                       = false;
     this.curSortDir['created_date']             = false;
-    this.curSortDir['accr_status']             = false;
-    this.curSortDir['applicantName']           = false;
-    this.curSortDir['criteria_request']        = false;
-    this.curSortDir['form_meta']             = false;
-    this.curSortDir['location']             = false;
+    this.curSortDir['accr_status']              = false;
+    this.curSortDir['applicantName']            = false;
+    this.curSortDir['criteria_request']         = false;
+    this.curSortDir['form_meta']                = false;
+    this.curSortDir['country']                  = false;
 
     this.userType = sessionStorage.getItem('type');
     this.loadCriteriaScheme();
@@ -500,29 +500,29 @@ if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_
           }
         }
         //By Payment Status
-        // if(sortBy == 'payment_status'){
-        //   this.curSortDir.payment_status = !sortDir;
-        //   //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
-        //   if(this.curSortDir.payment_status){
-        //     let array = data.slice().sort((a, b) => (a.payment_status > b.payment_status) ? 1 : -1)
-        //     this.trainerdata = array;
-        //     //console.log("after:: ", array, " :: ", this.trainerdata);
-        //   }
-        //   if(!this.curSortDir.payment_status){
-        //     let array = data.slice().sort((a, b) => (a.payment_status < b.payment_status) ? 1 : -1)
-        //     this.trainerdata = array;
-        //   }
-        // }  
-        if(sortBy == 'location'){
-          this.curSortDir.location = !sortDir;
+        if(sortBy == 'payment_status'){
+          this.curSortDir.payment_status = !sortDir;
           //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
-          if(this.curSortDir.location){
-            let array = data.slice().sort((a, b) => (a.location > b.location) ? 1 : -1)
+          if(this.curSortDir.payment_status){
+            let array = data.slice().sort((a, b) => (a.payment_status > b.payment_status) ? 1 : -1)
             this.trainerdata = array;
             //console.log("after:: ", array, " :: ", this.trainerdata);
           }
-          if(!this.curSortDir.location){
-            let array = data.slice().sort((a, b) => (a.location < b.location) ? 1 : -1)
+          if(!this.curSortDir.payment_status){
+            let array = data.slice().sort((a, b) => (a.payment_status < b.payment_status) ? 1 : -1)
+            this.trainerdata = array;
+          }
+        }  
+        if(sortBy == 'country'){
+          this.curSortDir.country = !sortDir;
+          //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
+          if(this.curSortDir.country){
+            let array = data.slice().sort((a, b) => (a.country > b.country) ? 1 : -1)
+            this.trainerdata = array;
+            //console.log("after:: ", array, " :: ", this.trainerdata);
+          }
+          if(!this.curSortDir.country){
+            let array = data.slice().sort((a, b) => (a.country < b.country) ? 1 : -1)
             this.trainerdata = array;
           }
         }        

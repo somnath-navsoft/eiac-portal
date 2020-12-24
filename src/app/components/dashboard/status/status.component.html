@@ -10,18 +10,17 @@
                         <h3> Accreditation Status</h3> 
                     </div>
                 </div>
-                <div class="col-md-4"> 
+                <!-- <div class="col-md-4"> 
                     <div class="tbl-filter-data">
                         <ul>
                             <li>
                                 <div class="filter">
-                                    <!-- <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a> -->
                                     <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a>
                                 </div>
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> -->
             </div>
 
 
@@ -32,7 +31,7 @@
                         <div class="col-md-4">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
-                                    <mat-label>Searchable Column</mat-label> 
+                                    <mat-label>Filter Column</mat-label> 
                                     <mat-select placeholder="Select" [ngModelOptions]="{standalone: true}" (selectionChange)="changeFilter($event)"
                                     [(ngModel)]="searchValue">
                                         <mat-option value="id">Application Number</mat-option>
@@ -41,7 +40,7 @@
                                         <mat-option value="accr_status">Status</mat-option>
                                         <mat-option value="form_meta">Accreditation Type</mat-option>
                                         <mat-option value="criteria">Scope</mat-option>
-                                        <mat-option value="location_city_country">Country</mat-option>
+                                        <mat-option value="country">Country</mat-option>
                                         <mat-option value="payment_status">Payment Status</mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -52,13 +51,18 @@
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
                                 <mat-label>Search Text</mat-label> 
-                                <input type="text" matInput [(ngModel)]="searchText" placeholder="Search Text">                                
+                                <ng-container *ngIf="searchValue !='id'">
+                                    <input type="text" matInput [(ngModel)]="searchText" placeholder="Search Text" maxlength="50">
+                                </ng-container>
+                                <ng-container *ngIf="searchValue ==='id'">
+                                    <input type="text" matInput  maxlength="15" (keypress)="_service.inputFilter($event, _service.regExNumb)" [(ngModel)]="searchText"  placeholder="Search Text">
+                                </ng-container>                              
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="slectType col-md-4" id="location_city_country"  [ngStyle]="{'display': 'none'}">  
+                        <div class="slectType col-md-4" id="country"  [ngStyle]="{'display': 'none'}">  
                             <div class="col-md-12"> 
-                                <div class="user-details"> 
+                                <div class="user-details" [ngStyle]="{'width':'75%'}"> 
                                     <mat-form-field class="cab-data">
                                         <mat-label>Country</mat-label>                              
                                         <mat-select placeholder="Acreditation Type" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
@@ -69,7 +73,7 @@
                             </div>
                         </div>
                         <div class="col-md-4 slectType" id="form_meta" [ngStyle]="{'display': 'none'}">
-                            <div class="user-details">
+                            <div class="user-details" [ngStyle]="{'width':'75%'}">
                                 <mat-form-field class="cab-data">
                                     <mat-label>Acreditation Type</mat-label>                              
                                     <mat-select placeholder="Acreditation Type" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
@@ -79,7 +83,7 @@
                             </div>
                         </div>
                         <div class="col-md-4 slectType" id="accr_status" [ngStyle]="{'display': 'none'}">
-                            <div class="user-details">
+                            <div class="user-details" [ngStyle]="{'width':'75%'}">
                                 <mat-form-field class="cab-data">
                                     <mat-label>Acreditation Status</mat-label>                              
                                     <mat-select placeholder="Acreditation Status" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
@@ -89,9 +93,9 @@
                             </div>
                         </div>
                         <div class="col-md-4 slectType" id="criteria" [ngStyle]="{'display': 'none'}">
-                            <div class="user-details">
+                            <div class="user-details" [ngStyle]="{'width':'90%'}">
                                 <mat-form-field class="cab-data">
-                                    <mat-label>Scope/Schme</mat-label>                              
+                                    <mat-label>Scope</mat-label>                              
                                     <mat-select placeholder="Scope Scheme" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
                                         <mat-option *ngFor="let item of allSchemeData;" [value]="item.value">{{item.value}}</mat-option>                                        
                                     </mat-select>
@@ -99,7 +103,7 @@
                             </div>
                         </div>
                         <div class="col-md-4 slectType" id="payment_status" [ngStyle]="{'display': 'none'}">
-                            <div class="user-details">
+                            <div class="user-details" [ngStyle]="{'width':'75%'}">
                                 <mat-form-field class="cab-data">
                                     <mat-label>Payment Status</mat-label>                              
                                     <mat-select placeholder="Payment Status" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
@@ -185,19 +189,18 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.form_meta"></span>
                                 </a>
                             </th>
-                            <!-- <th [ngStyle]="{'font-size':'14px'}">Payment Status
+                            <th [ngStyle]="{'font-size':'14px'}">Payment Status
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'payment_status', curSortDir.payment_status)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.payment_status"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.payment_status"></span>
                                 </a>
-                            </th> -->
-                            <th [ngStyle]="{'font-size':'14px'}">Location
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'location', curSortDir.location)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.location"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.location"></span>
-                                </a>
                             </th>
-                            <th [ngStyle]="{'font-size':'14px'}">Country</th>                            
+                            <th [ngStyle]="{'font-size':'14px'}">Country
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'country', curSortDir.location)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.country"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.country"></span>
+                                </a>
+                            </th>                            
                             <th [ngStyle]="{'font-size':'14px'}">Action</th>
                         </tr>
                     <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
@@ -242,14 +245,11 @@
                                 <span *ngIf="item.form_meta == 'pt_providers'">Proficiency Testing Providers</span>
                                 <span *ngIf="item.form_meta == 'halal_conformity_bodies'">Halal Confirmity Bodies</span>
                             </td> 
-                            <!-- <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review': (item.payment_status == 'pending' || item.payment_status == null)}">
+                            <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review': (item.payment_status == 'pending' || item.payment_status == null)}">
                                 <span *ngIf="item.payment_status == 'paid'">Paid</span>
                                 <span *ngIf="item.payment_status == 'pending'">Pending</span>
                                 <span *ngIf="item.payment_status == null">Pending</span>
-                            </td>   -->
-                            <td>
-                                {{item.city}},  {{item.country}}
-                            </td>
+                            </td> 
                             <td>
                                 {{item.country}}
                             </td> 

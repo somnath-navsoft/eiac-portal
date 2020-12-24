@@ -7,21 +7,20 @@
             <div class="row mb-4">
                 <div class="col-md-8">                    
                     <div class="dashbrd-hdr">
-                        <h3> Accreditation Status</h3> 
+                        <h3>Certifications</h3> 
                     </div>
                 </div>
-                <div class="col-md-4"> 
+                <!-- <div class="col-md-4"> 
                     <div class="tbl-filter-data">
                         <ul>
                             <li>
                                 <div class="filter">
-                                    <!-- <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a> -->
                                     <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a>
                                 </div>
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> -->
             </div>
 
 
@@ -32,17 +31,15 @@
                         <div class="col-md-4">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
-                                    <mat-label>Searchable Column</mat-label> 
+                                    <mat-label>Filter Columns</mat-label> 
                                     <mat-select placeholder="Select" [ngModelOptions]="{standalone: true}" (selectionChange)="changeFilter($event)"
                                     [(ngModel)]="searchValue">
-                                        <mat-option value="id">Application Number</mat-option>
                                         <mat-option value="cab_name">CAB Name</mat-option>
                                         <mat-option value="cab_code">CAB Code</mat-option>
-                                        <mat-option value="accr_status">Status</mat-option>
-                                        <mat-option value="form_meta">Accreditation Type</mat-option>
-                                        <mat-option value="criteria">Scope</mat-option>
+                                        <mat-option value="contact">Contact Person</mat-option>
+                                        <mat-option value="email">Email</mat-option>
+                                        <mat-option value="city">City</mat-option>
                                         <mat-option value="location_city_country">Country</mat-option>
-                                        <mat-option value="payment_status">Payment Status</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div> 
@@ -62,59 +59,19 @@
                                     <mat-form-field class="cab-data">
                                         <mat-label>Country</mat-label>                              
                                         <mat-select placeholder="Acreditation Type" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
-                                            <mat-option *ngFor="let item of getCountryStateCityAll;" [value]="item.CountryName">{{item.CountryName}}</mat-option>                                        
+                                            <!-- <input class="form-control form-control-sm w-100" #myInput  type="text" 
+                                                    (keyup)="searchCountry($event)" (keydown)="$event.stopPropagation()" autocomplete="off" placeholder="Search">
+                                                    <mat-divider></mat-divider> -->
+                                            <mat-option *ngFor="let item of loadCountryLists;" [value]="item.CountryName">{{item.CountryName}}</mat-option>                                        
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 slectType" id="form_meta" [ngStyle]="{'display': 'none'}">
-                            <div class="user-details">
-                                <mat-form-field class="cab-data">
-                                    <mat-label>Acreditation Type</mat-label>                              
-                                    <mat-select placeholder="Acreditation Type" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
-                                        <mat-option *ngFor="let item of selectAccrType;" [value]="item.value">{{item.title}}</mat-option>                                        
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div class="col-md-4 slectType" id="accr_status" [ngStyle]="{'display': 'none'}">
-                            <div class="user-details">
-                                <mat-form-field class="cab-data">
-                                    <mat-label>Acreditation Status</mat-label>                              
-                                    <mat-select placeholder="Acreditation Status" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
-                                        <mat-option *ngFor="let item of selectAccrStatus;" [value]="item.value">{{item.title}}</mat-option>                                        
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div class="col-md-4 slectType" id="criteria" [ngStyle]="{'display': 'none'}">
-                            <div class="user-details">
-                                <mat-form-field class="cab-data">
-                                    <mat-label>Scope/Schme</mat-label>                              
-                                    <mat-select placeholder="Scope Scheme" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
-                                        <mat-option *ngFor="let item of allSchemeData;" [value]="item.value">{{item.value}}</mat-option>                                        
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div class="col-md-4 slectType" id="payment_status" [ngStyle]="{'display': 'none'}">
-                            <div class="user-details">
-                                <mat-form-field class="cab-data">
-                                    <mat-label>Payment Status</mat-label>                              
-                                    <mat-select placeholder="Payment Status" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
-                                        <mat-option value="pending">Pending</mat-option>
-                                        <mat-option value="paid">Paid</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                        </div>
-
                         <div class="row m-0">
                             <div class="col-md-12"> 
                                 <div class="filter-search">
                                     <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
-                                    <!-- <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a> -->
                                     <ng-container *ngIf="userType == 'operations'">
                                     <a href="javascript:void(0)" (click)="exportFile()" class="space-left">EXPORT</a>
                                     </ng-container>
@@ -148,162 +105,79 @@
                     <!-- @{{trainerdata | json}} -->
                     <table id="accreditation-service-export">
                         <tr>
-                            <th [ngStyle]="{'font-size':'14px'}">Application No
+                            <th [ngStyle]="{'font-size':'14px'}">Certificate No
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'id', curSortDir.id)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.id"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.id"></span>
                                 </a>
                             </th>
-                            <th [ngStyle]="{'font-size':'14px'}">Date Submitted
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'created_date', curSortDir.created_date)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.created_date"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.created_date"></span>
+                            <th [ngStyle]="{'font-size':'14px'}">Certificate Type
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'certificate_type', curSortDir.certificate_type)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.certificate_type"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.certificate_type"></span>
                                 </a>
                             </th>
-                            <th width="15%" [ngStyle]="{'font-size':'14px'}">Status
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'accr_status', curSortDir.accr_status)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.accr_status"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.accr_status"></span>
+                            <th width="15%" [ngStyle]="{'font-size':'14px'}">CAB Type
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'cab_type', curSortDir.cab_type)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.cab_type"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.cab_type"></span>
                                 </a>
                             </th>
-                            <th [ngStyle]="{'font-size':'14px'}">CAB Name
-                                <!-- <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'applicantName', curSortDir.applicantName)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.applicantName"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.applicantName"></span>
-                                </a> -->
-                            </th>
-                            <th [ngStyle]="{'font-size':'14px'}">CAB Code</th>
-                            <th [ngStyle]="{'font-size':'14px'}">Scope/Scheme
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'criteria_request', curSortDir.criteria_request)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.criteria_request"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.criteria_request"></span>
+                            <th [ngStyle]="{'font-size':'14px'}">CAB Status
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'cab_status', curSortDir.cab_status)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.cab_status"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.cab_status"></span>
                                 </a>
                             </th>
-                            <th [ngStyle]="{'font-size':'14px'}">Accreditation Type
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'form_meta', curSortDir.form_meta)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.form_meta"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.form_meta"></span>
+                            <th [ngStyle]="{'font-size':'14px'}">Certificate Valid From
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'start_date', curSortDir.start_date)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.start_date"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.start_date"></span>
                                 </a>
                             </th>
-                            <!-- <th [ngStyle]="{'font-size':'14px'}">Payment Status
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'payment_status', curSortDir.payment_status)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.payment_status"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.payment_status"></span>
-                                </a>
-                            </th> -->
-                            <th [ngStyle]="{'font-size':'14px'}">Location
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'location', curSortDir.location)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.location"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.location"></span>
+                            <th [ngStyle]="{'font-size':'14px'}">Certificate Valid To
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'to_date', curSortDir.to_date)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.to_date"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.to_date"></span>
                                 </a>
                             </th>
-                            <th [ngStyle]="{'font-size':'14px'}">Country</th>                            
-                            <th [ngStyle]="{'font-size':'14px'}">Action</th>
+                            <th>Action</th>
                         </tr>
                     <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
                         <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
                             <td class="fnt-clr">
                                 <a href="javascript:void(0)" routerLink="/dashboard/operations/accreditation-service-details/{{item.id}}" title="View" alt="View">
                                 {{item.id}}</a></td>
-                            <td>
-                                {{item.created | date :'dd-MMM-yyyy' }}
+                            <td>                                
                             </td>
-                            <td [ngClass]="{'pending': item.accr_status === 'pending' || item.accr_status == 'application_process', 'under-review':item.accr_status === null || item.accr_status === 'under_review', 'complete': item.accr_status === 'complete', 'draft': item.accr_status === 'draft' }">
-                                <span *ngIf="item.accr_status == 'pending'">Payment Pending</span>
-                                <span *ngIf="item.accr_status == 'application_process'">Application Process</span>
-                                <span *ngIf="item.accr_status == null || item.accr_status == 'under_review'">Under Review</span>
-                                <span *ngIf="item.accr_status == 'complete'">Complete</span>
-                                <span *ngIf="item.accr_status == 'draft'">Draft</span>
+                            <td>                                
                             </td>
-                            <td>
-                                <ng-container *ngIf="item.cabDetails != undefined">
-                                    {{item.cabDetails.cab_name}}
-                                </ng-container>
+                            <td>                                
                             </td>
-                            <td>
-                                <ng-container *ngIf="item.cabDetails != undefined">
-                                    {{item.cabDetails.cab_code}}
-                                </ng-container>
+                            <td>                               
                             </td>
-                            <td>
-                                <ng-container *ngIf="item.form_meta == 'halal_conformity_bodies' || item.form_meta == 'certification_bodies'">
-                                    Not Applicable
-                                </ng-container>
-                                <ng-container *ngIf="item.form_meta != 'halal_conformity_bodies' && item.form_meta != 'certification_bodies'">
-                                    {{item.criteria_request}}
-                                </ng-container>
-                                
-                            </td>
-                            <td>
-                                <span *ngIf="item.form_meta == 'testing_calibration'">Testing Calibration</span>
-                                <span *ngIf="item.form_meta == 'inspection_body'">Inspection Bodies</span>
-                                <span *ngIf="item.form_meta == 'health_care'">Health Care</span>
-                                <span *ngIf="item.form_meta == 'certification_bodies'">Certification Bodies</span>
-                                <span *ngIf="item.form_meta == 'pt_providers'">Proficiency Testing Providers</span>
-                                <span *ngIf="item.form_meta == 'halal_conformity_bodies'">Halal Confirmity Bodies</span>
-                            </td> 
-                            <!-- <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review': (item.payment_status == 'pending' || item.payment_status == null)}">
-                                <span *ngIf="item.payment_status == 'paid'">Paid</span>
-                                <span *ngIf="item.payment_status == 'pending'">Pending</span>
-                                <span *ngIf="item.payment_status == null">Pending</span>
-                            </td>   -->
-                            <td>
-                                {{item.city}},  {{item.country}}
-                            </td>
-                            <td>
-                                {{item.country}}
-                            </td> 
-                            <td class="action fnt-clr">
-                                <ng-container *ngIf="item.form_meta == 'testing_calibration'">
-                                <a href="javascript:void(0)"  alt="Edit" [hidden]="editVisible(item)" routerLink="/dashboard/cab_client/testing-calibration-form/{{item.id}}"><span class="icon-edit"></span></a>
-                                </ng-container>
-                                <ng-container *ngIf="item.form_meta == 'halal_conformity_bodies'">
-                                <a href="javascript:void(0)"   alt="Edit" [hidden]="editVisible(item)" routerLink="/dashboard/cab_client/halal-conformity-form/{{item.id}}"><span class="icon-edit"></span></a>
-                                </ng-container>
-                                <ng-container *ngIf="item.form_meta == 'pt_providers'">
-                                <a href="javascript:void(0)"  alt="Edit" [hidden]="editVisible(item)" routerLink="/dashboard/cab_client/pt-providers-form/{{item.id}}"><span class="icon-edit"></span></a>
-                                </ng-container>
-                                <ng-container *ngIf="item.form_meta == 'inspection_body'">
-                                    <!-- <ng-container *ngIf="item.accr_status == 'draft' || item.paymentDetails ==  "> -->
-                                        <a href="javascript:void(0)" [hidden]="editVisible(item)"  alt="Edit" routerLink="/dashboard/cab_client/inspection-bodies-form/{{item.id}}" (click)="setIB(item.id)"><span class="icon-edit"></span></a>
-                                    <!-- </ng-container> -->
-                                    
-                                </ng-container>
-                                <ng-container *ngIf="item.form_meta == 'health_care' ">
-                                <a href="javascript:void(0)"  alt="Edit" [hidden]="editVisible(item)" routerLink="/dashboard/cab_client/health-care-form/{{item.id}}"><span class="icon-edit"></span></a>
-                                </ng-container>
-                                <ng-container *ngIf="item.form_meta == 'certification_bodies'">
-                                <a href="javascript:void(0)"  alt="Edit" [hidden]="editVisible(item)" routerLink="/dashboard/cab_client/certification-bodies-form/{{item.id}}"><span class="icon-edit"></span></a>
-                                </ng-container>
-                                <!-- <a href="javascript:void(0)" (click)="open(courseVoucher, item.id)" alt="Upload Proforma Invoice" title="Upload Proforma Invoice"><span class="icon-document-pen"></span></a> -->
-                                <!-- <ng-container *ngIf="item.training_course_type === 'custom_course'" class="action fnt-clr">
-                                    <a href="javascript:void(0)" (click)="openView(courseView, item.id)" title="View" alt="View"><span class="icon-document"></span></a>
-                                    <a routerLink="/dashboard/operations/training-apply/{{item.id}}" title="Edit" alt="Edit"><span class="icon-edit"></span></a>
-                                    <a href="javascript:void(0)" (click)="openDelete(item.id)" title="Delete" alt="Delete"><span class="icon-bin"></span></a>
-                                </ng-container>
-                                <ng-container *ngIf="item.training_course_type === 'public_course'"  class="action fnt-clr">
-                                    <a href="javascript:void(0)" (click)="openView(courseView, item.id)" title="View" alt="View">
-                                        <span class="icon-document"></span></a>
-                                    <a href="javascript:void(0)" title="Download" alt="Download"><span class="icon-download-diff"></span></a>
-                                </ng-container>
-                                <ng-container *ngIf="item.payment_status === 'voucher_sent'">
-                                    <a href="javascript:void(0)" (click)="open(courseVoucher, item.id)" title="Send Voucher" alt="Send Voucher">
-                                        <span class="icon-wallet"></span>
-                                    </a>
-                                </ng-container> -->
+                            <td>                                
+                            </td>                            
+                            <td class="action fnt-clr">                                
+                                <a href="javascript:void(0)"  alt="View">
+                                    <span class="icon-eye"></span>
+                                </a>
+                                <a href="javascript:void(0)"  alt="View">
+                                    <span class="icon-download"></span>
+                                </a>
                             </td>
                         </tr>
                     </ng-container>
                     <ng-container *ngIf="dataLoad && trainerdata.length == 0">
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
                                 No Records
                             </td>
                         </tr>
                     </ng-container>
                     <ng-container *ngIf="!dataLoad">
                         <tr>
-                            <td colspan="7" align="center">
+                            <td colspan="6" align="center">
                                 Loading...
                             </td>
                         </tr>

@@ -95,7 +95,7 @@ export class AccountsComponent implements OnInit {
           let elem: any = myClasses[i]
             console.log("@Elem: ", elem);
             elem.style.display = 'none';
-            if(getIdValue == 'cab_name' || getIdValue == 'cab_code' || getIdValue == 'application_number'  || getIdValue == 'voucher_no'){
+            if(getIdValue == 'cab_name' || getIdValue == 'cab_code' || getIdValue == 'id'  || getIdValue == 'voucher_no'){
                 let getElementId = document.getElementById('textType');
                 getElementId.style.display = 'block';
             }else{
@@ -149,7 +149,7 @@ export class AccountsComponent implements OnInit {
   }
 
   filterSearchSubmit(){
-    this.loader = false;
+    
     let postObject: any = {};
     // console.log("Search click....", this.applicationNo, " -- ", this.selectAccrTypeValue, " == ", this.paymentStatusValue);
     let postData: any = new FormData();
@@ -157,9 +157,20 @@ export class AccountsComponent implements OnInit {
       // if(this.eventTitle != '' && this.eventTitle != null){
       //   postData.append('cab_name', this.eventTitle)
       // }
+      this.loader = false;
       let appendKey = this.searchValue;
        if(this.searchValue != ''  && (this.searchText != '' || this.searchText != null)){
-        postData.append(appendKey, this.searchText);
+          if(this.searchValue === 'voucher_date'){
+              let dtDate: any = this.searchText;
+              console.log(">>>Date: ", dtData);
+              var dtData = dtDate._i;
+            var year = dtData.year;
+            var month = dtData.month + 1;
+            var date = dtData.date;
+            let dtFormat = year + "-" + month + "-" + date;
+            this.searchText = dtFormat;
+          }
+          postData.append(appendKey, this.searchText);
        }
         
         // console.log(">>>POST: ", JSON.stringify(postData)); 
@@ -169,7 +180,7 @@ export class AccountsComponent implements OnInit {
           .subscribe(
             result => {
               let data: any = result;
-                console.log("search results: ", result);
+                //console.log("search results: ", result);
                 this.loader = true;
                 if(data != undefined && typeof data === 'object' && data.records.length > 0){
                     // console.log(">>> Data: ", data.records);
@@ -190,19 +201,25 @@ export class AccountsComponent implements OnInit {
                         getDetails['appNo'] = allRecords[key].id;
                         getDetails['createdDate'] = allRecords[key].created;
                         getDetails['cabName'] = allRecords[key].cabDetails.cab_name;
+                        getDetails['cabCode'] = allRecords[key].cabDetails.cab_code;
                         getDetails['appType'] = allRecords[key].form_meta;
                         getDetails['totalPayment'] = allRecords[key].paymentDetails.length;
+                        getDetails['vouncherNumb'] = (allRecords[key].paymentDetails != null && typeof allRecords[key].paymentDetails === 'object' && allRecords[key].paymentDetails.voucher_no != null) ? allRecords[key].paymentDetails.voucher_no : 'NA';
+                        getDetails['appAmount'] = (allRecords[key].paymentDetails != null && typeof allRecords[key].paymentDetails === 'object' && allRecords[key].paymentDetails.amount != null) ? allRecords[key].paymentDetails.amount : 0;
+                        getDetails['payAmount'] = (allRecords[key].paymentDetails != null && typeof allRecords[key].paymentDetails === 'object' && allRecords[key].paymentDetails.amount != null) ? allRecords[key].paymentDetails.amount : 0;
                         
                         getDetails['prelim_visit'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'prelim_visit');
                         getDetails['application_fees'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'application_fees');
                         getDetails['document_review'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'document_review');
                         getDetails['assessment'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'assessment');
                         getDetails['certification'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'certification');
+                        console.log("@...", getDetails);
 
                         this.accountsData.push(getDetails);
                       }
-                    this.pageTotal = data.records.length;
+                    this.pageTotal = this.accountsData.length;
                 });
+                console.log(">>>.Accounts Data: ", this.accountsData);
               }
               if(data != undefined && typeof data === 'object' && data.records.length == 0){
                 this.accountsData = data.records;
@@ -228,7 +245,7 @@ export class AccountsComponent implements OnInit {
           this.loader = true;
           let data: any = result;
           // let dataRec: any=[];
-          // console.log('loading...', data.records);
+          console.log('loading...', data.records.length);
           
           var allRecords = [];
           allRecords = data.records
@@ -242,6 +259,9 @@ export class AccountsComponent implements OnInit {
               getDetails['cabCode'] = allRecords[key].cabDetails.cab_code;
               getDetails['appType'] = allRecords[key].form_meta;
               getDetails['totalPayment'] = allRecords[key].paymentDetails.length;
+              getDetails['vouncherNumb'] = (allRecords[key].paymentDetails != null && typeof allRecords[key].paymentDetails === 'object' && allRecords[key].paymentDetails[0].voucher_no != null) ? allRecords[key].paymentDetails[0].voucher_no : 'NA';
+              getDetails['appAmount'] = (allRecords[key].paymentDetails != null && typeof allRecords[key].paymentDetails === 'object' && allRecords[key].paymentDetails[0].amount != null) ? allRecords[key].paymentDetails[0].amount : 0;
+              getDetails['payAmount'] = (allRecords[key].paymentDetails != null && typeof allRecords[key].paymentDetails === 'object' && allRecords[key].paymentDetails[0].amount != null) ? allRecords[key].paymentDetails[0].amount : 0;
               
               getDetails['prelim_visit'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'prelim_visit');
               getDetails['application_fees'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'application_fees');

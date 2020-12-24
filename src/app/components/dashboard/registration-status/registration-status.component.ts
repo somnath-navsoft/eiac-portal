@@ -93,7 +93,7 @@ export class RegistrationStatusComponent implements OnInit {
           let elem: any = myClasses[i]
           console.log("@Elem: ", elem);
             elem.style.display = 'none';
-            if(getIdValue == 'cab_name' || getIdValue == 'cab_code' || getIdValue == 'application_number') {
+            if(getIdValue == 'cab_name' || getIdValue == 'cab_code' || getIdValue == 'id') {
                 let getElementId = document.getElementById('textType');
                 getElementId.style.display = 'block';
             }else{
