@@ -9,8 +9,113 @@
                         <h3>Accounts</h3> 
                     </div>
                 </div>
+                <div class="col-md-4"> 
+                    <div class="tbl-filter-data">
+                        <ul>
+                            <li>
+                                <div class="filter">
+                                    <!-- <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a> -->
+                                    <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="accounts">
+            <!-- <div class="row m-0">
+                <ng-container *ngIf="userType == 'operations'">
+                    <div class="col-md-4">
+                        <div class="user-details">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Export As</mat-label>                              
+                                <mat-select placeholder="Export" (selectionChange)="exportFile()"
+                                [ngModelOptions]="{standalone: true}" [(ngModel)]="exportAs" required>
+                                    <mat-option value="csv">Export as CSV</mat-option>
+                                    <mat-option value="xls">Export as XLS</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <div class="col-md-4">
+                    <div class="user-details">
+                        <mat-form-field class="cab-data">
+                            <mat-label>Show</mat-label>                              
+                            <mat-select placeholder="Show" (selectionChange)="showData()"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="show_data" required>
+                                <mat-option value="25">25</mat-option>
+                                <mat-option value="50">50</mat-option>
+                                <mat-option value="75">75</mat-option>
+                                <mat-option value="100">100</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div> -->
+
+            <ng-container class="tbl-filter-data">
+                <div class="filter-dash filter_certification">
+                    <div class="row m-0">
+                        <div class="col-md-4">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Searchable Column</mat-label> 
+                                    <mat-select placeholder="Select" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue"
+                                      (selectionChange)="changeFilter($event)">
+                                        <mat-option value="applicant">CAB Name</mat-option>
+                                        <mat-option value="accr_status">Payment Status</mat-option>
+                                        <mat-option value="form_meta">Application Type</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div> 
+                        </div>
+
+                        <div class="col-md-4 slectType" id="textType">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                <mat-label>Search Text</mat-label>
+                                <input type="text" matInput [(ngModel)]="searchText" placeholder="Search Text">
+                                </mat-form-field>
+                            </div>                            
+                        </div>
+                        <div class="col-md-4 slectType" id="form_meta" [ngStyle]="{'display': 'none'}">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Accreditation Type</mat-label>                              
+                                    <mat-select placeholder="Acreditation Type" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
+                                        <mat-option *ngFor="let item of selectAccrType;" [value]="item.value">{{item.title}}</mat-option>                                        
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-md-4 slectType" id="accr_status" [ngStyle]="{'display': 'none'}">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Payment Status</mat-label>                              
+                                    <mat-select placeholder="Acreditation Status" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
+                                        <mat-option *ngFor="let item of selectPaymentStatus;" [value]="item.value">{{item.title}}</mat-option>                                        
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="row m-0">
+                            <div class="col-md-12"> 
+                                <div class="filter-search">
+                                    <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
+                                    <!-- <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a> -->
+                                    <ng-container *ngIf="userType == 'operations'">
+                                    <a href="javascript:void(0)" (click)="exportFile()" class="space-left">EXPORT</a>
+                                    </ng-container>
+                                </div>         
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+            </ng-container>
+
+            <div class="accounts mt-3">
                 <table class="accounts_inner_tab">
                     <thead>
                         <tr class="main_acc_tab">
@@ -24,6 +129,10 @@
                             <th colspan="3">Assessment</th>
                             <th colspan="3">Certification</th>
                         </tr>
+                    </thead>
+                </table>
+                <table class="accounts_inner_tab" id="accreditation-service-export">
+                    <thead>
                         <tr>
                             <th>App. No.</th>
                             <th>Date</th>
@@ -46,8 +155,7 @@
                             <th>Status</th>
                             <th></th>
                         </tr>
-                    </thead>
-                    
+                    </thead>                    
                     <tbody>
                         <ng-container *ngIf="accountsData.length > 0">
                             <tr *ngFor="let item of accountsData | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i = index;">
@@ -142,7 +250,7 @@
                 </table>
 
                 <ng-container *ngIf="accountsData != undefined && accountsData.length > 5" >
-                    <pagination-controls (pageChange)="pageCurrentNumber = $event"></pagination-controls>
+                    <pagination-controls (click)="paginationReset()" (pageChange)="pageCurrentNumber = $event"></pagination-controls>
                 </ng-container>
 
             </div>

@@ -10,7 +10,7 @@ import { RecaptchaComponent } from 'ng-recaptcha';
 declare let paypal: any;
 import { TrainerService } from '../../../../../services/trainer.service';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
-import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
+import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer'; 
 import { DomSanitizer } from '@angular/platform-browser';
 import {CustomModalComponent} from '../../../../utility/custom-modal/custom-modal.component';
 import { find } from 'rxjs/operators';
@@ -617,7 +617,7 @@ export class TestingCalibrationFormComponent implements OnInit {
 }
 
 onChangeScopeOption(getValues: any,secIndex: any,familyId: any, lineIndex: number, columnIndex: number, type?:string) {
-  ////console.log('@GET Options: ', getValues, " :: ",  lineIndex, " -- ", type, " -- ", columnIndex, " --sec--  ", secIndex);
+  console.log('@GET Options: ', getValues, " :: ",  lineIndex, " -- ", type, " -- ", columnIndex, " --sec--  ", secIndex);
 
   let selectValue: any;
   if(type === undefined){
@@ -646,7 +646,7 @@ onChangeScopeOption(getValues: any,secIndex: any,familyId: any, lineIndex: numbe
   this.Service.put(url,jsonReq)
   .subscribe(
     record => {
-        //console.log("Load scope SErvice Data: ", secIndex, " -- ",familyId, " -- ",  this.dynamicScopeFieldColumns,  " - ", this.dynamicScopeModel);
+        console.log("Load scope SErvice Data: ", secIndex, " -- ",familyId, " -- ",  this.dynamicScopeFieldColumns,  " - ", this.dynamicScopeModel);
         //get through array find key column
         if(record['scopeValue'].length == undefined){
           record['scopeValue'] = [];
@@ -655,7 +655,7 @@ onChangeScopeOption(getValues: any,secIndex: any,familyId: any, lineIndex: numbe
         let nextColumnIndex = theColumnIndex + 1;
         let totSecColumn    = this.dynamicScopeFieldColumns[secIndex][familyId].length;//this.dynamicScopeFieldColumns[secIndex].length;
         //////////console.log(">>>Column Data: ", theColumnIndex, " -- ", nextColumnIndex, " -- ", totSecColumn, " -- ", );
-        //console.log("select scope values: ", familyId,  " --- ", record['scopeValue'], " :: ", this.dynamicScopeFieldType[secIndex], " len: ", this.dynamicScopeFieldColumns);
+        console.log("select scope values: ", familyId,  " --- ", record['scopeValue'], " :: ", this.dynamicScopeFieldType[secIndex], " len: ", this.dynamicScopeFieldColumns);
 
         //Auto selected for one item dropdown
         if(record['scopeValue'].length > 0 && record['scopeValue'].length == 1){
@@ -723,9 +723,9 @@ onChangeScopeOption(getValues: any,secIndex: any,familyId: any, lineIndex: numbe
 }
 
 getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
-  ////console.log("select Criteris: ", value, " -- ", secInd, " == ", typeFamily, " -- TypeTitle: ", typeTitle);
+  console.log("select Criteris: ", value, " -- ", secInd, " == ", typeFamily, " -- TypeTitle: ", typeTitle);
   this.scopeDataLoad = true;
-  if(value != undefined && value > 0){
+  if(value != undefined){
      //Get fullscope
      //let apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.criteriaIdByScope + value;
      //this.Service.apiServerUrl+"/"
@@ -735,8 +735,8 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
      if(typeFamily == undefined){
       apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testing_cal_form_basic_data+"?scheme="+value;
      }
-     if(typeFamily != undefined && typeFamily != ''){
-      apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testing_cal_form_basic_data+"?scheme="+value+"&family="+typeFamily;
+     if(typeFamily != undefined && typeof typeFamily === 'object'){
+      apiURL = this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testing_cal_form_basic_data+"?scheme="+value+"&family="+typeFamily.id;
      }
      //this.constant.API_ENDPOINT.criteriaScope + value;
      ////console.log("API: ", apiURL);
@@ -760,9 +760,7 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
             this.dynamicScopeFieldColumns[value] = [];
             this.dynamicScopeFieldType[value] = [];
             this.dynamicScopeModel[value] = {};
-          }
-          
-          
+          }          
 
           if(typeFamily == undefined){
             console.log(">>>> type  nor found: ", dataScope.scopeFamily);
@@ -940,7 +938,7 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
               //   this.scopeFamilyNull = false;
               // }
           }else{
-            console.log(">>>> type found");
+            console.log(">>>> type found : ", typeFamily);
             // type found
             let getTypeData: any;
             let familyTitle: string = '';
@@ -961,7 +959,7 @@ getCriteria(value, secInd: any, typeFamily?: any, typeTitle?: any){
                           if(familyData){
                             familyName = familyData.title.toString();
                             familyTitle = familyData.title.toString().toLowerCase().split(" ").join('_'); ;
-                            familyId = typeFamily;
+                            familyId = typeFamily.id;// typeFamily;
                           }
 
                           console.log(">>> Family Name: ", familyName);

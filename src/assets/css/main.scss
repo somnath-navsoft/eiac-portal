@@ -875,8 +875,8 @@ a:hover { text-decoration: none; }
 .main-status span { font-size: 15px; font-family: 'Dubai Regular'; color: #B19782; }
 
 .filter-dash { padding-top: 40px; position:relative; }
-.filter-dash .close-bttn { position: absolute; top: 30px; right: 20px; }
-.filter-dash.filter_certification .close-bttn { top: inherit; }
+.filter-dash .close-bttn { position: absolute; top: 30px; right: 20px; cursor: pointer; }
+.filter-dash.filter_certification .close-bttn { top: 0; }
 .sub-msg-dash { font-size: 16px; font-family: 'Dubai Medium'; color: #363839; margin: 0; }
 .dash-msg { padding: 20px 10px; }
 .dash-system-table table { width: 100%; border-collapse: collapse; border: 1px solid #B9B9B9; border-right: 0; border-left: 0; }
@@ -898,8 +898,9 @@ a:hover { text-decoration: none; }
 .fileupload input { width: 100% !important; }
 // .view_file.matupload .fileupload { right: 30px; }
 .view_file.matupload .fileupload { right: 0; }
-.filter-search { display: flex; justify-content:  space-between; float: right; }
-.search-fil { margin-right: 20px; }
+.filter-search { display: flex; justify-content:  space-between; float: right; height: 100%; align-items: center; }
+.search-fil { margin-right: 7px; }
+.space-left { margin-left: 25px; }
 .filter-search a { background: #B54150; color: #fff; font-size: 15px; font-family: 'Dubai Regular'; padding: 5px 15px; border-radius: 5px; }
 
 //==================OTHER DASHBOARDS==================//

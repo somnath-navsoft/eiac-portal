@@ -28,13 +28,50 @@ export class AccountDetailsComponent implements OnInit {
   pageData: any = {};
   pageTotal: number = 0;
 
-  exportAsConfig: ExportAsConfig = {
-    type: 'pdf', // the type you want to download
-    elementIdOrContent: 'excel-table', // the id of html/table element
-  }
+  selectType: any ='';
+  exportAsConfig: ExportAsConfig;
+
+  // exportAsConfig: ExportAsConfig = {
+  //   type: 'pdf', // the type you want to download
+  //   elementIdOrContent: 'excel-table', // the id of html/table element
+  // }
   
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private exportAsService: ExportAsService) { }
+
+
+  selectionType(){
+    if(this.selectType != ''){
+      this.exportAsConfig = {
+        type: this.selectType.toString(), // the type you want to download
+        elementIdOrContent: 'excel-table', // the id of html/table element
+      }
+    }
+  }
+
+  downloadDoc(){
+      if(this.selectType != ''){
+          let filename: string;
+          this.exportAsConfig = {
+            type: this.selectType.toString(), // the type you want to download
+            elementIdOrContent: 'excel-table', // the id of html/table element
+          }
+         if(this.selectType == 'pdf'){
+          filename = "ExportToPdf";
+          this.export(filename);
+         }
+         if(this.selectType == 'csv'){
+          filename = "ExportToCsv";
+          this.export(filename);
+         }
+         if(this.selectType == 'xls'){
+          filename = "ExportToXls";
+          this.export(filename);
+         }
+      }else{
+        this._toaster.warning("Please select a valid type",'');
+      }
+  }
 
   ngOnInit() {
     this.fileName = 'acounts.xlsx'
@@ -85,11 +122,14 @@ export class AccountDetailsComponent implements OnInit {
     XLSX.writeFile(wb, this.fileName);
   }
 
-  export() {
+  export(fileName: string) {
     // download the file using old school javascript method
-    this.exportAsService.save(this.exportAsConfig, 'My File Name').subscribe(() => {
+    this.exportAsService.save(this.exportAsConfig, fileName.toString()).subscribe(() => {
       // save started
     });
+    // this.exportAsService.save(this.exportAsConfig, 'My File Name').subscribe(() => {
+    //   // save started
+    // });
     // get the data as base64 or json object for json type - this will be helpful in ionic or SSR
     // this.exportAsService.get(this.exportAsConfig).subscribe(content => {
     //   console.log(content);

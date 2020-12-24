@@ -6,6 +6,7 @@ import { Constants } from '../../../../services/constant.service';
 import { ToastrService, Overlay, OverlayContainer } from 'ngx-toastr';
 import {CustomModalComponent} from '../../../utility/custom-modal/custom-modal.component';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
 @Component({
   selector: 'app-operations-training-service-list',
@@ -36,9 +37,25 @@ export class OperationsTrainingServiceListComponent implements OnInit {
   dataLoad: boolean = false;
   public minDate;
   voucherIndex:any;
+  exportAsConfig: ExportAsConfig;
+  exportAs:any;
+  advSearch: boolean = false;
+
+  selectTrainingType: any =[];
+  selectCustomCourses:any[] = [];
+
+  
+  applicationNo: string = '' || null;
+  selectTrainingTypeValue: string = '' || null;
+  paymentStatusValue: string = '' || null;
+  show_data:any;
+  searchValue:any;
+  searchText:any;
+  selectAccrType:any = [];
+  selectStatus:any = [];
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
-    private _trainerService: TrainerService, private modalService: NgbModal) {
+    private _trainerService: TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) {
       this.modalOptions = {
         backdrop:'static',
         backdropClass:'customBackdrop'
@@ -56,6 +73,134 @@ export class OperationsTrainingServiceListComponent implements OnInit {
     this.curSortDir['applicant']          = false;
     // var cdate = new Date();
     this.minDate = new Date();
+    this.selectTrainingType = [{'title':'In Premise', value: 'inprimise'},{'title':'Public Training', value: 'public_training'}];
+    //this.selectCustomCourses = [{'value':'In Premise'},{'value':'Public Training'}];
+    
+    //Assign Search Type
+    this.selectAccrType = [ 
+      {title: 'In Premise', value:'inprimise'},
+      {title: 'Public Training', value:'public_training'},
+      ];
+  
+    //Assign Search Type
+    this.selectStatus = [ 
+      {title: 'Application Process', value:'application_process'},
+      {title: 'Under Review	', value:'under_review'},
+      {title: 'Complete', value:'complete'},
+      {title: 'Pending', value:'pending'},
+      {title: 'Draft', value:'draft'}
+      ];
+  }
+
+  showData() {
+    //this.pageLimit = this.show_data;
+    // this.loadPageData();
+    this.pageLimit = this.show_data;
+    this.pageCurrentNumber = 1;
+    this.trainerdata.slice(0, this.show_data);
+  }
+
+  paginationReset() {
+    this.exportAs = {};
+  }
+  
+  exportFile() {
+    // console.log(this.exportAs);
+    this.exportAsConfig = {
+      type: 'csv', // the type you want to download
+      elementIdOrContent: 'accreditation-service-export', // the id of html/table element
+    }
+    // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
+    this.exportAsService.save(this.exportAsConfig, 'report').subscribe(() => {
+      // save started
+    });
+  }
+  
+  filterSearchSec(){
+    this.advSearch = !this.advSearch
+    // console.log(this.advSearch);
+    this.filterSearchReset();
+  }
+
+  filterSearchReset(type?: string){
+    //Reset serach
+    this.applicationNo = '' || null;
+    this.selectTrainingTypeValue = '' || null;
+    this.paymentStatusValue = '' || null;
+    this.show_data = this.pageLimit = 10;
+    this.exportAs = null;
+    if(type != undefined && type != ''){
+      this.loadPageData();
+    }
+  }
+  
+  isValidSearch(){
+    if((this.searchValue == '' || this.searchValue == null) || (this.searchText == '' || this.searchText == null)){
+      return false;
+    }
+    return true;
+  }
+
+  searchableColumn() {
+    this.searchText = '';
+    var myClasses = document.querySelectorAll('.field_show'),
+          i = 0,
+          l = myClasses.length;
+       for (i; i < l; i++) {
+          let elem: any = myClasses[i]
+          elem.style.display = 'none';
+      }
+    if(this.searchValue == 'cab_name') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'training_form_type') {
+      document.getElementById('accreditation_type').style.display = 'block';
+    }else if(this.searchValue == 'application_status') {
+      document.getElementById('status').style.display = 'block';
+    }else if(this.searchValue == 'course_title') {
+      document.getElementById('applicant').style.display = 'block';
+    }
+  }
+
+  filterSearchSubmit(){
+     let postObject: any = new FormData();
+     //console.log("Search click....");
+    //  let postData: any = new FormData();
+     if(this.isValidSearch()){
+        var appendKey = this.searchValue;
+        if(this.searchValue != '' && this.searchValue != null && this.searchText != '' && this.searchText != null){
+        postObject.append(appendKey, this.searchText);
+        }
+        
+        console.log(">>>POST: ", postObject); 
+
+        if(postObject){
+          this.loader = false;
+          this.subscriptions.push(this._trainerService.searchTrainingServList((postObject))
+          .subscribe(
+             result => {
+               this.loader = true;
+               let data: any = result;
+                ////console.log("search results: ", result);
+                if(data != undefined && typeof data === 'object' && data.records.length > 0){
+                    console.log(">>> Data: ", data.records);
+                    this.pageCurrentNumber = 1;
+                    this.dataLoad = true;
+                    this.trainerdata = data.records;
+                    this.pageTotal = data.records.length;
+                }
+                if(data != undefined && typeof data === 'object' && data.records.length == 0){
+                  this.trainerdata = data.records;
+                  this.pageTotal = data.records.length;
+                }
+             }
+            )
+          )
+        }
+
+     }else{
+      //this._service.openMessageDialog('Please select search fields properly.', "Validation Error");
+      this._toaster.warning("Please select search fields properly",'')
+     }     
   }
 
   setexDate(date, index){
@@ -173,18 +318,16 @@ export class OperationsTrainingServiceListComponent implements OnInit {
          }
        }  
        if(sortBy == 'applicant'){
-         this.curSortDir.applicant = !sortDir;
-         //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
-         if(this.curSortDir.applicant){
-           let array = data.slice().sort((a, b) => (a.applicant > b.applicant) ? 1 : -1)
-           this.trainerdata = array;
-           //console.log("after:: ", array, " :: ", this.trainerdata);
-         }
-         if(!this.curSortDir.applicant){
-           let array = data.slice().sort((a, b) => (a.applicant < b.applicant) ? 1 : -1)
-           this.trainerdata = array;
-         }
-       }        
+        this.curSortDir.applicant = !sortDir;
+        if(this.curSortDir.applicant){
+          let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name > b.cabDetails[0].cab_name) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.applicant){
+          let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name < b.cabDetails[0].cab_name) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }        
     }
   }
 

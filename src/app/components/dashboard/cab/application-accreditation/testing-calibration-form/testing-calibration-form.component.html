@@ -18,6 +18,7 @@
                         <div class="col-md-12">
                             <div class="user-steps">
                                 <!-- (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}" -->
+                                <!--  (click)="Service.headerStepMove(item.title, headerSteps,'menu')"  -->
                                 <ng-container *ngFor="let item of headerSteps; let k=index;">
                                     <div class="user-next" [ngClass]="(item.activeClass != '') ? item.activeClass : ''">
                                         <div class="usernext-icon">
@@ -26,7 +27,7 @@
                                         <!--  -->
                                         <div class="user-details-pending" 
                                         id="course_header" >
-                                            <span [innerHTML]="item.desc" (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}"></span>
+                                            <span [innerHTML]="item.desc" [ngStyle]="{'cursor':'pointer'}"></span>
                                         </div>
                                     </div>
                                     <div class="next-step" *ngIf="k < headerSteps.length-1">
@@ -1038,10 +1039,7 @@
                                                 </div>
                                                     <ng-container *ngFor="let itemF of typeFamily.scopeFamilyRows; let k = index;">  
                                                         <div class="row mt-3">
-                                                            <!-- @{{typeFamily.id}} == {{typeFamily.scopeFamilyRows[k].id}} -->
                                                             <div class="col-md-9 col-sm-9">
-                                                                <!-- @{{typeFamily.scopeFamilyRows[k].id}} -->
-                                                                <!-- @index - {{k}} -- @{{typeFamily.scopeFamilyRows[k].id}} -->
                                                                 <mat-form-field class="cab-data">
                                                                     
                                                                     <mat-label>Scope Family</mat-label>
@@ -1060,9 +1058,7 @@
                                                             </div>
                                                         </div> 
                                                     </ng-container>
-                                                    <!-- {{typeFamily.scopeRows |  json}} -->
                                             </ng-container>
-                                            <!-- [ngStyle]="{'display':showScopeTable}" -->
                                         <div class="row" >
                                             <div class="col-md-12 col-sm-12">  
                                             <!-- <ng-container  *ngIf="!typeFamily.isFamily">

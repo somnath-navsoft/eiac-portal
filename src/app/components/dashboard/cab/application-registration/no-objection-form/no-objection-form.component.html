@@ -1161,14 +1161,14 @@
                                                         I, the undersigned , confirm that I will not engage in any activity of a Conformity Assessment Body prior to obtaining a permit to act form from Emirates International Accreditation Centre, within six months from the date of issuance the Professional Trade License
                                                         Please read Law No. 2 for 2010  carefully to ensure that you understand the policy before signing this document.
                                                     </span>
-                                                    <!-- {{step6Data.authorization_confirm1}} -->
-                                                    <!-- (change)="authorizeCheckCount($event)" -->
-                                                    <!-- <mat-checkbox   name="authorization_confirm1" 
-                                                    [(ngModel)]="step6Data.authorization_confirm1" >
-                                                    I have read and been informed about the content &clauses of Law No. 2 for 2010.I have received a copy of the Law and agree to abide by the content & clauses as a Conformity Assessment Body working in the emirate of Dubai.
-I, the undersigned , confirm that I will not engage in any activity of a Conformity Assessment Body prior to obtaining a permit to act form from Emirates International Accreditation Centre, within six months from the date of issuance the Professional Trade License
-Please read Law No. 2 for 2010  carefully to ensure that you understand the policy before signing this document.
-                                                </mat-checkbox> -->
+                                                </li>
+                                                <li class="mt-4">
+                                                    <span class="auth_content">
+                                                    <mat-checkbox   name="authorization_confirm1" 
+                                                    [(ngModel)]="step6Data.authorization_confirm1">
+                                                    I have read and agree the above declrations.
+                                                    </mat-checkbox>
+                                                    </span>
                                                 </li>
                                             </ul>
                                             <p class="error" *ngIf="!readTermsCond  && isApplicationSubmitted == true">Read the Terms and Conditions</p>
