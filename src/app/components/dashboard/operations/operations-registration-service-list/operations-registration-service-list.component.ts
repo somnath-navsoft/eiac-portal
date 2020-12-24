@@ -53,6 +53,7 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
   searchText:any;
   selectAccrType:any = [];
   selectStatus:any = [];
+  getCountryLists:any = [];
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) { 
@@ -81,13 +82,24 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
       ];
   
     //Assign Search Type
-    this.selectStatus = [ 
+    this.selectStatus =  [
+      {title: 'Payment Pending', value:'pending'},
+      {title: 'Pending', value:'payment_pending'},
       {title: 'Application Process', value:'application_process'},
-      {title: 'Under Review	', value:'under_review'},
+      {title: 'Under Review', value:'under_review'},
+      {title: 'Under Process', value:'under_process'},
       {title: 'Complete', value:'complete'},
-      {title: 'Pending', value:'pending'},
       {title: 'Draft', value:'draft'}
-      ];
+    ];
+      this.loadCountryStateCity();
+  }
+
+  loadCountryStateCity = async() => {
+    let countryList =  this._service.getCountry();
+    await countryList.subscribe(record => {
+      // ////console.log(record,'record');
+      this.getCountryLists = record['countries'];
+    });
   }
 
   filterSearchReset(type?: string){
@@ -113,6 +125,10 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
       }
     if(this.searchValue == 'cab_name') {
       document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'cab_code') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'country') {
+      document.getElementById('country').style.display = 'block';
     }else if(this.searchValue == 'form_meta') {
       document.getElementById('accreditation_type').style.display = 'block';
     }else if(this.searchValue == 'application_status') {

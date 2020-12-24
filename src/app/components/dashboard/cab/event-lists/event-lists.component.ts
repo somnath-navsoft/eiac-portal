@@ -45,6 +45,9 @@ export class EventListsComponent implements OnInit {
   searchText:any;
   selectStatus:any = [];
   searchValue:any;
+  trainerEvent:any;
+  targetAudarr:any = [];
+  tutorListarr:any = [];
   
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService, public _trainerService:TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) { }
 
@@ -62,6 +65,22 @@ export class EventListsComponent implements OnInit {
     this.participantsTempList = [{'name':'Test test','email':'test@test.com','phone':89898989},{'name':'Test2 test2','email':'test2@test2.com','phone':56756756657},{'name':'Test3 test','email':'test3@test3.com','phone':787686778}];
 
     this.loadPageData();
+    this.loadTargetAud();
+  }
+
+  loadTargetAud() {
+    this.subscriptions.push(this._trainerService.searchTargetAud()
+      .subscribe(
+        result => {
+          // console.log(result,'cvbcbvvcbvb');
+          this.targetAudarr = result['records']['target_aud'];
+          this.tutorListarr = result['records']['tutor_list'];
+        },
+        ()=>{
+          // console.log('comp...');
+        }
+      )          
+    )
   }
 
   searchableColumn() {
@@ -73,13 +92,19 @@ export class EventListsComponent implements OnInit {
           let elem: any = myClasses[i]
           elem.style.display = 'none';
       }
-    if(this.searchValue == 'course') {
+    if(this.searchValue == 'course_title') {
       document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'targetAudId') {
+      document.getElementById('targetAudId').style.display = 'block';
+    }else if(this.searchValue == 'event_type') {
+      document.getElementById('event_type').style.display = 'block';
+    }else if(this.searchValue == 'event_date') {
+      document.getElementById('event_date').style.display = 'block';
+    }else if(this.searchValue == 'tutor_id') {
+      document.getElementById('tutor_id').style.display = 'block';
     }else if(this.searchValue == 'capacity') {
       document.getElementById('applicant').style.display = 'block';
-    }else if(this.searchValue == 'tutor') {
-      document.getElementById('applicant').style.display = 'block';
-    }else if(this.searchValue == 'location') {
+    }else if(this.searchValue == 'training_days') {
       document.getElementById('applicant').style.display = 'block';
     }
   }
@@ -133,7 +158,21 @@ export class EventListsComponent implements OnInit {
       //  }
       var appendKey = this.searchValue;
        if(this.searchValue != '' && this.searchValue != null && this.searchText != '' && this.searchText != null){
-        postObject.append(appendKey, this.searchText);
+
+        if(this.searchValue == 'event_date') {
+          let dtFormat: string = '';
+
+          var dtData = this.searchText._i;
+          var year = dtData.year;
+          var month = dtData.month + 1;
+          var date = dtData.date;
+          dtFormat = year + "-" + month + "-" + date;
+
+          postObject.append(appendKey, dtFormat);
+        }else{
+          postObject.append(appendKey, this.searchText);
+        }
+        
        }
 
         if(postObject){
@@ -211,11 +250,11 @@ export class EventListsComponent implements OnInit {
           //console.log(">>>Enter type...");
           this.curSortDir.course = !sortDir;
           if(this.curSortDir.course){
-            let array = data.slice().sort((a, b) => (a.course > b.course) ? 1 : -1)
+            let array = data.slice().sort((a, b) => (a.course.course > b.course.course) ? 1 : -1)
             this.eventData = array;
           }
           if(!this.curSortDir.course){
-            let array = data.slice().sort((a, b) => (a.course < b.course) ? 1 : -1)
+            let array = data.slice().sort((a, b) => (a.course.course < b.course.course) ? 1 : -1)
             this.eventData = array;
             //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
           }
@@ -347,10 +386,11 @@ export class EventListsComponent implements OnInit {
     // }
     // this.paymentReceiptValidation = null;
     this.participantsList = newObj.participants != null && newObj.participants.length > 0 ? newObj.participants : [];
-    this.detailsCourse = newObj.course;
+    this.detailsCourse = newObj.course.course;
 
     this.detailsDate = newObj.eventDates != null && newObj.eventDates.length > 0 ? newObj.eventDates[0].event_date : '';
     this.noOfParticipants = newObj.participants != null && newObj.participants.length > 0 ? newObj.participants.length : 0;
+    this.trainerEvent = newObj.tutor != null && newObj.tutor ? newObj.tutor.name : 'N/A';
 
     this.modalService.open(content, this.modalOptions).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;

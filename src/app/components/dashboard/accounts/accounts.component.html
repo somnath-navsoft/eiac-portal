@@ -77,12 +77,11 @@
                         <div class="col-md-4 slectType" id="textType">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
-                                <mat-label>Search Text</mat-label>
-                                <input type="text" matInput [(ngModel)]="searchText" placeholder="Search Text">
+                                <mat-label>Search Text</mat-label> 
                                 <ng-container *ngIf="searchValue !='id' && searchValue !='voucher_no'">
                                     <input type="text" matInput [(ngModel)]="searchText" placeholder="Search Text"  maxlength="50">
                                 </ng-container>
-                                <ng-container *ngIf="searchValue ==='id' || searchValue !='voucher_no'">
+                                <ng-container *ngIf="searchValue =='id' || searchValue =='voucher_no'">
                                     <input type="text" matInput  maxlength="15" (keypress)="_service.inputFilter($event, _service.regExNumb)" [(ngModel)]="searchText"  placeholder="Search Text">
                                 </ng-container>
                                 </mat-form-field>
