@@ -125,7 +125,7 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
       document.getElementById('applicant').style.display = 'block';
     }else if(this.searchValue == 'cab_code') {
       document.getElementById('applicant').style.display = 'block';
-    }else if(this.searchValue == 'location_city_country') {
+    }else if(this.searchValue == 'country') {
       document.getElementById('location_city_country').style.display = 'block';
     }else if(this.searchValue == 'form_meta') {
       document.getElementById('accreditation_type').style.display = 'block';

@@ -108,10 +108,13 @@
                                 <mat-form-field class="cab-data">
                                     <mat-label>Searchable Column</mat-label> 
                                     <mat-select placeholder="Select" (selectionChange)="searchableColumn()" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue">
-                                        <mat-option value="course">Course</mat-option>
+                                        <mat-option value="course_title">Course Name</mat-option>
+                                        <mat-option value="targetAudId">Audience</mat-option>
+                                        <mat-option value="event_type">Training Type</mat-option>
+                                        <mat-option value="event_date">Date</mat-option>
+                                        <mat-option value="tutor_id">Trainer</mat-option>
                                         <mat-option value="capacity">Capacity</mat-option>
-                                        <mat-option value="tutor">Tutor</mat-option>
-                                        <mat-option value="location">Location</mat-option>
+                                        <mat-option value="training_days">Duration</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div> 
@@ -124,6 +127,63 @@
                                 <input type="text" matInput [(ngModel)]="searchText" placeholder="Search Text">
                                 </mat-form-field>
                             </div>
+                        </div>
+
+                        <div class="col-md-4 field_show" id="event_type" [ngStyle]="{'display': 'none'}">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Training Type</mat-label> 
+                                    <mat-select placeholder="Select" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
+                                        <mat-option value="public_course_event">Public Course</mat-option>
+                                        <mat-option value="custom_course_event">Custom Course</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div> 
+                        </div>
+
+                        <div class="col-md-4 field_show" id="targetAudId" [ngStyle]="{'display': 'none'}">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Audience</mat-label>                              
+                                    <mat-select placeholder="Audience" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
+                                        <mat-option *ngFor="let item of targetAudarr;" [value]="item.id">{{item.title}}</mat-option>                                        
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 field_show" id="tutor_id" [ngStyle]="{'display': 'none'}">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Trainer</mat-label>                              
+                                    <mat-select placeholder="Trainer" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
+                                        <mat-option *ngFor="let item of tutorListarr;" [value]="item.id">{{item.name}}</mat-option>                                        
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 field_show" id="event_date" [ngStyle]="{'display': 'none'}">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Event Date</mat-label> 
+                                    <input matInput [matDatepicker]="event_date" name="event_date" [(ngModel)]="searchText" (dateChange)="setexDate(event_date)" readonly="true" (click)="Service._openCalendar(event_date)" placeholder="Date Of Issue">
+                                    <mat-datepicker-toggle matSuffix [for]="event_date"></mat-datepicker-toggle>
+                                    <mat-datepicker #event_date disabled="false"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 field_show" id="tutor_id" [ngStyle]="{'display': 'none'}">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Training Type</mat-label> 
+                                    <mat-select placeholder="Select" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
+                                        <mat-option value="public_course">Public Course</mat-option>
+                                        <mat-option value="custom_course">Custom Course</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div> 
                         </div>
 
                         <!-- <div class="col-md-4 field_show" id="accreditation_type" [ngStyle]="{'display':'none'}">
@@ -189,12 +249,16 @@
                         <!-- @{{eventData | json}} -->
                         <table id="accreditation-service-export">
                             <tr>
-                                <th width="45%">Event Title
+                                <th width="40%">Course Name
                                     <a href="javascript:void(0)" (click)="sortedList(eventData, 'course', curSortDir.course)">
                                         <span class="icon-arrow-down" *ngIf="!curSortDir.course"></span>
                                         <span class="icon-arrow-up"  *ngIf="curSortDir.course"></span>
                                     </a>
                                 </th>
+
+                                <th width="35%">Audience</th>
+                                <th width="15%">Training Type</th>
+
                                 <th width="15%">Date
                                     <!-- <a href="javascript:void(0)" (click)="sortedList(eventData, 'created_date', curSortDir.created_date)">
                                         <span class="icon-arrow-down" *ngIf="!curSortDir.created_date"></span>
@@ -202,53 +266,71 @@
                                     </a> -->
                                 </th>
 
-                                <th width="15%">Capacity
-                                    <a href="javascript:void(0)" (click)="sortedList(eventData, 'capacity', curSortDir.capacity)">
-                                        <span class="icon-arrow-down" *ngIf="!curSortDir.capacity"></span>
-                                        <span class="icon-arrow-up"  *ngIf="curSortDir.capacity"></span>
-                                    </a>
-                                </th>
+                                <th width="15%">Trainer</th>
+
+                                <th width="5%">Capacity</th>
                                 <!-- <th width="15%">Time
                                     <a href="javascript:void(0)" (click)="sortedList(eventData, 'accr_status', curSortDir.accr_status)">
                                         <span class="icon-arrow-down" *ngIf="!curSortDir.accr_status"></span>
                                         <span class="icon-arrow-up"  *ngIf="curSortDir.accr_status"></span>
                                     </a>
                                 </th> -->
-                                <th width="15%">No. of Participants
-                                    <a href="javascript:void(0)" (click)="sortedList(eventData, 'applicantName', curSortDir.applicantName)">
-                                        <span class="icon-arrow-down" *ngIf="!curSortDir.applicantName"></span>
-                                        <span class="icon-arrow-up"  *ngIf="curSortDir.applicantName"></span>
-                                    </a>
-                                </th>
+                                
+                                <th width="5%">Duration</th>
                             </tr>
                             <!-- eventData.records != undefined && -->  
                             <!-- <a href="javascript:void(0);" (click)="open(eventdetails,participantsTempList)">Click</a> -->
                         <ng-container *ngIf="eventData != undefined && eventData.length > 0">
                             <tr *ngFor="let item of eventData | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
                                 <td>
-                                    <a href="javascript:void(0);" (click)="open(eventdetails,item)"><span>{{item.course}}</span></a>
+                                    <a href="javascript:void(0);" (click)="open(eventdetails,item)"><span>{{item.course.course}}</span></a>
+                                </td>
+
+                                <td *ngIf="item.course['allTargatedAud']">
+                                    <ng-container *ngFor="let row9 of item.course['allTargatedAud']; let i9 = index;">
+                                        {{row9.target_aud_name.title}},<br>
+                                    </ng-container>
+                                </td>
+                                <td *ngIf="!item.course['allTargatedAud']">
+                                    N/A
+                                </td>
+
+                                <td *ngIf="item.course.training_course_type == 'public_course'">
+                                    Public Course
+                                </td>
+                                <td *ngIf="item.course.training_course_type == 'custom_course'">
+                                    Custom Course
                                 </td>
 
                                 <td *ngIf="item['eventDates'] && item['eventDates'].length > 0">
                                     {{item['eventDates'][0].event_date | date}}
                                 </td>
 
-                                <td *ngIf="!item['eventDates'] || item['eventDates'].length == 0">
+                                <td *ngIf="item['eventDates'] == null || item['eventDates'].length == 0">
                                     N/A
                                 </td>
 
-                                <td>
-                                    {{item.capacity}}
+                                <td *ngIf="item.tutor">
+                                    {{item.tutor.name}}
+                                </td>
+                                <td *ngIf="!item.tutor">
+                                    N/A
                                 </td>
 
-                                <td *ngIf="item.participants && item.participants.length > 0">
-                                    <!-- {{item.no_of_participants}} -->
-                                    {{item.participants.length}}
+                                <td *ngIf="item.course.capacity">
+                                    {{item.course.capacity}}
                                 </td>
-                                <td *ngIf="!item.participants || item.participants.length == 0">
-                                    <!-- {{item.no_of_participants}} -->
-                                    0
+                                <td *ngIf="!item.course.capacity">
+                                    N/A
                                 </td>
+
+                                <td *ngIf="item.course.training_days">
+                                    {{item.course.training_days}}
+                                </td>
+                                <td *ngIf="!item.course.training_days">
+                                    N/A
+                                </td>
+
                             </tr>
                         </ng-container>
                         <ng-container *ngIf="dataLoad && eventData.length == 0">
@@ -291,6 +373,10 @@
                     <div class="event-data">
                         <span class="event-head">Date</span>
                         <span>: {{detailsDate | date}}</span>
+                    </div>
+                    <div class="event-data">
+                        <span class="event-head">Event Tutor</span>
+                        <span>: {{trainerEvent}}</span>
                     </div>
                     <!-- <div class="event-data">
                         <span class="event-head">Time</span>

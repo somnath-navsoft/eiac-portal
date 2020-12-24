@@ -257,6 +257,11 @@ getAllEventList(){
   return this.http.get(url, this._service.getReqHeaders());
 }
 
+searchTargetAud(){
+  const url = `${this.BASE_REQ_URL}` + 'webservice/search-get-dropdown/';
+  return this.http.get(url, this._service.getReqHeaders());
+}
+
 getTrainingServiceList(){
   let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.trainingServList+"all"; 
   //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
