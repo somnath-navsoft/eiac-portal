@@ -18,7 +18,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit {
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, forkJoin } from 'rxjs';
 import { AppService } from '../../../../services/app.service';
 import { TrainerService } from '../../../../services/trainer.service';
 import { Constants } from '../../../../services/constant.service';
@@ -89,6 +89,10 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   show_data:any;
   searchValue:any;
   searchText:any;
+  selectStatus:any = [];
+  allSchemeData: any[] = [];
+  allSchemeREcord: any[] = [];
+  getCountryLists:any = [];
 
   constructor( private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent, private exportAsService: ExportAsService) { 
@@ -282,10 +286,8 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     var ex_type = ['pdf', 'PDF'];
     var ex_check = this._service.isInArray(file_exe,ex_type);
     if(ex_check){
-      this.paymentReceiptValidation = true;
-      //if(type == undefined){
+        this.paymentReceiptValidation = true;
         this.voucherFile.append('voucher_invoice',fileEvent.target.files[0]);
-      //}
     }else{
         this.paymentReceiptValidation = false;
         
@@ -293,7 +295,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   }
 
   searchableColumn() {
-
+    this.searchText = '';
     var myClasses = document.querySelectorAll('.field_show'),
           i = 0,
           l = myClasses.length;
@@ -301,12 +303,18 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
           let elem: any = myClasses[i]
           elem.style.display = 'none';
       }
-    if(this.searchValue == 'applicant') {
+    if(this.searchValue == 'cab_name') {
       document.getElementById('applicant').style.display = 'block';
     }else if(this.searchValue == 'form_meta') {
       document.getElementById('accreditation_type').style.display = 'block';
-    }else if(this.searchValue == 'status') {
+    }else if(this.searchValue == 'accr_status') {
       document.getElementById('status').style.display = 'block';
+    }else if(this.searchValue == 'cab_code') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'criteria') {
+      document.getElementById('criteria').style.display = 'block';
+    }else if(this.searchValue == 'location_city_country') {
+      document.getElementById('location_city_country').style.display = 'block';
     }
   }
 
@@ -341,11 +349,13 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     ];
 
     //Assign Search Type
-    // this.selectAccrType = [ 
-    //   {title: 'Application Process', value:'application_process'},
-    //   {title: 'Under Review	', value:'under_review'},
-    //   {title: 'Complete', value:'complete'}  
-    //   ];
+    this.selectStatus = [ 
+      {title: 'Application Process', value:'application_process'},
+      {title: 'Under Review	', value:'under_review'},
+      {title: 'Complete', value:'complete'},
+      {title: 'Pending', value:'pending'},
+      {title: 'Draft', value:'draft'}
+      ];
 	
     // this.selectPaymentStatusType = [ 
     //   {title: 'Paid', value:'paid'},
@@ -354,8 +364,53 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     
     this.loadPageData();
     //this.selectCustomCourses = [{'value':'Inspection Bodies'},{'value':'Certification Bodies'},{'value':'Testing Calibration'},{'value':'Health Care'},{'value':'Proficiency Testing Providers'},{'value':'Halal Confirmity Bodies'}];
+
+    this.loadCriteriaScheme();
+    this.loadCountryStateCity();
   }
 
+  loadCountryStateCity = async() => {
+    let countryList =  this._service.getCountry();
+    await countryList.subscribe(record => {
+      // ////console.log(record,'record');
+      this.getCountryLists = record['countries'];
+    });
+  }
+
+  loadCriteriaScheme = async () => {
+      let promiseIB: any = this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.inspection_form_basic_data);
+      let promiseTC: any = this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.testing_cal_form_basic_data);
+      let promiseCB: any = this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.certificationBodies);
+      let promiseHP: any = this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.healthcare_form_basic_data);
+      let promiseHCAB: any = this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.halal_conformity_form_management);
+      let promisePTP: any = this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.pt_provider);
+
+      forkJoin([promiseIB, promiseTC, promiseCB, promiseHP, promiseHCAB, promisePTP]).subscribe(results => {
+        let getData: any = results;
+        if(getData != undefined && typeof getData == 'object' && getData.length > 0){
+            getData.forEach(rec => {
+              if(rec.data != undefined && rec.data.criteriaList != undefined && rec.data.criteriaList.length > 0){
+                  this.allSchemeREcord.push(rec.data.criteriaList);
+              }
+            })
+        }
+        //console.log("@Multiple Results: ", getData, " -- ", this.allSchemeREcord);
+        if(this.allSchemeREcord.length  > 0){
+            this.allSchemeREcord.forEach(item => {
+                //console.log("#", item);
+                if(typeof item == 'object' && item.length > 0){
+                    let getItem: any = item;
+                    getItem.forEach(rec => {
+                      if(rec.code != undefined && rec.code != ''){
+                        this.allSchemeData.push({title: rec.service, value: rec.code})
+                      }
+                    })
+                }
+            })
+        }
+        // console.log("@Scheme record: ", this.allSchemeData);
+      });
+  }
   exportFile() {
     // console.log(this.exportAs);
     this.exportAsConfig = {

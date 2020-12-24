@@ -481,7 +481,7 @@ export class HalalConformityFormComponent implements OnInit {
   * @Abhishek
   ********************************/
  loadScopeCriteria(){
-  console.log(">>>> Load scope Criteria List");
+  console.log(">>>> Load scope Criteria List"); 
   this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.halal_conformity_form_management)
    .subscribe( 
      res => {
@@ -1527,7 +1527,6 @@ addSchemeRow(obj: any = [],index: number){
                 if(res['data'].reg_form_issued_esma != null){
                   let getFile = res['data'].reg_form_issued_esma.toString().split('/');
                   // if(getFile.length){
-
                     this.id_issued_esma = getFile[4].toString().split('.')[0];
                     this.issuedEsmaPath = this.constant.mediaPath +  res['data'].reg_form_issued_esma.toString();
                     this.id_issued_esma = getFile[4];
@@ -1537,7 +1536,6 @@ addSchemeRow(obj: any = [],index: number){
                 if(res['data'].certificate_stamp != null){
                   let getFile = res['data'].certificate_stamp.toString().split('/');
                   // if(getFile.length){
-
                     this.halal_certificate_stamp = getFile[4].toString().split('.')[0];
                     this.certificateStampPath = this.constant.mediaPath +  res['data'].certificate_stamp.toString();
                     this.halal_certificate_stamp = getFile[4];

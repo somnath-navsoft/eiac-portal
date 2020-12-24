@@ -40,6 +40,11 @@ export class AccountsComponent implements OnInit {
   advSearch: boolean = false;
   dataLoad: boolean = false;
 
+  selectAccrType: any[] =[];
+  selectPaymentStatus: any[] =[];
+  searchText: string = '';
+  searchValue: string = '';
+
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService, private exportAsService: ExportAsService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent,public router: Router) { }
 
@@ -53,20 +58,57 @@ export class AccountsComponent implements OnInit {
     }else if(this.userType == 'operations'){
       this.router.navigateByUrl('/dashboard/accounts');
     }else if(this.userType == 'candidate'){
-      this.router.navigateByUrl('/dashboard/accounts');
+      this.router.navigateByUrl('/dashboard/accounts'); 
     }else if(this.userType == 'trainers'){
       this.router.navigateByUrl('/dashboard'+this.userType+'/cab_client/home');
     }else if(this.userType == 'assessors'){
       this.router.navigateByUrl('/dashboard'+this.userType+'/cab_client/home');
     }
 
+    //Assign Search Type
+    this.selectAccrType = [ 
+      {title: 'Inspection Bodies', value:'inspection_body'},
+      {title: 'Certification Bodies', value:'certification_bodies'},
+      {title: 'Testing Calibration', value:'testing_calibration'},
+      {title: 'Health Care', value:'health_care'},
+      {title: 'Halal Conformity Bodies', value:'halal_conformity_bodies'},
+      {title: 'Proficiency Testing Providers', value:'pt_providers'}      
+      ];
+    this.selectPaymentStatus  = [
+      {title: 'Payment Pending', value:'pending'}
+      // {title: 'Application Process', value:'application_process'},
+      // {title: 'Under Review', value:'under_review'},
+      // {title: 'Complete', value:'complete'},
+      // {title: 'Draft', value:'draft'}
+    ]
+
     this.loadPageData();
+  }
+
+  changeFilter(theEvt: any){
+    console.log("@change: ", theEvt, " :: ", theEvt.value);
+    let getIdValue: string = theEvt.value;
+    this.searchText = '';
+    var myClasses = document.querySelectorAll('.slectType'),i = 0,length = myClasses.length;
+       for (i; i < length; i++) {
+          let elem: any = myClasses[i]
+          console.log("@Elem: ", elem);
+            elem.style.display = 'none';
+            if(getIdValue == 'applicant') {
+                let getElementId = document.getElementById('textType');
+                getElementId.style.display = 'block';
+            }else{
+              if(elem.id === getIdValue){
+                elem.style.display = 'block';
+              }
+            }
+      }
   }
 
   exportFile() {
     // console.log(this.exportAs);
     this.exportAsConfig = {
-      type: this.exportAs.toString(), // the type you want to download
+      type: 'csv', // the type you want to download
       elementIdOrContent: 'accreditation-service-export', // the id of html/table element
     }
     // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
@@ -101,7 +143,7 @@ export class AccountsComponent implements OnInit {
   }
 
   isValidSearch(){
-    if((this.eventTitle == '' || this.eventTitle == null)){
+    if((this.searchValue == '') || (this.searchText == '' || this.searchText == null)){
       return false;
     }
     return true;
@@ -113,9 +155,13 @@ export class AccountsComponent implements OnInit {
     // console.log("Search click....", this.applicationNo, " -- ", this.selectAccrTypeValue, " == ", this.paymentStatusValue);
     let postData: any = new FormData();
     if(this.isValidSearch()){
-      if(this.eventTitle != '' && this.eventTitle != null){
-        postData.append('cab_name', this.eventTitle)
-      }
+      // if(this.eventTitle != '' && this.eventTitle != null){
+      //   postData.append('cab_name', this.eventTitle)
+      // }
+      let appendKey = this.searchValue;
+       if(this.searchValue != ''  && (this.searchText != '' || this.searchText != null)){
+        postData.append(appendKey, this.searchText);
+       }
         
         // console.log(">>>POST: ", JSON.stringify(postData)); 
 

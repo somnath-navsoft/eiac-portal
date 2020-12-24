@@ -42,7 +42,13 @@ export class EventListsComponent implements OnInit {
   event_date:any;
   minDate:any;
   searchDateData: any = {};
-
+  searchText:any;
+  selectStatus:any = [];
+  searchValue:any;
+  trainerEvent:any;
+  targetAudarr:any = [];
+  tutorListarr:any = [];
+  
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService, public _trainerService:TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) { }
 
   ngOnInit() {
@@ -59,6 +65,48 @@ export class EventListsComponent implements OnInit {
     this.participantsTempList = [{'name':'Test test','email':'test@test.com','phone':89898989},{'name':'Test2 test2','email':'test2@test2.com','phone':56756756657},{'name':'Test3 test','email':'test3@test3.com','phone':787686778}];
 
     this.loadPageData();
+    this.loadTargetAud();
+  }
+
+  loadTargetAud() {
+    this.subscriptions.push(this._trainerService.searchTargetAud()
+      .subscribe(
+        result => {
+          // console.log(result,'cvbcbvvcbvb');
+          this.targetAudarr = result['records']['target_aud'];
+          this.tutorListarr = result['records']['tutor_list'];
+        },
+        ()=>{
+          // console.log('comp...');
+        }
+      )          
+    )
+  }
+
+  searchableColumn() {
+    this.searchText = '';
+    var myClasses = document.querySelectorAll('.field_show'),
+          i = 0,
+          l = myClasses.length;
+       for (i; i < l; i++) {
+          let elem: any = myClasses[i]
+          elem.style.display = 'none';
+      }
+    if(this.searchValue == 'course_title') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'targetAudId') {
+      document.getElementById('targetAudId').style.display = 'block';
+    }else if(this.searchValue == 'event_type') {
+      document.getElementById('event_type').style.display = 'block';
+    }else if(this.searchValue == 'event_date') {
+      document.getElementById('event_date').style.display = 'block';
+    }else if(this.searchValue == 'tutor_id') {
+      document.getElementById('tutor_id').style.display = 'block';
+    }else if(this.searchValue == 'capacity') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'training_days') {
+      document.getElementById('applicant').style.display = 'block';
+    }
   }
 
   setexDate(date){
@@ -92,38 +140,47 @@ export class EventListsComponent implements OnInit {
   }
 
   isValidSearch(){
-    if((this.eventTitle == '' || this.eventTitle == null) && (this.searchDateData.event_date == '' || this.searchDateData.event_date == null)){
+    if((this.searchValue == '' || this.searchValue == null) || (this.searchText == '' || this.searchText == null)){
       return false;
     }
     return true;
   }
 
   filterSearchSubmit(){
-    this.loader = false;
-    let postObject: any = {};
-    // console.log("Search click....", this.applicationNo, " -- ", this.selectAccrTypeValue, " == ", this.paymentStatusValue);
-    let postData: any = new FormData();
-    if(this.isValidSearch()){
-      if(this.eventTitle != '' && this.eventTitle != null){
-        postData.append('course_title', this.eventTitle)
-      }
+    let postObject: any = new FormData();
+     //console.log("Search click....");
+     if(this.isValidSearch()){
+      //  if(this.applicationNo != '' && this.applicationNo != null){
+      //   postObject.append('id', this.applicationNo);
+      //  }
+      //  if(this.selectAccrTypeValue != '' && this.selectAccrTypeValue != null){
+      //   postObject.append('form_meta', this.selectAccrTypeValue);
+      //  }
+      var appendKey = this.searchValue;
+       if(this.searchValue != '' && this.searchValue != null && this.searchText != '' && this.searchText != null){
 
-      let dtFormat = '';
-      if(this.searchDateData.event_date != '' && this.searchDateData.event_date != null){
-        var dtData = this.searchDateData.event_date._i;
-        var year = dtData.year;
-        var month = dtData.month + 1;
-        var date = dtData.date;
-        dtFormat = year + "-" + month + "-" + date;
-        postData.append('event_date', dtFormat);
-      }
-      
-        console.log(">>>POST: ", JSON.stringify(postData)); 
+        if(this.searchValue == 'event_date') {
+          let dtFormat: string = '';
+
+          var dtData = this.searchText._i;
+          var year = dtData.year;
+          var month = dtData.month + 1;
+          var date = dtData.date;
+          dtFormat = year + "-" + month + "-" + date;
+
+          postObject.append(appendKey, dtFormat);
+        }else{
+          postObject.append(appendKey, this.searchText);
+        }
+        
+       }
 
         if(postObject){
-          this.subscriptions.push(this._trainerService.searchEventlist((postData))
+          this.loader = false;
+          this.subscriptions.push(this._trainerService.searchEventlist((postObject))
           .subscribe(
             result => {
+              this.loader = true;
               let data: any = result;
                 console.log("search results: ", result);
                 this.loader = true;
@@ -152,7 +209,7 @@ export class EventListsComponent implements OnInit {
   exportFile() {
     // console.log(this.exportAs);
     this.exportAsConfig = {
-      type: this.exportAs.toString(), // the type you want to download
+      type: 'csv', // the type you want to download
       elementIdOrContent: 'accreditation-service-export', // the id of html/table element
     }
     // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
@@ -184,7 +241,7 @@ export class EventListsComponent implements OnInit {
       )          
     )
   }
-
+  
   sortedList(data: any, sortBy: string, sortDir: boolean){
     //true - asc / false - desc
     ////console.log('>>>', data);
@@ -193,26 +250,41 @@ export class EventListsComponent implements OnInit {
           //console.log(">>>Enter type...");
           this.curSortDir.course = !sortDir;
           if(this.curSortDir.course){
-            let array = data.slice().sort((a, b) => (a.course > b.course) ? 1 : -1)
+            let array = data.slice().sort((a, b) => (a.course.course > b.course.course) ? 1 : -1)
             this.eventData = array;
           }
           if(!this.curSortDir.course){
-            let array = data.slice().sort((a, b) => (a.course < b.course) ? 1 : -1)
+            let array = data.slice().sort((a, b) => (a.course.course < b.course.course) ? 1 : -1)
             this.eventData = array;
             //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
           }
         }
+
+        if(sortBy === 'capacity'){
+          //console.log(">>>Enter type...");
+          this.curSortDir.capacity = !sortDir;
+          if(this.curSortDir.capacity){
+            let array = data.slice().sort((a, b) => (a.capacity > b.capacity) ? 1 : -1)
+            this.eventData = array;
+          }
+          if(!this.curSortDir.capacity){
+            let array = data.slice().sort((a, b) => (a.capacity < b.capacity) ? 1 : -1)
+            this.eventData = array;
+            //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
+          }
+        }
+
         //By created_date
         if(sortBy == 'created_date'){
           this.curSortDir.created_date = !sortDir;
           //console.log(">>>Enter code...", data, " -- ", this.curSortDir.course_code);
           if(this.curSortDir.created_date){
-            let array = data.slice().sort((a, b) => (a.created_date > b.created_date) ? 1 : -1)
+            let array = data.slice().sort((a, b) => (a['eventDates'][0].event_date > b['eventDates'][0].event_date) ? 1 : -1)
             this.eventData = array;
             //console.log("after:: ", array, " :: ", this.eventData);
           }
           if(!this.curSortDir.created_date){
-            let array = data.slice().sort((a, b) => (a.created_date < b.created_date) ? 1 : -1)
+            let array = data.slice().sort((a, b) => (a['eventDates'][0].event_date < b['eventDates'][0].event_date) ? 1 : -1)
             this.eventData = array;
           }
         }
@@ -314,10 +386,11 @@ export class EventListsComponent implements OnInit {
     // }
     // this.paymentReceiptValidation = null;
     this.participantsList = newObj.participants != null && newObj.participants.length > 0 ? newObj.participants : [];
-    this.detailsCourse = newObj.course;
+    this.detailsCourse = newObj.course.course;
 
     this.detailsDate = newObj.eventDates != null && newObj.eventDates.length > 0 ? newObj.eventDates[0].event_date : '';
     this.noOfParticipants = newObj.participants != null && newObj.participants.length > 0 ? newObj.participants.length : 0;
+    this.trainerEvent = newObj.tutor != null && newObj.tutor ? newObj.tutor.name : 'N/A';
 
     this.modalService.open(content, this.modalOptions).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;

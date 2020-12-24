@@ -51,6 +51,8 @@ export class OperationsTrainingServiceListComponent implements OnInit {
   show_data:any;
   searchValue:any;
   searchText:any;
+  selectAccrType:any = [];
+  selectStatus:any = [];
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) {
@@ -74,6 +76,20 @@ export class OperationsTrainingServiceListComponent implements OnInit {
     this.selectTrainingType = [{'title':'In Premise', value: 'inprimise'},{'title':'Public Training', value: 'public_training'}];
     //this.selectCustomCourses = [{'value':'In Premise'},{'value':'Public Training'}];
     
+    //Assign Search Type
+    this.selectAccrType = [ 
+      {title: 'In Premise', value:'inprimise'},
+      {title: 'Public Training', value:'public_training'},
+      ];
+  
+    //Assign Search Type
+    this.selectStatus = [ 
+      {title: 'Application Process', value:'application_process'},
+      {title: 'Under Review	', value:'under_review'},
+      {title: 'Complete', value:'complete'},
+      {title: 'Pending', value:'pending'},
+      {title: 'Draft', value:'draft'}
+      ];
   }
 
   showData() {
@@ -123,6 +139,26 @@ export class OperationsTrainingServiceListComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  searchableColumn() {
+    this.searchText = '';
+    var myClasses = document.querySelectorAll('.field_show'),
+          i = 0,
+          l = myClasses.length;
+       for (i; i < l; i++) {
+          let elem: any = myClasses[i]
+          elem.style.display = 'none';
+      }
+    if(this.searchValue == 'cab_name') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'training_form_type') {
+      document.getElementById('accreditation_type').style.display = 'block';
+    }else if(this.searchValue == 'application_status') {
+      document.getElementById('status').style.display = 'block';
+    }else if(this.searchValue == 'course_title') {
+      document.getElementById('applicant').style.display = 'block';
+    }
   }
 
   filterSearchSubmit(){
