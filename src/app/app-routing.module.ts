@@ -114,7 +114,7 @@ import { InpremiseApprovalDetailsComponent } from './components/dashboard/operat
 import { SchemeListComponent } from './components/dashboard/cab/scheme-list/scheme-list.component';
 import { EventListsComponent } from './components/dashboard/cab/event-lists/event-lists.component';
 import { CertificationRecordsComponent } from './components/dashboard/cab/certification-records/certification-records.component';
-import { OperationRecordsComponent } from './components/dashboard/operations/operation-records/operation-records.component';
+import { OperationsCertificationsComponent } from './components/dashboard/operations/operations-certifications/operations-certifications.component'
 
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
@@ -160,6 +160,7 @@ const routes: Routes = [
           { path: '', redirectTo:'home', pathMatch:'full'},
           { path: 'home', component:OperationsDashboardComponent, canActivate: [AuthGuard]},
           { path: 'company-profile', component:OperationsCompanyProfileComponent, canActivate: [AuthGuard] },
+          { path: 'certifications', component:OperationsCertificationsComponent, canActivate: [AuthGuard] },
           { path: 'training-apply/:id', component:OperationsTrainerServiceComponent, canActivate: [AuthGuard] },
           { path: 'training-service', component:OperationsTrainerServiceListComponent, canActivate: [AuthGuard] },
           { path: 'accreditation-service-list', component:OperationsAccreditationServiceListComponent, canActivate: [AuthGuard] },
@@ -173,7 +174,6 @@ const routes: Routes = [
           { path: 'inpremise-approve', component:InpremiseApprovalListComponent, canActivate: [AuthGuard] },
           { path: 'inpremise-approve-detail/:id', component:InpremiseApprovalDetailsComponent, canActivate: [AuthGuard] },
           { path: 'event-list', component:EventListsComponent, canActivate: [AuthGuard] },
-          { path: 'records', component:OperationRecordsComponent, canActivate: [AuthGuard] },
         ] 
     }, 
 
