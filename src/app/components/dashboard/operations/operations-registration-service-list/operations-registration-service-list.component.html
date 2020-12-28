@@ -176,7 +176,7 @@
                             <div class="col-md-12"> 
                                 <div class="filter-search">
                                     <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
-                                    <!-- <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a> -->
+                                    <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a>
                                     <a href="javascript:void(0)" (click)="exportFile()" class="space-left">EXPORT</a>
                                 </div>         
                             </div>
@@ -303,9 +303,9 @@
                             </td>
                             
                             <td [ngClass]="{'pending': (item.application_status === 'pending' || item.application_status === 'payment_pending' || item.application_status == 'application_process'  || item.application_status == 'under_process'), 'under-review':item.application_status === null || item.application_status === 'under_review', 'complete': item.application_status === 'complete', 'draft': item.application_status === 'draft' }">
-                                <span *ngIf="item.application_status == 'pending'">Pending</span>
+                                <span *ngIf="item.application_status == 'pending'">Payment Pending</span>
                                 <span *ngIf="item.application_status == 'draft'">Draft</span>
-                                <span *ngIf="item.application_status == 'application_process'">Application Process</span>
+                                <span *ngIf="item.application_status == 'application_process'">Under Process</span>
                                 <span *ngIf="item.application_status == 'under_process'">Under Process</span>
                                 <span *ngIf="item.application_status == 'payment_pending'">Payment Pending</span>
                                 <span *ngIf="item.application_status == null || item.application_status === 'under_review'">Under Review</span>

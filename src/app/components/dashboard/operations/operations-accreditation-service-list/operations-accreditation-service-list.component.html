@@ -109,7 +109,7 @@
                             <div class="col-md-12"> 
                                 <div class="filter-search">
                                     <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
-                                    <!-- <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a> -->
+                                    <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a>
                                     <a href="javascript:void(0)" (click)="exportFile()" class="space-left">EXPORT</a>
                                 </div>         
                             </div>
@@ -242,12 +242,12 @@
                             
                             <td [ngClass]="{'pending': item.accr_status === 'pending' || item.accr_status == 'application_process', 'under-review':item.accr_status === null || item.accr_status === 'under_review', 'complete': item.accr_status === 'complete', 'draft': item.accr_status === 'draft' }">
                                 <span *ngIf="item.accr_status == 'pending'">Payment Pending</span>
-                                <span *ngIf="item.accr_status == 'application_process'">Application Process</span>
+                                <span *ngIf="item.accr_status == 'application_process'">Under Process</span>
                                 <span *ngIf="item.accr_status == null || item.accr_status == 'under_review'">Under Review</span>
                                 <span *ngIf="item.accr_status == 'complete'">Complete</span>
                                 <span *ngIf="item.accr_status == 'draft'">Draft</span>
                             </td>
-                            
+
                             <td>
                                 <span *ngIf="item.form_meta == 'testing_calibration'">Testing Calibration</span>
                                 <span *ngIf="item.form_meta == 'inspection_body'">Inspection Bodies</span>
