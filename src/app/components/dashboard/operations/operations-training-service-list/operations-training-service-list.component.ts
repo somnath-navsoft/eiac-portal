@@ -83,13 +83,15 @@ export class OperationsTrainingServiceListComponent implements OnInit {
       ];
   
     //Assign Search Type
-    this.selectStatus = [ 
+    this.selectStatus =  [
+      {title: 'Payment Pending', value:'pending'},
+      {title: 'Pending', value:'payment_pending'},
       {title: 'Application Process', value:'application_process'},
-      {title: 'Under Review	', value:'under_review'},
+      {title: 'Under Review', value:'under_review'},
+      {title: 'Under Process', value:'under_process'},
       {title: 'Complete', value:'complete'},
-      {title: 'Pending', value:'pending'},
       {title: 'Draft', value:'draft'}
-      ];
+    ];
   }
 
   showData() {
@@ -156,7 +158,9 @@ export class OperationsTrainingServiceListComponent implements OnInit {
       document.getElementById('accreditation_type').style.display = 'block';
     }else if(this.searchValue == 'application_status') {
       document.getElementById('status').style.display = 'block';
-    }else if(this.searchValue == 'course_title') {
+    }else if(this.searchValue == 'course_name') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'capacity') {
       document.getElementById('applicant').style.display = 'block';
     }
   }

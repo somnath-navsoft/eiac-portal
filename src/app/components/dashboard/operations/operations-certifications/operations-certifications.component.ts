@@ -11,11 +11,11 @@ import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
 @Component({
   selector: 'app-status',
-  templateUrl: './status.component.html',
-  styleUrls: ['./status.component.scss'], 
+  templateUrl: './operations-certifications.component.html',
+  styleUrls: ['./operations-certifications.component.scss'], 
   providers: [CustomModalComponent],
 })
-export class StatusComponent implements OnInit {
+export class OperationsCertificationsComponent implements OnInit {
 
   getTrainerCourse: Observable<any>; 
   trainerdata: any[] = [];
@@ -78,6 +78,7 @@ export class StatusComponent implements OnInit {
   searchCountryText: string = '';
   searchCityText: string = '';
   criteria: string = '';
+  loadCountryLists: any[]= [];
 
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
@@ -101,11 +102,11 @@ export class StatusComponent implements OnInit {
     this.loadPageData();
     this.curSortDir['id']                       = false;
     this.curSortDir['created_date']             = false;
-    this.curSortDir['accr_status']              = false;
-    this.curSortDir['applicantName']            = false;
-    this.curSortDir['criteria_request']         = false;
-    this.curSortDir['form_meta']                = false;
-    this.curSortDir['country']                  = false;
+    this.curSortDir['accr_status']             = false;
+    this.curSortDir['applicantName']           = false;
+    this.curSortDir['criteria_request']        = false;
+    this.curSortDir['form_meta']             = false;
+    this.curSortDir['location']             = false;
 
     this.userType = sessionStorage.getItem('type');
     this.loadCriteriaScheme();
@@ -227,9 +228,38 @@ loadCountryStateCityAll  = async() =>{
   await cscLIST.subscribe(record => {
     console.log("...> ", record);
     this.getCountryStateCityAll = record['Countries'];
+    this.loadCountryLists = record['Countries'];
     console.log("...>>> ", this.getCountryStateCityAll);
   });
   //console.log("ALL CSC: ", this.getCountryStateCityAll);
+}
+
+searchCountry(theEvt: any){    
+  console.log(">>>> enter: ", theEvt);
+  let query: string = '';
+  if(theEvt){
+    query = theEvt.target.value
+  }
+  console.log(">>> query: ", query, " == ", query.length);
+  let result: any = this.select(query);
+  if(result){
+    this.loadCountryLists = result;
+  }
+}
+select(query: string):any[]{
+  let result: string[] = [];
+  let countryData: any = this.getCountryStateCityAll;
+  //console.log(">>>> country: ", countryData);
+  countryData.forEach(item => {
+    //console.log("@ ", item);
+    let cName: string = item.CountryName;
+    console.log("query value: ", cName.toLowerCase().indexOf(query));
+    //if(cName.toLowerCase().indexOf(query) > -1){
+      if(cName.toLowerCase().indexOf(query) == 0){
+      result.push(item);
+    }
+  })
+  return result;
 }
 
   changeFilter(theEvt: any){
@@ -239,9 +269,9 @@ loadCountryStateCityAll  = async() =>{
     var myClasses = document.querySelectorAll('.slectType'),i = 0,length = myClasses.length;
        for (i; i < length; i++) {
           let elem: any = myClasses[i]
-          console.log("@Elem: ", elem);
+            console.log("@Elem: ", elem);
             elem.style.display = 'none';
-            if(getIdValue == 'cab_name' || getIdValue == 'cab_code' ||  getIdValue == 'id') {
+            if(getIdValue == 'cab_name' || getIdValue == 'cab_code' ||  getIdValue == 'contact'||  getIdValue == 'email') {
                 let getElementId = document.getElementById('textType');
                 getElementId.style.display = 'block';
             }else{
@@ -500,29 +530,29 @@ if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_
           }
         }
         //By Payment Status
-        if(sortBy == 'payment_status'){
-          this.curSortDir.payment_status = !sortDir;
+        // if(sortBy == 'payment_status'){
+        //   this.curSortDir.payment_status = !sortDir;
+        //   //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
+        //   if(this.curSortDir.payment_status){
+        //     let array = data.slice().sort((a, b) => (a.payment_status > b.payment_status) ? 1 : -1)
+        //     this.trainerdata = array;
+        //     //console.log("after:: ", array, " :: ", this.trainerdata);
+        //   }
+        //   if(!this.curSortDir.payment_status){
+        //     let array = data.slice().sort((a, b) => (a.payment_status < b.payment_status) ? 1 : -1)
+        //     this.trainerdata = array;
+        //   }
+        // }  
+        if(sortBy == 'location'){
+          this.curSortDir.location = !sortDir;
           //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
-          if(this.curSortDir.payment_status){
-            let array = data.slice().sort((a, b) => (a.payment_status > b.payment_status) ? 1 : -1)
+          if(this.curSortDir.location){
+            let array = data.slice().sort((a, b) => (a.location > b.location) ? 1 : -1)
             this.trainerdata = array;
             //console.log("after:: ", array, " :: ", this.trainerdata);
           }
-          if(!this.curSortDir.payment_status){
-            let array = data.slice().sort((a, b) => (a.payment_status < b.payment_status) ? 1 : -1)
-            this.trainerdata = array;
-          }
-        }  
-        if(sortBy == 'country'){
-          this.curSortDir.country = !sortDir;
-          //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
-          if(this.curSortDir.country){
-            let array = data.slice().sort((a, b) => (a.country > b.country) ? 1 : -1)
-            this.trainerdata = array;
-            //console.log("after:: ", array, " :: ", this.trainerdata);
-          }
-          if(!this.curSortDir.country){
-            let array = data.slice().sort((a, b) => (a.country < b.country) ? 1 : -1)
+          if(!this.curSortDir.location){
+            let array = data.slice().sort((a, b) => (a.location < b.location) ? 1 : -1)
             this.trainerdata = array;
           }
         }        

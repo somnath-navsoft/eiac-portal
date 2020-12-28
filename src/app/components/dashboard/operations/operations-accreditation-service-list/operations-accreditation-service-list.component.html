@@ -40,7 +40,7 @@
                                         <mat-option value="form_meta">Accreditation Type</mat-option>
                                         <mat-option value="accr_status">Status</mat-option>
                                         <mat-option value="criteria">Scope</mat-option>
-                                        <mat-option value="location_city_country">Location</mat-option>
+                                        <mat-option value="country">Country</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div> 
@@ -91,7 +91,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 field_show" id="location_city_country" [ngStyle]="{'display': 'none'}">
+                        <div class="col-md-4 field_show" id="country" [ngStyle]="{'display': 'none'}">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
                                     <mat-label>Country</mat-label>
@@ -156,7 +156,7 @@
 
                             <th>Scope</th>
 
-                            <th>Location</th>
+                            <th>Country</th>
 
                             <th>Application Date
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'created_date', curSortDir.created_date)">

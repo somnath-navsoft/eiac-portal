@@ -60,6 +60,10 @@ export class TrainingStatusComponent implements OnInit {
     this.curSortDir['accr_status']        = false;
     this.curSortDir['prelim_status']      = false;
     this.curSortDir['training_form_type'] = false;
+    this.curSortDir['application_status'] = false;
+    this.curSortDir['course'] = false;
+    this.curSortDir['capacity'] = false;
+    
     this.curSortDir['payment_status']     = false;
     this.curSortDir['cab_code']           = false;
     this.curSortDir['applicant']          = false;
@@ -86,7 +90,7 @@ export class TrainingStatusComponent implements OnInit {
           let elem: any = myClasses[i]
           console.log("@Elem: ", elem);
             elem.style.display = 'none';
-            if(getIdValue == 'cab_name' || getIdValue == 'cab_code' || getIdValue == 'course' || getIdValue == 'capacity') {
+            if(getIdValue == 'cab_name' || getIdValue == 'cab_code' || getIdValue == 'course_name' || getIdValue == 'capacity' || getIdValue == 'id') {
                 let getElementId = document.getElementById('textType');
                 getElementId.style.display = 'block';
             }else{
@@ -286,7 +290,7 @@ export class TrainingStatusComponent implements OnInit {
           let data: any = result;
           let dataRec: any=[];
           this.dataLoad = true;
-          // console.log('loading...', data.records);
+          console.log('loading...', data.records);
           // console.log(">>>List: ", data);
           this.trainerdata = data.records;
           dataRec = data.records;
@@ -341,14 +345,14 @@ export class TrainingStatusComponent implements OnInit {
          }
        }
        //By accr_status
-       if(sortBy == 'accr_status'){
-         this.curSortDir.accr_status = !sortDir;
-         if(this.curSortDir.accr_status){
-           let array = data.slice().sort((a, b) => (a.accr_status > b.accr_status) ? 1 : -1)
+       if(sortBy == 'application_status'){
+         this.curSortDir.application_status = !sortDir;
+         if(this.curSortDir.application_status){
+           let array = data.slice().sort((a, b) => (a.application_status > b.application_status) ? 1 : -1)
            this.trainerdata = array;
          }
-         if(!this.curSortDir.accr_status){
-           let array = data.slice().sort((a, b) => (a.accr_status < b.accr_status) ? 1 : -1)
+         if(!this.curSortDir.application_status){
+           let array = data.slice().sort((a, b) => (a.application_status < b.application_status) ? 1 : -1)
            this.trainerdata = array;
          }
        }
@@ -388,17 +392,29 @@ export class TrainingStatusComponent implements OnInit {
            this.trainerdata = array;
          }
        }  
-       if(sortBy == 'applicant'){
-         this.curSortDir.applicant = !sortDir;
-         if(this.curSortDir.applicant){
-           let array = data.slice().sort((a, b) => (a.applicant > b.applicant) ? 1 : -1)
+       if(sortBy == 'course'){
+         this.curSortDir.course = !sortDir;
+         if(this.curSortDir.course){
+           let array = data.slice().sort((a, b) => (a.courseEventDetails.course_details.course > b.courseEventDetails.course_details.course) ? 1 : -1)
            this.trainerdata = array;
          }
-         if(!this.curSortDir.applicant){
-           let array = data.slice().sort((a, b) => (a.applicant < b.applicant) ? 1 : -1)
+         if(!this.curSortDir.course){
+           let array = data.slice().sort((a, b) => (a.courseEventDetails.course_details.course < b.courseEventDetails.course_details.course) ? 1 : -1)
            this.trainerdata = array;
          }
-       }        
+       }
+       if(sortBy == 'capacity'){
+        this.curSortDir.capacity = !sortDir;
+        if(this.curSortDir.capacity){
+          let array = data.slice().sort((a, b) => (a.courseEventDetails.course_details.capacity > b.courseEventDetails.course_details.capacity) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.capacity){
+          let array = data.slice().sort((a, b) => (a.courseEventDetails.course_details.capacity < b.courseEventDetails.course_details.capacity) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
+
     }
   }
 }
