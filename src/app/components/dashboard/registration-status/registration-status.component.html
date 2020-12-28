@@ -60,7 +60,7 @@
                         <div class="col-md-4">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
-                                    <mat-label>Filter Column</mat-label> 
+                                    <mat-label>Searchable Column</mat-label> 
                                     <mat-select placeholder="Select" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue" 
                                         (selectionChange)="changeFilter($event)">
                                         <mat-option value="id">Application Number</mat-option>
@@ -138,7 +138,7 @@
                             <div class="col-md-12"> 
                                 <div class="filter-search">
                                     <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
-                                    <!-- <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a> -->
+                                    <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a>
                                     <ng-container *ngIf="userType == 'operations'">
                                     <a href="javascript:void(0)" (click)="exportFile()" class="space-left">EXPORT</a>
                                     </ng-container>
@@ -184,8 +184,24 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.created_date"></span>
                                 </a>
                             </th>
-                            <th>CAB Name</th>
-                            <th>CAB Code</th>
+                            <th [ngStyle]="{'font-size':'14px'}">CAB Name
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'applicantName', curSortDir.applicantName)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.applicantName"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.applicantName"></span>
+                                </a>
+                            </th>
+                            <th [ngStyle]="{'font-size':'14px'}">CAB Code
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'applicantCode', curSortDir.applicantCode)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.applicantCode"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.applicantCode"></span>
+                                </a>
+                            </th>
+                            <th>Country
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'country', curSortDir.country)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.country"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.country"></span>
+                                </a>
+                            </th>
                             <th width="15%">Status
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'application_status', curSortDir.application_status)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.application_status"></span>
@@ -199,14 +215,13 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.form_meta"></span>
                                 </a>
                             </th>
-                            <th>Country</th>
+                            
                             <th>Payment Status
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'payment_status', curSortDir.payment_status)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.payment_status"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.payment_status"></span>
                                 </a>
-                            </th>
-                            
+                            </th>                            
                             <th>Action</th>
                         </tr>
                     <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
@@ -227,12 +242,16 @@
                                     {{item.cabDetails[0].cab_code}}
                                 </ng-container>
                             </td>
+                            <td>
+                                <ng-container *ngIf="isNumber(item.country)">{{item.country}}</ng-container>
+                                <ng-container *ngIf="!isNumber(item.country)">NA</ng-container>
+                            </td>
                             <td [ngClass]="{'pending': (item.application_status === 'pending' || item.application_status === 'payment_pending' || item.application_status == 'application_process'  || item.application_status == 'under_process'), 'under-review':item.application_status === null || item.application_status === 'under_review', 'complete': item.application_status === 'complete', 'draft': item.application_status === 'draft' }">
-                                <span *ngIf="item.application_status == 'pending'">Pending</span>
+                                <!-- <span *ngIf="item.application_status == 'pending'">Pending</span> -->
                                 <span *ngIf="item.application_status == 'draft'">Draft</span>
-                                <span *ngIf="item.application_status == 'application_process'">Application Process</span>
-                                <span *ngIf="item.application_status == 'under_process'">Under Process</span>
-                                <span *ngIf="item.application_status == 'payment_pending'">Payment Pending</span>
+                                <!-- <span *ngIf="item.application_status == 'application_process'">Application Process</span> -->
+                                <span *ngIf="item.application_status == 'under_process' || item.application_status == 'application_process'">Under Process</span>
+                                <span *ngIf="item.application_status == 'pending'">Payment Pending</span>
                                 <span *ngIf="item.application_status == null || item.application_status === 'under_review'">Under Review</span>
                                 <span *ngIf="item.application_status == 'complete'">Complete</span>
                             </td>
@@ -242,7 +261,7 @@
                                 <span *ngIf="item.form_meta == 'no_objection'">No Objection Certificate</span>
                                 <span *ngIf="item.form_meta == 'work_activity'">Work Activity Permit</span>
                             </td>
-                            <td>{{item.country}}</td>
+                            
                             <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review':item.payment_status === null , 'under-review':item.payment_status === 'pending'}">
                                 <span *ngIf="item.payment_status == 'paid'">Paid</span>
                                 <span *ngIf="item.payment_status == 'pending'">Pending</span>

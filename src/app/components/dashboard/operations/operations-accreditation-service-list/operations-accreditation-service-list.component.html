@@ -35,6 +35,7 @@
                                 <mat-form-field class="cab-data">
                                     <mat-label>Searchable Column</mat-label> 
                                     <mat-select placeholder="Select" (selectionChange)="searchableColumn()" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue">
+                                        <mat-option value="id">Application Number</mat-option>
                                         <mat-option value="cab_name">CAB Name</mat-option>
                                         <mat-option value="cab_code">CAB Code</mat-option>
                                         <mat-option value="form_meta">Accreditation Type</mat-option>
@@ -108,7 +109,7 @@
                             <div class="col-md-12"> 
                                 <div class="filter-search">
                                     <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
-                                    <!-- <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a> -->
+                                    <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a>
                                     <a href="javascript:void(0)" (click)="exportFile()" class="space-left">EXPORT</a>
                                 </div>         
                             </div>
@@ -120,7 +121,7 @@
 
             <div class="row m-0">
                 <div class="col-md-2">
-                    <div class="user-details">
+                    <div class="user-details" [ngStyle]="{'width': '100px'}">
                         <mat-form-field class="cab-data">
                             <mat-label>Show</mat-label>                              
                             <mat-select placeholder="Show" (selectionChange)="showData()"
@@ -150,32 +151,55 @@
                                 </a>
                             </th>
 
-                            <th>CAB Name</th>
-
-                            <th>CAB Code</th>
-
-                            <th>Scope</th>
-
-                            <th>Country</th>
-
                             <th>Application Date
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'created_date', curSortDir.created_date)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.created_date"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.created_date"></span>
                                 </a>
                             </th>
-                            <th width="15%">Status
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'accr_status', curSortDir.accr_status)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.accr_status"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.accr_status"></span>
+
+                            <th>CAB Name
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'cab_name', curSortDir.cab_name)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.cab_name"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.cab_name"></span>
                                 </a>
                             </th>
+
+                            <th>CAB Code
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'cab_code', curSortDir.cab_code)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.cab_code"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.cab_code"></span>
+                                </a>
+                            </th>
+
+                            <th>Country
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'country', curSortDir.country)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.country"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.country"></span>
+                                </a>
+                            </th>
+
+                            <th>Scope
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'criteria_request', curSortDir.criteria_request)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.criteria_request"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.criteria_request"></span>
+                                </a>
+                            </th>
+                            
                             <th>Prelim Visit
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'prelim_visit', curSortDir.prelim_visit)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.prelim_visit"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.prelim_visit"></span>
                                 </a>
                             </th>
+                            
+                            <th width="15%">Status
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'accr_status', curSortDir.accr_status)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.accr_status"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.accr_status"></span>
+                                </a>
+                            </th>
+
                             <th>Accreditation Type
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'form_meta', curSortDir.form_meta)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.form_meta"></span>
@@ -203,23 +227,27 @@
                             <td class="fnt-clr">
                                 <a href="javascript:void(0)" (click)="getRouteId(item.id)" routerLink="/dashboard/operations/accreditation-service-details/{{item.id}}" title="View" alt="View">
                                 {{item.id}}</a></td>
-                            <td>{{item.cabDetails.cab_name}}</td>
-                            <td>{{item.cabDetails.cab_code}}</td>
-                            <td>{{item.criteria_request}}</td>
-                            <td>{{item.country}}</td>
                             <td>
                                 {{item.created | date :'dd-MMM-yyyy' }}
                             </td>
-                            <td [ngClass]="{'pending': (item.accr_status === 'pending' || item.accr_status == 'draft' || item.accr_status == 'application_process'), 'under-review':item.accr_status === null || item.accr_status === 'under_review', 'complete': item.accr_status === 'complete'}">
-                                <span *ngIf="item.accr_status == 'pending' || item.accr_status == 'draft'">Pending</span>
-                                <span *ngIf="item.accr_status == 'application_process'">Application Process</span>
-                                <span *ngIf="item.accr_status == null || item.accr_status === 'under_review'">Under Review</span>
-                                <span *ngIf="item.accr_status == 'complete'">Complete</span>
-                            </td>
+                            <td>{{item.cabDetails.cab_name}}</td>
+                            <td>{{item.cabDetails.cab_code}}</td>
+                            <td>{{item.country}}</td>
+                            <td>{{item.criteria_request}}</td>
+                            
                             <td [ngClass]="{'complete': item.is_prelim_visit == true, 'under-review':item.is_prelim_visit == false }">
                                 <span *ngIf="item.is_prelim_visit == true">Yes</span>
                                 <span *ngIf="item.is_prelim_visit == false">No</span>
                             </td>
+                            
+                            <td [ngClass]="{'pending': item.accr_status === 'pending' || item.accr_status == 'application_process', 'under-review':item.accr_status === null || item.accr_status === 'under_review', 'complete': item.accr_status === 'complete', 'draft': item.accr_status === 'draft' }">
+                                <span *ngIf="item.accr_status == 'pending'">Payment Pending</span>
+                                <span *ngIf="item.accr_status == 'application_process'">Under Process</span>
+                                <span *ngIf="item.accr_status == null || item.accr_status == 'under_review'">Under Review</span>
+                                <span *ngIf="item.accr_status == 'complete'">Complete</span>
+                                <span *ngIf="item.accr_status == 'draft'">Draft</span>
+                            </td>
+
                             <td>
                                 <span *ngIf="item.form_meta == 'testing_calibration'">Testing Calibration</span>
                                 <span *ngIf="item.form_meta == 'inspection_body'">Inspection Bodies</span>

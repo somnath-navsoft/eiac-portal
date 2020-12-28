@@ -63,17 +63,20 @@ export class TrainingStatusComponent implements OnInit {
     this.curSortDir['application_status'] = false;
     this.curSortDir['course'] = false;
     this.curSortDir['capacity'] = false;
+    this.curSortDir['Country'] = false;
+    
     
     this.curSortDir['payment_status']     = false;
     this.curSortDir['cab_code']           = false;
-    this.curSortDir['applicant']          = false;
+    this.curSortDir['applicantName']      = false;
+    this.curSortDir['applicantCode']      = false;
     this.userType = sessionStorage.getItem('type');
 
     this.selectTrainingType = [{'title':'In Premise', value: 'inprimise'},{'title':'Public Training', value: 'public_training'}];
     this.selectAccrStatus  = [
       {title: 'Payment Pending', value:'pending'},
-      {title: 'Pending', value:'payment_pending'},
-      {title: 'Application Process', value:'application_process'},
+      //{title: 'Pending', value:'payment_pending'},
+      //{title: 'Application Process', value:'application_process'},
       {title: 'Under Review', value:'under_review'},
       {title: 'Under Process', value:'under_process'},
       {title: 'Complete', value:'complete'},
@@ -81,9 +84,15 @@ export class TrainingStatusComponent implements OnInit {
     ]
   }
 
-  changeFilter(theEvt: any){
+  changeFilter(theEvt: any, type?:any){
     console.log("@change: ", theEvt, " :: ", theEvt.value);
-    let getIdValue: string = theEvt.value;
+    let getIdValue: string = '';
+    if(type == undefined){
+      getIdValue= theEvt.value;
+    }
+    if(type != undefined){
+      getIdValue= theEvt;
+    }
     this.searchText = '';
     var myClasses = document.querySelectorAll('.slectType'),i = 0,length = myClasses.length;
        for (i; i < length; i++) {
@@ -135,11 +144,17 @@ export class TrainingStatusComponent implements OnInit {
 
   filterSearchReset(type?: string){
     //Reset serach
-    this.applicationNo = '' || null;
-    this.selectTrainingTypeValue = '' || null;
-    this.paymentStatusValue = '' || null;
+    // this.applicationNo = '' || null;
+    // this.selectTrainingTypeValue = '' || null;
+    // this.paymentStatusValue = '' || null;
     this.show_data = this.pageLimit = 10;
     this.exportAs = null;
+    this.searchText = null;
+    this.searchValue = null;
+    this.changeFilter('id','reset');    
+    if(type != undefined && type != ''){
+      this.loadPageData();
+    }
     if(type != undefined && type != ''){
       this.loadPageData();
     }
@@ -291,8 +306,8 @@ export class TrainingStatusComponent implements OnInit {
           let dataRec: any=[];
           this.dataLoad = true;
           console.log('loading...', data.records);
-          // console.log(">>>List: ", data);
           this.trainerdata = data.records;
+          this.pageCurrentNumber = 1;
           dataRec = data.records;
           this.pageTotal = data.records.length;
         },
@@ -301,6 +316,10 @@ export class TrainingStatusComponent implements OnInit {
         }
       )          
     )
+  }
+
+  isNumber(param: any){
+    return isNaN(param);
   }
 
   sortedList(data: any, sortBy: string, sortDir: boolean){
@@ -392,6 +411,17 @@ export class TrainingStatusComponent implements OnInit {
            this.trainerdata = array;
          }
        }  
+       if(sortBy == 'Country'){
+        this.curSortDir.Country = !sortDir;
+        if(this.curSortDir.Country){
+          let array = data.slice().sort((a, b) => (a.country > b.country) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.Country){
+          let array = data.slice().sort((a, b) => (a.country < b.country) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
        if(sortBy == 'course'){
          this.curSortDir.course = !sortDir;
          if(this.curSortDir.course){
@@ -414,6 +444,33 @@ export class TrainingStatusComponent implements OnInit {
           this.trainerdata = array;
         }
       }
+      if(sortBy == 'applicantName'){
+        this.curSortDir.applicantName = !sortDir;
+        //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
+        if(this.curSortDir.applicantName){
+          let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name > b.cabDetails[0].cab_name) ? 1 : -1)
+          this.trainerdata = array;
+          //console.log("after:: ", array, " :: ", this.trainerdata);
+        }
+        if(!this.curSortDir.applicantName){
+          let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name < b.cabDetails[0].cab_name) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
+      //By Prelim Status
+      if(sortBy == 'applicantCode'){
+        this.curSortDir.applicantCode = !sortDir;
+        //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
+        if(this.curSortDir.applicantCode){
+          let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_code > b.cabDetails[0].cab_code) ? 1 : -1)
+          this.trainerdata = array;
+          //console.log("after:: ", array, " :: ", this.trainerdata);
+        }
+        if(!this.curSortDir.applicantCode){
+          let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_code < b.cabDetails[0].cab_code) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      } 
 
     }
   }

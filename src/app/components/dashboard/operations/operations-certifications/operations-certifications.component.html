@@ -34,12 +34,9 @@
                                     <mat-label>Filter Columns</mat-label> 
                                     <mat-select placeholder="Select" [ngModelOptions]="{standalone: true}" (selectionChange)="changeFilter($event)"
                                     [(ngModel)]="searchValue">
-                                        <mat-option value="cab_name">CAB Name</mat-option>
-                                        <mat-option value="cab_code">CAB Code</mat-option>
-                                        <mat-option value="contact">Contact Person</mat-option>
-                                        <mat-option value="email">Email</mat-option>
-                                        <mat-option value="city">City</mat-option>
-                                        <mat-option value="location_city_country">Country</mat-option>
+                                        <mat-option value="certificate_no">Certificate Number</mat-option>
+                                        <mat-option value="certificate_status">Certificate Status</mat-option>
+                                        <mat-option value="certificate_type">Certificate Type</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div> 
@@ -53,16 +50,25 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="slectType col-md-4" id="location_city_country"  [ngStyle]="{'display': 'none'}">  
+                        <div class="slectType col-md-4" id="certificate_status"  [ngStyle]="{'display': 'none'}">  
                             <div class="col-md-12"> 
                                 <div class="user-details"> 
                                     <mat-form-field class="cab-data">
-                                        <mat-label>Country</mat-label>                              
-                                        <mat-select placeholder="Acreditation Type" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
-                                            <!-- <input class="form-control form-control-sm w-100" #myInput  type="text" 
-                                                    (keyup)="searchCountry($event)" (keydown)="$event.stopPropagation()" autocomplete="off" placeholder="Search">
-                                                    <mat-divider></mat-divider> -->
-                                            <mat-option *ngFor="let item of loadCountryLists;" [value]="item.CountryName">{{item.CountryName}}</mat-option>                                        
+                                        <mat-label>Status</mat-label>                              
+                                        <mat-select placeholder="Certificate Status" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">                                            
+                                            <mat-option *ngFor="let item of loadCertificateStatus;" [value]="item.field_mgmt">{{item.title}}</mat-option>                                        
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slectType col-md-4" id="certificate_type"  [ngStyle]="{'display': 'none'}">  
+                            <div class="col-md-12"> 
+                                <div class="user-details"> 
+                                    <mat-form-field class="cab-data">
+                                        <mat-label>Type</mat-label>                              
+                                        <mat-select placeholder="Acreditation Type" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">                                            
+                                            <mat-option *ngFor="let item of loadCertificateType;" [value]="item.service_page.id">{{item.title}}</mat-option>                                        
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
@@ -106,9 +112,9 @@
                     <table id="accreditation-service-export">
                         <tr>
                             <th [ngStyle]="{'font-size':'14px'}">Certificate No
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'id', curSortDir.id)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.id"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.id"></span>
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'new_no', curSortDir.new_no)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.new_no"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.new_no"></span>
                                 </a>
                             </th>
                             <th [ngStyle]="{'font-size':'14px'}">Certificate Type
@@ -146,23 +152,26 @@
                     <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
                         <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
                             <td class="fnt-clr">
-                                <a href="javascript:void(0)" routerLink="/dashboard/operations/accreditation-service-details/{{item.id}}" title="View" alt="View">
-                                {{item.id}}</a></td>
-                            <td>                                
+                                <a href="javascript:void(0)" (click)="openView(certificateView, item.certificate)" title="View" alt="View">
+                               #{{item.new_no}}</a></td>
+                            <td> 
+                                Accreditation
                             </td>
-                            <td>                                
+                            <td>{{item.service_name}}</td>
+                            <td>{{item.dir_status}}</td>
+                            <td>
+                                <ng-container *ngIf="item.valid_from != null">{{item.valid_from | date}}</ng-container>
+                                <ng-container *ngIf="item.valid_from == null">NA</ng-container>
                             </td>
-                            <td>                                
-                            </td>
-                            <td>                               
-                            </td>
-                            <td>                                
+                            <td>
+                                <ng-container *ngIf="item.valid_to != null">{{item.valid_to | date}}</ng-container>
+                                <ng-container *ngIf="item.valid_to == null">NA</ng-container>
                             </td>                            
                             <td class="action fnt-clr">                                
-                                <a href="javascript:void(0)"  alt="View">
+                                <a href="javascript:void(0)" (click)="openView(certificateView, item.certificate)" [title]="item.certificate_name">
                                     <span class="icon-eye"></span>
-                                </a>
-                                <a href="javascript:void(0)"  alt="View">
+                                </a> 
+                                <a [href]="_constant.mediaPath+'/media/'+item.certificate" [title]="item.certificate_name" target="_blank">
                                     <span class="icon-download"></span>
                                 </a>
                             </td>
@@ -170,21 +179,47 @@
                     </ng-container>
                     <ng-container *ngIf="dataLoad && trainerdata.length == 0">
                         <tr>
-                            <td colspan="6">
+                            <td colspan="7">
                                 No Records
                             </td>
                         </tr>
                     </ng-container>
                     <ng-container *ngIf="!dataLoad">
                         <tr>
-                            <td colspan="6" align="center">
+                            <td colspan="7" align="center">
                                 Loading...
                             </td>
                         </tr>
                     </ng-container>
                     </table>
+                    <!-- <span id="openViewDialog" (click)="openView(certificateView)"></span> -->
+                    <ng-template #certificateView let-modal>
+                        <app-loader *ngIf="loaderPdf"></app-loader>  
+                        <div class="modal-header">
+                          <h4 class="modal-title" id="modal-basic-title">CERTIFICATE VIEW</h4>
+                          <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
+                            <span aria-hidden="true">&times;</span>
+                          </button>                          
+                        </div>
+                        <div class="modal-body">                            
+                            <app-loader *ngIf="loaderPdf"></app-loader>
+                            <p *ngIf="errorLoader">Error Loading PDF</p>
+                            <div class="pdf-parent">
+                            <pdf-viewer [src]="(pathPDF)" [show-all]="true" [stick-to-page]="true"
+                                [zoom]="1.0" [original-size]="false" [autoresize]="true"
+                                [show-borders]="true" (error)="onError($event)" (on-progress)="onProgress($event)"
+                                (after-load-complete)="completeLoadPDF($event)"
+                                [render-text]="true">
+                            </pdf-viewer>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                        
+                      </ng-template>
+                    <!-- pageCurrentNumber = $event || (click)="paginationReset()"-->
                     <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0" >
-                        <pagination-controls (click)="paginationReset()" (pageChange)="pageCurrentNumber = $event"></pagination-controls>
+                        <pagination-controls  (pageChange)="loadPage($event)"></pagination-controls>
                     </ng-container>
                 </div>
             </div>
