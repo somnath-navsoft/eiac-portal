@@ -28,7 +28,7 @@
                         <div class="col-md-4">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
-                                    <mat-label>Filter Column</mat-label> 
+                                    <mat-label>Searchable Column</mat-label> 
                                     <mat-select placeholder="Select" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue"
                                       (selectionChange)="changeFilter($event)">
                                         <mat-option value="id">Application Number</mat-option>
@@ -139,7 +139,7 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.created_date"></span>
                                 </a>
                             </th>
-                            <th [ngStyle]="{'font-size':'14px'}">CAB Name
+                            <th [ngStyle]="{'font-size':'14px'}">CAB Name/Candidate
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'applicantName', curSortDir.applicantName)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.applicantName"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.applicantName"></span>
@@ -149,6 +149,12 @@
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'applicantCode', curSortDir.applicantCode)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.applicantCode"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.applicantCode"></span>
+                                </a>
+                            </th>
+                            <th>Country
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'Country', curSortDir.Country)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.Country"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.Country"></span>
                                 </a>
                             </th>
                             <th>Course Name
@@ -163,9 +169,7 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.capacity"></span>
                                 </a>
                             </th>
-                            <!-- <th>Trainer</th>
-                            <th>Audience</th> -->
-                            <th width="15%">Status
+                            <th>Status
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'application_status', curSortDir.application_status)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.application_status"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.application_status"></span>
@@ -203,6 +207,10 @@
                                 <ng-container *ngIf="item.cabDetails != undefined && item.cabDetails.length > 0">
                                     {{item.cabDetails[0].cab_code}}
                                 </ng-container>
+                            </td>
+                            <td>
+                                <ng-container *ngIf="isNumber(item.country)">{{item.country}}</ng-container>
+                                <ng-container *ngIf="!isNumber(item.country)">NA</ng-container>
                             </td>
                             <td [ngStyle]="{'width':'100px'}">
                                 <ng-container *ngIf="item.courseEventDetails != 'NA' && item.courseEventDetails.course_details != undefined">

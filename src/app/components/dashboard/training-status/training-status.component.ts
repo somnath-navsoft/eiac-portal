@@ -63,6 +63,8 @@ export class TrainingStatusComponent implements OnInit {
     this.curSortDir['application_status'] = false;
     this.curSortDir['course'] = false;
     this.curSortDir['capacity'] = false;
+    this.curSortDir['Country'] = false;
+    
     
     this.curSortDir['payment_status']     = false;
     this.curSortDir['cab_code']           = false;
@@ -304,6 +306,10 @@ export class TrainingStatusComponent implements OnInit {
     )
   }
 
+  isNumber(param: any){
+    return isNaN(param);
+  }
+
   sortedList(data: any, sortBy: string, sortDir: boolean){
     //true - asc / false - desc
     ////console.log('>>>', data);
@@ -393,6 +399,17 @@ export class TrainingStatusComponent implements OnInit {
            this.trainerdata = array;
          }
        }  
+       if(sortBy == 'Country'){
+        this.curSortDir.Country = !sortDir;
+        if(this.curSortDir.Country){
+          let array = data.slice().sort((a, b) => (a.country > b.country) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.Country){
+          let array = data.slice().sort((a, b) => (a.country < b.country) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
        if(sortBy == 'course'){
          this.curSortDir.course = !sortDir;
          if(this.curSortDir.course){

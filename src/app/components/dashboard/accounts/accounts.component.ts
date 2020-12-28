@@ -44,6 +44,7 @@ export class AccountsComponent implements OnInit {
   selectPaymentStatus: any[] =[];
   searchText: string = '';
   searchValue: string = '';
+  isExport: boolean = false;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService, private exportAsService: ExportAsService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent,public router: Router) { }
@@ -108,6 +109,7 @@ export class AccountsComponent implements OnInit {
 
   exportFile() {
     // console.log(this.exportAs);
+    this.isExport = true;
     this.exportAsConfig = {
       type: 'csv', // the type you want to download
       elementIdOrContent: 'accreditation-service-export', // the id of html/table element
@@ -115,6 +117,8 @@ export class AccountsComponent implements OnInit {
     // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
     this.exportAsService.save(this.exportAsConfig, 'accounts').subscribe(() => {
       // save started
+      this.isExport = false;
+      console.log('...saving....');
     });
   }
 

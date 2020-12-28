@@ -107,6 +107,8 @@ export class StatusComponent implements OnInit {
     this.curSortDir['criteria_request']         = false;
     this.curSortDir['form_meta']                = false;
     this.curSortDir['country']                  = false;
+    this.curSortDir['prelim_visit']                  = false;
+    
 
     this.userType = sessionStorage.getItem('type');
     this.loadCriteriaScheme();
@@ -411,6 +413,9 @@ if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_
       )          
     )
   }
+  isNumber(param: any){
+    return isNaN(param);
+  }
 
   sortedList(data: any, sortBy: string, sortDir: boolean){
     //true - asc / false - desc
@@ -514,6 +519,21 @@ if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_
             this.trainerdata = array;
           }
         }
+        //prelim_visit
+        if(sortBy == 'prelim_visit'){
+          this.curSortDir.prelim_visit = !sortDir;
+          //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
+          if(this.curSortDir.prelim_visit){
+            let array = data.slice().sort((a, b) => (a.prelim_visit > b.prelim_visit) ? 1 : -1)
+            this.trainerdata = array;
+            //console.log("after:: ", array, " :: ", this.trainerdata);
+          }
+          if(!this.curSortDir.prelim_visit){
+            let array = data.slice().sort((a, b) => (a.prelim_visit < b.prelim_visit) ? 1 : -1)
+            this.trainerdata = array;
+          }
+        }
+
         //By Payment Status
         if(sortBy == 'payment_status'){
           this.curSortDir.payment_status = !sortDir;
