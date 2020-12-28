@@ -1,0 +1,375 @@
+<!-- <p>trainer-service-list works!</p> -->
+<app-loader *ngIf="!loader"></app-loader>
+<div class="main-detail">
+    <div class="container-fluid p-0">
+        <div class="main-dashboard-table">
+            <flash-messages></flash-messages>
+            <div class="row mb-4">
+                <div class="col-md-8">                    
+                    <div class="dashbrd-hdr">
+                        <h3>Certifications</h3> 
+                    </div>
+                </div>
+                <!-- <div class="col-md-4"> 
+                    <div class="tbl-filter-data">
+                        <ul>
+                            <li>
+                                <div class="filter">
+                                    <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div> -->
+            </div>
+
+
+            
+            <ng-container class="tbl-filter-data">
+                <div class="filter-dash filter_certification">
+                    <div class="row m-0">
+                        <div class="col-md-4">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Filter Columns</mat-label> 
+                                    <mat-select placeholder="Select" [ngModelOptions]="{standalone: true}" (selectionChange)="changeFilter($event)"
+                                    [(ngModel)]="searchValue">
+                                        <mat-option value="certificate_no">Certificate Number</mat-option>
+                                        <mat-option value="certificate_status">Certificate Status</mat-option>
+                                        <mat-option value="certificate_type">Certificate Type</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div> 
+                        </div>
+
+                        <div class="col-md-4 slectType" id="textType">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                <mat-label>Search Text</mat-label> 
+                                <input type="text" matInput [(ngModel)]="searchText" placeholder="Search Text">                                
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="slectType col-md-4" id="certificate_status"  [ngStyle]="{'display': 'none'}">  
+                            <div class="col-md-12"> 
+                                <div class="user-details"> 
+                                    <mat-form-field class="cab-data">
+                                        <mat-label>Status</mat-label>                              
+                                        <mat-select placeholder="Certificate Status" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">                                            
+                                            <mat-option *ngFor="let item of loadCertificateStatus;" [value]="item.field_mgmt">{{item.title}}</mat-option>                                        
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slectType col-md-4" id="certificate_type"  [ngStyle]="{'display': 'none'}">  
+                            <div class="col-md-12"> 
+                                <div class="user-details"> 
+                                    <mat-form-field class="cab-data">
+                                        <mat-label>Type</mat-label>                              
+                                        <mat-select placeholder="Acreditation Type" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">                                            
+                                            <mat-option *ngFor="let item of loadCertificateType;" [value]="item.service_page.id">{{item.title}}</mat-option>                                        
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-0">
+                            <div class="col-md-12"> 
+                                <div class="filter-search">
+                                    <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
+                                    <ng-container *ngIf="userType == 'operations'">
+                                    <a href="javascript:void(0)" (click)="exportFile()" class="space-left">EXPORT</a>
+                                    </ng-container>
+                                </div>         
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+            </ng-container>
+            <div class="row m-0">
+                <div class="col-md-4">
+                    <div class="user-details" [ngStyle]="{'width': '100px'}">
+                        <mat-form-field class="cab-data">
+                            <mat-label>Show</mat-label>                              
+                            <mat-select placeholder="Show" (selectionChange)="showData()"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="show_data">
+                                <mat-option value="25">25</mat-option>
+                                <mat-option value="50">50</mat-option>
+                                <mat-option value="75">75</mat-option>
+                                <mat-option value="100">100</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            
+        
+        <div class="table-dashboard-cont mt-3">
+            <div class="row m-0">
+                <div class="col-md-12 p-0">
+                    <!-- @{{trainerdata | json}} -->
+                    <table id="accreditation-service-export">
+                        <tr>
+                            <th [ngStyle]="{'font-size':'14px'}">Certificate No
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'new_no', curSortDir.new_no)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.new_no"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.new_no"></span>
+                                </a>
+                            </th>
+                            <th [ngStyle]="{'font-size':'14px'}">Certificate Type
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'certificate_type', curSortDir.certificate_type)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.certificate_type"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.certificate_type"></span>
+                                </a>
+                            </th>
+                            <th width="15%" [ngStyle]="{'font-size':'14px'}">CAB Type
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'cab_type', curSortDir.cab_type)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.cab_type"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.cab_type"></span>
+                                </a>
+                            </th>
+                            <th [ngStyle]="{'font-size':'14px'}">CAB Status
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'cab_status', curSortDir.cab_status)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.cab_status"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.cab_status"></span>
+                                </a>
+                            </th>
+                            <th [ngStyle]="{'font-size':'14px'}">Certificate Valid From
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'start_date', curSortDir.start_date)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.start_date"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.start_date"></span>
+                                </a>
+                            </th>
+                            <th [ngStyle]="{'font-size':'14px'}">Certificate Valid To
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'to_date', curSortDir.to_date)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.to_date"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.to_date"></span>
+                                </a>
+                            </th>
+                            <th>Action</th>
+                        </tr>
+                    <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
+                        <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
+                            <td class="fnt-clr">
+                                <a href="javascript:void(0)" (click)="openView(certificateView, item.certificate)" title="View" alt="View">
+                               #{{item.new_no}}</a></td>
+                            <td> 
+                                Accreditation
+                            </td>
+                            <td>{{item.service_name}}</td>
+                            <td>{{item.dir_status}}</td>
+                            <td>
+                                <ng-container *ngIf="item.valid_from != null">{{item.valid_from | date}}</ng-container>
+                                <ng-container *ngIf="item.valid_from == null">NA</ng-container>
+                            </td>
+                            <td>
+                                <ng-container *ngIf="item.valid_to != null">{{item.valid_to | date}}</ng-container>
+                                <ng-container *ngIf="item.valid_to == null">NA</ng-container>
+                            </td>                            
+                            <td class="action fnt-clr">                                
+                                <a href="javascript:void(0)" (click)="openView(certificateView, item.certificate)" [title]="item.certificate_name">
+                                    <span class="icon-eye"></span>
+                                </a> 
+                                <a [href]="_constant.mediaPath+'/media/'+item.certificate" [title]="item.certificate_name" target="_blank">
+                                    <span class="icon-download"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="dataLoad && trainerdata.length == 0">
+                        <tr>
+                            <td colspan="7">
+                                No Records
+                            </td>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="!dataLoad">
+                        <tr>
+                            <td colspan="7" align="center">
+                                Loading...
+                            </td>
+                        </tr>
+                    </ng-container>
+                    </table>
+                    <!-- <span id="openViewDialog" (click)="openView(certificateView)"></span> -->
+                    <ng-template #certificateView let-modal>
+                        <app-loader *ngIf="loaderPdf"></app-loader>  
+                        <div class="modal-header">
+                          <h4 class="modal-title" id="modal-basic-title">CERTIFICATE VIEW</h4>
+                          <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
+                            <span aria-hidden="true">&times;</span>
+                          </button>                          
+                        </div>
+                        <div class="modal-body">                            
+                            <app-loader *ngIf="loaderPdf"></app-loader>
+                            <p *ngIf="errorLoader">Error Loading PDF</p>
+                            <div class="pdf-parent">
+                            <pdf-viewer [src]="(pathPDF)" [show-all]="true" [stick-to-page]="true"
+                                [zoom]="1.0" [original-size]="false" [autoresize]="true"
+                                [show-borders]="true" (error)="onError($event)" (on-progress)="onProgress($event)"
+                                (after-load-complete)="completeLoadPDF($event)"
+                                [render-text]="true">
+                            </pdf-viewer>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                        
+                      </ng-template>
+                    <!-- pageCurrentNumber = $event || (click)="paginationReset()"-->
+                    <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0" >
+                        <pagination-controls  (pageChange)="loadPage($event)"></pagination-controls>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <ng-template #courseVoucher let-modal>
+            <div class="modal-header course-pop">
+              <h4 class="modal-title" id="modal-basic-title">UPLOAD PROFORMA INVOICE</h4>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span class="icon-close"></span>
+              </button>
+            </div>
+            <div class="modal-body">                 
+                <form #voucherForm="ngForm">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Voucher Number</mat-label>
+                                <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                                matInput placeholder="Voucher Number" 
+                                [(ngModel)]="voucherSentData.voucher_no">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Voucher Date</mat-label>
+                                <input matInput [matDatepicker]="voucher_date" 
+                                (click)="_service._openCalendar(voucher_date)" 
+                                readonly="true" 
+                                [min]="minDate" name="voucher_date" 
+                                [(ngModel)]="voucherSentData.voucher_date" placeholder="Voucher Date" required>
+                                <mat-datepicker-toggle matSuffix [for]="voucher_date"></mat-datepicker-toggle>
+                                <mat-datepicker #voucher_date disabled="false"></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Amount</mat-label>
+                                <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                                matInput placeholder="Voucher Number" 
+                                [(ngModel)]="voucherSentData.amount">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-6">
+                            <span class="fileupload">
+                                <input type="file" name="voucher_invoice"                                
+                                (change)="validateFile($event, 'voucher_invoice')" required>
+                                <span class="icon-attach attach-data"></span>
+                            </span>
+                            <p class="error" *ngIf="paymentReceiptValidation == false">Please Upload a valid file (ex: pdf)</p>
+                        </div>
+                    </div>
+                    <div class="row" [ngStyle]="{'margin-top': '10px'}">
+                        <div class="col-md-12">
+                            <div class="bttns-health">
+                                <button type="submit" (click)="voucherSentSubmit(voucherForm)" class="cancel-bttn">SUBMIT</button>
+                                <button type="button" class="submit-bttn submit-health" (click)="modal.close('Cancel click')">CANCEL</button>
+                            </div>
+                            
+                        </div>
+                    </div>                    
+                </form>
+            </div>
+            <!-- <div class="modal-footer">
+            </div> -->
+          </ng-template>
+          <!-- Modal -->
+          <!-- Modal VIEW -->
+        <ng-template #courseView let-modal>
+            <div class="modal-header">
+              <h4 class="modal-title" id="modal-basic-title">COURSE VIEW</h4>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body"> 
+                <ng-container *ngIf="selectCourseData != undefined">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Course Code</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <span [innerHTML]="selectCourseData.course_code"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Agreement Status</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <span [innerHTML]="selectCourseData.agreement_status | titlecase"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Payment Status</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <span [innerHTML]="selectCourseData.payment_status | titlecase"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Course Type</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <span [innerHTML]="(selectCourseData.training_course_type === 'custom_course') ? 'Custom Course' : 'Public Course'"></span>
+                    </div>
+                </div>
+                <div class="row" *ngIf="selectCourseData.customCourseListDetails != undefined && selectCourseData.customCourseListDetails.length > 0">
+                    <div class="col-md-6">
+                        <h5>Course Information</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <ng-container *ngIf="selectCourseData.customCourseListDetails != undefined && selectCourseData.customCourseListDetails.length > 0">
+                            <ng-container *ngFor="let item of selectCourseData.customCourseListDetails; let row = index">
+                                {{row + 1}}.&nbsp;{{item.name}}<br/>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                </div>
+                </ng-container>
+            </div>
+            <div class="modal-footer">
+              <!-- <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">CANCEL</button> -->
+            </div>
+          </ng-template>
+          <!-- Modal -->
+          <!-- Modal DELETE -->
+        <custom-modal *ngIf="deleteConfirm" (onDeleteAction)="deleteCourse(selectDeleteID)" [parent]="this" [modalType]="'delete'"></custom-modal>
+        <!-- <ng-template #courseDelete let-modal>            
+            <div class="modal-header">
+              <h4 class="modal-title" id="modal-basic-title">Delete Confirmation</h4>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body"> 
+                <p>Are you sure?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">CANCEL</button>  
+              <button type="button" class="btn btn-outline-dark" (click)="deleteCourse(selectDeleteID)">OK</button>
+            </div>
+          </ng-template> -->
+        <!--  -->
+    </div>
+    </div>
+</div>

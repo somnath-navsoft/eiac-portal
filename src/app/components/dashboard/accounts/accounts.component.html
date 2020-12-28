@@ -9,26 +9,184 @@
                         <h3>Accounts</h3> 
                     </div>
                 </div>
+                <!-- <div class="col-md-4"> 
+                    <div class="tbl-filter-data">
+                        <ul>
+                            <li>
+                                <div class="filter">
+                                    <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div> -->
             </div>
-            <div class="accounts">
+            <!-- <div class="row m-0">
+                <ng-container *ngIf="userType == 'operations'">
+                    <div class="col-md-4">
+                        <div class="user-details">
+                            <mat-form-field class="cab-data">
+                                <mat-label>Export As</mat-label>                              
+                                <mat-select placeholder="Export" (selectionChange)="exportFile()"
+                                [ngModelOptions]="{standalone: true}" [(ngModel)]="exportAs" required>
+                                    <mat-option value="csv">Export as CSV</mat-option>
+                                    <mat-option value="xls">Export as XLS</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <div class="col-md-4">
+                    <div class="user-details">
+                        <mat-form-field class="cab-data">
+                            <mat-label>Show</mat-label>                              
+                            <mat-select placeholder="Show" (selectionChange)="showData()"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="show_data" required>
+                                <mat-option value="25">25</mat-option>
+                                <mat-option value="50">50</mat-option>
+                                <mat-option value="75">75</mat-option>
+                                <mat-option value="100">100</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div> -->
+
+            <ng-container class="tbl-filter-data">
+                <div class="filter-dash filter_certification">
+                    <div class="row m-0">
+                        <div class="col-md-4">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Filter Column</mat-label> 
+                                    <mat-select placeholder="Select" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue"
+                                      (selectionChange)="changeFilter($event)">
+                                        <mat-option value="id">Application Number</mat-option>
+                                        <mat-option value="cab_name">CAB Name</mat-option>
+                                        <mat-option value="cab_code">CAB Code</mat-option>
+                                        <mat-option value="voucher_no">Voucher Number</mat-option>
+                                        <mat-option value="voucher_date">Payment Date</mat-option>
+                                        <mat-option value="accr_status">Status</mat-option>
+                                        <mat-option value="form_meta">Accreditation Type</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div> 
+                        </div>
+
+                        <div class="col-md-4 slectType" id="textType">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                <mat-label>Search Text</mat-label> 
+                                <ng-container *ngIf="searchValue !='id' && searchValue !='voucher_no'">
+                                    <input type="text" matInput [(ngModel)]="searchText" placeholder="Search Text"  maxlength="50">
+                                </ng-container>
+                                <ng-container *ngIf="searchValue =='id' || searchValue =='voucher_no'">
+                                    <input type="text" matInput  maxlength="15" (keypress)="_service.inputFilter($event, _service.regExNumb)" [(ngModel)]="searchText"  placeholder="Search Text">
+                                </ng-container>
+                                </mat-form-field>
+                            </div>                            
+                        </div>
+                        <div class="col-md-4 slectType" id="form_meta" [ngStyle]="{'display': 'none'}">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Accreditation Type</mat-label>                              
+                                    <mat-select placeholder="Acreditation Type" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
+                                        <mat-option *ngFor="let item of selectAccrType;" [value]="item.value">{{item.title}}</mat-option>                                        
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 slectType" id="voucher_date" [ngStyle]="{'display': 'none'}">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                <input matInput readonly="true" [matDatepicker]="payment_date" id="payment_date"  
+                                (click)="_service._openCalendar(payment_date)" placeholder="Payment Date" name="payment_date" 
+                                [(ngModel)]="searchText" required>
+                                <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle>
+                                <mat-datepicker #payment_date disabled="false"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-md-4 slectType" id="accr_status" [ngStyle]="{'display': 'none'}">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Payment Status</mat-label>                              
+                                    <mat-select placeholder="Payment Status" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
+                                        <mat-option *ngFor="let item of selectPaymentStatus;" [value]="item.value">{{item.title}}</mat-option>                                        
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="row m-0">
+                            <div class="col-md-12"> 
+                                <div class="filter-search">
+                                    <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
+                                    <!-- <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a> -->
+                                    <ng-container *ngIf="userType == 'operations'">
+                                    <a href="javascript:void(0)" (click)="exportFile()" class="space-left">EXPORT</a>
+                                    </ng-container>
+                                </div>         
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+            </ng-container>
+            <div class="row m-0">
+                <div class="col-md-4">
+                    <div class="user-details" [ngStyle]="{'width': '100px'}">
+                        <mat-form-field class="cab-data">
+                            <mat-label>Show</mat-label>                              
+                            <mat-select placeholder="Show" (selectionChange)="showData()"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="show_data">
+                                <mat-option value="25">25</mat-option>
+                                <mat-option value="50">50</mat-option>
+                                <mat-option value="75">75</mat-option>
+                                <mat-option value="100">100</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accounts mt-3">
                 <table class="accounts_inner_tab">
                     <thead>
                         <tr class="main_acc_tab">
                             <th class="main_tab_head"></th>
                             <th class="main_tab_head"></th>
                             <th class="main_tab_head"></th>
+                            <th class="main_tab_head"></th>
+                            <th class="main_tab_head"></th>
+                            <th class="main_tab_head"></th>
+                            <th class="main_tab_head"></th>
+                            <th class="main_tab_head"></th>
+                            <th class="main_tab_head"></th>
+                            <th class="main_tab_head"></th>
+                            <th class="main_tab_head"></th>
                             <th class="main_tab_head main_hd"></th>
-                            <th colspan="3">Application Fees</th>
-                            <th colspan="3">Preliminary Visit</th>
-                            <th colspan="3">Document Review</th>
-                            <th colspan="3">Assessment</th>
-                            <th colspan="3">Certification</th>
+                            <th colspan="6">Application Fees</th>
+                            <th colspan="6">Preliminary Visit</th>
+                            <th colspan="6">Document Review</th>
+                            <th colspan="6">Assessment</th>
+                            <th colspan="6">Certification</th>
                         </tr>
+                    </thead>
+                </table>
+                <table class="accounts_inner_tab" id="accreditation-service-export">
+                    <thead>
                         <tr>
                             <th>App. No.</th>
                             <th>Date</th>
-                            <th>CAB Name/Code</th>
-                            <th>Application Type</th>
+                            <th>CAB Name</th>
+                            <th>CAB Code</th>
+                            <th>App. Type</th>
+                            <th>Voucher Number</th>
+                            <th>Application Amount</th>
+                            <th>Payment Amount</th>
+                            <!--  -->
                             <th>Fees</th>
                             <th>Fees Date</th>
                             <th>Status</th>
@@ -46,20 +204,25 @@
                             <th>Status</th>
                             <th></th>
                         </tr>
-                    </thead>
-                    
+                    </thead>                    
                     <tbody>
                         <ng-container *ngIf="accountsData.length > 0">
                             <tr *ngFor="let item of accountsData | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i = index;">
                                 <td class="fnt-clr"><a href="javascript:void(0)" routerLink="/dashboard/account-details/{{item.appNo}}">{{item.appNo}}</a></td>
                                 <td>{{item.createdDate | date}}</td>
                                 <td>{{item.cabName}}</td>
+                                <td>{{item.cabCode}}</td>
+                                <td>
+                                    <span *ngIf="item.appType == 'testing_calibration'">Testing Calibration</span>
+                                    <span *ngIf="item.appType == 'inspection_body'">Inspection Bodies</span>
+                                    <span *ngIf="item.appType == 'health_care'">Health Care</span>
+                                    <span *ngIf="item.appType == 'certification_bodies'">Certification Bodies</span>
+                                </td>
+                                <td>{{item.application_fees.voucher_no}}</td>
+                                <td>{{item.application_fees.amount}}</td>
+                                <td>{{item.application_fees.amount}}</td>
 
-                                <td *ngIf="item.appType == 'testing_calibration'">Testing Calibration</td>
-                                <td *ngIf="item.appType == 'inspection_body'">Inspection Bodies</td>
-                                <td *ngIf="item.appType == 'health_care'">Health Care</td>
-                                <td *ngIf="item.appType == 'certification_bodies'">Certification Bodies</td>
-
+                                <!--  -->
                                 <ng-container *ngIf="item.application_fees">
                                     <td>{{item.application_fees.amount}}</td>
                                     <td>{{item.application_fees.voucher_date | date}}</td>
@@ -132,7 +295,7 @@
 
                         <ng-container *ngIf="accountsData.length == 0">
                             <tr>
-                                <td colspan="5">
+                                <td colspan="25">
                                     No Records
                                 </td>
                             </tr>
@@ -142,7 +305,7 @@
                 </table>
 
                 <ng-container *ngIf="accountsData != undefined && accountsData.length > 5" >
-                    <pagination-controls (pageChange)="pageCurrentNumber = $event"></pagination-controls>
+                    <pagination-controls (click)="paginationReset()" (pageChange)="pageCurrentNumber = $event"></pagination-controls>
                 </ng-container>
 
             </div>

@@ -14,6 +14,23 @@ export class TrainerService {
   constructor(private http: HttpClient, private _service: AppService, private _constants: Constants) {
   }
 
+  //Get certificate List
+  getCertificateList(page: number=0, limit: number=10){
+    let url = `${this.BASE_REQ_URL}` + 'webservice/cab_certificate_list/?offset='+page+'&limit='+limit;
+    return this.http.get(url, this._service.getReqHeaders());
+  }
+  //https://dev-service.eiac.gov.ae/webservice/cab_directory_by_service/?status=all&language_id=1
+  getCertificateType(){
+    let url = `${this.BASE_REQ_URL}` + 'webservice/cab_directory_by_service/?status=all&language_id=1';
+    return this.http.get(url, this._service.getReqHeaders());
+  }
+
+  searchCertificateList(params: any): any{
+    let url = `${this.BASE_REQ_URL}` + 'webservice/cab_certificate_list/?'+params;
+    return this.http.get(url, this._service.getReqHeaders());
+  }
+
+
   //Get Trainer Page Details
   getTrainerPageDetails(){
     let url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.trainerCoursePageDetails;
@@ -58,6 +75,43 @@ export class TrainerService {
   //webservice/reg_status_change/2
   registrationVoucherSave(postData: any){
     const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.trainerCourseVoucherSave;
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
+  }
+
+  searchAccrStatus(postData: any){
+    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-accrediation-service-status/all/';
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
+  }
+
+  searchEventlist(postData: any){
+    const url = `${this.BASE_REQ_URL}` + 'webservice/event-list/';
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
+  }
+
+  searchAccountlist(postData: any){
+    const url = `${this.BASE_REQ_URL}` + 'webservice/accounts/';
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
+  }
+
+  searchRegStatus(postData: any){
+    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-registration-list/all/';
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
+  }
+  searchTrainerStatus(postData: any){
+    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-training-list/all/';
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
+  }
+  //================================
+  searchAccrServList(postData: any){
+    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-accrediation-service-status/all/';
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
+  }
+  searchRegServList(postData: any){
+    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-registration-list/all/';
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
+  }
+  searchTrainingServList(postData: any){
+    const url = `${this.BASE_REQ_URL}` + 'webservice/seach-training-list/all/';
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
   
@@ -217,6 +271,11 @@ getAllEventList(){
   let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.event_list; 
   //let url = this._service.apiServerUrl + this._constants.API_ENDPOINT.trainerAccredServList; 
   //console.log("GET Event URL: ", url, " -- ", this._service.getReqHeaders());
+  return this.http.get(url, this._service.getReqHeaders());
+}
+
+searchTargetAud(){
+  const url = `${this.BASE_REQ_URL}` + 'webservice/search-get-dropdown/';
   return this.http.get(url, this._service.getReqHeaders());
 }
 

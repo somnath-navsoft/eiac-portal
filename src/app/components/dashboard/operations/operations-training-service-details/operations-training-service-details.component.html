@@ -285,6 +285,7 @@
                                             <input type="text" class="fee-inp" name="no_of_participants1" [disabled]="!editable" [(ngModel)]="noofParticipants">
                                         </td>
                                         <td>{{tutionFees}}</td>
+                                        
                                     </tr>
                                     <tr>
                                         <td>2</td>
@@ -471,8 +472,9 @@
         <div class="col-md-12">
           <div class="bttns-health bttn-staff">
             <div *ngIf="paymentDetails && paymentDetails!= null" class="button-content">
-              <button class="cancel-bttn" (click)="uiDialog.openPDFViewer(_constant.mediaPath,serviceDetail.form_pdf)"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button>
+              <!-- <button class="cancel-bttn" (click)="uiDialog.openPDFViewer(_constant.mediaPath,serviceDetail.form_pdf)"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button> -->
 
+              <button class="cancel-bttn" (click)="downloadApplications()" [ngStyle]="{'font-weight':'bold'}">DOWNLOAD APPLICATION</button>
               <button class="cancel-bttn" (click)="downloadCsv()"  [ngStyle]="{'font-weight':'bold'}">DOWNLOAD CSV</button>
             </div>
             <!-- <a *ngIf="!paymentDetails && userType == 'operations'" class="submit-bttn submit-health" href="javascript:void(0)" (click)="open(courseVoucher, routeId)">PROFORMA UPLOAD</a> -->

@@ -23,91 +23,191 @@
                     </div>
                 </div> -->
             </div>
-            <!-- <ng-container *ngIf="advSearch" class="tbl-filter-data">
-                <div class="filter-dash">
+            <!-- <div class="row m-0">
+                <div class="col-md-4">
+                    <div class="user-details">
+                        <mat-form-field class="cab-data">
+                            <mat-label>Export As</mat-label>                             
+                            <mat-select placeholder="Export" (selectionChange)="exportFile()"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="exportAs" required>
+                                <mat-option value="csv">Export as CSV</mat-option>
+                                <mat-option value="xls">Export as XLS</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="user-details">
+                        <mat-form-field class="cab-data">
+                            <mat-label>Show</mat-label>                              
+                            <mat-select placeholder="Show" (selectionChange)="showData()"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="show_data" required>
+                                <mat-option value="25">25</mat-option>
+                                <mat-option value="50">50</mat-option>
+                                <mat-option value="75">75</mat-option>
+                                <mat-option value="100">100</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <ng-container *ngIf="advSearch" class="tbl-filter-data">
+                <div class="filter-dash filter_certification">
                     <div class="close-bttn">
                         <span class="icon-close" (click)="filterSearchSec()"></span>
                     </div>
-                <div class="row m-0">
-                    <div class="col-md-4">
-                        <div class="user-details">
-                            <mat-form-field class="cab-data">
-                                <mat-label>Search by Course ID</mat-label> 
-                            <input type="text" matInput [(ngModel)]="selectCode" placeholder="Search by CODE">
-                            </mat-form-field>
+                    <div class="row m-0">
+                        <div class="col-md-4">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Application No</mat-label> 
+                                <input type="text" matInput [(ngModel)]="applicationNo" placeholder="Search by Application No" (keypress)="_service.inputFilter($event, _service.regExNumb)">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Registration Type</mat-label>                             
+                                    <mat-select placeholder="Select" 
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="selectRegTypeValue" required>
+                                        <mat-option *ngFor="let item of selectRegType;" [value]="item.value">{{item.title}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Payment Status</mat-label>                             
+                                    <mat-select placeholder="Select" 
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="paymentStatusValue" required>
+                                        <mat-option value="paid">Paid</mat-option>
+                                        <mat-option value="pending">Pending</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="user-details">
-                            <mat-form-field class="cab-data">
-                                <mat-label>Search by Fees</mat-label> 
-                            <input matInput type="number" [(ngModel)]="selectFees" placeholder="Search by Fees">
-                            </mat-form-field>
+
+                    <div class="row m-0">
+                        <div class="col-md-12"> 
+                            <div class="filter-search">
+                                <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
+                                <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a>
+                            </div>         
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="user-details">
-                            <mat-form-field class="cab-data">
-                                <mat-label>Select Course Type</mat-label>                             
-                                <mat-select placeholder="Select" 
-                                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectCustomCourse" required>
-                                    <mat-option *ngFor="let item of selectCustomCourses;" [value]="item.value">{{item.title}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                </div>
-                <div class="row m-0" >
-                    <div class="col-md-4">
-                        <div class="user-details">
-                            <mat-form-field class="cab-data">
-                                <mat-label>Select Agreement Status</mat-label>                             
-                                <mat-select placeholder="Select Status" 
-                                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectAgreementStatus" required>
-                                    <mat-option *ngFor="let item of agreementStatus;" [value]="item.value">{{item.title}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="user-details">
-                            <mat-form-field class="cab-data">
-                                <mat-label>Select Payment Status</mat-label>                             
-                                <mat-select placeholder="Select Status" 
-                                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectPaymentStatus" required>
-                                    <mat-option *ngFor="let item of paymentStatus;" [value]="item.value">{{item.title}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                </div>
-                <div class="row m-0">
-                    <div class="col-md-12"> 
-                        <div class="filter-search">
-                            <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
-                            <a href="javascript:void(0)" (click)="filterSearchReset()">RESET</a>
-                        </div>         
-                    </div>
-                    <div class="col-md-4"> 
-                        
-                        <div class="add-data">
-                            <a href="javascript:void(0)" (click)="filterSearchSubmit()">SEARCH</a>
-                        </div>   
-                        <div class="add-data">
-                            <a href="javascript:void(0)" (click)="filterSearchReset()">RESET</a>
-                        </div>                    
-                    </div>
-                </div>
                 </div>
                 
             </ng-container> -->
-            
+
+            <ng-container class="tbl-filter-data">
+                <div class="filter-dash filter_certification">
+                    <!-- <div class="close-bttn">
+                        <span class="icon-close" (click)="filterSearchSec()"></span>
+                    </div> -->
+                    <div class="row m-0">
+                        <div class="col-md-4">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Searchable Column</mat-label> 
+                                    <mat-select placeholder="Select" (selectionChange)="searchableColumn()" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue">
+                                        <mat-option value="cab_name">CAB Name</mat-option>
+                                        <mat-option value="cab_code">CAB Code</mat-option>
+                                        <mat-option value="form_meta">Registration Type</mat-option>
+                                        <mat-option value="application_status">Status</mat-option>
+                                        <mat-option value="country">Country</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div> 
+                        </div>
+
+                        <div class="col-md-4 field_show" id="applicant">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                <mat-label>Search Text</mat-label> 
+                                <input type="text" matInput [(ngModel)]="searchText" placeholder="Search Text">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 field_show" id="accreditation_type" [ngStyle]="{'display':'none'}">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Accreditation Type</mat-label>                             
+                                    <mat-select placeholder="Select" 
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
+                                        <mat-option *ngFor="let item of selectAccrType;" [value]="item.value">{{item.title}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 field_show" id="status" [ngStyle]="{'display':'none'}">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Status</mat-label>                             
+                                    <mat-select placeholder="Select" 
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
+                                        <mat-option *ngFor="let item of selectStatus;" [value]="item.value">{{item.title}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 field_show" id="country" [ngStyle]="{'display': 'none'}">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Country</mat-label>
+                                    <!-- @{{step1Data.country}} -->
+                                    <!--  -->
+                                    <mat-select placeholder="Select" name="country" [(ngModel)]="searchText">
+                                        <mat-option [value]="item.name" *ngFor="let item of getCountryLists; let i = index;">{{item.name}}</mat-option>
+                                    </mat-select> 
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="row m-0">
+                            <div class="col-md-12"> 
+                                <div class="filter-search">
+                                    <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
+                                    <!-- <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a> -->
+                                    <a href="javascript:void(0)" (click)="exportFile()" class="space-left">EXPORT</a>
+                                </div>         
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </ng-container>
+
+            <div class="row m-0">
+                <div class="col-md-2">
+                    <div class="user-details">
+                        <mat-form-field class="cab-data">
+                            <mat-label>Show</mat-label>                              
+                            <mat-select placeholder="Show" (selectionChange)="showData()"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="show_data">
+                                <mat-option value="25">25</mat-option>
+                                <mat-option value="50">50</mat-option>
+                                <mat-option value="75">75</mat-option>
+                                <mat-option value="100">100</mat-option>
+                                <!-- <mat-option value="pdf">Export as PDF</mat-option> -->
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
         
         <div class="table-dashboard-cont">
             <div class="row m-0">
                 <div class="col-md-12 p-0">
                     <!-- @{{trainerdata | json}} -->
-                    <table>
+                    <table id="accreditation-service-export">
                         <tr>
                             <th>Application No
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'id', curSortDir.id)">
@@ -115,6 +215,13 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.id"></span>
                                 </a>
                             </th>
+
+                            <th>CAB Name</th>
+
+                            <th>CAB Code</th>
+
+                            <th>Country</th>
+
                             <th>Application Date
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'created_date', curSortDir.created_date)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.created_date"></span>
@@ -160,6 +267,19 @@
                             <td class="fnt-clr">
                                 <a href="javascript:void(0)" routerLink="/dashboard/operations/registration-service-details/{{item.id}}" title="View" alt="View">
                                 {{item.id}}</a></td>
+
+                            <td>
+                                {{item['cabDetails'][0].cab_name}}
+                            </td>
+
+                            <td>
+                                {{item['cabDetails'][0].cab_code}}
+                            </td>
+                            
+                            <td>
+                                {{item.country}}
+                            </td>
+                            
                             <td>
                                 {{item.created | date :'dd-MMM-yyyy' }}
                             </td>
@@ -184,11 +304,13 @@
                             </td>
                             <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review':(item.payment_status === null || item.payment_status === 'pending') }">
                                 <span *ngIf="item.payment_status == 'paid'">Paid</span>
-                                <span *ngIf="item.payment_status == 'pending'">Unpaid</span>
-                                <span *ngIf="item.payment_status == null">Unpaid</span>
+                                <span *ngIf="item.payment_status == 'pending'">Pending</span>
+                                <span *ngIf="item.payment_status == null">Pending</span>
                             </td> 
                             <!-- <td>
-                                {{item.applicantName}}
+                                <span *ngIf="item.cabDetails != undefined && item.cabDetails.length > 0">
+                                        {{item.cabDetails[0].cab_name}}
+                                </span>
                             </td> -->
                             <td class="action fnt-clr">
                                 <!-- *ngIf="(item.application_status == null && item.application_status === 'under_review')" -->
@@ -215,7 +337,7 @@
                     </ng-container>
                     </table>
                     <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
-                        <pagination-controls (pageChange)="pageCurrentNumber = $event"></pagination-controls>
+                        <pagination-controls (click)="paginationReset()" (pageChange)="pageCurrentNumber = $event"></pagination-controls>
                     </ng-container>
                 </div>
             </div>

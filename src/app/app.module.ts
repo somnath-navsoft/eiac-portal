@@ -162,6 +162,8 @@ import { InpremiseApprovalDetailsComponent } from './components/dashboard/operat
 import { SchemeListComponent } from './components/dashboard/cab/scheme-list/scheme-list.component';
 import { EventListsComponent } from './components/dashboard/cab/event-lists/event-lists.component';
 import { CertificationRecordsComponent } from './components/dashboard/cab/certification-records/certification-records.component';
+import { ExportAsModule } from 'ngx-export-as';
+import { OperationsCertificationsComponent } from './components/dashboard/operations/operations-certifications/operations-certifications.component'
 
 export const MY_FORMATS = {
   parse: {
@@ -230,7 +232,8 @@ export const MY_FORMATS = {
     InpremiseApprovalDetailsComponent,
     SchemeListComponent,
     EventListsComponent,
-    CertificationRecordsComponent
+    CertificationRecordsComponent,
+    OperationsCertificationsComponent
   ],
   imports: [
     CommonModule,
@@ -270,6 +273,7 @@ export const MY_FORMATS = {
     ToastContainerModule,
     StoreModule.forRoot(reducers, {}),
     EffectsModule.forRoot([AuthEffects, TrainerEffects]),
+    ExportAsModule,
   ],
   entryComponents: [ViewerComponentComponent],
   exports: [PdfViewerModule],
