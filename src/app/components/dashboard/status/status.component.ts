@@ -103,6 +103,7 @@ export class StatusComponent implements OnInit {
     this.curSortDir['created_date']             = false;
     this.curSortDir['accr_status']              = false;
     this.curSortDir['applicantName']            = false;
+    this.curSortDir['applicantCode']            = false;
     this.curSortDir['criteria_request']         = false;
     this.curSortDir['form_meta']                = false;
     this.curSortDir['country']                  = false;
@@ -122,7 +123,7 @@ export class StatusComponent implements OnInit {
       ];
     this.selectAccrStatus  = [
       {title: 'Payment Pending', value:'pending'},
-      {title: 'Application Process', value:'application_process'},
+      {title: 'Under Process', value:'application_process'},
       {title: 'Under Review', value:'under_review'},
       {title: 'Complete', value:'complete'},
       {title: 'Draft', value:'draft'}
@@ -461,12 +462,26 @@ if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_
           this.curSortDir.applicantName = !sortDir;
           //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
           if(this.curSortDir.applicantName){
-            let array = data.slice().sort((a, b) => (a.applicantName > b.applicantName) ? 1 : -1)
+            let array = data.slice().sort((a, b) => (a.cabDetails.cab_name > b.cabDetails.cab_name) ? 1 : -1)
             this.trainerdata = array;
             //console.log("after:: ", array, " :: ", this.trainerdata);
           }
           if(!this.curSortDir.applicantName){
-            let array = data.slice().sort((a, b) => (a.applicantName < b.applicantName) ? 1 : -1)
+            let array = data.slice().sort((a, b) => (a.cabDetails.cab_name < b.cabDetails.cab_name) ? 1 : -1)
+            this.trainerdata = array;
+          }
+        }
+        //By Prelim Status
+        if(sortBy == 'applicantCode'){
+          this.curSortDir.applicantCode = !sortDir;
+          //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
+          if(this.curSortDir.applicantCode){
+            let array = data.slice().sort((a, b) => (a.cabDetails.cab_code > b.cabDetails.cab_code) ? 1 : -1)
+            this.trainerdata = array;
+            //console.log("after:: ", array, " :: ", this.trainerdata);
+          }
+          if(!this.curSortDir.applicantCode){
+            let array = data.slice().sort((a, b) => (a.cabDetails.cab_code < b.cabDetails.cab_code) ? 1 : -1)
             this.trainerdata = array;
           }
         }

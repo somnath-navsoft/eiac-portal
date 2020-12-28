@@ -139,19 +139,29 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.created_date"></span>
                                 </a>
                             </th>
-                            <th>CAB Name/Candidate</th>
-                            <th>CAB Code</th>
+                            <th [ngStyle]="{'font-size':'14px'}">CAB Name
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'applicantName', curSortDir.applicantName)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.applicantName"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.applicantName"></span>
+                                </a>
+                            </th>
+                            <th [ngStyle]="{'font-size':'14px'}">CAB Code
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'applicantCode', curSortDir.applicantCode)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.applicantCode"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.applicantCode"></span>
+                                </a>
+                            </th>
                             <th>Course Name
-                                <!-- <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'course', curSortDir.course)">
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'course', curSortDir.course)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.course"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.course"></span>
-                                </a> -->
+                                </a>
                             </th>
                             <th>Capacity
-                                <!-- <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'capacity', curSortDir.capacity)">
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'capacity', curSortDir.capacity)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.capacity"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.capacity"></span>
-                                </a> -->
+                                </a>
                             </th>
                             <!-- <th>Trainer</th>
                             <th>Audience</th> -->
@@ -194,7 +204,7 @@
                                     {{item.cabDetails[0].cab_code}}
                                 </ng-container>
                             </td>
-                            <td>
+                            <td [ngStyle]="{'width':'100px'}">
                                 <ng-container *ngIf="item.courseEventDetails != 'NA' && item.courseEventDetails.course_details != undefined">
                                     {{item.courseEventDetails.course_details.course}}
                                 </ng-container>
@@ -213,11 +223,11 @@
                             <!-- <td></td>
                             <td></td> -->
                             <td [ngClass]="{'pending': (item.application_status === 'pending' || item.application_status === 'payment_pending' || item.application_status == 'application_process' || item.application_status == 'under_process'), 'under-review':item.application_status === null || item.application_status === 'under_review', 'complete': item.application_status === 'complete','draft': item.application_status === 'draft' }">
-                                <span *ngIf="item.application_status == 'pending'">Pending</span>
+                                <!-- <span *ngIf="item.application_status == 'pending'">Pending</span> -->
                                 <span *ngIf="item.application_status == 'draft'">Draft</span>
-                                <span *ngIf="item.application_status == 'application_process'">Application Process</span>
+                                <!-- <span *ngIf="item.application_status == 'application_process'">Application Process</span> -->
                                 <span *ngIf="item.application_status == 'under_process'">Under Process</span>
-                                <span *ngIf="item.application_status == 'payment_pending'">Payment Pending</span>
+                                <span *ngIf="item.application_status == 'payment_pending' || item.application_status == 'pending'">Payment Pending</span>
                                 <span *ngIf="item.application_status === 'under_review'">Under Review</span>
                                 <span *ngIf="item.application_status == 'complete'">Complete</span>
                             </td>
