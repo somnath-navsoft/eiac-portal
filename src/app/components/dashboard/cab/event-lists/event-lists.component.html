@@ -257,7 +257,10 @@
                                 </th>
 
                                 <th width="35%">Audience</th>
-                                <th width="15%">Training Type</th>
+                                <th width="15%">Training Type<a href="javascript:void(0)" (click)="sortedList(eventData, 'training_course_type', curSortDir.training_course_type)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.training_course_type"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.training_course_type"></span>
+                                </a></th>
 
                                 <th width="15%">Date
                                     <!-- <a href="javascript:void(0)" (click)="sortedList(eventData, 'created_date', curSortDir.created_date)">
@@ -266,17 +269,20 @@
                                     </a> -->
                                 </th>
 
-                                <th width="15%">Trainer</th>
+                                <th width="15%">Trainer<a href="javascript:void(0)" (click)="sortedList(eventData, 'tutor', curSortDir.tutor)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.tutor"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.tutor"></span>
+                                </a></th>
 
-                                <th width="5%">Capacity</th>
-                                <!-- <th width="15%">Time
-                                    <a href="javascript:void(0)" (click)="sortedList(eventData, 'accr_status', curSortDir.accr_status)">
-                                        <span class="icon-arrow-down" *ngIf="!curSortDir.accr_status"></span>
-                                        <span class="icon-arrow-up"  *ngIf="curSortDir.accr_status"></span>
-                                    </a>
-                                </th> -->
+                                <th width="5%">Capacity<a href="javascript:void(0)" (click)="sortedList(eventData, 'capacity', curSortDir.capacity)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.capacity"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.capacity"></span>
+                                </a></th>
                                 
-                                <th width="5%">Duration</th>
+                                <th width="5%">Duration<a href="javascript:void(0)" (click)="sortedList(eventData, 'training_days', curSortDir.training_days)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.training_days"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.training_days"></span>
+                                </a></th>
                             </tr>
                             <!-- eventData.records != undefined && -->  
                             <!-- <a href="javascript:void(0);" (click)="open(eventdetails,participantsTempList)">Click</a> -->

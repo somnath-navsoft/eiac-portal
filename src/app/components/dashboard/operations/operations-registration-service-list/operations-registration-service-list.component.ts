@@ -84,10 +84,8 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
     //Assign Search Type
     this.selectStatus =  [
       {title: 'Payment Pending', value:'pending'},
-      {title: 'Pending', value:'payment_pending'},
       {title: 'Application Process', value:'application_process'},
       {title: 'Under Review', value:'under_review'},
-      {title: 'Under Process', value:'under_process'},
       {title: 'Complete', value:'complete'},
       {title: 'Draft', value:'draft'}
     ];
@@ -124,6 +122,8 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
           elem.style.display = 'none';
       }
     if(this.searchValue == 'cab_name') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'id') {
       document.getElementById('applicant').style.display = 'block';
     }else if(this.searchValue == 'cab_code') {
       document.getElementById('applicant').style.display = 'block';
@@ -257,12 +257,12 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
          this.curSortDir.created_date = !sortDir;
          //console.log(">>>Enter code...", data, " -- ", this.curSortDir.course_code);
          if(this.curSortDir.created_date){
-           let array = data.slice().sort((a, b) => (a.created_date > b.created_date) ? 1 : -1)
+           let array = data.slice().sort((a, b) => (a.created > b.created) ? 1 : -1)
            this.trainerdata = array;
            //console.log("after:: ", array, " :: ", this.trainerdata);
          }
          if(!this.curSortDir.created_date){
-           let array = data.slice().sort((a, b) => (a.created_date < b.created_date) ? 1 : -1)
+           let array = data.slice().sort((a, b) => (a.created < b.created) ? 1 : -1)
            this.trainerdata = array;
          }
        }
@@ -322,17 +322,42 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
            this.trainerdata = array;
          }
        }  
-       if(sortBy == 'applicant'){
-        this.curSortDir.applicant = !sortDir;
-        if(this.curSortDir.applicant){
-          let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name > b.cabDetails[0].cab_name) ? 1 : -1)
+       
+       if(sortBy == 'cab_name'){
+        this.curSortDir.cab_name = !sortDir;
+        if(this.curSortDir.cab_name){
+          let array = data.slice().sort((a, b) => (a.cabDetails.cab_name > b.cabDetails.cab_name) ? 1 : -1)
           this.trainerdata = array;
         }
-        if(!this.curSortDir.applicant){
-          let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name < b.cabDetails[0].cab_name) ? 1 : -1)
+        if(!this.curSortDir.cab_name){
+          let array = data.slice().sort((a, b) => (a.cabDetails.cab_name < b.cabDetails.cab_name) ? 1 : -1)
           this.trainerdata = array;
         }
-      }        
+      }
+
+      if(sortBy == 'cab_code'){
+        this.curSortDir.cab_code = !sortDir;
+        if(this.curSortDir.cab_code){
+          let array = data.slice().sort((a, b) => (a.cabDetails.cab_code > b.cabDetails.cab_code) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.cab_code){
+          let array = data.slice().sort((a, b) => (a.cabDetails.cab_code < b.cabDetails.cab_code) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
+
+      if(sortBy == 'country'){
+        this.curSortDir.country = !sortDir;
+        if(this.curSortDir.country){
+          let array = data.slice().sort((a, b) => (a.country > b.country) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.country){
+          let array = data.slice().sort((a, b) => (a.country < b.country) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
     }
   }
 
