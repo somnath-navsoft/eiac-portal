@@ -8,6 +8,8 @@ import { ToastrService} from 'ngx-toastr';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {CustomModalComponent} from 'src/app/components/utility/custom-modal/custom-modal.component';
 import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
+import { DomSanitizer } from '@angular/platform-browser';
+import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-status',
@@ -27,6 +29,7 @@ export class OperationsCertificationsComponent implements OnInit {
   //Add pagination
   paginationConfig: any;
   pageLimit: number = 10;
+  pageOffset: number = 0;
   pageCurrentNumber: number = 1;
   pageConfigData: any = {};
   pageData: any = {};
@@ -80,11 +83,81 @@ export class OperationsCertificationsComponent implements OnInit {
   criteria: string = '';
   loadCountryLists: any[]= [];
 
+  loadCertificateType: any[]=[];
+  loadCertificateStatus: any[]=[];
 
-  constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
+  public loaderPdf: boolean = false;
+  public completeLoaded: boolean = false;
+  public errorLoader: boolean = false;
+  pathPDF: any;
+
+  constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService, public sanitizer: DomSanitizer,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent, private exportAsService: ExportAsService) { }
 
     
+
+    //PDF View functions
+    closeDialog(){
+      this.modalService.dismissAll();
+    }
+    
+    onError(error: any) {
+      // do anything
+      //////////console.log('PDF Error: ', error)
+      this.errorLoader = true;
+    }
+  
+    completeLoadPDF(pdfLoad: PDFDocumentProxy){
+      console.log("Completed Load PDF :: ", pdfLoad);
+      this.loaderPdf = false;
+      this.completeLoaded = true;
+    }
+  
+    onProgress(progressData: PDFProgressData){
+     console.log("Loding Pdf :: ", progressData);
+      this.loaderPdf = true;
+    }
+  
+    getSantizeUrl(url : string) { 
+      return this.sanitizer.bypassSecurityTrustResourceUrl(url); 
+    }
+  
+    openView(content: any,filepath: string) {
+      let pathData: any;
+      this.errorLoader = false;
+      ////////console.log(">>>pop up...", content);
+      let makePath: any = this._constant.mediaPath + '/media/' + filepath;
+      console.log(">>> open file...", makePath);
+      pathData = this.getSantizeUrl(makePath);
+      this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
+  
+      console.log(">>> open view", pathData);
+  
+      this.modalService.open(content, this.modalOptions).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+        //////////console.log("Closed: ", this.closeResult);
+        //this.courseViewData['courseDuration'] = '';
+        //this.courseViewData['courseFees'] = '';
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      });
+    }
+    private getDismissReason(reason: any): string {
+      if (reason === ModalDismissReasons.ESC) {
+        //////////console.log("Closed with ESC ");
+        
+        return 'by pressing ESC';
+      } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+        //////////console.log("Closed with CLOSE ICON ");
+       
+        return 'by clicking on a backdrop';
+      } else {
+        //////////console.log("Closed ",`with: ${reason}`);
+        
+        return  `with: ${reason}`;
+      }
+    }
+
 
     exportFile() {
       // console.log(this.exportAs);
@@ -100,17 +173,15 @@ export class OperationsCertificationsComponent implements OnInit {
 
   ngOnInit() { 
     this.loadPageData();
-    this.curSortDir['id']                       = false;
-    this.curSortDir['created_date']             = false;
-    this.curSortDir['accr_status']             = false;
-    this.curSortDir['applicantName']           = false;
-    this.curSortDir['criteria_request']        = false;
-    this.curSortDir['form_meta']             = false;
-    this.curSortDir['location']             = false;
+    this.loadCertTypeStatus();
+    this.curSortDir['new_no']                       = false;
+    this.curSortDir['certificate_type']             = false;
+    this.curSortDir['cab_type']             = false;
+    this.curSortDir['cab_status']           = false;
+    this.curSortDir['start_date']        = false;
+    this.curSortDir['to_date']             = false;
 
     this.userType = sessionStorage.getItem('type');
-    this.loadCriteriaScheme();
-    this.loadCountryStateCityAll();
 
     //Assign Search Type
     this.selectAccrType = [ 
@@ -131,41 +202,34 @@ export class OperationsCertificationsComponent implements OnInit {
 
   }
 
+  loadCertTypeStatus(){
 
-  loadCriteriaScheme = async () => {
-        let promiseIB: any = this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.inspection_form_basic_data);
-        let promiseTC: any = this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.testing_cal_form_basic_data);
-        let promiseCB: any = this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.certificationBodies);
-        let promiseHP: any = this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.healthcare_form_basic_data);
-        let promiseHCAB: any = this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.halal_conformity_form_management);
-        let promisePTP: any = this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.pt_provider);
+    this.subscriptions.push(this._trainerService.getCertificateType()
+    .subscribe(
+      result => {
+        //this.loader = true;
+        let record: any = result;
 
-        forkJoin([promiseIB, promiseTC, promiseCB, promiseHP, promiseHCAB, promisePTP]).subscribe(results => {
-          let getData: any = results;
-          if(getData != undefined && typeof getData == 'object' && getData.length > 0){
-              getData.forEach(rec => {
-                if(rec.data != undefined && rec.data.criteriaList != undefined && rec.data.criteriaList.length > 0){
-                    this.allSchemeREcord.push(rec.data.criteriaList);
-                }
-              })
+        if(record != undefined && typeof record === 'object'){
+          if(record.certificate_status != undefined){
+            this.loadCertificateStatus = record.certificate_status;
           }
-          //console.log("@Multiple Results: ", getData, " -- ", this.allSchemeREcord);
-          if(this.allSchemeREcord.length  > 0){
-              this.allSchemeREcord.forEach(item => {
-                  //console.log("#", item);
-                  if(typeof item == 'object' && item.length > 0){
-                      let getItem: any = item;
-                      getItem.forEach(rec => {
-                        if(rec.code != undefined && rec.code != ''){
-                          this.allSchemeData.push({title: rec.service, value: rec.code})
-                        }
-                      })
-                  }
-              })
+          if(record.data != undefined && record.data.length > 0){
+            this.loadCertificateType = record.data;
           }
-          console.log("@Scheme record: ", this.allSchemeData);
-        });
+        }
+        
+        console.log('Data Status...', record);
+        
+      },
+      ()=>{
+        console.log('comp status...');
+      }
+    )          
+  )
+
   }
+
 
   filterSearchSec(){
     this.advSearch = !this.advSearch
@@ -196,71 +260,19 @@ export class OperationsCertificationsComponent implements OnInit {
     // this.loadPageData();
     this.pageLimit = this.show_data;
     this.pageCurrentNumber = 1;
-    this.trainerdata.slice(0, this.show_data);
+    if(this.searchValue != null && (this.searchText != null && this.searchText != '')){
+      this.filterSearchSubmit();
+   }else{
+    this.loadPageData(0,this.pageLimit);
+   }
+    //this.trainerdata.slice(0, this.show_data);
   }
 
   paginationReset() {
+    console.log(">>>Reset calling....");
     this.exportAs = {};
   }
 
-  cityByCountryAll(cname: string, index: number){
-    console.log(">>> Get county/index: ", cname, " :: ", index);
-    let tempCities: any[] =[];
-    if(cname != ''){
-      let countryFind : any = this.getCountryStateCityAll.find(item => item.CountryName === cname);
-      console.log(">>> found country/city: ", countryFind);
-        if(countryFind != undefined && countryFind.States != undefined && countryFind.States.length > 0){
-          countryFind.States.forEach((item, k) => {
-                if(item.Cities != undefined && item.Cities.length > 0){
-                  item.Cities.forEach(rec => {
-                    tempCities.push({name: rec});
-                  })
-                }
-          })
-        }
-        this.allCities = tempCities;       
-        console.log(">>>GET Cities: ", " :: ", this.allCities);
-    }
-}
-
-loadCountryStateCityAll  = async() =>{
-  let cscLIST = this._service.getCSCAll();
-  await cscLIST.subscribe(record => {
-    console.log("...> ", record);
-    this.getCountryStateCityAll = record['Countries'];
-    this.loadCountryLists = record['Countries'];
-    console.log("...>>> ", this.getCountryStateCityAll);
-  });
-  //console.log("ALL CSC: ", this.getCountryStateCityAll);
-}
-
-searchCountry(theEvt: any){    
-  console.log(">>>> enter: ", theEvt);
-  let query: string = '';
-  if(theEvt){
-    query = theEvt.target.value
-  }
-  console.log(">>> query: ", query, " == ", query.length);
-  let result: any = this.select(query);
-  if(result){
-    this.loadCountryLists = result;
-  }
-}
-select(query: string):any[]{
-  let result: string[] = [];
-  let countryData: any = this.getCountryStateCityAll;
-  //console.log(">>>> country: ", countryData);
-  countryData.forEach(item => {
-    //console.log("@ ", item);
-    let cName: string = item.CountryName;
-    console.log("query value: ", cName.toLowerCase().indexOf(query));
-    //if(cName.toLowerCase().indexOf(query) > -1){
-      if(cName.toLowerCase().indexOf(query) == 0){
-      result.push(item);
-    }
-  })
-  return result;
-}
 
   changeFilter(theEvt: any){
     console.log("@change: ", theEvt, " :: ", theEvt.value);
@@ -271,7 +283,7 @@ select(query: string):any[]{
           let elem: any = myClasses[i]
             console.log("@Elem: ", elem);
             elem.style.display = 'none';
-            if(getIdValue == 'cab_name' || getIdValue == 'cab_code' ||  getIdValue == 'contact'||  getIdValue == 'email') {
+            if(getIdValue == 'certificate_no') {
                 let getElementId = document.getElementById('textType');
                 getElementId.style.display = 'block';
             }else{
@@ -282,44 +294,36 @@ select(query: string):any[]{
       }
   }
 
-  filterSearchSubmit(){
+  filterSearchSubmit(offset:number = 0){
      
-     let postData: any = new FormData();
      if(this.isValidSearch()){
       this.loader = false;
-      //  if(this.applicationNo != '' && this.applicationNo != null){
-      //   postData.append('id', this.applicationNo)
-      //  }
-      //  if(this.selectAccrTypeValue != '' && this.selectAccrTypeValue != null){
-      //   postData.append('form_meta', this.selectAccrTypeValue)
-      //  }
-      //  if(this.paymentStatusValue != '' && this.paymentStatusValue != null){
-      //   postData.append('payment_status', this.paymentStatusValue)
-      //  }
-       let appendKey = this.searchValue;
-       if(this.searchValue != ''  && (this.searchText != '' || this.searchText != null)){
-        postData.append(appendKey, this.searchText);
-       }
-                      
+      let useQuery: any = '';
+      useQuery =   this.searchValue + "=" + this.searchText + '&offset='+offset+'&limit='+this.pageLimit;              
 
-        if(postData){
-          this.subscriptions.push(this._trainerService.searchAccrStatus((postData))
+        if(useQuery){
+          this.subscriptions.push(this._trainerService.searchCertificateList(useQuery)
           .subscribe(
              result => {
                let data: any = result;
                 console.log("search results: ", result);
-                this.loader = true;
-                if(data != undefined && typeof data === 'object' && data.records.length > 0){
-                    console.log(">>> Data: ", data.records);
-                    this.pageCurrentNumber = 1;
-                    this.dataLoad = true;
-                    this.trainerdata = data.records;
-                    this.pageTotal = data.records.length;
-                }
-                if(data != undefined && typeof data === 'object' && data.records.length == 0){
-                  this.trainerdata = data.records;
-                  this.pageTotal = data.records.length;
-                }
+                this.loader       = true;
+                this.dataLoad     = true;
+                console.log('Data search load...', data.cabDirectory);                
+                this.trainerdata  = data.cabDirectory;
+                this.pageTotal    = data.totalCount;
+
+                // if(data != undefined && typeof data === 'object' && data.records.length > 0){
+                //     console.log(">>> Data: ", data.records);
+                //     this.pageCurrentNumber = 1;
+                //     this.dataLoad = true;
+                //     this.trainerdata = data.records;
+                //     this.pageTotal = data.records.length;
+                // }
+                // if(data != undefined && typeof data === 'object' && data.records.length == 0){
+                //   this.trainerdata = data.records;
+                //   this.pageTotal = data.records.length;
+                // }
              }
             )
           )
@@ -331,111 +335,37 @@ select(query: string):any[]{
      }     
   }
 
-  setIB(id: any){
-    // console.log(">>>url id set...", id);
-    sessionStorage.setItem('ibUrlId', id);
-  }
-
-  editVisible(item: any){
-    //console.log(">>> Item data: ", object);
-
-    /*
-
-if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_conformity_bodies') && (item.is_draft == true || item.is_draft == false)){
-        console.log("@Enter....3.1: ",item.id);
-        return true;  
-      }
-    */
-    
-    if(item){
-
-      
-      if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_conformity_bodies') && 
-      (item.is_draft == true || item.is_draft == false) && item.paymentDetails != undefined && item.paymentDetails == false){
-        // console.log("@Enter....3.1: ",item.id); 
-        return true;  
-      }
-      if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_conformity_bodies') && item.is_draft == false && 
-        item.paymentDetails != undefined && item.paymentDetails != false && item.paymentDetails != false && 
-        typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
-          // console.log("@Enter....2222"); 
-        return false;
-      }
-      if((item.saved_step != null && item.saved_step == 5 && item.form_meta == 'certification_bodies') && 
-      (item.is_draft == true || item.is_draft == false) && item.paymentDetails != undefined && item.paymentDetails == false){
-        // console.log("@Enter....3.11: ",item.id); 
-        return true;  
-      }
-      if((item.saved_step != null && item.saved_step == 5 && item.form_meta == 'certification_bodies') && item.is_draft == false && 
-        item.paymentDetails != undefined && item.paymentDetails != false && item.paymentDetails != false && 
-        typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
-          // console.log("@Enter....4444");
-        return false;
-      }
-      
-      if(item.saved_step != null && item.saved_step < 7 && (item.is_draft == true || item.is_draft == false)){
-        // console.log("@Enter....3");
-        return false;
-      }
-
-      if(item.saved_step != null && item.saved_step == 7 && item.form_meta == 'certification_bodies'  && item.is_draft == false && 
-        item.paymentDetails != undefined && item.paymentDetails != false &&  typeof item.paymentDetails == 'object' && 
-        item.paymentDetails.voucher_invoice != '' && item.accr_status == 'complete'){
-        return true;
-       }
-       if(item.saved_step != null && item.saved_step == 8 && item.form_meta == 'halal_conformity_bodies'  && item.is_draft == false && 
-        item.paymentDetails != undefined && item.paymentDetails != false &&  typeof item.paymentDetails == 'object' && 
-        item.paymentDetails.voucher_invoice != '' && item.accr_status == 'complete'){
-        return true;
-       }
-      
-       if(item.saved_step != null && item.saved_step > 7 && item.is_draft == false && 
-        item.paymentDetails != undefined && item.paymentDetails != false && 
-        typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.accr_status == 'complete'){
-        return true;
-       }
-      if(item.saved_step != null && item.saved_step < 7 && item.is_draft == false && 
-        item.paymentDetails != undefined && item.paymentDetails != false && 
-        typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.accr_status == 'complete'){
-        return true;
-      }
-      if(item.saved_step != null && item.saved_step == 9 && (item.is_draft == false || item.is_draft == true) && 
-        item.paymentDetails != undefined && item.accr_status !== 'complete'){
-          // console.log("@Enter....1");
-        return false;
-      }
-
-       if(item.saved_step != null && item.saved_step == 7 && item.is_draft == false && 
-          item.paymentDetails != undefined && item.paymentDetails == false){
-        return true;
-      }
-       if(item.saved_step != null && item.saved_step == 7 && item.is_draft == false && 
-        item.paymentDetails != undefined && item.paymentDetails != false && item.paymentDetails != false && 
-        typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
-          // console.log("@Enter....2");
-        return false;
-      }
+  loadPage(theEvt: any){
+    console.log(theEvt);
+    let offset: number = theEvt - 1;
+    this.pageCurrentNumber = theEvt;
+    if(this.searchValue != null && (this.searchText != null && this.searchText != '')){
+      console.log('src...');
+       this.filterSearchSubmit(offset);
+    }else{
+    this.loadPageData(offset, this.pageLimit);
     }
   }
 
-  loadPageData() { 
+  loadPageData(offset?:number, limit?:number) { 
     this.loader = false;
     var id = 'all';
-    this.subscriptions.push(this._trainerService.getAccreditationStatusList(id)
+
+    this.subscriptions.push(this._trainerService.getCertificateList(offset,limit)
       .subscribe(
         result => {
           this.loader = true;
           let data: any = result;
           let dataRec: any=[];
           this.dataLoad = true;
-          console.log('Data load...', data.records);
+          console.log('Data load...', data.cabDirectory);
           
-          this.trainerdata = data.records;
-          dataRec = data.records;
-          this.pageTotal = data.records.length;
+          this.trainerdata = data.cabDirectory;
+          //dataRec = data.records;
+          this.pageTotal = data.totalCount;
         },
         ()=>{
-          // console.log('comp...');
+          console.log('comp...');
         }
       )          
     )
@@ -445,117 +375,83 @@ if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_
     //true - asc / false - desc
     ////console.log('>>>', data);
     if(data.length){
-        if(sortBy === 'id'){
+        if(sortBy === 'new_no'){
           //console.log(">>>Enter type...");
-          this.curSortDir.id = !sortDir;
-          if(this.curSortDir.id){
-            let array = data.slice().sort((a, b) => (a.id > b.id) ? 1 : -1)
+          this.curSortDir.new_no = !sortDir;
+          if(this.curSortDir.new_no){
+            let array = data.slice().sort((a, b) => (a.new_no > b.new_no) ? 1 : -1)
             this.trainerdata = array;
           }
-          if(!this.curSortDir.id){
-            let array = data.slice().sort((a, b) => (a.id < b.id) ? 1 : -1)
-            this.trainerdata = array;
-            //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
-          }
-        }
-        //By created_date
-        if(sortBy == 'created_date'){
-          this.curSortDir.created_date = !sortDir;
-          //console.log(">>>Enter code...", data, " -- ", this.curSortDir.course_code);
-          if(this.curSortDir.created_date){
-            let array = data.slice().sort((a, b) => (a.created_date > b.created_date) ? 1 : -1)
-            this.trainerdata = array;
-            //console.log("after:: ", array, " :: ", this.trainerdata);
-          }
-          if(!this.curSortDir.created_date){
-            let array = data.slice().sort((a, b) => (a.created_date < b.created_date) ? 1 : -1)
+          if(!this.curSortDir.new_no){
+            let array = data.slice().sort((a, b) => (a.new_no < b.new_no) ? 1 : -1)
             this.trainerdata = array;
           }
         }
-        //By accr_status
-        if(sortBy == 'accr_status'){
-          this.curSortDir.accr_status = !sortDir;
+        //By certificate_type
+        if(sortBy == 'certificate_type'){
+          this.curSortDir.certificate_type = !sortDir;
+          if(this.curSortDir.certificate_type){
+            let array = data.slice().sort((a, b) => (a.certificate_type > b.certificate_type) ? 1 : -1)
+            this.trainerdata = array;
+          }
+          if(!this.curSortDir.certificate_type){
+            let array = data.slice().sort((a, b) => (a.certificate_type < b.certificate_type) ? 1 : -1)
+            this.trainerdata = array;
+          }
+        }
+        //By cab_type
+        if(sortBy == 'cab_type'){
+          this.curSortDir.cab_type = !sortDir;
+          if(this.curSortDir.cab_type){
+            let array = data.slice().sort((a, b) => (a.cab_type > b.cab_type) ? 1 : -1)
+            this.trainerdata = array;
+          }
+          if(!this.curSortDir.cab_type){
+            let array = data.slice().sort((a, b) => (a.cab_type < b.cab_type) ? 1 : -1)
+            this.trainerdata = array;
+          }
+        }
+        //By cab_status
+        if(sortBy == 'cab_status'){
+          this.curSortDir.cab_status = !sortDir;
           //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
-          if(this.curSortDir.accr_status){
-            let array = data.slice().sort((a, b) => (a.accr_status > b.accr_status) ? 1 : -1)
+          if(this.curSortDir.cab_status){
+            let array = data.slice().sort((a, b) => (a.cab_status > b.cab_status) ? 1 : -1)
             this.trainerdata = array;
             //console.log("after:: ", array, " :: ", this.trainerdata);
           }
-          if(!this.curSortDir.accr_status){
-            let array = data.slice().sort((a, b) => (a.accr_status < b.accr_status) ? 1 : -1)
+          if(!this.curSortDir.cab_status){
+            let array = data.slice().sort((a, b) => (a.cab_status < b.cab_status) ? 1 : -1)
             this.trainerdata = array;
           }
         }
-        //By Prelim Status
-        if(sortBy == 'applicantName'){
-          this.curSortDir.applicantName = !sortDir;
+        //By start_date
+        if(sortBy == 'start_date'){
+          this.curSortDir.start_date = !sortDir;
           //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
-          if(this.curSortDir.applicantName){
-            let array = data.slice().sort((a, b) => (a.applicantName > b.applicantName) ? 1 : -1)
+          if(this.curSortDir.start_date){
+            let array = data.slice().sort((a, b) => (a.start_date > b.start_date) ? 1 : -1)
             this.trainerdata = array;
             //console.log("after:: ", array, " :: ", this.trainerdata);
           }
-          if(!this.curSortDir.applicantName){
-            let array = data.slice().sort((a, b) => (a.applicantName < b.applicantName) ? 1 : -1)
-            this.trainerdata = array;
-          }
-        }
-        //By criteria_request
-        if(sortBy == 'criteria_request'){
-          this.curSortDir.criteria_request = !sortDir;
-          //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
-          if(this.curSortDir.criteria_request){
-            let array = data.slice().sort((a, b) => (a.criteria_request > b.criteria_request) ? 1 : -1)
-            this.trainerdata = array;
-            //console.log("after:: ", array, " :: ", this.trainerdata);
-          }
-          if(!this.curSortDir.criteria_request){
-            let array = data.slice().sort((a, b) => (a.criteria_request < b.criteria_request) ? 1 : -1)
+          if(!this.curSortDir.start_date){
+            let array = data.slice().sort((a, b) => (a.start_date < b.start_date) ? 1 : -1)
             this.trainerdata = array;
           }
         }
 
-        //By form_meta
-        if(sortBy == 'form_meta'){
-          this.curSortDir.form_meta = !sortDir;
-          //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
-          if(this.curSortDir.form_meta){
-            let array = data.slice().sort((a, b) => (a.form_meta > b.form_meta) ? 1 : -1)
-            this.trainerdata = array;
-            //console.log("after:: ", array, " :: ", this.trainerdata);
-          }
-          if(!this.curSortDir.form_meta){
-            let array = data.slice().sort((a, b) => (a.form_meta < b.form_meta) ? 1 : -1)
+        //By to_date
+        if(sortBy == 'to_date'){
+          this.curSortDir.to_date = !sortDir;
+          if(this.curSortDir.to_date){
+            let array = data.slice().sort((a, b) => (a.to_date > b.to_date) ? 1 : -1)
             this.trainerdata = array;
           }
-        }
-        //By Payment Status
-        // if(sortBy == 'payment_status'){
-        //   this.curSortDir.payment_status = !sortDir;
-        //   //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
-        //   if(this.curSortDir.payment_status){
-        //     let array = data.slice().sort((a, b) => (a.payment_status > b.payment_status) ? 1 : -1)
-        //     this.trainerdata = array;
-        //     //console.log("after:: ", array, " :: ", this.trainerdata);
-        //   }
-        //   if(!this.curSortDir.payment_status){
-        //     let array = data.slice().sort((a, b) => (a.payment_status < b.payment_status) ? 1 : -1)
-        //     this.trainerdata = array;
-        //   }
-        // }  
-        if(sortBy == 'location'){
-          this.curSortDir.location = !sortDir;
-          //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
-          if(this.curSortDir.location){
-            let array = data.slice().sort((a, b) => (a.location > b.location) ? 1 : -1)
-            this.trainerdata = array;
-            //console.log("after:: ", array, " :: ", this.trainerdata);
-          }
-          if(!this.curSortDir.location){
-            let array = data.slice().sort((a, b) => (a.location < b.location) ? 1 : -1)
+          if(!this.curSortDir.to_date){
+            let array = data.slice().sort((a, b) => (a.to_date < b.to_date) ? 1 : -1)
             this.trainerdata = array;
           }
-        }        
+        }       
     }
   }
 }

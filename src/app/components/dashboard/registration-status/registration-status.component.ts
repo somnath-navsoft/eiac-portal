@@ -55,17 +55,18 @@ export class RegistrationStatusComponent implements OnInit {
     this.loadPageData();
     this.curSortDir['id']                 = false;
     this.curSortDir['created_date']       = false;
-    this.curSortDir['accr_status']        = false;
+    this.curSortDir['application_status']        = false;
     this.curSortDir['prelim_status']      = false;
     this.curSortDir['form_meta']          = false;
     this.curSortDir['payment_status']     = false;
-    this.curSortDir['applicant']          = false;
+    this.curSortDir['applicantName']            = false;
+    this.curSortDir['applicantCode']            = false;
+    this.curSortDir['country']            = false;
     this.userType = sessionStorage.getItem('type');
     this.selectRegType = [{title:'No Objection Certificate', value: 'no_objection'},{title:'Work Activity Permit', value:'work_activity'}];
     this.selectAccrStatus  = [
       {title: 'Payment Pending', value:'pending'},
-      {title: 'Pending', value:'payment_pending'},
-      {title: 'Application Process', value:'application_process'},
+      //{title: 'Pending', value:'payment_pending'},
       {title: 'Under Review', value:'under_review'},
       {title: 'Under Process', value:'under_process'},
       {title: 'Complete', value:'complete'},
@@ -341,6 +342,10 @@ export class RegistrationStatusComponent implements OnInit {
     )
   }
 
+  isNumber(param: any){
+    return isNaN(param);
+  }
+
   sortedList(data: any, sortBy: string, sortDir: boolean){
     //true - asc / false - desc
     ////console.log('>>>', data);
@@ -373,16 +378,16 @@ export class RegistrationStatusComponent implements OnInit {
          }
        }
        //By accr_status
-       if(sortBy == 'accr_status'){
-         this.curSortDir.accr_status = !sortDir;
+       if(sortBy == 'application_status'){
+         this.curSortDir.application_status = !sortDir;
          //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
-         if(this.curSortDir.accr_status){
-           let array = data.slice().sort((a, b) => (a.accr_status > b.accr_status) ? 1 : -1)
+         if(this.curSortDir.application_status){
+           let array = data.slice().sort((a, b) => (a.application_status > b.application_status) ? 1 : -1)
            this.trainerdata = array;
            //console.log("after:: ", array, " :: ", this.trainerdata);
          }
-         if(!this.curSortDir.accr_status){
-           let array = data.slice().sort((a, b) => (a.accr_status < b.accr_status) ? 1 : -1)
+         if(!this.curSortDir.application_status){
+           let array = data.slice().sort((a, b) => (a.application_status < b.application_status) ? 1 : -1)
            this.trainerdata = array;
          }
        }
@@ -400,6 +405,19 @@ export class RegistrationStatusComponent implements OnInit {
            this.trainerdata = array;
          }
        }
+       if(sortBy == 'country'){
+        this.curSortDir.country = !sortDir;
+        //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
+        if(this.curSortDir.country){
+          let array = data.slice().sort((a, b) => (a.country > b.country) ? 1 : -1)
+          this.trainerdata = array;
+          //console.log("after:: ", array, " :: ", this.trainerdata);
+        }
+        if(!this.curSortDir.country){
+          let array = data.slice().sort((a, b) => (a.country < b.country) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      } 
        //By form_meta
        if(sortBy == 'form_meta'){
          this.curSortDir.form_meta = !sortDir;
@@ -428,19 +446,34 @@ export class RegistrationStatusComponent implements OnInit {
            this.trainerdata = array;
          }
        }  
-       if(sortBy == 'applicant'){
-         this.curSortDir.applicant = !sortDir;
-         //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
-         if(this.curSortDir.applicant){
-           let array = data.slice().sort((a, b) => (a.applicant > b.applicant) ? 1 : -1)
-           this.trainerdata = array;
-           //console.log("after:: ", array, " :: ", this.trainerdata);
-         }
-         if(!this.curSortDir.applicant){
-           let array = data.slice().sort((a, b) => (a.applicant < b.applicant) ? 1 : -1)
-           this.trainerdata = array;
-         }
-       }        
+        //By Prelim Status
+        if(sortBy == 'applicantName'){
+          this.curSortDir.applicantName = !sortDir;
+          //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
+          if(this.curSortDir.applicantName){
+            let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name > b.cabDetails[0].cab_name) ? 1 : -1)
+            this.trainerdata = array;
+            //console.log("after:: ", array, " :: ", this.trainerdata);
+          }
+          if(!this.curSortDir.applicantName){
+            let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name < b.cabDetails[0].cab_name) ? 1 : -1)
+            this.trainerdata = array;
+          }
+        }
+        //By Prelim Status
+        if(sortBy == 'applicantCode'){
+          this.curSortDir.applicantCode = !sortDir;
+          //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
+          if(this.curSortDir.applicantCode){
+            let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_code > b.cabDetails[0].cab_code) ? 1 : -1)
+            this.trainerdata = array;
+            //console.log("after:: ", array, " :: ", this.trainerdata);
+          }
+          if(!this.curSortDir.applicantCode){
+            let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_code < b.cabDetails[0].cab_code) ? 1 : -1)
+            this.trainerdata = array;
+          }
+        }       
     }
   }
 }
