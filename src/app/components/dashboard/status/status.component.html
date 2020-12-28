@@ -47,7 +47,7 @@
                             </div> 
                         </div>
 
-                        <div class="col-md-4 slectType" id="textType">
+                        <div class="col-md-4 slectType" id="textType">  
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
                                 <mat-label>Search Text</mat-label> 
@@ -118,7 +118,7 @@
                             <div class="col-md-12"> 
                                 <div class="filter-search">
                                     <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
-                                    <!-- <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a> -->
+                                    <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a>
                                     <ng-container *ngIf="userType == 'operations'">
                                     <a href="javascript:void(0)" (click)="exportFile()" class="space-left">EXPORT</a>
                                     </ng-container>

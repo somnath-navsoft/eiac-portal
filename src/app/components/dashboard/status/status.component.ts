@@ -176,11 +176,12 @@ export class StatusComponent implements OnInit {
 
   filterSearchReset(type?: string){
     //Reset serach
-    this.applicationNo = '' || null;
-    this.selectAccrTypeValue = '' || null;
-    this.paymentStatusValue = '' || null;
+    
     this.show_data = this.pageLimit = 10;
     this.exportAs = null;
+    this.searchText = null;
+    this.searchValue = null;
+    this.changeFilter('id','reset');    
     if(type != undefined && type != ''){
       this.loadPageData();
     }
@@ -235,9 +236,16 @@ loadCountryStateCityAll  = async() =>{
   //console.log("ALL CSC: ", this.getCountryStateCityAll);
 }
 
-  changeFilter(theEvt: any){
+  changeFilter(theEvt: any, type?:any){
     console.log("@change: ", theEvt, " :: ", theEvt.value);
-    let getIdValue: string = theEvt.value;
+    let getIdValue: string = '';
+    if(type == undefined){
+      getIdValue= theEvt.value;
+    }
+    if(type != undefined){
+      getIdValue= theEvt;
+    }
+
     this.searchText = '';
     var myClasses = document.querySelectorAll('.slectType'),i = 0,length = myClasses.length;
        for (i; i < length; i++) {
@@ -404,6 +412,7 @@ if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_
           console.log('Data load...', data.records);
           
           this.trainerdata = data.records;
+          this.pageCurrentNumber = 1;
           dataRec = data.records;
           this.pageTotal = data.records.length;
         },
