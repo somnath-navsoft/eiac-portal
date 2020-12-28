@@ -85,6 +85,7 @@ export class Constants{
 		accrediationCsv: this.apiUrl + 'accrediation-csv/',
 		trainingCsv: this.apiUrl + 'training-csv/',
 		accrediationPdf: this.apiUrl + 'accrediation-pdf/',
+		trainingPdf: this.apiUrl + 'training-pdf/',
 		workPermitform: this.apiUrl + 'workpermit_form/',
 		training_course_list: this.apiUrl + 'training-course-list/',
 		course_details_publicForm: this.apiUrl + 'public-course-event-details-show/',

@@ -91,4 +91,8 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
     //   })
     window.open(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.trainingCsv+this.routeId, '_blank');
   }
+
+  downloadApplications() {
+    window.open(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.trainingPdf+this.routeId, '_blank');
+  }
 }
