@@ -125,7 +125,6 @@ export class AccountsComponent implements OnInit {
     this.exportAsService.save(this.exportAsConfig, 'accounts').subscribe(() => {
       // save started
       this.isExport = false;
-      console.log('...saving....');
     });
   }
 

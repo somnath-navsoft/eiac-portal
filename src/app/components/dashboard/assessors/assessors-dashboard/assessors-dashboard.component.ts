@@ -8,6 +8,9 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable } from 'rxjs';
+import { FullCalendarOptions, EventObject } from 'ngx-fullcalendar';
+
+declare var FullCalendar: any;
 
 @Component({
   selector: 'app-assessors-dashboard',
@@ -15,7 +18,11 @@ import { Observable } from 'rxjs';
   styleUrls: ['./assessors-dashboard.component.scss']
 })
 export class AssessorsDashboardComponent implements OnInit { 
-
+  @ViewChild('calendar', { static: true }) calendar: any;
+  options: FullCalendarOptions;
+  eventYear: string = '';
+  eventMonth: any;
+  events: any[] = [];
   messageList: any = [];
   userId: any;
   loader: boolean = true;
@@ -107,10 +114,83 @@ export class AssessorsDashboardComponent implements OnInit {
         });
   }
 
+
+  //Calendar hooks
+  //On Nav header click
+  handleNavclick(evtData: any) {
+    ////console.log('Nav Header Click - ', evtData);
+  }
+
+  //On Date click in any month
+  handleDateClick(evtData: any) {
+    ////console.log('Date Click - ', evtData);
+  }
+
+
+
+  //Handling day
+  handleDay(eventDay: any) {
+    ////console.log("Event Day: ", eventDay);
+    //elem - innerText/innerHTML/hidden/height/width/title/textContent
+    let dateObj = eventDay.date;
+    let elem = eventDay.el;
+    let output = eventDay.view;
+    output.header.el.innerText.toString().replace("Sun", 'Holiday');
+    output.header.el.innerText.toString().replace("Mon", 'AdDay');
+    if (new Date(dateObj).getDay() === 5 && output.header.el.innerText != undefined) {
+      //elem.title = "FFF";
+      //output.header.el.innerText = 'Sun Mon Tue Wed Thu Holiday Holiday';
+      let find = output.header.el.innerText.toString().toLowerCase().indexOf('fri');
+      if (find != -1) {
+        ////console.log('changing text haedrer...');
+        output.header.el.innerText.toString().replace("Fri", 'Holiday');
+      }
+      // //console.log('search fri: ', find);
+    }
+    if (new Date(dateObj).getDay() === 6 && elem.hidden != undefined) {
+      //elem.hidden = true;
+    }
+    // //console.log(eventDay, " :: ", dateObj, " - ", new Date(dateObj).getDay());
+  }
+  //fc-day fc-widget-content fc-tue fc-other-month fc-past
+  //fc-day-grid-event fc-h-event fc-event fc-start fc-end fc-allow-mouse-resize
+
+  handleDates(eventDates: any) {
+    ////console.log("Dates Event: ", eventDates);
+  }
+
+  //Click on event on calendar
+  handleEventClick(evtData: any) {
+    // console.log('Event Click - ', evtData);
+    let obj = {
+      // title : evtData.event._def.title,
+      title: evtData.calEvent.title,
+      // description : evtData.event._def.extendedProps.description,
+      description: evtData.calEvent.description,
+      // link : evtData.event._def.extendedProps.redirectUrl
+      link: evtData.calEvent.redirectUrl
+    };
+    // console.log('Event Click - ', title+description+link);
+    //this.uiDialog.eventCalenderDialog(obj);
+  }
+
+  //calendar hooks
+
   ngOnInit() {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.userId = sessionStorage.getItem('userId');
+    this.options = {
+      defaultDate: new Date(),
+      editable: false,
+      navLinks: true,
+      weekends: true,
+      hiddenDays: [], //0-6 range day number        
+    }
+    this.eventYear = new Date().getFullYear().toString();
+    let getMon = new Date().getMonth();
+    this.eventMonth = getMon + 1;
+
     this.loader = false;
     this.select_field = [
       { field: 'Internal Operations', value: 'Internal Operations' },      

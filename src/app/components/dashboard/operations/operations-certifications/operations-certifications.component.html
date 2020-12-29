@@ -31,7 +31,7 @@
                         <div class="col-md-4">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
-                                    <mat-label>Filter Columns</mat-label> 
+                                    <mat-label>Searchable Columns</mat-label> 
                                     <mat-select placeholder="Select" [ngModelOptions]="{standalone: true}" (selectionChange)="changeFilter($event)"
                                     [(ngModel)]="searchValue">
                                         <mat-option value="certificate_no">Certificate Number</mat-option>
@@ -153,7 +153,7 @@
                         <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
                             <td class="fnt-clr">
                                 <a href="javascript:void(0)" (click)="openView(certificateView, item.certificate)" title="View" alt="View">
-                               #{{item.new_no}}</a></td>
+                               {{item.new_no}}</a></td>
                             <td> 
                                 Accreditation
                             </td>

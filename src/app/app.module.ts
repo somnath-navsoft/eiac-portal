@@ -163,6 +163,7 @@ import { SchemeListComponent } from './components/dashboard/cab/scheme-list/sche
 import { EventListsComponent } from './components/dashboard/cab/event-lists/event-lists.component';
 import { CertificationRecordsComponent } from './components/dashboard/cab/certification-records/certification-records.component';
 import { ExportAsModule } from 'ngx-export-as';
+import { NgxFullCalendarModule } from 'ngx-fullcalendar';
 import { OperationsCertificationsComponent } from './components/dashboard/operations/operations-certifications/operations-certifications.component'
 
 export const MY_FORMATS = {
@@ -240,6 +241,7 @@ export const MY_FORMATS = {
     FormsModule,
     NgxPayPalModule,
     StripeCheckoutModule,
+    NgxFullCalendarModule,
     PdfViewerModule,
     HttpClientModule,
     AppRoutingModule,
