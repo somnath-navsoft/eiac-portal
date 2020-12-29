@@ -155,9 +155,6 @@ export class TrainingStatusComponent implements OnInit {
     if(type != undefined && type != ''){
       this.loadPageData();
     }
-    if(type != undefined && type != ''){
-      this.loadPageData();
-    }
   }
   
   isValidSearch(){

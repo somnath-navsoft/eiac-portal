@@ -47,6 +47,54 @@ input { font-family: 'Dubai Regular'; }
 .main-content .mat-radio-label-content { font-family: 'Dubai Regular'; font-size: 17px; }
 //==================DU PORTAL==================//
 
+.fc td  { border-width: 4px!important;}
+td.fc-widget-content .fc-themed { border-color: transparent!important;}
+td.fc-widget-content:last-child { border-color: transparent; border-top: 4px solid;}
+.fc th { border-width: 0!important; padding: 25px 0!important;}
+td.fc-head-container.fc-widget-header {border-color: transparent; border-bottom: 4px solid rgba(198, 184, 164, 0.3); }
+td.fc-day.fc-widget-content { border-color: rgba(198, 184, 164, 0.3); }
+.fc-ltr .fc-basic-view .fc-day-top .fc-day-number { float: none!important;}
+.fc-basic-view .fc-day-number, .fc-basic-view .fc-week-number { position: relative; top: 10px; left: 10px;}
+button.fc-today-button.fc-button.fc-state-default.fc-corner-left.fc-corner-right { display: none; }
+.fc-state-default { border: 0!important; background: #B54150!important; color: #ffffff!important; padding: 25px!important; }
+.fc button .fc-icon { font-size: 22px;}
+td.fc-day-top span { color: #77777B!important; font-family: "Dubai Regular";}
+td.fc-widget-content { border-color: transparent;}
+.fc-state-default.fc-corner-left { border-top-left-radius: 0!important; border-bottom-left-radius: 0!important;}
+.fc-state-default.fc-corner-right { border-top-right-radius: 0!important; border-bottom-right-radius: 0!important; }
+.fc button { height:inherit!important;}
+th.fc-day-header.fc-widget-header { font-size: 22px; font-family: "Dubai Bold"; color: #77777B; }
+td.fc-day.fc-widget-content.fc-other-month{ background: #E5E0D6; border-width: 0px!important; }
+.fc-bg td:first-child { border-left: transparent!important;}
+.fc-toolbar.fc-header-toolbar { margin-bottom: 0px!important;}
+button.fc-prev-button.fc-button.fc-state-default.fc-corner-left { position: absolute; left: 15px; top: 0;}
+button.fc-next-button.fc-button.fc-state-default.fc-corner-right { position: absolute; right: 15px; top: 0;}
+.fc-left h2 { padding: 22px; background: rgba(198, 184, 164, 0.3); font-family: "Dubai Regular"; font-size: 25px; color: #77777B; text-transform: uppercase;}
+.fc-toolbar .fc-left { float: none!important;}
+.fc .fc-toolbar>*>* { float: none!important;}
+.fc-toolbar .fc-left { float: none!important;}
+.fc-event { height: 60px!important; overflow: visible!important; line-height: 60px!important; color: #ffffff!important; font-size: 22px!important; border: none!important; border-radius: 0px!important;}
+.fc-scroller.fc-day-grid-container { overflow: hidden!important;}
+.fc-content { border-left: 5px solid #007565!important; background: #38C3B0; }
+.fc-day-grid-event .fc-time { font-size: 13px; display:none;}
+td.fc-day-top { padding-bottom: 10px!important;}
+// td.fc-event-container { position: absolute!important;}
+// .fc-day-grid-event span { padding: 10px;}
+thead.fc-head { border-color: transparent;}
+span.fc-title { display: inline-block; font-size: 13px;  white-space: normal; line-height: 20px!important;}
+.fc-event, .fc-event-dot { background-color: transparent!important; }
+.search-desc a:hover { color: #ffffff; text-decoration: none }
+.fc-day-grid-event .fc-content .fc-title { display: block; line-height: 20px!important; font-size: 15px; white-space: pre-line; } 
+tr:first-child>td>.fc-day-grid-event { margin-top: 10px!important; }
+th.fc-day-header.fc-widget-header.fc-fri { background: #E5E0D6; border-width: 0px!important; }
+th.fc-day-header.fc-widget-header.fc-sat { background: #E5E0D6; border-width: 0px!important; }
+
+// td.fc-event-container
+.calander-event { padding: 20px; border-left: 5px solid #007565; }
+.calander-event p { font-size: 20px; font-family: 'Dubai Regular'; color: #777777; }
+.calander-event p b { color: #38C3B0; }
+.calander-event a { color: #B14A56; font-size: 20px; font-family: 'Dubai Regular'; }
+
 //==================FOR BEFORE LOGIN==================//
 .cdk-overlay-container {
   position: fixed !important;

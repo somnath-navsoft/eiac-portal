@@ -214,7 +214,7 @@
                             <div class="col-md-12"> 
                                 <div class="filter-search">
                                     <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
-                                    <!-- <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a> -->
+                                    <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a>
                                     <a href="javascript:void(0)" (click)="exportFile()" class="space-left">EXPORT</a>
                                 </div>         
                             </div>
@@ -226,7 +226,7 @@
 
             <div class="row m-0">
                 <div class="col-md-2">
-                    <div class="user-details">
+                    <div class="user-details" [ngStyle]="{'width': '100px'}">
                         <mat-form-field class="cab-data">
                             <mat-label>Show</mat-label>                              
                             <mat-select placeholder="Show" (selectionChange)="showData()"
@@ -256,17 +256,20 @@
                                     </a>
                                 </th>
 
-                                <th width="35%">Audience</th>
+                                <th width="35%">Audience<a href="javascript:void(0)" (click)="sortedList(eventData, 'audience', curSortDir.audience)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.audience"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.audience"></span>
+                                </a></th>
                                 <th width="15%">Training Type<a href="javascript:void(0)" (click)="sortedList(eventData, 'training_course_type', curSortDir.training_course_type)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.training_course_type"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.training_course_type"></span>
                                 </a></th>
 
                                 <th width="15%">Date
-                                    <!-- <a href="javascript:void(0)" (click)="sortedList(eventData, 'created_date', curSortDir.created_date)">
+                                    <a href="javascript:void(0)" (click)="sortedList(eventData, 'created_date', curSortDir.created_date)">
                                         <span class="icon-arrow-down" *ngIf="!curSortDir.created_date"></span>
                                         <span class="icon-arrow-up"  *ngIf="curSortDir.created_date"></span>
-                                    </a> -->
+                                    </a>
                                 </th>
 
                                 <th width="15%">Trainer<a href="javascript:void(0)" (click)="sortedList(eventData, 'tutor', curSortDir.tutor)">
@@ -309,7 +312,7 @@
                                 </td>
 
                                 <td *ngIf="item['eventDates'] && item['eventDates'].length > 0">
-                                    {{item['eventDates'][0].event_date | date}}
+                                    {{item['eventDates'][0].event_date | date :'dd-MMM-yyyy'}}
                                 </td>
 
                                 <td *ngIf="item['eventDates'] == null || item['eventDates'].length == 0">
@@ -341,7 +344,7 @@
                         </ng-container>
                         <ng-container *ngIf="dataLoad && eventData.length == 0">
                             <tr>
-                                <td colspan="5">
+                                <td colspan="20">
                                     No Records
                                 </td>
                             </tr>
