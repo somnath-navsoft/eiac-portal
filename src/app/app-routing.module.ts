@@ -133,6 +133,7 @@ const routes: Routes = [
       { path: 'onboarding-message-list', component: MessageComponent, canActivate: [AuthGuard] },
       { path: 'message-detail/:id', component: MessageDetailComponent, canActivate: [AuthGuard] },
       { path: 'message-reply/:id', component: MessageReplyComponent, canActivate: [AuthGuard] },
+      { path: 'certification-records', component:CertificationRecordsComponent, canActivate: [AuthGuard] },
       { path: 'trainers', component: TrainersComponent, canActivate: [AuthGuard],
         children: [
             { path: 'home', component:TrainersDashboardComponent, canActivate: [AuthGuard]},
@@ -221,7 +222,6 @@ const routes: Routes = [
         { path: 'company-profile', component:CabCompanyProfileComponent, canActivate: [AuthGuard] },
         { path: 'onboarding-message-list', component:CabMessage, canActivate: [AuthGuard] },
         { path: 'scheme-list', component:SchemeListComponent, canActivate: [AuthGuard] },
-        { path: 'certification-records', component:CertificationRecordsComponent, canActivate: [AuthGuard] },
       ]
     },
 

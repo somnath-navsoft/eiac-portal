@@ -214,7 +214,7 @@
                             <div class="col-md-12"> 
                                 <div class="filter-search">
                                     <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
-                                    <!-- <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a> -->
+                                    <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a>
                                     <a href="javascript:void(0)" (click)="exportFile()" class="space-left">EXPORT</a>
                                 </div>         
                             </div>
@@ -226,7 +226,7 @@
 
             <div class="row m-0">
                 <div class="col-md-2">
-                    <div class="user-details">
+                    <div class="user-details" [ngStyle]="{'width': '100px'}">
                         <mat-form-field class="cab-data">
                             <mat-label>Show</mat-label>                              
                             <mat-select placeholder="Show" (selectionChange)="showData()"
@@ -344,7 +344,7 @@
                         </ng-container>
                         <ng-container *ngIf="dataLoad && eventData.length == 0">
                             <tr>
-                                <td colspan="5">
+                                <td colspan="20">
                                     No Records
                                 </td>
                             </tr>
