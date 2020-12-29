@@ -42,9 +42,10 @@ export class AccountsComponent implements OnInit {
 
   selectAccrType: any[] =[];
   selectPaymentStatus: any[] =[];
-  searchText: string = '';
+  searchText: any;
   searchValue: string = '';
   isExport: boolean = false;
+  paymentDate: any;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService, private exportAsService: ExportAsService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent,public router: Router) { }
@@ -87,9 +88,15 @@ export class AccountsComponent implements OnInit {
     this.loadPageData();
   }
 
-  changeFilter(theEvt: any){
+  changeFilter(theEvt: any, type?:any){
     console.log("@change: ", theEvt, " :: ", theEvt.value);
-    let getIdValue: string = theEvt.value;
+    let getIdValue: string = '';
+    if(type == undefined){
+      getIdValue= theEvt.value;
+    }
+    if(type != undefined){
+      getIdValue= theEvt;
+    }
     this.searchText = '';
     var myClasses = document.querySelectorAll('.slectType'),i = 0,length = myClasses.length;
        for (i; i < length; i++) {
@@ -135,7 +142,11 @@ export class AccountsComponent implements OnInit {
   
   filterSearchReset(type?: string){
     //Reset serach
-    this.eventTitle = '' || null;
+    this.show_data = this.pageLimit = 10;
+    this.exportAs = null;
+    this.searchText = null;
+    this.searchValue = null;
+    this.changeFilter('id','reset');
     if(type != undefined && type != ''){
       this.loadPageData();
     }
@@ -157,15 +168,20 @@ export class AccountsComponent implements OnInit {
     let postObject: any = {};
     // console.log("Search click....", this.applicationNo, " -- ", this.selectAccrTypeValue, " == ", this.paymentStatusValue);
     let postData: any = new FormData();
+    console.log("@@srch value: ", this.searchText);
+    if(this.searchValue === 'voucher_date'){
+        this.searchText = this.paymentDate;
+    }
     if(this.isValidSearch()){
       // if(this.eventTitle != '' && this.eventTitle != null){
       //   postData.append('cab_name', this.eventTitle)
       // }
       this.loader = false;
       let appendKey = this.searchValue;
+      console.log("@@srch value: 1 ", this.searchText);
        if(this.searchValue != ''  && (this.searchText != '' || this.searchText != null)){
           if(this.searchValue === 'voucher_date'){
-              let dtDate: any = this.searchText;
+              let dtDate: any = this.paymentDate;
               console.log(">>>Date: ", dtData);
               var dtData = dtDate._i;
             var year = dtData.year;
@@ -184,10 +200,11 @@ export class AccountsComponent implements OnInit {
           .subscribe(
             result => {
               let data: any = result;
-                //console.log("search results: ", result);
+                console.log("search results: ", result);
                 this.loader = true;
+                this.accountsData = [];
                 if(data != undefined && typeof data === 'object' && data.records.length > 0){
-                    // console.log(">>> Data: ", data.records);
+                    //console.log(">>> Data: ", );
                     this.pageCurrentNumber = 1;
                     this.dataLoad = true;
                     // this.accountsData = data.records;
@@ -204,6 +221,8 @@ export class AccountsComponent implements OnInit {
 
                         getDetails['appNo'] = allRecords[key].id;
                         getDetails['createdDate'] = allRecords[key].created;
+                        getDetails['form_meta'] = allRecords[key].form_meta;
+                        getDetails['payment_details'] = allRecords[key].paymentDetails;
                         getDetails['cabName'] = allRecords[key].cabDetails.cab_name;
                         getDetails['cabCode'] = allRecords[key].cabDetails.cab_code;
                         getDetails['appType'] = allRecords[key].form_meta;
@@ -224,7 +243,7 @@ export class AccountsComponent implements OnInit {
                     this.pageTotal = this.accountsData.length;
                 });
                 console.log(">>>.Accounts Data: ", this.accountsData);
-              }
+                }
               if(data != undefined && typeof data === 'object' && data.records.length == 0){
                 this.accountsData = data.records;
                 this.pageTotal = data.records.length;
@@ -249,16 +268,20 @@ export class AccountsComponent implements OnInit {
           this.loader = true;
           let data: any = result;
           // let dataRec: any=[];
-          console.log('loading...', data.records.length);
+          console.log('loading...', data.records);
           
           var allRecords = [];
           allRecords = data.records
           allRecords.forEach((res,key) => {
             if(allRecords[key].paymentDetails != false) {
               var getDetails = {};
+              //console.log("....> ", allRecords[key].paymentDetails);
 
               getDetails['appNo'] = allRecords[key].id;
               getDetails['createdDate'] = allRecords[key].created;
+              getDetails['form_meta'] = allRecords[key].form_meta;
+              getDetails['payment_details'] = allRecords[key].paymentDetails;
+
               getDetails['cabName'] = allRecords[key].cabDetails.cab_name;
               getDetails['cabCode'] = allRecords[key].cabDetails.cab_code;
               getDetails['appType'] = allRecords[key].form_meta;
@@ -277,7 +300,7 @@ export class AccountsComponent implements OnInit {
             }
             // this.accountsData.push(getDetails);
           })
-          console.log(this.accountsData,'result');
+         console.log(this.accountsData,'result');
 
 
           // this.accountsData = data.records;

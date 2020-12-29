@@ -21,37 +21,6 @@
                     </div>
                 </div> -->
             </div>
-            <!-- <div class="row m-0">
-                <ng-container *ngIf="userType == 'operations'">
-                    <div class="col-md-4">
-                        <div class="user-details">
-                            <mat-form-field class="cab-data">
-                                <mat-label>Export As</mat-label>                              
-                                <mat-select placeholder="Export" (selectionChange)="exportFile()"
-                                [ngModelOptions]="{standalone: true}" [(ngModel)]="exportAs" required>
-                                    <mat-option value="csv">Export as CSV</mat-option>
-                                    <mat-option value="xls">Export as XLS</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                </ng-container>
-
-                <div class="col-md-4">
-                    <div class="user-details">
-                        <mat-form-field class="cab-data">
-                            <mat-label>Show</mat-label>                              
-                            <mat-select placeholder="Show" (selectionChange)="showData()"
-                            [ngModelOptions]="{standalone: true}" [(ngModel)]="show_data" required>
-                                <mat-option value="25">25</mat-option>
-                                <mat-option value="50">50</mat-option>
-                                <mat-option value="75">75</mat-option>
-                                <mat-option value="100">100</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-            </div> -->
 
             <ng-container class="tbl-filter-data">
                 <div class="filter-dash filter_certification">
@@ -59,7 +28,7 @@
                         <div class="col-md-4">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
-                                    <mat-label>Search Column</mat-label> 
+                                    <mat-label>Searchable Column</mat-label> 
                                     <mat-select placeholder="Select" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue"
                                       (selectionChange)="changeFilter($event)">
                                         <mat-option value="id">Application Number</mat-option>
@@ -103,16 +72,16 @@
                                 <mat-form-field class="cab-data">
                                 <input matInput readonly="true" [matDatepicker]="payment_date" id="payment_date"  
                                 (click)="_service._openCalendar(payment_date)" placeholder="Payment Date" name="payment_date" 
-                                [(ngModel)]="searchText" required>
+                                [(ngModel)]="paymentDate" required>
                                 <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle>
-                                <mat-datepicker #payment_date disabled="false"></mat-datepicker>
+                                <mat-datepicker #payment_date disabled="false"></mat-datepicker> 
                                 </mat-form-field>
                             </div>
                         </div>
                         <div class="col-md-4 slectType" id="accr_status" [ngStyle]="{'display': 'none'}">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
-                                    <mat-label>Payment Status</mat-label>                              
+                                    <mat-label>Status</mat-label>                              
                                     <mat-select placeholder="Payment Status" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
                                         <mat-option *ngFor="let item of selectPaymentStatus;" [value]="item.value">{{item.title}}</mat-option>                                        
                                     </mat-select>
@@ -124,7 +93,7 @@
                             <div class="col-md-12"> 
                                 <div class="filter-search">
                                     <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
-                                    <!-- <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a> -->
+                                    <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a>
                                     <ng-container *ngIf="userType == 'operations'">
                                     <a href="javascript:void(0)" (click)="exportFile()" class="space-left">EXPORT</a>
                                     </ng-container>
@@ -212,12 +181,21 @@
                                 <td>{{item.cabName}}</td>
                                 <td>{{item.cabCode}}</td>
                                 <td>
-                                    <span *ngIf="item.appType == 'testing_calibration'">Testing Calibration</span>
-                                    <span *ngIf="item.appType == 'inspection_body'">Inspection Bodies</span>
-                                    <span *ngIf="item.appType == 'health_care'">Health Care</span>
-                                    <span *ngIf="item.appType == 'certification_bodies'">Certification Bodies</span>
+                                    <!-- {{item.appType}} -->
+                                    <!-- {{item.form_meta}} -->
+                                    <!-- 	 -->
+                                    <span *ngIf="item.form_meta == 'testing_calibration'">Testing Calibration</span>
+                                    <span *ngIf="item.form_meta == 'halal_conformity_bodies'">Halal Conformity Bodies</span>
+                                    <span *ngIf="item.form_meta == 'pt_providers'">Proficiency Testing Providers</span>
+                                    <span *ngIf="item.form_meta == 'inspection_body'">Inspection Bodies</span>
+                                    <span *ngIf="item.form_meta == 'health_care'">Health Care</span>
+                                    <span *ngIf="item.form_meta == 'certification_bodies'">Certification Bodies</span>
                                 </td>
-                                <td>{{item.application_fees.voucher_no}}</td>
+                                <td>
+                                    <!-- {{item.application_fees.voucher_no}} -->
+                                   <!-- {{item.payment_details | json}} -->
+                                        <span *ngIf="item.payment_details[0].voucher_no != ''">{{item.payment_details[0].voucher_no}}</span>
+                                </td>
                                 <td>{{item.application_fees.amount}}</td>
                                 <td>{{item.application_fees.amount}}</td>
                                 <ng-container *ngIf="item.application_fees">

@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
   templateUrl: './assessors-dashboard.component.html',
   styleUrls: ['./assessors-dashboard.component.scss']
 })
-export class AssessorsDashboardComponent implements OnInit {
+export class AssessorsDashboardComponent implements OnInit { 
 
   messageList: any = [];
   userId: any;
