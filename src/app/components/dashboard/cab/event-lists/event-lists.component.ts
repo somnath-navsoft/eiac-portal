@@ -278,11 +278,11 @@ export class EventListsComponent implements OnInit {
           //console.log(">>>Enter type...");
           this.curSortDir.tutor = !sortDir;
           if(this.curSortDir.tutor){
-            let array = data.slice().sort((a, b) => (a.tutor.name > b.tutor.name) ? 1 : -1)
+            let array = data.slice().sort((a, b) => (a.tutor && b.tutor && a.tutor.name > b.tutor.name) ? 1 : -1)
             this.eventData = array;
           }
           if(!this.curSortDir.tutor){
-            let array = data.slice().sort((a, b) => (a.tutor.name < b.tutor.name) ? 1 : -1)
+            let array = data.slice().sort((a, b) => (a.tutor && b.tutor && a.tutor.name < b.tutor.name) ? 1 : -1)
             this.eventData = array;
             //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
           }
@@ -311,6 +311,33 @@ export class EventListsComponent implements OnInit {
           }
           if(!this.curSortDir.training_days){
             let array = data.slice().sort((a, b) => (a.course.training_days < b.course.training_days) ? 1 : -1)
+            this.eventData = array;
+            //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
+          }
+        }
+
+        if(sortBy === 'training_days'){
+          //console.log(">>>Enter type...");
+          this.curSortDir.training_days = !sortDir;
+          if(this.curSortDir.training_days){
+            let array = data.slice().sort((a, b) => (a.course.training_days > b.course.training_days) ? 1 : -1)
+            this.eventData = array;
+          }
+          if(!this.curSortDir.training_days){
+            let array = data.slice().sort((a, b) => (a.course.training_days < b.course.training_days) ? 1 : -1)
+            this.eventData = array;
+            //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
+          }
+        }
+        if(sortBy === 'created_date'){
+          //console.log(">>>Enter type...");
+          this.curSortDir.created_date = !sortDir;
+          if(this.curSortDir.created_date){
+            let array = data.slice().sort((a, b) => (a['eventDates'] && b['eventDates'] && a['eventDates'][0].event_date > b['eventDates'][0].event_date) ? 1 : -1)
+            this.eventData = array;
+          }
+          if(!this.curSortDir.created_date){
+            let array = data.slice().sort((a, b) => (a['eventDates'] && b['eventDates'] && a['eventDates'][0].event_date < b['eventDates'][0].event_date) ? 1 : -1)
             this.eventData = array;
             //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
           }

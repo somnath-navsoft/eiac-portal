@@ -85,7 +85,7 @@ export class OperationsTrainingServiceListComponent implements OnInit {
     //Assign Search Type
     this.selectStatus =  [
       {title: 'Payment Pending', value:'pending'},
-      {title: 'Application Process', value:'application_process'},
+      {title: 'Under Process', value:'application_process'},
       {title: 'Under Review', value:'under_review'},
       {title: 'Complete', value:'complete'},
       {title: 'Draft', value:'draft'}
@@ -124,6 +124,17 @@ export class OperationsTrainingServiceListComponent implements OnInit {
 
   filterSearchReset(type?: string){
     //Reset serach
+    this.searchValue = {};
+    this.searchText = '';
+    var myClasses = document.querySelectorAll('.field_show'),
+          i = 0,
+          l = myClasses.length;
+       for (i; i < l; i++) {
+          let elem: any = myClasses[i]
+          elem.style.display = 'none';
+      }
+    document.getElementById('applicant').style.display = 'block';
+
     this.applicationNo = '' || null;
     this.selectTrainingTypeValue = '' || null;
     this.paymentStatusValue = '' || null;
