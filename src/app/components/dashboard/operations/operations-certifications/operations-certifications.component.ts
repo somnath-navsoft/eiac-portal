@@ -238,11 +238,10 @@ export class OperationsCertificationsComponent implements OnInit {
 
   filterSearchReset(type?: string){
     //Reset serach
-    this.applicationNo = '' || null;
-    this.selectAccrTypeValue = '' || null;
-    this.paymentStatusValue = '' || null;
-    this.show_data = this.pageLimit = 10;
     this.exportAs = null;
+    this.searchText = null;
+    this.searchValue = null;
+    this.changeFilter('certificate_no','reset');    
     if(type != undefined && type != ''){
       this.loadPageData();
     }
@@ -274,9 +273,15 @@ export class OperationsCertificationsComponent implements OnInit {
   }
 
 
-  changeFilter(theEvt: any){
+  changeFilter(theEvt: any, type?:any){
     console.log("@change: ", theEvt, " :: ", theEvt.value);
-    let getIdValue: string = theEvt.value;
+    let getIdValue: string = '';
+    if(type == undefined){
+      getIdValue= theEvt.value;
+    }
+    if(type != undefined){
+      getIdValue= theEvt;
+    }
     this.searchText = '';
     var myClasses = document.querySelectorAll('.slectType'),i = 0,length = myClasses.length;
        for (i; i < length; i++) {
@@ -299,7 +304,7 @@ export class OperationsCertificationsComponent implements OnInit {
      if(this.isValidSearch()){
       this.loader = false;
       let useQuery: any = '';
-      useQuery =   this.searchValue + "=" + this.searchText + '&offset='+offset+'&limit='+this.pageLimit;              
+      useQuery =   this.searchValue + "=" + this.searchText.toString().trim() + '&offset='+offset+'&limit='+this.pageLimit;              
 
         if(useQuery){
           this.subscriptions.push(this._trainerService.searchCertificateList(useQuery)

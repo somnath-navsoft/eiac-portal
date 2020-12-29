@@ -31,7 +31,7 @@
                         <div class="col-md-4">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
-                                    <mat-label>Filter Columns</mat-label> 
+                                    <mat-label>Searchable Columns</mat-label> 
                                     <mat-select placeholder="Select" [ngModelOptions]="{standalone: true}" (selectionChange)="changeFilter($event)"
                                     [(ngModel)]="searchValue">
                                         <mat-option value="certificate_no">Certificate Number</mat-option>
@@ -78,6 +78,7 @@
                             <div class="col-md-12"> 
                                 <div class="filter-search">
                                     <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
+                                    <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a>
                                     <ng-container *ngIf="userType == 'operations'">
                                     <a href="javascript:void(0)" (click)="exportFile()" class="space-left">EXPORT</a>
                                     </ng-container>
@@ -153,18 +154,19 @@
                         <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
                             <td class="fnt-clr">
                                 <a href="javascript:void(0)" (click)="openView(certificateView, item.certificate)" title="View" alt="View">
-                               #{{item.new_no}}</a></td>
+                               {{item.new_no}}</a></td>
                             <td> 
                                 Accreditation
                             </td>
                             <td>{{item.service_name}}</td>
                             <td>{{item.dir_status}}</td>
                             <td>
-                                <ng-container *ngIf="item.valid_from != null">{{item.valid_from | date}}</ng-container>
+                                <!-- {{item.created | date :'dd-MMM-yyyy' }} -->
+                                <ng-container *ngIf="item.valid_from != null">{{item.valid_from | date :'dd-MMM-yyyy'}}</ng-container>
                                 <ng-container *ngIf="item.valid_from == null">NA</ng-container>
                             </td>
                             <td>
-                                <ng-container *ngIf="item.valid_to != null">{{item.valid_to | date}}</ng-container>
+                                <ng-container *ngIf="item.valid_to != null">{{item.valid_to | date :'dd-MMM-yyyy'}}</ng-container>
                                 <ng-container *ngIf="item.valid_to == null">NA</ng-container>
                             </td>                            
                             <td class="action fnt-clr">                                

@@ -84,15 +84,12 @@ export class CabDashboardComponent implements OnInit {
       .subscribe(
         res => {
           this.loader = true;
-          // console.log(res,'res');
+          console.log(res,'res');
           if(res['status'] == 200){
             this.dashboardItemData = res['dashBoardData'];
 
             //Get recent updates
             if(this.dashboardItemData.lastLogin != undefined){
-              // let dt = new Date(this.dashboardItemData.lastLogin);
-              // let date = dt.toLocaleDateString();
-              // let time = dt.toLocaleTimeString();
               let datePart: any = this.dashboardItemData.lastLogin.toString().split(" ");
               let date = datePart[0];
               let time1 = datePart[1];
@@ -223,8 +220,9 @@ export class CabDashboardComponent implements OnInit {
             let month = date.getMonth() + 1;
             let day = date.getDate();
             let todays: any = new Date(yr+"-"+month+"-"+day);
-            let expiryData: any = this.step1Data.date_of_expiry;;//new Date("2021-1-15");;
+            let expiryData: any = this.step1Data.date_of_expiry;;//new Date("2021-1-15");//
             let diffDate: any = Math.round((expiryData-todays)/(1000*60*60*24))
+            
             if(diffDate > 0){
               //console.log("#########");
               this.licence_document_file = this.getFile(this.step1Data.trade_license);

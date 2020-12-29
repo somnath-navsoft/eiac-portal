@@ -312,7 +312,7 @@
                                 </td>
 
                                 <td *ngIf="item['eventDates'] && item['eventDates'].length > 0">
-                                    {{item['eventDates'][0].event_date | date}}
+                                    {{item['eventDates'][0].event_date | date :'dd-MMM-yyyy'}}
                                 </td>
 
                                 <td *ngIf="item['eventDates'] == null || item['eventDates'].length == 0">
