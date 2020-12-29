@@ -8,7 +8,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable } from 'rxjs';
-import { FullCalendarOptions, EventObject } from 'ngx-fullcalendar';
+//import { FullCalendarOptions, EventObject } from 'ngx-fullcalendar';
 
 declare var FullCalendar: any;
 
@@ -18,8 +18,8 @@ declare var FullCalendar: any;
   styleUrls: ['./assessors-dashboard.component.scss']
 })
 export class AssessorsDashboardComponent implements OnInit { 
-  @ViewChild('calendar', { static: true }) calendar: any;
-  options: FullCalendarOptions;
+  //@ViewChild('calendar', { static: true }) calendar: any;
+  //options: FullCalendarOptions;
   eventYear: string = '';
   eventMonth: any;
   events: any[] = [];
@@ -180,13 +180,13 @@ export class AssessorsDashboardComponent implements OnInit {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.userId = sessionStorage.getItem('userId');
-    this.options = {
-      defaultDate: new Date(),
-      editable: false,
-      navLinks: true,
-      weekends: true,
-      hiddenDays: [], //0-6 range day number        
-    }
+    // this.options = {
+    //   defaultDate: new Date(),
+    //   editable: false,
+    //   navLinks: true,
+    //   weekends: true,
+    //   hiddenDays: [], //0-6 range day number        
+    // }
     this.eventYear = new Date().getFullYear().toString();
     let getMon = new Date().getMonth();
     this.eventMonth = getMon + 1;

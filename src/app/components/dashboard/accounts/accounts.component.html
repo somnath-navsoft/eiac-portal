@@ -83,7 +83,7 @@
                                 <mat-form-field class="cab-data">
                                     <mat-label>Status</mat-label>                              
                                     <mat-select placeholder="Payment Status" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
-                                        <mat-option *ngFor="let item of selectPaymentStatus;" [value]="item.value">{{item.title}}</mat-option>                                        
+                                        <mat-option *ngFor="let item of selectAccrStatus;" [value]="item.value">{{item.title}}</mat-option>                                        
                                     </mat-select>
                                 </mat-form-field>
                             </div>
@@ -157,7 +157,7 @@
                             <th>Payment Amount</th>
                             <th>Fees</th>
                             <th>Fees Date</th>
-                            <th>Status</th>
+                            <th [ngStyle]="{'width': '137px'}">Status</th>
                             <th>Fees</th>
                             <th>Fees Date</th>
                             <th>Status</th>
@@ -177,7 +177,7 @@
                         <ng-container *ngIf="accountsData.length > 0">
                             <tr *ngFor="let item of accountsData | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i = index;">
                                 <td class="fnt-clr"><a href="javascript:void(0)" routerLink="/dashboard/account-details/{{item.appNo}}">{{item.appNo}}</a></td>
-                                <td>{{item.createdDate | date}}</td>
+                                <td>{{item.createdDate | date :'dd-MMM-yyyy'}}</td>
                                 <td>{{item.cabName}}</td>
                                 <td>{{item.cabCode}}</td>
                                 <td>
@@ -200,8 +200,18 @@
                                 <td>{{item.application_fees.amount}}</td>
                                 <ng-container *ngIf="item.application_fees">
                                     <td>{{item.application_fees.amount}}</td>
-                                    <td>{{item.application_fees.voucher_date | date}}</td>
-                                    <td class="complete"><span>{{item.application_fees.payment_status}}</span></td>
+                                    <td>{{item.application_fees.voucher_date | date :'dd-MMM-yyyy'}}</td>
+                                    <td [ngClass]="{'pending': (item.application_status === 'pending' || item.application_status === 'payment_pending' || item.application_status == 'application_process' || item.application_status == 'under_process'), 'under-review':item.application_status === null || item.application_status === 'under_review', 'complete': item.application_status === 'complete','draft': item.application_status === 'draft' }">
+                                        <span *ngIf="item.application_status == 'draft'">Draft</span>
+                                        <span *ngIf="item.application_status == 'under_process' || item.application_status == 'application_process'">Under Process</span>
+                                        <span *ngIf="item.application_status == 'pending'">Payment Pending</span>
+                                        <span *ngIf="item.application_status === 'under_review'">Under Review</span>
+                                        <span *ngIf="item.application_status == 'complete'">Complete</span>
+                                        <!-- <span *ngIf="item.application_fees.payment_status == 'pending'">
+                                        Pending</span>
+                                        <span *ngIf="item.application_fees.payment_status == 'paid'">
+                                        Paid</span> -->
+                                    </td>
                                 </ng-container>
                                 <ng-container *ngIf="!item.application_fees">
                                     <td>0.00</td>
@@ -211,7 +221,7 @@
 
                                 <ng-container *ngIf="item.prelim_visit">
                                     <td>{{item.prelim_visit.amount}}</td>
-                                    <td>{{item.prelim_visit.voucher_date | date}}</td>
+                                    <td>{{item.prelim_visit.voucher_date | date :'dd-MMM-yyyy'}}</td>
                                     <td class="complete"><span>{{item.prelim_visit.payment_status}}</span></td>
                                 </ng-container>
                                 <ng-container *ngIf="!item.prelim_visit">
@@ -222,7 +232,7 @@
 
                                 <ng-container *ngIf="item.document_review">
                                     <td>{{item.document_review.amount}}</td>
-                                    <td>{{item.document_review.voucher_date | date}}</td>
+                                    <td>{{item.document_review.voucher_date | date :'dd-MMM-yyyy'}}</td>
                                     <td class="complete"><span>{{item.document_review.payment_status}}</span></td>
                                 </ng-container>
                                 <ng-container *ngIf="!item.document_review">
@@ -233,7 +243,7 @@
 
                                 <ng-container *ngIf="item.assessment">
                                     <td>{{item.assessment.amount}}</td>
-                                    <td>{{item.assessment.voucher_date | date}}</td>
+                                    <td>{{item.assessment.voucher_date | date :'dd-MMM-yyyy'}}</td>
                                     <td class="complete"><span>{{item.assessment.payment_status}}</span></td>
                                 </ng-container>
                                 <ng-container *ngIf="!item.assessment">
@@ -244,7 +254,7 @@
 
                                 <ng-container *ngIf="item.certification">
                                     <td>{{item.certification.amount}}</td>
-                                    <td>{{item.certification.voucher_date | date}}</td>
+                                    <td>{{item.certification.voucher_date | date :'dd-MMM-yyyy'}}</td>
                                     <td class="complete"><span>{{item.certification.payment_status}}</span></td>
                                 </ng-container>
                                 <ng-container *ngIf="!item.certification">

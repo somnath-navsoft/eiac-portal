@@ -125,6 +125,7 @@ const routes: Routes = [
       //Trainers
       { path: 'onboarding-message-list', component: MessageComponent, canActivate: [AuthGuard] },
       { path: 'status/:id', component: StatusComponent, canActivate: [AuthGuard] }, 
+      { path: 'certifications', component:OperationsCertificationsComponent, canActivate: [AuthGuard] },
       { path: 'registration-status', component: RegistrationStatusComponent, canActivate: [AuthGuard] }, 
       { path: 'training-status', component: TrainingStatusComponent, canActivate: [AuthGuard] }, 
       { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard] },
@@ -160,7 +161,7 @@ const routes: Routes = [
           { path: '', redirectTo:'home', pathMatch:'full'},
           { path: 'home', component:OperationsDashboardComponent, canActivate: [AuthGuard]},
           { path: 'company-profile', component:OperationsCompanyProfileComponent, canActivate: [AuthGuard] },
-          { path: 'certifications', component:OperationsCertificationsComponent, canActivate: [AuthGuard] },
+          //{ path: 'certifications', component:OperationsCertificationsComponent, canActivate: [AuthGuard] },
           { path: 'training-apply/:id', component:OperationsTrainerServiceComponent, canActivate: [AuthGuard] },
           { path: 'training-service', component:OperationsTrainerServiceListComponent, canActivate: [AuthGuard] },
           { path: 'accreditation-service-list', component:OperationsAccreditationServiceListComponent, canActivate: [AuthGuard] },

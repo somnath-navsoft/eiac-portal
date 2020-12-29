@@ -241,7 +241,7 @@ export class OperationsCertificationsComponent implements OnInit {
     this.exportAs = null;
     this.searchText = null;
     this.searchValue = null;
-    this.changeFilter('id','reset');    
+    this.changeFilter('certificate_no','reset');    
     if(type != undefined && type != ''){
       this.loadPageData();
     }
@@ -304,7 +304,7 @@ export class OperationsCertificationsComponent implements OnInit {
      if(this.isValidSearch()){
       this.loader = false;
       let useQuery: any = '';
-      useQuery =   this.searchValue + "=" + this.searchText + '&offset='+offset+'&limit='+this.pageLimit;              
+      useQuery =   this.searchValue + "=" + this.searchText.toString().trim() + '&offset='+offset+'&limit='+this.pageLimit;              
 
         if(useQuery){
           this.subscriptions.push(this._trainerService.searchCertificateList(useQuery)

@@ -46,6 +46,7 @@ export class AccountsComponent implements OnInit {
   searchValue: string = '';
   isExport: boolean = false;
   paymentDate: any;
+  selectAccrStatus: any[]=[];
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService, private exportAsService: ExportAsService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent,public router: Router) { }
@@ -76,13 +77,22 @@ export class AccountsComponent implements OnInit {
       {title: 'Halal Conformity Bodies', value:'halal_conformity_bodies'},
       {title: 'Proficiency Testing Providers', value:'pt_providers'}      
       ];
-    this.selectPaymentStatus  = [
-      {title: 'Pending', value:'pending'},
-      {title: 'Paid', value:'paid'}
-      // {title: 'Application Process', value:'application_process'},
-      // {title: 'Under Review', value:'under_review'},
-      // {title: 'Complete', value:'complete'},
-      // {title: 'Draft', value:'draft'}
+    // this.selectPaymentStatus  = [
+    //   {title: 'Pending', value:'pending'},
+    //   {title: 'Paid', value:'paid'},
+    //   // {title: 'Application Process', value:'application_process'},
+    //   {title: 'Under Review', value:'under_review'},
+    //   {title: 'Complete', value:'complete'},
+    //   {title: 'Draft', value:'draft'}
+    // ]
+    this.selectAccrStatus  = [
+      {title: 'Payment Pending', value:'pending'},
+      //{title: 'Pending', value:'payment_pending'},
+      //{title: 'Application Process', value:'application_process'},
+      {title: 'Under Review', value:'under_review'},
+      {title: 'Under Process', value:'under_process'},
+      {title: 'Complete', value:'complete'},
+      {title: 'Draft', value:'draft'}
     ]
 
     this.loadPageData();
@@ -222,6 +232,7 @@ export class AccountsComponent implements OnInit {
                         getDetails['createdDate'] = allRecords[key].created;
                         getDetails['form_meta'] = allRecords[key].form_meta;
                         getDetails['payment_details'] = allRecords[key].paymentDetails;
+                        getDetails['application_status'] = (allRecords[key].accr_status == null) ? 'pending' : allRecords[key].accr_status;
                         getDetails['cabName'] = allRecords[key].cabDetails.cab_name;
                         getDetails['cabCode'] = allRecords[key].cabDetails.cab_code;
                         getDetails['appType'] = allRecords[key].form_meta;
@@ -280,6 +291,8 @@ export class AccountsComponent implements OnInit {
               getDetails['createdDate'] = allRecords[key].created;
               getDetails['form_meta'] = allRecords[key].form_meta;
               getDetails['payment_details'] = allRecords[key].paymentDetails;
+              getDetails['application_status'] = (allRecords[key].accr_status == null) ? 'pending' : allRecords[key].accr_status;
+              //
 
               getDetails['cabName'] = allRecords[key].cabDetails.cab_name;
               getDetails['cabCode'] = allRecords[key].cabDetails.cab_code;

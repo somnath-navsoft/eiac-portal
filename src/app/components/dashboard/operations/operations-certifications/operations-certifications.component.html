@@ -78,6 +78,7 @@
                             <div class="col-md-12"> 
                                 <div class="filter-search">
                                     <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
+                                    <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a>
                                     <ng-container *ngIf="userType == 'operations'">
                                     <a href="javascript:void(0)" (click)="exportFile()" class="space-left">EXPORT</a>
                                     </ng-container>
@@ -160,11 +161,12 @@
                             <td>{{item.service_name}}</td>
                             <td>{{item.dir_status}}</td>
                             <td>
-                                <ng-container *ngIf="item.valid_from != null">{{item.valid_from | date}}</ng-container>
+                                <!-- {{item.created | date :'dd-MMM-yyyy' }} -->
+                                <ng-container *ngIf="item.valid_from != null">{{item.valid_from | date :'dd-MMM-yyyy'}}</ng-container>
                                 <ng-container *ngIf="item.valid_from == null">NA</ng-container>
                             </td>
                             <td>
-                                <ng-container *ngIf="item.valid_to != null">{{item.valid_to | date}}</ng-container>
+                                <ng-container *ngIf="item.valid_to != null">{{item.valid_to | date :'dd-MMM-yyyy'}}</ng-container>
                                 <ng-container *ngIf="item.valid_to == null">NA</ng-container>
                             </td>                            
                             <td class="action fnt-clr">                                
