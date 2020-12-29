@@ -256,17 +256,20 @@
                                     </a>
                                 </th>
 
-                                <th width="35%">Audience</th>
+                                <th width="35%">Audience<a href="javascript:void(0)" (click)="sortedList(eventData, 'audience', curSortDir.audience)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.audience"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.audience"></span>
+                                </a></th>
                                 <th width="15%">Training Type<a href="javascript:void(0)" (click)="sortedList(eventData, 'training_course_type', curSortDir.training_course_type)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.training_course_type"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.training_course_type"></span>
                                 </a></th>
 
                                 <th width="15%">Date
-                                    <!-- <a href="javascript:void(0)" (click)="sortedList(eventData, 'created_date', curSortDir.created_date)">
+                                    <a href="javascript:void(0)" (click)="sortedList(eventData, 'created_date', curSortDir.created_date)">
                                         <span class="icon-arrow-down" *ngIf="!curSortDir.created_date"></span>
                                         <span class="icon-arrow-up"  *ngIf="curSortDir.created_date"></span>
-                                    </a> -->
+                                    </a>
                                 </th>
 
                                 <th width="15%">Trainer<a href="javascript:void(0)" (click)="sortedList(eventData, 'tutor', curSortDir.tutor)">
