@@ -78,7 +78,7 @@ export class AccountsComponent implements OnInit {
       {title: 'Proficiency Testing Providers', value:'pt_providers'}      
       ];
     this.selectPaymentStatus  = [
-      {title: 'Pending', value:'pending'},
+      {title: 'Unpaid', value:'pending'},
       {title: 'Paid', value:'paid'},
     ]
     this.selectAccrStatus  = [
