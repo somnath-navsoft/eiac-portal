@@ -77,14 +77,10 @@ export class AccountsComponent implements OnInit {
       {title: 'Halal Conformity Bodies', value:'halal_conformity_bodies'},
       {title: 'Proficiency Testing Providers', value:'pt_providers'}      
       ];
-    // this.selectPaymentStatus  = [
-    //   {title: 'Pending', value:'pending'},
-    //   {title: 'Paid', value:'paid'},
-    //   // {title: 'Application Process', value:'application_process'},
-    //   {title: 'Under Review', value:'under_review'},
-    //   {title: 'Complete', value:'complete'},
-    //   {title: 'Draft', value:'draft'}
-    // ]
+    this.selectPaymentStatus  = [
+      {title: 'Pending', value:'pending'},
+      {title: 'Paid', value:'paid'},
+    ]
     this.selectAccrStatus  = [
       {title: 'Payment Pending', value:'pending'},
       //{title: 'Pending', value:'payment_pending'},
