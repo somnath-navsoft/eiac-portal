@@ -67,19 +67,14 @@ th.fc-day-header.fc-widget-header { font-size: 22px; font-family: "Dubai Bold"; 
 td.fc-day.fc-widget-content.fc-other-month{ background: #E5E0D6; border-width: 0px!important; }
 .fc-bg td:first-child { border-left: transparent!important;}
 .fc-toolbar.fc-header-toolbar { margin-bottom: 0px!important;}
-button.fc-prev-button.fc-button.fc-state-default.fc-corner-left { position: absolute; left: 15px; top: 0;}
-button.fc-next-button.fc-button.fc-state-default.fc-corner-right { position: absolute; right: 15px; top: 0;}
-.fc-left h2 { padding: 22px; background: rgba(198, 184, 164, 0.3); font-family: "Dubai Regular"; font-size: 25px; color: #77777B; text-transform: uppercase;}
-.fc-toolbar .fc-left { float: none!important;}
+.fc-toolbar .fc-left { position: absolute; width: 100%; top: 0; }
+.fc-toolbar .fc-button-group { width: 100%; }
 .fc .fc-toolbar>*>* { float: none!important;}
-.fc-toolbar .fc-left { float: none!important;}
 .fc-event { height: 60px!important; overflow: visible!important; line-height: 60px!important; color: #ffffff!important; font-size: 22px!important; border: none!important; border-radius: 0px!important;}
 .fc-scroller.fc-day-grid-container { overflow: hidden!important;}
 .fc-content { border-left: 5px solid #007565!important; background: #38C3B0; }
 .fc-day-grid-event .fc-time { font-size: 13px; display:none;}
 td.fc-day-top { padding-bottom: 10px!important;}
-// td.fc-event-container { position: absolute!important;}
-// .fc-day-grid-event span { padding: 10px;}
 thead.fc-head { border-color: transparent;}
 span.fc-title { display: inline-block; font-size: 13px;  white-space: normal; line-height: 20px!important;}
 .fc-event, .fc-event-dot { background-color: transparent!important; }
@@ -88,12 +83,23 @@ span.fc-title { display: inline-block; font-size: 13px;  white-space: normal; li
 tr:first-child>td>.fc-day-grid-event { margin-top: 10px!important; }
 th.fc-day-header.fc-widget-header.fc-fri { background: #E5E0D6; border-width: 0px!important; }
 th.fc-day-header.fc-widget-header.fc-sat { background: #E5E0D6; border-width: 0px!important; }
-
-// td.fc-event-container
+.fc-ltr .fc-toolbar .fc-center { display: block; width: 100%; }
+.fc-center h2 { padding: 23px; background-color: rgba(198, 184, 164, 0.3);  font-family: "Dubai Regular"; font-size: 26px; color: #77777B; text-transform: uppercase; }
 .calander-event { padding: 20px; border-left: 5px solid #007565; }
 .calander-event p { font-size: 20px; font-family: 'Dubai Regular'; color: #777777; }
 .calander-event p b { color: #38C3B0; }
 .calander-event a { color: #B14A56; font-size: 20px; font-family: 'Dubai Regular'; }
+.fc-button.fc-today-button  { display: none; }
+.fc-button.fc-myCustomButton-button { display: none; }
+.fc-button-group .fc-button {  border: 0 !important; background: #B54150 !important; color: #ffffff !important; padding: 25px !important;}
+.fc-button-group .fc-button.fc-prev-button { position: absolute; left: 0; top: -14px; }
+.fc-button-group .fc-button:focus { outline: none; box-shadow: none; }
+.fc-button-group .fc-button.fc-next-button { position: absolute; right: 0; top: -14px; }
+.fc-ltr .fc-dayGrid-view .fc-day-top .fc-day-number { float: none!important; }
+.fc-toolbar { position: relative; }
+.fc-right { display: none; }
+.fc-day-number { position: relative; left: 10px; top: 10px; }
+.fc-view, .fc-view>table { margin-top: 40px; }
 
 //==================FOR BEFORE LOGIN==================//
 .cdk-overlay-container {
@@ -135,7 +141,7 @@ th.fc-day-header.fc-widget-header.fc-sat { background: #E5E0D6; border-width: 0p
   letter-spacing: 1px;
 }
 .login:focus { outline: none; }
-.no-acc { text-align: center; font-size: 20px; font-family: "Dubai Medium";}
+.no-acc { text-align: center; font-size: 20px; font-family: "Dubai Medium"; }
 .no-acc a { color: #B54150; }
 .no-acc a:hover { text-decoration: none; }
 .login-hdr { text-align: center; }
@@ -295,8 +301,6 @@ th.fc-day-header.fc-widget-header.fc-sat { background: #E5E0D6; border-width: 0p
 .signature .mat-checkbox-inner-container { height: 20px; width: 20px;}
 .wrappr-complete { padding: 20px 15px 0; }
 .form-bdy { background: #EFEFEF; margin-top: 30px; border-radius: 5px; }
-
-
 .service-desc {color: #77777B; font-family: 'Dubai Regular'; font-size: 22px;}
 .service-hdr-data { display: flex; margin-bottom: 40px; align-items: flex-start; }
 .service_desc_sec { width: 150px; height: 150px; }
@@ -657,7 +661,7 @@ a:hover { text-decoration: none; }
 .appln-details { text-align: center; }
 .appln-data h5 { font-size: 14px; color: #727272; font-family: "Dubai Regular"; }
 .appln-details span { color: #444444; font-size: 16px; font-family: "Dubai Medium"; }
-.appln-status span { color: #047666 ;}
+.appln-status span { color: #047666; }
 .border-left-dash { border-left: 1px solid #CFCFCF; }
 .appln-subhdr h5{ background: #E7E7E7; font-family: "Dubai Medium"; font-size: 16px; color: #B54150; padding: 10px 15px; margin: 0; border-radius: 5px 5px 0 0; }
 .appln-cnt-data { margin: 0; background: #EFEFEF; margin-bottom: 20px; border-radius: 5px; }
