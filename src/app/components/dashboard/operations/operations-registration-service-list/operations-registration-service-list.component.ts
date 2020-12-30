@@ -263,6 +263,19 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
            //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
          }
        }
+
+       if(sortBy == 'application_status'){
+        this.curSortDir.application_status = !sortDir;
+        if(this.curSortDir.application_status){
+          let array = data.slice().sort((a, b) => (a.application_status > b.application_status) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.application_status){
+          let array = data.slice().sort((a, b) => (a.application_status < b.application_status) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
+      
        //By created_date
        if(sortBy == 'created_date'){
          this.curSortDir.created_date = !sortDir;

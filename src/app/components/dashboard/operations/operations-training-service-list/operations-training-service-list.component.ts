@@ -85,7 +85,7 @@ export class OperationsTrainingServiceListComponent implements OnInit {
     //Assign Search Type
     this.selectStatus =  [
       {title: 'Payment Pending', value:'pending'},
-      {title: 'Under Process', value:'application_process'},
+      {title: 'Under Process', value:'under_process'},
       {title: 'Under Review', value:'under_review'},
       {title: 'Complete', value:'complete'},
       {title: 'Draft', value:'draft'}
@@ -162,6 +162,8 @@ export class OperationsTrainingServiceListComponent implements OnInit {
           elem.style.display = 'none';
       }
     if(this.searchValue == 'cab_name') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'cab_code') {
       document.getElementById('applicant').style.display = 'block';
     }else if(this.searchValue == 'id') {
       document.getElementById('applicant').style.display = 'block';
@@ -357,28 +359,52 @@ export class OperationsTrainingServiceListComponent implements OnInit {
         }
       }
 
+      if(sortBy == 'country'){
+        this.curSortDir.country = !sortDir;
+        if(this.curSortDir.country){
+          let array = data.slice().sort((a, b) => (a.country > b.country) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.country){
+          let array = data.slice().sort((a, b) => (a.country < b.country) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
+
       if(sortBy == 'course_name'){
-        // this.curSortDir.course_name = !sortDir;
-        // if(this.curSortDir.course_name){
-        //   let array = data.slice().sort((a, b) => (a.courseEventDetails.course_details.course > b.courseEventDetails.course_details.course) ? 1 : -1)
-        //   this.trainerdata = array;
-        // }
-        // if(!this.curSortDir.course_name){
-        //   let array = data.slice().sort((a, b) => (a.courseEventDetails.course_details.course < b.courseEventDetails.course_details.course) ? 1 : -1)
-        //   this.trainerdata = array;
-        // }
+        this.curSortDir.course_name = !sortDir;
+        if(this.curSortDir.course_name){
+          let array = data.slice().sort((a, b) => (a['courseEventDetails'] && b['courseEventDetails'] && a['courseEventDetails'].course_details && b['courseEventDetails'].course_details && a['courseEventDetails'].course_details.course > b['courseEventDetails'].course_details.course) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.course_name){
+          let array = data.slice().sort((a, b) => (a['courseEventDetails'] && b['courseEventDetails'] && a['courseEventDetails'].course_details && b['courseEventDetails'].course_details && a['courseEventDetails'].course_details.course < b['courseEventDetails'].course_details.course) ? 1 : -1)
+          this.trainerdata = array;
+        }
       }
 
       if(sortBy == 'capacity'){
-        // this.curSortDir.capacity = !sortDir;
-        // if(this.curSortDir.capacity){
-        //   let array = data.slice().sort((a, b) => (a['courseEventDetails'].course_details.capacity > b['courseEventDetails'].course_details.capacity) ? 1 : -1)
-        //   this.trainerdata = array;
-        // }
-        // if(!this.curSortDir.capacity){
-        //   let array = data.slice().sort((a, b) => (a['courseEventDetails'].course_details.capacity < b['courseEventDetails'].course_details.capacityy) ? 1 : -1)
-        //   this.trainerdata = array;
-        // }
+        this.curSortDir.capacity = !sortDir;
+        if(this.curSortDir.capacity){
+          let array = data.slice().sort((a, b) => (a['courseEventDetails'] && b['courseEventDetails'] && a['courseEventDetails'].course_details && b['courseEventDetails'].course_details && a.courseEventDetails && b.courseEventDetails && a['courseEventDetails'].course_details.capacity > b['courseEventDetails'].course_details.capacity) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.capacity){
+          let array = data.slice().sort((a, b) => (a['courseEventDetails'] && b['courseEventDetails'] && a['courseEventDetails'].course_details && b['courseEventDetails'].course_details && a.courseEventDetails && b.courseEventDetails && a['courseEventDetails'].course_details.capacity < b['courseEventDetails'].course_details.capacityy) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
+
+      if(sortBy == 'application_status'){
+        this.curSortDir.application_status = !sortDir;
+        if(this.curSortDir.application_status){
+          let array = data.slice().sort((a, b) => (a.application_status > b.application_status) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.application_status){
+          let array = data.slice().sort((a, b) => (a.application_status < b.application_status) ? 1 : -1)
+          this.trainerdata = array;
+        }
       }
     }
   }

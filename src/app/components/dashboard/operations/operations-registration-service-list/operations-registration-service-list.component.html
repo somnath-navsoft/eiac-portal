@@ -193,6 +193,7 @@
                             <mat-label>Show</mat-label>                              
                             <mat-select placeholder="Show" (selectionChange)="showData()"
                             [ngModelOptions]="{standalone: true}" [(ngModel)]="show_data">
+                                <mat-option value="{{pageTotal}}">All</mat-option>
                                 <mat-option value="25">25</mat-option>
                                 <mat-option value="50">50</mat-option>
                                 <mat-option value="75">75</mat-option>
