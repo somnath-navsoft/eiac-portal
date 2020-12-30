@@ -289,11 +289,15 @@
                             <td>{{item.country}}</td>
 
                             <td>
-                                {{item['courseEventDetails'].course_details?.course}}
+                                <ng-container *ngIf="item.course_name != undefined">
+                                    {{item.course_name}}
+                                </ng-container>
                             </td>
 
                             <td>
-                                {{item['courseEventDetails'].course_details?.capacity}}
+                                <ng-container *ngIf="item.course_capacity != undefined">
+                                    {{item.course_capacity}}
+                                </ng-container>
                             </td>
 
                             <td [ngClass]="{'pending': (item.application_status === 'pending' || item.application_status === 'payment_pending' || item.application_status == 'application_process' || item.application_status == 'under_process'), 'under-review':item.application_status === null || item.application_status === 'under_review', 'complete': item.application_status === 'complete','draft': item.application_status === 'draft' }">

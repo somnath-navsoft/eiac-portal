@@ -208,7 +208,7 @@ export class TrainingStatusComponent implements OnInit {
                     data.records.forEach((item,key) => {
                       if(item.courseEventDetails != undefined && item.courseEventDetails != 'NA'){
                         data.records[key]['course_name']      = item.courseEventDetails.course_details.course;
-                        data.records[key]['course_capacity']  = item.courseEventDetails.course_details.capacity;
+                        data.records[key]['course_capacity']  = data.records[key]['course_capacity']  = item.courseEventDetails['event_details'][0].capacity != null ? item.courseEventDetails['event_details'][0].capacity : 'N/A';
                       }else{
                         data.records[key]['course_name'] = '';
                         data.records[key]['course_capacity'] = '';
@@ -326,7 +326,7 @@ export class TrainingStatusComponent implements OnInit {
           data.records.forEach((item,key) => {
               if(item.courseEventDetails != undefined && item.courseEventDetails != 'NA'){
                 data.records[key]['course_name']      = item.courseEventDetails.course_details.course;
-                data.records[key]['course_capacity']  = item.courseEventDetails.course_details.capacity;
+                data.records[key]['course_capacity']  = item.courseEventDetails['event_details'][0].capacity != null ? item.courseEventDetails['event_details'][0].capacity : 'N/A';
               }else{
                 data.records[key]['course_name'] = '';
                 data.records[key]['course_capacity'] = '';
