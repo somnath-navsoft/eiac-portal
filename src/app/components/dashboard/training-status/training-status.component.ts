@@ -205,6 +205,15 @@ export class TrainingStatusComponent implements OnInit {
                     console.log(">>> Data: ", data.records);
                     this.pageCurrentNumber = 1;
                     this.dataLoad = true;
+                    data.records.forEach((item,key) => {
+                      if(item.courseEventDetails != undefined && item.courseEventDetails != 'NA'){
+                        data.records[key]['course_name']      = item.courseEventDetails.course_details.course;
+                        data.records[key]['course_capacity']  = item.courseEventDetails.course_details.capacity;
+                      }else{
+                        data.records[key]['course_name'] = '';
+                        data.records[key]['course_capacity'] = '';
+                      }
+                  })
                     this.trainerdata = data.records;
                     this.pageTotal = data.records.length;
                 }
@@ -314,14 +323,13 @@ export class TrainingStatusComponent implements OnInit {
           this.dataLoad = true;
           console.log('loading...', data.records);
           
-          let tempData: any[] =[];
           data.records.forEach((item,key) => {
               if(item.courseEventDetails != undefined && item.courseEventDetails != 'NA'){
                 data.records[key]['course_name']      = item.courseEventDetails.course_details.course;
                 data.records[key]['course_capacity']  = item.courseEventDetails.course_details.capacity;
               }else{
                 data.records[key]['course_name'] = '';
-                data.records[key]['course_capacity'] = 0;
+                data.records[key]['course_capacity'] = '';
               }
           })
           this.trainerdata = data.records;

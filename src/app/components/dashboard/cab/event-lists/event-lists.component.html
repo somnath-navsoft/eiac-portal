@@ -299,6 +299,7 @@
                                     <ng-container *ngFor="let row9 of item.course['allTargatedAud']; let i9 = index;">
                                         {{row9.target_aud_name.title}},<br>
                                     </ng-container>
+                                    @@@{{item.audName}}
                                 </td>
                                 <td *ngIf="!item.course['allTargatedAud']">
                                     N/A

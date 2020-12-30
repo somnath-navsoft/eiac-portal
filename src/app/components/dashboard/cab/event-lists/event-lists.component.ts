@@ -25,7 +25,7 @@ export class EventListsComponent implements OnInit {
   pageTotal: number = 0;
   eventData:any[] = [];
   curSortDir: any = {};
-  modalOptions:NgbModalOptions;
+  modalOptions:NgbModalOptions; 
   closeResult: string;
   participantsTempList:any[] = [{}];
   participantsList:any[] = [{}];
@@ -241,6 +241,12 @@ export class EventListsComponent implements OnInit {
           let data: any = result;
           let dataRec: any=[];
           // console.log('Data load...', data.records);
+          data.records.forEach((item, key) =>{
+               if(item.course != undefined && item.course.allTargatedAud  != undefined && item.course.allTargatedAud.length > 0){
+                data.records[key]['audName'] = item.course.allTargatedAud[0].target_aud_name.title;
+               }
+          })
+
           
           this.eventData = data.records;
           dataRec = data.records;
