@@ -110,7 +110,7 @@
                     <div class="row">
                     <div class="col-md-6"></div>
                     <div class="col-md-6">
-                        <div class="course-bttn">
+                        <div class="course-bttn" *ngIf="courseDetails.remaining_capacity > 0 || courseDetails.remaining_capacity == null">
                             <div class="course-btn ">
                                 <a class="curs-apply" [routerLink]="['/dashboard/cab_client/training-public-course-form']" [queryParams]="{courseid: routeId}">Apply Now</a>
                             </div>
