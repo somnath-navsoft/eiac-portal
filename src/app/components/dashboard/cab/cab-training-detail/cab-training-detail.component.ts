@@ -44,6 +44,7 @@ export class CabTrainingDetailComponent implements OnInit {
           this.audienceData = audAr.join(', ');
         }
         this.courseDetails = res['eventData'];
+        //this.courseDetails.remaining_capacity = 0;
         console.log(this.courseDetails);
       })
   }
