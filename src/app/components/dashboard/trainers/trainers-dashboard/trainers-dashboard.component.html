@@ -217,6 +217,43 @@
             </div>
         </div>
 
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="tra_events">
+                        <div class="trainer_head">
+                            <h4>Calendar</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">   
+                    <!-- <ngx-fullcalendar #calendar (onNavLinkDayClick)="handleNavclick($event)"
+                    (onDateClick)="handleDateClick($event)" (onDayRender)="handleDay($event)"
+                    (onDatesRender)="handleDates($event)" (onEventClick)="handleEventClick($event)"
+                    defaultView="month" [events]="events" [options]="options"></ngx-fullcalendar> -->
+
+                    <!-- <ngx-fullcalendar defaultView="month" [events]="events" [options]="optionCal"></ngx-fullcalendar> -->
+
+
+                    <!-- <div *ngIf="options">
+                        <ng-fullcalendar #fullcalendar [options]="options" (eventClick)="eventClick($event.detail)" (eventDrop)="updateEvent($event.detail)"
+                            (eventResize)="updateEvent($event.detail)" (clickButton)="clickButton($event.detail)"></ng-fullcalendar>
+                    </div> class="" -->
+
+                    <!-- ng-fullcalendar example (dateClick)="dateClick($event)"
+                              (clickButton)="clickButton($event)" (eventClick)="eventClick($event)"-->
+                    <div class="event-datetime">
+                        <ng-container *ngIf="options">
+                            <ng-fullcalendar #fullcalendar [options]="options"></ng-fullcalendar>
+                          </ng-container>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
         <div class="event_data">
             <div class="row m-0">
                 <div class="col-md-12">
@@ -238,13 +275,13 @@
 
                                         <mat-expansion-panel (opened)="panelOpenState = true"
                                         (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;">                                             
-                                            <mat-expansion-panel-header *ngIf="item.eventDate != undefined && item.eventDate.length > 0 && item.eventDate[0].event_date != null">
+                                            <mat-expansion-panel-header >
                                                 <div class="ass-details" [ngStyle]="{'padding-bottom': '4px'}">
                                                     
                                                     <div class="date_content">
-                                                        <span class="date-dash" *ngIf="item.eventDate != undefined && item.eventDate.length > 0">
+                                                        <span class="date-dash">
                                                             <span>
-                                                                {{item.eventDate[0].event_date | date}}
+                                                                {{item.event_start_date_time | date}}
                                                             </span>
                                                         </span>
                                                         {{item.courseDetails.course}}
@@ -271,8 +308,8 @@
                                                                     <h5>Date</h5>
                                                                 </div>
                                                                 <div class="counts">
-                                                                    <span *ngIf="item.eventDate != undefined && item.eventDate.length > 0">
-                                                                        {{item.eventDate[0].event_date | date}}
+                                                                    <span>
+                                                                        {{item.event_start_date_time | date}}
                                                                     </span>
                                                                 </div>
                                                             </div>
