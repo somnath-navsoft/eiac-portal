@@ -860,10 +860,12 @@ a:hover { text-decoration: none; }
 .trainer-detail .trainer-data span { margin-right: 10px; }
 .main-dashboard .trainer-detail { display: flex; justify-content: space-between; }
 .main-dashboard .trainer-content { height: 100%; display: flex; flex-direction: column; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.03); }
-.trainer-content .trainer-type { border-radius: 5px 5px 0 0; border-bottom: 1px solid #D0D0D0; background: #FFF8F8; color: #B29782; font-family: 'Dubai Medium'; text-align: center; height: 100%; display: flex; justify-content: center; align-items: center; }
+.trainer-content .trainer-type { font-size: 15px; border-radius: 5px 5px 0 0; border-bottom: 1px solid #D0D0D0; background: #FFF8F8; color: #B29782; font-family: 'Dubai Medium'; text-align: center; height: 100%; display: flex; justify-content: center; align-items: center; }
 .trainer-content .trainer-type-data { border-radius: 0 0 5px 5px; background: #FFFFFF; height: 100%; color: #616161; font-size: 18px; font-family: 'Dubai Medium'; display: flex; justify-content: center; align-items: center; }
 .main-dashboard .trainer-main-details { border-radius: 5px; padding: 20px 0; margin-top: 20px; display: flex; justify-content: center; align-items: center; background: #B19681; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.03); color: #fff; }
 .trainer-main-details .user-icons { font-size: 60px; margin-right: 35px; opacity: 0.4; }
+.trainer-main-details a { color: #fff; }
+.trainer-main-details a:hover { color: #fff; text-decoration: none;} 
 .trainer-main-details .trainer-data-det .trainer-pro { font-size: 18px; font-family: 'Dubai Medium'; }
 .trainer-main-details .trainer-maindata { font-size: 40px; font-family: 'Dubai Regular'; }
 .trainer-maindata span span { font-size: 14px; margin-left: 10px; vertical-align: middle; }
@@ -1518,6 +1520,11 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
   .confirm.activity_wrapper .mat-checkbox-layout .mat-checkbox-label { font-size: 16px; }
   .activity_wrapper.cab_info .activity_head { font-size: 16px; }
   .activity_wrapper.cab_info .activity_head { width: 30%; }
+  .trainer-content .trainer-type { font-size: 12px; }
+  .trainer-content .trainer-type-data { font-size: 15px; }
+  .lic-expire { font-size: 14px; }
+  .trainer-main-details .trainer-maindata.trainer-update { font-size: 25px; }
+  .trainer-main-details .trainer-maindata { font-size: 30px;}
 }
 
 

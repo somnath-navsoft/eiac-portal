@@ -84,7 +84,7 @@
                 <div class="col-md-3">
                     <div class="trainer-main-details trainer2">
                         <div class="user-icons">
-                            <span class="icon-doc-write"></span>  
+                            <a href="javascript:void(0)" routerLink="/dashboard/certifications"><span class="icon-doc-write"></span></a>
                         </div>
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
@@ -99,7 +99,7 @@
                 <div class="col-md-3">
                     <div class="trainer-main-details trainer3">
                         <div class="user-icons">
-                            <span class="icon-calendar"></span>
+                            <a href="javascript:void(0)" routerLink="/dashboard/events"><span class="icon-calendar"></span></a>
                         </div>
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
@@ -114,7 +114,7 @@
                 <div class="col-md-3">
                     <div class="trainer-main-details trainer4" [ngStyle]="{'height': '97px'}">
                         <div class="user-icons">
-                            <span class="icon-doc-diff"></span>
+                            <a href="javascript:void(0)" routerLink="/dashboard/certification-records"><span class="icon-doc-diff"></span></a>
                         </div>
                         <div class="trainer-data-det">
                             <!-- @{{dashboardTradeLicExDate}}
@@ -200,21 +200,29 @@
                             <div class="dash-main">
                                 <div class="dash-wrap">
                                     <div class="usermain">
-                                        <div class="main-status">
+                                        <!-- <div class="main-status">
                                             <p class="head-dash">Applications Accreditation</p>
                                             <p class="sub-head-dash">
                                                 <ng-container *ngIf="dashboardItemData.completeAccrCount != null">
                                                 {{dashboardItemData.completeAccrCount}}</ng-container><span class="active-dash complete-dash">Completed</span></p>
+                                        </div> -->
+
+                                        <div class="main-status">
+                                            <p class="head-dash">Applications</p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/status/all"><span>Accreditation</span></a>10<span class="active-dash"> Active</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/registration-status"><span>Registration</span></a>14<span class="active-dash"> Active</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/training-status"><span>Training</span></a>17<span class="active-dash"> Active</span></p>
                                         </div>
+                                        
                                         <div class="view-all">
                                             <p>From last week</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="dash-logo">
-                                    <a routerLink="/dashboard/status/all">
+                                    <!-- <a routerLink="/dashboard/status/all"> -->
                                         <span class="icon-pages"></span>
-                                    </a>
+                                    <!-- </a> -->
                                 </div>
                             </div>
                         </div>
@@ -222,7 +230,7 @@
                             <div class="dash-main">
                                 <div class="dash-wrap">
                                     <div class="usermain">
-                                        <div class="main-status">
+                                        <!-- <div class="main-status">
                                             <p class="head-dash">Applications Registration</p>
                                             <p class="sub-head-dash">
                                                 <ng-container *ngIf="dashboardItemData.completeRegCount != null">
@@ -231,13 +239,24 @@
                                         </div>
                                         <div class="view-all">
                                             <p>From last week</p>
+                                        </div> -->
+
+                                        <div class="main-status">
+                                            <p class="head-dash">Applications</p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/status/all"><span>Accreditation</span></a> 10<span class="active-dash complete-dash"> Comp.</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/registration-status"><span>Registration</span></a> 14<span class="active-dash complete-dash"> Comp.</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/training-status"><span>Training</span></a> 17<span class="active-dash complete-dash"> Comp.</span></p>
+                                        </div>
+                                        
+                                        <div class="view-all">
+                                            <p>From last week</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="dash-logo">
-                                    <a routerLink="/dashboard/registration-status">
+                                    <!-- <a routerLink="/dashboard/registration-status"> -->
                                         <span class="icon-pages"></span>
-                                    </a>
+                                    <!-- </a> -->
                                 </div>
                             </div>
                         </div>
@@ -315,7 +334,7 @@
                             </div> -->
                         </div>
                         <div class="col-md-6">
-                            <div class="dash-main">
+                            <!-- <div class="dash-main">
                                 <div class="dash-wrap">
                                     <div class="usermain">
                                         <div class="main-status">
@@ -334,7 +353,7 @@
                                         <span class="icon-pages"></span>
                                     </a>
                                 </div>
-                            </div>
+                            </div> -->
                             <!-- <div class="dash-main">
                                 <div class="dash-wrap">
                                     <div class="usermain">
@@ -467,7 +486,7 @@
                                 <div class="activity-details">
                                     <ul>
                                         <ng-container *ngFor = "let item of dashboardRecentUpdates">
-                                        <li>{{item.title}}<span> on {{item.date}} at {{item.time}}</span></li>
+                                        <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span> on {{item.date}} at {{item.time}}</span></li>
                                         </ng-container> 
                                         <!-- <li>These cases are perfectly simple and easy to distinguish. In a free hour,
                                             when our power of choice is
