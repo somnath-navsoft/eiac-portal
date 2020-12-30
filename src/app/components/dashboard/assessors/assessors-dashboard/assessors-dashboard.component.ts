@@ -78,6 +78,7 @@ export class AssessorsDashboardComponent implements OnInit {
   chatMessageFile: any = new FormData();
   localUrl: any;
   button_disable: any = true;
+  eventData: any[] = [];
   @ViewChild('fruitInput', { static: false }) fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
 
@@ -119,6 +120,35 @@ export class AssessorsDashboardComponent implements OnInit {
               console.log(datePart, " == ", date, " -- ", time);
               this.dashboardRecentUpdates.push({ title: "Assessor Last Login", date: date, time: time });
             }
+            //
+            //Get Events Data
+            this.eventData.push(
+              {
+               title: 'Test Event',
+               start:'2020-12-07',
+               end: '2020-12-07'
+              },
+              {
+                title: 'Hello Event',
+                start:'2020-12-07',
+                end: '2020-12-07'
+               },
+            )
+
+            this.options = {
+              editable: true,
+              events: this.eventData,
+              selectable: true,
+              eventLimit: true,
+              eventLimitText: "Click to more events...",
+              header: {
+                left: 'prev,next today myCustomButton',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+              },
+              plugins: [ dayGridPlugin, interactionPlugin ]
+            };
+
 
           }
           console.log(">>>> Load Data: ", res, " == ", this.dashboardRecentUpdates);
@@ -253,33 +283,33 @@ export class AssessorsDashboardComponent implements OnInit {
           // console.log(res['data'].message_list);
         });
         //this.yearMonth + '-07' || this.yearMonth + '-15'
-        this.options = {
-          editable: true,
-          events: [{
-            title: 'Long Event',
-            start: '2020-12-07',
-            end: '2020-12-17'
-          },
-          {
-            title: 'Day Event',
-            start: '2020-12-20',
-            end: '2020-12-20'
-          }],
-          customButtons: {
-            myCustomButton: {
-              text: 'custom!',
-              click: function() {
-                alert('clicked the custom button!');
-              }
-            }
-          },
-          header: {
-            left: 'prev,next today myCustomButton',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay'
-          },
-          plugins: [ dayGridPlugin, interactionPlugin ]
-        };
+        // this.options = {
+        //   editable: true,
+        //   events: [{
+        //     title: 'Long Event',
+        //     start: '2020-12-07',
+        //     end: '2020-12-17'
+        //   },
+        //   {
+        //     title: 'Day Event',
+        //     start: '2020-12-20',
+        //     end: '2020-12-20'
+        //   }],
+        //   customButtons: {
+        //     myCustomButton: {
+        //       text: 'custom!',
+        //       click: function() {
+        //         alert('clicked the custom button!');
+        //       }
+        //     }
+        //   },
+        //   header: {
+        //     left: 'prev,next today myCustomButton',
+        //     center: 'title',
+        //     right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        //   },
+        //   plugins: [ dayGridPlugin, interactionPlugin ]
+        // };
 
         // this.optionCal = {
         //   defaultDate: new Date(),
@@ -311,6 +341,7 @@ export class AssessorsDashboardComponent implements OnInit {
     console.log(model);
   }
   dateClick(model) {
+    alert('....');
     console.log(model);
   }
   updateEvents() {
