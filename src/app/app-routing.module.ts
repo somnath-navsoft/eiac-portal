@@ -135,7 +135,7 @@ const routes: Routes = [
       { path: 'message-detail/:id', component: MessageDetailComponent, canActivate: [AuthGuard] },
       { path: 'message-reply/:id', component: MessageReplyComponent, canActivate: [AuthGuard] },
       { path: 'certification-records', component:CertificationRecordsComponent, canActivate: [AuthGuard] },
-      { path: 'events', component:TrainersEventListComponent, canActivate: [AuthGuard] },
+      { path: 'event-list', component:EventListsComponent, canActivate: [AuthGuard] },
       { path: 'trainers', component: TrainersComponent, canActivate: [AuthGuard],
         children: [
             { path: 'home', component:TrainersDashboardComponent, canActivate: [AuthGuard]},
@@ -148,6 +148,7 @@ const routes: Routes = [
             { path: 'expertise', component:ExpertiseComponent, canActivate: [AuthGuard] },
             { path: 'agreements', component:AgreementsComponent, canActivate: [AuthGuard] },
             { path: 'my-files', component:MyfilesComponent, canActivate: [AuthGuard] },
+            { path: 'event-list', component:TrainersEventListComponent, canActivate: [AuthGuard] },
             { path: 'attendane-list', component:TrainersAttendanceListComponent, canActivate: [AuthGuard] },
             { path: 'agenda-list', component:TrainersAgendaListComponent, canActivate: [AuthGuard] },
             //{ path: 'training-apply', component:TrainerServiceComponent, canActivate: [AuthGuard] },
@@ -175,7 +176,7 @@ const routes: Routes = [
           { path: 'message-detail/:id', component:OperationsMessageDetailsComponent, canActivate: [AuthGuard] },
           { path: 'inpremise-approve', component:InpremiseApprovalListComponent, canActivate: [AuthGuard] },
           { path: 'inpremise-approve-detail/:id', component:InpremiseApprovalDetailsComponent, canActivate: [AuthGuard] },
-          { path: 'event-list', component:EventListsComponent, canActivate: [AuthGuard] },
+          
         ] 
     }, 
 
