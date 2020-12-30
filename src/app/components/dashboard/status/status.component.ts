@@ -107,6 +107,8 @@ export class StatusComponent implements OnInit {
     this.curSortDir['criteria_request']         = false;
     this.curSortDir['form_meta']                = false;
     this.curSortDir['country']                  = false;
+    this.curSortDir['prelim_visit']                  = false;
+    
 
     this.userType = sessionStorage.getItem('type');
     this.loadCriteriaScheme();
@@ -174,11 +176,12 @@ export class StatusComponent implements OnInit {
 
   filterSearchReset(type?: string){
     //Reset serach
-    this.applicationNo = '' || null;
-    this.selectAccrTypeValue = '' || null;
-    this.paymentStatusValue = '' || null;
+    
     this.show_data = this.pageLimit = 10;
     this.exportAs = null;
+    this.searchText = null;
+    this.searchValue = null;
+    this.changeFilter('id','reset');    
     if(type != undefined && type != ''){
       this.loadPageData();
     }
@@ -233,9 +236,16 @@ loadCountryStateCityAll  = async() =>{
   //console.log("ALL CSC: ", this.getCountryStateCityAll);
 }
 
-  changeFilter(theEvt: any){
+  changeFilter(theEvt: any, type?:any){
     console.log("@change: ", theEvt, " :: ", theEvt.value);
-    let getIdValue: string = theEvt.value;
+    let getIdValue: string = '';
+    if(type == undefined){
+      getIdValue= theEvt.value;
+    }
+    if(type != undefined){
+      getIdValue= theEvt;
+    }
+
     this.searchText = '';
     var myClasses = document.querySelectorAll('.slectType'),i = 0,length = myClasses.length;
        for (i; i < length; i++) {
@@ -402,6 +412,7 @@ if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_
           console.log('Data load...', data.records);
           
           this.trainerdata = data.records;
+          this.pageCurrentNumber = 1;
           dataRec = data.records;
           this.pageTotal = data.records.length;
         },
@@ -410,6 +421,9 @@ if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_
         }
       )          
     )
+  }
+  isNumber(param: any){
+    return isNaN(param);
   }
 
   sortedList(data: any, sortBy: string, sortDir: boolean){
@@ -514,6 +528,21 @@ if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_
             this.trainerdata = array;
           }
         }
+        //prelim_visit
+        if(sortBy == 'prelim_visit'){
+          this.curSortDir.prelim_visit = !sortDir;
+          //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
+          if(this.curSortDir.prelim_visit){
+            let array = data.slice().sort((a, b) => (a.prelim_visit > b.prelim_visit) ? 1 : -1)
+            this.trainerdata = array;
+            //console.log("after:: ", array, " :: ", this.trainerdata);
+          }
+          if(!this.curSortDir.prelim_visit){
+            let array = data.slice().sort((a, b) => (a.prelim_visit < b.prelim_visit) ? 1 : -1)
+            this.trainerdata = array;
+          }
+        }
+
         //By Payment Status
         if(sortBy == 'payment_status'){
           this.curSortDir.payment_status = !sortDir;

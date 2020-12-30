@@ -85,14 +85,14 @@
                                     <input type="text" matInput  maxlength="15" (keypress)="_service.inputFilter($event, _service.regExNumb)" [(ngModel)]="searchText"  placeholder="Search Text">
                                 </ng-container>
                                 </mat-form-field>
-                            </div>                            
+                            </div>
                         </div>
                         <div class="col-md-4 slectType" id="form_meta" [ngStyle]="{'display': 'none'}">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
                                     <mat-label>Accreditation Type</mat-label>                              
                                     <mat-select placeholder="Acreditation Type" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
-                                        <mat-option *ngFor="let item of selectAccrType;" [value]="item.value">{{item.title}}</mat-option>                                        
+                                        <mat-option *ngFor="let item of selectAccrType;" [value]="item.value">{{item.title}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
@@ -138,7 +138,7 @@
                 <div class="col-md-4">
                     <div class="user-details" [ngStyle]="{'width': '100px'}">
                         <mat-form-field class="cab-data">
-                            <mat-label>Show</mat-label>                              
+                            <mat-label>Show</mat-label>
                             <mat-select placeholder="Show" (selectionChange)="showData()"
                             [ngModelOptions]="{standalone: true}" [(ngModel)]="show_data">
                                 <mat-option value="25">25</mat-option>
@@ -204,7 +204,7 @@
                             <th>Status</th>
                             <th></th>
                         </tr>
-                    </thead>                    
+                    </thead>
                     <tbody>
                         <ng-container *ngIf="accountsData.length > 0">
                             <tr *ngFor="let item of accountsData | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i = index;">

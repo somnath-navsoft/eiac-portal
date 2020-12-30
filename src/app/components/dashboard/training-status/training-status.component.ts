@@ -63,6 +63,8 @@ export class TrainingStatusComponent implements OnInit {
     this.curSortDir['application_status'] = false;
     this.curSortDir['course'] = false;
     this.curSortDir['capacity'] = false;
+    this.curSortDir['Country'] = false;
+    
     
     this.curSortDir['payment_status']     = false;
     this.curSortDir['cab_code']           = false;
@@ -82,9 +84,15 @@ export class TrainingStatusComponent implements OnInit {
     ]
   }
 
-  changeFilter(theEvt: any){
+  changeFilter(theEvt: any, type?:any){
     console.log("@change: ", theEvt, " :: ", theEvt.value);
-    let getIdValue: string = theEvt.value;
+    let getIdValue: string = '';
+    if(type == undefined){
+      getIdValue= theEvt.value;
+    }
+    if(type != undefined){
+      getIdValue= theEvt;
+    }
     this.searchText = '';
     var myClasses = document.querySelectorAll('.slectType'),i = 0,length = myClasses.length;
        for (i; i < length; i++) {
@@ -136,11 +144,14 @@ export class TrainingStatusComponent implements OnInit {
 
   filterSearchReset(type?: string){
     //Reset serach
-    this.applicationNo = '' || null;
-    this.selectTrainingTypeValue = '' || null;
-    this.paymentStatusValue = '' || null;
+    // this.applicationNo = '' || null;
+    // this.selectTrainingTypeValue = '' || null;
+    // this.paymentStatusValue = '' || null;
     this.show_data = this.pageLimit = 10;
     this.exportAs = null;
+    this.searchText = null;
+    this.searchValue = null;
+    this.changeFilter('id','reset');    
     if(type != undefined && type != ''){
       this.loadPageData();
     }
@@ -292,8 +303,8 @@ export class TrainingStatusComponent implements OnInit {
           let dataRec: any=[];
           this.dataLoad = true;
           console.log('loading...', data.records);
-          // console.log(">>>List: ", data);
           this.trainerdata = data.records;
+          this.pageCurrentNumber = 1;
           dataRec = data.records;
           this.pageTotal = data.records.length;
         },
@@ -302,6 +313,10 @@ export class TrainingStatusComponent implements OnInit {
         }
       )          
     )
+  }
+
+  isNumber(param: any){
+    return isNaN(param);
   }
 
   sortedList(data: any, sortBy: string, sortDir: boolean){
@@ -393,6 +408,17 @@ export class TrainingStatusComponent implements OnInit {
            this.trainerdata = array;
          }
        }  
+       if(sortBy == 'Country'){
+        this.curSortDir.Country = !sortDir;
+        if(this.curSortDir.Country){
+          let array = data.slice().sort((a, b) => (a.country > b.country) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.Country){
+          let array = data.slice().sort((a, b) => (a.country < b.country) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
        if(sortBy == 'course'){
          this.curSortDir.course = !sortDir;
          if(this.curSortDir.course){
