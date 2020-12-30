@@ -193,7 +193,7 @@
                                 </a>
                             </th>
                             
-                            <th width="15%">Status
+                            <th width="13%">Status
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'accr_status', curSortDir.accr_status)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.accr_status"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.accr_status"></span>
@@ -233,7 +233,15 @@
                             <td>{{item.cabDetails.cab_name}}</td>
                             <td>{{item.cabDetails.cab_code}}</td>
                             <td>{{item.country}}</td>
-                            <td>{{item.criteria_request}}</td>
+                            <!-- <td>{{item.criteria_request}}</td> -->
+                            <td>
+                                <ng-container *ngIf="item.form_meta == 'halal_conformity_bodies' || item.form_meta == 'certification_bodies'">
+                                    Not Applicable
+                                </ng-container>
+                                <ng-container *ngIf="item.form_meta != 'halal_conformity_bodies' && item.form_meta != 'certification_bodies'">
+                                    {{item.criteria_request}}
+                                </ng-container>
+                            </td>
                             
                             <td [ngClass]="{'complete': item.is_prelim_visit == true, 'under-review':item.is_prelim_visit == false }">
                                 <span *ngIf="item.is_prelim_visit == true">Yes</span>

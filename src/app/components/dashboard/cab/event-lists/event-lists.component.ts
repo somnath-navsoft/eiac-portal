@@ -128,6 +128,17 @@ export class EventListsComponent implements OnInit {
   }
   
   filterSearchReset(type?: string){
+    this.searchValue = {};
+    this.searchText = '';
+    var myClasses = document.querySelectorAll('.field_show'),
+          i = 0,
+          l = myClasses.length;
+       for (i; i < l; i++) {
+          let elem: any = myClasses[i]
+          elem.style.display = 'none';
+      }
+    document.getElementById('applicant').style.display = 'block';
+    
     //Reset serach
     this.eventTitle = '' || null;
     if(type != undefined && type != ''){
