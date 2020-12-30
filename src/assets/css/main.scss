@@ -87,7 +87,7 @@ input { font-family: 'Dubai Regular'; }
   letter-spacing: 1px;
 }
 .login:focus { outline: none; }
-.no-acc { text-align: center; font-size: 20px; font-family: "Dubai Medium";}
+.no-acc { text-align: center; font-size: 20px; font-family: "Dubai Medium"; }
 .no-acc a { color: #B54150; }
 .no-acc a:hover { text-decoration: none; }
 .login-hdr { text-align: center; }
@@ -247,8 +247,6 @@ input { font-family: 'Dubai Regular'; }
 .signature .mat-checkbox-inner-container { height: 20px; width: 20px;}
 .wrappr-complete { padding: 20px 15px 0; }
 .form-bdy { background: #EFEFEF; margin-top: 30px; border-radius: 5px; }
-
-
 .service-desc {color: #77777B; font-family: 'Dubai Regular'; font-size: 22px;}
 .service-hdr-data { display: flex; margin-bottom: 40px; align-items: flex-start; }
 .service_desc_sec { width: 150px; height: 150px; }
@@ -609,7 +607,7 @@ a:hover { text-decoration: none; }
 .appln-details { text-align: center; }
 .appln-data h5 { font-size: 14px; color: #727272; font-family: "Dubai Regular"; }
 .appln-details span { color: #444444; font-size: 16px; font-family: "Dubai Medium"; }
-.appln-status span { color: #047666 ;}
+.appln-status span { color: #047666; }
 .border-left-dash { border-left: 1px solid #CFCFCF; }
 .appln-subhdr h5{ background: #E7E7E7; font-family: "Dubai Medium"; font-size: 16px; color: #B54150; padding: 10px 15px; margin: 0; border-radius: 5px 5px 0 0; }
 .appln-cnt-data { margin: 0; background: #EFEFEF; margin-bottom: 20px; border-radius: 5px; }

@@ -114,7 +114,7 @@
                                 <mat-form-field class="cab-data">
                                     <mat-label>Payment Status</mat-label>                              
                                     <mat-select placeholder="Payment Status" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
-                                        <mat-option *ngFor="let item of selectPaymentStatus;" [value]="item.value">{{item.title}}</mat-option>                                        
+                                        <mat-option *ngFor="let item of selectPaymentStatus;" [value]="item.value">{{item.title}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
@@ -152,7 +152,7 @@
             </div>
 
             <div class="accounts mt-3">
-                <table class="accounts_inner_tab">
+                <table class="accounts_inner_tab"  id="accreditation-service-export">
                     <thead>
                         <tr class="main_acc_tab">
                             <th class="main_tab_head"></th>
@@ -161,22 +161,22 @@
                             <th class="main_tab_head"></th>
                             <th class="main_tab_head"></th>
                             <th class="main_tab_head"></th>
+                            <!--<th class="main_tab_head"></th>
                             <th class="main_tab_head"></th>
                             <th class="main_tab_head"></th>
-                            <th class="main_tab_head"></th>
-                            <th class="main_tab_head"></th>
+                            <th class="main_tab_head"></th> -->
                             <th class="main_tab_head"></th>
                             <th class="main_tab_head main_hd"></th>
-                            <th colspan="6">Application Fees</th>
-                            <th colspan="6">Preliminary Visit</th>
-                            <th colspan="6">Document Review</th>
-                            <th colspan="6">Assessment</th>
-                            <th colspan="6">Certification</th>
+                            <th colspan="3">Application Fees</th>
+                            <th colspan="3">Preliminary Visit</th>
+                            <th colspan="3">Document Review</th>
+                            <th colspan="3">Assessment</th>
+                            <th colspan="3">Certification</th>
                         </tr>
-                    </thead>
-                </table>
-                <table class="accounts_inner_tab" id="accreditation-service-export">
-                    <thead>
+                    <!-- </thead> -->
+                <!-- </table> -->
+                <!-- <table class="accounts_inner_tab"> -->
+                    <!-- <thead> -->
                         <tr>
                             <th>App. No.</th>
                             <th>Date</th>
