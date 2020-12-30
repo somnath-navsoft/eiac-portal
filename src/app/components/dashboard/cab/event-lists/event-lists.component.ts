@@ -25,7 +25,7 @@ export class EventListsComponent implements OnInit {
   pageTotal: number = 0;
   eventData:any[] = [];
   curSortDir: any = {};
-  modalOptions:NgbModalOptions;
+  modalOptions:NgbModalOptions; 
   closeResult: string;
   participantsTempList:any[] = [{}];
   participantsList:any[] = [{}];
@@ -55,6 +55,7 @@ export class EventListsComponent implements OnInit {
     // console.log(this.event_date);
     this.userType = sessionStorage.getItem('type');
     this.curSortDir['course']                       = false;
+    this.curSortDir['audience']                       = false;    
     this.curSortDir['created_date']             = false;
     this.curSortDir['accr_status']             = false;
     this.curSortDir['applicantName']             = false;
@@ -117,9 +118,20 @@ export class EventListsComponent implements OnInit {
   showData() {
     //this.pageLimit = this.show_data;
     // this.loadPageData();
-    this.pageLimit = this.show_data;
-    this.pageCurrentNumber = 1;
-    this.eventData.slice(0, this.show_data);
+    // this.pageLimit = this.show_data;
+    // this.pageCurrentNumber = 1;
+    // this.eventData.slice(0, this.show_data);
+
+    if(this.show_data != 'all'){
+      this.pageLimit = this.show_data;
+      this.pageCurrentNumber = 1;
+      this.eventData.slice(0, this.show_data);
+    }else{
+      console.log('....');
+      this.pageLimit = this.pageTotal;
+      this.pageCurrentNumber = 1;
+      this.eventData.slice(0, this.pageTotal);
+    }
   }
 
   filterSearchSec(){
@@ -241,7 +253,11 @@ export class EventListsComponent implements OnInit {
           let data: any = result;
           let dataRec: any=[];
           // console.log('Data load...', data.records);
-          
+          data.records.forEach((item, key) =>{
+               if(item.course != undefined && item.course.allTargatedAud  != undefined && item.course.allTargatedAud.length > 0){
+                data.records[key]['audName'] = item.course.allTargatedAud[0].target_aud_name.title;
+               }
+          })          
           this.eventData = data.records;
           dataRec = data.records;
           this.pageTotal = data.records.length;
@@ -268,6 +284,19 @@ export class EventListsComponent implements OnInit {
             let array = data.slice().sort((a, b) => (a.course.course < b.course.course) ? 1 : -1)
             this.eventData = array;
             //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
+          }
+        }
+
+        if(sortBy === 'audience'){
+          //console.log(">>>Enter type...");
+          this.curSortDir.audience = !sortDir;
+          if(this.curSortDir.audience){
+            let array = data.slice().sort((a, b) => (a.audience > b.audience) ? 1 : -1)
+            this.eventData = array;
+          }
+          if(!this.curSortDir.audience){
+            let array = data.slice().sort((a, b) => (a.audience < b.audience) ? 1 : -1)
+            this.eventData = array;
           }
         }
 

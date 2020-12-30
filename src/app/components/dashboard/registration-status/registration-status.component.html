@@ -92,7 +92,7 @@
                         <div class="col-md-4 slectType" id="form_meta" [ngStyle]="{'display': 'none'}">
                             <div class="user-details" [ngStyle]="{'width':'75%'}">
                                 <mat-form-field class="cab-data">
-                                    <mat-label>Acreditation Type</mat-label>                              
+                                    <mat-label>Registration Type</mat-label>                              
                                     <mat-select placeholder="Acreditation Type" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
                                         <mat-option *ngFor="let item of selectRegType;" [value]="item.value">{{item.title}}</mat-option>                                        
                                     </mat-select>
@@ -159,6 +159,7 @@
                                 <mat-option value="50">50</mat-option>
                                 <mat-option value="75">75</mat-option>
                                 <mat-option value="100">100</mat-option>
+                                <mat-option value="all">All</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -250,9 +251,9 @@
                                 <!-- <span *ngIf="item.application_status == 'pending'">Pending</span> -->
                                 <span *ngIf="item.application_status == 'draft'">Draft</span>
                                 <!-- <span *ngIf="item.application_status == 'application_process'">Application Process</span> -->
-                                <span *ngIf="item.application_status == 'under_process' || item.application_status == 'application_process'">Under Process</span>
+                                <span *ngIf="item.application_status == 'under_process'">Under Process</span>
                                 <span *ngIf="item.application_status == 'pending'">Payment Pending</span>
-                                <span *ngIf="item.application_status == null || item.application_status === 'under_review'">Under Review</span>
+                                <span *ngIf="item.application_status === 'under_review'">Under Review</span>
                                 <span *ngIf="item.application_status == 'complete'">Complete</span>
                             </td>
                             
@@ -265,7 +266,7 @@
                             <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review':item.payment_status === null , 'under-review':item.payment_status === 'pending'}">
                                 <span *ngIf="item.payment_status == 'paid'">Paid</span>
                                 <span *ngIf="item.payment_status == 'pending'">Pending</span>
-                                <span *ngIf="item.payment_status == null">Pending</span>
+                                <!-- <span *ngIf="item.payment_status == null">Pending</span> -->
                             </td> 
                             <td class="action fnt-clr">
                                 <ng-container *ngIf="item.form_meta == 'work_permit'">

@@ -125,7 +125,7 @@ export class StatusComponent implements OnInit {
       ];
     this.selectAccrStatus  = [
       {title: 'Payment Pending', value:'pending'},
-      {title: 'Under Process', value:'application_process'},
+      {title: 'Under Process', value:'under_process'},
       {title: 'Under Review', value:'under_review'},
       {title: 'Complete', value:'complete'},
       {title: 'Draft', value:'draft'}
@@ -197,9 +197,18 @@ export class StatusComponent implements OnInit {
   showData() {
     //this.pageLimit = this.show_data;
     // this.loadPageData();
-    this.pageLimit = this.show_data;
-    this.pageCurrentNumber = 1;
-    this.trainerdata.slice(0, this.show_data);
+    console.log(">>Tortal: ", this.pageTotal);
+    if(this.show_data != 'all'){
+      this.pageLimit = this.show_data;
+      this.pageCurrentNumber = 1;
+      this.trainerdata.slice(0, this.show_data);
+    }else{
+      console.log('....');
+      this.pageLimit = this.pageTotal;
+      this.pageCurrentNumber = 1;
+      this.trainerdata.slice(0, this.pageTotal);
+    }
+    
   }
 
   paginationReset() {

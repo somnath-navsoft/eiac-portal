@@ -135,6 +135,7 @@ const routes: Routes = [
       { path: 'message-detail/:id', component: MessageDetailComponent, canActivate: [AuthGuard] },
       { path: 'message-reply/:id', component: MessageReplyComponent, canActivate: [AuthGuard] },
       { path: 'certification-records', component:CertificationRecordsComponent, canActivate: [AuthGuard] },
+      { path: 'event-list', component:EventListsComponent, canActivate: [AuthGuard] },
       { path: 'trainers', component: TrainersComponent, canActivate: [AuthGuard],
         children: [
             { path: 'home', component:TrainersDashboardComponent, canActivate: [AuthGuard]},
@@ -175,7 +176,7 @@ const routes: Routes = [
           { path: 'message-detail/:id', component:OperationsMessageDetailsComponent, canActivate: [AuthGuard] },
           { path: 'inpremise-approve', component:InpremiseApprovalListComponent, canActivate: [AuthGuard] },
           { path: 'inpremise-approve-detail/:id', component:InpremiseApprovalDetailsComponent, canActivate: [AuthGuard] },
-          { path: 'event-list', component:EventListsComponent, canActivate: [AuthGuard] },
+          
         ] 
     }, 
 

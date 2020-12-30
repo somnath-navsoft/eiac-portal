@@ -139,6 +139,7 @@
                                 <mat-option value="50">50</mat-option>
                                 <mat-option value="75">75</mat-option>
                                 <mat-option value="100">100</mat-option>
+                                <mat-option value="all">All</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -250,10 +251,10 @@
                                <span *ngIf="item.is_prelim_visit == true">Yes</span>
                                <span *ngIf="item.is_prelim_visit == false">No</span>
                             </td>
-                            <td [ngClass]="{'pending': item.accr_status === 'pending' || item.accr_status == 'application_process', 'under-review':item.accr_status === null || item.accr_status === 'under_review', 'complete': item.accr_status === 'complete', 'draft': item.accr_status === 'draft' }">
+                            <td [ngStyle]="{'width':'140px'}" [ngClass]="{'pending': item.accr_status === 'pending' || item.accr_status == 'application_process', 'under-review':item.accr_status === null || item.accr_status === 'under_review', 'complete': item.accr_status === 'complete', 'draft': item.accr_status === 'draft' }">
                                 <span *ngIf="item.accr_status == 'pending'">Payment Pending</span>
-                                <span *ngIf="item.accr_status == 'application_process' || item.accr_status == 'under_process'">Under Process</span>
-                                <span *ngIf="item.accr_status == null || item.accr_status == 'under_review'">Under Review</span>
+                                <span *ngIf="item.accr_status == 'under_process'">Under Process</span>
+                                <span *ngIf="item.accr_status == 'under_review'">Under Review</span>
                                 <span *ngIf="item.accr_status == 'complete'">Complete</span>
                                 <span *ngIf="item.accr_status == 'draft'">Draft</span>
                             </td>                            
@@ -268,7 +269,7 @@
                             <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review': (item.payment_status == 'pending' || item.payment_status == null)}">
                                 <span *ngIf="item.payment_status == 'paid'">Paid</span>
                                 <span *ngIf="item.payment_status == 'pending'">Pending</span>
-                                <span *ngIf="item.payment_status == null">Pending</span>
+                                <!-- <span *ngIf="item.payment_status == null">Pending</span> -->
                             </td>                             
                             <td class="action fnt-clr">
                                 <ng-container *ngIf="item.form_meta == 'testing_calibration'">

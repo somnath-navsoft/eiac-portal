@@ -116,10 +116,20 @@ export class RegistrationStatusComponent implements OnInit {
     //this.loadPageData();
     console.log(this.show_data);
     console.log(">>>1 ", this.trainerdata);
-    this.pageLimit = this.show_data;
-    this.pageCurrentNumber = 1;
-    this.trainerdata.slice(0, this.show_data);
-    console.log(">>> ", this.trainerdata);
+    // this.pageLimit = this.show_data;
+    // this.pageCurrentNumber = 1;
+    // this.trainerdata.slice(0, this.show_data);
+    // console.log(">>> ", this.trainerdata);
+    if(this.show_data != 'all'){
+      this.pageLimit = this.show_data;
+      this.pageCurrentNumber = 1;
+      this.trainerdata.slice(0, this.show_data);
+    }else{
+      console.log('....');
+      this.pageLimit = this.pageTotal;
+      this.pageCurrentNumber = 1;
+      this.trainerdata.slice(0, this.pageTotal);
+    }
   }
 
   paginationReset() {

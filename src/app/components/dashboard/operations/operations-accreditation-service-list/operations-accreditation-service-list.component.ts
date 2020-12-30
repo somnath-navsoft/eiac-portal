@@ -557,16 +557,16 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
             }
           }
           //By Prelim Status
-          if(sortBy == 'prelim_status'){
-            this.curSortDir.prelim_status = !sortDir;
+          if(sortBy == 'prelim_visit'){
+            this.curSortDir.prelim_visit = !sortDir;
             //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
-            if(this.curSortDir.prelim_status){
-              let array = data.slice().sort((a, b) => (a.prelim_status > b.prelim_status) ? 1 : -1)
+            if(this.curSortDir.prelim_visit){
+              let array = data.slice().sort((a, b) => (a.is_prelim_visit > b.is_prelim_visit) ? 1 : -1)
               this.trainerdata = array;
               //console.log("after:: ", array, " :: ", this.trainerdata);
             }
-            if(!this.curSortDir.prelim_status){
-              let array = data.slice().sort((a, b) => (a.prelim_status < b.prelim_status) ? 1 : -1)
+            if(!this.curSortDir.prelim_visit){
+              let array = data.slice().sort((a, b) => (a.is_prelim_visit < b.is_prelim_visit) ? 1 : -1)
               this.trainerdata = array;
             }
           }

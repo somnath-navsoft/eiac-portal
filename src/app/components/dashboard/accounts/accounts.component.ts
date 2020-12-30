@@ -135,9 +135,20 @@ export class AccountsComponent implements OnInit {
   }
 
   showData() {
-    this.pageLimit = this.show_data;
-    this.pageCurrentNumber = 1;
-    this.accountsData.slice(0, this.show_data);
+    // this.pageLimit = this.show_data;
+    // this.pageCurrentNumber = 1;
+    // this.accountsData.slice(0, this.show_data);
+
+    if(this.show_data != 'all'){
+      this.pageLimit = this.show_data;
+      this.pageCurrentNumber = 1;
+      this.accountsData.slice(0, this.show_data);
+    }else{
+      console.log('....');
+      this.pageLimit = this.pageTotal;
+      this.pageCurrentNumber = 1;
+      this.accountsData.slice(0, this.pageTotal);
+    }
   }
 
   filterSearchSec(){
