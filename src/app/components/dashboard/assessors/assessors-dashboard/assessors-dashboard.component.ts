@@ -252,12 +252,18 @@ export class AssessorsDashboardComponent implements OnInit {
           this.recordsTotal = res['data'].recordsTotal;
           // console.log(res['data'].message_list);
         });
+        //this.yearMonth + '-07' || this.yearMonth + '-15'
         this.options = {
           editable: true,
           events: [{
             title: 'Long Event',
-            start: this.yearMonth + '-07',
-            end: this.yearMonth + '-10'
+            start: '2020-12-07',
+            end: '2020-12-17'
+          },
+          {
+            title: 'Day Event',
+            start: '2020-12-20',
+            end: '2020-12-20'
           }],
           customButtons: {
             myCustomButton: {
@@ -275,20 +281,20 @@ export class AssessorsDashboardComponent implements OnInit {
           plugins: [ dayGridPlugin, interactionPlugin ]
         };
 
-        this.optionCal = {
-          defaultDate: new Date(),
-          editable: false,
-          navLinks: true,
-          weekends: true,
-          hiddenDays: [], //0-6 range day number        
-        }
-        this.events = [
-          { id: 'a', title: 'My Birthday', allDay: true },
-          { id: 'b', title: 'Friends coming round', start: '2018-07-26T18:00:00', end: '2018-07-26T23:00:00' }
-        ]
-        this.eventYear = new Date().getFullYear().toString();
-        let getMont = new Date().getMonth();
-        this.eventMonth = getMont + 1;
+        // this.optionCal = {
+        //   defaultDate: new Date(),
+        //   editable: false,
+        //   navLinks: true,
+        //   weekends: true,
+        //   hiddenDays: [], //0-6 range day number        
+        // }
+        // this.events = [
+        //   { id: 'a', title: 'My Birthday', allDay: true },
+        //   { id: 'b', title: 'Friends coming round', start: '2018-07-26T18:00:00', end: '2018-07-26T23:00:00' }
+        // ]
+        // this.eventYear = new Date().getFullYear().toString();
+        // let getMont = new Date().getMonth();
+        // this.eventMonth = getMont + 1;
   
         console.log(">>> Get month: ",this.eventMonth);
   }

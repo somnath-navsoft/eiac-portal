@@ -115,9 +115,19 @@ export class TrainingStatusComponent implements OnInit {
   showData() {
     //this.pageLimit = this.show_data;
     // this.loadPageData();
-    this.pageLimit = this.show_data;
-    this.pageCurrentNumber = 1;
-    this.trainerdata.slice(0, this.show_data);
+    // this.pageLimit = this.show_data;
+    // this.pageCurrentNumber = 1;
+    // this.trainerdata.slice(0, this.show_data);
+    if(this.show_data != 'all'){
+      this.pageLimit = this.show_data;
+      this.pageCurrentNumber = 1;
+      this.trainerdata.slice(0, this.show_data);
+    }else{
+      console.log('....');
+      this.pageLimit = this.pageTotal;
+      this.pageCurrentNumber = 1;
+      this.trainerdata.slice(0, this.pageTotal);
+    }
   }
 
   paginationReset() {
@@ -303,7 +313,19 @@ export class TrainingStatusComponent implements OnInit {
           let dataRec: any=[];
           this.dataLoad = true;
           console.log('loading...', data.records);
+          
+          let tempData: any[] =[];
+          data.records.forEach((item,key) => {
+              if(item.courseEventDetails != undefined && item.courseEventDetails != 'NA'){
+                data.records[key]['course_name']      = item.courseEventDetails.course_details.course;
+                data.records[key]['course_capacity']  = item.courseEventDetails.course_details.capacity;
+              }else{
+                data.records[key]['course_name'] = '';
+                data.records[key]['course_capacity'] = 0;
+              }
+          })
           this.trainerdata = data.records;
+          console.log('Data...', this.trainerdata);
           this.pageCurrentNumber = 1;
           dataRec = data.records;
           this.pageTotal = data.records.length;
@@ -422,22 +444,22 @@ export class TrainingStatusComponent implements OnInit {
        if(sortBy == 'course'){
          this.curSortDir.course = !sortDir;
          if(this.curSortDir.course){
-           let array = data.slice().sort((a, b) => (a.courseEventDetails.course_details.course > b.courseEventDetails.course_details.course) ? 1 : -1)
+           let array = data.slice().sort((a, b) => (a.course_name > b.course_name) ? 1 : -1)
            this.trainerdata = array;
          }
          if(!this.curSortDir.course){
-           let array = data.slice().sort((a, b) => (a.courseEventDetails.course_details.course < b.courseEventDetails.course_details.course) ? 1 : -1)
+           let array = data.slice().sort((a, b) => (a.course_name < b.course_name) ? 1 : -1)
            this.trainerdata = array;
          }
        }
        if(sortBy == 'capacity'){
         this.curSortDir.capacity = !sortDir;
         if(this.curSortDir.capacity){
-          let array = data.slice().sort((a, b) => (a.courseEventDetails.course_details.capacity > b.courseEventDetails.course_details.capacity) ? 1 : -1)
+          let array = data.slice().sort((a, b) => (a.course_capacity > b.course_capacity) ? 1 : -1)
           this.trainerdata = array;
         }
         if(!this.curSortDir.capacity){
-          let array = data.slice().sort((a, b) => (a.courseEventDetails.course_details.capacity < b.courseEventDetails.course_details.capacity) ? 1 : -1)
+          let array = data.slice().sort((a, b) => (a.course_capacity < b.course_capacity) ? 1 : -1)
           this.trainerdata = array;
         }
       }

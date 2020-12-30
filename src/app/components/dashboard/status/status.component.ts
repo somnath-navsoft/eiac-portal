@@ -197,9 +197,18 @@ export class StatusComponent implements OnInit {
   showData() {
     //this.pageLimit = this.show_data;
     // this.loadPageData();
-    this.pageLimit = this.show_data;
-    this.pageCurrentNumber = 1;
-    this.trainerdata.slice(0, this.show_data);
+    console.log(">>Tortal: ", this.pageTotal);
+    if(this.show_data != 'all'){
+      this.pageLimit = this.show_data;
+      this.pageCurrentNumber = 1;
+      this.trainerdata.slice(0, this.show_data);
+    }else{
+      console.log('....');
+      this.pageLimit = this.pageTotal;
+      this.pageCurrentNumber = 1;
+      this.trainerdata.slice(0, this.pageTotal);
+    }
+    
   }
 
   paginationReset() {
