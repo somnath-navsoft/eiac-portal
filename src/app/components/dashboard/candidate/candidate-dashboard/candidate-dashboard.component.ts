@@ -8,6 +8,13 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable } from 'rxjs';
+import { CalendarComponent } from 'ng-fullcalendar';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import { FullCalendarOptions, EventObject } from 'ngx-fullcalendar';
+import { OptionsInput } from '@fullcalendar/core';
+
+declare var FullCalendar: any;
 
 @Component({
   selector: 'app-candidate-dashboard',
@@ -16,6 +23,7 @@ import { Observable } from 'rxjs';
 })
 export class CandidateDashboardComponent implements OnInit {
  
+  options: OptionsInput;
   messageList: any = [];
   userId: any;
   loader: boolean = true;
@@ -62,6 +70,10 @@ export class CandidateDashboardComponent implements OnInit {
   button_disable: any = true;
   @ViewChild('fruitInput', { static: false }) fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
+  optionCal: FullCalendarOptions;
+  @ViewChild('fullcalendar', { static: true }) fullcalendar: CalendarComponent;
+
+  @ViewChild('calendar', { static: true }) calendar: any;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
     this.config = {
@@ -177,6 +189,34 @@ export class CandidateDashboardComponent implements OnInit {
               let time = time1 +" "  + time2;
               this.dashboardRecentUpdates.push({title: "CAB Training Payment",date:date, time: time});
             }
+
+            this.options = {
+              editable: true,
+              events: [{
+                title: 'Long Event',
+                start: '2020-12-07',
+                end: '2020-12-17'
+              },
+              {
+                title: 'Day Event',
+                start: '2020-12-20',
+                end: '2020-12-20'
+              }],
+              customButtons: {
+                myCustomButton: {
+                  text: 'custom!',
+                  click: function() {
+                    alert('clicked the custom button!');
+                  }
+                }
+              },
+              header: {
+                left: 'prev,next today myCustomButton',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+              },
+              plugins: [ dayGridPlugin, interactionPlugin ]
+            };
           }
           console.log(">>>> Load Data: ", res, " == ", this.dashboardRecentUpdates);
 
