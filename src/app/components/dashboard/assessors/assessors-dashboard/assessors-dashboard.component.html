@@ -200,30 +200,20 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">   
-                            <!-- <ngx-fullcalendar #calendar (onNavLinkDayClick)="handleNavclick($event)"
-                            (onDateClick)="handleDateClick($event)" (onDayRender)="handleDay($event)"
-                            (onDatesRender)="handleDates($event)" (onEventClick)="handleEventClick($event)"
-                            defaultView="month" [events]="events" [options]="options"></ngx-fullcalendar> -->
-
-                            <!-- <ngx-fullcalendar defaultView="month" [events]="events" [options]="optionCal"></ngx-fullcalendar> -->
-
-
-                            <!-- <div *ngIf="options">
-                                <ng-fullcalendar #fullcalendar [options]="options" (eventClick)="eventClick($event.detail)" (eventDrop)="updateEvent($event.detail)"
-                                    (eventResize)="updateEvent($event.detail)" (clickButton)="clickButton($event.detail)"></ng-fullcalendar>
-                            </div> class="" -->
-
+                            
+                            <!-- Output function...
+                            (dateClick)="dateClick($event)"
+                                      (clickButton)="clickButton($event)"
+                                      (eventDragStop)="eventDragStop($event)"
+                                      [eventsModel]="eventsModel"
+                                      (eventClick)="eventClick($event)"
+                            -->
                             <!-- ng-fullcalendar example -->
                             <div class="event-datetime">
                                 <ng-container *ngIf="options">
                                     <ng-fullcalendar
-                                      #fullcalendar
-                                      (dateClick)="dateClick($event)"
-                                      (clickButton)="clickButton($event)"
-                                      (eventDragStop)="eventDragStop($event)"
-                                      [eventsModel]="eventsModel"
-                                      [options]="options"
-                                      (eventClick)="eventClick($event)"
+                                      #fullcalendar                                 
+                                      [options]="options"                                      
                                     ></ng-fullcalendar>
                                   </ng-container>
                             </div>
