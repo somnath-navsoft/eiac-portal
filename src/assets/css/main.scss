@@ -866,7 +866,7 @@ a:hover { text-decoration: none; }
 .main-dashboard .trainer-content { height: 100%; display: flex; flex-direction: column; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.03); }
 .trainer-content .trainer-type { font-size: 15px; border-radius: 5px 5px 0 0; border-bottom: 1px solid #D0D0D0; background: #FFF8F8; color: #B29782; font-family: 'Dubai Medium'; text-align: center; height: 100%; display: flex; justify-content: center; align-items: center; }
 .trainer-content .trainer-type-data { border-radius: 0 0 5px 5px; background: #FFFFFF; height: 100%; color: #616161; font-size: 18px; font-family: 'Dubai Medium'; display: flex; justify-content: center; align-items: center; }
-.main-dashboard .trainer-main-details { border-radius: 5px; padding: 20px 0; margin-top: 20px; display: flex; justify-content: center; align-items: center; background: #B19681; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.03); color: #fff; }
+.main-dashboard .trainer-main-details { border-radius: 5px; padding: 20px 15px; margin-top: 20px; display: flex; justify-content: space-around; align-items: center; background: #B19681; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.03); color: #fff; }
 .trainer-main-details .user-icons { font-size: 60px; margin-right: 35px; opacity: 0.4; }
 .trainer-main-details a { color: #fff; }
 .trainer-main-details a:hover { color: #fff; text-decoration: none;} 
@@ -1146,6 +1146,7 @@ ul.bill-details li:first-child { border-right: 1px solid #C9C9C9; }
 .modal { display: flex!important; align-items: center; }
 .modal-dialog { max-width: 750px; }
 .modal-content { max-height: 700px; overflow-y: auto; }
+.custom-modal .modal-dialog { width: 100%; }
 .authData .mat-checkbox-frame {
   border-color: rgba(153, 153, 153, 1); 
   border-width: 1px; 
@@ -1490,8 +1491,7 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .other_data { margin-left: 20px; }
 .edit_data { display: flex; justify-content: flex-end; }
 .edit_data a { display: inline-block; padding: 10px; background: #B54150; color: #fff; border-radius: 50%; line-height: 1; }
-
-
+.event_wrapper { display: flex; justify-content: space-between; }
 //==================RESPONSIVE==================//
 @media(max-width: 1500px) {
   // .main-dashboard-cnt .user-steps { height: 50%; }
@@ -1503,6 +1503,7 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
   .complete span { padding: 0 5px; }
 }
 @media(max-width: 1366px) {
+  .main-dashboard .trainer-content { height: min-content; }
   .left_menu_portal li a { line-height: 30px; }
   .dash-logo { height: 50px; min-width: 50px; margin-right: 10px; }
   .main-status .head-dash { font-size: 16px; }
@@ -1524,11 +1525,13 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
   .confirm.activity_wrapper .mat-checkbox-layout .mat-checkbox-label { font-size: 16px; }
   .activity_wrapper.cab_info .activity_head { font-size: 16px; }
   .activity_wrapper.cab_info .activity_head { width: 30%; }
-  .trainer-content .trainer-type { font-size: 12px; }
-  .trainer-content .trainer-type-data { font-size: 15px; }
+  .trainer-content .trainer-type { font-size: 12px; padding: 15px; }
+  .trainer-content .trainer-type-data { font-size: 15px; padding: 15px; }
   .lic-expire { font-size: 14px; }
   .trainer-main-details .trainer-maindata.trainer-update { font-size: 25px; }
   .trainer-main-details .trainer-maindata { font-size: 30px;}
+  .trainer-main-details .user-icons { font-size: 50px;  margin-right: 20px; }
+  .trainer-main-details .trainer-data-det .trainer-pro { font-size: 15px; }
 }
 
 

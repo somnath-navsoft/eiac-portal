@@ -132,6 +132,8 @@
                             
                             <th>Action</th>
                         </tr>
+                        <a href="javascript:void(0)" (click)="openRecord(recordsdetails, item)" title="View" alt="View">
+                            Trade Licenses</a>
                     <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
                         <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
                             <td class="fnt-clr">
@@ -213,22 +215,25 @@
               </button>
             </div>
             <div class="modal-body"> 
-                <div class="event-details">
-                    <div class="event-data">
-                        <span class="event-head">Name</span>
-                        <span>: {{tradelicenseName}}</span>
+                <div class="event_wrapper">
+                    <div class="event-details">
+                        <div class="event-data">
+                            <span class="event-head">Name</span>
+                            <!-- <span>: {{tradelicenseName}}</span> -->
+                        </div>
+                        <div class="event-data">
+                            <span class="event-head">Upload On</span>
+                            <!-- <span>: {{startDate | date}}</span> -->
+                        </div>
+                        <div class="event-data">
+                            <span class="event-head">Expiry Date</span>
+                            <!-- <span>: {{expiryDate | date}}</span> -->
+                        </div>
                     </div>
-                    <div class="event-data">
-                        <span class="event-head">Upload On</span>
-                        <span>: {{startDate | date}}</span>
+                    <div>
+                        <button type="submit" (click)="downloadRecord(tradelicenseFile)" class="cancel-bttn">DOWNLOAD RECORD</button>
                     </div>
-                    <div class="event-data">
-                        <span class="event-head">Expiry Date</span>
-                        <span>: {{expiryDate | date}}</span>
-                    </div>
-                </div>                
-                
-                <button type="submit" (click)="downloadRecord(tradelicenseFile)" class="cancel-bttn">DOWNLOAD RECORD</button>
+                </div>
             </div>
         </ng-template>
     </div>
