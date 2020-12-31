@@ -5,7 +5,7 @@ import { AppService } from 'src/app/services/app.service';
 import { TrainerService } from 'src/app/services/trainer.service';
 import { Constants } from 'src/app/services/constant.service';
 import { ToastrService} from 'ngx-toastr';
-import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, ModalDismissReasons, NgbModalOptions, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
 import {CustomModalComponent} from 'src/app/components/utility/custom-modal/custom-modal.component';
 import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -95,7 +95,9 @@ export class CertificationRecordsComponent implements OnInit {
   expiryDate:any;
   tradelicenseFile:any;
   
-  constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService, public sanitizer: DomSanitizer, private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent, private exportAsService: ExportAsService) { }
+  constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService, public sanitizer: DomSanitizer, private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent, private exportAsService: ExportAsService,config: NgbModalConfig) { 
+    config.windowClass = 'custom-modal';
+  }
 
     closeDialog(){
       this.modalService.dismissAll();
@@ -358,10 +360,10 @@ export class CertificationRecordsComponent implements OnInit {
     // }
     // this.paymentReceiptValidation = null;
     
-    this.tradelicenseName = newObj.trade_license_number != null && newObj.trade_license_number ? newObj.trade_license_number : 'N/A';
-    this.tradelicenseFile = newObj.trade_license_number != null && newObj.trade_license_number ? newObj.trade_license_number : 'N/A';
-    this.startDate = newObj.date_of_issue != null && newObj.date_of_issue ? newObj.date_of_issue : 'N/A';
-    this.expiryDate = newObj.date_of_expiry != null && newObj.date_of_expiry ? newObj.date_of_expiry : 'N/A';
+    // this.tradelicenseName = newObj.trade_license_number != null && newObj.trade_license_number ? newObj.trade_license_number : 'N/A';
+    // this.tradelicenseFile = newObj.trade_license_number != null && newObj.trade_license_number ? newObj.trade_license_number : 'N/A';
+    // this.startDate = newObj.date_of_issue != null && newObj.date_of_issue ? newObj.date_of_issue : 'N/A';
+    // this.expiryDate = newObj.date_of_expiry != null && newObj.date_of_expiry ? newObj.date_of_expiry : 'N/A';
 
     this.modalService.open(content, this.modalOptions).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;

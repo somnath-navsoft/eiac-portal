@@ -79,6 +79,7 @@ export class AssessorsDashboardComponent implements OnInit {
   localUrl: any;
   button_disable: any = true;
   eventData: any[] = [];
+  options:any;
   @ViewChild('fruitInput', { static: false }) fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
 
