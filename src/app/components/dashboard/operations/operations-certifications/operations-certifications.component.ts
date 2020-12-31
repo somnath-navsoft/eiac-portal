@@ -257,14 +257,28 @@ export class OperationsCertificationsComponent implements OnInit {
   showData() {
     //this.pageLimit = this.show_data;
     // this.loadPageData();
-    this.pageLimit = this.show_data;
-    this.pageCurrentNumber = 1;
-    if(this.searchValue != null && (this.searchText != null && this.searchText != '')){
-      this.filterSearchSubmit();
-   }else{
-    this.loadPageData(0,this.pageLimit);
-   }
-    //this.trainerdata.slice(0, this.show_data);
+  //   this.pageLimit = this.show_data;
+  //   this.pageCurrentNumber = 1;
+  //   if(this.searchValue != null && (this.searchText != null && this.searchText != '')){
+  //     this.filterSearchSubmit();
+  //  }else{
+  //   this.loadPageData(0,this.pageLimit);
+  //  }
+
+    if(this.show_data != 'all'){
+      this.pageLimit = this.show_data;
+      this.pageCurrentNumber = 1;
+      if(this.searchValue != null && (this.searchText != null && this.searchText != '')){
+        this.filterSearchSubmit();
+    }else{
+      this.loadPageData(0,this.pageLimit);
+    }
+    }else{
+      console.log('....');
+      this.pageLimit = this.pageTotal;
+      this.pageCurrentNumber = 1;
+      this.loadPageData(0,this.pageLimit);
+    }
   }
 
   paginationReset() {

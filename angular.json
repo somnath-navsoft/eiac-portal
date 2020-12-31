@@ -37,11 +37,13 @@
               "node_modules/fullcalendar/dist/fullcalendar.min.css",
               "node_modules/@fullcalendar/core/main.css",
               "node_modules/@fullcalendar/daygrid/main.css",
-              "src/assets/css/main.scss"
+              "src/assets/css/main.scss" 
             ],
             "scripts": [
-              "./node_modules/jquery/dist/jquery.min.js",
-              "./node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/moment/min/moment.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/fullcalendar/dist/fullcalendar.min.js"
             ]
           },
           "configurations": {
