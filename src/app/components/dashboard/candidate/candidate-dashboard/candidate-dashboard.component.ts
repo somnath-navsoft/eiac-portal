@@ -190,18 +190,21 @@ export class CandidateDashboardComponent implements OnInit {
               this.dashboardRecentUpdates.push({title: "CAB Training Payment",date:date, time: time});
             }
 
+            let eventData: any[]=[];
+            if(this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0){
+              this.dashboardItemData.eventDetails.forEach(item => {
+                eventData.push({
+                  title: item.courseDetails.course,
+                  start: item.event_start_date_time,
+                  end: item.event_end_date_time
+                })
+              })
+            }
             this.options = {
               editable: true,
-              events: [{
-                title: 'Long Event',
-                start: '2020-12-07',
-                end: '2020-12-17'
-              },
-              {
-                title: 'Day Event',
-                start: '2020-12-20',
-                end: '2020-12-20'
-              }],
+              events: eventData,
+              eventLimit: true,
+              eventLimitText: "More",
               customButtons: {
                 myCustomButton: {
                   text: 'custom!',

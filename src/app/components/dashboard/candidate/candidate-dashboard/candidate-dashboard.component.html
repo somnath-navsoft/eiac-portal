@@ -281,19 +281,19 @@
                                         <mat-expansion-panel (opened)="panelOpenState = true"
                                         (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;">
                                             <!-- <ng-container *ngFor="let item of dashboardEvents;"> -->
-                                            <mat-expansion-panel-header *ngIf="item.eventDate != undefined && item.eventDate.length > 0 && item.eventDate[0].event_date != null">
-                                                <div class="ass-details" [ngStyle]="{'padding-bottom': '4px'}">
-                                                    
-                                                    <div class="date_content">
-                                                        <span class="date-dash" *ngIf="item.eventDate != undefined && item.eventDate.length > 0">
-                                                            <span>
-                                                                {{item.eventDate[0].event_date | date}}
+                                                <mat-expansion-panel-header >
+                                                    <div class="ass-details" [ngStyle]="{'padding-bottom': '4px'}">
+                                                        
+                                                        <div class="date_content">
+                                                            <span class="date-dash">
+                                                                <span>
+                                                                    {{item.event_start_date_time | date}}
+                                                                </span>
                                                             </span>
-                                                        </span>
-                                                        {{item.courseDetails.course}}
+                                                            {{item.courseDetails.course}}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </mat-expansion-panel-header>
+                                                </mat-expansion-panel-header>
 
                                             <div class="ass-details">
                                                 
@@ -314,8 +314,8 @@
                                                                     <h5>Date</h5>
                                                                 </div>
                                                                 <div class="counts">
-                                                                    <span *ngIf="item.eventDate != undefined && item.eventDate.length > 0">
-                                                                        {{item.eventDate[0].event_date | date}}
+                                                                    <span>
+                                                                        {{item.event_start_date_time | date}}
                                                                     </span>
                                                                 </div>
                                                             </div>
