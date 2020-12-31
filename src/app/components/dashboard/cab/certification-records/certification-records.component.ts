@@ -360,10 +360,10 @@ export class CertificationRecordsComponent implements OnInit {
     // }
     // this.paymentReceiptValidation = null;
     
-    // this.tradelicenseName = newObj.trade_license_number != null && newObj.trade_license_number ? newObj.trade_license_number : 'N/A';
-    // this.tradelicenseFile = newObj.trade_license_number != null && newObj.trade_license_number ? newObj.trade_license_number : 'N/A';
-    // this.startDate = newObj.date_of_issue != null && newObj.date_of_issue ? newObj.date_of_issue : 'N/A';
-    // this.expiryDate = newObj.date_of_expiry != null && newObj.date_of_expiry ? newObj.date_of_expiry : 'N/A';
+    this.tradelicenseName = newObj.trade_license_number != null && newObj.trade_license_number ? newObj.trade_license_number : 'N/A';
+    this.tradelicenseFile = newObj.trade_license_number != null && newObj.trade_license_number ? newObj.trade_license_number : 'N/A';
+    this.startDate = newObj.date_of_issue != null && newObj.date_of_issue ? newObj.date_of_issue : 'N/A';
+    this.expiryDate = newObj.date_of_expiry != null && newObj.date_of_expiry ? newObj.date_of_expiry : 'N/A';
 
     this.modalService.open(content, this.modalOptions).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
