@@ -11,12 +11,12 @@ import { Observable } from 'rxjs';
 import { OptionsInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { CalendarComponent } from 'ng-fullcalendar';
+import { CalendarComponent, FullCalendarModule } from 'ng-fullcalendar';
 
-import { FullCalendarOptions, EventObject } from 'ngx-fullcalendar';
+// import * as $ from 'jquery';
+// import 'fullcalendar';
 
-declare var FullCalendar: any;
-
+declare var $: any;
 @Component({
   selector: 'app-assessors-dashboard',
   templateUrl: './assessors-dashboard.component.html',
@@ -25,16 +25,16 @@ declare var FullCalendar: any;
 export class AssessorsDashboardComponent implements OnInit { 
   //@ViewChild('calendar', { static: true }) calendar: any;
   //options: FullCalendarOptions;
-  options: OptionsInput;
+  //options: OptionsInput;
   eventsModel: any;
-  optionCal: FullCalendarOptions;
+  //optionCal: FullCalendarOptions;
   @ViewChild('fullcalendar', { static: true }) fullcalendar: CalendarComponent;
 
   @ViewChild('calendar', { static: true }) calendar: any;
   eventYear: string = '';
   eventMonth: any;
  // events: any[] = [];
- events: EventObject[];
+ //events: EventObject[];
   messageList: any = [];
   userId: any;
   loader: boolean = true;
@@ -135,17 +135,41 @@ export class AssessorsDashboardComponent implements OnInit {
                },
             )
 
+            /*setTimeout(() => {
+              $("#calendar").fullCalendar({  
+                              header: {
+                                  left   : 'prev,next today',
+                                  center : 'title',
+                                  right  : 'month,agendaWeek,agendaDay'
+                              },
+                              navLinks   : true,
+                              editable   : true,
+                              eventLimit : true,
+                              events: this.eventData,  // request to load current events
+                          });
+           }, 100);*/
+
             this.options = {
               editable: true,
               events: this.eventData,
               selectable: true,
               eventLimit: true,
               eventLimitText: "Click to more events...",
+              customButtons: {
+                myCustomButton: {
+                  text: 'custom!',
+                  click: function() {
+                    alert('clicked the custom button!');
+                  }
+                }
+              },
               header: {
                 left: 'prev,next today myCustomButton',
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,timeGridDay'
               },
+              firstDay: 1,
+              
               plugins: [ dayGridPlugin, interactionPlugin ]
             };
 

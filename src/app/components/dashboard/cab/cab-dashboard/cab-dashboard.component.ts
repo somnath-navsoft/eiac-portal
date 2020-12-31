@@ -213,6 +213,14 @@ export class CabDashboardComponent implements OnInit {
           this.userDetails = res['data']['user_data'][0];
           this.step1Data = res['data']['step1'][0];
           //
+          // var differDate = new Date(this.step1Data.date_of_expiry);
+          // var currDate = new Date();
+          // if(differDate > currDate) {
+          //   console.log('Not expired');
+          // }else if(currDate > differDate) {
+          //   console.log('Expired');
+          // }
+
           if(this.step1Data && this.step1Data.date_of_expiry != null){
             this.dashboardTradeLicExDate = this.step1Data.date_of_expiry;
             let date = new Date();
