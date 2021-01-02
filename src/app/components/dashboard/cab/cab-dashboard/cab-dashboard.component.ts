@@ -212,6 +212,7 @@ export class CabDashboardComponent implements OnInit {
           this.loader = true;
           this.userDetails = res['data']['user_data'][0];
           this.step1Data = res['data']['step1'][0];
+          //console.log("Prof: ", res);
           //
           // var differDate = new Date(this.step1Data.date_of_expiry);
           // var currDate = new Date();
@@ -228,7 +229,7 @@ export class CabDashboardComponent implements OnInit {
             let month = date.getMonth() + 1;
             let day = date.getDate();
             let todays: any = new Date(yr+"-"+month+"-"+day);
-            let expiryData: any = this.step1Data.date_of_expiry;;//new Date("2021-1-15");//
+            let expiryData: any = new Date(this.step1Data.date_of_expiry);//new Date("2024-12-31");//;//
             let diffDate: any = Math.round((expiryData-todays)/(1000*60*60*24))
             
             if(diffDate > 0){

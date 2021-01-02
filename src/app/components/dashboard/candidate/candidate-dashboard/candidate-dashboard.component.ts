@@ -15,14 +15,14 @@ import { FullCalendarOptions, EventObject } from 'ngx-fullcalendar';
 import { OptionsInput } from '@fullcalendar/core';
 
 declare var FullCalendar: any;
-
+declare var $: any;
 @Component({
   selector: 'app-candidate-dashboard',
   templateUrl: './candidate-dashboard.component.html',
   styleUrls: ['./candidate-dashboard.component.scss']
 })
 export class CandidateDashboardComponent implements OnInit {
- 
+  @ViewChild('calendar', { static: true }) calendar: any;
   options: OptionsInput;
   messageList: any = [];
   userId: any;
@@ -73,7 +73,6 @@ export class CandidateDashboardComponent implements OnInit {
   optionCal: FullCalendarOptions;
   @ViewChild('fullcalendar', { static: true }) fullcalendar: CalendarComponent;
 
-  @ViewChild('calendar', { static: true }) calendar: any;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
     this.config = {
@@ -200,26 +199,42 @@ export class CandidateDashboardComponent implements OnInit {
                 })
               })
             }
-            this.options = {
-              editable: true,
-              events: eventData,
-              eventLimit: true,
-              eventLimitText: "More",
-              customButtons: {
-                myCustomButton: {
-                  text: 'custom!',
-                  click: function() {
-                    alert('clicked the custom button!');
-                  }
-                }
-              },
-              header: {
-                left: 'prev,next today myCustomButton',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay'
-              },
-              plugins: [ dayGridPlugin, interactionPlugin ]
-            };
+
+            setTimeout(() => {
+              $("#calendar").fullCalendar({  
+                  header: {
+                      left   : 'prev,next today',
+                      center : 'title',
+                      right  : 'month,agendaWeek,agendaDay'
+                  },
+                  navLinks   : true,
+                  editable   : true,
+                  eventLimit : true,
+                  events: eventData,  // request to load current events
+              });
+           }, 100); 
+
+
+            // this.options = {
+            //   editable: true,
+            //   events: eventData,
+            //   eventLimit: true,
+            //   eventLimitText: "More",
+            //   customButtons: {
+            //     myCustomButton: {
+            //       text: 'custom!',
+            //       click: function() {
+            //         alert('clicked the custom button!');
+            //       }
+            //     }
+            //   },
+            //   header: {
+            //     left: 'prev,next today myCustomButton',
+            //     center: 'title',
+            //     right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            //   },
+            //   plugins: [ dayGridPlugin, interactionPlugin ]
+            // };
           }
           console.log(">>>> Load Data: ", res, " == ", this.dashboardRecentUpdates);
 
@@ -257,7 +272,7 @@ export class CandidateDashboardComponent implements OnInit {
         this.userDetails = res['data']['user_data'][0];
         this.step1Data = res['data']['step1'][0];
         // this.step2Data = res['data']['step2']['education'][0];
-        // console.log(res,'res');
+        console.log(res,'res');
       });
 
     this.userId = sessionStorage.getItem('userId');

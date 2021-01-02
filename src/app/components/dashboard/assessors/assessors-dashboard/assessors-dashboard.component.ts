@@ -27,6 +27,7 @@ export class AssessorsDashboardComponent implements OnInit {
   //options: FullCalendarOptions;
   //options: OptionsInput;
   eventsModel: any;
+  dashboardEvents: any = [];
   //optionCal: FullCalendarOptions;
   @ViewChild('fullcalendar', { static: true }) fullcalendar: CalendarComponent;
 
@@ -127,16 +128,16 @@ export class AssessorsDashboardComponent implements OnInit {
               {
                title: 'Test Event',
                start:'2020-12-07',
-               end: '2020-12-07'
+               end: '2020-12-07',
               },
               {
                 title: 'Hello Event',
-                start:'2020-12-07',
-                end: '2020-12-07'
+                start:'2020-12-08',
+                end: '2020-12-08'
                },
             )
 
-            /*setTimeout(() => {
+            setTimeout(() => {
               $("#calendar").fullCalendar({  
                               header: {
                                   left   : 'prev,next today',
@@ -148,7 +149,7 @@ export class AssessorsDashboardComponent implements OnInit {
                               eventLimit : true,
                               events: this.eventData,  // request to load current events
                           });
-           }, 100);*/
+           }, 100);
 
             this.options = {
               editable: true,

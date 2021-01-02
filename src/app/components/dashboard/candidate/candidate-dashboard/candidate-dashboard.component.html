@@ -13,8 +13,8 @@
                             </div>
                         </div>
                         <div class="trainer-detail">
-                            <span class="trainer-data"><span class="icon-company"></span>{{step1Data?.office_address}}</span>
-                            <span class="trainer-data"><span class="icon-email"></span>{{step1Data?.office_email}}</span>
+                            <span class="trainer-data"><span class="icon-company"></span>{{step1Data?.office}}</span>
+                            <span class="trainer-data"><span class="icon-email"></span>{{userDetails?.email}}</span>
                             <span class="trainer-data"><span class="icon-call"></span>{{step1Data?.office_tel_no}}</span>
                         </div>
                     </div>
@@ -42,6 +42,7 @@
             </div>
             <div class="row">
                 <div class="col-md-3">
+                    <a routerLink="/dashboard/{{userType}}/company-profile">
                     <div class="trainer-main-details">
                         <div class="user-icons">
                             <span class="icon-user"></span>
@@ -49,23 +50,22 @@
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
                                 <span>Profile</span>
-
                             </div>
                             <div class="trainer-maindata trainer-update">
                                 <span>Update 
-                                    <a routerLink="/dashboard/{{userType}}/company-profile">
-                                        <span [ngStyle]="{'color': '#FFF', 'font-size':'31px'}">></span>
-                                    </a>
+                                    <span [ngStyle]="{'color': '#FFF', 'font-size':'31px'}">></span>
                                 </span>
                                 <!-- <span>Update<span class="icon-right-arrow"></span></span> -->
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="col-md-3">
+                    <a href="javascript:void(0)" routerLink="/dashboard/event-list">
                     <div class="trainer-main-details trainer2">
                         <div class="user-icons">
-                            <a href="javascript:void(0)" routerLink="/dashboard/event-list"><span class="icon-calendar"></span></a>
+                            <span class="icon-calendar"></span>
                         </div>
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
@@ -78,8 +78,10 @@
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="col-md-3">
+                    <a href="javascript:void(0)" routerLink="/dashboard/training-status">
                     <div class="trainer-main-details trainer3">
                         <div class="user-icons">
                             <span class="icon-tick"></span>
@@ -93,8 +95,10 @@
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="col-md-3">
+                    <a href="javascript:void(0)" routerLink="/dashboard/training-status">
                     <div class="trainer-main-details trainer4">
                         <div class="user-icons">
                             <span class="icon-menu"></span>
@@ -108,6 +112,7 @@
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -162,8 +167,7 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="event_timings">
-                                
+                            <div class="event_timings">                                
                                 <div class="date-cnt">
                                     <span>Last Activity</span>
                                 </div>
@@ -205,7 +209,8 @@
     
                                 <!-- ng-fullcalendar example -->
                                 <div class="event-datetime">
-                                    <ng-container *ngIf="options">
+                                    <div id="calendar"></div>
+                                    <!-- <ng-container *ngIf="options">
                                         <ng-fullcalendar
                                           #fullcalendar
                                           (dateClick)="dateClick($event)"
@@ -215,7 +220,7 @@
                                           [options]="options"
                                           (eventClick)="eventClick($event)"
                                         ></ng-fullcalendar>
-                                      </ng-container>
+                                      </ng-container> -->
                                 </div>
                                 
                             </div>

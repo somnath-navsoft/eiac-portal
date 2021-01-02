@@ -62,7 +62,8 @@ td.fc-day-top span { color: #77777B!important; font-family: "Dubai Regular";}
 td.fc-widget-content { border-color: transparent;}
 .fc-state-default.fc-corner-left { border-top-left-radius: 0!important; border-bottom-left-radius: 0!important;}
 
-.fc-icon-left-single-arrow:after{content:"\2039";font-weight:700;font-size:200%;top:-7% !important}
+.fc-icon-left-single-arrow:after{ font-size:20px!important; }
+.fc-icon-right-single-arrow:after { font-size: 20px!important;}
 
 
 .fc-state-default.fc-corner-right { border-top-right-radius: 0!important; border-bottom-right-radius: 0!important; }
