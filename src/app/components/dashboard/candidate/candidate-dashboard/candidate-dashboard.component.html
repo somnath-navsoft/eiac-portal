@@ -209,18 +209,15 @@
     
                                 <!-- ng-fullcalendar example -->
                                 <div class="event-datetime">
-                                    <div id="calendar"></div>
-                                    <!-- <ng-container *ngIf="options">
+                                    <!-- <div id="calendar"></div> -->
+                                    <ng-container *ngIf="options">
                                         <ng-fullcalendar
                                           #fullcalendar
-                                          (dateClick)="dateClick($event)"
-                                          (clickButton)="clickButton($event)"
-                                          (eventDragStop)="eventDragStop($event)"
                                           [eventsModel]="eventsModel"
                                           [options]="options"
                                           (eventClick)="eventClick($event)"
                                         ></ng-fullcalendar>
-                                      </ng-container> -->
+                                      </ng-container>
                                 </div>
                                 
                             </div>
@@ -285,7 +282,6 @@
                                     <mat-accordion>
                                         <mat-expansion-panel (opened)="panelOpenState = true"
                                         (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;">
-                                            <!-- <ng-container *ngFor="let item of dashboardEvents;"> -->
                                                 <mat-expansion-panel-header >
                                                     <div class="ass-details" [ngStyle]="{'padding-bottom': '4px'}">
                                                         
@@ -367,7 +363,6 @@
                                                             </div>
                                                         </div>
                                                 </div>
-                                            <!-- </ng-container> -->
                                         </mat-expansion-panel>
                                     </mat-accordion>
                                 </ng-container>
@@ -388,7 +383,7 @@
                         <div class="col-md-12">
                             <div class="tra_events">
                                 <div class="trainer_head">
-                                    <h4>COMMUNICATION</h4>
+                                    <h4>COMMUNICATION</h4> 
                                 </div>
                             </div>
                         </div>

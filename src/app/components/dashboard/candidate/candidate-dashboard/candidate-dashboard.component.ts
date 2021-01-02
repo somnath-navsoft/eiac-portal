@@ -81,6 +81,10 @@ export class CandidateDashboardComponent implements OnInit {
     };
   }
 
+  eventClick(theEvt: any){
+    console.log("@Event: ",theEvt)
+  }
+
   //Load Dashboatd data
   loadDashData(){
     this.loader = false;
@@ -89,7 +93,7 @@ export class CandidateDashboardComponent implements OnInit {
       .subscribe(
         res => {
           this.loader = true;
-          // console.log(res,'res');
+          console.log(res,'res');
           if(res['status'] == 200){
             this.dashboardItemData = res['dashBoardData'];
 
@@ -191,8 +195,10 @@ export class CandidateDashboardComponent implements OnInit {
 
             let eventData: any[]=[];
             if(this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0){
+              console.log(">>> Events: ", this.dashboardItemData.eventDetails);
               this.dashboardItemData.eventDetails.forEach(item => {
                 eventData.push({
+                  id: item.courseDetails.id,
                   title: item.courseDetails.course,
                   start: item.event_start_date_time,
                   end: item.event_end_date_time
@@ -200,41 +206,41 @@ export class CandidateDashboardComponent implements OnInit {
               })
             }
 
-            setTimeout(() => {
-              $("#calendar").fullCalendar({  
-                  header: {
-                      left   : 'prev,next today',
-                      center : 'title',
-                      right  : 'month,agendaWeek,agendaDay'
-                  },
-                  navLinks   : true,
-                  editable   : true,
-                  eventLimit : true,
-                  events: eventData,  // request to load current events
-              });
-           }, 100); 
+          //   setTimeout(() => {
+          //     $("#calendar").fullCalendar({  
+          //         header: {
+          //             left   : 'prev,next today',
+          //             center : 'title',
+          //             right  : 'month,agendaWeek,agendaDay'
+          //         },
+          //         navLinks   : true,
+          //         editable   : true,
+          //         eventLimit : true,
+          //         events: eventData,  // request to load current events
+          //     });
+          //  }, 100); 
 
 
-            // this.options = {
-            //   editable: true,
-            //   events: eventData,
-            //   eventLimit: true,
-            //   eventLimitText: "More",
-            //   customButtons: {
-            //     myCustomButton: {
-            //       text: 'custom!',
-            //       click: function() {
-            //         alert('clicked the custom button!');
-            //       }
-            //     }
-            //   },
-            //   header: {
-            //     left: 'prev,next today myCustomButton',
-            //     center: 'title',
-            //     right: 'dayGridMonth,timeGridWeek,timeGridDay'
-            //   },
-            //   plugins: [ dayGridPlugin, interactionPlugin ]
-            // };
+            this.options = {
+              editable: true,
+              events: eventData,
+              eventLimit: true,
+              eventLimitText: "More",
+              customButtons: {
+                myCustomButton: {
+                  text: 'custom!',
+                  click: function() {
+                    alert('clicked the custom button!');
+                  }
+                }
+              },
+              header: {
+                left: 'prev,next today myCustomButton',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+              },
+              plugins: [ dayGridPlugin, interactionPlugin ]
+            };
           }
           console.log(">>>> Load Data: ", res, " == ", this.dashboardRecentUpdates);
 
