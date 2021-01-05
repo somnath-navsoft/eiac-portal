@@ -13,7 +13,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { CalendarComponent, FullCalendarModule } from 'ng-fullcalendar';
 
-// import * as $ from 'jquery';
+// import * as $ from 'jquery'; 
 // import 'fullcalendar';
 
 declare var $: any;
@@ -81,6 +81,9 @@ export class AssessorsDashboardComponent implements OnInit {
   button_disable: any = true;
   eventData: any[] = [];
   options:any;
+  technicalFields: any[] =[];
+  technicalFieldsCount: number = 0;
+
   @ViewChild('fruitInput', { static: false }) fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
 
@@ -89,6 +92,34 @@ export class AssessorsDashboardComponent implements OnInit {
       itemsPerPage: this.Service.dashBoardPagination,
       currentPage: 1,
     };
+  }
+
+
+  loadTechnicalFields(){
+    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail+'&id='+this.userId)
+    .subscribe(
+      rec => {
+          let record: any = rec;
+          let data: any = record.data;
+
+          if(typeof data == 'object' && data.technical_field != undefined && data.technical_field.length > 0){
+              this.technicalFields = data.technical_field;
+          }
+          console.log(">>>Technical fields: ", this.technicalFields);
+          if(this.technicalFields.length > 0){
+            this.technicalFields.forEach(item => {
+                if(item.technical_fields != undefined && item.technical_fields != '' && 
+                    typeof item.technical_fields == 'object' && item.technical_fields.length > 0){
+                      console.log(">>>Count: ", item.technical_fields)
+                   this.technicalFieldsCount += item.technical_fields.length;
+                }
+            })
+          }
+          console.log("@Total count: ", this.technicalFieldsCount);
+          
+      }
+    );
+
   }
 
 
@@ -277,6 +308,7 @@ export class AssessorsDashboardComponent implements OnInit {
         });
 
     this.loadDashData();
+    this.loadTechnicalFields();
 
     this.Service.getwithoutData(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.profileService + '?userType=' + this.userType + '&email=' + this.userEmail)
       .subscribe(
