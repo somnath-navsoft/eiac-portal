@@ -245,10 +245,10 @@
                     <!-- ng-fullcalendar example (dateClick)="dateClick($event)"
                               (clickButton)="clickButton($event)" (eventClick)="eventClick($event)"-->
                     <div class="event-datetime">
-                        <div id="calendar"></div> 
-                        <!-- <ng-container *ngIf="options">
-                            <ng-fullcalendar #fullcalendar [options]="options"></ng-fullcalendar>
-                          </ng-container> -->
+                        <!-- <div id="calendar"></div>  -->
+                        <ng-container *ngIf="options">
+                            <ng-fullcalendar #fullcalendar [options]="options" (eventClick)="fullcanderClick($event)"></ng-fullcalendar>
+                          </ng-container>
                     </div>
                     
                 </div>
@@ -275,7 +275,7 @@
                                     <mat-accordion>
 
                                         <mat-expansion-panel (opened)="panelOpenState = true"
-                                        (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;">                                             
+                                        (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;" [expanded]="item.id == eventId ? true : false" [disabled]="true">                                             
                                             <mat-expansion-panel-header >
                                                 <div class="ass-details" [ngStyle]="{'padding-bottom': '4px'}">
                                                     
