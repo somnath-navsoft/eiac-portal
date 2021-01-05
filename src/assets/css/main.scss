@@ -71,7 +71,7 @@ td.fc-widget-content { border-color: transparent;}
 th.fc-day-header.fc-widget-header { font-size: 22px; font-family: "Dubai Bold"; color: #77777B; }
 td.fc-day.fc-widget-content.fc-other-month{ background: #E5E0D6; border-width: 0px!important; }
 .fc-bg td:first-child { border-left: transparent!important;}
-.fc-toolbar.fc-header-toolbar { margin-bottom: 0px!important;}
+.fc-toolbar.fc-header-toolbar { margin-bottom: 0px!important; display: none;}
 .fc-toolbar .fc-left { position: absolute; width: 100%; top: 0; }
 .fc-toolbar .fc-button-group { width: 100%; }
 .fc .fc-toolbar>*>* { float: none!important;}

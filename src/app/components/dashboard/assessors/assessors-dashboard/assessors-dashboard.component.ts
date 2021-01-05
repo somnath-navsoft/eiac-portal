@@ -83,6 +83,7 @@ export class AssessorsDashboardComponent implements OnInit {
   options:any;
   @ViewChild('fruitInput', { static: false }) fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
+  eventId:any;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
     this.config = {
@@ -123,33 +124,42 @@ export class AssessorsDashboardComponent implements OnInit {
               this.dashboardRecentUpdates.push({ title: "Assessor Last Login", date: date, time: time });
             }
             //
-            //Get Events Data
-            this.eventData.push(
-              {
-               title: 'Test Event',
-               start:'2020-12-07',
-               end: '2020-12-07',
-              },
-              {
-                title: 'Hello Event',
-                start:'2020-12-08',
-                end: '2020-12-08'
-               },
-            )
+            //dashboardEvents
+            if (this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0) {
+              this.dashboardEvents = this.dashboardItemData.eventDetails;
+              // console.log(">>>Events: ", this.dashboardEvents);
+            }
 
-            setTimeout(() => {
-              $("#calendar").fullCalendar({  
-                              header: {
-                                  left   : 'prev,next today',
-                                  center : 'title',
-                                  right  : 'month,agendaWeek,agendaDay'
-                              },
-                              navLinks   : true,
-                              editable   : true,
-                              eventLimit : true,
-                              events: this.eventData,  // request to load current events
-                          });
-           }, 100);
+            var eventCanderArr = [];
+            
+            this.dashboardEvents.forEach((res,key) => {
+              // console.log(res,'res');
+              // var tempObj = {}
+              // tempObj['title'] = res['courseDetails'].course;
+              // tempObj['start'] = res.event_start_date_time;
+              // tempObj['end'] = res.event_end_date_time;
+              // eventCanderArr.push(tempObj);
+              eventCanderArr.push({
+                id:res.id,
+                title:res['courseDetails'].course,
+                start:res.event_start_date_time,
+                end:res.event_end_date_time,
+              });
+            })
+
+          //   setTimeout(() => {
+          //     $("#calendar").fullCalendar({  
+          //                     header: {
+          //                         left   : 'prev,next today',
+          //                         center : 'title',
+          //                         right  : 'month,agendaWeek,agendaDay'
+          //                     },
+          //                     navLinks   : true,
+          //                     editable   : true,
+          //                     eventLimit : true,
+          //                     events: this.eventData,  // request to load current events
+          //                 });
+          //  }, 100);
 
             this.options = {
               editable: true,
@@ -352,8 +362,15 @@ export class AssessorsDashboardComponent implements OnInit {
         // let getMont = new Date().getMonth();
         // this.eventMonth = getMont + 1;
   
-        console.log(">>> Get month: ",this.eventMonth);
+        // console.log(">>> Get month: ",this.eventMonth);
   }
+
+  fullcanderClick(obj) {
+
+    this.eventId = obj.event._def.publicId;
+    // console.log(eventId);
+  }
+
   getUserDetails(user) {
     sessionStorage.setItem('messageUserDetails', JSON.stringify(user));
   }
