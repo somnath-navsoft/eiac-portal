@@ -291,8 +291,9 @@ td.fc-day-top.fc-tue.fc-today span.fc-day-number { color: #B14A56!important; }
 }
 .progress_wrapper .progress_head { display: flex; justify-content: space-between; }
 .progress_wrapper .progress-br { padding: 10px 0; }
-.progress_wrapper .progress_head span { font-family: "Dubai Bold"; color: #B14A56; }
+.progress_wrapper .progress_head span { font-family: "Dubai Bold"; color: #007564; }
 .progress_wrapper .progress_head span.complete { color: #777777; }
+.progress-br .mat-progress-bar-fill::after { background-color: #007564; }
 .progress_bar { margin: -22px -30px; margin-bottom: 20px; }
 .progress_bar .mat-progress-bar { height: 10px; }
 .progress_bar .mat-progress-bar-fill::after { background: #B19782; } 
@@ -1505,6 +1506,9 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .mat-accordion .mat-expansion-panel-header { padding: 0; }
 .mat-accordion .mat-expansion-panel-spacing { margin: 0; }
 .ass-details.ass-details_trainer { background: #EFEFEF; }
+.mat-accordion .mat-expansion-panel-header[aria-disabled=true] { color: #000; }
+
+
 //==================RESPONSIVE==================//
 @media(max-width: 1500px) {
   // .main-dashboard-cnt .user-steps { height: 50%; }
