@@ -76,6 +76,7 @@ export class TrainersDashboardComponent implements OnInit {
   optionCal: FullCalendarOptions;
   @ViewChild('fullcalendar', { static: true }) fullcalendar: CalendarComponent;
   @ViewChild('calendar', { static: true }) calendar: any;
+  eventId:any;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
     this.config = {
@@ -105,12 +106,14 @@ export class TrainersDashboardComponent implements OnInit {
             var eventCanderArr = [];
             
             this.dashboardEvents.forEach((res,key) => {
+              // console.log(res,'res');
               // var tempObj = {}
               // tempObj['title'] = res['courseDetails'].course;
               // tempObj['start'] = res.event_start_date_time;
               // tempObj['end'] = res.event_end_date_time;
               // eventCanderArr.push(tempObj);
               eventCanderArr.push({
+                id:res.id,
                 title:res['courseDetails'].course,
                 start:res.event_start_date_time,
                 end:res.event_end_date_time,
@@ -209,40 +212,40 @@ export class TrainersDashboardComponent implements OnInit {
             }
           }
 
-          setTimeout(() => {
-            $("#calendar").fullCalendar({  
-                header: {
-                    left   : 'prev,next today',
-                    center : 'title',
-                    right  : 'month,agendaWeek,agendaDay'
-                },
-                navLinks   : true, 
-                editable   : true,
-                eventLimit : true,
-                events: eventCanderArr,  // request to load current events
-            });
-         }, 100);
+        //   setTimeout(() => {
+        //     $("#calendar").fullCalendar({  
+        //         header: {
+        //             left   : 'prev,next today',
+        //             center : 'title',
+        //             right  : 'month,agendaWeek,agendaDay'
+        //         },
+        //         navLinks   : true, 
+        //         editable   : true,
+        //         eventLimit : true,
+        //         events: eventCanderArr,  // request to load current events
+        //     });
+        //  }, 100);
 
-          // this.options = {
-          //   editable: true,
-          //   events: eventCanderArr,
-          //   eventLimit: true,
-          //   eventLimitText: "More",
-          //   customButtons: {
-          //     myCustomButton: {
-          //       text: 'custom!',
-          //       click: function() {
-          //         alert('clicked the custom button!');
-          //       }
-          //     }
-          //   },
-          //   header: {
-          //     left: 'prev,next today myCustomButton',
-          //     center: 'title',
-          //     right: 'dayGridMonth,timeGridWeek,timeGridDay'
-          //   },
-          //   plugins: [ dayGridPlugin, interactionPlugin ]
-          // };
+          this.options = {
+            editable: true,
+            events: eventCanderArr,
+            eventLimit: true,
+            eventLimitText: "More",
+            customButtons: {
+              myCustomButton: {
+                text: 'custom!',
+                click: function() {
+                  alert('clicked the custom button!');
+                }
+              }
+            },
+            header: {
+              left: 'prev,next today myCustomButton',
+              center: 'title',
+              right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            plugins: [ dayGridPlugin, interactionPlugin ]
+          };
           console.log(">>>> Load Data: ", res, " == ", this.dashboardRecentUpdates);
 
         });
@@ -297,6 +300,12 @@ export class TrainersDashboardComponent implements OnInit {
           this.recordsTotal = res['data'].recordsTotal;
           this.loader = true;
         });
+  }
+
+  fullcanderClick(obj) {
+
+    this.eventId = obj.event._def.publicId;
+    // console.log(eventId);
   }
 
   getUserDetails(user) {
