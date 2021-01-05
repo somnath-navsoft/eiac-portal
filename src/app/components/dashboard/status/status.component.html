@@ -14,7 +14,7 @@
                     <div class="tbl-filter-data">
                         <ul>
                             <li>
-                                <div class="filter">
+                                <div class="filter"> 
                                     <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a>
                                 </div>
                             </li>
@@ -254,7 +254,7 @@
                             <td [ngStyle]="{'width':'140px'}" [ngClass]="{'pending': item.accr_status === 'pending' || item.accr_status == 'application_process', 'under-review':item.accr_status === null || item.accr_status === 'under_review', 'complete': item.accr_status === 'complete', 'draft': item.accr_status === 'draft' }">
                                 <span *ngIf="item.accr_status == 'pending'">Payment Pending</span>
                                 <span *ngIf="item.accr_status == 'under_process'">Under Process</span>
-                                <span *ngIf="item.accr_status == 'under_review'">Under Review</span>
+                                <span *ngIf="item.accr_status == null || item.accr_status == 'under_review'">Under Review</span>
                                 <span *ngIf="item.accr_status == 'complete'">Complete</span>
                                 <span *ngIf="item.accr_status == 'draft'">Draft</span>
                             </td>                            
@@ -266,7 +266,7 @@
                                 <span *ngIf="item.form_meta == 'pt_providers'">Proficiency Testing Providers</span>
                                 <span *ngIf="item.form_meta == 'halal_conformity_bodies'">Halal Confirmity Bodies</span>
                             </td> 
-                            <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review': (item.payment_status == 'pending' || item.payment_status == null)}">
+                            <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review': (item.payment_status == 'pending')}">
                                 <span *ngIf="item.payment_status == 'paid'">Paid</span>
                                 <span *ngIf="item.payment_status == 'pending'">Pending</span>
                                 <!-- <span *ngIf="item.payment_status == null">Pending</span> -->

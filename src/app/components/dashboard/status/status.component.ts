@@ -303,6 +303,9 @@ loadCountryStateCityAll  = async() =>{
                     console.log(">>> Data: ", data.records);
                     this.pageCurrentNumber = 1;
                     this.dataLoad = true;
+                    data.records.forEach((res,key) => {
+                      data.records[key]['payment_status'] = res.payment_status == '' || res.payment_status == null || res.payment_status == 'pending' ? 'pending' : 'paid';
+                    });
                     this.trainerdata = data.records;
                     this.pageTotal = data.records.length;
                 }
@@ -414,12 +417,16 @@ if((item.saved_step != null && item.saved_step == 6 && item.form_meta == 'halal_
     this.subscriptions.push(this._trainerService.getAccreditationStatusList(id)
       .subscribe(
         result => {
+          let tempData: any[]= [];
           this.loader = true;
           let data: any = result;
           let dataRec: any=[];
           this.dataLoad = true;
-          console.log('Data load...', data.records);
-          
+          console.log('Data load...', data.records);          
+          data.records.forEach((res,key) => {
+            data.records[key]['payment_status'] = res.payment_status == '' || res.payment_status == null || res.payment_status == 'pending' ? 'pending' : 'paid';
+          });
+          console.log('Data filter...', tempData);
           this.trainerdata = data.records;
           this.pageCurrentNumber = 1;
           dataRec = data.records;
