@@ -204,7 +204,7 @@
                     <div class="row">
                         <div class="col-md-12"> 
                             <!-- Only Jquery fullcalendar -->
-                            <div id="calendar"></div>                            
+                            <!-- <div id="calendar"></div> -->
                             <!-- Output function...
                             (dateClick)="dateClick($event)"
                                       (clickButton)="clickButton($event)"
@@ -221,6 +221,12 @@
                                     ></ng-fullcalendar>
                                   </ng-container>
                             </div> -->
+                            <div class="event-datetime">
+                                <!-- <div id="calendar"></div>  -->
+                                <ng-container *ngIf="options">
+                                    <ng-fullcalendar #fullcalendar [options]="options" (eventClick)="fullcanderClick($event)"></ng-fullcalendar>
+                                </ng-container>
+                            </div>
                             
                         </div>
                     </div>
@@ -245,7 +251,7 @@
                                 <ng-container *ngIf="dashboardEvents.length > 0">
                                     <mat-accordion>
                                         <mat-expansion-panel (opened)="panelOpenState = true"
-                                        (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;">
+                                        (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;" [expanded]="item.id == eventId ? true : false" [disabled]="true">
                                             <!-- <ng-container *ngFor="let item of dashboardEvents;"> -->
                                                 <mat-expansion-panel-header >
                                                     <div class="ass-details" [ngStyle]="{'padding-bottom': '4px'}">

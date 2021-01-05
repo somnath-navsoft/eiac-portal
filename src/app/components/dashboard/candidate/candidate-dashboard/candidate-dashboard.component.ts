@@ -72,7 +72,7 @@ export class CandidateDashboardComponent implements OnInit {
   @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
   optionCal: FullCalendarOptions;
   @ViewChild('fullcalendar', { static: true }) fullcalendar: CalendarComponent;
-
+  eventId:any;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
     this.config = {
@@ -83,6 +83,12 @@ export class CandidateDashboardComponent implements OnInit {
 
   eventClick(theEvt: any){
     console.log("@Event: ",theEvt)
+  }
+
+  fullcanderClick(obj) {
+
+    this.eventId = obj.event._def.publicId;
+    // console.log(eventId);
   }
 
   //Load Dashboatd data
@@ -98,10 +104,28 @@ export class CandidateDashboardComponent implements OnInit {
             this.dashboardItemData = res['dashBoardData'];
 
             //dashboardEvents
-            if(this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0){
+            if (this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0) {
               this.dashboardEvents = this.dashboardItemData.eventDetails;
               // console.log(">>>Events: ", this.dashboardEvents);
             }
+
+            var eventCanderArr = [];
+            
+            this.dashboardEvents.forEach((res,key) => {
+              // console.log(res,'res');
+              // var tempObj = {}
+              // tempObj['title'] = res['courseDetails'].course;
+              // tempObj['start'] = res.event_start_date_time;
+              // tempObj['end'] = res.event_end_date_time;
+              // eventCanderArr.push(tempObj);
+              eventCanderArr.push({
+                id:res.id,
+                title:res['courseDetails'].course,
+                start:res.event_start_date_time,
+                end:res.event_end_date_time,
+              });
+            })
+            
             //Get recent updates
             if(this.dashboardItemData.lastLogin != undefined){
               // let dt = new Date(this.dashboardItemData.lastLogin);
@@ -223,7 +247,7 @@ export class CandidateDashboardComponent implements OnInit {
 
             this.options = {
               editable: true,
-              events: eventData,
+              events: eventCanderArr,
               eventLimit: true,
               eventLimitText: "More",
               customButtons: {
