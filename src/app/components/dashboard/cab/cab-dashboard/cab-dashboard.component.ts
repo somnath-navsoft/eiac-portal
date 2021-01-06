@@ -100,7 +100,7 @@ export class CabDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 +" "+ time2;
-              console.log(datePart, " == ", date, " -- ",time);
+              // console.log(datePart, " == ", date, " -- ",time);
               this.dashboardRecentUpdates.push({title: "Last Login",date:date, time: time});
             }
             if(this.dashboardItemData.lastAccrApplied != undefined){

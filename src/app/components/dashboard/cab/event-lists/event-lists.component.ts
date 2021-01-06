@@ -233,7 +233,7 @@ export class EventListsComponent implements OnInit {
     // console.log(this.exportAs);
     this.exportAsConfig = {
       type: 'csv', // the type you want to download
-      elementIdOrContent: 'accreditation-service-export', // the id of html/table element
+      elementIdOrContent: 'event-export', // the id of html/table element
     }
     // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
     this.exportAsService.save(this.exportAsConfig, 'report').subscribe(() => {

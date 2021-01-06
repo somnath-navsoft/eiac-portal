@@ -182,7 +182,7 @@
                                 <div class="activity-details">
                                     <ul>
                                         <ng-container *ngFor="let item of dashboardRecentUpdates">
-                                            <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span> on {{item.date}} at {{item.time}}</span></li>
+                                            <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span>, {{item.title}} on {{item.date}} at {{item.time}}</span></li>
                                         </ng-container>
                                     </ul>
                                 </div>
@@ -251,7 +251,7 @@
                                 <ng-container *ngIf="dashboardEvents.length > 0">
                                     <mat-accordion>
                                         <mat-expansion-panel (opened)="panelOpenState = true"
-                                        (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;" [expanded]="item.id == eventId ? true : false" [disabled]="true">
+                                        (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;" [expanded]="item.id == eventId ? true : false">
                                             <!-- <ng-container *ngFor="let item of dashboardEvents;"> -->
                                                 <mat-expansion-panel-header >
                                                     <div class="ass-details" [ngStyle]="{'padding-bottom': '4px'}">
