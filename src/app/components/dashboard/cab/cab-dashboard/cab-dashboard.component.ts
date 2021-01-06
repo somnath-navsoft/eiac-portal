@@ -101,7 +101,7 @@ export class CabDashboardComponent implements OnInit {
               let time2 = datePart[2];
               let time = time1 +" "+ time2;
               console.log(datePart, " == ", date, " -- ",time);
-              this.dashboardRecentUpdates.push({title: "CAB Last Login",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Last Login",date:date, time: time});
             }
             if(this.dashboardItemData.lastAccrApplied != undefined){
               let datePart: any = this.dashboardItemData.lastAccrApplied.toString().split(" ");
@@ -113,7 +113,7 @@ export class CabDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 +" "  + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Accreditation Applied",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Accreditation Applied",date:date, time: time});
             }
             if(this.dashboardItemData.lastRegApplied != undefined){
               let datePart: any = this.dashboardItemData.lastRegApplied.toString().split(" ");
@@ -125,7 +125,7 @@ export class CabDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 +" "  + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Registration Applied",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Registration Applied",date:date, time: time});
             }
             if(this.dashboardItemData.lastTrainingApplied != undefined){
               let datePart: any = this.dashboardItemData.lastTrainingApplied.toString().split(" ");
@@ -137,7 +137,7 @@ export class CabDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 +" " + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Training Applied",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Training Applied",date:date, time: time});
             }
             if(this.dashboardItemData.lastAccrPayment != undefined){
               let datePart: any = this.dashboardItemData.lastAccrPayment.toString().split(" ");
@@ -149,7 +149,7 @@ export class CabDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 +" "  + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Accreditation Payment",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Accreditation Payment",date:date, time: time});
             }
             if(this.dashboardItemData.lastRegPayment != undefined){
               let datePart: any = this.dashboardItemData.lastRegPayment.toString().split(" ");
@@ -161,7 +161,7 @@ export class CabDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 +" "  + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Registration Payment",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Registration Payment",date:date, time: time});
             }
             if(this.dashboardItemData.lastTrainingPayment != undefined){
               let datePart: any = this.dashboardItemData.lastTrainingPayment.toString().split(" ");
@@ -173,7 +173,7 @@ export class CabDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 +" "  + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Training Payment",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Training Payment",date:date, time: time});
             }
           }
           console.log(">>>> Load Data: ", res, " == ", this.dashboardRecentUpdates);

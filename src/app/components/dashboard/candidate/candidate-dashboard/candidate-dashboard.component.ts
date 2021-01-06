@@ -12,7 +12,7 @@ import { CalendarComponent } from 'ng-fullcalendar';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { FullCalendarOptions, EventObject } from 'ngx-fullcalendar';
-import { OptionsInput } from '@fullcalendar/core';
+import { OptionsInput } from '@fullcalendar/core'; 
 
 declare var FullCalendar: any;
 declare var $: any;
