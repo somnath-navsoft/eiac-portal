@@ -158,7 +158,7 @@ export class AssessorsDashboardComponent implements OnInit {
             //dashboardEvents
             if (this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0) {
               this.dashboardEvents = this.dashboardItemData.eventDetails;
-              // console.log(">>>Events: ", this.dashboardEvents);
+              console.log(">>>Events: ", this.dashboardEvents);
             }
 
             var eventCanderArr = [];
@@ -194,7 +194,7 @@ export class AssessorsDashboardComponent implements OnInit {
 
             this.options = {
               editable: true,
-              events: this.eventData,
+              events: eventCanderArr,
               selectable: true,
               eventLimit: true,
               eventLimitText: "Click to more events...",
