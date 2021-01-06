@@ -11,7 +11,7 @@ import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
 @Component({
   selector: 'app-accounts',
-  templateUrl: './accounts.component.html',
+  templateUrl: './accounts.component.html', 
   styleUrls: ['./accounts.component.scss'], 
   providers: [CustomModalComponent],
 })
@@ -160,8 +160,8 @@ export class AccountsComponent implements OnInit {
     //Reset serach
     this.show_data = this.pageLimit = 10;
     this.exportAs = null;
-    this.searchText = null;
-    this.searchValue = null;
+    this.searchText = '';
+    this.searchValue = '';
     this.changeFilter('id','reset');
     if(type != undefined && type != ''){
       this.loadPageData();
@@ -185,28 +185,30 @@ export class AccountsComponent implements OnInit {
     // console.log("Search click....", this.applicationNo, " -- ", this.selectAccrTypeValue, " == ", this.paymentStatusValue);
     let postData: any = new FormData();
     console.log("@@srch value: ", this.searchText);
-    if(this.searchValue === 'voucher_date'){
-        this.searchText = this.paymentDate;
-    }
+    // if(this.searchValue === 'voucher_date'){
+    //     this.searchText = this.paymentDate;
+    // }
     if(this.isValidSearch()){
       // if(this.eventTitle != '' && this.eventTitle != null){
       //   postData.append('cab_name', this.eventTitle)
       // }
       this.loader = false;
       let appendKey = this.searchValue;
-      console.log("@@srch value: 1 ", this.searchText);
+      //console.log("@@srch value: 1 ", this.searchText);
        if(this.searchValue != ''  && (this.searchText != '' || this.searchText != null)){
           if(this.searchValue === 'voucher_date'){
-              let dtDate: any = this.paymentDate;
-              console.log(">>>Date: ", dtData);
+              let dtDate: any = this.searchText;
+              //console.log(">>>Date: ", dtData);
               var dtData = dtDate._i;
             var year = dtData.year;
             var month = dtData.month + 1;
             var date = dtData.date;
             let dtFormat = year + "-" + month + "-" + date;
-            this.searchText = dtFormat;
-          }
+            //this.searchText = dtFormat;
+            postData.append(appendKey, dtFormat);
+          }else{
           postData.append(appendKey, this.searchText);
+          }
        }
         
         // console.log(">>>POST: ", JSON.stringify(postData)); 
@@ -248,6 +250,7 @@ export class AccountsComponent implements OnInit {
                         getDetails['appAmount'] = (allRecords[key].paymentDetails != null && typeof allRecords[key].paymentDetails === 'object' && allRecords[key].paymentDetails.amount != null) ? allRecords[key].paymentDetails.amount : 0;
                         getDetails['payAmount'] = (allRecords[key].paymentDetails != null && typeof allRecords[key].paymentDetails === 'object' && allRecords[key].paymentDetails.amount != null) ? allRecords[key].paymentDetails.amount : 0;
                         
+                        //For Tab wise data
                         getDetails['prelim_visit'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'prelim_visit');
                         getDetails['application_fees'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'application_fees');
                         getDetails['document_review'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'document_review');

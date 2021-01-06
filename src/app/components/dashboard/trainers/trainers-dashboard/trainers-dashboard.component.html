@@ -1,7 +1,7 @@
 <app-loader *ngIf="!loader"></app-loader>
 <div class="main-detail">
     <div class="container-fluid p-0">
-        <div class="main-dashboard">
+        <div class="main-dashboard main-dashboard-trainer">
             <div class="row">
                 <div class="col-md-6">
                     <div class="trainer-details">
@@ -97,7 +97,7 @@
                 <div class="col-md-3">
                     <div class="trainer-main-details trainer4">
                         <div class="user-icons">
-                            <span class="icon-options"></span>
+                            <span class="icon-menu"></span>
                         </div>
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
@@ -149,7 +149,7 @@
                         </div>
                     </div>
                 </div> -->
-                <div class="col-md-12">
+                <div class="col-md-12 p-0">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="tra_events">
@@ -170,7 +170,7 @@
                                 <div class="activity-details">
                                     <ul>
                                         <ng-container *ngFor = "let item of dashboardRecentUpdates">
-                                        <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span> on {{item.date}} at {{item.time}}</span></li>
+                                        <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span>, {{item.title}} on {{item.date}} at {{item.time}}</span></li>
                                         </ng-container>
                                     </ul>
                                 </div>
@@ -217,7 +217,7 @@
             </div>
         </div>
 
-        <div class="col-md-12">
+        <div class="col-md-12 p-0">
             <div class="row">
                 <div class="col-md-12">
                     <div class="tra_events">
@@ -245,9 +245,10 @@
                     <!-- ng-fullcalendar example (dateClick)="dateClick($event)"
                               (clickButton)="clickButton($event)" (eventClick)="eventClick($event)"-->
                     <div class="event-datetime">
+                        <!-- <div id="calendar"></div>  -->
                         <ng-container *ngIf="options">
-                            <ng-fullcalendar #fullcalendar [options]="options"></ng-fullcalendar>
-                          </ng-container>
+                            <ng-fullcalendar #fullcalendar [options]="options" (eventClick)="fullcanderClick($event)"></ng-fullcalendar>
+                        </ng-container>
                     </div>
                     
                 </div>
@@ -256,7 +257,7 @@
 
         <div class="event_data">
             <div class="row m-0">
-                <div class="col-md-12">
+                <div class="col-md-12 p-0">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="tra_events">
@@ -274,7 +275,7 @@
                                     <mat-accordion>
 
                                         <mat-expansion-panel (opened)="panelOpenState = true"
-                                        (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;">                                             
+                                        (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;" [expanded]="item.id == eventId ? true : false">                                             
                                             <mat-expansion-panel-header >
                                                 <div class="ass-details" [ngStyle]="{'padding-bottom': '4px'}">
                                                     
@@ -289,7 +290,7 @@
                                                 </div>
                                             </mat-expansion-panel-header>
 
-                                            <div class="ass-details">
+                                            <div class="ass-details ass-details_trainer">
                                                 
                                                 <div class="row ticket-cnt">
                                                     <div class="col-md-12">
@@ -362,7 +363,7 @@
                                     </mat-accordion>
                                 </ng-container>
                                 <ng-container *ngIf="dashboardEvents.length == 0">
-                                    <p>No Events</p>
+                                    <p class="no-event">No Events</p>
                                 </ng-container>
                             </div>
                         </div>
@@ -372,7 +373,7 @@
         </div>
         <div class="comments-section">
             <div class="row m-0">
-                <div class="col-md-12">
+                <div class="col-md-12 p-0">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="tra_events">

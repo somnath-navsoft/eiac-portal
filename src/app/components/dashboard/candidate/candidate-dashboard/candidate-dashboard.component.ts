@@ -12,17 +12,17 @@ import { CalendarComponent } from 'ng-fullcalendar';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { FullCalendarOptions, EventObject } from 'ngx-fullcalendar';
-import { OptionsInput } from '@fullcalendar/core';
+import { OptionsInput } from '@fullcalendar/core'; 
 
 declare var FullCalendar: any;
-
+declare var $: any;
 @Component({
   selector: 'app-candidate-dashboard',
   templateUrl: './candidate-dashboard.component.html',
   styleUrls: ['./candidate-dashboard.component.scss']
 })
 export class CandidateDashboardComponent implements OnInit {
- 
+  @ViewChild('calendar', { static: true }) calendar: any;
   options: OptionsInput;
   messageList: any = [];
   userId: any;
@@ -72,14 +72,23 @@ export class CandidateDashboardComponent implements OnInit {
   @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
   optionCal: FullCalendarOptions;
   @ViewChild('fullcalendar', { static: true }) fullcalendar: CalendarComponent;
-
-  @ViewChild('calendar', { static: true }) calendar: any;
+  eventId:any;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
     this.config = {
       itemsPerPage: this.Service.dashBoardPagination,
       currentPage: 1,
     };
+  }
+
+  eventClick(theEvt: any){
+    console.log("@Event: ",theEvt)
+  }
+
+  fullcanderClick(obj) {
+
+    this.eventId = obj.event._def.publicId;
+    // console.log(eventId);
   }
 
   //Load Dashboatd data
@@ -90,15 +99,33 @@ export class CandidateDashboardComponent implements OnInit {
       .subscribe(
         res => {
           this.loader = true;
-          // console.log(res,'res');
+          console.log(res,'res');
           if(res['status'] == 200){
             this.dashboardItemData = res['dashBoardData'];
 
             //dashboardEvents
-            if(this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0){
+            if (this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0) {
               this.dashboardEvents = this.dashboardItemData.eventDetails;
               // console.log(">>>Events: ", this.dashboardEvents);
             }
+
+            var eventCanderArr = [];
+            
+            this.dashboardEvents.forEach((res,key) => {
+              // console.log(res,'res');
+              // var tempObj = {}
+              // tempObj['title'] = res['courseDetails'].course;
+              // tempObj['start'] = res.event_start_date_time;
+              // tempObj['end'] = res.event_end_date_time;
+              // eventCanderArr.push(tempObj);
+              eventCanderArr.push({
+                id:res.id,
+                title:res['courseDetails'].course,
+                start:res.event_start_date_time,
+                end:res.event_end_date_time,
+              });
+            })
+            
             //Get recent updates
             if(this.dashboardItemData.lastLogin != undefined){
               // let dt = new Date(this.dashboardItemData.lastLogin);
@@ -190,18 +217,39 @@ export class CandidateDashboardComponent implements OnInit {
               this.dashboardRecentUpdates.push({title: "CAB Training Payment",date:date, time: time});
             }
 
+            let eventData: any[]=[];
+            if(this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0){
+              console.log(">>> Events: ", this.dashboardItemData.eventDetails);
+              this.dashboardItemData.eventDetails.forEach(item => {
+                eventData.push({
+                  id: item.courseDetails.id,
+                  title: item.courseDetails.course,
+                  start: item.event_start_date_time,
+                  end: item.event_end_date_time
+                })
+              })
+            }
+
+          //   setTimeout(() => {
+          //     $("#calendar").fullCalendar({  
+          //         header: {
+          //             left   : 'prev,next today',
+          //             center : 'title',
+          //             right  : 'month,agendaWeek,agendaDay'
+          //         },
+          //         navLinks   : true,
+          //         editable   : true,
+          //         eventLimit : true,
+          //         events: eventData,  // request to load current events
+          //     });
+          //  }, 100); 
+
+
             this.options = {
               editable: true,
-              events: [{
-                title: 'Long Event',
-                start: '2020-12-07',
-                end: '2020-12-17'
-              },
-              {
-                title: 'Day Event',
-                start: '2020-12-20',
-                end: '2020-12-20'
-              }],
+              events: eventCanderArr,
+              eventLimit: true,
+              eventLimitText: "More",
               customButtons: {
                 myCustomButton: {
                   text: 'custom!',
@@ -254,7 +302,7 @@ export class CandidateDashboardComponent implements OnInit {
         this.userDetails = res['data']['user_data'][0];
         this.step1Data = res['data']['step1'][0];
         // this.step2Data = res['data']['step2']['education'][0];
-        // console.log(res,'res');
+        console.log(res,'res');
       });
 
     this.userId = sessionStorage.getItem('userId');

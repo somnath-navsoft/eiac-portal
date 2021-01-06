@@ -486,9 +486,13 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
                let data: any = result;
                 ////console.log("search results: ", result);
                 if(data != undefined && typeof data === 'object' && data.records.length > 0){
-                    console.log(">>> Data: ", data.records);
+                    // console.log(">>> Data: ", data.records);
                     this.pageCurrentNumber = 1;
                     this.dataLoad = true;
+
+                    data.records.forEach((res,key) => {
+                      data.records[key]['payment_status'] = res.payment_status == '' || res.payment_status == null || res.payment_status == 'pending' ? 'pending' : 'paid';
+                    });
                     this.trainerdata = data.records;
                     this.pageTotal = data.records.length;
                 }
@@ -686,7 +690,10 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
               let data: any = result;
               let dataRec: any=[];
               this.dataLoad = true;
-              console.log('loading...', data.records);
+              // console.log('loading...', data.records);
+              data.records.forEach((res,key) => {
+                data.records[key]['payment_status'] = res.payment_status == '' || res.payment_status == null || res.payment_status == 'pending' ? 'pending' : 'paid';
+              });
               // console.log(">>>List: ", data);
               this.trainerdata = data.records;
               dataRec = data.records;

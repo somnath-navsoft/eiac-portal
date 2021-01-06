@@ -14,7 +14,7 @@
                     <div class="tbl-filter-data">
                         <ul>
                             <li>
-                                <div class="filter">
+                                <div class="filter"> 
                                     <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a>
                                 </div>
                             </li>
@@ -39,7 +39,7 @@
                                         <mat-option value="cab_code">CAB Code</mat-option>
                                         <mat-option value="accr_status">Status</mat-option>
                                         <mat-option value="form_meta">Accreditation Type</mat-option>
-                                        <mat-option value="criteria">Scope</mat-option>
+                                        <mat-option value="criteria">Criteria</mat-option>
                                         <mat-option value="country">Country</mat-option>
                                         <mat-option value="payment_status">Payment Status</mat-option>
                                     </mat-select>
@@ -95,7 +95,7 @@
                         <div class="col-md-4 slectType" id="criteria" [ngStyle]="{'display': 'none'}">
                             <div class="user-details" [ngStyle]="{'width':'90%'}">
                                 <mat-form-field class="cab-data">
-                                    <mat-label>Scope</mat-label>                              
+                                    <mat-label>Criteria</mat-label>                              
                                     <mat-select placeholder="Scope Scheme" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
                                         <mat-option *ngFor="let item of allSchemeData;" [value]="item.value">{{item.value}}</mat-option>                                        
                                     </mat-select>
@@ -184,7 +184,7 @@
                                 </a>
                             </th>                           
                             
-                            <th [ngStyle]="{'font-size':'14px'}">Scope
+                            <th [ngStyle]="{'font-size':'14px'}">Criteria
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'criteria_request', curSortDir.criteria_request)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.criteria_request"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.criteria_request"></span>
@@ -254,7 +254,7 @@
                             <td [ngStyle]="{'width':'140px'}" [ngClass]="{'pending': item.accr_status === 'pending' || item.accr_status == 'application_process', 'under-review':item.accr_status === null || item.accr_status === 'under_review', 'complete': item.accr_status === 'complete', 'draft': item.accr_status === 'draft' }">
                                 <span *ngIf="item.accr_status == 'pending'">Payment Pending</span>
                                 <span *ngIf="item.accr_status == 'under_process'">Under Process</span>
-                                <span *ngIf="item.accr_status == 'under_review'">Under Review</span>
+                                <span *ngIf="item.accr_status == null || item.accr_status == 'under_review'">Under Review</span>
                                 <span *ngIf="item.accr_status == 'complete'">Complete</span>
                                 <span *ngIf="item.accr_status == 'draft'">Draft</span>
                             </td>                            
@@ -266,7 +266,7 @@
                                 <span *ngIf="item.form_meta == 'pt_providers'">Proficiency Testing Providers</span>
                                 <span *ngIf="item.form_meta == 'halal_conformity_bodies'">Halal Confirmity Bodies</span>
                             </td> 
-                            <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review': (item.payment_status == 'pending' || item.payment_status == null)}">
+                            <td [ngClass]="{'complete': item.payment_status == 'paid', 'under-review': (item.payment_status == 'pending')}">
                                 <span *ngIf="item.payment_status == 'paid'">Paid</span>
                                 <span *ngIf="item.payment_status == 'pending'">Pending</span>
                                 <!-- <span *ngIf="item.payment_status == null">Pending</span> -->

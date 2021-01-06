@@ -13,12 +13,9 @@
                             </div>
                         </div>
                         <div class="trainer-detail">
-                            <span class="trainer-data-off"><span
-                                    class="icon-company"></span>{{step1Data?.office_address}}</span>
-                            <span class="trainer-data"><span
-                                    class="icon-email"></span>{{step1Data?.office_email}}</span>
-                            <span class="trainer-data"><span
-                                    class="icon-call"></span>{{step1Data?.office_tel_no}}</span>
+                            <span class="trainer-data"><span class="icon-company"></span>{{step1Data?.office}}</span>
+                            <span class="trainer-data"><span class="icon-email"></span>{{userDetails?.email}}</span>
+                            <span class="trainer-data"><span class="icon-call"></span>{{step1Data?.office_tel_no}}</span>
                         </div>
                     </div>
                 </div>
@@ -45,6 +42,7 @@
             </div>
             <div class="row">
                 <div class="col-md-3">
+                    <a routerLink="/dashboard/{{userType}}/company-profile">
                     <div class="trainer-main-details">
                         <div class="user-icons">
                             <span class="icon-user"></span>
@@ -55,20 +53,22 @@
                             </div>
                             <div class="trainer-maindata trainer-update">
                                 <span>Update
-                                    <a routerLink="/dashboard/{{userType}}/company-profile">
+                                    
                                         <span [ngStyle]="{'color': '#FFF', 'font-size':'31px'}">></span>
                                         <!-- <span class="icon-right-arrow"></span> -->
-                                    </a>
+                                    
                                 </span>
                                 <!-- <span>Update<span class="icon-right-arrow"></span></span> -->
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="col-md-3">
+                    <a href="javascript:void(0)" routerLink="/dashboard/event-list">
                     <div class="trainer-main-details trainer2">
                         <div class="user-icons">
-                            <a href="javascript:void(0)" routerLink="/dashboard/event-list"><span class="icon-calendar"></span></a>
+                            <span class="icon-calendar"></span>
                         </div>
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
@@ -79,8 +79,10 @@
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="col-md-3">
+                    <a routerLink="/dashboard/{{userType}}/company-profile">
                     <div class="trainer-main-details trainer3">
                         <div class="user-icons">
                             <span class="icon-tick"></span>
@@ -90,10 +92,11 @@
                                 <span>Technical Fields</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span>NA</span>
+                                <span>{{technicalFieldsCount}}</span>
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="col-md-3">
                     <div class="trainer-main-details trainer4">
@@ -179,7 +182,7 @@
                                 <div class="activity-details">
                                     <ul>
                                         <ng-container *ngFor="let item of dashboardRecentUpdates">
-                                            <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span> on {{item.date}} at {{item.time}}</span></li>
+                                            <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span>, {{item.title}} on {{item.date}} at {{item.time}}</span></li>
                                         </ng-container>
                                     </ul>
                                 </div>
@@ -201,7 +204,7 @@
                     <div class="row">
                         <div class="col-md-12"> 
                             <!-- Only Jquery fullcalendar -->
-                            <!-- <div id="calendar"></div> -->                            
+                            <!-- <div id="calendar"></div> -->
                             <!-- Output function...
                             (dateClick)="dateClick($event)"
                                       (clickButton)="clickButton($event)"
@@ -210,15 +213,135 @@
                                       (eventClick)="eventClick($event)"
                             -->
                             <!-- ng-fullcalendar example -->
-                            <div class="event-datetime">
+                            <!-- <div class="event-datetime">
                                 <ng-container *ngIf="options">
                                     <ng-fullcalendar
                                       #fullcalendar                                 
                                       [options]="options"                                      
                                     ></ng-fullcalendar>
                                   </ng-container>
+                            </div> -->
+                            <div class="event-datetime">
+                                <!-- <div id="calendar"></div>  -->
+                                <ng-container *ngIf="options">
+                                    <ng-fullcalendar #fullcalendar [options]="options" (eventClick)="fullcanderClick($event)"></ng-fullcalendar>
+                                </ng-container>
                             </div>
                             
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="event_data">
+            <div class="row m-0">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="tra_events">
+                                <div class="trainer_head">
+                                    <h4>Events</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ass-name-det">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ng-container *ngIf="dashboardEvents.length > 0">
+                                    <mat-accordion>
+                                        <mat-expansion-panel (opened)="panelOpenState = true"
+                                        (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;" [expanded]="item.id == eventId ? true : false">
+                                            <!-- <ng-container *ngFor="let item of dashboardEvents;"> -->
+                                                <mat-expansion-panel-header >
+                                                    <div class="ass-details" [ngStyle]="{'padding-bottom': '4px'}">
+                                                        
+                                                        <div class="date_content">
+                                                            <span class="date-dash">
+                                                                <span>
+                                                                    {{item.event_start_date_time | date}}
+                                                                </span>
+                                                            </span>
+                                                            {{item.courseDetails.course}}
+                                                        </div>
+                                                    </div>
+                                                </mat-expansion-panel-header>
+
+                                            <div class="ass-details">
+                                                
+                                                <div class="row ticket-cnt">
+                                                    <div class="col-md-12">
+                                                        <div class="status-wrapper-ticket" *ngIf="item.courseDetails != undefined">
+                                                            <h3 [ngStyle]="{'font-size': '25px'}">{{item.courseDetails.course}}</h3>
+                                                            <p [innerHTML]="item.courseDetails.course_description"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                                <div class="row ticket-details m-0">
+                                                    <div class="col">
+                                                            <div class="doc-data border-right-dash">
+                                                                <div class="documents">
+                                                                    <h5>Date</h5>
+                                                                </div>
+                                                                <div class="counts">
+                                                                    <span>
+                                                                        {{item.event_start_date_time | date}}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col pl-0">
+                                                            <div class="doc-data border-right-dash">
+                                                                <div class="documents">
+                                                                    <h5>Location</h5>
+                                                                </div>
+                                                                <div class="counts">
+                                                                    <span *ngIf="item.courseDetails.location == 'eiac_training_center'">Eiac Training Center</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col pl-0">
+                                                            <div class="doc-data border-right-dash">
+                                                                <div class="documents">
+                                                                    <h5>Tutor</h5>
+                                                                </div>
+                                                                <div class="counts">
+                                                                    <span *ngIf="item.tutor != undefined && item.tutor.name != ''">{{item.tutor.name}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col pl-0">
+                                                            <div class="doc-data border-right-dash">
+                                                                <div class="documents">
+                                                                    <h5>Persons</h5>
+                                                                </div>
+                                                                <div class="counts">
+                                                                    <span *ngIf="item.courseDetails.allTargatedAud != undefined">{{item.courseDetails.allTargatedAud.length}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col pl-0">
+                                                            <div class="doc-data">
+                                                                <div class="documents">
+                                                                    <h5>Status</h5>
+                                                                </div>
+                                                                <div class="counts">
+                                                                    <span *ngIf="item.courseDetails.status != undefined && item.courseDetails.status == true">Active</span>
+                                                                    <span *ngIf="item.courseDetails.status != undefined && item.courseDetails.status == false">InActive</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                            <!-- </ng-container> -->
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+                                </ng-container>
+                                <ng-container *ngIf="dashboardEvents.length == 0">
+                                    <p>No Events</p>
+                                </ng-container>
+                            </div>
                         </div>
                     </div>
                 </div>

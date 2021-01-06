@@ -25,70 +25,63 @@
 
 
             
-            <!-- <ng-container class="tbl-filter-data">
+            <ng-container class="tbl-filter-data">
                 <div class="filter-dash filter_certification">
+                    <!-- <div class="close-bttn">
+                        <span class="icon-close" (click)="filterSearchSec()"></span>
+                    </div> -->
                     <div class="row m-0">
                         <div class="col-md-4">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
-                                    <mat-label>Filter Columns</mat-label> 
-                                    <mat-select placeholder="Select" [ngModelOptions]="{standalone: true}" (selectionChange)="changeFilter($event)"
-                                    [(ngModel)]="searchValue">
-                                        <mat-option value="certificate_no">Certificate Number</mat-option>
-                                        <mat-option value="certificate_status">Certificate Status</mat-option>
-                                        <mat-option value="certificate_type">Certificate Type</mat-option>
+                                    <mat-label>Searchable Column</mat-label> 
+                                    <mat-select placeholder="Select" (selectionChange)="searchableColumn()" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue">
+                                        <mat-option value="name">Name</mat-option>
+                                        <mat-option value="uploaded_on">Uploaded On</mat-option>
+                                        <mat-option value="expiry_date">Expiry Date</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div> 
                         </div>
 
-                        <div class="col-md-4 slectType" id="textType">
+                        <div class="col-md-4 field_show" id="applicant">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
-                                <mat-label>Search Text</mat-label> 
-                                <input type="text" matInput [(ngModel)]="searchText" placeholder="Search Text">                                
+                                <mat-label>Name</mat-label> 
+                                <input type="text" matInput [(ngModel)]="searchText" placeholder="Search Text">
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="slectType col-md-4" id="certificate_status"  [ngStyle]="{'display': 'none'}">  
-                            <div class="col-md-12"> 
-                                <div class="user-details"> 
-                                    <mat-form-field class="cab-data">
-                                        <mat-label>Status</mat-label>                              
-                                        <mat-select placeholder="Certificate Status" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">                                            
-                                            <mat-option *ngFor="let item of loadCertificateStatus;" [value]="item.field_mgmt">{{item.title}}</mat-option>                                        
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
+                        
+
+                        <div class="col-md-4 field_show" id="event_date" [ngStyle]="{'display': 'none'}">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Date</mat-label> 
+                                    <input matInput [matDatepicker]="event_date" name="event_date" [(ngModel)]="searchText" (dateChange)="setexDate(event_date)" readonly="true" (click)="Service._openCalendar(event_date)" placeholder="Date Of Issue">
+                                    <mat-datepicker-toggle matSuffix [for]="event_date"></mat-datepicker-toggle>
+                                    <mat-datepicker #event_date disabled="false"></mat-datepicker>
+                                </mat-form-field>
                             </div>
                         </div>
-                        <div class="slectType col-md-4" id="certificate_type"  [ngStyle]="{'display': 'none'}">  
-                            <div class="col-md-12"> 
-                                <div class="user-details"> 
-                                    <mat-form-field class="cab-data">
-                                        <mat-label>Type</mat-label>                              
-                                        <mat-select placeholder="Acreditation Type" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">                                            
-                                            <mat-option *ngFor="let item of loadCertificateType;" [value]="item.service_page.id">{{item.title}}</mat-option>                                        
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="row m-0">
                             <div class="col-md-12"> 
                                 <div class="filter-search">
                                     <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
-                                    <ng-container *ngIf="userType == 'operations'">
+                                    <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a>
                                     <a href="javascript:void(0)" (click)="exportFile()" class="space-left">EXPORT</a>
-                                    </ng-container>
                                 </div>         
                             </div>
                         </div>
+                        
                     </div>
-                </div>                
+                </div>
+                
             </ng-container>
+
             <div class="row m-0">
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <div class="user-details" [ngStyle]="{'width': '100px'}">
                         <mat-form-field class="cab-data">
                             <mat-label>Show</mat-label>                              
@@ -98,11 +91,13 @@
                                 <mat-option value="50">50</mat-option>
                                 <mat-option value="75">75</mat-option>
                                 <mat-option value="100">100</mat-option>
+                                <mat-option value="{{pageTotal}}">All</mat-option>
+                                <!-- <mat-option value="pdf">Export as PDF</mat-option> -->
                             </mat-select>
                         </mat-form-field>
                     </div>
                 </div>
-            </div> -->
+            </div>
             
         
         <div class="table-dashboard-cont mt-3">
@@ -132,6 +127,8 @@
                             
                             <th>Action</th>
                         </tr>
+                        <!-- <a href="javascript:void(0)" (click)="openRecord(recordsdetails, item)" title="View" alt="View">
+                            Trade Licenses</a> -->
                     <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
                         <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
                             <td class="fnt-clr">
@@ -213,22 +210,25 @@
               </button>
             </div>
             <div class="modal-body"> 
-                <div class="event-details">
-                    <div class="event-data">
-                        <span class="event-head">Name</span>
-                        <span>: {{tradelicenseName}}</span>
+                <div class="event_wrapper">
+                    <div class="event-details">
+                        <div class="event-data">
+                            <span class="event-head">Name</span>
+                            <span>: {{tradelicenseName}}</span>
+                        </div>
+                        <div class="event-data">
+                            <span class="event-head">Upload On</span>
+                            <span>: {{startDate | date}}</span>
+                        </div>
+                        <div class="event-data">
+                            <span class="event-head">Expiry Date</span>
+                            <span>: {{expiryDate | date}}</span>
+                        </div>
                     </div>
-                    <div class="event-data">
-                        <span class="event-head">Upload On</span>
-                        <span>: {{startDate | date}}</span>
+                    <div class="button_popup">
+                        <button type="submit" (click)="downloadRecord(tradelicenseFile)" class="submit-bttn submit-health">DOWNLOAD RECORD</button>
                     </div>
-                    <div class="event-data">
-                        <span class="event-head">Expiry Date</span>
-                        <span>: {{expiryDate | date}}</span>
-                    </div>
-                </div>                
-                
-                <button type="submit" (click)="downloadRecord(tradelicenseFile)" class="cancel-bttn">DOWNLOAD RECORD</button>
+                </div>
             </div>
         </ng-template>
     </div>

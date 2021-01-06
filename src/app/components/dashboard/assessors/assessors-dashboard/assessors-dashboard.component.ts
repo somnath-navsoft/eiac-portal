@@ -13,7 +13,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { CalendarComponent, FullCalendarModule } from 'ng-fullcalendar';
 
-// import * as $ from 'jquery';
+// import * as $ from 'jquery'; 
 // import 'fullcalendar';
 
 declare var $: any;
@@ -27,6 +27,7 @@ export class AssessorsDashboardComponent implements OnInit {
   //options: FullCalendarOptions;
   //options: OptionsInput;
   eventsModel: any;
+  dashboardEvents: any = [];
   //optionCal: FullCalendarOptions;
   @ViewChild('fullcalendar', { static: true }) fullcalendar: CalendarComponent;
 
@@ -79,14 +80,47 @@ export class AssessorsDashboardComponent implements OnInit {
   localUrl: any;
   button_disable: any = true;
   eventData: any[] = [];
+  options:any;
+  technicalFields: any[] =[];
+  technicalFieldsCount: number = 0;
+
   @ViewChild('fruitInput', { static: false }) fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
+  eventId:any;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
     this.config = {
       itemsPerPage: this.Service.dashBoardPagination,
       currentPage: 1,
     };
+  }
+
+
+  loadTechnicalFields(){
+    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail+'&id='+this.userId)
+    .subscribe(
+      rec => {
+          let record: any = rec;
+          let data: any = record.data;
+
+          if(typeof data == 'object' && data.technical_field != undefined && data.technical_field.length > 0){
+              this.technicalFields = data.technical_field;
+          }
+          console.log(">>>Technical fields: ", this.technicalFields);
+          if(this.technicalFields.length > 0){
+            this.technicalFields.forEach(item => {
+                if(item.technical_fields != undefined && item.technical_fields != '' && 
+                    typeof item.technical_fields == 'object' && item.technical_fields.length > 0){
+                      console.log(">>>Count: ", item.technical_fields)
+                   this.technicalFieldsCount += item.technical_fields.length;
+                }
+            })
+          }
+          console.log("@Total count: ", this.technicalFieldsCount);
+          
+      }
+    );
+
   }
 
 
@@ -121,33 +155,42 @@ export class AssessorsDashboardComponent implements OnInit {
               this.dashboardRecentUpdates.push({ title: "Assessor Last Login", date: date, time: time });
             }
             //
-            //Get Events Data
-            this.eventData.push(
-              {
-               title: 'Test Event',
-               start:'2020-12-07',
-               end: '2020-12-07'
-              },
-              {
-                title: 'Hello Event',
-                start:'2020-12-07',
-                end: '2020-12-07'
-               },
-            )
+            //dashboardEvents
+            if (this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0) {
+              this.dashboardEvents = this.dashboardItemData.eventDetails;
+              // console.log(">>>Events: ", this.dashboardEvents);
+            }
 
-            /*setTimeout(() => {
-              $("#calendar").fullCalendar({  
-                              header: {
-                                  left   : 'prev,next today',
-                                  center : 'title',
-                                  right  : 'month,agendaWeek,agendaDay'
-                              },
-                              navLinks   : true,
-                              editable   : true,
-                              eventLimit : true,
-                              events: this.eventData,  // request to load current events
-                          });
-           }, 100);*/
+            var eventCanderArr = [];
+            
+            this.dashboardEvents.forEach((res,key) => {
+              // console.log(res,'res');
+              // var tempObj = {}
+              // tempObj['title'] = res['courseDetails'].course;
+              // tempObj['start'] = res.event_start_date_time;
+              // tempObj['end'] = res.event_end_date_time;
+              // eventCanderArr.push(tempObj);
+              eventCanderArr.push({
+                id:res.id,
+                title:res['courseDetails'].course,
+                start:res.event_start_date_time,
+                end:res.event_end_date_time,
+              });
+            })
+
+          //   setTimeout(() => {
+          //     $("#calendar").fullCalendar({  
+          //                     header: {
+          //                         left   : 'prev,next today',
+          //                         center : 'title',
+          //                         right  : 'month,agendaWeek,agendaDay'
+          //                     },
+          //                     navLinks   : true,
+          //                     editable   : true,
+          //                     eventLimit : true,
+          //                     events: this.eventData,  // request to load current events
+          //                 });
+          //  }, 100);
 
             this.options = {
               editable: true,
@@ -275,6 +318,7 @@ export class AssessorsDashboardComponent implements OnInit {
         });
 
     this.loadDashData();
+    this.loadTechnicalFields();
 
     this.Service.getwithoutData(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.profileService + '?userType=' + this.userType + '&email=' + this.userEmail)
       .subscribe(
@@ -350,8 +394,15 @@ export class AssessorsDashboardComponent implements OnInit {
         // let getMont = new Date().getMonth();
         // this.eventMonth = getMont + 1;
   
-        console.log(">>> Get month: ",this.eventMonth);
+        // console.log(">>> Get month: ",this.eventMonth);
   }
+
+  fullcanderClick(obj) {
+
+    this.eventId = obj.event._def.publicId;
+    // console.log(eventId);
+  }
+
   getUserDetails(user) {
     sessionStorage.setItem('messageUserDetails', JSON.stringify(user));
   }
