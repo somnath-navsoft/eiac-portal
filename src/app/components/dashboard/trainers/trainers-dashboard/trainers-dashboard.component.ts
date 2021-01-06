@@ -20,7 +20,7 @@ declare var $: any;
 @Component({
   selector: 'app-trainers-dashboard',
   templateUrl: './trainers-dashboard.component.html',
-  styleUrls: ['./trainers-dashboard.component.scss']
+  styleUrls: ['./trainers-dashboard.component.scss'] 
 })
 export class TrainersDashboardComponent implements OnInit {
 
@@ -136,7 +136,7 @@ export class TrainersDashboardComponent implements OnInit {
               let time2 = datePart[2];
               let time = time1 + " " + time2;
               console.log(datePart, " == ", date, " -- ", time);
-              this.dashboardRecentUpdates.push({ title: "Trainer Last Login", date: date, time: time });
+              this.dashboardRecentUpdates.push({ title: "Last Login", date: date, time: time });
             }
             if (this.dashboardItemData.lastAccrApplied != undefined) {
               let datePart: any = this.dashboardItemData.lastAccrApplied.toString().split(" ");
@@ -148,7 +148,7 @@ export class TrainersDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 + " " + time2;
-              this.dashboardRecentUpdates.push({ title: "Trainer Accreditation Applied", date: date, time: time });
+              this.dashboardRecentUpdates.push({ title: "Accreditation Applied", date: date, time: time });
             }
             if (this.dashboardItemData.lastRegApplied != undefined) {
               let datePart: any = this.dashboardItemData.lastRegApplied.toString().split(" ");
@@ -160,7 +160,7 @@ export class TrainersDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 + " " + time2;
-              this.dashboardRecentUpdates.push({ title: "Trainer Registration Applied", date: date, time: time });
+              this.dashboardRecentUpdates.push({ title: "Registration Applied", date: date, time: time });
             }
             if (this.dashboardItemData.lastTrainingApplied != undefined) {
               let datePart: any = this.dashboardItemData.lastTrainingApplied.toString().split(" ");
@@ -172,7 +172,7 @@ export class TrainersDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 + " " + time2;
-              this.dashboardRecentUpdates.push({ title: "Trainer Training Applied", date: date, time: time });
+              this.dashboardRecentUpdates.push({ title: "Training Applied", date: date, time: time });
             }
             if (this.dashboardItemData.lastAccrPayment != undefined) {
               let datePart: any = this.dashboardItemData.lastAccrPayment.toString().split(" ");
@@ -184,7 +184,7 @@ export class TrainersDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 + " " + time2;
-              this.dashboardRecentUpdates.push({ title: "Trainer Accreditation Payment", date: date, time: time });
+              this.dashboardRecentUpdates.push({ title: "Accreditation Payment", date: date, time: time });
             }
             if (this.dashboardItemData.lastRegPayment != undefined) {
               let datePart: any = this.dashboardItemData.lastRegPayment.toString().split(" ");
@@ -196,7 +196,7 @@ export class TrainersDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 + " " + time2;
-              this.dashboardRecentUpdates.push({ title: "Trainer Registration Payment", date: date, time: time });
+              this.dashboardRecentUpdates.push({ title: "Registration Payment", date: date, time: time });
             }
             if (this.dashboardItemData.lastTrainingPayment != undefined) {
               let datePart: any = this.dashboardItemData.lastTrainingPayment.toString().split(" ");
@@ -208,7 +208,7 @@ export class TrainersDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 + " " + time2;
-              this.dashboardRecentUpdates.push({ title: "Trainer Training Payment", date: date, time: time });
+              this.dashboardRecentUpdates.push({ title: "Training Payment", date: date, time: time });
             }
           }
 
