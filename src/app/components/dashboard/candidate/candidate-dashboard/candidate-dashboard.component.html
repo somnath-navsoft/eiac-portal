@@ -72,9 +72,7 @@
                                 <span>Event</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span *ngIf="dashboardEvents != undefined"> 
-                                    {{dashboardEvents.length}}
-                                </span>
+                            {{dashboardItemData.eventTrainingCount}}
                             </div>
                         </div>
                     </div>
@@ -91,7 +89,7 @@
                                 <span>Course Completed</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span>NA</span>
+                                <span>{{dashboardItemData.completeTrainingAppCount}}</span>
                             </div>
                         </div>
                     </div>
@@ -108,7 +106,7 @@
                                 <span>Course Planned</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span>NA</span>
+                                <span>{{dashboardItemData.plannedTrainingAppCount}}</span>
                             </div>
                         </div>
                     </div>
@@ -174,7 +172,7 @@
                                 <div class="activity-details">
                                     <ul>
                                         <ng-container *ngFor = "let item of dashboardRecentUpdates">
-                                        <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span> on {{item.date}} at {{item.time}}</span></li>
+                                        <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span>, {{item.title}} on {{item.date}} at {{item.time}}</span></li>
                                         </ng-container>
                                     </ul>
                                 </div>

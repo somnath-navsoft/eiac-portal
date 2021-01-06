@@ -93,7 +93,7 @@
                                 <span>Certificates</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span *ngIf="dashboardItemData.totalCabDirectoryCount != ''">{{dashboardItemData.totalCabDirectoryCount}}</span>
+                                <span *ngIf="dashboardItemData.totalCabDirectoryCount != undefind">{{dashboardItemData.totalCabDirectoryCount}}</span>
                             </div>
                         </div>
                     </div>
@@ -110,7 +110,7 @@
                                 <span>Events</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span *ngIf="dashboardItemData.totalEventCount != ''">{{dashboardItemData.totalEventCount}}</span>
+                                <span *ngIf="dashboardItemData.eventTrainingCount != undefind">{{dashboardItemData.eventTrainingCount}}</span>
                             </div>
                         </div>
                     </div>
