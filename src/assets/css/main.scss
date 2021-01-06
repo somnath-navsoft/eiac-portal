@@ -88,8 +88,8 @@ span.fc-title { display: inline-block; font-size: 13px;  white-space: normal; li
 .fc-popover .fc-day-grid-event.fc-h-event .fc-content { margin: 0; }
 .fc-day-grid-event .fc-content .fc-title { display: block; line-height: 20px!important; white-space: pre-line; padding: 5px; text-align: left; } 
 tr:first-child>td>.fc-day-grid-event { margin-top: 10px!important; }
-th.fc-day-header.fc-widget-header.fc-fri { background: #aeadad; border-width: 0px!important; }
-th.fc-day-header.fc-widget-header.fc-sat { background: #aeadad; border-width: 0px!important; }
+th.fc-day-header.fc-widget-header.fc-fri { border-width: 0px!important; }
+th.fc-day-header.fc-widget-header.fc-sat { border-width: 0px!important; }
 .fc-ltr .fc-toolbar .fc-center { display: block; width: 100%; }
 .fc-center h2 { padding: 23px; background-color: rgba(198, 184, 164, 0.3);  font-family: "Dubai Regular"; font-size: 26px; color: #77777B; text-transform: uppercase; }
 .calander-event { padding: 20px; border-left: 5px solid #007565; }
