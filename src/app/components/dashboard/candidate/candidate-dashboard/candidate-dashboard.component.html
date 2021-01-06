@@ -274,7 +274,7 @@
                                 <ng-container *ngIf="dashboardEvents.length > 0">
                                     <mat-accordion>
                                         <mat-expansion-panel (opened)="panelOpenState = true"
-                                        (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;" [expanded]="item.id == eventId ? true : false" [disabled]="true">
+                                        (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;" [expanded]="item.id == eventId ? true : false">
                                                 <mat-expansion-panel-header >
                                                     <div class="ass-details" [ngStyle]="{'padding-bottom': '4px'}">
                                                         
