@@ -250,6 +250,7 @@ export class AccountsComponent implements OnInit {
                         getDetails['appAmount'] = (allRecords[key].paymentDetails != null && typeof allRecords[key].paymentDetails === 'object' && allRecords[key].paymentDetails.amount != null) ? allRecords[key].paymentDetails.amount : 0;
                         getDetails['payAmount'] = (allRecords[key].paymentDetails != null && typeof allRecords[key].paymentDetails === 'object' && allRecords[key].paymentDetails.amount != null) ? allRecords[key].paymentDetails.amount : 0;
                         
+                        //For Tab wise data
                         getDetails['prelim_visit'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'prelim_visit');
                         getDetails['application_fees'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'application_fees');
                         getDetails['document_review'] = allRecords[key].paymentDetails.find(item => item.payment_meta == 'document_review');

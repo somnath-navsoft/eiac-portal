@@ -174,7 +174,7 @@
                                 <div class="activity-details">
                                     <ul>
                                         <ng-container *ngFor = "let item of dashboardRecentUpdates">
-                                        <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span> on {{item.date}} at {{item.time}}</span></li>
+                                        <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span>, {{item.title}} on {{item.date}} at {{item.time}}</span></li>
                                         </ng-container>
                                     </ul>
                                 </div>
@@ -231,10 +231,10 @@
                                         <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
                                             eu.<span>05:21 PM</span></li>
                                         <li>On the other hand, we denounce with righteous indignation and dislike men
-                                            who.<span>05:25 PM</span></li>
-                                        <li>These cases are perfectly simple and easy to distinguish.<span>05:21
-                                                PM</span></li>
-                                    </ul>
+                                            who.<span>05:25 PM</span></li>May 30, 2020 Awareness, Internal Auditing & Point of Care Testing in Accordance with ISO 15189: 2012 Training Course
+
+
+
                                 </div>
                                 <div class="date-cnt">
                                     <span>20/01/2020</span>
@@ -276,7 +276,7 @@
                                 <ng-container *ngIf="dashboardEvents.length > 0">
                                     <mat-accordion>
                                         <mat-expansion-panel (opened)="panelOpenState = true"
-                                        (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;" [expanded]="item.id == eventId ? true : false" [disabled]="true">
+                                        (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;" [expanded]="item.id == eventId ? true : false">
                                                 <mat-expansion-panel-header >
                                                     <div class="ass-details" [ngStyle]="{'padding-bottom': '4px'}">
                                                         

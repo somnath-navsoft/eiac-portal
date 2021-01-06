@@ -165,7 +165,7 @@ export class CertificationRecordsComponent implements OnInit {
       // console.log(this.exportAs);
       this.exportAsConfig = {
         type: 'csv', // the type you want to download
-        elementIdOrContent: 'accreditation-service-export', // the id of html/table element
+        elementIdOrContent: 'certification-records-export', // the id of html/table element
       }
       // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
       this.exportAsService.save(this.exportAsConfig, 'report').subscribe(() => {
@@ -207,29 +207,47 @@ export class CertificationRecordsComponent implements OnInit {
   loadCertTypeStatus(){
 
     this.subscriptions.push(this._trainerService.getCertificateType()
-    .subscribe(
-      result => {
-        //this.loader = true;
-        let record: any = result;
+      .subscribe(
+        result => {
+          //this.loader = true;
+          let record: any = result;
 
-        if(record != undefined && typeof record === 'object'){
-          if(record.certificate_status != undefined){
-            this.loadCertificateStatus = record.certificate_status;
+          if(record != undefined && typeof record === 'object'){
+            if(record.certificate_status != undefined){
+              this.loadCertificateStatus = record.certificate_status;
+            }
+            if(record.data != undefined && record.data.length > 0){
+              this.loadCertificateType = record.data;
+            }
           }
-          if(record.data != undefined && record.data.length > 0){
-            this.loadCertificateType = record.data;
-          }
+          
+          console.log('Data Status...', record);
+          
+        },
+        ()=>{
+          console.log('comp status...');
         }
-        
-        console.log('Data Status...', record);
-        
-      },
-      ()=>{
-        console.log('comp status...');
-      }
-    )          
-  )
+      )
+    )
 
+  }
+
+  searchableColumn() {
+    this.searchText = '';
+    var myClasses = document.querySelectorAll('.field_show'),
+          i = 0,
+          l = myClasses.length;
+       for (i; i < l; i++) {
+          let elem: any = myClasses[i]
+          elem.style.display = 'none';
+      }
+    if(this.searchValue == 'name') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'uploaded_on') {
+      document.getElementById('event_date').style.display = 'block';
+    }else if(this.searchValue == 'expiry_date') {
+      document.getElementById('event_date').style.display = 'block';
+    }
   }
 
 
