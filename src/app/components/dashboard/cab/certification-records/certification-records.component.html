@@ -58,7 +58,7 @@
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
                                     <mat-label>Date</mat-label> 
-                                    <input matInput [matDatepicker]="event_date" name="event_date" [(ngModel)]="searchText" (dateChange)="setexDate(event_date)" readonly="true" (click)="Service._openCalendar(event_date)" placeholder="Date Of Issue">
+                                    <input matInput [matDatepicker]="event_date" name="event_date" [(ngModel)]="searchText" readonly="true" (click)="_service._openCalendar(event_date)" placeholder="Date Of Issue">
                                     <mat-datepicker-toggle matSuffix [for]="event_date"></mat-datepicker-toggle>
                                     <mat-datepicker #event_date disabled="false"></mat-datepicker>
                                 </mat-form-field>
@@ -129,7 +129,7 @@
                         </tr>
                         <!-- <a href="javascript:void(0)" (click)="openRecord(recordsdetails, item)" title="View" alt="View">
                             Trade Licenses</a> -->
-                    <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
+                    <ng-container *ngIf="trainerdata && trainerdata?.length > 0">
                         <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
                             <td class="fnt-clr">
                                 <a href="javascript:void(0)" (click)="openRecord(recordsdetails, item)" title="View" alt="View">
