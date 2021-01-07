@@ -152,7 +152,7 @@ export class AssessorsDashboardComponent implements OnInit {
               let time2 = datePart[2];
               let time = time1 + " " + time2;
               console.log(datePart, " == ", date, " -- ", time);
-              this.dashboardRecentUpdates.push({ title: "Assessor Last Login", date: date, time: time });
+              this.dashboardRecentUpdates.push({ title: "Last Login", date: date, time: time });
             }
             //
             //dashboardEvents

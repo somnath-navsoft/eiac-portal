@@ -26,13 +26,13 @@ export class AppService {
   //http://192.168.3.94:8000/
 
   // public apiServerUrl         =   'http://192.168.3.94:8000/webservice';
-  // public apiRequestUrl        =   'http://192.168.3.94:8000/';
+ // public apiRequestUrl        =   'http://192.168.3.94:8000/';
 
-  // public apiServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
-  // public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
+  public apiServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
+  public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/'; 
 
-  public apiServerUrl         =   'https://dev-service.eiac.gov.ae/webservice';
-  public apiRequestUrl        =   'https://dev-service.eiac.gov.ae/';
+  // public apiServerUrl         =   'https://dev-service.eiac.gov.ae/webservice';
+  // public apiRequestUrl        =   'https://dev-service.eiac.gov.ae/';
 
   public apiUatServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
   // public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
