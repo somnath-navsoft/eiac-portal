@@ -55,21 +55,21 @@
                             </div>
                             <div class="trainer-data-det">
                                 <div class="trainer-pro">
-                                    <span>Documents</span>
+                                    <span>Records</span>
                                 </div>
                                 <div class="trainer-maindata trainer-update">
-                                    <span>{{dashboardItemData.totalDocCount}}</span>
+                                    <span>{{dashboardItemData.totalActiveRecCount}}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="date-update update3">
                             <div class="data-bg">
-                                <h6><span class="icon-arrow-down"></span>{{dashboardItemData.lastMonthDocCount}} Expiring since last month</h6>
+                                <h6><span class="icon-arrow-down"></span>{{dashboardItemData.totalExpiredRecCountLastMonth}} Expiring since last month</h6>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3"> 
                     <div class="dsh-wrapper">
                         <div class="trainer-main-details trainer4">
                             <div class="user-icons">
@@ -77,7 +77,7 @@
                             </div>
                             <div class="trainer-data-det">
                                 <div class="trainer-pro">
-                                    <span>Training Events</span>
+                                    <span>Events</span>
                                 </div>
                                 <div class="trainer-maindata trainer-update">
                                     <span>{{dashboardItemData.totalEventCount}}</span>
@@ -283,7 +283,7 @@
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash">Service Enquiries</p>
-                                            <p class="sub-head-dash">NA</p>
+                                            <p class="sub-head-dash">{{dashboardItemData.enquiryCount}}</p>
                                         </div>
                                         <!-- <div class="view-all">
                                             <p><span class="icon-arrow-up"></span>12 New</p>
