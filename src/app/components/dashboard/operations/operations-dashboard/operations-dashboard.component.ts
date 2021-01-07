@@ -67,6 +67,9 @@ export class OperationsDashboardComponent implements OnInit {
 
   totalDeptStatus: any ={};
   totalDeptSelect: string ='';
+  getCountryStateCityAll: any[] =[];
+  loadCountryList: any[] = [];
+  select_country: string;
 
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
@@ -75,6 +78,45 @@ export class OperationsDashboardComponent implements OnInit {
       itemsPerPage: this.Service.dashBoardPagination,
       currentPage: 1,
     };
+  }
+
+  searchCountry(theEvt: any){    
+    ////console.log(">>>> enter: ", theEvt);
+    let query: string = '';
+    if(theEvt){
+      query = theEvt.target.value
+    }
+    ////console.log(">>> query: ", query, " == ", query.length);
+    let result: any = this.selectCountry(query);
+    if(result){
+      this.loadCountryList = result;
+    }
+  }
+  selectCountry(query: string):any[]{
+    let result: string[] = [];
+    let countryData: any = this.getCountryStateCityAll;
+    ////console.log(">>>> country: ", countryData);
+    var re = new RegExp(query,'gi');
+    countryData.forEach(item => {
+      if(re.exec(item.CountryName)){
+        result.push(item); 
+      }
+    }) 
+    return result;
+  }
+
+  loadCountryStateCityAll  = async() =>{
+    let cscLIST = this.Service.getCSCAll();
+    await cscLIST.subscribe(record => {
+      console.log("...> ", record);
+      this.getCountryStateCityAll = record['Countries'];
+      this.loadCountryList  = record['Countries'];
+      console.log("...>>> ", this.getCountryStateCityAll);
+    });
+  }
+
+  onSelectCountry(selCountry: string){
+    console.log(">>>Select country: ", selCountry);
   }
 
 
@@ -102,9 +144,9 @@ export class OperationsDashboardComponent implements OnInit {
                 this.totalDeptCABCount = getData.totalCabCount;
                 this.totalDeptCertificateCount = getData.all_crtificate_count;
                 if(getData.status_count != undefined){
-                    this.totalDeptStatus.accredatedCount    = getData.status_count.accredatedCount.length;
-                    this.totalDeptStatus.suspendedCount     = getData.status_count.suspendedCount.length;
-                    this.totalDeptStatus.volWithdrawCount   = getData.status_count.volWithdrawCount.length;
+                    this.totalDeptStatus.accredatedCount    = getData.status_count.accredatedCount[0].cab_data.certificate;
+                    this.totalDeptStatus.suspendedCount     = getData.status_count.suspendedCount[0].cab_data.certificate;
+                    this.totalDeptStatus.volWithdrawCount   = getData.status_count.volWithdrawCount[0].cab_data.certificate;
                     this.totalDeptStatus.volSuspendedCount  = getData.status_count.volSuspendedCount.length;
                     this.totalDeptStatus.withdrawCount      = getData.status_count.withdrawCount.length;
                     
@@ -221,6 +263,7 @@ export class OperationsDashboardComponent implements OnInit {
     this.userId = sessionStorage.getItem('userId');
 
     this.loadDashData();
+    this.loadCountryStateCityAll();
 
     if (this.userType != 'operations') {
       var landUrl = '/dashboard' + this.userType + '/home'
@@ -248,37 +291,7 @@ export class OperationsDashboardComponent implements OnInit {
 
   }
 
-  search(query: string) {
-    // this.searchTerm = query;
-    let result = this.select(query);
-    // this.searchDetails = result;
-    if (query != '') {
-      this.selectSearch = result;
-    } else {
-      this.selectSearch = [];
-    }
-
-  }
-
-  select(query: string): string[] {
-    let result: string[] = [];
-    if (this.getUserType == 'cab_client' || this.getUserType == 'cab_code') {
-      for (let a of this.searchDetails) {
-        if (a.username.toLowerCase().indexOf(query) > -1) {
-          result.push(a);
-        }
-      }
-    } else {
-      for (let a of this.searchDetails) {
-        if (a.email.toLowerCase().indexOf(query) > -1) {
-          result.push(a);
-        }
-      }
-    }
-
-    // this.searchDetails = result;
-    return result;
-  }
+  
 
   setField(value) {
     // this.search(this.searchTerm);

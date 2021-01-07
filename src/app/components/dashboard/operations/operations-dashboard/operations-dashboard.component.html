@@ -298,7 +298,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="row">
+                    <div class="row" [ngStyle]="{'padding-top': '25px'}">
                         <div class="col-md-6">
                             <div class="trainer_head">
                                 <h4>Certificate View</h4>
@@ -367,7 +367,17 @@
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash head-dash-bill">Region</p>
-                                            <p class="sub-head-dash">NA</p>
+                                            <!-- <p class="sub-head-dash">NA</p> -->
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Country</mat-label>                              
+                                                <mat-select placeholder="Acreditation Type" (selectionChange)="onSelectCountry(select_country)"
+                                                [(value)]="select_country" (openedChange)="myInput.focus()">
+                                                    <!-- <input class="form-control form-control-sm w-100" #myInput  type="text" 
+                                                    (keyup)="searchCountry($event)" (keydown)="$event.stopPropagation()" autocomplete="off" placeholder="Search">
+                                                    <mat-divider></mat-divider> -->
+                                                    <mat-option *ngFor="let item of loadCountryList;" [value]="item.CountryName">{{item.CountryName}}</mat-option>                                        
+                                                </mat-select>
+                                            </mat-form-field>
                                         </div>
                                     </div>
                                 </div>
