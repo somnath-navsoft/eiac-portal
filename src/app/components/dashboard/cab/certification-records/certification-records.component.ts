@@ -333,17 +333,6 @@ export class CertificationRecordsComponent implements OnInit {
                 this.trainerdata  = data['records'];
                 this.pageTotal    = data.totalCount;
 
-                // if(data != undefined && typeof data === 'object' && data.records.length > 0){
-                //     console.log(">>> Data: ", data.records);
-                //     this.pageCurrentNumber = 1;
-                //     this.dataLoad = true;
-                //     this.trainerdata = data.records;
-                //     this.pageTotal = data.records.length;
-                // }
-                // if(data != undefined && typeof data === 'object' && data.records.length == 0){
-                //   this.trainerdata = data.records;
-                //   this.pageTotal = data.records.length;
-                // }
             }
             )
           )

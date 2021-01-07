@@ -237,6 +237,7 @@ onSubmit(theForm: any){
     //{"course_id_arr":["69","70"],"course_type":"custom_course","event_start_date_time":"2020-08-21T18:30:00.000Z",
     //"capacity":"20","custom_location":"7 nG Kolkata","agreement_status":"accepted"}
 
+    // console.log(this.inPremiseForm.select_date,'select_date');
     let postData: any = {};
     postData['course_type']           = "custom_course";
     postData['capacity']              = this.inPremiseForm.no_of_candidate;
