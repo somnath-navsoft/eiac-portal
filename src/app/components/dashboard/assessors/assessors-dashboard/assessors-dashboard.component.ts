@@ -152,13 +152,13 @@ export class AssessorsDashboardComponent implements OnInit {
               let time2 = datePart[2];
               let time = time1 + " " + time2;
               console.log(datePart, " == ", date, " -- ", time);
-              this.dashboardRecentUpdates.push({ title: "Assessor Last Login", date: date, time: time });
+              this.dashboardRecentUpdates.push({ title: "Last Login", date: date, time: time });
             }
             //
             //dashboardEvents
             if (this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0) {
               this.dashboardEvents = this.dashboardItemData.eventDetails;
-              // console.log(">>>Events: ", this.dashboardEvents);
+              console.log(">>>Events: ", this.dashboardEvents);
             }
 
             var eventCanderArr = [];
@@ -194,7 +194,7 @@ export class AssessorsDashboardComponent implements OnInit {
 
             this.options = {
               editable: true,
-              events: this.eventData,
+              events: eventCanderArr,
               selectable: true,
               eventLimit: true,
               eventLimitText: "Click to more events...",

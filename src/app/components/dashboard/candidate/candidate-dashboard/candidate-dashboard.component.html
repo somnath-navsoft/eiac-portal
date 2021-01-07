@@ -275,6 +275,7 @@
                                     <mat-accordion>
                                         <mat-expansion-panel (opened)="panelOpenState = true"
                                         (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;" [expanded]="item.id == eventId ? true : false">
+                                        <!-- <div id="{{item.id}}"> -->
                                                 <mat-expansion-panel-header >
                                                     <div class="ass-details" [ngStyle]="{'padding-bottom': '4px'}">
                                                         
@@ -356,6 +357,7 @@
                                                             </div>
                                                         </div>
                                                 </div>
+                                            <!-- </div> -->
                                         </mat-expansion-panel>
                                     </mat-accordion>
                                 </ng-container>

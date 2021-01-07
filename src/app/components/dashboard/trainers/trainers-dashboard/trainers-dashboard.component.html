@@ -73,7 +73,7 @@
                             </div>
                             <div class="trainer-maindata">
                                 <span *ngIf="dashboardEvents != undefined">
-                                    {{dashboardEvents.length}}
+                                    {{dashboardItemData.eventCount}}
                                 </span>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                                 <span>Course Completed</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span>NA</span>
+                                <span>{{dashboardItemData.completeTrainingAppCount}}</span>
                             </div>
                         </div>
                     </div>
@@ -104,7 +104,7 @@
                                 <span>Course Planned</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span>NA</span>
+                                <span>{{dashboardItemData.plannedTrainingAppCount}}</span>
                             </div>
                         </div>
                     </div>
