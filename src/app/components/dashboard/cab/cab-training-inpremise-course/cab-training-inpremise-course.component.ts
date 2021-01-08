@@ -241,7 +241,11 @@ onSubmit(theForm: any){
     let postData: any = {};
     postData['course_type']           = "custom_course";
     postData['capacity']              = this.inPremiseForm.no_of_candidate;
-    postData['event_start_date_time'] = new Date(this.inPremiseForm.select_date);
+
+    let date_establishment= new Date(this.inPremiseForm.select_date);
+    date_establishment.setMinutes(date_establishment.getMinutes() - date_establishment.getTimezoneOffset());
+
+    postData['event_start_date_time'] = date_establishment;
     postData['custom_location']       = this.inPremiseForm.select_location;
     postData['agreement_status']      = "accepted";
     postData['course_id_arr']         = courseIdAr;

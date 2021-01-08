@@ -265,3 +265,6 @@
 .icon-file_invoice:before {
   content: "\e950";
 }
+.icon-turn-off:before {
+  content: "\e951";
+}
