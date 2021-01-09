@@ -10,7 +10,9 @@
           </div>
         </div>
         <div class="row m-0">
+
           <div class="col-md-6" *ngFor="let item of pageDetails; let i = index;">
+            <ng-container *ngIf="userType == 'cab_client' || userType == 'candidate'">
               <div [ngStyle]="{'float': 'left'}" class="accreditation-container" *ngIf="item.page_path.path != '' && item.page_path.path == 'public_training'">
                 <div class="acc-main">
                   <div class="accreditation-img">
@@ -31,15 +33,14 @@
 
                 </div>
               </div>
+            </ng-container>
 
-
+            <ng-container *ngIf="userType == 'cab_client'">
               <div class="accreditation-container" *ngIf="item.page_path.path != '' && item.page_path.path == 'in_premise_training'">
                 <div class="acc-main">
                   <div class="accreditation-img">
                     <img [src]="_constant.mediaPath + item.page_path.image_file" alt="">                    
-                  </div> 
-                  
-                  
+                  </div>                  
                   <div class="accreditation-desc training_acc">
                     <div class="accred_name">
                         <!-- <p>{{item.page_title}}</p> -->
@@ -54,10 +55,9 @@
                         </p>
                     </div>
                   </div>
-
-
                 </div>
               </div>
+            </ng-container>
 
           </div>
         </div>

@@ -43,6 +43,13 @@
                                         </tr>
                                     <!-- </ng-container> -->
                                 </ng-container>
+                                <ng-container *ngIf="allScheme.length == 0">
+                                    <tr>
+                                        <td colspan="6">
+                                            No Data
+                                        </td>
+                                    </tr>
+                                </ng-container>
                                 </table>
                             </div>
                             </div>
