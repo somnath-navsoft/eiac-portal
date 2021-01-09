@@ -196,7 +196,7 @@ export class OperationsDashboardComponent implements OnInit {
 
 
   //department view onchange
-  //https://dev-service.eiac.gov.ae/webservice/io-dashboard/?department_type = io roles value
+  //https://uat-service.eiac.gov.ae/webservice/io-dashboard/?department_type = io roles value
 
   //Load Dashboatd data
   loadDashData(){
