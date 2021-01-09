@@ -12,15 +12,23 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <h1>{{courseDetails?.course}}</h1>
+                        <h1>{{courseDetails?.public_course.course}}</h1>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-6 ">
                         <div class="course-list">
-                            <div class="description-course" *ngIf="courseDetails?.courseType && courseDetails?.courseType[0].course_type_img">
-                                <img src="{{_constant.mediaPath}}/media/{{courseDetails?.courseType[0].course_type_img}}" alt="">
-                            </div>
+                            <ng-container *ngIf="courseDetails?.public_course && courseDetails?.public_course.course_image !=''">
+                                <div class="description-course">
+                                    <img src="{{_constant.mediaPath}}{{courseDetails?.public_course.course_image}}" [alt]="courseDetails?.public_course.course"
+                                    [title]="courseDetails?.public_course.course">                                   
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="courseDetails?.public_course && courseDetails?.public_course.course_image ===''">
+                                <div class="description-course">
+                                    <h3 [ngStyle]="{'text-align': 'center'}">No Image</h3>
+                                </div>
+                            </ng-container>
                         </div>
                     </div>
                     <div class="col-lg-6 pl-sm-0">
@@ -32,10 +40,10 @@
                                 <div class="course-info">
                                     <div class="course-det">
                                         <h5>Date : 
-                                            <div  *ngIf="courseDetails?.event.eventDates && courseDetails?.event.eventDates[0].event_date; then Dateshow else Datehide" ></div>
+                                            <div  *ngIf="courseDetails?.eventDate && courseDetails?.eventDate[0].event_date; then Dateshow else Datehide" ></div>
 
                                             <ng-template #Dateshow>
-                                                <span>{{courseDetails?.event.eventDates[0].event_date | date}}</span>
+                                                <span>{{courseDetails?.eventDate[0].event_date | date}}</span>
                                             </ng-template>
                                             <ng-template #Datehide>
                                                 <span>N/A</span>
@@ -44,29 +52,30 @@
                                     </div>
                                     
                                     <div class="course-det">
-                                        <h5>Duration : <span *ngIf="courseDetails?.training_days != ''">{{courseDetails?.training_days}} Days</span>
-                                        <span *ngIf="courseDetails?.training_days == ''">N/A</span>
+                                        <h5>Duration : <span *ngIf="courseDetails?.public_course.training_days != ''">{{courseDetails?.public_course.training_days}} Days</span>
+                                        <span *ngIf="courseDetails?.public_course.training_days == ''">N/A</span>
                                         </h5>
                                     </div>
                                 </div>
                                 
                                 <div class="course-info">
                                     <div class="course-det">
-                                        <h5>Fees in AED : <span *ngIf="courseDetails?.fees_per_trainee != ''">{{courseDetails?.fees_per_trainee}}</span>
-                                        <span *ngIf="courseDetails?.fees_per_trainee == ''">N/A</span>
+                                        <h5 [ngStyle]="{'font-size': '21px'}">Fees in AED : <span *ngIf="courseDetails?.public_course.fees_per_trainee != ''">{{courseDetails?.public_course.fees_per_trainee}}</span>
+                                        <span *ngIf="courseDetails?.public_course.fees_per_trainee == ''">N/A</span>
                                         </h5>
                                     </div>
 
                                     <div class="course-det">
-                                        <h5>Capacity : <span *ngIf="courseDetails?.capacity != ''">{{courseDetails?.capacity}}</span>
+                                        <h5  [ngStyle]="{'font-size': '21px'}">No. of Seats Available : <span *ngIf="courseDetails?.capacity != ''">
+                                            {{courseDetails?.seat_availability}} of  {{courseDetails?.capacity}}</span>
                                         <span *ngIf="courseDetails?.capacity == ''">N/A</span>
                                         </h5>
                                     </div>
                                 </div>
 
                                 <div class="course-info">
-                                    <h5>Trainer : <span *ngIf="courseDetails?.tutor != ''">{{courseDetails?.event.tutor}}</span>
-                                    <span *ngIf="courseDetails?.tutor == ''">N/A</span>
+                                    <h5>Trainer : <span *ngIf="courseDetails?.tutor != undefined">{{courseDetails?.tutor.name}}</span>
+                                    <span *ngIf="courseDetails?.tutor == undefined">N/A</span>
                                     </h5>
                                 </div>
 
@@ -92,7 +101,7 @@
                     <div class="col-md-12">
                         <div class="progs-up">
                             <div class="prog-details">
-                                <p [innerHtml]="courseDetails?.course_description"></p>
+                                <p [innerHtml]="courseDetails?.public_course.course_description"></p>
                             </div>                               
                         </div>
                     </div>
@@ -101,7 +110,7 @@
                     <div class="row">
                     <div class="col-md-6"></div>
                     <div class="col-md-6">
-                        <div class="course-bttn">
+                        <div class="course-bttn" *ngIf="courseDetails.remaining_capacity > 0 || courseDetails.remaining_capacity == null">
                             <div class="course-btn ">
                                 <a class="curs-apply" [routerLink]="['/dashboard/cab_client/training-public-course-form']" [queryParams]="{courseid: routeId}">Apply Now</a>
                             </div>

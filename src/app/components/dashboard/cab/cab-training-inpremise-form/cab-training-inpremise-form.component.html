@@ -376,7 +376,7 @@
                                                             </td>
                                                             <td>{{taxVat}}</td>
                                                         </tr>
-                                                        <tr>
+                                                        <!-- <tr>
                                                             <td>3</td>
                                                             <td>Knowledge Fees - Per Participant درهم المعرفة</td>
                                                             <td>{{fee_day_pertime3}}</td>
@@ -393,7 +393,7 @@
                                                                 <input type="text" class="fee-inp" name="no_of_participants4" [disabled]="!editable" [(ngModel)]="noofParticipants">
                                                             </td>
                                                             <td>{{innovationFees}}</td>
-                                                        </tr>
+                                                        </tr> -->
                                                         <tr>
                                                             <td></td>
                                                             <td colspan="3"><b>Total</b></td>
@@ -427,11 +427,80 @@
                     <form #ngForm5="ngForm" (ngSubmit)="onSubmitStep5(ngForm5)" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
+
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr form_subhdr">
+                                                <h5>5. AUTHORIZATION OF THE APPLICATION</h5>
+                                                <!-- <span>*If you want the certificate issued on a different address please update below</span> -->
+                                            </div>
+                                            <hr>
+                                        </div>
+                                        
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-12 p-0">
+                                            <div class="form-subheader-data subhead-dt">
+                                                <h5>TERMS AND CONDITIONS</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="auth_data_main">
+                                        <ul>
+                                            <li>
+                                                Training materials electronic format pdf files will be provided by EIAC.
+                                            </li>
+                                            <li>
+                                                This quotation  is based on the law no.2/2010 of Government of Dubai.
+                                            </li>
+                                            <li>
+                                                The CAB(s)/Clients(s) shall provide educational training hall (classroom - Shape) suitable to deliver the course. The hall needs to be equipped with electrical and connections, internet access, projector/suitable LED display screen.
+                                            </li>
+                                            <li>
+                                                The CABs/Client shall provide the hospitality including breakfast, coffee break, lunch and refreshments for the trainer(s).
+                                            </li>
+                                            <li>
+                                                The CABs/Client shall bear the trainer-required transportation from the hotel to their premises and back to the hotel.
+                                            </li>
+                                            <li>
+                                                A list of participant(s)/trainee(s) with their exact name and contacts (e.g: e-mail, phone No. , ...... etc) must be provided to EIAC by the CAB(s) in advance.
+                                            </li>
+                                            <li>
+                                                A copy of applicant's tax certificate  (if available) must be submitted with this request.
+                                            </li>
+                                            <li>
+                                                Attach all participants/ trainees ID card(s). Names on certificates will be exactly as the name on the ID card(s). Original ID cards must be present with the trainees during the course.
+                                            </li>
+                                            <li>
+                                                Registration must be completed by filling all cells in the contract and send it to EIAC's officer(s) prior the course scheduled time by one month -one month in advance- in order to enroll the trainee(s) on the course.
+                                            </li>
+                                            <li>
+                                                Payment of full course amount shall be in advance 15 days from the date of training start.
+                                            </li>
+                                            <li>
+                                                CAB will bear the fees in case of any cancellation due to any reasons or circumstances from their side. In all cases, fees paid will not be refund.
+                                            </li>
+                                            <li>
+                                                Shifting the course time  is allowed once for In Client Premises Training in case the CAB has notified EIAC's Officer(s) prior the course scheduled time by one month - one month in advance- in order to re arrange for the course.
+                                            </li>
+                                            <li>
+                                                The programs could include an evaluation exam to evaluate of the course.
+                                            </li>
+                                        </ul>
+
+                                        <mat-checkbox name="undertaking_confirmTop3" 
+                                        [(ngModel)]="authorizationList.undertaking_confirmTop3">Agree to all terms and conditions</mat-checkbox>
+                                    </div>
+                                </div>
+                                
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr">
-                                                <h5>5. ON THE BEHALF OF THE APPLICANT COMPANY</h5>
+                                                <h5>ON THE BEHALF OF THE APPLICANT COMPANY</h5>
                                             </div>
                                             <hr>
                                         </div>
@@ -499,7 +568,7 @@
                                         <a class="cancel-bttn" href="javascript:void(0)" type="button" (click)="Service.headerStepMove('fees_details',headerSteps,'menu','authorization')">BACK</a> 
                                         <button class="cancel-bttn" type="button" (click)="savedraftStep('step5')">SAVE AS DRAFT</button>
                                     </div>
-                                    <button class="submit-bttn submit-health" >CONTINUE</button>
+                                    <button class="submit-bttn submit-health" >SUBMIT</button>
                                 </div>
                             </div>
                         </div>
@@ -589,7 +658,7 @@
                                         <div class="col-md-4 mt-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Voucher Code</mat-label>
-                                                <input type="number" readonly="true" [ngModelOptions]="{standalone: true}" required="true"
+                                                <input type="text" readonly="true" [ngModelOptions]="{standalone: true}" required="true"
                                                 matInput placeholder="Voucher Code" 
                                                 [(ngModel)]="voucherSentData.voucher_code">
                                             </mat-form-field>

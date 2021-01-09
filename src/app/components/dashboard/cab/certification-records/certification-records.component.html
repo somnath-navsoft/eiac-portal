@@ -7,7 +7,7 @@
             <div class="row mb-4">
                 <div class="col-md-8">                    
                     <div class="dashbrd-hdr">
-                        <h3>Records of Certifications</h3> 
+                        <h3>Records</h3> 
                     </div>
                 </div>
                 <!-- <div class="col-md-4"> 
@@ -15,7 +15,6 @@
                         <ul>
                             <li>
                                 <div class="filter">
-                                    <a href="javascript:void(0)" class="border-right"><span class="icon-switch"></span></a>
                                     <a href="javascript:void(0)" (click)="filterSearchSec()"><span class="icon-filter"></span></a>
                                 </div>
                             </li>
@@ -23,191 +22,215 @@
                     </div>
                 </div> -->
             </div>
-            <ng-container *ngIf="advSearch" class="tbl-filter-data">
-                <div class="filter-dash">
-                    <div class="close-bttn">
+
+
+            
+            <ng-container class="tbl-filter-data">
+                <div class="filter-dash filter_certification">
+                    <!-- <div class="close-bttn">
                         <span class="icon-close" (click)="filterSearchSec()"></span>
-                    </div>
-                <div class="row m-0">
-                    <div class="col-md-4">
-                        <div class="user-details">
-                            <mat-form-field class="cab-data">
-                                <mat-label>Search by Course ID</mat-label> 
-                            <input type="text" matInput [(ngModel)]="selectCode" placeholder="Search by CODE">
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="user-details">
-                            <mat-form-field class="cab-data">
-                                <mat-label>Search by Fees</mat-label> 
-                            <input matInput type="number" [(ngModel)]="selectFees" placeholder="Search by Fees">
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="user-details">
-                            <mat-form-field class="cab-data">
-                                <mat-label>Select Course Type</mat-label>                             
-                                <mat-select placeholder="Select" 
-                                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectCustomCourse" required>
-                                    <mat-option *ngFor="let item of selectCustomCourses;" [value]="item.value">{{item.title}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                </div>
-                <div class="row m-0" >
-                    <div class="col-md-4">
-                        <div class="user-details">
-                            <mat-form-field class="cab-data">
-                                <mat-label>Select Agreement Status</mat-label>                             
-                                <mat-select placeholder="Select Status" 
-                                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectAgreementStatus" required>
-                                    <mat-option *ngFor="let item of agreementStatus;" [value]="item.value">{{item.title}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="user-details">
-                            <mat-form-field class="cab-data">
-                                <mat-label>Select Payment Status</mat-label>                             
-                                <mat-select placeholder="Select Status" 
-                                [ngModelOptions]="{standalone: true}" [(ngModel)]="selectPaymentStatus" required>
-                                    <mat-option *ngFor="let item of paymentStatus;" [value]="item.value">{{item.title}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                </div>
-                <div class="row m-0">
-                    <div class="col-md-12"> 
-                        <div class="filter-search">
-                            <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
-                            <a href="javascript:void(0)" (click)="filterSearchReset()">RESET</a>
-                        </div>         
-                    </div>
-                    <!-- <div class="col-md-4"> 
-                        
-                        <div class="add-data">
-                            <a href="javascript:void(0)" (click)="filterSearchSubmit()">SEARCH</a>
-                        </div>   
-                        <div class="add-data">
-                            <a href="javascript:void(0)" (click)="filterSearchReset()">RESET</a>
-                        </div>                    
                     </div> -->
-                </div>
+                    <div class="row m-0">
+                        <div class="col-md-4">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Searchable Column</mat-label> 
+                                    <mat-select placeholder="Select" (selectionChange)="searchableColumn()" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue">
+                                        <mat-option value="name">Name</mat-option>
+                                        <mat-option value="uploaded_on">Uploaded On</mat-option>
+                                        <mat-option value="expiry_date">Expiry Date</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div> 
+                        </div>
+
+                        <div class="col-md-4 field_show" id="applicant">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                <mat-label>Name</mat-label> 
+                                <input type="text" matInput [(ngModel)]="searchText" placeholder="Search Text">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        
+
+                        <div class="col-md-4 field_show" id="event_date" [ngStyle]="{'display': 'none'}">
+                            <div class="user-details">
+                                <mat-form-field class="cab-data">
+                                    <mat-label>Date</mat-label> 
+                                    <input matInput [matDatepicker]="event_date" name="event_date" [(ngModel)]="searchText" readonly="true" (click)="_service._openCalendar(event_date)" placeholder="Date Of Issue">
+                                    <mat-datepicker-toggle matSuffix [for]="event_date"></mat-datepicker-toggle>
+                                    <mat-datepicker #event_date disabled="false"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="row m-0">
+                            <div class="col-md-12"> 
+                                <div class="filter-search">
+                                    <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
+                                    <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a>
+                                    <a href="javascript:void(0)" (click)="exportFile()" class="space-left">EXPORT</a>
+                                </div>         
+                            </div>
+                        </div>
+                        
+                    </div>
                 </div>
                 
             </ng-container>
-            
-        
-            <div class="table-dashboard-cont">
-                <div class="row m-0">
-                    <div class="col-md-12 p-0">
-                        <!-- @{{certificationRecords | json}} -->
-                        <table>
-                            <tr>
-                                <th width="15%">Certificate No
-                                    <a href="javascript:void(0)" (click)="sortedList(certificationRecords, 'id', curSortDir.id)">
-                                        <span class="icon-arrow-down" *ngIf="!curSortDir.id"></span>
-                                        <span class="icon-arrow-up"  *ngIf="curSortDir.id"></span>
-                                    </a>
-                                </th>
-                                <th width="15%">Certificate Type
-                                    <a href="javascript:void(0)" (click)="sortedList(certificationRecords, 'created_date', curSortDir.created_date)">
-                                        <span class="icon-arrow-down" *ngIf="!curSortDir.created_date"></span>
-                                        <span class="icon-arrow-up"  *ngIf="curSortDir.created_date"></span>
-                                    </a>
-                                </th>
-                                <th width="15%">Cab Type
-                                    <a href="javascript:void(0)" (click)="sortedList(certificationRecords, 'accr_status', curSortDir.accr_status)">
-                                        <span class="icon-arrow-down" *ngIf="!curSortDir.accr_status"></span>
-                                        <span class="icon-arrow-up"  *ngIf="curSortDir.accr_status"></span>
-                                    </a>
-                                </th>
-                                <th width="15%">Cab Status
-                                    <a href="javascript:void(0)" (click)="sortedList(certificationRecords, 'applicantName', curSortDir.applicantName)">
-                                        <span class="icon-arrow-down" *ngIf="!curSortDir.applicantName"></span>
-                                        <span class="icon-arrow-up"  *ngIf="curSortDir.applicantName"></span>
-                                    </a>
-                                </th>
-                                <th width="15%">Certification Valid Form
-                                    <a href="javascript:void(0)" (click)="sortedList(certificationRecords, 'applicantName', curSortDir.applicantName)">
-                                        <span class="icon-arrow-down" *ngIf="!curSortDir.applicantName"></span>
-                                        <span class="icon-arrow-up"  *ngIf="curSortDir.applicantName"></span>
-                                    </a>
-                                </th>
-                                <th width="15%">Certification Valid To
-                                    <a href="javascript:void(0)" (click)="sortedList(certificationRecords, 'applicantName', curSortDir.applicantName)">
-                                        <span class="icon-arrow-down" *ngIf="!curSortDir.applicantName"></span>
-                                        <span class="icon-arrow-up"  *ngIf="curSortDir.applicantName"></span>
-                                    </a>
-                                </th>
-                                <th>Action</th>
-                            </tr>
-                            <!-- certificationRecords.records != undefined && -->  
-                        <ng-container *ngIf="certificationRecords != undefined && certificationRecords.length > 0">
-                            <tr *ngFor="let item of certificationRecords | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
-                                <td>
-                                    {{item.certificate_no}}
-                                </td>
 
-                                <td>
-                                    {{item.certificate_type}}
-                                </td>
-
-                                <td>
-                                    {{item.cab_type}}
-                                </td>
-
-                                <td>
-                                    {{item.cab_status}}
-                                </td>
-
-                                <td>
-                                    {{item.certification_valid_form}}
-                                </td>
-
-                                <td>
-                                    {{item.certification_valid_to}}
-                                </td>
-
-                                <td>
-                                    <div class="icn-appln">
-                                        <a href="javascript:void(0)" (click)="uiDialog.openPDFViewer(constant.mediaPath,cabStep1.trade_license)">
-                                            <span class="icon-eye"></span>
-                                        </a>
-                                        <a target="_blank" [href]="tradeLicenseFile"> 
-                                            <span class="icon-download"></span>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </ng-container>
-                        <ng-container *ngIf="dataLoad && certificationRecords.length == 0">
-                            <tr>
-                                <td colspan="5">
-                                    No Records
-                                </td>
-                            </tr>
-                        </ng-container>
-                        <ng-container *ngIf="!dataLoad">
-                            <tr>
-                                <td colspan="7" align="center">
-                                    Loading...
-                                </td>
-                            </tr>
-                        </ng-container>
-                        </table>
-                        <ng-container *ngIf="certificationRecords != undefined && certificationRecords.length > 0" >
-                            <pagination-controls (pageChange)="pageCurrentNumber = $event"></pagination-controls>
-                        </ng-container>
+            <div class="row m-0">
+                <div class="col-md-2">
+                    <div class="user-details" [ngStyle]="{'width': '100px'}">
+                        <mat-form-field class="cab-data">
+                            <mat-label>Show</mat-label>                              
+                            <mat-select placeholder="Show" (selectionChange)="showData()"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="show_data">
+                                <mat-option value="25">25</mat-option>
+                                <mat-option value="50">50</mat-option>
+                                <mat-option value="75">75</mat-option>
+                                <mat-option value="100">100</mat-option>
+                                <mat-option value="{{pageTotal}}">All</mat-option>
+                                <!-- <mat-option value="pdf">Export as PDF</mat-option> -->
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
             </div>
+            
         
+        <div class="table-dashboard-cont mt-3">
+            <div class="row m-0">
+                <div class="col-md-12 p-0">
+                    <!-- @{{trainerdata | json}} -->
+                    <table id="accreditation-service-export">
+                        <tr>
+                            <th [ngStyle]="{'font-size':'14px'}">Name
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'new_no', curSortDir.new_no)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.new_no"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.new_no"></span>
+                                </a>
+                            </th>
+                            <th [ngStyle]="{'font-size':'14px'}">Uploaded On
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'certificate_type', curSortDir.certificate_type)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.certificate_type"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.certificate_type"></span>
+                                </a>
+                            </th>
+                            <th width="15%" [ngStyle]="{'font-size':'14px'}">Expiry Date
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'cab_type', curSortDir.cab_type)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.cab_type"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.cab_type"></span>
+                                </a>
+                            </th>
+                            
+                            <th>Action</th>
+                        </tr>
+                        <!-- <a href="javascript:void(0)" (click)="openRecord(recordsdetails, item)" title="View" alt="View">
+                            Trade Licenses</a> -->
+                    <ng-container *ngIf="trainerdata && trainerdata?.length > 0">
+                        <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
+                            <td class="fnt-clr">
+                                <a href="javascript:void(0)" (click)="openRecord(recordsdetails, item)" title="View" alt="View">
+                               Trade Licenses</a></td>
+                            <td> 
+                                {{item.date_of_issue | date}}
+                            </td>
+
+                            <td> 
+                                {{item.date_of_expiry | date}}
+                            </td>
+                            
+                            <td class="action fnt-clr">                                
+                                <a href="javascript:void(0)" (click)="openView(certificateView, item.trade_license)" [title]="item.certificate_name">
+                                    <span class="icon-eye"></span>
+                                </a> 
+                                <a [href]="_constant.mediaPath+'/media/'+item.trade_license" [title]="item.certificate_name" target="_blank">
+                                    <span class="icon-download"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="dataLoad && trainerdata.length == 0">
+                        <tr>
+                            <td colspan="7">
+                                No Records
+                            </td>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="!dataLoad">
+                        <tr>
+                            <td colspan="7" align="center">
+                                Loading...
+                            </td>
+                        </tr>
+                    </ng-container>
+                    </table>
+                    <!-- <span id="openViewDialog" (click)="openView(certificateView)"></span> -->
+                    <ng-template #certificateView let-modal>
+                        <app-loader *ngIf="loaderPdf"></app-loader>  
+                        <div class="modal-header">
+                          <h4 class="modal-title" id="modal-basic-title">CERTIFICATE VIEW</h4>
+                          <button type="button" class="close" aria-label="Close" (click)="closeDialog()">
+                            <span aria-hidden="true">&times;</span>
+                          </button>                          
+                        </div>
+                        <div class="modal-body">                            
+                            <app-loader *ngIf="loaderPdf"></app-loader>
+                            <p *ngIf="errorLoader">Error Loading PDF</p>
+                            <div class="pdf-parent">
+                            <pdf-viewer [src]="(pathPDF)" [show-all]="true" [stick-to-page]="true"
+                                [zoom]="1.0" [original-size]="false" [autoresize]="true"
+                                [show-borders]="true" (error)="onError($event)" (on-progress)="onProgress($event)"
+                                (after-load-complete)="completeLoadPDF($event)"
+                                [render-text]="true">
+                            </pdf-viewer>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                        
+                      </ng-template>
+                    <!-- pageCurrentNumber = $event || (click)="paginationReset()"-->
+                    <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0" >
+                        <pagination-controls  (pageChange)="loadPage($event)"></pagination-controls>
+                    </ng-container>
+                </div>
+            </div>
         </div>
+        
+        <!-- Modal -->
+        <!-- Modal VIEW -->
+        <ng-template #recordsdetails let-modal>
+            <div class="modal-header course-pop">
+              <h4 class="modal-title" id="modal-basic-title">RECORDS DETAILS</h4>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span class="icon-close"></span>
+              </button>
+            </div>
+            <div class="modal-body"> 
+                <div class="event_wrapper">
+                    <div class="event-details">
+                        <div class="event-data">
+                            <span class="event-head">Name</span>
+                            <span>: {{tradelicenseName}}</span>
+                        </div>
+                        <div class="event-data">
+                            <span class="event-head">Upload On</span>
+                            <span>: {{startDate | date}}</span>
+                        </div>
+                        <div class="event-data">
+                            <span class="event-head">Expiry Date</span>
+                            <span>: {{expiryDate | date}}</span>
+                        </div>
+                    </div>
+                    <div class="button_popup">
+                        <button type="submit" (click)="downloadRecord(tradelicenseFile)" class="submit-bttn submit-health">DOWNLOAD RECORD</button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </div>
     </div>
 </div>

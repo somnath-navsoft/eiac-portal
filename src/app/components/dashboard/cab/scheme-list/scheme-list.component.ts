@@ -10,12 +10,12 @@ import { Observable, Subscription } from 'rxjs';
   templateUrl: './scheme-list.component.html',
   styleUrls: ['./scheme-list.component.scss']
 })
-export class SchemeListComponent implements OnInit {
+export class SchemeListComponent implements OnInit { 
 
   loader:boolean = true;
   subscriptions: Subscription[] = [];
   schemedata:any;
-  allScheme:any;
+  allScheme:any[] =[];
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService) { }

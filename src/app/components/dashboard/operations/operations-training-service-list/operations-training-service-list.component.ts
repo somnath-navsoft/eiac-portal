@@ -6,6 +6,7 @@ import { Constants } from '../../../../services/constant.service';
 import { ToastrService, Overlay, OverlayContainer } from 'ngx-toastr';
 import {CustomModalComponent} from '../../../utility/custom-modal/custom-modal.component';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
 @Component({
   selector: 'app-operations-training-service-list',
@@ -15,7 +16,7 @@ import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-b
 })
 export class OperationsTrainingServiceListComponent implements OnInit {
 
-  subscriptions: Subscription[] = [];
+  subscriptions: Subscription[] = []; 
   modalOptions:NgbModalOptions;
   voucherSentData: any = {};
   voucherFile:any = new FormData();
@@ -35,9 +36,26 @@ export class OperationsTrainingServiceListComponent implements OnInit {
   curSortDir: any = {};
   dataLoad: boolean = false;
   public minDate;
+  voucherIndex:any;
+  exportAsConfig: ExportAsConfig;
+  exportAs:any;
+  advSearch: boolean = false;
+
+  selectTrainingType: any =[];
+  selectCustomCourses:any[] = [];
+
+  
+  applicationNo: string = '' || null;
+  selectTrainingTypeValue: string = '' || null;
+  paymentStatusValue: string = '' || null;
+  show_data:any;
+  searchValue:any;
+  searchText:any;
+  selectAccrType:any = [];
+  selectStatus:any = [];
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
-    private _trainerService: TrainerService, private modalService: NgbModal) {
+    private _trainerService: TrainerService, private modalService: NgbModal, private exportAsService: ExportAsService) {
       this.modalOptions = {
         backdrop:'static',
         backdropClass:'customBackdrop'
@@ -55,6 +73,162 @@ export class OperationsTrainingServiceListComponent implements OnInit {
     this.curSortDir['applicant']          = false;
     // var cdate = new Date();
     this.minDate = new Date();
+    this.selectTrainingType = [{'title':'In Premise', value: 'inprimise'},{'title':'Public Training', value: 'public_training'}];
+    //this.selectCustomCourses = [{'value':'In Premise'},{'value':'Public Training'}];
+    
+    //Assign Search Type
+    this.selectAccrType = [ 
+      {title: 'In Premise', value:'inprimise'},
+      {title: 'Public Training', value:'public_training'},
+      ];
+  
+    //Assign Search Type
+    this.selectStatus =  [
+      {title: 'Payment Pending', value:'pending'},
+      {title: 'Under Process', value:'under_process'},
+      {title: 'Under Review', value:'under_review'},
+      {title: 'Complete', value:'complete'},
+      {title: 'Draft', value:'draft'}
+    ];
+  }
+
+  showData() {
+    //this.pageLimit = this.show_data;
+    // this.loadPageData();
+    this.pageLimit = this.show_data;
+    this.pageCurrentNumber = 1;
+    this.trainerdata.slice(0, this.show_data);
+  }
+
+  paginationReset() {
+    this.exportAs = {};
+  }
+  
+  exportFile() {
+    // console.log(this.exportAs);
+    this.exportAsConfig = {
+      type: 'csv', // the type you want to download
+      elementIdOrContent: 'accreditation-service-export', // the id of html/table element
+    }
+    // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
+    this.exportAsService.save(this.exportAsConfig, 'report').subscribe(() => {
+      // save started
+    });
+  }
+  
+  filterSearchSec(){
+    this.advSearch = !this.advSearch
+    // console.log(this.advSearch);
+    this.filterSearchReset();
+  }
+
+  filterSearchReset(type?: string){
+    //Reset serach
+    this.searchValue = {};
+    this.searchText = '';
+    var myClasses = document.querySelectorAll('.field_show'),
+          i = 0,
+          l = myClasses.length;
+       for (i; i < l; i++) {
+          let elem: any = myClasses[i]
+          elem.style.display = 'none';
+      }
+    document.getElementById('applicant').style.display = 'block';
+
+    this.applicationNo = '' || null;
+    this.selectTrainingTypeValue = '' || null;
+    this.paymentStatusValue = '' || null;
+    this.show_data = this.pageLimit = 10;
+    this.exportAs = null;
+    if(type != undefined && type != ''){
+      this.loadPageData();
+    }
+  }
+  
+  isValidSearch(){
+    if((this.searchValue == '' || this.searchValue == null) || (this.searchText == '' || this.searchText == null)){
+      return false;
+    }
+    return true;
+  }
+
+  searchableColumn() {
+    this.searchText = '';
+    var myClasses = document.querySelectorAll('.field_show'),
+          i = 0,
+          l = myClasses.length;
+       for (i; i < l; i++) {
+          let elem: any = myClasses[i]
+          elem.style.display = 'none';
+      }
+    if(this.searchValue == 'cab_name') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'cab_code') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'id') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'training_form_type') {
+      document.getElementById('accreditation_type').style.display = 'block';
+    }else if(this.searchValue == 'application_status') {
+      document.getElementById('status').style.display = 'block';
+    }else if(this.searchValue == 'course_name') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'capacity') {
+      document.getElementById('applicant').style.display = 'block';
+    }
+  }
+
+  filterSearchSubmit(){
+     let postObject: any = new FormData();
+     //console.log("Search click....");
+    //  let postData: any = new FormData();
+     if(this.isValidSearch()){
+        var appendKey = this.searchValue;
+        if(this.searchValue != '' && this.searchValue != null && this.searchText != '' && this.searchText != null){
+        postObject.append(appendKey, this.searchText);
+        }
+        
+        console.log(">>>POST: ", postObject); 
+
+        if(postObject){
+          this.loader = false;
+          this.subscriptions.push(this._trainerService.searchTrainingServList((postObject))
+          .subscribe(
+             result => {
+               this.loader = true;
+               let data: any = result;
+                ////console.log("search results: ", result);
+                if(data != undefined && typeof data === 'object' && data.records.length > 0){
+                    console.log(">>> Data: ", data.records);
+                    this.pageCurrentNumber = 1;
+                    this.dataLoad = true;
+                    
+                    data.records.forEach((item,key) => {
+                      if(item.courseEventDetails != undefined && item.courseEventDetails != 'NA'){
+                        data.records[key]['course_name']      = item.courseEventDetails.course_details.course;
+                        data.records[key]['course_capacity']  = item.courseEventDetails['event_details'][0].capacity != null ? item.courseEventDetails['event_details'][0].capacity : 'N/A';
+                      }else{
+                        data.records[key]['course_name'] = '';
+                        data.records[key]['course_capacity'] = '';
+                      }
+                  })
+                  
+                    this.trainerdata = data.records;
+                    this.pageTotal = data.records.length;
+                }
+                if(data != undefined && typeof data === 'object' && data.records.length == 0){
+                  this.trainerdata = data.records;
+                  this.pageTotal = data.records.length;
+                }
+             }
+            )
+          )
+        }
+
+     }else{
+      //this._service.openMessageDialog('Please select search fields properly.', "Validation Error");
+      this._toaster.warning("Please select search fields properly",'')
+     }     
   }
 
   setexDate(date, index){
@@ -73,6 +247,15 @@ export class OperationsTrainingServiceListComponent implements OnInit {
           this.dataLoad = true;
           console.log('loading...', data.records);
           // console.log(">>>List: ", data);
+          data.records.forEach((item,key) => {
+            if(item.courseEventDetails != undefined && item.courseEventDetails != 'NA'){
+              data.records[key]['course_name']      = item.courseEventDetails.course_details.course;
+              data.records[key]['course_capacity']  = item.courseEventDetails['event_details'][0].capacity != null ? item.courseEventDetails['event_details'][0].capacity : 'N/A';
+            }else{
+              data.records[key]['course_name'] = '';
+              data.records[key]['course_capacity'] = '';
+            }
+        })
           this.trainerdata = data.records;
           dataRec = data.records;
           this.pageTotal = data.records.length;
@@ -106,12 +289,12 @@ export class OperationsTrainingServiceListComponent implements OnInit {
          this.curSortDir.created_date = !sortDir;
          //console.log(">>>Enter code...", data, " -- ", this.curSortDir.course_code);
          if(this.curSortDir.created_date){
-           let array = data.slice().sort((a, b) => (a.created_date > b.created_date) ? 1 : -1)
+           let array = data.slice().sort((a, b) => (a.created > b.created) ? 1 : -1)
            this.trainerdata = array;
            //console.log("after:: ", array, " :: ", this.trainerdata);
          }
          if(!this.curSortDir.created_date){
-           let array = data.slice().sort((a, b) => (a.created_date < b.created_date) ? 1 : -1)
+           let array = data.slice().sort((a, b) => (a.created < b.created) ? 1 : -1)
            this.trainerdata = array;
          }
        }
@@ -171,42 +354,121 @@ export class OperationsTrainingServiceListComponent implements OnInit {
            this.trainerdata = array;
          }
        }  
-       if(sortBy == 'applicant'){
-         this.curSortDir.applicant = !sortDir;
-         //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
-         if(this.curSortDir.applicant){
-           let array = data.slice().sort((a, b) => (a.applicant > b.applicant) ? 1 : -1)
-           this.trainerdata = array;
-           //console.log("after:: ", array, " :: ", this.trainerdata);
-         }
-         if(!this.curSortDir.applicant){
-           let array = data.slice().sort((a, b) => (a.applicant < b.applicant) ? 1 : -1)
-           this.trainerdata = array;
-         }
-       }        
+       
+       if(sortBy == 'cab_name'){
+        this.curSortDir.cab_name = !sortDir;
+        if(this.curSortDir.cab_name){
+          let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name > b.cabDetails[0].cab_name) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.cab_name){
+          let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name < b.cabDetails[0].cab_name) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
+
+      if(sortBy == 'cab_code'){
+        this.curSortDir.cab_code = !sortDir;
+        if(this.curSortDir.cab_code){
+          let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_code > b.cabDetails[0].cab_code) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.cab_code){
+          let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_code < b.cabDetails[0].cab_code) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
+
+      if(sortBy == 'country'){
+        this.curSortDir.country = !sortDir;
+        if(this.curSortDir.country){
+          let array = data.slice().sort((a, b) => (a.country > b.country) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.country){
+          let array = data.slice().sort((a, b) => (a.country < b.country) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
+
+      if(sortBy == 'course_name'){
+        this.curSortDir.course_name = !sortDir;
+        if(this.curSortDir.course_name){
+          let array = data.slice().sort((a, b) => (a.course_name > b.course_name) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.course_name){
+          let array = data.slice().sort((a, b) => (a.course_name < b.course_name) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
+
+      // if(sortBy == 'capacity'){
+      //   this.curSortDir.capacity = !sortDir;
+      //   if(this.curSortDir.capacity){
+      //     let array = data.slice().sort((a, b) => (a['courseEventDetails'] && b['courseEventDetails'] && a['courseEventDetails']['event_details'] && b['courseEventDetails']['event_details'] && a['courseEventDetails']['event_details'][0] && b['courseEventDetails']['event_details'][0] && a['courseEventDetails']['event_details'][0].capacity > b['courseEventDetails']['event_details'][0].capacity) ? 1 : -1)
+      //     this.trainerdata = array;
+      //   }
+      //   if(!this.curSortDir.capacity){
+      //     let array = data.slice().sort((a, b) => (a['courseEventDetails'] && b['courseEventDetails'] && a['courseEventDetails']['event_details'] && b['courseEventDetails']['event_details'] && a['courseEventDetails']['event_details'][0] && b['courseEventDetails']['event_details'][0] && a['courseEventDetails']['event_details'][0].capacity < b['courseEventDetails']['event_details'][0].capacityy) ? 1 : -1)
+      //     this.trainerdata = array;
+      //   }
+      // }
+
+      if(sortBy == 'capacity'){
+        this.curSortDir.capacity = !sortDir;
+        if(this.curSortDir.capacity){
+          let array = data.slice().sort((a, b) => (a.course_capacity > b.course_capacity) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.capacity){
+          let array = data.slice().sort((a, b) => (a.course_capacity < b.course_capacity) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
+
+      if(sortBy == 'application_status'){
+        this.curSortDir.application_status = !sortDir;
+        if(this.curSortDir.application_status){
+          let array = data.slice().sort((a, b) => (a.application_status > b.application_status) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.application_status){
+          let array = data.slice().sort((a, b) => (a.application_status < b.application_status) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
     }
   }
 
   serviceStatus(index,id){
+
+    // console.log(index);
+    // console.log(this.pageCurrentNumber);
+    var changableIndex = index;
+    var currIndex = 10 * (this.pageCurrentNumber -1) + parseInt(changableIndex);
     this.loader = false;
 
-    this.subscriptions.push(this._trainerService.updateStatus(id)
+    this.subscriptions.push(this._trainerService.updateStatusTraining(id)
       .subscribe(
         result => {
           this.loader = true;
           // console.log(result,'result');
-          this.trainerdata[index].accr_status = 'complete';
+          this.trainerdata[currIndex].application_status = 'complete';
           this._toaster.success("Payment Completed Successfully",'');
       })
     );
 
   }
 
-  open(content, id: number) {
+  open(content, id: number,key:any) {
+    // console.log(key)
     //this.voucherSentData = {};
     if(id){
       console.log(">>ID: ", id);
       this.voucherSentData['accreditation'] = id;
+      this.voucherSentData['index'] = key;
+      this.voucherIndex = key
     }
     this.paymentReceiptValidation = null;
     this.modalService.open(content, this.modalOptions).result.then((result) => {
@@ -264,6 +526,11 @@ export class OperationsTrainingServiceListComponent implements OnInit {
                   this.voucherSentData = {};
                   this.modalService.dismissAll();
                   this._toaster.success("Invoice Uploaded Successfully",'Upload');
+                  
+                  var changableIndex = this.voucherIndex;
+                  var currIndex = 10 * (this.pageCurrentNumber -1) + parseInt(changableIndex);
+                  
+                  this.trainerdata[currIndex].application_status = 'payment_pending';
                 }else{
                   this._toaster.warning(data.msg,'');
                 }

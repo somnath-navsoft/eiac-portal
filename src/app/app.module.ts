@@ -138,6 +138,7 @@ import { AccountDetailsComponent } from './components/dashboard/accounts/account
 import { AccountUploadComponent } from './components/dashboard/accounts/account-upload/account-upload.component';
 import { CabTrainingDetailComponent } from './components/dashboard/cab/cab-training-detail/cab-training-detail.component';
 import { CabTrainingInpremiseDetailComponent } from './components/dashboard/cab/cab-training-inpremise-detail/cab-training-inpremise-detail.component';
+import { CabTrainingInpremiseApplyDetailComponent } from './components/dashboard/cab/cab-training-inpremise-apply-detail/cab-training-inpremise-apply-detail.component';
 import { CabTrainingInpremiseEventDetailsComponent } from './components/dashboard/cab/cab-training-inpremise-event-details/cab-training-inpremise-event-details.component';
 import { CabTrainingInpremiseFormComponent } from './components/dashboard/cab/cab-training-inpremise-form/cab-training-inpremise-form.component';
 import { MessageReplyComponent } from './components/dashboard/message/message-reply/message-reply.component';
@@ -161,6 +162,10 @@ import { InpremiseApprovalDetailsComponent } from './components/dashboard/operat
 import { SchemeListComponent } from './components/dashboard/cab/scheme-list/scheme-list.component';
 import { EventListsComponent } from './components/dashboard/cab/event-lists/event-lists.component';
 import { CertificationRecordsComponent } from './components/dashboard/cab/certification-records/certification-records.component';
+import { ExportAsModule } from 'ngx-export-as';
+import { FullCalendarModule } from 'ng-fullcalendar';
+import { NgxFullCalendarModule } from 'ngx-fullcalendar';
+import { OperationsCertificationsComponent } from './components/dashboard/operations/operations-certifications/operations-certifications.component'
 
 export const MY_FORMATS = {
   parse: {
@@ -208,6 +213,7 @@ export const MY_FORMATS = {
     AccountUploadComponent,
     CabTrainingDetailComponent,
     CabTrainingInpremiseDetailComponent,
+    CabTrainingInpremiseApplyDetailComponent,
     CabTrainingInpremiseEventDetailsComponent,
     CabTrainingInpremiseFormComponent,
     MessageReplyComponent,
@@ -228,13 +234,16 @@ export const MY_FORMATS = {
     InpremiseApprovalDetailsComponent,
     SchemeListComponent,
     EventListsComponent,
-    CertificationRecordsComponent
+    CertificationRecordsComponent,
+    OperationsCertificationsComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     NgxPayPalModule,
     StripeCheckoutModule,
+    FullCalendarModule,
+    NgxFullCalendarModule,
     PdfViewerModule,
     HttpClientModule,
     AppRoutingModule,
@@ -268,6 +277,7 @@ export const MY_FORMATS = {
     ToastContainerModule,
     StoreModule.forRoot(reducers, {}),
     EffectsModule.forRoot([AuthEffects, TrainerEffects]),
+    ExportAsModule,
   ],
   entryComponents: [ViewerComponentComponent],
   exports: [PdfViewerModule],

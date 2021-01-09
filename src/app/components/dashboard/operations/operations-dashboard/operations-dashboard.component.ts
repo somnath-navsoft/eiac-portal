@@ -28,6 +28,7 @@ export class OperationsDashboardComponent implements OnInit {
   addOnBlur = true;
   userType: any;
   userEmail: any;
+  userDetails: any[] = [];
   chatMessage: any = {};
   file_validation: boolean = true;
   chatMessageFile: any = new FormData();
@@ -64,9 +65,14 @@ export class OperationsDashboardComponent implements OnInit {
   totalDeptCertificateCount: number = 0;
   totalDeptCABCount: number = 0;
   totalDeptDocCount: number = 0;
+  totalDeptPendingCount: number = 0;
+  totalDeptCabWaitingCount: number = 0;
 
   totalDeptStatus: any ={};
   totalDeptSelect: string ='';
+  getCountryStateCityAll: any[] =[];
+  loadCountryList: any[] = [];
+  select_country: string = '';
 
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
@@ -77,11 +83,86 @@ export class OperationsDashboardComponent implements OnInit {
     };
   }
 
+  searchCountry(theEvt: any){    
+    ////console.log(">>>> enter: ", theEvt);
+    let query: string = '';
+    if(theEvt){
+      query = theEvt.target.value
+    }
+    ////console.log(">>> query: ", query, " == ", query.length);
+    let result: any = this.selectCountry(query);
+    if(result){
+      this.loadCountryList = result;
+    }
+  }
+  selectCountry(query: string):any[]{
+    let result: string[] = [];
+    let countryData: any = this.getCountryStateCityAll;
+    ////console.log(">>>> country: ", countryData);
+    var re = new RegExp(query,'gi');
+    countryData.forEach(item => {
+      if(re.exec(item.CountryName)){
+        result.push(item); 
+      }
+    }) 
+    return result;
+  }
+
+  loadCountryStateCityAll  = async() =>{
+    let cscLIST = this.Service.getCSCAll();
+    await cscLIST.subscribe(record => {
+      console.log("...> ", record);
+      this.getCountryStateCityAll = record['Countries'];
+      this.loadCountryList  = record['Countries'];
+      console.log("...>>> ", this.getCountryStateCityAll);
+    });
+  }
+
+  onSelectCountry(selCountry: string){
+    console.log(">>>Select country: ", selCountry, " -- ", this.selectDepartment);
+    if(this.selectDepartment == undefined || this.selectDepartment == ''){
+      this.toastr.warning("Please select department", '');
+      return;
+    }
+    let departmetnId: any = this.selectDepartment;
+    let region: string    = selCountry;
+
+    if(departmetnId != undefined && (departmetnId !='' && region != '')){
+      this.loader = false;
+      let getURL: string =this.Service.apiServerUrl + "/" + 'io-dashboard/?department_type='+departmetnId + '&region='+region;
+      this.Service.getwithoutData(getURL)
+        .subscribe(
+          res => {
+            this.loader = true;
+            let getData: any = {};
+            getData = res['dashBoardData'];
+            console.log(getData,'::::Department data');
+
+            this.totalDeptSelect = getData.lastApplication;
+            if(getData.allScheme != undefined){
+              this.totalDeptSchemeCount = getData.allScheme.length;
+            }
+            this.totalDeptDocCount = getData.totalDeptDocCount;
+            this.totalDeptCABCount = getData.cabWaitingCount;
+            this.totalDeptCertificateCount = getData.all_crtificate_count;
+            this.totalDeptPendingCount = getData.pendingAccrCount;
+
+            if(getData.status_count != undefined){
+                this.totalDeptStatus.accredatedCount    = getData.status_count.accredatedCount[0].cab_data.certificate;
+                this.totalDeptStatus.suspendedCount     = getData.status_count.suspendedCount[0].cab_data.certificate;
+                this.totalDeptStatus.volWithdrawCount   = getData.status_count.volWithdrawCount[0].cab_data.certificate;
+                //this.totalDeptStatus.volSuspendedCount  = getData.status_count.volSuspendedCount.length;
+                //this.totalDeptStatus.withdrawCount      = getData.status_count.withdrawCount.length;                
+            }
+      });
+    }
+  }
+
 
   changeDepartmentView(theEvt: any){
     console.log("> ", this.selectDepartment, " -- ", theEvt);
     this.loader = false;
-    let departmetnId: any =''
+    let departmetnId: any ='';
     if(theEvt && theEvt.value != undefined){
       departmetnId = theEvt.value;
           this.loader = false;
@@ -102,15 +183,13 @@ export class OperationsDashboardComponent implements OnInit {
                 this.totalDeptCABCount = getData.totalCabCount;
                 this.totalDeptCertificateCount = getData.all_crtificate_count;
                 if(getData.status_count != undefined){
-                    this.totalDeptStatus.accredatedCount    = getData.status_count.accredatedCount.length;
-                    this.totalDeptStatus.suspendedCount     = getData.status_count.suspendedCount.length;
-                    this.totalDeptStatus.volWithdrawCount   = getData.status_count.volWithdrawCount.length;
+                    this.totalDeptStatus.accredatedCount    = getData.status_count.accredatedCount[0].cab_data.certificate;
+                    this.totalDeptStatus.suspendedCount     = getData.status_count.suspendedCount[0].cab_data.certificate;
+                    this.totalDeptStatus.volWithdrawCount   = getData.status_count.volWithdrawCount[0].cab_data.certificate;
                     this.totalDeptStatus.volSuspendedCount  = getData.status_count.volSuspendedCount.length;
                     this.totalDeptStatus.withdrawCount      = getData.status_count.withdrawCount.length;
                     
                 }
-
-
           });
     }
   }
@@ -177,24 +256,24 @@ export class OperationsDashboardComponent implements OnInit {
               let time2 = datePart[2];
               let time = time1 +" "+ time2;
               console.log(datePart, " == ", date, " -- ",time);  
-              this.dashboardRecentUpdates.push({title: "IO Last Login",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Last Login",date:date, time: time});
             }
-            if(this.dashboardItemData.lastAccrApplied != undefined){
-              let datePart: any = this.dashboardItemData.lastAccrApplied.toString().split(" ");
-              let date = datePart[0];
-              let time1 = datePart[1];
-              let time1Ar = time1.split(":");
-              console.log(">>>>... ", time1Ar, " -- ", time1Ar.length);
-              if(time1Ar.length == 1){
-                time1 = time1 +":00";
-              }
-              let time2 = datePart[2];
-              let time = time1 +" "+ time2;
-              console.log(datePart, " == ", date, " -- ",time);  
-              this.dashboardRecentUpdates.push({title: "IO Last Accreditation Applied",date:date, time: time});
-            }            
+            // if(this.dashboardItemData.lastAccrApplied != undefined){
+            //   let datePart: any = this.dashboardItemData.lastAccrApplied.toString().split(" ");
+            //   let date = datePart[0];
+            //   let time1 = datePart[1];
+            //   let time1Ar = time1.split(":");
+            //   console.log(">>>>... ", time1Ar, " -- ", time1Ar.length);
+            //   if(time1Ar.length == 1){
+            //     time1 = time1 +":00";
+            //   }
+            //   let time2 = datePart[2];
+            //   let time = time1 +" "+ time2;
+            //   console.log(datePart, " == ", date, " -- ",time);  
+            //   this.dashboardRecentUpdates.push({title: "Accreditation Applied",date:date, time: time});
+            // }            
           }
-          console.log(">>>> Load Data: ", res, " == ", this.dashboardRecentUpdates);
+          //console.log(">>>> Load Data: ", res, " == ", this.dashboardRecentUpdates);
 
         });
   }
@@ -221,6 +300,7 @@ export class OperationsDashboardComponent implements OnInit {
     this.userId = sessionStorage.getItem('userId');
 
     this.loadDashData();
+    this.loadCountryStateCityAll();
 
     if (this.userType != 'operations') {
       var landUrl = '/dashboard' + this.userType + '/home'
@@ -228,6 +308,15 @@ export class OperationsDashboardComponent implements OnInit {
     }
 
     this.loader = false;
+
+    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.profileService + '?userType=' + this.userType + '&email=' + this.userEmail)
+      .subscribe(
+        res => {
+          this.loader = true;
+          console.log(">>> User Profile: ", res);
+          this.userDetails = res['data']['user_data'][0];
+        });
+
     this.Service.getwithoutData(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.messageList + '?id=' + this.userId)
       .subscribe(
         res => {
@@ -248,37 +337,7 @@ export class OperationsDashboardComponent implements OnInit {
 
   }
 
-  search(query: string) {
-    // this.searchTerm = query;
-    let result = this.select(query);
-    // this.searchDetails = result;
-    if (query != '') {
-      this.selectSearch = result;
-    } else {
-      this.selectSearch = [];
-    }
-
-  }
-
-  select(query: string): string[] {
-    let result: string[] = [];
-    if (this.getUserType == 'cab_client' || this.getUserType == 'cab_code') {
-      for (let a of this.searchDetails) {
-        if (a.username.toLowerCase().indexOf(query) > -1) {
-          result.push(a);
-        }
-      }
-    } else {
-      for (let a of this.searchDetails) {
-        if (a.email.toLowerCase().indexOf(query) > -1) {
-          result.push(a);
-        }
-      }
-    }
-
-    // this.searchDetails = result;
-    return result;
-  }
+  
 
   setField(value) {
     // this.search(this.searchTerm);

@@ -1,0 +1,158 @@
+<app-loader *ngIf="!loaderData"></app-loader>
+<div class="main-content">
+    <section>
+        <!-- @{{trainingDetails | json}} -->
+        <div class="form-wrapper-course">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="dashbrd-hdr">
+                            <h3>Apply InPremise course</h3>
+                        </div>
+                    </div>
+                </div>
+                <!-- <ng-container *ngFor="let item of courseDetails; let k = index;"> -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- <ng-container *ngIf="trainingDetails.courseDetails?.course != ''"> -->
+                                <h1>{{trainingDetails.courseDetails?.course}}</h1>
+                            <!-- </ng-container>                             -->
+                        </div>
+                    </div>
+                    <div class="row"> 
+                        <div class="col-lg-6 ">
+                            <div class="course-list">
+                                <!-- <div class="description-course" *ngIf="trainingDetails.course_image != '' && trainingDetails.course_image != null">
+                                    <img src="{{_constant.mediaPath}}{{trainingDetails.course_image}}" [alt] = "trainingDetails.course[0].new_custom_course.name"
+                                    [title] = "trainingDetails.course[0].new_custom_course.name">
+                                </div> -->
+
+                                <ng-container *ngIf="trainingDetails.courseDetails?.course_type != '' && trainingDetails.courseDetails?.course_type != null">
+                                    <div class="description-course">
+                                        <img src="{{_constant.mediaPath}}{{trainingDetails.courseDetails.course_type.course_type_img_thumb}}" [alt]="trainingDetails.courseDetails.course"
+                                        [title]="trainingDetails.courseDetails.course">                                   
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="trainingDetails.courseDetails.course_type == '' || trainingDetails.courseDetails.course_type == null">
+                                    <div class="description-course">
+                                        <h3 [ngStyle]="{'text-align': 'center'}">No Image</h3>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-6 pl-sm-0">
+                            <div class="service-course-block">
+                                <div class="course-data">
+                                    <div class="course-info">
+                                        <h3>COURSE INFORMATION</h3>
+                                    </div>
+                                    <div class="course-info">
+                                        <div class="course-det">
+                                            <h5>Date : 
+                                                <!-- <div *ngIf="trainingDetails['eventDate'].length > 0; then Dateshow else Datehide" ></div>
+                                                <ng-template #Dateshow>
+                                                    <span>{{trainingDetails['eventDate'][0].event_date | date}}</span>
+                                                </ng-template>
+                                                <ng-template #Datehide>
+                                                    <span>N/A</span>
+                                                </ng-template> -->
+                                                
+                                                <span *ngIf="trainingDetails['eventDate'].length > 0;">{{trainingDetails['eventDate'][0].event_date | date}}</span>
+                                            </h5>
+                                        </div>
+                                        
+                                        <div class="course-det">
+                                            <h5>Duration : <span *ngIf="trainingDetails.courseDetails.training_days != ''">{{trainingDetails.courseDetails.training_days}} Days</span>
+                                                <span *ngIf="trainingDetails.courseDetails.training_days == ''">N/A</span>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="course-info">
+                                        <div class="course-det">
+                                            <h5>Fees in AED : <span *ngIf="trainingDetails.courseDetails.fees_per_trainee != ''">{{trainingDetails.courseDetails.fees_per_trainee}}</span>
+                                            <span *ngIf="trainingDetails.courseDetails.fees_per_trainee == ''">N/A</span>
+                                            </h5>
+                                        </div>
+
+                                        <div class="course-det">
+                                            <h5>Capacity : <span *ngIf="trainingDetails.courseDetails.capacity != ''">{{trainingDetails.capacity}}</span>
+                                            <span *ngIf="trainingDetails.courseDetails.capacity == ''">N/A</span>
+                                            </h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="course-info">
+                                        <!-- <h5>Trainer : </h5> -->
+                                        <h5>Trainer : <span *ngIf="trainingDetails.tutor.name != ''">{{trainingDetails.tutor.name}}</span>
+                                        <span *ngIf="trainingDetails.tutor.name == ''">N/A</span>
+                                        </h5>
+                                    </div>
+
+                                    <div class="course-info">
+                                        <h5>Location : <span *ngIf="trainingDetails.custom_location != null">{{trainingDetails.custom_location}}</span>
+                                        <span *ngIf="trainingDetails.custom_location == null">Client Premise</span>
+                                        </h5>
+                                    </div>
+
+                                    <div class="course-info">
+                                        <h5>Audience:
+                                            <ng-container *ngIf="trainingDetails.courseDetails['allTargatedAud'] != undefined && trainingDetails.courseDetails['allTargatedAud'].length > 0">
+                                                <ng-container *ngFor="let item of trainingDetails.courseDetails['allTargatedAud']">
+                                                    <span>{{item.target_aud_name.title}}</span>, 
+                                                </ng-container>
+                                            </ng-container>
+                                        </h5>
+                                        <!-- <h5>Audience : <span *ngIf="item.public_course?.allTargatedAud && item.public_course?.allTargatedAud[0].target_aud_name.title">{{courseDetails?.allTargatedAud[0].target_aud_name.title}}</span>
+                                        <span *ngIf="!courseDetails?.allTargatedAud && !courseDetails?.allTargatedAud[0].target_aud_name.title">{{courseDetails?.allTargatedAud[0].target_aud_name.title}}</span>
+                                        </h5> -->
+                                        <!-- <ng-container *ngIf="item.public_course_dtls.allTargatedAud != undefined && item.public_course_dtls.allTargatedAud.length > 0">
+                                            <ng-container *ngFor="let data of item.public_course_dtls.allTargatedAud">
+                                                <span>{{data.target_aud_name.title}}</span>|
+                                            </ng-container>
+                                        </ng-container> -->
+                                        <!-- <ng-container *ngIf="audienceData[k].audience != undefined && audienceData[k].audience != ''">
+                                            {{audienceData[k].audience}}
+                                        </ng-container>
+                                        <ng-container *ngIf="audienceData[k].audience == ''">
+                                            NA
+                                        </ng-container> -->
+                                        <!-- <span *ngIf="audienceData != ''">{{audienceData}}</span>
+                                        <span *ngIf="audienceData === ''">NA</span> -->
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="progs-up">
+                                <div class="prog-details">
+                                    <ng-container *ngIf="trainingDetails.courseDetails.course_description != ''">
+                                        <p [innerHtml]="trainingDetails.courseDetails.course_description"></p>
+                                    </ng-container>
+                                    
+                                </div>                               
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6">
+                            <div class="course-bttn"  *ngIf="trainingDetails.remaining_capacity > 0 || trainingDetails.remaining_capacity == null">
+                                <div class="course-btn">
+                                    <a class="curs-apply" [routerLink]="['/dashboard/cab_client/training-inpremise-form']" [queryParams]="{courseid: routeId}">Apply Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>               
+                
+                <!-- </ng-container> -->
+                        
+            </div>
+        </div>
+    </section>
+        
+</div>

@@ -6,106 +6,160 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="dashbrd-hdr">
-                            <h3>Apply Public Course</h3>
+                            <h3>Apply In Premise Course</h3>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <h1>{{courseDetails?.course}}</h1>
+                <!-- <ng-container *ngFor="let item of courseDetails; let k = index;"> -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ng-container *ngIf="trainingDetails.main_course != undefined && trainingDetails.main_course != null">
+                                <h1>{{trainingDetails.main_course.name}}</h1>
+                            </ng-container>                            
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 ">
-                        <div class="course-list">
-                            <div class="description-course" *ngIf="courseDetails?.courseType && courseDetails?.courseType[0].course_type_img">
-                                <img src="{{_constant.mediaPath}}/media/{{courseDetails?.courseType[0].course_type_img}}" alt="">
+                    <div class="row"> 
+                        <div class="col-lg-6 ">
+                            <div class="course-list">
+                                <div class="description-course" *ngIf="trainingDetails.courseType != undefined && trainingDetails.courseType.length > 0">
+                                    <img src="{{_constant.mediaPath}}/media/{{trainingDetails.courseType[0].course_type_img}}" [alt] = "" [title] = "">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="col-lg-6 pl-sm-0">
-                        <div class="service-course-block">
-                            <div class="course-data">
-                                <div class="course-info">
-                                    <h3>COURSE INFORMATION</h3>
-                                </div>
-                                <div class="course-info">
-                                    <div class="course-det">
-                                        <h5>Date : 
-                                            <div  *ngIf="courseDetails?.event.eventDates && courseDetails?.event.eventDates[0].event_date; then Dateshow else Datehide" ></div>
-
-                                            <ng-template #Dateshow>
-                                                <span>{{courseDetails?.event.eventDates[0].event_date | date}}</span>
-                                            </ng-template>
-                                            <ng-template #Datehide>
-                                                <span>N/A</span>
-                                            </ng-template>
-                                        </h5>
+                        
+                        <div class="col-lg-6 pl-sm-0">
+                            <div class="service-course-block">
+                                <div class="course-data">
+                                    <div class="course-info">
+                                        <h3>COURSE INFORMATION</h3>
+                                    </div>
+                                    <div class="course-info">
+                                        <div class="course-det">
+                                            <h5>Date : 
+                                                <!-- <div  *ngIf="trainingDetails.eventDate; then Dateshow else Datehide" ></div>
+                                                <ng-template #Dateshow>
+                                                    <span>{{trainingDetails?.eventDate[0].event_date | date}}</span>
+                                                </ng-template>
+                                                <ng-template #Datehide>
+                                                    <span>N/A</span>
+                                                </ng-template> -->
+                                                <!-- <div  *ngIf="trainingDetails.eventDate && courseDetails?.eventDate[0].event_date; then Dateshow else Datehide" ></div>
+                                                <ng-template #Dateshow>
+                                                    <span>{{courseDetails?.eventDate[0].event_date | date}}</span>
+                                                </ng-template>
+                                                <ng-template #Datehide>
+                                                    <span>N/A</span>
+                                                </ng-template> -->
+                                                <ng-container *ngIf="trainingDetails.eventDate != undefined && trainingDetails.eventDate.length > 0">
+                                                    <span>{{trainingDetails?.eventDate[0].event_date | date}}</span>
+                                                </ng-container>
+                                                <ng-container *ngIf="trainingDetails.eventDate == undefined || trainingDetails.eventDate == 'NA'">
+                                                    <span>NA</span>
+                                                </ng-container>
+                                            </h5>
+                                        </div>
+                                        
+                                        <div class="course-det">
+                                            <h5>Duration : <span *ngIf="trainingDetails?.training_days != ''">{{trainingDetails?.training_days}} Days</span>
+                                                <span *ngIf="trainingDetails?.training_days == ''">N/A</span>
+                                            </h5>
+                                        </div>
                                     </div>
                                     
-                                    <div class="course-det">
-                                        <h5>Duration : <span *ngIf="courseDetails?.training_days != ''">{{courseDetails?.training_days}} Days</span>
-                                        <span *ngIf="courseDetails?.training_days == ''">N/A</span>
+                                    <div class="course-info">
+                                        <div class="course-det">
+                                            <h5>Fees in AED : <span *ngIf="trainingDetails?.fees_per_trainee != ''">{{trainingDetails?.fees_per_trainee}}</span>
+                                            <span *ngIf="trainingDetails?.fees_per_trainee == ''">N/A</span>
+                                            </h5>
+                                        </div>
+
+                                        <div class="course-det">
+                                            <h5>Capacity : <span *ngIf="trainingDetails?.capacity != ''">{{trainingDetails?.capacity}}</span>
+                                            <span *ngIf="trainingDetails?.capacity == ''">N/A</span>
+                                            </h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="course-info">
+                                        <h5>Trainer : 
+                                        <span *ngIf="trainingDetails?.tutor != undefined">{{trainingDetails?.tutor.tutor__name}}</span>
+                                        <span *ngIf="trainingDetails?.tutor == undefined || trainingDetails?.tutor == null">NA</span>
+                                        </h5>
+                                        <!-- <h5>Trainer : <span *ngIf="courseDetails?.tutor != ''">{{courseDetails?.event.tutor}}</span>
+                                        <span *ngIf="courseDetails?.tutor == ''">N/A</span>
+                                        </h5> -->
+                                    </div>
+
+                                    <div class="course-info">
+                                        <h5>Location : <span *ngIf="trainingDetails?.location == 'eiac_training_center'">EIAC Training Center</span>
+                                        <span *ngIf="trainingDetails?.location === '' || trainingDetails?.location == null">N/A</span>
                                         </h5>
                                     </div>
-                                </div>
-                                
-                                <div class="course-info">
-                                    <div class="course-det">
-                                        <h5>Fees in AED : <span *ngIf="courseDetails?.fees_per_trainee != ''">{{courseDetails?.fees_per_trainee}}</span>
-                                        <span *ngIf="courseDetails?.fees_per_trainee == ''">N/A</span>
+
+                                    <div class="course-info">
+                                        <h5>Audience:
+                                        <span *ngIf="audienceData != ''">{{audienceData}}</span>
+                                        <span *ngIf="audienceData === ''">NA</span>
+
                                         </h5>
+
+                                        <!-- <ng-container *ngIf="trainingDetails.allTargatedAud != undefined || trainingDetails.allTargatedAud != null">                                                        
+                                            <ng-container *ngFor="let item of trainingDetails.allTargatedAud;">
+                                                <span>{{item.target_aud_name.title}}</span>, 
+                                            </ng-container>
+                                        </ng-container>
+                                        <ng-container *ngIf="trainingDetails.allTargatedAud == undefined || trainingDetails.allTargatedAud == null">
+                                            NA
+                                        </ng-container> -->
+                                        <!-- <h5>Audience : <span *ngIf="item.public_course?.allTargatedAud && item.public_course?.allTargatedAud[0].target_aud_name.title">{{courseDetails?.allTargatedAud[0].target_aud_name.title}}</span>
+                                        <span *ngIf="!courseDetails?.allTargatedAud && !courseDetails?.allTargatedAud[0].target_aud_name.title">{{courseDetails?.allTargatedAud[0].target_aud_name.title}}</span>
+                                        </h5> -->
+                                        <!-- <ng-container *ngIf="item.public_course_dtls.allTargatedAud != undefined && item.public_course_dtls.allTargatedAud.length > 0">
+                                            <ng-container *ngFor="let data of item.public_course_dtls.allTargatedAud">
+                                                <span>{{data.target_aud_name.title}}</span>|
+                                            </ng-container>
+                                        </ng-container> -->
+                                        <!-- <ng-container *ngIf="audienceData[k].audience != undefined && audienceData[k].audience != ''">
+                                            {{audienceData[k].audience}}
+                                        </ng-container>
+                                        <ng-container *ngIf="audienceData[k].audience == ''">
+                                            NA
+                                        </ng-container> -->
+                                        <!-- <span *ngIf="audienceData != ''">{{audienceData}}</span>
+                                        <span *ngIf="audienceData === ''">NA</span> -->
                                     </div>
-
-                                    <div class="course-det">
-                                        <h5>Capacity : <span *ngIf="courseDetails?.capacity != ''">{{courseDetails?.capacity}}</span>
-                                        <span *ngIf="courseDetails?.capacity == ''">N/A</span>
-                                        </h5>
-                                    </div>
+                                    
                                 </div>
-
-                                <div class="course-info">
-                                    <h5>Trainer : <span *ngIf="courseDetails?.tutor != ''">{{courseDetails?.event.tutor}}</span>
-                                    <span *ngIf="courseDetails?.tutor == ''">N/A</span>
-                                    </h5>
-                                </div>
-
-                                <div class="course-info">
-                                    <h5>Location : <span *ngIf="courseDetails?.event.location == 'eiac_training_center'">EIAC Training Center</span>
-                                    <span *ngIf="courseDetails?.event.location != '' && courseDetails?.event.location != 'eiac_training_center'">N/A</span>
-                                    </h5>
-                                </div>
-
-                                <div class="course-info">
-                                    <h5>Audience : <span *ngIf="courseDetails?.allTargatedAud && courseDetails?.allTargatedAud[0].target_aud_name.title">{{courseDetails?.allTargatedAud[0].target_aud_name.title}}</span>
-                                    <span *ngIf="!courseDetails?.allTargatedAud && !courseDetails?.allTargatedAud[0].target_aud_name.title">{{courseDetails?.allTargatedAud[0].target_aud_name.title}}</span>
-                                    </h5>
-                                </div>
-                                
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="progs-up">
-                            <div class="prog-details">
-                                <p [innerHtml]="courseDetails?.course_description"></p>
-                            </div>                               
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="progs-up">
+                                <div class="prog-details">
+                                    <ng-container *ngIf="trainingDetails.main_course != undefined && trainingDetails.main_course.description != ''">
+                                        <p [innerHtml]="trainingDetails.main_course.description"></p>
+                                    </ng-container>
+                                    <ng-container *ngIf="trainingDetails.main_course != undefined && trainingDetails.main_course.description == ''">
+                                        <p></p>
+                                    </ng-container>
+                                </div>                               
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6"></div>
-                    <div class="col-md-6">
-                        <div class="course-bttn">
-                            <!-- <div class="course-btn ">
-                                <a class="curs-apply" routerLink = "/dashboard/cab_client/training-inpremise-form/{{routeId}}">Apply Now</a>
-                            </div> -->
+                    <!-- <div class="row">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6">
+                            <div class="course-bttn">
+                                <div class="course-btn">
+                                    <a class="curs-apply" routerLink = "/dashboard/cab_client/training-inpremise-form/{{item.training_course}}">Apply Now</a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </div>                -->
+                
+                <!-- </ng-container> -->
+                        
             </div>
         </div>
     </section>

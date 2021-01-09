@@ -14,7 +14,7 @@
                         </div>
                         <div class="trainer-detail">
                             <!-- <span class="trainer-data"><span class="icon-company"></span>Navigators Software Pvt. Ltd.</span> -->
-                            <span class="trainer-data"><span class="icon-Page"></span>{{userDetails.email}}</span>
+                            <span class="trainer-data"><span class="icon-mail"></span>{{userDetails.email}}</span>
                             <!-- <span class="trainer-data"><span class="icon-call"></span>+971 254-3269</span> -->
                         </div>
                     </div>
@@ -62,6 +62,7 @@
             </div>
             <div class="row">
                 <div class="col-md-3">
+                    <a routerLink="/dashboard/{{userType}}/company-profile">
                     <div class="trainer-main-details">
                         <div class="user-icons">
                             <span class="icon-user-dash"></span>
@@ -71,32 +72,35 @@
                                 <span>Profile</span>
                             </div>
                             <div class="trainer-maindata trainer-update">                                
-                                <span>Update 
-                                    <a routerLink="/dashboard/{{userType}}/company-profile">
+                                <span>Update                                    
                                         <span [ngStyle]="{'color': '#FFF', 'font-size':'31px'}">></span>
                                     <!-- <span class="icon-right-arrow"></span> -->
-                                    </a>
+                                    <!-- </a> -->
                                 </span>                                
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="col-md-3">
+                    <a href="javascript:void(0)" routerLink="/dashboard/certifications">
                     <div class="trainer-main-details trainer2">
                         <div class="user-icons">
-                            <span class="icon-doc-write"></span>  
+                            <span class="icon-doc-write"></span>
                         </div>
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
                                 <span>Certificates</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span *ngIf="dashboardItemData.totalCabDirectoryCount != ''">{{dashboardItemData.totalCabDirectoryCount}}</span>
+                                <span *ngIf="dashboardItemData.totalCabDirectoryCount != undefind">{{dashboardItemData.totalCabDirectoryCount}}</span>
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="col-md-3">
+                    <a href="javascript:void(0)" routerLink="/dashboard/event-list">
                     <div class="trainer-main-details trainer3">
                         <div class="user-icons">
                             <span class="icon-calendar"></span>
@@ -106,42 +110,61 @@
                                 <span>Events</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span *ngIf="dashboardItemData.totalEventCount != ''">{{dashboardItemData.totalEventCount}}</span>
+                                <!-- <span *ngIf="dashboardItemData.eventTrainingCount != undefind">{{dashboardItemData.eventTrainingCount}}</span> -->
+                                <span *ngIf="dashboardItemData.eventTrainingCount != undefind">34</span>
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="col-md-3">
+                    <a href="javascript:void(0)" routerLink="/dashboard/certification-records">
+                    <ng-container *ngIf="dashboardTradeLicExStatus">                    
                     <div class="trainer-main-details trainer4" [ngStyle]="{'height': '97px'}">
                         <div class="user-icons">
                             <span class="icon-doc-diff"></span>
                         </div>
                         <div class="trainer-data-det">
-                            <!-- @{{dashboardTradeLicExDate}}
-                            @{{dashboardTradeLicFile}} -->
                             <div class="trainer-pro">
                                 <span>Records</span>
                             </div>
-                            <div class="trainer-maindata">
+                            <div class="trainer-maindata"> 
                                 <span>1</span>
                             </div>                            
                         </div>                        
                     </div> 
-                    <div class="lic-expire" *ngIf="!dashboardTradeLicExStatus" [ngStyle]="{'height':'35px'}">                       
+                    </ng-container>
+                    <ng-container *ngIf="!dashboardTradeLicExStatus">                    
+                        <div class="trainer-main-details trainer4">
+                            <div class="user-icons">
+                                <span class="icon-doc-diff"></span>
+                            </div>
+                            <div class="trainer-data-det">
+                                <div class="trainer-pro">
+                                    <span>Records</span>
+                                </div>
+                                <div class="trainer-maindata"> 
+                                    <span>1</span>
+                                </div>                            
+                            </div>                        
+                        </div> 
+                    </ng-container>
+                    <!-- <div class="lic-expire" *ngIf="!dashboardTradeLicExStatus" [ngStyle]="{'height':'35px'}">                       
                         <ng-container>
                             <span>{{licence_document_file}}</span>
-                            <div class="icn-appln" [ngStyle]="{'padding': '0px'}">                                
+                            <span [ngStyle]="{'padding-left':'10px'}">
                                 <a target="_blank" [href]="licence_document_path"> 
-                                <span class="icon-download"  [ngStyle]="{'font-size': '11px'}"></span>
+                                    <span class="icon-download"  [ngStyle]="{'font-size': '11px'}"></span>
                                 </a>
-                              </div>
+                            </span>
                         </ng-container>
-                    </div>
+                    </div> -->
                     <div class="lic-expire" *ngIf="dashboardTradeLicExStatus" [ngStyle]="{'height':'35px'}">
                         <ng-container>
                             <span>Trade License expired on : {{dashboardTradeLicExDate | date}}</span>
                         </ng-container>                        
                     </div>
+                    </a> 
                 </div>
             </div>
         </div>
@@ -200,21 +223,32 @@
                             <div class="dash-main">
                                 <div class="dash-wrap">
                                     <div class="usermain">
-                                        <div class="main-status">
+                                        <!-- <div class="main-status">
                                             <p class="head-dash">Applications Accreditation</p>
                                             <p class="sub-head-dash">
                                                 <ng-container *ngIf="dashboardItemData.completeAccrCount != null">
                                                 {{dashboardItemData.completeAccrCount}}</ng-container><span class="active-dash complete-dash">Completed</span></p>
+                                        </div> -->
+                                        <!-- 1 0 5 -->
+                                        <div class="main-status">
+                                            <p class="head-dash">Applications</p>
+                                            <!-- <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/status/all"><span>Accreditation&nbsp;&nbsp;</span></a>{{dashboardItemData.activeAccrCount}}<span class="active-dash"> Active</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/registration-status"><span>Registration&nbsp;&nbsp;</span></a>{{dashboardItemData.activeRegCount}}<span class="active-dash"> Active</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/training-status"><span>Training&nbsp;&nbsp;</span></a>{{dashboardItemData.activeTrainingCount}}<span class="active-dash"> Active</span></p> -->
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/status/all"><span>Accreditation&nbsp;&nbsp;</span></a>1<span class="active-dash"> Active</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/registration-status"><span>Registration&nbsp;&nbsp;</span></a>0<span class="active-dash"> Active</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/training-status"><span>Training&nbsp;&nbsp;</span></a>5<span class="active-dash"> Active</span></p>
                                         </div>
+                                        
                                         <div class="view-all">
                                             <p>From last week</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="dash-logo">
-                                    <a routerLink="/dashboard/status/all">
+                                    <!-- <a routerLink="/dashboard/status/all"> -->
                                         <span class="icon-pages"></span>
-                                    </a>
+                                    <!-- </a> -->
                                 </div>
                             </div>
                         </div>
@@ -222,7 +256,7 @@
                             <div class="dash-main">
                                 <div class="dash-wrap">
                                     <div class="usermain">
-                                        <div class="main-status">
+                                        <!-- <div class="main-status">
                                             <p class="head-dash">Applications Registration</p>
                                             <p class="sub-head-dash">
                                                 <ng-container *ngIf="dashboardItemData.completeRegCount != null">
@@ -231,13 +265,27 @@
                                         </div>
                                         <div class="view-all">
                                             <p>From last week</p>
+                                        </div> -->
+
+                                        <div class="main-status">
+                                            <p class="head-dash">Applications</p>
+                                            <!-- <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/status/all"><span>Accreditation&nbsp;&nbsp;</span></a> {{dashboardItemData.completeAccrCount}}<span class="active-dash complete-dash"> Completed</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/registration-status"><span>Registration&nbsp;&nbsp;</span></a> {{dashboardItemData.completeRegCount}}<span class="active-dash complete-dash"> Completed</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/training-status"><span>Training&nbsp;&nbsp;</span></a> {{dashboardItemData.completeTrainingCount}}<span class="active-dash complete-dash"> Completed</span></p> -->
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/status/all"><span>Accreditation&nbsp;&nbsp;</span></a> 0<span class="active-dash complete-dash"> Completed</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/registration-status"><span>Registration&nbsp;&nbsp;</span></a> 0<span class="active-dash complete-dash"> Completed</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/training-status"><span>Training&nbsp;&nbsp;</span></a> 0<span class="active-dash complete-dash"> Completed</span></p>
+                                        </div>
+                                        
+                                        <div class="view-all">
+                                            <p>From last week</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="dash-logo">
-                                    <a routerLink="/dashboard/registration-status">
+                                    <!-- <a routerLink="/dashboard/registration-status"> -->
                                         <span class="icon-pages"></span>
-                                    </a>
+                                    <!-- </a> -->
                                 </div>
                             </div>
                         </div>
@@ -253,12 +301,12 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="dash-main">
+                            <div class="dash-main" [ngStyle]="{'height': '124px'}">
                                 <div class="dash-wrap">
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash head-dash-bill">Vouchers</p>
-                                            <p class="sub-head-dash" *ngIf="dashboardItemData.voucherCount != ''">{{dashboardItemData.voucherCount}}<span class="active-dash">active</span></p>
+                                            <p class="sub-head-dash" *ngIf="dashboardItemData.voucherCount != ''">{{dashboardItemData.activeVoucherCount}}<span class="active-dash">active</span></p>
                                         </div>
                                         <div class="view-all">
                                             <p>From last week</p>
@@ -273,14 +321,16 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="dash-main">
+                            <div class="dash-main" [ngStyle]="{'height': '124px'}">
                                 <div class="dash-wrap">
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash head-dash-bill">Payments</p>
                                             <p class="sub-head-dash">
-                                            <ng-container *ngIf="dashboardItemData.paymentCount != null">
-                                                {{dashboardItemData.paymentCount}}</ng-container>
+                                                0
+                                            <!-- <ng-container *ngIf="dashboardItemData.lastWeekPaymentCount != null">
+                                                {{dashboardItemData.lastWeekPaymentCount}}
+                                            </ng-container> -->
                                             </p>
                                         </div>
                                         <div class="view-all"> 
@@ -315,7 +365,7 @@
                             </div> -->
                         </div>
                         <div class="col-md-6">
-                            <div class="dash-main">
+                            <!-- <div class="dash-main">
                                 <div class="dash-wrap">
                                     <div class="usermain">
                                         <div class="main-status">
@@ -334,13 +384,13 @@
                                         <span class="icon-pages"></span>
                                     </a>
                                 </div>
-                            </div>
-                            <!-- <div class="dash-main">
+                            </div> -->
+                            <div class="dash-main" [ngStyle]="{'height': '223px'}">
                                 <div class="dash-wrap">
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash head-dash-bill">Vouchers</p>
-                                            <p class="sub-head-dash">17<span  class="active-dash expired-dash">Expired</span></p>
+                                            <p class="sub-head-dash">{{dashboardItemData.expiredVoucherCount}}<span  class="active-dash expired-dash">Expired</span></p>
                                         </div>
                                         <div class="view-all">
                                             <p>From last week</p>
@@ -350,20 +400,21 @@
                                 <div class="dash-logo bill-logo">
                                     <span class="icon-tag"></span>
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="dash-main">
+                            <div class="dash-main" [ngStyle]="{'height': '223px'}">
                                 <div class="dash-wrap">
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash head-dash-bill">Payments</p>
                                             <p class="sub-head-dash">                                                 
-                                                <ng-container *ngIf="dashboardItemData.paymentConfirmedCount != undefind && dashboardItemData.paymentConfirmedCount != null">
-                                                    {{dashboardItemData.paymentConfirmedCount}}</ng-container>
-                                                <ng-container *ngIf="dashboardItemData.paymentConfirmedCount == undefind || dashboardItemData.paymentConfirmedCount == null">
+                                                <!-- <ng-container *ngIf="dashboardItemData.lastWeekPaymentConfirmedCount != undefind && dashboardItemData.lastWeekPaymentConfirmedCount != null">
+                                                    {{dashboardItemData.lastWeekPaymentConfirmedCount}}</ng-container>
+                                                <ng-container *ngIf="dashboardItemData.lastWeekPaymentConfirmedCount == undefind || dashboardItemData.lastWeekPaymentConfirmedCount == null">
                                                     0
-                                                </ng-container>
+                                                </ng-container> -->
+                                                0
                                                 <span class="active-dash confirmed-dash">Confirmed</span></p>
                                         </div>
                                         <div class="view-all">
@@ -467,7 +518,7 @@
                                 <div class="activity-details">
                                     <ul>
                                         <ng-container *ngFor = "let item of dashboardRecentUpdates">
-                                        <li>{{item.title}}<span> on {{item.date}} at {{item.time}}</span></li>
+                                        <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span>, {{item.title}} on {{item.date}} at {{item.time}}</span></li>
                                         </ng-container> 
                                         <!-- <li>These cases are perfectly simple and easy to distinguish. In a free hour,
                                             when our power of choice is
@@ -540,6 +591,135 @@
                         </div>
                     </div>
                     <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                    <div class="row" hidden>
+                        <div class="col-md-12">
+                            <div class="cmnt-content">
+                                <form #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <mat-form-field  class="cab-data">
+                                                <mat-label>Select</mat-label>
+                                                <mat-select required [(ngModel)]="selectedField"
+                                                    [ngModelOptions]="{standalone: true}"
+                                                    (ngModelChange)="setField($event)">
+                                                    <mat-option *ngFor="let data of select_field" [value]="data.value">
+                                                        {{data.field}}</mat-option>
+                                                </mat-select>
+                                                <mat-error></mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-6"
+                                            *ngIf="getUserType=='cab_client' || getUserType=='cab_code'">
+                                            <mat-form-field class="cab-data">
+                                                <!-- <input type="text" (click)="search($event.target.value)"
+                                                    (input)="search($event.target.value)"
+                                                    placeholder="{{selectedField}}" matInput required
+                                                    [matAutocomplete]="auto">
+                                                <mat-autocomplete #auto="matAutocomplete">
+                                                    <mat-option (onSelectionChange)="getValue(option.id)"
+                                                        *ngFor="let option of selectSearch" [value]="option.username">
+                                                        {{option.username}}
+                                                    </mat-option>
+                                                </mat-autocomplete> -->
+                                                <mat-chip-list #chipList >
+                                                    <mat-chip
+                                                      *ngFor="let option of selectedUser"
+                                                      [selectable]="selectable"
+                                                      [removable]="removable"
+                                                      (removed)="remove(option)">
+                                                      {{option}}
+                                                      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                                    </mat-chip>
+                                                    <input 
+                                                      placeholder="{{selectedField}}"
+                                                      #fruitInput                                                      
+                                                      [matAutocomplete]="auto"
+                                                      [matChipInputFor]="chipList"                                                      
+                                                      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                      (matChipInputTokenEnd)="add($event)" (input)="search($event.target.value)">
+                                                  </mat-chip-list>
+                                                  <mat-autocomplete #auto="matAutocomplete">
+                                                    <mat-option (onSelectionChange)="getValue(option, 'username')"
+                                                        *ngFor="let option of selectSearch" [value]="option.username">
+                                                        {{option.username}}
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-6"
+                                            *ngIf="getUserType=='trainers' || getUserType=='operations'">
+                                            <mat-form-field class="cab-data" #matForm>
+                                                <!-- <input type="text" (click)="search($event.target.value)"
+                                                    (input)="search($event.target.value)"
+                                                    placeholder="{{selectedField}}" matInput required
+                                                    [matAutocomplete]="auto"> -->
+                                                    <mat-chip-list #chipList >
+                                                        <mat-chip
+                                                          *ngFor="let option of selectedUser"
+                                                          [selectable]="selectable"
+                                                          [removable]="removable"
+                                                          (removed)="remove(option)">
+                                                          {{option}}
+                                                          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                                        </mat-chip>
+                                                        <input 
+                                                          placeholder="{{selectedField}}"
+                                                          #fruitInput                                                      
+                                                          [matAutocomplete]="auto"
+                                                          [matChipInputFor]="chipList"
+                                                          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                          (matChipInputTokenEnd)="add($event)" (input)="search($event.target.value)">
+                                                      </mat-chip-list>
+                                                <mat-autocomplete #auto="matAutocomplete" >
+                                                    <mat-option (onSelectionChange)="getValue(option, 'email')"
+                                                        *ngFor="let option of selectSearch" [value]="option.email">
+                                                        {{option.email}}
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="matupload position-relative">
+                                                <mat-form-field class="lng-data">
+                                                    <input readonly name="upload_message" [(ngModel)]="documentName"
+                                                        matInput name="file" placeholder="Upload Document">
+                                                </mat-form-field>
+                                                <span class="fileupload">
+                                                    <input #file type="file" accept="application/pdf"
+                                                        name="upload_message_file"
+                                                        [(ngModel)]="chatMessage.upload_message_file"
+                                                        (change)="validateFile($event)">
+                                                    <!-- <mat-error class="error" *ngIf="!file_validation">Please Upload a valid file (ex: pdf,xlsx,xlx)</mat-error>  -->
+                                                    <span class="icon-attach attach-data" (click)="file.click()"></span>
+                                                </span>
+                                                <p class="error" *ngIf="!file_validation">Please Upload a
+                                                    valid file (ex: pdf)</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Message</mat-label>
+                                                <input name="message" maxlength="200" required [(ngModel)]="chatMessage.message"
+                                                    matInput autocomplete="off" placeholder="Message">
+                                                <mat-error></mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col-md-12">
+                                            <div class="bttns-appln mb-0">
+                                                <button class="submit-bttn" [disabled]="button_disable">SEND
+                                                    MESSAGE</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     <!-- <div class="hdr-sec">
                         <div class="row">
                             <div class="col-md-12">

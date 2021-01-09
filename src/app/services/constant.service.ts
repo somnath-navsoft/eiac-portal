@@ -9,7 +9,8 @@ export class Constants{
 
 	public apiUrl: string 					= '';
 
-	public mediaPath: string 				= 'https://uat-service.eiac.gov.ae';
+	public mediaPath: string 				= 'https://dev-service.eiac.gov.ae';
+	//public mediaPath: string 				= 'https://uat-service.eiac.gov.ae';
 	//trainerAPI: '/trainer',
 	//all_services: this.apiUrl + 'service_page/', 
 	public myvalue: any;
@@ -83,11 +84,15 @@ export class Constants{
 		accountLists: this.apiUrl + 'accounts/',
 		accountDetails: this.apiUrl + 'account-details-show/',
 		accrediationCsv: this.apiUrl + 'accrediation-csv/',
+		trainingCsv: this.apiUrl + 'training-csv/',
+		accrediationPdf: this.apiUrl + 'accrediation-pdf/',
+		trainingPdf: this.apiUrl + 'training-pdf/',
 		workPermitform: this.apiUrl + 'workpermit_form/',
 		training_course_list: this.apiUrl + 'training-course-list/',
 		course_details_publicForm: this.apiUrl + 'public-course-event-details-show/',
 		publicTrainingForm: 'training_request_form/',
-		noc_submit_form : 'noc_form'		
+		noc_submit_form : 'noc_form',
+		event_list : 'event-list',
 		// webservice/training_request_form/
 	}
 	//course_details: this.apiUrl + 'course-details/',

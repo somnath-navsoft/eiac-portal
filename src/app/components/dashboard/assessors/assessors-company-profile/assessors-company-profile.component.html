@@ -12,7 +12,7 @@
               <div class="col-md-3">
                 <div class="main_app_wrap">
                   <div class="appln-data">
-                    <h3>{{cabUserDetails?.first_name}} {{cabUserDetails?.last_name}}</h3>
+                    <h4 [ngStyle]="{'font-family' : 'Dubai Medium'}">{{cabUserDetails?.first_name}} {{cabUserDetails?.last_name}}</h4>
                     <span>{{cabUserDetails?.designation}}</span>
                   </div>
                 </div>
@@ -70,7 +70,7 @@
                   <h5>Phone Number</h5>
                 </div>
                 <div class="appln-details">
-                  <span *ngIf="cabStep1?.office_tel_no != ''">{{cabStep1?.office_tel_no}}</span> 
+                  <span *ngIf="cabUserDetails?.contact != ''">{{cabUserDetails?.contact}}</span> 
                 </div>
               </div>
               <div class="col border-left-dash">

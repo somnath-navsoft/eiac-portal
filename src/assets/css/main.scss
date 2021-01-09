@@ -47,6 +47,72 @@ input { font-family: 'Dubai Regular'; }
 .main-content .mat-radio-label-content { font-family: 'Dubai Regular'; font-size: 17px; }
 //==================DU PORTAL==================//
 
+.fc td  { border-width: 1px!important;}
+td.fc-widget-content .fc-themed { border-color: transparent!important;}
+td.fc-widget-content:last-child { border-color: transparent; border-top: 4px solid;}
+.fc th { border-width: 1px!important; padding: 12px 0!important;}
+td.fc-head-container.fc-widget-header {border-color: transparent; border-bottom: 4px solid rgba(198, 184, 164, 0.3); }
+td.fc-day.fc-widget-content { border-color: #D0D0D0; color: #888A8C; background: #fff; }
+.fc-ltr .fc-basic-view .fc-day-top .fc-day-number { float: none!important;}
+.fc-basic-view .fc-day-number, .fc-basic-view .fc-week-number { position: relative; top: 10px; left: 10px;}
+button.fc-today-button.fc-button.fc-state-default.fc-corner-left.fc-corner-right { display: none; }
+.fc-state-default { border: 0!important; background: #B54150!important; color: #ffffff!important; padding: 25px!important; }
+.fc button .fc-icon { font-size: 22px;}
+td.fc-day-top span { color: #77777B!important; font-family: "Dubai Medium";}
+td.fc-widget-content { border-color: transparent;}
+.fc-state-default.fc-corner-left { border-top-left-radius: 0!important; border-bottom-left-radius: 0!important;}
+
+.fc-icon-left-single-arrow:after{ font-size:20px!important; }
+.fc-icon-right-single-arrow:after { font-size: 20px!important;}
+
+
+.fc-state-default.fc-corner-right { border-top-right-radius: 0!important; border-bottom-right-radius: 0!important; }
+.fc button { height:inherit!important;}
+th.fc-day-header.fc-widget-header { font-size: 16px; color: #fff; text-transform: uppercase; background: #656565; letter-spacing: 0.8px; border-color: #fff; }
+td.fc-day.fc-widget-content.fc-other-month{ background: #F3F4F6; border-width: 1px!important; color: #888A8C; border-color: #D0D0D0; }
+.fc-bg td:first-child { border-left: transparent!important;}
+.fc-toolbar.fc-header-toolbar { margin-bottom: 0px!important; display: none;}
+.fc-toolbar .fc-left { position: absolute; width: 100%; top: 0; }
+.fc-toolbar .fc-button-group { width: 100%; }
+.fc .fc-toolbar>*>* { float: none!important;}
+.fc-event { overflow: visible!important; line-height: 60px!important; color: #ffffff!important; font-size: 22px!important; border: none!important; border-radius: 0px!important;}
+.fc-scroller.fc-day-grid-container { overflow: hidden!important;}
+.fc-content {  background: #B14A56; color: #fff; border-radius: 4px; font-size: 14px; font-family: 'Dubai Regular'; }
+.fc-day-grid-event .fc-time { font-size: 13px; display:none;}
+td.fc-day-top { padding-bottom: 10px!important;}
+thead.fc-head { border-color: transparent;}
+span.fc-title { display: inline-block; font-size: 13px;  white-space: normal; line-height: 20px!important;}
+.fc-event, .fc-event-dot { background-color: transparent!important; }
+.search-desc a:hover { color: #ffffff; text-decoration: none }
+.fc-day-grid-event .fc-content { margin: 0 15px; }
+.fc-popover .fc-day-grid-event.fc-h-event .fc-content { margin: 0; }
+.fc-day-grid-event .fc-content .fc-title { display: block; line-height: 20px!important; white-space: pre-line; padding: 5px; text-align: left; } 
+tr:first-child>td>.fc-day-grid-event { margin-top: 10px!important; }
+th.fc-day-header.fc-widget-header.fc-fri { border-width: 1px!important; }
+th.fc-day-header.fc-widget-header.fc-sat { border-width: 0px!important; }
+.fc-ltr .fc-toolbar .fc-center { display: block; width: 100%; }
+.fc-center h2 { padding: 23px; background-color: rgba(198, 184, 164, 0.3);  font-family: "Dubai Regular"; font-size: 26px; color: #77777B; text-transform: uppercase; }
+.calander-event { padding: 20px; border-left: 5px solid #007565; }
+.calander-event p { font-size: 20px; font-family: 'Dubai Regular'; color: #777777; }
+.calander-event p b { color: #38C3B0; }
+.calander-event a { color: #B14A56; font-size: 20px; font-family: 'Dubai Regular'; }
+.fc-button.fc-today-button  { display: none; }
+.fc-button.fc-myCustomButton-button { display: none; }
+.fc-button-group .fc-button {  border: 0 !important; background: #B54150 !important; color: #ffffff !important; padding: 25px !important;}
+.fc-button-group .fc-button.fc-prev-button { position: absolute; left: 0; top: -14px; }
+.fc-button-group .fc-button:focus { outline: none; box-shadow: none; }
+.fc-button-group .fc-button.fc-next-button { position: absolute; right: 0; top: -14px; }
+.fc-ltr .fc-dayGrid-view .fc-day-top .fc-day-number { float: none!important; }
+.fc-toolbar { position: relative; }
+.fc-right { display: none; }
+.fc-row .fc-content-skeleton td, .fc-row .fc-mirror-skeleton td { text-align: right; font-size: 14px; }
+.fc-day-number { position: relative; left: -10px; top: 10px; }
+.fc-view, .fc-view>table { margin-top: 40px; }
+.fc-event[href], .fc-event.fc-draggable { display: block; margin: 0; margin-bottom: 10px; }
+a.fc-more { margin-right: 15px; }
+td.fc-day-top.fc-tue.fc-today span.fc-day-number { color: #B14A56!important; }
+.no-event { font-size: 18px; margin: 0; padding: 10px; }
+
 //==================FOR BEFORE LOGIN==================//
 .cdk-overlay-container {
   position: fixed !important;
@@ -87,7 +153,7 @@ input { font-family: 'Dubai Regular'; }
   letter-spacing: 1px;
 }
 .login:focus { outline: none; }
-.no-acc { text-align: center; font-size: 20px; font-family: "Dubai Medium";}
+.no-acc { text-align: center; font-size: 20px; font-family: "Dubai Medium"; }
 .no-acc a { color: #B54150; }
 .no-acc a:hover { text-decoration: none; }
 .login-hdr { text-align: center; }
@@ -225,8 +291,9 @@ input { font-family: 'Dubai Regular'; }
 }
 .progress_wrapper .progress_head { display: flex; justify-content: space-between; }
 .progress_wrapper .progress-br { padding: 10px 0; }
-.progress_wrapper .progress_head span { font-family: "Dubai Bold"; color: #B14A56; }
+.progress_wrapper .progress_head span { font-family: "Dubai Bold"; color: #007564; }
 .progress_wrapper .progress_head span.complete { color: #777777; }
+.progress-br .mat-progress-bar-fill::after { background-color: #007564; }
 .progress_bar { margin: -22px -30px; margin-bottom: 20px; }
 .progress_bar .mat-progress-bar { height: 10px; }
 .progress_bar .mat-progress-bar-fill::after { background: #B19782; } 
@@ -247,8 +314,6 @@ input { font-family: 'Dubai Regular'; }
 .signature .mat-checkbox-inner-container { height: 20px; width: 20px;}
 .wrappr-complete { padding: 20px 15px 0; }
 .form-bdy { background: #EFEFEF; margin-top: 30px; border-radius: 5px; }
-
-
 .service-desc {color: #77777B; font-family: 'Dubai Regular'; font-size: 22px;}
 .service-hdr-data { display: flex; margin-bottom: 40px; align-items: flex-start; }
 .service_desc_sec { width: 150px; height: 150px; }
@@ -358,6 +423,7 @@ input { font-family: 'Dubai Regular'; }
 .main-dashboard-cnt .user-steps { display: flex; justify-content: center; align-items: center; width: 1525px; margin: 0 auto; }
 .user-steps .user-next { display: inline-block; vertical-align: middle; border-radius: 5px; border: 1px solid #CECECE ; background: #FFF; padding: 15px 0; color: #1D1D1D; text-align: center; min-height: 123px; width: 123px; margin-bottom: 20px; }
 .main-dashboard-cnt .user-steps.user-small { width: 100%; }
+.main-dashboard-trainer { margin: 0 -15px; }
 // .user-steps.user-small .user-next { height: 100%; min-height: inherit; }
 .user-steps .user-present { border: 1px solid #B19782; background: #B19782; color: #FFF; }
 .user-steps .user-skip { border: 1px solid #B19782; background: #574f46; color: #FFF; }
@@ -406,7 +472,8 @@ a:hover { text-decoration: none; }
 .table-dashboard-cont tr:nth-child(odd) { background: #f3f4f6; }
 .table-dashboard-cont .fnt-clr { color: #B14A56; }
 .table-dashboard-cont .fnt-clr a { color: #B14A56; }
-.table-dashboard-cont td { padding: 5px 15px; font-size: 14px; color: #454545; border: 1px solid #e9e9e9; font-family: "Dubai Regular"; }
+.table-dashboard-cont td { padding: 5px 9px; font-size: 14px; color: #454545; border: 1px solid #e9e9e9; font-family: "Dubai Regular"; }
+.table-dashboard-cont td a { color: #454545; }
 .table-dashboard-cont a:hover { text-decoration: none; }
 .complete span { background: #047666; color: #ffffff; border-radius: 3px; font-size: 14px; padding: 0 10px; font-family: "Dubai Regular"; }
 .draft span { background: #000bbc; color: #ffffff; border-radius: 3px; font-size: 14px; padding: 0 10px; font-family: "Dubai Regular";}
@@ -608,7 +675,7 @@ a:hover { text-decoration: none; }
 .appln-details { text-align: center; }
 .appln-data h5 { font-size: 14px; color: #727272; font-family: "Dubai Regular"; }
 .appln-details span { color: #444444; font-size: 16px; font-family: "Dubai Medium"; }
-.appln-status span { color: #047666 ;}
+.appln-status span { color: #047666; }
 .border-left-dash { border-left: 1px solid #CFCFCF; }
 .appln-subhdr h5{ background: #E7E7E7; font-family: "Dubai Medium"; font-size: 16px; color: #B54150; padding: 10px 15px; margin: 0; border-radius: 5px 5px 0 0; }
 .appln-cnt-data { margin: 0; background: #EFEFEF; margin-bottom: 20px; border-radius: 5px; }
@@ -673,6 +740,8 @@ a:hover { text-decoration: none; }
 .attach-cnt { padding: 10px 0; }
 .cmnt-content { background: #EFEFEF; padding: 50px; border-radius: 5px;  }
 .bttns-appln { padding-top: 0px; font-family: "Dubai Bold"; font-size: 26px;}
+.auth_data_main { padding: 15px 0; }
+.auth_data_main ul { padding: 0; color: #777777; padding-left: 30px; }
 
 //==================POPUPS==================//
 .main-dil-cnt { padding: 50px; position: relative; }
@@ -805,10 +874,12 @@ a:hover { text-decoration: none; }
 .trainer-detail .trainer-data span { margin-right: 10px; }
 .main-dashboard .trainer-detail { display: flex; justify-content: space-between; }
 .main-dashboard .trainer-content { height: 100%; display: flex; flex-direction: column; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.03); }
-.trainer-content .trainer-type { border-radius: 5px 5px 0 0; border-bottom: 1px solid #D0D0D0; background: #FFF8F8; color: #B29782; font-family: 'Dubai Medium'; text-align: center; height: 100%; display: flex; justify-content: center; align-items: center; }
+.trainer-content .trainer-type { font-size: 15px; border-radius: 5px 5px 0 0; border-bottom: 1px solid #D0D0D0; background: #FFF8F8; color: #B29782; font-family: 'Dubai Medium'; text-align: center; height: 100%; display: flex; justify-content: center; align-items: center; }
 .trainer-content .trainer-type-data { border-radius: 0 0 5px 5px; background: #FFFFFF; height: 100%; color: #616161; font-size: 18px; font-family: 'Dubai Medium'; display: flex; justify-content: center; align-items: center; }
-.main-dashboard .trainer-main-details { border-radius: 5px; padding: 20px 0; margin-top: 20px; display: flex; justify-content: center; align-items: center; background: #B19681; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.03); color: #fff; }
+.main-dashboard .trainer-main-details { border-radius: 5px; padding: 20px 15px; margin-top: 20px; display: flex; justify-content: space-around; align-items: center; background: #B19681; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.03); color: #fff; }
 .trainer-main-details .user-icons { font-size: 60px; margin-right: 35px; opacity: 0.4; }
+.trainer-main-details a { color: #fff; }
+.trainer-main-details a:hover { color: #fff; text-decoration: none;} 
 .trainer-main-details .trainer-data-det .trainer-pro { font-size: 18px; font-family: 'Dubai Medium'; }
 .trainer-main-details .trainer-maindata { font-size: 40px; font-family: 'Dubai Regular'; }
 .trainer-maindata span span { font-size: 14px; margin-left: 10px; vertical-align: middle; }
@@ -872,7 +943,8 @@ a:hover { text-decoration: none; }
 .main-status span { font-size: 15px; font-family: 'Dubai Regular'; color: #B19782; }
 
 .filter-dash { padding-top: 40px; position:relative; }
-.filter-dash .close-bttn { position: absolute; top: 30px; right: 20px; }
+.filter-dash .close-bttn { position: absolute; top: 30px; right: 20px; cursor: pointer; }
+.filter-dash.filter_certification .close-bttn { top: 0; }
 .sub-msg-dash { font-size: 16px; font-family: 'Dubai Medium'; color: #363839; margin: 0; }
 .dash-msg { padding: 20px 10px; }
 .dash-system-table table { width: 100%; border-collapse: collapse; border: 1px solid #B9B9B9; border-right: 0; border-left: 0; }
@@ -894,8 +966,9 @@ a:hover { text-decoration: none; }
 .fileupload input { width: 100% !important; }
 // .view_file.matupload .fileupload { right: 30px; }
 .view_file.matupload .fileupload { right: 0; }
-.filter-search { display: flex; justify-content:  space-between; float: right; }
-.search-fil { margin-right: 20px; }
+.filter-search { display: flex; justify-content:  space-between; float: right; height: 100%; align-items: center; }
+.search-fil { margin-right: 7px; }
+.space-left { margin-left: 25px; }
 .filter-search a { background: #B54150; color: #fff; font-size: 15px; font-family: 'Dubai Regular'; padding: 5px 15px; border-radius: 5px; }
 
 //==================OTHER DASHBOARDS==================//
@@ -1083,6 +1156,7 @@ ul.bill-details li:first-child { border-right: 1px solid #C9C9C9; }
 .modal { display: flex!important; align-items: center; }
 .modal-dialog { max-width: 750px; }
 .modal-content { max-height: 700px; overflow-y: auto; }
+.custom-modal .modal-dialog { width: 100%; }
 .authData .mat-checkbox-frame {
   border-color: rgba(153, 153, 153, 1); 
   border-width: 1px; 
@@ -1090,6 +1164,7 @@ ul.bill-details li:first-child { border-right: 1px solid #C9C9C9; }
   width: 20px; 
   height: 20px;
 }
+.button_popup { display: flex; align-items: center; }
 .authData .mat-checkbox-inner-container { height: 20px; width: 20px; margin-top: 7px; }
 .authData .mat-checkbox-layout .mat-checkbox-label { line-height: 34px; font-family: "Dubai Medium"; font-size: 18px; }
 .auth-details .mat-checkbox-frame {
@@ -1101,7 +1176,7 @@ ul.bill-details li:first-child { border-right: 1px solid #C9C9C9; }
 }
 .auth-details .mat-checkbox-inner-container { height: 20px; width: 20px; margin-top: 7px; }
 .auth-details .mat-checkbox-layout .mat-checkbox-label { line-height: 34px; font-family: "Dubai Medium"; font-size: 18px; }
-
+.button_popup .submit-bttn { font-size: 15px; }
 .cab-data .mat-checkbox-frame {
   border-color: rgba(153, 153, 153, 1); 
   border-width: 1px; 
@@ -1284,8 +1359,12 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .assess-doc { padding: 20px 15px; display: flex; justify-content: space-between; }
 .bttn-details .cancel-bttn { display: block; color: #B54150; font-family: 'Dubai Bold'; }
 .course-pop button:focus { outline: none; }
-.course-pop button span { color: #999999; }
-
+.course-pop button span { color: #999999; font-size: 20px; }
+.course-pop .modal-title { font-size: 24px; color: #C6B8A4; margin: 0; line-height: 1; }
+.event-details { font-size: 16px; font-family: 'Dubai Medium'; color: #191919; }
+.event-data { padding: 5px 0; }
+.event-data .event-head { color: #000; display: inline-block; padding-right: 10px; }
+.event-details span { color: #B14A56; }
 .tnc_inner_cond li:before { content: "("counter(item, lower-alpha)")"; }
 .tnc .tnc_inner_cond li { margin-bottom: 0; }
 .tnc_inner_data li:before {counter-increment: list; content: ""counter(list, lower-roman)")"; }
@@ -1423,6 +1502,13 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .other_data { margin-left: 20px; }
 .edit_data { display: flex; justify-content: flex-end; }
 .edit_data a { display: inline-block; padding: 10px; background: #B54150; color: #fff; border-radius: 50%; line-height: 1; }
+.event_wrapper { display: flex; justify-content: space-between; }
+.mat-accordion .mat-expansion-panel-header { padding-left: 0; }
+.mat-accordion .mat-expansion-panel-spacing { margin: 0; }
+.ass-details.ass-details_trainer { background: #EFEFEF; }
+.mat-accordion .mat-expansion-panel-header[aria-disabled=true] { color: #000; }
+.main-status .select_dash { width: 80%; border: 0; background-color: transparent; color: #000; font-size: 25px;}
+.main-status option { font-size: 18px; }
 
 
 //==================RESPONSIVE==================//
@@ -1436,6 +1522,7 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
   .complete span { padding: 0 5px; }
 }
 @media(max-width: 1366px) {
+  .main-dashboard .trainer-content { height: min-content; }
   .left_menu_portal li a { line-height: 30px; }
   .dash-logo { height: 50px; min-width: 50px; margin-right: 10px; }
   .main-status .head-dash { font-size: 16px; }
@@ -1457,6 +1544,13 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
   .confirm.activity_wrapper .mat-checkbox-layout .mat-checkbox-label { font-size: 16px; }
   .activity_wrapper.cab_info .activity_head { font-size: 16px; }
   .activity_wrapper.cab_info .activity_head { width: 30%; }
+  .trainer-content .trainer-type { font-size: 12px; padding: 15px; }
+  .trainer-content .trainer-type-data { font-size: 15px; padding: 15px; }
+  .lic-expire { font-size: 14px; }
+  .trainer-main-details .trainer-maindata.trainer-update { font-size: 25px; }
+  .trainer-main-details .trainer-maindata { font-size: 30px;}
+  .trainer-main-details .user-icons { font-size: 50px;  margin-right: 20px; }
+  .trainer-main-details .trainer-data-det .trainer-pro { font-size: 15px; }
 }
 
 

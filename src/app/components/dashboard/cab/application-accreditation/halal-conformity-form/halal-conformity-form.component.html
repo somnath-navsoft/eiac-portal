@@ -615,13 +615,18 @@
                                     </div>
 
                                     <div class="row" id="hcab_other_location" *ngIf="step1Data.hcab_other_loc == '1'">
+                                        <!-- {{getCountryStateCityAll | json}} -->
+                                        <!-- {{allCityTypeList | json}} -->
+                                        <!-- {{hcabOtherLocation | json}} -->
                                         <div class="col-md-12">
                                             <div class="table-content-health table_padd">
                                                 <table>
                                                     <thead>
                                                         <tr>
                                                             <th width="30%">Location Type(such of Regional Off)</th>
-                                                            <th width="20%">Address/City/Country</th>
+                                                            <th width="20%">Address</th>
+                                                            <th width="20%">Country</th>
+                                                            <th width="20%">City</th>
                                                             <th width="50%">*Key Activities carried out at this Location</th>
                                                             <th></th>
                                                         </tr>
@@ -629,6 +634,7 @@
                                                     <tbody>
                                                         <tr *ngFor="let item of hcabOtherLocation; let i = index;">
                                                             <td>
+                                                                <!-- {{i}} -->
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="location_type_{{i}}" [(ngModel)]="hcabOtherLocation[i].location_type" required>
@@ -637,8 +643,27 @@
 
                                                             <td>
                                                                 <mat-form-field class="cab-data">
-                                                                    <mat-label>Type Here</mat-label>
-                                                                    <input matInput placeholder="" name="city_country_{{i}}" [(ngModel)]="hcabOtherLocation[i].city_country" required>
+                                                                    <mat-label>Address</mat-label>
+                                                                    <input matInput placeholder="" name="address_{{i}}" [(ngModel)]="hcabOtherLocation[i].address_type" required>
+                                                                </mat-form-field>
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <mat-label>Country</mat-label>
+                                                                    <mat-select placeholder="Select" name="country" [(ngModel)]="hcabOtherLocation[i].country" [ngModelOptions]="{standalone: true}" required>
+                                                                        <mat-option [value]="item.CountryName" (click)="cityByCountryAll(item.CountryName, i)" 
+                                                                        *ngFor="let item of getCountryStateCityAll">{{item.CountryName}}</mat-option>
+                                                                    </mat-select>
+                                                                </mat-form-field>                                                               
+                                                            </td>
+                                                            <td>
+                                                                <mat-form-field class="cab-data">
+                                                                    <!-- {{allCityTypeLoder[i] | json}} || {{allCityTypeLoder[i].loader}} -->
+                                                                    <mat-label>City</mat-label>
+                                                                    <mat-select placeholder="Select" name="city" [(ngModel)]="hcabOtherLocation[i].city"  
+                                                                    [ngModelOptions]="{standalone: true}"  required>
+                                                                        <mat-option [value]="item.name" *ngFor="let item of allCityTypeList[i]">{{item.name}}</mat-option>
+                                                                    </mat-select>      
                                                                 </mat-form-field>
                                                             </td>
 

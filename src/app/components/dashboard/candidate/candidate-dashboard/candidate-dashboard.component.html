@@ -13,8 +13,8 @@
                             </div>
                         </div>
                         <div class="trainer-detail">
-                            <span class="trainer-data"><span class="icon-company"></span>{{step1Data?.office_address}}</span>
-                            <span class="trainer-data"><span class="icon-Page"></span>{{step1Data?.office_email}}</span>
+                            <span class="trainer-data"><span class="icon-company"></span>{{step1Data?.office}}</span>
+                            <span class="trainer-data"><span class="icon-email"></span>{{userDetails?.email}}</span>
                             <span class="trainer-data"><span class="icon-call"></span>{{step1Data?.office_tel_no}}</span>
                         </div>
                     </div>
@@ -42,6 +42,7 @@
             </div>
             <div class="row">
                 <div class="col-md-3">
+                    <a routerLink="/dashboard/{{userType}}/company-profile">
                     <div class="trainer-main-details">
                         <div class="user-icons">
                             <span class="icon-user"></span>
@@ -49,20 +50,19 @@
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
                                 <span>Profile</span>
-
                             </div>
                             <div class="trainer-maindata trainer-update">
                                 <span>Update 
-                                    <a routerLink="/dashboard/{{userType}}/company-profile">
-                                        <span [ngStyle]="{'color': '#FFF', 'font-size':'31px'}">></span>
-                                    </a>
+                                    <span [ngStyle]="{'color': '#FFF', 'font-size':'31px'}">></span>
                                 </span>
                                 <!-- <span>Update<span class="icon-right-arrow"></span></span> -->
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="col-md-3">
+                    <a href="javascript:void(0)" routerLink="/dashboard/event-list">
                     <div class="trainer-main-details trainer2">
                         <div class="user-icons">
                             <span class="icon-calendar"></span>
@@ -72,14 +72,14 @@
                                 <span>Event</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span *ngIf="dashboardEvents != undefined"> 
-                                    {{dashboardEvents.length}}
-                                </span>
+                            {{dashboardItemData.eventTrainingCount}}
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="col-md-3">
+                    <a href="javascript:void(0)" routerLink="/dashboard/training-status">
                     <div class="trainer-main-details trainer3">
                         <div class="user-icons">
                             <span class="icon-tick"></span>
@@ -89,25 +89,28 @@
                                 <span>Course Completed</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span>NA</span>
+                                <span>{{dashboardItemData.completeTrainingAppCount}}</span>
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="col-md-3">
+                    <a href="javascript:void(0)" routerLink="/dashboard/training-status">
                     <div class="trainer-main-details trainer4">
                         <div class="user-icons">
-                            <span class="icon-options"></span>
+                            <span class="icon-menu"></span>
                         </div>
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
                                 <span>Course Planned</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span>NA</span>
+                                <span>{{dashboardItemData.plannedTrainingAppCount}}</span>
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -162,18 +165,54 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="event_timings">
-                                
+                            <div class="event_timings">                                
                                 <div class="date-cnt">
                                     <span>Last Activity</span>
                                 </div>
                                 <div class="activity-details">
                                     <ul>
                                         <ng-container *ngFor = "let item of dashboardRecentUpdates">
-                                        <li>{{item.title}}<span> on {{item.date}} at {{item.time}}</span></li>
+                                        <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span>, {{item.title}} on {{item.date}} at {{item.time}}</span></li>
                                         </ng-container>
                                     </ul>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="tra_events">
+                                    <div class="trainer_head">
+                                        <h4>Calendar</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 p-0">   
+                                <!-- <ngx-fullcalendar #calendar (onNavLinkDayClick)="handleNavclick($event)"
+                                (onDateClick)="handleDateClick($event)" (onDayRender)="handleDay($event)"
+                                (onDatesRender)="handleDates($event)" (onEventClick)="handleEventClick($event)"
+                                defaultView="month" [events]="events" [options]="options"></ngx-fullcalendar> -->
+    
+                                <!-- <ngx-fullcalendar defaultView="month" [events]="events" [options]="optionCal"></ngx-fullcalendar> -->
+    
+    
+                                <!-- <div *ngIf="options">
+                                    <ng-fullcalendar #fullcalendar [options]="options" (eventClick)="eventClick($event.detail)" (eventDrop)="updateEvent($event.detail)"
+                                        (eventResize)="updateEvent($event.detail)" (clickButton)="clickButton($event.detail)"></ng-fullcalendar>
+                                </div> class="" -->
+    
+                                <!-- ng-fullcalendar example -->
+                                <div class="event-datetime">
+                                    <!-- <div id="calendar"></div>  -->
+                                    <ng-container *ngIf="options">
+                                        <ng-fullcalendar #fullcalendar [options]="options" (eventClick)="fullcanderClick($event)"></ng-fullcalendar>
+                                    </ng-container>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -190,10 +229,10 @@
                                         <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
                                             eu.<span>05:21 PM</span></li>
                                         <li>On the other hand, we denounce with righteous indignation and dislike men
-                                            who.<span>05:25 PM</span></li>
-                                        <li>These cases are perfectly simple and easy to distinguish.<span>05:21
-                                                PM</span></li>
-                                    </ul>
+                                            who.<span>05:25 PM</span></li>May 30, 2020 Awareness, Internal Auditing & Point of Care Testing in Accordance with ISO 15189: 2012 Training Course
+
+
+
                                 </div>
                                 <div class="date-cnt">
                                     <span>20/01/2020</span>
@@ -235,21 +274,21 @@
                                 <ng-container *ngIf="dashboardEvents.length > 0">
                                     <mat-accordion>
                                         <mat-expansion-panel (opened)="panelOpenState = true"
-                                        (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;">
-                                            <!-- <ng-container *ngFor="let item of dashboardEvents;"> -->
-                                            <mat-expansion-panel-header *ngIf="item.eventDate != undefined && item.eventDate.length > 0 && item.eventDate[0].event_date != null">
-                                                <div class="ass-details" [ngStyle]="{'padding-bottom': '4px'}">
-                                                    
-                                                    <div class="date_content">
-                                                        <span class="date-dash" *ngIf="item.eventDate != undefined && item.eventDate.length > 0">
-                                                            <span>
-                                                                {{item.eventDate[0].event_date | date}}
+                                        (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;" [expanded]="item.id == eventId ? true : false">
+                                        <!-- <div id="{{item.id}}"> -->
+                                                <mat-expansion-panel-header >
+                                                    <div class="ass-details" [ngStyle]="{'padding-bottom': '4px'}">
+                                                        
+                                                        <div class="date_content">
+                                                            <span class="date-dash">
+                                                                <span>
+                                                                    {{item.event_start_date_time | date}}
+                                                                </span>
                                                             </span>
-                                                        </span>
-                                                        {{item.courseDetails.course}}
+                                                            {{item.courseDetails.course}}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </mat-expansion-panel-header>
+                                                </mat-expansion-panel-header>
 
                                             <div class="ass-details">
                                                 
@@ -270,8 +309,8 @@
                                                                     <h5>Date</h5>
                                                                 </div>
                                                                 <div class="counts">
-                                                                    <span *ngIf="item.eventDate != undefined && item.eventDate.length > 0">
-                                                                        {{item.eventDate[0].event_date | date}}
+                                                                    <span>
+                                                                        {{item.event_start_date_time | date}}
                                                                     </span>
                                                                 </div>
                                                             </div>
@@ -283,6 +322,7 @@
                                                                 </div>
                                                                 <div class="counts">
                                                                     <span *ngIf="item.courseDetails.location == 'eiac_training_center'">Eiac Training Center</span>
+                                                                    <span *ngIf="item.courseDetails.location == 'client_premisis'">Client Premise</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -318,7 +358,7 @@
                                                             </div>
                                                         </div>
                                                 </div>
-                                            <!-- </ng-container> -->
+                                            <!-- </div> -->
                                         </mat-expansion-panel>
                                     </mat-accordion>
                                 </ng-container>
@@ -339,7 +379,7 @@
                         <div class="col-md-12">
                             <div class="tra_events">
                                 <div class="trainer_head">
-                                    <h4>COMMUNICATION</h4>
+                                    <h4>COMMUNICATION</h4> 
                                 </div>
                             </div>
                         </div>
@@ -381,6 +421,135 @@
                         </div>
                     </div>
                     <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+                    <div class="row" hidden>
+                        <div class="col-md-12">
+                            <div class="cmnt-content">
+                                <form #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <mat-form-field  class="cab-data">
+                                                <mat-label>Select</mat-label>
+                                                <mat-select required [(ngModel)]="selectedField"
+                                                    [ngModelOptions]="{standalone: true}"
+                                                    (ngModelChange)="setField($event)">
+                                                    <mat-option *ngFor="let data of select_field" [value]="data.value">
+                                                        {{data.field}}</mat-option>
+                                                </mat-select>
+                                                <mat-error></mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-6"
+                                            *ngIf="getUserType=='cab_client' || getUserType=='cab_code'">
+                                            <mat-form-field class="cab-data">
+                                                <!-- <input type="text" (click)="search($event.target.value)"
+                                                    (input)="search($event.target.value)"
+                                                    placeholder="{{selectedField}}" matInput required
+                                                    [matAutocomplete]="auto">
+                                                <mat-autocomplete #auto="matAutocomplete">
+                                                    <mat-option (onSelectionChange)="getValue(option.id)"
+                                                        *ngFor="let option of selectSearch" [value]="option.username">
+                                                        {{option.username}}
+                                                    </mat-option>
+                                                </mat-autocomplete> -->
+                                                <mat-chip-list #chipList >
+                                                    <mat-chip
+                                                      *ngFor="let option of selectedUser"
+                                                      [selectable]="selectable"
+                                                      [removable]="removable"
+                                                      (removed)="remove(option)">
+                                                      {{option}}
+                                                      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                                    </mat-chip>
+                                                    <input 
+                                                      placeholder="{{selectedField}}"
+                                                      #fruitInput                                                      
+                                                      [matAutocomplete]="auto"
+                                                      [matChipInputFor]="chipList"                                                      
+                                                      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                      (matChipInputTokenEnd)="add($event)" (input)="search($event.target.value)">
+                                                  </mat-chip-list>
+                                                  <mat-autocomplete #auto="matAutocomplete">
+                                                    <mat-option (onSelectionChange)="getValue(option, 'username')"
+                                                        *ngFor="let option of selectSearch" [value]="option.username">
+                                                        {{option.username}}
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-6"
+                                            *ngIf="getUserType=='trainers' || getUserType=='operations'">
+                                            <mat-form-field class="cab-data" #matForm>
+                                                <!-- <input type="text" (click)="search($event.target.value)"
+                                                    (input)="search($event.target.value)"
+                                                    placeholder="{{selectedField}}" matInput required
+                                                    [matAutocomplete]="auto"> -->
+                                                    <mat-chip-list #chipList >
+                                                        <mat-chip
+                                                          *ngFor="let option of selectedUser"
+                                                          [selectable]="selectable"
+                                                          [removable]="removable"
+                                                          (removed)="remove(option)">
+                                                          {{option}}
+                                                          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                                        </mat-chip>
+                                                        <input 
+                                                          placeholder="{{selectedField}}"
+                                                          #fruitInput                                                      
+                                                          [matAutocomplete]="auto"
+                                                          [matChipInputFor]="chipList"
+                                                          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                          (matChipInputTokenEnd)="add($event)" (input)="search($event.target.value)">
+                                                      </mat-chip-list>
+                                                <mat-autocomplete #auto="matAutocomplete" >
+                                                    <mat-option (onSelectionChange)="getValue(option, 'email')"
+                                                        *ngFor="let option of selectSearch" [value]="option.email">
+                                                        {{option.email}}
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="matupload position-relative">
+                                                <mat-form-field class="lng-data">
+                                                    <input readonly name="upload_message" [(ngModel)]="documentName"
+                                                        matInput name="file" placeholder="Upload Document">
+                                                </mat-form-field>
+                                                <span class="fileupload">
+                                                    <input #file type="file" accept="application/pdf"
+                                                        name="upload_message_file"
+                                                        [(ngModel)]="chatMessage.upload_message_file"
+                                                        (change)="validateFile($event)">
+                                                    <!-- <mat-error class="error" *ngIf="!file_validation">Please Upload a valid file (ex: pdf,xlsx,xlx)</mat-error>  -->
+                                                    <span class="icon-attach attach-data" (click)="file.click()"></span>
+                                                </span>
+                                                <p class="error" *ngIf="!file_validation">Please Upload a
+                                                    valid file (ex: pdf)</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <mat-form-field class="cab-data">
+                                                <mat-label>Message</mat-label>
+                                                <input name="message" maxlength="200" required [(ngModel)]="chatMessage.message"
+                                                    matInput autocomplete="off" placeholder="Message">
+                                                <mat-error></mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col-md-12">
+                                            <div class="bttns-appln mb-0">
+                                                <button class="submit-bttn" [disabled]="button_disable">SEND
+                                                    MESSAGE</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -378,7 +378,7 @@
                                                             </td>
                                                             <td>{{taxVat}}</td>
                                                         </tr>
-                                                        <tr>
+                                                        <!-- <tr>
                                                             <td>3</td>
                                                             <td>Knowledge Fees - Per Participant درهم المعرفة</td>
                                                             <td>{{fee_day_pertime3}}</td>
@@ -395,7 +395,7 @@
                                                                 <input type="text" class="fee-inp" name="no_of_participants4" [disabled]="!editable" [(ngModel)]="noofParticipants">
                                                             </td>
                                                             <td>{{innovationFees}}</td>
-                                                        </tr>
+                                                        </tr> -->
                                                         <tr>
                                                             <td></td>
                                                             <td colspan="3"><b>Total</b></td>
@@ -591,7 +591,7 @@
                                         <div class="col-md-4 mt-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Voucher Code</mat-label>
-                                                <input type="number" readonly="true" [ngModelOptions]="{standalone: true}" required="true"
+                                                <input type="text" readonly="true" [ngModelOptions]="{standalone: true}" required="true"
                                                 matInput placeholder="Voucher Code" 
                                                 [(ngModel)]="voucherSentData.voucher_code">
                                             </mat-form-field>

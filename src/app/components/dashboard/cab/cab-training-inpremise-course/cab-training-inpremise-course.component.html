@@ -38,7 +38,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="training-data">
-                                                <h4>{{row2.course.name}}</h4>
+                                                <h4>{{row2.course}}</h4>
                                             </div>
                                             <hr>
                                         </div>
@@ -51,7 +51,11 @@
                                                         <span>Audience</span>
                                                     </div>
                                                     <div class="training_type">
-                                                        <span>{{row2.target_audiance}}</span>
+                                                        <ng-container *ngIf="row2.allTargatedAud != undefined && row2.allTargatedAud.length > 0">
+                                                            <ng-container *ngFor="let item of row2.allTargatedAud">
+                                                                <span>{{item.target_aud_name.title}}</span>, 
+                                                            </ng-container>
+                                                        </ng-container>
                                                     </div>
                                                 </div>
                                             </div>
@@ -61,7 +65,7 @@
                                                         <span>Duration</span>
                                                     </div>
                                                     <div class="training_type">
-                                                        <span>{{row2.course.training_course.training_days}} Days</span>
+                                                        <span>{{row2.training_days}} Days</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -92,7 +96,7 @@
                     </div>
     
                     <form #ngForm1="ngForm" (ngSubmit)="onSubmit(ngForm1)" autocomplete="off">
-                        <div class="row form-bdy m-0">
+                        <div class="row form-bdy m-0" [ngStyle]="{'width':'98%'}">
                             <div class="wrapper">
                                 <div class="col-md-12">
                                     <div class="row">
@@ -167,21 +171,22 @@
                             </div>
                             <div class="sort-data">
                                  <label for="sort">Sort By :</label>
-
+                                
                                 <mat-form-field appearance="fill">
-                                    <mat-select (selectionChange)="shortProgramListing('schedule_program_listing')" [(value)]="scheduleProgramSection">
+                                    <!-- shortProgramListing('schedule_program_listing') -->
+                                    <mat-select (selectionChange)="sortByList(sortValue)" [(ngModel)] = "sortValue" [(value)]="scheduleProgramSection">
                                     <mat-option value="">Select</mat-option>
-                                        <mat-option value="coursename">Course Name</mat-option>
-                                        <mat-option value="audience">Audience</mat-option>
-                                        <mat-option value="date">Date</mat-option>
+                                        <mat-option value="course">Course Name</mat-option>
+                                        <!-- <mat-option value="audience">Audience</mat-option> -->
+                                        <mat-option value="rate">Rate</mat-option>
                                         <mat-option value="days">Days</mat-option>
-                                    </mat-select>
+                                    </mat-select> 
                                 </mat-form-field>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div *ngIf="allCourseTraining == ''">
+                <div *ngIf="allCourseTraining.length == 0">
                     <div class="col-md-12">
                         <div class="scheduled-prog">
                             No Data Found
@@ -195,7 +200,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="training-data">
-                                            <h4>{{row2.course.name}}</h4>
+                                            <h4>{{row2.course}}</h4>
                                         </div>
                                         <hr>
                                     </div>
@@ -208,7 +213,11 @@
                                                     <span>Audience</span>
                                                 </div>
                                                 <div class="training_type">
-                                                    <span>{{row2.target_audiance}}</span>
+                                                    <ng-container *ngIf="row2.allTargatedAud != undefined && row2.allTargatedAud.length > 0">
+                                                        <ng-container *ngFor="let item of row2.allTargatedAud">
+                                                            <span>{{item.target_aud_name.title}}</span>, 
+                                                        </ng-container>
+                                                    </ng-container>
                                                 </div>
                                             </div>
                                         </div>
@@ -218,7 +227,8 @@
                                                     <span>Duration</span>
                                                 </div>
                                                 <div class="training_type">
-                                                    <span>{{row2.course.training_course.training_days}} Days</span>
+                                                    <span *ngIf="row2.training_days != null">{{row2.training_days}} Days</span>
+                                                    <span *ngIf="row2.training_days == null">0 Day</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -250,7 +260,9 @@
 
                 </div>
                 <div class="load-more-dir">
-                    <a href="javascript:void(0)" *ngIf="allCourses?.length > totalRow" (click)="load_more('1')">Load More...</a>
+                    <a href="javascript:void(0)" [hidden]="pageLimit >= totalListLen"
+                        (click)="loadMore()">Load More...</a>
+                    <!-- <a href="javascript:void(0)" *ngIf="allCourses?.length > totalRow" (click)="load_more('1')">Load More...</a> -->
                 </div>
 
             </div>
