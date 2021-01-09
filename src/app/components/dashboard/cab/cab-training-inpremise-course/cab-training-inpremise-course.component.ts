@@ -237,10 +237,15 @@ onSubmit(theForm: any){
     //{"course_id_arr":["69","70"],"course_type":"custom_course","event_start_date_time":"2020-08-21T18:30:00.000Z",
     //"capacity":"20","custom_location":"7 nG Kolkata","agreement_status":"accepted"}
 
+    // console.log(this.inPremiseForm.select_date,'select_date');
     let postData: any = {};
     postData['course_type']           = "custom_course";
     postData['capacity']              = this.inPremiseForm.no_of_candidate;
-    postData['event_start_date_time'] = new Date(this.inPremiseForm.select_date);
+
+    let date_establishment= new Date(this.inPremiseForm.select_date);
+    date_establishment.setMinutes(date_establishment.getMinutes() - date_establishment.getTimezoneOffset());
+
+    postData['event_start_date_time'] = date_establishment;
     postData['custom_location']       = this.inPremiseForm.select_location;
     postData['agreement_status']      = "accepted";
     postData['course_id_arr']         = courseIdAr;

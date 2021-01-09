@@ -62,6 +62,7 @@
             </div>
             <div class="row">
                 <div class="col-md-3">
+                    <a routerLink="/dashboard/{{userType}}/company-profile">
                     <div class="trainer-main-details">
                         <div class="user-icons">
                             <span class="icon-user-dash"></span>
@@ -71,77 +72,98 @@
                                 <span>Profile</span>
                             </div>
                             <div class="trainer-maindata trainer-update">                                
-                                <span>Update 
-                                    <a routerLink="/dashboard/{{userType}}/company-profile">
+                                <span>Update                                    
                                         <span [ngStyle]="{'color': '#FFF', 'font-size':'31px'}">></span>
                                     <!-- <span class="icon-right-arrow"></span> -->
-                                    </a>
+                                    <!-- </a> -->
                                 </span>                                
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="col-md-3">
+                    <a href="javascript:void(0)" routerLink="/dashboard/certifications">
                     <div class="trainer-main-details trainer2">
                         <div class="user-icons">
-                            <a href="javascript:void(0)" routerLink="/dashboard/certifications"><span class="icon-doc-write"></span></a>
+                            <span class="icon-doc-write"></span>
                         </div>
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
                                 <span>Certificates</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span *ngIf="dashboardItemData.totalCabDirectoryCount != ''">{{dashboardItemData.totalCabDirectoryCount}}</span>
+                                <span *ngIf="dashboardItemData.totalCabDirectoryCount != undefind">{{dashboardItemData.totalCabDirectoryCount}}</span>
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="col-md-3">
+                    <a href="javascript:void(0)" routerLink="/dashboard/event-list">
                     <div class="trainer-main-details trainer3">
                         <div class="user-icons">
-                            <a href="javascript:void(0)" routerLink="/dashboard/event-list"><span class="icon-calendar"></span></a>
+                            <span class="icon-calendar"></span>
                         </div>
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
                                 <span>Events</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span *ngIf="dashboardItemData.totalEventCount != ''">{{dashboardItemData.totalEventCount}}</span>
+                                <span *ngIf="dashboardItemData.eventTrainingCount != undefind">{{dashboardItemData.eventTrainingCount}}</span>
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="col-md-3">
+                    <a href="javascript:void(0)" routerLink="/dashboard/certification-records">
+                    <ng-container *ngIf="dashboardTradeLicExStatus">                    
                     <div class="trainer-main-details trainer4" [ngStyle]="{'height': '97px'}">
                         <div class="user-icons">
-                            <a href="javascript:void(0)" routerLink="/dashboard/certification-records"><span class="icon-doc-diff"></span></a>
+                            <span class="icon-doc-diff"></span>
                         </div>
                         <div class="trainer-data-det">
-                            <!-- @{{dashboardTradeLicExDate}}
-                            @{{dashboardTradeLicFile}} -->
                             <div class="trainer-pro">
                                 <span>Records</span>
                             </div>
-                            <div class="trainer-maindata">
+                            <div class="trainer-maindata"> 
                                 <span>1</span>
                             </div>                            
                         </div>                        
                     </div> 
-                    <div class="lic-expire" *ngIf="!dashboardTradeLicExStatus" [ngStyle]="{'height':'35px'}">                       
+                    </ng-container>
+                    <ng-container *ngIf="!dashboardTradeLicExStatus">                    
+                        <div class="trainer-main-details trainer4">
+                            <div class="user-icons">
+                                <span class="icon-doc-diff"></span>
+                            </div>
+                            <div class="trainer-data-det">
+                                <div class="trainer-pro">
+                                    <span>Records</span>
+                                </div>
+                                <div class="trainer-maindata"> 
+                                    <span>1</span>
+                                </div>                            
+                            </div>                        
+                        </div> 
+                    </ng-container>
+                    <!-- <div class="lic-expire" *ngIf="!dashboardTradeLicExStatus" [ngStyle]="{'height':'35px'}">                       
                         <ng-container>
                             <span>{{licence_document_file}}</span>
-                            <div class="icn-appln" [ngStyle]="{'padding': '0px'}">                                
+                            <span [ngStyle]="{'padding-left':'10px'}">
                                 <a target="_blank" [href]="licence_document_path"> 
-                                <span class="icon-download"  [ngStyle]="{'font-size': '11px'}"></span>
+                                    <span class="icon-download"  [ngStyle]="{'font-size': '11px'}"></span>
                                 </a>
-                              </div>
+                            </span>
                         </ng-container>
-                    </div>
+                    </div> -->
                     <div class="lic-expire" *ngIf="dashboardTradeLicExStatus" [ngStyle]="{'height':'35px'}">
                         <ng-container>
                             <span>Trade License expired on : {{dashboardTradeLicExDate | date}}</span>
                         </ng-container>                        
                     </div>
+                    </a> 
                 </div>
             </div>
         </div>
@@ -209,9 +231,9 @@
 
                                         <div class="main-status">
                                             <p class="head-dash">Applications</p>
-                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/status/all"><span>Accreditation</span></a>10<span class="active-dash"> Active</span></p>
-                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/registration-status"><span>Registration</span></a>14<span class="active-dash"> Active</span></p>
-                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/training-status"><span>Training</span></a>17<span class="active-dash"> Active</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/status/all"><span>Accreditation&nbsp;&nbsp;</span></a>{{dashboardItemData.activeAccrCount}}<span class="active-dash"> Active</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/registration-status"><span>Registration&nbsp;&nbsp;</span></a>{{dashboardItemData.activeRegCount}}<span class="active-dash"> Active</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/training-status"><span>Training&nbsp;&nbsp;</span></a>{{dashboardItemData.activeTrainingCount}}<span class="active-dash"> Active</span></p>
                                         </div>
                                         
                                         <div class="view-all">
@@ -243,9 +265,9 @@
 
                                         <div class="main-status">
                                             <p class="head-dash">Applications</p>
-                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/status/all"><span>Accreditation</span></a> 10<span class="active-dash complete-dash"> Comp.</span></p>
-                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/registration-status"><span>Registration</span></a> 14<span class="active-dash complete-dash"> Comp.</span></p>
-                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/training-status"><span>Training</span></a> 17<span class="active-dash complete-dash"> Comp.</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/status/all"><span>Accreditation&nbsp;&nbsp;</span></a> {{dashboardItemData.completeAccrCount}}<span class="active-dash complete-dash"> Completed</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/registration-status"><span>Registration&nbsp;&nbsp;</span></a> {{dashboardItemData.completeRegCount}}<span class="active-dash complete-dash"> Completed</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/training-status"><span>Training&nbsp;&nbsp;</span></a> {{dashboardItemData.completeTrainingCount}}<span class="active-dash complete-dash"> Completed</span></p>
                                         </div>
                                         
                                         <div class="view-all">
@@ -272,12 +294,12 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="dash-main">
+                            <div class="dash-main" [ngStyle]="{'height': '124px'}">
                                 <div class="dash-wrap">
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash head-dash-bill">Vouchers</p>
-                                            <p class="sub-head-dash" *ngIf="dashboardItemData.voucherCount != ''">{{dashboardItemData.voucherCount}}<span class="active-dash">active</span></p>
+                                            <p class="sub-head-dash" *ngIf="dashboardItemData.voucherCount != ''">{{dashboardItemData.activeVoucherCount}}<span class="active-dash">active</span></p>
                                         </div>
                                         <div class="view-all">
                                             <p>From last week</p>
@@ -292,14 +314,15 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="dash-main">
+                            <div class="dash-main" [ngStyle]="{'height': '124px'}">
                                 <div class="dash-wrap">
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash head-dash-bill">Payments</p>
                                             <p class="sub-head-dash">
-                                            <ng-container *ngIf="dashboardItemData.paymentCount != null">
-                                                {{dashboardItemData.paymentCount}}</ng-container>
+                                            <ng-container *ngIf="dashboardItemData.lastWeekPaymentCount != null">
+                                                {{dashboardItemData.lastWeekPaymentCount}}
+                                            </ng-container>
                                             </p>
                                         </div>
                                         <div class="view-all"> 
@@ -354,12 +377,12 @@
                                     </a>
                                 </div>
                             </div> -->
-                            <!-- <div class="dash-main">
+                            <div class="dash-main" [ngStyle]="{'height': '223px'}">
                                 <div class="dash-wrap">
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash head-dash-bill">Vouchers</p>
-                                            <p class="sub-head-dash">17<span  class="active-dash expired-dash">Expired</span></p>
+                                            <p class="sub-head-dash">{{dashboardItemData.expiredVoucherCount}}<span  class="active-dash expired-dash">Expired</span></p>
                                         </div>
                                         <div class="view-all">
                                             <p>From last week</p>
@@ -369,18 +392,18 @@
                                 <div class="dash-logo bill-logo">
                                     <span class="icon-tag"></span>
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="dash-main">
+                            <div class="dash-main" [ngStyle]="{'height': '223px'}">
                                 <div class="dash-wrap">
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash head-dash-bill">Payments</p>
                                             <p class="sub-head-dash">                                                 
-                                                <ng-container *ngIf="dashboardItemData.paymentConfirmedCount != undefind && dashboardItemData.paymentConfirmedCount != null">
-                                                    {{dashboardItemData.paymentConfirmedCount}}</ng-container>
-                                                <ng-container *ngIf="dashboardItemData.paymentConfirmedCount == undefind || dashboardItemData.paymentConfirmedCount == null">
+                                                <ng-container *ngIf="dashboardItemData.lastWeekPaymentConfirmedCount != undefind && dashboardItemData.lastWeekPaymentConfirmedCount != null">
+                                                    {{dashboardItemData.lastWeekPaymentConfirmedCount}}</ng-container>
+                                                <ng-container *ngIf="dashboardItemData.lastWeekPaymentConfirmedCount == undefind || dashboardItemData.lastWeekPaymentConfirmedCount == null">
                                                     0
                                                 </ng-container>
                                                 <span class="active-dash confirmed-dash">Confirmed</span></p>
@@ -486,7 +509,7 @@
                                 <div class="activity-details">
                                     <ul>
                                         <ng-container *ngFor = "let item of dashboardRecentUpdates">
-                                        <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span> on {{item.date}} at {{item.time}}</span></li>
+                                        <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span>, {{item.title}} on {{item.date}} at {{item.time}}</span></li>
                                         </ng-container> 
                                         <!-- <li>These cases are perfectly simple and easy to distinguish. In a free hour,
                                             when our power of choice is

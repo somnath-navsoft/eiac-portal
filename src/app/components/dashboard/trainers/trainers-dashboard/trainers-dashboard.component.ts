@@ -16,11 +16,11 @@ import { FullCalendarOptions, EventObject } from 'ngx-fullcalendar';
 import { OptionsInput } from '@fullcalendar/core';
 
 declare var FullCalendar: any;
-
+declare var $: any;
 @Component({
   selector: 'app-trainers-dashboard',
   templateUrl: './trainers-dashboard.component.html',
-  styleUrls: ['./trainers-dashboard.component.scss']
+  styleUrls: ['./trainers-dashboard.component.scss'] 
 })
 export class TrainersDashboardComponent implements OnInit {
 
@@ -75,8 +75,8 @@ export class TrainersDashboardComponent implements OnInit {
   @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
   optionCal: FullCalendarOptions;
   @ViewChild('fullcalendar', { static: true }) fullcalendar: CalendarComponent;
-
   @ViewChild('calendar', { static: true }) calendar: any;
+  eventId:any;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
     this.config = {
@@ -106,12 +106,14 @@ export class TrainersDashboardComponent implements OnInit {
             var eventCanderArr = [];
             
             this.dashboardEvents.forEach((res,key) => {
+              // console.log(res,'res');
               // var tempObj = {}
               // tempObj['title'] = res['courseDetails'].course;
               // tempObj['start'] = res.event_start_date_time;
               // tempObj['end'] = res.event_end_date_time;
               // eventCanderArr.push(tempObj);
               eventCanderArr.push({
+                id:res.id,
                 title:res['courseDetails'].course,
                 start:res.event_start_date_time,
                 end:res.event_end_date_time,
@@ -134,7 +136,7 @@ export class TrainersDashboardComponent implements OnInit {
               let time2 = datePart[2];
               let time = time1 + " " + time2;
               console.log(datePart, " == ", date, " -- ", time);
-              this.dashboardRecentUpdates.push({ title: "Trainer Last Login", date: date, time: time });
+              this.dashboardRecentUpdates.push({ title: "Last Login", date: date, time: time });
             }
             if (this.dashboardItemData.lastAccrApplied != undefined) {
               let datePart: any = this.dashboardItemData.lastAccrApplied.toString().split(" ");
@@ -146,7 +148,7 @@ export class TrainersDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 + " " + time2;
-              this.dashboardRecentUpdates.push({ title: "Trainer Accreditation Applied", date: date, time: time });
+              this.dashboardRecentUpdates.push({ title: "Accreditation Applied", date: date, time: time });
             }
             if (this.dashboardItemData.lastRegApplied != undefined) {
               let datePart: any = this.dashboardItemData.lastRegApplied.toString().split(" ");
@@ -158,7 +160,7 @@ export class TrainersDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 + " " + time2;
-              this.dashboardRecentUpdates.push({ title: "Trainer Registration Applied", date: date, time: time });
+              this.dashboardRecentUpdates.push({ title: "Registration Applied", date: date, time: time });
             }
             if (this.dashboardItemData.lastTrainingApplied != undefined) {
               let datePart: any = this.dashboardItemData.lastTrainingApplied.toString().split(" ");
@@ -170,7 +172,7 @@ export class TrainersDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 + " " + time2;
-              this.dashboardRecentUpdates.push({ title: "Trainer Training Applied", date: date, time: time });
+              this.dashboardRecentUpdates.push({ title: "Training Applied", date: date, time: time });
             }
             if (this.dashboardItemData.lastAccrPayment != undefined) {
               let datePart: any = this.dashboardItemData.lastAccrPayment.toString().split(" ");
@@ -182,7 +184,7 @@ export class TrainersDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 + " " + time2;
-              this.dashboardRecentUpdates.push({ title: "Trainer Accreditation Payment", date: date, time: time });
+              this.dashboardRecentUpdates.push({ title: "Accreditation Payment", date: date, time: time });
             }
             if (this.dashboardItemData.lastRegPayment != undefined) {
               let datePart: any = this.dashboardItemData.lastRegPayment.toString().split(" ");
@@ -194,7 +196,7 @@ export class TrainersDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 + " " + time2;
-              this.dashboardRecentUpdates.push({ title: "Trainer Registration Payment", date: date, time: time });
+              this.dashboardRecentUpdates.push({ title: "Registration Payment", date: date, time: time });
             }
             if (this.dashboardItemData.lastTrainingPayment != undefined) {
               let datePart: any = this.dashboardItemData.lastTrainingPayment.toString().split(" ");
@@ -206,10 +208,23 @@ export class TrainersDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 + " " + time2;
-              this.dashboardRecentUpdates.push({ title: "Trainer Training Payment", date: date, time: time });
+              this.dashboardRecentUpdates.push({ title: "Training Payment", date: date, time: time });
             }
           }
 
+        //   setTimeout(() => {
+        //     $("#calendar").fullCalendar({  
+        //         header: {
+        //             left   : 'prev,next today',
+        //             center : 'title',
+        //             right  : 'month,agendaWeek,agendaDay'
+        //         },
+        //         navLinks   : true, 
+        //         editable   : true,
+        //         eventLimit : true,
+        //         events: eventCanderArr,  // request to load current events
+        //     });
+        //  }, 100);
 
           this.options = {
             editable: true,
@@ -285,6 +300,12 @@ export class TrainersDashboardComponent implements OnInit {
           this.recordsTotal = res['data'].recordsTotal;
           this.loader = true;
         });
+  }
+
+  fullcanderClick(obj) {
+
+    this.eventId = obj.event._def.publicId;
+    // console.log(eventId);
   }
 
   getUserDetails(user) {

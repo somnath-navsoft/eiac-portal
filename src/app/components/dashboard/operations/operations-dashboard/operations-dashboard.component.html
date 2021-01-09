@@ -22,8 +22,8 @@
                             <div class="data-bg">
                                 <h6><span class="icon-arrow-up"></span>{{dashboardItemData.lastMonthCabCount}}New since last month</h6>
                             </div>
-                        </div>
-                    </div>
+                        </div> 
+                    </div> 
                 </div>
                 <div class="col-md-3">
                     <div class="dsh-wrapper">
@@ -55,21 +55,21 @@
                             </div>
                             <div class="trainer-data-det">
                                 <div class="trainer-pro">
-                                    <span>Documents</span>
+                                    <span>Records</span>
                                 </div>
                                 <div class="trainer-maindata trainer-update">
-                                    <span>{{dashboardItemData.totalDocCount}}</span>
+                                    <span>{{dashboardItemData.totalActiveRecCount}}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="date-update update3">
                             <div class="data-bg">
-                                <h6><span class="icon-arrow-down"></span>{{dashboardItemData.lastMonthDocCount}} Expiring since last month</h6>
+                                <h6><span class="icon-arrow-down"></span>{{dashboardItemData.totalExpiredRecCountLastMonth}} Expiring since last month</h6>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3"> 
                     <div class="dsh-wrapper">
                         <div class="trainer-main-details trainer4">
                             <div class="user-icons">
@@ -77,7 +77,7 @@
                             </div>
                             <div class="trainer-data-det">
                                 <div class="trainer-pro">
-                                    <span>Training Events</span>
+                                    <span>Events</span>
                                 </div>
                                 <div class="trainer-maindata trainer-update">
                                     <span>{{dashboardItemData.totalEventCount}}</span>
@@ -109,7 +109,7 @@
                         <div class="usermain">
                             <div class="main-status">
                                 <p class="head-dash">Received</p>
-                                <p class="sub-head-dash">{{dashboardItemData.draftAccr}}</p>
+                                <p class="sub-head-dash">{{dashboardItemData.total_received}}</p>
                             </div>
                             <div class="view-all sub-head-dash">
                                 <!-- <p><span class="active-dash waiting-dash">Waiting</span></p> -->
@@ -117,7 +117,7 @@
                         </div>
                     </div>
                     <div class="dash-logo">
-                        <span class="icon-check-mark"></span>
+                        <span class="icon-download"></span>
                     </div>
                 </div>
             </div>
@@ -127,7 +127,7 @@
                         <div class="usermain">
                             <div class="main-status">
                                 <p class="head-dash">Approved</p>
-                                <p class="sub-head-dash">{{dashboardItemData.underReviewAccr}}</p>
+                                <p class="sub-head-dash">{{dashboardItemData.total_approved}}</p>
                             </div>
                             <div class="view-all">
                                 <!-- <p><span class="icon-arrow-up"></span>12 New</p> -->
@@ -145,7 +145,7 @@
                         <div class="usermain">
                             <div class="main-status">
                                 <p class="head-dash head-dash-bill">In Processed</p>
-                                <p class="sub-head-dash">{{dashboardItemData.applicationProcessed}}</p>
+                                <p class="sub-head-dash">{{dashboardItemData.total_inprocess}}</p>
                             </div>
                             <div class="view-all">
                                 <!-- <p><span class="icon-arrow-up"></span>12 New</p> -->
@@ -153,7 +153,7 @@
                         </div>
                     </div>
                     <div class="dash-logo">
-                        <span class="icon-check-mark"></span>
+                        <span class="icon-refresh"></span>
                     </div>
                 </div>
             </div>
@@ -163,7 +163,7 @@
                         <div class="usermain">
                             <div class="main-status">
                                 <p class="head-dash head-dash-bill">Closed</p>
-                                <p class="sub-head-dash">{{dashboardItemData.completeAccr}}</p>
+                                <p class="sub-head-dash">{{dashboardItemData.total_closed}}</p>
                             </div>
                             <div class="view-all">
                                 <!-- <p><span class="icon-arrow-up"></span>12 New</p> -->
@@ -171,23 +171,26 @@
                         </div>
                     </div>
                     <div class="dash-logo">
-                        <span class="icon-check-mark"></span>
+                        <span class="icon-close"></span>
                     </div>
                 </div>
             </div>
         </div>
 
-
+<!-- display: flex;
+    align-items: flex-end;
+    height: 100%; -->
         <div class="service-links dash_menu_main">
             <div class="row m-0">
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="trainer_head">
+                            <div class="trainer_head" [ngStyle]="{'display':'flex', 'align-items':'flex-end', 'height':'100%'}">
                                 <h4>Department View</h4>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-4">
                             <!-- @{{selectDepartment}} -->
                             <!-- (selectionChange)="changeDepartmentView($event)" -->
                             <mat-form-field class="cab-data mt-2">         
@@ -283,7 +286,7 @@
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash">Service Enquiries</p>
-                                            <p class="sub-head-dash">NA</p>
+                                            <p class="sub-head-dash">{{dashboardItemData.enquiryCount}}</p>
                                         </div>
                                         <!-- <div class="view-all">
                                             <p><span class="icon-arrow-up"></span>12 New</p>
@@ -298,7 +301,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="row">
+                    <div class="row" [ngStyle]="{'padding-top': '25px'}">
                         <div class="col-md-6">
                             <div class="trainer_head">
                                 <h4>Certificate View</h4>
@@ -330,7 +333,7 @@
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash head-dash-bill">In Progress</p>
-                                            <p class="sub-head-dash">NA</p>
+                                            <p class="sub-head-dash">{{totalDeptPendingCount}}</p>
                                         </div>
                                         <div class="view-all">
                                             <p>From last week</p>
@@ -351,8 +354,8 @@
                                             <p class="sub-head-dash">{{totalDeptStatus.accredatedCount}}<span>Accredited</span></p>
                                             <p class="sub-head-dash">{{totalDeptStatus.withdrawCount}} <span>Withdrawn</span></p>
                                             <p class="sub-head-dash">{{totalDeptStatus.suspendedCount}} <span>Suspended</span></p>
-                                            <p class="sub-head-dash">{{totalDeptStatus.volWithdrawCount}} <span>Voluntary Withdrawn</span></p>
-                                            <p class="sub-head-dash">{{totalDeptStatus.volSuspendedCount}} <span>Voluntary Suspended</span></p>
+                                            <!-- <p class="sub-head-dash">{{totalDeptStatus.volWithdrawCount}} <span>Voluntary Withdrawn</span></p>
+                                            <p class="sub-head-dash">{{totalDeptStatus.volSuspendedCount}} <span>Voluntary Suspended</span></p> -->
                                         </div>
                                     </div>
                                 </div>
@@ -361,13 +364,26 @@
                                 </div>
                             </div>
                         </div>
+                         <!-- (openedChange)="myInput.focus()" || <input class="form-control form-control-sm w-100" #myInput  type="text" 
+                        (keyup)="searchCountry($event)" (keydown)="$event.stopPropagation()" autocomplete="off" placeholder="Search">
+                        <mat-divider></mat-divider> -->
                         <div class="col-md-6">
                             <div class="dash-main">
                                 <div class="dash-wrap">
                                     <div class="usermain">
                                         <div class="main-status">
                                             <p class="head-dash head-dash-bill">Region</p>
-                                            <p class="sub-head-dash">NA</p>
+                                            <select class="select_dash" [(ngModel)]="select_country" (change)="onSelectCountry(select_country)">
+                                            <option value="">Country</option>
+                                                <option *ngFor="let item of loadCountryList;" value="{{item.CountryName}}">{{item.CountryName}}</option>
+                                            </select>
+                                            <!-- <mat-form-field class="cab-data">
+                                                <mat-label>Country</mat-label>
+                                                <mat-select placeholder="Acreditation Type" (selectionChange)="onSelectCountry(select_country)"
+                                                [(value)]="select_country">                                                   
+                                                    <mat-option *ngFor="let item of loadCountryList;" [value]="item.CountryName">{{item.CountryName}}</mat-option>                                        
+                                                </mat-select>
+                                            </mat-form-field> -->
                                         </div>
                                     </div>
                                 </div>
@@ -404,7 +420,7 @@
                                 <div class="activity-details">
                                     <ul>
                                         <ng-container *ngFor = "let item of dashboardRecentUpdates">
-                                        <li>{{item.title}}<span> on {{item.date}} at {{item.time}}</span></li>
+                                        <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span>, {{item.title}} on {{item.date}} at {{item.time}}</span></li>
                                         </ng-container>
                                     </ul>
                                 </div>
