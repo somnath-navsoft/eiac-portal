@@ -90,6 +90,7 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   getFamilyTitles: any = {};
   getSchemeTitles: any = {};
   summaryDetails:any[] = [{}];
+
   newSummaryDetails:any[] = [];
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
@@ -508,8 +509,6 @@ loadScopeDataHalal(){
             // console.log(result['data'].summaryOfPersonnel);
             this.summaryDetails = result['data'].summaryOfPersonnel;
             console.log(this.summaryDetails,'summaryOfPersonnel');
-
-            
 
             this.summaryDetails.forEach((item,key) => {
               var newArr = {};

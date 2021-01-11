@@ -404,6 +404,7 @@
                                                     <div class="col-md-4 col-sm-12">
                                                         <mat-form-field class="cab-data">
                                                             <mat-label>Land Line Phone No.</mat-label>
+
                                                             <input matInput (keypress)="Service.IsNumeric($event)" placeholder="Land Line Phone No." name="managing_telephone_no_{{i}}" [(ngModel)]="managingDirector[i].telephone_no" required>
                                                         </mat-form-field>
                                                     </div>
@@ -562,6 +563,7 @@
                                             <hr>
                                         </div>
                                     </div> -->
+
                                     <div class="row mt-4">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subheader-data form_subhdr">
@@ -569,6 +571,7 @@
                                                 <div class="form-subheader-data">
                                                         <mat-radio-group name="hcab_other_loc" #hcabOtherLoc="ngModel" [(ngModel)]="step1Data.hcab_other_loc" 
                                                     #selectAccredHold="ngModel" required>
+
                                                         <div class="row form_right_data">
                                                             <div class="col-md-4">
                                                                 <label class="check-rdo">
@@ -684,11 +687,13 @@
                                     </div>
                                     <div class="row mt-3" *ngIf="step1Data.hcab_other_loc == '1'">
                                         <div class="col-md-12 col-sm-3">
+
                                             <p class="desc_table">
                                                 (*)as example of the key activities include: policy formulation, process and/or procedure development, proceedings of safeguarding impartiality committee/scheme committee, approval of auditors/examiners/inspectors, application & contract review, selection of auditors/examiners/inspectors, handling of contractual agreements with auditors/examiners/inspectors, monitoring of auditors/examiners/inspectors, planning of audits/examinations/inspections, review, approval and decision on the results of audits/examinations/inspections and preparation, release and control of certificates, Final decision on appeals and complaints.
                                               </p>
                                         </div>                                       
                                     </div>
+
 
                                     <div class="row my-4">
                                         <div class="col-md-12 p-0">
@@ -697,6 +702,7 @@
                                                     <div class="form-subheader-data">
                                                         <mat-radio-group name="is_hold_other_accr" #hcabCurrentlyHold="ngModel" [(ngModel)]="step1Data.is_hold_other_accr" 
                                                         #selectAccredHold="ngModel" required>
+
                                                             <div class="row form_right_data">
                                                                 <div class="col-md-4">
                                                                     <label class="check-rdo">
@@ -711,6 +717,7 @@
                                                         
                                                             </div>
                                                         </mat-radio-group>
+
                                                     <div class="row">
                                                         <div class="col-md-12" [ngStyle]="{'margin-top':'5px'}">
                                                             <p class="error" *ngIf="isApplicationSubmitted == true && hcabCurrentlyHold.errors?.required">Please select anyone option</p>
@@ -1601,6 +1608,7 @@
                                                             <th>Name of the Authorized Persons</th>
                                                             <th>Signature Specimen</th>
                                                             <th>Contact Details(Tel, Mobile No. and Email)</th>
+
                                                             <th></th>
                                                         </tr>
                                                     </thead>

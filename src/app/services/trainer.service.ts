@@ -26,7 +26,7 @@ export class TrainerService {
     return this.http.get(url, this._service.getReqHeaders());
   }
 
-  //https://dev-service.eiac.gov.ae/webservice/cab_directory_by_service/?status=all&language_id=1
+  //https://uat-service.eiac.gov.ae/webservice/cab_directory_by_service/?status=all&language_id=1
   getCertificateType(){
     let url = `${this.BASE_REQ_URL}` + 'webservice/cab_directory_by_service/?status=all&language_id=1';
     return this.http.get(url, this._service.getReqHeaders());

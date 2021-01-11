@@ -77,6 +77,7 @@ export class TrainersDashboardComponent implements OnInit {
   @ViewChild('fullcalendar', { static: true }) fullcalendar: CalendarComponent;
   @ViewChild('calendar', { static: true }) calendar: any;
   eventId:any;
+  education_specialization:any;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
     this.config = {
@@ -307,6 +308,8 @@ export class TrainersDashboardComponent implements OnInit {
           this.userDetails = res['data']['user_data'][0];
           this.step1Data = res['data']['step1'][0];
           //this.step2Data = res['data']['step2']['education'][0];
+          var education = res['data'].step2['all_data'] && res['data'].step2['all_data'][0].education && res['data'].step2['all_data'][0].education != null ? JSON.parse(res['data'].step2['all_data'][0].education) : null;
+          this.education_specialization = education.specialization;
           console.log(res, 'res');
         });
 

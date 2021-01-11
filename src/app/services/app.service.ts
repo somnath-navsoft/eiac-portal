@@ -31,14 +31,17 @@ export class AppService {
   // public apiServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
   // public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
 
-  // public apiServerUrl         =   'https://dev-service.eiac.gov.ae/webservice';
-  // public apiRequestUrl        =   'https://dev-service.eiac.gov.ae/';
+
+  // public apiServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
+  // public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
+
 
   public apiUatServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
   // public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
 
   public countryURL           =   "https://raw.githubusercontent.com/sagarshirbhate/Country-State-City-Database/master/Contries.json";
   public assetsBasePath       =   "https://uat-portal.eiac.gov.ae/assets/csc-json/";
+
   //https://raw.githubusercontent.com/sagarshirbhate/Country-State-City-Database/master/Contries.json
 
   public regExName: any;
@@ -343,6 +346,7 @@ addMinutesToTime()
     if(urlVal != ''){
 
       let getData: any = JSON.parse(sessionStorage.getItem('userData'));
+
       ////console.log(">>> User Save data: ", getData);
       if(pageName === 'inspection-bodies-form' || pageName === 'health-care-form' || pageName == 'testing-calibration-form' || pageName == 'pt-providers-form'){
         if(getData.data.accredation_criteria == 2){

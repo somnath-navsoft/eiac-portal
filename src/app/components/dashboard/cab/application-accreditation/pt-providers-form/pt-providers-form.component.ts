@@ -13,6 +13,7 @@ import { TrainerService } from '../../../../../services/trainer.service';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer';
 import {CustomModalComponent} from '../../../../utility/custom-modal/custom-modal.component';
+import { relativeTimeRounding } from 'moment';
 
 @Component({
   selector: 'app-pt-providers-form',
@@ -34,7 +35,8 @@ export class PtProvidersFormComponent implements OnInit {
 
   isPrelimSubmitted: boolean = false;
 
-  public accreditationInfo: Array<any> = [{}];
+  //public accreditationInfo: Array<any> = [{}];
+  accreditationInfo: any[] = [{}];
   public technicalManager: any = {};
   public managementManager: any = {};
   public medicaMainlLabInfo:Array<any>=[];
@@ -177,6 +179,7 @@ export class PtProvidersFormComponent implements OnInit {
   deleteEditScopeConfirm: boolean = false;
   deleteScopeConfirm: boolean = false;
   deleteRowConfirm: boolean = false;
+
   aboutSubContractors:Array<any> = [{}];
 
 
@@ -209,7 +212,11 @@ export class PtProvidersFormComponent implements OnInit {
         res => {
           console.log("@Load Accreditation criteria....", res);         
           this.criteriaMaster = res['data']['schemes'];
+          
           this.criteriaList = res['data']['criteriaList'];
+          if(this.criteriaList.length == 1){
+          this.step1Data.criteria_request = this.criteriaList[0].code;
+          }
           console.log("#Get criteria: ", this.criteriaMaster);
           if(this.criteriaList.length == 1){
             this.step1Data.criteria_request = this.criteriaList[0].code;
@@ -1117,6 +1124,7 @@ setexDate(date){
         this.step1Data.date_of_issue = new Date(data.date_of_issue);
         this.step1Data.fax_no = data.applicant_fax_no;
         this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
+
         this.step1Data.is_hold_other_accreditation = "1";
         //this.step1Data.is_main_activity = "";
         //this.step1Data.is_main_activity_note = "";
@@ -1259,13 +1267,14 @@ setexDate(date){
               }
               if(res['data'].is_main_activity != undefined){
                   this.step1Data.is_main_activity = res['data'].is_main_activity.toString();
+                  //alert(this.step1Data.is_main_activity);
                   if(!res['data'].is_main_activity){
                     this.step1Data.is_main_activity_note = res['data'].is_main_activity_note.toString();
                   }
                   console.log(this.step1Data.is_main_activity,'is_main_activity');
               }
-
-              if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0){
+              //if(this.accreditationInfo.length > 0 && !this.Service.isObjectEmpty(this.accreditationInfo[0])) {
+              if(res['data'].otherAccr != undefined && res['data'].otherAccr.length > 0 && !this.Service.isObjectEmpty(res['data'].otherAccr[0])){
                 //console.log('>>>Accr infor: ', getData.data.otherAccr);
                 this.accreditationInfo = [];
                 this.step1Data.is_hold_other_accreditation_select = "1";
@@ -1274,7 +1283,7 @@ setexDate(date){
                     ////console.log('>> ', item, " :: ", key);
                     let data: any;
                     data = item['value'];
-                   
+
                     var obj1 = data.replace(/'/g, "\"");
                     let jparse = JSON.parse(obj1);
                     this.accreditationInfo.push(jparse);
@@ -1284,10 +1293,12 @@ setexDate(date){
                       this.step1Data.is_hold_other_accreditation_select = "0";
                       return;
                     }
+
                 })
               }else{
                 this.step1Data.is_hold_other_accreditation_select = "0";
               }
+             // alert(this.step1Data.is_hold_other_accreditation_select);
 
               //step2
               
@@ -1530,6 +1541,7 @@ onSubmitStep1(ngForm1: any){
     }
     this.ptProvidersForm.step1.is_draft = false;
     this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
+
     this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation_select == '0' ? false : true;
    // this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
     this.ptProvidersForm.step1 = this.step1Data;
@@ -1544,6 +1556,7 @@ onSubmitStep1(ngForm1: any){
     if(this.ownOrgMembInfo) {
       this.ptProvidersForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
     }
+
     //if(this.accreditationInfo) {
     if(this.accreditationInfo.length > 0 && !this.Service.isObjectEmpty(this.accreditationInfo[0]) && this.step1Data.is_hold_other_accreditation_select == '1') {
       this.ptProvidersForm.step1['accreditationInfo'] = this.accreditationInfo;
@@ -1551,6 +1564,9 @@ onSubmitStep1(ngForm1: any){
 
     this.loader = true;
     // this.step1DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
+
+    console.log(">>>>STEP 1 submit: ", this.ptProvidersForm);
+    //return;
     this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
     .subscribe(
       res => {
@@ -1606,6 +1622,7 @@ savedraftStep(stepCount) {
     if(this.ownOrgMembInfo) {
       this.ptProvidersForm.step1['ownOrgMembInfo'] = this.ownOrgMembInfo;
     }
+
     //if(this.accreditationInfo) {
       if(this.accreditationInfo.length > 0 && !this.Service.isObjectEmpty(this.accreditationInfo[0]) && this.step1Data.is_hold_other_accreditation_select == '1') {
       this.ptProvidersForm.step1['accreditationInfo'] = this.accreditationInfo;
@@ -1626,6 +1643,7 @@ savedraftStep(stepCount) {
   }
   if(stepCount == 'step2') {
     this.ptProvidersForm = {};
+
     this.ptProvidersForm.step2 = {};
     // this.step3Data = {};
     var applicationId = sessionStorage.getItem('applicationId');
@@ -1692,6 +1710,7 @@ savedraftStep(stepCount) {
       });
   }
   
+
 
   if(stepCount == 'step5') {
     this.ptProvidersForm = {};
@@ -1841,6 +1860,7 @@ savedraftStep(stepCount) {
 }
 
 onSubmitStep2(ngForm2: any){
+
   // this.Service.moveSteps('personal_information', 'information_audit_management', this.headerSteps);
 
   if(ngForm2.form.valid) {
@@ -2183,12 +2203,13 @@ updateScopeData = async(rowInd: number) => {
   .subscribe(
   res => {
       let getData: any  =res;
-      console.log(">>>. Data: ", getData);
+      //console.log(">>>. Data: ", getData);
       if(getData.data.scopeDetails != undefined && !this.Service.isObjectEmpty(getData.data.scopeDetails)){
         let jsonObject: any = getData.data.scopeDetails;
         if(jsonObject[getScheme]['scope_value'] != undefined){
           jsonObject[getScheme]['scope_value'].reverse();
         }
+
         this.toastr.success('Scope Data added successfully!','Success',{timeOut:2300});
         this.editScopeData = jsonObject;  
       }
@@ -2296,7 +2317,7 @@ onSubmitStep4(ngForm: any, type?: any , rowInd?:any) {
       this.saveScope(rowInd);
       ////console.log(">>> step5 submit...", this.step5Data, " -- ", this.ptProvidersForm);
       this.ptProvidersForm.step5.is_draft = false;
-      this.ptProvidersForm.saved_step = 5;
+      this.ptProvidersForm.saved_step = 4;
       //this.step5DataBodyFormFile.append('data',JSON.stringify(this.ptProvidersForm));
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.ptProviderForm,this.ptProvidersForm)
       .subscribe(
@@ -2364,12 +2385,14 @@ onSubmitStep4(ngForm: any, type?: any , rowInd?:any) {
 
 onSubmitStep5(ngForm5: any){
   // this.Service.moveSteps('profciency_testing_participation', 'personal_information', this.headerSteps);
+
   // this.Service.moveSteps('scope_accreditation', 'about_subcontractors', this.headerSteps);
   if(ngForm5.form.valid) {
     this.ptProvidersForm = {};
     this.ptProvidersForm.step5 = {};
     this.ptProvidersForm.email = this.userEmail;
     this.ptProvidersForm.userType = this.userType;
+
     this.ptProvidersForm.saved_step = '5';
     var applicationId = sessionStorage.getItem('applicationId');
     // this.step2Data.application_id = applicationId;
@@ -2394,6 +2417,7 @@ onSubmitStep5(ngForm5: any){
         this.loader = false;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
+
           this.Service.moveSteps('about_subcontractors', 'perlim_visit', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
@@ -2501,6 +2525,7 @@ if(this.authorizationStatus && checkCount == 11){
 }else{
   this.authorizationStatus = false;
 }
+
 
 
 // if(this.authorizationStatus == false){
