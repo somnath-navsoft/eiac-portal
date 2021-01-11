@@ -104,22 +104,40 @@ export class CandidateDashboardComponent implements OnInit {
             this.dashboardItemData = res['dashBoardData'];
 
             //dashboardEvents
+            let curYear: any;
+            let curMonth: any;
+            let curDate: any = new Date();
+            curYear = curDate.getFullYear();
+            curMonth = curDate.getMonth() + 1;
+            let eventCanderArr = []; 
+            console.log(">>>", curYear, " :: ", curMonth);
             if (this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0) {
               this.dashboardEvents = this.dashboardItemData.eventDetails;
               // console.log(">>>Events: ", this.dashboardEvents);
-            }
+              
+              let filterEvents: any[] =[];
+              this.dashboardEvents.forEach(item => {
+                let evtStart: any = item.event_start_date_time;
+                let evtDate: any = new Date(evtStart);
+                let evtYear: any = evtDate.getFullYear();
+                let evtMonth: any = evtDate.getMonth() + 1;
+                console.log("@Evt datae: ", evtStart, " :: ", evtYear, " :: ", evtMonth);
 
-            var eventCanderArr = [];            
-            this.dashboardEvents.forEach((res,key) => {
-              // console.log(res,'res');
-              eventCanderArr.push({
-                id:res.id,
-                title:res['courseDetails'].course,
-                start:res.event_start_date_time,
-                end:res.event_end_date_time,
-              });
-            })
-            
+                if((curYear == evtYear) && (curMonth == evtMonth)){
+                  filterEvents.push(item);
+                  eventCanderArr.push({
+                    id: item.id,
+                    title: item.courseDetails.course,
+                    start: item.event_start_date_time,
+                    end: item.event_end_date_time
+                  })
+                }
+                
+              })
+              this.dashboardEvents = filterEvents;
+            }
+            console.log(">>> ",this.dashboardEvents);
+
             //Get recent updates
             if(this.dashboardItemData.lastLogin != undefined){
               // let dt = new Date(this.dashboardItemData.lastLogin);
@@ -211,18 +229,33 @@ export class CandidateDashboardComponent implements OnInit {
               this.dashboardRecentUpdates.push({title: "Training Payment",date:date, time: time});
             }
 
-            let eventData: any[]=[];
+            /*let eventData: any[]=[];
             if(this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0){
               //console.log(">>> Events: ", this.dashboardItemData.eventDetails);
+              let curYear: any;
+              let curMonth: any;
+              let curDate: any = new Date();
+              curYear = curDate.getFullYear();
+              curMonth = curDate.getMonth() + 1;
+              console.log(">>>", curYear, " :: ", curMonth);
               this.dashboardItemData.eventDetails.forEach(item => {
-                eventData.push({
-                  id: item.courseDetails.id,
-                  title: item.courseDetails.course,
-                  start: item.event_start_date_time,
-                  end: item.event_end_date_time
-                })
+                let evtStart: any = item.event_start_date_time;
+                let evtDate: any = new Date(evtStart);
+                let evtYear: any = evtDate.getFullYear();
+                let evtMonth: any = evtDate.getMonth() + 1;
+                console.log("@Evt datae: ", evtStart, " :: ", evtYear, " :: ", evtMonth);
+
+                if((curYear == evtYear) && (curMonth == evtMonth)){
+                  eventData.push({
+                    id: item.courseDetails.id,
+                    title: item.courseDetails.course,
+                    start: item.event_start_date_time,
+                    end: item.event_end_date_time
+                  })
+                }
+                
               })
-            }
+            }*/
 
           //   setTimeout(() => {
           //     $("#calendar").fullCalendar({  

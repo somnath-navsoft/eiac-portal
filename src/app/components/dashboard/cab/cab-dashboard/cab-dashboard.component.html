@@ -110,7 +110,8 @@
                                 <span>Events</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span *ngIf="dashboardItemData.eventTrainingCount != undefind">{{dashboardItemData.eventTrainingCount}}</span>
+                                <!-- <span *ngIf="dashboardItemData.eventTrainingCount != undefind">{{dashboardItemData.eventTrainingCount}}</span> -->
+                                <span *ngIf="dashboardItemData.eventTrainingCount != undefind">34</span>
                             </div>
                         </div>
                     </div>
@@ -228,12 +229,15 @@
                                                 <ng-container *ngIf="dashboardItemData.completeAccrCount != null">
                                                 {{dashboardItemData.completeAccrCount}}</ng-container><span class="active-dash complete-dash">Completed</span></p>
                                         </div> -->
-
+                                        <!-- 1 0 5 -->
                                         <div class="main-status">
                                             <p class="head-dash">Applications</p>
-                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/status/all"><span>Accreditation&nbsp;&nbsp;</span></a>{{dashboardItemData.activeAccrCount}}<span class="active-dash"> Active</span></p>
+                                            <!-- <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/status/all"><span>Accreditation&nbsp;&nbsp;</span></a>{{dashboardItemData.activeAccrCount}}<span class="active-dash"> Active</span></p>
                                             <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/registration-status"><span>Registration&nbsp;&nbsp;</span></a>{{dashboardItemData.activeRegCount}}<span class="active-dash"> Active</span></p>
-                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/training-status"><span>Training&nbsp;&nbsp;</span></a>{{dashboardItemData.activeTrainingCount}}<span class="active-dash"> Active</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/training-status"><span>Training&nbsp;&nbsp;</span></a>{{dashboardItemData.activeTrainingCount}}<span class="active-dash"> Active</span></p> -->
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/status/all"><span>Accreditation&nbsp;&nbsp;</span></a>1<span class="active-dash"> Active</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/registration-status"><span>Registration&nbsp;&nbsp;</span></a>0<span class="active-dash"> Active</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/training-status"><span>Training&nbsp;&nbsp;</span></a>5<span class="active-dash"> Active</span></p>
                                         </div>
                                         
                                         <div class="view-all">
@@ -265,9 +269,12 @@
 
                                         <div class="main-status">
                                             <p class="head-dash">Applications</p>
-                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/status/all"><span>Accreditation&nbsp;&nbsp;</span></a> {{dashboardItemData.completeAccrCount}}<span class="active-dash complete-dash"> Completed</span></p>
+                                            <!-- <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/status/all"><span>Accreditation&nbsp;&nbsp;</span></a> {{dashboardItemData.completeAccrCount}}<span class="active-dash complete-dash"> Completed</span></p>
                                             <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/registration-status"><span>Registration&nbsp;&nbsp;</span></a> {{dashboardItemData.completeRegCount}}<span class="active-dash complete-dash"> Completed</span></p>
-                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/training-status"><span>Training&nbsp;&nbsp;</span></a> {{dashboardItemData.completeTrainingCount}}<span class="active-dash complete-dash"> Completed</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/training-status"><span>Training&nbsp;&nbsp;</span></a> {{dashboardItemData.completeTrainingCount}}<span class="active-dash complete-dash"> Completed</span></p> -->
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/status/all"><span>Accreditation&nbsp;&nbsp;</span></a> 0<span class="active-dash complete-dash"> Completed</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/registration-status"><span>Registration&nbsp;&nbsp;</span></a> 0<span class="active-dash complete-dash"> Completed</span></p>
+                                            <p class="sub-head-dash"><a href="javascript:void(0)" routerLink="/dashboard/training-status"><span>Training&nbsp;&nbsp;</span></a> 0<span class="active-dash complete-dash"> Completed</span></p>
                                         </div>
                                         
                                         <div class="view-all">
@@ -320,9 +327,10 @@
                                         <div class="main-status">
                                             <p class="head-dash head-dash-bill">Payments</p>
                                             <p class="sub-head-dash">
-                                            <ng-container *ngIf="dashboardItemData.lastWeekPaymentCount != null">
+                                                0
+                                            <!-- <ng-container *ngIf="dashboardItemData.lastWeekPaymentCount != null">
                                                 {{dashboardItemData.lastWeekPaymentCount}}
-                                            </ng-container>
+                                            </ng-container> -->
                                             </p>
                                         </div>
                                         <div class="view-all"> 
@@ -401,11 +409,12 @@
                                         <div class="main-status">
                                             <p class="head-dash head-dash-bill">Payments</p>
                                             <p class="sub-head-dash">                                                 
-                                                <ng-container *ngIf="dashboardItemData.lastWeekPaymentConfirmedCount != undefind && dashboardItemData.lastWeekPaymentConfirmedCount != null">
+                                                <!-- <ng-container *ngIf="dashboardItemData.lastWeekPaymentConfirmedCount != undefind && dashboardItemData.lastWeekPaymentConfirmedCount != null">
                                                     {{dashboardItemData.lastWeekPaymentConfirmedCount}}</ng-container>
                                                 <ng-container *ngIf="dashboardItemData.lastWeekPaymentConfirmedCount == undefind || dashboardItemData.lastWeekPaymentConfirmedCount == null">
                                                     0
-                                                </ng-container>
+                                                </ng-container> -->
+                                                0
                                                 <span class="active-dash confirmed-dash">Confirmed</span></p>
                                         </div>
                                         <div class="view-all">

@@ -3,8 +3,8 @@
     <div class="container-fluid p-0">
         <div class="main-dashboard">
             <div class="row">
-                <div class="col-md-6">
-                    <div class="trainer-details">
+                <div class="col-md-8">
+                    <div class="trainer-details" >
                         <div class="trainer-name">
                             <h4>{{userDetails?.first_name}} {{userDetails?.last_name}}</h4>
                             <div class="acc_verified">
@@ -12,24 +12,24 @@
                                 <span class="tooltip_data">Account Verified</span>
                             </div>
                         </div>
-                        <div class="trainer-detail">
-                            <span class="trainer-data"><span class="icon-company"></span>{{step1Data?.office}}</span>
-                            <span class="trainer-data"><span class="icon-email"></span>{{userDetails?.email}}</span>
+                        <div class="trainer-detail" [ngStyle]="{'display':'block'}">
+                            <span class="trainer-data"  [ngStyle]="{'padding-right':'45px'}"><span class="icon-company"></span>{{step1Data?.office}}</span>
+                            <span class="trainer-data"  [ngStyle]="{'padding-right':'45px'}"><span class="icon-email"></span>{{userDetails?.email}}</span>
                             <span class="trainer-data"><span class="icon-call"></span>{{step1Data?.office_tel_no}}</span>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="trainer-content">
                         <div class="trainer-type">
                             <span>Type</span>
                         </div>
                         <div class="trainer-type-data">
-                            <span>{{userDetails?.designation}}</span>
+                            <span>{{assessorTypes}}</span>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <!-- <div class="col-md-3">
                     <div class="trainer-content">
                         <div class="trainer-type">
                             <span>Technical Fields</span>
@@ -38,7 +38,7 @@
                             <span>{{step2Data?.specialization}}<span class="icon-checkmark"></span></span>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="row">
                 <div class="col-md-3">
@@ -104,20 +104,26 @@
                             <span class="icon-options"></span>
                         </div>
                         <div class="trainer-data-det"
-                            [ngStyle]="{'width': '50%', 'border-right': '1px solid','border-right-color': '#FFF','margin-right': '18px'  }">
+                            [ngStyle]="{'width': '50%', 'border-right': '1px solid','border-right-color': '#FFF' }"> 
                             <div class="trainer-pro">
                                 <span>Date Appointed</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span>NA</span>
+                                <ng-container *ngIf="dashboardItemData.assessorDetails != undefined && dashboardItemData.assessorDetails.length > 0">
+                                    <ng-container *ngIf="dashboardItemData.assessorDetails[0].appointment_date != null && dashboardItemData.assessorDetails[0].appointment_date != ''">
+                                        <span>{{dashboardItemData.assessorDetails[0].appointment_date | date:'y'}}</span>
+                                    </ng-container>
+                                    
+                                </ng-container>
+                                
                             </div>
                         </div>
                         <div class="trainer-data-det" [ngStyle]="{'width': '50%'}">
-                            <div class="trainer-pro">
+                            <div class="trainer-pro" [ngStyle]="{'padding-left':'8px'}">
                                 <span>Years in Service</span>
                             </div>
-                            <div class="trainer-maindata">
-                                <span>NA</span>
+                            <div class="trainer-maindata"  [ngStyle]="{'padding-left':'8px'}">
+                                <span>{{totalYear}}</span>
                             </div>
                         </div>
                     </div>
@@ -299,6 +305,7 @@
                                                                 </div>
                                                                 <div class="counts">
                                                                     <span *ngIf="item.courseDetails.location == 'eiac_training_center'">Eiac Training Center</span>
+                                                                    <span *ngIf="item.courseDetails.location == 'client_premisis'">Client Premise</span>
                                                                 </div>
                                                             </div>
                                                         </div>

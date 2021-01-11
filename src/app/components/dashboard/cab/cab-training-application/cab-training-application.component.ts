@@ -15,12 +15,14 @@ export class CabTrainingApplicationComponent implements OnInit  {
   subscriptions: Subscription[] = [];
   pageDetails: any[]= [];
   loaderData: boolean = false;
+  userType: any;
   constructor(public _service: AppService, public _constant:Constants, public _trainerService: TrainerService) { }
 
   ngOnInit() {
+    this.userType = sessionStorage.getItem('type');
     this.loadData()
   }
-  ngOnDestroy(){
+  ngOnDestroy(){ 
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 

@@ -87,6 +87,10 @@ export class AssessorsDashboardComponent implements OnInit {
   @ViewChild('fruitInput', { static: false }) fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
   eventId:any;
+  yrsService: any;
+  assessorType: any[] =[];
+  assessorTypes: string = '';
+  totalYear: any = 0;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
     this.config = {
@@ -112,7 +116,7 @@ export class AssessorsDashboardComponent implements OnInit {
                 if(item.technical_fields != undefined && item.technical_fields != '' && 
                     typeof item.technical_fields == 'object' && item.technical_fields.length > 0){
                       console.log(">>>Count: ", item.technical_fields)
-                   this.technicalFieldsCount += item.technical_fields.length;
+                  // this.technicalFieldsCount += item.technical_fields.length;
                 }
             })
           }
@@ -121,6 +125,24 @@ export class AssessorsDashboardComponent implements OnInit {
       }
     );
 
+  }
+
+  calcDays(date1,date2){
+    var diff = Math.floor(date1.getTime() - date2.getTime());
+    var day = 1000 * 60 * 60 * 24;
+
+    var days = Math.floor(diff/day);
+    var months = Math.floor(days/31);
+    var years = Math.floor(months/12);
+
+    var message = date2.toDateString();
+    //message += " was "
+    message += days + " days " 
+    message += months + " months "
+    message += years + " years ago \n"
+
+    console.log("Todat years: ", message);
+    return message;
   }
 
 
@@ -134,9 +156,58 @@ export class AssessorsDashboardComponent implements OnInit {
           this.loader = true;
           let getData: any = {};
           getData = res;
-          // console.log(res,'res');
+          console.log(res,'res');
           if (res['status'] == 200) {
             this.dashboardItemData = res['dashBoardData'];
+
+            this.technicalFieldsCount = this.dashboardItemData.technicalFieldsCount;
+
+            if(this.dashboardItemData.assessorDetails != undefined && this.dashboardItemData.assessorDetails.length > 0){
+                let assessorData: any = this.dashboardItemData.assessorDetails[0];
+               // this.dashboardItemData.assessorDetails[0].appointment_date = new Date('2019-10-10');
+                console.log("@Assesor data: ", assessorData);
+
+                let date = new Date();
+                let yr = date.getFullYear();
+                let month = date.getMonth() + 1;
+                let day = date.getDate();
+                let todays: any = new Date(yr+"-"+month+"-"+day);
+                let appintmentDate: any = new Date(assessorData.appointment_date);//new Date("2024-12-31");//;//
+                let diffDate: any = Math.round((todays - appintmentDate)/(1000*60*60*24))
+
+                var dateFrom = assessorData.appointment_date; 
+                var dateTo =todays;
+                var date1: any = new Date(dateFrom);
+                var date2: any = new Date(dateTo);
+                var diff=0;
+                let  monthp=31;
+                var days=1000*60*60*24;
+                diff=date2-date1; 
+                var dayp=(Math.floor(diff/days));   
+                var years = (Math.floor(dayp/365));
+                var months = Math.round(dayp % 365)/monthp;
+                let dayCal: any = Math.ceil(dayp*30);
+                let totalYears: string = years + "Years" + Math.ceil(months) + ' Months' + dayCal + ' Days';
+                if(this.totalYear < 10){
+                  this.totalYear = '0' + years;
+                }
+                
+                console.log(">>>Difference Year: ", diffDate, " -- ", this.calcDays(todays,appintmentDate), " -- ", years, " : ", months, " : ", dayp, " == ", totalYears);
+
+                if(assessorData.expert != undefined && assessorData.expert != null && assessorData.expert != '' && assessorData.expert == 'y'){
+                  this.assessorType.push('Expert');
+                }
+                if(assessorData.lead != undefined && assessorData.lead != null && assessorData.lead != '' && assessorData.lead == 'y'){
+                  this.assessorType.push('Lead');
+                }
+                if(assessorData.technical != undefined && assessorData.technical != null && assessorData.technical != '' && assessorData.technical == 'y'){
+                  this.assessorType.push('Technical');
+                }
+                if(this.assessorType.length > 0){
+                  this.assessorTypes = this.assessorType.join(',');
+                }
+
+            }
 
             console.log(">>>>> ", res['dashBoardData'], " == ", getData);
             //Get recent updates
@@ -156,27 +227,54 @@ export class AssessorsDashboardComponent implements OnInit {
             }
             //
             //dashboardEvents
+            let curYear: any;
+            let curMonth: any;
+            let curDate: any = new Date();
+            curYear = curDate.getFullYear();
+            curMonth = curDate.getMonth() + 1;
+            let eventCanderArr = []; 
+            console.log(">>>", curYear, " :: ", curMonth);
             if (this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0) {
               this.dashboardEvents = this.dashboardItemData.eventDetails;
               console.log(">>>Events: ", this.dashboardEvents);
+              let filterEvents: any[] =[];
+              this.dashboardEvents.forEach(item => {
+                let evtStart: any = item.event_start_date_time;
+                let evtDate: any = new Date(evtStart);
+                let evtYear: any = evtDate.getFullYear();
+                let evtMonth: any = evtDate.getMonth() + 1;
+                console.log("@Evt datae: ", evtStart, " :: ", evtYear, " :: ", evtMonth);
+
+                if((curYear == evtYear) && (curMonth == evtMonth)){
+                  filterEvents.push(item);
+                  eventCanderArr.push({
+                    id: item.id,
+                    title: item.courseDetails.course,
+                    start: item.event_start_date_time,
+                    end: item.event_end_date_time
+                  })
+                }
+                
+              })
+              this.dashboardEvents = filterEvents;
             }
 
-            var eventCanderArr = [];
+            // var eventCanderArr = [];
             
-            this.dashboardEvents.forEach((res,key) => {
-              // console.log(res,'res');
-              // var tempObj = {}
-              // tempObj['title'] = res['courseDetails'].course;
-              // tempObj['start'] = res.event_start_date_time;
-              // tempObj['end'] = res.event_end_date_time;
-              // eventCanderArr.push(tempObj);
-              eventCanderArr.push({
-                id:res.id,
-                title:res['courseDetails'].course,
-                start:res.event_start_date_time,
-                end:res.event_end_date_time,
-              });
-            })
+            // this.dashboardEvents.forEach((res,key) => {
+            //   // console.log(res,'res');
+            //   // var tempObj = {}
+            //   // tempObj['title'] = res['courseDetails'].course;
+            //   // tempObj['start'] = res.event_start_date_time;
+            //   // tempObj['end'] = res.event_end_date_time;
+            //   // eventCanderArr.push(tempObj);
+            //   eventCanderArr.push({
+            //     id:res.id,
+            //     title:res['courseDetails'].course,
+            //     start:res.event_start_date_time,
+            //     end:res.event_end_date_time,
+            //   });
+            // })
 
           //   setTimeout(() => {
           //     $("#calendar").fullCalendar({  
