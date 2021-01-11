@@ -113,7 +113,7 @@ export class CandidateDashboardComponent implements OnInit {
             console.log(">>>", curYear, " :: ", curMonth);
             if (this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0) {
               this.dashboardEvents = this.dashboardItemData.eventDetails;
-              // console.log(">>>Events: ", this.dashboardEvents);
+              console.log(">>>Events: ", this.dashboardEvents);
               
               let filterEvents: any[] =[];
               this.dashboardEvents.forEach(item => {
@@ -123,7 +123,7 @@ export class CandidateDashboardComponent implements OnInit {
                 let evtMonth: any = evtDate.getMonth() + 1;
                 console.log("@Evt datae: ", evtStart, " :: ", evtYear, " :: ", evtMonth);
 
-                if((curYear == evtYear) && (curMonth == evtMonth)){
+                if(item.event_type == 'public_course_event'){
                   filterEvents.push(item);
                   eventCanderArr.push({
                     id: item.id,
@@ -131,8 +131,7 @@ export class CandidateDashboardComponent implements OnInit {
                     start: item.event_start_date_time,
                     end: item.event_end_date_time
                   })
-                }
-                
+                }                
               })
               this.dashboardEvents = filterEvents;
             }

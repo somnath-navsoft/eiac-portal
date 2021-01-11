@@ -107,42 +107,41 @@ export class TrainersDashboardComponent implements OnInit {
             if (this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0) {
               this.dashboardEvents = this.dashboardItemData.eventDetails;
               // console.log(">>>Events: ", this.dashboardEvents);
-              let filterEvents: any[] =[];
-              this.dashboardEvents.forEach(item => {
-                let evtStart: any = item.event_start_date_time;
-                let evtDate: any = new Date(evtStart);
-                let evtYear: any = evtDate.getFullYear();
-                let evtMonth: any = evtDate.getMonth() + 1;
-                console.log("@Evt datae: ", evtStart, " :: ", evtYear, " :: ", evtMonth);
-                if((curYear == evtYear) && (curMonth == evtMonth)){
-                  filterEvents.push(item);
-                  eventCanderArr.push({
-                    id: item.id,
-                    title: item.courseDetails.course,
-                    start: item.event_start_date_time,
-                    end: item.event_end_date_time
-                  })
-                }                
-              })
-              this.dashboardEvents = filterEvents;
+              // let filterEvents: any[] =[];
+              // this.dashboardEvents.forEach(item => {
+              //   let evtStart: any = item.event_start_date_time;
+              //   let evtDate: any = new Date(evtStart);
+              //   let evtYear: any = evtDate.getFullYear();
+              //   let evtMonth: any = evtDate.getMonth() + 1;
+              //   console.log("@Evt datae: ", evtStart, " :: ", evtYear, " :: ", evtMonth);
+              //   if((curYear == evtYear) && (curMonth == evtMonth)){
+              //     filterEvents.push(item);
+              //     eventCanderArr.push({
+              //       id: item.id,
+              //       title: item.courseDetails.course,
+              //       start: item.event_start_date_time,
+              //       end: item.event_end_date_time
+              //     })
+              //   }                
+              // })
+              // this.dashboardEvents = filterEvents;
             }
 
-            // var eventCanderArr = [];
-            
-            // this.dashboardEvents.forEach((res,key) => {
-            //   // console.log(res,'res');
-            //   // var tempObj = {}
-            //   // tempObj['title'] = res['courseDetails'].course;
-            //   // tempObj['start'] = res.event_start_date_time;
-            //   // tempObj['end'] = res.event_end_date_time;
-            //   // eventCanderArr.push(tempObj);
-            //   eventCanderArr.push({
-            //     id:res.id,
-            //     title:res['courseDetails'].course,
-            //     start:res.event_start_date_time,
-            //     end:res.event_end_date_time,
-            //   });
-            // })
+            var eventCanderArr = [];            
+            this.dashboardEvents.forEach((res,key) => {
+              // console.log(res,'res');
+              // var tempObj = {}
+              // tempObj['title'] = res['courseDetails'].course;
+              // tempObj['start'] = res.event_start_date_time;
+              // tempObj['end'] = res.event_end_date_time;
+              // eventCanderArr.push(tempObj);
+              eventCanderArr.push({
+                id:res.id,
+                title:res['courseDetails'].course,
+                start:res.event_start_date_time,
+                end:res.event_end_date_time,
+              });
+            })
 
             //Get recent updates
             if (this.dashboardItemData.lastLogin != undefined) {

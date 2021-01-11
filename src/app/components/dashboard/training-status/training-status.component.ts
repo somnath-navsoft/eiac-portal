@@ -19,7 +19,7 @@ export class TrainingStatusComponent implements OnInit {
   paymentReceiptValidation: boolean = true;
   loader:boolean = true;
   closeResult: string;
-  trainerdata: any[] = [];
+  trainerdata: any[] = []; 
   trainerTempdata: any;
 
   //Add pagination

@@ -352,7 +352,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
 
     //Assign Search Type
     this.selectStatus =  [
-      {title: 'Payment Pending', value:'pending'},
+      {title: 'Payment Pending', value:'payment_pending'},
       {title: 'Under Process', value:'application_process'},
       {title: 'Under Review', value:'under_review'},
       {title: 'Complete', value:'complete'},
