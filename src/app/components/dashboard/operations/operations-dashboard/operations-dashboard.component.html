@@ -421,7 +421,7 @@
                                     <div class="activity-details">
                                         <ul>
                                             <ng-container *ngFor = "let item of dashboardRecentUpdates">
-                                            <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span>, {{item.title}} on {{item.date}} at {{item.time}}</span></li>
+                                            <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span>, {{item.title}} on {{item.date | date: 'short'}}</span></li>
                                             </ng-container>
                                         </ul>
                                     </div>

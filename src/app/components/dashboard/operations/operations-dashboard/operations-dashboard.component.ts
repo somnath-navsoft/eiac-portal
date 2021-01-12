@@ -28,7 +28,7 @@ export class OperationsDashboardComponent implements OnInit {
   addOnBlur = true;
   userType: any;
   userEmail: any;
-  userDetails: any[] = [];
+  userDetails: any;
   chatMessage: any = {};
   file_validation: boolean = true;
   chatMessageFile: any = new FormData();
@@ -247,17 +247,19 @@ export class OperationsDashboardComponent implements OnInit {
             //Get recent updates
             if(this.dashboardItemData.lastLogin != undefined){
               let datePart: any = this.dashboardItemData.lastLogin.toString().split(" ");
-              let date = datePart[0];
-              let time1 = datePart[1];
-              let time1Ar = time1.split(":");
-              console.log(">>>>... ", time1Ar, " -- ", time1Ar.length);
-              if(time1Ar.length == 1){
-                time1 = time1 +":00";
-              }
-              let time2 = datePart[2];
-              let time = time1 +" "+ time2;
-              console.log(datePart, " == ", date, " -- ",time);  
-              this.dashboardRecentUpdates.push({title: "Last Login",date:date, time: time});
+              // let date = datePart[0];
+              // let time1 = datePart[1];
+              // let time1Ar = time1.split(":");
+              // console.log(">>>>... ", time1Ar, " -- ", time1Ar.length);
+              // if(time1Ar.length == 1){
+              //   time1 = time1 +":00";
+              // }
+              // let time2 = datePart[2];
+              // let time = time1 +" "+ time2;
+              //console.log(datePart, " == ", date, " -- ",time);  
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Last Login ";
+              this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
             }
             // if(this.dashboardItemData.lastAccrApplied != undefined){
             //   let datePart: any = this.dashboardItemData.lastAccrApplied.toString().split(" ");
