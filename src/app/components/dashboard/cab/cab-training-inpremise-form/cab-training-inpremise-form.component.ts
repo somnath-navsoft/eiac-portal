@@ -329,6 +329,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
               this.step1Data.mobile_phone_number = res['data'].mobile_phone_number;
               this.step1Data.event_management = res['data'].event_management;
               this.step1Data.event_management != '' && this.step1Data.event_management != null ? this.loadCourseDetailsPage(res['data'].event_management) : '';
+              this.step2Data.event_management = res['data'].event_management;
   
               // step2
               if(res['data'].eventParticipant != null) {
@@ -873,7 +874,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
         this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
         this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
         this.voucherFile.append('voucher_date', dtFormat);
-        this.voucherFile.append('accreditation',this.formApplicationId);
+        // this.voucherFile.append('accreditation',this.formApplicationId);
         this.voucherFile.append('application_id',this.formApplicationId);
         this.voucherFile.append('saved_step', 7);
         this.voucherFile.append('payment_status', 'paid');
