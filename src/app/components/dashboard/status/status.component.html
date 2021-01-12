@@ -251,8 +251,8 @@
                                <span *ngIf="item.is_prelim_visit == true">Yes</span>
                                <span *ngIf="item.is_prelim_visit == false">No</span>
                             </td>
-                            <td [ngStyle]="{'width':'140px'}" [ngClass]="{'pending': item.accr_status === 'pending' || item.accr_status == 'application_process' || item.accr_status == 'payment_pending', 'under-review':item.accr_status === null || item.accr_status === 'under_review', 'complete': item.accr_status === 'complete', 'draft': item.accr_status === 'draft' }">
-                                <span *ngIf="item.accr_status == 'pending' || item.accr_status == 'payment_pending'">Payment Pending</span>
+                            <td [ngStyle]="{'width':'140px'}" [ngClass]="{'pending': item.accr_status === 'pending' || item.accr_status == 'payment_pending', 'under-review':item.accr_status === null || item.accr_status === 'under_review', 'complete': item.accr_status === 'complete', 'draft': item.accr_status === 'draft' }">
+                                <span *ngIf="item.accr_status == 'payment_pending'">Payment Pending</span>
                                 <span *ngIf="item.accr_status == 'under_process'">Under Process</span>
                                 <span *ngIf="item.accr_status == 'under_review'">Under Review</span>
                                 <span *ngIf="item.accr_status == 'complete'">Complete</span>
