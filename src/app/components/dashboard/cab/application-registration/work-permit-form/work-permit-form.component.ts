@@ -987,7 +987,7 @@ export class WorkPermitFormComponent implements OnInit {
       this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
       this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
       this.voucherFile.append('voucher_date', dtFormat);
-      this.voucherFile.append('accreditation',this.formApplicationId);
+      // this.voucherFile.append('accreditation',this.formApplicationId);
       this.voucherFile.append('application_id',this.formApplicationId);
       this.voucherFile.append('saved_step', 8);
       this.voucherFile.append('payment_status', 'paid');
