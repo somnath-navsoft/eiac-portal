@@ -175,7 +175,7 @@ export class OperationsDashboardComponent implements OnInit {
                 getData = res['dashBoardData'];
                 console.log(getData,'::::Department data');
 
-                this.totalDeptSelect = getData.lastApplication;
+                this.totalDeptSelect = (getData.lastApplication == '' && this.selectDepartment === 'inspection_bodies') ? 'IB' : (getData.lastApplication != '' && this.selectDepartment === 'halal_conformity_bodies') ? 'HCAB' : getData.lastApplication;
                 if(getData.allScheme != undefined){
                   this.totalDeptSchemeCount = getData.allScheme.length;
                 }
@@ -219,7 +219,7 @@ export class OperationsDashboardComponent implements OnInit {
                     if(item == 'certification_bodies'){
                       this.ioDeartment.push({title:'CB', value: item})
                     }
-                    if(item == "inspection_body"){
+                    if(item == "inspection_bodies"){
                       this.ioDeartment.push({title:'IB', value: item})
                     }
                     if(item == "testing_calibration"){
@@ -240,7 +240,8 @@ export class OperationsDashboardComponent implements OnInit {
                     // if(item == "no_objection"){
                     //   this.ioDeartment.push({title:'NOC', value: item})
                     // }
-              })
+              });
+              this.ioDeartment.sort((a, b) => (a.title > b.title) ? 1 : -1);
             }
 
             //Get recent updates
