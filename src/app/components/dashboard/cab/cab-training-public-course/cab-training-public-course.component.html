@@ -46,6 +46,7 @@
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr form_subhdr">
                                                 <h5>1. APPLICANT INFORMATION</h5>
+                                                <span>* Your certiticate will be issued in the same name so ensure the candidate names are entered correctly</span>
                                             </div>
                                             <hr>
                                         </div>
@@ -429,6 +430,66 @@
                     <form #ngForm5="ngForm" (ngSubmit)="onSubmitStep5(ngForm5)" autocomplete="off">
                         <div class="row form-bdy m-0">
                             <div class="wrapper">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 p-0">
+                                            <div class="form-subhdr form_subhdr">
+                                                <h5>5. AUTHORIZATION OF THE APPLICATION</h5>
+                                                <!-- <span>*If you want the certificate issued on a different address please update below</span> -->
+                                            </div>
+                                            <hr>
+                                        </div>
+                                        
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-12 p-0">
+                                            <div class="form-subheader-data subhead-dt">
+                                                <h5>TERMS AND CONDITIONS</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="auth_data_main">
+                                        <ul>
+                                            <li>
+                                                Training materials electronic format pdf files will be provided by EIAC.
+                                            </li>
+                                            <li>
+                                                This quotation is based on the law no.2/2010 of Government of Dubai.
+                                            </li>
+                                            <li>
+                                                A list of participant(s)/trainee(s) with their exact names & contacts ( e.g: e-mail, phone No., ..... etc) must be provided to EIAC by the CAB(s) in advance.
+                                            </li>
+                                            <li>
+                                                A copy of applicants tax certificate (if available) must be submitted with this request.
+                                            </li>
+                                            <li>
+                                                Attach all participants/trainees ID card. Names on certificates will be exactly as the name on the ID cards must be present with the trainees during the course.
+                                            </li>
+                                            <li>
+                                                Registration must be completed by filling all cells in this contract & send it to EIAC's officer(s) prior the course scheduled time by one month - one month in advance - in order to enroll the trainee(s) on the course.
+                                            </li>
+                                            <li>
+                                                Payment of full course amount shall be in advance 15 days from the date of training start.
+                                            </li>
+                                            <li>
+                                                CAB will bear the fees in case of any cancellation due to any reasons or circumstances from their side.
+                                            </li>
+                                            <li>
+                                                Shifting the course time is prohibited for Public Group Training. In all cases, fees paid will not be found.
+                                            </li>
+                                            <li>
+                                                The programs could include an evaluation exam to evaluate of the course.
+                                            </li>
+                                        </ul>
+
+                                        <mat-checkbox name="undertaking_confirmTop3" 
+                                        [(ngModel)]="authorizationList.undertaking_confirmTop3">Agree to all terms and conditions</mat-checkbox>
+                                    </div>
+                                </div>
+
+
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-md-12 p-0">

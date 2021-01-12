@@ -245,12 +245,12 @@ export class TrainingStatusComponent implements OnInit {
               }
               if(item.saved_step != null && item.saved_step > 5 && item.is_draft == false && 
                 item.paymentDetails != undefined && item.paymentDetails != "NA" && 
-                typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
+                typeof item.paymentDetails == 'object' && item.paymentDetails[0].voucher_invoice != '' && item.application_status == 'complete'){
                 return true;
                }
               if(item.saved_step != null && item.saved_step < 5 && item.is_draft == false && 
                 item.paymentDetails != undefined && item.paymentDetails != "NA" && 
-                typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
+                typeof item.paymentDetails == 'object' && item.paymentDetails[0].voucher_invoice != '' && item.application_status == 'complete'){
                 return true;
               }
               if(item.saved_step != null && item.saved_step == 7 && (item.is_draft == false || item.is_draft == true) && 
@@ -265,7 +265,7 @@ export class TrainingStatusComponent implements OnInit {
               }
                if(item.saved_step != null && item.saved_step == 5 && item.is_draft == false && 
                 item.paymentDetails != undefined && item.paymentDetails != "NA" && item.paymentDetails != false && 
-                typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
+                typeof item.paymentDetails == 'object' && item.paymentDetails[0].voucher_invoice != ''){
                   // console.log("@Enter....2");
                 return false;
               }
@@ -279,12 +279,12 @@ export class TrainingStatusComponent implements OnInit {
               }
               if(item.saved_step != null && item.saved_step > 5 && item.is_draft == false && 
                 item.paymentDetails != undefined && item.paymentDetails != "NA" && 
-                typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
+                typeof item.paymentDetails == 'object' && item.paymentDetails[0].voucher_invoice != '' && item.application_status == 'complete'){
                 return true;
                }
               if(item.saved_step != null && item.saved_step < 5 && item.is_draft == false && 
                 item.paymentDetails != undefined && item.paymentDetails != "NA" && 
-                typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != '' && item.application_status == 'complete'){
+                typeof item.paymentDetails == 'object' && item.paymentDetails[0].voucher_invoice != '' && item.application_status == 'complete'){
                 return true;
               }             
         
@@ -300,7 +300,7 @@ export class TrainingStatusComponent implements OnInit {
               }
                if(item.saved_step != null && item.saved_step == 5 && item.is_draft == false && 
                 item.paymentDetails != undefined && item.paymentDetails != "NA" && item.paymentDetails != false && 
-                typeof item.paymentDetails == 'object' && item.paymentDetails.voucher_invoice != ''){
+                typeof item.paymentDetails == 'object' && item.paymentDetails[0].voucher_invoice != ''){
                   // console.log("@Enter....2");
                 return false;
               }
