@@ -316,7 +316,8 @@
                                     </tr> -->
                                     <tr>
                                         <td></td>
-                                        <td colspan="3"><b>Total</b></td>
+                                        <td></td>
+                                        <td colspan="2"><b>Total</b></td>
                                         <td><b>{{subTotal}}</b></td>
                                     </tr>
                                 </tbody>
@@ -343,46 +344,79 @@
       <div class="row status-det-wrapper">
         <div class="col-md-12">
           <div class="auth_wrapper">
-            <ul>
+            <ul *ngIf="serviceDetail?.training_form_type == 'public_training'">
               <li>
                 Training materials electronic format pdf files will be provided by EIAC.
-            </li>
-            <li>
-                This quotation  is based on the law no.2/2010 of Government of Dubai.
-            </li>
-            <li>
-                The CAB(s)/Clients(s) shall provide educational training hall (classroom - Shape) suitable to deliver the course. The hall needs to be equipped with electrical and connections, internet access, projector/suitable LED display screen.
-            </li>
-            <li>
-                The CABs/Client shall provide the hospitality including breakfast, coffee break, lunch and refreshments for the trainer(s).
-            </li>
-            <li>
-                The CABs/Client shall bear the trainer-required transportation from the hotel to their premises and back to the hotel.
-            </li>
-            <li>
-                A list of participant(s)/trainee(s) with their exact name and contacts (e.g: e-mail, phone No. , ...... etc) must be provided to EIAC by the CAB(s) in advance.
-            </li>
-            <li>
-                A copy of applicant's tax certificate  (if available) must be submitted with this request.
-            </li>
-            <li>
-                Attach all participants/ trainees ID card(s). Names on certificates will be exactly as the name on the ID card(s). Original ID cards must be present with the trainees during the course.
-            </li>
-            <li>
-                Registration must be completed by filling all cells in the contract and send it to EIAC's officer(s) prior the course scheduled time by one month -one month in advance- in order to enroll the trainee(s) on the course.
-            </li>
-            <li>
-                Payment of full course amount shall be in advance 15 days from the date of training start.
-            </li>
-            <li>
-                CAB will bear the fees in case of any cancellation due to any reasons or circumstances from their side. In all cases, fees paid will not be refund.
-            </li>
-            <li>
-                Shifting the course time  is allowed once for In Client Premises Training in case the CAB has notified EIAC's Officer(s) prior the course scheduled time by one month - one month in advance- in order to re arrange for the course.
-            </li>
-            <li>
-                The programs could include an evaluation exam to evaluate of the course.
-            </li>
+              </li>
+              <li>
+                  This quotation is based on the law no.2/2010 of Government of Dubai.
+              </li>
+              <li>
+                  A list of participant(s)/trainee(s) with their exact names & contacts ( e.g: e-mail, phone No., ..... etc) must be provided to EIAC by the CAB(s) in advance.
+              </li>
+              <li>
+                  A copy of applicants tax certificate (if available) must be submitted with this request.
+              </li>
+              <li>
+                  Attach all participants/trainees ID card. Names on certificates will be exactly as the name on the ID cards must be present with the trainees during the course.
+              </li>
+              <li>
+                  Registration must be completed by filling all cells in this contract & send it to EIAC's officer(s) prior the course scheduled time by one month - one month in advance - in order to enroll the trainee(s) on the course.
+              </li>
+              <li>
+                  Payment of full course amount shall be in advance 15 days from the date of training start.
+              </li>
+              <li>
+                  CAB will bear the fees in case of any cancellation due to any reasons or circumstances from their side.
+              </li>
+              <li>
+                  Shifting the course time is prohibited for Public Group Training. In all cases, fees paid will not be found.
+              </li>
+              <li>
+                  The programs could include an evaluation exam to evaluate of the course.
+              </li>
+            </ul>
+
+            <ul *ngIf="serviceDetail?.training_form_type == 'inprimise'">
+              <li>
+                Training materials electronic format pdf files will be provided by EIAC.
+              </li>
+              <li>
+                  This quotation  is based on the law no.2/2010 of Government of Dubai.
+              </li>
+              <li>
+                  The CAB(s)/Clients(s) shall provide educational training hall (classroom - Shape) suitable to deliver the course. The hall needs to be equipped with electrical and connections, internet access, projector/suitable LED display screen.
+              </li>
+              <li>
+                  The CABs/Client shall provide the hospitality including breakfast, coffee break, lunch and refreshments for the trainer(s).
+              </li>
+              <li>
+                  The CABs/Client shall bear the trainer-required transportation from the hotel to their premises and back to the hotel.
+              </li>
+              <li>
+                  A list of participant(s)/trainee(s) with their exact name and contacts (e.g: e-mail, phone No. , ...... etc) must be provided to EIAC by the CAB(s) in advance.
+              </li>
+              <li>
+                  A copy of applicant's tax certificate  (if available) must be submitted with this request.
+              </li>
+              <li>
+                  Attach all participants/ trainees ID card(s). Names on certificates will be exactly as the name on the ID card(s). Original ID cards must be present with the trainees during the course.
+              </li>
+              <li>
+                  Registration must be completed by filling all cells in the contract and send it to EIAC's officer(s) prior the course scheduled time by one month -one month in advance- in order to enroll the trainee(s) on the course.
+              </li>
+              <li>
+                  Payment of full course amount shall be in advance 15 days from the date of training start.
+              </li>
+              <li>
+                  CAB will bear the fees in case of any cancellation due to any reasons or circumstances from their side. In all cases, fees paid will not be refund.
+              </li>
+              <li>
+                  Shifting the course time  is allowed once for In Client Premises Training in case the CAB has notified EIAC's Officer(s) prior the course scheduled time by one month - one month in advance- in order to re arrange for the course.
+              </li>
+              <li>
+                  The programs could include an evaluation exam to evaluate of the course.
+              </li>
             </ul>
 
             <mat-checkbox name="undertaking_confirmTop3" (click)="$event.preventDefault()"
