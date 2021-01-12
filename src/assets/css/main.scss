@@ -848,7 +848,7 @@ a:hover { text-decoration: none; }
 .form_right_data { background: #E7E7E7; align-items: center; height: 100%; }
 
 //==================TRAINERS DASHBOARD==================//
-.main-dashboard { padding: 20px; background: #EEF3F5; }
+.main-dashboard { padding: 20px 15px; background: #EEF3F5; }
 .main-dashboard .trainer-details { background: #fff; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.03); padding: 16px 18px; height: 100%; border-radius: 5px; }
 .main-dashboard .trainer-name h4 { font-size: 26px; color: #191919; font-family: 'Dubai Medium'; display: inline-block; }
 .main-dashboard .trainer-name .acc_verified {color: #007565; font-size: 20px; margin-left: 10px; position: relative; display: inline-block; cursor: pointer; }
@@ -876,18 +876,19 @@ a:hover { text-decoration: none; }
 .main-dashboard .trainer-content { height: 100%; display: flex; flex-direction: column; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.03); }
 .trainer-content .trainer-type { font-size: 15px; border-radius: 5px 5px 0 0; border-bottom: 1px solid #D0D0D0; background: #FFF8F8; color: #B29782; font-family: 'Dubai Medium'; text-align: center; height: 100%; display: flex; justify-content: center; align-items: center; }
 .trainer-content .trainer-type-data { border-radius: 0 0 5px 5px; background: #FFFFFF; height: 100%; color: #616161; font-size: 18px; font-family: 'Dubai Medium'; display: flex; justify-content: center; align-items: center; }
-.main-dashboard .trainer-main-details { border-radius: 5px; padding: 20px 15px; margin-top: 20px; display: flex; justify-content: space-around; align-items: center; background: #B19681; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.03); color: #fff; }
+.main-dashboard .trainer-main-details { border-radius: 5px; padding: 20px 15px; margin-top: 20px; display: flex; justify-content: center; align-items: center; background: #B19681; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.03); color: #fff; }
 .trainer-main-details .user-icons { font-size: 60px; margin-right: 35px; opacity: 0.4; }
 .trainer-main-details a { color: #fff; }
 .trainer-main-details a:hover { color: #fff; text-decoration: none;} 
-.trainer-main-details .trainer-data-det .trainer-pro { font-size: 18px; font-family: 'Dubai Medium'; }
+.trainer-main-details .trainer-data-det .trainer-pro { font-size: 18px; font-family: 'Dubai Bold'; }
 .trainer-main-details .trainer-maindata { font-size: 40px; font-family: 'Dubai Regular'; }
 .trainer-maindata span span { font-size: 14px; margin-left: 10px; vertical-align: middle; }
-.trainer-main-details .trainer-maindata.trainer-update { font-size: 30px; }
+.trainer-main-details .trainer-maindata.trainer-update { font-size: 30px; font-family: 'Dubai Bold';}
 .main-dashboard .trainer2 { background: #BDAB9C; }
 .main-dashboard .trainer3 { background: #D3BD9E; }
 .main-dashboard .trainer4 { background: #9B917F; }
-.trainer_head { padding: 15px 5px; }
+.trainer_head { padding: 13px 5px; }
+.main-status.long_content .sub-head-dash { font-size: 28px; }
 .trainer_head h4 { color: #191919; font-size: 26px; font-family: 'Dubai Medium'; margin: 0; text-transform: capitalize; }
 .tra_events { display: flex; justify-content: space-between; align-items: center; }
 .event_timings { background: #EFEFEF;  height: 305px; overflow-y: scroll; margin-bottom: 15px; border-radius: 5px; }
@@ -1026,7 +1027,9 @@ a:hover { text-decoration: none; }
 .service_data a:hover { text-decoration: none; }
 
 // ================CLIENT DASHBOARD================== //
-.dash-main { border-radius: 5px; background: #fff; padding: 11px 22px; display: flex; justify-content: space-between; align-items: center; border: 2px solid #E6E6E6; background: #FCFCFC; margin: 0 -5px; margin-bottom: 20px; }
+.dash-main { border-radius: 5px; background: #fff; padding: 11px 22px; display: flex; justify-content: space-between; align-items: center; border: 2px solid #E6E6E6; background: #FCFCFC;  margin-bottom: 20px;
+  // margin: 0 -5px;
+}
 .dash_menu_main .dash-main { min-height: 125px; }
 .service-links .dash-main:first-child { margin-left: 0; }
 .dash-logo { background: #FCFCFC; border: 2px solid #E6E6E6; color: #B14A56; font-size: 26px; height: 60px; min-width: 60px; border-radius: 50%; }
@@ -1034,7 +1037,7 @@ a:hover { text-decoration: none; }
 .main-status .head-dash { font-size: 18px; color: #B14A56; font-family: 'Dubai Medium'; margin: 0; }
 .main-status .head-dash.head-dash-bill { color: #B19782; }
 .main-status.long_content .sub-head-dash { line-height: 0.75; }
-.main-status.long_content .sub-head-dash span { margin-left: 5px; color: #363839; font-size: 16px; }
+.main-status.long_content .sub-head-dash span { margin-left: 14px; color: #363839; font-size: 16px; }
 .main-status .sub-head-dash { font-size: 32px; font-family: 'Dubai Bold'; color: #363839; margin: 0; display: flex; align-items: center; }
 .usermain .view-all p { margin: 0; font-size: 16px; color: #777777; }
 .usermain .view-all span { font-size: 10px; margin-left: 5px; }
@@ -1507,9 +1510,9 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .mat-accordion .mat-expansion-panel-spacing { margin: 0; }
 .ass-details.ass-details_trainer { background: #EFEFEF; }
 .mat-accordion .mat-expansion-panel-header[aria-disabled=true] { color: #000; }
-.main-status .select_dash { width: 80%; border: 0; background-color: transparent; color: #000; font-size: 25px;}
-.main-status option { font-size: 18px; }
-
+.main-status .select_dash { width: 80%; border: 0; background-color: transparent; color: #000; font-size: 25px; font-family: 'Dubai Bold';}
+.main-status option { font-size: 18px; font-family: 'Dubai Regular'; }
+.main-status .head-dash.region { margin-left: 4px; }
 
 //==================RESPONSIVE==================//
 @media(max-width: 1500px) {

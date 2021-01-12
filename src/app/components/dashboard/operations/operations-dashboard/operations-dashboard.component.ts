@@ -225,9 +225,9 @@ export class OperationsDashboardComponent implements OnInit {
                     if(item == "testing_calibration"){
                       this.ioDeartment.push({title:'TCL', value: item})
                     }
-                    if(item == "pt_providers"){
-                      this.ioDeartment.push({title:'PTP', value: item})
-                    }
+                    // if(item == "pt_providers"){
+                    //   this.ioDeartment.push({title:'PTP', value: item})
+                    // }
                     if(item == "health_care"){
                       this.ioDeartment.push({title:'HP', value: item})
                     }
