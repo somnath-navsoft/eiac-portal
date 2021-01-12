@@ -28,7 +28,7 @@ export class OperationsDashboardComponent implements OnInit {
   addOnBlur = true;
   userType: any;
   userEmail: any;
-  userDetails: any[] = [];
+  userDetails: any;
   chatMessage: any = {};
   file_validation: boolean = true;
   chatMessageFile: any = new FormData();
@@ -175,7 +175,7 @@ export class OperationsDashboardComponent implements OnInit {
                 getData = res['dashBoardData'];
                 console.log(getData,'::::Department data');
 
-                this.totalDeptSelect = getData.lastApplication;
+                this.totalDeptSelect = (getData.lastApplication == '' && this.selectDepartment === 'inspection_bodies') ? 'IB' : (getData.lastApplication != '' && this.selectDepartment === 'halal_conformity_bodies') ? 'HCAB' : getData.lastApplication;
                 if(getData.allScheme != undefined){
                   this.totalDeptSchemeCount = getData.allScheme.length;
                 }
@@ -219,7 +219,7 @@ export class OperationsDashboardComponent implements OnInit {
                     if(item == 'certification_bodies'){
                       this.ioDeartment.push({title:'CB', value: item})
                     }
-                    if(item == "inspection_body"){
+                    if(item == "inspection_bodies"){
                       this.ioDeartment.push({title:'IB', value: item})
                     }
                     if(item == "testing_calibration"){
@@ -240,23 +240,26 @@ export class OperationsDashboardComponent implements OnInit {
                     // if(item == "no_objection"){
                     //   this.ioDeartment.push({title:'NOC', value: item})
                     // }
-              })
+              });
+              this.ioDeartment.sort((a, b) => (a.title > b.title) ? 1 : -1);
             }
 
             //Get recent updates
             if(this.dashboardItemData.lastLogin != undefined){
               let datePart: any = this.dashboardItemData.lastLogin.toString().split(" ");
-              let date = datePart[0];
-              let time1 = datePart[1];
-              let time1Ar = time1.split(":");
-              console.log(">>>>... ", time1Ar, " -- ", time1Ar.length);
-              if(time1Ar.length == 1){
-                time1 = time1 +":00";
-              }
-              let time2 = datePart[2];
-              let time = time1 +" "+ time2;
-              console.log(datePart, " == ", date, " -- ",time);  
-              this.dashboardRecentUpdates.push({title: "Last Login",date:date, time: time});
+              // let date = datePart[0];
+              // let time1 = datePart[1];
+              // let time1Ar = time1.split(":");
+              // console.log(">>>>... ", time1Ar, " -- ", time1Ar.length);
+              // if(time1Ar.length == 1){
+              //   time1 = time1 +":00";
+              // }
+              // let time2 = datePart[2];
+              // let time = time1 +" "+ time2;
+              //console.log(datePart, " == ", date, " -- ",time);  
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Last Login ";
+              this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
             }
             // if(this.dashboardItemData.lastAccrApplied != undefined){
             //   let datePart: any = this.dashboardItemData.lastAccrApplied.toString().split(" ");
