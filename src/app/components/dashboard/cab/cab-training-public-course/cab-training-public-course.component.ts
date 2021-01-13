@@ -188,6 +188,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             this.trainingDurationSelectbox = courseDetails.training_days != null && courseDetails.training_days != '' ? true : false;
             this.step1Data.event_management = trainingPublicCourseid;
             // console.log(courseDetails.training_days,'training_days');
+            this.step2Data.event_management = trainingPublicCourseid;
           });
     }
   }
