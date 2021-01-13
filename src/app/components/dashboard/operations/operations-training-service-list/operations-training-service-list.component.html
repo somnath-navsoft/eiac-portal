@@ -301,7 +301,6 @@
                             </td>
 
                             <td [ngClass]="{'pending': (item.application_status === 'pending' || item.application_status === 'payment_pending' || item.application_status == 'application_process' || item.application_status == 'under_process'), 'under-review':item.application_status === null || item.application_status === 'under_review', 'complete': item.application_status === 'complete','draft': item.application_status === 'draft' }">
-                                <span *ngIf="item.application_status == 'pending'">Payment Pending</span>
                                 <span *ngIf="item.application_status == 'draft'">Draft</span>
                                 <span *ngIf="item.application_status == 'application_process'">Under Process</span>
                                 <span *ngIf="item.application_status == 'under_process'">Under Process</span>
@@ -409,7 +408,7 @@
                                 <button type="submit" (click)="voucherSentSubmit(voucherForm)" class="cancel-bttn">SUBMIT</button>
                                 <button type="button" class="submit-bttn submit-health" (click)="modal.close('Cancel click')">CANCEL</button>
                             </div>
-                            
+                            reg_status_change
                         </div>
                     </div>                    
                 </form>

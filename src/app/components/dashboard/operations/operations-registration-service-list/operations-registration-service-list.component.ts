@@ -386,14 +386,16 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
   }
 
   serviceStatus(index,id){
+    var changableIndex = index;
+    var currIndex = 10 * (this.pageCurrentNumber -1) + parseInt(changableIndex);
     this.loader = false;
 
-    this.subscriptions.push(this._trainerService.updateStatusTraining(id)
+    this.subscriptions.push(this._trainerService.updateStatusReg(id)
       .subscribe(
         result => {
           this.loader = true;
           // console.log(result,'result');
-          this.trainerdata[index].accr_status = 'Complete';
+          this.trainerdata[currIndex].application_status = 'complete';
           this._toaster.success("Payment Completed Successfully",'');
       })
     );
