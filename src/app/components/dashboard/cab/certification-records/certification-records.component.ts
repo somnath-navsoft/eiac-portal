@@ -423,15 +423,15 @@ export class CertificationRecordsComponent implements OnInit {
           this.dataLoad = true;
           console.log('Data load...', data);
           let tempObj = [];
-          this.trainerdata = data['records'];
-          this.trainerdata.forEach((res,key) => {
-            if(this.trainerdata[key].trade_license_number != null){
-              tempObj.push(this.trainerdata[key]);
-            }
-            // this.trainerdata[key].trade_license_number = ;
-          })
+          this.trainerdata = data.records;
+          // this.trainerdata.forEach((res,key) => {
+          //   // if(this.trainerdata[key].trade_license_number != null){
+          //   //   tempObj.push(this.trainerdata[key]);
+          //   // }
+          //   // this.trainerdata[key].trade_license_number = ;
+          // })
           //dataRec = data.records;
-          this.trainerdata = tempObj;
+          //this.trainerdata = tempObj; 
           this.pageTotal = data.totalCount;
         },
         ()=>{

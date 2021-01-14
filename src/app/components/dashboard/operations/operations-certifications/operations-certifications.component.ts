@@ -359,7 +359,6 @@ export class OperationsCertificationsComponent implements OnInit {
     let offset: number = theEvt - 1;
     this.pageCurrentNumber = theEvt;
     if(this.searchValue != null && (this.searchText != null && this.searchText != '')){
-      console.log('src...');
        this.filterSearchSubmit(offset);
     }else{
     this.loadPageData(offset, this.pageLimit);
