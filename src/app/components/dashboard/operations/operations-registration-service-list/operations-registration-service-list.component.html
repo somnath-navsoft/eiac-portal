@@ -336,7 +336,7 @@
                                 <!-- *ngIf="(item.application_status == null && item.application_status === 'under_review')" -->
                                 <a href="javascript:void(0)" *ngIf="(item.payment_status == 'paid' && item.application_status != 'complete')" (click)="serviceStatus(i2,item.id)" alt="Delete"><span class="icon-tick"></span></a>
                                 <!-- <a href="javascript:void(0)" *ngIf="item.application_status == 'complete'" alt="Delete"><span class="icon-tick"></span></a> -->
-                                <a href="javascript:void(0)" *ngIf="(item.application_status == null || item.application_status == 'application_process' || item.application_status == 'under_process' || item.application_status === 'under_review' || item.application_status == 'pending' || item.application_status == 'payment_pending' || item.application_status == 'draft') && item.payment_status != 'paid'" (click)="open(courseVoucher, item.id)" alt="Upload Proforma Invoice" title="Upload Proforma Invoice"><span class="icon-document-pen"></span></a>
+                                <a href="javascript:void(0)" *ngIf="(item.application_status == null || item.application_status == 'application_process' || item.application_status == 'under_process' || item.application_status === 'under_review' || item.application_status == 'pending' || item.application_status == 'payment_pending' || item.application_status == 'draft') && item.payment_status != 'paid'" (click)="open(courseVoucher, item.id,i2)" alt="Upload Proforma Invoice" title="Upload Proforma Invoice"><span class="icon-document-pen"></span></a>
                                
                             </td>
                         </tr>

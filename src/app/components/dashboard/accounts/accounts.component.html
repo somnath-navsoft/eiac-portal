@@ -151,7 +151,7 @@
                     </div>
                 </div>
             </div>
-
+            <!-- table-dashboard-cont -->
             <div class="accounts mt-3">
                 <table class="accounts_inner_tab"  id="accreditation-service-export">
                     <thead>
@@ -179,30 +179,147 @@
                 <!-- <table class="accounts_inner_tab"> -->
                     <!-- <thead> -->
                         <tr>
-                            <th>App. No.</th>
-                            <th>Date</th>
-                            <th>CAB Name</th>
-                            <th>CAB Code</th>
-                            <th>App. Type</th>
-                            <th>Voucher Number</th>
-                            <th>Application Amount</th>
-                            <th>Payment Amount</th>
-                            <!--  -->
-                            <th>Fees</th>
-                            <th>Fees Date</th>
-                            <th>Status</th>
-                            <th>Fees</th>
-                            <th>Fees Date</th>
-                            <th>Status</th>
-                            <th>Fees</th>
-                            <th>Fees Date</th>
-                            <th>Status</th>
-                            <th>Fees</th>
-                            <th>Fees Date</th>
-                            <th>Status</th>
-                            <th>Fees</th>
-                            <th>Fees Date</th>
-                            <th>Status</th>
+                            <th>App. No.
+                            <a href="javascript:void(0)" (click)="sortedList(accountsData, 'id', curSortDir.id)">
+                                <span class="icon-arrow-down" *ngIf="!curSortDir.id"></span>
+                                <span class="icon-arrow-up"  *ngIf="curSortDir.id"></span>
+                            </a>
+                            </th>
+                            <th>Date
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'createdDate', curSortDir.createdDate)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.createdDate"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.createdDate"></span>
+                                </a>
+                            </th>
+                            <th>CAB Name
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'cabName', curSortDir.cabName)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.cabName"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.cabName"></span>
+                                </a>
+                            </th>
+                            <th>CAB Code
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'cabCode', curSortDir.cabCode)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.cabCode"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.cabCode"></span>
+                                </a>
+                            </th>
+                            <th>App. Type
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'appType', curSortDir.appType)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.appType"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.appType"></span>
+                                </a>
+                            </th>
+                            <th>Voucher Number
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'voucher_no', curSortDir.voucher_no)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.voucher_no"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.voucher_no"></span>
+                                </a>
+                            </th>
+                            <th>Application Amount
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'app_amount', curSortDir.app_amount)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.app_amount"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.app_amount"></span>
+                                </a>
+                            </th>
+                            <th>Payment Amount
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'pay_amount', curSortDir.pay_amount)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.pay_amount"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.pay_amount"></span>
+                                </a>
+                            </th>
+                            <th>Fees
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'app_fees', curSortDir.app_fees)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.app_fees"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.app_fees"></span>
+                                </a>
+                            </th>
+                            <th>Fees Date
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'app_fees_date', curSortDir.app_fees_date)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.app_fees_date"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.app_fees_date"></span>
+                                </a>
+                            </th>
+                            <th>Status
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'app_fees_status', curSortDir.app_fees_status)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.app_fees_status"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.app_fees_status"></span>
+                                </a>
+                            </th>
+                            <th>Fees
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'prelim_fees', curSortDir.prelim_fees)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.prelim_fees"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.prelim_fees"></span>
+                                </a>
+                            </th>
+                            <th>Fees Date
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'prelim_fees_date', curSortDir.prelim_fees_date)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.prelim_fees_date"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.prelim_fees_date"></span>
+                                </a>
+                            </th>
+                            <th>Status
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'prelim_fees_status', curSortDir.prelim_fees_status)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.prelim_fees_status"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.prelim_fees_status"></span>
+                                </a>
+                            </th>
+
+                            <th>Fees
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'doc_fees', curSortDir.doc_fees)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.doc_fees"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.doc_fees"></span>
+                                </a>
+                            </th>
+                            <th>Fees Date
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'doc_fees_date', curSortDir.doc_fees_date)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.doc_fees_date"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.doc_fees_date"></span>
+                                </a>
+                            </th>
+                            <th>Status
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'doc_fees_status', curSortDir.doc_fees_status)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.doc_fees_status"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.doc_fees_status"></span>
+                                </a>
+                            </th>
+
+                            <th>Fees
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'asses_fees', curSortDir.asses_fees)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.asses_fees"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.asses_fees"></span>
+                                </a>
+                            </th>
+                            <th>Fees Date
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'asses_fees_date', curSortDir.asses_fees_date)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.asses_fees_date"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.asses_fees_date"></span>
+                                </a>
+                            </th>
+                            <th>Status
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'asses_fees_status', curSortDir.asses_fees_status)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.asses_fees_status"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.asses_fees_status"></span>
+                                </a>
+                            </th>
+
+                            <th>Fees
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'certif_fees', curSortDir.certif_fees)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.certif_fees"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.certif_fees"></span>
+                                </a>
+                            </th>
+                            <th>Fees Date
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'certif_fees_date', curSortDir.certif_fees_date)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.certif_fees_date"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.certif_fees_date"></span>
+                                </a>
+                            </th>
+                            <th>Status
+                                <a href="javascript:void(0)" (click)="sortedList(accountsData, 'certif_fees_status', curSortDir.certif_fees_status)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.certif_fees_status"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.certif_fees_status"></span>
+                                </a>
+                            </th>
                             <th></th>
                         </tr>
                     </thead>
@@ -248,7 +365,6 @@
                                 <ng-container *ngIf="item.prelim_visit">
                                     <td>{{item.prelim_visit.amount}}</td>
                                     <td>{{item.prelim_visit.voucher_date | date}}</td>
-                                    <!-- <td class="complete"><span>{{item.prelim_visit.payment_status}}</span></td> -->
                                     <td [ngClass]="{'complete': item.prelim_visit.payment_status == 'paid', 'under-review':item.prelim_visit.payment_status === null , 'under-review':item.prelim_visit.payment_status === 'pending'}">
                                         <span *ngIf="item.prelim_visit.payment_status == 'paid'">Paid</span>
                                         <span *ngIf="item.prelim_visit.payment_status == 'pending'">Unpaid</span>

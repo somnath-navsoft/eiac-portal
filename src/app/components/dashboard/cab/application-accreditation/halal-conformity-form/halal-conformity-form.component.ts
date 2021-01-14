@@ -1796,7 +1796,7 @@ addSchemeRow(obj: any = [],index: number){
                 //Step 7
                 if(res['data'].paymentDetails != null && typeof res['data'].paymentDetails === 'object'){
                   // //console.log(">>>payment details...show");
-                    this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
+                    this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no; 
                     this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
                     this.voucherSentData.amount           = res['data'].paymentDetails.amount;
 
@@ -3719,16 +3719,13 @@ onSubmitStep7(ngForm7: any) {
   this.publicHalalConformityForm.step8 = {};
   
     let dtFormat: string = '';
-    if(this.voucherSentData['payment_date'] != undefined && 
-      this.voucherSentData['payment_date']._i != undefined){
-      var dtData = this.voucherSentData['payment_date']._i;
-      var year = dtData.year;
-      var month = dtData.month+1;
-      var date = dtData.date;
+    if(this.voucherSentData['payment_date'] != null){
+      var dtData = new Date(this.voucherSentData['payment_date']);
+      var year = dtData.getFullYear();
+      var month = dtData.getMonth() + 1;
+      var date = dtData.getDate();
       dtFormat = year + "-" + month + "-" + date;
     }
-    //     
-  
   this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
   this.voucherFile.append('amount',this.voucherSentData['amount']);
   this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);

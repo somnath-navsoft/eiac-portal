@@ -21,7 +21,7 @@ import { relativeTimeRounding } from 'moment';
   styleUrls: ['./pt-providers-form.component.scss'],
   providers: [CustomModalComponent]
 })
-export class PtProvidersFormComponent implements OnInit {
+export class PtProvidersFormComponent implements OnInit { 
 
   public newRow: any = {};
   public ptProvidersForm: any = {};
@@ -2647,12 +2647,11 @@ this.ptProvidersForm.step9 = {};
 // console.log(this.voucherSentData.payment_date,'payment_date');
 // console.log(this.voucherSentData['payment_date'],'payment_date');
   let dtFormat: string = '';
-  if(this.voucherSentData['payment_date'] != undefined && 
-    this.voucherSentData['payment_date']._i != undefined){
-    var dtData = this.voucherSentData['payment_date']._i;
-    var year = dtData.year;
-    var month = dtData.month+1;
-    var date = dtData.date;
+  if(this.voucherSentData['payment_date'] != null){
+    var dtData = new Date(this.voucherSentData['payment_date']);
+    var year = dtData.getFullYear();
+    var month = dtData.getMonth() + 1;
+    var date = dtData.getDate();
     dtFormat = year + "-" + month + "-" + date;
   }
 

@@ -48,6 +48,8 @@ export class AccountsComponent implements OnInit {
   paymentDate: any;
   selectAccrStatus: any[]=[];
 
+  curSortDir: any = {};
+
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService, private exportAsService: ExportAsService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent,public router: Router) { }
 
@@ -56,6 +58,43 @@ export class AccountsComponent implements OnInit {
     // if(this.userType != 'cab_client' || this.userType != 'operations' || this.userType != 'candidate'){
     //   this.router.navigateByUrl('/dashboard'+this.userType'/cab_client/home');
     // }
+
+    //Column Sorting
+    this.curSortDir['id']                       = false;
+    this.curSortDir['createdDate']              = false;
+    this.curSortDir['cabName']                  = false;
+    this.curSortDir['cabCode']                  = false;
+    this.curSortDir['appType']                  = false;
+    this.curSortDir['voucher_no']               = false;
+    this.curSortDir['app_amount']               = false;
+    this.curSortDir['pay_amount']               = false;
+
+    //Application Fees Sort
+    this.curSortDir['app_fees']                 = false;
+    this.curSortDir['app_fees_date']            = false;
+    this.curSortDir['app_fees_status']          = false;    
+
+    //Preliminary Fees Sort
+    this.curSortDir['prelim_fees']               = false;
+    this.curSortDir['prelim_fees_date']          = false;
+    this.curSortDir['prelim_fees_status']        = false;
+
+    //Document Fees Sort
+    this.curSortDir['doc_fees']                   = false;
+    this.curSortDir['doc_fees_date']              = false;
+    this.curSortDir['doc_fees_status']            = false;
+
+    //Assessment Fees Sort
+    this.curSortDir['asses_fees']                 = false;
+    this.curSortDir['asses_fees_date']            = false;
+    this.curSortDir['asses_fees_status']          = false;
+
+    //Certification Fees Sort
+    this.curSortDir['certif_fees']                = false;
+    this.curSortDir['certif_fees_date']           = false;
+    this.curSortDir['certif_fees_status']         = false;
+
+
     if(this.userType == 'cab_client'){
       this.router.navigateByUrl('/dashboard/accounts');
     }else if(this.userType == 'operations'){
@@ -163,6 +202,7 @@ export class AccountsComponent implements OnInit {
     this.searchText = '';
     this.searchValue = '';
     this.changeFilter('id','reset');
+    this.accountsData = [];
     if(type != undefined && type != ''){
       this.loadPageData();
     }
@@ -334,6 +374,310 @@ export class AccountsComponent implements OnInit {
         }
       )          
     )
+  }
+
+
+  //Sorted Column
+  sortedList(data: any, sortBy: string, sortDir: boolean){
+    //true - asc / false - desc
+    ////console.log('>>>', data);
+    if(data.length){
+        if(sortBy === 'id'){
+          this.curSortDir.id = !sortDir;
+          if(this.curSortDir.id){
+            let array = data.slice().sort((a, b) => (a.id > b.id) ? 1 : -1)
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.id){
+            let array = data.slice().sort((a, b) => (a.id < b.id) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+        // //By created_date
+        if(sortBy == 'createdDate'){
+          this.curSortDir.createdDate = !sortDir;
+          if(this.curSortDir.createdDate){
+            let array = data.slice().sort((a, b) => (a.createdDate > b.createdDate) ? 1 : -1)
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.createdDate){
+            let array = data.slice().sort((a, b) => (a.createdDate < b.createdDate) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+
+        // //By Cab Name
+        if(sortBy == 'cabName'){
+          this.curSortDir.cabName = !sortDir;
+          if(this.curSortDir.cabName){
+            let array = data.slice().sort((a, b) => (a.cabName > b.cabName) ? 1 : -1)
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.cabName){
+            let array = data.slice().sort((a, b) => (a.cabName < b.cabName) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+
+        // //By Cab Code
+        if(sortBy == 'cabCode'){
+          this.curSortDir.cabCode = !sortDir;
+          if(this.curSortDir.cabCode){
+            let array = data.slice().sort((a, b) => (a.cabCode > b.cabCode) ? 1 : -1)
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.cabCode){
+            let array = data.slice().sort((a, b) => (a.cabCode < b.cabCode) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+
+        // By Application Type
+        if(sortBy == 'appType'){
+          this.curSortDir.appType = !sortDir;
+          if(this.curSortDir.appType){
+            let array = data.slice().sort((a, b) => (a.appType > b.appType) ? 1 : -1)
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.appType){
+            let array = data.slice().sort((a, b) => (a.appType < b.appType) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+
+        // By Voucher Number
+        if(sortBy == 'voucher_no'){
+          this.curSortDir.voucher_no = !sortDir;
+          if(this.curSortDir.voucher_no){
+            let array = data.slice().sort((a, b) => (a.voucher_no > b.voucher_no) ? 1 : -1)
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.voucher_no){
+            let array = data.slice().sort((a, b) => (a.voucher_no < b.voucher_no) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+
+        // By Application Amount
+        if(sortBy == 'app_amount'){
+          this.curSortDir.app_amount = !sortDir;
+          if(this.curSortDir.app_amount){
+            let array = data.slice().sort((a, b) => (a.application_fees.amount > b.application_fees.amount) ? 1 : -1)
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.app_amount){
+            let array = data.slice().sort((a, b) => (a.application_fees.amount < b.application_fees.amount) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+
+        // By Payment Amount
+        if(sortBy == 'pay_amount'){
+          this.curSortDir.pay_amount = !sortDir;
+          if(this.curSortDir.pay_amount){
+            let array = data.slice().sort((a, b) => (a.application_fees.amount > b.application_fees.amount) ? 1 : -1)
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.pay_amount){
+            let array = data.slice().sort((a, b) => (a.application_fees.amount < b.application_fees.amount) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+
+        //Application fees column sort
+        //Application Fees :: Fees
+        if(sortBy == 'app_fees'){
+          this.curSortDir.app_fees = !sortDir;
+          if(this.curSortDir.app_fees){
+            let array = data.slice().sort((a, b) => (a.application_fees.amount > b.application_fees.amount) ? 1 : -1)
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.app_fees){
+            let array = data.slice().sort((a, b) => (a.application_fees.amount < b.application_fees.amount) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+        //Application Fees :: Fees Date
+        if(sortBy == 'app_fees_date'){
+          this.curSortDir.app_fees_date = !sortDir;
+          if(this.curSortDir.app_fees_date){
+            let array = data.slice().sort((a, b) => (a.application_fees.voucher_date > b.application_fees.voucher_date) ? 1 : -1)
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.app_fees_date){
+            let array = data.slice().sort((a, b) => (a.application_fees.voucher_date < b.application_fees.voucher_date) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+        //Application Fees :: Status
+        if(sortBy == 'app_fees_status'){
+          this.curSortDir.app_fees_status = !sortDir;
+          if(this.curSortDir.app_fees_status){ 
+            let array = data.slice().sort((a, b) => (a.application_fees.payment_status > b.application_fees.payment_status) ? 1 : -1)
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.app_fees_status){
+            let array = data.slice().sort((a, b) => (a.application_fees.payment_status < b.application_fees.payment_status) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+
+        //Preliminary Visit column sort
+        //Preliminary Visit :: Fees
+        if(sortBy == 'prelim_fees'){
+          this.curSortDir.prelim_fees = !sortDir;
+          if(this.curSortDir.prelim_fees){
+            let array = data.slice().sort((a, b) => (a.prelim_visit !=  undefined && a.prelim_visit.amount > b.prelim_visit.amount) ? 1 : -1);
+            this.accountsData = array;
+            // data.forEach(item => {
+            //     console.log(">>> ", item);
+            // })
+          }
+          if(!this.curSortDir.prelim_fees){
+            let array = data.slice().sort((a, b) => (a.prelim_visit !=  undefined && a.prelim_visit.amount < b.prelim_visit.amount) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+        //Preliminary Visit :: Fees Date
+        if(sortBy == 'prelim_fees_date'){
+          this.curSortDir.prelim_fees_date = !sortDir;
+          if(this.curSortDir.prelim_fees_date){
+            let array = data.slice().sort((a, b) => (a.prelim_visit !=  undefined && a.prelim_visit.voucher_date > b.prelim_visit.voucher_date) ? 1 : -1)
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.prelim_fees_date){
+            let array = data.slice().sort((a, b) => (a.prelim_visit !=  undefined && a.prelim_visit.voucher_date < b.prelim_visit.voucher_date) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+        //Preliminary Visit :: Status
+        if(sortBy == 'prelim_fees_status'){
+          this.curSortDir.prelim_fees_status = !sortDir;
+          if(this.curSortDir.prelim_fees_status){ 
+            let array = data.slice().sort((a, b) => (a.prelim_visit !=  undefined && a.prelim_visit.payment_status > b.prelim_visit.payment_status) ? 1 : -1)
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.prelim_fees_status){
+            let array = data.slice().sort((a, b) => (a.prelim_visit !=  undefined && a.prelim_visit.payment_status < b.prelim_visit.payment_status) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+
+        //Document Review column sort
+        //Document Review :: Fees
+        if(sortBy == 'doc_fees'){
+          this.curSortDir.doc_fees = !sortDir;
+          if(this.curSortDir.doc_fees){
+            let array = data.slice().sort((a, b) => (a.document_review !=  undefined && a.document_review.amount > b.document_review.amount) ? 1 : -1);
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.doc_fees){
+            let array = data.slice().sort((a, b) => (a.document_review !=  undefined && a.document_review.amount < b.document_review.amount) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+        //Document Review :: Fees Date
+        if(sortBy == 'doc_fees_date'){
+          this.curSortDir.doc_fees_date = !sortDir;
+          if(this.curSortDir.doc_fees_date){
+            let array = data.slice().sort((a, b) => (a.document_review !=  undefined && a.document_review.voucher_date > b.document_review.voucher_date) ? 1 : -1)
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.doc_fees_date){
+            let array = data.slice().sort((a, b) => (a.document_review !=  undefined && a.document_review.voucher_date < b.document_review.voucher_date) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+        //Document Review :: Status
+        if(sortBy == 'doc_fees_status'){
+          this.curSortDir.doc_fees_status = !sortDir;
+          if(this.curSortDir.doc_fees_status){ 
+            let array = data.slice().sort((a, b) => (a.document_review !=  undefined && a.document_review.payment_status > b.document_review.payment_status) ? 1 : -1)
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.doc_fees_status){
+            let array = data.slice().sort((a, b) => (a.document_review !=  undefined && a.document_review.payment_status < b.document_review.payment_status) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+
+        //Assessment column sort
+        //Assessment :: Fees
+        if(sortBy == 'asses_fees'){
+          this.curSortDir.asses_fees = !sortDir;
+          if(this.curSortDir.asses_fees){
+            let array = data.slice().sort((a, b) => (a.assessment !=  undefined && a.assessment.amount > b.assessment.amount) ? 1 : -1);
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.asses_fees){
+            let array = data.slice().sort((a, b) => (a.assessment !=  undefined && a.assessment.amount < b.assessment.amount) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+        //Assessment :: Fees Date
+        if(sortBy == 'asses_fees_date'){
+          this.curSortDir.asses_fees_date = !sortDir;
+          if(this.curSortDir.asses_fees_date){
+            let array = data.slice().sort((a, b) => (a.assessment !=  undefined && a.assessment.voucher_date > b.assessment.voucher_date) ? 1 : -1)
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.asses_fees_date){
+            let array = data.slice().sort((a, b) => (a.assessment !=  undefined && a.assessment.voucher_date < b.assessment.voucher_date) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+        //Assessment :: Status
+        if(sortBy == 'asses_fees_status'){
+          this.curSortDir.asses_fees_status = !sortDir;
+          if(this.curSortDir.asses_fees_status){ 
+            let array = data.slice().sort((a, b) => (a.assessment !=  undefined && a.assessment.payment_status > b.assessment.payment_status) ? 1 : -1)
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.asses_fees_status){
+            let array = data.slice().sort((a, b) => (a.assessment !=  undefined && a.assessment.payment_status < b.assessment.payment_status) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+
+        //Certification column sort
+        //Certification :: Fees 
+        if(sortBy == 'certif_fees'){
+          this.curSortDir.certif_fees = !sortDir;
+          if(this.curSortDir.certif_fees){
+            let array = data.slice().sort((a, b) => (a.certification !=  undefined && a.certification.amount > b.certification.amount) ? 1 : -1);
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.certif_fees){
+            let array = data.slice().sort((a, b) => (a.certification !=  undefined && a.certification.amount < b.certification.amount) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+        //Certification :: Fees Date
+        if(sortBy == 'certif_fees_date'){
+          this.curSortDir.certif_fees_date = !sortDir;
+          if(this.curSortDir.certif_fees_date){
+            let array = data.slice().sort((a, b) => (a.certification !=  undefined && a.certification.voucher_date > b.certification.voucher_date) ? 1 : -1)
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.certif_fees_date){
+            let array = data.slice().sort((a, b) => (a.certification !=  undefined && a.certification.voucher_date < b.certification.voucher_date) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+        //Certification :: Status
+        if(sortBy == 'certif_fees_status'){
+          this.curSortDir.certif_fees_status = !sortDir;
+          if(this.curSortDir.certif_fees_status){ 
+            let array = data.slice().sort((a, b) => (a.certification !=  undefined && a.certification.payment_status > b.certification.payment_status) ? 1 : -1)
+            this.accountsData = array;
+          }
+          if(!this.curSortDir.certif_fees_status){
+            let array = data.slice().sort((a, b) => (a.certification !=  undefined && a.certification.payment_status < b.certification.payment_status) ? 1 : -1)
+            this.accountsData = array;
+          }
+        }
+        
+    }
   }
 
 }

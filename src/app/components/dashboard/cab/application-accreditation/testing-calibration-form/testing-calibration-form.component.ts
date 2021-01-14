@@ -11,7 +11,7 @@ declare let paypal: any;
 import { TrainerService } from '../../../../../services/trainer.service';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer'; 
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser'; 
 import {CustomModalComponent} from '../../../../utility/custom-modal/custom-modal.component';
 import { find } from 'rxjs/operators';
 
@@ -232,7 +232,7 @@ export class TestingCalibrationFormComponent implements OnInit {
    */
 
   updateScopeFamilyRows(data: any, schemeid: any, index: number){
-    if(data){
+    if(data){ 
       //update family rows...
       if(data[index] != undefined && data[index].id != undefined){
           let familyId= data[index].id;
@@ -2517,6 +2517,7 @@ getCriteria(value, secInd: any){
                     // this.voucherSentData.payment_method   = res['data'].paymentDetails.payment_method;
                     // this.voucherSentData.payment_made_by  = res['data'].paymentDetails.payment_made_by;
                     // this.voucherSentData.mobile_no        = res['data'].paymentDetails.mobile_no;
+                    console.log(">>Load payment info: ", this.voucherSentData); 
 
                     this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this.constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
                     if(this.paymentFile != undefined && this.paymentFile != ''){
@@ -4151,16 +4152,16 @@ onSubmitPaymentInformation(ngForm9: any, type?: boolean){
   this.testingCalForm.step9 = {};
 
     let dtFormat: string = '';
-    if(this.voucherSentData['payment_date'] != undefined && 
-      this.voucherSentData['payment_date']._i != undefined){
-      var dtData = this.voucherSentData['payment_date']._i;
-      var year = dtData.year;
-      var month = dtData.month;
-      var date = dtData.date;
+    if(this.voucherSentData['payment_date'] != null){
+      var dtData = new Date(this.voucherSentData['payment_date']);
+      var year = dtData.getFullYear();
+      var month = dtData.getMonth() + 1;
+      var date = dtData.getDate();
       dtFormat = year + "-" + month + "-" + date;
     }
+    console.log("@Date: ", dtFormat, " -- ", dtData);
     //     
-    let is_valid = false;
+  let is_valid = false;
   this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
   this.voucherFile.append('amount',this.voucherSentData['amount']);
   this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
@@ -4181,6 +4182,8 @@ onSubmitPaymentInformation(ngForm9: any, type?: boolean){
       is_valid = true;
     }
     //ngForm9.form.valid 
+
+   // return false;
   
   if(is_valid == true && this.paymentReceiptValidation != false) {
     this.loader = false;

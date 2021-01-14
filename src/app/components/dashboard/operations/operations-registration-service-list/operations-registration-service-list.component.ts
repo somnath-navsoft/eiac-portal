@@ -402,12 +402,13 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
 
   }
 
-  open(content, id: number) {
+  open(content, id: number,index: number) {
     //this.voucherSentData = {};
     if(id){
       console.log(">>ID: ", id);
       this.voucherSentData['accreditation'] = id;
     }
+    this.voucherSentData['index'] = index;
     this.paymentReceiptValidation = null;
     this.modalService.open(content, this.modalOptions).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -434,7 +435,7 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
         is_valid = true;
       }
       //console.log("Valid/Invalid: ", theForm.form.valid, " -- "," --", is_valid, " --", this.voucherSentData);
-
+      
     //return false;
      if(is_valid == true && this.paymentReceiptValidation === true){ 
           let dtFormat: string = '';;
@@ -460,10 +461,13 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
              result => {
                let data: any = result;
                 if(data.status){
+                  var currIndex = 10 * (this.pageCurrentNumber -1) + parseInt(this.voucherSentData['index']);
+                  this.trainerdata[currIndex].application_status = 'payment_pending';
                   this.voucherFile = new FormData();
                   this.voucherSentData = {};
                   this.modalService.dismissAll();
                   this._toaster.success("Invoice Uploaded Successfully",'Upload');
+                  
                 }else{
                   this._toaster.warning(data.msg,'');
                 }

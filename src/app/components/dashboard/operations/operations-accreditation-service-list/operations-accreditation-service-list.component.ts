@@ -199,11 +199,12 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   }
 
   // Modal Actions
-  open(content, id: number) {
+  open(content, id: number, key:number) {
     //this.voucherSentData = {};
     if(id){
-      console.log(">>ID: ", id);
+      // console.log(">>ID: ", id);
       this.voucherSentData['accreditation'] = id;
+      this.voucherSentData['index'] = key;
     }
     this.paymentReceiptValidation = null;
     this.modalService.open(content, this.modalOptions).result.then((result) => {
@@ -256,6 +257,8 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
              result => {
                let data: any = result;
                 if(data.status){
+                  var currIndex = 10 * (this.pageCurrentNumber -1) + parseInt(this.voucherSentData['index']);
+                  this.trainerdata[currIndex].application_status = 'payment_pending';
                   this.voucherFile = new FormData();
                   this.voucherSentData = {};
                   this.modalService.dismissAll();
