@@ -458,26 +458,26 @@ export class CertificationRecordsComponent implements OnInit {
           }
         }
         //By certificate_type
-        if(sortBy == 'certificate_type'){
-          this.curSortDir.certificate_type = !sortDir;
-          if(this.curSortDir.certificate_type){
-            let array = data.slice().sort((a, b) => (a.certificate_type > b.certificate_type) ? 1 : -1)
+        if(sortBy == 'uploaded_on'){
+          this.curSortDir.uploaded_on = !sortDir;
+          if(this.curSortDir.uploaded_on){
+            let array = data.slice().sort((a, b) => (a.date_of_issue > b.date_of_issue) ? 1 : -1)
             this.trainerdata = array;
           }
-          if(!this.curSortDir.certificate_type){
-            let array = data.slice().sort((a, b) => (a.certificate_type < b.certificate_type) ? 1 : -1)
+          if(!this.curSortDir.uploaded_on){
+            let array = data.slice().sort((a, b) => (a.date_of_issue < b.date_of_issue) ? 1 : -1)
             this.trainerdata = array;
           }
         }
         //By cab_type
-        if(sortBy == 'cab_type'){
-          this.curSortDir.cab_type = !sortDir;
-          if(this.curSortDir.cab_type){
-            let array = data.slice().sort((a, b) => (a.cab_type > b.cab_type) ? 1 : -1)
+        if(sortBy == 'expiry_date'){
+          this.curSortDir.expiry_date = !sortDir;
+          if(this.curSortDir.expiry_date){
+            let array = data.slice().sort((a, b) => (a.date_of_expiry > b.date_of_expiry) ? 1 : -1)
             this.trainerdata = array;
           }
-          if(!this.curSortDir.cab_type){
-            let array = data.slice().sort((a, b) => (a.cab_type < b.cab_type) ? 1 : -1)
+          if(!this.curSortDir.expiry_date){
+            let array = data.slice().sort((a, b) => (a.date_of_expiry < b.date_of_expiry) ? 1 : -1)
             this.trainerdata = array;
           }
         }
