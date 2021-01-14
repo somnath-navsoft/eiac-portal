@@ -65,7 +65,7 @@ export class RegistrationStatusComponent implements OnInit {
     this.userType = sessionStorage.getItem('type');
     this.selectRegType = [{title:'No Objection Certificate', value: 'no_objection'},{title:'Work Activity Permit', value:'work_activity'}];
     this.selectAccrStatus  = [
-      {title: 'Payment Pending', value:'pending'},
+      {title: 'Payment Pending', value:'payment_pending'},
       //{title: 'Pending', value:'payment_pending'},
       {title: 'Under Review', value:'under_review'},
       {title: 'Under Process', value:'under_process'},

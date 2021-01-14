@@ -74,7 +74,7 @@ export class TrainingStatusComponent implements OnInit {
 
     this.selectTrainingType = [{'title':'In Premise', value: 'inprimise'},{'title':'Public Training', value: 'public_training'}];
     this.selectAccrStatus  = [
-      {title: 'Payment Pending', value:'pending'},
+      {title: 'Payment Pending', value:'payment_pending'},
       //{title: 'Pending', value:'payment_pending'},
       //{title: 'Application Process', value:'application_process'},
       {title: 'Under Review', value:'under_review'},
