@@ -18,7 +18,7 @@ import { map, startWith } from 'rxjs/operators';
 export class OperationsDashboardComponent implements OnInit {
 
   visible = true;
-  selectable = true;
+  selectable = true; 
   removable = true;
   separatorKeysCodes: number[] = [ENTER, COMMA]; 
   fruitCtrl = new FormControl();

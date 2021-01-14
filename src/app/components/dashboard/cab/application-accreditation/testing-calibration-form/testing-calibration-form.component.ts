@@ -11,7 +11,7 @@ declare let paypal: any;
 import { TrainerService } from '../../../../../services/trainer.service';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import { PDFProgressData, PDFDocumentProxy} from 'ng2-pdf-viewer'; 
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser'; 
 import {CustomModalComponent} from '../../../../utility/custom-modal/custom-modal.component';
 import { find } from 'rxjs/operators';
 
@@ -2505,7 +2505,7 @@ getCriteria(value, secInd: any){
                 if(res['data'].paymentDetails != null && typeof res['data'].paymentDetails === 'object'){
                   // ////console.log(">>>payment details...show");
                     this.voucherSentData.voucher_code     = res['data'].paymentDetails.voucher_no;
-                    this.voucherSentData.payment_date     = ((res['data'].paymentDetails.voucher_date == null) ? '' : res['data'].paymentDetails.voucher_date);
+                    this.voucherSentData.payment_date     = new Date(res['data'].paymentDetails.voucher_date);
                     this.voucherSentData.amount           = res['data'].paymentDetails.amount;
 
                     this.voucherSentData.transaction_no   = (getData.data.paymentDetails.transaction_no != 'null') ? getData.data.paymentDetails.transaction_no : '';
@@ -4182,6 +4182,8 @@ onSubmitPaymentInformation(ngForm9: any, type?: boolean){
       is_valid = true;
     }
     //ngForm9.form.valid 
+
+   // return false;
   
   if(is_valid == true && this.paymentReceiptValidation != false) {
     this.loader = false;
