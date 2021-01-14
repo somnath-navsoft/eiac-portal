@@ -29,7 +29,9 @@
                     <div class="dsh-wrapper">
                         <div class="trainer-main-details trainer2">
                             <div class="user-icons">
+                            
                                 <span class="icon-doc-write"></span>
+                            
                             </div>
                             <div class="trainer-data-det">
                                 <div class="trainer-pro">
@@ -50,8 +52,8 @@
                 <div class="col-md-3">
                     <div class="dsh-wrapper">
                         <div class="trainer-main-details trainer3">
-                            <div class="user-icons">
-                                <span class="icon-doc-diff"></span>
+                            <div class="user-icons">                            
+                                <span class="icon-doc-diff"></span>                            
                             </div>
                             <div class="trainer-data-det">
                                 <div class="trainer-pro">
@@ -73,7 +75,9 @@
                     <div class="dsh-wrapper">
                         <div class="trainer-main-details trainer4">
                             <div class="user-icons">
+                            
                                 <span class="icon-calendar"></span>
+                            
                             </div>
                             <div class="trainer-data-det">
                                 <div class="trainer-pro">
@@ -239,7 +243,7 @@
                                         </div>
                                     </div>
                                     <div class="dash-logo">
-                                        <span class="icon-doc-fold"></span>
+                                        <span (click)="openScheme()" [ngStyle]="{'cursor':'pointer'}" class="icon-doc-fold"></span>
                                     </div>
                                 </div>
                             </div>
@@ -289,9 +293,9 @@
                                                 <p class="head-dash">Service Enquiries</p>
                                                 <p class="sub-head-dash">{{dashboardItemData.enquiryCount}}</p>
                                             </div>
-                                            <div class="view-all">
+                                            <!-- <div class="view-all">
                                                 <p><span class="icon-arrow-up"></span> 12 New</p>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                     <div class="dash-logo">
@@ -324,7 +328,9 @@
                                         </div>
                                     </div>
                                     <div class="dash-logo bill-logo">
-                                        <span class="icon-doc-write"></span>
+                                        <a routerLink="/dashboard/certifications">
+                                            <span class="icon-doc-write"></span>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -421,7 +427,8 @@
                                     <div class="activity-details">
                                         <ul>
                                             <ng-container *ngFor = "let item of dashboardRecentUpdates">
-                                            <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span>, {{item.title}} on {{item.date | date: 'short'}}</span></li>
+                                            <!-- <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span>, {{item.title}} on {{item.date | date: 'short'}}</span></li> -->
+                                            <li>{{item.title}}<span> on {{item.date | date: 'short'}}</span></li>
                                             </ng-container>
                                         </ul>
                                     </div>
