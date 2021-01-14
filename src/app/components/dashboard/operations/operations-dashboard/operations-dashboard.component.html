@@ -261,7 +261,9 @@
                                         </div>
                                     </div>
                                     <div class="dash-logo">
-                                        <span class="icon-doc-diff"></span>
+                                        <a href="https://uat.eiac.gov.ae/documents/publications" target="_blank">
+                                            <span class="icon-doc-diff"></span>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -281,7 +283,9 @@
                                         </div>
                                     </div>
                                     <div class="dash-logo">
+                                    <a href="/dashboard/onboarding-message-list">
                                         <span class="icon-check-mark"></span>
+                                    </a>
                                     </div>
                                 </div>
                             </div>
@@ -298,7 +302,7 @@
                                             </div> -->
                                         </div>
                                     </div>
-                                    <div class="dash-logo">
+                                    <div class="dash-logo">                                        
                                         <span class="icon-check-mark"></span>
                                     </div>
                                 </div>
@@ -367,7 +371,9 @@
                                         </div>
                                     </div>
                                     <div class="dash-logo bill-logo">
+                                        <a href="https://uat.eiac.gov.ae/directory" target="_blank">
                                         <span class="icon-menu"></span>
+                                    </a>
                                     </div>
                                 </div>
                             </div>
@@ -428,7 +434,7 @@
                                         <ul>
                                             <ng-container *ngFor = "let item of dashboardRecentUpdates">
                                             <!-- <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span>, {{item.title}} on {{item.date | date: 'short'}}</span></li> -->
-                                            <li>{{item.title}}<span> on {{item.date | date: 'short'}}</span></li>
+                                            <li>{{item.title}}<span> on {{item.date | date: 'dd/MM/y, h:mm:ss a'}}</span></li>
                                             </ng-container>
                                         </ul>
                                     </div>

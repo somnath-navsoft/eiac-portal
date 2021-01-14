@@ -314,19 +314,19 @@ export class OperationsDashboardComponent implements OnInit {
             if(this.dashboardItemData.lastAccrApplied != undefined){
               let datePart: any = this.dashboardItemData.lastAccrApplied.toString().split(" ");              
               let dateStr: string = datePart[0] + " " + datePart[1];
-              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Received " + this.getFormType(this.dashboardItemData.lastAccrAppliedFormName) + " Application ";
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", " + this.getFormType(this.dashboardItemData.lastAccrAppliedFormName) + " Application has been received ";
               this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
             }
             if(this.dashboardItemData.lastRegApplied != undefined){
               let datePart: any = this.dashboardItemData.lastRegApplied.toString().split(" ");              
               let dateStr: string = datePart[0] + " " + datePart[1];
-              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Received " + this.getFormType(this.dashboardItemData.lastRegAppliedFormName) + " Application ";
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", " + this.getFormType(this.dashboardItemData.lastRegAppliedFormName) + " Application has been received ";
               this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
             }
             if(this.dashboardItemData.lastTrainingApplied != undefined){
               let datePart: any = this.dashboardItemData.lastTrainingApplied.toString().split(" ");             
               let dateStr: string = datePart[0] + " " + datePart[1];
-              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Received " + this.getFormType(this.dashboardItemData.lastTrainingAppliedFormName) + " Application ";
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", " + this.getFormType(this.dashboardItemData.lastTrainingAppliedFormName) + " Application has been received ";
               this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
             }
             if(this.dashboardItemData.lastAccrPayment != undefined){
