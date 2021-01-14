@@ -160,6 +160,7 @@ import { TrainingStatusComponent } from './components/dashboard/training-status/
 import { InpremiseApprovalListComponent } from './components/dashboard/operations/inpremise-approval-list/inpremise-approval-list.component';
 import { InpremiseApprovalDetailsComponent } from './components/dashboard/operations/inpremise-approval-details/inpremise-approval-details.component';
 import { SchemeListComponent } from './components/dashboard/cab/scheme-list/scheme-list.component';
+import { SchemeListOperationsComponent } from './components/dashboard/operations/scheme-list/operations-scheme-list.component';
 import { EventListsComponent } from './components/dashboard/cab/event-lists/event-lists.component';
 import { CertificationRecordsComponent } from './components/dashboard/cab/certification-records/certification-records.component';
 import { ExportAsModule } from 'ngx-export-as';
@@ -233,6 +234,7 @@ export const MY_FORMATS = {
     InpremiseApprovalListComponent,
     InpremiseApprovalDetailsComponent,
     SchemeListComponent,
+    SchemeListOperationsComponent,
     EventListsComponent,
     CertificationRecordsComponent,
     OperationsCertificationsComponent

@@ -9,7 +9,7 @@ import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-b
 import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
 @Component({
-  selector: 'app-operations-registration-service-list',
+  selector: 'app-operations-registration-service-list', 
   templateUrl: './operations-registration-service-list.component.html',
   styleUrls: ['./operations-registration-service-list.component.scss'],
   providers: [CustomModalComponent, ToastrService, Overlay, OverlayContainer]
@@ -84,7 +84,7 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
     //Assign Search Type
     this.selectStatus =  [
       {title: 'Payment Pending', value:'pending'},
-      {title: 'Under Process', value:'application_process'},
+      {title: 'Under Process', value:'under_process'},
       {title: 'Under Review', value:'under_review'},
       {title: 'Complete', value:'complete'},
       {title: 'Draft', value:'draft'}
@@ -143,7 +143,7 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
     }else if(this.searchValue == 'form_meta') {
       document.getElementById('accreditation_type').style.display = 'block';
     }else if(this.searchValue == 'application_status') {
-      document.getElementById('status').style.display = 'block';
+      document.getElementById('application_status').style.display = 'block';
     }
   }
 

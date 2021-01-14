@@ -6,7 +6,7 @@ import { Constants } from '../../../services/constant.service';
 import { ToastrService, Overlay, OverlayContainer } from 'ngx-toastr';
 import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
-@Component({
+@Component({ 
   selector: 'app-registration-status',
   templateUrl: './registration-status.component.html',
   styleUrls: ['./registration-status.component.scss']

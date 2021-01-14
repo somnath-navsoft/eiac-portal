@@ -136,6 +136,7 @@ export class OperationsDashboardComponent implements OnInit {
             this.loader = true;
             let getData: any = {};
             getData = res['dashBoardData'];
+            this.dashboardItemData = res['dashBoardData'];
             console.log(getData,'::::Department data');
 
             this.totalDeptSelect = getData.lastApplication;
@@ -173,6 +174,7 @@ export class OperationsDashboardComponent implements OnInit {
                 this.loader = true;
                 let getData: any = {};
                 getData = res['dashBoardData'];
+                this.dashboardItemData = res['dashBoardData'];
                 console.log(getData,'::::Department data');
 
                 this.totalDeptSelect = (getData.lastApplication == '' && this.selectDepartment === 'inspection_bodies') ? 'IB' : (getData.lastApplication != '' && this.selectDepartment === 'halal_conformity_bodies') ? 'HCAB' : getData.lastApplication;
@@ -195,8 +197,55 @@ export class OperationsDashboardComponent implements OnInit {
   }
 
 
+  openScheme(){
+    if(this.selectDepartment == undefined || this.selectDepartment == ''){
+      this.toastr.warning("Please select department", '');
+      return;
+    }
+    let selDept: any = this.selectDepartment;
+    //console.log(">>>dept...", selDept);
+    sessionStorage.setItem("io_dept", selDept);
+    this.router.navigateByUrl('/dashboard/operations/scheme-list')
+  }
+
+
   //department view onchange
   //https://uat-service.eiac.gov.ae/webservice/io-dashboard/?department_type = io roles value
+
+  getFormType(formMeta: string){
+    // | 
+      if(formMeta === 'health_care'){
+        return 'HP';
+      }
+      else if(formMeta === 'inspection_body'){
+        return 'IB';
+      }
+      else if(formMeta === 'testing_calibration'){
+        return 'TCL';
+      }
+      else if(formMeta === 'certification_bodies'){
+        return 'CB';
+      }
+      else if(formMeta === 'pt_providers'){
+        return 'PTP';
+      }
+      else if(formMeta === 'halal_conformity_bodies'){
+        return 'HCAB';
+      }else if(formMeta === 'inprimise'){
+        return 'In Premise Training';
+      }else if(formMeta === 'public_training'){
+        return 'Public Training';
+      }else if(formMeta === 'work_permit'){
+        return 'Work Activity Permit';
+      }else if(formMeta === 'no_objection'){
+        return 'No Objection Certificate';
+      }else if(formMeta === 'work_activity'){
+        return 'Work Activity Permit';
+      }else{
+        return 'NA';
+      }
+  }
+
 
   //Load Dashboatd data
   loadDashData(){
@@ -261,20 +310,44 @@ export class OperationsDashboardComponent implements OnInit {
               let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Last Login ";
               this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
             }
-            // if(this.dashboardItemData.lastAccrApplied != undefined){
-            //   let datePart: any = this.dashboardItemData.lastAccrApplied.toString().split(" ");
-            //   let date = datePart[0];
-            //   let time1 = datePart[1];
-            //   let time1Ar = time1.split(":");
-            //   console.log(">>>>... ", time1Ar, " -- ", time1Ar.length);
-            //   if(time1Ar.length == 1){
-            //     time1 = time1 +":00";
-            //   }
-            //   let time2 = datePart[2];
-            //   let time = time1 +" "+ time2;
-            //   console.log(datePart, " == ", date, " -- ",time);  
-            //   this.dashboardRecentUpdates.push({title: "Accreditation Applied",date:date, time: time});
-            // }            
+
+            if(this.dashboardItemData.lastAccrApplied != undefined){
+              let datePart: any = this.dashboardItemData.lastAccrApplied.toString().split(" ");              
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", " + this.getFormType(this.dashboardItemData.lastAccrAppliedFormName) + " Application has been received ";
+              this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
+            }
+            if(this.dashboardItemData.lastRegApplied != undefined){
+              let datePart: any = this.dashboardItemData.lastRegApplied.toString().split(" ");              
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", " + this.getFormType(this.dashboardItemData.lastRegAppliedFormName) + " Application has been received ";
+              this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
+            }
+            if(this.dashboardItemData.lastTrainingApplied != undefined){
+              let datePart: any = this.dashboardItemData.lastTrainingApplied.toString().split(" ");             
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", " + this.getFormType(this.dashboardItemData.lastTrainingAppliedFormName) + " Application has been received ";
+              this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
+            }
+            if(this.dashboardItemData.lastAccrPayment != undefined){
+              let datePart: any = this.dashboardItemData.lastAccrPayment.toString().split(" ");              
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Accreditaion Payment details of " + this.getFormType(this.dashboardItemData.lastAccrPayFormName) + " Updated ";
+              this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
+            }
+            if(this.dashboardItemData.lastRegPayment != undefined){
+              let datePart: any = this.dashboardItemData.lastRegPayment.toString().split(" ");              
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Registration Payment details of " + this.getFormType(this.dashboardItemData.lastRegPayFormName) + " Updated ";
+              this.dashboardRecentUpdates.push({title:titleText,date:dateStr});
+            }
+            if(this.dashboardItemData.lastTrainingPayment != undefined){
+              let datePart: any = this.dashboardItemData.lastTrainingPayment.toString().split(" ");              
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Training Payment details of " + this.getFormType(this.dashboardItemData.lastTrainingPayFormName) + " Updated ";
+              this.dashboardRecentUpdates.push({title: titleText,date:dateStr});
+            }
+                        
           }
           //console.log(">>>> Load Data: ", res, " == ", this.dashboardRecentUpdates);
 
@@ -302,7 +375,10 @@ export class OperationsDashboardComponent implements OnInit {
     this.userEmail = sessionStorage.getItem('email');
     this.userId = sessionStorage.getItem('userId');
 
-    this.loadDashData();
+    setTimeout(() => {
+      this.loadDashData();
+    }, 100)   
+
     this.loadCountryStateCityAll();
 
     if (this.userType != 'operations') {
