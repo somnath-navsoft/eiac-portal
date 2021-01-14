@@ -37,6 +37,11 @@ export class TrainerService {
     return this.http.get(url, this._service.getReqHeaders());
   }
 
+  searchRecordList(params: any): any{
+    let url = `${this.BASE_REQ_URL}` + 'webservice/record_list/?'+params;
+    return this.http.get(url, this._service.getReqHeaders());
+  }
+
 
   //Get Trainer Page Details
   getTrainerPageDetails(){

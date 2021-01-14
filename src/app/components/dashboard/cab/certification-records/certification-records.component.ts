@@ -91,9 +91,11 @@ export class CertificationRecordsComponent implements OnInit {
   public errorLoader: boolean = false;
   pathPDF: any;
   tradelicenseName:any;
+  cabName:any;
   startDate:any;
   expiryDate:any;
   tradelicenseFile:any;
+  newTextchange:any;
   
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService, public sanitizer: DomSanitizer, private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent, private exportAsService: ExportAsService,config: NgbModalConfig) { 
     config.windowClass = 'custom-modal';
@@ -128,7 +130,7 @@ export class CertificationRecordsComponent implements OnInit {
       let pathData: any;
       this.errorLoader = false;
       ////////console.log(">>>pop up...", content);
-      let makePath: any = this._constant.mediaPath + '/media/' + filepath;
+      let makePath: any = this._constant.mediaPath+filepath;
       console.log(">>> open file...", makePath);
       pathData = this.getSantizeUrl(makePath);
       this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
@@ -165,7 +167,7 @@ export class CertificationRecordsComponent implements OnInit {
       // console.log(this.exportAs);
       this.exportAsConfig = {
         type: 'csv', // the type you want to download
-        elementIdOrContent: 'certification-records-export', // the id of html/table element
+        elementIdOrContent: 'records-export', // the id of html/table element
       }
       // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
       this.exportAsService.save(this.exportAsConfig, 'report').subscribe(() => {
@@ -241,12 +243,14 @@ export class CertificationRecordsComponent implements OnInit {
           let elem: any = myClasses[i]
           elem.style.display = 'none';
       }
-    if(this.searchValue == 'name') {
+    if(this.searchValue == 'trade_license_number') {
       document.getElementById('applicant').style.display = 'block';
     }else if(this.searchValue == 'uploaded_on') {
       document.getElementById('event_date').style.display = 'block';
+      this.newTextchange = 'Uploaded On';
     }else if(this.searchValue == 'expiry_date') {
       document.getElementById('event_date').style.display = 'block';
+      this.newTextchange = 'Expiry Date';
     }
   }
 
@@ -258,9 +262,9 @@ export class CertificationRecordsComponent implements OnInit {
 
   filterSearchReset(type?: string){
     //Reset serach
-    this.applicationNo = '' || null;
-    this.selectAccrTypeValue = '' || null;
-    this.paymentStatusValue = '' || null;
+    this.searchText = '' || null;
+    this.searchValue = '' || null;
+    // this.paymentStatusValue = '' || null;
     this.show_data = this.pageLimit = 10;
     this.exportAs = null;
     if(type != undefined && type != ''){
@@ -319,10 +323,20 @@ export class CertificationRecordsComponent implements OnInit {
     if(this.isValidSearch()){
       this.loader = false;
       let useQuery: any = '';
-      useQuery =   this.searchValue + "=" + this.searchText + '&offset='+offset+'&limit='+this.pageLimit;              
+      let newsearchText = '';
+      if(this.searchValue == 'trade_license_number') {
+        newsearchText = this.searchText;
+      }else if(this.searchValue == 'uploaded_on' || this.searchValue == 'expiry_date') {
+        var dtData = this.searchText._i;
+        var year = dtData.year;
+        var month = dtData.month + 1;
+        var date = dtData.date;
+        newsearchText = year + "-" + month + "-" + date;
+      }
+      useQuery =   this.searchValue + "=" + newsearchText + '&offset='+offset+'&limit='+this.pageLimit;              
 
         if(useQuery){
-          this.subscriptions.push(this._trainerService.searchCertificateList(useQuery)
+          this.subscriptions.push(this._trainerService.searchRecordList(useQuery)
           .subscribe(
             result => {
               let data: any = result;
@@ -331,6 +345,16 @@ export class CertificationRecordsComponent implements OnInit {
                 this.dataLoad     = true;
                 console.log('Data search load...', data);                
                 this.trainerdata  = data['records'];
+                let tempObj = [];
+                this.trainerdata.forEach((res,key) => {
+                  if(this.trainerdata[key].trade_license_number != null){
+                    tempObj.push(this.trainerdata[key]);
+                  }
+                  // this.trainerdata[key].trade_license_number = ;
+                })
+                //dataRec = data.records;
+                this.trainerdata = tempObj;
+
                 this.pageTotal    = data.totalCount;
 
             }
@@ -368,8 +392,9 @@ export class CertificationRecordsComponent implements OnInit {
     // this.paymentReceiptValidation = null;
     
     
+    this.cabName = newObj.cab_name != null && newObj.cab_name ? newObj.cab_name : 'N/A';
     this.tradelicenseName = newObj.trade_license_number != null && newObj.trade_license_number ? newObj.trade_license_number : 'N/A';
-    this.tradelicenseFile = newObj.trade_license_number != null && newObj.trade_license_number ? newObj.trade_license_number : 'N/A';
+    this.tradelicenseFile = newObj.trade_license != null && newObj.trade_license ? newObj.trade_license : 'N/A';
     this.startDate = newObj.date_of_issue != null && newObj.date_of_issue ? newObj.date_of_issue : 'N/A';
     this.expiryDate = newObj.date_of_expiry != null && newObj.date_of_expiry ? newObj.date_of_expiry : 'N/A';
 
@@ -381,7 +406,8 @@ export class CertificationRecordsComponent implements OnInit {
   }
 
   downloadRecord(file){
-    window.open(this._constant.mediaPath+'/media/'+file, '_blank');
+    console.log(file,'file');
+    window.open(this._constant.mediaPath+file, '_blank');
   }
 
   loadPageData(offset?:number, limit?:number) { 
@@ -396,9 +422,16 @@ export class CertificationRecordsComponent implements OnInit {
           let dataRec: any=[];
           this.dataLoad = true;
           console.log('Data load...', data);
-          
+          let tempObj = [];
           this.trainerdata = data['records'];
+          this.trainerdata.forEach((res,key) => {
+            if(this.trainerdata[key].trade_license_number != null){
+              tempObj.push(this.trainerdata[key]);
+            }
+            // this.trainerdata[key].trade_license_number = ;
+          })
           //dataRec = data.records;
+          this.trainerdata = tempObj;
           this.pageTotal = data.totalCount;
         },
         ()=>{
@@ -416,11 +449,11 @@ export class CertificationRecordsComponent implements OnInit {
           //console.log(">>>Enter type...");
           this.curSortDir.new_no = !sortDir;
           if(this.curSortDir.new_no){
-            let array = data.slice().sort((a, b) => (a.new_no > b.new_no) ? 1 : -1)
+            let array = data.slice().sort((a, b) => (a.trade_license_number > b.trade_license_number) ? 1 : -1)
             this.trainerdata = array;
           }
           if(!this.curSortDir.new_no){
-            let array = data.slice().sort((a, b) => (a.new_no < b.new_no) ? 1 : -1)
+            let array = data.slice().sort((a, b) => (a.trade_license_number < b.trade_license_number) ? 1 : -1)
             this.trainerdata = array;
           }
         }

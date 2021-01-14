@@ -14,7 +14,7 @@
                         </div>
                         <div class="trainer-detail">
                             <!-- <span class="trainer-data"><span class="icon-company"></span>Navigators Software Pvt. Ltd.</span> -->
-                            <span class="trainer-data"><span class="icon-mail"></span>{{userDetails.email}}</span>
+                            <span class="trainer-data"><span class="icon-mail"></span>{{userDetails?.email}}</span>
                             <!-- <span class="trainer-data"><span class="icon-call"></span>+971 254-3269</span> -->
                         </div>
                     </div>
@@ -118,7 +118,7 @@
                     </a>
                 </div>
                 <div class="col-md-3">
-                    <a href="javascript:void(0)" routerLink="/dashboard/certification-records">
+                    <a href="javascript:void(0)" routerLink="/dashboard/records">
                     <ng-container *ngIf="dashboardTradeLicExStatus">                    
                     <div class="trainer-main-details trainer4" [ngStyle]="{'height': '97px'}">
                         <div class="user-icons">
