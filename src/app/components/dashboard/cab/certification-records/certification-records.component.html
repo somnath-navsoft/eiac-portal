@@ -37,8 +37,8 @@
                                     <mat-label>Searchable Column</mat-label> 
                                     <mat-select placeholder="Select" (selectionChange)="searchableColumn()" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue">
                                         <mat-option value="trade_license_number">Trade License Number</mat-option>
-                                        <mat-option value="uploaded_on">Uploaded On</mat-option>
-                                        <mat-option value="expiry_date">Expiry Date</mat-option>
+                                        <mat-option value="uploaded_on">Date of Issue</mat-option>
+                                        <mat-option value="expiry_date">Date of Expiry</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div> 
@@ -112,16 +112,16 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.new_no"></span>
                                 </a>
                             </th>
-                            <th [ngStyle]="{'font-size':'14px'}">Uploaded On
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'certificate_type', curSortDir.certificate_type)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.certificate_type"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.certificate_type"></span>
+                            <th [ngStyle]="{'font-size':'14px'}">Date of Issue
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'uploaded_on', curSortDir.uploaded_on)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.uploaded_on"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.uploaded_on"></span>
                                 </a>
                             </th>
-                            <th width="15%" [ngStyle]="{'font-size':'14px'}">Expiry Date
-                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'cab_type', curSortDir.cab_type)">
-                                    <span class="icon-arrow-down" *ngIf="!curSortDir.cab_type"></span>
-                                    <span class="icon-arrow-up"  *ngIf="curSortDir.cab_type"></span>
+                            <th width="15%" [ngStyle]="{'font-size':'14px'}">Date of Expiry
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'expiry_date', curSortDir.expiry_date)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.expiry_date"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.expiry_date"></span>
                                 </a>
                             </th>
                             
