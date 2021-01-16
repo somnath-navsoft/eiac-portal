@@ -179,6 +179,7 @@ export class CertificationRecordsComponent implements OnInit {
     this.loadPageData();
     this.loadCertTypeStatus();
     this.curSortDir['new_no']                       = false;
+    this.curSortDir['record_type']                       = false;
     this.curSortDir['certificate_type']             = false;
     this.curSortDir['cab_type']             = false;
     this.curSortDir['cab_status']           = false;
@@ -423,18 +424,14 @@ export class CertificationRecordsComponent implements OnInit {
           let dataRec: any=[];
           this.dataLoad = true;
           console.log('Data load...', data);
-          // let tempObj = [];
+          let tempObj = [];
           this.trainerdata = data['records'];
-          // this.trainerdata.forEach((res,key) => {
-          //   // if(this.trainerdata[key].trade_license_number != null){
-          //     tempObj.push(this.trainerdata[key]);
-          //   // }
-          //   // this.trainerdata[key].trade_license_number = ;
-          // })
-          //dataRec = data.records;
-          // this.trainerdata = tempObj;
+          this.trainerdata.forEach((res,key) => {
+              this.trainerdata[key].record_type = "Trade Licenses";
+              tempObj.push(this.trainerdata[key]);
+          })
+          this.trainerdata = tempObj;
           this.pageTotal = data.totalCount;
-
         },
         ()=>{
           console.log('comp...');
@@ -456,6 +453,18 @@ export class CertificationRecordsComponent implements OnInit {
           }
           if(!this.curSortDir.new_no){
             let array = data.slice().sort((a, b) => (a.trade_license_number < b.trade_license_number) ? 1 : -1)
+            this.trainerdata = array;
+          }
+        }
+        if(sortBy === 'record_type'){
+          //console.log(">>>Enter type...");
+          this.curSortDir.record_type = !sortDir;
+          if(this.curSortDir.record_type){
+            let array = data.slice().sort((a, b) => (a.record_type > b.record_type) ? 1 : -1)
+            this.trainerdata = array;
+          }
+          if(!this.curSortDir.record_type){
+            let array = data.slice().sort((a, b) => (a.record_type < b.record_type) ? 1 : -1)
             this.trainerdata = array;
           }
         }
