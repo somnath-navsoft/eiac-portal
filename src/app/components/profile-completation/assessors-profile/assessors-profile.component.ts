@@ -94,7 +94,7 @@ export class AssessorsProfileComponent implements OnInit {
       title:'knowledge_experience', desc:'4. Knowledge <br> And Experience', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
-      title:'applicant_trainer', desc:'5. Applicant <br> Trainer', activeStep:false, stepComp:false, icon:'icon-doc-edit', activeClass:''
+      title:'applicant_trainer', desc:'5. Applicant <br> Assessor', activeStep:false, stepComp:false, icon:'icon-doc-edit', activeClass:''
       }
     );
     this.titleArr = ['Mr.','Ms.','Dr.','Prof.','Mrs.'];
