@@ -332,7 +332,13 @@ export class CertificationRecordsComponent implements OnInit {
         var dtData = this.searchText._i;
         var year = dtData.year;
         var month = dtData.month + 1;
+        if(month <= 9){
+          month = "0" + month;
+        }
         var date = dtData.date;
+        if(date <= 9){
+          date = "0" + date;
+        }
         newsearchText = year + "-" + month + "-" + date;
       }
       useQuery =   this.searchValue + "=" + newsearchText + '&offset='+offset+'&limit='+this.pageLimit;              
@@ -347,15 +353,13 @@ export class CertificationRecordsComponent implements OnInit {
                 this.dataLoad     = true;
                 console.log('Data search load...', data);                
                 this.trainerdata  = data['records'];
-                // let tempObj = [];
-                // this.trainerdata.forEach((res,key) => {
-                //   if(this.trainerdata[key].trade_license_number != null){
-                //     tempObj.push(this.trainerdata[key]);
-                //   }
-                //   // this.trainerdata[key].trade_license_number = ;
-                // })
-                // //dataRec = data.records;
-                // this.trainerdata = tempObj;
+                let tempObj = [];
+                this.trainerdata = data['records'];
+                this.trainerdata.forEach((res,key) => {
+                    this.trainerdata[key].record_type = "Trade License";
+                    tempObj.push(this.trainerdata[key]);
+                })
+                this.trainerdata = tempObj;
 
                 this.pageTotal    = data.totalCount;
 
@@ -427,7 +431,7 @@ export class CertificationRecordsComponent implements OnInit {
           let tempObj = [];
           this.trainerdata = data['records'];
           this.trainerdata.forEach((res,key) => {
-              this.trainerdata[key].record_type = "Trade Licenses";
+              this.trainerdata[key].record_type = "Trade License";
               tempObj.push(this.trainerdata[key]);
           })
           this.trainerdata = tempObj;
