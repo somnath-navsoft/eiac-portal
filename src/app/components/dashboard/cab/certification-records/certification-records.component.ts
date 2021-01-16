@@ -95,7 +95,7 @@ export class CertificationRecordsComponent implements OnInit {
   startDate:any;
   expiryDate:any;
   tradelicenseFile:any;
-  newTextchange:any;
+  newTextchange:any = 'Search Text';
   
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService, public sanitizer: DomSanitizer, private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent, private exportAsService: ExportAsService,config: NgbModalConfig) { 
     config.windowClass = 'custom-modal';
@@ -245,6 +245,7 @@ export class CertificationRecordsComponent implements OnInit {
       }
     if(this.searchValue == 'trade_license_number') {
       document.getElementById('applicant').style.display = 'block';
+      this.newTextchange = 'Record Number';
     }else if(this.searchValue == 'uploaded_on') {
       document.getElementById('event_date').style.display = 'block';
       this.newTextchange = 'Date of Issue';
@@ -345,15 +346,15 @@ export class CertificationRecordsComponent implements OnInit {
                 this.dataLoad     = true;
                 console.log('Data search load...', data);                
                 this.trainerdata  = data['records'];
-                let tempObj = [];
-                this.trainerdata.forEach((res,key) => {
-                  if(this.trainerdata[key].trade_license_number != null){
-                    tempObj.push(this.trainerdata[key]);
-                  }
-                  // this.trainerdata[key].trade_license_number = ;
-                })
-                //dataRec = data.records;
-                this.trainerdata = tempObj;
+                // let tempObj = [];
+                // this.trainerdata.forEach((res,key) => {
+                //   if(this.trainerdata[key].trade_license_number != null){
+                //     tempObj.push(this.trainerdata[key]);
+                //   }
+                //   // this.trainerdata[key].trade_license_number = ;
+                // })
+                // //dataRec = data.records;
+                // this.trainerdata = tempObj;
 
                 this.pageTotal    = data.totalCount;
 
@@ -422,17 +423,18 @@ export class CertificationRecordsComponent implements OnInit {
           let dataRec: any=[];
           this.dataLoad = true;
           console.log('Data load...', data);
-          let tempObj = [];
-          this.trainerdata = data.records;
+          // let tempObj = [];
+          this.trainerdata = data['records'];
           // this.trainerdata.forEach((res,key) => {
           //   // if(this.trainerdata[key].trade_license_number != null){
-          //   //   tempObj.push(this.trainerdata[key]);
+          //     tempObj.push(this.trainerdata[key]);
           //   // }
           //   // this.trainerdata[key].trade_license_number = ;
           // })
           //dataRec = data.records;
-          //this.trainerdata = tempObj; 
+          // this.trainerdata = tempObj;
           this.pageTotal = data.totalCount;
+
         },
         ()=>{
           console.log('comp...');

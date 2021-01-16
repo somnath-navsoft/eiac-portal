@@ -36,7 +36,7 @@
                                 <mat-form-field class="cab-data">
                                     <mat-label>Searchable Column</mat-label> 
                                     <mat-select placeholder="Select" (selectionChange)="searchableColumn()" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue">
-                                        <mat-option value="trade_license_number">Trade License Number</mat-option>
+                                        <mat-option value="trade_license_number">Record Number</mat-option>
                                         <mat-option value="uploaded_on">Date of Issue</mat-option>
                                         <mat-option value="expiry_date">Date of Expiry</mat-option>
                                     </mat-select>
@@ -47,7 +47,7 @@
                         <div class="col-md-4 field_show" id="applicant">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
-                                <mat-label>Trade License Number</mat-label> 
+                                <mat-label>{{newTextchange}}</mat-label> 
                                 <input type="text" matInput [(ngModel)]="searchText" placeholder="Search Text">
                                 </mat-form-field>
                             </div>
@@ -106,12 +106,15 @@
                     <!-- @{{trainerdata | json}} -->
                     <table id="records-export">
                         <tr>
-                            <th [ngStyle]="{'font-size':'14px'}">Trade License Number
+                            <th [ngStyle]="{'font-size':'14px'}">Record Number
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'new_no', curSortDir.new_no)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.new_no"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.new_no"></span>
                                 </a>
                             </th>
+                            
+                            <th [ngStyle]="{'font-size':'14px'}">Record Type</th>
+
                             <th [ngStyle]="{'font-size':'14px'}">Date of Issue
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'uploaded_on', curSortDir.uploaded_on)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.uploaded_on"></span>
@@ -133,7 +136,9 @@
                         <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
                             <td class="fnt-clr">
                                 <a href="javascript:void(0)" (click)="openRecord(recordsdetails, item)" title="View" alt="View">
-                               {{item.trade_license_number}}</a></td>
+                               {{item.trade_license_number}}</a>
+                            </td>
+                            <td>Trade Licenses</td>
                             <td> 
                                 {{item.date_of_issue | date}}
                             </td>
@@ -213,7 +218,7 @@
                 <div class="event_wrapper">
                     <div class="event-details">
                         <div class="event-data">
-                            <span class="event-head">Trade License Number</span>
+                            <span class="event-head">Record Number</span>
                             <span>: {{tradelicenseName}}</span>
                         </div>
 
@@ -223,11 +228,11 @@
                         </div>
 
                         <div class="event-data">
-                            <span class="event-head">Upload On</span>
+                            <span class="event-head">Date of Issue</span>
                             <span>: {{startDate | date}}</span>
                         </div>
                         <div class="event-data">
-                            <span class="event-head">Expiry Date</span>
+                            <span class="event-head">Date of Expiry</span>
                             <span>: {{expiryDate | date}}</span>
                         </div>
                     </div>

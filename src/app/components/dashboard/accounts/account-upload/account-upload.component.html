@@ -30,24 +30,26 @@
                                 <div class="col-md-4">
                                     <mat-form-field class="cab-data">
                                         <mat-label>Voucher Code</mat-label>
-                                        <input type="number" [ngModelOptions]="{standalone: true}" required
+                                        <input type="number" [ngModelOptions]="{standalone: true}" readonly
                                         matInput placeholder="Voucher Code"
                                         [(ngModel)]="voucherSentData.voucher_code">
                                     </mat-form-field>
                                 </div>
                                 <div class="col-md-4">
-
+                                    <!-- (click)="_service._openCalendar(payment_date)" -->
                                     <mat-form-field class="cab-data">
-                                        <input (keypress)="_service.inputFilter($event, _service.regExName)" matInput [matDatepicker]="payment_date" readonly="true" placeholder="Payment Date" name="payment_date" (click)="_service._openCalendar(payment_date)" [(ngModel)]="voucherSentData.payment_date" required>
-                                        <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle>
-                                        <mat-datepicker #payment_date  disabled="false"></mat-datepicker>
+                                        <input (keypress)="_service.inputFilter($event, _service.regExName)" matInput [matDatepicker]="payment_date" 
+                                        readonly placeholder="Voucher Date" name="payment_date" 
+                                         [(ngModel)]="voucherSentData.payment_date">
+                                        <!-- <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle> -->
+                                        <!-- <mat-datepicker #payment_date  disabled="false"></mat-datepicker> -->
                                     </mat-form-field>
 
                                 </div>
                                 <div class="col-md-4">
                                     <mat-form-field class="cab-data">
                                         <mat-label>Payment Amount</mat-label>
-                                        <input type="number" [ngModelOptions]="{standalone: true}" required
+                                        <input type="number" [ngModelOptions]="{standalone: true}" readonly
                                         matInput placeholder="Payment Amount" 
                                         [(ngModel)]="voucherSentData.amount">
                                     </mat-form-field>

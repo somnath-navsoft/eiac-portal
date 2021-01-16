@@ -485,7 +485,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Legal Status (License/Registration number) of CB</mat-label>
-                                                <input matInput [(ngModel)]="step2Data.legal_license" (keypress)="Service.IsNumeric($event)" name="legal_license" placeholder="" required>
+                                                <input matInput [(ngModel)]="step2Data.legal_license" (keypress)="Service.inputFilter($event, Service.regExName)" name="legal_license" placeholder="" required>
                                             </mat-form-field>
                                         </div>
 
