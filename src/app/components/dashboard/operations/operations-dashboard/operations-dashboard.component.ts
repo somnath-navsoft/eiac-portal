@@ -9,6 +9,7 @@ import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { TrainerService } from '../../../../services/trainer.service';
 
 @Component({
   selector: 'app-operations-dashboard',
@@ -75,7 +76,7 @@ export class OperationsDashboardComponent implements OnInit {
   select_country: string = '';
 
 
-  constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
+  constructor(public Service: AppService, private _trainerService: TrainerService, public constant: Constants, public router: Router, public toastr: ToastrService) {
 
     this.config = {
       itemsPerPage: this.Service.dashBoardPagination,
@@ -247,6 +248,18 @@ export class OperationsDashboardComponent implements OnInit {
   }
 
 
+  loadRecordsData(offset?:number, limit?:number) { 
+    this.loader = false;
+    this._trainerService.getRecordList(offset,limit)
+      .subscribe(
+        record => {
+          let data: any = record;
+            console.log("@@@ Total records: ", data);
+          this.loader = true;
+        })
+  }
+
+
   //Load Dashboatd data
   loadDashData(){
     this.loader = false;
@@ -378,7 +391,7 @@ export class OperationsDashboardComponent implements OnInit {
     setTimeout(() => {
       this.loadDashData();
     }, 100)   
-
+    this.loadRecordsData();
     this.loadCountryStateCityAll();
 
     if (this.userType != 'operations') {

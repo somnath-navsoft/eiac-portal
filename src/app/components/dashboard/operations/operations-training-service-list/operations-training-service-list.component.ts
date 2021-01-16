@@ -84,7 +84,7 @@ export class OperationsTrainingServiceListComponent implements OnInit {
   
     //Assign Search Type
     this.selectStatus =  [
-      {title: 'Payment Pending', value:'pending'},
+      {title: 'Payment Pending', value:'payment_pending'},
       {title: 'Under Process', value:'under_process'},
       {title: 'Under Review', value:'under_review'},
       {title: 'Complete', value:'complete'},

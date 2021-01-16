@@ -248,10 +248,10 @@ export class CertificationRecordsComponent implements OnInit {
       this.newTextchange = 'Record Number';
     }else if(this.searchValue == 'uploaded_on') {
       document.getElementById('event_date').style.display = 'block';
-      this.newTextchange = 'Uploaded On';
+      this.newTextchange = 'Date of Issue';
     }else if(this.searchValue == 'expiry_date') {
       document.getElementById('event_date').style.display = 'block';
-      this.newTextchange = 'Expiry Date';
+      this.newTextchange = 'Date of Expiry';
     }
   }
 
