@@ -228,6 +228,10 @@ export class AssessorsCompanyProfileComponent implements OnInit {
           this.progressValue = 88;
         }
 
+        if(res['data'].step5 && res['data'].step5 != '' && res['data'].step5[0].place && res['data'].step5[0].place != null && res['data'].step5[0].registration_date != null && res['data'].step5[0].signature != null) {
+          this.progressValue = 100;
+        }
+
         //profile progress
 
 
