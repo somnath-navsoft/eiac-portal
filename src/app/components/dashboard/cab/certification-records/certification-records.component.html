@@ -36,9 +36,9 @@
                                 <mat-form-field class="cab-data">
                                     <mat-label>Searchable Column</mat-label> 
                                     <mat-select placeholder="Select" (selectionChange)="searchableColumn()" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue">
-                                        <mat-option value="trade_license_number">Trade License Number</mat-option>
-                                        <mat-option value="uploaded_on">Date of Issue</mat-option>
-                                        <mat-option value="expiry_date">Date of Expiry</mat-option>
+                                        <mat-option value="trade_license_number">Record Number</mat-option>
+                                        <mat-option value="uploaded_on">Uploaded On</mat-option>
+                                        <mat-option value="expiry_date">Expiry Date</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div> 
@@ -112,13 +112,16 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.new_no"></span>
                                 </a>
                             </th>
-                            <th [ngStyle]="{'font-size':'14px'}">Date of Issue
+                            
+                            <th [ngStyle]="{'font-size':'14px'}">Record Type</th>
+
+                            <th [ngStyle]="{'font-size':'14px'}">Uploaded On
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'uploaded_on', curSortDir.uploaded_on)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.uploaded_on"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.uploaded_on"></span>
                                 </a>
                             </th>
-                            <th width="15%" [ngStyle]="{'font-size':'14px'}">Date of Expiry
+                            <th width="15%" [ngStyle]="{'font-size':'14px'}">Expiry Date
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'expiry_date', curSortDir.expiry_date)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.expiry_date"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.expiry_date"></span>
@@ -218,24 +221,33 @@
                             <span class="event-head">Record Number</span>
                             <span>: {{tradelicenseName}}</span>
                         </div>
+                  </div>
+                  <div class="modal-body"> 
+                      <div class="event_wrapper">
+                          <div class="event-details">
+                              <div class="event-data">
+                                  <span class="event-head">Record Number</span>
 
-                        <div class="event-data">
-                            <span class="event-head">CAB Name</span>
-                            <span>: {{cabName}}</span>
-                        </div>
+                                <div class="event-data">
+                                    <span class="event-head">CAB Name</span>
+                                    <span>: {{cabName}}</span>
+                                </div>
 
-                        <div class="event-data">
-                            <span class="event-head">Upload On</span>
-                            <span>: {{startDate | date}}</span>
+                                <div class="event-data">
+                                    <span class="event-head">Upload On</span>
+                                    <span>: {{startDate | date}}</span>
+                                </div>
+                                <div class="event-data">
+                                    <span class="event-head">Expiry Date</span>
+                                    <span>: {{expiryDate | date}}</span>
+                                </div>
+                            </div>
+                            <div class="button_popup">
+                                <button type="submit" (click)="downloadRecord(tradelicenseFile)" class="submit-bttn submit-health">DOWNLOAD RECORD</button>
+                            </div>
                         </div>
-                        <div class="event-data">
-                            <span class="event-head">Expiry Date</span>
-                            <span>: {{expiryDate | date}}</span>
-                        </div>
-                    </div>
-                    <div class="button_popup">
-                        <button type="submit" (click)="downloadRecord(tradelicenseFile)" class="submit-bttn submit-health">DOWNLOAD RECORD</button>
-                    </div>
+                      </div>
+                  </div>
                 </div>
             </div>
         </ng-template>
