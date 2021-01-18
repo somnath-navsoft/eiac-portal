@@ -113,7 +113,9 @@
                                     <ng-container *ngIf="dashboardItemData.assessorDetails[0].appointment_date != null && dashboardItemData.assessorDetails[0].appointment_date != ''">
                                         <span>{{dashboardItemData.assessorDetails[0].appointment_date | date:'y'}}</span>
                                     </ng-container>
-                                    
+                                    <ng-container *ngIf="dashboardItemData.assessorDetails[0].appointment_date == null || dashboardItemData.assessorDetails[0].appointment_date != ''">
+                                        NA
+                                    </ng-container>                                    
                                 </ng-container>
                                 
                             </div>
@@ -188,7 +190,7 @@
                                 <div class="activity-details">
                                     <ul>
                                         <ng-container *ngFor="let item of dashboardRecentUpdates">
-                                            <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span>, {{item.title}} on {{item.date}} at {{item.time}}</span></li>
+                                            <li>{{item.title}}<span> on {{item.date | date: 'dd/MM/y, h:mm:ss a'}}</span></li>
                                         </ng-container>
                                     </ul>
                                 </div>
