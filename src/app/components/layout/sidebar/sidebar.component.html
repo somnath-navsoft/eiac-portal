@@ -91,7 +91,7 @@
         </li>
         <ng-container *ngFor="let item of dashMenu">
         <li (click)="accDropDown(item.title)">
-            <a href="javascript:void(0)"  (click)="goToParentLink(item.menu.link)"><span class="icon-dashboard"></span>{{item.title}}
+            <a href="javascript:void(0)"  (click)="goToParentLink(item.menu.link)"><span class="{{item.icon}}"></span>{{item.title}}
                 <span class="dropdown">
                     <span *ngIf="item.title != currentTitle && item.child_menu" class="icon-down-arrow"></span>
                     <span *ngIf="item.title == currentTitle && item.child_menu" class="icon-up-arrow"></span>
@@ -101,12 +101,12 @@
                 <div class="sub-side-cont" *ngIf="item.title == currentTitle">
                     <ul class="dropcontent">
                         <li *ngFor="let data of item.child_menu">
-                                <a href="javascript:void(0)" (click)="goToLink(data.menu.link)">{{data.title}}</a>
+                            <a href="javascript:void(0)" (click)="goToLink(data.menu.link)">{{data.title}}</a>
                         </li>
                     </ul>
                 </div>
             </ng-container>
-            </li>
+        </li>
         </ng-container>
     </ul>
 </div>

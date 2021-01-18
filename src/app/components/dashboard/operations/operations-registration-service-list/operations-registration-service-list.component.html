@@ -115,11 +115,12 @@
                                 <mat-form-field class="cab-data">
                                     <mat-label>Searchable Column</mat-label> 
                                     <mat-select placeholder="Select" (selectionChange)="searchableColumn()" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchValue">
+                                        <mat-option value="id">Application Number</mat-option>
                                         <mat-option value="cab_name">CAB Name</mat-option>
                                         <mat-option value="cab_code">CAB Code</mat-option>
                                         <mat-option value="form_meta">Registration Type</mat-option>
                                         <mat-option value="application_status">Status</mat-option>
-                                        <mat-option value="country">Location</mat-option>
+                                        <mat-option value="country">Country</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div> 
@@ -137,7 +138,7 @@
                         <div class="col-md-4 field_show" id="accreditation_type" [ngStyle]="{'display':'none'}">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
-                                    <mat-label>Accreditation Type</mat-label>                             
+                                    <mat-label>Registration Type</mat-label>                             
                                     <mat-select placeholder="Select" 
                                     [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText">
                                         <mat-option *ngFor="let item of selectAccrType;" [value]="item.value">{{item.title}}</mat-option>
@@ -146,7 +147,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 field_show" id="status" [ngStyle]="{'display':'none'}">
+                        <div class="col-md-4 field_show" id="application_status" [ngStyle]="{'display':'none'}">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
                                     <mat-label>Status</mat-label>                             
@@ -158,7 +159,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 field_show" id="location_city_country" [ngStyle]="{'display': 'none'}">
+                        <div class="col-md-4 field_show" id="country" [ngStyle]="{'display': 'none'}">
                             <div class="user-details">
                                 <mat-form-field class="cab-data">
                                     <mat-label>Country</mat-label>
@@ -175,7 +176,7 @@
                             <div class="col-md-12"> 
                                 <div class="filter-search">
                                     <a href="javascript:void(0)" (click)="filterSearchSubmit()" class="search-fil">SEARCH</a>
-                                    <!-- <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a> -->
+                                    <a href="javascript:void(0)" (click)="filterSearchReset('load')">RESET</a>
                                     <a href="javascript:void(0)" (click)="exportFile()" class="space-left">EXPORT</a>
                                 </div>         
                             </div>
@@ -187,7 +188,7 @@
 
             <div class="row m-0">
                 <div class="col-md-2">
-                    <div class="user-details">
+                    <div class="user-details" [ngStyle]="{'width': '100px'}">
                         <mat-form-field class="cab-data">
                             <mat-label>Show</mat-label>                              
                             <mat-select placeholder="Show" (selectionChange)="showData()"
@@ -196,6 +197,7 @@
                                 <mat-option value="50">50</mat-option>
                                 <mat-option value="75">75</mat-option>
                                 <mat-option value="100">100</mat-option>
+                                <mat-option value="{{pageTotal}}">All</mat-option>
                                 <!-- <mat-option value="pdf">Export as PDF</mat-option> -->
                             </mat-select>
                         </mat-form-field>
@@ -216,18 +218,34 @@
                                 </a>
                             </th>
 
-                            <th>CAB Name</th>
-
-                            <th>CAB Code</th>
-
-                            <th>Country</th>
-
                             <th>Application Date
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'created_date', curSortDir.created_date)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.created_date"></span>
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.created_date"></span>
                                 </a>
                             </th>
+
+                            <th>CAB Name
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'cab_name', curSortDir.cab_name)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.cab_name"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.cab_name"></span>
+                                </a>
+                            </th>
+
+                            <th>CAB Code
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'cab_code', curSortDir.cab_code)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.cab_code"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.cab_code"></span>
+                                </a>
+                            </th>
+
+                            <th>Country
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'country', curSortDir.country)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.country"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.country"></span>
+                                </a>
+                            </th>
+
                             <th width="15%">Status
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'application_status', curSortDir.application_status)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.application_status"></span>
@@ -266,7 +284,12 @@
                         <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
                             <td class="fnt-clr">
                                 <a href="javascript:void(0)" routerLink="/dashboard/operations/registration-service-details/{{item.id}}" title="View" alt="View">
-                                {{item.id}}</a></td>
+                                {{item.id}}</a>
+                            </td>
+                            
+                            <td>
+                                {{item.created | date :'dd-MMM-yyyy' }}
+                            </td>
 
                             <td>
                                 {{item['cabDetails'][0].cab_name}}
@@ -280,15 +303,12 @@
                                 {{item.country}}
                             </td>
                             
-                            <td>
-                                {{item.created | date :'dd-MMM-yyyy' }}
-                            </td>
-                            <td [ngClass]="{'pending': (item.application_status === 'pending' || item.application_status === 'payment_pending' || item.application_status == 'application_process' || item.application_status == 'under_process'), 'under-review':item.application_status === null || item.application_status === 'under_review', 'complete': item.application_status === 'complete', 'draft': item.application_status == 'draft'}">
-                                <span *ngIf="item.application_status == 'pending'">Pending</span>
-                                <span *ngIf="item.application_status == 'payment_pending'">Payment Pending</span>
+                            <td [ngClass]="{'pending': (item.application_status === 'pending' || item.application_status === 'payment_pending' || item.application_status == 'application_process'  || item.application_status == 'under_process'), 'under-review':item.application_status === null || item.application_status === 'under_review', 'complete': item.application_status === 'complete', 'draft': item.application_status === 'draft' }">
+                                <span *ngIf="item.application_status == 'pending'">Payment Pending</span>
                                 <span *ngIf="item.application_status == 'draft'">Draft</span>
-                                <span *ngIf="item.application_status == 'application_process'">Application Process</span>
+                                <span *ngIf="item.application_status == 'application_process'">Under Process</span>
                                 <span *ngIf="item.application_status == 'under_process'">Under Process</span>
+                                <span *ngIf="item.application_status == 'payment_pending'">Payment Pending</span>
                                 <span *ngIf="item.application_status == null || item.application_status === 'under_review'">Under Review</span>
                                 <span *ngIf="item.application_status == 'complete'">Complete</span>
                             </td>
@@ -316,7 +336,7 @@
                                 <!-- *ngIf="(item.application_status == null && item.application_status === 'under_review')" -->
                                 <a href="javascript:void(0)" *ngIf="(item.payment_status == 'paid' && item.application_status != 'complete')" (click)="serviceStatus(i2,item.id)" alt="Delete"><span class="icon-tick"></span></a>
                                 <!-- <a href="javascript:void(0)" *ngIf="item.application_status == 'complete'" alt="Delete"><span class="icon-tick"></span></a> -->
-                                <a href="javascript:void(0)" *ngIf="(item.application_status == null || item.application_status == 'application_process' || item.application_status == 'under_process' || item.application_status === 'under_review' || item.application_status == 'pending' || item.application_status == 'payment_pending' || item.application_status == 'draft') && item.payment_status != 'paid'" (click)="open(courseVoucher, item.id)" alt="Upload Proforma Invoice" title="Upload Proforma Invoice"><span class="icon-document-pen"></span></a>
+                                <a href="javascript:void(0)" *ngIf="(item.application_status == null || item.application_status == 'application_process' || item.application_status == 'under_process' || item.application_status === 'under_review' || item.application_status == 'pending' || item.application_status == 'payment_pending' || item.application_status == 'draft') && item.payment_status != 'paid'" (click)="open(courseVoucher, item.id,i2)" alt="Upload Proforma Invoice" title="Upload Proforma Invoice"><span class="icon-document-pen"></span></a>
                                
                             </td>
                         </tr>

@@ -8,15 +8,15 @@
                     <div class="row">
                         <div class="col-md-8">
                             <div class="form-main complete-usr">
-                                <h1>COMPLETE YOUR PROFILE</h1>
+                                <h1 [ngStyle]="{'font-size': '30px','color':'black', 'letter-spacing':0, 'font-weight': 'bold'}">UPDATE PROFILE</h1>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <!-- <div class="col-md-4">
                             <div class="progress-br">
                                 <mat-progress-bar mode="determinate" value="{{progressValue}}"></mat-progress-bar>
                                 <span>{{progressValue}}%</span>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
 
@@ -485,7 +485,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Legal Status (License/Registration number) of CB</mat-label>
-                                                <input matInput [(ngModel)]="step2Data.legal_license" (keypress)="Service.IsNumeric($event)" name="legal_license" placeholder="" required>
+                                                <input matInput [(ngModel)]="step2Data.legal_license" (keypress)="Service.inputFilter($event, Service.regExName)" name="legal_license" placeholder="" required>
                                             </mat-form-field>
                                         </div>
 

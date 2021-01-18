@@ -8,14 +8,22 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable } from 'rxjs';
+import { CalendarComponent } from 'ng-fullcalendar';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import { FullCalendarOptions, EventObject } from 'ngx-fullcalendar';
+import { OptionsInput } from '@fullcalendar/core'; 
 
+declare var FullCalendar: any;
+declare var $: any;
 @Component({
   selector: 'app-candidate-dashboard',
   templateUrl: './candidate-dashboard.component.html',
   styleUrls: ['./candidate-dashboard.component.scss']
 })
 export class CandidateDashboardComponent implements OnInit {
- 
+  @ViewChild('calendar', { static: true }) calendar: any;
+  options: OptionsInput;
   messageList: any = [];
   userId: any;
   loader: boolean = true;
@@ -62,12 +70,25 @@ export class CandidateDashboardComponent implements OnInit {
   button_disable: any = true;
   @ViewChild('fruitInput', { static: false }) fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
+  optionCal: FullCalendarOptions;
+  @ViewChild('fullcalendar', { static: true }) fullcalendar: CalendarComponent;
+  eventId:any;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
     this.config = {
       itemsPerPage: this.Service.dashBoardPagination,
       currentPage: 1,
     };
+  }
+
+  eventClick(theEvt: any){
+    console.log("@Event: ",theEvt)
+  }
+
+  fullcanderClick(obj) {
+
+    this.eventId = obj.event._def.publicId;
+    // console.log(eventId);
   }
 
   //Load Dashboatd data
@@ -78,15 +99,44 @@ export class CandidateDashboardComponent implements OnInit {
       .subscribe(
         res => {
           this.loader = true;
-          // console.log(res,'res');
+          console.log(res,'res');
           if(res['status'] == 200){
             this.dashboardItemData = res['dashBoardData'];
 
             //dashboardEvents
-            if(this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0){
+            let curYear: any;
+            let curMonth: any;
+            let curDate: any = new Date();
+            curYear = curDate.getFullYear();
+            curMonth = curDate.getMonth() + 1;
+            let eventCanderArr = []; 
+            console.log(">>>", curYear, " :: ", curMonth);
+            if (this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0) {
               this.dashboardEvents = this.dashboardItemData.eventDetails;
-              // console.log(">>>Events: ", this.dashboardEvents);
+              console.log(">>>Events: ", this.dashboardEvents);
+              
+              let filterEvents: any[] =[];
+              this.dashboardEvents.forEach(item => {
+                let evtStart: any = item.event_start_date_time;
+                let evtDate: any = new Date(evtStart);
+                let evtYear: any = evtDate.getFullYear();
+                let evtMonth: any = evtDate.getMonth() + 1;
+                console.log("@Evt datae: ", evtStart, " :: ", evtYear, " :: ", evtMonth);
+
+                if(item.event_type == 'public_course_event'){
+                  filterEvents.push(item);
+                  eventCanderArr.push({
+                    id: item.id,
+                    title: item.courseDetails.course,
+                    start: item.event_start_date_time,
+                    end: item.event_end_date_time
+                  })
+                }                
+              })
+              this.dashboardEvents = filterEvents;
             }
+            console.log(">>> ",this.dashboardEvents);
+
             //Get recent updates
             if(this.dashboardItemData.lastLogin != undefined){
               // let dt = new Date(this.dashboardItemData.lastLogin);
@@ -103,7 +153,7 @@ export class CandidateDashboardComponent implements OnInit {
               let time2 = datePart[2];
               let time = time1 +" "+ time2;
               console.log(datePart, " == ", date, " -- ",time);
-              this.dashboardRecentUpdates.push({title: "CAB Last Login",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Last Login",date:date, time: time});
             }
             if(this.dashboardItemData.lastAccrApplied != undefined){
               let datePart: any = this.dashboardItemData.lastAccrApplied.toString().split(" ");
@@ -115,7 +165,7 @@ export class CandidateDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 +" "  + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Accreditation Applied",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Accreditation Applied",date:date, time: time});
             }
             if(this.dashboardItemData.lastRegApplied != undefined){
               let datePart: any = this.dashboardItemData.lastRegApplied.toString().split(" ");
@@ -127,7 +177,7 @@ export class CandidateDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 +" "  + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Registration Applied",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Registration Applied",date:date, time: time});
             }
             if(this.dashboardItemData.lastTrainingApplied != undefined){
               let datePart: any = this.dashboardItemData.lastTrainingApplied.toString().split(" ");
@@ -139,7 +189,7 @@ export class CandidateDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 +" " + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Training Applied",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Training Applied",date:date, time: time});
             }
             if(this.dashboardItemData.lastAccrPayment != undefined){
               let datePart: any = this.dashboardItemData.lastAccrPayment.toString().split(" ");
@@ -151,7 +201,7 @@ export class CandidateDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 +" "  + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Accreditation Payment",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Accreditation Payment",date:date, time: time});
             }
             if(this.dashboardItemData.lastRegPayment != undefined){
               let datePart: any = this.dashboardItemData.lastRegPayment.toString().split(" ");
@@ -163,7 +213,7 @@ export class CandidateDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 +" "  + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Registration Payment",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Registration Payment",date:date, time: time});
             }
             if(this.dashboardItemData.lastTrainingPayment != undefined){
               let datePart: any = this.dashboardItemData.lastTrainingPayment.toString().split(" ");
@@ -175,8 +225,72 @@ export class CandidateDashboardComponent implements OnInit {
               }
               let time2 = datePart[2];
               let time = time1 +" "  + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Training Payment",date:date, time: time});
+              this.dashboardRecentUpdates.push({title: "Training Payment",date:date, time: time});
             }
+
+            /*let eventData: any[]=[];
+            if(this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0){
+              //console.log(">>> Events: ", this.dashboardItemData.eventDetails);
+              let curYear: any;
+              let curMonth: any;
+              let curDate: any = new Date();
+              curYear = curDate.getFullYear();
+              curMonth = curDate.getMonth() + 1;
+              console.log(">>>", curYear, " :: ", curMonth);
+              this.dashboardItemData.eventDetails.forEach(item => {
+                let evtStart: any = item.event_start_date_time;
+                let evtDate: any = new Date(evtStart);
+                let evtYear: any = evtDate.getFullYear();
+                let evtMonth: any = evtDate.getMonth() + 1;
+                console.log("@Evt datae: ", evtStart, " :: ", evtYear, " :: ", evtMonth);
+
+                if((curYear == evtYear) && (curMonth == evtMonth)){
+                  eventData.push({
+                    id: item.courseDetails.id,
+                    title: item.courseDetails.course,
+                    start: item.event_start_date_time,
+                    end: item.event_end_date_time
+                  })
+                }
+                
+              })
+            }*/
+
+          //   setTimeout(() => {
+          //     $("#calendar").fullCalendar({  
+          //         header: {
+          //             left   : 'prev,next today',
+          //             center : 'title',
+          //             right  : 'month,agendaWeek,agendaDay'
+          //         },
+          //         navLinks   : true,
+          //         editable   : true,
+          //         eventLimit : true,
+          //         events: eventData,  // request to load current events
+          //     });
+          //  }, 100); 
+
+
+            this.options = {
+              editable: true,
+              events: eventCanderArr,
+              eventLimit: true,
+              eventLimitText: "More",
+              customButtons: {
+                myCustomButton: {
+                  text: 'custom!',
+                  click: function() {
+                    alert('clicked the custom button!');
+                  }
+                }
+              },
+              header: {
+                left: 'prev,next today myCustomButton',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+              },
+              plugins: [ dayGridPlugin, interactionPlugin ]
+            };
           }
           console.log(">>>> Load Data: ", res, " == ", this.dashboardRecentUpdates);
 
@@ -214,7 +328,7 @@ export class CandidateDashboardComponent implements OnInit {
         this.userDetails = res['data']['user_data'][0];
         this.step1Data = res['data']['step1'][0];
         // this.step2Data = res['data']['step2']['education'][0];
-        // console.log(res,'res');
+        console.log(res,'res');
       });
 
     this.userId = sessionStorage.getItem('userId');

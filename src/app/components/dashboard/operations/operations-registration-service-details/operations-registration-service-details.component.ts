@@ -204,4 +204,18 @@ export class OperationsRegistrationServiceDetailsComponent implements OnInit {
         })
     )
   }
+
+  downloadCsv() {
+    // /admin/accreditation-application-csv?id=1068
+    // this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.accrediationCsv+this.routeId)
+    // .subscribe(
+    //   res => {
+    //     console.log(res,'res');
+    //   })
+    window.open(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.registrationCsv+this.routeId, '_blank');
+  }
+
+  downloadApplications() {
+    window.open(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.registrationPdf+this.routeId, '_blank');
+  }
 }

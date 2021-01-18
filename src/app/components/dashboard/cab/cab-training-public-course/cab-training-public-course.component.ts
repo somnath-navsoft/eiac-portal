@@ -168,6 +168,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     // innovationFees:any;
     // noofParticipants:any;
     // this.authorizationList= {undertaking_confirmTop3: true }
+
+    this.authorizationList= {undertaking_confirmTop3: false };
   }
 
   addRow(obj) {
@@ -186,6 +188,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             this.trainingDurationSelectbox = courseDetails.training_days != null && courseDetails.training_days != '' ? true : false;
             this.step1Data.event_management = trainingPublicCourseid;
             // console.log(courseDetails.training_days,'training_days');
+            this.step2Data.event_management = trainingPublicCourseid;
           });
     }
   }
@@ -317,6 +320,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
             this.step1Data.mobile_phone_number = res['data'].mobile_phone_number;
             this.step1Data.event_management = res['data'].event_management;
             this.step1Data.event_management != '' && this.step1Data.event_management != null ? this.loadCourseDetailsPage(res['data'].event_management) : '';
+            this.step2Data.event_management = res['data'].event_management;
 
             // step2
             if(res['data'].eventParticipant != null) {
@@ -334,6 +338,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
               this.step5Data.representative_name = res['data'].onBehalfApplicantDetails.representative_name;
               this.step5Data.designation = res['data'].onBehalfApplicantDetails.designation;
               this.step5Data.digital_signature = res['data'].onBehalfApplicantDetails.digital_signature;
+              this.authorizationList.undertaking_confirmTop3 = true;
             }
 
             // step7
@@ -352,7 +357,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
                 this.voucherSentData.mobile_no        = (res['data'].paymentDetails.mobile_no != 'null') ? res['data'].paymentDetails.mobile_no : '';
 
                 this.paymentFile = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? this._constant.mediaPath+'/media/'+res['data'].paymentDetails.payment_receipt : '';
-                this.paymentReceiptValidation = true;
+                // this.paymentReceiptValidation = true;
+                this.paymentReceiptValidation = res['data'].paymentDetails.payment_receipt && res['data'].paymentDetails.payment_receipt != null ? true : false;
             }
 
             let pathData: any;
@@ -650,24 +656,9 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     this.loaderPdf = true;
   }
 
-  validateFile1(fileEvent: any, type?: any) {
-    var file_name = fileEvent.target.files[0].name;
-    var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
-    var ex_type = ['pdf', 'PDF'];
-    var ex_check = this.Service.isInArray(file_exe,ex_type);
-    if(ex_check){
-      this.paymentReceiptValidation = true;
-      //if(type == undefined){
-        this.voucherFile.append('payment_receipt',fileEvent.target.files[0]);
-      //}
-    }else{
-      this.paymentReceiptValidation = false;
-    }
-  }
-
   onSubmitStep5(ngForm5){
     // this.Service.moveSteps('authorization', 'proforma_invoice', this.headerSteps);
-    if(ngForm5.form.valid) {
+    if(ngForm5.form.valid && this.authorizationList.undertaking_confirmTop3 == true) {
       this.publicTrainingForm = {};
       this.publicTrainingForm.step5 = {};
       this.publicTrainingForm.email = this.userEmail;
@@ -826,6 +817,21 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     //this.Service.moveSteps('undertaking_applicant', 'payment', this.headerSteps);
   }
 
+  validateFile1(fileEvent: any, type?: any) {
+    var file_name = fileEvent.target.files[0].name;
+    var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
+    var ex_type = ['pdf', 'PDF'];
+    var ex_check = this.Service.isInArray(file_exe,ex_type);
+    if(ex_check){
+      this.paymentReceiptValidation = true;
+      //if(type == undefined){
+        this.voucherFile.append('payment_receipt',fileEvent.target.files[0]);
+      //}
+    }else{
+      this.paymentReceiptValidation = false;
+    }
+  }
+
   onSubmitPaymentInformation(theForm: any, type?: any){
     //this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
 
@@ -857,7 +863,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
       this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
       this.voucherFile.append('voucher_date', dtFormat);
-      this.voucherFile.append('accreditation',this.formApplicationId);
+      // this.voucherFile.append('accreditation',this.formApplicationId);
       this.voucherFile.append('application_id',this.formApplicationId);
       this.voucherFile.append('saved_step', 7);
       this.voucherFile.append('payment_status', 'paid');
@@ -872,6 +878,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
         this.voucherSentData['mobile_no'] != ''){
           is_valid = true;
         }
+
+        console.log(this.paymentReceiptValidation);
 
         if(is_valid == true && type == undefined && this.paymentReceiptValidation != false) {
           //this.noObjectionBodyForm.saved_step = 8;      

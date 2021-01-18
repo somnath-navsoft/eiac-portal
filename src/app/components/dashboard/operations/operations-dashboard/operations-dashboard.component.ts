@@ -9,6 +9,7 @@ import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { TrainerService } from '../../../../services/trainer.service';
 
 @Component({
   selector: 'app-operations-dashboard',
@@ -18,7 +19,7 @@ import { map, startWith } from 'rxjs/operators';
 export class OperationsDashboardComponent implements OnInit {
 
   visible = true;
-  selectable = true;
+  selectable = true; 
   removable = true;
   separatorKeysCodes: number[] = [ENTER, COMMA]; 
   fruitCtrl = new FormControl();
@@ -28,6 +29,7 @@ export class OperationsDashboardComponent implements OnInit {
   addOnBlur = true;
   userType: any;
   userEmail: any;
+  userDetails: any;
   chatMessage: any = {};
   file_validation: boolean = true;
   chatMessageFile: any = new FormData();
@@ -64,12 +66,17 @@ export class OperationsDashboardComponent implements OnInit {
   totalDeptCertificateCount: number = 0;
   totalDeptCABCount: number = 0;
   totalDeptDocCount: number = 0;
+  totalDeptPendingCount: number = 0;
+  totalDeptCabWaitingCount: number = 0;
 
   totalDeptStatus: any ={};
   totalDeptSelect: string ='';
+  getCountryStateCityAll: any[] =[];
+  loadCountryList: any[] = [];
+  select_country: string = '';
 
 
-  constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
+  constructor(public Service: AppService, private _trainerService: TrainerService, public constant: Constants, public router: Router, public toastr: ToastrService) {
 
     this.config = {
       itemsPerPage: this.Service.dashBoardPagination,
@@ -77,11 +84,87 @@ export class OperationsDashboardComponent implements OnInit {
     };
   }
 
+  searchCountry(theEvt: any){    
+    ////console.log(">>>> enter: ", theEvt);
+    let query: string = '';
+    if(theEvt){
+      query = theEvt.target.value
+    }
+    ////console.log(">>> query: ", query, " == ", query.length);
+    let result: any = this.selectCountry(query);
+    if(result){
+      this.loadCountryList = result;
+    }
+  }
+  selectCountry(query: string):any[]{
+    let result: string[] = [];
+    let countryData: any = this.getCountryStateCityAll;
+    ////console.log(">>>> country: ", countryData);
+    var re = new RegExp(query,'gi');
+    countryData.forEach(item => {
+      if(re.exec(item.CountryName)){
+        result.push(item); 
+      }
+    }) 
+    return result;
+  }
+
+  loadCountryStateCityAll  = async() =>{
+    let cscLIST = this.Service.getCSCAll();
+    await cscLIST.subscribe(record => {
+      console.log("...> ", record);
+      this.getCountryStateCityAll = record['Countries'];
+      this.loadCountryList  = record['Countries'];
+      console.log("...>>> ", this.getCountryStateCityAll);
+    });
+  }
+
+  onSelectCountry(selCountry: string){
+    console.log(">>>Select country: ", selCountry, " -- ", this.selectDepartment);
+    if(this.selectDepartment == undefined || this.selectDepartment == ''){
+      this.toastr.warning("Please select department", '');
+      return;
+    }
+    let departmetnId: any = this.selectDepartment;
+    let region: string    = selCountry;
+
+    if(departmetnId != undefined && (departmetnId !='' && region != '')){
+      this.loader = false;
+      let getURL: string =this.Service.apiServerUrl + "/" + 'io-dashboard/?department_type='+departmetnId + '&region='+region;
+      this.Service.getwithoutData(getURL)
+        .subscribe(
+          res => {
+            this.loader = true;
+            let getData: any = {};
+            getData = res['dashBoardData'];
+            this.dashboardItemData = res['dashBoardData'];
+            console.log(getData,'::::Department data');
+
+            this.totalDeptSelect = getData.lastApplication;
+            if(getData.allScheme != undefined){
+              this.totalDeptSchemeCount = getData.allScheme.length;
+            }
+            this.totalDeptDocCount = getData.totalDeptDocCount;
+            this.totalDeptCABCount = getData.cabWaitingCount;
+            this.totalDeptCertificateCount = getData.all_crtificate_count;
+            this.totalDeptPendingCount = getData.pendingAccrCount;
+
+            if(getData.status_count != undefined){
+                this.totalDeptStatus.accredatedCount    = getData.status_count.accredatedCount[0].cab_data.certificate;
+                this.totalDeptStatus.suspendedCount     = getData.status_count.suspendedCount[0].cab_data.certificate;
+                this.totalDeptStatus.volWithdrawCount   = getData.status_count.volWithdrawCount[0].cab_data.certificate;
+                //this.totalDeptStatus.volSuspendedCount  = getData.status_count.volSuspendedCount.length;
+                //this.totalDeptStatus.withdrawCount      = getData.status_count.withdrawCount.length;                
+            }
+      });
+    }
+  }
+
 
   changeDepartmentView(theEvt: any){
     console.log("> ", this.selectDepartment, " -- ", theEvt);
     this.loader = false;
-    let departmetnId: any =''
+    let departmetnId: any ='';
     if(theEvt && theEvt.value != undefined){
       departmetnId = theEvt.value;
           this.loader = false;
@@ -92,9 +175,10 @@ export class OperationsDashboardComponent implements OnInit {
                 this.loader = true;
                 let getData: any = {};
                 getData = res['dashBoardData'];
+                this.dashboardItemData = res['dashBoardData'];
                 console.log(getData,'::::Department data');
 
-                this.totalDeptSelect = getData.lastApplication;
+                this.totalDeptSelect = (getData.lastApplication == '' && this.selectDepartment === 'inspection_bodies') ? 'IB' : (getData.lastApplication != '' && this.selectDepartment === 'halal_conformity_bodies') ? 'HCAB' : getData.lastApplication;
                 if(getData.allScheme != undefined){
                   this.totalDeptSchemeCount = getData.allScheme.length;
                 }
@@ -102,22 +186,79 @@ export class OperationsDashboardComponent implements OnInit {
                 this.totalDeptCABCount = getData.totalCabCount;
                 this.totalDeptCertificateCount = getData.all_crtificate_count;
                 if(getData.status_count != undefined){
-                    this.totalDeptStatus.accredatedCount    = getData.status_count.accredatedCount.length;
-                    this.totalDeptStatus.suspendedCount     = getData.status_count.suspendedCount.length;
-                    this.totalDeptStatus.volWithdrawCount   = getData.status_count.volWithdrawCount.length;
+                    this.totalDeptStatus.accredatedCount    = getData.status_count.accredatedCount[0].cab_data.certificate;
+                    this.totalDeptStatus.suspendedCount     = getData.status_count.suspendedCount[0].cab_data.certificate;
+                    this.totalDeptStatus.volWithdrawCount   = getData.status_count.volWithdrawCount[0].cab_data.certificate;
                     this.totalDeptStatus.volSuspendedCount  = getData.status_count.volSuspendedCount.length;
                     this.totalDeptStatus.withdrawCount      = getData.status_count.withdrawCount.length;
                     
                 }
-
-
           });
     }
   }
 
 
+  openScheme(){
+    if(this.selectDepartment == undefined || this.selectDepartment == ''){
+      this.toastr.warning("Please select department", '');
+      return;
+    }
+    let selDept: any = this.selectDepartment;
+    //console.log(">>>dept...", selDept);
+    sessionStorage.setItem("io_dept", selDept);
+    this.router.navigateByUrl('/dashboard/operations/scheme-list')
+  }
+
+
   //department view onchange
-  //https://dev-service.eiac.gov.ae/webservice/io-dashboard/?department_type = io roles value
+  //https://uat-service.eiac.gov.ae/webservice/io-dashboard/?department_type = io roles value
+
+  getFormType(formMeta: string){
+    // | 
+      if(formMeta === 'health_care'){
+        return 'HP';
+      }
+      else if(formMeta === 'inspection_body'){
+        return 'IB';
+      }
+      else if(formMeta === 'testing_calibration'){
+        return 'TCL';
+      }
+      else if(formMeta === 'certification_bodies'){
+        return 'CB';
+      }
+      else if(formMeta === 'pt_providers'){
+        return 'PTP';
+      }
+      else if(formMeta === 'halal_conformity_bodies'){
+        return 'HCAB';
+      }else if(formMeta === 'inprimise'){
+        return 'In Premise Training';
+      }else if(formMeta === 'public_training'){
+        return 'Public Training';
+      }else if(formMeta === 'work_permit'){
+        return 'Work Activity Permit';
+      }else if(formMeta === 'no_objection'){
+        return 'No Objection Certificate';
+      }else if(formMeta === 'work_activity'){
+        return 'Work Activity Permit';
+      }else{
+        return 'NA';
+      }
+  }
+
+
+  loadRecordsData(offset?:number, limit?:number) { 
+    this.loader = false;
+    this._trainerService.getRecordList(offset,limit)
+      .subscribe(
+        record => {
+          let data: any = record;
+            console.log("@@@ Total records: ", data);
+          this.loader = true;
+        })
+  }
+
 
   //Load Dashboatd data
   loadDashData(){
@@ -140,15 +281,15 @@ export class OperationsDashboardComponent implements OnInit {
                     if(item == 'certification_bodies'){
                       this.ioDeartment.push({title:'CB', value: item})
                     }
-                    if(item == "inspection_body"){
+                    if(item == "inspection_bodies"){
                       this.ioDeartment.push({title:'IB', value: item})
                     }
                     if(item == "testing_calibration"){
                       this.ioDeartment.push({title:'TCL', value: item})
                     }
-                    if(item == "pt_providers"){
-                      this.ioDeartment.push({title:'PTP', value: item})
-                    }
+                    // if(item == "pt_providers"){
+                    //   this.ioDeartment.push({title:'PTP', value: item})
+                    // }
                     if(item == "health_care"){
                       this.ioDeartment.push({title:'HP', value: item})
                     }
@@ -161,40 +302,67 @@ export class OperationsDashboardComponent implements OnInit {
                     // if(item == "no_objection"){
                     //   this.ioDeartment.push({title:'NOC', value: item})
                     // }
-              })
+              });
+              this.ioDeartment.sort((a, b) => (a.title > b.title) ? 1 : -1);
             }
 
             //Get recent updates
             if(this.dashboardItemData.lastLogin != undefined){
               let datePart: any = this.dashboardItemData.lastLogin.toString().split(" ");
-              let date = datePart[0];
-              let time1 = datePart[1];
-              let time1Ar = time1.split(":");
-              console.log(">>>>... ", time1Ar, " -- ", time1Ar.length);
-              if(time1Ar.length == 1){
-                time1 = time1 +":00";
-              }
-              let time2 = datePart[2];
-              let time = time1 +" "+ time2;
-              console.log(datePart, " == ", date, " -- ",time);  
-              this.dashboardRecentUpdates.push({title: "IO Last Login",date:date, time: time});
+              // let date = datePart[0];
+              // let time1 = datePart[1];
+              // let time1Ar = time1.split(":");
+              // console.log(">>>>... ", time1Ar, " -- ", time1Ar.length);
+              // if(time1Ar.length == 1){
+              //   time1 = time1 +":00";
+              // }
+              // let time2 = datePart[2];
+              // let time = time1 +" "+ time2;
+              //console.log(datePart, " == ", date, " -- ",time);  
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Last Login ";
+              this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
             }
+
             if(this.dashboardItemData.lastAccrApplied != undefined){
-              let datePart: any = this.dashboardItemData.lastAccrApplied.toString().split(" ");
-              let date = datePart[0];
-              let time1 = datePart[1];
-              let time1Ar = time1.split(":");
-              console.log(">>>>... ", time1Ar, " -- ", time1Ar.length);
-              if(time1Ar.length == 1){
-                time1 = time1 +":00";
-              }
-              let time2 = datePart[2];
-              let time = time1 +" "+ time2;
-              console.log(datePart, " == ", date, " -- ",time);  
-              this.dashboardRecentUpdates.push({title: "IO Last Accreditation Applied",date:date, time: time});
-            }            
+              let datePart: any = this.dashboardItemData.lastAccrApplied.toString().split(" ");              
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", " + this.getFormType(this.dashboardItemData.lastAccrAppliedFormName) + " Application has been received ";
+              this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
+            }
+            if(this.dashboardItemData.lastRegApplied != undefined){
+              let datePart: any = this.dashboardItemData.lastRegApplied.toString().split(" ");              
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", " + this.getFormType(this.dashboardItemData.lastRegAppliedFormName) + " Application has been received ";
+              this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
+            }
+            if(this.dashboardItemData.lastTrainingApplied != undefined){
+              let datePart: any = this.dashboardItemData.lastTrainingApplied.toString().split(" ");             
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", " + this.getFormType(this.dashboardItemData.lastTrainingAppliedFormName) + " Application has been received ";
+              this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
+            }
+            if(this.dashboardItemData.lastAccrPayment != undefined){
+              let datePart: any = this.dashboardItemData.lastAccrPayment.toString().split(" ");              
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Accreditaion Payment details of " + this.getFormType(this.dashboardItemData.lastAccrPayFormName) + " Updated ";
+              this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
+            }
+            if(this.dashboardItemData.lastRegPayment != undefined){
+              let datePart: any = this.dashboardItemData.lastRegPayment.toString().split(" ");              
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Registration Payment details of " + this.getFormType(this.dashboardItemData.lastRegPayFormName) + " Updated ";
+              this.dashboardRecentUpdates.push({title:titleText,date:dateStr});
+            }
+            if(this.dashboardItemData.lastTrainingPayment != undefined){
+              let datePart: any = this.dashboardItemData.lastTrainingPayment.toString().split(" ");              
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Training Payment details of " + this.getFormType(this.dashboardItemData.lastTrainingPayFormName) + " Updated ";
+              this.dashboardRecentUpdates.push({title: titleText,date:dateStr});
+            }
+                        
           }
-          console.log(">>>> Load Data: ", res, " == ", this.dashboardRecentUpdates);
+          //console.log(">>>> Load Data: ", res, " == ", this.dashboardRecentUpdates);
 
         });
   }
@@ -220,7 +388,11 @@ export class OperationsDashboardComponent implements OnInit {
     this.userEmail = sessionStorage.getItem('email');
     this.userId = sessionStorage.getItem('userId');
 
-    this.loadDashData();
+    setTimeout(() => {
+      this.loadDashData();
+    }, 100)   
+    this.loadRecordsData();
+    this.loadCountryStateCityAll();
 
     if (this.userType != 'operations') {
       var landUrl = '/dashboard' + this.userType + '/home'
@@ -228,6 +400,15 @@ export class OperationsDashboardComponent implements OnInit {
     }
 
     this.loader = false;
+
+    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.profileService + '?userType=' + this.userType + '&email=' + this.userEmail)
+      .subscribe(
+        res => {
+          this.loader = true;
+          console.log(">>> User Profile: ", res);
+          this.userDetails = res['data']['user_data'][0];
+        });
+
     this.Service.getwithoutData(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.messageList + '?id=' + this.userId)
       .subscribe(
         res => {
@@ -248,37 +429,7 @@ export class OperationsDashboardComponent implements OnInit {
 
   }
 
-  search(query: string) {
-    // this.searchTerm = query;
-    let result = this.select(query);
-    // this.searchDetails = result;
-    if (query != '') {
-      this.selectSearch = result;
-    } else {
-      this.selectSearch = [];
-    }
-
-  }
-
-  select(query: string): string[] {
-    let result: string[] = [];
-    if (this.getUserType == 'cab_client' || this.getUserType == 'cab_code') {
-      for (let a of this.searchDetails) {
-        if (a.username.toLowerCase().indexOf(query) > -1) {
-          result.push(a);
-        }
-      }
-    } else {
-      for (let a of this.searchDetails) {
-        if (a.email.toLowerCase().indexOf(query) > -1) {
-          result.push(a);
-        }
-      }
-    }
-
-    // this.searchDetails = result;
-    return result;
-  }
+  
 
   setField(value) {
     // this.search(this.searchTerm);

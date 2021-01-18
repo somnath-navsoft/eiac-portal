@@ -83,13 +83,13 @@ export class OperationsTrainingServiceListComponent implements OnInit {
       ];
   
     //Assign Search Type
-    this.selectStatus = [ 
-      {title: 'Application Process', value:'application_process'},
-      {title: 'Under Review	', value:'under_review'},
+    this.selectStatus =  [
+      {title: 'Payment Pending', value:'payment_pending'},
+      {title: 'Under Process', value:'under_process'},
+      {title: 'Under Review', value:'under_review'},
       {title: 'Complete', value:'complete'},
-      {title: 'Pending', value:'pending'},
       {title: 'Draft', value:'draft'}
-      ];
+    ];
   }
 
   showData() {
@@ -124,6 +124,17 @@ export class OperationsTrainingServiceListComponent implements OnInit {
 
   filterSearchReset(type?: string){
     //Reset serach
+    this.searchValue = {};
+    this.searchText = '';
+    var myClasses = document.querySelectorAll('.field_show'),
+          i = 0,
+          l = myClasses.length;
+       for (i; i < l; i++) {
+          let elem: any = myClasses[i]
+          elem.style.display = 'none';
+      }
+    document.getElementById('applicant').style.display = 'block';
+
     this.applicationNo = '' || null;
     this.selectTrainingTypeValue = '' || null;
     this.paymentStatusValue = '' || null;
@@ -152,11 +163,17 @@ export class OperationsTrainingServiceListComponent implements OnInit {
       }
     if(this.searchValue == 'cab_name') {
       document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'cab_code') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'id') {
+      document.getElementById('applicant').style.display = 'block';
     }else if(this.searchValue == 'training_form_type') {
       document.getElementById('accreditation_type').style.display = 'block';
     }else if(this.searchValue == 'application_status') {
       document.getElementById('status').style.display = 'block';
-    }else if(this.searchValue == 'course_title') {
+    }else if(this.searchValue == 'course_name') {
+      document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'capacity') {
       document.getElementById('applicant').style.display = 'block';
     }
   }
@@ -185,6 +202,17 @@ export class OperationsTrainingServiceListComponent implements OnInit {
                     console.log(">>> Data: ", data.records);
                     this.pageCurrentNumber = 1;
                     this.dataLoad = true;
+                    
+                    data.records.forEach((item,key) => {
+                      if(item.courseEventDetails != undefined && item.courseEventDetails != 'NA'){
+                        data.records[key]['course_name']      = item.courseEventDetails.course_details.course;
+                        data.records[key]['course_capacity']  = item.courseEventDetails['event_details'][0].capacity != null ? item.courseEventDetails['event_details'][0].capacity : 'N/A';
+                      }else{
+                        data.records[key]['course_name'] = '';
+                        data.records[key]['course_capacity'] = '';
+                      }
+                  })
+                  
                     this.trainerdata = data.records;
                     this.pageTotal = data.records.length;
                 }
@@ -219,6 +247,15 @@ export class OperationsTrainingServiceListComponent implements OnInit {
           this.dataLoad = true;
           console.log('loading...', data.records);
           // console.log(">>>List: ", data);
+          data.records.forEach((item,key) => {
+            if(item.courseEventDetails != undefined && item.courseEventDetails != 'NA'){
+              data.records[key]['course_name']      = item.courseEventDetails.course_details.course;
+              data.records[key]['course_capacity']  = item.courseEventDetails['event_details'][0].capacity != null ? item.courseEventDetails['event_details'][0].capacity : 'N/A';
+            }else{
+              data.records[key]['course_name'] = '';
+              data.records[key]['course_capacity'] = '';
+            }
+        })
           this.trainerdata = data.records;
           dataRec = data.records;
           this.pageTotal = data.records.length;
@@ -252,12 +289,12 @@ export class OperationsTrainingServiceListComponent implements OnInit {
          this.curSortDir.created_date = !sortDir;
          //console.log(">>>Enter code...", data, " -- ", this.curSortDir.course_code);
          if(this.curSortDir.created_date){
-           let array = data.slice().sort((a, b) => (a.created_date > b.created_date) ? 1 : -1)
+           let array = data.slice().sort((a, b) => (a.created > b.created) ? 1 : -1)
            this.trainerdata = array;
            //console.log("after:: ", array, " :: ", this.trainerdata);
          }
          if(!this.curSortDir.created_date){
-           let array = data.slice().sort((a, b) => (a.created_date < b.created_date) ? 1 : -1)
+           let array = data.slice().sort((a, b) => (a.created < b.created) ? 1 : -1)
            this.trainerdata = array;
          }
        }
@@ -317,17 +354,90 @@ export class OperationsTrainingServiceListComponent implements OnInit {
            this.trainerdata = array;
          }
        }  
-       if(sortBy == 'applicant'){
-        this.curSortDir.applicant = !sortDir;
-        if(this.curSortDir.applicant){
+       
+       if(sortBy == 'cab_name'){
+        this.curSortDir.cab_name = !sortDir;
+        if(this.curSortDir.cab_name){
           let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name > b.cabDetails[0].cab_name) ? 1 : -1)
           this.trainerdata = array;
         }
-        if(!this.curSortDir.applicant){
+        if(!this.curSortDir.cab_name){
           let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name < b.cabDetails[0].cab_name) ? 1 : -1)
           this.trainerdata = array;
         }
-      }        
+      }
+
+      if(sortBy == 'cab_code'){
+        this.curSortDir.cab_code = !sortDir;
+        if(this.curSortDir.cab_code){
+          let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_code > b.cabDetails[0].cab_code) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.cab_code){
+          let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_code < b.cabDetails[0].cab_code) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
+
+      if(sortBy == 'country'){
+        this.curSortDir.country = !sortDir;
+        if(this.curSortDir.country){
+          let array = data.slice().sort((a, b) => (a.country > b.country) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.country){
+          let array = data.slice().sort((a, b) => (a.country < b.country) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
+
+      if(sortBy == 'course_name'){
+        this.curSortDir.course_name = !sortDir;
+        if(this.curSortDir.course_name){
+          let array = data.slice().sort((a, b) => (a.course_name > b.course_name) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.course_name){
+          let array = data.slice().sort((a, b) => (a.course_name < b.course_name) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
+
+      // if(sortBy == 'capacity'){
+      //   this.curSortDir.capacity = !sortDir;
+      //   if(this.curSortDir.capacity){
+      //     let array = data.slice().sort((a, b) => (a['courseEventDetails'] && b['courseEventDetails'] && a['courseEventDetails']['event_details'] && b['courseEventDetails']['event_details'] && a['courseEventDetails']['event_details'][0] && b['courseEventDetails']['event_details'][0] && a['courseEventDetails']['event_details'][0].capacity > b['courseEventDetails']['event_details'][0].capacity) ? 1 : -1)
+      //     this.trainerdata = array;
+      //   }
+      //   if(!this.curSortDir.capacity){
+      //     let array = data.slice().sort((a, b) => (a['courseEventDetails'] && b['courseEventDetails'] && a['courseEventDetails']['event_details'] && b['courseEventDetails']['event_details'] && a['courseEventDetails']['event_details'][0] && b['courseEventDetails']['event_details'][0] && a['courseEventDetails']['event_details'][0].capacity < b['courseEventDetails']['event_details'][0].capacityy) ? 1 : -1)
+      //     this.trainerdata = array;
+      //   }
+      // }
+
+      if(sortBy == 'capacity'){
+        this.curSortDir.capacity = !sortDir;
+        if(this.curSortDir.capacity){
+          let array = data.slice().sort((a, b) => (a.course_capacity > b.course_capacity) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.capacity){
+          let array = data.slice().sort((a, b) => (a.course_capacity < b.course_capacity) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
+
+      if(sortBy == 'application_status'){
+        this.curSortDir.application_status = !sortDir;
+        if(this.curSortDir.application_status){
+          let array = data.slice().sort((a, b) => (a.application_status > b.application_status) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.application_status){
+          let array = data.slice().sort((a, b) => (a.application_status < b.application_status) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
     }
   }
 
@@ -412,6 +522,8 @@ export class OperationsTrainingServiceListComponent implements OnInit {
              result => {
                let data: any = result;
                 if(data.status){
+                  var currIndex = 10 * (this.pageCurrentNumber -1) + parseInt(this.voucherSentData['index']);
+                  this.trainerdata[currIndex].application_status = 'payment_pending';
                   this.voucherFile = new FormData();
                   this.voucherSentData = {};
                   this.modalService.dismissAll();

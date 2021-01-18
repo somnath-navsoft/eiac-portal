@@ -9,7 +9,7 @@ import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-b
 import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
 @Component({
-  selector: 'app-operations-registration-service-list',
+  selector: 'app-operations-registration-service-list', 
   templateUrl: './operations-registration-service-list.component.html',
   styleUrls: ['./operations-registration-service-list.component.scss'],
   providers: [CustomModalComponent, ToastrService, Overlay, OverlayContainer]
@@ -82,13 +82,13 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
       ];
   
     //Assign Search Type
-    this.selectStatus = [ 
-      {title: 'Application Process', value:'application_process'},
-      {title: 'Under Review	', value:'under_review'},
+    this.selectStatus =  [
+      {title: 'Payment Pending', value:'payment_pending'},
+      {title: 'Under Process', value:'under_process'},
+      {title: 'Under Review', value:'under_review'},
       {title: 'Complete', value:'complete'},
-      {title: 'Pending', value:'pending'},
       {title: 'Draft', value:'draft'}
-      ];
+    ];
       this.loadCountryStateCity();
   }
 
@@ -102,6 +102,17 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
 
   filterSearchReset(type?: string){
     //Reset serach
+    this.searchValue = {};
+    this.searchText = '';
+    var myClasses = document.querySelectorAll('.field_show'),
+          i = 0,
+          l = myClasses.length;
+       for (i; i < l; i++) {
+          let elem: any = myClasses[i]
+          elem.style.display = 'none';
+      }
+    document.getElementById('applicant').style.display = 'block';
+
     this.applicationNo = '' || null;
     this.selectRegTypeValue = '' || null;
     this.paymentStatusValue = '' || null;
@@ -123,14 +134,16 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
       }
     if(this.searchValue == 'cab_name') {
       document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'id') {
+      document.getElementById('applicant').style.display = 'block';
     }else if(this.searchValue == 'cab_code') {
       document.getElementById('applicant').style.display = 'block';
     }else if(this.searchValue == 'country') {
-      document.getElementById('location_city_country').style.display = 'block';
+      document.getElementById('country').style.display = 'block';
     }else if(this.searchValue == 'form_meta') {
       document.getElementById('accreditation_type').style.display = 'block';
     }else if(this.searchValue == 'application_status') {
-      document.getElementById('status').style.display = 'block';
+      document.getElementById('application_status').style.display = 'block';
     }
   }
 
@@ -250,17 +263,30 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
            //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
          }
        }
+
+       if(sortBy == 'application_status'){
+        this.curSortDir.application_status = !sortDir;
+        if(this.curSortDir.application_status){
+          let array = data.slice().sort((a, b) => (a.application_status > b.application_status) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.application_status){
+          let array = data.slice().sort((a, b) => (a.application_status < b.application_status) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
+      
        //By created_date
        if(sortBy == 'created_date'){
          this.curSortDir.created_date = !sortDir;
          //console.log(">>>Enter code...", data, " -- ", this.curSortDir.course_code);
          if(this.curSortDir.created_date){
-           let array = data.slice().sort((a, b) => (a.created_date > b.created_date) ? 1 : -1)
+           let array = data.slice().sort((a, b) => (a.created > b.created) ? 1 : -1)
            this.trainerdata = array;
            //console.log("after:: ", array, " :: ", this.trainerdata);
          }
          if(!this.curSortDir.created_date){
-           let array = data.slice().sort((a, b) => (a.created_date < b.created_date) ? 1 : -1)
+           let array = data.slice().sort((a, b) => (a.created < b.created) ? 1 : -1)
            this.trainerdata = array;
          }
        }
@@ -320,41 +346,69 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
            this.trainerdata = array;
          }
        }  
-       if(sortBy == 'applicant'){
-        this.curSortDir.applicant = !sortDir;
-        if(this.curSortDir.applicant){
-          let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name > b.cabDetails[0].cab_name) ? 1 : -1)
+       
+       if(sortBy == 'cab_name'){
+        this.curSortDir.cab_name = !sortDir;
+        if(this.curSortDir.cab_name){
+          let array = data.slice().sort((a, b) => (a.cabDetails.cab_name > b.cabDetails.cab_name) ? 1 : -1)
           this.trainerdata = array;
         }
-        if(!this.curSortDir.applicant){
-          let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name < b.cabDetails[0].cab_name) ? 1 : -1)
+        if(!this.curSortDir.cab_name){
+          let array = data.slice().sort((a, b) => (a.cabDetails.cab_name < b.cabDetails.cab_name) ? 1 : -1)
           this.trainerdata = array;
         }
-      }        
+      }
+
+      if(sortBy == 'cab_code'){
+        this.curSortDir.cab_code = !sortDir;
+        if(this.curSortDir.cab_code){
+          let array = data.slice().sort((a, b) => (a.cabDetails.cab_code > b.cabDetails.cab_code) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.cab_code){
+          let array = data.slice().sort((a, b) => (a.cabDetails.cab_code < b.cabDetails.cab_code) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
+
+      if(sortBy == 'country'){
+        this.curSortDir.country = !sortDir;
+        if(this.curSortDir.country){
+          let array = data.slice().sort((a, b) => (a.country > b.country) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.country){
+          let array = data.slice().sort((a, b) => (a.country < b.country) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
     }
   }
 
   serviceStatus(index,id){
+    var changableIndex = index;
+    var currIndex = 10 * (this.pageCurrentNumber -1) + parseInt(changableIndex);
     this.loader = false;
 
-    this.subscriptions.push(this._trainerService.updateStatusTraining(id)
+    this.subscriptions.push(this._trainerService.updateStatusReg(id)
       .subscribe(
         result => {
           this.loader = true;
           // console.log(result,'result');
-          this.trainerdata[index].accr_status = 'Complete';
+          this.trainerdata[currIndex].application_status = 'complete';
           this._toaster.success("Payment Completed Successfully",'');
       })
     );
 
   }
 
-  open(content, id: number) {
+  open(content, id: number,index: number) {
     //this.voucherSentData = {};
     if(id){
       console.log(">>ID: ", id);
       this.voucherSentData['accreditation'] = id;
     }
+    this.voucherSentData['index'] = index;
     this.paymentReceiptValidation = null;
     this.modalService.open(content, this.modalOptions).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -381,7 +435,7 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
         is_valid = true;
       }
       //console.log("Valid/Invalid: ", theForm.form.valid, " -- "," --", is_valid, " --", this.voucherSentData);
-
+      
     //return false;
      if(is_valid == true && this.paymentReceiptValidation === true){ 
           let dtFormat: string = '';;
@@ -407,10 +461,13 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
              result => {
                let data: any = result;
                 if(data.status){
+                  var currIndex = 10 * (this.pageCurrentNumber -1) + parseInt(this.voucherSentData['index']);
+                  this.trainerdata[currIndex].application_status = 'payment_pending';
                   this.voucherFile = new FormData();
                   this.voucherSentData = {};
                   this.modalService.dismissAll();
                   this._toaster.success("Invoice Uploaded Successfully",'Upload');
+                  
                 }else{
                   this._toaster.warning(data.msg,'');
                 }

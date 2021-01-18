@@ -25,7 +25,7 @@ export class EventListsComponent implements OnInit {
   pageTotal: number = 0;
   eventData:any[] = [];
   curSortDir: any = {};
-  modalOptions:NgbModalOptions;
+  modalOptions:NgbModalOptions; 
   closeResult: string;
   participantsTempList:any[] = [{}];
   participantsList:any[] = [{}];
@@ -55,6 +55,7 @@ export class EventListsComponent implements OnInit {
     // console.log(this.event_date);
     this.userType = sessionStorage.getItem('type');
     this.curSortDir['course']                       = false;
+    this.curSortDir['audience']                       = false;    
     this.curSortDir['created_date']             = false;
     this.curSortDir['accr_status']             = false;
     this.curSortDir['applicantName']             = false;
@@ -117,9 +118,20 @@ export class EventListsComponent implements OnInit {
   showData() {
     //this.pageLimit = this.show_data;
     // this.loadPageData();
-    this.pageLimit = this.show_data;
-    this.pageCurrentNumber = 1;
-    this.eventData.slice(0, this.show_data);
+    // this.pageLimit = this.show_data;
+    // this.pageCurrentNumber = 1;
+    // this.eventData.slice(0, this.show_data);
+
+    if(this.show_data != 'all'){
+      this.pageLimit = this.show_data;
+      this.pageCurrentNumber = 1;
+      this.eventData.slice(0, this.show_data);
+    }else{
+      console.log('....');
+      this.pageLimit = this.pageTotal;
+      this.pageCurrentNumber = 1;
+      this.eventData.slice(0, this.pageTotal);
+    }
   }
 
   filterSearchSec(){
@@ -128,6 +140,17 @@ export class EventListsComponent implements OnInit {
   }
   
   filterSearchReset(type?: string){
+    this.searchValue = {};
+    this.searchText = '';
+    var myClasses = document.querySelectorAll('.field_show'),
+          i = 0,
+          l = myClasses.length;
+       for (i; i < l; i++) {
+          let elem: any = myClasses[i]
+          elem.style.display = 'none';
+      }
+    document.getElementById('applicant').style.display = 'block';
+    
     //Reset serach
     this.eventTitle = '' || null;
     if(type != undefined && type != ''){
@@ -210,7 +233,7 @@ export class EventListsComponent implements OnInit {
     // console.log(this.exportAs);
     this.exportAsConfig = {
       type: 'csv', // the type you want to download
-      elementIdOrContent: 'accreditation-service-export', // the id of html/table element
+      elementIdOrContent: 'event-export', // the id of html/table element
     }
     // let fileName: string = (this.exportAs.toString() == 'xls') ? 'accreditation-service-report' : 
     this.exportAsService.save(this.exportAsConfig, 'report').subscribe(() => {
@@ -230,7 +253,11 @@ export class EventListsComponent implements OnInit {
           let data: any = result;
           let dataRec: any=[];
           // console.log('Data load...', data.records);
-          
+          data.records.forEach((item, key) =>{
+               if(item.course != undefined && item.course.allTargatedAud  != undefined && item.course.allTargatedAud.length > 0){
+                data.records[key]['audName'] = item.course.allTargatedAud[0].target_aud_name.title;
+               }
+          })          
           this.eventData = data.records;
           dataRec = data.records;
           this.pageTotal = data.records.length;
@@ -260,118 +287,101 @@ export class EventListsComponent implements OnInit {
           }
         }
 
-        if(sortBy === 'capacity'){
+        if(sortBy === 'audience'){
           //console.log(">>>Enter type...");
-          this.curSortDir.capacity = !sortDir;
-          if(this.curSortDir.capacity){
-            let array = data.slice().sort((a, b) => (a.capacity > b.capacity) ? 1 : -1)
+          this.curSortDir.audience = !sortDir;
+          if(this.curSortDir.audience){
+            let array = data.slice().sort((a, b) => (a.audience > b.audience) ? 1 : -1)
             this.eventData = array;
           }
-          if(!this.curSortDir.capacity){
-            let array = data.slice().sort((a, b) => (a.capacity < b.capacity) ? 1 : -1)
+          if(!this.curSortDir.audience){
+            let array = data.slice().sort((a, b) => (a.audience < b.audience) ? 1 : -1)
+            this.eventData = array;
+          }
+        }
+
+        if(sortBy === 'training_course_type'){
+          //console.log(">>>Enter type...");
+          this.curSortDir.training_course_type = !sortDir;
+          if(this.curSortDir.training_course_type){
+            let array = data.slice().sort((a, b) => (a.course.training_course_type > b.course.training_course_type) ? 1 : -1)
+            this.eventData = array;
+          }
+          if(!this.curSortDir.training_course_type){
+            let array = data.slice().sort((a, b) => (a.course.training_course_type < b.course.training_course_type) ? 1 : -1)
             this.eventData = array;
             //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
           }
         }
 
-        //By created_date
-        if(sortBy == 'created_date'){
-          this.curSortDir.created_date = !sortDir;
-          //console.log(">>>Enter code...", data, " -- ", this.curSortDir.course_code);
-          if(this.curSortDir.created_date){
-            let array = data.slice().sort((a, b) => (a['eventDates'][0].event_date > b['eventDates'][0].event_date) ? 1 : -1)
-            this.eventData = array;
-            //console.log("after:: ", array, " :: ", this.eventData);
-          }
-          if(!this.curSortDir.created_date){
-            let array = data.slice().sort((a, b) => (a['eventDates'][0].event_date < b['eventDates'][0].event_date) ? 1 : -1)
+        if(sortBy === 'tutor'){
+          //console.log(">>>Enter type...");
+          this.curSortDir.tutor = !sortDir;
+          if(this.curSortDir.tutor){
+            let array = data.slice().sort((a, b) => (a.tutor && b.tutor && a.tutor.name > b.tutor.name) ? 1 : -1)
             this.eventData = array;
           }
-        }
-        //By accr_status
-        if(sortBy == 'accr_status'){
-          this.curSortDir.accr_status = !sortDir;
-          //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
-          if(this.curSortDir.accr_status){
-            let array = data.slice().sort((a, b) => (a.accr_status > b.accr_status) ? 1 : -1)
+          if(!this.curSortDir.tutor){
+            let array = data.slice().sort((a, b) => (a.tutor && b.tutor && a.tutor.name < b.tutor.name) ? 1 : -1)
             this.eventData = array;
-            //console.log("after:: ", array, " :: ", this.eventData);
-          }
-          if(!this.curSortDir.accr_status){
-            let array = data.slice().sort((a, b) => (a.accr_status < b.accr_status) ? 1 : -1)
-            this.eventData = array;
-          }
-        }
-        //By Prelim Status
-        if(sortBy == 'applicantName'){
-          this.curSortDir.applicantName = !sortDir;
-          //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
-          if(this.curSortDir.applicantName){
-            let array = data.slice().sort((a, b) => (a.applicantName > b.applicantName) ? 1 : -1)
-            this.eventData = array;
-            //console.log("after:: ", array, " :: ", this.eventData);
-          }
-          if(!this.curSortDir.applicantName){
-            let array = data.slice().sort((a, b) => (a.applicantName < b.applicantName) ? 1 : -1)
-            this.eventData = array;
-          }
-        }
-        //By criteria_request
-        if(sortBy == 'criteria_request'){
-          this.curSortDir.criteria_request = !sortDir;
-          //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
-          if(this.curSortDir.criteria_request){
-            let array = data.slice().sort((a, b) => (a.criteria_request > b.criteria_request) ? 1 : -1)
-            this.eventData = array;
-            //console.log("after:: ", array, " :: ", this.eventData);
-          }
-          if(!this.curSortDir.criteria_request){
-            let array = data.slice().sort((a, b) => (a.criteria_request < b.criteria_request) ? 1 : -1)
-            this.eventData = array;
+            //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
           }
         }
 
-        //By form_meta
-        if(sortBy == 'form_meta'){
-          this.curSortDir.form_meta = !sortDir;
-          //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
-          if(this.curSortDir.form_meta){
-            let array = data.slice().sort((a, b) => (a.form_meta > b.form_meta) ? 1 : -1)
+        if(sortBy === 'capacity'){
+          //console.log(">>>Enter type...");
+          this.curSortDir.capacity = !sortDir;
+          if(this.curSortDir.capacity){
+            let array = data.slice().sort((a, b) => (a.course.capacity > b.course.capacity) ? 1 : -1)
             this.eventData = array;
-            //console.log("after:: ", array, " :: ", this.eventData);
           }
-          if(!this.curSortDir.form_meta){
-            let array = data.slice().sort((a, b) => (a.form_meta < b.form_meta) ? 1 : -1)
+          if(!this.curSortDir.capacity){
+            let array = data.slice().sort((a, b) => (a.course.capacity < b.course.capacity) ? 1 : -1)
             this.eventData = array;
+            //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
           }
         }
-        //By Payment Status
-        // if(sortBy == 'payment_status'){
-        //   this.curSortDir.payment_status = !sortDir;
-        //   //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
-        //   if(this.curSortDir.payment_status){
-        //     let array = data.slice().sort((a, b) => (a.payment_status > b.payment_status) ? 1 : -1)
-        //     this.eventData = array;
-        //     //console.log("after:: ", array, " :: ", this.eventData);
-        //   }
-        //   if(!this.curSortDir.payment_status){
-        //     let array = data.slice().sort((a, b) => (a.payment_status < b.payment_status) ? 1 : -1)
-        //     this.eventData = array;
-        //   }
-        // }  
-        if(sortBy == 'location'){
-          this.curSortDir.location = !sortDir;
-          //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
-          if(this.curSortDir.location){
-            let array = data.slice().sort((a, b) => (a.location > b.location) ? 1 : -1)
-            this.eventData = array;
-            //console.log("after:: ", array, " :: ", this.eventData);
-          }
-          if(!this.curSortDir.location){
-            let array = data.slice().sort((a, b) => (a.location < b.location) ? 1 : -1)
+
+        if(sortBy === 'training_days'){
+          //console.log(">>>Enter type...");
+          this.curSortDir.training_days = !sortDir;
+          if(this.curSortDir.training_days){
+            let array = data.slice().sort((a, b) => (a.course.training_days > b.course.training_days) ? 1 : -1)
             this.eventData = array;
           }
-        }        
+          if(!this.curSortDir.training_days){
+            let array = data.slice().sort((a, b) => (a.course.training_days < b.course.training_days) ? 1 : -1)
+            this.eventData = array;
+            //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
+          }
+        }
+
+        if(sortBy === 'training_days'){
+          //console.log(">>>Enter type...");
+          this.curSortDir.training_days = !sortDir;
+          if(this.curSortDir.training_days){
+            let array = data.slice().sort((a, b) => (a.course.training_days > b.course.training_days) ? 1 : -1)
+            this.eventData = array;
+          }
+          if(!this.curSortDir.training_days){
+            let array = data.slice().sort((a, b) => (a.course.training_days < b.course.training_days) ? 1 : -1)
+            this.eventData = array;
+            //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
+          }
+        }
+        if(sortBy === 'created_date'){
+          //console.log(">>>Enter type...");
+          this.curSortDir.created_date = !sortDir;
+          if(this.curSortDir.created_date){
+            let array = data.slice().sort((a, b) => (a['eventDates'] && b['eventDates'] && a['eventDates'][0].event_date > b['eventDates'][0].event_date) ? 1 : -1)
+            this.eventData = array;
+          }
+          if(!this.curSortDir.created_date){
+            let array = data.slice().sort((a, b) => (a['eventDates'] && b['eventDates'] && a['eventDates'][0].event_date < b['eventDates'][0].event_date) ? 1 : -1)
+            this.eventData = array;
+            //data.sort((a, b) => (a.training_course_type < b.training_course_type) ? 1 : -1);
+          }
+        }
     }
   }
 

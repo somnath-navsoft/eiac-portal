@@ -19,7 +19,7 @@ export class CabDashboardComponent implements OnInit {
 
   userEmail: any;
   userType: any;
-  userDetails: any[] = []
+  userDetails: any;
   step1Data: any;
   loader: boolean = true;
   messageList: any = [];
@@ -76,6 +76,46 @@ export class CabDashboardComponent implements OnInit {
     return fname;
   }
 
+/*
+<span *ngIf="item.form_meta == 'work_permit'">Work Permit</span>
+<span *ngIf="item.form_meta == 'no_objection'">No Objection Certificate</span>
+<span *ngIf="item.form_meta == 'work_activity'">Work Activity Permit</span>
+*/
+
+  getFormType(formMeta: string){
+    // | 
+      if(formMeta === 'health_care'){
+        return 'HP';
+      }
+      else if(formMeta === 'inspection_body'){
+        return 'IB';
+      }
+      else if(formMeta === 'testing_calibration'){
+        return 'TCL';
+      }
+      else if(formMeta === 'certification_bodies'){
+        return 'CB';
+      }
+      else if(formMeta === 'pt_providers'){
+        return 'PTP';
+      }
+      else if(formMeta === 'halal_conformity_bodies'){
+        return 'HCAB';
+      }else if(formMeta === 'inprimise'){
+        return 'Inpremise Training';
+      }else if(formMeta === 'public_training'){
+        return 'Public Training';
+      }else if(formMeta === 'work_permit'){
+        return 'Work Activity Permit';
+      }else if(formMeta === 'no_objection'){
+        return 'No Objection Certificate';
+      }else if(formMeta === 'work_activity'){
+        return 'Work Activity Permit';
+      }else{
+        return 'NA';
+      }
+  }
+
   //Load Dashboatd data
   loadDashData(){
     this.loader = false;
@@ -84,99 +124,111 @@ export class CabDashboardComponent implements OnInit {
       .subscribe(
         res => {
           this.loader = true;
-          // console.log(res,'res');
+          console.log(res,'res', " :: ", this.userDetails);
           if(res['status'] == 200){
             this.dashboardItemData = res['dashBoardData'];
 
             //Get recent updates
             if(this.dashboardItemData.lastLogin != undefined){
-              // let dt = new Date(this.dashboardItemData.lastLogin);
-              // let date = dt.toLocaleDateString();
-              // let time = dt.toLocaleTimeString();
               let datePart: any = this.dashboardItemData.lastLogin.toString().split(" ");
-              let date = datePart[0];
-              let time1 = datePart[1];
-              let time1Ar = time1.split(":");
-              console.log(">>>>... ", time1Ar, " -- ", time1Ar.length);
-              if(time1Ar.length == 1){
-                time1 = time1 +":00";
-              }
-              let time2 = datePart[2];
-              let time = time1 +" "+ time2;
-              console.log(datePart, " == ", date, " -- ",time);
-              this.dashboardRecentUpdates.push({title: "CAB Last Login",date:date, time: time});
+              // let date = datePart[0];
+              // let time1 = datePart[1];
+              // let time1Ar = time1.split(":");
+              // console.log(">>>>... ", time1Ar, " -- ", time1Ar.length);
+              // if(time1Ar.length == 1){
+              //   time1 = time1 +":00";
+              // }
+              // let time2 = datePart[2];
+              // let time = time1 +" "+ time2;
+              // console.log(datePart, " == ", date, " -- ",time);
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              console.log(">>Date part: ", new Date(dateStr), " -- ", dateStr);
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Last Login ";
+              this.dashboardRecentUpdates.push({title: titleText,date:dateStr});
             }
             if(this.dashboardItemData.lastAccrApplied != undefined){
               let datePart: any = this.dashboardItemData.lastAccrApplied.toString().split(" ");
-              let date = datePart[0];
-              let time1 = datePart[1];
-              let time1Ar = time1.split(":");
-              if(time1Ar.length == 1){
-                time1 = time1 +":00";
-              }
-              let time2 = datePart[2];
-              let time = time1 +" "  + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Accreditation Applied",date:date, time: time});
+              // let date = datePart[0];
+              // let time1 = datePart[1];
+              // let time1Ar = time1.split(":");
+              // if(time1Ar.length == 1){
+              //   time1 = time1 +":00";
+              // }
+              // let time2 = datePart[2];
+              // let time = time1 +" "  + time2;
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Applied " + this.getFormType(this.dashboardItemData.lastAccrPayFormName) + " Application ";
+              this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
             }
             if(this.dashboardItemData.lastRegApplied != undefined){
               let datePart: any = this.dashboardItemData.lastRegApplied.toString().split(" ");
-              let date = datePart[0];
-              let time1 = datePart[1];
-              let time1Ar = time1.split(":");
-              if(time1Ar.length == 1){
-                time1 = time1 +":00";
-              }
-              let time2 = datePart[2];
-              let time = time1 +" "  + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Registration Applied",date:date, time: time});
+              // let date = datePart[0];
+              // let time1 = datePart[1];
+              // let time1Ar = time1.split(":");
+              // if(time1Ar.length == 1){
+              //   time1 = time1 +":00";
+              // }
+              // let time2 = datePart[2];
+              // let time = time1 +" "  + time2;
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Applied " + this.getFormType(this.dashboardItemData.lastRegPayFormName) + " Application ";
+              this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
             }
             if(this.dashboardItemData.lastTrainingApplied != undefined){
               let datePart: any = this.dashboardItemData.lastTrainingApplied.toString().split(" ");
-              let date = datePart[0];
-              let time1 = datePart[1];
-              let time1Ar = time1.split(":");
-              if(time1Ar.length == 1){
-                time1 = time1 +":00";
-              }
-              let time2 = datePart[2];
-              let time = time1 +" " + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Training Applied",date:date, time: time});
+              // let date = datePart[0];
+              // let time1 = datePart[1];
+              // let time1Ar = time1.split(":");
+              // if(time1Ar.length == 1){
+              //   time1 = time1 +":00";
+              // }
+              // let time2 = datePart[2];
+              // let time = time1 +" " + time2;
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Applied " + this.getFormType(this.dashboardItemData.lastTrainingPayFormName) + " Application ";
+              this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
             }
             if(this.dashboardItemData.lastAccrPayment != undefined){
               let datePart: any = this.dashboardItemData.lastAccrPayment.toString().split(" ");
-              let date = datePart[0];
-              let time1 = datePart[1];
-              let time1Ar = time1.split(":");
-              if(time1Ar.length == 1){
-                time1 = time1 +":00";
-              }
-              let time2 = datePart[2];
-              let time = time1 +" "  + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Accreditation Payment",date:date, time: time});
+              // let date = datePart[0];
+              // let time1 = datePart[1];
+              // let time1Ar = time1.split(":");
+              // if(time1Ar.length == 1){
+              //   time1 = time1 +":00";
+              // }
+              // let time2 = datePart[2];
+              // let time = time1 +" "  + time2;
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Accreditaion Payment details of " + this.getFormType(this.dashboardItemData.lastAccrPayFormName) + " Updated ";
+              this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
             }
             if(this.dashboardItemData.lastRegPayment != undefined){
               let datePart: any = this.dashboardItemData.lastRegPayment.toString().split(" ");
-              let date = datePart[0];
-              let time1 = datePart[1];
-              let time1Ar = time1.split(":");
-              if(time1Ar.length == 1){
-                time1 = time1 +":00";
-              }
-              let time2 = datePart[2];
-              let time = time1 +" "  + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Registration Payment",date:date, time: time});
+              // let date = datePart[0];
+              // let time1 = datePart[1];
+              // let time1Ar = time1.split(":");
+              // if(time1Ar.length == 1){
+              //   time1 = time1 +":00";
+              // }
+              // let time2 = datePart[2];
+              // let time = time1 +" "  + time2;
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Registration Payment details of " + this.getFormType(this.dashboardItemData.lastRegPayFormName) + " Updated ";
+              this.dashboardRecentUpdates.push({title:titleText,date:dateStr});
             }
             if(this.dashboardItemData.lastTrainingPayment != undefined){
               let datePart: any = this.dashboardItemData.lastTrainingPayment.toString().split(" ");
-              let date = datePart[0];
-              let time1 = datePart[1];
-              let time1Ar = time1.split(":");
-              if(time1Ar.length == 1){
-                time1 = time1 +":00";
-              }
-              let time2 = datePart[2];
-              let time = time1 +" "  + time2;
-              this.dashboardRecentUpdates.push({title: "CAB Training Payment",date:date, time: time});
+              // let date = datePart[0];
+              // let time1 = datePart[1];
+              // let time1Ar = time1.split(":");
+              // if(time1Ar.length == 1){
+              //   time1 = time1 +":00";
+              // }
+              // let time2 = datePart[2];
+              // let time = time1 +" "  + time2;
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Training Payment details of " + this.getFormType(this.dashboardItemData.lastTrainingPayFormName) + " Updated ";
+              this.dashboardRecentUpdates.push({title: titleText,date:dateStr});
             }
           }
           console.log(">>>> Load Data: ", res, " == ", this.dashboardRecentUpdates);
@@ -215,7 +267,16 @@ export class CabDashboardComponent implements OnInit {
           this.loader = true;
           this.userDetails = res['data']['user_data'][0];
           this.step1Data = res['data']['step1'][0];
+          //console.log("Prof: ", res);
           //
+          // var differDate = new Date(this.step1Data.date_of_expiry);
+          // var currDate = new Date();
+          // if(differDate > currDate) {
+          //   console.log('Not expired');
+          // }else if(currDate > differDate) {
+          //   console.log('Expired');
+          // }
+
           if(this.step1Data && this.step1Data.date_of_expiry != null){
             this.dashboardTradeLicExDate = this.step1Data.date_of_expiry;
             let date = new Date();
@@ -223,8 +284,9 @@ export class CabDashboardComponent implements OnInit {
             let month = date.getMonth() + 1;
             let day = date.getDate();
             let todays: any = new Date(yr+"-"+month+"-"+day);
-            let expiryData: any = this.step1Data.date_of_expiry;;//new Date("2021-1-15");;
+            let expiryData: any = new Date(this.step1Data.date_of_expiry);//new Date("2024-12-31");//;//
             let diffDate: any = Math.round((expiryData-todays)/(1000*60*60*24))
+            
             if(diffDate > 0){
               //console.log("#########");
               this.licence_document_file = this.getFile(this.step1Data.trade_license);
@@ -254,7 +316,9 @@ export class CabDashboardComponent implements OnInit {
           this.recordsTotal = res['data'].recordsTotal;
           this.loader = true;
         });
-        this.loadDashData();
+        setTimeout(() => {
+          this.loadDashData(); 
+        },100)
   }
 
   getUserDetails(user) {

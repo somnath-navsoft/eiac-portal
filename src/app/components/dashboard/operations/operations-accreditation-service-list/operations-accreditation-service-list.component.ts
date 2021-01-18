@@ -199,11 +199,12 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   }
 
   // Modal Actions
-  open(content, id: number) {
+  open(content, id: number, key:number) {
     //this.voucherSentData = {};
     if(id){
-      console.log(">>ID: ", id);
+      // console.log(">>ID: ", id);
       this.voucherSentData['accreditation'] = id;
+      this.voucherSentData['index'] = key;
     }
     this.paymentReceiptValidation = null;
     this.modalService.open(content, this.modalOptions).result.then((result) => {
@@ -256,6 +257,8 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
              result => {
                let data: any = result;
                 if(data.status){
+                  var currIndex = 10 * (this.pageCurrentNumber -1) + parseInt(this.voucherSentData['index']);
+                  this.trainerdata[currIndex].application_status = 'payment_pending';
                   this.voucherFile = new FormData();
                   this.voucherSentData = {};
                   this.modalService.dismissAll();
@@ -305,6 +308,8 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
       }
     if(this.searchValue == 'cab_name') {
       document.getElementById('applicant').style.display = 'block';
+    }else if(this.searchValue == 'id') {
+      document.getElementById('applicant').style.display = 'block';
     }else if(this.searchValue == 'form_meta') {
       document.getElementById('accreditation_type').style.display = 'block';
     }else if(this.searchValue == 'accr_status') {
@@ -313,8 +318,8 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
       document.getElementById('applicant').style.display = 'block';
     }else if(this.searchValue == 'criteria') {
       document.getElementById('criteria').style.display = 'block';
-    }else if(this.searchValue == 'location_city_country') {
-      document.getElementById('location_city_country').style.display = 'block';
+    }else if(this.searchValue == 'country') {
+      document.getElementById('country').style.display = 'block';
     }
   }
 
@@ -349,13 +354,13 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
     ];
 
     //Assign Search Type
-    this.selectStatus = [ 
-      {title: 'Application Process', value:'application_process'},
-      {title: 'Under Review	', value:'under_review'},
+    this.selectStatus =  [
+      {title: 'Payment Pending', value:'payment_pending'},
+      {title: 'Under Process', value:'application_process'},
+      {title: 'Under Review', value:'under_review'},
       {title: 'Complete', value:'complete'},
-      {title: 'Pending', value:'pending'},
       {title: 'Draft', value:'draft'}
-      ];
+    ];
 	
     // this.selectPaymentStatusType = [ 
     //   {title: 'Paid', value:'paid'},
@@ -430,6 +435,16 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   }
 
   filterSearchReset(type?: string){
+    this.searchValue = {};
+    this.searchText = '';
+    var myClasses = document.querySelectorAll('.field_show'),
+          i = 0,
+          l = myClasses.length;
+       for (i; i < l; i++) {
+          let elem: any = myClasses[i]
+          elem.style.display = 'none';
+      }
+    document.getElementById('applicant').style.display = 'block';
     //Reset serach
     this.applicationNo = '' || null;
     this.selectAccrTypeValue = '' || null;
@@ -474,9 +489,13 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
                let data: any = result;
                 ////console.log("search results: ", result);
                 if(data != undefined && typeof data === 'object' && data.records.length > 0){
-                    console.log(">>> Data: ", data.records);
+                    // console.log(">>> Data: ", data.records);
                     this.pageCurrentNumber = 1;
                     this.dataLoad = true;
+
+                    data.records.forEach((res,key) => {
+                      data.records[key]['payment_status'] = res.payment_status == '' || res.payment_status == null || res.payment_status == 'pending' ? 'pending' : 'paid';
+                    });
                     this.trainerdata = data.records;
                     this.pageTotal = data.records.length;
                 }
@@ -521,12 +540,12 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
             this.curSortDir.created_date = !sortDir;
             //console.log(">>>Enter code...", data, " -- ", this.curSortDir.course_code);
             if(this.curSortDir.created_date){
-              let array = data.slice().sort((a, b) => (a.created_date > b.created_date) ? 1 : -1)
+              let array = data.slice().sort((a, b) => (a.created > b.created) ? 1 : -1)
               this.trainerdata = array;
               //console.log("after:: ", array, " :: ", this.trainerdata);
             }
             if(!this.curSortDir.created_date){
-              let array = data.slice().sort((a, b) => (a.created_date < b.created_date) ? 1 : -1)
+              let array = data.slice().sort((a, b) => (a.created < b.created) ? 1 : -1)
               this.trainerdata = array;
             }
           }
@@ -545,16 +564,16 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
             }
           }
           //By Prelim Status
-          if(sortBy == 'prelim_status'){
-            this.curSortDir.prelim_status = !sortDir;
+          if(sortBy == 'prelim_visit'){
+            this.curSortDir.prelim_visit = !sortDir;
             //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
-            if(this.curSortDir.prelim_status){
-              let array = data.slice().sort((a, b) => (a.prelim_status > b.prelim_status) ? 1 : -1)
+            if(this.curSortDir.prelim_visit){
+              let array = data.slice().sort((a, b) => (a.is_prelim_visit > b.is_prelim_visit) ? 1 : -1)
               this.trainerdata = array;
               //console.log("after:: ", array, " :: ", this.trainerdata);
             }
-            if(!this.curSortDir.prelim_status){
-              let array = data.slice().sort((a, b) => (a.prelim_status < b.prelim_status) ? 1 : -1)
+            if(!this.curSortDir.prelim_visit){
+              let array = data.slice().sort((a, b) => (a.is_prelim_visit < b.is_prelim_visit) ? 1 : -1)
               this.trainerdata = array;
             }
           }
@@ -585,18 +604,55 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
               let array = data.slice().sort((a, b) => (a.payment_status < b.payment_status) ? 1 : -1)
               this.trainerdata = array;
             }
-          }  
-          if(sortBy == 'applicant'){
-            this.curSortDir.applicant = !sortDir;
-            if(this.curSortDir.applicant){
-              let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name > b.cabDetails[0].cab_name) ? 1 : -1)
+          }
+          if(sortBy == 'cab_name'){
+            this.curSortDir.cab_name = !sortDir;
+            if(this.curSortDir.cab_name){
+              let array = data.slice().sort((a, b) => (a.cabDetails.cab_name > b.cabDetails.cab_name) ? 1 : -1)
               this.trainerdata = array;
             }
-            if(!this.curSortDir.applicant){
-              let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name < b.cabDetails[0].cab_name) ? 1 : -1)
+            if(!this.curSortDir.cab_name){
+              let array = data.slice().sort((a, b) => (a.cabDetails.cab_name < b.cabDetails.cab_name) ? 1 : -1)
               this.trainerdata = array;
             }
-          }        
+          }
+
+          if(sortBy == 'cab_code'){
+            this.curSortDir.cab_code = !sortDir;
+            if(this.curSortDir.cab_code){
+              let array = data.slice().sort((a, b) => (a.cabDetails.cab_code > b.cabDetails.cab_code) ? 1 : -1)
+              this.trainerdata = array;
+            }
+            if(!this.curSortDir.cab_code){
+              let array = data.slice().sort((a, b) => (a.cabDetails.cab_code < b.cabDetails.cab_code) ? 1 : -1)
+              this.trainerdata = array;
+            }
+          }
+
+          if(sortBy == 'criteria_request'){
+            this.curSortDir.criteria_request = !sortDir;
+            if(this.curSortDir.criteria_request){
+              let array = data.slice().sort((a, b) => (a.criteria_request > b.criteria_request) ? 1 : -1)
+              this.trainerdata = array;
+            }
+            if(!this.curSortDir.criteria_request){
+              let array = data.slice().sort((a, b) => (a.criteria_request < b.criteria_request) ? 1 : -1)
+              this.trainerdata = array;
+            }
+          }
+
+          if(sortBy == 'country'){
+            this.curSortDir.country = !sortDir;
+            if(this.curSortDir.country){
+              let array = data.slice().sort((a, b) => (a.country > b.country) ? 1 : -1)
+              this.trainerdata = array;
+            }
+            if(!this.curSortDir.country){
+              let array = data.slice().sort((a, b) => (a.country < b.country) ? 1 : -1)
+              this.trainerdata = array;
+            }
+          }
+
       }
   }
 
@@ -616,7 +672,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   loadPageData(){ 
     //let url = this._service.apiServerUrl + "/" + this._constant.API_ENDPOINT.trainerAccredServList; 
     
-    //let url1 = 'https://dev-service.eiac.gov.ae/webservice/profile-service/?userType=cab_client&email=abhishek@navsoft.in';
+    //let url1 = 'https://uat-service.eiac.gov.ae/webservice/profile-service/?userType=cab_client&email=abhishek@navsoft.in';
     // console.log(">>API: ", url);
     // this._service.getwithoutData(url).subscribe(record => {
     //    console.log(">>> ", record);
@@ -637,7 +693,10 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
               let data: any = result;
               let dataRec: any=[];
               this.dataLoad = true;
-              console.log('loading...', data.records);
+              // console.log('loading...', data.records);
+              data.records.forEach((res,key) => {
+                data.records[key]['payment_status'] = res.payment_status == '' || res.payment_status == null || res.payment_status == 'pending' ? 'pending' : 'paid';
+              });
               // console.log(">>>List: ", data);
               this.trainerdata = data.records;
               dataRec = data.records;

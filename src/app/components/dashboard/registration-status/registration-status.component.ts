@@ -6,7 +6,7 @@ import { Constants } from '../../../services/constant.service';
 import { ToastrService, Overlay, OverlayContainer } from 'ngx-toastr';
 import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
-@Component({
+@Component({ 
   selector: 'app-registration-status',
   templateUrl: './registration-status.component.html',
   styleUrls: ['./registration-status.component.scss']
@@ -46,6 +46,7 @@ export class RegistrationStatusComponent implements OnInit {
   searchValue: any;
   searchText: any;
   selectAccrStatus: any[];
+  getCountryStateCityAll: any[] = [];
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, private exportAsService: ExportAsService) { } 
@@ -54,34 +55,52 @@ export class RegistrationStatusComponent implements OnInit {
     this.loadPageData();
     this.curSortDir['id']                 = false;
     this.curSortDir['created_date']       = false;
-    this.curSortDir['accr_status']        = false;
+    this.curSortDir['application_status']        = false;
     this.curSortDir['prelim_status']      = false;
     this.curSortDir['form_meta']          = false;
     this.curSortDir['payment_status']     = false;
-    this.curSortDir['applicant']          = false;
+    this.curSortDir['applicantName']            = false;
+    this.curSortDir['applicantCode']            = false;
+    this.curSortDir['country']            = false;
     this.userType = sessionStorage.getItem('type');
     this.selectRegType = [{title:'No Objection Certificate', value: 'no_objection'},{title:'Work Activity Permit', value:'work_activity'}];
     this.selectAccrStatus  = [
-      {title: 'Payment Pending', value:'pending'},
-      {title: 'Pending', value:'payment_pending'},
-      {title: 'Application Process', value:'application_process'},
+      {title: 'Payment Pending', value:'payment_pending'},
+      //{title: 'Pending', value:'payment_pending'},
       {title: 'Under Review', value:'under_review'},
       {title: 'Under Process', value:'under_process'},
       {title: 'Complete', value:'complete'},
       {title: 'Draft', value:'draft'}
-    ]
+    ];
+    this.loadCountryStateCityAll();
   }
 
-  changeFilter(theEvt: any){
+  loadCountryStateCityAll  = async() =>{
+    let cscLIST = this._service.getCSCAll();
+    await cscLIST.subscribe(record => {
+      console.log("...> ", record);
+      this.getCountryStateCityAll = record['Countries'];
+      console.log("...>>> ", this.getCountryStateCityAll);
+    });
+    //console.log("ALL CSC: ", this.getCountryStateCityAll);
+  }
+
+  changeFilter(theEvt: any, type?:any){
     console.log("@change: ", theEvt, " :: ", theEvt.value);
-    let getIdValue: string = theEvt.value;
+    let getIdValue: string = '';
+    if(type == undefined){
+      getIdValue= theEvt.value;
+    }
+    if(type != undefined){
+      getIdValue= theEvt;
+    }
     this.searchText = '';
     var myClasses = document.querySelectorAll('.slectType'),i = 0,length = myClasses.length;
        for (i; i < length; i++) {
           let elem: any = myClasses[i]
           console.log("@Elem: ", elem);
             elem.style.display = 'none';
-            if(getIdValue == 'cab_name' || getIdValue == 'cab_code') {
+            if(getIdValue == 'cab_name' || getIdValue == 'cab_code' || getIdValue == 'id') {
                 let getElementId = document.getElementById('textType');
                 getElementId.style.display = 'block';
             }else{
@@ -97,10 +116,20 @@ export class RegistrationStatusComponent implements OnInit {
     //this.loadPageData();
     console.log(this.show_data);
     console.log(">>>1 ", this.trainerdata);
-    this.pageLimit = this.show_data;
-    this.pageCurrentNumber = 1;
-    this.trainerdata.slice(0, this.show_data);
-    console.log(">>> ", this.trainerdata);
+    // this.pageLimit = this.show_data;
+    // this.pageCurrentNumber = 1;
+    // this.trainerdata.slice(0, this.show_data);
+    // console.log(">>> ", this.trainerdata);
+    if(this.show_data != 'all'){
+      this.pageLimit = this.show_data;
+      this.pageCurrentNumber = 1;
+      this.trainerdata.slice(0, this.show_data);
+    }else{
+      console.log('....');
+      this.pageLimit = this.pageTotal;
+      this.pageCurrentNumber = 1;
+      this.trainerdata.slice(0, this.pageTotal);
+    }
   }
 
   paginationReset() {
@@ -109,11 +138,15 @@ export class RegistrationStatusComponent implements OnInit {
 
   filterSearchReset(type?: string){
     //Reset serach
-    this.applicationNo = '' || null;
-    this.selectRegTypeValue = '' || null;
-    this.paymentStatusValue = '' || null;
+    
     this.show_data = this.pageLimit = 10;
     this.exportAs = null;
+    this.searchText = null;
+    this.searchValue = null;
+    this.changeFilter('id','reset');    
+    if(type != undefined && type != ''){
+      this.loadPageData();
+    }
     if(type != undefined && type != ''){
       this.loadPageData();
     }
@@ -319,6 +352,7 @@ export class RegistrationStatusComponent implements OnInit {
           console.log('loading...', data.records);
           // console.log(">>>List: ", data);
           this.trainerdata = data.records;
+          this.pageCurrentNumber = 1;
           dataRec = data.records;
           this.pageTotal = data.records.length;
         },
@@ -327,6 +361,10 @@ export class RegistrationStatusComponent implements OnInit {
         }
       )          
     )
+  }
+
+  isNumber(param: any){
+    return isNaN(param);
   }
 
   sortedList(data: any, sortBy: string, sortDir: boolean){
@@ -361,16 +399,16 @@ export class RegistrationStatusComponent implements OnInit {
          }
        }
        //By accr_status
-       if(sortBy == 'accr_status'){
-         this.curSortDir.accr_status = !sortDir;
+       if(sortBy == 'application_status'){
+         this.curSortDir.application_status = !sortDir;
          //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
-         if(this.curSortDir.accr_status){
-           let array = data.slice().sort((a, b) => (a.accr_status > b.accr_status) ? 1 : -1)
+         if(this.curSortDir.application_status){
+           let array = data.slice().sort((a, b) => (a.application_status > b.application_status) ? 1 : -1)
            this.trainerdata = array;
            //console.log("after:: ", array, " :: ", this.trainerdata);
          }
-         if(!this.curSortDir.accr_status){
-           let array = data.slice().sort((a, b) => (a.accr_status < b.accr_status) ? 1 : -1)
+         if(!this.curSortDir.application_status){
+           let array = data.slice().sort((a, b) => (a.application_status < b.application_status) ? 1 : -1)
            this.trainerdata = array;
          }
        }
@@ -388,6 +426,19 @@ export class RegistrationStatusComponent implements OnInit {
            this.trainerdata = array;
          }
        }
+       if(sortBy == 'country'){
+        this.curSortDir.country = !sortDir;
+        //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
+        if(this.curSortDir.country){
+          let array = data.slice().sort((a, b) => (a.country > b.country) ? 1 : -1)
+          this.trainerdata = array;
+          //console.log("after:: ", array, " :: ", this.trainerdata);
+        }
+        if(!this.curSortDir.country){
+          let array = data.slice().sort((a, b) => (a.country < b.country) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      } 
        //By form_meta
        if(sortBy == 'form_meta'){
          this.curSortDir.form_meta = !sortDir;
@@ -416,19 +467,34 @@ export class RegistrationStatusComponent implements OnInit {
            this.trainerdata = array;
          }
        }  
-       if(sortBy == 'applicant'){
-         this.curSortDir.applicant = !sortDir;
-         //console.log(">>>Enter payment_status...", data, " -- ", this.curSortDir.payment_status);
-         if(this.curSortDir.applicant){
-           let array = data.slice().sort((a, b) => (a.applicant > b.applicant) ? 1 : -1)
-           this.trainerdata = array;
-           //console.log("after:: ", array, " :: ", this.trainerdata);
-         }
-         if(!this.curSortDir.applicant){
-           let array = data.slice().sort((a, b) => (a.applicant < b.applicant) ? 1 : -1)
-           this.trainerdata = array;
-         }
-       }        
+        //By Prelim Status
+        if(sortBy == 'applicantName'){
+          this.curSortDir.applicantName = !sortDir;
+          //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
+          if(this.curSortDir.applicantName){
+            let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name > b.cabDetails[0].cab_name) ? 1 : -1)
+            this.trainerdata = array;
+            //console.log("after:: ", array, " :: ", this.trainerdata);
+          }
+          if(!this.curSortDir.applicantName){
+            let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_name < b.cabDetails[0].cab_name) ? 1 : -1)
+            this.trainerdata = array;
+          }
+        }
+        //By Prelim Status
+        if(sortBy == 'applicantCode'){
+          this.curSortDir.applicantCode = !sortDir;
+          //console.log(">>>Enter agreement_status...", data, " -- ", this.curSortDir.agreement_status);
+          if(this.curSortDir.applicantCode){
+            let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_code > b.cabDetails[0].cab_code) ? 1 : -1)
+            this.trainerdata = array;
+            //console.log("after:: ", array, " :: ", this.trainerdata);
+          }
+          if(!this.curSortDir.applicantCode){
+            let array = data.slice().sort((a, b) => (a.cabDetails[0].cab_code < b.cabDetails[0].cab_code) ? 1 : -1)
+            this.trainerdata = array;
+          }
+        }       
     }
   }
 }

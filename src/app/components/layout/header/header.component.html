@@ -30,15 +30,15 @@
                                         </li> -->
                                         <li>
                                             <a *ngIf="firstName" href="javascript:void(0)">
-                                                WELCOME {{firstName}}
+                                                Hello! {{firstName}}
                                             </a>
                                             <a *ngIf="firstName == '' || firstName == null" href="javascript:void(0)">
-                                                WELCOME USER
+                                                Hello! USER
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="javascript:void(0)" (click)="logOut()">
-                                                LOGOUT
+                                            <a href="javascript:void(0)" class="logout_icn" (click)="logOut()">
+                                                <span class="icon-turn-off"></span>
                                             </a>
                                         </li>
                                         <!-- <li><a href="javascript:void(0)" class="notify-port">

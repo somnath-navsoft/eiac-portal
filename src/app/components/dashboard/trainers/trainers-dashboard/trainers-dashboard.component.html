@@ -1,21 +1,21 @@
 <app-loader *ngIf="!loader"></app-loader>
 <div class="main-detail">
     <div class="container-fluid p-0">
-        <div class="main-dashboard">
+        <div class="main-dashboard main-dashboard-trainer">
             <div class="row">
                 <div class="col-md-6">
                     <div class="trainer-details">
                         <div class="trainer-name">
-                            <h4>Mr. Chris Jackson Joe</h4>
+                            <h4>{{userDetails?.first_name}} {{userDetails?.last_name}}</h4>
                             <div class="acc_verified">
                                 <span class="icon-check-circle"></span>
                                 <span class="tooltip_data">Account Verified</span>
                             </div>
                         </div>
-                        <div class="trainer-detail">
+                        <div class="trainer-detail"> 
                             <span class="trainer-data"><span class="icon-company"></span>{{step1Data?.office_address}}</span>
-                            <span class="trainer-data"><span class="icon-Page"></span>{{step1Data?.office_email}}</span>
-                            <span class="trainer-data"><span class="icon-call"></span>{{step1Data?.office_tel_no}}</span>
+                            <span class="trainer-data"><span class="icon-email"></span>{{step1Data?.email}}</span>
+                            <span class="trainer-data"><span class="icon-call"></span>{{step1Data?.phone}}</span>
                         </div>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                             <span>Type</span>
                         </div>
                         <div class="trainer-type-data"> 
-                            <span>{{step1Data?.designation}}</span>
+                            <span>{{education_specialization}}</span>
                         </div>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                 <div class="col-md-3">
                     <div class="trainer-main-details trainer2">
                         <div class="user-icons">
-                            <span class="icon-calendar"></span>
+                            <a href="javascript:void(0)" routerLink="/dashboard/event-list"><span class="icon-calendar"></span></a>
                         </div>
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
@@ -73,7 +73,7 @@
                             </div>
                             <div class="trainer-maindata">
                                 <span *ngIf="dashboardEvents != undefined">
-                                    {{dashboardEvents.length}}
+                                    {{dashboardItemData.eventCount}}
                                 </span>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                                 <span>Course Completed</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span>NA</span>
+                                <span>{{dashboardItemData.completeTrainingAppCount}}</span>
                             </div>
                         </div>
                     </div>
@@ -97,14 +97,14 @@
                 <div class="col-md-3">
                     <div class="trainer-main-details trainer4">
                         <div class="user-icons">
-                            <span class="icon-options"></span>
+                            <span class="icon-menu"></span>
                         </div>
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
                                 <span>Course Planned</span>
                             </div>
                             <div class="trainer-maindata">
-                                <span>NA</span>
+                                <span>{{dashboardItemData.plannedTrainingAppCount}}</span>
                             </div>
                         </div>
                     </div>
@@ -149,7 +149,7 @@
                         </div>
                     </div>
                 </div> -->
-                <div class="col-md-12">
+                <div class="col-md-12 p-0">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="tra_events">
@@ -170,7 +170,7 @@
                                 <div class="activity-details">
                                     <ul>
                                         <ng-container *ngFor = "let item of dashboardRecentUpdates">
-                                        <li>{{item.title}}<span> on {{item.date}} at {{item.time}}</span></li>
+                                        <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span>, {{item.title}} on {{item.date}} at {{item.time}}</span></li>
                                         </ng-container>
                                     </ul>
                                 </div>
@@ -217,9 +217,47 @@
             </div>
         </div>
 
+        <div class="col-md-12 p-0">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="tra_events">
+                        <div class="trainer_head">
+                            <h4>Calendar</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">   
+                    <!-- <ngx-fullcalendar #calendar (onNavLinkDayClick)="handleNavclick($event)"
+                    (onDateClick)="handleDateClick($event)" (onDayRender)="handleDay($event)"
+                    (onDatesRender)="handleDates($event)" (onEventClick)="handleEventClick($event)"
+                    defaultView="month" [events]="events" [options]="options"></ngx-fullcalendar> -->
+
+                    <!-- <ngx-fullcalendar defaultView="month" [events]="events" [options]="optionCal"></ngx-fullcalendar> -->
+
+
+                    <!-- <div *ngIf="options">
+                        <ng-fullcalendar #fullcalendar [options]="options" (eventClick)="eventClick($event.detail)" (eventDrop)="updateEvent($event.detail)"
+                            (eventResize)="updateEvent($event.detail)" (clickButton)="clickButton($event.detail)"></ng-fullcalendar>
+                    </div> class="" -->
+
+                    <!-- ng-fullcalendar example (dateClick)="dateClick($event)"
+                              (clickButton)="clickButton($event)" (eventClick)="eventClick($event)"-->
+                    <div class="event-datetime">
+                        <!-- <div id="calendar"></div>  -->
+                        <ng-container *ngIf="options">
+                            <ng-fullcalendar #fullcalendar [options]="options" (eventClick)="fullcanderClick($event)"></ng-fullcalendar>
+                        </ng-container>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
         <div class="event_data">
             <div class="row m-0">
-                <div class="col-md-12">
+                <div class="col-md-12 p-0">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="tra_events">
@@ -237,14 +275,14 @@
                                     <mat-accordion>
 
                                         <mat-expansion-panel (opened)="panelOpenState = true"
-                                        (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;">                                             
-                                            <mat-expansion-panel-header *ngIf="item.eventDate != undefined && item.eventDate.length > 0 && item.eventDate[0].event_date != null">
+                                        (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;" [expanded]="item.id == eventId ? true : false">                                             
+                                            <mat-expansion-panel-header >
                                                 <div class="ass-details" [ngStyle]="{'padding-bottom': '4px'}">
                                                     
                                                     <div class="date_content">
-                                                        <span class="date-dash" *ngIf="item.eventDate != undefined && item.eventDate.length > 0">
+                                                        <span class="date-dash">
                                                             <span>
-                                                                {{item.eventDate[0].event_date | date}}
+                                                                {{item.event_start_date_time | date}}
                                                             </span>
                                                         </span>
                                                         {{item.courseDetails.course}}
@@ -252,7 +290,7 @@
                                                 </div>
                                             </mat-expansion-panel-header>
 
-                                            <div class="ass-details">
+                                            <div class="ass-details ass-details_trainer">
                                                 
                                                 <div class="row ticket-cnt">
                                                     <div class="col-md-12">
@@ -271,8 +309,8 @@
                                                                     <h5>Date</h5>
                                                                 </div>
                                                                 <div class="counts">
-                                                                    <span *ngIf="item.eventDate != undefined && item.eventDate.length > 0">
-                                                                        {{item.eventDate[0].event_date | date}}
+                                                                    <span>
+                                                                        {{item.event_start_date_time | date}}
                                                                     </span>
                                                                 </div>
                                                             </div>
@@ -284,6 +322,7 @@
                                                                 </div>
                                                                 <div class="counts">
                                                                     <span *ngIf="item.courseDetails.location == 'eiac_training_center'">Eiac Training Center</span>
+                                                                    <span *ngIf="item.courseDetails.location == 'client_premisis'">Client Premise</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -294,6 +333,7 @@
                                                                 </div>
                                                                 <div class="counts">
                                                                     <span *ngIf="item.tutor != undefined && item.tutor.name != ''">{{item.tutor.name}}</span>
+                                                                    
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -325,7 +365,7 @@
                                     </mat-accordion>
                                 </ng-container>
                                 <ng-container *ngIf="dashboardEvents.length == 0">
-                                    <p>No Events</p>
+                                    <p class="no-event">No Events</p>
                                 </ng-container>
                             </div>
                         </div>
@@ -335,7 +375,7 @@
         </div>
         <div class="comments-section">
             <div class="row m-0">
-                <div class="col-md-12">
+                <div class="col-md-12 p-0">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="tra_events">

@@ -160,9 +160,13 @@ import { TrainingStatusComponent } from './components/dashboard/training-status/
 import { InpremiseApprovalListComponent } from './components/dashboard/operations/inpremise-approval-list/inpremise-approval-list.component';
 import { InpremiseApprovalDetailsComponent } from './components/dashboard/operations/inpremise-approval-details/inpremise-approval-details.component';
 import { SchemeListComponent } from './components/dashboard/cab/scheme-list/scheme-list.component';
+import { SchemeListOperationsComponent } from './components/dashboard/operations/scheme-list/operations-scheme-list.component';
 import { EventListsComponent } from './components/dashboard/cab/event-lists/event-lists.component';
 import { CertificationRecordsComponent } from './components/dashboard/cab/certification-records/certification-records.component';
 import { ExportAsModule } from 'ngx-export-as';
+import { FullCalendarModule } from 'ng-fullcalendar';
+import { NgxFullCalendarModule } from 'ngx-fullcalendar';
+import { OperationsCertificationsComponent } from './components/dashboard/operations/operations-certifications/operations-certifications.component'
 
 export const MY_FORMATS = {
   parse: {
@@ -230,14 +234,18 @@ export const MY_FORMATS = {
     InpremiseApprovalListComponent,
     InpremiseApprovalDetailsComponent,
     SchemeListComponent,
+    SchemeListOperationsComponent,
     EventListsComponent,
-    CertificationRecordsComponent
+    CertificationRecordsComponent,
+    OperationsCertificationsComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     NgxPayPalModule,
     StripeCheckoutModule,
+    FullCalendarModule,
+    NgxFullCalendarModule,
     PdfViewerModule,
     HttpClientModule,
     AppRoutingModule,

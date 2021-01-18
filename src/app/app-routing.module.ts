@@ -112,8 +112,11 @@ import { OperationsTrainingServiceDetailsComponent } from './components/dashboar
 import { InpremiseApprovalListComponent } from './components/dashboard/operations/inpremise-approval-list/inpremise-approval-list.component';
 import { InpremiseApprovalDetailsComponent } from './components/dashboard/operations/inpremise-approval-details/inpremise-approval-details.component';
 import { SchemeListComponent } from './components/dashboard/cab/scheme-list/scheme-list.component';
+import { SchemeListOperationsComponent } from './components/dashboard/operations/scheme-list/operations-scheme-list.component';
+
 import { EventListsComponent } from './components/dashboard/cab/event-lists/event-lists.component';
 import { CertificationRecordsComponent } from './components/dashboard/cab/certification-records/certification-records.component';
+import { OperationsCertificationsComponent } from './components/dashboard/operations/operations-certifications/operations-certifications.component'
 
 const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
@@ -124,6 +127,7 @@ const routes: Routes = [
       //Trainers
       { path: 'onboarding-message-list', component: MessageComponent, canActivate: [AuthGuard] },
       { path: 'status/:id', component: StatusComponent, canActivate: [AuthGuard] }, 
+      { path: 'certifications', component:OperationsCertificationsComponent, canActivate: [AuthGuard] },
       { path: 'registration-status', component: RegistrationStatusComponent, canActivate: [AuthGuard] }, 
       { path: 'training-status', component: TrainingStatusComponent, canActivate: [AuthGuard] }, 
       { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard] },
@@ -132,6 +136,8 @@ const routes: Routes = [
       { path: 'onboarding-message-list', component: MessageComponent, canActivate: [AuthGuard] },
       { path: 'message-detail/:id', component: MessageDetailComponent, canActivate: [AuthGuard] },
       { path: 'message-reply/:id', component: MessageReplyComponent, canActivate: [AuthGuard] },
+      { path: 'records', component:CertificationRecordsComponent, canActivate: [AuthGuard] },
+      { path: 'event-list', component:EventListsComponent, canActivate: [AuthGuard] },
       { path: 'trainers', component: TrainersComponent, canActivate: [AuthGuard],
         children: [
             { path: 'home', component:TrainersDashboardComponent, canActivate: [AuthGuard]},
@@ -159,6 +165,7 @@ const routes: Routes = [
           { path: '', redirectTo:'home', pathMatch:'full'},
           { path: 'home', component:OperationsDashboardComponent, canActivate: [AuthGuard]},
           { path: 'company-profile', component:OperationsCompanyProfileComponent, canActivate: [AuthGuard] },
+          //{ path: 'certifications', component:OperationsCertificationsComponent, canActivate: [AuthGuard] },
           { path: 'training-apply/:id', component:OperationsTrainerServiceComponent, canActivate: [AuthGuard] },
           { path: 'training-service', component:OperationsTrainerServiceListComponent, canActivate: [AuthGuard] },
           { path: 'accreditation-service-list', component:OperationsAccreditationServiceListComponent, canActivate: [AuthGuard] },
@@ -171,7 +178,7 @@ const routes: Routes = [
           { path: 'message-detail/:id', component:OperationsMessageDetailsComponent, canActivate: [AuthGuard] },
           { path: 'inpremise-approve', component:InpremiseApprovalListComponent, canActivate: [AuthGuard] },
           { path: 'inpremise-approve-detail/:id', component:InpremiseApprovalDetailsComponent, canActivate: [AuthGuard] },
-          { path: 'event-list', component:EventListsComponent, canActivate: [AuthGuard] },
+          { path: 'scheme-list', component:SchemeListOperationsComponent, canActivate: [AuthGuard] },          
         ] 
     }, 
 
@@ -219,7 +226,6 @@ const routes: Routes = [
         { path: 'company-profile', component:CabCompanyProfileComponent, canActivate: [AuthGuard] },
         { path: 'onboarding-message-list', component:CabMessage, canActivate: [AuthGuard] },
         { path: 'scheme-list', component:SchemeListComponent, canActivate: [AuthGuard] },
-        { path: 'certification-records', component:CertificationRecordsComponent, canActivate: [AuthGuard] },
       ]
     },
 

@@ -8,14 +8,34 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable } from 'rxjs';
+import { OptionsInput } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import { CalendarComponent, FullCalendarModule } from 'ng-fullcalendar';
 
+// import * as $ from 'jquery'; 
+// import 'fullcalendar';
+
+declare var $: any;
 @Component({
   selector: 'app-assessors-dashboard',
   templateUrl: './assessors-dashboard.component.html',
   styleUrls: ['./assessors-dashboard.component.scss']
 })
-export class AssessorsDashboardComponent implements OnInit {
+export class AssessorsDashboardComponent implements OnInit { 
+  //@ViewChild('calendar', { static: true }) calendar: any;
+  //options: FullCalendarOptions;
+  //options: OptionsInput;
+  eventsModel: any;
+  dashboardEvents: any = [];
+  //optionCal: FullCalendarOptions;
+  @ViewChild('fullcalendar', { static: true }) fullcalendar: CalendarComponent;
 
+  @ViewChild('calendar', { static: true }) calendar: any;
+  eventYear: string = '';
+  eventMonth: any;
+ // events: any[] = [];
+ //events: EventObject[];
   messageList: any = [];
   userId: any;
   loader: boolean = true;
@@ -59,14 +79,70 @@ export class AssessorsDashboardComponent implements OnInit {
   chatMessageFile: any = new FormData();
   localUrl: any;
   button_disable: any = true;
+  eventData: any[] = [];
+  options:any;
+  technicalFields: any[] =[];
+  technicalFieldsCount: number = 0;
+
   @ViewChild('fruitInput', { static: false }) fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
+  eventId:any;
+  yrsService: any;
+  assessorType: any[] =[];
+  assessorTypes: string = '';
+  totalYear: any = 0;
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
     this.config = {
       itemsPerPage: this.Service.dashBoardPagination,
       currentPage: 1,
     };
+  }
+
+
+  loadTechnicalFields(){
+    this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail+'&id='+this.userId)
+    .subscribe(
+      rec => {
+          let record: any = rec;
+          let data: any = record.data;
+
+          if(typeof data == 'object' && data.technical_field != undefined && data.technical_field.length > 0){
+              this.technicalFields = data.technical_field;
+          }
+          console.log(">>>Technical fields: ", this.technicalFields);
+          if(this.technicalFields.length > 0){
+            this.technicalFields.forEach(item => {
+                if(item.technical_fields != undefined && item.technical_fields != '' && 
+                    typeof item.technical_fields == 'object' && item.technical_fields.length > 0){
+                      console.log(">>>Count: ", item.technical_fields)
+                  // this.technicalFieldsCount += item.technical_fields.length;
+                }
+            })
+          }
+          console.log("@Total count: ", this.technicalFieldsCount);
+          
+      }
+    );
+
+  }
+
+  calcDays(date1,date2){
+    var diff = Math.floor(date1.getTime() - date2.getTime());
+    var day = 1000 * 60 * 60 * 24;
+
+    var days = Math.floor(diff/day);
+    var months = Math.floor(days/31);
+    var years = Math.floor(months/12);
+
+    var message = date2.toDateString();
+    //message += " was "
+    message += days + " days " 
+    message += months + " months "
+    message += years + " years ago \n"
+
+    console.log("Todat years: ", message);
+    return message;
   }
 
 
@@ -80,9 +156,58 @@ export class AssessorsDashboardComponent implements OnInit {
           this.loader = true;
           let getData: any = {};
           getData = res;
-          // console.log(res,'res');
+          console.log(res,'res');
           if (res['status'] == 200) {
             this.dashboardItemData = res['dashBoardData'];
+
+            this.technicalFieldsCount = this.dashboardItemData.technicalFieldsCount;
+
+            if(this.dashboardItemData.assessorDetails != undefined && this.dashboardItemData.assessorDetails.length > 0){
+                let assessorData: any = this.dashboardItemData.assessorDetails[0];
+               // this.dashboardItemData.assessorDetails[0].appointment_date = new Date('2019-10-10');
+                console.log("@Assesor data: ", assessorData);
+
+                let date = new Date();
+                let yr = date.getFullYear();
+                let month = date.getMonth() + 1;
+                let day = date.getDate();
+                let todays: any = new Date(yr+"-"+month+"-"+day);
+                let appintmentDate: any = new Date(assessorData.appointment_date);//new Date("2024-12-31");//;//
+                let diffDate: any = Math.round((todays - appintmentDate)/(1000*60*60*24))
+
+                var dateFrom = assessorData.appointment_date; 
+                var dateTo =todays;
+                var date1: any = new Date(dateFrom);
+                var date2: any = new Date(dateTo);
+                var diff=0;
+                let  monthp=31;
+                var days=1000*60*60*24;
+                diff=date2-date1; 
+                var dayp=(Math.floor(diff/days));   
+                var years = (Math.floor(dayp/365));
+                var months = Math.round(dayp % 365)/monthp;
+                let dayCal: any = Math.ceil(dayp*30);
+                let totalYears: string = years + "Years" + Math.ceil(months) + ' Months' + dayCal + ' Days';
+                if(this.totalYear < 10){
+                  this.totalYear = '0' + years;
+                }
+                
+                console.log(">>>Difference Year: ", diffDate, " -- ", this.calcDays(todays,appintmentDate), " -- ", years, " : ", months, " : ", dayp, " == ", totalYears);
+
+                if(assessorData.expert != undefined && assessorData.expert != null && assessorData.expert != '' && assessorData.expert == 'y'){
+                  this.assessorType.push('Expert');
+                }
+                if(assessorData.lead != undefined && assessorData.lead != null && assessorData.lead != '' && assessorData.lead == 'y'){
+                  this.assessorType.push('Lead');
+                }
+                if(assessorData.technical != undefined && assessorData.technical != null && assessorData.technical != '' && assessorData.technical == 'y'){
+                  this.assessorType.push('Technical');
+                }
+                if(this.assessorType.length > 0){
+                  this.assessorTypes = this.assessorType.join(',');
+                }
+
+            }
 
             console.log(">>>>> ", res['dashBoardData'], " == ", getData);
             //Get recent updates
@@ -98,8 +223,97 @@ export class AssessorsDashboardComponent implements OnInit {
               let time2 = datePart[2];
               let time = time1 + " " + time2;
               console.log(datePart, " == ", date, " -- ", time);
-              this.dashboardRecentUpdates.push({ title: "Assessor Last Login", date: date, time: time });
+              this.dashboardRecentUpdates.push({ title: "Last Login", date: date, time: time });
             }
+            //
+            //dashboardEvents
+            let curYear: any;
+            let curMonth: any;
+            let curDate: any = new Date();
+            curYear = curDate.getFullYear();
+            curMonth = curDate.getMonth() + 1;
+            //let eventCanderArr = []; 
+            console.log(">>>", curYear, " :: ", curMonth);
+            if (this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0) {
+              this.dashboardEvents = this.dashboardItemData.eventDetails;
+              console.log(">>>Events: ", this.dashboardEvents);
+              // let filterEvents: any[] =[];
+              // this.dashboardEvents.forEach(item => {
+              //   let evtStart: any = item.event_start_date_time;
+              //   let evtDate: any = new Date(evtStart);
+              //   let evtYear: any = evtDate.getFullYear();
+              //   let evtMonth: any = evtDate.getMonth() + 1;
+              //   console.log("@Evt datae: ", evtStart, " :: ", evtYear, " :: ", evtMonth);
+
+              //   if((curYear == evtYear) && (curMonth == evtMonth)){
+              //     filterEvents.push(item);
+              //     eventCanderArr.push({
+              //       id: item.id,
+              //       title: item.courseDetails.course,
+              //       start: item.event_start_date_time,
+              //       end: item.event_end_date_time
+              //     })
+              //   }
+                
+              // })
+              // this.dashboardEvents = filterEvents;
+            }
+
+            var eventCanderArr = [];
+            
+            this.dashboardEvents.forEach((res,key) => {
+              // console.log(res,'res');
+              // var tempObj = {}
+              // tempObj['title'] = res['courseDetails'].course;
+              // tempObj['start'] = res.event_start_date_time;
+              // tempObj['end'] = res.event_end_date_time;
+              // eventCanderArr.push(tempObj);
+              eventCanderArr.push({
+                id:res.id,
+                title:res['courseDetails'].course,
+                start:res.event_start_date_time,
+                end:res.event_end_date_time,
+              });
+            })
+
+          //   setTimeout(() => {
+          //     $("#calendar").fullCalendar({  
+          //                     header: {
+          //                         left   : 'prev,next today',
+          //                         center : 'title',
+          //                         right  : 'month,agendaWeek,agendaDay'
+          //                     },
+          //                     navLinks   : true,
+          //                     editable   : true,
+          //                     eventLimit : true,
+          //                     events: this.eventData,  // request to load current events
+          //                 });
+          //  }, 100);
+
+            this.options = {
+              editable: true,
+              events: eventCanderArr,
+              selectable: true,
+              eventLimit: true,
+              eventLimitText: "Click to more events...",
+              customButtons: {
+                myCustomButton: {
+                  text: 'custom!',
+                  click: function() {
+                    alert('clicked the custom button!');
+                  }
+                }
+              },
+              header: {
+                left: 'prev,next today myCustomButton',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+              },
+              firstDay: 1,
+              
+              plugins: [ dayGridPlugin, interactionPlugin ]
+            };
+
 
           }
           console.log(">>>> Load Data: ", res, " == ", this.dashboardRecentUpdates);
@@ -107,10 +321,83 @@ export class AssessorsDashboardComponent implements OnInit {
         });
   }
 
+
+  //Calendar hooks
+  //On Nav header click
+  handleNavclick(evtData: any) {
+    ////console.log('Nav Header Click - ', evtData);
+  }
+
+  //On Date click in any month
+  handleDateClick(evtData: any) {
+    ////console.log('Date Click - ', evtData);
+  }
+
+
+
+  //Handling day
+  handleDay(eventDay: any) {
+    ////console.log("Event Day: ", eventDay);
+    //elem - innerText/innerHTML/hidden/height/width/title/textContent
+    let dateObj = eventDay.date;
+    let elem = eventDay.el;
+    let output = eventDay.view;
+    output.header.el.innerText.toString().replace("Sun", 'Holiday');
+    output.header.el.innerText.toString().replace("Mon", 'AdDay');
+    if (new Date(dateObj).getDay() === 5 && output.header.el.innerText != undefined) {
+      //elem.title = "FFF";
+      //output.header.el.innerText = 'Sun Mon Tue Wed Thu Holiday Holiday';
+      let find = output.header.el.innerText.toString().toLowerCase().indexOf('fri');
+      if (find != -1) {
+        ////console.log('changing text haedrer...');
+        output.header.el.innerText.toString().replace("Fri", 'Holiday');
+      }
+      // //console.log('search fri: ', find);
+    }
+    if (new Date(dateObj).getDay() === 6 && elem.hidden != undefined) {
+      //elem.hidden = true;
+    }
+    // //console.log(eventDay, " :: ", dateObj, " - ", new Date(dateObj).getDay());
+  }
+  //fc-day fc-widget-content fc-tue fc-other-month fc-past
+  //fc-day-grid-event fc-h-event fc-event fc-start fc-end fc-allow-mouse-resize
+
+  handleDates(eventDates: any) {
+    ////console.log("Dates Event: ", eventDates);
+  }
+
+  //Click on event on calendar
+  handleEventClick(evtData: any) {
+    // console.log('Event Click - ', evtData);
+    let obj = {
+      // title : evtData.event._def.title,
+      title: evtData.calEvent.title,
+      // description : evtData.event._def.extendedProps.description,
+      description: evtData.calEvent.description,
+      // link : evtData.event._def.extendedProps.redirectUrl
+      link: evtData.calEvent.redirectUrl
+    };
+    // console.log('Event Click - ', title+description+link);
+    //this.uiDialog.eventCalenderDialog(obj);
+  }
+
+  //calendar hooks
+
   ngOnInit() {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.userId = sessionStorage.getItem('userId');
+    // this.options = {
+    //   defaultDate: new Date(),
+    //   editable: false,
+    //   navLinks: true,
+    //   weekends: true,
+    //   hiddenDays: [], //0-6 range day number        
+    // }
+    this.eventYear = new Date().getFullYear().toString();
+    let getMon = new Date().getMonth();
+    this.eventMonth = getMon + 1;
+
     this.loader = false;
     this.select_field = [
       { field: 'Internal Operations', value: 'Internal Operations' },      
@@ -129,6 +416,7 @@ export class AssessorsDashboardComponent implements OnInit {
         });
 
     this.loadDashData();
+    this.loadTechnicalFields();
 
     this.Service.getwithoutData(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.profileService + '?userType=' + this.userType + '&email=' + this.userEmail)
       .subscribe(
@@ -160,9 +448,85 @@ export class AssessorsDashboardComponent implements OnInit {
           this.recordsTotal = res['data'].recordsTotal;
           // console.log(res['data'].message_list);
         });
+        //this.yearMonth + '-07' || this.yearMonth + '-15'
+        // this.options = {
+        //   editable: true,
+        //   events: [{
+        //     title: 'Long Event',
+        //     start: '2020-12-07',
+        //     end: '2020-12-17'
+        //   },
+        //   {
+        //     title: 'Day Event',
+        //     start: '2020-12-20',
+        //     end: '2020-12-20'
+        //   }],
+        //   customButtons: {
+        //     myCustomButton: {
+        //       text: 'custom!',
+        //       click: function() {
+        //         alert('clicked the custom button!');
+        //       }
+        //     }
+        //   },
+        //   header: {
+        //     left: 'prev,next today myCustomButton',
+        //     center: 'title',
+        //     right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        //   },
+        //   plugins: [ dayGridPlugin, interactionPlugin ]
+        // };
+
+        // this.optionCal = {
+        //   defaultDate: new Date(),
+        //   editable: false,
+        //   navLinks: true,
+        //   weekends: true,
+        //   hiddenDays: [], //0-6 range day number        
+        // }
+        // this.events = [
+        //   { id: 'a', title: 'My Birthday', allDay: true },
+        //   { id: 'b', title: 'Friends coming round', start: '2018-07-26T18:00:00', end: '2018-07-26T23:00:00' }
+        // ]
+        // this.eventYear = new Date().getFullYear().toString();
+        // let getMont = new Date().getMonth();
+        // this.eventMonth = getMont + 1;
+  
+        // console.log(">>> Get month: ",this.eventMonth);
   }
+
+  fullcanderClick(obj) {
+
+    this.eventId = obj.event._def.publicId;
+    // console.log(eventId);
+  }
+
   getUserDetails(user) {
     sessionStorage.setItem('messageUserDetails', JSON.stringify(user));
+  }
+  eventClick(model) {
+    console.log(model);
+  }
+  eventDragStop(model) {
+    console.log(model);
+  }
+  clickButton(model) {
+    console.log(model);
+  }
+  dateClick(model) {
+    alert('....');
+    console.log(model);
+  }
+  updateEvents() {
+    this.eventsModel = [{
+      title: 'Updaten Event',
+      start: this.yearMonth + '-08',
+      end: this.yearMonth + '-10'
+    }];
+  }
+  get yearMonth(): string {
+    const dateObj = new Date();
+    return dateObj.getUTCFullYear() + '-' + (dateObj.getUTCMonth() + 1);
   }
 
   pageChanged(event) {
