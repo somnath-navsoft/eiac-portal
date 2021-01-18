@@ -145,6 +145,40 @@ export class AssessorsDashboardComponent implements OnInit {
     return message;
   }
 
+  getFormType(formMeta: string){
+    // | 
+      if(formMeta === 'health_care'){
+        return 'HP';
+      }
+      else if(formMeta === 'inspection_body'){
+        return 'IB';
+      }
+      else if(formMeta === 'testing_calibration'){
+        return 'TCL';
+      }
+      else if(formMeta === 'certification_bodies'){
+        return 'CB';
+      }
+      else if(formMeta === 'pt_providers'){
+        return 'PTP';
+      }
+      else if(formMeta === 'halal_conformity_bodies'){
+        return 'HCAB';
+      }else if(formMeta === 'inprimise'){
+        return 'In Premise Training';
+      }else if(formMeta === 'public_training'){
+        return 'Public Training';
+      }else if(formMeta === 'work_permit'){
+        return 'Work Activity Permit';
+      }else if(formMeta === 'no_objection'){
+        return 'No Objection Certificate';
+      }else if(formMeta === 'work_activity'){
+        return 'Work Activity Permit';
+      }else{
+        return 'NA';
+      }
+  }
+
 
   //Load Dashboatd data
   loadDashData() {
@@ -206,25 +240,34 @@ export class AssessorsDashboardComponent implements OnInit {
                 if(this.assessorType.length > 0){
                   this.assessorTypes = this.assessorType.join(',');
                 }
-
             }
-
             console.log(">>>>> ", res['dashBoardData'], " == ", getData);
             //Get recent updates
-            if (this.dashboardItemData.lastLogin != undefined) {
+            if (this.dashboardItemData.lastLogin != undefined) {              
               let datePart: any = this.dashboardItemData.lastLogin.toString().split(" ");
-              let date = datePart[0];
-              let time1 = datePart[1];
-              let time1Ar = time1.split(":");
-              console.log(">>>>... ", time1Ar, " -- ", time1Ar.length);
-              if (time1Ar.length == 1) {
-                time1 = time1 + ":00";
-              }
-              let time2 = datePart[2];
-              let time = time1 + " " + time2;
-              console.log(datePart, " == ", date, " -- ", time);
-              this.dashboardRecentUpdates.push({ title: "Last Login", date: date, time: time });
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Last Login ";
+              this.dashboardRecentUpdates.push({title: titleText,date: dateStr}); 
             }
+            if(this.dashboardItemData.lastAccrApplied != undefined){
+              let datePart: any = this.dashboardItemData.lastAccrApplied.toString().split(" ");
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Applied " + this.getFormType(this.dashboardItemData.lastAccrAppliedFormName) + " Application ";
+              this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
+            }
+            if(this.dashboardItemData.lastRegApplied != undefined){ 
+              let datePart: any = this.dashboardItemData.lastRegApplied.toString().split(" ");              
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Applied " + this.getFormType(this.dashboardItemData.lastRegAppliedFormName) + " Application ";
+              this.dashboardRecentUpdates.push({title:titleText,date:dateStr});
+            }
+            if(this.dashboardItemData.lastTrainingApplied != undefined){
+              let datePart: any = this.dashboardItemData.lastTrainingApplied.toString().split(" ");              
+              let dateStr: string = datePart[0] + " " + datePart[1];
+              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Applied " + this.getFormType(this.dashboardItemData.lastTrainingAppliedFormName) + " Application ";
+              this.dashboardRecentUpdates.push({title: titleText,date:dateStr});
+            }
+
             //
             //dashboardEvents
             let curYear: any;
@@ -272,7 +315,7 @@ export class AssessorsDashboardComponent implements OnInit {
                 id:res.id,
                 title:res['courseDetails'].course,
                 start:res.event_start_date_time,
-                end:res.event_end_date_time,
+                end:res.event_end_date_time, 
               });
             })
 
