@@ -87,7 +87,7 @@ export class AssessorsCompanyProfileComponent implements OnInit {
         this.cabStep1 = res['data']['step1'][0];
         this.cabStep2 = res['data']['step2'];
 
-        console.log(">>>>", this.cabUserDetails);
+        console.log("cabUserDetails", this.cabUserDetails);
 
         //Calculate progression
         /*if(res['data'].step1 !='' && res['data'].step1[0] && res['data'].step1[0].dob != null && res['data'].step1[0].official_email !='' && res['data'].step1[0].office_tel_no !='' && res['data'].step1[0].designation !='' && res['data'].step1[0].nationality != null && res['data'].step1[0].mailing_address !='' && res['data'].step1[0].office !='' && res['data'].step1[0].tel_no !='' && res['data'].step1[0].office_address !='') {

@@ -86,40 +86,21 @@ export class TrainersDashboardComponent implements OnInit {
     };
   }
 
-  getFormType(formMeta: string){
-    // | 
-      if(formMeta === 'health_care'){
-        return 'HP';
-      }
-      else if(formMeta === 'inspection_body'){
-        return 'IB';
-      }
-      else if(formMeta === 'testing_calibration'){
-        return 'TCL';
-      }
-      else if(formMeta === 'certification_bodies'){
-        return 'CB';
-      }
-      else if(formMeta === 'pt_providers'){
-        return 'PTP';
-      }
-      else if(formMeta === 'halal_conformity_bodies'){
-        return 'HCAB';
-      }else if(formMeta === 'inprimise'){
-        return 'In Premise Training';
-      }else if(formMeta === 'public_training'){
-        return 'Public Training';
-      }else if(formMeta === 'work_permit'){
-        return 'Work Activity Permit';
-      }else if(formMeta === 'no_objection'){
-        return 'No Objection Certificate';
-      }else if(formMeta === 'work_activity'){
-        return 'Work Activity Permit';
-      }else{
-        return 'NA';
-      }
+  checkStatus(item) {
+    let date = new Date();
+    let yr = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let todays: any = new Date(yr+"-"+month+"-"+day);
+    let expiryData: any = new Date(item['eventDate'][item['eventDate'].length - 1].event_date);//new Date("2024-12-31");//;//
+    let diffDate: any = Math.round((expiryData-todays)/(1000*60*60*24))
+    if(diffDate > 0){
+      return 'Active';
+    }else{
+      return 'InActive';
+    }
+    
   }
-
   //Load Dashboatd data
   loadDashData() {
     this.loader = false;
@@ -139,9 +120,6 @@ export class TrainersDashboardComponent implements OnInit {
             curYear = curDate.getFullYear();
             curMonth = curDate.getMonth() + 1;
             var eventCanderArr = []; 
-
-            console.log("@ Dashboard Data: ", this.dashboardItemData);
-
             if (this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0) {
               this.dashboardEvents = this.dashboardItemData.eventDetails;
               // console.log(">>>Events: ", this.dashboardEvents);
@@ -176,50 +154,101 @@ export class TrainersDashboardComponent implements OnInit {
               eventCanderArr.push({
                 id:res.id,
                 title:res['courseDetails'].course,
-                start:res.event_start_date_time,
-                end:res.event_end_date_time,
+                start:res['eventDate'][0].event_date,
+                end:res['eventDate'][res['eventDate'].length - 1].event_date,
               });
             })
+            console.log(this.dashboardEvents,'dashboardEvents')
 
             //Get recent updates
             if (this.dashboardItemData.lastLogin != undefined) {
               // let dt = new Date(this.dashboardItemData.lastLogin);
               // let date = dt.toLocaleDateString();
               // let time = dt.toLocaleTimeString();
-              // let datePart: any = this.dashboardItemData.lastLogin.toString().split(" ");
-              // let date = datePart[0];
-              // let time1 = datePart[1];
-              // let time1Ar = time1.split(":");
-              // console.log(">>>>... ", time1Ar, " -- ", time1Ar.length);
-              // if (time1Ar.length == 1) {
-              //   time1 = time1 + ":00";
-              // }
-              // let time2 = datePart[2];
-              // let time = time1 + " " + time2;
-              // console.log(datePart, " == ", date, " -- ", time);
-              // this.dashboardRecentUpdates.push({ title: "Last Login", date: date, time: time });
               let datePart: any = this.dashboardItemData.lastLogin.toString().split(" ");
-              let dateStr: string = datePart[0] + " " + datePart[1];
-              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Last Login ";
-              this.dashboardRecentUpdates.push({title: titleText,date: dateStr}); 
+              let date = datePart[0];
+              let time1 = datePart[1];
+              let time1Ar = time1.split(":");
+              console.log(">>>>... ", time1Ar, " -- ", time1Ar.length);
+              if (time1Ar.length == 1) {
+                time1 = time1 + ":00";
+              }
+              let time2 = datePart[2];
+              let time = time1 + " " + time2;
+              console.log(datePart, " == ", date, " -- ", time);
+              this.dashboardRecentUpdates.push({ title: "Last Login", date: date, time: time });
             }
-            if(this.dashboardItemData.lastAccrPayment != undefined){
+            if (this.dashboardItemData.lastAccrApplied != undefined) {
+              let datePart: any = this.dashboardItemData.lastAccrApplied.toString().split(" ");
+              let date = datePart[0];
+              let time1 = datePart[1];
+              let time1Ar = time1.split(":");
+              if (time1Ar.length == 1) {
+                time1 = time1 + ":00";
+              }
+              let time2 = datePart[2];
+              let time = time1 + " " + time2;
+              this.dashboardRecentUpdates.push({ title: "Accreditation Applied", date: date, time: time });
+            }
+            if (this.dashboardItemData.lastRegApplied != undefined) {
+              let datePart: any = this.dashboardItemData.lastRegApplied.toString().split(" ");
+              let date = datePart[0];
+              let time1 = datePart[1];
+              let time1Ar = time1.split(":");
+              if (time1Ar.length == 1) {
+                time1 = time1 + ":00";
+              }
+              let time2 = datePart[2];
+              let time = time1 + " " + time2;
+              this.dashboardRecentUpdates.push({ title: "Registration Applied", date: date, time: time });
+            }
+            if (this.dashboardItemData.lastTrainingApplied != undefined) {
+              let datePart: any = this.dashboardItemData.lastTrainingApplied.toString().split(" ");
+              let date = datePart[0];
+              let time1 = datePart[1];
+              let time1Ar = time1.split(":");
+              if (time1Ar.length == 1) {
+                time1 = time1 + ":00";
+              }
+              let time2 = datePart[2];
+              let time = time1 + " " + time2;
+              this.dashboardRecentUpdates.push({ title: "Training Applied", date: date, time: time });
+            }
+            if (this.dashboardItemData.lastAccrPayment != undefined) {
               let datePart: any = this.dashboardItemData.lastAccrPayment.toString().split(" ");
-              let dateStr: string = datePart[0] + " " + datePart[1];
-              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Accreditaion Payment details of " + this.getFormType(this.dashboardItemData.lastAccrPayFormName) + " Updated ";
-              this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
+              let date = datePart[0];
+              let time1 = datePart[1];
+              let time1Ar = time1.split(":");
+              if (time1Ar.length == 1) {
+                time1 = time1 + ":00";
+              }
+              let time2 = datePart[2];
+              let time = time1 + " " + time2;
+              this.dashboardRecentUpdates.push({ title: "Accreditation Payment", date: date, time: time });
             }
-            if(this.dashboardItemData.lastRegPayment != undefined){
-              let datePart: any = this.dashboardItemData.lastRegPayment.toString().split(" ");              
-              let dateStr: string = datePart[0] + " " + datePart[1];
-              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Registration Payment details of " + this.getFormType(this.dashboardItemData.lastRegPayFormName) + " Updated ";
-              this.dashboardRecentUpdates.push({title:titleText,date:dateStr});
+            if (this.dashboardItemData.lastRegPayment != undefined) {
+              let datePart: any = this.dashboardItemData.lastRegPayment.toString().split(" ");
+              let date = datePart[0];
+              let time1 = datePart[1];
+              let time1Ar = time1.split(":");
+              if (time1Ar.length == 1) {
+                time1 = time1 + ":00";
+              }
+              let time2 = datePart[2];
+              let time = time1 + " " + time2;
+              this.dashboardRecentUpdates.push({ title: "Registration Payment", date: date, time: time });
             }
-            if(this.dashboardItemData.lastTrainingPayment != undefined){
-              let datePart: any = this.dashboardItemData.lastTrainingPayment.toString().split(" ");              
-              let dateStr: string = datePart[0] + " " + datePart[1];
-              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Training Payment details of " + this.getFormType(this.dashboardItemData.lastTrainingPayFormName) + " Updated ";
-              this.dashboardRecentUpdates.push({title: titleText,date:dateStr});
+            if (this.dashboardItemData.lastTrainingPayment != undefined) {
+              let datePart: any = this.dashboardItemData.lastTrainingPayment.toString().split(" ");
+              let date = datePart[0];
+              let time1 = datePart[1];
+              let time1Ar = time1.split(":");
+              if (time1Ar.length == 1) {
+                time1 = time1 + ":00";
+              }
+              let time2 = datePart[2];
+              let time = time1 + " " + time2;
+              this.dashboardRecentUpdates.push({ title: "Training Payment", date: date, time: time });
             }
           }
 
@@ -286,18 +315,21 @@ export class TrainersDashboardComponent implements OnInit {
           this.loader = true;
         });
 
-    this.loadDashData();
+    
 
     this.Service.getwithoutData(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.profileService + '?userType=' + this.userType + '&email=' + this.userEmail)
       .subscribe(
         res => {
           this.loader = true;
           this.userDetails = res['data']['user_data'][0];
+          if(typeof this.userDetails != undefined) {
+            this.loadDashData();
+          }
           this.step1Data = res['data']['step1'][0];
           //this.step2Data = res['data']['step2']['education'][0];
           var education = res['data'].step2['all_data'] && res['data'].step2['all_data'][0].education && res['data'].step2['all_data'][0].education != null ? JSON.parse(res['data'].step2['all_data'][0].education) : null;
           this.education_specialization = education.specialization;
-          console.log(res, 'res');
+          // console.log(res, 'res');
         });
 
     this.loader = false;

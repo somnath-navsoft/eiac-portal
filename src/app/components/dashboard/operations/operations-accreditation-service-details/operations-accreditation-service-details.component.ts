@@ -107,7 +107,6 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
     this.ILAAgreement     = ('https://uat-service.eiac.gov.ae/media/publication/files/EIAC%20ILAC%20MRA%20Mark%20Agreement%20with%20CAB.pdf');;
     this.loadAppInfo();
     this.loadData();
-    
   }
   onError(error: any) {
     // do anything

@@ -125,6 +125,23 @@ export class CandidateDashboardComponent implements OnInit {
       }
   }
 
+  checkStatus(item) {
+    let date = new Date();
+    let yr = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let todays: any = new Date(yr+"-"+month+"-"+day);
+    let expiryData: any = new Date(item['eventDate'][item['eventDate'].length - 1].event_date);//new Date("2024-12-31");//;//
+    let diffDate: any = Math.round((expiryData-todays)/(1000*60*60*24));
+    // console.log(diffDate,'diffDate');
+    if(diffDate > 0){
+      return 'Active';
+    }else{
+      return 'InActive';
+    }
+    
+  }
+
   //Load Dashboatd data
   loadDashData(){
     this.loader = false;
@@ -157,15 +174,15 @@ export class CandidateDashboardComponent implements OnInit {
                 let evtMonth: any = evtDate.getMonth() + 1;
                 console.log("@Evt datae: ", evtStart, " :: ", evtYear, " :: ", evtMonth);
 
-                if(item.event_type == 'public_course_event'){ 
+                // if(item.event_type == 'public_course_event'){ 
                   filterEvents.push(item);
                   eventCanderArr.push({
                     id: item.id,
-                    title: item.courseDetails.course,
-                    start: item.event_start_date_time,
-                    end: item.event_end_date_time
+                    title: item['courseDetails'].course,
+                    start:item['eventDate'][0].event_date,
+                    end:item['eventDate'][item['eventDate'].length - 1].event_date,
                   })
-                }                
+                // }                
               })
               this.dashboardEvents = filterEvents;
             }
