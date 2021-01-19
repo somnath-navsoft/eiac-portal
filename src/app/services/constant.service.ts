@@ -40,6 +40,8 @@ export class Constants{
 		proformaAccrSave: 'webservice/proforma-step-accr/',
 		accountPaymentSave: 'webservice/account-payment-save/',
 
+		paymentGateway: 'webservice/payment_settings',
+
 		savePublicTrainingForm:'trainer/training-application-form/',
 
 		searchCourse: 'trainer/search-course/',

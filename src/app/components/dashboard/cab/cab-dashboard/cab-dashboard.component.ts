@@ -176,7 +176,7 @@ export class CabDashboardComponent implements OnInit {
             }
             if(this.dashboardItemData.lastTrainingApplied != undefined){
               let datePart: any = this.dashboardItemData.lastTrainingApplied.toString().split(" ");
-              // let date = datePart[0];
+              // let date = datePart[0]; 
               // let time1 = datePart[1];
               // let time1Ar = time1.split(":");
               // if(time1Ar.length == 1){
@@ -318,7 +318,7 @@ export class CabDashboardComponent implements OnInit {
         });
         setTimeout(() => {
           this.loadDashData(); 
-        },100)
+        },1000)
   }
 
   getUserDetails(user) {

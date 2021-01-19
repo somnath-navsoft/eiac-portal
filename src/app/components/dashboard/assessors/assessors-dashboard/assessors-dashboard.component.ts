@@ -209,22 +209,25 @@ export class AssessorsDashboardComponent implements OnInit {
                 let appintmentDate: any = new Date(assessorData.appointment_date);//new Date("2024-12-31");//;//
                 let diffDate: any = Math.round((todays - appintmentDate)/(1000*60*60*24))
 
-                var dateFrom = assessorData.appointment_date; 
-                var dateTo =todays;
-                var date1: any = new Date(dateFrom);
-                var date2: any = new Date(dateTo);
-                var diff=0;
-                let  monthp=31;
-                var days=1000*60*60*24;
-                diff=date2-date1; 
-                var dayp=(Math.floor(diff/days));   
-                var years = (Math.floor(dayp/365));
-                var months = Math.round(dayp % 365)/monthp;
-                let dayCal: any = Math.ceil(dayp*30);
-                let totalYears: string = years + "Years" + Math.ceil(months) + ' Months' + dayCal + ' Days';
-                if(this.totalYear < 10){
-                  this.totalYear = '0' + years;
+                if( assessorData.appointment_date !=  null){
+                  var dateFrom = assessorData.appointment_date; 
+                  var dateTo =todays;
+                  var date1: any = new Date(dateFrom);
+                  var date2: any = new Date(dateTo);
+                  var diff=0;
+                  let  monthp=31;
+                  var days=1000*60*60*24;
+                  diff=date2-date1; 
+                  var dayp=(Math.floor(diff/days));   
+                  var years = (Math.floor(dayp/365));
+                  var months = Math.round(dayp % 365)/monthp;
+                  let dayCal: any = Math.ceil(dayp*30);
+                  var totalYears: string = years + "Years" + Math.ceil(months) + ' Months' + dayCal + ' Days';
+                  if(this.totalYear < 10){
+                    this.totalYear = '0' + years;
+                  }
                 }
+                    
                 
                 console.log(">>>Difference Year: ", diffDate, " -- ", this.calcDays(todays,appintmentDate), " -- ", years, " : ", months, " : ", dayp, " == ", totalYears);
 
@@ -241,7 +244,7 @@ export class AssessorsDashboardComponent implements OnInit {
                   this.assessorTypes = this.assessorType.join(',');
                 }
             }
-            console.log(">>>>> ", res['dashBoardData'], " == ", getData);
+            console.log(">>>>> ", res['dashBoardData'], " == ", getData, " -- ", this.userDetails);
             //Get recent updates
             if (this.dashboardItemData.lastLogin != undefined) {              
               let datePart: any = this.dashboardItemData.lastLogin.toString().split(" ");

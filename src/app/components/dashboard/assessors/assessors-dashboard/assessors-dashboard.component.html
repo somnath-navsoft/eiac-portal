@@ -125,7 +125,8 @@
                                 <span>Years in Service</span>
                             </div>
                             <div class="trainer-maindata"  [ngStyle]="{'padding-left':'8px'}">
-                                <span>{{totalYear}}</span>
+                                <span *ngIf="totalYear > 0">{{totalYear}}</span>
+                                <span *ngIf="totalYear == 0">NA</span>
                             </div>
                         </div>
                     </div>
