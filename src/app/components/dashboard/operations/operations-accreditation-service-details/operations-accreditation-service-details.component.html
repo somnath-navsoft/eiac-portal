@@ -1778,7 +1778,7 @@
                       <td>Mobile Number</td>
                       <td *ngIf="paymentDetails?.mobile_no != null" colspan="3">{{_service.removePlus(paymentDetails?.mobile_no)}}</td>
                     </tr>
-                    <tr *ngIf="paymentDetails?.voucher_invoice != ''">
+                    <tr *ngIf="paymentDetails?.voucher_invoice != '' && userType != 'cab_client'">
                       <td>Voucher Receipt File</td>                      
                       <td *ngIf="paymentDetails?.voucher_invoice != ''" colspan="3">
                         <a [href]="_constant.mediaPath+'/media/'+paymentDetails?.voucher_invoice" target="_blank">
@@ -1786,7 +1786,7 @@
                         </a>
                       </td>
                     </tr>
-                    <tr *ngIf="paymentDetails?.payment_receipt != ''">
+                    <tr *ngIf="paymentDetails?.payment_receipt != '' && userType != 'cab_client'">
                       <td>Payment Receipt File</td>
                       <td *ngIf="paymentDetails?.payment_receipt != null" colspan="3">
                         <a [href]="_constant.mediaPath+'/media/'+paymentDetails?.payment_receipt" target="_blank">

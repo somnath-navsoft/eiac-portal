@@ -282,7 +282,7 @@
                                                         <div class="date_content">
                                                             <span class="date-dash">
                                                                 <span>
-                                                                    {{item.event_start_date_time | date}}
+                                                                    {{item['eventDate'][0].event_date | date}}
                                                                 </span>
                                                             </span>
                                                             {{item.courseDetails.course}}
@@ -310,7 +310,7 @@
                                                                 </div>
                                                                 <div class="counts">
                                                                     <span>
-                                                                        {{item.event_start_date_time | date}}
+                                                                        {{item['eventDate'][0].event_date | date | date}}
                                                                     </span>
                                                                 </div>
                                                             </div>
@@ -342,7 +342,7 @@
                                                                     <h5>Persons</h5>
                                                                 </div>
                                                                 <div class="counts">
-                                                                    <span *ngIf="item.courseDetails.allTargatedAud != undefined">{{item.courseDetails.allTargatedAud.length}}</span>
+                                                                    <span *ngIf="item.courseDetails.allTargatedAud != undefined">{{item.capacity}}</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -352,8 +352,9 @@
                                                                     <h5>Status</h5>
                                                                 </div>
                                                                 <div class="counts">
-                                                                    <span *ngIf="item.courseDetails.status != undefined && item.courseDetails.status == true">Active</span>
-                                                                    <span *ngIf="item.courseDetails.status != undefined && item.courseDetails.status == false">InActive</span>
+                                                                    <!-- <span *ngIf="item.courseDetails.status != undefined && item.courseDetails.status == true">Active</span>
+                                                                    <span *ngIf="item.courseDetails.status != undefined && item.courseDetails.status == false">InActive</span> -->
+                                                                    <span [innerHtml]="checkStatus(item)"></span>
                                                                 </div>
                                                             </div>
                                                         </div>
