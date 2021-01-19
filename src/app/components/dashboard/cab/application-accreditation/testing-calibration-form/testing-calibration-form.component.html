@@ -1624,7 +1624,7 @@
                                             <div class="authData">
                                                 
                                                 <mat-checkbox name="undertaking_confirmTop3" (change)="authorizeCheckCount($event)"
-                                                [(ngModel)]="authorizationList.undertaking_confirmTop3">Do you require ILAC MRA Mark Laboratories</mat-checkbox>
+                                                [(ngModel)]="authorizationList.undertaking_confirmTop3">Do you require ILAC MRA Mark</mat-checkbox>
                                             </div>
                                             <div class="terms-condition" style="height:500px;overflow:auto" *ngIf="authorizationList.undertaking_confirmTop3">
                                                 <div class="tnc" [innerHTML]="(termsILA != undefined && termsILA.content != undefined) ? termsILA.content : ''"></div>
@@ -1945,27 +1945,23 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Voucher Code</mat-label>
-                                                <input type="number" [ngModelOptions]="{standalone: true}" required="true"
-                                                matInput placeholder="Voucher Code" 
+                                                <input type="number" [ngModelOptions]="{standalone: true}" matInput placeholder="Voucher Code" readonly
                                                 [(ngModel)]="voucherSentData.voucher_code">
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-4">
-                                            <!-- (click)="Service._openCalendar(payment_date)" -->
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Payment Date</mat-label>
-                                                <input matInput [matDatepicker]="payment_date" 
-                                                [min]="minDate" name="payment_date" readonly
+                                                <input matInput [matDatepicker]="payment_date" (click)="Service._openCalendar(payment_date)" [min]="minDate" name="payment_date" 
                                                 [(ngModel)]="voucherSentData.payment_date" placeholder="Payment Date" required>
-                                                <!-- <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle> -->
+                                                <mat-datepicker-toggle matSuffix [for]="payment_date" (click)="Service._openCalendar(payment_date)"></mat-datepicker-toggle>
                                                 <mat-datepicker #payment_date disabled="false"></mat-datepicker>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Payment Amount</mat-label>
-                                                <input type="number" [ngModelOptions]="{standalone: true}" required="true"
-                                                matInput placeholder="Payment Amount" 
+                                                <input type="number" [ngModelOptions]="{standalone: true}" required matInput placeholder="Payment Amount" 
                                                 [(ngModel)]="voucherSentData.amount">
                                             </mat-form-field>
                                         </div>

@@ -82,11 +82,15 @@
                 <div class="col-md-3">
                     <div class="trainer-main-details trainer3">
                         <div class="user-icons">
-                            <span class="icon-tick"></span>
+                            <a href="javascript:void(0)" routerLink="/dashboard/event-list">
+                                <span class="icon-tick"></span>
+                            </a>
                         </div>
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
-                                <span>Course Completed</span>
+                                <a href="javascript:void(0)" routerLink="/dashboard/event-list">
+                                    <span>Course Completed</span>
+                                </a>
                             </div>
                             <div class="trainer-maindata">
                                 <span>{{dashboardItemData.completeTrainingAppCount}}</span>
@@ -97,11 +101,15 @@
                 <div class="col-md-3">
                     <div class="trainer-main-details trainer4">
                         <div class="user-icons">
-                            <span class="icon-menu"></span>
+                            <a href="javascript:void(0)" routerLink="/dashboard/event-list">
+                                <span class="icon-menu"></span>
+                            </a>
                         </div>
                         <div class="trainer-data-det">
                             <div class="trainer-pro">
-                                <span>Course Planned</span>
+                                <a href="javascript:void(0)" routerLink="/dashboard/event-list">
+                                    <span>Course Planned</span>
+                                </a>
                             </div>
                             <div class="trainer-maindata">
                                 <span>{{dashboardItemData.plannedTrainingAppCount}}</span>
@@ -170,7 +178,8 @@
                                 <div class="activity-details">
                                     <ul>
                                         <ng-container *ngFor = "let item of dashboardRecentUpdates">
-                                        <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span>, {{item.title}} on {{item.date}} at {{item.time}}</span></li>
+                                        <!-- <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span>, {{item.title}} on {{item.date}} at {{item.time}}</span></li> -->
+                                        <li>{{item.title}}<span> on {{item.date | date: 'dd/MM/y, h:mm:ss a'}}</span></li>
                                         </ng-container>
                                     </ul>
                                 </div>
@@ -282,7 +291,7 @@
                                                     <div class="date_content">
                                                         <span class="date-dash">
                                                             <span>
-                                                                {{item.event_start_date_time | date}}
+                                                                {{item['eventDate'][0].event_date | date}}
                                                             </span>
                                                         </span>
                                                         {{item.courseDetails.course}}
@@ -310,7 +319,7 @@
                                                                 </div>
                                                                 <div class="counts">
                                                                     <span>
-                                                                        {{item.event_start_date_time | date}}
+                                                                        {{item['eventDate'][0].event_date | date | date}}
                                                                     </span>
                                                                 </div>
                                                             </div>
@@ -343,7 +352,7 @@
                                                                     <h5>Persons</h5>
                                                                 </div>
                                                                 <div class="counts">
-                                                                    <span *ngIf="item.courseDetails.allTargatedAud != undefined">{{item.courseDetails.allTargatedAud.length}}</span>
+                                                                    <span *ngIf="item.courseDetails.allTargatedAud != undefined">{{item.capacity}}</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -353,8 +362,10 @@
                                                                     <h5>Status</h5>
                                                                 </div>
                                                                 <div class="counts">
-                                                                    <span *ngIf="item.courseDetails.status != undefined && item.courseDetails.status == true">Active</span>
-                                                                    <span *ngIf="item.courseDetails.status != undefined && item.courseDetails.status == false">InActive</span>
+                                                                    <!-- <span *ngIf="item.courseDetails.status != undefined && item.courseDetails.status == true">Active</span>
+                                                                    <span *ngIf="item.courseDetails.status != undefined && item.courseDetails.status == false">InActive</span> -->
+
+                                                                    <span [innerHtml]="checkStatus(item)"></span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -423,7 +434,7 @@
                     </div>
                     <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
 
-                    <div class="row" hidden>
+                    <div class="row">
                         <div class="col-md-12">
                             <div class="cmnt-content">
                                 <form #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)">

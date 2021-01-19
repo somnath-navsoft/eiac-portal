@@ -185,6 +185,7 @@ export class TrainersProfileComponent implements OnInit {
             // this.headerSteps[2].stepComp = true;
           }if(res['data'].step3 != '' && res['data'].step3[0] && res['data'].step3[0].place && res['data'].step3[0].place != null && res['data'].step3[0].registration_date != null && res['data'].step3[0].signature != null) {
             this.progressValue = 100;
+            this.Service.moveSteps('educational_information','applicant_trainer', this.headerSteps);
           }
 
           if(res['data'].step1 && res['data'].step1 != '' && res['data'].step1[0]) {

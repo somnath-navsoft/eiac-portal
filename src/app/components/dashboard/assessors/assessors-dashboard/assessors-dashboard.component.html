@@ -3,7 +3,7 @@
     <div class="container-fluid p-0">
         <div class="main-dashboard">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <div class="trainer-details" >
                         <div class="trainer-name">
                             <h4>{{userDetails?.first_name}} {{userDetails?.last_name}}</h4>
@@ -19,17 +19,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <div class="trainer-content">
                         <div class="trainer-type">
                             <span>Type</span>
                         </div>
                         <div class="trainer-type-data">
-                            <span>{{assessorTypes}}</span>
+                            <span>{{step1Data.designation}}</span>
                         </div>
                     </div>
                 </div>
-                <!-- <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="trainer-content">
                         <div class="trainer-type">
                             <span>Technical Fields</span>
@@ -38,7 +38,7 @@
                             <span>{{step2Data?.specialization}}<span class="icon-checkmark"></span></span>
                         </div>
                     </div>
-                </div> -->
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-3">
@@ -113,7 +113,9 @@
                                     <ng-container *ngIf="dashboardItemData.assessorDetails[0].appointment_date != null && dashboardItemData.assessorDetails[0].appointment_date != ''">
                                         <span>{{dashboardItemData.assessorDetails[0].appointment_date | date:'y'}}</span>
                                     </ng-container>
-                                    
+                                    <ng-container *ngIf="dashboardItemData.assessorDetails[0].appointment_date == null || dashboardItemData.assessorDetails[0].appointment_date != ''">
+                                        NA
+                                    </ng-container>                                    
                                 </ng-container>
                                 
                             </div>
@@ -123,7 +125,8 @@
                                 <span>Years in Service</span>
                             </div>
                             <div class="trainer-maindata"  [ngStyle]="{'padding-left':'8px'}">
-                                <span>{{totalYear}}</span>
+                                <span *ngIf="totalYear > 0">{{totalYear}}</span>
+                                <span *ngIf="totalYear == 0">NA</span>
                             </div>
                         </div>
                     </div>
@@ -188,7 +191,7 @@
                                 <div class="activity-details">
                                     <ul>
                                         <ng-container *ngFor="let item of dashboardRecentUpdates">
-                                            <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span>, {{item.title}} on {{item.date}} at {{item.time}}</span></li>
+                                            <li>{{item.title}}<span> on {{item.date | date: 'dd/MM/y, h:mm:ss a'}}</span></li>
                                         </ng-container>
                                     </ul>
                                 </div>
@@ -506,7 +509,7 @@
                     </div>
                     <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
 
-                    <div class="row" hidden>
+                    <div class="row">
                         <div class="col-md-12">
                             <div class="cmnt-content">
                                 <form #ngForm="ngForm" (ngSubmit)="onSubmit(ngForm)">

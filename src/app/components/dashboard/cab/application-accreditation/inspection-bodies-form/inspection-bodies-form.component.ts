@@ -202,6 +202,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   deleteScopeConfirm: boolean = false;
 
   is_main_activity_note_entry: boolean = false;
+  paypalSandboxToken: string;
 
 
   shift2_from: boolean = false;
@@ -285,7 +286,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       //proforma save
       let postData: any = new FormData();
       postData.append('accreditation', this.formApplicationId);
-      this._trainerService.proformaAccrSave(postData)
+      this._trainerService.proformaAccrSave(postData) 
       .subscribe(
         result => {
             let data: any = result;
@@ -306,11 +307,12 @@ export class InspectionBodiesFormComponent implements OnInit {
    //AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl = das.abhishek77@gmail.com
    //Get transaction ID - https://uateloper.paypal.com/docs/checkout/reference/server-integration/get-transaction/#on-the-server
     if(this.transactions.length){
+    //sandbox token = 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
       this.loadExternalScript("https://www.paypalobjects.com/api/checkout.js").then(() => {
       paypal.Button.render({
         env: 'sandbox',
         client: {
-          sandbox: 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
+          sandbox: compObj.paypalSandboxToken
         },
         commit: true,
         payment: function (data, actions) {
@@ -1836,6 +1838,20 @@ export class InspectionBodiesFormComponent implements OnInit {
         //step 9
         if(getData.data.paymentDetails != null && typeof getData.data.paymentDetails === 'object'){
           console.log(">>>payment details...show; ", getData.data.paymentDetails);
+          // this._trainerService.checkPaymentGateway() 
+          // .subscribe(
+          //   result => {
+          //     let data: any = result;
+          //     if(data.records.status){
+          //       if(data.records.title == 'Live'){
+                  
+          //       }
+          //       if(data.records.title == 'Sandbox'){
+                  
+          //       }
+          //     }
+          //   })
+
             this.voucherSentData.voucher_code     = getData.data.paymentDetails.voucher_no;
             this.voucherSentData.payment_date     = getData.data.paymentDetails.voucher_date;
             this.voucherSentData.amount           = getData.data.paymentDetails.amount;
@@ -4086,14 +4102,53 @@ backScopeAccreditation(){
         this.transactions.push(this.transactionsItem);
         //////////console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
       }
-      setTimeout(() => {
-        this.createPaymentButton(this.transactionsItem, this.inspectionBodyForm, this);
-        let elem = document.getElementsByClassName('paypal-button-logo');
-        ////console.log("button creting...", elem);
-        if(elem){
-          ////console.log("button creted...");          
-        }
-      }, 100)
+      //Check payment service to redirect.....
+      //Check @UAT - Paypal | @LIVE - Third party redirect
+      this._trainerService.checkPaymentGateway() 
+      .subscribe(
+        result => {
+            let data: any = result;
+            console.log(">>> Payment Gateway... ", data);
+            if(data.records.status){
+              if(data.records.title == 'Live'){
+                  let postData: any = new FormData();
+                  postData.append('accreditation', this.formApplicationId);
+                  this._trainerService.proformaAccrSave(postData)
+                  .subscribe(
+                    result => {
+                        let record: any = result;
+                        if(record.status){
+                          //Check step complete service....
+                          let getUrl: string = data.records.other_details;
+                          console.log("@@ ", getUrl);
+                          top.location.href = getUrl;
+                        }
+                    console.log(">>> Save resultts: ", result);
+                    });                      
+              }
+              if(data.records.title == 'Sandbox'){
+                this.paypalSandboxToken = data.records.value;
+                setTimeout(() => {
+                  this.createPaymentButton(this.transactionsItem, this.inspectionBodyForm, this);
+                  let elem = document.getElementsByClassName('paypal-button-logo');
+                  ////console.log("button creting...", elem);
+                  if(elem){
+                    ////console.log("button creted...");          
+                  }
+                }, 100)
+              }
+            }
+        });
+        return;
+
+      // setTimeout(() => {
+      //   this.createPaymentButton(this.transactionsItem, this.inspectionBodyForm, this);
+      //   let elem = document.getElementsByClassName('paypal-button-logo');
+      //   ////console.log("button creting...", elem);
+      //   if(elem){
+      //     ////console.log("button creted...");          
+      //   }
+      // }, 100)
  }
 
 onSubmitPaymentInformation(ngForm7: any, type?: boolean){
@@ -4102,17 +4157,18 @@ onSubmitPaymentInformation(ngForm7: any, type?: boolean){
     this.inspectionBodyForm.step9 = {};
     //this.inspectionBodyForm.saved_step = 9;
 
-          // let dtFormat: string = '';
-          // if(this.voucherSentData['payment_date'] != undefined && 
-          //   this.voucherSentData['payment_date']._i != undefined){
-          //   var dtData = this.voucherSentData['payment_date']._i;
-          //   var year = dtData.year;
-          //   var month = dtData.month;
-          //   var date = dtData.date;
-          //   dtFormat = year + "-" + month + "-" + date;
-          // }
+          let dtFormat: string = '';
+          if(this.voucherSentData['payment_date'] != undefined && 
+            this.voucherSentData['payment_date']._i != undefined){
+            var dtData = this.voucherSentData['payment_date']._i;
+            var year = dtData.year;
+            var month = dtData.month + 1;
+            var date = dtData.date;
+            dtFormat = year + "-" + month + "-" + date;
+          }
 
-          console.log("payment date: ", " -- ",this.voucherSentData, " -- ");
+          console.log("payment date: ", " -- ",this.voucherSentData, " -- ", dtFormat);
+
         let is_valid: boolean = false;
         this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
         this.voucherFile.append('amount',this.voucherSentData['amount']);
@@ -4120,7 +4176,7 @@ onSubmitPaymentInformation(ngForm7: any, type?: boolean){
         this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
         this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
         this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
-        this.voucherFile.append('payment_date',this.voucherSentData['payment_date']);
+        this.voucherFile.append('payment_date', dtFormat);
         this.voucherFile.append('accreditation',this.formApplicationId);
         this.voucherFile.append('application_id',this.formApplicationId);
         this.voucherFile.append('saved_step', 9);
@@ -4132,7 +4188,7 @@ onSubmitPaymentInformation(ngForm7: any, type?: boolean){
         // }
         console.log(">>> Data: ", this.voucherSentData);
         if(this.voucherSentData['transaction_no'] != '' && this.voucherSentData['payment_method'] != '' && this.voucherSentData['payment_made_by'] &&
-          this.voucherSentData['mobile_no'] != ''){
+          this.voucherSentData['mobile_no'] != '' && this.voucherSentData['amount'] != '' && (this.voucherSentData['payment_date'] != '' && this.voucherSentData['payment_date'] != null)){
             is_valid = true;
           }
 

@@ -154,7 +154,7 @@ export class TrainerService {
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
 
-  paymentVoucherNOCSave(postData: any){
+  paymentVoucherNOCSave(postData: any){ 
     const url = `${this.BASE_REQ_URL}` + "webservice/reg-payment-details-save/";
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
@@ -171,6 +171,13 @@ export class TrainerService {
     console.log(">>> Prodorma saving: ", url);
     return this.http.post(url, postData, this._service.getReqHeaders());
   }
+
+  checkPaymentGateway(){
+    let url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.paymentGateway; 
+    console.log("GET PAyment URL: ", url, " -- ", this._service.getReqHeaders());
+    return this.http.get(url, this._service.getReqHeaders());
+  }
+
 
   accountPaymentSave(postData: any){
     const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.accountPaymentSave;

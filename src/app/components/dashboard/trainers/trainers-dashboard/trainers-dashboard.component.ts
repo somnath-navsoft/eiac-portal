@@ -86,6 +86,21 @@ export class TrainersDashboardComponent implements OnInit {
     };
   }
 
+  checkStatus(item) {
+    let date = new Date();
+    let yr = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let todays: any = new Date(yr+"-"+month+"-"+day);
+    let expiryData: any = new Date(item['eventDate'][item['eventDate'].length - 1].event_date);//new Date("2024-12-31");//;//
+    let diffDate: any = Math.round((expiryData-todays)/(1000*60*60*24))
+    if(diffDate > 0){
+      return 'Active';
+    }else{
+      return 'InActive';
+    }
+    
+  }
   //Load Dashboatd data
   loadDashData() {
     this.loader = false;
@@ -139,10 +154,11 @@ export class TrainersDashboardComponent implements OnInit {
               eventCanderArr.push({
                 id:res.id,
                 title:res['courseDetails'].course,
-                start:res.event_start_date_time,
-                end:res.event_end_date_time,
+                start:res['eventDate'][0].event_date,
+                end:res['eventDate'][res['eventDate'].length - 1].event_date,
               });
             })
+            console.log(this.dashboardEvents,'dashboardEvents')
 
             //Get recent updates
             if (this.dashboardItemData.lastLogin != undefined) {
@@ -299,18 +315,21 @@ export class TrainersDashboardComponent implements OnInit {
           this.loader = true;
         });
 
-    this.loadDashData();
+    
 
     this.Service.getwithoutData(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.profileService + '?userType=' + this.userType + '&email=' + this.userEmail)
       .subscribe(
         res => {
           this.loader = true;
           this.userDetails = res['data']['user_data'][0];
+          if(typeof this.userDetails != undefined) {
+            this.loadDashData();
+          }
           this.step1Data = res['data']['step1'][0];
           //this.step2Data = res['data']['step2']['education'][0];
           var education = res['data'].step2['all_data'] && res['data'].step2['all_data'][0].education && res['data'].step2['all_data'][0].education != null ? JSON.parse(res['data'].step2['all_data'][0].education) : null;
           this.education_specialization = education.specialization;
-          console.log(res, 'res');
+          // console.log(res, 'res');
         });
 
     this.loader = false;

@@ -218,6 +218,7 @@ export class TestingCalibrationFormComponent implements OnInit {
   getFamilyName: boolean = false;
   getFamilyTitles: any = {};
   findFamily: any = {};
+  paypalSandboxToken: string ='';
   
   constructor(public Service: AppService, public constant:Constants,public router: Router,
     public toastr: ToastrService,public _trainerService:TrainerService,
@@ -2925,11 +2926,11 @@ getCriteria(value, secInd: any){
           this.voucherSentData['payment_date']._i != undefined){
           var dtData = this.voucherSentData['payment_date']._i;
           var year = dtData.year;
-        var month = dtData.month;
-        var date = dtData.date;
-        dtFormat = year + "-" + month + "-" + date;
+          var month = dtData.month + 1;
+          var date = dtData.date;
+          dtFormat = year + "-" + month + "-" + date;
       }
-      //     
+      console.log("@Date format: "+dtFormat); 
 
       this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
       this.voucherFile.append('amount',this.voucherSentData['amount']);
@@ -4134,6 +4135,48 @@ onSubmitStep8(ngForm8: any) {
       this.transactions.push(this.transactionsItem);
       //////console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
     }
+
+    //Check payment service to redirect.....
+      //Check @UAT - Paypal | @LIVE - Third party redirect
+      this._trainerService.checkPaymentGateway() 
+      .subscribe(
+        result => {
+            let data: any = result;
+            console.log(">>> Payment Gateway... ", data);
+            if(data.records.status){
+              if(data.records.title == 'Live'){
+                  let postData: any = new FormData();
+                  postData.append('accreditation', this.formApplicationId);
+                  this._trainerService.proformaAccrSave(postData)
+                  .subscribe(
+                    result => {
+                        let record: any = result;
+                        if(record.status){
+                          //Check step complete service....
+                          let getUrl: string = data.records.other_details;
+                          console.log("@@ ", getUrl);
+                          //top.location.href = getUrl;
+                          window.open(getUrl);
+                        }
+                    console.log(">>> Save resultts: ", result);
+                    });                      
+              }
+              if(data.records.title == 'Sandbox'){
+                this.paypalSandboxToken = data.records.value;
+                setTimeout(() => {
+                  this.createPaymentButton(this.transactionsItem, this.testingCalForm, this);
+                  let elem = document.getElementsByClassName('paypal-button-logo');
+                  ////console.log("button creting...", elem);
+                  if(elem){
+                    ////console.log("button creted...");          
+                  }
+                }, 100)
+              }
+            }
+        });
+
+
+    return;
     setTimeout(() => {
       this.createPaymentButton(this.transactionsItem, this.testingCalForm, this);
       let elem = document.getElementsByClassName('paypal-button-logo');
@@ -4178,7 +4221,7 @@ onSubmitPaymentInformation(ngForm9: any, type?: boolean){
       ////console.log(">>> Data: ", this.voucherSentData);
 
     if(this.voucherSentData['transaction_no'] != '' && this.voucherSentData['payment_method'] != '' && this.voucherSentData['payment_made_by'] &&
-    this.voucherSentData['mobile_no'] != ''){
+    this.voucherSentData['mobile_no'] != '' && this.voucherSentData['amount'] != ''){
       is_valid = true;
     }
     //ngForm9.form.valid 
@@ -4367,7 +4410,7 @@ validateFileVoucher(fileEvent: any, type?: any) {
 
     //proforma save
     let postData: any = new FormData();
-    postData.append('accreditation', this.formApplicationId);
+    postData.append('accreditation', this.formApplicationId); 
     this._trainerService.proformaAccrSave(postData)
     .subscribe(
       result => {
@@ -4391,11 +4434,12 @@ validateFileVoucher(fileEvent: any, type?: any) {
    //Get transaction ID - https://uateloper.paypal.com/docs/checkout/reference/server-integration/get-transaction/#on-the-server
     if(this.transactions.length){
       ////console.log('Paypal');
+      //sandbox token = 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
       this.loadExternalScript("https://www.paypalobjects.com/api/checkout.js").then(() => {
       paypal.Button.render({
         env: 'sandbox',
         client: {
-          sandbox: 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
+          sandbox: compObj.paypalSandboxToken
         },
         commit: true,
         payment: function (data, actions) {
@@ -4424,11 +4468,11 @@ validateFileVoucher(fileEvent: any, type?: any) {
           this.toastr.warning("You have cancelled payment, Continue next step please complete payment process again.", 'Paypal>>',{timeOut:6500});
       },
       onError: err => {
-          ////console.log('OnError', err);
+          //console.log('OnError', err, " :: ", err.error_description);
           formObj.paypalReturn = err;
           formObj.paypalStatus = 'error';
-          //compObj.saveCourseAfterPayment(formObj);
-          this.toastr.error("Paypal transaction error has occured, please try again", 'Payment Return'); 
+          let errMsg: string = "Paypal Error Occured, Please check your Authentication OR Token" ;
+          this.toastr.error(errMsg, 'Payment Return'); 
       },
       onClick: (data, actions) => {
           ////console.log('onClick', data, actions);

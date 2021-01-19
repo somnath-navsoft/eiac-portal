@@ -589,4 +589,37 @@ export class OperationsDashboardComponent implements OnInit {
     this.config.currentPage = event;
   }
 
+  search(query: string) {
+    // this.searchTerm = query;
+    let result = this.select(query);
+    // this.searchDetails = result;
+    if (query != '') {
+      this.selectSearch = result;
+    } else {
+      this.selectSearch = [];
+    }
+
+  }
+
+  select(query: string): string[] {
+    let result: string[] = [];
+    if (this.getUserType == 'cab_client' || this.getUserType == 'cab_code') {
+      for (let a of this.searchDetails) {
+        if (a.username.toLowerCase().indexOf(query) > -1) {
+          result.push(a);
+        }
+      }
+    } else {
+      for (let a of this.searchDetails) {
+        if (a.email.toLowerCase().indexOf(query) > -1) {
+          result.push(a);
+        }
+      }
+    }
+
+    // this.searchDetails = result;
+    return result;
+  }  
+
+
 }
