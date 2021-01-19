@@ -149,7 +149,7 @@ export class OperationsDashboardComponent implements OnInit {
             this.totalDeptCertificateCount = getData.all_crtificate_count;
             this.totalDeptPendingCount = getData.pendingAccrCount;
 
-            if(getData.status_count != undefined){
+            if(getData.status_count != undefined){ 
                 this.totalDeptStatus.accredatedCount    = getData.status_count.accredatedCount[0].cab_data.certificate;
                 this.totalDeptStatus.suspendedCount     = getData.status_count.suspendedCount[0].cab_data.certificate;
                 this.totalDeptStatus.volWithdrawCount   = getData.status_count.volWithdrawCount[0].cab_data.certificate;
@@ -168,7 +168,13 @@ export class OperationsDashboardComponent implements OnInit {
     if(theEvt && theEvt.value != undefined){
       departmetnId = theEvt.value;
           this.loader = false;
-          let getURL: string =this.Service.apiServerUrl + "/" + 'io-dashboard/?department_type='+departmetnId;
+          let getURL: string = '';
+          getURL = this.Service.apiServerUrl + "/" + 'io-dashboard/?department_type='+departmetnId;
+          if(this.select_country != '' && this.select_country != undefined && this.select_country != null){
+            let region: string = this.select_country;
+            getURL = this.Service.apiServerUrl + "/" + 'io-dashboard/?department_type='+departmetnId + '&region='+region;
+          }
+
           this.Service.getwithoutData(getURL)
             .subscribe(
               res => {

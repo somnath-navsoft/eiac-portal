@@ -31,6 +31,10 @@ export class AppService {
   // public apiServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
   // public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
 
+  //@Amit
+  // public apiServerUrl         =   'http://192.168.7.28:8000/webservice';
+  // public apiRequestUrl        =   'http://192.168.7.28:8000/';
+
   //@UAT
   public apiServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
   public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
