@@ -2960,7 +2960,7 @@ this.voucherFile.append('is_draft', false);
 this.voucherFile.append('payment_status', 'paid');
 // this.voucherFile.append('application_id',this.formApplicationId);
 if(this.voucherSentData['transaction_no'] != '' && this.voucherSentData['payment_method'] != '' && this.voucherSentData['payment_made_by'] &&
-this.voucherSentData['mobile_no'] != ''){
+this.voucherSentData['mobile_no'] != ''  && this.voucherSentData['amount'] != null && (this.voucherSentData['payment_date'] != undefined && this.voucherSentData['payment_date'] != null)){
   is_valid = true;
 }
 

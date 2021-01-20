@@ -3707,7 +3707,7 @@ onSubmitStep7(ngForm7: any) {
       ////console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
     }
 
-    //Check payment service to redirect.....
+      //Check payment service to redirect.....
       //Check @UAT - Paypal | @LIVE - Third party redirect
       this._trainerService.checkPaymentGateway() 
       .subscribe(
