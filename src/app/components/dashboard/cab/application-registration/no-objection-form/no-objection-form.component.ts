@@ -42,7 +42,7 @@ export class NoObjectionFormComponent implements OnInit {
   public loader:boolean=true;
   public banner:any=[];
   other_description = [false,false,false,false,false];
-  public cab_type: Array<any> = [];
+  public cab_type: Array<any> = []; 
 
   laboratory:string = '';
   inspection_body:string = '';
@@ -146,6 +146,7 @@ export class NoObjectionFormComponent implements OnInit {
   public errorLoader: boolean = false;
   closeResult: string;
   modalOptions:NgbModalOptions;
+  paypalSandboxToken: string = '';
   
   constructor(public Service: AppService, public constant:Constants, public sanitizer: DomSanitizer , public router: Router,
     public toastr: ToastrService, private modalService: NgbModal, private _trainerService: TrainerService,) { }
@@ -638,9 +639,8 @@ export class NoObjectionFormComponent implements OnInit {
             }
           }
           this.step1Data.country = data.country;
-                if(this.getCountryLists.length){
+                if(this.getCountryLists != undefined && this.getCountryLists.length > 0){
                   let cdata: any = this.getCountryLists.find(rec => rec.name == data.country)
-                    console.log("Fnd country: ", cdata);  
                     if(cdata){
                       let cid = cdata.id;
                       this.statelistById(cid) 
@@ -732,7 +732,7 @@ export class NoObjectionFormComponent implements OnInit {
   
                 this.step1Data.country = getData.data.country;
                 ////console.log(">>> country data: ", this.getCountryLists);
-                if(this.getCountryLists.length){
+                if(this.getCountryLists != undefined && this.getCountryLists.length > 0){
                   ////console.log(">>> 11c country data: ", this.getCountryLists);
                   let cdata: any = this.getCountryLists.find(rec => rec.name == getData.data.country)
                     console.log("Fnd country: ", cdata);  
@@ -1772,7 +1772,7 @@ export class NoObjectionFormComponent implements OnInit {
       paypal.Button.render({
         env: 'sandbox',
         client: {
-          sandbox: 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
+          sandbox: compObj.paypalSandboxToken
         },
         commit: true,
         payment: function (data, actions) {
@@ -1837,7 +1837,53 @@ export class NoObjectionFormComponent implements OnInit {
         this.transactions.push(this.transactionsItem);
         //////////console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
       }
-      setTimeout(() => {
+
+      //Check payment service to redirect.....
+      //Check @UAT - Paypal | @LIVE - Third party redirect
+      this._trainerService.checkPaymentGateway() 
+      .subscribe(
+        result => {
+            let data: any = result;
+            console.log(">>> Payment Gateway... ", data);
+            if(data.records.status){
+              if(data.records.title == 'Live'){
+                  let postData: any = new FormData();
+                  postData.append('accreditation', this.formApplicationId);
+                  this._trainerService.proformaAccrSave(postData)
+                  .subscribe(
+                    result => {
+                        let record: any = result;
+                        if(record.status){
+                          //Check step complete service....
+                          let getUrl: string = data.records.other_details;
+                          //console.log("@@ ", getUrl);
+                          //top.location.href = getUrl;
+                          this.loaderPdf = true;
+                          setTimeout(() => {
+                            this.loaderPdf = false;
+                            window.open(getUrl);
+                          }, 1500)
+                          
+                        }
+                    //console.log(">>> Save resultts: ", result);
+                    });                      
+              }
+              if(data.records.title == 'Sandbox'){
+                this.paypalSandboxToken = data.records.value;
+                setTimeout(() => {
+                  this.createPaymentButton(this.transactionsItem, this.noObjectionBodyForm, this);
+                  let elem = document.getElementsByClassName('paypal-button-logo');
+                  ////console.log("button creting...", elem);
+                  if(elem){
+                    ////console.log("button creted...");          
+                  }
+                }, 100)
+              }
+            }
+        });
+
+
+      /*setTimeout(() => {
         console.log("Button...........");
         this.createPaymentButton(this.transactionsItem, this.noObjectionBodyForm, this);
         let elem = document.getElementsByClassName('paypal-button-logo');
@@ -1845,7 +1891,7 @@ export class NoObjectionFormComponent implements OnInit {
         if(elem){
           ////console.log("button creted...");          
         }
-      }, 100)
+      }, 100)*/
 
   }
 
@@ -1896,7 +1942,7 @@ export class NoObjectionFormComponent implements OnInit {
 
       console.log(">>> Data: ", this.voucherSentData);
       if(this.voucherSentData['transaction_no'] != '' && this.voucherSentData['payment_method'] != '' && this.voucherSentData['payment_made_by'] &&
-        this.voucherSentData['mobile_no'] != ''){
+        this.voucherSentData['mobile_no'] != '' && this.voucherSentData['amount'] != null && (this.voucherSentData['payment_date'] != undefined && this.voucherSentData['payment_date'] != null)){
           is_valid = true;
         }
 

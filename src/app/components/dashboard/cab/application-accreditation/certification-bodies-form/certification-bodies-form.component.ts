@@ -3145,11 +3145,12 @@ createPaymentButton(itemData: any, formObj?:any, compObj?:any){
  //Get transaction ID - https://uateloper.paypal.com/docs/checkout/reference/server-integration/get-transaction/#on-the-server
   if(this.transactions.length){
     //console.log('Paypal');
+    //'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
     this.loadExternalScript("https://www.paypalobjects.com/api/checkout.js").then(() => {
     paypal.Button.render({
       env: 'sandbox',
       client: {
-        sandbox: 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
+        sandbox: compObj.paypalSandboxToken
       },
       commit: true,
       payment: function (data, actions) {

@@ -267,7 +267,7 @@ export class CabDashboardComponent implements OnInit {
           this.loader = true;
           this.userDetails = res['data']['user_data'][0];
           this.step1Data = res['data']['step1'][0];
-          //console.log("Prof: ", res);
+          console.log("Prof: ", res);
           //
           // var differDate = new Date(this.step1Data.date_of_expiry);
           // var currDate = new Date();
@@ -284,10 +284,11 @@ export class CabDashboardComponent implements OnInit {
             let month = date.getMonth() + 1;
             let day = date.getDate();
             let todays: any = new Date(yr+"-"+month+"-"+day);
-            let expiryData: any = new Date(this.step1Data.date_of_expiry);//new Date("2024-12-31");//;//
+            let expiryData: any = new Date(this.step1Data.date_of_expiry);//new Date("2021-1-19");
             let diffDate: any = Math.round((expiryData-todays)/(1000*60*60*24))
-            
-            if(diffDate > 0){
+            console.log("@@@ Difvdate: ", diffDate, " -- ", this.step1Data.date_of_expiry);
+
+            if(diffDate >= 0){
               //console.log("#########");
               this.licence_document_file = this.getFile(this.step1Data.trade_license);
               this.licence_document_path = this.constant.mediaPath + this.step1Data.trade_license;
@@ -301,7 +302,7 @@ export class CabDashboardComponent implements OnInit {
           if(this.step1Data && this.step1Data.trade_license != null){
             this.dashboardTradeLicFile = this.step1Data.trade_license;
           }
-          // console.log(res,'res');
+          // console.log(res,'res'); 
         });
 
     this.Service.getwithoutData(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.messageList + '?id=' + this.userId)

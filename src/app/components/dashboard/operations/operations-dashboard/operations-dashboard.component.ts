@@ -211,7 +211,7 @@ export class OperationsDashboardComponent implements OnInit {
     }
     let selDept: any = this.selectDepartment;
     //console.log(">>>dept...", selDept);
-    sessionStorage.setItem("io_dept", selDept);
+    sessionStorage.setItem("io_dept", selDept); 
     this.router.navigateByUrl('/dashboard/operations/scheme-list')
   }
 
@@ -394,9 +394,9 @@ export class OperationsDashboardComponent implements OnInit {
     this.userEmail = sessionStorage.getItem('email');
     this.userId = sessionStorage.getItem('userId');
 
-    setTimeout(() => {
-      this.loadDashData();
-    }, 100)   
+    // setTimeout(() => {
+    //   this.loadDashData();
+    // }, 100)   
     this.loadRecordsData();
     this.loadCountryStateCityAll();
 
@@ -413,6 +413,9 @@ export class OperationsDashboardComponent implements OnInit {
           this.loader = true;
           console.log(">>> User Profile: ", res);
           this.userDetails = res['data']['user_data'][0];
+          if(this.userDetails != undefined && this.userDetails != null){
+            this.loadDashData();
+          }   
         });
 
     this.Service.getwithoutData(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.messageList + '?id=' + this.userId)
