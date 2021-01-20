@@ -180,7 +180,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="dash-main">
+                            <div class="dash-main" [ngStyle]="{'height':'125px'}">
                                 <div class="dash-wrap">
                                     <div class="usermain">
                                         <div class="main-status">
@@ -325,9 +325,9 @@
                                         <div class="main-status">
                                             <p class="head-dash head-dash-bill">Payments</p>
                                             <p class="sub-head-dash">
-                                                
                                             <ng-container *ngIf="dashboardItemData.lastWeekPaymentCount != null">
                                                 {{dashboardItemData.lastWeekPaymentCount}}
+                                                <span class="active-dash">Processed</span>
                                             </ng-container>
                                             </p>
                                         </div>
