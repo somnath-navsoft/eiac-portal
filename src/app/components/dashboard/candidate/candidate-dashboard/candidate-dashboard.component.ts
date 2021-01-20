@@ -233,18 +233,18 @@ export class CandidateDashboardComponent implements OnInit {
             //   let time = time1 +" " + time2;
             //   this.dashboardRecentUpdates.push({title: "Training Applied",date:date, time: time});
             // }
-            if(this.dashboardItemData.lastAccrPayment != undefined){
-              let datePart: any = this.dashboardItemData.lastAccrPayment.toString().split(" ");
-              let dateStr: string = datePart[0] + " " + datePart[1];
-              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Accreditaion Payment details of " + this.getFormType(this.dashboardItemData.lastAccrPayFormName) + " Updated ";
-              this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
-            }
-            if(this.dashboardItemData.lastRegPayment != undefined){
-              let datePart: any = this.dashboardItemData.lastRegPayment.toString().split(" ");              
-              let dateStr: string = datePart[0] + " " + datePart[1];
-              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Registration Payment details of " + this.getFormType(this.dashboardItemData.lastRegPayFormName) + " Updated ";
-              this.dashboardRecentUpdates.push({title:titleText,date:dateStr});
-            }
+            // if(this.dashboardItemData.lastAccrPayment != undefined){
+            //   let datePart: any = this.dashboardItemData.lastAccrPayment.toString().split(" ");
+            //   let dateStr: string = datePart[0] + " " + datePart[1];
+            //   let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Accreditaion Payment details of " + this.getFormType(this.dashboardItemData.lastAccrPayFormName) + " Updated ";
+            //   this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
+            // }
+            // if(this.dashboardItemData.lastRegPayment != undefined){
+            //   let datePart: any = this.dashboardItemData.lastRegPayment.toString().split(" ");              
+            //   let dateStr: string = datePart[0] + " " + datePart[1];
+            //   let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Registration Payment details of " + this.getFormType(this.dashboardItemData.lastRegPayFormName) + " Updated ";
+            //   this.dashboardRecentUpdates.push({title:titleText,date:dateStr});
+            // }
             if(this.dashboardItemData.lastTrainingPayment != undefined){
               let datePart: any = this.dashboardItemData.lastTrainingPayment.toString().split(" ");              
               let dateStr: string = datePart[0] + " " + datePart[1];

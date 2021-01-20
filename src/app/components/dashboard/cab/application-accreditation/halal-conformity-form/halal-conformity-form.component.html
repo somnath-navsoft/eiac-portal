@@ -26,8 +26,7 @@
                                         </div>
                                         <!-- (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}" -->
                                         <!-- (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}" -->
-                                        <div class="user-details-pending" 
-                                        id="course_header" >
+                                        <div class="user-details-pending" id="course_header" >
                                             <span [innerHTML]="item.desc"></span>
                                         </div>
                                     </div>
@@ -2188,7 +2187,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Voucher Code</mat-label>
-                                                <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                                                <input type="number" [ngModelOptions]="{standalone: true}"
                                                 matInput placeholder="Voucher Code" readonly="true"
                                                 [(ngModel)]="voucherSentData.voucher_code">
                                             </mat-form-field>
@@ -2196,17 +2195,17 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Payment Date</mat-label>
-                                                <input matInput [matDatepicker]="payment_date" readonly
+                                                <input matInput [matDatepicker]="payment_date" 
                                                 (click)="Service._openCalendar(payment_date)" name="payment_date" 
                                                 [(ngModel)]="voucherSentData.payment_date" placeholder="Payment Date" required>
-                                                <!-- <mat-datepicker-toggle matSuffix [for]="payment_date"></mat-datepicker-toggle> -->
+                                                <mat-datepicker-toggle (click)="Service._openCalendar(payment_date)" matSuffix [for]="payment_date"></mat-datepicker-toggle>
                                                 <mat-datepicker #payment_date disabled="false"></mat-datepicker>
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Payment Amount</mat-label>
-                                                <input type="number"  readonly="true" [ngModelOptions]="{standalone: true}" required="true"
+                                                <input type="number" [ngModelOptions]="{standalone: true}" required="true"
                                                 matInput placeholder="Payment Amount" 
                                                 [(ngModel)]="voucherSentData.amount">
                                             </mat-form-field>

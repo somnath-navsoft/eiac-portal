@@ -187,6 +187,8 @@ export class CertificationBodiesFormComponent implements OnInit {
    //Other scope fixed table
    otherStandards: any[] = [{}];
 
+   paypalSandboxToken: string = '';
+
    //Master scope form data declaration
    firstStep:any;
 
@@ -1807,14 +1809,14 @@ savedraftStep(stepCount) {
 
     let dtFormat: string = '';
     if(this.voucherSentData['payment_date'] != undefined && 
-        this.voucherSentData['payment_date']._i != undefined){
-        var dtData = this.voucherSentData['payment_date']._i;
-        var year = dtData.year;
-      var month = dtData.month;
+      this.voucherSentData['payment_date']._i != undefined){
+      var dtData = this.voucherSentData['payment_date']._i;
+      var year = dtData.year;
+      var month = dtData.month + 1;
       var date = dtData.date;
       dtFormat = year + "-" + month + "-" + date;
     }
-    //     
+    console.log("@Date: ",dtFormat);     
 
     this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
     this.voucherFile.append('amount',this.voucherSentData['amount']);
@@ -2872,16 +2874,60 @@ this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity:
     this.transactions.push(this.transactionsItem);
     ////console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
   }
-  setTimeout(() => {
+
+      //Check payment service to redirect.....
+      //Check @UAT - Paypal | @LIVE - Third party redirect
+      this._trainerService.checkPaymentGateway() 
+      .subscribe(
+        result => {
+            let data: any = result;
+            console.log(">>> Payment Gateway... ", data);
+            if(data.records.status){
+              if(data.records.title == 'Live'){
+                  let postData: any = new FormData();
+                  postData.append('accreditation', this.formApplicationId);
+                  this._trainerService.proformaAccrSave(postData)
+                  .subscribe(
+                    result => {
+                        let record: any = result;
+                        if(record.status){
+                          //Check step complete service....
+                          let getUrl: string = data.records.other_details;
+                          console.log("@@ ", getUrl);
+                          //top.location.href = getUrl;
+                          this.loaderPdf = true;
+                          setTimeout(() => {
+                            this.loaderPdf = false;
+                            window.open(getUrl);
+                          }, 1500)
+                          
+                        }
+                    console.log(">>> Save resultts: ", result);
+                    });                      
+              }
+              if(data.records.title == 'Sandbox'){
+                this.paypalSandboxToken = data.records.value;
+                setTimeout(() => {
+                  this.createPaymentButton(this.transactionsItem, this.certificationBodiesForm, this);
+                  let elem = document.getElementsByClassName('paypal-button-logo');
+                  ////console.log("button creting...", elem);
+                  if(elem){
+                    ////console.log("button creted...");          
+                  }
+                }, 100)
+              }
+            }
+        });
+
+  /*setTimeout(() => {
     this.createPaymentButton(this.transactionsItem, this.certificationBodiesForm, this);
     let elem = document.getElementsByClassName('paypal-button-logo');
-    //console.log("button creting...");
     if(elem){
       //console.log("button creted...");
     }else{
       //console.log("Loding button...");
     }
-  }, 100)
+  }, 100)*/
 }
 
 onSubmitPaymentInformation(ngForm7: any, type?: boolean){
@@ -2894,11 +2940,12 @@ this.certificationBodiesForm.step7 = {};
     this.voucherSentData['payment_date']._i != undefined){
     var dtData = this.voucherSentData['payment_date']._i;
     var year = dtData.year;
-    var month = dtData.month;
+    var month = dtData.month + 1;
     var date = dtData.date;
     dtFormat = year + "-" + month + "-" + date;
   }
-  //     
+  console.log("@Date: ",dtFormat);
+
   let is_valid: boolean = false;
 this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
 this.voucherFile.append('amount',this.voucherSentData['amount']);
@@ -2907,7 +2954,7 @@ this.voucherFile.append('payment_method',this.voucherSentData['payment_method'])
 this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);
 this.voucherFile.append('mobile_no',this.voucherSentData['mobile_no']);
 //this.voucherFile.append('voucher_date',dtFormat);
-this.voucherFile.append('payment_date',this.voucherSentData['payment_date']);
+this.voucherFile.append('payment_date',dtFormat);
 this.voucherFile.append('accreditation',this.formApplicationId);
 this.voucherFile.append('is_draft', false);
 this.voucherFile.append('payment_status', 'paid');
@@ -3066,7 +3113,7 @@ private loadExternalScript(scriptUrl: string) {
     scriptElement.src = scriptUrl
     scriptElement.onload = resolve
     ////console.log("load script...");
-    document.body.appendChild(scriptElement)
+    document.body.appendChild(scriptElement) 
   })
 }
 
