@@ -134,7 +134,7 @@ export class CandidateDashboardComponent implements OnInit {
     let expiryData: any = new Date(item['eventDate'][item['eventDate'].length - 1].event_date);//new Date("2024-12-31");//;//
     let diffDate: any = Math.round((expiryData-todays)/(1000*60*60*24));
     // console.log(diffDate,'diffDate');
-    if(diffDate > 0){
+    if(diffDate >= 0){
       return 'Active';
     }else{
       return 'InActive';
@@ -163,8 +163,10 @@ export class CandidateDashboardComponent implements OnInit {
             let eventCanderArr = []; 
             console.log(">>>", curYear, " :: ", curMonth);
             if (this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0) {
-              this.dashboardEvents = this.dashboardItemData.eventDetails;
-              console.log(">>>Events: ", this.dashboardEvents);
+              let array = this.dashboardItemData.eventDetails.slice().sort((a, b) => (a['eventDate'][0].event_date > b['eventDate'][0].event_date) ? 1 : -1)
+              this.dashboardEvents = array;
+              // this.dashboardEvents = this.dashboardItemData.eventDetails;
+              // console.log(">>>Events: ", this.dashboardEvents);
               
               let filterEvents: any[] =[];
               this.dashboardEvents.forEach(item => {
@@ -231,18 +233,18 @@ export class CandidateDashboardComponent implements OnInit {
             //   let time = time1 +" " + time2;
             //   this.dashboardRecentUpdates.push({title: "Training Applied",date:date, time: time});
             // }
-            if(this.dashboardItemData.lastAccrPayment != undefined){
-              let datePart: any = this.dashboardItemData.lastAccrPayment.toString().split(" ");
-              let dateStr: string = datePart[0] + " " + datePart[1];
-              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Accreditaion Payment details of " + this.getFormType(this.dashboardItemData.lastAccrPayFormName) + " Updated ";
-              this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
-            }
-            if(this.dashboardItemData.lastRegPayment != undefined){
-              let datePart: any = this.dashboardItemData.lastRegPayment.toString().split(" ");              
-              let dateStr: string = datePart[0] + " " + datePart[1];
-              let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Registration Payment details of " + this.getFormType(this.dashboardItemData.lastRegPayFormName) + " Updated ";
-              this.dashboardRecentUpdates.push({title:titleText,date:dateStr});
-            }
+            // if(this.dashboardItemData.lastAccrPayment != undefined){
+            //   let datePart: any = this.dashboardItemData.lastAccrPayment.toString().split(" ");
+            //   let dateStr: string = datePart[0] + " " + datePart[1];
+            //   let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Accreditaion Payment details of " + this.getFormType(this.dashboardItemData.lastAccrPayFormName) + " Updated ";
+            //   this.dashboardRecentUpdates.push({title: titleText,date: dateStr});
+            // }
+            // if(this.dashboardItemData.lastRegPayment != undefined){
+            //   let datePart: any = this.dashboardItemData.lastRegPayment.toString().split(" ");              
+            //   let dateStr: string = datePart[0] + " " + datePart[1];
+            //   let titleText: string = this.userDetails.first_name + " " + this.userDetails.last_name + ", Registration Payment details of " + this.getFormType(this.dashboardItemData.lastRegPayFormName) + " Updated ";
+            //   this.dashboardRecentUpdates.push({title:titleText,date:dateStr});
+            // }
             if(this.dashboardItemData.lastTrainingPayment != undefined){
               let datePart: any = this.dashboardItemData.lastTrainingPayment.toString().split(" ");              
               let dateStr: string = datePart[0] + " " + datePart[1];

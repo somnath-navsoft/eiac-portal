@@ -180,6 +180,24 @@ export class AssessorsDashboardComponent implements OnInit {
   }
 
 
+  checkStatus(item) {
+    let date = new Date();
+    let yr = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let todays: any = new Date(yr+"-"+month+"-"+day);
+    let expiryData: any = new Date(item['eventDate'][item['eventDate'].length - 1].event_date);//new Date("2024-12-31");//;//
+    // console.log(expiryData);   
+    let diffDate: any = Math.round((expiryData-todays)/(1000*60*60*24));
+    // console.log(diffDate);
+    if(diffDate >= 0){
+      return 'Active';
+    }else{
+      return 'InActive';
+    }
+    
+  }
+
   //Load Dashboatd data
   loadDashData() {
     this.loader = false;
@@ -281,8 +299,10 @@ export class AssessorsDashboardComponent implements OnInit {
             //let eventCanderArr = []; 
             console.log(">>>", curYear, " :: ", curMonth);
             if (this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0) {
-              this.dashboardEvents = this.dashboardItemData.eventDetails;
-              console.log(">>>Events: ", this.dashboardEvents);
+              // this.dashboardEvents = this.dashboardItemData.eventDetails;
+              let array = this.dashboardItemData.eventDetails.slice().sort((a, b) => (a['eventDate'][0].event_date > b['eventDate'][0].event_date) ? 1 : -1)
+              this.dashboardEvents = array;
+              // console.log(">>>Events: ", this.dashboardEvents);
               // let filterEvents: any[] =[];
               // this.dashboardEvents.forEach(item => {
               //   let evtStart: any = item.event_start_date_time;
@@ -317,8 +337,8 @@ export class AssessorsDashboardComponent implements OnInit {
               eventCanderArr.push({
                 id:res.id,
                 title:res['courseDetails'].course,
-                start:res.event_start_date_time,
-                end:res.event_end_date_time, 
+                start:res['eventDate'][0].event_date,
+                end:res['eventDate'][res['eventDate'].length - 1].event_date,
               });
             })
 
