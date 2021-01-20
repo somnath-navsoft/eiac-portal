@@ -93,8 +93,10 @@ export class TrainersDashboardComponent implements OnInit {
     let day = date.getDate();
     let todays: any = new Date(yr+"-"+month+"-"+day);
     let expiryData: any = new Date(item['eventDate'][item['eventDate'].length - 1].event_date);//new Date("2024-12-31");//;//
-    let diffDate: any = Math.round((expiryData-todays)/(1000*60*60*24))
-    if(diffDate > 0){
+    // console.log(expiryData);
+    let diffDate: any = Math.round((expiryData-todays)/(1000*60*60*24));
+    // console.log(diffDate);
+    if(diffDate >= 0){
       return 'Active';
     }else{
       return 'InActive';
@@ -121,7 +123,9 @@ export class TrainersDashboardComponent implements OnInit {
             curMonth = curDate.getMonth() + 1;
             var eventCanderArr = []; 
             if (this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0) {
-              this.dashboardEvents = this.dashboardItemData.eventDetails;
+
+              let array = this.dashboardItemData.eventDetails.slice().sort((a, b) => (a['eventDate'][0].event_date < b['eventDate'][0].event_date) ? 1 : -1)
+              this.dashboardEvents = array;
               // console.log(">>>Events: ", this.dashboardEvents);
               // let filterEvents: any[] =[];
               // this.dashboardEvents.forEach(item => {
@@ -158,7 +162,7 @@ export class TrainersDashboardComponent implements OnInit {
                 end:res['eventDate'][res['eventDate'].length - 1].event_date,
               });
             })
-            console.log(this.dashboardEvents,'dashboardEvents')
+            // console.log(this.dashboardEvents,'dashboardEvents')
 
             //Get recent updates
             if (this.dashboardItemData.lastLogin != undefined) {
@@ -178,78 +182,78 @@ export class TrainersDashboardComponent implements OnInit {
               console.log(datePart, " == ", date, " -- ", time);
               this.dashboardRecentUpdates.push({ title: "Last Login", date: date, time: time });
             }
-            if (this.dashboardItemData.lastAccrApplied != undefined) {
-              let datePart: any = this.dashboardItemData.lastAccrApplied.toString().split(" ");
-              let date = datePart[0];
-              let time1 = datePart[1];
-              let time1Ar = time1.split(":");
-              if (time1Ar.length == 1) {
-                time1 = time1 + ":00";
-              }
-              let time2 = datePart[2];
-              let time = time1 + " " + time2;
-              this.dashboardRecentUpdates.push({ title: "Accreditation Applied", date: date, time: time });
-            }
-            if (this.dashboardItemData.lastRegApplied != undefined) {
-              let datePart: any = this.dashboardItemData.lastRegApplied.toString().split(" ");
-              let date = datePart[0];
-              let time1 = datePart[1];
-              let time1Ar = time1.split(":");
-              if (time1Ar.length == 1) {
-                time1 = time1 + ":00";
-              }
-              let time2 = datePart[2];
-              let time = time1 + " " + time2;
-              this.dashboardRecentUpdates.push({ title: "Registration Applied", date: date, time: time });
-            }
-            if (this.dashboardItemData.lastTrainingApplied != undefined) {
-              let datePart: any = this.dashboardItemData.lastTrainingApplied.toString().split(" ");
-              let date = datePart[0];
-              let time1 = datePart[1];
-              let time1Ar = time1.split(":");
-              if (time1Ar.length == 1) {
-                time1 = time1 + ":00";
-              }
-              let time2 = datePart[2];
-              let time = time1 + " " + time2;
-              this.dashboardRecentUpdates.push({ title: "Training Applied", date: date, time: time });
-            }
-            if (this.dashboardItemData.lastAccrPayment != undefined) {
-              let datePart: any = this.dashboardItemData.lastAccrPayment.toString().split(" ");
-              let date = datePart[0];
-              let time1 = datePart[1];
-              let time1Ar = time1.split(":");
-              if (time1Ar.length == 1) {
-                time1 = time1 + ":00";
-              }
-              let time2 = datePart[2];
-              let time = time1 + " " + time2;
-              this.dashboardRecentUpdates.push({ title: "Accreditation Payment", date: date, time: time });
-            }
-            if (this.dashboardItemData.lastRegPayment != undefined) {
-              let datePart: any = this.dashboardItemData.lastRegPayment.toString().split(" ");
-              let date = datePart[0];
-              let time1 = datePart[1];
-              let time1Ar = time1.split(":");
-              if (time1Ar.length == 1) {
-                time1 = time1 + ":00";
-              }
-              let time2 = datePart[2];
-              let time = time1 + " " + time2;
-              this.dashboardRecentUpdates.push({ title: "Registration Payment", date: date, time: time });
-            }
-            if (this.dashboardItemData.lastTrainingPayment != undefined) {
-              let datePart: any = this.dashboardItemData.lastTrainingPayment.toString().split(" ");
-              let date = datePart[0];
-              let time1 = datePart[1];
-              let time1Ar = time1.split(":");
-              if (time1Ar.length == 1) {
-                time1 = time1 + ":00";
-              }
-              let time2 = datePart[2];
-              let time = time1 + " " + time2;
-              this.dashboardRecentUpdates.push({ title: "Training Payment", date: date, time: time });
-            }
+            // if (this.dashboardItemData.lastAccrApplied != undefined) {
+            //   let datePart: any = this.dashboardItemData.lastAccrApplied.toString().split(" ");
+            //   let date = datePart[0];
+            //   let time1 = datePart[1];
+            //   let time1Ar = time1.split(":");
+            //   if (time1Ar.length == 1) {
+            //     time1 = time1 + ":00";
+            //   }
+            //   let time2 = datePart[2];
+            //   let time = time1 + " " + time2;
+            //   this.dashboardRecentUpdates.push({ title: "Accreditation Applied", date: date, time: time });
+            // }
+            // if (this.dashboardItemData.lastRegApplied != undefined) {
+            //   let datePart: any = this.dashboardItemData.lastRegApplied.toString().split(" ");
+            //   let date = datePart[0];
+            //   let time1 = datePart[1];
+            //   let time1Ar = time1.split(":");
+            //   if (time1Ar.length == 1) {
+            //     time1 = time1 + ":00";
+            //   }
+            //   let time2 = datePart[2];
+            //   let time = time1 + " " + time2;
+            //   this.dashboardRecentUpdates.push({ title: "Registration Applied", date: date, time: time });
+            // }
+            // if (this.dashboardItemData.lastTrainingApplied != undefined) {
+            //   let datePart: any = this.dashboardItemData.lastTrainingApplied.toString().split(" ");
+            //   let date = datePart[0];
+            //   let time1 = datePart[1];
+            //   let time1Ar = time1.split(":");
+            //   if (time1Ar.length == 1) {
+            //     time1 = time1 + ":00";
+            //   }
+            //   let time2 = datePart[2];
+            //   let time = time1 + " " + time2;
+            //   this.dashboardRecentUpdates.push({ title: "Training Applied", date: date, time: time });
+            // }
+            // if (this.dashboardItemData.lastAccrPayment != undefined) {
+            //   let datePart: any = this.dashboardItemData.lastAccrPayment.toString().split(" ");
+            //   let date = datePart[0];
+            //   let time1 = datePart[1];
+            //   let time1Ar = time1.split(":");
+            //   if (time1Ar.length == 1) {
+            //     time1 = time1 + ":00";
+            //   }
+            //   let time2 = datePart[2];
+            //   let time = time1 + " " + time2;
+            //   this.dashboardRecentUpdates.push({ title: "Accreditation Payment", date: date, time: time });
+            // }
+            // if (this.dashboardItemData.lastRegPayment != undefined) {
+            //   let datePart: any = this.dashboardItemData.lastRegPayment.toString().split(" ");
+            //   let date = datePart[0];
+            //   let time1 = datePart[1];
+            //   let time1Ar = time1.split(":");
+            //   if (time1Ar.length == 1) {
+            //     time1 = time1 + ":00";
+            //   }
+            //   let time2 = datePart[2];
+            //   let time = time1 + " " + time2;
+            //   this.dashboardRecentUpdates.push({ title: "Registration Payment", date: date, time: time });
+            // }
+            // if (this.dashboardItemData.lastTrainingPayment != undefined) {
+            //   let datePart: any = this.dashboardItemData.lastTrainingPayment.toString().split(" ");
+            //   let date = datePart[0];
+            //   let time1 = datePart[1];
+            //   let time1Ar = time1.split(":");
+            //   if (time1Ar.length == 1) {
+            //     time1 = time1 + ":00";
+            //   }
+            //   let time2 = datePart[2];
+            //   let time = time1 + " " + time2;
+            //   this.dashboardRecentUpdates.push({ title: "Training Payment", date: date, time: time });
+            // }
           }
 
         //   setTimeout(() => {

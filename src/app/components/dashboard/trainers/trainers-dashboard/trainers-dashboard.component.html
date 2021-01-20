@@ -170,7 +170,7 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="event_timings">
+                            <div class="event_timings" [ngStyle]="{'height':'205px'}">
                                 
                                 <div class="date-cnt">
                                     <span>Last Activity</span>
@@ -291,7 +291,7 @@
                                                     <div class="date_content">
                                                         <span class="date-dash">
                                                             <span>
-                                                                {{item['eventDate'][0].event_date | date}}
+                                                                {{item['eventDate'][0].event_date | date:'d/M/y' }}
                                                             </span>
                                                         </span>
                                                         {{item.courseDetails.course}}
@@ -319,7 +319,7 @@
                                                                 </div>
                                                                 <div class="counts">
                                                                     <span>
-                                                                        {{item['eventDate'][0].event_date | date | date}}
+                                                                        {{item['eventDate'][0].event_date | date:'d/M/y'}}
                                                                     </span>
                                                                 </div>
                                                             </div>
@@ -330,8 +330,10 @@
                                                                     <h5>Location</h5>
                                                                 </div>
                                                                 <div class="counts">
-                                                                    <span *ngIf="item.courseDetails.location == 'eiac_training_center'">Eiac Training Center</span>
-                                                                    <span *ngIf="item.courseDetails.location == 'client_premisis'">Client Premise</span>
+                                                                    <span *ngIf="item.location == 'eiac_training_center' && (item.custom_location == '' || item.custom_location == null)">Eiac Training Center</span>
+                                                                    <span *ngIf="item.location == 'eiac_training_center' && item.custom_location != ''">{{item.custom_location}}</span>
+                                                                    <span *ngIf="item.location == 'client_premisis' && (item.custom_location == '' || item.custom_location == null)">Client Premise</span>
+                                                                    <span *ngIf="item.location == 'client_premisis' && item.custom_location != ''">{{item.custom_location}}</span>
                                                                 </div>
                                                             </div>
                                                         </div>
