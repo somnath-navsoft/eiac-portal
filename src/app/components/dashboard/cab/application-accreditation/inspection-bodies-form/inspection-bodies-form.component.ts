@@ -4138,9 +4138,7 @@ backScopeAccreditation(){
                 }, 100)
               }
             }
-        });
-        return;
-
+        });        
       // setTimeout(() => {
       //   this.createPaymentButton(this.transactionsItem, this.inspectionBodyForm, this);
       //   let elem = document.getElementsByClassName('paypal-button-logo');

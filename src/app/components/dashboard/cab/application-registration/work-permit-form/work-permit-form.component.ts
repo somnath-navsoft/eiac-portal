@@ -102,7 +102,7 @@ export class WorkPermitFormComponent implements OnInit {
   // modalOptions:NgbModalOptions;
   accredAgreemFile: any;
   checklistDocFile: any;
-  paymentReceiptValidation:boolean
+  paymentReceiptValidation:boolean = false;
   getCountryLists:any[] = [];
   selectTradeLicName :string = ''; 
   selectTradeLicPath :string = '';
@@ -117,6 +117,7 @@ export class WorkPermitFormComponent implements OnInit {
   public completeLoaded: boolean = false;
   paymentFile:any;
   paymentDetailsChk:any;
+  paypalSandboxToken: string = '';
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,public _trainerService:TrainerService,public sanitizer:DomSanitizer,private modalService: NgbModal) { }
 
@@ -864,7 +865,54 @@ export class WorkPermitFormComponent implements OnInit {
         this.transactions.push(this.transactionsItem);
         //console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
       }
-      setTimeout(() => {
+
+      //Check payment service to redirect.....
+      //Check @UAT - Paypal | @LIVE - Third party redirect
+      this._trainerService.checkPaymentGateway() 
+      .subscribe(
+        result => {
+            let data: any = result;
+            console.log(">>> Payment Gateway... ", data);
+            if(data.records.status){
+              if(data.records.title == 'Live'){
+                  let postData: any = new FormData();
+                  postData.append('accreditation', this.formApplicationId);
+                  this._trainerService.proformaAccrSave(postData)
+                  .subscribe(
+                    result => {
+                        let record: any = result;
+                        if(record.status){
+                          //Check step complete service....
+                          let getUrl: string = data.records.other_details;
+                          //console.log("@@ ", getUrl);
+                          //top.location.href = getUrl;
+                          this.loaderPdf = true;
+                          setTimeout(() => {
+                            this.loaderPdf = false;
+                            window.open(getUrl);
+                          }, 1500)
+                          
+                        }
+                    //console.log(">>> Save resultts: ", result);
+                    });                      
+              }
+              if(data.records.title == 'Sandbox'){
+                this.paypalSandboxToken = data.records.value;
+                setTimeout(() => {
+                  this.createPaymentButton(this.transactionsItem, this.workPermitForm, this);
+                  let elem = document.getElementsByClassName('paypal-button-logo');
+                  ////console.log("button creting...", elem);
+                  if(elem){
+                    ////console.log("button creted...");          
+                  }
+                }, 100)
+              }
+            }
+        });
+
+
+
+      /*setTimeout(() => {
         this.createPaymentButton(this.transactionsItem, this.workPermitForm, this);
         let elem = document.getElementsByClassName('paypal-button-logo');
         //console.log("button creting...");
@@ -873,7 +921,7 @@ export class WorkPermitFormComponent implements OnInit {
         }else{
           //console.log("Loding button...");
         }
-      }, 100)
+      }, 100)*/
   }
 
   createPaymentButton(itemData: any, formObj?:any, compObj?:any){
@@ -886,7 +934,7 @@ export class WorkPermitFormComponent implements OnInit {
       paypal.Button.render({
         env: 'sandbox',
         client: {
-          sandbox: 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
+          sandbox: compObj.paypalSandboxToken
         },
         commit: true,
         payment: function (data, actions) {
@@ -935,7 +983,7 @@ export class WorkPermitFormComponent implements OnInit {
       const scriptElement = document.createElement('script')
       scriptElement.src = scriptUrl
       scriptElement.onload = resolve
-      ////console.log("load script...");
+      ////console.log("load script..."); 
       document.body.appendChild(scriptElement)
     })
   }
@@ -977,9 +1025,6 @@ export class WorkPermitFormComponent implements OnInit {
       var nYear = nFdate.getFullYear();
       dtFormat = nYear + "-" + nMonth + "-" + nDate;
     }
-
-    // console.log(">>> Date: ", dtFormat, " -- ", this.voucherSentData);
-
       this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
       this.voucherFile.append('amount',this.voucherSentData['amount']);
       this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
@@ -997,20 +1042,14 @@ export class WorkPermitFormComponent implements OnInit {
         this.voucherFile.append('is_draft', true);
       }
 
-      // console.log(">>> Data: ", this.voucherSentData);
+      console.log(">>> File up: ", this.paymentReceiptValidation);
       if(this.voucherSentData['transaction_no'] != '' && this.voucherSentData['payment_method'] != '' && this.voucherSentData['payment_made_by'] &&
-        this.voucherSentData['mobile_no'] != ''){
+        this.voucherSentData['mobile_no'] != '' && this.voucherSentData['amount'] != null && (this.voucherSentData['payment_date'] != undefined && this.voucherSentData['payment_date'] != null)){
           is_valid = true;
         }
 
         if(is_valid == true && type == undefined && this.paymentReceiptValidation != false) {
-          //this.noObjectionBodyForm.saved_step = 8;      
-          //this.noObjectionBodyForm.step8 = this.step6Data;
-          //this.noObjectionBodyForm.step8.application_id = this.formApplicationId;
-          //this.noObjectionBodyForm.step8.is_draft = false;
-          // console.log(">> Submit Form: "," -- ", this.voucherSentData);
-
-          this._trainerService.paymentVoucherNOCSave((this.voucherFile))
+                   this._trainerService.paymentVoucherNOCSave((this.voucherFile))
           .subscribe(
              result => {
                let data: any = result;

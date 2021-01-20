@@ -282,7 +282,7 @@
                                                         <div class="date_content">
                                                             <span class="date-dash">
                                                                 <span>
-                                                                    {{item['eventDate'][0].event_date | date}}
+                                                                    {{item['eventDate'][0].event_date | date:'d/M/y'}}
                                                                 </span>
                                                             </span>
                                                             {{item.courseDetails.course}}
@@ -310,7 +310,7 @@
                                                                 </div>
                                                                 <div class="counts">
                                                                     <span>
-                                                                        {{item['eventDate'][0].event_date | date | date}}
+                                                                        {{item['eventDate'][0].event_date | date:'d/M/y'}}
                                                                     </span>
                                                                 </div>
                                                             </div>

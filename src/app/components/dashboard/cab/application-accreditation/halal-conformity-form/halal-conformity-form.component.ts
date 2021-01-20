@@ -30,7 +30,7 @@ export class HalalConformityFormComponent implements OnInit {
   public technicalManager: any = {};
   public islamicAffair: any = {};
   public qualityManager: any = {};
-  public checkSecurity:boolean = false;
+  public checkSecurity:boolean = false; 
   public checkCaptchaValidation:boolean = false;
   public managing_director: Array<any> = [];
   public ownershipOfTheCompany: Array<any> = [];
@@ -266,7 +266,9 @@ export class HalalConformityFormComponent implements OnInit {
    others	: any[] = [];
    selectable = true;
    removable = true;
+   paypalSandboxToken: string = '';
   
+
   @ViewChild('captchaRef',{static:true}) captchaRef: RecaptchaComponent;
 
   scrollHandler(elem) {
@@ -1432,7 +1434,7 @@ addSchemeRow(obj: any = [],index: number){
         this.Service.getwithoutData(url2)
         .subscribe(
           res => {
-            //console.log(res,'urlVal')
+            console.log(res,'urlVal')
             this.loader = true;
             let getData: any = res;
             let saveStep: number;
@@ -1455,12 +1457,14 @@ addSchemeRow(obj: any = [],index: number){
 
                 saveStep = parseInt(getData.data.saved_step) - 1;
               }else{
-                if(parseInt(getData.data.saved_step) == 9){
+                if(parseInt(getData.data.saved_step) == 8){
+                  saveStep = parseInt(getData.data.saved_step) - 1;
+                }
+                else if(parseInt(getData.data.saved_step) == 9){
                   this.paymentStepComp = true;
                   saveStep = parseInt(getData.data.saved_step) - 2;
-                }else{
-                  
-                saveStep = parseInt(getData.data.saved_step);
+                }else{                  
+                  saveStep = parseInt(getData.data.saved_step);
                 }
               }
                 
@@ -2073,11 +2077,12 @@ addSchemeRow(obj: any = [],index: number){
    //Get transaction ID - https://uateloper.paypal.com/docs/checkout/reference/server-integration/get-transaction/#on-the-server
     if(this.transactions.length){
       //console.log('Paypal');
+      //'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
       this.loadExternalScript("https://www.paypalobjects.com/api/checkout.js").then(() => {
       paypal.Button.render({
         env: 'sandbox',
         client: {
-          sandbox: 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
+          sandbox: compObj.paypalSandboxToken
         },
         commit: true,
         payment: function (data, actions) {
@@ -3701,7 +3706,51 @@ onSubmitStep7(ngForm7: any) {
       this.transactions.push(this.transactionsItem);
       ////console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
     }
-    setTimeout(() => {
+
+    //Check payment service to redirect.....
+      //Check @UAT - Paypal | @LIVE - Third party redirect
+      this._trainerService.checkPaymentGateway() 
+      .subscribe(
+        result => {
+            let data: any = result;
+            console.log(">>> Payment Gateway... ", data);
+            if(data.records.status){
+              if(data.records.title == 'Live'){
+                  let postData: any = new FormData();
+                  postData.append('accreditation', this.formApplicationId);
+                  this._trainerService.proformaAccrSave(postData)
+                  .subscribe(
+                    result => {
+                        let record: any = result;
+                        if(record.status){
+                          //Check step complete service....
+                          let getUrl: string = data.records.other_details;
+                          console.log("@@ ", getUrl);
+                          //top.location.href = getUrl;
+                          this.loaderPdf = true;
+                          setTimeout(() => {
+                            this.loaderPdf = false;
+                            window.open(getUrl);
+                          }, 1500)                          
+                        }
+                    console.log(">>> Save resultts: ", result);
+                    });                      
+              }
+              if(data.records.title == 'Sandbox'){
+                this.paypalSandboxToken = data.records.value;
+                setTimeout(() => {
+                  this.createPaymentButton(this.transactionsItem, this.publicHalalConformityForm, this);
+                  let elem = document.getElementsByClassName('paypal-button-logo');
+                  ////console.log("button creting...", elem);
+                  if(elem){
+                    ////console.log("button creted...");          
+                  }
+                }, 100)
+              }
+            }
+        });
+
+    /*setTimeout(() => {
       this.createPaymentButton(this.transactionsItem, this.publicHalalConformityForm, this);
       let elem = document.getElementsByClassName('paypal-button-logo');
       //console.log("button creting...");
@@ -3710,7 +3759,7 @@ onSubmitStep7(ngForm7: any) {
       }else{
         //console.log("Loding button...");
       }
-    }, 100)
+    }, 100)*/
   }
   
   onSubmitPaymentInformation(ngForm8: any, type?: boolean){
@@ -3769,11 +3818,10 @@ onSubmitStep7(ngForm7: any) {
                 }
               }, 100)
               //this.openView('appComp','');
-              setTimeout(() => {                    
+              setTimeout(() => {
                 // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
                 this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
               },3500)
-              
             }else{
               this.toastr.warning(data.msg,'');
             }

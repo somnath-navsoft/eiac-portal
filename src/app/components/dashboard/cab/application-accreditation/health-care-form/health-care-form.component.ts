@@ -210,6 +210,7 @@ export class HealthCareFormComponent implements OnInit {
   schemeRows: Array<any> = [{}];
   //Master scope form data declaration
   is_main_activity_note_entry: boolean = false;
+  paypalSandboxToken: string ='';
 
   @ViewChild('mydiv', null) mydiv: ElementRef;
   @HostListener('scroll', ['$event.target'])
@@ -1315,8 +1316,8 @@ loadData(){
           }
         }
         this.step1Data.country = data.country;
-              ////console.log(">>> country data: ", this.getCountryLists);
-              if(this.getCountryLists.length){
+              //console.log(">>> country data: ", this.getCountryLists);
+              if(this.getCountryLists != undefined && this.getCountryLists.length > 0){
                 ////console.log(">>> 11c country data: ", this.getCountryLists);
                 let cdata: any = this.getCountryLists.find(rec => rec.name == data.country)
                   console.log("Fnd country: ", cdata);  
@@ -1425,7 +1426,7 @@ loadData(){
               }
 
               if(getData.data.saved_step == 3 && getData.data.accredation_criteria == 2){
-                  saveStep = 4;
+                  saveStep = 4; 
               }
               if(getData.data.cab_type != 'Healthcare' && getData.data.cab_type != 'Medical' &&
               getData.data.cab_type != 'Sample Collection'){
@@ -1445,7 +1446,7 @@ loadData(){
 
               this.step1Data.country = getData.data.country;
               ////console.log(">>> country data: ", this.getCountryLists);
-              if(this.getCountryLists.length){
+              if(this.getCountryLists != undefined && this.getCountryLists.length > 0){
                 ////console.log(">>> 11c country data: ", this.getCountryLists);
                 let cdata: any = this.getCountryLists.find(rec => rec.name == getData.data.country)
                   console.log("Fnd country: ", cdata);  
@@ -2230,11 +2231,10 @@ savedraftStep(stepCount) {
         this.voucherSentData['payment_date']._i != undefined){
         var dtData = this.voucherSentData['payment_date']._i;
         var year = dtData.year;
-      var month = dtData.month;
-      var date = dtData.date;
+        var month = dtData.month + 1;
+        var date = dtData.date;
       dtFormat = year + "-" + month + "-" + date;
-    }
-    //     
+    }    
 
     this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
     this.voucherFile.append('amount',this.voucherSentData['amount']);
@@ -3196,7 +3196,53 @@ this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity:
     this.transactions.push(this.transactionsItem);
     ////console.log("Cart Items: ", this.transactionsItem, " -- ", this.transactions);
   }
-  setTimeout(() => {
+
+      //Check payment service to redirect.....
+      //Check @UAT - Paypal | @LIVE - Third party redirect
+      this._trainerService.checkPaymentGateway() 
+      .subscribe(
+        result => {
+            let data: any = result;
+            console.log(">>> Payment Gateway... ", data);
+            if(data.records.status){
+              if(data.records.title == 'Live'){
+                  let postData: any = new FormData();
+                  postData.append('accreditation', this.formApplicationId);
+                  this._trainerService.proformaAccrSave(postData)
+                  .subscribe(
+                    result => {
+                        let record: any = result;
+                        if(record.status){
+                          //Check step complete service....
+                          let getUrl: string = data.records.other_details;
+                          console.log("@@ ", getUrl);
+                          //top.location.href = getUrl;
+                          this.loaderPdf = true;
+                          setTimeout(() => {
+                            this.loaderPdf = false;
+                            window.open(getUrl);
+                          }, 1500)                          
+                        }
+                    console.log(">>> Save resultts: ", result);
+                    });                      
+              }
+              if(data.records.title == 'Sandbox'){
+                this.paypalSandboxToken = data.records.value;
+                setTimeout(() => {
+                  this.createPaymentButton(this.transactionsItem, this.healthCareForm, this);
+                  let elem = document.getElementsByClassName('paypal-button-logo');
+                  ////console.log("button creting...", elem);
+                  if(elem){
+                    ////console.log("button creted...");          
+                  }
+                }, 100)
+              }
+            }
+        });
+
+
+
+  /*setTimeout(() => {
     this.createPaymentButton(this.transactionsItem, this.healthCareForm, this);
     let elem = document.getElementsByClassName('paypal-button-logo');
     //console.log("button creting...");
@@ -3205,7 +3251,7 @@ this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity:
     }else{
       //console.log("Loding button...");
     }
-  }, 100)
+  }, 100)*/
 }
 
 onSubmitPaymentInformation(ngForm9: any, type?: boolean){
@@ -3218,12 +3264,12 @@ this.healthCareForm.step9 = {};
     this.voucherSentData['payment_date']._i != undefined){
     var dtData = this.voucherSentData['payment_date']._i;
     var year = dtData.year;
-    var month = dtData.month;
+    var month = dtData.month + 1;
     var date = dtData.date;
     dtFormat = year + "-" + month + "-" + date;
   }
-  //     
-  let is_valid: boolean = false;
+
+let is_valid: boolean = false;
 this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
 this.voucherFile.append('amount',this.voucherSentData['amount']);
 this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
@@ -3409,7 +3455,7 @@ private loadExternalScript(scriptUrl: string) {
 
 saveInspectopnAfterPayment(theData: any){
   ////console.log(">>> The Data: ", theData);
-  this.transactions = [];
+  this.transactions = []; 
   this.toastr.success('Payment Success, Thank you.','Paypal>>',{timeOut:2000});
 
   //proforma save
@@ -3438,11 +3484,12 @@ createPaymentButton(itemData: any, formObj?:any, compObj?:any){
  //Get transaction ID - https://uateloper.paypal.com/docs/checkout/reference/server-integration/get-transaction/#on-the-server
   if(this.transactions.length){
     //console.log('Paypal');
+    //'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
     this.loadExternalScript("https://www.paypalobjects.com/api/checkout.js").then(() => {
     paypal.Button.render({
       env: 'sandbox',
       client: {
-        sandbox: 'AZFJTTAUauorPCb9sK3QeQoXE_uwYUzjfrSNEB4I808qDO1vO04mNfK-rQ3x1rjLUIN_Bv83mhhfyCRl'
+        sandbox: compObj.paypalSandboxToken
       },
       commit: true,
       payment: function (data, actions) {

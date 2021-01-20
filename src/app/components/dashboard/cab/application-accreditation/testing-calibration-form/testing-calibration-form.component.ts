@@ -4174,10 +4174,7 @@ onSubmitStep8(ngForm8: any) {
               }
             }
         });
-
-
-    return;
-    setTimeout(() => {
+    /*setTimeout(() => {
       this.createPaymentButton(this.transactionsItem, this.testingCalForm, this);
       let elem = document.getElementsByClassName('paypal-button-logo');
       ////console.log("button creting...");
@@ -4186,7 +4183,7 @@ onSubmitStep8(ngForm8: any) {
       }else{
         ////console.log("Loding button...");
       }
-    }, 100)
+    }, 100)*/
 }
 
 onSubmitPaymentInformation(ngForm9: any, type?: boolean){

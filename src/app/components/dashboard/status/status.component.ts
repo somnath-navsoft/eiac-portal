@@ -125,7 +125,7 @@ export class StatusComponent implements OnInit {
       ];
     this.selectAccrStatus  = [
       {title: 'Payment Pending', value:'payment_pending'},
-      {title: 'Under Process', value:'under_process'},
+      {title: 'Under Process', value:'application_process'},
       {title: 'Under Review', value:'under_review'},
       {title: 'Complete', value:'complete'},
       {title: 'Draft', value:'draft'}
