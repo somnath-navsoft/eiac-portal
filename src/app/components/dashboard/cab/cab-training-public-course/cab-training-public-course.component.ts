@@ -113,6 +113,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
 
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
+    console.log(this.userType,'userType');
 
     // this.amount1 = 1 * this.fee_day_pertime1 * this.publicTrainingForm.training_duration;
     // this.amount2 = 0.5 * this.amount1;
@@ -162,7 +163,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     //console.log('<<< Duratioh: ', durationAr);
     this.trainingDuration = durationAr;
     // console.log(this.participantTraineeDetails.length);
-    // tutionFees:any;
+    // tutionFees:any;cabOwnerData
     // taxVat:any;
     // knowledgeFees:any;
     // innovationFees:any;
@@ -230,7 +231,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
         this.step1Data.fax_no = res['data']['step1'][0].applicant_fax_no;
         this.step1Data.official_email = res['data']['step1'][0].applicant_email;
         this.step1Data.official_website = res['data']['step1'][0].applicant_website;
-        this.step1Data.authorized_contact_person = res['data']['step2']['cabOwnerData'][0].name;
+        this.step1Data.authorized_contact_person = this.userType == 'cab_client' ? res['data']['step2']['cabOwnerData'][0].name : '';
         this.step1Data.designation = res['data']['step1'][0].designation;
         this.step1Data.mobile_phone_number = res['data']['step1'][0].applicant_tel_no;
 

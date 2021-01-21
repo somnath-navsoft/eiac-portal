@@ -214,13 +214,6 @@
                         <div class="col-md-12"> 
                             <!-- Only Jquery fullcalendar -->
                             <!-- <div id="calendar"></div> -->
-                            <!-- Output function...
-                            (dateClick)="dateClick($event)"
-                                      (clickButton)="clickButton($event)"
-                                      (eventDragStop)="eventDragStop($event)"
-                                      [eventsModel]="eventsModel"
-                                      (eventClick)="eventClick($event)"
-                            -->
                             <!-- ng-fullcalendar example -->
                             <!-- <div class="event-datetime">
                                 <ng-container *ngIf="options">
@@ -261,35 +254,36 @@
                                     <mat-accordion>
                                         <mat-expansion-panel (opened)="panelOpenState = true"
                                         (closed)="panelOpenState = false" *ngFor="let item of dashboardEvents;let i=index;" [expanded]="item.id == eventId ? true : false">
-                                            <!-- <ng-container *ngFor="let item of dashboardEvents;"> -->
-                                                <mat-expansion-panel-header >
-                                                    <div class="ass-details" [ngStyle]="{'padding-bottom': '4px'}">
-                                                        
-                                                        <div class="date_content">
-                                                            <span class="date-dash">
-                                                                <span>
-                                                                    {{item['eventDate'][0].event_date | date:'d/M/y'}}
+                                            <!-- <ng-container *ngFor="let item of dashboardEvents;"> -->`
+                                                <!-- <ng-container > -->
+                                                    <mat-expansion-panel-header *ngIf="item.eventDate != 'NA'">
+                                                        <div class="ass-details" [ngStyle]="{'padding-bottom': '4px'}">
+                                                            
+                                                            <div class="date_content">
+                                                                <span class="date-dash">
+                                                                    <span>
+                                                                        {{item['eventDate'][0].event_date | date:'d/M/y'}}
+                                                                    </span>
                                                                 </span>
-                                                            </span>
-                                                            {{item.courseDetails.course}}
+                                                                {{item.courseDetails.course}}
+                                                            </div>
+                                                        </div>
+                                                    </mat-expansion-panel-header>
+
+                                                    <div class="ass-details">
+                                                        
+                                                        <div class="row ticket-cnt">
+                                                            <div class="col-md-12">
+                                                                <div class="status-wrapper-ticket" *ngIf="item.courseDetails != undefined">
+                                                                    <h3 [ngStyle]="{'font-size': '25px'}">{{item.courseDetails.course}}</h3>
+                                                                    <p [innerHTML]="item.courseDetails.course_description"></p>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </mat-expansion-panel-header>
 
-                                            <div class="ass-details">
-                                                
-                                                <div class="row ticket-cnt">
-                                                    <div class="col-md-12">
-                                                        <div class="status-wrapper-ticket" *ngIf="item.courseDetails != undefined">
-                                                            <h3 [ngStyle]="{'font-size': '25px'}">{{item.courseDetails.course}}</h3>
-                                                            <p [innerHTML]="item.courseDetails.course_description"></p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                                <div class="row ticket-details m-0">
-                                                    <div class="col">
+                                                    <div class="row ticket-details m-0">
+                                                        <div class="col">
                                                             <div class="doc-data border-right-dash">
                                                                 <div class="documents">
                                                                     <h5>Date</h5>
@@ -344,7 +338,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                </div>
+                                                    </div>
                                             <!-- </ng-container> -->
                                         </mat-expansion-panel>
                                     </mat-accordion>

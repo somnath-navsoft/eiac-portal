@@ -102,7 +102,7 @@ export class CabTrainingPublicCourseListComponent implements OnInit {
             // }
             tempObj['courseAvailability'] = item.seat_availability;
             tempObj['courseDuration']     = pcourse.training_days;
-            tempObj['courseDate']         = new Date(item.event_start_date_time);
+            tempObj['courseDate']         = new Date(item['eventDate'][0].event_date);
             tempObj['courseLocation']     = (pcourse.location != '' && pcourse.location == 'eiac_training_center') ? "EIAC Training Center" : '';
             tempObj['courseAudience']     = (pcourse.allTargatedAud != undefined && pcourse.allTargatedAud.length > 0) ? this.getTargetAudNames(pcourse.allTargatedAud) : '';
             listCourse.push(tempObj);

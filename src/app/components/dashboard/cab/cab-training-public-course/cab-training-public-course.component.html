@@ -56,7 +56,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Organization / Candidate Name</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" readonly placeholder="Organization / Candidate Name" name="organization_name" [(ngModel)]="step1Data.organization_name">
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" [readonly]="userType =='cab_client' ? true : false" placeholder="Organization / Candidate Name" name="organization_name" [(ngModel)]="step1Data.organization_name">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
@@ -64,7 +64,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mailing Address</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" readonly placeholder="Mailing Address" name="mailing_address" [(ngModel)]="step1Data.mailing_address">
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" [readonly]="userType =='cab_client' ? true : false" placeholder="Mailing Address" name="mailing_address" [(ngModel)]="step1Data.mailing_address">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
@@ -72,7 +72,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>PO Box No./ZIP Code</mat-label>
-                                                <input matInput (keypress)="Service.IsNumeric($event)" autocomplete="off" placeholder="Mailing Address" readonly name="zip_code" [(ngModel)]="step1Data.zip_code">
+                                                <input matInput (keypress)="Service.IsNumeric($event)" autocomplete="off" placeholder="Mailing Address" [readonly]="userType =='cab_client' ? true : false" name="zip_code" [(ngModel)]="step1Data.zip_code">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
@@ -111,21 +111,21 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Telephone Number</mat-label>
-                                                <input (keypress)="Service.IsNumeric($event)" readonly autocomplete="off" matInput placeholder="Issued Date" name="telephone_number" [(ngModel)]="step1Data.telephone_number">
+                                                <input (keypress)="Service.IsNumeric($event)" [readonly]="userType =='cab_client' ? true : false" autocomplete="off" matInput placeholder="Issued Date" name="telephone_number" [(ngModel)]="step1Data.telephone_number">
                                             </mat-form-field>
                                         </div>
 
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Fax No.</mat-label>
-                                                <input matInput readonly (keypress)="Service.IsNumeric($event)" autocomplete="off" placeholder="Fax No." name="fax_no" [(ngModel)]="step1Data.fax_no">
+                                                <input matInput [readonly]="userType =='cab_client' ? true : false" (keypress)="Service.IsNumeric($event)" autocomplete="off" placeholder="Fax No." name="fax_no" [(ngModel)]="step1Data.fax_no">
                                             </mat-form-field>
                                         </div>
 
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Official Email Address</mat-label>
-                                                <input matInput autocomplete="off" placeholder="Official Email Address"  name="official_email" [(ngModel)]="step1Data.official_email"  readonly>
+                                                <input matInput autocomplete="off" placeholder="Official Email Address"  name="official_email" [(ngModel)]="step1Data.official_email" [readonly]="userType =='cab_client' ? true : false">
                                                 <mat-error></mat-error> 
                                             </mat-form-field>
                                             <p class="error" *ngIf="step1Data.official_email && !Service.checkInput('email',step1Data.official_email)">Please Enter Correct Email Id</p>
@@ -137,7 +137,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Official Website</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" readonly matInput autocomplete="off" placeholder="Official Website" name="official_website" [(ngModel)]="step1Data.official_website">
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" [readonly]="userType =='cab_client' ? true : false" matInput autocomplete="off" placeholder="Official Website" name="official_website" [(ngModel)]="step1Data.official_website">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
@@ -145,7 +145,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Mobile Phone Number</mat-label>
-                                                <input matInput (keypress)="Service.IsNumeric($event)" readonly autocomplete="off" placeholder="Mobile Phone Number" name="mobile_phone_number" [(ngModel)]="step1Data.mobile_phone_number">
+                                                <input matInput (keypress)="Service.IsNumeric($event)" [readonly]="userType =='cab_client' ? true : false" autocomplete="off" placeholder="Mobile Phone Number" name="mobile_phone_number" [(ngModel)]="step1Data.mobile_phone_number">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
@@ -153,7 +153,7 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Designation</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" readonly matInput autocomplete="off" placeholder="Designation" name="designation" [(ngModel)]="step1Data.designation">
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" [readonly]="userType =='cab_client' ? true : false" matInput autocomplete="off" placeholder="Designation" name="designation" [(ngModel)]="step1Data.designation">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>
@@ -163,7 +163,7 @@
                                         <div class="col-md-6">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Authorized Contact Person Name</mat-label>
-                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Authorized Contact Person Name" name="authorized_contact_person" readonly [(ngModel)]="step1Data.authorized_contact_person">
+                                                <input (keypress)="Service.inputFilter($event, Service.regExName)" matInput autocomplete="off" placeholder="Authorized Contact Person Name" name="authorized_contact_person" [readonly]="userType =='cab_client' ? true : false" [(ngModel)]="step1Data.authorized_contact_person">
                                                 <mat-error></mat-error>  
                                             </mat-form-field>
                                         </div>

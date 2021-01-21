@@ -163,7 +163,7 @@ export class CandidateDashboardComponent implements OnInit {
             let eventCanderArr = []; 
             console.log(">>>", curYear, " :: ", curMonth);
             if (this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0) {
-              let array = this.dashboardItemData.eventDetails.slice().sort((a, b) => (a['eventDate'][0].event_date > b['eventDate'][0].event_date) ? 1 : -1)
+              let array = this.dashboardItemData.eventDetails.slice().sort((a, b) => (a['eventDate'][0].event_date < b['eventDate'][0].event_date) ? 1 : -1)
               this.dashboardEvents = array;
               // this.dashboardEvents = this.dashboardItemData.eventDetails;
               // console.log(">>>Events: ", this.dashboardEvents);
