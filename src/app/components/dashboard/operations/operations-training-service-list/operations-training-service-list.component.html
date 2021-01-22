@@ -279,11 +279,21 @@
                             </td>
                             
                             <td>
-                                {{item['cabDetails'][0].cab_name}}
+                                <ng-container *ngIf="item.cabDetails != 'NA'">
+                                    {{item['cabDetails'][0].cab_name}}
+                                </ng-container>
+                                <ng-container *ngIf="item.cabDetails == 'NA'">
+                                    {{item.organization_name}}
+                                </ng-container>
                             </td>
 
                             <td>
-                                {{item['cabDetails'][0].cab_code}}
+                                <ng-container *ngIf="item.cabDetails != 'NA'">
+                                    {{item['cabDetails'][0].cab_code}}
+                                </ng-container>
+                                <ng-container *ngIf="item.cabDetails == 'NA'">
+                                    N/A
+                                </ng-container>
                             </td>
                             
                             <td>{{item.country}}</td>

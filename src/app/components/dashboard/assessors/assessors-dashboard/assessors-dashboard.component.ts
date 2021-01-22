@@ -300,7 +300,7 @@ export class AssessorsDashboardComponent implements OnInit {
             console.log(">>>", curYear, " :: ", curMonth);
             if (this.dashboardItemData.eventDetails != undefined && this.dashboardItemData.eventDetails.length > 0) {
               // this.dashboardEvents = this.dashboardItemData.eventDetails;
-              let array = this.dashboardItemData.eventDetails.slice().sort((a, b) => (a['eventDate'][0].event_date > b['eventDate'][0].event_date) ? 1 : -1)
+              let array = this.dashboardItemData.eventDetails.slice().sort((a, b) => (a['eventDate'][0].event_date < b['eventDate'][0].event_date) ? 1 : -1)
               this.dashboardEvents = array;
               // console.log(">>>Events: ", this.dashboardEvents);
               // let filterEvents: any[] =[];
@@ -481,7 +481,7 @@ export class AssessorsDashboardComponent implements OnInit {
           this.loader = true;
         });
 
-    this.loadDashData();
+    
     this.loadTechnicalFields();
 
     this.Service.getwithoutData(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.profileService + '?userType=' + this.userType + '&email=' + this.userEmail)
@@ -493,6 +493,8 @@ export class AssessorsDashboardComponent implements OnInit {
           this.step1Data = res['data']['step1'][0];
           this.step2Data = res['data']['step2']['education'][0];
           // console.log(res,'res');
+          this.userDetails != undefined ? this.loadDashData() : '';
+          
         });
 
 

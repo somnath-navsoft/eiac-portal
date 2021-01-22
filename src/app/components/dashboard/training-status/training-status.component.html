@@ -203,10 +203,16 @@
                                 <ng-container *ngIf="item.cabDetails != undefined && item.cabDetails.length > 0">
                                     {{item.cabDetails[0].cab_name}}
                                 </ng-container>
+                                <ng-container *ngIf="item.cabDetails == 'NA'">
+                                    {{item.organization_name}}
+                                </ng-container>
                             </td>
                             <td>
                                 <ng-container *ngIf="item.cabDetails != undefined && item.cabDetails.length > 0">
                                     {{item.cabDetails[0].cab_code}}
+                                </ng-container>
+                                <ng-container *ngIf="item.cabDetails == 'NA'">
+                                    NA
                                 </ng-container>
                             </td>
                             <td>
