@@ -147,6 +147,8 @@ export class NoObjectionFormComponent implements OnInit {
   closeResult: string;
   modalOptions:NgbModalOptions;
   paypalSandboxToken: string = '';
+
+  showHideCBSec: boolean = false;
   
   constructor(public Service: AppService, public constant:Constants, public sanitizer: DomSanitizer , public router: Router,
     public toastr: ToastrService, private modalService: NgbModal, private _trainerService: TrainerService,) { }
@@ -446,8 +448,29 @@ export class NoObjectionFormComponent implements OnInit {
         }
       break;
       case 'calibration_lab':
+        let checkCount: number = 0;
         if(theEvt.checked){
+          console.log("#check...");
           this.calibrationLabCheckItemOthers = false;
+          this.calibrationLabCheckboxes.forEach(item => {
+            if(item.checked){
+              checkCount++;
+            }
+          })          
+        }else{
+          console.log("@uncheck...");
+          this.calibrationLabCheckboxes.forEach(item => {
+            if(item.checked){
+              checkCount++;
+            }
+          })
+        }
+        console.log(">>>Count check: ", checkCount);
+        if(checkCount > 0){
+          this.showHideCBSec = true;
+        }
+        if(checkCount == 0){
+          this.showHideCBSec = false;
         }
       break;
       case 'certification_body_first':
@@ -490,6 +513,12 @@ export class NoObjectionFormComponent implements OnInit {
               item.checked = false;
             }
           }) 
+        }
+        if(this.calibrationLabCheckItemOthers){
+          this.showHideCBSec = true;
+        }
+        if(!this.calibrationLabCheckItemOthers){
+          this.showHideCBSec = false;
         }
       break;
       case 'certification_body_first':
@@ -843,7 +872,7 @@ export class NoObjectionFormComponent implements OnInit {
                    }
                 }
                 
-                //Step 4
+                //Step 3
                 if(getData.data.nocTableData != undefined && typeof getData.data.nocTableData == 'object'){
                     let nocData: any = getData.data.nocTableData;
 
@@ -870,13 +899,18 @@ export class NoObjectionFormComponent implements OnInit {
                     if(nocData.calibration_lab != undefined && typeof nocData.calibration_lab == 'object'){
                       let calibrationLabCheckboxes: any = nocData.calibration_lab.calibrationLabCheckDetails;
                       console.log(">>>>>calibration Lab ", calibrationLabCheckboxes, " == ", nocData.calibration_lab);
+                      let checkCount: number = 0;
                       if(calibrationLabCheckboxes.checkItems.length){
                            this.calibrationLabCheckboxes.forEach(item => {
                               let findText: any = calibrationLabCheckboxes.checkItems.find(rec => rec.value == item.label);
                               if(findText){
+                                checkCount++;
                                 item.checked = true;
                               }
                            })
+                      }
+                      if(checkCount > 0){
+                        this.showHideCBSec = true;
                       }
                       if(calibrationLabCheckboxes.checkItemsOthers.length){
                         this.calibrationLabCheckItemOthers = true;
