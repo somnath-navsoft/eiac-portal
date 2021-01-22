@@ -42,80 +42,88 @@
             </div>
             <div class="row">
                 <div class="col-md-3">
-                    <div class="trainer-main-details">
-                        <div class="user-icons">
-                            <span class="icon-user"></span>
-                        </div>
-                        <div class="trainer-data-det">
-                            <div class="trainer-pro">
-                                <span>Profile</span>
+                    <a href="javascript:void(0)" routerLink="/dashboard/{{userType}}/company-profile">
+                        <div class="trainer-main-details">
+                            <div class="user-icons">
+                                <span class="icon-user"></span>
                             </div>
-                            <div class="trainer-maindata trainer-update">
-                                <!-- <span>Update<span class="icon-right-arrow"></span></span> -->
-                                <span>Update 
-                                    <a routerLink="/dashboard/{{userType}}/company-profile">
-                                        <span [ngStyle]="{'color': '#FFF', 'font-size':'31px'}">></span>
-                                    <!-- <span class="icon-right-arrow"></span> -->
+                            <div class="trainer-data-det">
+                                <div class="trainer-pro">
+                                    <span>Profile</span>
+                                </div>
+                                <div class="trainer-maindata trainer-update">
+                                    <!-- <span>Update<span class="icon-right-arrow"></span></span> -->
+                                    <span>Update 
+                                        <a routerLink="/dashboard/{{userType}}/company-profile">
+                                            <span [ngStyle]="{'color': '#FFF', 'font-size':'31px'}">></span>
+                                        <!-- <span class="icon-right-arrow"></span> -->
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="javascript:void(0)" routerLink="/dashboard/event-list">
+                        <div class="trainer-main-details trainer2">
+                            <div class="user-icons">
+                                <a href="javascript:void(0)" routerLink="/dashboard/event-list"><span class="icon-calendar"></span></a>
+                            </div>
+                            <div class="trainer-data-det">
+                                <div class="trainer-pro">
+                                    <span>Event</span>
+                                </div>
+                                <div class="trainer-maindata">
+                                    <span *ngIf="dashboardEvents != undefined">
+                                        {{dashboardItemData.eventCount}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="javascript:void(0)" routerLink="/dashboard/event-list">
+                        <div class="trainer-main-details trainer3">
+                            <div class="user-icons">
+                                <a href="javascript:void(0)" routerLink="/dashboard/event-list">
+                                    <span class="icon-tick"></span>
+                                </a>
+                            </div>
+                            <div class="trainer-data-det">
+                                <div class="trainer-pro">
+                                    <a href="javascript:void(0)" routerLink="/dashboard/event-list">
+                                        <span>Course Completed</span>
                                     </a>
-                                </span>
+                                </div>
+                                <div class="trainer-maindata">
+                                    <span>{{dashboardItemData.completeTrainingAppCount}}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-md-3">
-                    <div class="trainer-main-details trainer2">
-                        <div class="user-icons">
-                            <a href="javascript:void(0)" routerLink="/dashboard/event-list"><span class="icon-calendar"></span></a>
-                        </div>
-                        <div class="trainer-data-det">
-                            <div class="trainer-pro">
-                                <span>Event</span>
-                            </div>
-                            <div class="trainer-maindata">
-                                <span *ngIf="dashboardEvents != undefined">
-                                    {{dashboardItemData.eventCount}}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="trainer-main-details trainer3">
-                        <div class="user-icons">
-                            <a href="javascript:void(0)" routerLink="/dashboard/event-list">
-                                <span class="icon-tick"></span>
-                            </a>
-                        </div>
-                        <div class="trainer-data-det">
-                            <div class="trainer-pro">
+                    <a href="javascript:void(0)" routerLink="/dashboard/event-list">
+                        <div class="trainer-main-details trainer4">
+                            <div class="user-icons">
                                 <a href="javascript:void(0)" routerLink="/dashboard/event-list">
-                                    <span>Course Completed</span>
+                                    <span class="icon-menu"></span>
                                 </a>
                             </div>
-                            <div class="trainer-maindata">
-                                <span>{{dashboardItemData.completeTrainingAppCount}}</span>
+                            <div class="trainer-data-det">
+                                <div class="trainer-pro">
+                                    <a href="javascript:void(0)" routerLink="/dashboard/event-list">
+                                        <span>Course Planned</span>
+                                    </a>
+                                </div>
+                                <div class="trainer-maindata">
+                                    <span>{{dashboardItemData.plannedTrainingAppCount}}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="trainer-main-details trainer4">
-                        <div class="user-icons">
-                            <a href="javascript:void(0)" routerLink="/dashboard/event-list">
-                                <span class="icon-menu"></span>
-                            </a>
-                        </div>
-                        <div class="trainer-data-det">
-                            <div class="trainer-pro">
-                                <a href="javascript:void(0)" routerLink="/dashboard/event-list">
-                                    <span>Course Planned</span>
-                                </a>
-                            </div>
-                            <div class="trainer-maindata">
-                                <span>{{dashboardItemData.plannedTrainingAppCount}}</span>
-                            </div>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -137,7 +145,23 @@
                                 <ul>
                                     <li><span class="date-dash">20/01/2020</span>At vero eos et accusamus et iusto odio
                                         dignissimos ducimus qui blanditiis.</li>
-                                    <hr>
+                                    <hr>    <div class="trainer-main-details trainer4">
+                            <div class="user-icons">
+                                <a href="javascript:void(0)" routerLink="/dashboard/event-list">
+                                    <span class="icon-menu"></span>
+                                </a>
+                            </div>
+                            <div class="trainer-data-det">
+                                <div class="trainer-pro">
+                                    <a href="javascript:void(0)" routerLink="/dashboard/event-list">
+                                        <span>Course Planned</span>
+                                    </a>
+                                </div>
+                                <div class="trainer-maindata">
+                                    <span>{{dashboardItemData.plannedTrainingAppCount}}</span>
+                                </div>
+                            </div>
+                        </div>
                                     <li><span class="date-dash">19/01/2020</span>Et harum quidem rerum facilis est et
                                         expedita distinctio. Nam libero tempor.</li>
                                     <hr>
