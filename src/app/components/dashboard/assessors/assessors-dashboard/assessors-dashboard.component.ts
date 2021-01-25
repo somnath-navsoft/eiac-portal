@@ -110,17 +110,39 @@ export class AssessorsDashboardComponent implements OnInit {
           if(typeof data == 'object' && data.technical_field != undefined && data.technical_field.length > 0){
               this.technicalFields = data.technical_field;
           }
-          console.log(">>>Technical fields: ", this.technicalFields);
-          if(this.technicalFields.length > 0){
-            this.technicalFields.forEach(item => {
-                if(item.technical_fields != undefined && item.technical_fields != '' && 
-                    typeof item.technical_fields == 'object' && item.technical_fields.length > 0){
-                      console.log(">>>Count: ", item.technical_fields)
-                  // this.technicalFieldsCount += item.technical_fields.length;
+          // console.log(">>>Technical fields: ", this.technicalFields);
+          // if(this.technicalFields.length > 0){
+          //   this.technicalFields.forEach(item => {
+          //       if(item.technical_fields != undefined && item.technical_fields != '' && 
+          //           typeof item.technical_fields == 'object' && item.technical_fields.length > 0){
+          //             // console.log(">>>Count: ", item.technical_fields)
+          //         this.technicalFieldsCount += item.technical_fields.length;
+          //       }
+          //   })
+          // }
+          // console.log("@Total count: ", this.technicalFieldsCount);
+
+          var arr = [];
+          if(rec['data'].step4 != '') {
+            // console.log(res['data'].technical_field);
+            var step4 = rec['data'].step4;
+            // console.log(step4['technical_experience'],'step5');
+            for(let key in step4['technical_experience']) {
+              this.technicalFields.forEach(res => {
+                for(let nxtkey in res['technical_fields']) {
+                  if(key == res['technical_fields'][nxtkey].field_mgmt) {
+                    res['technical_fields'][nxtkey].knowledge_experienced = step4['technical_experience'][key];
+                    arr.push(res['technical_fields'][nxtkey].service_name);
+                  }
                 }
-            })
+              });
+            }
+            let unique = arr.filter((item, i, ar) => ar.indexOf(item) === i);
+            this.technicalFieldsCount = unique.length;
+            // console.log(unique);
+            // const uniqueArr = [...new Set(arr.map(item => item.key))]
+            // console.log(uniqueArr,'htryyyyyyyyyyyyyy');
           }
-          console.log("@Total count: ", this.technicalFieldsCount);
           
       }
     );
@@ -212,7 +234,7 @@ export class AssessorsDashboardComponent implements OnInit {
           if (res['status'] == 200) {
             this.dashboardItemData = res['dashBoardData'];
 
-            this.technicalFieldsCount = this.dashboardItemData.technicalFieldsCount;
+            // this.technicalFieldsCount = this.dashboardItemData.technicalFieldsCount;
 
             if(this.dashboardItemData.assessorDetails != undefined && this.dashboardItemData.assessorDetails.length > 0){
                 let assessorData: any = this.dashboardItemData.assessorDetails[0];

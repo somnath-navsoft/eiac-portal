@@ -519,7 +519,7 @@
                                     <ul>
                                         <ng-container *ngFor = "let item of dashboardRecentUpdates">
                                         <!-- <li>{{userDetails?.first_name}} {{userDetails?.last_name}}<span>, {{item.title}} on {{item.date | date: 'short'}}</span></li> -->
-                                        <li>{{item.title}}<span> on {{item.date | date: 'short'}}</span></li>
+                                        <li>{{item.title}}<span> on {{item.date | date: 'dd/MM/y, h:mm:ss a'}}</span></li>
                                         </ng-container> 
                                         <!-- <li>These cases are perfectly simple and easy to distinguish. In a free hour,
                                             when our power of choice is
@@ -550,7 +550,8 @@
                         <div class="row" *ngIf="row.meta_title != 'user_registration'">
                             <div class="col-md-12">
                                 <div class="ass-data">
-                                    <h3>{{row.title}}</h3>
+                                    <h3 *ngIf="row.title == 'Admin Message'">Eiac Portal</h3>
+                                    <h3 *ngIf="row.title != 'Admin Message'">{{row.title}}</h3>
                                     <div class="date_wrapper">
                                         <p>{{row.created | date}}</p>
                                         <div class="reply_msg" (click)="getUserDetails(row.user)"

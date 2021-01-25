@@ -329,14 +329,27 @@
                                 <td class="fnt-clr"><a href="javascript:void(0)" routerLink="/dashboard/account-details/{{item.appNo}}">{{item.appNo}}</a></td>
                                 <td>{{item.createdDate | date:'dd-MMM-yyyy'}}</td>
                                 <td>{{item.cabName}}</td>
-                                <td>{{item.cabCode}}</td> 
                                 <td>
-                                    <span *ngIf="item.appType == 'testing_calibration'">Testing Calibration</span>
-                                    <span *ngIf="item.appType == 'inspection_body'">Inspection Bodies</span>
-                                    <span *ngIf="item.appType == 'health_care'">Health Care</span>
-                                    <span *ngIf="item.appType == 'halal_conformity_bodies'">Halal Conformity Bodies</span>
-                                    <span *ngIf="item.appType == 'certification_bodies'">Certification Bodies</span>
-                                    <span *ngIf="item.appType == 'pt_providers'">Proficiency Testing Providers</span>
+                                    <ng-container *ngIf="userType != 'candidate'">
+                                        {{item.cabCode}}
+                                    </ng-container>
+                                    <ng-container *ngIf="userType == 'candidate'">
+                                        N/A
+                                    </ng-container>
+                                </td> 
+                                <td>
+                                    <ng-container *ngIf="userType != 'candidate'">
+                                        <span *ngIf="item.appType == 'testing_calibration'">Testing Calibration</span>
+                                        <span *ngIf="item.appType == 'inspection_body'">Inspection Bodies</span>
+                                        <span *ngIf="item.appType == 'health_care'">Health Care</span>
+                                        <span *ngIf="item.appType == 'halal_conformity_bodies'">Halal Conformity Bodies</span>
+                                        <span *ngIf="item.appType == 'certification_bodies'">Certification Bodies</span>
+                                        <span *ngIf="item.appType == 'pt_providers'">Proficiency Testing Providers</span>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="userType == 'candidate'">
+                                        N/A
+                                    </ng-container>
                                 </td>
                                 <td>{{item.application_fees.voucher_no}}</td>
                                 <td>{{item.application_fees.amount}}</td>

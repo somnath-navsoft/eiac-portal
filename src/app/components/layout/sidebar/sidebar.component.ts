@@ -55,6 +55,7 @@ export class SidebarComponent implements OnInit {
               this.dashMenu[key]['icon'] = 'icon-doc-attach';
             }else if(res.title == 'DOCUMENTS'){
               this.dashMenu[key]['icon'] = 'icon-money';
+              this.dashMenu[key]['menuLink'] = 'documents';
             }else if(res.title == 'PROFILE'){
               this.dashMenu[key]['icon'] = 'icon-user-dash';
             }else if(res.title == 'MESSAGES'){
@@ -98,9 +99,12 @@ export class SidebarComponent implements OnInit {
       }
       return link;
   }
-  goToParentLink(link: any) {
-    if(link!== '#'){
+  goToParentLink(link: any,menuLink:any) {
+    if(link!== '#' && menuLink !='documents'){
       this._router.navigateByUrl('dashboard/'+link);
+    }else if(link!== '#' && menuLink =='documents'){
+      // this._router.navigateByUrl('https://eiac.gov.ae/documents/publications');
+      window.open('https://eiac.gov.ae/documents/publications', '_blank');
     }
   }
 
