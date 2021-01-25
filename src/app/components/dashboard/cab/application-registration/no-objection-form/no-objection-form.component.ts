@@ -122,10 +122,16 @@ export class NoObjectionFormComponent implements OnInit {
   halalCabCheckItemOthers: boolean = false;
   halalCabCheckItemOthersInput: any;
 
+  entryTestingLab: boolean      = false;
+  entryCalibrationLab: boolean  = false;
+  entryInspection: boolean      = false;
+  entryHalal: boolean           = false;
+
+
   //STEP 4
   listOfIntEquip: any[] = [{}];
-  // step 5
-  listOfStaff: any[] = [{}];
+  //Step 5
+  listOfStaff: any[]    = [{}];
 
 
   //Add multiple input items
@@ -1431,12 +1437,12 @@ export class NoObjectionFormComponent implements OnInit {
           calibrationLabCheckValues['checkItemsOthers'].push({value: this.calibrationLabCheckItemOtherInput});
         }            
       }
-      //this.step3Data.calibrationLabCheckDetails = calibrationLabCheckValues;
-      //this.step3Data.calibrationLabInformation = this.calibrationLabInfo;
       tempObj['calibrationLabCheckDetails'] = calibrationLabCheckValues;
       tempObj['calibrationLabInformation'] = this.calibrationLabInfo;
-      //scopeCollections['calibrationLab'] = tempObj;
+
       this.step3Data.calibration_lab = tempObj;
+
+      console.log("@TCL Data: ",this.step3Data.testing_lab, " :: ", this.step3Data.calibration_lab);
 
       //For certification bodies checkboxes
       let certificationCheckCountFirst = 0;
@@ -1490,6 +1496,8 @@ export class NoObjectionFormComponent implements OnInit {
       tempObj['inspectionInfo'] = this.certificationBodiesInfo;
       //scopeCollections['inspectionBodies'] = tempObj;
      this.step3Data.inspection_body = tempObj;
+
+     console.log("@IB Data: ",this.step3Data.inspection_body);
     
 
       //Hall Lab checkboxes
@@ -1518,6 +1526,61 @@ export class NoObjectionFormComponent implements OnInit {
       //this.step3Data.calibration_lab = tempObj;
       //scopeCollections['halalCab'] = tempObj;
       this.step3Data.halal_lab = tempObj;
+
+      console.log("@HALAL Data: ",this.step3Data.halal_lab);
+
+      /*--------------------------------------
+      entryTestingLab: boolean      = false;
+      entryCalibrationLab: boolean  = false;
+      entryInspection: boolean      = false;
+      entryHalal: boolean           = false;
+      */
+
+      this.entryTestingLab = false;
+      this.entryCalibrationLab = false;
+      this.entryInspection = false;
+      this.entryHalal = false;
+
+
+      //Check section entry from scope section
+      if(this.step3Data.testing_lab != undefined && typeof this.step3Data.testing_lab == 'object'){
+        if(this.step3Data.testing_lab.testingLabCheckDetails.checkItems.length > 0 || 
+            this.step3Data.testing_lab.testingLabCheckDetails.checkItemsOthers.length > 0 ||
+            (this.step3Data.testing_lab.testingLabInformation.length > 0 && this.Service.isObjectEmpty(this.step3Data.testing_lab.testingLabInformation[0]) == false))
+                  { 
+                    console.log("TCL..........>")
+                    this.entryTestingLab = true;
+                  }
+      }
+      if(this.step3Data.calibration_lab != undefined && typeof this.step3Data.calibration_lab == 'object'){
+        if(this.step3Data.calibration_lab.calibrationLabCheckDetails != undefined && 
+          (this.step3Data.calibration_lab.calibrationLabCheckDetails.checkItems.length > 0 || 
+            this.step3Data.calibration_lab.calibrationLabCheckDetails.checkItemsOthers.length > 0 ||
+            (this.step3Data.calibration_lab.calibrationLabInformation.length > 0 && this.Service.isObjectEmpty(this.step3Data.calibration_lab.calibrationLabInformation[0]) == false ))){ 
+            
+              console.log("CAL..........>")
+            this.entryCalibrationLab = true;
+        }
+      }
+      if(this.step3Data.inspection_body != undefined && typeof this.step3Data.inspection_body == 'object'){
+        if(this.step3Data.inspection_body.inspectionCheckDetails != undefined && 
+          (this.step3Data.inspection_body.inspectionCheckDetails.checkItems.length > 0 || 
+            this.step3Data.inspection_body.inspectionCheckDetails.checkItemsOthers.length > 0 ||
+            this.step3Data.inspection_body.inspectionCheckDetails.checkItemsOthers.length > 0 ||
+            (this.step3Data.inspection_body.inspectionInfo.length > 0 && this.Service.isObjectEmpty(this.step3Data.inspection_body.inspectionInfo[0]) == false))){  
+          this.entryInspection = true;
+        }
+      }
+      if(this.step3Data.halal_lab != undefined && typeof this.step3Data.halal_lab == 'object'){
+        if(this.step3Data.halal_lab.halalLabCheckDetails != undefined && 
+          (this.step3Data.halal_lab.halalLabCheckDetails.checkItems.length > 0 || 
+            this.step3Data.halal_lab.halalLabCheckDetails.checkItemsOthers.length > 0 ||
+            this.step3Data.halal_lab.halalLabCheckDetails.checkItemsOthers.length > 0)){  
+              this.entryHalal = true;
+        }
+      }
+
+      //Check section entry from scope section
 
 
     if(theForm.form.valid && type == undefined && (testingLabCheckCount > 0 || 

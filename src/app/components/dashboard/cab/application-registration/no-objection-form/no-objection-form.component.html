@@ -994,6 +994,10 @@
                                         </div>
                                     </div>
 
+                                    <div class="row">
+                                        @Halal: {{entryHalal}} @Testing: {{entryTestingLab}} @Calibration: {{entryCalibrationLab}} @IB: {{entryInspection}}
+                                    </div>
+
                                     <!-- Table -->
                                     <div class="row">
                                         <div class="col-md-12">
@@ -1014,13 +1018,15 @@
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                                    [required]="entryTestingLab || entryCalibrationLab || entryInspection || entryHalal"
                                                                     matInput placeholder="" name="name_od_equip_{{i}}" [(ngModel)]="listOfIntEquip[i].name_od_equip" > 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" 
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)"
+                                                                    [required]="entryTestingLab || entryCalibrationLab || entryInspection || entryHalal" 
                                                                     matInput placeholder="" name="usage_of_equip_{{i}}" [(ngModel)]="listOfIntEquip[i].usage_of_equip" > 
                                                                 </mat-form-field>                                                                
                                                             </td>                                                            
