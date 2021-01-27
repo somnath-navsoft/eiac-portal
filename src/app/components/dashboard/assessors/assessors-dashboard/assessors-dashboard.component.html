@@ -25,7 +25,7 @@
                             <span>Type</span>
                         </div>
                         <div class="trainer-type-data">
-                            <span>{{step1Data?.designation}}</span>
+                            <span>{{assessorTypes}}</span>
                         </div>
                     </div>
                 </div>
@@ -113,7 +113,7 @@
                                     <ng-container *ngIf="dashboardItemData.assessorDetails[0].appointment_date != null && dashboardItemData.assessorDetails[0].appointment_date != ''">
                                         <span>{{dashboardItemData.assessorDetails[0].appointment_date | date:'y'}}</span>
                                     </ng-container>
-                                    <ng-container *ngIf="dashboardItemData.assessorDetails[0].appointment_date == null || dashboardItemData.assessorDetails[0].appointment_date != ''">
+                                    <ng-container *ngIf="dashboardItemData.assessorDetails[0].appointment_date == null || dashboardItemData.assessorDetails[0].appointment_date == ''">
                                         NA
                                     </ng-container>                                    
                                 </ng-container>
@@ -126,7 +126,7 @@
                             </div>
                             <div class="trainer-maindata"  [ngStyle]="{'padding-left':'8px'}">
                                 <span *ngIf="totalYear > 0">{{totalYear}}</span>
-                                <span *ngIf="totalYear == 0">NA</span>
+                                <span *ngIf="totalYear == 0">00</span>
                             </div>
                         </div>
                     </div>
