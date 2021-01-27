@@ -253,15 +253,10 @@ export class AssessorsDashboardComponent implements OnInit {
                 let diffDate: any = Math.round((todays - appintmentDate)/(1000*60*60*24))
 
                 let curYear: number = yr;
-<<<<<<< HEAD
-                let appYear :  number = appintmentDate.getFullYear();
 
-                console.log(appYear, " :: ", curYear);
-=======
                 let appYear: number = appintmentDate.getFullYear();
 
                 console.log("@ YEAR: ", curYear, " :: ", appYear);
->>>>>>> development
 
                 if( assessorData.appointment_date !=  null){
                   var dateFrom = assessorData.appointment_date; 
@@ -280,25 +275,12 @@ export class AssessorsDashboardComponent implements OnInit {
                   console.log("@YYY: ", years);
                   var totalYears: string = years + "Years" + Math.ceil(months) + ' Months' + dayCal + ' Days';
                   //if(this.totalYear < 10){
-<<<<<<< HEAD
 
-                  if(appYear < curYear){
-                    years = (curYear - appYear);
-                  }
-                  if(appYear == curYear){
-                    years = 0;
-                  }
-                  console.log("@@ ", years);
-                  if(years > 0 && years < 10){
-                    this.totalYear = '0' + years;
-                  }else{
-=======
                   if(curYear > appYear){
                     //this.totalYear = '0' + years;
                     this.totalYear = (curYear - appYear);
                   }
                   if(curYear == appYear){
->>>>>>> development
                     this.totalYear = 0;
                   }
                 }
