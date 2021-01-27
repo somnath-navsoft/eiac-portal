@@ -191,6 +191,9 @@ export class CertificationBodiesFormComponent implements OnInit {
 
    //Master scope form data declaration
    firstStep:any;
+  allCityTypeList: any = {};
+  allCityTypeLoder: any = {};
+  getCountryStateCityAll: any;
 
   @ViewChild('mydiv', null) mydiv: ElementRef;
   @ViewChild('captchaRef',{static:true}) captchaRef: RecaptchaComponent;
@@ -371,7 +374,8 @@ ngOnInit() {
   this.authorizationList = {authorization_confirm1:false,authorization_confirm2:false,  undertaking_confirmTop3: false,undertaking_confirm1:false,
     undertaking_confirm2:false,undertaking_confirm4:false,undertaking_confirm5:false,
     undertaking_confirm7:false,undertaking_confirm8:false};
-  this.loadAppInfo()
+  this.loadAppInfo();
+  this.loadCountryStateCityAll();
   this.loadCountryStateCity();
 
   this.loadScopeData();
@@ -1003,14 +1007,89 @@ ngOnInit() {
       this._customModal.closeDialog();
       //console.log(">>>Final Data: ", this.editScopeData);
   }
-  openDeleteRowConfirm(delObj: any, delIndex: any){
+  openDeleteRowConfirm(obj: any, index: any, type?:string){
     //console.log(">>>delete ", delObj, " -- ", delIndex);
-    if(delObj){
+    if(obj){
       //console.log("assign delete id: ", delIndex, " -- ", delObj);
-      this.selectDeleteIndex = delIndex;
-      this.selectRowObj = delObj;
+      this.selectDeleteIndex = index;
+      this.selectRowObj = obj;
       this.deleteOthersConfirm = true;
+
+      if(type === '' || type == undefined){
+        obj.splice(index, 1);
+      }
+      if(this.allCityTypeList != undefined){
+        //delete this.allCityTypeList[index]
+        //this.allCityTypeList.splice(index, 1)
+      }
+      
+      console.log(">>> after delet: ", this.allCityTypeList);
+      //var arr1 = Array.from(this.allCityTypeList);
+      const arr1: any = Object.entries(this.allCityTypeList);
+      arr1.splice(index, 1);
+      //const obj1 = Object.fromEntries(arr1);// Deprecated for Convert Array to Object
+      const obj1= Object.assign({}, arr1);
+      console.log(">>>Conv objects: ", obj1, " == ", JSON.parse(JSON.stringify(arr1)));
+      let countInd: number = 0;
+      let tempDataObj: any ={};
+      for(let key in obj1){
+        console.log(key, " :: ", obj1[key], " -- ", countInd);
+        if(typeof obj1[key] == 'object'){
+            let dobj: any = obj1[key];
+            dobj.forEach((item, ind) => {
+                if(typeof item === 'object'){
+                  console.log("Found....value: ", item);
+                  tempDataObj[countInd.toString()] = item;
+                  countInd++;
+                }
+            })
+        }
+        // tempDataObj[countInd.toString()] = obj1[key];
+        // countInd++;
+      }
+      console.log(".......",arr1, " :: ", obj1, " == ", tempDataObj);
+      this.allCityTypeList = tempDataObj;    
+      return true;
     } 
+  }
+
+  removeRowCity(obj: any, index: number, type?:string){
+
+    if(type === '' || type == undefined){
+      obj.splice(index, 1);
+    }
+    if(this.allCityTypeList != undefined){
+      //delete this.allCityTypeList[index]
+      //this.allCityTypeList.splice(index, 1)
+    }
+    
+    console.log(">>> after delet: ", this.allCityTypeList);
+    //var arr1 = Array.from(this.allCityTypeList);
+    const arr1: any = Object.entries(this.allCityTypeList);
+    arr1.splice(index, 1);
+    //const obj1 = Object.fromEntries(arr1);// Deprecated for Convert Array to Object
+    const obj1= Object.assign({}, arr1);
+    console.log(">>>Conv objects: ", obj1, " == ", JSON.parse(JSON.stringify(arr1)));
+    let countInd: number = 0;
+    let tempDataObj: any ={};
+    for(let key in obj1){
+      console.log(key, " :: ", obj1[key], " -- ", countInd);
+      if(typeof obj1[key] == 'object'){
+          let dobj: any = obj1[key];
+          dobj.forEach((item, ind) => {
+              if(typeof item === 'object'){
+                console.log("Found....value: ", item);
+                tempDataObj[countInd.toString()] = item;
+                countInd++;
+              }
+          })
+      }
+      // tempDataObj[countInd.toString()] = obj1[key];
+      // countInd++;
+    }
+    console.log(".......",arr1, " :: ", obj1, " == ", tempDataObj);
+    this.allCityTypeList = tempDataObj;    
+    return true;
   }
 
   openDeleteScopeConfirm(delIndex: any, delKey: any, typeTitle: any){
@@ -1456,6 +1535,13 @@ loadAppInfo(){
               for(var k in getActivity){
                 console.log(">>>> ", getActivity[k]['value'], " -- ", typeof getActivity[k]['value']);
                 let tempObj: any = (getActivity[k]['value']);
+
+                // if(k == 'country') {
+                  // this.cityByCountryAll();
+                  // getActivity[k]['value'].city = this.cityByCountryAll(getActivity[k]['value'].country,k);
+                // }
+                this.cityByCountryAll(getActivity[k]['value'].country, parseInt(k));
+
                 tempAct.push(tempObj);
                 console.log(">>> ", k , " :: ", tempAct);
               }
@@ -2083,6 +2169,45 @@ updateScopeData = async() => {
   });
 }
 
+cityByCountryAll(cname: string, index: number){
+  console.log(">>> Get county/index: ", cname, " :: ", index);
+  this.allCityTypeList[index] = [];
+  this.allCityTypeLoder[index] = {};
+  this.allCityTypeLoder[index]['loader'] = false;
+
+  let tempCities: any[] =[];
+  if(cname != ''){
+    let countryFind : any = this.getCountryStateCityAll.find(item => item.CountryName === cname);
+    console.log(">>> found country/city: ", countryFind);
+      if(countryFind != undefined && countryFind.States != undefined && countryFind.States.length > 0){
+        countryFind.States.forEach((item, k) => {
+              this.allCityTypeLoder[index]['loader'] = true;
+              if(item.Cities != undefined && item.Cities.length > 0){
+                item.Cities.forEach(rec => {
+                  tempCities.push({name: rec});
+                })
+              }
+        })
+      }
+      if(tempCities.length > 0){
+        this.allCityTypeLoder[index]['loader'] = false;
+      }
+      this.allCityTypeList[index] = tempCities;
+
+     
+      console.log(">>>GET Cities: ", " :: ", tempCities);
+  }
+}
+
+loadCountryStateCityAll  = async() =>{
+  let cscLIST = this.Service.getCSCAll();
+  await cscLIST.subscribe(record => {
+    console.log("...> ", record);
+    this.getCountryStateCityAll = record['Countries'];
+    console.log("...>>> ", this.getCountryStateCityAll);
+  });
+  //console.log("ALL CSC: ", this.getCountryStateCityAll);
+}
 
 continueScopeAccreditation(){
 //Reset all model data 

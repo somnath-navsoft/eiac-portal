@@ -1244,7 +1244,8 @@
                                                             <thead>
                                                                 <tr>
                                                                     <th>Location Type(such as Regional office,Branch)</th>
-                                                                    <th>City & Countries</th>
+                                                                    <th>Country</th>
+                                                                    <th>City</th>
                                                                     <th>Activities carried out at this Location</th>
                                                                     <th></th>
                                                                 </tr>
@@ -1261,9 +1262,29 @@
                                                                         </mat-form-field>
                                                                     </td>
                                                                     <td>
-                                                                        <mat-form-field class="cab-data">
+                                                                        <!-- <mat-form-field class="cab-data">
                                                                             <mat-label>Type Here</mat-label>
-                                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="city_country_{{i}}" [(ngModel)]="cbsOtherActivity[i].city_country" > 
+                                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="country_{{i}}" [(ngModel)]="cbsOtherActivity[i].country" > 
+                                                                        </mat-form-field> -->
+                                                                        <mat-form-field class="cab-data">
+                                                                            <mat-label>Country</mat-label>
+                                                                            <mat-select placeholder="Select" name="country" [(ngModel)]="cbsOtherActivity[i].country" [ngModelOptions]="{standalone: true}" required>
+                                                                                <mat-option [value]="item.CountryName" (click)="cityByCountryAll(item.CountryName, i)" 
+                                                                                *ngFor="let item of getCountryStateCityAll">{{item.CountryName}}</mat-option>
+                                                                            </mat-select>
+                                                                        </mat-form-field>
+                                                                    </td>
+                                                                    <td>
+                                                                        <!-- <mat-form-field class="cab-data">
+                                                                            <mat-label>Type Here</mat-label>
+                                                                            <input onpaste="return false" (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="city_{{i}}" [(ngModel)]="cbsOtherActivity[i].city" > 
+                                                                        </mat-form-field> -->
+                                                                        <mat-form-field class="cab-data">
+                                                                            <mat-label>City</mat-label>
+                                                                            <mat-select placeholder="Select" name="city" [(ngModel)]="cbsOtherActivity[i].city"  
+                                                                            [ngModelOptions]="{standalone: true}"  required>
+                                                                                <mat-option [value]="item.name" *ngFor="let item of allCityTypeList[i]">{{item.name}}</mat-option>
+                                                                            </mat-select>      
                                                                         </mat-form-field>
                                                                     </td>
                                                                     <td>
