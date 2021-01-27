@@ -573,9 +573,9 @@
                                                         (matChipInputTokenEnd)="add($event)" (input)="search($event.target.value)">
                                                     </mat-chip-list>
                                                     <mat-autocomplete #auto="matAutocomplete">
-                                                        <mat-option (onSelectionChange)="getValue(option, 'username')"
+                                                        <mat-option (onSelectionChange)="getValue(option, 'cab_name')"
                                                             *ngFor="let option of selectSearch" [value]="option.username">
-                                                            {{option.username}}
+                                                            {{option.cab_name}}
                                                         </mat-option>
                                                     </mat-autocomplete>
                                                 </mat-form-field>
