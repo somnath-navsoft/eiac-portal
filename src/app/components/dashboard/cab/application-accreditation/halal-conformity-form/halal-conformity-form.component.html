@@ -18,13 +18,13 @@
                     <div class="row user_main">
                         <div class="col-md-12">
                             <div class="user-steps">
-                                <!--  -->
+                                <!-- (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}" -->
                                 <ng-container *ngFor="let item of headerSteps; let k=index;">
                                     <div class="user-next" [ngClass]="(item.activeClass != '') ? item.activeClass : ''">
                                         <div class="usernext-icon">
                                             <span [ngClass]="(item.activeClass === 'user-done') ? 'icon-tick' : item.icon"></span>
                                         </div>
-                                        <!-- (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}" -->
+                                        <!--  -->
                                         <div class="user-details-pending" id="course_header" >
                                             <span [innerHTML]="item.desc"></span>
                                         </div>
@@ -1425,7 +1425,7 @@
                                                                                 <th *ngFor="let item1 of (item5.value.scope_heading) | keyvalue;">{{item1.value}}</th>
                                                                                 <th>Action</th>
                                                                             </tr>
-                                                                            <ng-container *ngIf="item5.value.scope_value.length > 0">
+                                                                            <ng-container *ngIf="item5.value.scope_value != undefined && item5.value.scope_value.length > 0">
                                                                                 <tr *ngFor="let item2 of (item5.value.scope_value) | keyvalue; let i4 = index;">
                                                                                     <td *ngFor="let item3 of item2.value | keyvalue;">
                                                                                         <span [innerHTML]="(item3.value)"></span>
@@ -1435,7 +1435,7 @@
                                                                                     </td>                                                                
                                                                                 </tr>
                                                                             </ng-container>
-                                                                            <ng-container *ngIf="item5.value.scope_value.length == 0">
+                                                                            <ng-container *ngIf="item5.value.scope_value != undefined && item5.value.scope_value.length == 0">
                                                                                 <tr>
                                                                                     <td [attr.colspan]="Service.getObjectLength(item5.value.scope_heading)+1">
                                                                                         No Data
@@ -2157,8 +2157,11 @@
                                         <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice(ngForm8, true)">SAVE AS DRAFT</button> -->
                                         <!-- <button class="submit-bttn submit-health" (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)">CONTINUE</button> -->
                                     </div>
-                                    <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button>
-                                    <ng-container *ngIf="transactions.length">
+                                    <div class="bttn_wrap" *ngIf="paymentFilePath != ''">
+                                        <button class="submit-bttn submit-health mr-5">PROCEED TO PAYMENT</button>
+                                        <button class="submit-bttn submit-health" type="button" (click)="step_payment()">UPDATE PAYMENT</button>
+                                    </div>
+                                    <ng-container *ngIf="transactions.length && paymentMode == 'Sandbox'">
                                         <div id="paypalPayment"></div>
                                     </ng-container>
                                 </div>

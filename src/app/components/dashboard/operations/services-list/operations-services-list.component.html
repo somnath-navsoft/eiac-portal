@@ -1,0 +1,74 @@
+<app-loader *ngIf="!loader"></app-loader>
+<!-- <app-header-after-login></app-header-after-login>
+<div class="side-data-cont">
+    <app-sidebar-after-login></app-sidebar-after-login>
+</div> -->
+<div class="main-detail">
+    <div class="container-fluid p-0">
+        <div class="main-dashboard-cnt">
+
+            <div class="row mb-4">
+                <div class="col-md-8">                    
+                    <div class="dashbrd-hdr">
+                        <h3>Services Enquiries Lists</h3> 
+                    </div>
+                </div>
+            </div>
+
+            <div class="row m-0">
+                <div class="col-md-12">
+                <div class="row status-det-wrapper">
+                    <div class="col-md-12 p-0">
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                            <div class="table-appln pt-0">
+                                <table>
+                                <tr>
+                                    <th>S.I.</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Comments</th>
+                                    <th>Message Sent</th>
+                                    <th>Enquiry Type</th>
+                                </tr>
+                                <ng-container *ngIf="allRecord != undefined && allRecord.length > 0">
+                                    <tr *ngFor="let item of allRecord | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
+                                        <td>{{i2+1}}</td>
+                                        <td>{{item.name}}</td>
+                                        <td>{{item.email}}</td>
+                                        <td>
+                                            <span *ngIf="item.phone == null">NA</span>
+                                            <span *ngIf="item.phone != null">{{item.phone}}</span>
+                                        </td>
+                                        <td>{{item.comments}}</td>
+                                        <td>{{item.created | date:'dd-MM-yyyy'}}</td>
+                                        <td>
+                                            <span [innerHTML]="getFormType(item.enquiry_type)"></span>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                                <ng-container *ngIf="allRecord.length == 0">
+                                    <tr>
+                                        <td colspan="7">
+                                            No Data
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                                </table>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <ng-container *ngIf="allRecord != undefined && allRecord.length > 0" >
+                                <pagination-controls  (pageChange)="loadPage($event)"></pagination-controls>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

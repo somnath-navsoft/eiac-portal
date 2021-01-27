@@ -211,6 +211,7 @@ export class HealthCareFormComponent implements OnInit {
   //Master scope form data declaration
   is_main_activity_note_entry: boolean = false;
   paypalSandboxToken: string ='';
+  paymentMode: string = '';
 
   @ViewChild('mydiv', null) mydiv: ElementRef;
   @HostListener('scroll', ['$event.target'])
@@ -3174,6 +3175,9 @@ this.toastr.warning('Please Fill required field','Validation Error',{timeOut:500
 }    
 }
 
+step_payment(){
+  this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);   
+}
 
 onSubmitStep8(ngForm8: any) {
 //Paypal config data
@@ -3206,6 +3210,7 @@ this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity:
             console.log(">>> Payment Gateway... ", data);
             if(data.records.status){
               if(data.records.title == 'Live'){
+                  this.paymentMode = 'Live';
                   let postData: any = new FormData();
                   postData.append('accreditation', this.formApplicationId);
                   this._trainerService.proformaAccrSave(postData)
@@ -3227,6 +3232,7 @@ this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity:
                     });                      
               }
               if(data.records.title == 'Sandbox'){
+                this.paymentMode = 'Sandbox';
                 this.paypalSandboxToken = data.records.value;
                 setTimeout(() => {
                   this.createPaymentButton(this.transactionsItem, this.healthCareForm, this);

@@ -167,6 +167,9 @@ export class OperationsDashboardComponent implements OnInit {
     let departmetnId: any ='';
     if(theEvt && theEvt.value != undefined){
       departmetnId = theEvt.value;
+    }else{
+      departmetnId = theEvt;
+    }
           this.loader = false;
           let getURL: string = '';
           getURL = this.Service.apiServerUrl + "/" + 'io-dashboard/?department_type='+departmetnId;
@@ -200,7 +203,7 @@ export class OperationsDashboardComponent implements OnInit {
                     
                 }
           });
-    }
+    //}
   }
 
 
@@ -213,6 +216,17 @@ export class OperationsDashboardComponent implements OnInit {
     //console.log(">>>dept...", selDept);
     sessionStorage.setItem("io_dept", selDept); 
     this.router.navigateByUrl('/dashboard/operations/scheme-list')
+  }
+
+  openServiceEnquiries(){
+    if(this.selectDepartment == undefined || this.selectDepartment == ''){
+      this.toastr.warning("Please select department", '');
+      return;
+    }
+    let selDept: any = this.selectDepartment;
+    //console.log(">>>dept...", selDept);
+    sessionStorage.setItem("io_dept", selDept); 
+    this.router.navigateByUrl('/dashboard/operations/service-enquiries-list')
   }
 
 
@@ -293,9 +307,9 @@ export class OperationsDashboardComponent implements OnInit {
                     if(item == "testing_calibration"){
                       this.ioDeartment.push({title:'TCL', value: item})
                     }
-                    // if(item == "pt_providers"){
-                    //   this.ioDeartment.push({title:'PTP', value: item})
-                    // }
+                    if(item == "pt_providers"){
+                      this.ioDeartment.push({title:'PTP', value: item})
+                    }
                     if(item == "health_care"){
                       this.ioDeartment.push({title:'HP', value: item})
                     }
@@ -310,6 +324,10 @@ export class OperationsDashboardComponent implements OnInit {
                     // }
               });
               this.ioDeartment.sort((a, b) => (a.title > b.title) ? 1 : -1);
+              if(this.ioDeartment.length == 1){
+                 this.selectDepartment = this.ioDeartment[0].value;
+                 this.changeDepartmentView(this.selectDepartment);
+              }
             }
 
             //Get recent updates
@@ -393,6 +411,12 @@ export class OperationsDashboardComponent implements OnInit {
     this.userType = sessionStorage.getItem('type');
     this.userEmail = sessionStorage.getItem('email');
     this.userId = sessionStorage.getItem('userId');
+
+
+    // if(sessionStorage.getItem("io_dept") != '' && sessionStorage.getItem("io_dept") != undefined){
+    //     this.selectDepartment = sessionStorage.getItem("io_dept").toString();
+    //     this.changeDepartmentView(this.selectDepartment);
+    // }
 
     // setTimeout(() => {
     //   this.loadDashData();

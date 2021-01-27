@@ -185,6 +185,7 @@ export class PtProvidersFormComponent implements OnInit {
   public completeLoaded: boolean = false;
   errorLoader :  boolean = false;
   paypalSandboxToken: string ='';
+  paymentMode: string = '';
 
   constructor(public Service: AppService, public constant:Constants, private _customModal: CustomModalComponent,
     public router: Router,public toastr: ToastrService,private modalService: NgbModal,public sanitizer:DomSanitizer,public _trainerService:TrainerService) { }
@@ -2615,6 +2616,10 @@ onProgress(progressData: PDFProgressData){
   this.loaderPdf = true;
 }
 
+step_payment(){
+  this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);   
+}
+
 
 onSubmitStep8(ngForm8: any) {
 //Paypal config data
@@ -2649,6 +2654,7 @@ this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity:
             console.log(">>> Payment Gateway... ", data);
             if(data.records.status){
               if(data.records.title == 'Live'){
+                this.paymentMode = 'Live';
                   let postData: any = new FormData();
                   postData.append('accreditation', this.formApplicationId);
                   this._trainerService.proformaAccrSave(postData)
@@ -2670,6 +2676,7 @@ this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity:
                     });                      
               }
               if(data.records.title == 'Sandbox'){
+                this.paymentMode = 'Sandbox';
                 this.paypalSandboxToken = data.records.value;
                 setTimeout(() => {
                   this.createPaymentButton(this.transactionsItem, this.ptProvidersForm, this);
@@ -2760,7 +2767,7 @@ if(is_valid == true &&  this.paymentReceiptValidation != false) {
             },3500)
             
           }else{
-            this.toastr.warning(data.msg,'');
+            this.toastr.warning(data.msg,''); 
           }
         }
       )

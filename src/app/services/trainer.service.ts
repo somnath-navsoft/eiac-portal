@@ -17,16 +17,23 @@ export class TrainerService {
   //Get certificate List
   getCertificateList(page: number=0, limit: number=10){
     let url = `${this.BASE_REQ_URL}` + 'webservice/cab_certificate_list/?offset='+page+'&limit='+limit;
-    console.log(">>>Certif List: ", url);
+    //console.log(">>>Certif List: ", url);
+    return this.http.get(url, this._service.getReqHeaders());
+  }
+
+  getEnquiriesList(page: number=1, limit: number=10, params: string){
+    let url = `${this.BASE_REQ_URL}` + 'webservice/enquiry-list/?page='+page+'&limit='+limit+'&enquiry_for='+params;
+    //console.log(">>>Enquiries List: ", url);
     return this.http.get(url, this._service.getReqHeaders());
   }
 
   //Get certificate List
   getRecordList(page: number=0, limit: number=10){
     let url = `${this.BASE_REQ_URL}` + 'webservice/record_list/?offset='+page+'&limit='+limit;
-    console.log(">>>Records List: ", url);
+    //console.log(">>>Records List: ", url);
     return this.http.get(url, this._service.getReqHeaders());
   }
+ 
 
   //https://uat-service.eiac.gov.ae/webservice/cab_directory_by_service/?status=all&language_id=1
   getCertificateType(){

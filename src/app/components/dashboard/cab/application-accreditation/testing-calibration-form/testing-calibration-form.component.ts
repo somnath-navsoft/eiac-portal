@@ -219,6 +219,8 @@ export class TestingCalibrationFormComponent implements OnInit {
   getFamilyTitles: any = {};
   findFamily: any = {};
   paypalSandboxToken: string ='';
+
+  paymentMode: string = '';
   
   constructor(public Service: AppService, public constant:Constants,public router: Router,
     public toastr: ToastrService,public _trainerService:TrainerService,
@@ -4111,6 +4113,9 @@ onSubmitStep5(ngForm: any, type?: any, rowInd?:any, schemeid?:any, familyid?:any
   }    
 }
 
+step_payment(){
+  this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);   
+}
 
 onSubmitStep8(ngForm8: any) {
   //Paypal config data
@@ -4145,6 +4150,7 @@ onSubmitStep8(ngForm8: any) {
             console.log(">>> Payment Gateway... ", data);
             if(data.records.status){
               if(data.records.title == 'Live'){
+                  this.paymentMode = 'Live';
                   let postData: any = new FormData();
                   postData.append('accreditation', this.formApplicationId);
                   this._trainerService.proformaAccrSave(postData)
@@ -4156,12 +4162,17 @@ onSubmitStep8(ngForm8: any) {
                           let getUrl: string = data.records.other_details;
                           console.log("@@ ", getUrl);
                           //top.location.href = getUrl;
-                          window.open(getUrl);
+                          this.loaderPdf = true;
+                          setTimeout(() => {
+                            this.loaderPdf = false;
+                            window.open(getUrl);
+                          }, 1500)
                         }
                     console.log(">>> Save resultts: ", result);
                     });                      
               }
               if(data.records.title == 'Sandbox'){
+                this.paymentMode = 'Sandbox';
                 this.paypalSandboxToken = data.records.value;
                 setTimeout(() => {
                   this.createPaymentButton(this.transactionsItem, this.testingCalForm, this);
@@ -4366,7 +4377,7 @@ validateFileVoucher(fileEvent: any, type?: any) {
     //if(type == undefined){
       this.voucherFile.append('payment_receipt',fileEvent.target.files[0]);
     //}
-  }else{
+  }else{ 
       this.paymentReceiptValidation = false;
       
   }

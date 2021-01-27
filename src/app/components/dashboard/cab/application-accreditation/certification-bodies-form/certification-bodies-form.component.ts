@@ -188,6 +188,7 @@ export class CertificationBodiesFormComponent implements OnInit {
    otherStandards: any[] = [{}];
 
    paypalSandboxToken: string = '';
+   paymentMode: string ='';
 
    //Master scope form data declaration
    firstStep:any;
@@ -2977,6 +2978,9 @@ if(ngForm5.form.valid && this.authorizationStatus == true && recomCheckCount >0)
   }
 }
 
+step_payment(){
+  this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);   
+}
 
 onSubmitStep6(ngForm6: any) {
 //Paypal config data
@@ -3009,6 +3013,7 @@ this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity:
             console.log(">>> Payment Gateway... ", data);
             if(data.records.status){
               if(data.records.title == 'Live'){
+                  this.paymentMode = 'Live';
                   let postData: any = new FormData();
                   postData.append('accreditation', this.formApplicationId);
                   this._trainerService.proformaAccrSave(postData)
@@ -3031,6 +3036,7 @@ this.transactionsItem['item_list']['items'].push({name: 'Test Course', quantity:
                     });                      
               }
               if(data.records.title == 'Sandbox'){
+                this.paymentMode = 'Sandbox';
                 this.paypalSandboxToken = data.records.value;
                 setTimeout(() => {
                   this.createPaymentButton(this.transactionsItem, this.certificationBodiesForm, this);
@@ -3072,7 +3078,7 @@ this.certificationBodiesForm.step7 = {};
   console.log("@Date: ",dtFormat);
 
   let is_valid: boolean = false;
-this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
+this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']); 
 this.voucherFile.append('amount',this.voucherSentData['amount']);
 this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
 this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
