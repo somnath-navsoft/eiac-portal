@@ -205,15 +205,13 @@ export class InspectionBodiesFormComponent implements OnInit {
   paypalSandboxToken: string;
 
 
-  shift2_from: boolean = false;
-  shift2_to: boolean = false;
-  shift3_from: boolean = false;
-  shift3_to: boolean = false;
+  shift2_from: boolean  = false;
+  shift2_to: boolean    = false;
+  shift3_from: boolean  = false;
+  shift3_to: boolean    = false;
 
+  paymentMode: string = '';
 
-  //dynamicScopeOptions:any[] = [];  
-  //dynamicScopeModelValues:any={};
-  //dynamicFirstFieldValues:any;
   
   @ViewChild('mydiv', null) mydiv: ElementRef;
   @ViewChild('elementDateIssue', null) _input: ElementRef;
@@ -4083,6 +4081,10 @@ backScopeAccreditation(){
    //return false;
  }
 
+ step_payment(){
+   this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);   
+ }
+
  onSubmitProforma(ngForm){
   this.transactionsItem['amount']               = {};
   this.transactionsItem['amount']['total']      = 0.00;
@@ -4111,9 +4113,11 @@ backScopeAccreditation(){
             console.log(">>> Payment Gateway... ", data);
             if(data.records.status){
               if(data.records.title == 'Live'){
+                  console.log(">>>Live....");
+                  this.paymentMode = 'Live';
                   let postData: any = new FormData();
                   postData.append('accreditation', this.formApplicationId);
-                  this._trainerService.proformaAccrSave(postData)
+                  this._trainerService.proformaAccrSave(postData) 
                   .subscribe(
                     result => {
                         let record: any = result;
@@ -4121,12 +4125,19 @@ backScopeAccreditation(){
                           //Check step complete service....
                           let getUrl: string = data.records.other_details;
                           console.log("@@ ", getUrl);
-                          top.location.href = getUrl;
+                          //top.location.href = getUrl;
+                          this.loaderPdf = true;
+                          setTimeout(() => {
+                            this.loaderPdf = false;
+                            window.open(getUrl);
+                          }, 1500)
                         }
                     console.log(">>> Save resultts: ", result);
                     });                      
               }
               if(data.records.title == 'Sandbox'){
+                console.log(">>>Sandbox....");
+                this.paymentMode = 'Sandbox';
                 this.paypalSandboxToken = data.records.value;
                 setTimeout(() => {
                   this.createPaymentButton(this.transactionsItem, this.inspectionBodyForm, this);

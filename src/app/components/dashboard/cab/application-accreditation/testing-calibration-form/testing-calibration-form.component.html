@@ -18,7 +18,6 @@
                         <div class="col-md-12">
                             <div class="user-steps">
                                 <!-- (click)="Service.headerStepMove(item.title, headerSteps,'menu')" [ngStyle]="{'cursor':'pointer'}" -->
-                                <!--  (click)="Service.headerStepMove(item.title, headerSteps,'menu')"  -->
                                 <ng-container *ngFor="let item of headerSteps; let k=index;">
                                     <div class="user-next" [ngClass]="(item.activeClass != '') ? item.activeClass : ''">
                                         <div class="usernext-icon">
@@ -26,8 +25,8 @@
                                         </div>
                                         <!--  -->
                                         <div class="user-details-pending" 
-                                        id="course_header" >
-                                            <span [innerHTML]="item.desc" [ngStyle]="{'cursor':'pointer'}"></span>
+                                        id="course_header">
+                                            <span [innerHTML]="item.desc" ></span>
                                         </div>
                                     </div>
                                     <div class="next-step" *ngIf="k < headerSteps.length-1">
@@ -1914,10 +1913,13 @@
                                         <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice(ngForm8, true)">SAVE AS DRAFT</button> -->
                                         <!-- <button class="submit-bttn submit-health" (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)">CONTINUE</button> -->
                                     </div>
-                                    <ng-container *ngIf="paymentFilePath != ''">
-                                    <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button>
-                                    </ng-container>
-                                    <ng-container *ngIf="transactions.length">
+                                    <div class="bttn_wrap" *ngIf="paymentFilePath != ''">
+                                        <!-- <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button> -->
+                                        <button class="submit-bttn submit-health mr-5">PROCEED TO PAYMENT</button>
+                                        <button class="submit-bttn submit-health" type="button" (click)="step_payment()">UPDATE PAYMENT</button>
+                                    </div>
+
+                                    <ng-container *ngIf="transactions.length && paymentMode == 'Sandbox'">
                                         <div id="paypalPayment"></div>
                                     </ng-container>
                                 </div>

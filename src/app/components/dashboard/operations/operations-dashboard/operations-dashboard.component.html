@@ -90,7 +90,7 @@
                                     <span>Events</span>
                                 </div>
                                 <div class="trainer-maindata trainer-update">
-                                    <span>{{dashboardItemData.totalEventCount}}</span>
+                                    <span>{{dashboardItemData.eventCount}}</span>
                                 </div>
                             </div>
                         </div>
@@ -98,7 +98,7 @@
                             <div class="data-bg">
                                 <h6>
                                     <!-- <span class="icon-arrow-down"></span> -->
-                                    {{dashboardItemData.lastMonthEventCount}} Completed this year</h6>
+                                    {{dashboardItemData.completedThisYearEventCount}} Completed this year</h6>
                             </div>
                         </div>
                     </div>
@@ -157,7 +157,7 @@
                         <div class="dash-wrap">
                             <div class="usermain">
                                 <div class="main-status">
-                                    <p class="head-dash head-dash-bill">In Processed</p>
+                                    <p class="head-dash head-dash-bill">In Process</p>
                                     <p class="sub-head-dash">{{dashboardItemData.total_inprocess}}</p>
                                 </div>
                                 <div class="view-all">
@@ -276,6 +276,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- service-enquiries-list -->
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="dash-main">
@@ -311,7 +312,7 @@
                                         </div>
                                     </div>
                                     <div class="dash-logo">                                        
-                                        <span class="icon-check-mark"></span>
+                                        <span (click)="openServiceEnquiries()" [ngStyle]="{'cursor':'pointer'}" class="icon-check-mark"></span>
                                     </div>
                                 </div>
                             </div>

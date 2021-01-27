@@ -113,6 +113,7 @@ import { InpremiseApprovalListComponent } from './components/dashboard/operation
 import { InpremiseApprovalDetailsComponent } from './components/dashboard/operations/inpremise-approval-details/inpremise-approval-details.component';
 import { SchemeListComponent } from './components/dashboard/cab/scheme-list/scheme-list.component';
 import { SchemeListOperationsComponent } from './components/dashboard/operations/scheme-list/operations-scheme-list.component';
+import { ServicesListOperationsComponent } from './components/dashboard/operations/services-list/operations-services-list.component';
 
 import { EventListsComponent } from './components/dashboard/cab/event-lists/event-lists.component';
 import { CertificationRecordsComponent } from './components/dashboard/cab/certification-records/certification-records.component';
@@ -178,7 +179,9 @@ const routes: Routes = [
           { path: 'message-detail/:id', component:OperationsMessageDetailsComponent, canActivate: [AuthGuard] },
           { path: 'inpremise-approve', component:InpremiseApprovalListComponent, canActivate: [AuthGuard] },
           { path: 'inpremise-approve-detail/:id', component:InpremiseApprovalDetailsComponent, canActivate: [AuthGuard] },
-          { path: 'scheme-list', component:SchemeListOperationsComponent, canActivate: [AuthGuard] },          
+          { path: 'scheme-list', component:SchemeListOperationsComponent, canActivate: [AuthGuard] },  
+          { path: 'service-enquiries-list', component:ServicesListOperationsComponent, canActivate: [AuthGuard] },
+                  
         ] 
     }, 
 

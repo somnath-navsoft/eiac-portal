@@ -10,7 +10,7 @@
                     <div class="row">
                         <div class="col-md-12 p-0 mb-3">
                             <div class="dashbrd-hdr">
-                                <h3>Inspection Bodies</h3>
+                                <h3>Inspection Bodies</h3> 
                             </div>
                         </div>
                     </div>
@@ -18,7 +18,7 @@
                 <!--   -->
                 <div id="page_header"></div>
                 <ng-container>
-                    <div class="row user_main">
+                    <div class="row user_main"> 
                         <div class="col-md-12">
                             <div class="user-steps">
                                 <!-- <a (click)="Service.headerStepMove(item.title, headerSteps,'menu')"> -->
@@ -1633,10 +1633,11 @@
                                         (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice'); ">BACK</a> 
                                         <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice()">SAVE AS DRAFT</button> -->
                                     </div>
-                                    <ng-container *ngIf="paymentFilePath != ''">
-                                    <button class="submit-bttn submit-health" *ngIf="!transactions.length" >CONTINUE</button>
-                                    </ng-container>
-                                    <ng-container *ngIf="transactions.length">
+                                    <div class="bttn_wrap" *ngIf="paymentFilePath != ''">
+                                        <button class="submit-bttn submit-health mr-5">PROCEED TO PAYMENT</button>
+                                        <button class="submit-bttn submit-health" type="button" (click)="step_payment()">UPDATE PAYMENT</button>
+                                    </div>
+                                    <ng-container *ngIf="transactions.length && paymentMode == 'Sandbox'">
                                         <div id="paypalPayment"></div>
                                     </ng-container>
                                 </div>

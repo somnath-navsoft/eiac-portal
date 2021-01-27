@@ -267,7 +267,7 @@ export class HalalConformityFormComponent implements OnInit {
    selectable = true;
    removable = true;
    paypalSandboxToken: string = '';
-  
+   paymentMode: string = '';
 
   @ViewChild('captchaRef',{static:true}) captchaRef: RecaptchaComponent;
 
@@ -3680,6 +3680,10 @@ getMatchScheme(scId: any, scopeData: any){
       this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
   }
+
+  step_payment(){
+    this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);   
+  }
   
   
 onSubmitStep7(ngForm7: any) {
@@ -3716,6 +3720,7 @@ onSubmitStep7(ngForm7: any) {
             console.log(">>> Payment Gateway... ", data);
             if(data.records.status){
               if(data.records.title == 'Live'){
+                  this.paymentMode = 'Live';
                   let postData: any = new FormData();
                   postData.append('accreditation', this.formApplicationId);
                   this._trainerService.proformaAccrSave(postData)
@@ -3737,6 +3742,7 @@ onSubmitStep7(ngForm7: any) {
                     });                      
               }
               if(data.records.title == 'Sandbox'){
+                this.paymentMode = 'Sandbox';
                 this.paypalSandboxToken = data.records.value;
                 setTimeout(() => {
                   this.createPaymentButton(this.transactionsItem, this.publicHalalConformityForm, this);
