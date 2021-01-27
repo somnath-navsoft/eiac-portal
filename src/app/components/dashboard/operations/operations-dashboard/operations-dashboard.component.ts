@@ -467,7 +467,7 @@ export class OperationsDashboardComponent implements OnInit {
   setField(value) {
     // this.search(this.searchTerm);
     this.selectedUser = [];
-    this.loader = false;
+    //this.loader = false;
     this.searchDetails = [];
     this.selectSearch = [];
     this.selectedField = value;
@@ -491,7 +491,7 @@ export class OperationsDashboardComponent implements OnInit {
       this.getUserType = 'super_admin';
     }
 
-    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=' + this.getUserType + '&searchKey=S')
+    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=' + this.getUserType + '&searchKey=')
       .subscribe(
         res => {
           this.searchDetails = res['data'].user_list;
@@ -585,8 +585,10 @@ export class OperationsDashboardComponent implements OnInit {
     this.selectedUser = [];
     this.selectedUserId = value.id;
     this.button_disable = this.selectedUserId != '' ? false : true;
-    if (data == 'username') {
-      this.selectedUser.push(value.username);
+    if (data == 'cab_name') {
+      this.selectedUser.push(value.cab_name);
+    }else if (data == 'cab_code') {
+      this.selectedUser.push(value.cab_code);
     } else {
       this.selectedUser.push(value.email);
     }
@@ -631,16 +633,21 @@ export class OperationsDashboardComponent implements OnInit {
     } else {
       this.selectSearch = [];
     }
-
+    console.log("SSS res: ", this.selectSearch);
   }
 
   select(query: string): string[] {
     let result: string[] = [];
+    console.log("### ", query);
     if (this.getUserType == 'cab_client' || this.getUserType == 'cab_code') {
       for (let a of this.searchDetails) {
-        if (a.username.toLowerCase().indexOf(query) > -1) {
-          result.push(a);
-        }
+        console.log(">>>, ",a);
+        //if (a.cab_name.toLowerCase().indexOf(query) > -1) {
+        if(a.cab_name != null && a.cab_name != ''){
+          if (a.cab_name.toString().toLowerCase().indexOf(query) > -1) {
+            result.push(a);
+          }
+        }            
       }
     } else {
       for (let a of this.searchDetails) {
