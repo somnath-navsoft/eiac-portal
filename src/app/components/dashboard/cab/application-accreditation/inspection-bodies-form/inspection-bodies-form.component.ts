@@ -586,6 +586,30 @@ export class InspectionBodiesFormComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url); 
   }
 
+  openViewAuth(content, type:string) {
+    let pathData: any;
+    ////console.log(">>>pop up...", content);
+    // if(type != undefined && type == 'agreement'){
+    //   pathData = this.getSantizeUrl(this.accredAgreemFile);
+    //   this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
+    // }
+    // if(type != undefined && type == 'checklist'){
+    //   pathData = this.getSantizeUrl(this.checklistDocFile);
+    //   this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
+    // }
+  
+    ////console.log(">>> open view", this.pathPDF, " -- ",  this.pathPDF);
+  
+    this.modalService.open(content, this.modalOptions).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      //////console.log("Closed: ", this.closeResult);
+      //this.courseViewData['courseDuration'] = '';
+      //this.courseViewData['courseFees'] = '';
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
   openView(content, type?:string) {
     let pathData: any;
     ////////console.log(">>>pop up...", content);
@@ -2673,10 +2697,21 @@ export class InspectionBodiesFormComponent implements OnInit {
               this.Service.moveSteps('undertaking_applicant', 'proforma_invoice', this.headerSteps);
             }
             else{
-              this.toastr.success("Application Submitted Successfully");
-              setTimeout(() => {
-                this.router.navigateByUrl('/dashboard/status/all');
-              }, 5000)              
+              // this.toastr.success("Application Submitted Successfully");
+              // setTimeout(() => {
+              //   this.router.navigateByUrl('/dashboard/status/all');
+              // }, 5000);
+              setTimeout(()=>{
+                let elem = document.getElementById('openPayDialog');
+                //////console.log("App dialog hash....", elem);
+                if(elem){
+                  elem.click();
+                }
+              }, 100)
+              setTimeout(() => {                    
+                // this.router.navigateByUrl('/dashboard/cab_client/application-accreditation');
+                //this.Service.moveSteps('payment_update', 'application_complete', this.headerSteps);
+              },1500)
             }
           }else{
             this.toastr.warning(res['msg'], '');

@@ -1539,6 +1539,24 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row"> 
+                            <span id="openPayDialog" (click)="openViewAuth(payComp)"></span>
+                            <ng-template #payComp let-modal>
+                                <div class="main_pop">
+                                    <div class="pop_close">
+                                        <span class="icon-close"></span>
+                                    </div>
+                                    <div class="pop_thanks">
+                                        <h5>Thank you</h5>
+                                        <p>Your Application has been received, please wait for the Proforma Invoice to be generated, to proceed with 
+                                            payment</p>
+                                        <button class="submit-bttn" (click)="closeDialog()"
+                                        routerLink="/dashboard/status/all">Return to Status</button>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </div>
                     </form>
                     <ng-template #agreementView let-modal>
                         <div class="modal-header">
