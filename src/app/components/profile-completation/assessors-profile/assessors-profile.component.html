@@ -9,13 +9,7 @@
                             <div class="form-main complete-usr">
                                 <h1 [ngStyle]="{'font-size': '30px','color':'black', 'letter-spacing':0, 'font-weight': 'bold'}">UPDATE PROFILE</h1>
                             </div>
-                        </div>
-                        <!-- <div class="col-md-4">
-                            <div class="progress-br">
-                                <mat-progress-bar mode="determinate" value="{{progressValue}}"></mat-progress-bar>
-                                <span>{{progressValue}}%</span>
-                            </div>
-                        </div> -->
+                        </div>                        
                     </div>
                 </div>
 
@@ -25,7 +19,7 @@
                             <div class="user-steps user-small">
                                 <ng-container *ngFor="let item of headerSteps; let k=index;">
                                     <div class="user-next" [ngClass]="(item.activeClass != '') ? item.activeClass : ''">
-                                        <div class="usernext-icon">
+                                        <div class="usernext-icon"> 
                                             <span [ngClass]="(item.activeClass === 'user-done') ? 'icon-tick' : item.icon"></span>
                                         </div>
 
@@ -42,14 +36,6 @@
                         </div>
                     </div>
                 </ng-container>
-
-                <!-- <mat-horizontal-stepper #stepper [selectedIndex]="0">
-                    <mat-step>
-                        <ng-template matStepLabel>
-                            <span>
-                                1. Personal Details
-                            </span>
-                        </ng-template> -->
                 <div class="cust-stepper" id="personal_details">
                     <form #ngForm1="ngForm" (ngSubmit)="onSubmitStep1(ngForm1)" autocomplete="off">
                         <div class="row m-0 form-bdy mt-3">
@@ -200,14 +186,6 @@
                         </div>
                     </form>
                 </div>
-                <!-- </mat-step>
-
-                <mat-step>
-                    <ng-template matStepLabel>
-                        <span>
-                            2. EDUCATIONAL INFORMATION
-                        </span>
-                    </ng-template> -->
                 <div class="cust-stepper" id="educational_information" [ngStyle]="{'display': 'none'}">
                     <form #ngForm2="ngForm" (ngSubmit)="onSubmitStep2(ngForm2)" autocomplete="off">
                         <div class="row m-0 form-bdy mt-3">
@@ -567,14 +545,6 @@
                         </div>
                     </form>
                 </div>
-                <!-- </mat-step>
-
-                <mat-step>
-                    <ng-template matStepLabel>
-                        <span>
-                            3. EMPLOYMENT
-                        </span>
-                    </ng-template> -->
                 <div class="cust-stepper" id="employment" [ngStyle]="{'display': 'none'}">
                     <form #ngForm3="ngForm" (ngSubmit)="onSubmitStep3(ngForm3)" autocomplete="off">
                     <div class="row m-0 form-bdy mt-3">
@@ -925,14 +895,6 @@
                     </div>
                 </form>
                 </div>
-                <!-- </mat-step>
-
-                <mat-step>
-                    <ng-template matStepLabel>
-                        <span>
-                            4. KNOWLEDGE AND EXPERIENCE
-                        </span>
-                    </ng-template> -->
                 <div class="cust-stepper" id="knowledge_experience" [ngStyle]="{'display': 'none'}">
                     <form #ngForm4="ngForm" (ngSubmit)="onSubmitStep4(ngForm4)" autocomplete="off">
                         <div class="row m-0 form-bdy mt-3">
@@ -941,7 +903,7 @@
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr">
-                                                <h5>KNOWLEDGE AND EXPERIENCE</h5>
+                                                <h5>#KNOWLEDGE AND EXPERIENCE</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -955,8 +917,6 @@
                                             </div>
                                             <div class="col-md-1 col-sm-6 p-0">
                                                 <div class="open-cls">
-                                                    <!-- <a href="javascript:void(0)"><span class="icon-add"></span></a> -->
-                                                    
                                                     <tr>
                                                         <th class="manage-first" colspan="8" *ngIf="row['technical_fields']" >
                                                             <a *ngIf="isdDynamicsopenClose == row.id" href="javascript:void(0)" (click)="dynamicsopenClose(row.id,'close')"><span class="icon-minus"></span></a>
@@ -972,11 +932,12 @@
                                         <div class="row" *ngIf="isdDynamicsopenClose == row.id">
                                             <div class="col-md-12">
                                                 <div class="table-content-health">
+                                                    {{row.id}}
+                                                    <!-- Years of Experience -->
                                                     <table>
-
                                                         <tr>
                                                             <th>Field</th>
-                                                            <th>Years of Experience</th>
+                                                            <th>Scoring</th>
                                                         </tr>
                                                         
                                                         <tr *ngFor="let item of row['technical_fields']; let i = index;">
@@ -990,13 +951,97 @@
                                                                     </div>
                                                                 </mat-radio-group>
                                                             </td>
-                                                        </tr>
-                                                        
+                                                        </tr>                                                        
                                                     </table>
                                                 </div>
                                             </div>
                                         </div>
                                     </ng-container>
+
+                                    <!-- Fixed Type Data -->
+                                    <ng-container  *ngFor="let item of subTechnicalFields; let j = index;">
+                                        <div class="row mt-3">
+                                            <div class="col-md-11 col-sm-6 p-0">
+                                                <div class="form-subheader-data">
+                                                    <h5>{{item.title}}</h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1 col-sm-6 p-0">
+                                            <div class="open-cls">
+                                                <tr>
+                                                    <th class="manage-first" colspan="8" *ngIf="item['technicalFields']">
+                                                        <a *ngIf="isdDynamicsopenClose == item.id" href="javascript:void(0)" (click)="dynamicsopenClose(item.id,'close')"><span class="icon-minus"></span></a>
+                                                        <a (click)="dynamicsopenClose(item.id,'open')" *ngIf="isdDynamicsopenClose != item.id" href="javascript:void(0)" ><span class="icon-add"></span></a>
+                                                    </th>
+                                                    <th class="manage-first" colspan="8"></th>
+                                                </tr>
+                                            </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" *ngIf="isdDynamicsopenClose == item.id">
+                                            <div class="col-md-12">
+                                                <div class="table-content-health" [ngStyle]="{'overflow':'hidden'}">
+                                             
+                                                    <ng-container *ngIf="!item.isChild">
+                                                            <table>
+                                                                <tr>
+                                                                    <th>Field</th>
+                                                                    <th>Scoring</th>
+                                                                </tr>
+                                                                <tr *ngFor="let rec of loop(item.technicalFields[0].entryRow); let i = index;">
+                                                                    <td>
+                                                                        <!-- @{{subField[i]['title'] | json}} -->
+                                                                     {{i+1}}.<input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="subField[i]['title']" [ngStyle]="{'width':'90%','margin-left': '15px'}">
+                                                                    </td>
+                                                                    <td>
+                                                                    <mat-radio-group name="knowledge_sub_experienced_{{i}}">
+                                                                        <div class="desc-content-prof">
+                                                                            <mat-radio-button value="1">From 5-10 Years</mat-radio-button>
+                                                                            <mat-radio-button value="2">From 11-15 Years</mat-radio-button>
+                                                                            <mat-radio-button value="3">Above 16 Years</mat-radio-button>
+                                                                        </div>
+                                                                    </mat-radio-group>
+                                                                    </td>
+                                                                </tr>                                                        
+                                                            </table>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="item.isChild">
+                                                        <ng-container *ngFor="let rec of item.technicalFields; let k = index;">
+                                                            <div class="table-content-health" [ngStyle]="{'overflow':'hidden'}">
+                                                                <div class="form-subhdr"><h5>{{rec.subTitle}}</h5></div>
+                                                                <table>
+                                                                    <tr>
+                                                                        <th>Field</th>
+                                                                        <th>Scoring</th>
+                                                                    </tr>                                                                
+                                                                    <tr *ngFor="let rec1 of loop(rec.entryRow); let p = index;">
+                                                                        <td>
+                                                                            <!-- @{{k}} == {{p}}
+                                                                            #{{subInput | json}} -->
+                                                                         {{p+1}}.<input type="text" [ngModelOptions]="{standalone: true}" 
+                                                                         [(ngModel)]="subInput[k][p].title" [ngStyle]="{'width':'90%','margin-left': '15px'}">
+                                                                        </td>
+                                                                        <td>
+                                                                        <mat-radio-group name="knowledge_sub_cexperienced_{{p}}">
+                                                                            <div class="desc-content-prof">
+                                                                                <mat-radio-button value="1">From 5-10 Years</mat-radio-button>
+                                                                                <mat-radio-button value="2">From 11-15 Years</mat-radio-button>
+                                                                                <mat-radio-button value="3">Above 16 Years</mat-radio-button>
+                                                                            </div>
+                                                                        </mat-radio-group>
+                                                                        </td>
+                                                                    </tr>                                                        
+                                                                </table>
+                                                            </div>
+                                                        </ng-container>                                                            
+                                                    </ng-container>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </ng-container>        
+
                                         
                                 </div> 
                             </div>
@@ -1015,14 +1060,6 @@
                         </div>
                     </form>
                 </div>
-                <!-- </mat-step>
-
-                <mat-step>
-                    <ng-template matStepLabel>
-                        <span>
-                            5. APPLICANT ASSESSOR
-                        </span>
-                    </ng-template> -->
                 <div class="cust-stepper" id="applicant_trainer" [ngStyle]="{'display': 'none'}">
                     <form #ngForm5="ngForm" (ngSubmit)="onSubmitStep5(ngForm5)" autocomplete="off">
                         <div class="row m-0 form-bdy mt-3">
@@ -1103,8 +1140,6 @@
                         </div>
                     </form>
                 </div>
-                    <!-- </mat-step>
-                </mat-horizontal-stepper> -->
             </div>
         </div>
     </div>

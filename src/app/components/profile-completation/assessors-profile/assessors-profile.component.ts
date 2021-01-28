@@ -47,6 +47,9 @@ export class AssessorsProfileComponent implements OnInit {
   step4DataBodyFormFile:any = new FormData();
   step5DataBodyFormFile:any = new FormData();
   technicalFields:any[] = [];
+
+  subTechnicalFields: any[] =[];
+
   tradeLicensedValidation1:any = false;
   tradeLicensedValidation2:any = false;
   tradeLicensedValidation3:any;
@@ -66,6 +69,9 @@ export class AssessorsProfileComponent implements OnInit {
   file_validation_listAuditor:boolean = true;
   modalOptions:NgbModalOptions;
   closeResult: string;
+
+  subField: any = {};
+  subInput: any = {};
   
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -73,12 +79,33 @@ export class AssessorsProfileComponent implements OnInit {
     this.today.setDate(this.today.getDate());
    }
 
+
+   loop(i: number) {
+    return new Array(i);
+}
+
   ngOnInit() {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
     this.profileComplete = sessionStorage.getItem('profileComplete');
     this.userId = sessionStorage.getItem('userId');
+
+    //this.subField['title'] = '';
+    for(let i=0; i<8; i++){
+      this.subField[i] = {};
+      this.subField[i]['title'] = '';
+    }
+    for(let i=0; i<1; i++){
+      this.subInput[i] = {};
+      for(let k=i; k<4; k++){
+        this.subInput[i][k] = {};
+        this.subInput[i][k]['title'] = '';
+      }
+    }
+
+    console.log(this.subField, " -- ", this.subInput);
+
 
     this.headerSteps.push(
       {
@@ -108,6 +135,73 @@ export class AssessorsProfileComponent implements OnInit {
     this.loadStepsData();
     this.stepDefaultValue();
     this.loadLanguages();
+
+    this.subTechnicalFields.push({
+      title: 'Proficiency Testing Providers',
+      id: 100,
+      isChild: false,
+      technicalFields: [
+        {field_title: {} , entryRow: 8, knowledge_sub_experienced:''}
+      ]
+    },
+    {
+      title: 'Reference Material Producers',
+      id: 101,
+      isChild: true,
+      technicalFields: [
+        {
+          subTitle: 'Testing',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+        {
+          subTitle: 'Calibration',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+        {
+          subTitle: 'Medical',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+        {
+          subTitle: 'Inspection',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+      ]
+    },
+    {
+      title: 'Validation and Verification Bodies',
+      id: 102,
+      isChild: true,
+      technicalFields: [
+        {
+          subTitle: 'Testing',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+        {
+          subTitle: 'Calibration',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+        {
+          subTitle: 'Medical',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+        {
+          subTitle: 'Inspection',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+      ]
+    },
+    )
+
+    window.console.log("#Sub fields: ", this.subTechnicalFields);
+
   }
 
   loadLanguages = async() => {
@@ -250,7 +344,7 @@ export class AssessorsProfileComponent implements OnInit {
           this.step1Data.phone_with_area = res['data']['user_data'][0].contact;
 
           this.technicalFields = res['data'].technical_field;
-          // console.log(this.technicalFields,'technicalFields');
+          console.log(this.technicalFields,'technicalFields');
 
           if(res['data'].step1 != '' && res['data'].step1[0] && res['data']['user_data'][0].first_name != "" && res['data'].step1[0].office_email != "" && res['data'].step1[0].dob != null && res['data'].step1[0].mailing_address != "" && res['data'].step1[0].office != "" && res['data'].step1[0].designation != "" && res['data'].step1[0].office_address != "" && res['data'].step1[0].office_tel_no != "" && res['data'].step1[0].nationality != null) {
             this.progressValue = 22;
