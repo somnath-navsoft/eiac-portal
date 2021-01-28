@@ -153,6 +153,7 @@ export class NoObjectionFormComponent implements OnInit {
   closeResult: string;
   modalOptions:NgbModalOptions;
   paypalSandboxToken: string = '';
+  paymentMode: string = '';
 
   showHideCBSec: boolean = false;
   
@@ -1548,7 +1549,7 @@ export class NoObjectionFormComponent implements OnInit {
             this.step3Data.testing_lab.testingLabCheckDetails.checkItemsOthers.length > 0 ||
             (this.step3Data.testing_lab.testingLabInformation.length > 0 && this.Service.isObjectEmpty(this.step3Data.testing_lab.testingLabInformation[0]) == false))
                   { 
-                    console.log("TCL..........>")
+                    console.log("TCL..........>") 
                     this.entryTestingLab = true;
                   }
       }
@@ -1913,6 +1914,12 @@ export class NoObjectionFormComponent implements OnInit {
     });
     }
   }
+
+
+  step_payment(){
+    this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);   
+  }
+
   onSubmitProformaInvoice(theForm: any, type?: any){
     //this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
 
@@ -1941,9 +1948,10 @@ export class NoObjectionFormComponent implements OnInit {
       .subscribe(
         result => {
             let data: any = result;
-            console.log(">>> Payment Gateway... ", data);
+            //console.log(">>> Payment Gateway... ", data);
             if(data.records.status){
               if(data.records.title == 'Live'){
+                  this.paymentMode = 'Live';
                   let postData: any = new FormData();
                   postData.append('accreditation', this.formApplicationId);
                   this._trainerService.proformaAccrSave(postData)
@@ -1960,12 +1968,12 @@ export class NoObjectionFormComponent implements OnInit {
                             this.loaderPdf = false;
                             window.open(getUrl);
                           }, 1500)
-                          
                         }
-                    //console.log(">>> Save resultts: ", result);
+                        //console.log(">>> Save resultts: ", result);
                     });                      
               }
               if(data.records.title == 'Sandbox'){
+                this.paymentMode = 'Sandbox';
                 this.paypalSandboxToken = data.records.value;
                 setTimeout(() => {
                   this.createPaymentButton(this.transactionsItem, this.noObjectionBodyForm, this);
