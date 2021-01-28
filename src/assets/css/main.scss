@@ -935,7 +935,8 @@ a:hover { text-decoration: none; }
 }
 .activity-details li:nth-child(even)::after { border: 3px solid #B54150; }
 .event_data .ass-details { padding-bottom: 0; }
-
+.remembr-pwd a { color: #212529;}
+.remembr-pwd a:hover { color: #212529;}
 //==================SYSTEM DASHBOARD==================//
 .date-update {  background: #B19681; }
 .data-bg { padding: 10px; background: rgba(0, 0, 0, 0.1); color: #fff; text-align: center; }

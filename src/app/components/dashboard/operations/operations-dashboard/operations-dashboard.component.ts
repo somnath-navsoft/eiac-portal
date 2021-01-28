@@ -630,10 +630,13 @@ export class OperationsDashboardComponent implements OnInit {
     // this.searchDetails = result;
     if (query != '') {
       this.selectSearch = result;
+      console.log("Get value");
     } else {
       this.selectSearch = [];
+      console.log("Not Get value");
+
     }
-    console.log("SSS res: ", this.selectSearch);
+    // console.log("SSS res: ", this.selectSearch);
   }
 
   select(query: string): string[] {
@@ -643,11 +646,15 @@ export class OperationsDashboardComponent implements OnInit {
       for (let a of this.searchDetails) {
         console.log(">>>, ",a);
         //if (a.cab_name.toLowerCase().indexOf(query) > -1) {
-        if(a.cab_name != null && a.cab_name != ''){
+        if(a.cab_name != null && a.cab_name != '' && this.getUserType == 'cab_client'){
           if (a.cab_name.toString().toLowerCase().indexOf(query) > -1) {
             result.push(a);
           }
-        }            
+        }else if(a.cab_code != null && a.cab_code != '' && this.getUserType == 'cab_code'){
+          if (a.cab_code.toString().toLowerCase().indexOf(query) > -1) {
+            result.push(a);
+          }
+        }  
       }
     } else {
       for (let a of this.searchDetails) {

@@ -783,11 +783,12 @@
                                         <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice(ngForm8, true)">SAVE AS DRAFT</button> -->
                                         <!-- <button class="submit-bttn submit-health" (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)">CONTINUE</button> -->
                                     </div>
-                                    <ng-container *ngIf="paymentDetailsChk != null">
-                                        <button class="submit-bttn submit-health" *ngIf="!transactions.length">CONTINUE</button>
-                                        <ng-container *ngIf="transactions.length">
+                                    <div class="bttn_wrap" *ngIf="paymentFilePath != ''">
+                                        <button class="submit-bttn submit-health mr-5">PROCEED TO PAYMENT</button>
+                                        <button class="submit-bttn submit-health" type="button" (click)="step_payment()">UPDATE PAYMENT</button>
+                                    </div>
+                                    <ng-container *ngIf="transactions.length && paymentMode == 'Sandbox'">
                                             <div id="paypalPayment"></div>
-                                        </ng-container>
                                     </ng-container>
                                 </div>
                             </div>
