@@ -150,11 +150,11 @@ export class OperationsDashboardComponent implements OnInit {
             this.totalDeptPendingCount = getData.pendingAccrCount;
 
             if(getData.status_count != undefined){ 
-                this.totalDeptStatus.accredatedCount    = getData.status_count.accredatedCount[0].cab_data.certificate;
-                this.totalDeptStatus.suspendedCount     = getData.status_count.suspendedCount[0].cab_data.certificate;
-                this.totalDeptStatus.volWithdrawCount   = getData.status_count.volWithdrawCount[0].cab_data.certificate;
+                this.totalDeptStatus.accredatedCount    = getData.status_count.accredatedCount; //getData.status_count.accredatedCount[0].cab_data.certificate;
+                this.totalDeptStatus.suspendedCount     = getData.status_count.suspendedCount;  //getData.status_count.suspendedCount[0].cab_data.certificate;
+                //this.totalDeptStatus.volWithdrawCount   = getData.status_count.volWithdrawCount;  //getData.status_count.volWithdrawCount[0].cab_data.certificate;
                 //this.totalDeptStatus.volSuspendedCount  = getData.status_count.volSuspendedCount.length;
-                //this.totalDeptStatus.withdrawCount      = getData.status_count.withdrawCount.length;                
+                this.totalDeptStatus.withdrawCount      = getData.status_count.withdrawCount;                
             }
       });
     }
@@ -195,11 +195,11 @@ export class OperationsDashboardComponent implements OnInit {
                 this.totalDeptCABCount = getData.totalCabCount;
                 this.totalDeptCertificateCount = getData.all_crtificate_count;
                 if(getData.status_count != undefined){
-                    this.totalDeptStatus.accredatedCount    = getData.status_count.accredatedCount[0].cab_data.certificate;
-                    this.totalDeptStatus.suspendedCount     = getData.status_count.suspendedCount[0].cab_data.certificate;
-                    this.totalDeptStatus.volWithdrawCount   = getData.status_count.volWithdrawCount[0].cab_data.certificate;
+                    this.totalDeptStatus.accredatedCount    = getData.status_count.accredatedCount;//getData.status_count.accredatedCount[0].cab_data.certificate;
+                    this.totalDeptStatus.suspendedCount     = getData.status_count.suspendedCount;//getData.status_count.suspendedCount[0].cab_data.certificate;
+                    this.totalDeptStatus.volWithdrawCount   = getData.status_count.volWithdrawCount;//getData.status_count.volWithdrawCount[0].cab_data.certificate;
                     this.totalDeptStatus.volSuspendedCount  = getData.status_count.volSuspendedCount.length;
-                    this.totalDeptStatus.withdrawCount      = getData.status_count.withdrawCount.length;
+                    this.totalDeptStatus.withdrawCount      = getData.status_count.withdrawCount;
                     
                 }
           });
