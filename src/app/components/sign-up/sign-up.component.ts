@@ -192,7 +192,7 @@ export class SignUpComponent implements OnInit {
             // console.log(res,'res')
             this.loader = true;
             if(res['status'] == true) {
-              this.toastr.success(res['msg'], '');
+              this.toastr.success('Successfully registered with EIAC, Please check your email for verifying', '');
               this.router.navigateByUrl('/sign-in');
             }else{
               let getMsg = res['msg'];
