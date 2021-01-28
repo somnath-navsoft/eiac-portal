@@ -685,14 +685,34 @@
                                                 [(ngModel)]="voucherSentData.transaction_no">
                                             </mat-form-field>
                                         </div>
-                                        <div class="col-md-4">
+                                        <!-- <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-select placeholder="Select" name="payment_method" [(ngModel)]="voucherSentData.payment_method" required="true">
                                                     <mat-option value="Cash">Cash</mat-option>
                                                     <mat-option value="Online">Online</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
+                                        </div> -->
+                                        <div class="col-md-4">
+                                            <mat-label [ngStyle]="{'font-size': '16px'}">Payment Method</mat-label>
+                                            <mat-radio-group name="payment_method" 
+                                            [(ngModel)]="voucherSentData.payment_method" required>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <label class="check-rdo">
+                                                            <mat-radio-button value="Cash">Cash</mat-radio-button>
+                                                        </label>
+                                                    </div>  
+                                                    <div class="col-md-4">
+                                                        <label class="check-rdo">
+                                                            <mat-radio-button value="Online">Online</mat-radio-button>
+                                                        </label>
+                                                    </div>  
+                                            
+                                                </div>
+                                            </mat-radio-group>
                                         </div>
+                                        
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Payment Made By</mat-label>
