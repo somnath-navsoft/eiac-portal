@@ -118,6 +118,7 @@ export class WorkPermitFormComponent implements OnInit {
   paymentFile:any;
   paymentDetailsChk:any;
   paypalSandboxToken: string = '';
+  paymentMode: string = '';
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,public _trainerService:TrainerService,public sanitizer:DomSanitizer,private modalService: NgbModal) { }
 
@@ -842,6 +843,10 @@ export class WorkPermitFormComponent implements OnInit {
     
   }
 
+  step_payment(){
+    this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);   
+  }
+
   onSubmit5(ngForm5) {
     this.transactionsItem['amount']               = {};
     this.transactionsItem['amount']['total']      = 0.00;
@@ -875,6 +880,7 @@ export class WorkPermitFormComponent implements OnInit {
             console.log(">>> Payment Gateway... ", data);
             if(data.records.status){
               if(data.records.title == 'Live'){
+                  this.paymentMode = 'Live';
                   let postData: any = new FormData();
                   postData.append('accreditation', this.formApplicationId);
                   this._trainerService.proformaAccrSave(postData)
@@ -897,6 +903,7 @@ export class WorkPermitFormComponent implements OnInit {
                     });                      
               }
               if(data.records.title == 'Sandbox'){
+                this.paymentMode = 'Sandbox';
                 this.paypalSandboxToken = data.records.value;
                 setTimeout(() => {
                   this.createPaymentButton(this.transactionsItem, this.workPermitForm, this);
@@ -1026,7 +1033,7 @@ export class WorkPermitFormComponent implements OnInit {
       dtFormat = nYear + "-" + nMonth + "-" + nDate;
     }
       this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
-      this.voucherFile.append('amount',this.voucherSentData['amount']);
+      this.voucherFile.append('amount',this.voucherSentData['amount']); 
       this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
       this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);
       this.voucherFile.append('payment_made_by',this.voucherSentData['payment_made_by']);

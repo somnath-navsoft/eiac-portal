@@ -97,6 +97,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
   authorizationList:any;
   trainingCapacity:any;
   paypalSandboxToken: string ='';
+  paymentMode: string = '';
 
   constructor(private Service: AppService, private http: HttpClient,
     public _toaster: ToastrService, private _router: Router, private _route: ActivatedRoute,
@@ -730,6 +731,10 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
         this._toaster.warning('Please Fill required field','Validation Error',{timeOut:5000});
       }
     }
+
+    step_payment(){
+      this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);   
+    }
   
     onSubmitStep6(ngForm6) {
       // this.Service.moveSteps('proforma_invoice', 'payment_update', this.headerSteps);
@@ -765,6 +770,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
             console.log(">>> Payment Gateway... ", data);
             if(data.records.status){
               if(data.records.title == 'Live'){
+                this.paymentMode = 'Live';
                   let postData: any = new FormData();
                   postData.append('accreditation', this.formApplicationId);
                   this._trainerService.proformaAccrSave(postData)
@@ -786,6 +792,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
                     });                      
               }
               if(data.records.title == 'Sandbox'){
+                this.paymentMode = 'Sandbox';
                 this.paypalSandboxToken = data.records.value;
                 setTimeout(() => {
                   this.createPaymentButton(this.transactionsItem, this.publicTrainingForm, this);
