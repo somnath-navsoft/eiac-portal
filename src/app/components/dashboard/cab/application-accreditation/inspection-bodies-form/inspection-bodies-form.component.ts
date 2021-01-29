@@ -3231,33 +3231,34 @@ export class InspectionBodiesFormComponent implements OnInit {
     //if(this.proficiencyTesting.length > 0 && this.step2Data.proficiency_testing_val > 0) {
       this.step2Data.proficiency_testing_val = 1;
       //if(type == undefined){
-        
-      this.inspectionBodyForm.step2['proficiencyTesting'] = this.proficiencyTesting;
-     
-      //}
-        ////////console.log(">> Data: ", this.proficiencyTesting);
+        if(this.Service.isObjectEmpty(this.proficiencyTesting) == true) {
+            this.inspectionBodyForm.step2['proficiencyTesting'] = this.proficiencyTesting;
+          
+            //}
+              ////////console.log(">> Data: ", this.proficiencyTesting);
 
-        this.proficiencyTesting.forEach((rec,key) => {
-          let dtFormat = '';
-         if(rec.participation_date != undefined && rec.participation_date._i != undefined){
-          var dtData = rec.participation_date._i;
-          var year = dtData.year;
-          var month = dtData.month;
-          var date = dtData.date;
+              this.proficiencyTesting.forEach((rec,key) => {
+                let dtFormat = '';
+              if(rec.participation_date != undefined && rec.participation_date._i != undefined){
+                var dtData = rec.participation_date._i;
+                var year = dtData.year;
+                var month = dtData.month;
+                var date = dtData.date;
+              }
+              dtFormat = year + "-" + month + "-" + date;
+              ////////console.log(">>DT: ", dtFormat);
+              this.proficiencyTesting[key].date = dtFormat;
+        
+              this.proficiencyTesting[key].test_name = (rec.test_name == undefined) ? "" : rec.test_name;
+              var yyyy = new Date().getFullYear().toString();
+              var mm = (new Date().getMonth()+1).toString();
+              var dd  = new Date().getDate().toString();
+              let dformat = yyyy + "-" + mm +"-"+dd;
+              this.proficiencyTesting[key].participation_date = (rec.participation_date == undefined) ? dformat : rec.participation_date;
+              this.proficiencyTesting[key].result = (rec.result == undefined) ? "" : rec.result;
+              this.proficiencyTesting[key].pt_provider = (rec.pt_provider == undefined) ? "" : rec.pt_provider;
+          })
         }
-        dtFormat = year + "-" + month + "-" + date;
-        ////////console.log(">>DT: ", dtFormat);
-        this.proficiencyTesting[key].date = dtFormat;
-  
-        this.proficiencyTesting[key].test_name = (rec.test_name == undefined) ? "" : rec.test_name;
-        var yyyy = new Date().getFullYear().toString();
-        var mm = (new Date().getMonth()+1).toString();
-        var dd  = new Date().getDate().toString();
-        let dformat = yyyy + "-" + mm +"-"+dd;
-        this.proficiencyTesting[key].participation_date = (rec.participation_date == undefined) ? dformat : rec.participation_date;
-        this.proficiencyTesting[key].result = (rec.result == undefined) ? "" : rec.result;
-        this.proficiencyTesting[key].pt_provider = (rec.pt_provider == undefined) ? "" : rec.pt_provider;
-    })
     ////console.log("@Step2 submit...", this.inspectionBodyForm, " --- ", this.formApplicationId);
    // return;
 
@@ -3302,9 +3303,9 @@ export class InspectionBodiesFormComponent implements OnInit {
           }
         });
     }
-    else{
-      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
-    }
+    // else{
+    //   this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    // }
   }
 
   onSubmitPersonalInformation(ngForm3: any, type?: boolean){
@@ -3508,9 +3509,10 @@ export class InspectionBodiesFormComponent implements OnInit {
           this.toastr.warning(res['msg'], '');
         }
       });
-      }else{
-      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
+    // else{
+    //   this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    // }
   }
   
   onSubmitPerlimVisit(ngForm: any, type?:boolean){

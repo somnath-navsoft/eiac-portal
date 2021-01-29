@@ -2980,13 +2980,15 @@ getCriteria(value, secInd: any){
       this.step2Data.is_draft = false;
       this.testingCalForm.step2 = this.step2Data;
 
-      this.testingCalForm.step2['proficiencyTesting'] = [];
       
-      if(this.ownOrgBasicInfo) {
+      
+      if(this.Service.isObjectEmpty(this.proficiencyTesting) == true) {
+        this.testingCalForm.step2['proficiencyTesting'] = [];
         this.testingCalForm.step2['proficiencyTesting'] = this.proficiencyTesting;
       }
 
       // this.step2DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
+      console.log(this.testingCalForm,'testingCalForm');
       this.loader = false;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.testingCalibration,this.testingCalForm)
       .subscribe(
@@ -3000,9 +3002,10 @@ getCriteria(value, secInd: any){
             this.toastr.warning(res['msg'], '');
           }
         });
-    }else{
-      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
     }
+    // else{
+    //   this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    // }
   }
 
   onSubmitStep3(ngForm3: any){
