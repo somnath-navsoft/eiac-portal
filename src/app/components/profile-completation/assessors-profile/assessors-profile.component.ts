@@ -47,6 +47,9 @@ export class AssessorsProfileComponent implements OnInit {
   step4DataBodyFormFile:any = new FormData();
   step5DataBodyFormFile:any = new FormData();
   technicalFields:any[] = [];
+
+  subTechnicalFields: any[] =[];
+
   tradeLicensedValidation1:any = false;
   tradeLicensedValidation2:any = false;
   tradeLicensedValidation3:any;
@@ -66,6 +69,10 @@ export class AssessorsProfileComponent implements OnInit {
   file_validation_listAuditor:boolean = true;
   modalOptions:NgbModalOptions;
   closeResult: string;
+
+  subField: any = {}; 
+  subInput: any = {};
+  subInput1: any = {};
   
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -73,12 +80,94 @@ export class AssessorsProfileComponent implements OnInit {
     this.today.setDate(this.today.getDate());
    }
 
+
+   loop(i: number) {
+    return new Array(i);
+}
+
+checkInput(index: number){
+    if(index != null){
+      let input: any = this.subField[index]['title'];
+      console.log(">> get input: ", input);
+      if(input == '' || input == undefined || input == null){
+          this.toastr.warning("Please add input in field",'', {timeOut:1000})
+          return false;
+      }
+    }
+}
+checkInputSub(parent: number, inner: number){
+  if(parent != null && inner != null){
+    let input: any = this.subInput[parent][inner]['title'];
+    console.log("@ get input: ", input);
+    if(input == '' || input == undefined || input == null){
+        this.toastr.warning("Please add input in field",'', {timeOut:1000})
+        return false;
+    }
+  }
+}
+checkInputSub1(parent: number, inner: number){
+  if(parent != null && inner != null){
+    let input: any = this.subInput1[parent][inner]['title'];
+    console.log("@ get input: ", input);
+    if(input == '' || input == undefined || input == null){
+        this.toastr.warning("Please add input in field",'', {timeOut:1000})
+        return false;
+    }
+  }
+}
+
+updateInput(theEvt: any, parent: number, inner: number){
+    let inpValue: string;
+    inpValue = theEvt.target.value;
+    console.log("@Input: ", inpValue, " -- ", this.subInput[parent], " :: ", this.subInput[parent][inner]);
+    if(this.subInput[parent][inner] != null && this.subInput[parent][inner]['title'] != null){
+      this.subInput[parent][inner]['title'] = inpValue;
+        console.log("@value assign....");
+    }
+}
+updateInput1(theEvt: any, parent: number, inner: number){
+  let inpValue: string;
+  inpValue = theEvt.target.value;
+  console.log("@Input: ", inpValue, " -- ", this.subInput1[parent], " :: ", this.subInput1[parent][inner]);
+  if(this.subInput1[parent][inner] != null && this.subInput1[parent][inner]['title'] != null){
+    this.subInput1[parent][inner]['title'] = inpValue;
+      console.log("@value assign....");
+  }
+}
+
+
   ngOnInit() {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
     this.isCompleteness = sessionStorage.getItem('isCompleteness');
     this.profileComplete = sessionStorage.getItem('profileComplete');
     this.userId = sessionStorage.getItem('userId');
+
+    //this.subField['title'] = '';
+    for(let i=0; i<8; i++){
+      this.subField[i] = {};
+      this.subField[i]['title'] = '';
+      this.subField[i]['checked'] = '';
+    }
+    for(let i=0; i<4; i++){
+      this.subInput[i] = {};
+      for(let k=0; k<4; k++){
+        this.subInput[i][k] = {};
+        this.subInput[i][k]['title'] = '';
+        this.subInput[i][k]['checked'] = '';
+      }
+    }
+    for(let i=0; i<4; i++){
+      this.subInput1[i] = {};
+      for(let k=0; k<4; k++){
+        this.subInput1[i][k] = {};
+        this.subInput1[i][k]['title'] = '';
+        this.subInput1[i][k]['checked'] = '';
+      }
+    }
+
+    console.log(this.subField, " -- ", this.subInput);
+
 
     this.headerSteps.push(
       {
@@ -108,6 +197,75 @@ export class AssessorsProfileComponent implements OnInit {
     this.loadStepsData();
     this.stepDefaultValue();
     this.loadLanguages();
+
+    this.subTechnicalFields.push({
+      title: 'Proficiency Testing Providers',
+      id: 100,
+      isChild: false,
+      technicalFields: [
+        {field_title: {} , entryRow: 8, knowledge_sub_experienced:''}
+      ]
+    },
+    {
+      title: 'Reference Material Producers',
+      id: 101,
+      isChild: true,
+      isLabel: 'reference',
+      technicalFields: [
+        {
+          subTitle: 'Testing',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+        {
+          subTitle: 'Calibration',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+        {
+          subTitle: 'Medical',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+        {
+          subTitle: 'Inspection',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+      ]
+    },
+    {
+      title: 'Validation and Verification Bodies',
+      id: 102,
+      isChild: true,
+      isLabel: 'validation',
+      technicalFields: [
+        {
+          subTitle: 'Testing',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+        {
+          subTitle: 'Calibration',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+        {
+          subTitle: 'Medical',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+        {
+          subTitle: 'Inspection',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+      ]
+    },
+    )
+
+    window.console.log("#Sub fields: ", this.subTechnicalFields);
+
   }
 
   loadLanguages = async() => {
@@ -250,7 +408,7 @@ export class AssessorsProfileComponent implements OnInit {
           this.step1Data.phone_with_area = res['data']['user_data'][0].contact;
 
           this.technicalFields = res['data'].technical_field;
-          // console.log(this.technicalFields,'technicalFields');
+          console.log(this.technicalFields,'technicalFields');
 
           if(res['data'].step1 != '' && res['data'].step1[0] && res['data']['user_data'][0].first_name != "" && res['data'].step1[0].office_email != "" && res['data'].step1[0].dob != null && res['data'].step1[0].mailing_address != "" && res['data'].step1[0].office != "" && res['data'].step1[0].designation != "" && res['data'].step1[0].office_address != "" && res['data'].step1[0].office_tel_no != "" && res['data'].step1[0].nationality != null) {
             this.progressValue = 22;
@@ -754,7 +912,41 @@ export class AssessorsProfileComponent implements OnInit {
   onSubmitStep4(ngForm4:any) {
     // //console.log(this.schemeSlideData,'schemeSlideData');
     // schemeMainData
-    if(ngForm4.form.valid) {
+    let freetextInput: boolean = false;
+    let freetextInput1: boolean = false;
+    let freefieldInput: boolean = false;
+    console.log("@Form submit: ", ngForm4.form.valid);
+    console.log(this.subInput, " :: ", this.subField);
+
+    //subinput
+    for(let k in this.subInput){
+        if(typeof this.subInput[k] === 'object'){
+          for(let p in this.subInput[k]){
+            if(typeof this.subInput[k][p] === 'object' && this.subInput[k][p]['title'] != '' && this.subInput[k][p]['checked'] != ''){
+              freetextInput = true;
+            }
+          }
+        }
+    }
+    for(let k in this.subInput1){
+      if(typeof this.subInput1[k] === 'object'){
+        for(let p in this.subInput1[k]){
+          if(typeof this.subInput1[k][p] === 'object' && this.subInput1[k][p]['title'] != '' && this.subInput[k][p]['checked'] != ''){
+            freetextInput1 = true;
+          }
+        }
+      }
+  }
+    //subfield
+    for(let k in this.subField){
+      if(typeof this.subField[k] === 'object'){
+          if(typeof this.subField[k] === 'object' && this.subField[k]['title'] != '' && this.subInput[k]['checked'] != ''){
+            freefieldInput = true;
+          }
+      }
+    }
+    //return;
+    if(ngForm4.form.valid && freetextInput && freefieldInput && freetextInput1) {
 
         this.assessorsProfile = {};
         this.assessorsProfile.step4 = {};

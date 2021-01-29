@@ -17,9 +17,8 @@
                 <ng-container>
                     <div class="row user_main">
                         <div class="col-md-12">
-                            <div class="user-steps user-small">
-                                <!--  -->
-                                <ng-container *ngFor="let item of headerSteps; let k=index;">
+                            <div class="user-steps user-small">     
+                                <ng-container *ngFor="let item of headerSteps; let k=index;">  
                                     <div class="user-next" [ngClass]="(item.activeClass != '') ? item.activeClass : ''">
                                         <div class="usernext-icon">
                                             <span [ngClass]="(item.activeClass === 'user-done') ? 'icon-tick' : item.icon"></span>

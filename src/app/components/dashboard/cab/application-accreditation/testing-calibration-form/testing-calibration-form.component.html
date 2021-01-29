@@ -1623,7 +1623,7 @@
                                             <div class="authData">
                                                 
                                                 <mat-checkbox name="undertaking_confirmTop3" (change)="authorizeCheckCount($event)"
-                                                [(ngModel)]="authorizationList.undertaking_confirmTop3">Do you require ILAC MRA Mark Laboratories</mat-checkbox>
+                                                [(ngModel)]="authorizationList.undertaking_confirmTop3">Do you require ILAC MRA Mark</mat-checkbox>
                                             </div>
                                             <div class="terms-condition" style="height:500px;overflow:auto" *ngIf="authorizationList.undertaking_confirmTop3">
                                                 <div class="tnc" [innerHTML]="(termsILA != undefined && termsILA.content != undefined) ? termsILA.content : ''"></div>
