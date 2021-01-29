@@ -2057,10 +2057,9 @@ savedraftStep(stepCount) {
     
     this.step2Data.is_draft = true;
     this.healthCareForm.step2 = this.step2Data;
-
-    this.healthCareForm.step2['proficiencyTesting'] = [];
     
-    if(this.ownOrgBasicInfo) {
+    if(this.Service.isObjectEmpty(this.proficiencyTesting) == true) {
+      this.healthCareForm.step2['proficiencyTesting'] = [];
       this.healthCareForm.step2['proficiencyTesting'] = this.proficiencyTesting;
     }
 
@@ -2303,10 +2302,10 @@ onSubmitStep2(ngForm2: any){
     
     this.step2Data.is_draft = false;
     this.healthCareForm.step2 = this.step2Data;
-
-    this.healthCareForm.step2['proficiencyTesting'] = [];
     
-    if(this.ownOrgBasicInfo) {
+    
+    if(this.Service.isObjectEmpty(this.proficiencyTesting) == true) {
+      this.healthCareForm.step2['proficiencyTesting'] = [];
       this.healthCareForm.step2['proficiencyTesting'] = this.proficiencyTesting;
     }
 
@@ -2541,9 +2540,10 @@ onSubmitStep4(ngForm4: any){
           this.toastr.warning(res['msg'], '');
         }
       });
-  }else{
-    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
   }
+  // else{
+  //   this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+  // }
 }
 
 //Scope Save functions

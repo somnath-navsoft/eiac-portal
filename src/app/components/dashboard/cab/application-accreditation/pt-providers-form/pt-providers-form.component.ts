@@ -1980,9 +1980,10 @@ onSubmitStep3(ngForm3: any){
           this.toastr.warning(res['msg'], '');
         }
       });
-  }else{
-    this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
   }
+  // else{
+  //   this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+  // }
 }
 
 // Scope saving

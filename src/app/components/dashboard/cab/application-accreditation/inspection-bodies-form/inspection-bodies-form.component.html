@@ -918,7 +918,7 @@
                                         <div class="col-md-6 col-sm-12 mt-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Audit Date</mat-label>
-                                                <input matInput   readonly="true" [matDatepicker]="audit_date" id="audit_date"  (click)="Service._openCalendar(audit_date)"   placeholder="Audit Date" name="audit_date" [(ngModel)]="step4Data.audit_date" required>
+                                                <input matInput   readonly="true" [matDatepicker]="audit_date" id="audit_date"  (click)="Service._openCalendar(audit_date)"   placeholder="Audit Date" name="audit_date" [(ngModel)]="step4Data.audit_date">
                                                 <mat-datepicker-toggle matSuffix [for]="audit_date"></mat-datepicker-toggle>
                                                 <mat-datepicker #audit_date disabled="false"></mat-datepicker>
                                             </mat-form-field>
@@ -927,7 +927,7 @@
                                         <div class="col-md-6 col-sm-12  mt-3">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>MRM Date</mat-label>
-                                                <input matInput   readonly="true" [matDatepicker]="mrm_date" (click)="Service._openCalendar(mrm_date)"   placeholder="MRM Date" name="mrm_date" [(ngModel)]="step4Data.mrm_date" required>
+                                                <input matInput   readonly="true" [matDatepicker]="mrm_date" (click)="Service._openCalendar(mrm_date)"   placeholder="MRM Date" name="mrm_date" [(ngModel)]="step4Data.mrm_date">
                                                 <mat-datepicker-toggle matSuffix [for]="mrm_date"></mat-datepicker-toggle>
                                                 <mat-datepicker #mrm_date disabled="false"></mat-datepicker>
                                             </mat-form-field>
