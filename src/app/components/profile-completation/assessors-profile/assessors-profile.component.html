@@ -1033,6 +1033,7 @@
                                                             </div>
                                                         </ng-container>                                                            
                                                     </ng-container>
+
                                                     <ng-container *ngIf="item.isChild == true && item.isLabel == 'validation'">
                                                         <ng-container *ngFor="let rec of item.technicalFields; let k = index;">
                                                             <div class="table-content-health" [ngStyle]="{'overflow':'hidden'}">
@@ -1044,7 +1045,7 @@
                                                                     </tr>                                                                    
                                                                     <tr *ngFor="let rec1 of loop(rec.entryRow); let p = index;">
                                                                         <td>
-                                                                         {{p+1}}.<input type="text" (keyup)="updateInput1($event,k,p)" [ngStyle]="{'width':'90%','margin-left': '15px'}">
+                                                                         {{p+1}}.<input type="text" (keyup)="updateInput1($event,k,p)" [ngModelOptions]="{standalone: true}" [(ngModel)]="subInput1[k][p]['title']" [ngStyle]="{'width':'90%','margin-left': '15px'}">
                                                                         </td>
                                                                         <td>
                                                                         <mat-radio-group name="knowledge_sub_c1experienced_{{p}}" [(ngModel)]="subInput1[k][p]['checked']" [ngModelOptions]="{standalone: true}">

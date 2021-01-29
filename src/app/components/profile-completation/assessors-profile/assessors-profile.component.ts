@@ -916,7 +916,7 @@ updateInput1(theEvt: any, parent: number, inner: number){
     let freetextInput1: boolean = false;
     let freefieldInput: boolean = false;
     console.log("@Form submit: ", ngForm4.form.valid);
-    console.log(this.subInput, " :: ", this.subField);
+    console.log(this.subInput, " :: ", this.subInput1, this.subField, " == ");
 
     //subinput
     for(let k in this.subInput){
@@ -931,7 +931,7 @@ updateInput1(theEvt: any, parent: number, inner: number){
     for(let k in this.subInput1){
       if(typeof this.subInput1[k] === 'object'){
         for(let p in this.subInput1[k]){
-          if(typeof this.subInput1[k][p] === 'object' && this.subInput1[k][p]['title'] != '' && this.subInput[k][p]['checked'] != ''){
+          if(typeof this.subInput1[k][p] === 'object' && this.subInput1[k][p]['title'] != '' && this.subInput1[k][p]['checked'] != ''){
             freetextInput1 = true;
           }
         }
@@ -940,7 +940,7 @@ updateInput1(theEvt: any, parent: number, inner: number){
     //subfield
     for(let k in this.subField){
       if(typeof this.subField[k] === 'object'){
-          if(typeof this.subField[k] === 'object' && this.subField[k]['title'] != '' && this.subInput[k]['checked'] != ''){
+          if(typeof this.subField[k] === 'object' && this.subField[k]['title'] != '' && this.subField[k]['checked'] != ''){
             freefieldInput = true;
           }
       }
