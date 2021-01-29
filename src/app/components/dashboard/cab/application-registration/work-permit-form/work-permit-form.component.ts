@@ -1027,10 +1027,10 @@ export class WorkPermitFormComponent implements OnInit {
     // }else{
     if(this.voucherSentData['payment_date'] != undefined){
       var nFdate = new Date(this.voucherSentData['payment_date']);
-      var nMonth = nFdate.getMonth() + 1;
+      var nMonth = nFdate.getMonth() + 1; 
       var nDate = nFdate.getDate();
       var nYear = nFdate.getFullYear();
-      dtFormat = nYear + "-" + nMonth + "-" + nDate;
+      dtFormat = nYear + "-" + nMonth + "-" + nDate;  
     }
       this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
       this.voucherFile.append('amount',this.voucherSentData['amount']); 
