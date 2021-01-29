@@ -15,7 +15,7 @@
 
                 <ng-container>
                     <div class="row user_main">
-                        <div class="col-md-12">
+                        <div class="col-md-12"> 
                             <div class="user-steps user-small">
                                 <ng-container *ngFor="let item of headerSteps; let k=index;">
                                     <div class="user-next" [ngClass]="(item.activeClass != '') ? item.activeClass : ''">
@@ -903,7 +903,7 @@
                                     <div class="row">
                                         <div class="col-md-12 p-0">
                                             <div class="form-subhdr">
-                                                <h5>#KNOWLEDGE AND EXPERIENCE</h5>
+                                                <h5>KNOWLEDGE AND EXPERIENCE</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -932,7 +932,6 @@
                                         <div class="row" *ngIf="isdDynamicsopenClose == row.id">
                                             <div class="col-md-12">
                                                 <div class="table-content-health">
-                                                    {{row.id}}
                                                     <!-- Years of Experience -->
                                                     <table>
                                                         <tr>
@@ -982,7 +981,6 @@
                                         <div class="row" *ngIf="isdDynamicsopenClose == item.id">
                                             <div class="col-md-12">
                                                 <div class="table-content-health" [ngStyle]="{'overflow':'hidden'}">
-                                             
                                                     <ng-container *ngIf="!item.isChild">
                                                             <table>
                                                                 <tr>
@@ -991,43 +989,42 @@
                                                                 </tr>
                                                                 <tr *ngFor="let rec of loop(item.technicalFields[0].entryRow); let i = index;">
                                                                     <td>
-                                                                        <!-- @{{subField[i]['title'] | json}} -->
                                                                      {{i+1}}.<input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="subField[i]['title']" [ngStyle]="{'width':'90%','margin-left': '15px'}">
+                                                                     <!-- @ {{subField | json}} -->
                                                                     </td>
                                                                     <td>
-                                                                    <mat-radio-group name="knowledge_sub_experienced_{{i}}">
-                                                                        <div class="desc-content-prof">
-                                                                            <mat-radio-button value="1">From 5-10 Years</mat-radio-button>
-                                                                            <mat-radio-button value="2">From 11-15 Years</mat-radio-button>
-                                                                            <mat-radio-button value="3">Above 16 Years</mat-radio-button>
+                                                                    <mat-radio-group name="knowledge_experienced_check{{i}}" [(ngModel)]="subField[i]['checked']" [ngModelOptions]="{standalone: true}">
+                                                                        <div class="desc-content-prof" >
+                                                                            <mat-radio-button value="1" (click)="checkInput(i)">From 5-10 Years</mat-radio-button>
+                                                                            <mat-radio-button value="2" (click)="checkInput(i)">From 11-15 Years</mat-radio-button>
+                                                                            <mat-radio-button value="3" (click)="checkInput(i)">Above 16 Years</mat-radio-button>
                                                                         </div>
                                                                     </mat-radio-group>
                                                                     </td>
                                                                 </tr>                                                        
                                                             </table>
                                                     </ng-container>
-                                                    <ng-container *ngIf="item.isChild">
+
+                                                    <ng-container *ngIf="item.isChild == true && item.isLabel == 'reference'">
                                                         <ng-container *ngFor="let rec of item.technicalFields; let k = index;">
                                                             <div class="table-content-health" [ngStyle]="{'overflow':'hidden'}">
                                                                 <div class="form-subhdr"><h5>{{rec.subTitle}}</h5></div>
+                                                                <!-- -->
                                                                 <table>
                                                                     <tr>
                                                                         <th>Field</th>
                                                                         <th>Scoring</th>
-                                                                    </tr>                                                                
+                                                                    </tr>                                                                    
                                                                     <tr *ngFor="let rec1 of loop(rec.entryRow); let p = index;">
                                                                         <td>
-                                                                            <!-- @{{k}} == {{p}}
-                                                                            #{{subInput | json}} -->
-                                                                         {{p+1}}.<input type="text" [ngModelOptions]="{standalone: true}" 
-                                                                         [(ngModel)]="subInput[k][p].title" [ngStyle]="{'width':'90%','margin-left': '15px'}">
+                                                                         {{p+1}}.<input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="subInput[k][p]['title']" (keyup)="updateInput($event,k,p)" [ngStyle]="{'width':'90%','margin-left': '15px'}">
                                                                         </td>
                                                                         <td>
-                                                                        <mat-radio-group name="knowledge_sub_cexperienced_{{p}}">
+                                                                        <mat-radio-group name="knowledge_sub_cexperienced_{{p}}" [(ngModel)]="subInput[k][p]['checked']" [ngModelOptions]="{standalone: true}">
                                                                             <div class="desc-content-prof">
-                                                                                <mat-radio-button value="1">From 5-10 Years</mat-radio-button>
-                                                                                <mat-radio-button value="2">From 11-15 Years</mat-radio-button>
-                                                                                <mat-radio-button value="3">Above 16 Years</mat-radio-button>
+                                                                                <mat-radio-button value="1" (click)="checkInputSub(k,p)">From 5-10 Years</mat-radio-button>
+                                                                                <mat-radio-button value="2" (click)="checkInputSub(k,p)">From 11-15 Years</mat-radio-button>
+                                                                                <mat-radio-button value="3" (click)="checkInputSub(k,p)">Above 16 Years</mat-radio-button>
                                                                             </div>
                                                                         </mat-radio-group>
                                                                         </td>
@@ -1036,6 +1033,34 @@
                                                             </div>
                                                         </ng-container>                                                            
                                                     </ng-container>
+                                                    <ng-container *ngIf="item.isChild == true && item.isLabel == 'validation'">
+                                                        <ng-container *ngFor="let rec of item.technicalFields; let k = index;">
+                                                            <div class="table-content-health" [ngStyle]="{'overflow':'hidden'}">
+                                                                <div class="form-subhdr"><h5>{{rec.subTitle}}</h5></div>
+                                                                <table>
+                                                                    <tr>
+                                                                        <th>Field</th>
+                                                                        <th>Scoring</th>
+                                                                    </tr>                                                                    
+                                                                    <tr *ngFor="let rec1 of loop(rec.entryRow); let p = index;">
+                                                                        <td>
+                                                                         {{p+1}}.<input type="text" (keyup)="updateInput1($event,k,p)" [ngStyle]="{'width':'90%','margin-left': '15px'}">
+                                                                        </td>
+                                                                        <td>
+                                                                        <mat-radio-group name="knowledge_sub_c1experienced_{{p}}" [(ngModel)]="subInput1[k][p]['checked']" [ngModelOptions]="{standalone: true}">
+                                                                            <div class="desc-content-prof">
+                                                                                <mat-radio-button value="1" (click)="checkInputSub1(k,p)">From 5-10 Years</mat-radio-button>
+                                                                                <mat-radio-button value="2" (click)="checkInputSub1(k,p)">From 11-15 Years</mat-radio-button>
+                                                                                <mat-radio-button value="3" (click)="checkInputSub1(k,p)">Above 16 Years</mat-radio-button>
+                                                                            </div>
+                                                                        </mat-radio-group>
+                                                                        </td>
+                                                                    </tr>                                                        
+                                                                </table>
+                                                            </div>
+                                                        </ng-container>                                                            
+                                                    </ng-container>
+
                                                 </div>
                                             </div>
                                         </div>

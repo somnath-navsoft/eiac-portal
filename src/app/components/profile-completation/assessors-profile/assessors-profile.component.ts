@@ -70,8 +70,9 @@ export class AssessorsProfileComponent implements OnInit {
   modalOptions:NgbModalOptions;
   closeResult: string;
 
-  subField: any = {};
+  subField: any = {}; 
   subInput: any = {};
+  subInput1: any = {};
   
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -84,6 +85,57 @@ export class AssessorsProfileComponent implements OnInit {
     return new Array(i);
 }
 
+checkInput(index: number){
+    if(index != null){
+      let input: any = this.subField[index]['title'];
+      console.log(">> get input: ", input);
+      if(input == '' || input == undefined || input == null){
+          this.toastr.warning("Please add input in field",'', {timeOut:1000})
+          return false;
+      }
+    }
+}
+checkInputSub(parent: number, inner: number){
+  if(parent != null && inner != null){
+    let input: any = this.subInput[parent][inner]['title'];
+    console.log("@ get input: ", input);
+    if(input == '' || input == undefined || input == null){
+        this.toastr.warning("Please add input in field",'', {timeOut:1000})
+        return false;
+    }
+  }
+}
+checkInputSub1(parent: number, inner: number){
+  if(parent != null && inner != null){
+    let input: any = this.subInput1[parent][inner]['title'];
+    console.log("@ get input: ", input);
+    if(input == '' || input == undefined || input == null){
+        this.toastr.warning("Please add input in field",'', {timeOut:1000})
+        return false;
+    }
+  }
+}
+
+updateInput(theEvt: any, parent: number, inner: number){
+    let inpValue: string;
+    inpValue = theEvt.target.value;
+    console.log("@Input: ", inpValue, " -- ", this.subInput[parent], " :: ", this.subInput[parent][inner]);
+    if(this.subInput[parent][inner] != null && this.subInput[parent][inner]['title'] != null){
+      this.subInput[parent][inner]['title'] = inpValue;
+        console.log("@value assign....");
+    }
+}
+updateInput1(theEvt: any, parent: number, inner: number){
+  let inpValue: string;
+  inpValue = theEvt.target.value;
+  console.log("@Input: ", inpValue, " -- ", this.subInput1[parent], " :: ", this.subInput1[parent][inner]);
+  if(this.subInput1[parent][inner] != null && this.subInput1[parent][inner]['title'] != null){
+    this.subInput1[parent][inner]['title'] = inpValue;
+      console.log("@value assign....");
+  }
+}
+
+
   ngOnInit() {
     this.userEmail = sessionStorage.getItem('email');
     this.userType = sessionStorage.getItem('type');
@@ -95,12 +147,22 @@ export class AssessorsProfileComponent implements OnInit {
     for(let i=0; i<8; i++){
       this.subField[i] = {};
       this.subField[i]['title'] = '';
+      this.subField[i]['checked'] = '';
     }
-    for(let i=0; i<1; i++){
+    for(let i=0; i<4; i++){
       this.subInput[i] = {};
-      for(let k=i; k<4; k++){
+      for(let k=0; k<4; k++){
         this.subInput[i][k] = {};
         this.subInput[i][k]['title'] = '';
+        this.subInput[i][k]['checked'] = '';
+      }
+    }
+    for(let i=0; i<4; i++){
+      this.subInput1[i] = {};
+      for(let k=0; k<4; k++){
+        this.subInput1[i][k] = {};
+        this.subInput1[i][k]['title'] = '';
+        this.subInput1[i][k]['checked'] = '';
       }
     }
 
@@ -148,6 +210,7 @@ export class AssessorsProfileComponent implements OnInit {
       title: 'Reference Material Producers',
       id: 101,
       isChild: true,
+      isLabel: 'reference',
       technicalFields: [
         {
           subTitle: 'Testing',
@@ -175,6 +238,7 @@ export class AssessorsProfileComponent implements OnInit {
       title: 'Validation and Verification Bodies',
       id: 102,
       isChild: true,
+      isLabel: 'validation',
       technicalFields: [
         {
           subTitle: 'Testing',
@@ -848,7 +912,41 @@ export class AssessorsProfileComponent implements OnInit {
   onSubmitStep4(ngForm4:any) {
     // //console.log(this.schemeSlideData,'schemeSlideData');
     // schemeMainData
-    if(ngForm4.form.valid) {
+    let freetextInput: boolean = false;
+    let freetextInput1: boolean = false;
+    let freefieldInput: boolean = false;
+    console.log("@Form submit: ", ngForm4.form.valid);
+    console.log(this.subInput, " :: ", this.subField);
+
+    //subinput
+    for(let k in this.subInput){
+        if(typeof this.subInput[k] === 'object'){
+          for(let p in this.subInput[k]){
+            if(typeof this.subInput[k][p] === 'object' && this.subInput[k][p]['title'] != '' && this.subInput[k][p]['checked'] != ''){
+              freetextInput = true;
+            }
+          }
+        }
+    }
+    for(let k in this.subInput1){
+      if(typeof this.subInput1[k] === 'object'){
+        for(let p in this.subInput1[k]){
+          if(typeof this.subInput1[k][p] === 'object' && this.subInput1[k][p]['title'] != '' && this.subInput[k][p]['checked'] != ''){
+            freetextInput1 = true;
+          }
+        }
+      }
+  }
+    //subfield
+    for(let k in this.subField){
+      if(typeof this.subField[k] === 'object'){
+          if(typeof this.subField[k] === 'object' && this.subField[k]['title'] != '' && this.subInput[k]['checked'] != ''){
+            freefieldInput = true;
+          }
+      }
+    }
+    //return;
+    if(ngForm4.form.valid && freetextInput && freefieldInput && freetextInput1) {
 
         this.assessorsProfile = {};
         this.assessorsProfile.step4 = {};
