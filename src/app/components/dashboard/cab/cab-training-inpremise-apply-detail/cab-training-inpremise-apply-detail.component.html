@@ -27,13 +27,14 @@
                                     [title] = "trainingDetails.course[0].new_custom_course.name">
                                 </div> -->
 
-                                <ng-container *ngIf="trainingDetails.courseDetails?.course_type != '' && trainingDetails.courseDetails?.course_type != null">
+                                <!-- {{trainingDetails.courseDetails | json}} -->
+                                <ng-container *ngIf="trainingDetails?.courseDetails?.course_type != '' && trainingDetails?.courseDetails?.course_type != null">
                                     <div class="description-course">
-                                        <img src="{{_constant.mediaPath}}{{trainingDetails.courseDetails.course_type.course_type_img_thumb}}" [alt]="trainingDetails.courseDetails.course"
-                                        [title]="trainingDetails.courseDetails.course">                                   
+                                        <img src="{{_constant.mediaPath}}{{trainingDetails?.courseDetails?.course_type.course_type_img_thumb}}" [alt]="trainingDetails?.courseDetails?.course"
+                                        [title]="trainingDetails?.courseDetails?.course">                                   
                                     </div>
                                 </ng-container>
-                                <ng-container *ngIf="trainingDetails.courseDetails.course_type == '' || trainingDetails.courseDetails.course_type == null">
+                                <ng-container *ngIf="trainingDetails?.courseDetails?.course_type == '' || trainingDetails?.courseDetails?.course_type == null">
                                     <div class="description-course">
                                         <h3 [ngStyle]="{'text-align': 'center'}">No Image</h3>
                                     </div>
