@@ -256,7 +256,6 @@ export class CertificationRecordsComponent implements OnInit {
     }
   }
 
-
   filterSearchSec(){
     this.advSearch = !this.advSearch
     this.filterSearchReset();
