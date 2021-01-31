@@ -20,8 +20,8 @@ export class SidebarComponent implements OnInit {
               private _router: Router) { }
 
   ngOnInit() {
-    this.userEmail = sessionStorage.getItem('email');
-    this.userType = sessionStorage.getItem('type');
+    this.userEmail = localStorage.getItem('email');
+    this.userType = localStorage.getItem('type');
     this._service.getUserType();
     // this.userType = this._constants.logType;
    

@@ -20,7 +20,7 @@ export class CabTrainingInpremiseDetailComponent implements OnInit {
   constructor(public _service: AppService, public _constant:Constants, public _trainerService: TrainerService) { }
 
   ngOnInit() {
-    this.routeId = sessionStorage.getItem('inpremiseCourseId');
+    this.routeId = localStorage.getItem('inpremiseCourseId');
     this.loadData();
   }
 

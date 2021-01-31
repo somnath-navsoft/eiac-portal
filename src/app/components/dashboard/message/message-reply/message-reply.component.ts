@@ -34,11 +34,11 @@ export class MessageReplyComponent implements OnInit {
 
     this.replyMessageId = this.router.url.toString().split('/')[3];
     this.loader = false;
-    this.userType = sessionStorage.getItem('type');
-    this.userEmail = sessionStorage.getItem('email');
-    this.userType = sessionStorage.getItem('type');
-    this.userId = sessionStorage.getItem('userId');
-    this.userDetails =JSON.parse(sessionStorage.getItem('messageUserDetails'));
+    this.userType = localStorage.getItem('type');
+    this.userEmail = localStorage.getItem('email');
+    this.userType = localStorage.getItem('type');
+    this.userId = localStorage.getItem('userId');
+    this.userDetails =JSON.parse(localStorage.getItem('messageUserDetails'));
     console.log(this.userDetails);
     
     this.getMessage();

@@ -214,7 +214,7 @@ export class OperationsDashboardComponent implements OnInit {
     }
     let selDept: any = this.selectDepartment;
     //console.log(">>>dept...", selDept);
-    sessionStorage.setItem("io_dept", selDept); 
+    localStorage.setItem("io_dept", selDept); 
     this.router.navigateByUrl('/dashboard/operations/scheme-list')
   }
 
@@ -225,7 +225,7 @@ export class OperationsDashboardComponent implements OnInit {
     }
     let selDept: any = this.selectDepartment;
     //console.log(">>>dept...", selDept);
-    sessionStorage.setItem("io_dept", selDept); 
+    localStorage.setItem("io_dept", selDept); 
     this.router.navigateByUrl('/dashboard/operations/service-enquiries-list')
   }
 
@@ -408,13 +408,13 @@ export class OperationsDashboardComponent implements OnInit {
       { field: 'Assessor', value: 'Assessor' },
       { field: 'Super Admin', value: 'Super Admin' }
     ];
-    this.userType = sessionStorage.getItem('type');
-    this.userEmail = sessionStorage.getItem('email');
-    this.userId = sessionStorage.getItem('userId');
+    this.userType = localStorage.getItem('type');
+    this.userEmail = localStorage.getItem('email');
+    this.userId = localStorage.getItem('userId');
 
 
-    // if(sessionStorage.getItem("io_dept") != '' && sessionStorage.getItem("io_dept") != undefined){
-    //     this.selectDepartment = sessionStorage.getItem("io_dept").toString();
+    // if(localStorage.getItem("io_dept") != '' && localStorage.getItem("io_dept") != undefined){
+    //     this.selectDepartment = localStorage.getItem("io_dept").toString();
     //     this.changeDepartmentView(this.selectDepartment);
     // }
 
@@ -505,7 +505,7 @@ export class OperationsDashboardComponent implements OnInit {
   }
 
   getRouteId(routeId) {
-    sessionStorage.setItem('routeId', routeId);
+    localStorage.setItem('routeId', routeId);
   }
 
   validateFile(fileEvent: any) {
@@ -604,7 +604,7 @@ export class OperationsDashboardComponent implements OnInit {
   }
 
   getUserDetails(user) {
-    sessionStorage.setItem('messageUserDetails', JSON.stringify(user));
+    localStorage.setItem('messageUserDetails', JSON.stringify(user));
   }
 
   add(event: MatChipInputEvent): void {

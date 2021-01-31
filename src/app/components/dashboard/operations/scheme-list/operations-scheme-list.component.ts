@@ -26,8 +26,8 @@ export class SchemeListOperationsComponent implements OnInit {
   loadPageData() { 
     this.loader = false;
     let departmetnId: any = '';
-    if(sessionStorage.getItem('io_dept') != null && sessionStorage.getItem('io_dept') != ''){
-      departmetnId = sessionStorage.getItem('io_dept');
+    if(localStorage.getItem('io_dept') != null && localStorage.getItem('io_dept') != ''){
+      departmetnId = localStorage.getItem('io_dept');
     }
     let getURL: string = this._service.apiServerUrl + "/" + 'io-dashboard/?department_type=' + departmetnId;
     console.log("@URL: ", getURL);

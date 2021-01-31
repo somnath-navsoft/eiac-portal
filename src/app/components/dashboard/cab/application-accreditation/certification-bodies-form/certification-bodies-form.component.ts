@@ -318,11 +318,11 @@ ngOnInit() {
   this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');
   this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Document%20review%20Checklist-%20ISO%2017020-%202012_Inspection%20Bodies.pdf');
   this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
-  this.userEmail = sessionStorage.getItem('email');
-  this.userType = sessionStorage.getItem('type');
-  this.isCompleteness = sessionStorage.getItem('isCompleteness');
-  this.profileComplete = sessionStorage.getItem('profileComplete'); 
-  this.userId = sessionStorage.getItem('userId');
+  this.userEmail = localStorage.getItem('email');
+  this.userType = localStorage.getItem('type');
+  this.isCompleteness = localStorage.getItem('isCompleteness');
+  this.profileComplete = localStorage.getItem('profileComplete'); 
+  this.userId = localStorage.getItem('userId');
 
   this.headerSteps.push(
     {
@@ -1751,7 +1751,7 @@ savedraftStep(stepCount) {
     this.certificationBodiesForm = {};
     this.certificationBodiesForm.step2 = {};
     // this.step3Data = {};
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     // this.step3Data.application_id = applicationId;
     this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step2Data.is_draft = true;
@@ -1822,7 +1822,7 @@ savedraftStep(stepCount) {
     this.certificationBodiesForm.step4 = {};
     this.certificationBodiesForm.email = this.userEmail;
     this.certificationBodiesForm.userType = this.userType;
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step4Data.is_prelim_visit = this.step4Data.is_prelim_visit_val == 0 ? false : true;
     this.step4Data.is_draft = true;
@@ -1851,7 +1851,7 @@ savedraftStep(stepCount) {
     this.certificationBodiesForm.step5 = {};
     this.certificationBodiesForm.email = this.userEmail;
     this.certificationBodiesForm.userType = this.userType;
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step5Data.authorization_list_json = this.authorizationList;
     //this.step5Data.recommend = this.recommend;
@@ -2010,7 +2010,7 @@ onSubmitStep1(ngForm1: any){
         let data: any =res;
         if(res['status'] == true) {
           // this.toastr.success(res['msg'], '');
-          this.formApplicationId =  this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
+          this.formApplicationId =  this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : localStorage.setItem('applicationId',res['application_id']);
           if(data.application_id != undefined && data.application_id > 0){
             this.formApplicationId = data.application_id;
             ////console.log(this.formApplicationId,'App id assigned')
@@ -2028,7 +2028,7 @@ onSubmitStep1(ngForm1: any){
 onSubmitStep2(ngForm2: any){
   // this.Service.moveSteps('scope_accreditation', 'perlim_visit', this.headerSteps);
   if(ngForm2.form.valid) {
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     // this.step3Data.application_id = applicationId;
     
     this.certificationBodiesForm = {};
@@ -2267,7 +2267,7 @@ this.subTypeRows = [{}];
         //saving
         this.certificationBodiesForm = {};
         this.certificationBodiesForm.step3 = {};  
-        var applicationId = sessionStorage.getItem('applicationId');
+        var applicationId = localStorage.getItem('applicationId');
         this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
         this.certificationBodiesForm.step3 = this.step3Data;
         this.certificationBodiesForm.step3['otherActivityLocations'] = [];
@@ -2649,7 +2649,7 @@ onSubmitStep3(ngForm: any, type?:any, rowInd?: any, typeScopeId?: number) {
   //console.log(">>>Enter....1:  ", type)
   this.certificationBodiesForm = {};
   this.certificationBodiesForm.step3 = {};  
-  var applicationId = sessionStorage.getItem('applicationId');
+  var applicationId = localStorage.getItem('applicationId');
   this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
   //this.certificationBodiesForm.step5.application_id = this.formApplicationId;
   this.certificationBodiesForm.step3 = this.step3Data;
@@ -2812,7 +2812,7 @@ onSubmitStep4(ngForm4: any){
     this.certificationBodiesForm.saved_step = '4';
     this.certificationBodiesForm.email = this.userEmail;
     this.certificationBodiesForm.userType = this.userType;
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step4Data.is_prelim_visit = this.step4Data.is_prelim_visit_val == 0 ? false : true;
     this.step4Data.is_draft = false;
@@ -2929,7 +2929,7 @@ if(ngForm5.form.valid && this.authorizationStatus == true && recomCheckCount >0)
   this.certificationBodiesForm.step5 = {};
   this.certificationBodiesForm.email = this.userEmail;
   this.certificationBodiesForm.userType = this.userType;
-  var applicationId = sessionStorage.getItem('applicationId');
+  var applicationId = localStorage.getItem('applicationId');
   this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
   this.certificationBodiesForm.saved_step = '5';
   this.step5Data.authorization_list_json = this.authorizationList;

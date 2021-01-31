@@ -69,9 +69,9 @@ export class MessageComponent implements OnInit {
       { field: 'Assessor', value: 'Assessor' },
       { field: 'Super Admin', value: 'Super Admin' }
     ];
-    this.userType = sessionStorage.getItem('type');
-    this.userEmail = sessionStorage.getItem('email');
-    this.userId = sessionStorage.getItem('userId');
+    this.userType = localStorage.getItem('type');
+    this.userEmail = localStorage.getItem('email');
+    this.userId = localStorage.getItem('userId');
 
     if (this.userType != 'operations') {
       var landUrl = '/dashboard' + this.userType + '/home'
@@ -171,7 +171,7 @@ export class MessageComponent implements OnInit {
   }
 
   getRouteId(routeId) {
-    sessionStorage.setItem('routeId', routeId);
+    localStorage.setItem('routeId', routeId);
   }
 
 
@@ -269,7 +269,7 @@ export class MessageComponent implements OnInit {
   }
 
   getUserDetails(user) {
-    sessionStorage.setItem('messageUserDetails', JSON.stringify(user));
+    localStorage.setItem('messageUserDetails', JSON.stringify(user));
   }
 
   add(event: MatChipInputEvent): void {

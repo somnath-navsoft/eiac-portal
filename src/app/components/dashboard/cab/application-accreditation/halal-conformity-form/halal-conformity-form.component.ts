@@ -323,11 +323,11 @@ export class HalalConformityFormComponent implements OnInit {
     
     this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/checklists/Document%20Review%20Checklist%20Halal%20Certification%20UAE.S%202055-2.pdf');
     this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
-    this.userEmail = sessionStorage.getItem('email');
-    this.userType = sessionStorage.getItem('type');
-    this.isCompleteness = sessionStorage.getItem('isCompleteness');
-    this.profileComplete = sessionStorage.getItem('profileComplete'); 
-    this.userId = sessionStorage.getItem('userId');
+    this.userEmail = localStorage.getItem('email');
+    this.userType = localStorage.getItem('type');
+    this.isCompleteness = localStorage.getItem('isCompleteness');
+    this.profileComplete = localStorage.getItem('profileComplete'); 
+    this.userId = localStorage.getItem('userId');
 
     var d = new Date();
     var yr = d.getFullYear();
@@ -994,7 +994,7 @@ addSchemeRow(obj: any = [],index: number){
      //save to server at time 
           this.publicHalalConformityForm = {};
           this.publicHalalConformityForm.step3 = {};  
-          var applicationId = sessionStorage.getItem('applicationId');
+          var applicationId = localStorage.getItem('applicationId');
           this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
           this.publicHalalConformityForm.saved_step = 3;
           this.step3Data['scopeDetails']  = this.editScopeData;
@@ -2466,7 +2466,7 @@ addSchemeRow(obj: any = [],index: number){
       this.publicHalalConformityForm.email = this.userEmail;
       this.publicHalalConformityForm.userType = this.userType;
       this.publicHalalConformityForm.saved_step = '2';
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       
@@ -2528,7 +2528,7 @@ addSchemeRow(obj: any = [],index: number){
       this.publicHalalConformityForm.email = this.userEmail;
       this.publicHalalConformityForm.userType = this.userType;
       this.publicHalalConformityForm.saved_step = '4';
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       
@@ -2565,7 +2565,7 @@ addSchemeRow(obj: any = [],index: number){
       this.publicHalalConformityForm.step5 = {};
       this.publicHalalConformityForm.email = this.userEmail;
       this.publicHalalConformityForm.userType = this.userType;
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step5Data.is_prelim_visit = this.step5Data.prelim_visit_val == 0 ? false : true;
       if(!this.step5Data.is_prelim_visit){
@@ -2598,7 +2598,7 @@ addSchemeRow(obj: any = [],index: number){
         this.publicHalalConformityForm.step6 = {};
         this.publicHalalConformityForm.email = this.userEmail;
         this.publicHalalConformityForm.userType = this.userType;
-        var applicationId = sessionStorage.getItem('applicationId');
+        var applicationId = localStorage.getItem('applicationId');
         this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
         this.publicHalalConformityForm.saved_step = '6';
         // this.step6Data.authorizationList = this.authorizationList;
@@ -2758,7 +2758,7 @@ addSchemeRow(obj: any = [],index: number){
           let data: any =res;
           if(res['status'] == true) {
             // this.toastr.success(res['msg'], '');
-            this.formApplicationId =  this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
+            this.formApplicationId =  this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : localStorage.setItem('applicationId',res['application_id']);
             if(data.application_id != undefined && data.application_id > 0){
               this.formApplicationId = data.application_id;
               ////console.log(this.formApplicationId,'App id assigned')
@@ -2776,7 +2776,7 @@ addSchemeRow(obj: any = [],index: number){
   onSubmitStep2(ngForm2: any){
     //this.Service.moveSteps('personal_information','scope_accreditation',  this.headerSteps);
     if(ngForm2.form.valid) {
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       // this.step3Data.application_id = applicationId;
       
       this.publicHalalConformityForm = {};
@@ -2953,7 +2953,7 @@ addSchemeRow(obj: any = [],index: number){
           //saving
           this.publicHalalConformityForm = {};
           this.publicHalalConformityForm.step3 = {};  
-          var applicationId = sessionStorage.getItem('applicationId');
+          var applicationId = localStorage.getItem('applicationId');
           this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
           this.publicHalalConformityForm.step3 = this.step3Data;
          // this.publicHalalConformityForm.step3['otherActivityLocations'] = [];
@@ -2988,7 +2988,7 @@ addSchemeRow(obj: any = [],index: number){
         }else{
           this.publicHalalConformityForm = {};
           this.publicHalalConformityForm.step3 = {};  
-          var applicationId = sessionStorage.getItem('applicationId');
+          var applicationId = localStorage.getItem('applicationId');
           this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
           this.step3Data['scopeDetails'] = {};
           this.publicHalalConformityForm.step3 = this.step3Data;
@@ -3350,7 +3350,7 @@ getMatchScheme(scId: any, scopeData: any){
     //console.log(">>>Enter....1:  ", type)
     this.publicHalalConformityForm = {};
     this.publicHalalConformityForm.step3 = {};  
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     //this.publicHalalConformityForm.step5.application_id = this.formApplicationId;
     //alert(">>>> calling.....1");
@@ -3543,7 +3543,7 @@ getMatchScheme(scId: any, scopeData: any){
       this.publicHalalConformityForm.saved_step = '4';
       this.publicHalalConformityForm.email = this.userEmail;
       this.publicHalalConformityForm.userType = this.userType;
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step4Data.is_draft = false;
       this.publicHalalConformityForm.step4 = this.step4Data;
@@ -3587,7 +3587,7 @@ getMatchScheme(scId: any, scopeData: any){
       this.publicHalalConformityForm.saved_step = '5';
       this.publicHalalConformityForm.email = this.userEmail;
       this.publicHalalConformityForm.userType = this.userType;
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step5Data.is_prelim_visit = this.step5Data.prelim_visit_val == 0 ? false : true;
       console.log("vaue: ", this.step5Data.is_prelim_visit, " -- ", this.step5Data.prelim_visit_val);
@@ -3658,7 +3658,7 @@ getMatchScheme(scId: any, scopeData: any){
     this.publicHalalConformityForm.step6 = {};
     this.publicHalalConformityForm.email = this.userEmail;
     this.publicHalalConformityForm.userType = this.userType;
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.publicHalalConformityForm.saved_step = '6';
     this.publicHalalConformityForm.step6.terms1 = this.authorizationListTerms1;

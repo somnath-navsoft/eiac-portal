@@ -77,7 +77,7 @@ export class ApplicationAccreditationComponent implements OnInit {
       { name: 'keywords', content: 'Eiac, Portal, Test, Rest' },      
     );
     this.loadService();
-    this.userType = sessionStorage.getItem('type');
+    this.userType = localStorage.getItem('type');
 
     this.curSortDir['id']                 = false;
     this.curSortDir['created_date']       = false;
@@ -93,10 +93,10 @@ export class ApplicationAccreditationComponent implements OnInit {
 
   checkIBId(id: any){
     console.log("resetting...id...1");
-    let getId = sessionStorage.getItem('ibUrlId');
+    let getId = localStorage.getItem('ibUrlId');
     if(getId != undefined && getId != ''){
       console.log("resetting...id...2");
-      sessionStorage.setItem('ibUrlId', '');
+      localStorage.setItem('ibUrlId', '');
     }
   }
 
@@ -324,7 +324,7 @@ export class ApplicationAccreditationComponent implements OnInit {
   }
 
   getRouteId(routeId) {
-    // sessionStorage.setItem('routeId',routeId);
+    // localStorage.setItem('routeId',routeId);
   }
 
   sortedList(data: any, sortBy: string, sortDir: boolean){

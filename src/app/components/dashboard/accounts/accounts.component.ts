@@ -54,7 +54,7 @@ export class AccountsComponent implements OnInit {
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent,public router: Router) { }
 
   ngOnInit() {
-    this.userType = sessionStorage.getItem('type');
+    this.userType = localStorage.getItem('type');
     // if(this.userType != 'cab_client' || this.userType != 'operations' || this.userType != 'candidate'){
     //   this.router.navigateByUrl('/dashboard'+this.userType'/cab_client/home');
     // }

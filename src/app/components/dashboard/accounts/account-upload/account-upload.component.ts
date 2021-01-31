@@ -44,10 +44,10 @@ export class AccountUploadComponent implements OnInit {
   }  
 
   ngOnInit() {
-    this.accountUploadId = sessionStorage.getItem('accountUploadId');
+    this.accountUploadId = localStorage.getItem('accountUploadId');
     let appID: any = this.accountUploadId;
-    this.userEmail = sessionStorage.getItem('email');
-    this.userType = sessionStorage.getItem('type');
+    this.userEmail = localStorage.getItem('email');
+    this.userType = localStorage.getItem('type');
     
     let url = this._service.apiServerUrl+"/"+'accrediation-details-show/'+appID;
     let promiseResult: any = this.getAppInfo(url);

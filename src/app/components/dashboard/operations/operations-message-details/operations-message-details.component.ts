@@ -33,12 +33,12 @@ export class OperationsMessageDetailsComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.router.url.toString().split('/')[4]);
-    this.userType = sessionStorage.getItem('type');
-    this.userEmail = sessionStorage.getItem('email');
+    this.userType = localStorage.getItem('type');
+    this.userEmail = localStorage.getItem('email');
     // this.routeId = this.route.snapshot.queryParamMap.get('id');
-    // console.log(sessionStorage.getItem('routeId'));
-    this.routeId = sessionStorage.getItem('routeId');
-    this.userType = sessionStorage.getItem('type');
+    // console.log(localStorage.getItem('routeId'));
+    this.routeId = localStorage.getItem('routeId');
+    this.userType = localStorage.getItem('type');
 
     if(this.userType != 'operations')
     {

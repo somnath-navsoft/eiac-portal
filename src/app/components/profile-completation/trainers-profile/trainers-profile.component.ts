@@ -57,11 +57,11 @@ export class TrainersProfileComponent implements OnInit {
 
   ngOnInit() {
     this.stepDefaultValue();
-    this.userEmail = sessionStorage.getItem('email');
-    this.userType = sessionStorage.getItem('type');
-    this.isCompleteness = sessionStorage.getItem('isCompleteness');
-    this.profileComplete = sessionStorage.getItem('profileComplete');
-    this.userId = sessionStorage.getItem('userId');
+    this.userEmail = localStorage.getItem('email');
+    this.userType = localStorage.getItem('type');
+    this.isCompleteness = localStorage.getItem('isCompleteness');
+    this.profileComplete = localStorage.getItem('profileComplete');
+    this.userId = localStorage.getItem('userId');
 
     this.headerSteps.push(
       {
@@ -426,7 +426,7 @@ export class TrainersProfileComponent implements OnInit {
               this.toastr.success(res['msg'], '');
               this.progressValue == 80 || this.progressValue < 100 ? this.progressValue = 100 : this.progressValue = this.progressValue ;
               this.loader = true;
-              if(sessionStorage.getItem('profileComplete') == '0') {
+              if(localStorage.getItem('profileComplete') == '0') {
                 setTimeout(()=>{
                   let elem = document.getElementById('openAppDialog');
                   //console.log("App dialog hash....", elem);

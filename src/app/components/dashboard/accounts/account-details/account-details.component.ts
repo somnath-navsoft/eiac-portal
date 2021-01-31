@@ -75,7 +75,7 @@ export class AccountDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.fileName = 'acounts.xlsx'
-    this.accountDetailId = sessionStorage.getItem('accountDetailId');
+    this.accountDetailId = localStorage.getItem('accountDetailId');
 
     this.loader = false;
     this.subscriptions.push(this._trainerService.getAccountDetails(this.accountDetailId)

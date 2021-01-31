@@ -482,9 +482,9 @@ export class AssessorsDashboardComponent implements OnInit {
   //calendar hooks
 
   ngOnInit() {
-    this.userEmail = sessionStorage.getItem('email');
-    this.userType = sessionStorage.getItem('type');
-    this.userId = sessionStorage.getItem('userId');
+    this.userEmail = localStorage.getItem('email');
+    this.userType = localStorage.getItem('type');
+    this.userId = localStorage.getItem('userId');
     // this.options = {
     //   defaultDate: new Date(),
     //   editable: false,
@@ -531,7 +531,7 @@ export class AssessorsDashboardComponent implements OnInit {
 
 
 
-    this.userId = sessionStorage.getItem('userId');
+    this.userId = localStorage.getItem('userId');
 
     this.loader = false;
     this.Service.getwithoutData(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.messageList + '?id=' + this.userId)
@@ -602,7 +602,7 @@ export class AssessorsDashboardComponent implements OnInit {
   }
 
   getUserDetails(user) {
-    sessionStorage.setItem('messageUserDetails', JSON.stringify(user));
+    localStorage.setItem('messageUserDetails', JSON.stringify(user));
   }
   eventClick(model) {
     console.log(model);

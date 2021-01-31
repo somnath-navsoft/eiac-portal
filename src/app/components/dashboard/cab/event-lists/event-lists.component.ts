@@ -53,7 +53,7 @@ export class EventListsComponent implements OnInit {
 
   ngOnInit() {
     // console.log(this.event_date);
-    this.userType = sessionStorage.getItem('type');
+    this.userType = localStorage.getItem('type');
     this.curSortDir['course']                       = false;
     this.curSortDir['audience']                       = false;    
     this.curSortDir['created_date']             = false;

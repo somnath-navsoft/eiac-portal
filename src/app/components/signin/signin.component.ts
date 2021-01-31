@@ -184,13 +184,13 @@ checkStrongPasswordType(type: string){
   createLogin(){
     ////console.log("Login creating....");
     //Check remeber status action
-    sessionStorage.removeItem('email');
-    sessionStorage.removeItem('password');
-    sessionStorage.removeItem('RememberMe');
+    localStorage.removeItem('email');
+    localStorage.removeItem('password');
+    localStorage.removeItem('RememberMe');
     if(this.checkRemember){
-      sessionStorage.setItem('email', this.signin.get('email').value);
-      sessionStorage.setItem('password', this.changePasswordForm.password);
-      sessionStorage.setItem('RememberMe',JSON.stringify(this.checkRemember));
+      localStorage.setItem('email', this.signin.get('email').value);
+      localStorage.setItem('password', this.changePasswordForm.password);
+      localStorage.setItem('RememberMe',JSON.stringify(this.checkRemember));
     }
     //Check remeber status action
     if(this.isValid()){
@@ -218,18 +218,18 @@ checkStrongPasswordType(type: string){
     this.changePasswordForm.passwordStrength['password'] = {};
     //////console.log("@@@@role...");
     //Check previous remeber me 
-    if(sessionStorage.getItem('email') != null && sessionStorage.getItem('password') != null && 
-       sessionStorage.getItem('RememberMe') != null){
+    if(localStorage.getItem('email') != null && localStorage.getItem('password') != null && 
+       localStorage.getItem('RememberMe') != null){
          
-      let emailValue: string         = sessionStorage.getItem('email');
-      let passValue: string          = sessionStorage.getItem('password');
+      let emailValue: string         = localStorage.getItem('email');
+      let passValue: string          = localStorage.getItem('password');
       //this.userObject.email   = this.emailValue;
       //////console.log('get remember me value...', emailValue, " :: ", passValue, " -- ", this.changePasswordForm);
       this.signin.get('email').setValue(emailValue);
       this.changePasswordForm.password = passValue;
       this.checkPassword('password');
       //////console.log('get remember me value...', emailValue, " :: ", passValue, " -- ", this.changePasswordForm);
-      this.checkRemember  = JSON.parse(JSON.stringify(sessionStorage.getItem('RememberMe')));
+      this.checkRemember  = JSON.parse(JSON.stringify(localStorage.getItem('RememberMe')));
     } 
     this.authService.appErrorStack.subscribe(response => {
       ////console.log("Result Message: ", response);

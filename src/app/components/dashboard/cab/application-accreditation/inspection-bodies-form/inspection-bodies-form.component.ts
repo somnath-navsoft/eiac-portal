@@ -748,12 +748,12 @@ export class InspectionBodiesFormComponent implements OnInit {
   ngOnInit() { 
 
     //this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
-    this.urlVal = sessionStorage.getItem('ibUrlId');;
+    this.urlVal = localStorage.getItem('ibUrlId');;
     ////console.log(">>>Get URL value: ", this.urlVal);
-    this.userEmail = sessionStorage.getItem('email');
-    this.userType = sessionStorage.getItem('type');
-    this.isCompleteness = sessionStorage.getItem('isCompleteness');
-    this.profileComplete = sessionStorage.getItem('profileComplete');
+    this.userEmail = localStorage.getItem('email');
+    this.userType = localStorage.getItem('type');
+    this.isCompleteness = localStorage.getItem('isCompleteness');
+    this.profileComplete = localStorage.getItem('profileComplete');
 
     this.recomendVisit.push({
       checked: false,
@@ -776,7 +776,7 @@ export class InspectionBodiesFormComponent implements OnInit {
 
     this.loadTermsConditions();
 
-    //this.routeId = sessionStorage.getItem('routerId');
+    //this.routeId = localStorage.getItem('routerId');
     //this.routeId = this.urlVal;//this.Service.getValue() != '' ? this.Service.getValue() : '';
     //////console.log("@@router: ", this.routeId, " -- ", this.Service.setValue);
     this.step5Data.scheme_ids = [];
@@ -1343,7 +1343,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         console.log(getData,"get APP Data:");
 
         this.viewData = getData;
-        sessionStorage.setItem("userData", JSON.stringify(getData));
+        localStorage.setItem("userData", JSON.stringify(getData));
 
             var stateList =  this.Service.getState();
             var cityList =  this.Service.getCity();

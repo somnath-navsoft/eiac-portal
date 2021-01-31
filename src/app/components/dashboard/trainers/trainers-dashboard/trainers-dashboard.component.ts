@@ -285,10 +285,10 @@ export class TrainersDashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userId = sessionStorage.getItem('userId');
-    this.userEmail = sessionStorage.getItem('email');
-    this.userType = sessionStorage.getItem('type');
-    this.userId = sessionStorage.getItem('userId');
+    this.userId = localStorage.getItem('userId');
+    this.userEmail = localStorage.getItem('email');
+    this.userType = localStorage.getItem('type');
+    this.userId = localStorage.getItem('userId');
 
     this.select_field = [
       { field: 'Internal Operations', value: 'Internal Operations' },
@@ -347,7 +347,7 @@ export class TrainersDashboardComponent implements OnInit {
   }
 
   getUserDetails(user) {
-    sessionStorage.setItem('messageUserDetails', JSON.stringify(user));
+    localStorage.setItem('messageUserDetails', JSON.stringify(user));
   }
 
   pageChanged(event) {

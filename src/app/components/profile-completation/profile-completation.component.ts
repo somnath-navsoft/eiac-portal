@@ -17,7 +17,7 @@ export class ProfileCompletationComponent implements OnInit {
   constructor(public appService: AppService, public constant:Constants,public toastr: ToastrService, public router: Router) { }
 
   ngOnInit() {
-    this.userType = sessionStorage.getItem('type');
+    this.userType = localStorage.getItem('type');
     // //console.log(this.userType,'userType');
   }
 

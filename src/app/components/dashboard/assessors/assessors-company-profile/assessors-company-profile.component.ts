@@ -36,13 +36,13 @@ export class AssessorsCompanyProfileComponent implements OnInit {
   constructor(public Service: AppService, public constant:Constants,public router: Router,public route: ActivatedRoute,public toastr: ToastrService,public uiDialog: UiDialogService) { }
 
   ngOnInit() {
-    this.userType = sessionStorage.getItem('type');
-    this.userEmail = sessionStorage.getItem('email'); 
+    this.userType = localStorage.getItem('type');
+    this.userEmail = localStorage.getItem('email'); 
     // this.routeId = this.route.snapshot.queryParamMap.get('id');
-    // console.log(sessionStorage.getItem('routeId'));
-    this.routeId = 1061;//sessionStorage.getItem('routeId');
+    // console.log(localStorage.getItem('routeId'));
+    this.routeId = 1061;//localStorage.getItem('routeId');
 
-    this.userType = sessionStorage.getItem('type');
+    this.userType = localStorage.getItem('type');
     // if(this.userType != 'operations')
     // {
     //   var landUrl = '/dashboard'+this.userType+'/home'

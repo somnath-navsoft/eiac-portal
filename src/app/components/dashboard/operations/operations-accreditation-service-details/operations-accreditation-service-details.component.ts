@@ -98,9 +98,9 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
 
   ngOnInit() {
     this.loader = true;
-    this.routeId = sessionStorage.getItem('routeId');
+    this.routeId = localStorage.getItem('routeId');
 
-    this.userType = sessionStorage.getItem('type');
+    this.userType = localStorage.getItem('type');
     this.step1Data['cab_type'] = '';
     this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');
     this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Document%20review%20Checklist-%20ISO%2017020-%202012_Inspection%20Bodies.pdf');
@@ -215,8 +215,8 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
 
  loadAppInfo(){
   //let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
-    //this.userEmail = sessionStorage.getItem('email');
-    //this.userType = sessionStorage.getItem('type');
+    //this.userEmail = localStorage.getItem('email');
+    //this.userType = localStorage.getItem('type');
     
     // let url = this._service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
     // this._service.getwithoutData(url)
@@ -790,8 +790,8 @@ loadScopeDataHalal(){
         }
       )     
     )
-    // this.userEmail = sessionStorage.getItem('email');
-    // this.userType = sessionStorage.getItem('type');
+    // this.userEmail = localStorage.getItem('email');
+    // this.userType = localStorage.getItem('type');
     // let url = this._service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
 
     // this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.profileService+'?id='+this.routeId)

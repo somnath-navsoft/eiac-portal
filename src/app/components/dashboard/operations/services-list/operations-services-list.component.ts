@@ -66,8 +66,8 @@ export class ServicesListOperationsComponent implements OnInit {
   loadPageData(offset?:number, limit?:number) { 
     this.loader = false;
     let departmetnId: any = '';
-    if(sessionStorage.getItem('io_dept') != null && sessionStorage.getItem('io_dept') != ''){
-      departmetnId = sessionStorage.getItem('io_dept');
+    if(localStorage.getItem('io_dept') != null && localStorage.getItem('io_dept') != ''){
+      departmetnId = localStorage.getItem('io_dept');
     }
     //departmetnId = 'accreditation_service';
     //let getURL: string = this._service.apiServerUrl + "/" + 'enquiry-list?page=1&limit=10&enquiry_for=' + departmetnId;

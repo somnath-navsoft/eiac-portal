@@ -30,9 +30,9 @@ export class OperationsCompanyProfileComponent implements OnInit {
   constructor(public Service: AppService, public constant:Constants,public router: Router,public route: ActivatedRoute,public toastr: ToastrService,public uiDialog: UiDialogService) { }
 
   ngOnInit() {
-    this.userType = sessionStorage.getItem('type');
-    this.userEmail = sessionStorage.getItem('email');
-    this.userType = sessionStorage.getItem('type');
+    this.userType = localStorage.getItem('type');
+    this.userEmail = localStorage.getItem('email');
+    this.userType = localStorage.getItem('type');
     this.loadData()
   }
 

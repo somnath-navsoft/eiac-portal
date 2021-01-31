@@ -8,7 +8,7 @@ export class AuthCheck implements CanActivate {
     constructor( public router: Router, public _service:AppService) 
     {  }
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        let getLocalToken = sessionStorage.getItem('token');
+        let getLocalToken = localStorage.getItem('token');
         this.token = (getLocalToken != null || getLocalToken != undefined) ? getLocalToken : '';
         // console.log('portal Auth check: 1',this.token, " ---> #", getLocalToken);
         //&& this.token  !== 'null'
@@ -29,7 +29,7 @@ export class AuthCheck implements CanActivate {
             // console.log('portal Auth check: 2',this.token);
             // this.router.navigate(['/dashboard']);
             // this.router.navigateByUrl('/profile-completation');
-            var logType = sessionStorage.getItem('type');
+            var logType = localStorage.getItem('type');
             let landURL = '/dashboard/'+logType+'/home';
             this.router.navigateByUrl(landURL);
             return false;           

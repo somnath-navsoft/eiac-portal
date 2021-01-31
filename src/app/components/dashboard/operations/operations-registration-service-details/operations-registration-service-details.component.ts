@@ -41,7 +41,7 @@ export class OperationsRegistrationServiceDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.loader = true;
-    this.routeId = sessionStorage.getItem('registrationId');
+    this.routeId = localStorage.getItem('registrationId');
     this.loadData();
   }
 

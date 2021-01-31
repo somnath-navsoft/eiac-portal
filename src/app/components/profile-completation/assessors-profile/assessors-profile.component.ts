@@ -137,11 +137,11 @@ updateInput1(theEvt: any, parent: number, inner: number){
 
 
   ngOnInit() {
-    this.userEmail = sessionStorage.getItem('email');
-    this.userType = sessionStorage.getItem('type');
-    this.isCompleteness = sessionStorage.getItem('isCompleteness');
-    this.profileComplete = sessionStorage.getItem('profileComplete');
-    this.userId = sessionStorage.getItem('userId');
+    this.userEmail = localStorage.getItem('email');
+    this.userType = localStorage.getItem('type');
+    this.isCompleteness = localStorage.getItem('isCompleteness');
+    this.profileComplete = localStorage.getItem('profileComplete');
+    this.userId = localStorage.getItem('userId');
 
     //this.subField['title'] = '';
     for(let i=0; i<8; i++){
@@ -1017,7 +1017,7 @@ updateInput1(theEvt: any, parent: number, inner: number){
               this.progressValue == 88 || this.progressValue < 100 ? this.progressValue = 100 : this.progressValue = this.progressValue ;
               // this.router.navigateByUrl('/sign-in');
 
-              if(sessionStorage.getItem('profileComplete') == '0') {
+              if(localStorage.getItem('profileComplete') == '0') {
                 setTimeout(()=>{
                   let elem = document.getElementById('openAppDialog');
                   //console.log("App dialog hash....", elem);

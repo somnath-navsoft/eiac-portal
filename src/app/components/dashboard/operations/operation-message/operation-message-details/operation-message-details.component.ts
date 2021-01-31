@@ -13,7 +13,7 @@ export class OperationMessageDetailsComponent implements OnInit {
   constructor(public router: Router) { }
 
   ngOnInit() {
-    this.userType = sessionStorage.getItem('type');
+    this.userType = localStorage.getItem('type');
     if(this.userType != 'operations')
     {
       var landUrl = '/dashboard'+this.userType+'/home'
