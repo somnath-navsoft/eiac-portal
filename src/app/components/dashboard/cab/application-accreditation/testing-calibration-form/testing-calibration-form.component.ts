@@ -1621,11 +1621,11 @@ getCriteria(value, secInd: any){
     // });
     this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
     ////console.log(this.urlVal,'valofurl');
-    this.userEmail = sessionStorage.getItem('email');
-    this.userType = sessionStorage.getItem('type');
-    this.isCompleteness = sessionStorage.getItem('isCompleteness');
-    this.profileComplete = sessionStorage.getItem('profileComplete');
-    this.userId = sessionStorage.getItem('userId');
+    this.userEmail = localStorage.getItem('email');
+    this.userType = localStorage.getItem('type');
+    this.isCompleteness = localStorage.getItem('isCompleteness');
+    this.profileComplete = localStorage.getItem('profileComplete');
+    this.userId = localStorage.getItem('userId');
     // this.titleService.setTitle('EIAC - Testing and Calibration Laboratories');
     this.addMinutesToTime = this.Service.addMinutesToTime();
 
@@ -2208,7 +2208,7 @@ getCriteria(value, secInd: any){
             this.loader = true;
             let saveStep: number;
             let getData: any = res;
-            sessionStorage.setItem("userData", JSON.stringify(getData));
+            localStorage.setItem("userData", JSON.stringify(getData));
 
             if(res['data'].id && res['data'].id != '') {
                 let pathData: any;
@@ -2677,11 +2677,11 @@ getCriteria(value, secInd: any){
             // this.toastr.success(res['msg'], '');
             if(data.application_id != undefined && data.application_id > 0){
               this.formApplicationId = data.application_id;
-              sessionStorage.setItem('applicationId',data.application_id);
+              localStorage.setItem('applicationId',data.application_id);
               ////////console.log(this.formApplicationId,'App id assigned')
             }
 
-            //(this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
+            //(this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : localStorage.setItem('applicationId',res['application_id']);
             this.Service.moveSteps('application_information', 'profciency_testing_participation', this.headerSteps);
           }else{
             this.toastr.warning(res['msg'], '');
@@ -2748,7 +2748,7 @@ getCriteria(value, secInd: any){
       this.testingCalForm.email = this.userEmail;
       this.testingCalForm.userType = this.userType;
       this.testingCalForm.saved_step = '2';
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       
@@ -2778,7 +2778,7 @@ getCriteria(value, secInd: any){
     if(stepCount == 'step3') {
       this.testingCalForm = {};
       // this.step3Data = {};
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       // this.step3Data.application_id = applicationId;
       this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step3Data.is_draft = true;
@@ -2820,7 +2820,7 @@ getCriteria(value, secInd: any){
     if(stepCount == 'step4') {
       this.testingCalForm = {};
       this.testingCalForm.step4 = {};
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step4Data.is_draft = true;
       this.testingCalForm.saved_step = '4';
@@ -2850,7 +2850,7 @@ getCriteria(value, secInd: any){
       this.testingCalForm.step6 = {};
       this.testingCalForm.email = this.userEmail;
       this.testingCalForm.userType = this.userType;
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step6Data.is_prelim_visit = this.step6Data.is_prelim_visit == 0 ? false : true;
       this.step6Data.is_draft = true;
@@ -2973,7 +2973,7 @@ getCriteria(value, secInd: any){
       this.testingCalForm.email = this.userEmail;
       this.testingCalForm.userType = this.userType;
       this.testingCalForm.saved_step = '2';
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       
@@ -3013,7 +3013,7 @@ getCriteria(value, secInd: any){
     if(ngForm3.form.valid) {
       this.testingCalForm = {};
       // this.step3Data = {};
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       // this.step3Data.application_id = applicationId;
       this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step3Data.is_draft = false;
@@ -3083,7 +3083,7 @@ getCriteria(value, secInd: any){
     if(ngForm4.form.valid) {
       this.testingCalForm = {};
       this.testingCalForm.step4 = {};
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step4Data.is_draft = false;
       this.testingCalForm.saved_step = '4';
@@ -3840,7 +3840,7 @@ onSubmitStep5(ngForm: any, type?: any, rowInd?:any, schemeid?:any, familyid?:any
     this.testingCalForm.saved_step  = 5;
     this.testingCalForm.email       = this.userEmail;
     this.testingCalForm.userType    = this.userType;
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     this.step5Data.application_id   = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step5Data.is_draft         = false;
     this.testingCalForm.step5       = this.step5Data;
@@ -3929,7 +3929,7 @@ onSubmitStep5(ngForm: any, type?: any, rowInd?:any, schemeid?:any, familyid?:any
       this.testingCalForm.saved_step = '6';
       this.testingCalForm.email = this.userEmail;
       this.testingCalForm.userType = this.userType;
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step6Data.is_prelim_visit = this.step6Data.prelim_visit_val == 0 ? false : true;
       this.step6Data.is_draft = false;
@@ -4028,7 +4028,7 @@ onSubmitStep5(ngForm: any, type?: any, rowInd?:any, schemeid?:any, familyid?:any
     this.testingCalForm.step7 = {};
     this.testingCalForm.email = this.userEmail;
     this.testingCalForm.userType = this.userType;
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.testingCalForm.saved_step = '7';
     this.step7Data.authorization_list_json = this.authorizationList;
@@ -4064,7 +4064,7 @@ onSubmitStep5(ngForm: any, type?: any, rowInd?:any, schemeid?:any, familyid?:any
     // this.testingCalForm.step7 = {};
     // this.testingCalForm.email = this.userEmail;
     // this.testingCalForm.userType = this.userType;
-    // var applicationId = sessionStorage.getItem('applicationId');
+    // var applicationId = localStorage.getItem('applicationId');
     // this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     // this.testingCalForm.saved_step = '7';
     // this.step7Data.authorizationList = this.authorizationList;

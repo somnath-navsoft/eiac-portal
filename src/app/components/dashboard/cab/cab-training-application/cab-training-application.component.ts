@@ -19,7 +19,7 @@ export class CabTrainingApplicationComponent implements OnInit  {
   constructor(public _service: AppService, public _constant:Constants, public _trainerService: TrainerService) { }
 
   ngOnInit() {
-    this.userType = sessionStorage.getItem('type');
+    this.userType = localStorage.getItem('type');
     this.loadData()
   }
   ngOnDestroy(){ 

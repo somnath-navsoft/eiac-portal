@@ -164,9 +164,9 @@ export class NoObjectionFormComponent implements OnInit {
     //this.meta.addTag({name: 'title', content: 'Angular Project, Create Angular Project'});
     //this.loadFormDynamicTable();
     this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
-    this.userEmail = sessionStorage.getItem('email');
-    this.userType = sessionStorage.getItem('type');
-    this.userId = sessionStorage.getItem('userId');
+    this.userEmail = localStorage.getItem('email');
+    this.userType = localStorage.getItem('type');
+    this.userId = localStorage.getItem('userId');
 
     this.step2Data.cabTypeLaboratory_testing = false;
     this.step2Data.cabTypeLaboratory_calibration = false;
@@ -729,7 +729,7 @@ export class NoObjectionFormComponent implements OnInit {
                 let getData: any = res;
                 let saveStep: number;
   
-                sessionStorage.setItem("userData", JSON.stringify(getData));
+                localStorage.setItem("userData", JSON.stringify(getData));
                 
                 if(!this.Service.isObjectEmpty(getData.data.paymentDetails)){
                   if(getData.data.paymentDetails.voucher_invoice != undefined && getData.data.paymentDetails.voucher_invoice != ''){

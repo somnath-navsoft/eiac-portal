@@ -264,11 +264,11 @@ export class PtProvidersFormComponent implements OnInit {
   //  this.titleService.setTitle('EIAC - Proficiency Testing Providers');
   this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
    ////console.log(">>>Get URL value: ", this.urlVal);
-   this.userEmail = sessionStorage.getItem('email');
-   this.userType = sessionStorage.getItem('type');
-   this.isCompleteness = sessionStorage.getItem('isCompleteness');
-   this.profileComplete = sessionStorage.getItem('profileComplete');
-   this.userId = sessionStorage.getItem('userId');
+   this.userEmail = localStorage.getItem('email');
+   this.userType = localStorage.getItem('type');
+   this.isCompleteness = localStorage.getItem('isCompleteness');
+   this.profileComplete = localStorage.getItem('profileComplete');
+   this.userId = localStorage.getItem('userId');
 
    this.addMinutesToTime = this.Service.addMinutesToTime();
    window.scrollTo(0,0);
@@ -1176,7 +1176,7 @@ setexDate(date){
           getData = res;
           let saveStep: number;
           
-          sessionStorage.setItem("userData", JSON.stringify(getData));
+          localStorage.setItem("userData", JSON.stringify(getData));
 
           if(res['data'].id && res['data'].id != '') {
               let pathData: any;
@@ -1603,11 +1603,11 @@ onSubmitStep1(ngForm1: any){
              ////////console.log(res,'Data')
             if(data.application_id != undefined && data.application_id > 0){
               this.formApplicationId = data.application_id;
-              sessionStorage.setItem('applicationId',data.application_id);
+              localStorage.setItem('applicationId',data.application_id);
               ////////console.log(this.formApplicationId,'App id assigned')
             }
           
-            //this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
+            //this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : localStorage.setItem('applicationId',res['application_id']);
           this.Service.moveSteps('application_information', 'personal_information', this.headerSteps);
         }else{
           this.toastr.warning(res['msg'], '');
@@ -1668,7 +1668,7 @@ savedraftStep(stepCount) {
 
     this.ptProvidersForm.step2 = {};
     // this.step3Data = {};
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     // this.step3Data.application_id = applicationId;
     this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step2Data.is_draft = true;
@@ -1710,7 +1710,7 @@ savedraftStep(stepCount) {
   if(stepCount == 'step3') {
     this.ptProvidersForm = {};
     this.ptProvidersForm.step3 = {};
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step3Data.is_draft = true;
     this.ptProvidersForm.saved_step = '3';
@@ -1740,7 +1740,7 @@ savedraftStep(stepCount) {
     this.ptProvidersForm.email = this.userEmail;
     this.ptProvidersForm.userType = this.userType;
     this.ptProvidersForm.saved_step = '5';
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     // this.step2Data.application_id = applicationId;
     this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     
@@ -1773,7 +1773,7 @@ savedraftStep(stepCount) {
     this.ptProvidersForm.step6 = {};
     this.ptProvidersForm.email = this.userEmail;
     this.ptProvidersForm.userType = this.userType;
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step6Data.is_prelim_visit = this.step6Data.is_prelim_visit == 0 ? false : true;
     this.step6Data.is_draft = true;
@@ -1804,7 +1804,7 @@ savedraftStep(stepCount) {
     this.step7Data.authorization_list_json = this.authorizationList;
     //this.step7Data.recommend = this.recommend;
     //this.step7Data.recommend = this.recommend;
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step7Data.is_draft = true;
     this.ptProvidersForm.saved_step = '7';
@@ -1888,7 +1888,7 @@ onSubmitStep2(ngForm2: any){
     this.ptProvidersForm = {};
     this.ptProvidersForm.step2 = {};
     // this.step3Data = {};
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     // this.step3Data.application_id = applicationId;
     this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step2Data.is_draft = false;
@@ -1957,7 +1957,7 @@ onSubmitStep3(ngForm3: any){
   if(ngForm3.form.valid) {
     this.ptProvidersForm = {};
     this.ptProvidersForm.step3 = {};
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step3Data.is_draft = false;
     this.ptProvidersForm.saved_step = '3';
@@ -2273,7 +2273,7 @@ onSubmitStep4(ngForm: any, type?: any , rowInd?:any) {
   this.ptProvidersForm = {};
   this.ptProvidersForm.step4 = {};
   this.ptProvidersForm.step4 = this.step4Data;
-  var applicationId = sessionStorage.getItem('applicationId');
+  var applicationId = localStorage.getItem('applicationId');
   this.ptProvidersForm.step4.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
   this.ptProvidersForm.step4['scheme_id'] = 1;//this.schemeRows[0].id;
   // if(this.step5Data.criteria_request != undefined){
@@ -2416,7 +2416,7 @@ onSubmitStep5(ngForm5: any){
     this.ptProvidersForm.userType = this.userType;
 
     this.ptProvidersForm.saved_step = '5';
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     // this.step2Data.application_id = applicationId;
     this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     
@@ -2459,7 +2459,7 @@ onSubmitStep6(ngForm6: any){
     this.ptProvidersForm.saved_step = '6';
     this.ptProvidersForm.email = this.userEmail;
     this.ptProvidersForm.userType = this.userType;
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     //this.step6Data.is_prelim_visit = this.step6Data.is_prelim_visit == 0 ? false : true;
     this.step6Data.is_prelim_visit = this.step6Data.prelim_visit_val == 0 ? false : true;
@@ -2580,7 +2580,7 @@ if(ngForm7.form.valid && recomCheckCount > 0 && this.authorizationStatus == true
   this.ptProvidersForm.step7 = {};
   this.ptProvidersForm.email = this.userEmail;
   this.ptProvidersForm.userType = this.userType;
-  var applicationId = sessionStorage.getItem('applicationId');
+  var applicationId = localStorage.getItem('applicationId');
   this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
   this.ptProvidersForm.saved_step = '7';
   this.step7Data.authorization_list_json = this.authorizationList;

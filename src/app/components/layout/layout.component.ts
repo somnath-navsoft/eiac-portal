@@ -30,7 +30,7 @@ export class LayoutComponent implements OnInit {
 
   constructor(private store: Store<AppState>, private router: Router,
     public route: ActivatedRoute, private _service: AppService) { 
-    let getToken = sessionStorage.getItem('token');
+    let getToken = localStorage.getItem('token');
     if(getToken != '' && getToken != 'null'){
       // //console.log('>>> layout state status calling....');
       this.store.dispatch(new LogInState({token: getToken}));
@@ -55,13 +55,13 @@ export class LayoutComponent implements OnInit {
         // if(data && typeof data == 'object' && data.url != ''){
         //   let getLastPart: any = data.url.substring(data.url.lastIndexOf('/') + 1)
         //   console.log(">>>part: ", getLastPart);
-        //   sessionStorage.setItem('routerId', getLastPart);
+        //   localStorage.setItem('routerId', getLastPart);
         //   // console.log('lst part: ', getLastPart, " -- ", Number.isInteger(parseInt(getLastPart)), " :: ", typeof (parseInt(getLastPart)));
         //   // //&& Number.isInteger(parseInt(getLastPart)) === true
         //   // if(getLastPart != null && getLastPart != undefined ){
         //   //     let getDecID = window.atob(getLastPart);
         //   //     console.log('Routr param: ', getLastPart, " :: ", getDecID);
-        //   //     sessionStorage.setItem('routerId', getDecID);
+        //   //     localStorage.setItem('routerId', getDecID);
         //   // }
         // }
 
@@ -74,24 +74,24 @@ export class LayoutComponent implements OnInit {
         // console.log(splitForverifyAccount,'splitForverifyAccount');
         if(splitUrl[2] == 'account-details') {
           // this._service.setValueUrl(splitUrl[3]);
-          sessionStorage.setItem('accountDetailId', splitUrl[3]);
+          localStorage.setItem('accountDetailId', splitUrl[3]);
         }
         if(splitUrl[2] == 'account-upload') {
           // this._service.setValueUrl(splitUrl[3]);
-          sessionStorage.setItem('accountUploadId', splitUrl[3]);
+          localStorage.setItem('accountUploadId', splitUrl[3]);
         }
 
         //alert("...." + splitUrl[3] +" -- " + eval(splitUrl));
 
-        if(sessionStorage.getItem('inpremiseApplyCourseId') != ''){
-          sessionStorage.setItem('inpremiseApplyCourseId','');
+        if(localStorage.getItem('inpremiseApplyCourseId') != ''){
+          localStorage.setItem('inpremiseApplyCourseId','');
         }
         
         if(splitUrl[3] == 'testing-calibration-form') {
           this._service.setValueUrl(splitUrl[4]);
         }else if(splitUrl[3] == 'inspection-bodies-form') {
           let id = splitUrl[4];
-          sessionStorage.setItem('ibUrlId', id);
+          localStorage.setItem('ibUrlId', id);
           //this._service.setValueUrl(splitUrl[4]);
         }else if(splitUrl[3] == 'health-care-form') {
           this._service.setValueUrl(splitUrl[4]);
@@ -104,23 +104,23 @@ export class LayoutComponent implements OnInit {
         }else if(splitUrl[3] == 'halal-conformity-form') {
           this._service.setValueUrl(splitUrl[4]);
         }else if(splitUrl[3] == 'accreditation-service-details') {
-          sessionStorage.setItem('routeId', splitUrl[4]);
+          localStorage.setItem('routeId', splitUrl[4]);
         }else if(splitUrl[3] == 'registration-service-details') {
-          sessionStorage.setItem('registrationId', splitUrl[4]);
+          localStorage.setItem('registrationId', splitUrl[4]);
         }else if(splitUrl[3] == 'training-service-details') {
-          sessionStorage.setItem('trainingId', splitUrl[4]);
+          localStorage.setItem('trainingId', splitUrl[4]);
         }else if(splitUrl[3] == 'work-permit-form') {
-          sessionStorage.setItem('workPermitId', splitUrl[4]);
+          localStorage.setItem('workPermitId', splitUrl[4]);
         }else if(splitUrl[3] == 'training-course-details') {
-          sessionStorage.setItem('courseDetailId', splitUrl[4]);
+          localStorage.setItem('courseDetailId', splitUrl[4]);
         }else if(splitUrl[3] == 'training-public-course-form') {
-          sessionStorage.setItem('publicFormId', splitUrl[4]);
+          localStorage.setItem('publicFormId', splitUrl[4]);
         }else if(splitUrl[3] == 'training-inpremise-form') {
-          sessionStorage.setItem('inpremiseFormId', splitUrl[4]);
+          localStorage.setItem('inpremiseFormId', splitUrl[4]);
         }else if(splitUrl[3] == 'training-inpremise-details') {
-          sessionStorage.setItem('inpremiseCourseId', splitUrl[4]);
+          localStorage.setItem('inpremiseCourseId', splitUrl[4]);
         }else if(splitUrl[3] == 'training-inpremise-apply-details') {
-          sessionStorage.setItem('inpremiseApplyCourseId', splitUrl[4]);
+          localStorage.setItem('inpremiseApplyCourseId', splitUrl[4]);
         }else{
           this._service.setValueUrl('');
         }
@@ -130,9 +130,9 @@ export class LayoutComponent implements OnInit {
           this.currentState = 'reset-password';
           this.pageId = splitForverifyAccount[1];
         }else if(splitForverifyAccount[0] == '/dashboard/cab_client/training-public-course-form'){
-          sessionStorage.setItem('trainingPublicCourse', splitForverifyAccount[1]);
+          localStorage.setItem('trainingPublicCourse', splitForverifyAccount[1]);
         }else if(splitForverifyAccount[0] == '/dashboard/cab_client/training-inpremise-form'){
-          sessionStorage.setItem('trainingInpremiseCourse', splitForverifyAccount[1]);
+          localStorage.setItem('trainingInpremiseCourse', splitForverifyAccount[1]);
         }else if(splitForverifyAccount[0] == '/verify-account')
         {
           this.currentState = 'verify-account';

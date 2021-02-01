@@ -110,7 +110,7 @@ export class StatusComponent implements OnInit {
     this.curSortDir['prelim_visit']                  = false;
     
 
-    this.userType = sessionStorage.getItem('type');
+    this.userType = localStorage.getItem('type');
     this.loadCriteriaScheme();
     this.loadCountryStateCityAll();
 
@@ -326,7 +326,7 @@ loadCountryStateCityAll  = async() =>{
 
   setIB(id: any){
     // console.log(">>>url id set...", id);
-    sessionStorage.setItem('ibUrlId', id);
+    localStorage.setItem('ibUrlId', id);
   }
 
   editVisible(item: any){

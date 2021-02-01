@@ -181,7 +181,7 @@ export class OperationsCertificationsComponent implements OnInit {
     this.curSortDir['start_date']        = false;
     this.curSortDir['to_date']             = false;
 
-    this.userType = sessionStorage.getItem('type');
+    this.userType = localStorage.getItem('type');
 
     //Assign Search Type
     this.selectAccrType = [ 

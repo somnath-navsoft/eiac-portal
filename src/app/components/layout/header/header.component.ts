@@ -15,7 +15,7 @@ export class HeaderComponent implements OnInit {
   constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
-    var first_name = sessionStorage.getItem('first_name');
+    var first_name = localStorage.getItem('first_name');
     if(first_name && first_name != '') {
       var firstNameval = first_name.split(' ');
       this.firstName = firstNameval[1] && firstNameval[1] != '' ? firstNameval[1] : first_name;

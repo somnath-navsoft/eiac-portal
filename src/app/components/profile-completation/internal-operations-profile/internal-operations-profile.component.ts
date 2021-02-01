@@ -31,11 +31,11 @@ export class InternalOperationsProfileComponent implements OnInit {
 
   ngOnInit() {
     this.stepDefaultValue();
-    this.userEmail = sessionStorage.getItem('email');
-    this.userType = sessionStorage.getItem('type');
-    this.isCompleteness = sessionStorage.getItem('profileComplete');
-    this.profileComplete = sessionStorage.getItem('profileComplete');
-    this.userId = sessionStorage.getItem('userId');
+    this.userEmail = localStorage.getItem('email');
+    this.userType = localStorage.getItem('type');
+    this.isCompleteness = localStorage.getItem('profileComplete');
+    this.profileComplete = localStorage.getItem('profileComplete');
+    this.userId = localStorage.getItem('userId');
 
     this.headerSteps.push(
       {
@@ -113,7 +113,7 @@ export class InternalOperationsProfileComponent implements OnInit {
               this.toastr.success(res['msg'], '');
               this.progressValue == 0 || this.progressValue < 100 ? this.progressValue = 100 : this.progressValue = this.progressValue ;
               // this.router.navigateByUrl('/sign-in');
-              if(sessionStorage.getItem('profileComplete') == '0') {
+              if(localStorage.getItem('profileComplete') == '0') {
                 setTimeout(()=>{
                   let elem = document.getElementById('openAppDialog');
                   //console.log("App dialog hash....", elem);

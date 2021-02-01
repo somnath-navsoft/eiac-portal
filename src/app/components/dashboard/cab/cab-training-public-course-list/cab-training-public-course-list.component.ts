@@ -74,7 +74,7 @@ export class CabTrainingPublicCourseListComponent implements OnInit {
   }
 
   setCourseAvailability(available: number){
-      sessionStorage.setItem("courseAvailable", available.toString());
+      localStorage.setItem("courseAvailable", available.toString());
   }
 
   loadTrainingData() {

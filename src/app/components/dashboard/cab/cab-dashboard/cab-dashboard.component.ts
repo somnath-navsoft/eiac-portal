@@ -257,9 +257,9 @@ export class CabDashboardComponent implements OnInit {
         });
 
 
-    this.userEmail = sessionStorage.getItem('email');
-    this.userType = sessionStorage.getItem('type');
-    this.userId = sessionStorage.getItem('userId');
+    this.userEmail = localStorage.getItem('email');
+    this.userType = localStorage.getItem('type');
+    this.userId = localStorage.getItem('userId');
     this.loader = false;
     this.Service.getwithoutData(this.Service.apiServerUrl + "/" + this.constant.API_ENDPOINT.profileService + '?userType=' + this.userType + '&email=' + this.userEmail)
       .subscribe(
@@ -323,7 +323,7 @@ export class CabDashboardComponent implements OnInit {
   }
 
   getUserDetails(user) {
-    sessionStorage.setItem('messageUserDetails', JSON.stringify(user));
+    localStorage.setItem('messageUserDetails', JSON.stringify(user));
   }
 
   pageChanged(event) {

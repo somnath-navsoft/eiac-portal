@@ -858,11 +858,11 @@ scrollForm(data?:any){
   this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');
   this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Document%20review%20Checklist-%20ISO%2017020-%202012_Inspection%20Bodies.pdf');
   this.urlVal = this.Service.getValue() != '' ? this.Service.getValue() : '';
-  this.userEmail = sessionStorage.getItem('email');
-  this.userType = sessionStorage.getItem('type');
-  this.isCompleteness = sessionStorage.getItem('isCompleteness');
-  this.profileComplete = sessionStorage.getItem('profileComplete');
-  this.userId = sessionStorage.getItem('userId');
+  this.userEmail = localStorage.getItem('email');
+  this.userType = localStorage.getItem('type');
+  this.isCompleteness = localStorage.getItem('isCompleteness');
+  this.profileComplete = localStorage.getItem('profileComplete');
+  this.userId = localStorage.getItem('userId');
   // this.titleService.setTitle('EIAC - Testing and Calibration Laboratories');
   this.addMinutesToTime = this.Service.addMinutesToTime();
 
@@ -1376,7 +1376,7 @@ loadData(){
               let getData: any = res;
               let saveStep: number;
 
-              sessionStorage.setItem("userData", JSON.stringify(getData));
+              localStorage.setItem("userData", JSON.stringify(getData));
               // if(!this.Service.isObjectEmpty(res['data'].paymentDetails)){
               
               //   if(res['data'].paymentDetails.voucher_invoice != undefined && res['data'].paymentDetails.voucher_invoice != ''
@@ -1972,7 +1972,7 @@ onSubmitStep1(ngForm1: any){
           
 
 
-          this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['application_id']);
+          this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : localStorage.setItem('applicationId',res['application_id']);
           if(getData){
             console.log(">>> APP Id generate: ", getData);
 
@@ -2051,7 +2051,7 @@ savedraftStep(stepCount) {
     this.healthCareForm.email = this.userEmail;
     this.healthCareForm.userType = this.userType;
     this.healthCareForm.saved_step = '2';
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     // this.step2Data.application_id = applicationId;
     this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     
@@ -2080,7 +2080,7 @@ savedraftStep(stepCount) {
   if(stepCount == 'step3') {
     this.healthCareForm = {};
     // this.step3Data = {};
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     // this.step3Data.application_id = applicationId;
     this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step3Data.is_draft = true;
@@ -2122,7 +2122,7 @@ savedraftStep(stepCount) {
   if(stepCount == 'step4') {
     this.healthCareForm = {};
     this.healthCareForm.step4 = {};
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step4Data.is_draft = true;
     this.healthCareForm.saved_step = '4';
@@ -2152,7 +2152,7 @@ savedraftStep(stepCount) {
     this.healthCareForm.step6 = {};
     this.healthCareForm.email = this.userEmail;
     this.healthCareForm.userType = this.userType;
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step6Data.is_prelim_visit = this.step6Data.prelim_visit_val == 0 ? false : true;
     this.step6Data.is_draft = true;
@@ -2180,7 +2180,7 @@ savedraftStep(stepCount) {
     this.healthCareForm.step7 = {};
     this.healthCareForm.email = this.userEmail;
     this.healthCareForm.userType = this.userType;
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step7Data.authorization_list_json = this.authorizationList;
     //this.step7Data.recommend = this.recommend;
@@ -2223,7 +2223,7 @@ savedraftStep(stepCount) {
     this.healthCareForm.step9 = {};
     this.healthCareForm.email = this.userEmail;
     this.healthCareForm.userType = this.userType;
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     this.step9Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
 
     let dtFormat: string = '';
@@ -2296,7 +2296,7 @@ onSubmitStep2(ngForm2: any){
     this.healthCareForm.email = this.userEmail;
     this.healthCareForm.userType = this.userType;
     this.healthCareForm.saved_step = '2';
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     // this.step2Data.application_id = applicationId;
     this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     
@@ -2333,7 +2333,7 @@ onSubmitStep3(ngForm3: any){
   if(ngForm3.form.valid) {
     this.healthCareForm = {};
     // this.step3Data = {};
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     // this.step3Data.application_id = applicationId;
     this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step3Data.is_draft = false;
@@ -2498,7 +2498,7 @@ onSubmitStep4(ngForm4: any){
   if(ngForm4.form.valid) {
     this.healthCareForm = {};
     this.healthCareForm.step4 = {};
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step4Data.is_draft = false;
     this.healthCareForm.saved_step = '4';
@@ -2864,7 +2864,7 @@ onSubmitStep5(ngForm: any, type?:any, rowInd?:any) {
   //console.log(">>>Enter....1:  ", type)
   this.healthCareForm = {};
   this.healthCareForm.step5 = {};  
-  var applicationId = sessionStorage.getItem('applicationId');
+  var applicationId = localStorage.getItem('applicationId');
   this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
   //this.healthCareForm.step5.application_id = this.formApplicationId;
   this.healthCareForm.step5 = this.step5Data;
@@ -3002,7 +3002,7 @@ onSubmitStep6(ngForm6: any){
     this.healthCareForm.saved_step = '6';
     this.healthCareForm.email = this.userEmail;
     this.healthCareForm.userType = this.userType;
-    var applicationId = sessionStorage.getItem('applicationId');
+    var applicationId = localStorage.getItem('applicationId');
     this.step6Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
     this.step6Data.is_prelim_visit = this.step6Data.prelim_visit_val == 0 ? false : true;
     this.step6Data.is_draft = false;
@@ -3108,7 +3108,7 @@ this.healthCareForm = {};
   this.healthCareForm.step7 = {};
   this.healthCareForm.email = this.userEmail;
   this.healthCareForm.userType = this.userType;
-  var applicationId = sessionStorage.getItem('applicationId'); 
+  var applicationId = localStorage.getItem('applicationId'); 
   this.step7Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
   this.healthCareForm.saved_step = '7';
   this.step7Data.authorization_list_json = this.authorizationList;

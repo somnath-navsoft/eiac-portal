@@ -123,14 +123,14 @@ export class WorkPermitFormComponent implements OnInit {
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,public _trainerService:TrainerService,public sanitizer:DomSanitizer,private modalService: NgbModal) { }
 
   ngOnInit() {
-    this.getWorkPermitId = sessionStorage.getItem('workPermitId');
+    this.getWorkPermitId = localStorage.getItem('workPermitId');
     this.checkCaptchaValidation = true;
     // this.authorizationList = {authorization_confirm1:false};
-    this.userEmail = sessionStorage.getItem('email');
-    this.userType = sessionStorage.getItem('type');
-    this.isCompleteness = sessionStorage.getItem('isCompleteness');
-    this.profileComplete = sessionStorage.getItem('profileComplete'); 
-    this.userId = sessionStorage.getItem('userId');
+    this.userEmail = localStorage.getItem('email');
+    this.userType = localStorage.getItem('type');
+    this.isCompleteness = localStorage.getItem('isCompleteness');
+    this.profileComplete = localStorage.getItem('profileComplete'); 
+    this.userId = localStorage.getItem('userId');
     this.loadData();
     this.loadCountryStateCity();
     this.loadAppInfo();
@@ -686,7 +686,7 @@ export class WorkPermitFormComponent implements OnInit {
           let getData: any = res;
           if(res['status'] == true) {
 
-            this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['id']);
+            this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : localStorage.setItem('applicationId',res['id']);
             
             this.Service.moveSteps('application_information', 'activities_scope', this.headerSteps);
           }else{
@@ -717,7 +717,7 @@ export class WorkPermitFormComponent implements OnInit {
       this.workPermitForm.email = this.userEmail;
       this.workPermitForm.userType = this.userType;
       this.workPermitForm.saved_step = '2';
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
 
@@ -755,7 +755,7 @@ export class WorkPermitFormComponent implements OnInit {
       this.workPermitForm.email = this.userEmail;
       this.workPermitForm.userType = this.userType;
       this.workPermitForm.saved_step = '3';
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
 
@@ -794,7 +794,7 @@ export class WorkPermitFormComponent implements OnInit {
       this.workPermitForm.userType = this.userType;
       this.workPermitForm.saved_step = '4';
       this.step4Data.authorization_list_json = {'authorization_confirm1' : this.step4Data.authorization_confirm1};
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
 
@@ -1321,7 +1321,7 @@ export class WorkPermitFormComponent implements OnInit {
           let getData: any = res;
           if(res['status'] == true) {
 
-            this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['id']);
+            this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : localStorage.setItem('applicationId',res['id']);
 
             this.toastr.success('Save Draft Successfully', '');
           }
@@ -1333,7 +1333,7 @@ export class WorkPermitFormComponent implements OnInit {
       this.workPermitForm.email = this.userEmail;
       this.workPermitForm.userType = this.userType;
       this.workPermitForm.saved_step = '2';
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
 
@@ -1361,7 +1361,7 @@ export class WorkPermitFormComponent implements OnInit {
       this.workPermitForm.email = this.userEmail;
       this.workPermitForm.userType = this.userType;
       this.workPermitForm.saved_step = '3';
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
 
@@ -1387,7 +1387,7 @@ export class WorkPermitFormComponent implements OnInit {
       this.workPermitForm.userType = this.userType;
       this.workPermitForm.saved_step = '4';
       this.step4Data.authorization_list_json = {'authorization_confirm1' : this.step4Data.authorization_confirm1};
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
 

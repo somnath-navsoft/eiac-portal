@@ -92,15 +92,25 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
   summaryDetails:any[] = [{}];
 
   newSummaryDetails:any[] = [];
+  scopeofHalalConformity:any[] = [];
+  authorizedPersonforSigning:any[] = [];
+  selectTradeLicName :string = ''; 
+  selectTradeLicPath :string = '';
+  hcabLogo1Path:any;
+  hcabLogo2Path:any;
+  hcabLogo3Path:any;
+  hcabLogo1:any;
+  hcabLogo2:any;
+  hcabLogo3:any;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
     private _trainerService: TrainerService, public sanitizer: DomSanitizer,private modalService: NgbModal,public uiDialog: UiDialogService) { }
 
   ngOnInit() {
     this.loader = true;
-    this.routeId = sessionStorage.getItem('routeId');
+    this.routeId = localStorage.getItem('routeId');
 
-    this.userType = sessionStorage.getItem('type');
+    this.userType = localStorage.getItem('type');
     this.step1Data['cab_type'] = '';
     this.accredAgreemFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Accreditation%20Agreement.pdf');
     this.checklistDocFile = ('https://uat-service.eiac.gov.ae/media/publication/files/Document%20review%20Checklist-%20ISO%2017020-%202012_Inspection%20Bodies.pdf');
@@ -215,8 +225,8 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
 
  loadAppInfo(){
   //let url = this.Service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
-    //this.userEmail = sessionStorage.getItem('email');
-    //this.userType = sessionStorage.getItem('type');
+    //this.userEmail = localStorage.getItem('email');
+    //this.userType = localStorage.getItem('type');
     
     // let url = this._service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
     // this._service.getwithoutData(url)
@@ -477,6 +487,36 @@ loadScopeDataHalal(){
           // }
           //
           // console.log(this.serviceDetail.is_main_activity,'is_main_activity');
+
+          // var data = getData.data['step1'][0]
+          // if(data.trade_license != ''){
+          //   let getFile = data.trade_license.toString().split('/');
+          //   if(getFile.length){
+          //     this.selectTradeLicName = getFile[4].toString().split('.')[0];
+          //     this.selectTradeLicPath = this._constant.mediaPath +  data.trade_license.toString();
+          //   }
+          // }
+
+          if(result['data'].recognized_logo1 && result['data'].recognized_logo1 != ''){
+            let getFile = result['data'].recognized_logo1.toString().split('/');
+            
+            this.hcabLogo1 = getFile[4].toString().split('.')[0];
+            this.hcabLogo1Path = this._constant.mediaPath +  result['data'].recognized_logo1.toString();
+          }
+
+          if(result['data'].recognized_logo2 && result['data'].recognized_logo2 != ''){
+            let getFile = result['data'].recognized_logo2.toString().split('/');
+              this.hcabLogo2 = getFile[4].toString().split('.')[0];
+              this.hcabLogo2Path = this._constant.mediaPath +  result['data'].recognized_logo2.toString();
+          }
+
+          if(result['data'].recognized_logo3 && result['data'].recognized_logo3 != ''){
+            let getFile = result['data'].recognized_logo3.toString().split('/');
+            
+            this.hcabLogo3 = getFile[4].toString().split('.')[0];
+            this.hcabLogo2Path = this._constant.mediaPath +  result['data'].recognized_logo3.toString();
+            
+          }
           
           this.step1Data.cab_type = getData.data.cab_type;
           //alert(this.step1Data.cab_type + " -- "+ getData.data.cab_type);
@@ -504,6 +544,22 @@ loadScopeDataHalal(){
           this.editScopeData = result['data']['scopeDetails'];
           this.aboutSubContractors = result['data']['aboutSubContractors'];
 
+          if(result['data'].scopeOfHalalConformity != null){
+            var halalScope = result['data'].scopeOfHalalConformity;
+            // this.ownOrgBasicInfo = res['data'].scopeOfHalalConformity;
+            for(let key in halalScope) {
+              var arr = [];
+              var value_obj = JSON.parse(halalScope[key].value);
+              arr.push(value_obj);
+            }
+            this.scopeofHalalConformity = arr;
+          }
+
+          if(result['data'].singningHalalCertificate != null){
+            this.authorizedPersonforSigning = result['data'].singningHalalCertificate;
+          }
+          // console.log(result['data'].summaryOfPersonnel,'authorizedPersonforSigning');
+
           if(result['data'].summaryOfPersonnel != undefined && result['data'].summaryOfPersonnel.length > 0){
             // console.log(result['data'].summaryOfPersonnel);
             this.summaryDetails = result['data'].summaryOfPersonnel;
@@ -516,12 +572,13 @@ loadScopeDataHalal(){
                 newArr['position'] = this.summaryDetails[key].position;
                 newArr['total_no'] = this.summaryDetails[key].total_no;
                 if(this.summaryDetails[key].fulltime_emp_name != undefined && typeof this.summaryDetails[key].fulltime_emp_name == 'string'){
-                  let fulltimeAr = JSON.parse(this.summaryDetails[key].fulltime_emp_name);
-                  // console.log(fulltimeAr, " -- ", fulltimeAr.length);
+                  console.log(this.summaryDetails[key].fulltime_emp_name,'fulltime_emp_name');
+                  let fulltimeAr = result['data'].form_meta != 'certification_bodies' ? JSON.parse(this.summaryDetails[key].fulltime_emp_name) : this.summaryDetails[key].fulltime_emp_name;
+                  // console.log(fulltimeAr, "fulltimeArfulltimeArfulltimeAr");
                   newArr['fulltime_emp_name'] = fulltimeAr;
                 }
                 if(this.summaryDetails[key].parttime_emp_name != undefined && typeof this.summaryDetails[key].parttime_emp_name == 'string'){
-                  let parttimeAr = JSON.parse(this.summaryDetails[key].parttime_emp_name);
+                  let parttimeAr = result['data'].form_meta != 'certification_bodies' ? JSON.parse(this.summaryDetails[key].parttime_emp_name) : this.summaryDetails[key].fulltime_emp_name;
                   // console.log(parttimeAr, " -- ", parttimeAr.length);
                   newArr['parttime_emp_name'] = parttimeAr;
                 }
@@ -790,8 +847,8 @@ loadScopeDataHalal(){
         }
       )     
     )
-    // this.userEmail = sessionStorage.getItem('email');
-    // this.userType = sessionStorage.getItem('type');
+    // this.userEmail = localStorage.getItem('email');
+    // this.userType = localStorage.getItem('type');
     // let url = this._service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
 
     // this._service.getwithoutData(this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.profileService+'?id='+this.routeId)

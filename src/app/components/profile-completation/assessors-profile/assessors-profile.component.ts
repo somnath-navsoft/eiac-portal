@@ -137,11 +137,11 @@ updateInput1(theEvt: any, parent: number, inner: number){
 
 
   ngOnInit() {
-    this.userEmail = sessionStorage.getItem('email');
-    this.userType = sessionStorage.getItem('type');
-    this.isCompleteness = sessionStorage.getItem('isCompleteness');
-    this.profileComplete = sessionStorage.getItem('profileComplete');
-    this.userId = sessionStorage.getItem('userId');
+    this.userEmail = localStorage.getItem('email');
+    this.userType = localStorage.getItem('type');
+    this.isCompleteness = localStorage.getItem('isCompleteness');
+    this.profileComplete = localStorage.getItem('profileComplete');
+    this.userId = localStorage.getItem('userId');
 
     //this.subField['title'] = '';
     for(let i=0; i<8; i++){
@@ -916,7 +916,7 @@ updateInput1(theEvt: any, parent: number, inner: number){
     let freetextInput1: boolean = false;
     let freefieldInput: boolean = false;
     console.log("@Form submit: ", ngForm4.form.valid);
-    console.log(this.subInput, " :: ", this.subField);
+    console.log(this.subInput, " :: ", this.subInput1, this.subField, " == ");
 
     //subinput
     for(let k in this.subInput){
@@ -931,7 +931,7 @@ updateInput1(theEvt: any, parent: number, inner: number){
     for(let k in this.subInput1){
       if(typeof this.subInput1[k] === 'object'){
         for(let p in this.subInput1[k]){
-          if(typeof this.subInput1[k][p] === 'object' && this.subInput1[k][p]['title'] != '' && this.subInput[k][p]['checked'] != ''){
+          if(typeof this.subInput1[k][p] === 'object' && this.subInput1[k][p]['title'] != '' && this.subInput1[k][p]['checked'] != ''){
             freetextInput1 = true;
           }
         }
@@ -940,7 +940,7 @@ updateInput1(theEvt: any, parent: number, inner: number){
     //subfield
     for(let k in this.subField){
       if(typeof this.subField[k] === 'object'){
-          if(typeof this.subField[k] === 'object' && this.subField[k]['title'] != '' && this.subInput[k]['checked'] != ''){
+          if(typeof this.subField[k] === 'object' && this.subField[k]['title'] != '' && this.subField[k]['checked'] != ''){
             freefieldInput = true;
           }
       }
@@ -1017,7 +1017,7 @@ updateInput1(theEvt: any, parent: number, inner: number){
               this.progressValue == 88 || this.progressValue < 100 ? this.progressValue = 100 : this.progressValue = this.progressValue ;
               // this.router.navigateByUrl('/sign-in');
 
-              if(sessionStorage.getItem('profileComplete') == '0') {
+              if(localStorage.getItem('profileComplete') == '0') {
                 setTimeout(()=>{
                   let elem = document.getElementById('openAppDialog');
                   //console.log("App dialog hash....", elem);

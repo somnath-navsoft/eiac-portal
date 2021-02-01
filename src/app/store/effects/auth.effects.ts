@@ -62,38 +62,38 @@ export class AuthEffects {
     // console.log(">>>Effects LAnd URL:",authUserData );
     if(authUserData.isVerified == '0')
     {
-      // sessionStorage.setItem('token', user.payload.token);
+      // localStorage.setItem('token', user.payload.token);
       // this._appServ.getUserType();
-      // sessionStorage.setItem('type', this._constants.logType);
+      // localStorage.setItem('type', this._constants.logType);
       // console.log(authUserData,'authUserData');
       this.router.navigateByUrl('/sign-in');
-      sessionStorage.setItem('token', '');
+      localStorage.setItem('token', '');
       // this.toastr.error('Please complete your verification before Sign in','Validation Error', {timeOut: 30000});
       // this.authService.appErrorStack.next('Please complete your verification before Sign in');
     }else if(authUserData.isCompleteness == '0')
     {
-      sessionStorage.setItem('token', user.payload.token);
-      sessionStorage.setItem('email', authUserData.email);
-      sessionStorage.setItem('first_name', authUserData.first_name);
-      sessionStorage.setItem('isVerified', authUserData.isVerified);
-      sessionStorage.setItem('profileComplete', authUserData.isCompleteness);
-      sessionStorage.setItem('userId', authUserData.user_id);
+      localStorage.setItem('token', user.payload.token);
+      localStorage.setItem('email', authUserData.email);
+      localStorage.setItem('first_name', authUserData.first_name);
+      localStorage.setItem('isVerified', authUserData.isVerified);
+      localStorage.setItem('profileComplete', authUserData.isCompleteness);
+      localStorage.setItem('userId', authUserData.user_id);
       this._appServ.getUserType();
-      sessionStorage.setItem('type', this._constants.logType);
+      localStorage.setItem('type', this._constants.logType);
       this.router.navigateByUrl('/profile-completion');
 
       // let landURL = '/dashboard/' + this._constants.logType + '/home';
       // this.router.navigateByUrl(landURL);
 
     }else{
-      sessionStorage.setItem('token', user.payload.token);
-      sessionStorage.setItem('email', authUserData.email);
-      sessionStorage.setItem('first_name', authUserData.first_name);
-      sessionStorage.setItem('isCompleteness', authUserData.isVerified);
-      sessionStorage.setItem('profileComplete', authUserData.isCompleteness);
-      sessionStorage.setItem('userId', authUserData.user_id);
+      localStorage.setItem('token', user.payload.token);
+      localStorage.setItem('email', authUserData.email);
+      localStorage.setItem('first_name', authUserData.first_name);
+      localStorage.setItem('isCompleteness', authUserData.isVerified);
+      localStorage.setItem('profileComplete', authUserData.isCompleteness);
+      localStorage.setItem('userId', authUserData.user_id);
       this._appServ.getUserType();
-      sessionStorage.setItem('type', this._constants.logType);
+      localStorage.setItem('type', this._constants.logType);
       //this._appServ.updateStoreAuthenticated();
       // console.log(">>>Effects: Usertype parse: ",this._constants.logType );
       let landURL = '/dashboard/' + this._constants.logType + '/home';
@@ -124,7 +124,7 @@ export class AuthEffects {
   LogOut: Observable<any> = this.actions.pipe(
   ofType(AuthActionTypes.LOGOUT),
   tap((user) => {
-    sessionStorage.setItem('token', '');
+    localStorage.setItem('token', '');
     this.router.navigateByUrl('/sign-in');
   }));
 

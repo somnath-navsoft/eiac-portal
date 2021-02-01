@@ -23,8 +23,8 @@ export class DashboardComponent implements OnInit {
   }
 
   constructor(private store: Store<AppState>, private _service: AppService) { 
-    // let getToken = sessionStorage.getItem('token');
-    // let getEmail = sessionStorage.getItem('email');
+    // let getToken = localStorage.getItem('token');
+    // let getEmail = localStorage.getItem('email');
     // if(getToken != '' && getToken != 'null'){
     //   this.store.dispatch(new LogInSuccess({token: getToken}));
     // }

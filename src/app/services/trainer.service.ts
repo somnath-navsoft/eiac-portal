@@ -57,6 +57,7 @@ export class TrainerService {
     let url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.trainerCoursePageDetails;
     return this.http.get(url, this._service.getReqHeaders());
   }
+  
   //Get Trainer Course Details
   getTrainerCourseTypeDetails(){
     let url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.trainerCourseTypeDetails;

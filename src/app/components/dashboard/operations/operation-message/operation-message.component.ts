@@ -23,9 +23,9 @@ export class OperationMessageComponent implements OnInit {
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) { }
 
   ngOnInit() {
-    this.userType = sessionStorage.getItem('type');
-    this.userEmail = sessionStorage.getItem('email');
-    this.userId = sessionStorage.getItem('userId');
+    this.userType = localStorage.getItem('type');
+    this.userEmail = localStorage.getItem('email');
+    this.userId = localStorage.getItem('userId');
     if (this.userType != 'operations') {
       var landUrl = '/dashboard' + this.userType + '/home'
       this.router.navigateByUrl(landUrl);

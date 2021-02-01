@@ -72,11 +72,11 @@ export class ClientCabProfileComponent implements OnInit {
     // this.step2Data.is_bod = '0';
     this.addMinutesToTime = this.Service.addMinutesToTime();
 
-    this.userEmail = sessionStorage.getItem('email');
-    this.userType = sessionStorage.getItem('type');
-    this.isCompleteness = sessionStorage.getItem('isCompleteness');
-    this.profileComplete = sessionStorage.getItem('profileComplete');
-    this.userId = sessionStorage.getItem('userId');
+    this.userEmail = localStorage.getItem('email');
+    this.userType = localStorage.getItem('type');
+    this.isCompleteness = localStorage.getItem('isCompleteness');
+    this.profileComplete = localStorage.getItem('profileComplete');
+    this.userId = localStorage.getItem('userId');
     // this.nameOftheOwner ? this.clientCabForm.step2 = this.nameOftheOwner : '';
     // this.clientCabForm.nameOftheOwner = this.nameOftheOwner;
     // this.clientCabForm.companyBodMembers = this.companyBodMembers
@@ -468,7 +468,7 @@ export class ClientCabProfileComponent implements OnInit {
               this.toastr.success(res['msg'], '');
               this.progressValue == 50 ? this.progressValue = 100 : this.progressValue = this.progressValue ;
               // this.router.navigateByUrl('/sign-in');
-              if(sessionStorage.getItem('profileComplete') == '0') {
+              if(localStorage.getItem('profileComplete') == '0') {
                 setTimeout(()=>{
                   let elem = document.getElementById('openAppDialog');
                   //console.log("App dialog hash....", elem);

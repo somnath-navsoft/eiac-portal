@@ -203,7 +203,7 @@ addMinutesToTime()
   }
 
   getToken(){
-    return sessionStorage.getItem('token');
+    return localStorage.getItem('token');
   }
 
   getUserType(){
@@ -348,7 +348,7 @@ addMinutesToTime()
     }
     if(urlVal != ''){
 
-      let getData: any = JSON.parse(sessionStorage.getItem('userData'));
+      let getData: any = JSON.parse(localStorage.getItem('userData'));
 
       ////console.log(">>> User Save data: ", getData);
       if(pageName === 'inspection-bodies-form' || pageName === 'health-care-form' || pageName == 'testing-calibration-form' || pageName == 'pt-providers-form'){

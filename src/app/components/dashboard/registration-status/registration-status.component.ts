@@ -62,7 +62,7 @@ export class RegistrationStatusComponent implements OnInit {
     this.curSortDir['applicantName']            = false;
     this.curSortDir['applicantCode']            = false;
     this.curSortDir['country']            = false;
-    this.userType = sessionStorage.getItem('type');
+    this.userType = localStorage.getItem('type');
     this.selectRegType = [{title:'No Objection Certificate', value: 'no_objection'},{title:'Work Activity Permit', value:'work_activity'}];
     this.selectAccrStatus  = [
       {title: 'Payment Pending', value:'payment_pending'},

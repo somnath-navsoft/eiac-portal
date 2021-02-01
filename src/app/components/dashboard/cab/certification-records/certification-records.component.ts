@@ -186,7 +186,7 @@ export class CertificationRecordsComponent implements OnInit {
     this.curSortDir['start_date']        = false;
     this.curSortDir['to_date']             = false;
 
-    this.userType = sessionStorage.getItem('type');
+    this.userType = localStorage.getItem('type');
 
     //Assign Search Type
     this.selectAccrType = [ 
@@ -255,7 +255,6 @@ export class CertificationRecordsComponent implements OnInit {
       this.newTextchange = 'Date of Expiry';
     }
   }
-
 
   filterSearchSec(){
     this.advSearch = !this.advSearch

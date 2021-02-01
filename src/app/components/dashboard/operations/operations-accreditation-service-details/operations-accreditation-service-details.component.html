@@ -121,7 +121,10 @@
                   <h5>Trade License No.</h5>
                 </div>
                 <div class="appln-details license_no">
-                  <span *ngIf="serviceDetail?.trade_license_number != null">{{serviceDetail?.trade_license_number}}</span>
+                  <span *ngIf="serviceDetail?.trade_license_number != null">
+                    <!-- <a href="{{selectTradeLicPath}}" target="_blank">{{serviceDetail?.trade_license_number}}</a> -->
+                    {{serviceDetail?.trade_license_number}}
+                  </span>
                   <span *ngIf="serviceDetail?.trade_license_number == null">N/A</span>
                 </div>
               </div>
@@ -1244,11 +1247,184 @@
                           </div>
                       </div>
                   </div> -->
+                  
 
                   </div>
                 </div>
               </div>
 
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row m-0">
+        <div class="col-md-12">
+          <div class="row status-det-wrapper">
+            <div class="col-md-12 p-0">
+              <div class="row">
+                <div class="col-md-12">
+
+                  <div class="appln-subhdr" *ngIf="serviceDetail?.form_meta == 'halal_conformity_bodies'">
+                    <h5>OTHER HCAB DETAILS</h5>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="table-appln">
+                        <div class="row m-0" *ngIf="serviceDetail?.form_meta == 'halal_conformity_bodies'">
+                          <div class="col-md-12">
+                            <div class="row status-det-wrapper">
+                              <div class="col-md-12 p-0">
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <div class="appln-subhdr">
+                                      <h5>SCOPE OF HALAL CONFORMITY ASSESSMENT CERTIFICATION:</h5>
+                                    </div>
+
+                                    <hr>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <div class="table-appln">
+                                      <table>
+                                        <tr>
+                                          <th>Type of Establishment</th>
+                                          <th>Name of Establishment</th>
+                                          <th>Contact Details,Name</th>
+                                          <th>Location/Distance</th>
+                                          <th>Product Category</th>
+                                          <th>Products</th>
+                                        </tr>
+                                        <ng-container *ngFor="let item of scopeofHalalConformity; let i4 = index;">
+                                          <tr >
+                                              <td>{{item.type_of_establishment}}</td>
+                                              <td>{{item.name_of_establishment}}</td>
+                                              <td>{{item.contact_details}}</td>
+                                              <td>{{item.location}}</td>
+                                              <td>{{item.product_category}}</td>
+                                              <td>{{item.products}}</td>
+                                          </tr>
+                                        </ng-container>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="row">
+                                  <div class="col-md-12">
+
+                                    <div class="appln-subhdr">
+                                      <h5>AUTHORIZED PERSONS FOR SIGNING THE HALAL CERTIFICATES</h5>
+                                    </div>
+                                    <hr>
+                                  </div>
+                                </div>
+
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <div class="table-appln">
+                                      <table>
+                                        <tr>
+                                          <th>Name of the Authorized Persons</th>
+                                          <th>Signature Specimen</th>
+                                          <th>Contact Details(Tel, Mobile No. and Email)</th>
+                                        </tr>
+                                        <ng-container *ngFor="let item of authorizedPersonforSigning; let i4 = index;">
+                                          <tr >
+                                              <td>{{item.name}}</td>
+                                              <td>
+                                                <!-- {{item.authorized_personforSigning_upload}} -->
+                                                <ng-container *ngIf="item.signature != ''">
+                                                  <a [href]="_constant.mediaPath+'/media/'+item.signature" target="_blank">
+                                                    File{{i4 + 1}}
+                                                  </a>
+                                                </ng-container>
+
+                                                <ng-container *ngIf="item.signature == ''">
+                                                  N/A
+                                                </ng-container>
+
+                                              </td>
+                                              <td>{{item.contact_details}}</td>
+                                          </tr>
+                                        </ng-container>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="row">
+                                  <div class="col-md-12">
+
+                                    <div class="appln-subhdr">
+                                      <h5>OTHER RECOGNIZED LOGOS OR SYMBOLS USED BY THE HCAB</h5>
+                                    </div>
+                                    <hr>
+                                  </div>
+                                </div>
+
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <div class="table-appln">
+                                      <table>
+                                        <tr>
+                                          <th>Logo1</th>
+                                          <th>Logo2</th>
+                                          <th>Logo3</th>
+                                        </tr>
+                                          <tr >
+                                              <td>
+                                                <ng-container *ngIf="serviceDetail.recognized_logo1 != null">
+                                                  <a *ngIf="hcabLogo1Path" href="{{hcabLogo1Path}}" target="_blank">
+                                                    {{hcabLogo1}}
+                                                  </a>
+                                                </ng-container>
+
+                                                <ng-container *ngIf="serviceDetail.recognized_logo1 == null">
+                                                  N/A
+                                                </ng-container>
+                                              </td>
+                                              <td>
+                                                <ng-container *ngIf="serviceDetail.recognized_logo2 != null">
+                                                  <a *ngIf="hcabLogo2Path" href="{{hcabLogo2Path}}" target="_blank">
+                                                    {{hcabLogo2}}
+                                                  </a>
+                                                </ng-container>
+
+                                                <ng-container *ngIf="serviceDetail.recognized_logo2 == null">
+                                                  N/A
+                                                </ng-container>
+                                              </td>
+                                              <td>
+                                                <ng-container *ngIf="serviceDetail.recognized_logo3 != null">
+                                                  <a *ngIf="hcabLogo3Path" href="{{hcabLogo3Path}}" target="_blank">
+                                                    {{hcabLogo3}}
+                                                  </a>
+                                                </ng-container>
+
+                                                <ng-container *ngIf="serviceDetail.recognized_logo3 == null">
+                                                  N/A
+                                                </ng-container>
+                                              </td>
+                                          </tr>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1407,13 +1583,15 @@
                   <div class="table-appln pt-0">
                     <table>
                       <tr>
-                        <th width="33%">Location Type(such as Regional office,Branch)</th>
-                        <th width="33%">City & Countries</th>
-                        <th width="33%">Activities carried out at this Location</th>
+                        <th >Location Type(such as Regional office,Branch)</th>
+                        <th >Countries</th>
+                        <th >City</th>
+                        <th >Activities carried out at this Location</th>
                       </tr>
                         <tr *ngFor="let item of cbsOtherActivity;">
                             <td>{{item.location_type}}</td>
-                            <td>{{item.city_country}}</td>
+                            <td>{{item.country}}</td>
+                            <td>{{item.city}}</td>
                             <td>{{item.activity_carried_out}}</td>
                         </tr>
                     </table>
@@ -1778,7 +1956,7 @@
                       <td>Mobile Number</td>
                       <td *ngIf="paymentDetails?.mobile_no != null" colspan="3">{{_service.removePlus(paymentDetails?.mobile_no)}}</td>
                     </tr>
-                    <tr *ngIf="paymentDetails?.voucher_invoice != '' && userType != 'cab_client'">
+                    <tr *ngIf="paymentDetails?.voucher_invoice != ''">
                       <td>Voucher Receipt File</td>                      
                       <td *ngIf="paymentDetails?.voucher_invoice != ''" colspan="3">
                         <a [href]="_constant.mediaPath+'/media/'+paymentDetails?.voucher_invoice" target="_blank">
@@ -1786,7 +1964,7 @@
                         </a>
                       </td>
                     </tr>
-                    <tr *ngIf="paymentDetails?.payment_receipt != '' && userType != 'cab_client'">
+                    <tr *ngIf="paymentDetails?.payment_receipt != ''">
                       <td>Payment Receipt File</td>
                       <td *ngIf="paymentDetails?.payment_receipt != null" colspan="3">
                         <a [href]="_constant.mediaPath+'/media/'+paymentDetails?.payment_receipt" target="_blank">

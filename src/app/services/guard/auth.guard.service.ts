@@ -9,7 +9,7 @@ export class AuthGuard implements CanActivate {
        
     }
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        let getLocalToken = sessionStorage.getItem('token');
+        let getLocalToken = localStorage.getItem('token');
         this.token = (getLocalToken != null) ? getLocalToken : '';        
         // console.log('Auth guard: 1',this.token);
         //this.token == undefined || this.token == '' || 

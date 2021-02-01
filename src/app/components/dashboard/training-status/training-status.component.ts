@@ -70,7 +70,7 @@ export class TrainingStatusComponent implements OnInit {
     this.curSortDir['cab_code']           = false;
     this.curSortDir['applicantName']      = false;
     this.curSortDir['applicantCode']      = false;
-    this.userType = sessionStorage.getItem('type');
+    this.userType = localStorage.getItem('type');
 
     this.selectTrainingType = [{'title':'In Premise', value: 'inprimise'},{'title':'Public Training', value: 'public_training'}];
     this.selectAccrStatus  = [

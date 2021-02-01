@@ -103,18 +103,18 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     private _trainerService: TrainerService, private _constant: Constants,public sanitizer:DomSanitizer,private modalService: NgbModal) { }
 
   ngOnInit() {
-    this.traningPublicId = sessionStorage.getItem('publicFormId');
+    this.traningPublicId = localStorage.getItem('publicFormId');
 
-    var publicCourseid = sessionStorage.getItem('trainingPublicCourse');
+    var publicCourseid = localStorage.getItem('trainingPublicCourse');
     if(publicCourseid && publicCourseid != undefined) {
       var splitId = publicCourseid.split('=');
       this.trainingPublicCourseid = splitId[1];
       // console.log(this.trainingPublicCourseid,'trainingPublicCourseid');
-      sessionStorage.setItem('publicFormId','');
+      localStorage.setItem('publicFormId','');
     }
 
-    this.userEmail = sessionStorage.getItem('email');
-    this.userType = sessionStorage.getItem('type');
+    this.userEmail = localStorage.getItem('email');
+    this.userType = localStorage.getItem('type');
     console.log(this.userType,'userType');
 
     // this.amount1 = 1 * this.fee_day_pertime1 * this.publicTrainingForm.training_duration;
@@ -509,7 +509,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
         res => {
           this.loader = true;
           if(res['status'] == true) {
-            this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['id']);
+            this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : localStorage.setItem('applicationId',res['id']);
             this.Service.moveSteps('application_information', 'participant', this.headerSteps);
           // console.log(res);
           }else{
@@ -529,7 +529,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.publicTrainingForm.email = this.userEmail;
       this.publicTrainingForm.userType = this.userType;
       this.publicTrainingForm.saved_step = '2';
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step2Data.is_draft = false;
@@ -570,7 +570,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.publicTrainingForm.saved_step = '3';
       this.step3Data.is_draft = false;
 
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step3Data.training_form_type = 'public_training';
@@ -614,7 +614,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.publicTrainingForm.saved_step = '4';
       this.step4Data.is_draft = false;
 
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step4Data.training_form_type = 'public_training';
@@ -670,7 +670,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.step5Data.is_draft = false;
       this.step5Data.training_form_type = 'public_training';
 
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
 
@@ -1125,7 +1125,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
         res => {
           this.loader = true;
           if(res['status'] == true) {
-            this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : sessionStorage.setItem('applicationId',res['id']);
+            this.formApplicationId = (this.formApplicationId && this.formApplicationId != '') ?  this.formApplicationId : localStorage.setItem('applicationId',res['id']);
             // this.Service.moveSteps('application_information', 'participant', this.headerSteps);
           // console.log(res);
           this._toaster.success('Save Draft Successfully', '');
@@ -1139,7 +1139,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.publicTrainingForm.email = this.userEmail;
       this.publicTrainingForm.userType = this.userType;
       this.publicTrainingForm.saved_step = '2';
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step2Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step2Data.is_draft = true;
@@ -1181,7 +1181,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.publicTrainingForm.saved_step = '3';
       this.step3Data.is_draft = true;
 
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step3Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step3Data.training_form_type = 'public_training';
@@ -1218,7 +1218,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.publicTrainingForm.saved_step = '4';
       this.step4Data.is_draft = true;
 
-      var applicationId = sessionStorage.getItem('applicationId');
+      var applicationId = localStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
       this.step4Data.training_form_type = 'public_training';

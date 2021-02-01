@@ -40,7 +40,7 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.loader = true;
-    this.routeId = sessionStorage.getItem('trainingId');
+    this.routeId = localStorage.getItem('trainingId');
     this.loadData();
     // this.undertaking_confirmTop3 = true;
   }
