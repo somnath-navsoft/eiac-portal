@@ -8,6 +8,9 @@ import { async } from '@angular/core/testing';
 // import * as data from '../../../../assets/csc-json/cities.json';
 // import SampleJson from './cities.json';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { AppState, selectAuthState } from '../../../store/app.states';
+import { LogOut, LogInSuccess } from '../../../store/actions/auth.actions';
 
 @Component({
   selector: 'app-client-cab-profile',
@@ -60,10 +63,11 @@ export class ClientCabProfileComponent implements OnInit {
   userId:any;
   modalOptions:NgbModalOptions;
   closeResult: string;
+  user = null;
   
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,private modalService: NgbModal) { 
+  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,private modalService: NgbModal,private store: Store<AppState>) { 
     this.today.setDate(this.today.getDate());
   }
 
@@ -505,6 +509,7 @@ export class ClientCabProfileComponent implements OnInit {
 
   closeChecklistDialog(){
     this.modalService.dismissAll();
+    this.store.dispatch(new LogOut(this.user));
   }
 
   private getDismissReason(reason: any): string {

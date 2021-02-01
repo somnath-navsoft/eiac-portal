@@ -725,14 +725,14 @@
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExAlphaNum)"
-                                                                    matInput placeholder="" name="test_name_{{i}}" [(ngModel)]="proficiencyTesting[i].test_name"> 
+                                                                    matInput placeholder="" name="test_name_{{i}}" [(ngModel)]="proficiencyTesting[i].test_name" required> 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input 
-                                                                    matInput [matDatepicker]="participate_date"    readonly="true"
+                                                                    matInput [matDatepicker]="participate_date" required  readonly="true"
                                                                     (click)="Service._openCalendar(participate_date)" 
                                                                     (dateChange)="Service.inputEvent($event,i,proficiencyTesting)"   placeholder="Date of Issue" name="participate_date_{{i}}" [(ngModel)]="proficiencyTesting[i].participation_date">
                                                                         <mat-datepicker-toggle matSuffix [for]="participate_date"></mat-datepicker-toggle>
@@ -743,14 +743,14 @@
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExAlphaNum)" 
-                                                                    matInput placeholder="" name="pt_provider_{{i}}" [(ngModel)]="proficiencyTesting[i].pt_provider"> 
+                                                                    matInput placeholder="" name="pt_provider_{{i}}" [(ngModel)]="proficiencyTesting[i].pt_provider" required> 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
                                                                     <input  (keypress)="Service.inputFilter($event, Service.regExAlphaNum)" matInput placeholder="" name="result_summery_{{i}}" 
-                                                                    [(ngModel)]="proficiencyTesting[i].result"> 
+                                                                    [(ngModel)]="proficiencyTesting[i].result" required> 
                                                                 </mat-form-field>
                                                                 </td>
                                                             <td class="content-icn">
@@ -1480,7 +1480,7 @@
                                                         <mat-label>Organization Name</mat-label>
                                                         <input 
                                                         matInput placeholder="Organization Name" name="onbehalf_company_name" 
-                                                        [(ngModel)]="step7Data.organization_name" required>
+                                                        [(ngModel)]="step7Data.organization_name" readonly>
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="col-md-4 col-sm-12">

@@ -122,8 +122,8 @@
                 </div>
                 <div class="appln-details license_no">
                   <span *ngIf="serviceDetail?.trade_license_number != null">
-                    <!-- <a href="{{selectTradeLicPath}}" target="_blank">{{serviceDetail?.trade_license_number}}</a> -->
-                    {{serviceDetail?.trade_license_number}}
+                    <a href="{{selectTradeLicPath}}" target="_blank">{{serviceDetail?.trade_license_number}}</a>
+                    <!-- {{serviceDetail?.trade_license_number}} -->
                   </span>
                   <span *ngIf="serviceDetail?.trade_license_number == null">N/A</span>
                 </div>
