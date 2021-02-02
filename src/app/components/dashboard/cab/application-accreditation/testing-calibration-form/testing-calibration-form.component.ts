@@ -2192,6 +2192,10 @@ getCriteria(value, secInd: any){
           this.ownOrgMembInfo = step2['cabBodData'];
           this.step1Data.physical_location_address = data.applicant_location;
           this.step1Data.po_box = data.po_box;
+
+          var cabName = data.cab_name.toString();
+          // console.log(cabName,'cabName');
+          this.step7Data.organization_name  = (cabName != undefined && cabName != null) ? cabName : 'N/A';
           
           this.step1Data.telephone = data.applicant_tel_no;
         }
@@ -2645,6 +2649,7 @@ getCriteria(value, secInd: any){
       if(this.step1Data.is_hold_other_accreditation_select != undefined && this.step1Data.is_hold_other_accreditation_select == 0){
         this.step1Data.is_hold_other_accreditation = false;
       }
+      this.step1Data.application_number = this.Service.getAppID();
       //this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
       this.testingCalForm.step1 = this.step1Data;
 
@@ -2713,6 +2718,7 @@ getCriteria(value, secInd: any){
         this.step1Data.is_hold_other_accreditation = false;
       }
       this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
+      this.step1Data.application_number = this.Service.getAppID();
       this.testingCalForm.step1 = this.step1Data;
 
       this.testingCalForm.step1['ownOrgBasicInfo'] = [];

@@ -1478,9 +1478,6 @@ export class InspectionBodiesFormComponent implements OnInit {
           // if(getData.data.cab_name  != ''){
           // this.step1Data.official_commercial_name = getData.data.cab_name.toString();
           // }
-          var cabName = getData.data.cab_name.toString();
-          console.log(cabName,'cabName');
-          this.step7Data.organization_name  = (cabName != undefined && cabName != null) ? cabName : 'N/A';
           
           // if(getData.data.date_of_issue != ''){
           // this.step1Data.date_of_expiry = getData.data.date_of_expiry;
@@ -2018,6 +2015,10 @@ export class InspectionBodiesFormComponent implements OnInit {
                   this.step1Data.official_commercial_name = data.cab_name.toString();
                 }
             //}
+
+            var cabName = data.cab_name.toString();
+            // console.log(cabName,'cabName');
+            this.step7Data.organization_name  = (cabName != undefined && cabName != null) ? cabName : 'N/A';
 
             if(data.date_of_issue != ''){
               this.step1Data.date_of_expiry = data.date_of_expiry;
@@ -2883,6 +2884,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     if(this.step1Data.official_email == undefined){
       this.step1Data.official_email = " ";
     }
+    this.step1Data.application_number = this.Service.getAppID();
 
     // this.inspectionBodyForm.step1['ownOrgBasicInfo'] = (this.ownOrgBasicInfo.length> 0) ? this.ownOrgBasicInfo :  [];
     //   this.inspectionBodyForm.step1['ownOrgMembInfo'] = [];
@@ -3018,6 +3020,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         this.inspectionBodyForm.email = this.userEmail;
         this.inspectionBodyForm.userType = this.userType;
         this.inspectionBodyForm.saved_step = 1;
+        this.step1Data.application_number = this.Service.getAppID();
         this.inspectionBodyForm.step1 = this.step1Data;      
   
         this.inspectionBodyForm.step1['ownOrgBasicInfo'] = [];

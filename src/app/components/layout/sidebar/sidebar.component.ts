@@ -15,7 +15,10 @@ export class SidebarComponent implements OnInit {
   userEmail:any;
   currentTitle:any;
   isdDynamicsopenClose:any;
-  
+  accrCount:any;
+  registrationCount:any;
+  trainingCount:any;
+
   constructor(private _constants:  Constants, private _service: AppService, 
               private _router: Router) { }
 
@@ -37,6 +40,11 @@ export class SidebarComponent implements OnInit {
         // let getTypeMenu = this.dashMenu.find(rec => rec.type === this.userType);
         // this.dashMenu = getTypeMenu;
         
+        // console.log(this.dashMenu,'APPLICATIONAPPLICATION');
+        this.accrCount = this.userType == 'operations' ? res['applicationCount'].accrCount : '';
+        this.registrationCount = this.userType == 'operations' ? res['applicationCount'].registerCount : '';
+        this.trainingCount = this.userType == 'operations' ? res['applicationCount'].trainingCount : '';
+
         if(this.dashMenu != null) {
           this.dashMenu.forEach((res,key) => {
             // this.dashMenu[key]['icon'] = res.title == 'APPLICATION' ? 'icon-doc' : 'icon-dashboard';
@@ -60,7 +68,11 @@ export class SidebarComponent implements OnInit {
               this.dashMenu[key]['icon'] = 'icon-user-dash';
             }else if(res.title == 'MESSAGES'){
               this.dashMenu[key]['icon'] = 'icon-email';
-            }else{
+            }
+            // else if(res.title == 'APPLICATION' && ){
+
+            // }
+            else{
               this.dashMenu[key]['icon'] = 'icon-dashboard';
             }
 

@@ -1395,6 +1395,11 @@ addSchemeRow(obj: any = [],index: number){
           // this.step1Data.is_main_activity_note = "";
           this.step1Data.mailing_address = data.applicant_address;
           this.step1Data.official_commercial_name = data.cab_name;
+
+          var cabName = data.cab_name.toString();
+          // console.log(cabName,'cabName');
+          this.step7Data.organization_name  = (cabName != undefined && cabName != null) ? cabName : 'N/A';
+
           this.step1Data.official_email = data.applicant_email;
           this.step1Data.official_website = data.applicant_website;
           this.ownOrgBasicInfo = step2['cabOwnerData'];
@@ -2419,6 +2424,7 @@ addSchemeRow(obj: any = [],index: number){
       this.step1Data.hcab_other_location = this.step1Data.hcab_other_loc == '0' ? false : true;
       
       this.step1Data.is_draft = true;
+      this.step1Data.application_number = this.Service.getAppID();
       this.publicHalalConformityForm.step1 = this.step1Data;
   
       this.publicHalalConformityForm.step1['ownOrgBasicInfo'] = [];
@@ -2723,6 +2729,7 @@ addSchemeRow(obj: any = [],index: number){
       this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accr == '0' ? false : true;
       this.step1Data.hcab_other_location = this.step1Data.hcab_other_loc == '0' ? false : true;
       
+      this.step1Data.application_number = this.Service.getAppID();
       this.publicHalalConformityForm.step1 = this.step1Data;
   
       this.publicHalalConformityForm.step1['ownOrgBasicInfo'] = [];

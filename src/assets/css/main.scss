@@ -409,6 +409,18 @@ td.fc-day-top.fc-tue.fc-today span.fc-day-number { color: #B14A56!important; }
   text-transform: capitalize;
   font-weight: normal;
   color: #D5C8BA;
+  display: flex;
+  justify-content: space-between;
+}
+.left_menu_portal li ul.dropcontent li a span {
+  color: #fff;
+  font-family: 'Dubai Bold';
+  border-radius: 50%;
+  line-height: 1;
+  padding: 5px;
+  background-color: #B54150;
+  display: flex;
+  align-items: center;
 }
 .left_menu_portal li .dropdown { position: absolute; right: 5px; font-size: 12px; margin: 0; }
 .sub-side-cont li a:hover { background: rgba(255, 255, 255, 0.1); border-radius: 15px; }
@@ -1536,6 +1548,7 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+.auth-details td:last-child a.info { text-decoration: none; margin-left: 10px; display: inline-block; }
 //==================RESPONSIVE==================//
 @media(max-width: 1500px) {
   // .main-dashboard-cnt .user-steps { height: 50%; }

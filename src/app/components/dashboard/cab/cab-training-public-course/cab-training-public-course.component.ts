@@ -498,6 +498,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       if(this.formApplicationId > 0){
         this.step1Data.application_id = this.formApplicationId;
       }
+      this.step1Data.application_number = this.Service.getAppID();
 
       this.publicTrainingForm.step1 = this.step1Data;
 
@@ -1115,6 +1116,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       if(this.formApplicationId > 0){
         this.step1Data.application_id = this.formApplicationId;
       }
+      this.step1Data.application_number = this.Service.getAppID();
       this.publicTrainingForm.step1 = this.step1Data;
 
       // console.log(this.publicTrainingForm);

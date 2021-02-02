@@ -1379,7 +1379,7 @@
                                                     <tr>
                                                         <td><mat-checkbox name="undertaking_confirm2" [disableRipple]="true"
                                                             (click)="$event.preventDefault()" [(ngModel)]="authorizationList.undertaking_confirm2"></mat-checkbox></td>
-                                                        <td><span><a href="javascript:void(0)" title="Please review the checklist" alt="Please review the checklist" (click)="openView(checklistView, 'checklist')">Filled in Document Review Checklist</a></span> (for 1st submission only)<br/>
+                                                        <td><span><a href="javascript:void(0)" title="Please review the checklist" alt="Please review the checklist" (click)="openView(checklistView, 'checklist')">Filled in Document Review Checklist</a></span> (for 1st submission only)&nbsp;&nbsp;<a class="info" href="javascript:void(0)"><span class="icon-info"></span> </a>&nbsp;<span [ngStyle]="{'font-size': '14px'}">Please review the checklist</span><br/>
                                                             <p class="error" *ngIf="!readReviewChecklist && isApplicationSubmitted == true">Please review the checklist</p>                                                            
                                                         </td>
                                                     </tr>
@@ -1714,8 +1714,9 @@
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Payment Amount</mat-label>
                                                 <input type="number" [ngModelOptions]="{standalone: true}" required="true"
-                                                matInput placeholder="Payment Amount" 
+                                                matInput placeholder="AED" 
                                                 [(ngModel)]="voucherSentData.amount">
+                                                <span matPrefix>AED&nbsp;</span>
                                             </mat-form-field>
                                         </div>
                                     </div>

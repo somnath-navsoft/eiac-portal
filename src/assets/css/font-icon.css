@@ -268,3 +268,6 @@
 .icon-turn-off:before {
   content: "\e951";
 }
+.icon-info:before {
+  content: "\e952";
+}

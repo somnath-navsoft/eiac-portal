@@ -101,7 +101,21 @@
                 <div class="sub-side-cont" *ngIf="item.title == currentTitle">
                     <ul class="dropcontent">
                         <li *ngFor="let data of item.child_menu">
-                            <a href="javascript:void(0)" (click)="goToLink(data.menu.link)">{{data.title}}</a>
+                            <ng-container *ngIf="userType == 'operations'">
+                                <a *ngIf="data.title == 'Accreditation'" href="javascript:void(0)" (click)="goToLink(data.menu.link)">{{data.title}} <span class="count_data">{{accrCount}}</span></a>
+                                
+
+                                <a *ngIf="data.title == 'Registration'" href="javascript:void(0)" (click)="goToLink(data.menu.link)">{{data.title}} <span class="count_data">{{registrationCount}}</span></a>
+
+                                <a *ngIf="data.title == 'Training'" href="javascript:void(0)" (click)="goToLink(data.menu.link)">{{data.title}} <span class="count_data">{{trainingCount}}</span></a>
+
+                                <a *ngIf="data.title != 'Accreditation' && data.title != 'Registration' && data.title != 'Training'" href="javascript:void(0)" (click)="goToLink(data.menu.link)">{{data.title}}</a>
+                            </ng-container>
+
+                            
+                            <ng-container *ngIf="userType != 'operations'">
+                                <a *ngIf="userType != 'operations'" href="javascript:void(0)" (click)="goToLink(data.menu.link)">{{data.title}}</a>
+                            </ng-container>
                         </li>
                     </ul>
                 </div>

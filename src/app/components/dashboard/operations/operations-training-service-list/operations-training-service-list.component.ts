@@ -161,7 +161,7 @@ export class OperationsTrainingServiceListComponent implements OnInit {
           let elem: any = myClasses[i]
           elem.style.display = 'none';
       }
-    if(this.searchValue == 'cab_name') {
+    if(this.searchValue == 'application_number') {
       document.getElementById('applicant').style.display = 'block';
     }else if(this.searchValue == 'cab_code') {
       document.getElementById('applicant').style.display = 'block';
