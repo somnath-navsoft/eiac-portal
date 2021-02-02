@@ -17,6 +17,9 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { iif } from 'rxjs';
 
+// import csc from 'country-state-city';
+// import { ICountry, IState, ICity } from 'country-state-city'
+
 @Component({
   selector: 'app-halal-conformity-form',
   templateUrl: './halal-conformity-form.component.html',
@@ -312,7 +315,7 @@ export class HalalConformityFormComponent implements OnInit {
   ngOnInit() {
     // this.titleService.setTitle('EIAC - Halal Conformity Bodies');
     // this.loadCountryStateCity();
-
+    
     this.allCityTypeLoder[0] = {};
     this.allCityTypeLoder[0]['loader'] = false;
 
@@ -1281,14 +1284,22 @@ addSchemeRow(obj: any = [],index: number){
         let countryFind : any = this.getCountryStateCityAll.find(item => item.CountryName === cname);
         console.log(">>> found country/city: ", countryFind);
           if(countryFind != undefined && countryFind.States != undefined && countryFind.States.length > 0){
-            countryFind.States.forEach((item, k) => {
-                  this.allCityTypeLoder[index]['loader'] = true;
-                  if(item.Cities != undefined && item.Cities.length > 0){
-                    item.Cities.forEach(rec => {
-                      tempCities.push({name: rec});
-                    })
-                  }
-            })
+            
+            
+
+                  countryFind.States.forEach((item, k) => {
+                        this.allCityTypeLoder[index]['loader'] = true;
+                        // ||  || 
+                        if(cname != 'United States' && cname != 'United Kingdom' && cname != 'United Arab Emirates'){
+                          if(item.Cities != undefined && item.Cities.length > 0){
+                            item.Cities.forEach(rec => {
+                              tempCities.push({name: rec});
+                            })
+                          }
+                        }else{
+                          tempCities.push({name: item.StateName});
+                        }
+                  })
           }
           if(tempCities.length > 0){
             this.allCityTypeLoder[index]['loader'] = false;
@@ -1307,7 +1318,7 @@ addSchemeRow(obj: any = [],index: number){
       this.getCountryStateCityAll = record['Countries'];
       console.log("...>>> ", this.getCountryStateCityAll);
     });
-    //console.log("ALL CSC: ", this.getCountryStateCityAll);
+    console.log("ALL CSC: ", cscLIST);
   }
   
   loadCountryStateCity = async() => {
