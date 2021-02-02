@@ -308,7 +308,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
       }
     if(this.searchValue == 'cab_name') {
       document.getElementById('applicant').style.display = 'block';
-    }else if(this.searchValue == 'id') {
+    }else if(this.searchValue == 'application_number') {
       document.getElementById('applicant').style.display = 'block';
     }else if(this.searchValue == 'form_meta') {
       document.getElementById('accreditation_type').style.display = 'block';

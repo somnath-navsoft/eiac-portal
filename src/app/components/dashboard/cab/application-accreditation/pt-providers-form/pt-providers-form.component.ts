@@ -1152,6 +1152,9 @@ setexDate(date){
         //this.step1Data.is_main_activity_note = "";
         this.step1Data.mailing_address = data.mailing_address; //data.applicant_address;
         this.step1Data.official_commercial_name = data.cab_name;
+        var cabName = data.cab_name.toString();
+        // console.log(cabName,'cabName');
+        this.step7Data.organization_name  = (cabName != undefined && cabName != null) ? cabName : 'N/A';
         this.step1Data.official_email = data.applicant_email;
         this.step1Data.official_website = data.applicant_website;
         this.ownOrgBasicInfo = step2['cabOwnerData'];
@@ -1566,6 +1569,7 @@ onSubmitStep1(ngForm1: any){
 
     this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation_select == '0' ? false : true;
    // this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
+   this.step1Data.application_number = this.Service.getAppID();
     this.ptProvidersForm.step1 = this.step1Data;
 
     this.ptProvidersForm.step1['ownOrgBasicInfo'] = [];
@@ -1632,6 +1636,7 @@ savedraftStep(stepCount) {
     this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
     this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation == '0' ? false : true;
     this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
+    this.step1Data.application_number = this.Service.getAppID();
     this.ptProvidersForm.step1 = this.step1Data;
 
     this.ptProvidersForm.step1['ownOrgBasicInfo'] = [];

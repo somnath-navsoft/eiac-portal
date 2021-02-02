@@ -227,7 +227,7 @@ td.fc-day-top.fc-tue.fc-today span.fc-day-number { color: #B14A56!important; }
 .remembr-pwd .mat-checkbox-inner-container { height: 20px; width: 20px;}
 .visible-pwd { position: absolute; right: 5px; color: #6c6c6c; }
 .matupload .visible-pwd { right: 25px; }
-.cab-data { width: 100%; }
+.cab-data { width: 100%; position: relative; }
 .cab-data .mat-form-field-label { color: #3F3F3F; font-family: 'Dubai Regular';}
 .mat-form-field-label { font-size: 18px; }
 .scope_list {
@@ -409,6 +409,18 @@ td.fc-day-top.fc-tue.fc-today span.fc-day-number { color: #B14A56!important; }
   text-transform: capitalize;
   font-weight: normal;
   color: #D5C8BA;
+  display: flex;
+  justify-content: space-between;
+}
+.left_menu_portal li ul.dropcontent li a span {
+  color: #fff;
+  font-family: 'Dubai Bold';
+  border-radius: 50%;
+  line-height: 1;
+  padding: 5px;
+  background-color: #B54150;
+  display: flex;
+  align-items: center;
 }
 .left_menu_portal li .dropdown { position: absolute; right: 5px; font-size: 12px; margin: 0; }
 .sub-side-cont li a:hover { background: rgba(255, 255, 255, 0.1); border-radius: 15px; }
@@ -902,7 +914,7 @@ a:hover { text-decoration: none; }
 .event_timings::-webkit-scrollbar-track { border-radius: 25px; }
 .event_timings::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, .1);  border-radius: 25px; }
 .event_timings ul { padding: 0; margin: 0; list-style: none; }
-.event_timings li { padding: 13px 15px; font-size: 16px; font-family: 'Dubai Regular'; color: #444444; }
+.event_timings li { padding: 13px 15px; font-size: 17px; font-family: 'Dubai Regular'; color: #444444; }
 .event_timings hr { margin: 0; }
 .date-dash { color: #B14A56; border: 1px solid #B14A56; border-radius: 25px; font-family: 'Dubai Medium'; font-size: 14px; background: #ffffff; padding: 0 10px; margin-right: 20px; }
 .activity-details { position: relative; }
@@ -1472,7 +1484,7 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .auth-details td:last-child { font-size: 18px; }
 .auth-details td:last-child a { text-decoration: underline; color: #AA9777; }
 .undertaking-last { display: flex; justify-content: space-between; align-items: center; }
-.recommend { font-size: 18px; display: flex; align-items: center; align-content: center; font-family: 'Dubai regular'; }
+// .recommend { font-size: 18px; display: flex; align-items: center; align-content: center; font-family: 'Dubai regular'; }
 .recommend a { color: #AA9777; }
 .signature_under { border-bottom: 1px solid #9B9B9B; padding: 40px 50px 10px; font-family: 'Sign Regular'; font-size: 22px; }
 .date_undertake span { color: #222222; font-size: 18px; font-family: 'Dubai Regular'; }
@@ -1521,6 +1533,22 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .main-status option { font-size: 18px; font-family: 'Dubai Regular'; }
 .main-status .head-dash.region { margin-left: 4px; }
 
+.aed_logo .mat-form-field-infix:before {
+  content: 'د.إ';
+  position: absolute;
+  right: 0;
+  color: #656565;
+  font-size: 16px;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+.auth-details td:last-child a.info { text-decoration: none; margin-left: 10px; display: inline-block; }
 //==================RESPONSIVE==================//
 @media(max-width: 1500px) {
   // .main-dashboard-cnt .user-steps { height: 50%; }

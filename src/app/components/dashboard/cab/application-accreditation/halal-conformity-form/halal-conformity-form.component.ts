@@ -17,6 +17,9 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { iif } from 'rxjs';
 
+// import csc from 'country-state-city';
+// import { ICountry, IState, ICity } from 'country-state-city'
+
 @Component({
   selector: 'app-halal-conformity-form',
   templateUrl: './halal-conformity-form.component.html',
@@ -312,7 +315,7 @@ export class HalalConformityFormComponent implements OnInit {
   ngOnInit() {
     // this.titleService.setTitle('EIAC - Halal Conformity Bodies');
     // this.loadCountryStateCity();
-
+    
     this.allCityTypeLoder[0] = {};
     this.allCityTypeLoder[0]['loader'] = false;
 
@@ -1281,14 +1284,22 @@ addSchemeRow(obj: any = [],index: number){
         let countryFind : any = this.getCountryStateCityAll.find(item => item.CountryName === cname);
         console.log(">>> found country/city: ", countryFind);
           if(countryFind != undefined && countryFind.States != undefined && countryFind.States.length > 0){
-            countryFind.States.forEach((item, k) => {
-                  this.allCityTypeLoder[index]['loader'] = true;
-                  if(item.Cities != undefined && item.Cities.length > 0){
-                    item.Cities.forEach(rec => {
-                      tempCities.push({name: rec});
-                    })
-                  }
-            })
+            
+            
+
+                  countryFind.States.forEach((item, k) => {
+                        this.allCityTypeLoder[index]['loader'] = true;
+                        // ||  || 
+                        if(cname != 'United States' && cname != 'United Kingdom' && cname != 'United Arab Emirates'){
+                          if(item.Cities != undefined && item.Cities.length > 0){
+                            item.Cities.forEach(rec => {
+                              tempCities.push({name: rec});
+                            })
+                          }
+                        }else{
+                          tempCities.push({name: item.StateName});
+                        }
+                  })
           }
           if(tempCities.length > 0){
             this.allCityTypeLoder[index]['loader'] = false;
@@ -1307,7 +1318,7 @@ addSchemeRow(obj: any = [],index: number){
       this.getCountryStateCityAll = record['Countries'];
       console.log("...>>> ", this.getCountryStateCityAll);
     });
-    //console.log("ALL CSC: ", this.getCountryStateCityAll);
+    console.log("ALL CSC: ", cscLIST);
   }
   
   loadCountryStateCity = async() => {
@@ -1395,6 +1406,11 @@ addSchemeRow(obj: any = [],index: number){
           // this.step1Data.is_main_activity_note = "";
           this.step1Data.mailing_address = data.applicant_address;
           this.step1Data.official_commercial_name = data.cab_name;
+
+          var cabName = data.cab_name.toString();
+          // console.log(cabName,'cabName');
+          this.step7Data.organization_name  = (cabName != undefined && cabName != null) ? cabName : 'N/A';
+
           this.step1Data.official_email = data.applicant_email;
           this.step1Data.official_website = data.applicant_website;
           this.ownOrgBasicInfo = step2['cabOwnerData'];
@@ -2419,6 +2435,7 @@ addSchemeRow(obj: any = [],index: number){
       this.step1Data.hcab_other_location = this.step1Data.hcab_other_loc == '0' ? false : true;
       
       this.step1Data.is_draft = true;
+      this.step1Data.application_number = this.Service.getAppID();
       this.publicHalalConformityForm.step1 = this.step1Data;
   
       this.publicHalalConformityForm.step1['ownOrgBasicInfo'] = [];
@@ -2723,6 +2740,7 @@ addSchemeRow(obj: any = [],index: number){
       this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accr == '0' ? false : true;
       this.step1Data.hcab_other_location = this.step1Data.hcab_other_loc == '0' ? false : true;
       
+      this.step1Data.application_number = this.Service.getAppID();
       this.publicHalalConformityForm.step1 = this.step1Data;
   
       this.publicHalalConformityForm.step1['ownOrgBasicInfo'] = [];

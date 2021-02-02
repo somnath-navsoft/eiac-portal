@@ -1641,7 +1641,7 @@
                                                     <tr>
                                                         <td><mat-checkbox name="undertaking_confirm2" [disableRipple]="true"
                                                             (click)="$event.preventDefault()" [(ngModel)]="authorizationList.undertaking_confirm2"></mat-checkbox></td>
-                                                        <td><span><a href="javascript:void(0)" title="Please review the checklist" alt="Please review the checklist" (click)="openView(checklistView, 'checklist')">Filled Up Document Review Checklist based on the related standard</a></span> (for 1st submission only)<br/>
+                                                        <td><span><a href="javascript:void(0)" title="Please review the checklist" alt="Please review the checklist" (click)="openView(checklistView, 'checklist')">Filled Up Document Review Checklist based on the related standard</a></span> (for 1st submission only)&nbsp;&nbsp;<a class="info" href="javascript:void(0)"><span class="icon-info"></span> </a>&nbsp;<span [ngStyle]="{'font-size': '14px'}">Please review the checklist</span><br/>
                                                             <p class="error" *ngIf="!readReviewChecklist && isApplicationSubmitted == true">Please review the checklist</p>                                                            
                                                         </td>
                                                     </tr>
@@ -1765,7 +1765,7 @@
                                                         <input  
                                                         (keypress)="Service.inputFilter($event, Service.regExName)" 
                                                         matInput placeholder="Organization Name" name="onbehalf_company_name" 
-                                                        [(ngModel)]="step7Data.organization_name" required>
+                                                        [(ngModel)]="step7Data.organization_name" readonly>
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="col-md-4 col-sm-12">
@@ -1983,6 +1983,7 @@
                                                 <mat-label>Payment Amount</mat-label>
                                                 <input type="number" [ngModelOptions]="{standalone: true}" required matInput placeholder="Payment Amount" 
                                                 [(ngModel)]="voucherSentData.amount">
+                                                <span matPrefix>AED&nbsp;</span>
                                             </mat-form-field>
                                         </div>
                                     </div>

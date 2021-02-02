@@ -1770,9 +1770,14 @@ export class InspectionBodiesFormComponent implements OnInit {
           this.step6Data.prelim_visit_select_time = getData.data.prelim_visit_time;
         }
         //Step 7
+        
         if(getData.data.onBehalfApplicantDetails != null && getData.data.onBehalfApplicantDetails != undefined){
           let getAuthData = getData.data.onBehalfApplicantDetails;
           ////console.log(">>> Auth data: ", getAuthData);
+          // console.log(">>> Auth data: ", getData.data.cab_name);
+          // if(getData.data.cab_name  != ''){
+          //   this.step1Data.official_commercial_name = getData.data.cab_name.toString();
+          // }
           this.step7Data.organization_name        = (getAuthData.organization_name != undefined) ? getAuthData.organization_name : '';
           this.step7Data.representative_name      = getAuthData.representative_name;
           this.step7Data.designation              = getAuthData.designation;
@@ -2005,11 +2010,16 @@ export class InspectionBodiesFormComponent implements OnInit {
               }
             }
             this.step1Data.trade_license_number = data.trade_license_number;
+            this.step1Data.trade_license = data.trade_license;
             //if(this.urlVal == 'undefined'){
                 if(data.cab_name  != ''){
                   this.step1Data.official_commercial_name = data.cab_name.toString();
                 }
             //}
+
+            var cabName = data.cab_name.toString();
+            // console.log(cabName,'cabName');
+            this.step7Data.organization_name  = (cabName != undefined && cabName != null) ? cabName : 'N/A';
 
             if(data.date_of_issue != ''){
               this.step1Data.date_of_expiry = data.date_of_expiry;
@@ -2875,6 +2885,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     if(this.step1Data.official_email == undefined){
       this.step1Data.official_email = " ";
     }
+    this.step1Data.application_number = this.Service.getAppID();
 
     // this.inspectionBodyForm.step1['ownOrgBasicInfo'] = (this.ownOrgBasicInfo.length> 0) ? this.ownOrgBasicInfo :  [];
     //   this.inspectionBodyForm.step1['ownOrgMembInfo'] = [];
@@ -3010,6 +3021,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         this.inspectionBodyForm.email = this.userEmail;
         this.inspectionBodyForm.userType = this.userType;
         this.inspectionBodyForm.saved_step = 1;
+        this.step1Data.application_number = this.Service.getAppID();
         this.inspectionBodyForm.step1 = this.step1Data;      
   
         this.inspectionBodyForm.step1['ownOrgBasicInfo'] = [];
@@ -3303,9 +3315,9 @@ export class InspectionBodiesFormComponent implements OnInit {
           }
         });
     }
-    // else{
-    //   this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
-    // }
+    else{
+      this.toastr.warning('Please Fill required field','Validation Error',{timeOut:5000});
+    }
   }
 
   onSubmitPersonalInformation(ngForm3: any, type?: boolean){

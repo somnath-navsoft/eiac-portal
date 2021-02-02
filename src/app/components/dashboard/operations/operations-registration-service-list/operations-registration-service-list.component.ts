@@ -134,7 +134,7 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
       }
     if(this.searchValue == 'cab_name') {
       document.getElementById('applicant').style.display = 'block';
-    }else if(this.searchValue == 'id') {
+    }else if(this.searchValue == 'application_number') {
       document.getElementById('applicant').style.display = 'block';
     }else if(this.searchValue == 'cab_code') {
       document.getElementById('applicant').style.display = 'block';

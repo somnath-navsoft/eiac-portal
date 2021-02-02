@@ -1301,6 +1301,10 @@ loadAppInfo(){
         this.step1Data.official_email = data.applicant_email;
         this.step1Data.official_website = data.applicant_website;
         this.ownOrgBasicInfo = step2['cabOwnerData'];
+
+        var cabName = data.cab_name.toString();
+        // console.log(cabName,'cabName');
+        this.step7Data.organization_name  = (cabName != undefined && cabName != null) ? cabName : 'N/A';
         //console.log(this.ownOrgBasicInfo,'ownOrgBasicInfo');
         step2['cabBodData'].forEach((res,key) => {
           // //console.log(res," -- ",key);
@@ -1718,6 +1722,7 @@ savedraftStep(stepCount) {
     this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
     this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation_select == '0' ? false : true;
     this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
+    this.step1Data.application_number = this.Service.getAppID();
     this.certificationBodiesForm.step1 = this.step1Data;
 
     this.certificationBodiesForm.step1['ownOrgBasicInfo'] = [];
@@ -1983,6 +1988,7 @@ onSubmitStep1(ngForm1: any){
     // this.certificationBodiesForm.step1.is_draft = false;
     this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
     this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation_select == '0' ? false : true;
+    this.step1Data.application_number = this.Service.getAppID();
     this.certificationBodiesForm.step1 = this.step1Data;
 
     this.certificationBodiesForm.step1['ownOrgBasicInfo'] = [];
@@ -2183,11 +2189,22 @@ cityByCountryAll(cname: string, index: number){
       if(countryFind != undefined && countryFind.States != undefined && countryFind.States.length > 0){
         countryFind.States.forEach((item, k) => {
               this.allCityTypeLoder[index]['loader'] = true;
-              if(item.Cities != undefined && item.Cities.length > 0){
-                item.Cities.forEach(rec => {
-                  tempCities.push({name: rec});
-                })
+
+              if(cname != 'United States' && cname != 'United Kingdom' && cname != 'United Arab Emirates'){
+                if(item.Cities != undefined && item.Cities.length > 0){
+                  item.Cities.forEach(rec => {
+                    tempCities.push({name: rec});
+                  })
+                }
+              }else{
+                tempCities.push({name: item.StateName});
               }
+
+              // if(item.Cities != undefined && item.Cities.length > 0){
+              //   item.Cities.forEach(rec => {
+              //     tempCities.push({name: rec});
+              //   })
+              // }
         })
       }
       if(tempCities.length > 0){
