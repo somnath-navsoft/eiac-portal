@@ -2189,11 +2189,22 @@ cityByCountryAll(cname: string, index: number){
       if(countryFind != undefined && countryFind.States != undefined && countryFind.States.length > 0){
         countryFind.States.forEach((item, k) => {
               this.allCityTypeLoder[index]['loader'] = true;
-              if(item.Cities != undefined && item.Cities.length > 0){
-                item.Cities.forEach(rec => {
-                  tempCities.push({name: rec});
-                })
+
+              if(cname != 'United States' && cname != 'United Kingdom' && cname != 'United Arab Emirates'){
+                if(item.Cities != undefined && item.Cities.length > 0){
+                  item.Cities.forEach(rec => {
+                    tempCities.push({name: rec});
+                  })
+                }
+              }else{
+                tempCities.push({name: item.StateName});
               }
+
+              // if(item.Cities != undefined && item.Cities.length > 0){
+              //   item.Cities.forEach(rec => {
+              //     tempCities.push({name: rec});
+              //   })
+              // }
         })
       }
       if(tempCities.length > 0){
