@@ -1774,9 +1774,10 @@ export class InspectionBodiesFormComponent implements OnInit {
         if(getData.data.onBehalfApplicantDetails != null && getData.data.onBehalfApplicantDetails != undefined){
           let getAuthData = getData.data.onBehalfApplicantDetails;
           ////console.log(">>> Auth data: ", getAuthData);
-          if(data.cab_name  != ''){
-            this.step1Data.official_commercial_name = data.cab_name.toString();
-          }
+          // console.log(">>> Auth data: ", getData.data.cab_name);
+          // if(getData.data.cab_name  != ''){
+          //   this.step1Data.official_commercial_name = getData.data.cab_name.toString();
+          // }
           this.step7Data.organization_name        = (getAuthData.organization_name != undefined) ? getAuthData.organization_name : '';
           this.step7Data.representative_name      = getAuthData.representative_name;
           this.step7Data.designation              = getAuthData.designation;
