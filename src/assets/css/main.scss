@@ -227,7 +227,7 @@ td.fc-day-top.fc-tue.fc-today span.fc-day-number { color: #B14A56!important; }
 .remembr-pwd .mat-checkbox-inner-container { height: 20px; width: 20px;}
 .visible-pwd { position: absolute; right: 5px; color: #6c6c6c; }
 .matupload .visible-pwd { right: 25px; }
-.cab-data { width: 100%; }
+.cab-data { width: 100%; position: relative; }
 .cab-data .mat-form-field-label { color: #3F3F3F; font-family: 'Dubai Regular';}
 .mat-form-field-label { font-size: 18px; }
 .scope_list {
@@ -902,7 +902,7 @@ a:hover { text-decoration: none; }
 .event_timings::-webkit-scrollbar-track { border-radius: 25px; }
 .event_timings::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, .1);  border-radius: 25px; }
 .event_timings ul { padding: 0; margin: 0; list-style: none; }
-.event_timings li { padding: 13px 15px; font-size: 16px; font-family: 'Dubai Regular'; color: #444444; }
+.event_timings li { padding: 13px 15px; font-size: 17px; font-family: 'Dubai Regular'; color: #444444; }
 .event_timings hr { margin: 0; }
 .date-dash { color: #B14A56; border: 1px solid #B14A56; border-radius: 25px; font-family: 'Dubai Medium'; font-size: 14px; background: #ffffff; padding: 0 10px; margin-right: 20px; }
 .activity-details { position: relative; }
@@ -1521,6 +1521,21 @@ span.mat-placeholder-required.mat-form-field-required-marker { color: #B54150; }
 .main-status option { font-size: 18px; font-family: 'Dubai Regular'; }
 .main-status .head-dash.region { margin-left: 4px; }
 
+.aed_logo .mat-form-field-infix:before {
+  content: 'د.إ';
+  position: absolute;
+  right: 0;
+  color: #656565;
+  font-size: 16px;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
 //==================RESPONSIVE==================//
 @media(max-width: 1500px) {
   // .main-dashboard-cnt .user-steps { height: 50%; }

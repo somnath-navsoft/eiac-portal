@@ -1479,7 +1479,7 @@ export class InspectionBodiesFormComponent implements OnInit {
           // this.step1Data.official_commercial_name = getData.data.cab_name.toString();
           // }
           var cabName = getData.data.cab_name.toString();
-          // console.log(cabName,'cabName');
+          console.log(cabName,'cabName');
           this.step7Data.organization_name  = (cabName != undefined && cabName != null) ? cabName : 'N/A';
           
           // if(getData.data.date_of_issue != ''){
