@@ -28,11 +28,11 @@ export class AppService {
   // public apiServerUrl         =   'http://192.168.7.28:8000/webservice';
   // public apiRequestUrl        =   'http://192.168.7.28:8000/';
 
-  // public apiServerUrl         =   'http://192.168.3.94:8000/webservice';
-  // public apiRequestUrl        =   'http://192.168.3.94:8000/';
+  public apiServerUrl         =   'http://192.168.3.94:8000/webservice';
+  public apiRequestUrl        =   'http://192.168.3.94:8000/';
 
-  public apiServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
-  public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
+  // public apiServerUrl         =   'https://uat-service.eiac.gov.ae/webservice';
+  // public apiRequestUrl        =   'https://uat-service.eiac.gov.ae/';
 
 
   // public apiServerUrl         =   'https://dev-service.eiac.gov.ae/webservice';
@@ -110,6 +110,20 @@ function getFeesPerTrainee(training_days){
 }
 
 */
+
+
+getAppID(){
+  // ANother way - var dd = Math.floor(new Date().valueOf() * Math.random());
+  let currentTimeInSeconds=Math.floor(Date.now()/1000); //unix timestamp in seconds
+  let currentTimeInMilliseconds=Date.now(); 
+  let dd = currentTimeInMilliseconds;
+  let tt = '';
+  tt = dd.toString();
+  if(dd.toString().length > 12){
+    tt = dd.toString().substr(0,12);
+  }  
+  return tt;
+}
 
 getObjectLength(obj: any){
   let count: number =0;
