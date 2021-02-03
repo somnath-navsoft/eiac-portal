@@ -227,8 +227,16 @@
                     <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
                         <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
                             <td class="fnt-clr">
-                                <a href="javascript:void(0)" (click)="getRouteId(item.id)" routerLink="/dashboard/operations/accreditation-service-details/{{item.id}}" title="View" alt="View">
-                                {{item.id}}</a></td>
+                                <ng-container *ngIf="item.application_number != null">
+                                    <a href="javascript:void(0)" (click)="getRouteId(item.id)" routerLink="/dashboard/operations/accreditation-service-details/{{item.id}}" title="View" alt="View">
+                                    {{item.application_number}}</a>
+                                </ng-container>
+
+                                <ng-container *ngIf="item.application_number == null">
+                                    <a href="javascript:void(0)" (click)="getRouteId(item.id)" routerLink="/dashboard/operations/accreditation-service-details/{{item.id}}" title="View" alt="View">
+                                    {{item.id}}</a>
+                                </ng-container>
+                            </td>
                             <td>
                                 {{item.created | date :'dd-MMM-yyyy' }}
                             </td>

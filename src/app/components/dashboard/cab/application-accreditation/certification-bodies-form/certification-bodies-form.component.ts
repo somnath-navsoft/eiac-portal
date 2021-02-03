@@ -1301,6 +1301,7 @@ loadAppInfo(){
         this.step1Data.official_email = data.applicant_email;
         this.step1Data.official_website = data.applicant_website;
         this.ownOrgBasicInfo = step2['cabOwnerData'];
+        // getData.data.application_number != null ? localStorage.setItem('application_number',getData.data.application_number) : '';
 
         var cabName = data.cab_name.toString();
         // console.log(cabName,'cabName');
@@ -1410,6 +1411,8 @@ loadAppInfo(){
               // }else if(res['data'].cab_type == 'calibration_laboratories') {
               //   this.step1Data.cab_type = 
               // }
+              res['data'].application_number != null ? localStorage.setItem('application_number',res['data'].application_number) : '';
+
               this.step1Data.cab_type = res['data'].cab_type != '' ? res['data'].cab_type : '';
               //console.log("@cab type: ", res['data'].accredation_criteria);
               
@@ -1989,6 +1992,8 @@ onSubmitStep1(ngForm1: any){
     this.step1Data.is_bod = this.step1Data.is_bod == '0' ? false : true;
     this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation_select == '0' ? false : true;
     this.step1Data.application_number = this.Service.getAppID();
+
+    localStorage.setItem('application_number',this.step1Data.application_number);
     this.certificationBodiesForm.step1 = this.step1Data;
 
     this.certificationBodiesForm.step1['ownOrgBasicInfo'] = [];
@@ -2951,8 +2956,7 @@ if(ngForm5.form.valid && this.authorizationStatus == true && recomCheckCount >0)
   this.certificationBodiesForm.saved_step = '5';
   this.step5Data.authorization_list_json = this.authorizationList;
  // this.step5Data.recommend = this.recommend;
-
-  
+ this.step5Data.application_number = localStorage.getItem('application_number');
 
   this.step5Data.is_draft = false;
   this.step5Data.application_date = new Date();
@@ -3106,6 +3110,8 @@ this.certificationBodiesForm.step7 = {};
   console.log("@Date: ",dtFormat);
 
   let is_valid: boolean = false;
+var applicationNumber = localStorage.getItem('application_number');
+this.voucherFile.append('application_number',applicationNumber);
 this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']); 
 this.voucherFile.append('amount',this.voucherSentData['amount']);
 this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);

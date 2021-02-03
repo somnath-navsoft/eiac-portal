@@ -2299,7 +2299,10 @@ getCriteria(value, secInd: any){
                 // }else if(res['data'].cab_type == 'calibration_laboratories') {
                 //   this.step1Data.cab_type = 
                 // }
+                res['data'].application_number != null ? localStorage.setItem('application_number',res['data'].application_number) : '';
+
                 this.step1Data.cab_type = res['data'].cab_type != '' ? res['data'].cab_type : '';
+                // getData.data.application_number != null ? localStorage.setItem('application_number',getData.data.application_number) : '';
                 ////console.log("@cab type: ", this.step1Data.cab_type);
                 
                 if(res['data'].accredation_criteria  != ''){
@@ -2650,6 +2653,7 @@ getCriteria(value, secInd: any){
         this.step1Data.is_hold_other_accreditation = false;
       }
       this.step1Data.application_number = this.Service.getAppID();
+      localStorage.setItem('application_number',this.step1Data.application_number);
       //this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
       this.testingCalForm.step1 = this.step1Data;
 
@@ -2899,6 +2903,8 @@ getCriteria(value, secInd: any){
         }
         recomVisit[item.name.toString()] = item.checked;
       })
+      this.step7Data.application_number = localStorage.getItem('application_number');
+
       this.step7Data.recommend = recomVisit;//this.recomendVisit;
       this.testingCalForm.step7.terms1 = this.authorizationListTerms1;
       this.testingCalForm.step7.terms2 = this.authorizationListTerms2;
@@ -4054,7 +4060,7 @@ onSubmitStep5(ngForm: any, type?: any, rowInd?:any, schemeid?:any, familyid?:any
     this.step7Data.recommend = recomVisit;
     this.step7Data.is_draft = false;
     this.step7Data.application_date = new Date();
-    
+    this.step7Data.application_number = localStorage.getItem('application_number');
 
     this.testingCalForm.step7 = this.step7Data;
     this.testingCalForm.step7.terms1 = this.authorizationListTerms1;
@@ -4258,6 +4264,8 @@ onSubmitPaymentInformation(ngForm9: any, type?: boolean){
     console.log("@Date: ", dtFormat, " -- ", dtData);
     //     
   let is_valid = false;
+  var applicationNumber = localStorage.getItem('application_number');
+  this.voucherFile.append('application_number',applicationNumber);
   this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
   this.voucherFile.append('amount',this.voucherSentData['amount']);
   this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);

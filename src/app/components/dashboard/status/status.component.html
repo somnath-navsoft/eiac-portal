@@ -34,7 +34,7 @@
                                     <mat-label>Searchable Column</mat-label> 
                                     <mat-select placeholder="Select" [ngModelOptions]="{standalone: true}" (selectionChange)="changeFilter($event)"
                                     [(ngModel)]="searchValue">
-                                        <mat-option value="id">Application Number</mat-option>
+                                        <mat-option value="application_number">Application Number</mat-option>
                                         <mat-option value="cab_name">CAB Name</mat-option>
                                         <mat-option value="cab_code">CAB Code</mat-option>
                                         <mat-option value="accr_status">Status</mat-option>
@@ -220,8 +220,19 @@
                     <ng-container *ngIf="trainerdata != undefined && trainerdata.length > 0">
                         <tr *ngFor="let item of trainerdata | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i2 = index;">
                             <td class="fnt-clr">
-                                <a href="javascript:void(0)" routerLink="/dashboard/operations/accreditation-service-details/{{item.id}}" title="View" alt="View">
-                                {{item.id}}</a></td>
+                                <!-- <a href="javascript:void(0)" routerLink="/dashboard/operations/accreditation-service-details/{{item.id}}" title="View" alt="View">
+                                {{item.id}}</a> -->
+
+                                <ng-container *ngIf="item.application_number != null">
+                                    <a href="javascript:void(0)" routerLink="/dashboard/operations/accreditation-service-details/{{item.id}}" title="View" alt="View">
+                                    {{item.application_number}}</a>
+                                </ng-container>
+
+                                <ng-container *ngIf="item.application_number == null">
+                                    <a href="javascript:void(0)" routerLink="/dashboard/operations/accreditation-service-details/{{item.id}}" title="View" alt="View">
+                                    {{item.id}}</a>
+                                </ng-container>
+                            </td>
                             <td>
                                 {{item.created | date :'dd-MMM-yyyy' }}
                             </td>

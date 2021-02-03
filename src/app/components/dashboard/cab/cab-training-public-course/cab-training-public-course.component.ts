@@ -307,6 +307,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
               }
             });
 
+            res['data'].application_number != null ? localStorage.setItem('application_number',res['data'].application_number) : '';
             // step1
             this.step1Data.organization_name = res['data'].organization_name;
             this.step1Data.mailing_address = res['data'].mailing_address;
@@ -499,6 +500,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
         this.step1Data.application_id = this.formApplicationId;
       }
       this.step1Data.application_number = this.Service.getAppID();
+      localStorage.setItem('application_number',this.step1Data.application_number);
 
       this.publicTrainingForm.step1 = this.step1Data;
 
@@ -670,7 +672,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
       this.publicTrainingForm.saved_step = '5';
       this.step5Data.is_draft = false;
       this.step5Data.training_form_type = 'public_training';
-
+      this.step5Data.application_number = localStorage.getItem('application_number');
       var applicationId = localStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step5Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
@@ -910,7 +912,8 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     }
 
     // console.log(">>> Date: ", dtFormat, " -- ", this.voucherSentData);
-
+      var applicationNumber = localStorage.getItem('application_number');
+      this.voucherFile.append('application_number',applicationNumber);
       this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
       this.voucherFile.append('amount',this.voucherSentData['amount']);
       this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);

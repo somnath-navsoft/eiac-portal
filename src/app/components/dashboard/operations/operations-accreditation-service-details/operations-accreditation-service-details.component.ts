@@ -496,7 +496,8 @@ loadScopeDataHalal(){
           //     this.selectTradeLicPath = this._constant.mediaPath +  data.trade_license.toString();
           //   }
           // }
-          this.selectTradeLicPath = this._constant.mediaPath +  this.serviceDetail.trade_license.toString();
+          // console.log(this.serviceDetail.trade_license,'trade_license');
+          this.selectTradeLicPath = this.serviceDetail.trade_license != null ? this._constant.mediaPath +  this.serviceDetail.trade_license.toString() : '';
           // console.log(this.selectTradeLicPath,'selectTradeLicPath');
           // console.log(this._constant.mediaPath,'mediaPath');
           // console.log(this.serviceDetail.trade_license,'trade_license');
