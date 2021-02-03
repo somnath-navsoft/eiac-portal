@@ -945,7 +945,36 @@ updateInput1(theEvt: any, parent: number, inner: number){
           }
       }
     }
-    //return;
+
+    /**********************************************************************************
+    //Saving structure
+    //technical_experience_custom
+    //technical_experience_custom:{'Freetext Value' : {'free_text_type':'1', 'experience': '3'} ,  'Freetext Value' : {'free_text_type':'1', 'experience': '3'}   }
+    'Freetext Value' : {'free_text_type':'1', 'experience': '3'} ,  'Freetext Value' : {'free_text_type':'1', 'experience': '3'} 
+    #Free text type: 
+    1   =   Proficiency_Testing_Providers
+    2   =   Reference_Material_Producers_Testing
+    3   =   Reference_Material_Producers_Calibration
+    4   =   Reference_Material_Producers_Medical
+    5   =   Reference_Material_Producers_Inspection
+    6   =   Validation_and_Verification_Bodies_Testing
+    7   =   Validation_and_Verification_Bodies_Calibration
+    8   =   Validation_and_Verification_Bodies_Medical
+    9   =   Validation_and_Verification_Bodies_Inspection
+    */
+
+    let customFreeText: any = {};
+    let cnt = 0;
+    for(let key in this.subField){
+      let tempObj: any            = {};
+      customFreeText[key.toString()]  = tempObj;
+      tempObj['free_text_type'] = 1;
+      tempObj['experience']     = this.subField[cnt].checked;
+      cnt++;
+    }
+    console.log(">>>> Free text: ", customFreeText)
+
+    return;
     if(ngForm4.form.valid && freetextInput && freefieldInput && freetextInput1) {
 
         this.assessorsProfile = {};
