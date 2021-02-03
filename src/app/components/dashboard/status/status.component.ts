@@ -261,7 +261,7 @@ loadCountryStateCityAll  = async() =>{
           let elem: any = myClasses[i]
           console.log("@Elem: ", elem);
             elem.style.display = 'none';
-            if(getIdValue == 'cab_name' || getIdValue == 'cab_code' ||  getIdValue == 'id') {
+            if(getIdValue == 'cab_name' || getIdValue == 'cab_code' ||  getIdValue == 'application_number') {
                 let getElementId = document.getElementById('textType');
                 getElementId.style.display = 'block';
             }else{

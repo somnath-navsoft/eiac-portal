@@ -12,7 +12,9 @@
               <div class="col-md-3">
                 <div class="main_app_wrap">
                   <div class="appln-data">
-                    <h3>Application No. {{routeId}}</h3>
+                    <h3 *ngIf="serviceDetail?.application_number != null">Application No. {{serviceDetail?.application_number}}</h3>
+                    <h3 *ngIf="serviceDetail?.application_number == null">Application No. {{routeId}}</h3>
+                    
                   </div>
                   <!-- <div class="appln-details">
                     <span>
