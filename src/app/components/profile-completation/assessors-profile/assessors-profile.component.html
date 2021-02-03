@@ -1020,7 +1020,7 @@
                                                                          {{p+1}}.<input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="subInput[k][p]['title']" (keyup)="updateInput($event,k,p)" [ngStyle]="{'width':'90%','margin-left': '15px'}">
                                                                         </td>
                                                                         <td>
-                                                                        <mat-radio-group name="knowledge_sub_cexperienced_{{p}}" [(ngModel)]="subInput[k][p]['checked']" [ngModelOptions]="{standalone: true}">
+                                                                        <mat-radio-group name="knowledge_sub_cexperienced_{{k}}_{{p}}" [(ngModel)]="subInput[k][p]['checked']" [ngModelOptions]="{standalone: true}">
                                                                             <div class="desc-content-prof">
                                                                                 <mat-radio-button value="1" (click)="checkInputSub(k,p)">From 5-10 Years</mat-radio-button>
                                                                                 <mat-radio-button value="2" (click)="checkInputSub(k,p)">From 11-15 Years</mat-radio-button>
@@ -1048,11 +1048,12 @@
                                                                          {{p+1}}.<input type="text" (keyup)="updateInput1($event,k,p)" [ngModelOptions]="{standalone: true}" [(ngModel)]="subInput1[k][p]['title']" [ngStyle]="{'width':'90%','margin-left': '15px'}">
                                                                         </td>
                                                                         <td>
-                                                                        <mat-radio-group name="knowledge_sub_c1experienced_{{p}}" [(ngModel)]="subInput1[k][p]['checked']" [ngModelOptions]="{standalone: true}">
+                                                                        <mat-radio-group name="knowledge_sub_c1experienced_{{k}}_{{p}}" 
+                                                                        [(ngModel)]="subInput1[k][p]['checked']">
                                                                             <div class="desc-content-prof">
-                                                                                <mat-radio-button value="1" (click)="checkInputSub1(k,p)">From 5-10 Years</mat-radio-button>
-                                                                                <mat-radio-button value="2" (click)="checkInputSub1(k,p)">From 11-15 Years</mat-radio-button>
-                                                                                <mat-radio-button value="3" (click)="checkInputSub1(k,p)">Above 16 Years</mat-radio-button>
+                                                                            <mat-radio-button value="1"  (click)="checkInputSub1(k,p)">From 5-10 Years</mat-radio-button>
+                                                                            <mat-radio-button value="2"  (click)="checkInputSub1(k,p)">From 11-15 Years</mat-radio-button>
+                                                                            <mat-radio-button value="3"  (click)="checkInputSub1(k,p)">Above 16 Years</mat-radio-button>
                                                                             </div>
                                                                         </mat-radio-group>
                                                                         </td>
