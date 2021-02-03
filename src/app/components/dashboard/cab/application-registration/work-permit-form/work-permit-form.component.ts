@@ -396,6 +396,7 @@ export class WorkPermitFormComponent implements OnInit {
             }
 
             var wapdata = res['data'].wapData;
+            wapdata.application_number != null ? localStorage.setItem('application_number',wapdata.application_number) : '';
             this.step2Data.activity_section = wapdata.activity_section != null ? wapdata.activity_section : '';
             this.step2Data.scopes_to_be_authorized = wapdata.scopes_to_be_authorized != null ? wapdata.scopes_to_be_authorized : '';
             if(res['data'].wapData.activity_section != null) {
@@ -664,6 +665,8 @@ export class WorkPermitFormComponent implements OnInit {
       // this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accr == '0' ? false : true;
 
       this.workPermitForm.step1.is_draft = false;
+      this.step1Data.application_number = this.Service.getAppID();
+      localStorage.setItem('application_number',this.step1Data.application_number);
       this.workPermitForm.step1 = this.step1Data;
 
       this.workPermitForm.step1['ownOrgBasicInfo'] = [];
@@ -797,7 +800,7 @@ export class WorkPermitFormComponent implements OnInit {
       var applicationId = localStorage.getItem('applicationId');
       // this.step2Data.application_id = applicationId;
       this.step4Data.application_id = this.formApplicationId && this.formApplicationId != '' ?  this.formApplicationId : applicationId;
-
+      this.step4Data.application_number = localStorage.getItem('application_number');
       this.step4Data.is_draft = false;
       this.step4Data.application_date = new Date();
       this.workPermitForm.step4 = this.step4Data;
@@ -1032,6 +1035,9 @@ export class WorkPermitFormComponent implements OnInit {
       var nYear = nFdate.getFullYear();
       dtFormat = nYear + "-" + nMonth + "-" + nDate;  
     }
+
+      var applicationNumber = localStorage.getItem('application_number');
+      this.voucherFile.append('application_number',applicationNumber);
       this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
       this.voucherFile.append('amount',this.voucherSentData['amount']); 
       this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);

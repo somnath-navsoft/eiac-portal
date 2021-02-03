@@ -491,23 +491,23 @@
                                             <h5>{{row.message}}</h5>
                                         </div>
                                         <div class="bttn-details">
-                                            <a *ngIf="row.user.users_type=='cab_client'" class="cancel-bttn"
+                                            <a *ngIf="row.user.users_type=='cab_client'" class="reg_details submit-bttn"
                                                 (click)="getRouteId(row.user.id)"
                                                 routerLink="/dashboard/cab_client/message-detail/{{row.user.id}}">DETAILS</a>
 
-                                            <a *ngIf="row.user.users_type=='assessors'" class="cancel-bttn"
+                                            <a *ngIf="row.user.users_type=='assessors'" class="reg_details submit-bttn"
                                                 (click)="getRouteId(row.user.id)"
                                                 routerLink="/dashboard/assessors/message-detail/{{row.user.id}}">DETAILS</a>
 
-                                            <a *ngIf="row.user.users_type=='trainers'" class="cancel-bttn"
+                                            <a *ngIf="row.user.users_type=='trainers'" class="reg_details submit-bttn"
                                                 (click)="getRouteId(row.user.id)"
                                                 routerLink="/dashboard/trainers/message-detail/{{row.user.id}}">DETAILS</a>
 
-                                            <a *ngIf="row.user.users_type=='candidate'" class="cancel-bttn"
+                                            <a *ngIf="row.user.users_type=='candidate'" class="reg_details submit-bttn"
                                                 (click)="getRouteId(row.user.id)"
                                                 routerLink="/dashboard/candidate/message-detail/{{row.user.id}}">DETAILS</a>
 
-                                            <a *ngIf="row.user.users_type=='operations'" class="cancel-bttn"
+                                            <a *ngIf="row.user.users_type=='operations'" class="reg_details submit-bttn"
                                                 (click)="getRouteId(row.user.id)"
                                                 routerLink="/dashboard/operations/message-detail/{{row.user.id}}">DETAILS</a>
                                         </div>

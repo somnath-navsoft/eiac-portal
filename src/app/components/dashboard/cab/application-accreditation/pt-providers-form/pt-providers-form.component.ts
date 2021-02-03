@@ -1258,6 +1258,7 @@ setexDate(date){
               // }else if(res['data'].cab_type == 'calibration_laboratories') {
               //   this.step1Data.cab_type = 
               // }
+              res['data'].application_number != null ? localStorage.setItem('application_number',res['data'].application_number) : '';
               this.step1Data.cab_type = res['data'].cab_type != '' ? res['data'].cab_type : '';
               console.log("@cab type: ", this.step1Data.cab_type);
               
@@ -1570,6 +1571,7 @@ onSubmitStep1(ngForm1: any){
     this.step1Data.is_hold_other_accreditation = this.step1Data.is_hold_other_accreditation_select == '0' ? false : true;
    // this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
    this.step1Data.application_number = this.Service.getAppID();
+   localStorage.setItem('application_number',this.step1Data.application_number);
     this.ptProvidersForm.step1 = this.step1Data;
 
     this.ptProvidersForm.step1['ownOrgBasicInfo'] = [];
@@ -2592,6 +2594,7 @@ if(ngForm7.form.valid && recomCheckCount > 0 && this.authorizationStatus == true
   //this.step7Data.recommend = this.recommend;
   this.step7Data.is_draft = false;
   this.step7Data.application_date = new Date();
+  this.step7Data.application_number = localStorage.getItem('application_number');
 
   this.ptProvidersForm.step7 = this.step7Data;
   this.ptProvidersForm.step7.terms1 = this.authorizationListTerms1;
@@ -2764,6 +2767,8 @@ this.ptProvidersForm.step9 = {};
   }
 
   let is_valid: boolean = false;
+  var applicationNumber = localStorage.getItem('application_number');
+this.voucherFile.append('application_number',applicationNumber);
 this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
 this.voucherFile.append('amount',this.voucherSentData['amount']);
 this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);

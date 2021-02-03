@@ -738,6 +738,9 @@ export class NoObjectionFormComponent implements OnInit {
                     this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
                   }
                 }
+
+                getData.data.application_number != null ? localStorage.setItem('application_number',getData.data.application_number) : '';
+
         
                 //check steps
                 // if(getData.data.is_draft){
@@ -1181,7 +1184,10 @@ export class NoObjectionFormComponent implements OnInit {
     this.noObjectionBodyForm.step1['ownOrgMembInfo'] = [];
 
     if(theForm.form.valid && type == undefined){
-            
+      
+      this.step1Data.application_number = this.Service.getAppID();
+      localStorage.setItem('application_number',this.step1Data.application_number);
+
       this.noObjectionBodyForm.saved_step = 1; 
       if(this.ownOrgMembInfo.length > 0){
         this.step1Data.is_bod = true;
@@ -1769,6 +1775,7 @@ export class NoObjectionFormComponent implements OnInit {
     let postData: any = new FormData();
     this.noObjectionBodyForm = {}; 
     this.noObjectionBodyForm.step6 = {}; 
+    this.step6Data.application_number = localStorage.getItem('application_number');
     console.log(">>>TSEP 6 SUBMIT: ", this.step6Data);
     //this.step6Data.authorization_confirm1 == true
 
@@ -2028,6 +2035,9 @@ export class NoObjectionFormComponent implements OnInit {
 
     console.log(">>> Date: ", dtFormat, " -- ", this.voucherSentData);
 
+      var applicationNumber = localStorage.getItem('application_number');
+      this.voucherFile.append('application_number',applicationNumber);
+      
       this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
       this.voucherFile.append('amount',this.voucherSentData['amount']);
       this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
