@@ -1350,6 +1350,7 @@ loadData(){
         //this.step1Data.is_main_activity_note = "";
         this.step1Data.mailing_address = data.applicant_address;
         this.step1Data.official_commercial_name = data.cab_name;
+        // getData.data.application_number != null ? localStorage.setItem('application_number',getData.data.application_number) : '';
         var cabName = data.cab_name.toString();
         // console.log(cabName,'cabName');
         this.step7Data.organization_name  = (cabName != undefined && cabName != null) ? cabName : 'N/A';
@@ -1516,6 +1517,8 @@ loadData(){
               // }else if(res['data'].cab_type == 'calibration_laboratories') {
               //   this.step1Data.cab_type = 
               // }
+              res['data'].application_number != null ? localStorage.setItem('application_number',res['data'].application_number) : '';
+
               this.step1Data.cab_type = res['data'].cab_type != '' ? res['data'].cab_type : '';
               
               if(res['data'].accredation_criteria  != ''){
@@ -1939,7 +1942,7 @@ onSubmitStep1(ngForm1: any){
       }
     }
     this.step1Data.application_number = this.Service.getAppID();
-    
+    localStorage.setItem('application_number',this.step1Data.application_number);
 
     //this.step1Data.is_main_activity = this.step1Data.is_main_activity == "true" ? true : false;
     this.healthCareForm.step1 = this.step1Data;
@@ -3124,7 +3127,7 @@ this.healthCareForm = {};
 
   this.healthCareForm.step7.terms1 = this.authorizationListTerms1;
   this.healthCareForm.step7.terms2 = this.authorizationListTerms2;
-
+  this.step7Data.application_number = localStorage.getItem('application_number');
   
 
 //make visit 
@@ -3292,6 +3295,8 @@ this.healthCareForm.step9 = {};
   }
 
 let is_valid: boolean = false;
+var applicationNumber = localStorage.getItem('application_number');
+this.voucherFile.append('application_number',applicationNumber);
 this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
 this.voucherFile.append('amount',this.voucherSentData['amount']);
 this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);

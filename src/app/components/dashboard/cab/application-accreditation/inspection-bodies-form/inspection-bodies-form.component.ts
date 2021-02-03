@@ -1465,7 +1465,7 @@ export class InspectionBodiesFormComponent implements OnInit {
 
         //Step 1
         //
-
+        getData.data.application_number != null ? localStorage.setItem('application_number',getData.data.application_number) : '';
         if(getData.data.trade_license != ''){
           // let getFile = getData.data.trade_license.toString().split('/');
           // if(getFile.length){
@@ -2658,6 +2658,7 @@ export class InspectionBodiesFormComponent implements OnInit {
         }
         recomVisit[item.name.toString()] = item.checked;
       })
+      this.step7Data.application_number = localStorage.getItem('application_number');
       this.step7Data.recommend = recomVisit;//this.recomendVisit;
 
       //check check status
@@ -2886,6 +2887,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       this.step1Data.official_email = " ";
     }
     this.step1Data.application_number = this.Service.getAppID();
+    localStorage.setItem('application_number',this.step1Data.application_number);
 
     // this.inspectionBodyForm.step1['ownOrgBasicInfo'] = (this.ownOrgBasicInfo.length> 0) ? this.ownOrgBasicInfo :  [];
     //   this.inspectionBodyForm.step1['ownOrgMembInfo'] = [];
@@ -2963,7 +2965,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       //return;
       //this.inspectionBodyForm.step1['trade_license'] = this.step1DataBodyFormFile;
       this.inspectionBodyForm.step1.is_draft = false;
-      console.log(">>> First Step Data: ", this.inspectionBodyForm);
+      // console.log(">>> First Step Data: ", this.inspectionBodyForm);
       //return;
       //this.step1DataBodyFormFile.append('data',JSON.stringify(this.inspectionBodyForm));
           // this.toastr.success('Application Successfully Submitted', '');
@@ -4228,7 +4230,9 @@ onSubmitPaymentInformation(ngForm7: any, type?: boolean){
           console.log("payment date: ", " -- ",this.voucherSentData, " -- ", dtFormat);
 
         let is_valid: boolean = false;
+        var applicationNumber = localStorage.getItem('application_number');
         this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
+        this.voucherFile.append('application_number',applicationNumber);
         this.voucherFile.append('amount',this.voucherSentData['amount']);
         this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
         this.voucherFile.append('payment_method',this.voucherSentData['payment_method']);

@@ -1520,6 +1520,7 @@ addSchemeRow(obj: any = [],index: number){
                 // }else if(res['data'].cab_type == 'calibration_laboratories') {
                 //   this.step1Data.cab_type = 
                 // }
+                res['data'].application_number != null ? localStorage.setItem('application_number',res['data'].application_number) : '';
                 this.step1Data.cab_type = res['data'].cab_type != '' ? res['data'].cab_type : '';
                 //console.log("@cab type: ", res['data'].accredation_criteria);
                 
@@ -2436,6 +2437,8 @@ addSchemeRow(obj: any = [],index: number){
       
       this.step1Data.is_draft = true;
       this.step1Data.application_number = this.Service.getAppID();
+      localStorage.setItem('application_number',this.step1Data.application_number);
+
       this.publicHalalConformityForm.step1 = this.step1Data;
   
       this.publicHalalConformityForm.step1['ownOrgBasicInfo'] = [];
@@ -3687,7 +3690,7 @@ getMatchScheme(scId: any, scopeData: any){
     
     this.step6Data.is_draft = false;
     this.step6Data.application_date = new Date();
-  
+    this.step6Data.application_number = localStorage.getItem('application_number');
     
 
     this.publicHalalConformityForm.step6 = this.step6Data;
@@ -3835,6 +3838,8 @@ onSubmitStep7(ngForm7: any) {
       var date = dtData.getDate();
       dtFormat = year + "-" + month + "-" + date;
     }
+    var applicationNumber = localStorage.getItem('application_number');
+  this.voucherFile.append('application_number',applicationNumber);
   this.voucherFile.append('voucher_no',this.voucherSentData['voucher_code']);
   this.voucherFile.append('amount',this.voucherSentData['amount']);
   this.voucherFile.append('transaction_no',this.voucherSentData['transaction_no']);
