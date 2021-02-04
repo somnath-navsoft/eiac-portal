@@ -108,7 +108,7 @@ checkInputSub(parent: number, inner: number){
 checkInputSub1(parent: number, inner: number){
   if(parent != null && inner != null){
     let input: any = this.subInput1[parent][inner]['title'];
-    console.log("@ get input: ", input);
+    console.log("@ get input: ", input, " == ", this.subInput1);
     if(input == '' || input == undefined || input == null){
         this.toastr.warning("Please add input in field",'', {timeOut:1000})
         return false;
@@ -166,7 +166,7 @@ updateInput1(theEvt: any, parent: number, inner: number){
       }
     }
 
-    console.log(this.subField, " -- ", this.subInput);
+    console.log(this.subField, " -- ", this.subInput, " == ", this.subInput1);
 
 
     this.headerSteps.push(
@@ -388,7 +388,7 @@ updateInput1(theEvt: any, parent: number, inner: number){
     this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.profileService+'?userType='+this.userType+'&email='+this.userEmail+'&id='+this.userId)
     .subscribe(
       res => {
-        // console.log(res['data'],'data');
+        console.log(res['data'],'data');
         if(res['status'] == true) {
           this.loader = true;
           this.criteriaList = res['data']['criteriaList'];
@@ -409,6 +409,8 @@ updateInput1(theEvt: any, parent: number, inner: number){
 
           this.technicalFields = res['data'].technical_field;
           console.log(this.technicalFields,'technicalFields');
+
+
 
           if(res['data'].step1 != '' && res['data'].step1[0] && res['data']['user_data'][0].first_name != "" && res['data'].step1[0].office_email != "" && res['data'].step1[0].dob != null && res['data'].step1[0].mailing_address != "" && res['data'].step1[0].office != "" && res['data'].step1[0].designation != "" && res['data'].step1[0].office_address != "" && res['data'].step1[0].office_tel_no != "" && res['data'].step1[0].nationality != null) {
             this.progressValue = 22;
@@ -543,10 +545,104 @@ updateInput1(theEvt: any, parent: number, inner: number){
             this.progressValue = 88;
             this.Service.moveSteps('knowledge_experience','applicant_trainer', this.headerSteps);
           }
-          // if(res['data'].step5 && res['data'].step5 != '' && res['data'].step5[0].place && res['data'].step5[0].place != null && res['data'].step5[0].registration_date != null && res['data'].step5[0].signature != null) {
-          //   this.progressValue = 100;
-          // }
-          
+
+          if(res['data'].step4 && res['data'].step4['technical_experience_custom'] != undefined && res['data'].step4['technical_experience_custom'] != '') {
+                
+              let filterData: any;
+              let customData: any[] = res['data'].step4['technical_experience_custom'];
+              
+              filterData = customData.filter(item => (item.free_text != null && item.free_text != ''));
+              console.log("@Filter Custom: ", filterData, " -- ", customData);
+
+              //Participants Data show.
+              let Ptpdata: any = filterData.filter(item => item.free_text_type == 1);
+              console.log("@PTP Data: ", Ptpdata)
+              if(Ptpdata){
+                Ptpdata.forEach((item, key) => {
+                  this.subField[key]['title'] = item.free_text;
+                  this.subField[key]['checked'] = item.experience;
+                })
+              } 
+              console.log("@GET PTP Daata: ", Ptpdata, " :: ", this.subField);
+
+              //Reference
+              let RefDataTesting: any = filterData.filter(item => item.free_text_type == 2);
+              let RefDataCalibration: any = filterData.filter(item => item.free_text_type == 3);
+              let RefDataMedical: any = filterData.filter(item => item.free_text_type == 4);
+              let RefDataInspection: any = filterData.filter(item => item.free_text_type == 5);
+
+              //Validation section
+              let ValDataTesting: any = filterData.filter(item => item.free_text_type == 6);
+              let ValDataCalibration: any = filterData.filter(item => item.free_text_type == 7);
+              let ValDataMedical: any = filterData.filter(item => item.free_text_type == 8);
+              let ValDataInspection: any = filterData.filter(item => item.free_text_type == 9);
+
+
+              this.subTechnicalFields.forEach((item, tind) => {
+                //For - Reference
+                if(item.isLabel === 'reference' && item.technicalFields.length){
+                  item.technicalFields.forEach((data,pind) => {
+                        console.log(data.subTitle, " -- ", data.entryRow," -- ", RefDataTesting)
+                        if(data.subTitle != '' && data.subTitle =='Testing'){
+                          RefDataTesting.forEach((rec, key) => {
+                            this.subInput[pind][key]['title']     = rec.free_text;
+                            this.subInput[pind][key]['checked']   = rec.experience;
+                          })
+                        }
+                        if(data.subTitle != '' && data.subTitle =='Calibration'){
+                          RefDataCalibration.forEach((rec, key) => {
+                            this.subInput[pind][key]['title']     = rec.free_text;
+                            this.subInput[pind][key]['checked']   = rec.experience;
+                          })
+                        }
+                        if(data.subTitle != '' && data.subTitle =='Medical'){
+                          RefDataMedical.forEach((rec, key) => {
+                            this.subInput[pind][key]['title']     = rec.free_text;
+                            this.subInput[pind][key]['checked']   = rec.experience;
+                          })
+                        }
+                        if(data.subTitle != '' && data.subTitle =='Inspection'){
+                          RefDataInspection.forEach((rec, key) => {
+                            this.subInput[pind][key]['title']     = rec.free_text;
+                            this.subInput[pind][key]['checked']   = rec.experience;
+                          })
+                        }
+                  })
+                }
+                //For validators
+                if(item.isLabel === 'validation' && item.technicalFields.length){
+                  item.technicalFields.forEach((data,pind) => {
+                        console.log(data.subTitle, " -- ", data.entryRow," -- ", RefDataTesting)
+                        if(data.subTitle != '' && data.subTitle =='Testing'){
+                          ValDataTesting.forEach((rec, key) => {
+                            this.subInput1[pind][key]['title']     = rec.free_text;
+                            this.subInput1[pind][key]['checked']   = rec.experience;
+                          })
+                        }
+                        if(data.subTitle != '' && data.subTitle =='Calibration'){
+                          ValDataCalibration.forEach((rec, key) => {
+                            this.subInput1[pind][key]['title']     = rec.free_text;
+                            this.subInput1[pind][key]['checked']   = rec.experience;
+                          })
+                        }
+                        if(data.subTitle != '' && data.subTitle =='Medical'){
+                          ValDataMedical.forEach((rec, key) => {
+                            this.subInput1[pind][key]['title']     = rec.free_text;
+                            this.subInput1[pind][key]['checked']   = rec.experience;
+                          })
+                        }
+                        if(data.subTitle != '' && data.subTitle =='Inspection'){
+                          ValDataInspection.forEach((rec, key) => {
+                            this.subInput1[pind][key]['title']     = rec.free_text;
+                            this.subInput1[pind][key]['checked']   = rec.experience;
+                          })
+                        }
+                  })
+                }
+              })
+              console.log("Updated subinput for testing: ", this.subInput, " :: ", this.subInput1);
+
+          }          
 
           if(res['data'].step1 != '' && res['data'].step1[0]) {
             var step1 = res['data'].step1[0];
@@ -915,8 +1011,8 @@ updateInput1(theEvt: any, parent: number, inner: number){
     let freetextInput: boolean = false;
     let freetextInput1: boolean = false;
     let freefieldInput: boolean = false;
-    console.log("@Form submit: ", ngForm4.form.valid);
-    console.log(this.subInput, " :: ", this.subInput1, this.subField, " == ");
+    //console.log("@Form submit: ", ngForm4.form.valid);
+    //console.log(this.subInput, " :: ", this.subInput1, this.subField, " == ");
 
     //subinput
     for(let k in this.subInput){
@@ -965,16 +1061,125 @@ updateInput1(theEvt: any, parent: number, inner: number){
 
     let customFreeText: any = {};
     let cnt = 0;
+    let subFiledLen: any = this.Service.getObjectLength(this.subField);
+    let postObj: any = {};
+    postObj['technical_experience_custom'] = {};
+    window.console.log("@Subfiled Len: ", subFiledLen);
     for(let key in this.subField){
       let tempObj: any            = {};
-      customFreeText[key.toString()]  = tempObj;
-      tempObj['free_text_type'] = 1;
-      tempObj['experience']     = this.subField[cnt].checked;
-      cnt++;
+      tempObj['free_text_type']   = 1;
+      tempObj['experience']       = this.subField[key].checked;
+      if(this.subField[key].title != undefined){
+        customFreeText[this.subField[key].title.toString()] = tempObj;
+      }
     }
-    console.log(">>>> Free text: ", customFreeText)
+    this.subTechnicalFields.forEach((item, tind) => {
+            //For - Reference
+            if(item.isLabel === 'reference' && item.technicalFields.length){
+              item.technicalFields.forEach((data,pind) => {
+                    console.log(data.subTitle, " -- ", data.entryRow)
+                    if(data.subTitle != '' && data.subTitle =='Testing'){
+                      for(let key in this.subInput[pind]){
+                        console.log(">>> Testing: ", pind, " == ", key);
+                        let tempObj: any            = {};
+                        tempObj['free_text_type']   = 2;
+                        tempObj['experience']       = this.subInput[pind][key].checked;
+                        if(this.subInput[pind][key].title != undefined){
+                          customFreeText[this.subInput[pind][key].title.toString()] = tempObj;
+                        }
+                      }
+                    }
+                    if(data.subTitle != '' && data.subTitle =='Calibration'){
+                      for(let key1 in this.subInput[pind]){
+                        console.log(">>> Calibration: ", pind, " == ", key1);
+                        let tempObj: any            = {};
+                        tempObj['free_text_type']   = 3;
+                        tempObj['experience']       = this.subInput[pind][key1].checked;
+                        if(this.subInput[pind][key1].title != undefined){
+                          customFreeText[this.subInput[pind][key1].title.toString()] = tempObj;
+                        }
+                      }
+                    }
+                    if(data.subTitle != '' && data.subTitle =='Medical'){
+                      for(let key1 in this.subInput[pind]){
+                        console.log(">>> Medical: ", pind, " == ", key1);
+                        let tempObj: any            = {};
+                        tempObj['free_text_type']   = 4;
+                        tempObj['experience']       = this.subInput[pind][key1].checked;
+                        if(this.subInput[pind][key1].title != undefined){
+                          customFreeText[this.subInput[pind][key1].title.toString()] = tempObj;
+                        }
+                      }
+                    }
+                    if(data.subTitle != '' && data.subTitle =='Inspection'){
+                      for(let key1 in this.subInput[pind]){
+                        console.log(">>> Inspection: ", pind, " == ", key1);
+                        let tempObj: any            = {};
+                        tempObj['free_text_type']   = 5;
+                        tempObj['experience']       = this.subInput[pind][key1].checked;
+                        if(this.subInput[pind][key1].title != undefined){
+                          customFreeText[this.subInput[pind][key1].title.toString()] = tempObj;
+                        }
+                      }
+                    }
+              })
+            }
+            //For - Validation
+            if(item.isLabel === 'validation' && item.technicalFields.length){
+              item.technicalFields.forEach((data,pind) => {
+                    console.log(data.subTitle, " -- ", data.entryRow)
+                    if(data.subTitle != '' && data.subTitle =='Testing'){
+                      for(let key in this.subInput1[pind]){
+                        console.log(">>> Testing: ", pind, " == ", key);
+                        let tempObj: any            = {};
+                        tempObj['free_text_type']   = 6;
+                        tempObj['experience']       = this.subInput[pind][key].checked;
+                        if(this.subInput1[pind][key].title != undefined){
+                          customFreeText[this.subInput1[pind][key].title.toString()] = tempObj;
+                        }
+                      }
+                    }
+                    if(data.subTitle != '' && data.subTitle =='Calibration'){
+                      for(let key1 in this.subInput1[pind]){
+                        console.log(">>> Calibration: ", pind, " == ", key1);
+                        let tempObj: any            = {};
+                        tempObj['free_text_type']   = 7;
+                        tempObj['experience']       = this.subInput1[pind][key1].checked;
+                        if(this.subInput1[pind][key1].title != undefined){
+                          customFreeText[this.subInput1[pind][key1].title.toString()] = tempObj;
+                        }
+                      }
+                    }
+                    if(data.subTitle != '' && data.subTitle =='Medical'){
+                      for(let key1 in this.subInput1[pind]){
+                        console.log(">>> Medical: ", pind, " == ", key1);
+                        let tempObj: any            = {};
+                        tempObj['free_text_type']   = 8;
+                        tempObj['experience']       = this.subInput1[pind][key1].checked;
+                        if(this.subInput1[pind][key1].title != undefined){
+                          customFreeText[this.subInput1[pind][key1].title.toString()] = tempObj;
+                        }
+                      }
+                    }
+                    if(data.subTitle != '' && data.subTitle =='Inspection'){
+                      for(let key1 in this.subInput1[pind]){
+                        console.log(">>> Inspection: ", pind, " == ", key1);
+                        let tempObj: any            = {};
+                        tempObj['free_text_type']   = 9;
+                        tempObj['experience']       = this.subInput1[pind][key1].checked;
+                        if(this.subInput1[pind][key1].title != undefined){
+                          customFreeText[this.subInput1[pind][key1].title.toString()] = tempObj;
+                        }
+                      }
+                    }
+              })
+            }
+    })
+    postObj['technical_experience_custom'] = customFreeText;
+    //Reference_Material_Producers_Testing
 
-    return;
+    console.log(">>>> Free text: ", customFreeText, " -- ", postObj)
+    //return;
     if(ngForm4.form.valid && freetextInput && freefieldInput && freetextInput1) {
 
         this.assessorsProfile = {};
@@ -982,8 +1187,9 @@ updateInput1(theEvt: any, parent: number, inner: number){
         this.assessorsProfile.email = this.userEmail;
         this.assessorsProfile.userType = this.userType;
 
-        this.assessorsProfile.step4['technical_experience'] = [];
-
+        this.assessorsProfile.step4['technical_experience']         = [];
+        this.assessorsProfile.step4['technical_experience_custom']  = {};
+        this.assessorsProfile.step4['technical_experience_custom']  = customFreeText;
         var blankArr = {};
         // primaryJson['course'] = [];
         this.technicalFields.forEach((res,key) => {
@@ -993,14 +1199,12 @@ updateInput1(theEvt: any, parent: number, inner: number){
               var key1 = res['technical_fields'][key2].field_mgmt;
               var value = res['technical_fields'][key2]['knowledge_experienced'];
               
-              blankArr[key1] = value;
-              
+              blankArr[key1] = value;              
             }
-            this.assessorsProfile.step4['technical_experience'] = blankArr;
-            
+            this.assessorsProfile.step4['technical_experience'] = blankArr;            
           }
         });
-        // console.log(this.technicalFields,'technicalFields');
+        console.log(this.assessorsProfile,'@ Assessor profile post');
         this.loader = false;
         this.step4DataBodyFormFile.append('data',JSON.stringify(this.assessorsProfile));
         //console.log(this.step2DataBodyFormFile);
