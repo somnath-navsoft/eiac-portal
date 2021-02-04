@@ -199,11 +199,12 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
   }
 
   // Modal Actions
-  open(content, id: number, key:number) {
+  open(content, id: number, application_number:number, key:number) {
     //this.voucherSentData = {};
     if(id){
       // console.log(">>ID: ", id);
       this.voucherSentData['accreditation'] = id;
+      this.voucherSentData['application_number'] = application_number;
       this.voucherSentData['index'] = key;
     }
     this.paymentReceiptValidation = null;
@@ -251,6 +252,7 @@ export class OperationsAccreditationServiceListComponent implements OnInit, OnDe
           this.voucherFile.append('amount',this.voucherSentData['amount']);
           this.voucherFile.append('voucher_date',dtFormat);
           this.voucherFile.append('accreditation',this.voucherSentData['accreditation']);
+          this.voucherFile.append('application_number',this.voucherSentData['application_number']);
 
           this.subscriptions.push(this._trainerService.courseVoucherSave((this.voucherFile))
           .subscribe(

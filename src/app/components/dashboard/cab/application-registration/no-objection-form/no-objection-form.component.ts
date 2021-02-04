@@ -701,6 +701,11 @@ export class NoObjectionFormComponent implements OnInit {
           this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
           this.step1Data.mailing_address = data.mailing_address;// data.applicant_address;
           this.step1Data.official_commercial_name = data.cab_name;
+
+          var cabName = data.cab_name.toString();
+          // console.log(cabName,'cabName');
+          this.step6Data.organization_name  = (cabName != undefined && cabName != null) ? cabName : 'N/A';
+
           this.step1Data.official_email = data.applicant_email;
           this.step1Data.official_website = data.applicant_website;
           this.ownOrgBasicInfo = step2['cabOwnerData'];

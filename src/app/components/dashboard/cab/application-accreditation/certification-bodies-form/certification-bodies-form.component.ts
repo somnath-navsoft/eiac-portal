@@ -1305,7 +1305,7 @@ loadAppInfo(){
 
         var cabName = data.cab_name.toString();
         // console.log(cabName,'cabName');
-        this.step7Data.organization_name  = (cabName != undefined && cabName != null) ? cabName : 'N/A';
+        this.step5Data.organization_name  = (cabName != undefined && cabName != null) ? cabName : 'N/A';
         //console.log(this.ownOrgBasicInfo,'ownOrgBasicInfo');
         step2['cabBodData'].forEach((res,key) => {
           // //console.log(res," -- ",key);

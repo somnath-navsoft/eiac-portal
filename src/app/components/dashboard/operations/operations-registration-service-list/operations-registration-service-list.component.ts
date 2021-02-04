@@ -402,11 +402,12 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
 
   }
 
-  open(content, id: number,index: number) {
+  open(content, id: number, application_number:number, index: number) {
     //this.voucherSentData = {};
     if(id){
       console.log(">>ID: ", id);
       this.voucherSentData['accreditation'] = id;
+      this.voucherSentData['application_number'] = application_number;
     }
     this.voucherSentData['index'] = index;
     this.paymentReceiptValidation = null;
@@ -455,6 +456,7 @@ export class OperationsRegistrationServiceListComponent implements OnInit {
           this.voucherFile.append('voucher_date',dtFormat);
           // this.voucherFile.append('accreditation',this.voucherSentData['accreditation']);
           this.voucherFile.append('registration',this.voucherSentData['accreditation']);
+          this.voucherFile.append('application_number',this.voucherSentData['application_number']);
 
           this.subscriptions.push(this._trainerService.registrationVoucherSave((this.voucherFile))
           .subscribe(

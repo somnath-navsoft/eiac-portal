@@ -291,6 +291,8 @@ export class WorkPermitFormComponent implements OnInit {
           
           this.step1Data.mailing_address = data.applicant_address;
           this.step1Data.official_commercial_name = data.cab_name;
+          this.step4Data.organization_name  = (data.cab_name != undefined && data.cab_name != null) ? data.cab_name : 'N/A';
+          
           this.step1Data.official_email = data.applicant_email;
           this.step1Data.official_website = data.applicant_website;
           this.ownOrgBasicInfo = step2['cabOwnerData'];

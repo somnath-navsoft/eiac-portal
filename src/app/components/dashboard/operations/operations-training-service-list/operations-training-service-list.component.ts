@@ -461,12 +461,13 @@ export class OperationsTrainingServiceListComponent implements OnInit {
 
   }
 
-  open(content, id: number,key:any) {
+  open(content, id: number, application_number:number, key:any) {
     // console.log(key)
     //this.voucherSentData = {};
     if(id){
       console.log(">>ID: ", id);
       this.voucherSentData['accreditation'] = id;
+      this.voucherSentData['application_number'] = application_number;
       this.voucherSentData['index'] = key;
       this.voucherIndex = key
     }
@@ -516,6 +517,7 @@ export class OperationsTrainingServiceListComponent implements OnInit {
           this.voucherFile.append('voucher_date',dtFormat);
           // this.voucherFile.append('accreditation',this.voucherSentData['accreditation']);
           this.voucherFile.append('training',this.voucherSentData['accreditation']);
+          this.voucherFile.append('application_number',this.voucherSentData['application_number']);
 
           this.subscriptions.push(this._trainerService.courseVoucherSave((this.voucherFile))
           .subscribe(
