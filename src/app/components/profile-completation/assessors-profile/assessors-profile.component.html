@@ -909,7 +909,7 @@
                                     </div>
                                     
                                     <ng-container *ngFor="let row of technicalFields; let j = index;">
-                                        <div class="row mt-3">
+                                        <div class="row mt-3" *ngIf="row['technical_fields'].length > 0 && row['technical_fields'].length != '' && row['technical_fields'].length != null">
                                             <div class="col-md-11 col-sm-6 p-0">
                                                 <div class="form-subheader-data">
                                                     <h5>{{row.title}}</h5>
@@ -918,7 +918,7 @@
                                             <div class="col-md-1 col-sm-6 p-0">
                                                 <div class="open-cls">
                                                     <tr>
-                                                        <th class="manage-first" colspan="8" *ngIf="row['technical_fields']" >
+                                                        <th class="manage-first" colspan="8" *ngIf="row['technical_fields']">
                                                             <a *ngIf="isdDynamicsopenClose == row.id" href="javascript:void(0)" (click)="dynamicsopenClose(row.id,'close')"><span class="icon-minus"></span></a>
                                                             
                                                             <a (click)="dynamicsopenClose(row.id,'open')" *ngIf="isdDynamicsopenClose != row.id" href="javascript:void(0)" ><span class="icon-add"></span></a>

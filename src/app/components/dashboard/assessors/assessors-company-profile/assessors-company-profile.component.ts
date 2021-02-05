@@ -19,7 +19,7 @@ export class AssessorsCompanyProfileComponent implements OnInit {
   serviceDetail: any;
   cabStep1:any;
   cabStep2:any;
-  tabId:any = 'personal_details';
+  tabId:any = 'personal_details'; 
   approveRejectStatus:any = '';
   loader:boolean = true;
   tradeLicenseFile:any;
@@ -33,6 +33,13 @@ export class AssessorsCompanyProfileComponent implements OnInit {
   assessorsKnowledge: any = [];
 
 
+  subField: any = {}; 
+  subInput: any = {};
+  subInput1: any = {};
+
+  subTechnicalFields: any[] =[];
+
+
   constructor(public Service: AppService, public constant:Constants,public router: Router,public route: ActivatedRoute,public toastr: ToastrService,public uiDialog: UiDialogService) { }
 
   ngOnInit() {
@@ -40,9 +47,107 @@ export class AssessorsCompanyProfileComponent implements OnInit {
     this.userEmail = localStorage.getItem('email'); 
     // this.routeId = this.route.snapshot.queryParamMap.get('id');
     // console.log(localStorage.getItem('routeId'));
-    this.routeId = 1061;//localStorage.getItem('routeId');
-
+    this.routeId  = localStorage.getItem('routeId');
     this.userType = localStorage.getItem('type');
+
+    for(let i=0; i<8; i++){
+      this.subField[i] = {};
+      this.subField[i]['title'] = '';
+      this.subField[i]['checked'] = '';
+    }
+    for(let i=0; i<4; i++){
+      this.subInput[i] = {};
+      for(let k=0; k<4; k++){
+        this.subInput[i][k] = {};
+        this.subInput[i][k]['title'] = '';
+        this.subInput[i][k]['checked'] = '';
+      }
+    }
+    for(let i=0; i<5; i++){
+      this.subInput1[i] = {};
+      for(let k=0; k<5; k++){
+        this.subInput1[i][k] = {};
+        this.subInput1[i][k]['title'] = '';
+        this.subInput1[i][k]['checked'] = '';
+      }
+    }
+
+    console.log(this.subField, " -- ", this.subInput, " == ", this.subInput1);
+
+    this.subTechnicalFields.push({
+      title: 'Proficiency Testing Providers',
+      id: 100,
+      isChild: false,
+      technicalFields: [
+        {field_title: {} , entryRow: 8, knowledge_sub_experienced:''}
+      ]
+    },
+    {
+      title: 'Reference Material Producers',
+      id: 101,
+      isChild: true,
+      isLabel: 'reference',
+      technicalFields: [
+        {
+          subTitle: 'Testing',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+        {
+          subTitle: 'Calibration',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+        {
+          subTitle: 'Medical',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+        {
+          subTitle: 'Inspection',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+      ]
+    },
+    {
+      title: 'Validation and Verification Bodies',
+      id: 102,
+      isChild: true,
+      isLabel: 'validation',
+      technicalFields: [
+        {
+          subTitle: 'Testing',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+        {
+          subTitle: 'Calibration',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+        {
+          subTitle: 'Medical',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+        {
+          subTitle: 'Inspection',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+        {
+          subTitle: 'Certification Body',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+      ]
+    },
+    )
+
+    window.console.log("#Sub fields: ", this.subTechnicalFields);
+
+
     // if(this.userType != 'operations')
     // {
     //   var landUrl = '/dashboard'+this.userType+'/home'
@@ -50,6 +155,10 @@ export class AssessorsCompanyProfileComponent implements OnInit {
     // }
     //alert(">>>>>"); 
     this.loadData()
+  }
+
+  loop(i: number) {
+    return new Array(i);
   }
 
   dynamicsopenClose(id,status)
@@ -60,8 +169,8 @@ export class AssessorsCompanyProfileComponent implements OnInit {
     }else if(status == 'close'){
       this.isdDynamicsopenClose = '0';
     }
-    //console.log(this.isdDynamicsopenClose);
-    //console.log(status);
+    console.log(this.isdDynamicsopenClose);
+    console.log(status);
   }
 
   getFile(file: string){
@@ -279,10 +388,14 @@ export class AssessorsCompanyProfileComponent implements OnInit {
         }
 
         if(getData.technical_field != undefined && getData.technical_field.length > 0){
-          this.assessorsKnowledge = getData.technical_field;
+          this.assessorsKnowledge = getData.technical_field.filter(item => item.technical_fields.length > 0);
+          this.assessorsKnowledge.forEach((item, key) => {
+                if(item.title == 'Management Certification Bodies'){
+                  this.assessorsKnowledge[key]['title'] = 'Certification Bodies';
+                }
+          })
         }
         if(getData.step4 != undefined){
-          console.log(".....");
             let step4Data: any = getData.step4;
             for(let key in step4Data['technical_experience']) {
               getData.technical_field.forEach(rec => {
@@ -294,7 +407,111 @@ export class AssessorsCompanyProfileComponent implements OnInit {
               });
             }
 
-            console.log(">>>Technical...", getData.technical_field);
+            //Custom experience
+            if(step4Data['technical_experience_custom'] != undefined && step4Data['technical_experience_custom'] != '') {
+              let filterData: any;
+              let customData: any[] = step4Data['technical_experience_custom'];
+              
+              filterData = customData.filter(item => (item.free_text != null && item.free_text != ''));
+              console.log("@Filter Custom: ", filterData, " -- ", customData);
+
+              //Participants Data show.
+              let Ptpdata: any = filterData.filter(item => item.free_text_type == 1);
+              console.log("@PTP Data: ", Ptpdata)
+              if(Ptpdata){
+                Ptpdata.forEach((item, key) => {
+                  this.subField[key]['title'] = item.free_text;
+                  this.subField[key]['checked'] = item.experience;
+                })
+              } 
+              console.log("@GET PTP Daata: ", Ptpdata, " :: ", this.subField, " --- ");
+
+              //Reference
+              let RefDataTesting: any = filterData.filter(item => item.free_text_type == 2);
+              let RefDataCalibration: any = filterData.filter(item => item.free_text_type == 3);
+              let RefDataMedical: any = filterData.filter(item => item.free_text_type == 4);
+              let RefDataInspection: any = filterData.filter(item => item.free_text_type == 5);
+
+              //Validation section
+              let ValDataTesting: any     = filterData.filter(item => item.free_text_type == 6);
+              let ValDataCalibration: any = filterData.filter(item => item.free_text_type == 7);
+              let ValDataMedical: any     = filterData.filter(item => item.free_text_type == 8);
+              let ValDataInspection: any  = filterData.filter(item => item.free_text_type == 9);
+              let ValDataCB: any          = filterData.filter(item => item.free_text_type == 10);
+
+              console.log("@@@Defore ", this.assessorsKnowledge);
+              this.subTechnicalFields.forEach((item, tind) => {
+                
+                //For - Reference
+                if(item.isLabel === 'reference' && item.technicalFields.length){
+                  item.technicalFields.forEach((data,pind) => {
+                        console.log(data.subTitle, " -- ", data.entryRow," -- ", RefDataTesting)
+                        if(data.subTitle != '' && data.subTitle =='Testing'){
+                          RefDataTesting.forEach((rec, key) => {
+                            this.subInput[pind][key]['title']     = rec.free_text;
+                            this.subInput[pind][key]['checked']   = rec.experience;
+                          })
+                        }
+                        if(data.subTitle != '' && data.subTitle =='Calibration'){
+                          RefDataCalibration.forEach((rec, key) => {
+                            this.subInput[pind][key]['title']     = rec.free_text;
+                            this.subInput[pind][key]['checked']   = rec.experience;
+                          })
+                        }
+                        if(data.subTitle != '' && data.subTitle =='Medical'){
+                          RefDataMedical.forEach((rec, key) => {
+                            this.subInput[pind][key]['title']     = rec.free_text;
+                            this.subInput[pind][key]['checked']   = rec.experience;
+                          })
+                        }
+                        if(data.subTitle != '' && data.subTitle =='Inspection'){
+                          RefDataInspection.forEach((rec, key) => {
+                            this.subInput[pind][key]['title']     = rec.free_text;
+                            this.subInput[pind][key]['checked']   = rec.experience;
+                          })
+                        }
+                  })
+                }
+                //For validators
+                if(item.isLabel === 'validation' && item.technicalFields.length){
+                  item.technicalFields.forEach((data,pind) => {
+                        console.log(data.subTitle, " -- ", data.entryRow," -- ", RefDataTesting)
+                        if(data.subTitle != '' && data.subTitle =='Testing'){
+                          ValDataTesting.forEach((rec, key) => {
+                            this.subInput1[pind][key]['title']     = rec.free_text;
+                            this.subInput1[pind][key]['checked']   = rec.experience;
+                          })
+                        }
+                        if(data.subTitle != '' && data.subTitle =='Calibration'){
+                          ValDataCalibration.forEach((rec, key) => {
+                            this.subInput1[pind][key]['title']     = rec.free_text;
+                            this.subInput1[pind][key]['checked']   = rec.experience;
+                          })
+                        }
+                        if(data.subTitle != '' && data.subTitle =='Medical'){
+                          ValDataMedical.forEach((rec, key) => {
+                            this.subInput1[pind][key]['title']     = rec.free_text;
+                            this.subInput1[pind][key]['checked']   = rec.experience;
+                          })
+                        }
+                        if(data.subTitle != '' && data.subTitle =='Inspection'){
+                          ValDataInspection.forEach((rec, key) => {
+                            this.subInput1[pind][key]['title']     = rec.free_text;
+                            this.subInput1[pind][key]['checked']   = rec.experience;
+                          })
+                        }
+                        if(data.subTitle != '' && data.subTitle =='Certification Body'){
+                          ValDataCB.forEach((rec, key) => {
+                            this.subInput1[pind][key]['title']     = rec.free_text;
+                            this.subInput1[pind][key]['checked']   = rec.experience;
+                          })
+                        }
+                  })
+                }
+              })
+              console.log("Updated subinput for testing: ", this.subInput, " :: ", this.subInput1);
+            }
+            console.log(">>>Technical...", this.assessorsKnowledge);
         }
 
 

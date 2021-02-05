@@ -157,9 +157,9 @@ updateInput1(theEvt: any, parent: number, inner: number){
         this.subInput[i][k]['checked'] = '';
       }
     }
-    for(let i=0; i<4; i++){
+    for(let i=0; i<5; i++){
       this.subInput1[i] = {};
-      for(let k=0; k<4; k++){
+      for(let k=0; k<5; k++){
         this.subInput1[i][k] = {};
         this.subInput1[i][k]['title'] = '';
         this.subInput1[i][k]['checked'] = '';
@@ -257,6 +257,11 @@ updateInput1(theEvt: any, parent: number, inner: number){
         },
         {
           subTitle: 'Inspection',
+          subInput: {title: ''},
+          entryRow: 4,
+        },
+        {
+          subTitle: 'Certification Body',
           subInput: {title: ''},
           entryRow: 4,
         },
@@ -408,9 +413,11 @@ updateInput1(theEvt: any, parent: number, inner: number){
           this.step1Data.phone_with_area = res['data']['user_data'][0].contact;
 
           this.technicalFields = res['data'].technical_field;
-          console.log(this.technicalFields,'technicalFields');
-
-
+            this.technicalFields.forEach((item, tind) => {
+              if(item.title === 'Management Certification Bodies'){
+                item.title = 'Certification Bodies';
+              }
+            });
 
           if(res['data'].step1 != '' && res['data'].step1[0] && res['data']['user_data'][0].first_name != "" && res['data'].step1[0].office_email != "" && res['data'].step1[0].dob != null && res['data'].step1[0].mailing_address != "" && res['data'].step1[0].office != "" && res['data'].step1[0].designation != "" && res['data'].step1[0].office_address != "" && res['data'].step1[0].office_tel_no != "" && res['data'].step1[0].nationality != null) {
             this.progressValue = 22;
@@ -563,7 +570,7 @@ updateInput1(theEvt: any, parent: number, inner: number){
                   this.subField[key]['checked'] = item.experience;
                 })
               } 
-              console.log("@GET PTP Daata: ", Ptpdata, " :: ", this.subField);
+              console.log("@GET PTP Daata: ", Ptpdata, " :: ", this.subField, " --- ", this.subTechnicalFields);
 
               //Reference
               let RefDataTesting: any = filterData.filter(item => item.free_text_type == 2);
@@ -572,13 +579,15 @@ updateInput1(theEvt: any, parent: number, inner: number){
               let RefDataInspection: any = filterData.filter(item => item.free_text_type == 5);
 
               //Validation section
-              let ValDataTesting: any = filterData.filter(item => item.free_text_type == 6);
+              let ValDataTesting: any     = filterData.filter(item => item.free_text_type == 6);
               let ValDataCalibration: any = filterData.filter(item => item.free_text_type == 7);
-              let ValDataMedical: any = filterData.filter(item => item.free_text_type == 8);
-              let ValDataInspection: any = filterData.filter(item => item.free_text_type == 9);
+              let ValDataMedical: any     = filterData.filter(item => item.free_text_type == 8);
+              let ValDataInspection: any  = filterData.filter(item => item.free_text_type == 9);
+              let ValDataCB: any          = filterData.filter(item => item.free_text_type == 10);
 
-
+              console.log("@@@Defore ", this.technicalFields, " -- ", this.subTechnicalFields);
               this.subTechnicalFields.forEach((item, tind) => {
+
                 //For - Reference
                 if(item.isLabel === 'reference' && item.technicalFields.length){
                   item.technicalFields.forEach((data,pind) => {
@@ -633,6 +642,12 @@ updateInput1(theEvt: any, parent: number, inner: number){
                         }
                         if(data.subTitle != '' && data.subTitle =='Inspection'){
                           ValDataInspection.forEach((rec, key) => {
+                            this.subInput1[pind][key]['title']     = rec.free_text;
+                            this.subInput1[pind][key]['checked']   = rec.experience;
+                          })
+                        }
+                        if(data.subTitle != '' && data.subTitle =='Certification Body'){
+                          ValDataCB.forEach((rec, key) => {
                             this.subInput1[pind][key]['title']     = rec.free_text;
                             this.subInput1[pind][key]['checked']   = rec.experience;
                           })
@@ -1125,6 +1140,7 @@ updateInput1(theEvt: any, parent: number, inner: number){
               })
             }
             //For - Validation
+            console.log("@ subinput: ", this.subInput1);
             if(item.isLabel === 'validation' && item.technicalFields.length){
               item.technicalFields.forEach((data,pind) => {
                     console.log(data.subTitle, " -- ", data.entryRow)
@@ -1133,7 +1149,7 @@ updateInput1(theEvt: any, parent: number, inner: number){
                         console.log(">>> Testing: ", pind, " == ", key);
                         let tempObj: any            = {};
                         tempObj['free_text_type']   = 6;
-                        tempObj['experience']       = this.subInput[pind][key].checked;
+                        tempObj['experience']       = this.subInput1[pind][key].checked;
                         if(this.subInput1[pind][key].title != undefined){
                           customFreeText[this.subInput1[pind][key].title.toString()] = tempObj;
                         }
@@ -1172,13 +1188,33 @@ updateInput1(theEvt: any, parent: number, inner: number){
                         }
                       }
                     }
+                    if(data.subTitle != '' && data.subTitle =='Certification Body'){
+                      for(let key1 in this.subInput1[pind]){
+                        console.log(">>> Inspection: ", pind, " == ", key1);
+                        let tempObj: any            = {};
+                        tempObj['free_text_type']   = 10;
+                        tempObj['experience']       = this.subInput1[pind][key1].checked;
+                        if(this.subInput1[pind][key1].title != undefined){
+                          customFreeText[this.subInput1[pind][key1].title.toString()] = tempObj;
+                        }
+                      }
+                    }
               })
             }
     })
+
+    //Redefine objects
+    let tempObj: any = {};
+    for(var key in customFreeText){
+          if(key != ''){
+            tempObj[key] = customFreeText[key];
+          }
+    }
+    customFreeText = {...tempObj};
+    //console.log("Filter custom...", tempObj, " === ", customFreeText);
     postObj['technical_experience_custom'] = customFreeText;
     //Reference_Material_Producers_Testing
-
-    console.log(">>>> Free text: ", customFreeText, " -- ", postObj)
+    //console.log(">>>> Free text: ", customFreeText, " -- ", postObj)
     //return;
     if(ngForm4.form.valid && freetextInput && freefieldInput && freetextInput1) {
 

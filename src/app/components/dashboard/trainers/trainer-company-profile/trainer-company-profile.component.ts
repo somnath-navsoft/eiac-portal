@@ -38,7 +38,7 @@ export class TrainerCompanyProfileComponent implements OnInit {
     this.userEmail = localStorage.getItem('email'); 
     // this.routeId = this.route.snapshot.queryParamMap.get('id');
     // console.log(localStorage.getItem('routeId'));
-    this.routeId = 1061;//localStorage.getItem('routeId');
+    this.routeId = localStorage.getItem('routeId');
 
     this.userType = localStorage.getItem('type');
     // if(this.userType != 'operations')
