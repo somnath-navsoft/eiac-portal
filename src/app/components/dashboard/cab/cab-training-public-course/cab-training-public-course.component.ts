@@ -203,6 +203,7 @@ export class CabTrainingPublicCourseComponent implements OnInit {
     .subscribe(
       res => {
         this.step1Data.organization_name = res['data']['step1'][0].cab_name;
+        this.step5Data.organization_name = res['data']['step1'][0].cab_name;
         this.step1Data.mailing_address = res['data']['step1'][0].mailing_address;
         this.step1Data.zip_code = res['data']['step1'][0].po_box;
 
