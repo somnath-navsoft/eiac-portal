@@ -3406,17 +3406,18 @@ getCriteria(value, secInd: any){
     }
     //Has scope family
     if(typeScope.isFamily != undefined && typeScope.isFamily == true){
-      ////console.log(">>> HAs scope family .... scope values....")
+      console.log(">>> HAs scope family .... scope values....", this.dynamicScopeModel)
       let familyId = 0;
       let familyData: any;
 
           if(typeScope.scopeRows.length){
               //for(var t=0;t<typeScope.scopeRows.length; t++){
                 for(var t=rowInd;t<=rowInd; t++){
-                  console.log("Scheme Sec: ", typeScope);
+                  console.log("Scheme Sec: ", typeScope, " -- ", typeScope.scopeFamilyRows);
                   secInd = t;
                   selectScheme = typeScope.id;// typeScope.scopeRows[t].id;
-                  familyData =     typeScope.scopeFamilyRows.find(item => item.familyId == familyid);//typeScope.scopeRows[t].familyId;
+                  familyData =     typeScope.scopeFamilyRows.find(item => item.familyId.id == familyid);//typeScope.scopeRows[t].familyId;
+                  console.log("@familydaa: ",familyData );
                   if(familyData){
                     familyId  = familyData.familyId.id;
                   }
@@ -3649,7 +3650,8 @@ getCriteria(value, secInd: any){
   // }
   console.log("#Updated Scope after edit: ", scopeCollections, " -- ", this.editScopeData);
   this.step5Data['scopeDetails']    = scopeCollections;
-  //return;
+  return;
+
 }
 //scopeCollections[selectScheme]['scope_heading'][keyIds]  //assign scope heading
 //scopeCollections[selectScheme]['scope_value'] //assign unmatch scope value
@@ -3713,10 +3715,8 @@ updateScopeData = async(rowInd: number) => {
                     }
                   }
                 });
-              }                         
-
-            }
-          
+              }
+            }          
       }
       console.log("@@@>>> Family Name data: ", this.getFamilyTitles);
       }
@@ -3760,7 +3760,7 @@ onSubmitStep5(ngForm: any, type?: any, rowInd?:any, schemeid?:any, familyid?:any
   let selectScheme: any;
   let errorScope: boolean = false;
 
-  console.log("@Calling....", rowInd, " -- ", schemeid);
+  console.log("@Calling....", rowInd, " -- ", schemeid, " -- Fmily: ", familyid);
 
   this.fullTypeFamily.forEach(typeScope => {
     ////console.log(">>>> Type: ", typeScope, " -- ", typeScope.scopeRows);
@@ -4366,7 +4366,7 @@ onError(error: any) {
   this.errorLoader = true;
 }
 
-completeLoadPDF(pdfLoad: PDFDocumentProxy){
+completeLoadPDF(pdfLoad: PDFDocumentProxy){ 
   ////////console.log("Completed Load PDF :: ", pdfLoad);
   this.loaderPdf = false;
   this.completeLoaded = true;
