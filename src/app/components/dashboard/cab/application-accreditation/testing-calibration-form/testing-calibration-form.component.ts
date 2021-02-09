@@ -3148,7 +3148,7 @@ getCriteria(value, secInd: any){
               console.log("Scheme Sec: ", t," -- ", scopeCollections, " == ", selectScheme);
               if(selectScheme == undefined){
                 ////console.log(">>Heading scheme notfff....exit", selectScheme);
-                break;
+                break;  
               }
               let getData = this.criteriaMaster.find(rec => rec.scope_accridiation.id == selectScheme);
               ////console.log("@Scheme Data: ", getData);
@@ -3191,14 +3191,14 @@ getCriteria(value, secInd: any){
               for(var t=rowInd;t<=rowInd; t++){
               ////////console.log("Scheme Sec: ", t," -- ", scopeCollections);
               selectScheme  = typeScope.id;//typeScope.scopeRows[t].id;
-              familyId      = familyid;//typeScope.scopeRows[t].familyId;
+              familyId      = typeScope.scopeRows[t].familyId; 
 
               if(selectScheme == undefined){
                 ////console.log(">>Heading scheme notfff....exit", selectScheme);
                 break;
               }
               let getData = this.criteriaMaster.find(rec => rec.scope_accridiation.id == selectScheme);
-              console.log("@Scheme Data: ", getData, " scheme ", selectScheme, " Index: ", rowInd, " family: ", familyId);
+              console.log("@Scheme Data: ", getData, " scheme ", selectScheme, " Index: ", rowInd, " family:1 ", familyId, " family:2 ", familyid);
               let scopeTitle: string ='';
               scopeTitle  = getData.title.toString().toLowerCase().split(" ").join('_');
               if(getData){
@@ -3443,6 +3443,8 @@ getCriteria(value, secInd: any){
                         tempDataObj[selectScheme][familyId.toString()] = [];
                         tempDataRow = {};
 
+                        console.log("@Enter....fetch");
+
                         //Scope data population
                         for(var key in this.dynamicScopeModel[selectScheme][familyId.toString()]){
                           if(key == 'fieldLines'){
@@ -3467,7 +3469,7 @@ getCriteria(value, secInd: any){
                               //resultTempAr[k] = {};
 
                               this.dynamicScopeFieldColumns[selectScheme][familyId.toString()].forEach((colItem,colIndex) => {
-                                  console.log("...Col>>> ",colIndex, " :: ", colItem[0], " -- ", this.dynamicScopeModel[scopeTitle][key][k])
+                                  console.log("...Col>>> ",colIndex, " :: ", colItem[0], " -- ")
                                   let colData: any = colItem[0];
                                   let optionNameAr: any = [];
                                   let optionName: any;
