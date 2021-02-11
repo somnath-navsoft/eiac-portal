@@ -3493,6 +3493,7 @@ getCriteria(value, secInd: any){
                                     
                                   }else{
                                       //Map column key to row key values
+                                      //Trainig block
                                       
                                     let selTitle: any       = colItem[0].title;
                                     let selTitleVal: any    = colItem[0].values;
