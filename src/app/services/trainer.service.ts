@@ -172,6 +172,7 @@ export class TrainerService {
     const url = `${this.BASE_REQ_URL}` + "webservice/reg-payment-details-save/";
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
+  //Trainer service
 
   //proforma-step-accr/
   proformaAccrSave(postData: any){
