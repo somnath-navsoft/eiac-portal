@@ -49,6 +49,9 @@ export class AccountsComponent implements OnInit {
   selectAccrStatus: any[]=[];
 
   curSortDir: any = {};
+  voucherFile:any                   = new FormData();
+  paymentReceiptValidation: boolean = true;
+  closeResult: string;
 
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService, private exportAsService: ExportAsService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent,public router: Router) { }
@@ -318,6 +321,108 @@ export class AccountsComponent implements OnInit {
       this._toaster.warning("Please select search fields properly",'')
     }     
   }
+
+  //Voucher submit
+  // Modal Actions
+  open(content, id: number, application_number:any) {
+    //this.voucherSentData = {};
+
+    console.log(">>Dtaa: ", application_number);
+
+    if(id){
+      console.log(">>ID: ", id);
+      this.voucherSentData['accreditation'] = id;
+      this.voucherSentData['application_number'] = application_number;
+      //this.voucherSentData['index'] = key;
+    }
+    this.paymentReceiptValidation = null;
+    this.modalService.open(content, this.modalOptions).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
+  }
+
+  validateFile(fileEvent: any, type?: any) {
+    var file_name = fileEvent.target.files[0].name;
+    var file_exe = file_name.substring(file_name.lastIndexOf('.')+1, file_name.length);
+    var ex_type = ['pdf', 'PDF'];
+    var ex_check = this._service.isInArray(file_exe,ex_type);
+    if(ex_check){
+        this.paymentReceiptValidation = true;
+        this.voucherFile.append('voucher_invoice',fileEvent.target.files[0]);
+    }else{
+        this.paymentReceiptValidation = false;
+        
+    }
+  }
+
+  voucherSentSubmit(theForm){ 
+     
+     let postObject: any = {};
+     let is_valid: boolean = false;
+     if(this.voucherSentData['voucher_no'] != undefined && this.voucherSentData['amount'] != undefined &&
+      this.voucherSentData['voucher_date'] != undefined){
+        is_valid = true;
+      }
+      //console.log("Valid/Invalid: ", theForm.form.valid, " -- "," --", is_valid, " --", this.voucherSentData);
+
+    //return false;
+     if(is_valid == true && this.paymentReceiptValidation === true){ 
+          let dtFormat: string = '';;
+          if(this.voucherSentData['voucher_date'] != undefined && 
+          this.voucherSentData['voucher_date']._i != undefined){
+            var dtData = this.voucherSentData['voucher_date']._i;
+            var year = dtData.year;
+            var month = dtData.month + 1;
+            var date = dtData.date;
+            dtFormat = year + "-" + month + "-" + date;
+          }
+
+          //console.log(">>> Date: ", (dtFormat), " -- ", this.voucherSentData['voucher_date'], " -- ", this.voucherSentData['voucher_date']._i);
+          //console.log("@accred ID: ", this.voucherSentData['accreditation'])
+          this.voucherFile.append('voucher_no',this.voucherSentData['voucher_no']);
+          this.voucherFile.append('amount',this.voucherSentData['amount']);
+          this.voucherFile.append('voucher_date',dtFormat);
+          this.voucherFile.append('accreditation',this.voucherSentData['accreditation']);
+          this.voucherFile.append('application_number',this.voucherSentData['application_number']);
+
+          this.subscriptions.push(this._trainerService.courseVoucherSave((this.voucherFile))
+          .subscribe(
+             result => {
+               let data: any = result;
+                if(data.status){
+                  var currIndex = 10 * (this.pageCurrentNumber -1) + parseInt(this.voucherSentData['index']);
+                  //this.trainerdata[currIndex].accr_status = 'payment_pending';
+                  this.voucherFile = new FormData();
+                  this.voucherSentData = {};
+                  this.modalService.dismissAll();
+                  this._toaster.success("Invoice Uploaded Successfully",'Upload');
+                }else{
+                  this._toaster.warning(data.msg,'');
+                }
+             }
+            )
+          )
+
+     }else if(theForm.form.valid && (this.paymentReceiptValidation == false || this.paymentReceiptValidation == null)){
+      this._toaster.warning('Please Upload Valid Files','Upload Error',{timeOut:5000});
+     }
+     else{
+      this._toaster.warning('Please Fill required fields','Validation Error',{timeOut:5000});
+     }
+  }
+
+
 
   loadPageData() {
     this.loader = false;

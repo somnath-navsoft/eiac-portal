@@ -471,9 +471,10 @@
                                         <span class="icon-wallet"></span>
                                     </a>
 
-                                    <!-- <a *ngIf="userType == 'operations' && item.totalPayment < 4" href="javascript:void(0)" routerLink="/dashboard/account-upload/{{item.appNo}}">
+                                    <a *ngIf="userType == 'operations'" href="javascript:void(0)" (click)="open(courseVoucher, item.application_fees.id, item.appNo)">
+
                                         <span class="icon-wallet"></span>
-                                    </a> -->
+                                    </a>
                                 </td>
                             </tr>
                         </ng-container>
@@ -488,6 +489,67 @@
 
                     </tbody>
                 </table>
+                <ng-template #courseVoucher let-modal>
+                    <div class="modal-header course-pop">
+                      <h4 class="modal-title" id="modal-basic-title">UPLOAD PROFORMA INVOICE</h4>
+                      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                        <span class="icon-close"></span>
+                      </button>
+                    </div>
+                    <div class="modal-body">                 
+                        <form #voucherForm="ngForm">
+        
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <mat-form-field class="cab-data">
+                                        <mat-label>Voucher Number</mat-label>
+                                        <input type="text" [ngModelOptions]="{standalone: true}"
+                                        matInput placeholder="Voucher Number" 
+                                        [(ngModel)]="voucherSentData.voucher_no" required>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-6">
+                                    <mat-form-field class="cab-data">
+                                        <mat-label>Voucher Date</mat-label>
+                                        <input matInput [matDatepicker]="voucher_date"  readonly="true" placeholder="Voucher Date" 
+                                        name="voucher_date" (click)="_service._openCalendar(voucher_date)" 
+                                        [(ngModel)]="voucherSentData.voucher_date" required>
+                                        <mat-datepicker-toggle matSuffix [for]="voucher_date"></mat-datepicker-toggle>
+                                        <mat-datepicker #voucher_date  disabled="false"></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <mat-form-field class="cab-data">
+                                        <mat-label>Amount</mat-label>
+                                        <input type="number" [ngModelOptions]="{standalone: true}" 
+                                        matInput placeholder="Amount" 
+                                        [(ngModel)]="voucherSentData.amount" required>
+                                    </mat-form-field>
+                                </div>
+        
+                                <div class="col-md-6">
+                                    <span class="fileupload">
+                                        <input type="file" name="voucher_invoice"                                
+                                        (change)="validateFile($event, 'voucher_invoice')" required>
+                                        <span class="icon-attach attach-data"></span>
+                                    </span>
+                                    <p class="error" *ngIf="paymentReceiptValidation == false">Please Upload a valid file (ex: pdf)</p>
+                                </div>
+                            </div>
+                            <div class="row" [ngStyle]="{'margin-top': '10px'}">
+                                <div class="col-md-12">
+                                    <div class="bttns-health">
+                                        <button type="submit" (click)="voucherSentSubmit(voucherForm)" class="cancel-bttn">SUBMIT</button>
+                                        <button type="button" class="submit-bttn submit-health" (click)="modal.close('Cancel click')">CANCEL</button>
+                                    </div>
+                                    
+                                </div>
+                            </div>                    
+                        </form>
+                    </div>
+                  </ng-template>
 
                 <ng-container *ngIf="accountsData != undefined && accountsData.length > 5" >
                     <pagination-controls (click)="paginationReset()" (pageChange)="pageCurrentNumber = $event"></pagination-controls>
