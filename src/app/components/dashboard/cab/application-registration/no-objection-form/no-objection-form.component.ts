@@ -474,10 +474,10 @@ export class NoObjectionFormComponent implements OnInit {
         }
         console.log(">>>Count check: ", checkCount);
         if(checkCount > 0){
-          this.showHideCBSec = true;
+          //this.showHideCBSec = true;
         }
         if(checkCount == 0){
-          this.showHideCBSec = false;
+          //this.showHideCBSec = false;
         }
       break;
       case 'certification_body_first':
@@ -522,10 +522,10 @@ export class NoObjectionFormComponent implements OnInit {
           }) 
         }
         if(this.calibrationLabCheckItemOthers){
-          this.showHideCBSec = true;
+          //this.showHideCBSec = true;
         }
         if(!this.calibrationLabCheckItemOthers){
-          this.showHideCBSec = false;
+          //this.showHideCBSec = false;
         }
       break;
       case 'certification_body_first':
@@ -698,7 +698,7 @@ export class NoObjectionFormComponent implements OnInit {
           this.step1Data.date_of_expiry = new Date(data.date_of_expiry);
           this.step1Data.date_of_issue = new Date(data.date_of_issue);
           this.step1Data.fax_no = data.applicant_fax_no;
-          this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0";
+          this.step1Data.is_bod = step2['cabBodData'] != '' ? "1" : "0"; 
           this.step1Data.mailing_address = data.mailing_address;// data.applicant_address;
           this.step1Data.official_commercial_name = data.cab_name;
 
@@ -925,7 +925,7 @@ export class NoObjectionFormComponent implements OnInit {
                            })
                       }
                       if(checkCount > 0){
-                        this.showHideCBSec = true;
+                        //this.showHideCBSec = true;
                       }
                       if(calibrationLabCheckboxes.checkItemsOthers.length){
                         this.calibrationLabCheckItemOthers = true;

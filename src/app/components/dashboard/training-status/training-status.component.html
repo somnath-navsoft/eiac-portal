@@ -164,6 +164,12 @@
                                     <span class="icon-arrow-up"  *ngIf="curSortDir.course"></span>
                                 </a>
                             </th>
+                            <th>Course Date
+                                <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'course_date', curSortDir.course_date)">
+                                    <span class="icon-arrow-down" *ngIf="!curSortDir.course_date"></span>
+                                    <span class="icon-arrow-up"  *ngIf="curSortDir.course_date"></span>
+                                </a>
+                            </th>
                             <th>Capacity
                                 <a href="javascript:void(0)" (click)="sortedList(trainerdata, 'capacity', curSortDir.capacity)">
                                     <span class="icon-arrow-down" *ngIf="!curSortDir.capacity"></span>
@@ -237,6 +243,14 @@
                                 <ng-container *ngIf="item.course_name === ''">
                                     NA
                                 </ng-container>
+                            </td>
+                            <td>
+                                <ng-container *ngIf="item.courseEventDetails != undefined && item.courseEventDetails.event_details.length > 0">
+                                        {{item.courseEventDetails.event_details[0].event_start_date_time | date}}
+                                </ng-container>
+                                <ng-container *ngIf="item.courseEventDetails != undefined && item.courseEventDetails.event_details.length == 0">
+                                    NA
+                            </ng-container>
                             </td>
                             <td>
                                 <ng-container *ngIf="item.course_capacity != undefined">
