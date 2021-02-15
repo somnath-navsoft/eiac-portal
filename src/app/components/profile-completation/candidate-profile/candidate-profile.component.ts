@@ -63,7 +63,7 @@ export class CandidateProfileComponent implements OnInit {
     this.titleArr = ['Mr.','Ms.','Dr.','Prof.','Mrs.'];
 
     // console.log(this.step1Data.application_info);
-    
+    this.applicationInfo(0);
   }
 
   applicationInfo(param) {

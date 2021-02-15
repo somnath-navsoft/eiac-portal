@@ -146,7 +146,8 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
       //console.log(">>>pop up...", content);
       if(type != undefined && type == 'agreement'){
         pathData = this.getSantizeUrl(this.accredAgreemFile);
-        this.pathPDF = pathData.changingThisBreaksApplicationSecurity;
+        this.pathPDF = pathData;
+        console.log(this.pathPDF,'accredAgreemFile');
       }
       if(type != undefined && type == 'checklist'){
         pathData = this.getSantizeUrl(this.checklistDocFile);
@@ -256,7 +257,16 @@ export class OperationsAccreditationServiceDetailsComponent implements OnInit, O
         console.log(res,'Terms data');
         let getData: any = res;
         if(getData){
-          this.termsGeneral = getData.data[0].content;
+
+          getData.data.forEach(item =>{
+            if(item.title != undefined && item.title == "Accreditation Agreement"){
+              this.termsGeneral = item;
+            }
+            // if(item.title != undefined && item.title == "IAF-EIAC Agreement with CB"){
+            //   this.termsIAF = item;
+            // }
+          })
+          // this.termsGeneral = getData.data[0].content;
           //this.termsIAF     = getData.data[1];
 
         }        

@@ -59,8 +59,8 @@ export class AuthEffects {
   ofType(AuthActionTypes.LOGIN_SUCCESS),
   tap((user) => {
     var authUserData = this._appServ.decodeJWT(user.payload.token);
-    // console.log(">>>Effects LAnd URL:",authUserData );
-    if(authUserData.isVerified == '0')
+    console.log(">>>Effects LAnd URL:",authUserData );
+    if(authUserData.isVerified == '0' && authUserData.profileComplete != '2')
     {
       // localStorage.setItem('token', user.payload.token);
       // this._appServ.getUserType();
@@ -72,6 +72,7 @@ export class AuthEffects {
       // this.authService.appErrorStack.next('Please complete your verification before Sign in');
     }else if(authUserData.isCompleteness == '0')
     {
+      console.log(authUserData,'authUserData');
       localStorage.setItem('token', user.payload.token);
       localStorage.setItem('email', authUserData.email);
       localStorage.setItem('first_name', authUserData.first_name);
@@ -85,6 +86,24 @@ export class AuthEffects {
       // let landURL = '/dashboard/' + this._constants.logType + '/home';
       // this.router.navigateByUrl(landURL);
 
+    }else if(authUserData.isCompleteness == '2')
+    {
+      // localStorage.setItem('token', user.payload.token);
+      // this._appServ.getUserType();
+      // localStorage.setItem('type', this._constants.logType);
+      console.log('authEffects');
+      localStorage.setItem('token', '');
+      localStorage.setItem('email', '');
+      localStorage.setItem('first_name', '');
+      localStorage.setItem('isVerified', '');
+      localStorage.setItem('profileComplete', '');
+      localStorage.setItem('userId', '');
+      localStorage.setItem('type', '');
+      this.toastr.error('Hi Your profile is rejected by Admin','Validation Error', {timeOut: 30000});
+      this.router.navigateByUrl('/sign-in');
+      // localStorage.setItem('token', '');
+      
+      // this.authService.appErrorStack.next('Please complete your verification before Sign in');
     }else{
       localStorage.setItem('token', user.payload.token);
       localStorage.setItem('email', authUserData.email);
