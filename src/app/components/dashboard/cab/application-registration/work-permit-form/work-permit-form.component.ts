@@ -36,9 +36,19 @@ export class WorkPermitFormComponent implements OnInit {
   public file_validation3:boolean = true;
   public file_validation4:boolean = true;
   licence_document_validation:boolean = false;
+  licence_document_size_validation:boolean = false;
+
+
   quality_manual_validation:boolean = false;
+  quality_manual_size_validation:boolean = false;
+
   work_instruction_validation:boolean = false;
+  work_instruction_size_validation:boolean = false;
+
   check_list_validation:boolean = false;
+  check_list_size_validation:boolean = false;
+
+
   licence_document_file:any;
   quality_manual_file:any;
   work_instruction_file:any;
@@ -596,33 +606,41 @@ export class WorkPermitFormComponent implements OnInit {
       this.step3Data.licence_document = fileEvent.target.files[0].name;
       this.step3DataBodyFormFile.append(fileName,fileEvent.target.files[0]);
       this.licence_document_validation = true;
+      this.licence_document_size_validation = true;
       return true;
     }else if(!ex_check && fileName == 'licence_document_file') {
       this.licence_document_validation = false;
+      this.licence_document_size_validation = false;
       return false;
     }else if(ex_check && fileName == 'quality_manual_file'){
       this.step3Data.quality_manual = fileEvent.target.files[0].name;
       this.step3DataBodyFormFile.append(fileName,fileEvent.target.files[0]);
       this.quality_manual_validation = true;
+      this.quality_manual_size_validation = true;
       return true;
     }else if(!ex_check && fileName == 'quality_manual_file') {
       this.quality_manual_validation = false;
+      this.quality_manual_size_validation = false;
       return false;
     }else if(ex_check && fileName == 'work_instruction_file'){
       this.step3Data.work_instruction = fileEvent.target.files[0].name;
       this.step3DataBodyFormFile.append(fileName,fileEvent.target.files[0]);
       this.work_instruction_validation = true;
+      this.work_instruction_size_validation = true;
       return true;
     }else if(!ex_check && fileName == 'work_instruction_file') {
       this.work_instruction_validation = false;
+      this.work_instruction_size_validation = false;
       return false;
     }else if(ex_check && fileName == 'check_list_file'){
       this.step3Data.check_list = fileEvent.target.files[0].name;
       this.step3DataBodyFormFile.append(fileName,fileEvent.target.files[0]);
       this.check_list_validation = true;
+      this.check_list_size_validation = true;
       return true;
     }else if(!ex_check && fileName == 'check_list_file') {
       this.check_list_validation = false;
+      this.check_list_size_validation = false;
       return false;
     }
   }
@@ -754,7 +772,7 @@ export class WorkPermitFormComponent implements OnInit {
   onSubmit3(ngForm3) {
     // this.Service.moveSteps('documents_tobe_attached', 'authorization_ofthe_application', this.headerSteps);
 
-    if(ngForm3.form.valid) {
+    if(ngForm3.form.valid && this.licence_document_validation == true && this.check_list_validation == true) {
       this.workPermitForm = {};
       this.workPermitForm.step3 = {};
       this.workPermitForm.email = this.userEmail;

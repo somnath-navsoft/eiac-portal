@@ -62,6 +62,7 @@ export class TrainingStatusComponent implements OnInit {
     this.curSortDir['training_form_type'] = false;
     this.curSortDir['application_status'] = false;
     this.curSortDir['course'] = false;
+    this.curSortDir['course_date'] = false;
     this.curSortDir['capacity'] = false;
     this.curSortDir['Country'] = false;
     
@@ -390,6 +391,18 @@ export class TrainingStatusComponent implements OnInit {
            this.trainerdata = array;
          }
        }
+       //By course Date
+       if(sortBy == 'course_date'){
+        this.curSortDir.course_date = !sortDir;
+        if(this.curSortDir.course_date){
+          let array = data.slice().sort((a, b) => (a.courseEventDetails.event_details[0].event_start_date_time > b.courseEventDetails.event_details[0].event_start_date_time) ? 1 : -1)
+          this.trainerdata = array;
+        }
+        if(!this.curSortDir.course_date){
+          let array = data.slice().sort((a, b) => (a.courseEventDetails.event_details[0].event_start_date_time < b.courseEventDetails.event_details[0].event_start_date_time) ? 1 : -1)
+          this.trainerdata = array;
+        }
+      }
        //By accr_status
        if(sortBy == 'application_status'){
          this.curSortDir.application_status = !sortDir;
