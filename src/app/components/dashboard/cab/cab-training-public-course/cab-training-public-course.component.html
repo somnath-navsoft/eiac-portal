@@ -44,9 +44,9 @@
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-12 p-0">
-                                            <div class="form-subhdr form_subhdr">
+                                            <div class="form-subhdr">
                                                 <h5>1. APPLICANT INFORMATION</h5>
-                                                <span>* Your certiticate will be issued in the same name so ensure the candidate names are entered correctly</span>
+                                                
                                             </div>
                                             <hr>
                                         </div>
@@ -198,8 +198,9 @@
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-md-12 p-0">
-                                            <div class="form-subhdr">
+                                            <div class="form-subhdr form_subhdr">
                                                 <h5>2. PARTICIPANT/TRAINEES DETAILS</h5>
+                                                <span>* Your certiticate will be issued in the same name so ensure the candidate names are entered correctly</span>
                                             </div>
                                             <hr>
                                         </div>
@@ -222,28 +223,28 @@
                                                                 <div class="participant_trainee">
                                                                     <mat-form-field class="cab-data mr-2">
                                                                         <mat-label>First Name</mat-label>
-                                                                        <input  (keypress)="Service.inputFilter($event, Service.regExAlphaNum)" matInput placeholder="" name="first_name_{{i}}" [(ngModel)]="participantTraineeDetails[i].first_name" required> 
+                                                                        <input  (keypress)="Service.inputFilter($event, Service.regExAlphaNum)" matInput placeholder="First Name" name="first_name_{{i}}" [(ngModel)]="participantTraineeDetails[i].first_name" required> 
                                                                     </mat-form-field>
 
                                                                     <mat-form-field class="cab-data">
                                                                         <mat-label>Last Name</mat-label>
-                                                                        <input  (keypress)="Service.inputFilter($event, Service.regExAlphaNum)" matInput placeholder="" name="last_name_{{i}}" [(ngModel)]="participantTraineeDetails[i].last_name" required> 
+                                                                        <input  (keypress)="Service.inputFilter($event, Service.regExAlphaNum)" matInput placeholder="Last Name" name="last_name_{{i}}" [(ngModel)]="participantTraineeDetails[i].last_name" required> 
                                                                     </mat-form-field>
                                                                 </div>
                                                             </td>
 
                                                             <td>
                                                                 <mat-form-field class="cab-data">
-                                                                    <mat-label>Type Here</mat-label>
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExAlphaNum)" matInput placeholder="" name="email_address_{{i}}" [(ngModel)]="participantTraineeDetails[i].email_address" required> 
+                                                                    <mat-label>E-mail Address</mat-label>
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExAlphaNum)" matInput placeholder="E-mail Address" name="email_address_{{i}}" [(ngModel)]="participantTraineeDetails[i].email_address" required> 
                                                                 </mat-form-field>
                                                                 <p class="error" *ngIf="participantTraineeDetails[i].email_address && !Service.checkInput('email',participantTraineeDetails[i].email_address)">Please Enter Correct Email Id</p>
                                                             </td>
 
                                                             <td>
                                                                 <mat-form-field class="cab-data">
-                                                                    <mat-label>Type Here</mat-label>
-                                                                    <input (keypress)="Service.IsNumeric($event)" matInput placeholder="" name="phone_number_{{i}}" [(ngModel)]="participantTraineeDetails[i].phone_number" required> 
+                                                                    <mat-label>Phone Number</mat-label>
+                                                                    <input (keypress)="Service.IsNumeric($event)" matInput placeholder="Phone Number" name="phone_number_{{i}}" [(ngModel)]="participantTraineeDetails[i].phone_number" required> 
                                                                 </mat-form-field>
                                                             </td>
                                                             

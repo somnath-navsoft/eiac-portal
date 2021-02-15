@@ -53,11 +53,13 @@ export class CandidateProfileComponent implements OnInit {
     this.headerSteps.push(
       {
       title:'personal_details', desc:'1. Personal <br> Details', activeStep:true, stepComp:false, icon:'icon-user', activeClass:'user-present'
-      },
+      }      
+    );
+    /*
       {
       title:'application_information', desc:'2. Application <br> Information', activeStep:false, stepComp:false, icon:'icon-doc-edit', activeClass:''
       }
-    );
+    */
 
     this.loadStep1Data();
     this.titleArr = ['Mr.','Ms.','Dr.','Prof.','Mrs.'];
@@ -174,7 +176,7 @@ export class CandidateProfileComponent implements OnInit {
             
             if(res['data'].step1 != '' && res['data'].step1[0] && res['data'].step1[0].dob != null && res['data'].step1[0].office_email != '' && res['data'].step1[0].designation != '' && res['data'].step1[0].nationality != null && res['data'].step1[0].mailing_address != '' && res['data'].step1[0].office != '' && res['data'].step1[0].tel_no != '' && res['data'].step1[0].office_address != '' && res['data'].step1[0].office_tel_no != '' && res['data'].step1[0].office_tel_no != '' && res['data'].step1[0].applicant_office != '' && res['data'].step1[0].applicant_tel_no != '' && res['data'].step1[0].applicant_office_address != '' && res['data'].step1[0].applicant_office_tel_no != '' && res['data'].step1[0].applicant_address != '') {
               this.progressValue = 50;
-              this.Service.moveSteps('personal_details','application_information', this.headerSteps);
+              //this.Service.moveSteps('personal_details','application_information', this.headerSteps);
             }if(res['data'].step2 != '' && res['data'].step2.candidateOwnerData != '' && res['data'].step2.candidateBodData != '' && res['data'].step1[0].legal_status != '' && res['data'].step1[0].date_of_establisment != null) {
               this.progressValue = 100;
             }

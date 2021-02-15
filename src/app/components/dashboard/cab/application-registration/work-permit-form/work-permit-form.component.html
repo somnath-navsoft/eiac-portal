@@ -510,7 +510,7 @@
                                         <div class="col-md-6">
                                             <div class="matupload position-relative view_file">
                                                 <mat-form-field  class="lng-data">
-                                                    <input matInput readonly="true" name="licence_document" [(ngModel)]="step3Data.licence_document" placeholder="Upload License Documents">
+                                                    <input matInput readonly="true" name="licence_document" [(ngModel)]="step3Data.licence_document" placeholder="Upload License Documents" required>
                                         
                                                     <a *ngIf="licence_document_path" href="{{licence_document_path}}" target="_blank">
                                                         <span class="icon-eye visible-pwd"></span>
@@ -522,6 +522,7 @@
                                                     <span class="icon-attach attach-data"></span>
                                                 </span>
                                                 <p class="error" *ngIf="!licence_document_validation">Please Upload a valid file (ex: pdf)</p>
+                                                <p class="error" *ngIf="!licence_document_size_validation">File Size maximum 2MB</p>
                                             </div>
                                         </div>
 
@@ -540,10 +541,11 @@
                                                     <span class="icon-attach attach-data"></span>
                                                 </span>
                                                 <p class="error" *ngIf="!quality_manual_validation">Please Upload a valid file (ex: pdf)</p>
-                                                <!-- <p class="error" *ngIf="!quality_manual_validation">Please Upload a valid file (ex: pdf)</p> -->
+                                                <p class="error" *ngIf="!quality_manual_size_validation">File Size maximum 2MB</p>
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- licence_document_validation || check_list_validation-->
 
                                     <div class="row">
                                         <div class="col-md-6">
@@ -561,25 +563,25 @@
                                                     <span class="icon-attach attach-data"></span>
                                                 </span>
                                                 <p class="error" *ngIf="!work_instruction_validation">Please Upload a valid file (ex: pdf)</p>
+                                                <p class="error" *ngIf="!work_instruction_size_validation">File Size maximum 2MB</p>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="matupload position-relative view_file">
                                                 <mat-form-field  class="lng-data">
-                                                    <input matInput readonly="true" name="check_list" [(ngModel)]="step3Data.check_list" placeholder="Upload Checklkist related to the International Standard">
+                                                    <input matInput readonly="true" name="check_list" [(ngModel)]="step3Data.check_list" placeholder="Upload Checklkist related to the International Standard" required>
                                         
                                                     <a *ngIf="check_list_path" href="{{check_list_path}}" target="_blank">
                                                         <span class="icon-eye visible-pwd"></span>
                                                     </a>
-                                                </mat-form-field>
-                                        
+                                                </mat-form-field>                                        
                                                 <span class="fileupload" [ngStyle]="{'padding-bottom': '17px'}">
                                                     <input type="file" name="id_issuedEsma" [(ngModel)]="check_list_file" (change)="validateFile($event,'check_list_file')">
                                                     <span class="icon-attach attach-data"></span>
                                                 </span>
                                                 <p class="error" *ngIf="!check_list_validation">Please Upload a valid file (ex: pdf)</p>
-                                               
+                                                <p class="error" *ngIf="!check_list_size_validation">File Size maximum 2MB</p>
                                             </div>
                                         </div>
 
@@ -816,7 +818,7 @@
                                                 <mat-label>Voucher Code</mat-label>
                                                 <input type="text" [ngModelOptions]="{standalone: true}" required="true"
                                                 matInput placeholder="Voucher Code" readonly="true"
-                                                [(ngModel)]="voucherSentData.voucher_code">
+                                                [(ngModel)]="voucherSentData.voucher_code"> 
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-4">

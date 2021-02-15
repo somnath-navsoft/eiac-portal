@@ -233,7 +233,7 @@
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExAlphaNum)" matInput placeholder="" name="email_address_{{i}}" [(ngModel)]="participantTraineeDetails[i].email_address" required> 
+                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExAlphaNum)" matInput placeholder="E-mail Address" name="email_address_{{i}}" [(ngModel)]="participantTraineeDetails[i].email_address" required> 
                                                                 </mat-form-field>
                                                                 <p class="error" *ngIf="participantTraineeDetails[i].email_address && !Service.checkInput('email',participantTraineeDetails[i].email_address)">Please Enter Correct Email Id</p>
                                                             </td>
@@ -241,7 +241,7 @@
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input (keypress)="Service.IsNumeric($event)" matInput placeholder="" name="phone_number_{{i}}" [(ngModel)]="participantTraineeDetails[i].phone_number" required> 
+                                                                    <input (keypress)="Service.IsNumeric($event)" matInput placeholder="Phone Number" name="phone_number_{{i}}" [(ngModel)]="participantTraineeDetails[i].phone_number" required> 
                                                                 </mat-form-field>
                                                             </td>
                                                             
