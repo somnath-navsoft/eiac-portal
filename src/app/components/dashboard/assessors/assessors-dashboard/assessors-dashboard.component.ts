@@ -121,6 +121,7 @@ export class AssessorsDashboardComponent implements OnInit {
           //   })
           // }
           // console.log("@Total count: ", this.technicalFieldsCount);
+          console.log(">>>>Dtaa: ", data);
 
           var arr = [];
           if(rec['data'].step4 != '') {
@@ -137,9 +138,44 @@ export class AssessorsDashboardComponent implements OnInit {
                 }
               });
             }
+            //Free text
+            //let filterCustomExp: any = step4['technical_experience_custom'].filter(item => item.free_text != null);
+            let customData: any = step4['technical_experience_custom'];
+            let filterData: any = customData.filter(item => (item.free_text != null && item.free_text != ''));
+            //console.log("@get text: ", filterData);
+            let Ptpdata: any = filterData.filter(item => (item.free_text_type == 1 && item.free_text != null));
+            //Reference
+            let RefDataTesting: any = filterData.filter(item => (item.free_text_type == 2 && item.free_text != null));
+            let RefDataCalibration: any = filterData.filter(item => (item.free_text_type == 3 && item.free_text != null));
+            let RefDataMedical: any = filterData.filter(item => (item.free_text_type == 4 && item.free_text != null));
+            let RefDataInspection: any = filterData.filter(item => (item.free_text_type == 5 && item.free_text != null));
+
+            //Validation section
+            let ValDataTesting: any     = filterData.filter(item => (item.free_text_type == 6 && item.free_text != null));
+            let ValDataCalibration: any = filterData.filter(item => (item.free_text_type == 7 && item.free_text != null));
+            let ValDataMedical: any     = filterData.filter(item => (item.free_text_type == 8 && item.free_text != null));
+            let ValDataInspection: any  = filterData.filter(item => (item.free_text_type == 9 && item.free_text != null));
+            let ValDataCB: any          = filterData.filter(item => (item.free_text_type == 10 && item.free_text != null));
+
+            //console.log("@Knowledge Data: ", RefDataCalibration, " -- ", Ptpdata);
+            let freeTextCount: number = 0;
+            if(Ptpdata.length > 0){
+              freeTextCount++;
+            }
+            if(RefDataTesting.length > 0 || RefDataCalibration.length > 0 || RefDataMedical.length > 0 || RefDataInspection.length > 0){
+              freeTextCount++;
+            }
+            if(ValDataTesting.length > 0 || ValDataCalibration.length > 0 || ValDataMedical.length > 0 || ValDataInspection.length > 0 || ValDataCB.length > 0){
+              freeTextCount++;
+            }
+            //console.log("@Freetext count: ", freeTextCount);
+
             let unique = arr.filter((item, i, ar) => ar.indexOf(item) === i);
             this.technicalFieldsCount = unique.length;
-            // console.log(unique);
+            if(freeTextCount > 0){
+              this.technicalFieldsCount += freeTextCount;
+            }
+            //console.log("unique...",unique);
             // const uniqueArr = [...new Set(arr.map(item => item.key))]
             // console.log(uniqueArr,'htryyyyyyyyyyyyyy');
           }
@@ -239,7 +275,7 @@ export class AssessorsDashboardComponent implements OnInit {
             if(this.dashboardItemData.assessorDetails != undefined && this.dashboardItemData.assessorDetails.length > 0){
                 let assessorData: any = this.dashboardItemData.assessorDetails[0];
                // this.dashboardItemData.assessorDetails[0].appointment_date = new Date('2019-10-10');
-                console.log("@Assesor data: ", assessorData);
+                //console.log("@Assesor data: ", assessorData);
 
                 let date = new Date();
                 let yr = date.getFullYear();

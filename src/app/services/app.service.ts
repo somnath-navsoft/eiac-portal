@@ -134,6 +134,176 @@ getObjectLength(obj: any){
   }
   return count;
 } 
+
+isObjectKeyValueEmpty(Obj: any) {
+  //console.log("objecyt key value...");
+  for(var key in Obj) 
+  {
+    //console.log(key, " -- ", Obj[key]);
+    if(Obj.hasOwnProperty(key)){
+       //console.log("@key value enetere....");
+        if(Obj[key] != ''){
+          return false;
+        }
+    }      
+  }
+  return true;
+}
+
+getNOCScopeData(object:  any, type: string){
+      let scopeStatus: boolean = false;
+      let testScopeSelect: any[] =[];
+      switch(type){
+
+          case 'testing':
+              testScopeSelect = [];
+              if(typeof object === 'object' && object.key === "testing_lab"){
+                //console.log("Testing enter.....",object)
+                if(object.value != undefined && typeof object.value === 'object'){
+                      for(let key in object.value){
+                        //console.log("@Key: ", key, " :: ", object.value[key]);
+                        if(key === 'testingLabCheckDetails'){
+                            if(object.value[key]['checkItems'].length > 0){
+                              testScopeSelect.push({found: true});
+                            }
+                            if(object.value[key]['checkItemsOthers'].length > 0){
+                              testScopeSelect.push({found: true});
+                            }
+                        }
+                        if(key === 'testingLabInformation'){
+                            if(!this.isObjectEmpty(object.value[key][0]) && !this.isObjectKeyValueEmpty(object.value[key][0])){
+                              testScopeSelect.push({found: true});
+                            }
+                          //console.log("@Testing Lab Informma: ", this.isObjectEmpty(object.value[key][0]));
+                        }
+                      }
+                }
+              }
+              //console.log("Check...", testScopeSelct.length, " :: ", testScopeSelct);
+              if(testScopeSelect.length > 0){
+                return true;
+              }
+              return false;
+          break;
+
+          case 'calibration':
+              testScopeSelect = [];
+              if(typeof object === 'object' && object.key === "calibration_lab"){
+                //console.log("Calibration Enter.....",object)
+                if(object.value != undefined && typeof object.value === 'object'){
+                    for(let key in object.value){
+                        //console.log("@Key: ", key, " :: ", object.value[key]);
+                        if(key === 'calibrationLabCheckDetails'){
+                            if(object.value[key]['checkItems'].length > 0){
+                              testScopeSelect.push({found: true});
+                            }
+                            if(object.value[key]['checkItemsOthers'].length > 0){
+                              testScopeSelect.push({found: true});
+                            }
+                        }
+                        if(key === 'calibrationLabInformation'){
+                            if(!this.isObjectEmpty(object.value[key][0]) && !this.isObjectKeyValueEmpty(object.value[key][0])){
+                              testScopeSelect.push({found: true});
+                            }
+                          //console.log("@Calibration Lab Informma: ", this.isObjectEmpty(object.value[key][0]));
+                        }
+                    }
+                }
+              }
+              //console.log("Check...", testScopeSelect.length, " :: ", testScopeSelect);
+              if(testScopeSelect.length > 0){
+                return true;
+              }
+              return false;
+          break;
+
+          case 'inspection':
+              testScopeSelect = [];
+              if(typeof object === 'object' && object.key === "inspection_body"){
+                //console.log("Calibration Enter.....",object)
+                if(object.value != undefined && typeof object.value === 'object'){
+                    for(let key in object.value){
+                        //console.log("@Key: ", key, " :: ", object.value[key]);
+                        if(key === 'inspectionCheckDetails'){
+                            if(object.value[key]['checkItems'].length > 0){
+                              testScopeSelect.push({found: true});
+                            }
+                            if(object.value[key]['checkItemsOthers'].length > 0){
+                              testScopeSelect.push({found: true});
+                            }
+                        }
+                        if(key === 'inspectionInfo'){
+                            if(!this.isObjectEmpty(object.value[key][0]) && !this.isObjectKeyValueEmpty(object.value[key][0])){
+                              testScopeSelect.push({found: true});
+                            }
+                          //console.log("@Calibration Lab Informma: ", this.isObjectEmpty(object.value[key][0]));
+                        }
+                    }
+                }
+              }
+              //console.log("Check...", testScopeSelect.length, " :: ", testScopeSelect);
+              if(testScopeSelect.length > 0){
+                return true;
+              }
+              return false;
+          break;
+
+          case 'certification':
+            testScopeSelect = [];
+              if(typeof object === 'object' && object.key === "cb_management"){
+                //console.log("Calibration Enter.....",object)
+                if(object.value != undefined && typeof object.value === 'object'){
+                    for(let key in object.value){
+                        //console.log("@Key: ", key, " :: ", object.value[key]);
+                        if(key === 'certificationCheckDetails'){
+                            if(object.value[key]['checkItems'].length > 0){
+                              testScopeSelect.push({found: true});
+                            }
+                            if(object.value[key]['checkItemsOthers'].length > 0){
+                              testScopeSelect.push({found: true});
+                            }
+                        }                        
+                    }
+                }
+              }
+              if(testScopeSelect.length > 0){
+                return true;
+              }
+              return false;
+          break;
+
+          case 'halal':
+              testScopeSelect = [];
+              if(typeof object === 'object' && object.key === "halal_lab"){
+                //console.log("Calibration Enter.....",object)
+                if(object.value != undefined && typeof object.value === 'object'){
+                    for(let key in object.value){
+                        //console.log("@Key: ", key, " :: ", object.value[key]);
+                        if(key === 'halalLabCheckDetails'){
+                            if(object.value[key]['checkItems'].length > 0){
+                              testScopeSelect.push({found: true});
+                            }
+                            if(object.value[key]['checkItemsOthers'].length > 0){
+                              testScopeSelect.push({found: true});
+                            }
+                        }                        
+                    }
+                }
+              }
+              if(testScopeSelect.length > 0){
+                return true;
+              }
+              return false;
+          break;
+
+          default:
+          break;
+
+
+      }
+}
+
+
 setValueUrlIB(value: any) {
   // //console.log(">>assign IB value: ", value);
   //this.userDataSource.next(value);
@@ -341,6 +511,9 @@ addMinutesToTime()
     }
     return true;
   }
+
+  
+
 
   isEmptyObject(obj) {
     return (obj && (Object.keys(obj).length === 0));

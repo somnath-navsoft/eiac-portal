@@ -416,7 +416,7 @@
               <div class="col-md-12">
                 <div class="table-appln">
                   <table>
-                    <tr>
+                    <tr *ngIf="nocCabTypeData['lab'].length">
                       <td width="25%">Laboratory</td>
                       <td>
                         <ng-container *ngIf="nocCabTypeData['lab'].length">
@@ -426,7 +426,7 @@
                         </ng-container>
                       </td>                      
                     </tr>
-                    <tr>
+                    <tr *ngIf="nocCabTypeData['ib'].length">
                       <td>Inspection Body</td>
                       <td>
                       <ng-container *ngIf="nocCabTypeData['ib'].length">
@@ -436,7 +436,7 @@
                      </ng-container>  
                     </td>                 
                     </tr>
-                    <tr>
+                    <tr *ngIf="nocCabTypeData['cb'].length">
                       <td>Certification Body</td>
                       <td>
                       <ng-container *ngIf="nocCabTypeData['cb'].length">
@@ -446,7 +446,7 @@
                      </ng-container>   
                     </td>                   
                     </tr>
-                    <tr>
+                    <tr *ngIf="nocCabTypeData['hcab'].length">
                       <td>Halal CAB</td>
                       <td>
                       <ng-container *ngIf="nocCabTypeData['hcab'].length">
@@ -463,7 +463,8 @@
           </div>          
         </div>
 
-        <div class="row m-0 appn-cnt-data">
+        <div class="row m-0 appn-cnt-data" *ngIf="nocTableScopeData.listOfIntEquip != undefined && nocTableScopeData.listOfIntEquip.length > 0 
+                                                    && !_service.isObjectKeyValueEmpty(nocTableScopeData.listOfIntEquip[0])">
           <div class="col-md-12">
             <div class="row">
               <div class="col-md-12">
@@ -474,7 +475,7 @@
             </div>
               <div class="row">
                 <div class="col-md-12">
-                    <div class="table-appln scope-data-table" *ngIf="nocTableScopeData.listOfIntEquip != undefined && nocTableScopeData.listOfIntEquip.length">                        
+                    <div class="table-appln scope-data-table">                        
                         <table>
                         <tr>
                             <th>Name Of Instrument / Equipment</th>
@@ -490,7 +491,8 @@
               </div>
           </div>
         </div>
-        <div class="row m-0 appn-cnt-data">
+        <div class="row m-0 appn-cnt-data" *ngIf="nocTableScopeData.listOfStaff != undefined && nocTableScopeData.listOfStaff.length > 0 
+                                                    && !_service.isObjectKeyValueEmpty(nocTableScopeData.listOfStaff[0])">
           <div class="col-md-12">
             <div class="row">
               <div class="col-md-12">
@@ -501,7 +503,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="table-appln scope-data-table" *ngIf="nocTableScopeData.listOfStaff != undefined && nocTableScopeData.listOfStaff.length">                        
+                    <div class="table-appln scope-data-table">                        
                         <table>
                         <tr>
                             <th>Job Title</th>
@@ -587,97 +589,147 @@
               <div class="col-md-12">
                   <ng-container *ngIf="nocTableScopeData != null">
                     <ng-container *ngFor="let item of nocTableScopeData | keyvalue">
+                      <!-- @{{item.key}} == {{item.value |  json}} -->
+
                       <!-- For Testing -->
-                      <ng-container *ngIf="item.key != null && item.key === 'testing_lab'">
-                        <ng-container *ngFor="let item1 of item.value | keyvalue">
-                            <!-- {{item1.key}} -->
-                             <ng-container *ngIf="item1.key != null && item1.key === 'testingLabCheckDetails'">
-                              <div class="appln-subhdr mt-3">
-                                <h5>FOR TESTING LAB : (ISO / IEC 17025)</h5>
-                              </div>
-                               <!-- 1111 = {{item1.value | json}} -->
-                              <ng-container *ngFor="let item2 of item1.value | keyvalue">
-                                   <!-- ........  {{item2.key}} ::  {{item2.value.length }} -->
-                                   <ng-container *ngIf="item2.key != null && item2.key === 'checkItems' && item2.value.length > 0">
-                                    <div class="table-appln scope-data-table">                        
-                                      <table>
-                                      <!-- <tr>
-                                          <th>Items</th>
-                                      </tr> -->
-                                      <tr>
-                                          <td [ngStyle]="{'text-align': 'left'}">
-                                            <ng-container *ngFor="let item3 of item2.value;let k = index;">
-                                              {{item3.value}} <ng-container *ngIf="k < item2.value.length-1">,</ng-container>
-                                            </ng-container>
-                                          </td>
-                                      </tr>
-                                    </table>
-                                    </div>
-                                   </ng-container>
-                                   <ng-container *ngIf="item2.key != null && item2.key === 'checkItemsOthers' && item2.value.length > 0">
-                                    <div class="table-appln scope-data-table">                        
-                                      <table>
-                                      <!-- <tr>
-                                          <th>Others</th>
-                                      </tr> -->
-                                      <tr *ngFor="let item3 of item2.value;">
-                                          <td [ngStyle]="{'text-align': 'left'}">{{item3.value}}</td>
-                                      </tr>
-                                    </table>
-                                    </div>                                          
-                                   </ng-container>
+                      <ng-container *ngIf="_service.getNOCScopeData(item, 'testing')">
+                              <ng-container *ngIf="item.key != null && item.key === 'testing_lab'">
+                                <ng-container *ngFor="let item1 of item.value | keyvalue">
+                                    <ng-container *ngIf="item1.key != null && item1.key === 'testingLabCheckDetails'">
+                                      <div class="appln-subhdr mt-3">
+                                        <h5>FOR TESTING LAB : (ISO / IEC 17025)</h5>
+                                      </div>
+                                      <ng-container *ngFor="let item2 of item1.value | keyvalue">
+                                          <ng-container *ngIf="item2.key != null && item2.key === 'checkItems' && item2.value.length > 0">
+                                            <div class="table-appln scope-data-table">                        
+                                              <table>
+                                              <tr>
+                                                  <td [ngStyle]="{'text-align': 'left'}">
+                                                    <ng-container *ngFor="let item3 of item2.value;let k = index;">
+                                                      {{item3.value}} <ng-container *ngIf="k < item2.value.length-1">,</ng-container>
+                                                    </ng-container>
+                                                  </td>
+                                              </tr>
+                                            </table>
+                                            </div>
+                                          </ng-container>
+                                          <ng-container *ngIf="item2.key != null && item2.key === 'checkItemsOthers' && item2.value.length > 0">
+                                            <div class="table-appln scope-data-table">                        
+                                              <table>
+                                              <tr *ngFor="let item3 of item2.value;">
+                                                  <td [ngStyle]="{'text-align': 'left'}">{{item3.value}}</td>
+                                              </tr>
+                                            </table>
+                                            </div>                                          
+                                          </ng-container>
+                                      </ng-container>
+                                    </ng-container>
+                                    <ng-container *ngIf="item1.key != null && item1.key === 'testingLabInformation'  && !_service.isObjectEmpty(item1.value[0]) && !_service.isObjectKeyValueEmpty(item1.value[0])">
+                                      <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12" [ngStyle]="{'padding':'0'}">
+                                                <div class="table-appln scope-data-table" *ngIf="item1.value.length > 0">
+                                                    <table>
+                                                    <tr>
+                                                        <th>Type of task	</th>
+                                                        <th>Material/Products	</th>
+                                                        <th>Task Name</th>
+                                                        <th>Standard Method</th>
+                                                    </tr>
+                                                    <ng-container *ngIf="item1.value.length > 0">
+                                                    <tr *ngFor="let item4 of item1.value;">
+                                                        <td>{{item4.task_type}}</td>
+                                                        <td>{{item4.product}}</td>
+                                                        <td>{{item4.task_name}}</td>
+                                                        <td>{{item4.method}}</td>
+                                                    </tr>                                            
+                                                  </ng-container>
+                                                  <ng-container *ngIf="item1.value.length == 0">
+                                                    <td colspan="4">No Records</td>
+                                                  </ng-container>
+                                                  </table>
+                                              </div>
+                                            </div>
+                                        </div>
+                                      </div>
+                                    </ng-container>
+                                </ng-container>
                               </ng-container>
-                             </ng-container>
-                             <ng-container *ngIf="item1.key != null && item1.key === 'testingLabInformation'  && !_service.isObjectEmpty(item1.value[0])">
-                              <div class="col-md-12">
-                                <!-- <div class="row"  >
-                                  @{{item1.value | json}} 
-                                  <div class="col-md-12" [ngStyle]="{'padding': '0'}">
-                                    <div class="appln-subhdr">
-                                      <h5>Table Data</h5>
+                      </ng-container>
+
+                      <!-- For Calibration -->
+                      <ng-container *ngIf="_service.getNOCScopeData(item, 'calibration')">
+                        <ng-container *ngIf="item.key != null && item.key === 'calibration_lab'">
+                              <ng-container *ngFor="let item1 of item.value | keyvalue">
+                                  <ng-container *ngIf="item1.key != null && item1.key === 'calibrationLabCheckDetails'">
+                                    <div class="appln-subhdr mt-3">
+                                      <h5>FOR CALIBRATION LAB : (ISO / IEC 17025)</h5>
                                     </div>
-                                  </div>
-                                </div> -->
-                                <div class="row">
-                                    <div class="col-md-12" [ngStyle]="{'padding':'0'}">
-                                        <div class="table-appln scope-data-table" *ngIf="item1.value.length > 0"> 
-                                          <!-- @@@{{item1.value | json}} -->
-                                          <!-- @@@{{_service.isObjectEmpty(item1.value)}} == {{item1.value | json}} -->
-                                            <table>
+                                    <ng-container *ngFor="let item2 of item1.value | keyvalue">
+                                        <ng-container *ngIf="item2.key != null && item2.key === 'checkItems' && item2.value.length > 0">
+                                          <div class="table-appln scope-data-table">                        
+                                            <table width="100%">
                                             <tr>
-                                                <th>Type of task	</th>
-                                                <th>Material/Products	</th>
-                                                <th>Task Name</th>
-                                                <th>Standard Method</th>
+                                                <td [ngStyle]="{'text-align': 'left'}">
+                                                  <ng-container *ngFor="let item3 of item2.value;let k = index;">
+                                                    {{item3.value}} <ng-container *ngIf="k < item2.value.length-1">,</ng-container>
+                                                  </ng-container>
+                                                </td>
                                             </tr>
-                                            <ng-container *ngIf="item1.value.length > 0">
-                                            <tr *ngFor="let item4 of item1.value;">
-                                                <td>{{item4.task_type}}</td>
-                                                <td>{{item4.product}}</td>
-                                                <td>{{item4.task_name}}</td>
-                                                <td>{{item4.method}}</td>
-                                            </tr>                                            
-                                          </ng-container>
-                                          <ng-container *ngIf="item1.value.length == 0">
-                                            <td colspan="4">No Records</td>
-                                          </ng-container>
                                           </table>
+                                          </div>
+                                        </ng-container>
+                                        <ng-container *ngIf="item2.key != null && item2.key === 'checkItemsOthers' && item2.value.length > 0">
+                                          <div class="table-appln scope-data-table">                        
+                                            <table width="100%">
+                                            <tr *ngFor="let item3 of item2.value;">
+                                                <td [ngStyle]="{'text-align': 'left'}">{{item3.value}}</td>
+                                            </tr>
+                                          </table>
+                                          </div>                                          
+                                        </ng-container>
+                                    </ng-container>
+                                  </ng-container>
+                                  <ng-container *ngIf="item1.key != null && item1.key === 'calibrationLabInformation'  && !_service.isObjectEmpty(item1.value[0]) && !_service.isObjectKeyValueEmpty(item1.value[0])">
+                                    <div class="col-md-12">                                    
+                                      <div class="row">
+                                          <div class="col-md-12" [ngStyle]="{'padding':'0'}">
+                                              <div class="table-appln scope-data-table" *ngIf="item1.value.length > 0">                        
+                                                  <table width="100%">
+                                                  <tr>
+                                                      <th>Calibration Field/Measured Quantity</th>
+                                                      <th>Calibration Methods</th>
+                                                  </tr>
+                                                  <ng-container *ngIf="item1.value.length > 0">
+                                                  <tr *ngFor="let item4 of item1.value;">
+                                                      <td>{{item4.measured_quantity}}</td>
+                                                      <td>{{item4.methods}}</td>
+                                                  </tr>
+                                                </ng-container>
+                                                  <ng-container *ngIf="item1.value.length == 0">
+                                                    <td colspan="4">No Records</td>
+                                                  </ng-container>
+                                                </table>
+                                            </div>
+                                          </div>
                                       </div>
                                     </div>
-                                </div>
-                              </div>
-                             </ng-container>
+                                  </ng-container>
+
+
+                              </ng-container>
                         </ng-container>
                       </ng-container>
-                      <!-- For Calibration -->
-                      <ng-container *ngIf="item.key != null && item.key === 'calibration_lab'">
+                      <!-- For inspection -->
+                      <ng-container *ngIf="_service.getNOCScopeData(item, 'inspection')">
+                          <ng-container *ngIf="item.key != null && item.key === 'inspection_body'">
                             <ng-container *ngFor="let item1 of item.value | keyvalue">
-                                 <ng-container *ngIf="item1.key != null && item1.key === 'calibrationLabCheckDetails'">
+                                <ng-container *ngIf="item1.key != null && item1.key === 'inspectionCheckDetails'">
                                   <div class="appln-subhdr mt-3">
-                                    <h5>FOR CALIBRATION LAB : (ISO / IEC 17025)</h5>
+                                    <h5>FOR INSPECTION BODIES: (ISO/IEC 17020)</h5>
                                   </div>
                                   <ng-container *ngFor="let item2 of item1.value | keyvalue">
-                                       <ng-container *ngIf="item2.key != null && item2.key === 'checkItems' && item2.value.length > 0">
+                                      <ng-container *ngIf="item2.key != null && item2.key === 'checkItems' && item2.value.length > 0">
                                         <div class="table-appln scope-data-table">                        
                                           <table width="100%">
                                           <tr>
@@ -689,8 +741,8 @@
                                           </tr>
                                         </table>
                                         </div>
-                                       </ng-container>
-                                       <ng-container *ngIf="item2.key != null && item2.key === 'checkItemsOthers' && item2.value.length > 0">
+                                      </ng-container>
+                                      <ng-container *ngIf="item2.key != null && item2.key === 'checkItemsOthers' && item2.value.length > 0">
                                         <div class="table-appln scope-data-table">                        
                                           <table width="100%">
                                           <tr *ngFor="let item3 of item2.value;">
@@ -698,172 +750,112 @@
                                           </tr>
                                         </table>
                                         </div>                                          
-                                       </ng-container>
+                                      </ng-container>
                                   </ng-container>
-                                 </ng-container>
-                                 <ng-container *ngIf="item1.key != null && item1.key === 'calibrationLabInformation'  && !_service.isObjectEmpty(item1.value[0])">
+                                </ng-container>
+                                <ng-container *ngIf="item1.key != null && item1.key === 'inspectionInfo' && !_service.isObjectEmpty(item1.value[0]) && !_service.isObjectKeyValueEmpty(item1.value[0])">
                                   <div class="col-md-12">                                    
                                     <div class="row">
                                         <div class="col-md-12" [ngStyle]="{'padding':'0'}">
                                             <div class="table-appln scope-data-table" *ngIf="item1.value.length > 0">                        
                                                 <table width="100%">
                                                 <tr>
-                                                    <th>Calibration Field/Measured Quantity</th>
-                                                    <th>Calibration Methods</th>
+                                                  <th>Type of task</th>
+                                                  <th>Material/Products</th>
+                                                  <th>Task Name</th>
+                                                  <th>Standard Method</th>
                                                 </tr>
                                                 <ng-container *ngIf="item1.value.length > 0">
                                                 <tr *ngFor="let item4 of item1.value;">
-                                                    <td>{{item4.measured_quantity}}</td>
-                                                    <td>{{item4.methods}}</td>
+                                                    <td>{{item4.task_type}}</td>
+                                                    <td>{{item4.product}}</td>
+                                                    <td>{{item4.task_name}}</td>
+                                                    <td>{{item4.method}}</td>
                                                 </tr>
-                                              </ng-container>
-                                                <ng-container *ngIf="item1.value.length == 0">
-                                                  <td colspan="4">No Records</td>
-                                                </ng-container>
+                                              </ng-container>                                            
                                               </table>
                                           </div>
                                         </div>
                                     </div>
                                   </div>
-                                 </ng-container>
+                                </ng-container>
 
 
                             </ng-container>
+                          </ng-container>
                       </ng-container>
-
-                      <!-- For inspection -->
-                      <ng-container *ngIf="item.key != null && item.key === 'inspection_body'">
-                        <ng-container *ngFor="let item1 of item.value | keyvalue">
-                             <ng-container *ngIf="item1.key != null && item1.key === 'inspectionCheckDetails'">
-                              <div class="appln-subhdr mt-3">
-                                <h5>FOR INSPECTION BODIES: (ISO/IEC 17020)</h5>
-                              </div>
-                              <ng-container *ngFor="let item2 of item1.value | keyvalue">
-                                   <ng-container *ngIf="item2.key != null && item2.key === 'checkItems' && item2.value.length > 0">
-                                    <div class="table-appln scope-data-table">                        
-                                      <table width="100%">
-                                      <tr>
-                                          <td [ngStyle]="{'text-align': 'left'}">
-                                            <ng-container *ngFor="let item3 of item2.value;let k = index;">
-                                              {{item3.value}} <ng-container *ngIf="k < item2.value.length-1">,</ng-container>
-                                            </ng-container>
-                                          </td>
-                                      </tr>
-                                    </table>
-                                    </div>
-                                   </ng-container>
-                                   <ng-container *ngIf="item2.key != null && item2.key === 'checkItemsOthers' && item2.value.length > 0">
-                                    <div class="table-appln scope-data-table">                        
-                                      <table width="100%">
-                                      <tr *ngFor="let item3 of item2.value;">
-                                          <td [ngStyle]="{'text-align': 'left'}">{{item3.value}}</td>
-                                      </tr>
-                                    </table>
-                                    </div>                                          
-                                   </ng-container>
-                              </ng-container>
-                             </ng-container>
-                             <ng-container *ngIf="item1.key != null && item1.key === 'inspectionInfo' && !_service.isObjectEmpty(item1.value[0])">
-                              <div class="col-md-12">                                    
-                                <div class="row">
-                                    <div class="col-md-12" [ngStyle]="{'padding':'0'}">
-                                        <div class="table-appln scope-data-table" *ngIf="item1.value.length > 0">                        
-                                            <table width="100%">
-                                            <tr>
-                                              <th>Type of task</th>
-                                              <th>Material/Products</th>
-                                              <th>Task Name</th>
-                                              <th>Standard Method</th>
-                                            </tr>
-                                            <ng-container *ngIf="item1.value.length > 0">
-                                            <tr *ngFor="let item4 of item1.value;">
-                                                <td>{{item4.task_type}}</td>
-                                                <td>{{item4.product}}</td>
-                                                <td>{{item4.task_name}}</td>
-                                                <td>{{item4.method}}</td>
-                                            </tr>
-                                          </ng-container>                                            
-                                          </table>
-                                      </div>
-                                    </div>
+                      <!-- For CB Mnagement -->
+                      <ng-container *ngIf="_service.getNOCScopeData(item, 'certification')">
+                        <ng-container *ngIf="item.key != null && item.key === 'cb_management'">
+                          <ng-container *ngFor="let item1 of item.value | keyvalue">
+                              <ng-container *ngIf="item1.key != null && item1.key === 'certificationCheckDetails'">
+                                <div class="appln-subhdr mt-3">
+                                  <h5>FOR CERTIFICATION BODIES : ISO / IEC 17021 (CERTIFICATION OF MANAGEMENT SYSTEMS)</h5>
                                 </div>
-                              </div>
-                             </ng-container>
-
-
-                        </ng-container>
-                      </ng-container>
-
-                      <!-- For CB Mnagement -->
-                      <ng-container *ngIf="item.key != null && item.key === 'cb_management'">
-                        <ng-container *ngFor="let item1 of item.value | keyvalue">
-                             <ng-container *ngIf="item1.key != null && item1.key === 'certificationCheckDetails'">
-                              <div class="appln-subhdr mt-3">
-                                <h5>FOR CERTIFICATION BODIES : ISO / IEC 17021 (CERTIFICATION OF MANAGEMENT SYSTEMS)</h5>
-                              </div>
-                              <ng-container *ngFor="let item2 of item1.value | keyvalue">
-                                   <ng-container *ngIf="item2.key != null && item2.key === 'checkItems' && item2.value.length > 0">
-                                    <div class="table-appln scope-data-table">                        
-                                      <table width="100%">
-                                      <tr>
-                                          <td [ngStyle]="{'text-align': 'left'}">
-                                            <ng-container *ngFor="let item3 of item2.value;let k = index;">
-                                              {{item3.value}} <ng-container *ngIf="k < item2.value.length-1">,</ng-container>
-                                            </ng-container>
-                                          </td>
-                                      </tr>
-                                    </table>
-                                    </div>
-                                   </ng-container>
-                                   <ng-container *ngIf="item2.key != null && item2.key === 'checkItemsOthers' && item2.value.length > 0">
-                                    <div class="table-appln scope-data-table">                        
-                                      <table width="100%">
-                                      <tr *ngFor="let item3 of item2.value;">
-                                          <td [ngStyle]="{'text-align': 'left'}">{{item3.value}}</td>
-                                      </tr>
-                                    </table>
-                                    </div>                                          
-                                   </ng-container>
+                                <ng-container *ngFor="let item2 of item1.value | keyvalue">
+                                    <ng-container *ngIf="item2.key != null && item2.key === 'checkItems' && item2.value.length > 0">
+                                      <div class="table-appln scope-data-table">                        
+                                        <table width="100%">
+                                        <tr>
+                                            <td [ngStyle]="{'text-align': 'left'}">
+                                              <ng-container *ngFor="let item3 of item2.value;let k = index;">
+                                                {{item3.value}} <ng-container *ngIf="k < item2.value.length-1">,</ng-container>
+                                              </ng-container>
+                                            </td>
+                                        </tr>
+                                      </table>
+                                      </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="item2.key != null && item2.key === 'checkItemsOthers' && item2.value.length > 0">
+                                      <div class="table-appln scope-data-table">                        
+                                        <table width="100%">
+                                        <tr *ngFor="let item3 of item2.value;">
+                                            <td [ngStyle]="{'text-align': 'left'}">{{item3.value}}</td>
+                                        </tr>
+                                      </table>
+                                      </div>                                          
+                                    </ng-container>
+                                </ng-container>
                               </ng-container>
-                             </ng-container>
+                          </ng-container>
                         </ng-container>
                       </ng-container>
-
-                      <!-- For CB Mnagement -->
-                      <ng-container *ngIf="item.key != null && item.key === 'halal_lab'">
-                        <ng-container *ngFor="let item1 of item.value | keyvalue">
-                             <ng-container *ngIf="item1.key != null && item1.key === 'halalLabCheckDetails'">
-                              <div class="appln-subhdr mt-3">
-                                <h5>FOR HALAL CAB</h5>
-                              </div>
-                              <ng-container *ngFor="let item2 of item1.value | keyvalue">
-                                   <ng-container *ngIf="item2.key != null && item2.key === 'checkItems' && item2.value.length > 0">
-                                    <div class="table-appln scope-data-table">                        
-                                      <table width="100%">
-                                      <tr>
-                                          <td [ngStyle]="{'text-align': 'left'}">
-                                            <ng-container *ngFor="let item3 of item2.value;let k = index;">
-                                              {{item3.value}} <ng-container *ngIf="k < item2.value.length-1">,</ng-container>
-                                            </ng-container>
-                                          </td>
-                                      </tr>
-                                    </table>
-                                    </div>
-                                   </ng-container>
-                                   <ng-container *ngIf="item2.key != null && item2.key === 'checkItemsOthers' && item2.value.length > 0">
-                                    <div class="table-appln scope-data-table">                        
-                                      <table width="100%">
-                                      <tr *ngFor="let item3 of item2.value;">
-                                          <td [ngStyle]="{'text-align': 'left'}">{{item3.value}}</td>
-                                      </tr>
-                                    </table>
-                                    </div>                                          
-                                   </ng-container>
-                              </ng-container>
-                             </ng-container>
-                        </ng-container>
+                      <!-- For HALAL Mnagement -->
+                      <ng-container *ngIf="_service.getNOCScopeData(item, 'halal')">
+                          <ng-container *ngIf="item.key != null && item.key === 'halal_lab'">
+                            <ng-container *ngFor="let item1 of item.value | keyvalue">
+                                <ng-container *ngIf="item1.key != null && item1.key === 'halalLabCheckDetails'">
+                                  <div class="appln-subhdr mt-3">
+                                    <h5>FOR HALAL CAB</h5>
+                                  </div>
+                                  <ng-container *ngFor="let item2 of item1.value | keyvalue">
+                                      <ng-container *ngIf="item2.key != null && item2.key === 'checkItems' && item2.value.length > 0">
+                                        <div class="table-appln scope-data-table">                        
+                                          <table width="100%">
+                                          <tr>
+                                              <td [ngStyle]="{'text-align': 'left'}">
+                                                <ng-container *ngFor="let item3 of item2.value;let k = index;">
+                                                  {{item3.value}} <ng-container *ngIf="k < item2.value.length-1">,</ng-container>
+                                                </ng-container>
+                                              </td>
+                                          </tr>
+                                        </table>
+                                        </div>
+                                      </ng-container>
+                                      <ng-container *ngIf="item2.key != null && item2.key === 'checkItemsOthers' && item2.value.length > 0">
+                                        <div class="table-appln scope-data-table">                        
+                                          <table width="100%">
+                                          <tr *ngFor="let item3 of item2.value;">
+                                              <td [ngStyle]="{'text-align': 'left'}">{{item3.value}}</td>
+                                          </tr>
+                                        </table>
+                                        </div>                                          
+                                      </ng-container>
+                                  </ng-container>
+                                </ng-container>
+                            </ng-container>
+                          </ng-container>
                       </ng-container>
-                      
                     </ng-container>
                   </ng-container>
               </div>
