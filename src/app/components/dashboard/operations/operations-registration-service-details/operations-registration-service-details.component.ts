@@ -21,7 +21,7 @@ export class OperationsRegistrationServiceDetailsComponent implements OnInit {
   paymentDetails:any;
   activitySection:any;
   scopes_to_be_authorized:any;
-  onBehalfApplicantDetails:any;
+  onBehalfApplicantDetails:any; 
 
   nocCabTypeData: any = {};
   nocTableScopeData: any;
@@ -69,10 +69,10 @@ export class OperationsRegistrationServiceDetailsComponent implements OnInit {
                 this.nocCabTypeData['hcab'] = [];
                 this.nocCabTypeData['ib'] = [];
                 let getCabType: any = JSON.parse((getData.data.nocData.cab_type));
-                console.log("Type: ", getCabType);
+                //console.log("Type: ", getCabType);
                 if(getCabType.lab != undefined && getCabType.lab.length > 0){
                     for(let k in getCabType.lab[0]){
-                      console.log(k, " -- ", getCabType.lab[0][k]);
+                      //console.log(k, " -- ", getCabType.lab[0][k]);
                       if(getCabType.lab[0][k]){
                         if( k === 'cabTypeLaboratory_testing'){
                           this.nocCabTypeData['lab'].push('Testing Laboratory')
@@ -85,7 +85,7 @@ export class OperationsRegistrationServiceDetailsComponent implements OnInit {
                 }
                 if(getCabType.CB != undefined && getCabType.CB.length > 0){
                   for(let k in getCabType.CB[0]){
-                    console.log(k, " -- ", getCabType.CB[0][k]);
+                    //console.log(k, " -- ", getCabType.CB[0][k]);
                     if(getCabType.CB[0][k]){
                       if( k === 'cabTypeCertificationBody_management_system_cb'){
                         this.nocCabTypeData['cb'].push('Management System CB')
@@ -101,7 +101,7 @@ export class OperationsRegistrationServiceDetailsComponent implements OnInit {
                 }
                 if(getCabType.IB != undefined && getCabType.IB.length > 0){
                   for(let k in getCabType.IB[0]){
-                    console.log(k, " -- ", getCabType.IB[0][k]);
+                    //console.log(k, " -- ", getCabType.IB[0][k]);
                     if(getCabType.IB[0][k]){
                       if( k === 'cabTypeInspectionBody_engineering_ib'){
                         this.nocCabTypeData['ib'].push('Engineering IB')
@@ -114,7 +114,7 @@ export class OperationsRegistrationServiceDetailsComponent implements OnInit {
                 }
                 if(getCabType.HCAB != undefined && getCabType.HCAB.length > 0){
                   for(let k in getCabType.HCAB[0]){
-                    console.log(k, " -- ", getCabType.HCAB[0][k]);
+                    //console.log(k, " -- ", getCabType.HCAB[0][k]);
                     if(getCabType.HCAB[0][k]){
                       if( k === 'cabTypeHalal_cb'){
                         this.nocCabTypeData['hcab'].push('CB')
@@ -133,9 +133,12 @@ export class OperationsRegistrationServiceDetailsComponent implements OnInit {
             //Services Scope
             if(getData.data.nocTableData != undefined && typeof getData.data.nocTableData == 'object'){
               this.nocTableScopeData = getData.data.nocTableData;
-              console.log(">>>Table scope: ", this.nocTableScopeData);
-              
+              console.log(">>>Table scope: ", this.nocTableScopeData);             
 
+            }
+            if(getData.data.nocData != undefined && getData.data.nocData.cab_type != null){
+                let getTData: any = JSON.parse(getData.data.nocData.cab_type);
+                //console.log("@>> parse Data: ", getTData);
             }
 
           }

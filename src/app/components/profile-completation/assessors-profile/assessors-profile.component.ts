@@ -90,7 +90,7 @@ checkInput(index: number){
       let input: any = this.subField[index]['title'];
       console.log(">> get input: ", input);
       if(input == '' || input == undefined || input == null){
-          this.toastr.warning("Please add input in field",'', {timeOut:1000})
+          this.toastr.warning("Please Enter Field & Scoring properly",'', {timeOut:1000})
           return false;
       }
     }
@@ -100,7 +100,7 @@ checkInputSub(parent: number, inner: number){
     let input: any = this.subInput[parent][inner]['title'];
     console.log("@ get input: ", input);
     if(input == '' || input == undefined || input == null){
-        this.toastr.warning("Please add input in field",'', {timeOut:1000})
+        this.toastr.warning("Please Enter Field & Scoring properly",'', {timeOut:1000})
         return false;
     }
   }
@@ -110,7 +110,7 @@ checkInputSub1(parent: number, inner: number){
     let input: any = this.subInput1[parent][inner]['title'];
     console.log("@ get input: ", input, " == ", this.subInput1);
     if(input == '' || input == undefined || input == null){
-        this.toastr.warning("Please add input in field",'', {timeOut:1000})
+        this.toastr.warning("Please Enter Field & Scoring properly",'', {timeOut:1000})
         return false;
     }
   }
@@ -1033,8 +1033,12 @@ updateInput1(theEvt: any, parent: number, inner: number){
     for(let k in this.subInput){
         if(typeof this.subInput[k] === 'object'){
           for(let p in this.subInput[k]){
-            if(typeof this.subInput[k][p] === 'object' && this.subInput[k][p]['title'] != '' && this.subInput[k][p]['checked'] != ''){
+            if(typeof this.subInput[k][p] === 'object' && (this.subInput[k][p]['title'] != '' && this.subInput[k][p]['checked'] === '')
+                          || (this.subInput[k][p]['title'] === '' && this.subInput[k][p]['checked'] != '')){
               freetextInput = true;
+              console.log("@Empty...Reference free text: ", k," :: ", p);
+              this.toastr.warning('Please Enter Field & Scoring properly','', {timeOut:1000});
+              return false;
             }
           }
         }
@@ -1042,8 +1046,12 @@ updateInput1(theEvt: any, parent: number, inner: number){
     for(let k in this.subInput1){
       if(typeof this.subInput1[k] === 'object'){
         for(let p in this.subInput1[k]){
-          if(typeof this.subInput1[k][p] === 'object' && this.subInput1[k][p]['title'] != '' && this.subInput1[k][p]['checked'] != ''){
+          if(typeof this.subInput1[k][p] === 'object' && (this.subInput1[k][p]['title'] != '' && this.subInput1[k][p]['checked'] === '')
+                    || (this.subInput1[k][p]['title'] === '' && this.subInput1[k][p]['checked'] != '')){
             freetextInput1 = true;
+            console.log("@Empty...Validation free text: ", k," :: ", p);
+            this.toastr.warning('Please Enter Field & Scoring properly','');
+            return false;
           }
         }
       }
@@ -1051,8 +1059,12 @@ updateInput1(theEvt: any, parent: number, inner: number){
     //subfield
     for(let k in this.subField){
       if(typeof this.subField[k] === 'object'){
-          if(typeof this.subField[k] === 'object' && this.subField[k]['title'] != '' && this.subField[k]['checked'] != ''){
+          if(typeof this.subField[k] === 'object' && (this.subField[k]['title'] != '' && this.subField[k]['checked'] === '')
+                || (this.subField[k]['title'] === '' && this.subField[k]['checked'] != '')){
+            console.log("@Empty...proficiency free text: ", k);
             freefieldInput = true;
+            this.toastr.warning('Please Enter Field & Scoring properly','');
+            return false;
           }
       }
     }
@@ -1073,6 +1085,11 @@ updateInput1(theEvt: any, parent: number, inner: number){
     8   =   Validation_and_Verification_Bodies_Medical
     9   =   Validation_and_Verification_Bodies_Inspection
     */
+
+
+
+
+    //return;
 
     let customFreeText: any = {};
     let cnt = 0;
@@ -1216,7 +1233,8 @@ updateInput1(theEvt: any, parent: number, inner: number){
     //Reference_Material_Producers_Testing
     //console.log(">>>> Free text: ", customFreeText, " -- ", postObj)
     //return;
-    if(ngForm4.form.valid && freetextInput && freefieldInput && freetextInput1) {
+    //&& freetextInput && freefieldInput && freetextInput1
+    if(ngForm4.form.valid ) {
 
         this.assessorsProfile = {};
         this.assessorsProfile.step4 = {};
