@@ -440,13 +440,17 @@
                     <table>
                       <tr>
                         <th>Location Type(such of Regional Off)	</th>
-                        <th>Address/City/Country</th>
+                        <th>Address</th>
+                        <th>Country</th>
+                        <th>City</th>                        
                         <th>Key Activities carried out at this Location</th>
                       </tr>
                       <!-- <ng-container *ngFor="let othr_accr of otherAccr; let i3 = index;"> -->
                         <tr *ngFor="let item of hcabOtherLocation; let hcabi = index;">
                             <td>{{item.location_type}}</td>
-                            <td>{{item.city_country}}</td>
+                            <td>{{item.address_type}}</td>
+                            <td>{{item.country}}</td>
+                            <td>{{item.city}}</td>
                             <td>{{item.activity_carried_out}}</td>
                         </tr>
                       <!-- </ng-container> -->
@@ -1009,23 +1013,10 @@
                                     {{getSchemeTitles[item.key][0].title}}
                                 </ng-container>
                               </h5>
-                                  <!-- <ng-container *ngIf="item.key != undefined && item.key > 0">
-                                    <ng-container *ngIf="getSchemeTitles[item.key] != undefined">
-                                        <ng-container *ngIf="getSchemeTitles[item.key][0] != undefined && getSchemeTitles[item.key][0].title != undefined">
-                                            
-                                        </ng-container>                                                                        
-                                    </ng-container>
-                                </ng-container> -->
-                                    <!-- <ng-container *ngIf="!loadTCScheme">
-                                      {{getSchmeTC(item.key)}}
-                                    </ng-container>
-                                    <ng-container *ngIf="loadTCScheme">
-                                      <h5><strong>Accreditation Scope for {{TCSchmeData.title}} </strong></h5>
-                                    </ng-container> -->
                                 </div>
                             </div>
                         </div>
-                        <ng-container *ngIf="item.value != null && item.value != undefined">
+                        <ng-container *ngIf="item.value != undefined && item.value != null">
                             <ng-container *ngFor="let item5 of (item.value) | keyvalue;">
                                 <div class="row">
                                     <div class="col-md-12">

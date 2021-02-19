@@ -113,15 +113,14 @@ function getFeesPerTrainee(training_days){
 
 
 getAppID(){
-  // ANother way - var dd = Math.floor(new Date().valueOf() * Math.random());
   let currentTimeInSeconds=Math.floor(Date.now()/1000); //unix timestamp in seconds
   let currentTimeInMilliseconds=Date.now(); 
   let dd = currentTimeInMilliseconds;
   let tt = '';
   tt = dd.toString();
-  if(dd.toString().length > 12){
-    tt = dd.toString().substr(0,12);
-  }  
+  // if(dd.toString().length > 12){
+  //   tt = dd.toString().substr(0,12);
+  // }  
   return tt;
 }
 

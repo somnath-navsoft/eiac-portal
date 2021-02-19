@@ -4,6 +4,9 @@ import { Constants } from 'src/app/services/constant.service';
 import { AppService } from 'src/app/services/app.service';
 import { ToastrService } from 'ngx-toastr';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { AppState, selectAuthState } from '../../../store/app.states';
+import { LogOut, LogInSuccess } from '../../../store/actions/auth.actions';
 
 @Component({
   selector: 'app-internal-operations-profile',
@@ -20,14 +23,15 @@ export class InternalOperationsProfileComponent implements OnInit {
   isCompleteness:any;
   profileComplete:any;
   progressValue:any = 0;
-  loader:boolean = true;
+  loader:boolean = true; 
   userId:any;
   titleArr:any[] = [];
   titleFind:any;
   closeResult: string;
   modalOptions:NgbModalOptions;
-  
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,private modalService: NgbModal) { }
+  user:any = null;
+
+  constructor(public Service: AppService, private store: Store<AppState>, public constant:Constants,public router: Router,public toastr: ToastrService,private modalService: NgbModal) { }
 
   ngOnInit() {
     this.stepDefaultValue();
@@ -146,6 +150,7 @@ export class InternalOperationsProfileComponent implements OnInit {
 
   closeChecklistDialog(){
     this.modalService.dismissAll();
+    this.store.dispatch(new LogOut(this.user));
   }
 
   private getDismissReason(reason: any): string {

@@ -479,6 +479,22 @@ loadScopeDataHalal(){
 
   loadData() {
     this.loader = false;
+
+    // this.userEmail = localStorage.getItem('email');
+    // this.userType = localStorage.getItem('type');
+    // let url = this._service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;
+
+    // this._service.getwithoutData(url)
+    // .subscribe(
+    //   res => {
+
+    //     console.log("@Profile data: ", res);
+
+    //   })
+
+
+
+
     this.subscriptions.push(this._trainerService.trainerAccredDetailsServtrainerAccredDetailsServ(this.routeId)
       .subscribe(
         result => {
@@ -529,9 +545,10 @@ loadScopeDataHalal(){
             let getFile = result['data'].recognized_logo3.toString().split('/');
             
             this.hcabLogo3 = getFile[4].toString().split('.')[0];
-            this.hcabLogo2Path = this._constant.mediaPath +  result['data'].recognized_logo3.toString();
+            this.hcabLogo3Path = this._constant.mediaPath +  result['data'].recognized_logo3.toString();
             
           }
+          
           
           this.step1Data.cab_type = getData.data.cab_type;
           //alert(this.step1Data.cab_type + " -- "+ getData.data.cab_type);

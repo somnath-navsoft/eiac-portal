@@ -5,6 +5,9 @@ import { AppService } from 'src/app/services/app.service';
 import { ToastrService } from 'ngx-toastr';
 import { MatStepper } from '@angular/material';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { AppState, selectAuthState } from '../../../store/app.states';
+import { LogOut, LogInSuccess } from '../../../store/actions/auth.actions';
 
 @Component({
   selector: 'app-trainers-profile',
@@ -14,7 +17,7 @@ import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-b
 export class TrainersProfileComponent implements OnInit {
 
   trainersProfile:any = {};
-  step1Data:any = {};
+  step1Data:any = {}; 
   step2Data:any = {};
   step3Data:any = {};
   arabic:any = {};
@@ -48,10 +51,11 @@ export class TrainersProfileComponent implements OnInit {
   languageArr:any = [];
   modalOptions:NgbModalOptions;
   closeResult: string;
+  user:any = null;
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,private modalService: NgbModal) {
+  constructor(public Service: AppService, private store: Store<AppState>, public constant:Constants,public router: Router,public toastr: ToastrService,private modalService: NgbModal) {
     this.today.setDate(this.today.getDate());
    }
 
@@ -461,6 +465,7 @@ export class TrainersProfileComponent implements OnInit {
 
   closeChecklistDialog(){
     this.modalService.dismissAll();
+    this.store.dispatch(new LogOut(this.user));
   }
 
   private getDismissReason(reason: any): string {

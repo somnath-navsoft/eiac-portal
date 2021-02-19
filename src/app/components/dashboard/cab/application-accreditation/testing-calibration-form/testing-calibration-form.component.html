@@ -1980,9 +1980,9 @@
                                         <div class="col-md-4">
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Payment Amount</mat-label>
-                                                <input type="number" [ngModelOptions]="{standalone: true}" required matInput placeholder="AED" 
+                                                <input type="text" (keypress)="Service.inputFilter($event, Service.regExNumb)" [ngModelOptions]="{standalone: true}" required matInput placeholder="" 
                                                 [(ngModel)]="voucherSentData.amount">
-                                                <!-- <span matPrefix>AED&nbsp;</span> -->
+                                                <span matPrefix>AED&nbsp;</span>
                                             </mat-form-field>
                                         </div>
                                     </div>

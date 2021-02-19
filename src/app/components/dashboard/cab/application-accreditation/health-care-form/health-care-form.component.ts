@@ -457,7 +457,7 @@ export class HealthCareFormComponent implements OnInit {
               this.dynamicScopeFieldColumns[scopeTitle][key].push(colObj);
               defLine[fieldValues] = [];
               //console.log(">>> Field values: ", fieldValues, " -- ", this.dynamicScopeFieldColumns, " -- ", this.dynamicScopeModel.fieldLines);
-              if(defLine['firstFieldValues'].length > 0  && key == 0){
+              if(defLine['firstFieldValues'].length == 1  && key == 0){
                 let getValue = defLine['firstFieldValues'][0].field_value.id;
                 
                 if(key === 0){

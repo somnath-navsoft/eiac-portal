@@ -4,6 +4,9 @@ import { Constants } from 'src/app/services/constant.service';
 import { AppService } from 'src/app/services/app.service';
 import { ToastrService } from 'ngx-toastr';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { AppState, selectAuthState } from '../../../store/app.states';
+import { LogOut, LogInSuccess } from '../../../store/actions/auth.actions';
 
 @Component({
   selector: 'app-candidate-profile',
@@ -36,8 +39,9 @@ export class CandidateProfileComponent implements OnInit {
   userId:any;
   modalOptions:NgbModalOptions;
   closeResult: string;
+  user: any = null;
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,private modalService: NgbModal) { 
+  constructor(public Service: AppService, private store: Store<AppState>, public constant:Constants,public router: Router,public toastr: ToastrService,private modalService: NgbModal) { 
     this.today.setDate(this.today.getDate());
   }
 
@@ -184,7 +188,7 @@ export class CandidateProfileComponent implements OnInit {
             if(res['data'].step1 != '') {
               var step1 = res['data'].step1[0];
 
-              this.step1Data.date_of_birth = new Date(step1.dob);
+              this.step1Data.date_of_birth = new Date(step1.dob); 
               this.step1Data.company_email = step1.office_email;
               this.step1Data.designation = step1.designation;
               this.step1Data.nationality = step1.nationality;
@@ -350,6 +354,7 @@ export class CandidateProfileComponent implements OnInit {
 
   closeChecklistDialog(){
     this.modalService.dismissAll();
+    this.store.dispatch(new LogOut(this.user));
   }
 
   private getDismissReason(reason: any): string {
