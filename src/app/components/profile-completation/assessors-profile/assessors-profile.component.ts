@@ -5,6 +5,9 @@ import { AppService } from 'src/app/services/app.service';
 import { ToastrService } from 'ngx-toastr';
 import { MatStepper } from '@angular/material';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { AppState, selectAuthState } from '../../../store/app.states';
+import { LogOut, LogInSuccess } from '../../../store/actions/auth.actions';
 
 @Component({
   selector: 'app-assessors-profile',
@@ -73,10 +76,11 @@ export class AssessorsProfileComponent implements OnInit {
   subField: any = {}; 
   subInput: any = {};
   subInput1: any = {};
+  user = null;
   
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,private modalService: NgbModal) {
+  constructor(public Service: AppService, private store: Store<AppState>, public constant:Constants,public router: Router,public toastr: ToastrService,private modalService: NgbModal) {
     this.today.setDate(this.today.getDate());
    }
 
@@ -578,7 +582,7 @@ updateInput1(theEvt: any, parent: number, inner: number){
               let RefDataMedical: any = filterData.filter(item => item.free_text_type == 4);
               let RefDataInspection: any = filterData.filter(item => item.free_text_type == 5);
 
-              //Validation section
+              //Validation section 
               let ValDataTesting: any     = filterData.filter(item => item.free_text_type == 6);
               let ValDataCalibration: any = filterData.filter(item => item.free_text_type == 7);
               let ValDataMedical: any     = filterData.filter(item => item.free_text_type == 8);
@@ -1338,6 +1342,7 @@ updateInput1(theEvt: any, parent: number, inner: number){
 
   closeChecklistDialog(){
     this.modalService.dismissAll();
+    this.store.dispatch(new LogOut(this.user));
   }
 
   private getDismissReason(reason: any): string {

@@ -2573,7 +2573,7 @@ export class InspectionBodiesFormComponent implements OnInit {
     if(this.authorizationStatus && checkCount == 10){ 
       this.authorizationStatus = true;
     }else{
-      this.authorizationStatus = false;
+      this.authorizationStatus = false; 
     }
     console.log(">>> Check status count: ", checkCount);
   }
