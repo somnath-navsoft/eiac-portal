@@ -624,43 +624,59 @@ export class OperationsDashboardComponent implements OnInit {
     this.config.currentPage = event;
   }
 
+  enterInput(theEvt: any){
+    if(this.selectedUser.length > 0){
+      this.selectSearch = [];
+      theEvt.preventDefault();
+      return;
+    }
+  }
+
   search(query: string) {
-    // this.searchTerm = query;
+    if(this.selectedUser.length > 0){
+      this.selectSearch = [];
+      return;
+    }
     let result = this.select(query);
-    // this.searchDetails = result;
     if (query != '') {
       this.selectSearch = result;
-      console.log("Get value");
     } else {
       this.selectSearch = [];
-      console.log("Not Get value");
-
     }
-    // console.log("SSS res: ", this.selectSearch);
   }
 
   select(query: string): string[] {
     let result: string[] = [];
-    console.log("### ", query);
+    let re = new RegExp(query,'gi');
+    //console.log("### ", query);
     if (this.getUserType == 'cab_client' || this.getUserType == 'cab_code') {
       for (let a of this.searchDetails) {
-        console.log(">>>, ",a);
+        //console.log(">>>, ",a);
         //if (a.cab_name.toLowerCase().indexOf(query) > -1) {
-        if(a.cab_name != null && a.cab_name != '' && this.getUserType == 'cab_client'){
-          if (a.cab_name.toString().toLowerCase().indexOf(query) > -1) {
-            result.push(a);
+        if(a.cab_name != null && a.cab_name != '' && this.getUserType == 'cab_client'){          
+          if(re.exec(a.cab_name)){ 
+            result.push(a); 
           }
+          // if (a.cab_name.toString().toLowerCase().indexOf(query) > -1) {
+          //   result.push(a);
+          // }
         }else if(a.cab_code != null && a.cab_code != '' && this.getUserType == 'cab_code'){
-          if (a.cab_code.toString().toLowerCase().indexOf(query) > -1) {
-            result.push(a);
+          // if (a.cab_code.toString().toLowerCase().indexOf(query) > -1) {
+          //   result.push(a);
+          // }
+          if(re.exec(a.cab_code)){ 
+            result.push(a); 
           }
         }  
       }
     } else {
       for (let a of this.searchDetails) {
-        if (a.email.toLowerCase().indexOf(query) > -1) {
-          result.push(a);
+        if(re.exec(a.email)){ 
+          result.push(a); 
         }
+        // if (a.email.toLowerCase().indexOf(query) > -1) {
+        //   result.push(a);
+        // }
       }
     }
 
