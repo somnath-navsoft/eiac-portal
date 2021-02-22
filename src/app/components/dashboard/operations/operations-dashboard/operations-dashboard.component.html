@@ -54,7 +54,7 @@
                 <div class="col-md-3">
                     <div class="dsh-wrapper">
                         <div class="trainer-main-details trainer3">
-                            <div class="user-icons">                            
+                            <div class="user-icons">                             
                                 <span class="icon-doc-diff"></span>                            
                             </div>
                             <div class="trainer-data-det">
@@ -539,17 +539,7 @@
                                             </div>
                                             <!-- {{selectSearch | json}} -->
                                             <div class="col-md-6" *ngIf="getUserType =='cab_client'">
-                                                <mat-form-field class="cab-data">
-                                                    <!-- <input type="text" (click)="search($event.target.value)"
-                                                        (input)="search($event.target.value)"
-                                                        placeholder="{{selectedField}}" matInput required
-                                                        [matAutocomplete]="auto">
-                                                    <mat-autocomplete #auto="matAutocomplete">
-                                                        <mat-option (onSelectionChange)="getValue(option.id)"
-                                                            *ngFor="let option of selectSearch" [value]="option.username">
-                                                            {{option.username}}
-                                                        </mat-option>
-                                                    </mat-autocomplete> -->
+                                                <mat-form-field class="cab-data">                                                   
                                                     <mat-chip-list #chipList >
                                                         <mat-chip
                                                         *ngFor="let option of selectedUser"
@@ -565,14 +555,15 @@
                                                         [matAutocomplete]="auto"
                                                         [matChipInputFor]="chipList"                                                      
                                                         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                        (keypress)="enterInput($event)"
                                                         (matChipInputTokenEnd)="add($event)" (input)="search($event.target.value)">
                                                     </mat-chip-list>
-                                                    <mat-autocomplete #auto="matAutocomplete">
-                                                        <mat-option (onSelectionChange)="getValue(option, 'cab_name')"
-                                                            *ngFor="let option of selectSearch" [value]="option.username">
-                                                            {{option.cab_name}}
-                                                        </mat-option>
-                                                    </mat-autocomplete>
+                                                        <mat-autocomplete #auto="matAutocomplete" >
+                                                            <mat-option (onSelectionChange)="getValue(option, 'cab_name')"
+                                                                *ngFor="let option of selectSearch" [value]="option.username">
+                                                                {{option.cab_name}}
+                                                            </mat-option>
+                                                        </mat-autocomplete>                                                    
                                                 </mat-form-field>
                                             </div>
                                             <!-- {{selectSearch | json}} -->
@@ -593,6 +584,7 @@
                                                         [matAutocomplete]="auto"
                                                         [matChipInputFor]="chipList"                                                      
                                                         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                        (keypress)="enterInput($event)"
                                                         (matChipInputTokenEnd)="add($event)" (input)="search($event.target.value)">
                                                     </mat-chip-list>
                                                     <mat-autocomplete #auto="matAutocomplete">
@@ -626,6 +618,7 @@
                                                             [matAutocomplete]="auto"
                                                             [matChipInputFor]="chipList"
                                                             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                            (keypress)="enterInput($event)"
                                                             (matChipInputTokenEnd)="add($event)" (input)="search($event.target.value)">
                                                         </mat-chip-list>
                                                     <mat-autocomplete #auto="matAutocomplete" >
@@ -648,7 +641,6 @@
                                                             name="upload_message_file"
                                                             [(ngModel)]="chatMessage.upload_message_file"
                                                             (change)="validateFile($event)">
-                                                        <!-- <mat-error class="error" *ngIf="!file_validation">Please Upload a valid file (ex: pdf,xlsx,xlx)</mat-error>  -->
                                                         <span class="icon-attach attach-data" (click)="file.click()"></span>
                                                     </span>
                                                     <p class="error" *ngIf="!file_validation">Please Upload a
