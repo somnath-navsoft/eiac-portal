@@ -550,7 +550,7 @@ export class OperationsDashboardComponent implements OnInit {
   }
 
   onOperationSubmit(ngForm) {
-
+    console.log("@Submit User: ", this.selectedUserId);
     if (ngForm.form.valid && this.selectedUserId != '') {
       let formdata = new FormData();
       formdata.append('message_by', this.userId);
@@ -583,7 +583,9 @@ export class OperationsDashboardComponent implements OnInit {
   getValue(value, data) {
     this.fruitInput.nativeElement.blur();
     this.selectedUser = [];
-    this.selectedUserId = value.id;
+    //this.selectedUserId = value.id;
+    this.selectedUserId = (data=='cab_name' || data=='cab_code') ? value.user_id : value.id;
+    console.log("@Getvalue: ", value, " :: ", data, "--", this.selectSearch);
     this.button_disable = this.selectedUserId != '' ? false : true;
     if (data == 'cab_name') {
       this.selectedUser.push(value.cab_name);
