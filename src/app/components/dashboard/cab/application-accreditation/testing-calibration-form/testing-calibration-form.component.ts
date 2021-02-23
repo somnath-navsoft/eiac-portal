@@ -424,7 +424,7 @@ export class TestingCalibrationFormComponent implements OnInit {
             ////console.log('Fullscope: ', record, " -- ");
             let data: any = record;
             if(data && data.data.scopeFamily != undefined && data.data.scopeFamily.length > 0){
-              getFamilydata = data.data.scopeFamily.find(item => item.scope_family == fid);
+              getFamilydata = data.data.scopeFamily.find(item => item.scope_family.id == fid);
               //console.log(">>> family: 1 ", this.findFamily);
               if(getFamilydata){
                 console.log(">>> family namem: ", getFamilydata.title);
@@ -2416,7 +2416,7 @@ getCriteria(value, secInd: any){
                               ////console.log('Fullscope: ', record, " -- ");
                               let data: any = record;
                               if(data && data.data.scopeFamily != undefined && data.data.scopeFamily.length > 0){
-                                let getFamilydata = data.data.scopeFamily.find(item => item.scope_family == key1);
+                                let getFamilydata = data.data.scopeFamily.find(item => item.scope_family.id == key1);
                                 //console.log(">>> family: 1 ", this.findFamily);
                                 if(getFamilydata){
                                   console.log(">>> family namem: ", getFamilydata.title);
@@ -3710,7 +3710,7 @@ updateScopeData = async(rowInd: number) => {
                   ////console.log('Fullscope: ', record, " -- ");
                   let data: any = record;
                   if(data && data.data.scopeFamily != undefined && data.data.scopeFamily.length > 0){
-                    let getFamilydata = data.data.scopeFamily.find(item => item.scope_family == key1);
+                    let getFamilydata = data.data.scopeFamily.find(item => item.scope_family.id == key1);
                     //console.log(">>> family: 1 ", this.findFamily);
                     if(getFamilydata){
                       console.log(">>> family namem: ", getFamilydata.title);

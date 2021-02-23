@@ -690,12 +690,14 @@ loadScopeDataHalal(){
                       let apiURL = this._service.apiServerUrl+"/"+this._constant.API_ENDPOINT.testing_cal_form_basic_data+"?scheme="+key;
                       this._service.getwithoutData(apiURL).subscribe(
                         async record => {
-                        ////console.log('Fullscope: ', record, " -- ");
-                        let data: any = record;
-                        if(data && data.data.scopeFamily != undefined && data.data.scopeFamily.length > 0){
-                          let getFamilydata = data.data.scopeFamily.find(item => item.scope_family == key1);
-                          //console.log(">>> family: 1 ", this.findFamily);
-                          if(getFamilydata){
+                        console.log('Fullscope: ', record, " -- ");
+                        let dataRec: any = record;
+
+                        if(dataRec && dataRec.data.scopeFamily != undefined && dataRec.data.scopeFamily.length > 0){
+                          console.log("...........", key1, " -- ", dataRec.data.scopeFamily);
+                          let getFamilydata: any = dataRec.data.scopeFamily.find(item => item.scope_family.id == key1);
+                          console.log(">>> family: 1 ", getFamilydata);
+                          if(getFamilydata){ 
                             console.log(">>> family namem: ", getFamilydata.title);
                             this.getFamilyTitles[key][key1].push({title: getFamilydata.title});
                           }
@@ -710,9 +712,9 @@ loadScopeDataHalal(){
 
             }
 
-            if(result['data'].form_meta == 'testing_calibration'){
+            // if(result['data'].form_meta == 'testing_calibration'){
 
-            }
+            // }
 
             
             //
