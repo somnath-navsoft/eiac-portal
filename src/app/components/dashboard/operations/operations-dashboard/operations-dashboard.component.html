@@ -553,9 +553,10 @@
                                                         placeholder="{{selectedField}}"
                                                         #fruitInput                                                      
                                                         [matAutocomplete]="auto"
-                                                        [matChipInputFor]="chipList"                                                      
+                                                        [matChipInputFor]="chipList"
                                                         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                                         (keypress)="enterInput($event)"
+                                                        (click) = "changeInput($event)"
                                                         (matChipInputTokenEnd)="add($event)" (input)="search($event.target.value)">
                                                     </mat-chip-list>
                                                         <mat-autocomplete #auto="matAutocomplete" >

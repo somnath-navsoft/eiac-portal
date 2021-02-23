@@ -124,8 +124,12 @@
                 </div>
                 <div class="appln-details license_no">
                   <span *ngIf="serviceDetail?.trade_license_number != null">
-                    <a href="{{selectTradeLicPath}}" target="_blank">{{serviceDetail?.trade_license_number}}</a>
-                    <!-- {{serviceDetail?.trade_license_number}} -->
+                    <ng-container *ngIf="selectTradeLicPath != ''">
+                      <a href="{{selectTradeLicPath}}" target="_blank">{{serviceDetail?.trade_license_number}}</a>
+                    </ng-container>
+                    <ng-container *ngIf="selectTradeLicPath === ''">
+                      <a href="javascript:void(0);">{{serviceDetail?.trade_license_number}}</a>
+                    </ng-container>   
                   </span>
                   <span *ngIf="serviceDetail?.trade_license_number == null">N/A</span>
                 </div>
@@ -991,23 +995,11 @@
                   </ng-container>
 
                   <ng-container *ngIf="serviceDetail?.form_meta == 'testing_calibration' && editScopeData != undefined && editScopeData != null">
-                    
-                      <!-- <div class="row">
-                          <div class="col-md-12">
-                              <div class="form-subheader-data">
-                                  <h5>SCOPE DATA</h5>
-                              </div>
-                          </div>
-                      </div> -->
                       <ng-container *ngFor="let item of editScopeData | keyvalue">
+                        <!-- {{item | json}} -->
                         <div class="row"> 
                             <div class="col-md-12">
                                 <div class="sub-header">
-                                  <!-- .....@{{item.key}}<br>#{{getSchemeTitles[item.key][0].title}} -->
-                                  <!-- {{getSchmeTC(item.key)}} -->
-                                  <!-- <h5 [innerHTML]="getSchmeTC(item.key)"></h5> -->
-                                  <!-- {{getSchemeTitles | json}} -->
-                                  <!-- {{getSchemeTitles[item.key][0].title}} -->
                                   <h5>
                                   <ng-container *ngIf="getSchemeTitles[item.key][0].title != undefined">
                                     {{getSchemeTitles[item.key][0].title}}
@@ -1016,7 +1008,8 @@
                                 </div>
                             </div>
                         </div>
-                        <ng-container *ngIf="item.value != undefined && item.value != null">
+                        <!-- @{{item.value |  json}} -->
+                        <ng-container *ngIf="item.value">
                             <ng-container *ngFor="let item5 of (item.value) | keyvalue;">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -1026,31 +1019,21 @@
                                                   <ng-container *ngIf="item5.key != undefined && item5.key > 0">
                                                     <ng-container *ngIf="getFamilyTitles[item.key][item5.key] != undefined">
                                                         <ng-container *ngIf="getFamilyTitles[item.key][item5.key][0] != undefined && getFamilyTitles[item.key][item5.key][0].title != undefined">
-                                                            {{getFamilyTitles[item.key][item5.key][0].title}}
+                                                           {{getFamilyTitles[item.key][item5.key][0].title}}
                                                         </ng-container>                                                                        
                                                     </ng-container>
-                                                </ng-container>
-                                                  <!-- <ng-container *ngIf="!getFamilyName">
-                                                    {{getFamilySchmeTC(item.key, item5.key)}}
-                                                  </ng-container>                     
-                                                  <ng-container *ngIf="getFamilyName && findFamily != undefined">
-                                                      Accreditation Family Scope for  {{findFamily.title}}
-                                                  </ng-container> -->
+                                                </ng-container>                                                 
                                                 </h5>
                                             </div>
                                             <table *ngIf="item5.value.scope_value != undefined">
                                                 <tr>
                                                     <th *ngFor="let item6 of (item5.value.scope_heading) | keyvalue;">{{item6.value}}</th>
-                                                    <!-- <th>Action</th> -->
                                                 </tr>
                                                 <ng-container *ngIf="item5.value.scope_value.length > 0">
                                                     <tr *ngFor="let item2 of (item5.value.scope_value) | keyvalue; let i4 = index;">
                                                         <td *ngFor="let item3 of item2.value | keyvalue;">
                                                             <span [innerHTML]="(item3.value)"></span> 
-                                                        </td>
-                                                        <!-- <td>
-                                                        <span [ngStyle]="{'cursor': 'pointer'}" class="icon-cross" (click)="openDeleteEditScopeConfirm(i4, item.key, item5.key )"></span>
-                                                        </td>-->
+                                                        </td>                                                        
                                                     </tr>
                                                 </ng-container>
                                                 <ng-container *ngIf="item5.value.scope_value.length == 0">
