@@ -1555,6 +1555,10 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 .auth-details td:last-child a.info { text-decoration: none; margin-left: 10px; display: inline-block; }
+
+.cur-aed .mat-form-field-label-wrapper {
+  left: -38px !important;
+}
 //==================RESPONSIVE==================//
 @media(max-width: 1500px) {
   // .main-dashboard-cnt .user-steps { height: 50%; }
