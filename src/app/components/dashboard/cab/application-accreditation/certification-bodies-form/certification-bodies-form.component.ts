@@ -1280,9 +1280,11 @@ loadAppInfo(){
             this.selectTradeLicName = getFile[4].toString().split('.')[0];
             this.selectTradeLicPath = this.constant.mediaPath +  data.trade_license.toString();
           }
+          this.step1Data.trade_license_number = data.trade_license_number;
+          this.step1Data.trade_license = data.trade_license;
         }
-        this.step1Data.trade_license_number = data.trade_license_number;
         
+
         this.step1Data.city =  data.city;
         this.step1Data.country = data.country;
         this.step1Data.state = data.state;

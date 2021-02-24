@@ -450,6 +450,7 @@ export class OperationsDashboardComponent implements OnInit {
       .subscribe(
         res => {
           this.messageList = res['data'].message_list;
+          console.log("@message detete: ", res);
           this.loader = true;
         });
 
