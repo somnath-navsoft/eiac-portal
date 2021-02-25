@@ -16,6 +16,7 @@ import { typeWithParameters } from '@angular/compiler/src/render3/util';
 import { AnyFn } from '@ngrx/store/src/selector';
 import {CustomModalComponent} from '../../../../utility/custom-modal/custom-modal.component';
 import { iif } from 'rxjs';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
 declare let paypal: any; 
 @Component({
@@ -209,6 +210,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   shift2_to: boolean    = false;
   shift3_from: boolean  = false;
   shift3_to: boolean    = false;
+  floatLabelControl = new FormControl('auto');
 
   paymentMode: string = '';
 

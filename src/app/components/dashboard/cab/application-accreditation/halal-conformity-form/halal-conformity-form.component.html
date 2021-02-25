@@ -2223,12 +2223,10 @@
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-4">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Payment Amount</mat-label>
+                                            <mat-form-field class="cab-data cur-aed" [floatLabel]="'always'">
                                                 <input type="number" [ngModelOptions]="{standalone: true}" required="true"
-                                                matInput placeholder="AED" 
-                                                [(ngModel)]="voucherSentData.amount">
-                                                <!-- <span matPrefix>د.إ&nbsp;</span> -->
+                                                matInput placeholder="Payment Amount" [(ngModel)]="voucherSentData.amount">
+                                                <span matPrefix>AED&nbsp;</span>
                                             </mat-form-field>
                                         </div>
                                     </div>
