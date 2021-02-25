@@ -1978,10 +1978,9 @@
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-4">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Payment Amount</mat-label>
-                                                <input type="text" (keypress)="Service.inputFilter($event, Service.regExNumb)" [ngModelOptions]="{standalone: true}" required matInput placeholder="" 
-                                                [(ngModel)]="voucherSentData.amount">
+                                            <mat-form-field class="cab-data cur-aed" [floatLabel]="'always'">
+                                                <input type="text" (keypress)="Service.inputFilter($event, Service.regExNumb)" [ngModelOptions]="{standalone: true}" required matInput 
+                                                placeholder="Payment Amount" [(ngModel)]="voucherSentData.amount">
                                                 <span matPrefix>AED&nbsp;</span>
                                             </mat-form-field>
                                         </div>
