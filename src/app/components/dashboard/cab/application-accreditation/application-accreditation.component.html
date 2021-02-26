@@ -13,11 +13,13 @@
           <div class="col-md-4" *ngFor="let row of serviceList; let i = index;">
             <div class="accreditation-container">
               <div class="acc-main">
-                <div class="accreditation-img"> 
+                <div class="accreditation-img">
                   <img src="{{constant.mediaPath}}{{row.service_page.thumb_image}}" alt="">
-                  <div class="acc-hov acc-apply">
+                  <div class="acc-hov acc-apply" *ngIf="!row.suspend">
                     <a href="javascript:void(0)" routerLink="/{{row.service_page.meta_title !='' ? '/dashboard/cab_client/'+row.service_page.meta_title+'-form' : '#'}}" (click)="checkIBId()">APPLY NOW</a>
-                    <!-- <a href="javascript:void(0)" routerLink="/accrediation-service-status/draft" class="save_draft">SAVED DRAFT</a> -->
+                  </div>
+                  <div class="acc-hov acc-apply" *ngIf="row.suspend">
+                    <a href="javascript:void(0)" (click)="suspendAlert(suspendBox)">APPLY NOW</a>
                   </div>
                 </div>
                 <div class="accreditation-desc">
@@ -28,6 +30,17 @@
               </div>
             </div>
           </div>
+          <ng-template #suspendBox let-modal>
+            <div class="main_pop">
+                <div class="pop_close">
+                    <span class="icon-close" (click)="closeDialog()"></span>
+                </div>
+                <div class="pop_thanks">
+                    <h5>Suspended</h5>
+                    <p>Please contact EIAC to allow submission.</p>
+                </div>
+            </div>
+        </ng-template>
         </div>
       </div>
     </div>
