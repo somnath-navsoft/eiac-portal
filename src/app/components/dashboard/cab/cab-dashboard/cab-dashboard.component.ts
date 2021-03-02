@@ -76,6 +76,14 @@ export class CabDashboardComponent implements OnInit {
     return fname;
   }
 
+  enterInput(theEvt: any) {
+    if (this.selectedUser.length > 0) {
+      this.selectSearch = [];
+      theEvt.preventDefault();
+      return;
+    }
+  }
+
 /*
 <span *ngIf="item.form_meta == 'work_permit'">Work Permit</span>
 <span *ngIf="item.form_meta == 'no_objection'">No Objection Certificate</span>

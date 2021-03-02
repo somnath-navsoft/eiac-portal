@@ -290,23 +290,29 @@ export class TrainersDashboardComponent implements OnInit {
     this.userType = localStorage.getItem('type');
     this.userId = localStorage.getItem('userId');
 
+    // this.select_field = [
+    //   { field: 'Internal Operations', value: 'Internal Operations' },
+    //   { field: 'CAB Code', value: 'CAB Code' },
+    //   { field: 'Candidate', value: 'Candidate' },
+    // ];
+    this.getUserType = 'cab_client';
     this.select_field = [
       { field: 'Internal Operations', value: 'Internal Operations' },
+      { field: 'CAB Name', value: 'CAB Name' },
       { field: 'CAB Code', value: 'CAB Code' },
-      { field: 'Candidate', value: 'Candidate' },
+      { field: 'Candidate', value: 'Candidate' }
     ];
 
+    // this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=' + this.getUserType + '&searchKey=S')
+    //   .subscribe(
+    //     res => {
+    //       this.searchDetails = res['data'].user_list;
+    //       this.loader = true;;
+    //       // this.search(this.searchTerm);
 
-    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=' + this.getUserType + '&searchKey=S')
-      .subscribe(
-        res => {
-          this.searchDetails = res['data'].user_list;
-          this.loader = true;;
-          // this.search(this.searchTerm);
-
-        }, err => {
-          this.loader = true;
-        });
+    //     }, err => {
+    //       this.loader = true;
+    //     });
 
     
 
@@ -369,7 +375,7 @@ export class TrainersDashboardComponent implements OnInit {
         .subscribe(
           res => {
             if (res['status'] == true) {
-              this.setField('Internal Operations');
+              this.setField('CAB Name');
               this.documentName = '';
               this.selectedUserId = '';
               this.selectedUser = [];
@@ -446,29 +452,50 @@ export class TrainersDashboardComponent implements OnInit {
     return file.split('/')[-1];
   }
 
-  search(query: string) {
-    // this.searchTerm = query;
-    let result = this.select(query);
-    // this.searchDetails = result;
-    if (query != '') {
-      this.selectSearch = result;
-    } else {
+  enterInput(theEvt: any) {
+    if (this.selectedUser.length > 0) {
       this.selectSearch = [];
+      theEvt.preventDefault();
+      return;
     }
+  }
+
+  changeInput(theEvt: any){
+    console.log("@change input...");
+    if (this.selectedUser.length > 0) {
+      this.selectSearch = [];
+      theEvt.preventDefault();
+      return;
+    }
+  }
+
+  search(query: string) {
+    // let result = this.select(query);
+    // // this.searchDetails = result;
+    // if (query != '') {
+    //   this.selectSearch = result;
+    // } else {
+    //   this.selectSearch = [];
+    // }
+    if (this.selectedUser.length > 0) {
+      this.selectSearch = [];
+      return;
+    }
+    this.select(query);
 
   }
 
-  select(query: string): string[] {
-    let result: string[] = [];
+  select(query: string) {
+    /*let result: string[] = [];
     if (this.getUserType == 'cab_client' || this.getUserType == 'cab_code') {
       for (let a of this.searchDetails) {
-        if (a.username.toLowerCase().indexOf(query) > -1) {
+        if (a.username.toString().toLowerCase().indexOf(query) > -1) {
           result.push(a);
         }
       }
     } else {
       for (let a of this.searchDetails) {
-        if (a.email.toLowerCase().indexOf(query) > -1) {
+        if (a.email.toString().toLowerCase().indexOf(query) > -1) {
           result.push(a);
         }
       }
@@ -476,22 +503,56 @@ export class TrainersDashboardComponent implements OnInit {
 
     // this.searchDetails = result;
     return result;
+    */
+   let result: string[] = [];
+    //let re = new RegExp(query, 'gi');
+    console.log("### ", query);
+    if (query != '') {
+      this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=' + this.getUserType + '&searchKey=' + query)
+        .subscribe(
+          res => {
+            this.searchDetails = res['data'].user_list;
+            this.loader = true;
+            // this.search(this.searchTerm);
+            console.log("@get User: ", this.searchDetails);
+            this.selectSearch = this.searchDetails;
+
+          }, err => {
+            this.loader = true;
+          });
+    } else {
+      this.selectSearch = [];
+    }
   }
 
 
   getValue(value, data) {
+    // this.fruitInput.nativeElement.blur();
+    // this.selectedUser = [];
+    // this.selectedUserId = value.id;
+    // this.button_disable = this.selectedUserId != '' ? false : true;
+    // if (data == 'username') {
+    //   this.selectedUser.push(value.username);
+    // } else {
+    //   this.selectedUser.push(value.email);
+    // }
+    // this.fruitInput.nativeElement.value = '';
+    // this.fruitInput.nativeElement.blur();
+
     this.fruitInput.nativeElement.blur();
-    this.selectedUser = [];
-    this.selectedUserId = value.id;
+    this.selectedUser = [];    
+    this.selectedUserId = (data == 'cab_name' || data == 'cab_code') ? value.user_id : value.id;
+    console.log("@Getvalue: ", value, " :: ", data, "--", this.selectSearch);
     this.button_disable = this.selectedUserId != '' ? false : true;
-    if (data == 'username') {
-      this.selectedUser.push(value.username);
+    if (data == 'cab_name') {
+      this.selectedUser.push(value.cab_name);
+    } else if (data == 'cab_code') {
+      this.selectedUser.push(value.cab_code);
     } else {
       this.selectedUser.push(value.email);
     }
     this.fruitInput.nativeElement.value = '';
     this.fruitInput.nativeElement.blur();
-
 
   }
 
