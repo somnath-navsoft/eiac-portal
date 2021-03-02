@@ -85,6 +85,14 @@ export class CandidateDashboardComponent implements OnInit {
     console.log("@Event: ",theEvt)
   }
 
+  enterInput(theEvt: any) {
+    if (this.selectedUser.length > 0) {
+      this.selectSearch = [];
+      theEvt.preventDefault();
+      return;
+    }
+  }
+
   fullcanderClick(obj) {
 
     this.eventId = obj.event._def.publicId;

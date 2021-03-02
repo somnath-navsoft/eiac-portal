@@ -10,7 +10,7 @@
                             <div class="acc_verified">
                                 <span class="icon-check-circle"></span>
                                 <span class="tooltip_data">Account Verified</span>
-                            </div>
+                            </div> 
                         </div>
                         <div class="trainer-detail"> 
                             <span class="trainer-data"><span class="icon-company"></span>{{step1Data?.office_address}}</span>
@@ -478,19 +478,68 @@
                                             </mat-form-field>
                                         </div>
 
-                                        <div class="col-md-6"
+                                        <div class="col-md-6" *ngIf="getUserType =='cab_client'">
+                                            <mat-form-field class="cab-data">                                                   
+                                                <mat-chip-list #chipList >
+                                                    <mat-chip
+                                                    *ngFor="let option of selectedUser"
+                                                    [selectable]="selectable"
+                                                    [removable]="removable"
+                                                    (removed)="remove(option)">
+                                                    {{option}}
+                                                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                                    </mat-chip>
+                                                    <input 
+                                                    placeholder="{{selectedField}}"
+                                                    #fruitInput                                                      
+                                                    [matAutocomplete]="auto"
+                                                    [matChipInputFor]="chipList"
+                                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                    (keypress)="enterInput($event)"
+                                                    (click) = "changeInput($event)"
+                                                    (matChipInputTokenEnd)="add($event)" (input)="search($event.target.value)">
+                                                </mat-chip-list>
+                                                    <mat-autocomplete #auto="matAutocomplete" >
+                                                        <mat-option (onSelectionChange)="getValue(option, 'cab_name')"
+                                                            *ngFor="let option of selectSearch" [value]="option.username">
+                                                            {{option.cab_name}}
+                                                        </mat-option>
+                                                    </mat-autocomplete>                                                    
+                                            </mat-form-field>
+                                        </div>
+                                        <!-- {{selectSearch | json}} -->
+                                        <div class="col-md-6" *ngIf="getUserType =='cab_code'">
+                                            <mat-form-field class="cab-data">
+                                                <mat-chip-list #chipList >
+                                                    <mat-chip
+                                                    *ngFor="let option of selectedUser"
+                                                    [selectable]="selectable"
+                                                    [removable]="removable"
+                                                    (removed)="remove(option)">
+                                                    {{option}}
+                                                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                                    </mat-chip>
+                                                    <input 
+                                                    placeholder="{{selectedField}}"
+                                                    #fruitInput                                                      
+                                                    [matAutocomplete]="auto"
+                                                    [matChipInputFor]="chipList"                                                      
+                                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                    (keypress)="enterInput($event)"
+                                                    (matChipInputTokenEnd)="add($event)" (input)="search($event.target.value)">
+                                                </mat-chip-list>
+                                                <mat-autocomplete #auto="matAutocomplete">
+                                                    <mat-option (onSelectionChange)="getValue(option, 'cab_code')"
+                                                        *ngFor="let option of selectSearch" [value]="option.username">
+                                                        {{option.cab_code}}
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <!-- <div class="col-md-6"
                                             *ngIf="getUserType=='cab_client' || getUserType=='cab_code'">
                                             <mat-form-field class="cab-data">
-                                                <!-- <input type="text" (click)="search($event.target.value)"
-                                                    (input)="search($event.target.value)"
-                                                    placeholder="{{selectedField}}" matInput required
-                                                    [matAutocomplete]="auto">
-                                                <mat-autocomplete #auto="matAutocomplete">
-                                                    <mat-option (onSelectionChange)="getValue(option.id)"
-                                                        *ngFor="let option of selectSearch" [value]="option.username">
-                                                        {{option.username}}
-                                                    </mat-option>
-                                                </mat-autocomplete> -->
                                                 <mat-chip-list #chipList >
                                                     <mat-chip
                                                       *ngFor="let option of selectedUser"
@@ -515,7 +564,9 @@
                                                     </mat-option>
                                                 </mat-autocomplete>
                                             </mat-form-field>
-                                        </div>
+                                        </div> -->
+
+
                                         <div class="col-md-6"
                                             *ngIf="getUserType=='candidate' || getUserType=='operations'">
                                             <mat-form-field class="cab-data" #matForm>
@@ -538,6 +589,7 @@
                                                           [matAutocomplete]="auto"
                                                           [matChipInputFor]="chipList"
                                                           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                          (keypress)="enterInput($event)"
                                                           (matChipInputTokenEnd)="add($event)" (input)="search($event.target.value)">
                                                       </mat-chip-list>
                                                 <mat-autocomplete #auto="matAutocomplete" >
