@@ -748,12 +748,12 @@
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="test_name_{{i}}" [(ngModel)]="proficiencyTesting[i].test_name"> 
+                                                                    <input required (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="test_name_{{i}}" [(ngModel)]="proficiencyTesting[i].test_name"> 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput [matDatepicker]="participate_date" (dateChange)="Service.inputEvent($event,i,proficiencyTesting)" readonly="true" name="participate_date_{{i}}" placeholder="Select Date" (click)="Service._openCalendar(participate_date)" [(ngModel)]="proficiencyTesting[i].participation_date">
+                                                                    <input required (keypress)="Service.inputFilter($event, Service.regExName)" matInput [matDatepicker]="participate_date" (dateChange)="Service.inputEvent($event,i,proficiencyTesting)" readonly="true" name="participate_date_{{i}}" placeholder="Select Date" (click)="Service._openCalendar(participate_date)" [(ngModel)]="proficiencyTesting[i].participation_date">
                                                                     <mat-datepicker-toggle matSuffix [for]="participate_date"></mat-datepicker-toggle>
                                                                     <mat-datepicker #participate_date  disabled="false"></mat-datepicker>
                                                                 </mat-form-field>
@@ -762,13 +762,13 @@
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="pt_provider_{{i}}" [(ngModel)]="proficiencyTesting[i].pt_provider"> 
+                                                                    <input required (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="pt_provider_{{i}}" [(ngModel)]="proficiencyTesting[i].pt_provider"> 
                                                                 </mat-form-field>
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
                                                                     <mat-label>Type Here</mat-label>
-                                                                    <input  (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="result_summery_{{i}}" [(ngModel)]="proficiencyTesting[i].result"> 
+                                                                    <input required (keypress)="Service.inputFilter($event, Service.regExName)" matInput placeholder="" name="result_summery_{{i}}" [(ngModel)]="proficiencyTesting[i].result"> 
                                                                 </mat-form-field>
                                                                 </td>
                                                             <td class="content-icn">

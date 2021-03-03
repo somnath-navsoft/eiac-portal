@@ -156,6 +156,7 @@ export class NoObjectionFormComponent implements OnInit {
   paymentMode: string = '';
 
   showHideCBSec: boolean = false;
+  req4thStep: boolean = false;
   
   constructor(public Service: AppService, public constant:Constants, public sanitizer: DomSanitizer , public router: Router,
     public toastr: ToastrService, private modalService: NgbModal, private _trainerService: TrainerService,) { }
@@ -197,7 +198,7 @@ export class NoObjectionFormComponent implements OnInit {
       title:'list_service_scope', desc:'3. List Of Services Scope', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
-      title:'list_instrument_equipment', desc:'4. List of Indtrument & Equipments', activeStep:false, stepComp:false, icon:'icon-task', activeClass:''
+      title:'list_instrument_equipment', desc:'4. List of Instrument & Equipments', activeStep:false, stepComp:false, icon:'icon-task', activeClass:''
       },
       {
         title:'list_staff', desc:'5. List of Staff', activeStep:false, stepComp:false, icon:'icon-sheet', activeClass:''
@@ -1271,7 +1272,6 @@ export class NoObjectionFormComponent implements OnInit {
 
   onSubmitCabInformation(theForm: any, type?: any){
    //this.Service.moveSteps('cab_information', 'list_service_scope', this.headerSteps);
-    console.log(">>>>>");
    //return;
    let postData: any =new FormData();
     this.isFormSubmitted = true;
@@ -1328,6 +1328,28 @@ export class NoObjectionFormComponent implements OnInit {
       'cabTypeHalal_ib':this.step2Data.cabTypeHalal_ib,
       'cabTypeHalal_cb':this.step2Data.cabTypeHalal_cb,
     });
+    let checkSelect: any[]=[];
+    if(cabTypes){
+        for(let key in cabTypes){
+              if(cabTypes[key].length){
+                if(!this.Service.isObjectEmpty(cabTypes[key][0])){
+                  for(let key1 in cabTypes[key][0]){
+                    console.log(">>>... ", cabTypes[key][0][key1]);
+                    if(cabTypes[key][0][key1]){
+                      checkSelect.push({
+                        key1 : true
+                      })
+                    }
+                  }
+                }                  
+              }
+        }
+    }
+    console.log("@Check count: ", checkSelect);
+    this.req4thStep  = false;
+    if(checkSelect.length > 1){
+          this.req4thStep  = true;
+    }
     this.step2Data.cab_type = cabTypes;//JSON.stringify(cabTypes);
     console.log(">>>form status: ",theForm.form.valid ," -- ", this.step2Data);
 
