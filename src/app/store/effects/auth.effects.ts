@@ -60,6 +60,10 @@ export class AuthEffects {
   tap((user) => {
     var authUserData = this._appServ.decodeJWT(user.payload.token);
     console.log(">>>Effects LAnd URL:",authUserData );
+    // if(authUserData.user_type === 'candidate'){
+    //   authUserData.isCompleteness = 1;
+    //   authUserData.isVerified = 1;
+    // }
     if(authUserData.isVerified == '0' && authUserData.profileComplete != '2')
     {
       // localStorage.setItem('token', user.payload.token);
@@ -72,7 +76,7 @@ export class AuthEffects {
       // this.authService.appErrorStack.next('Please complete your verification before Sign in');
     }else if(authUserData.isCompleteness == '0')
     {
-      console.log(authUserData,'authUserData');
+      console.log(authUserData,'@@@@authUserData');
       localStorage.setItem('token', user.payload.token);
       localStorage.setItem('email', authUserData.email);
       localStorage.setItem('first_name', authUserData.first_name);
@@ -91,7 +95,7 @@ export class AuthEffects {
       // localStorage.setItem('token', user.payload.token);
       // this._appServ.getUserType();
       // localStorage.setItem('type', this._constants.logType);
-      console.log('authEffects');
+      console.log('####authEffects');
       localStorage.setItem('token', '');
       localStorage.setItem('email', '');
       localStorage.setItem('first_name', '');
@@ -154,7 +158,7 @@ export class AuthEffects {
       switchMap(payload => {
         return this.authService.logIn(payload.email, payload.password).pipe(
           map(data => {
-             ////console.log("Login Data: ", data);
+             console.log("Login Data: ", data);
              if( data != undefined && data.access != ''){
               this.store.dispatch(new LogInSuccess({token: data.access}));
              }

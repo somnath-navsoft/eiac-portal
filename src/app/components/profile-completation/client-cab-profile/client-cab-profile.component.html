@@ -201,6 +201,18 @@
                                 </div>
                             </div>
                         </div>
+                        <span id="openAppDialog" (click)="openView(appComp)"></span>
+                                <ng-template #appComp let-modal>
+                                    <div class="main_pop">
+                                        <div class="pop_close" (click)="closeChecklistDialog()"> 
+                                            <span class="icon-close"></span>
+                                        </div>
+                                        <div class="pop_thanks">
+                                            <h5>Thank you</h5>
+                                            <p>Your Complete Profile has been submitted successfully and is under review. We will get back you soon.</p>
+                                        </div>
+                                    </div>
+                                </ng-template>
                     </form>
                 </div>
                 <!-- </mat-step>  -->
@@ -626,7 +638,7 @@
                                 </div>
 
 
-                                <span id="openAppDialog" (click)="openView(appComp)"></span>
+                                <!-- <span id="openAppDialog" (click)="openView(appComp)"></span>
                                 <ng-template #appComp let-modal>
                                     <div class="main_pop">
                                         <div class="pop_close" (click)="closeChecklistDialog()"> 
@@ -637,7 +649,7 @@
                                             <p>Your Complete Profile has been submitted successfully and is under review. We will get back you soon.</p>
                                         </div>
                                     </div>
-                                </ng-template>
+                                </ng-template> -->
 
                                 <!-- <div class="row">
                                     <div class="col-md-4">

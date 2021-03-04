@@ -341,7 +341,7 @@ ngOnInit() {
     title:'undertaking_applicant', desc:'5. Authorization of the Application', activeStep:false, stepComp:false, icon:'icon-work', activeClass:''
     },
     {
-      title:'proforma_invoice', desc:'6. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-file_invoice', activeClass:''
+      title:'proforma_invoice', desc:'6. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-dubai-aed', activeClass:''
     },
     {
       title:'payment_update', desc:'7. Payment Update', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
