@@ -341,7 +341,7 @@ ngOnInit() {
     title:'undertaking_applicant', desc:'5. Authorization of the Application', activeStep:false, stepComp:false, icon:'icon-work', activeClass:''
     },
     {
-      title:'proforma_invoice', desc:'6. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-file_invoice', activeClass:''
+      title:'proforma_invoice', desc:'6. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-dubai-aed', activeClass:''
     },
     {
       title:'payment_update', desc:'7. Payment Update', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
@@ -1280,9 +1280,11 @@ loadAppInfo(){
             this.selectTradeLicName = getFile[4].toString().split('.')[0];
             this.selectTradeLicPath = this.constant.mediaPath +  data.trade_license.toString();
           }
+          this.step1Data.trade_license_number = data.trade_license_number;
+          this.step1Data.trade_license = data.trade_license;
         }
-        this.step1Data.trade_license_number = data.trade_license_number;
         
+
         this.step1Data.city =  data.city;
         this.step1Data.country = data.country;
         this.step1Data.state = data.state;

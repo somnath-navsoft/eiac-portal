@@ -201,6 +201,18 @@
                                 </div>
                             </div>
                         </div>
+                        <span id="openAppDialog" (click)="openView(appComp)"></span>
+                                <ng-template #appComp let-modal>
+                                    <div class="main_pop">
+                                        <div class="pop_close" (click)="closeChecklistDialog()"> 
+                                            <span class="icon-close"></span>
+                                        </div>
+                                        <div class="pop_thanks">
+                                            <h5>Thank you</h5>
+                                            <p>Your Complete Profile has been submitted successfully and is under review. We will get back you soon.</p>
+                                        </div>
+                                    </div>
+                                </ng-template>
                     </form>
                 </div>
                 <!-- </mat-step>  -->
@@ -353,8 +365,8 @@
                                             <input matInput name="trade_license_number" [(ngModel)]="step2Data.trade_license_number" placeholder="Trade License Number" required>
                                         </mat-form-field> -->
                                         <div class="matupload position-relative">
-                                            <mat-form-field  class="lng-data">
-                                                <input matInput readonly="true" name="trade_license_name" [(ngModel)]="step2Data.trade_license_name"  placeholder="Upload Document" required>
+                                            <mat-form-field  class="cab-data">
+                                                <input matInput readonly="true" name="trade_license_name" [(ngModel)]="step2Data.trade_license_name"  placeholder="Upload Legal / Profession / Commercial / Trade License" required>
                                             </mat-form-field>
 
                                             <span class="fileupload">
@@ -626,7 +638,7 @@
                                 </div>
 
 
-                                <span id="openAppDialog" (click)="openView(appComp)"></span>
+                                <!-- <span id="openAppDialog" (click)="openView(appComp)"></span>
                                 <ng-template #appComp let-modal>
                                     <div class="main_pop">
                                         <div class="pop_close" (click)="closeChecklistDialog()"> 
@@ -637,7 +649,7 @@
                                             <p>Your Complete Profile has been submitted successfully and is under review. We will get back you soon.</p>
                                         </div>
                                     </div>
-                                </ng-template>
+                                </ng-template> -->
 
                                 <!-- <div class="row">
                                     <div class="col-md-4">

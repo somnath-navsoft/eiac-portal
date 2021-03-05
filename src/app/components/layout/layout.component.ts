@@ -168,10 +168,9 @@ export class LayoutComponent implements OnInit {
         if(state.user != null && state.user.token != undefined && state.user.token != null) {
           
           let authUserData = this._service.decodeJWT(state.user.token);
-          // console.log(authUserData,'authUserData')
+          console.log(authUserData,'@layout authUserData')
           if(state.user.token !=null && authUserData.isVerified == '0')
-          {
-            
+          {            
             this.isAuthenticated = false;
           }else if(state.user.token !=null && authUserData.isCompleteness == '0'){
             this.isAuthenticated = state.isAuthenticated;

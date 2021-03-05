@@ -143,11 +143,11 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-4">
+                                                    <!-- <div class="col-md-4">
                                                         <div class="initial_data">
                                                             <mat-radio-button value="3">Renewal</mat-radio-button>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                                 </mat-radio-group>
                                             </div>
@@ -663,7 +663,7 @@
                                                             </td>
                                                             <td>
                                                                 <mat-form-field class="cab-data">
-                                                                    <input readonly="true"  (keypress)="Service.inputFilter($event, Service.regExName)" matInput [matDatepicker]="converted_date" readonly="true" placeholder="Date of Certificate" name="converted_date_{{i}}" (click)="Service._openCalendar(converted_date)" [(ngModel)]="accreditationInfo[i].converted_date" required>
+                                                                    <input readonly="true"  (keypress)="Service.inputFilter($event, Service.regExName)" matInput [matDatepicker]="converted_date" readonly="true" placeholder="Expiry Date of Certificate" name="converted_date_{{i}}" (click)="Service._openCalendar(converted_date)" [(ngModel)]="accreditationInfo[i].converted_date" required>
                                                                     <mat-datepicker-toggle matSuffix [for]="converted_date"></mat-datepicker-toggle>
                                                                     <mat-datepicker #converted_date  disabled="false"></mat-datepicker>
                                                                 </mat-form-field>
@@ -1694,7 +1694,7 @@
                                                 [(ngModel)]="voucherSentData.voucher_code">
                                             </mat-form-field>
                                         </div>
-                                        <div class="col-md-4  mt-3">
+                                        <div class="col-md-4  mt-3"> 
                                             <mat-form-field class="cab-data">
                                                 <mat-label>Payment Date</mat-label>
                                                 <input matInput [matDatepicker]="payment_date" name="payment_date" 
@@ -1704,12 +1704,10 @@
                                             </mat-form-field>
                                         </div>
                                         <div class="col-md-4  mt-3">
-                                            <mat-form-field class="cab-data">
-                                                <mat-label>Payment Amount</mat-label>
+                                            <mat-form-field class="cab-data cur-aed" [floatLabel]="'always'">
                                                 <input type="number" [ngModelOptions]="{standalone: true}" required="true"
-                                                matInput placeholder="AED" 
-                                                [(ngModel)]="voucherSentData.amount">
-                                                <!-- <span matPrefix>AED&nbsp;</span> -->
+                                                matInput placeholder="Payment Amount"  [(ngModel)]="voucherSentData.amount">
+                                                <span matPrefix>AED&nbsp;</span>
                                             </mat-form-field>
                                         </div>
                                     </div>

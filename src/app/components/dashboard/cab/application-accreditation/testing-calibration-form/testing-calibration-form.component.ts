@@ -1701,7 +1701,7 @@ getCriteria(value, secInd: any){
       title:'undertaking_applicant', desc:'7. Authorization of the Application', activeStep:false, stepComp:false, icon:'icon-work', activeClass:''
       },
       {
-        title:'proforma_invoice', desc:'8. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-file_invoice', activeClass:''
+        title:'proforma_invoice', desc:'8. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-dubai-aed', activeClass:''
       },
       {
         title:'payment_update', desc:'9. Payment Update', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
@@ -2172,6 +2172,8 @@ getCriteria(value, secInd: any){
             }
           }
           this.step1Data.trade_license_number = data.trade_license_number;
+          this.step1Data.trade_license = data.trade_license;
+
           this.step1Data.city =  data.city;
           this.step1Data.country = data.country;
           this.step1Data.state = data.state;
@@ -2671,7 +2673,8 @@ getCriteria(value, secInd: any){
         this.testingCalForm.step1['accreditationInfo'] = this.accreditationInfo;
       }
 
-      //console.log(">>> Step Data: ", this.testingCalForm);
+      console.log(">>> Step Data: ", this.testingCalForm);
+      //return;
 
       this.loader = false;
       // this.step1DataBodyFormFile.append('data',JSON.stringify(this.testingCalForm));
@@ -3696,7 +3699,7 @@ updateScopeData = async(rowInd: number) => {
         this.toastr.success('Scope Data added successfully!','Success',{timeOut:2300});
         for(let key in this.editScopeData){
           console.log(">>> scheme: ", key);
-          if(typeof this.editScopeData[key] === 'object'){
+          if(typeof this.editScopeData[key] === 'object'){ 
             for(let key1 in this.editScopeData[key]){
               console.log(">>> family: ", key1);
               let fid: number = parseInt(key1);

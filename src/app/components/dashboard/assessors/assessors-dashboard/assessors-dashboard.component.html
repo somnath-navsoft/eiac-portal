@@ -536,6 +536,7 @@
                                                         [matAutocomplete]="auto" [matChipInputFor]="chipList"
                                                         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                                         (matChipInputTokenEnd)="add($event)"
+                                                        (keypress)="enterInput($event)"
                                                         (input)="search($event.target.value)">
                                                 </mat-chip-list>
                                                 <mat-autocomplete #auto="matAutocomplete">
@@ -560,6 +561,7 @@
                                                         [matAutocomplete]="auto" [matChipInputFor]="chipList"
                                                         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                                         (matChipInputTokenEnd)="add($event)"
+                                                        (keypress)="enterInput($event)"
                                                         (input)="search($event.target.value)">
                                                 </mat-chip-list>
                                                 <mat-autocomplete #auto="matAutocomplete">

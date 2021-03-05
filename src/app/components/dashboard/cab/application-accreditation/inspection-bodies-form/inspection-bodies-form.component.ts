@@ -16,6 +16,7 @@ import { typeWithParameters } from '@angular/compiler/src/render3/util';
 import { AnyFn } from '@ngrx/store/src/selector';
 import {CustomModalComponent} from '../../../../utility/custom-modal/custom-modal.component';
 import { iif } from 'rxjs';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
 declare let paypal: any; 
 @Component({
@@ -209,6 +210,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   shift2_to: boolean    = false;
   shift3_from: boolean  = false;
   shift3_to: boolean    = false;
+  floatLabelControl = new FormControl('auto');
 
   paymentMode: string = '';
 
@@ -873,7 +875,7 @@ export class InspectionBodiesFormComponent implements OnInit {
       title:'undertaking_applicant', desc:'7. Authorization of the Application', activeStep:false, stepComp:false, icon:'icon-work', activeClass:''
       },
       {
-        title:'proforma_invoice', desc:'8. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-file_invoice', activeClass:''
+        title:'proforma_invoice', desc:'8. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-dubai-aed', activeClass:''
       },
       {
         title:'payment_update', desc:'9. Payment Update', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''

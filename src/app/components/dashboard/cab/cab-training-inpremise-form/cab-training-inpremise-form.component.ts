@@ -146,7 +146,7 @@ export class CabTrainingInpremiseFormComponent implements OnInit {
         title:'payment_update', desc:'7. Payment Update', activeStep:false, stepComp:false, icon:'icon-work', activeClass:''
         },
         {
-          title:'application_complete', desc:'8. Application Complete', activeStep:false, stepComp:false, icon:'icon-file_invoice', activeClass:''
+          title:'application_complete', desc:'8. Application Complete', activeStep:false, stepComp:false, icon:'icon-dubai-aed', activeClass:''
         },
       );
   

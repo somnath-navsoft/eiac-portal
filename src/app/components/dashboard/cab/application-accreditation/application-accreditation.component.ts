@@ -58,6 +58,8 @@ export class ApplicationAccreditationComponent implements OnInit {
 
   deleteConfirm: boolean = false;
 
+  getUserID: number = 0;
+
   constructor(public Service: AppService, private titleService: Title,
   private metaTagService: Meta, public constant:Constants,public router: Router,public toastr: ToastrService,
   private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent) {
@@ -76,8 +78,12 @@ export class ApplicationAccreditationComponent implements OnInit {
     this.metaTagService.updateTag(
       { name: 'keywords', content: 'Eiac, Portal, Test, Rest' },      
     );
-    this.loadService();
+    this.getUserID = parseInt(localStorage.getItem('userId'));
+    //this.loadService();
+    this.loadStatusService();
+
     this.userType = localStorage.getItem('type');
+    
 
     this.curSortDir['id']                 = false;
     this.curSortDir['created_date']       = false;
@@ -100,12 +106,57 @@ export class ApplicationAccreditationComponent implements OnInit {
     }
   }
 
+  suspendAlert(content) { 
+    console.log("...", content); 
+    this.modalService.open(content, this.modalOptions).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  loadStatusService(){
+    let servURL = this.Service.apiServerUrl+"/"+'pillar_page/?data=accreditation_service&language_id=1&user_id='+this.getUserID;
+    console.log("@SUSpend URL: ", servURL);
+    this.Service.getwithoutData(servURL)
+    .subscribe(
+      res => {
+        let dataRec: any = res;
+        
+        this.serviceList  = res['allServiceList'];
+        console.log(res,'@@@@ Serv list', " == ", this.serviceList);
+        let getSuspended: any = dataRec.serviceStatus;
+        let suspendIds: any = [];
+        console.log("@suspended List: ", getSuspended);
+        for(let key in getSuspended){
+            let val: string = getSuspended[key];
+            console.log(val[0], " -- ", key);
+            if(val[0] === 'Suspended'){
+              suspendIds.push({id: parseInt(key) });
+            }
+        }
+        console.log("#Suspendids: ", suspendIds);
+        this.serviceList.forEach((item, key) => {
+              let suspendId: any = suspendIds.find(rec => rec.id === item.service_page.id);
+              console.log("@Found susps: ", suspendId);
+              if(suspendId != undefined){
+                this.serviceList[key]['suspend'] = true;
+              }else{
+                this.serviceList[key]['suspend'] = false;
+              }
+        })
+
+        console.log('@@@@ Revised Serv list', " == ", this.serviceList);
+
+      });
+  }
+
   loadService() {
     this.loader = false;
     this.Service.getwithoutData(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.service_details_page+"?data=accreditation_service&language_id=1")
     .subscribe(
       res => {
-        // console.log(res,'res');
+        console.log(res,'@@@@Service list');
         this.serviceList  = res['allServiceList'];
         this.loader = true;
       });
@@ -134,6 +185,10 @@ export class ApplicationAccreditationComponent implements OnInit {
           )
       );
     }
+  }
+
+  closeDialog(){
+    this.modalService.dismissAll();
   }
 
   openDelete(id: number){

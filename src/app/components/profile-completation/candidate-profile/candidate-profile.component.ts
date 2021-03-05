@@ -276,8 +276,16 @@ export class CandidateProfileComponent implements OnInit {
           res => {
             if(res['status'] == true) {
               this.toastr.success(res['msg'], '');
-              this.progressValue == 0 || this.progressValue < 50 ? this.progressValue = 50 : this.progressValue = this.progressValue ;
-              this.Service.moveSteps('personal_details','application_information', this.headerSteps);
+              //this.progressValue == 0 || this.progressValue < 50 ? this.progressValue = 50 : this.progressValue = this.progressValue ;
+              //this.Service.moveSteps('personal_details','application_information', this.headerSteps);
+              this.loader = true;
+              setTimeout(()=>{
+                let elem = document.getElementById('openAppDialog');
+                console.log("App dialog hash....", elem);
+                if(elem){
+                  elem.click();
+                }
+              }, 100)
             }else{
               this.toastr.warning(res['msg'], '');
             }
@@ -340,7 +348,7 @@ export class CandidateProfileComponent implements OnInit {
     }
   }
 
-  openView(content, type:string) {
+  openView(content, type?:string) {
     
     this.modalService.open(content, this.modalOptions).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;

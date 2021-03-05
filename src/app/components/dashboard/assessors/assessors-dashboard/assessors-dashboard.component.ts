@@ -256,6 +256,14 @@ export class AssessorsDashboardComponent implements OnInit {
     
   }
 
+  enterInput(theEvt: any) {
+    if (this.selectedUser.length > 0) {
+      this.selectSearch = [];
+      theEvt.preventDefault();
+      return;
+    }
+  }
+
   //Load Dashboatd data
   loadDashData() {
     this.loader = false;

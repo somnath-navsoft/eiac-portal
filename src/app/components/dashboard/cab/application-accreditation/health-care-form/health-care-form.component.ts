@@ -946,7 +946,7 @@ scrollForm(data?:any){
     title:'undertaking_applicant', desc:'7. Authorization of the Application', activeStep:false, stepComp:false, icon:'icon-work', activeClass:''
     },
     {
-      title:'proforma_invoice', desc:'8. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-file_invoice', activeClass:''
+      title:'proforma_invoice', desc:'8. Proforma Invoice', activeStep:false, stepComp:false, icon:'icon-dubai-aed', activeClass:''
     },
     {
       title:'payment_update', desc:'9. Payment Update', activeStep:false, stepComp:false, icon:'icon-payment', activeClass:''
@@ -1248,7 +1248,7 @@ loadData(){
         this.schemes = res['data']['schemes'];
         // this.step1Data.criteria_request = this.criteriaList[0].code; 
         // this.criteriaMaster = res['data']['schemes'];
-        ////////console.log("#Get criteria: ", this.criteriaMaster);
+        console.log("#Get criteria: ", this.schemes, " -- ", this.criteriaList);
 
       },
       error => {
@@ -1315,7 +1315,10 @@ loadData(){
             this.selectTradeLicName = getFile[4].toString().split('.')[0];
             this.selectTradeLicPath = this.constant.mediaPath +  data.trade_license.toString();
           }
+          this.step1Data.trade_license_number = data.trade_license_number; 
+          this.step1Data.trade_license        = data.trade_license;
         }
+        
         this.step1Data.country = data.country;
               //console.log(">>> country data: ", this.getCountryLists);
               if(this.getCountryLists != undefined && this.getCountryLists.length > 0){
@@ -1784,6 +1787,22 @@ getType(thevalue: any){
     console.log(">>> Other type schemes empty: ");
     this.step1Data.scheme = "";
   }
+  //Selected criteria
+  if(thevalue === 'Healthcare'){
+      this.step1Data.criteria_request = 'ISQua Frame Work';
+  }
+  else if(thevalue === 'Medical'){
+    this.step1Data.criteria_request = 'ISO 15189';
+
+  }
+  else if(thevalue === 'Sample Collection'){
+    this.step1Data.criteria_request = 'ISO 20658';
+
+  }else{
+    this.step1Data.criteria_request = null;
+  }
+
+
 }
 
 loadScopeFamily(appId: number){
