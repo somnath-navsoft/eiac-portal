@@ -280,13 +280,21 @@ export class AccountsComponent implements OnInit {
                       if(allRecords[key].paymentDetails != "NA") {
                         var getDetails = {};
 
+                        console.log(">>>");
+
                         getDetails['appNo'] = allRecords[key].id;
                         getDetails['createdDate'] = allRecords[key].created;
                         getDetails['form_meta'] = allRecords[key].form_meta;
                         getDetails['payment_details'] = allRecords[key].paymentDetails;
                         getDetails['application_status'] = (allRecords[key].accr_status == null) ? 'pending' : allRecords[key].accr_status;
-                        getDetails['cabName'] = allRecords[key].cabDetails != 'N/A' ? allRecords[key].cabDetails.cab_name : allRecords[key].organization_name;
-                        getDetails['cabCode'] = allRecords[key].cabDetails.cab_code;
+
+                        getDetails['cabDetails'] = allRecords[key].cabDetails;
+
+
+                        //getDetails['cabName'] = allRecords[key].cabDetails != 'N/A' ? allRecords[key].cabDetails.cab_name : allRecords[key].organization_name;
+                        //getDetails['cabCode'] = allRecords[key].cabDetails.cab_code;
+
+
                         getDetails['appType'] = allRecords[key].form_meta;
                         getDetails['totalPayment'] = allRecords[key].paymentDetails.length;
                         getDetails['vouncherNumb'] = (allRecords[key].paymentDetails != null && typeof allRecords[key].paymentDetails === 'object' && allRecords[key].paymentDetails.voucher_no != null) ? allRecords[key].paymentDetails.voucher_no : 'NA';
@@ -440,15 +448,22 @@ export class AccountsComponent implements OnInit {
           allRecords.forEach((res,key) => {
             if(allRecords[key].paymentDetails != "NA") {
               var getDetails = {};
-              //console.log("....> ", allRecords[key].paymentDetails);
+              console.log("....> ", allRecords[key]);
 
-              getDetails['appNo'] = allRecords[key].id;
+              getDetails['appNo'] = (allRecords[key].application_number != null)  ? allRecords[key].application_number : allRecords[key].id;//allRecords[key].id;
+              getDetails['appID'] = allRecords[key].id;
+              getDetails['appTypes'] = allRecords[key].applicationType;
               getDetails['createdDate'] = allRecords[key].created;
               getDetails['form_meta'] = allRecords[key].form_meta;
               getDetails['payment_details'] = allRecords[key].paymentDetails;
               getDetails['application_status'] = (allRecords[key].accr_status == null) ? 'pending' : allRecords[key].accr_status;
-              getDetails['cabName'] = allRecords[key].cabDetails != 'NA' ? allRecords[key].cabDetails.cab_name : allRecords[key].organization_name;
-              getDetails['cabCode'] = allRecords[key].cabDetails.cab_code;
+
+              getDetails['cabDetails'] = allRecords[key].cabDetails;
+              getDetails['orgName'] = allRecords[key].organization_name;
+              //getDetails['cabName'] = allRecords[key].cabDetails != 'NA' ? allRecords[key].cabDetails.cab_name : allRecords[key].organization_name;
+              //getDetails['cabCode'] = allRecords[key].cabDetails.cab_code;
+
+
               getDetails['appType'] = allRecords[key].form_meta;
               getDetails['totalPayment'] = allRecords[key].paymentDetails.length;
               getDetails['vouncherNumb'] = (allRecords[key].paymentDetails != null && typeof allRecords[key].paymentDetails === 'object' && allRecords[key].paymentDetails[0].voucher_no != null) ? allRecords[key].paymentDetails[0].voucher_no : 'NA';

@@ -23,7 +23,7 @@ export class OperationsMessageDetailsComponent implements OnInit {
   loader:boolean = true;
   tradeLicenseFile:any;
   tradeLicenseText:any;
-  rejectedMessageId:boolean = false;
+  rejectedMessageId:boolean = false; 
   param1: string;
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public route: ActivatedRoute,public toastr: ToastrService,public uiDialog: UiDialogService) {

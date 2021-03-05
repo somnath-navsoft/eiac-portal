@@ -326,19 +326,27 @@
                     <tbody>
                         <ng-container *ngIf="accountsData.length > 0">
                             <tr *ngFor="let item of accountsData | paginate: { itemsPerPage: pageLimit, totalItems: pageTotal, currentPage: pageCurrentNumber }; let i = index;">
-                                <td class="fnt-clr"><a href="javascript:void(0)" routerLink="/dashboard/account-details/{{item.appNo}}">{{item.appNo}}</a></td>
+                                <td class="fnt-clr"><a href="javascript:void(0)" routerLink="/dashboard/account-details/{{item.appID}}/{{item.appTypes}}">{{item.appNo}}</a></td>
                                 <td>{{item.createdDate | date:'dd-MMM-yyyy'}}</td>
                                 <td>
+                                    <!-- @{{userType}} == {{item.cabDetails}} -->
                                     <ng-container *ngIf="userType == 'candidate'">
-                                        {{item.cabName}}
+                                        {{item.orgName}}
                                     </ng-container>
-
-                                    <ng-container *ngIf="userType != 'candidate' && item.cabName && item.cabName != '' && item.cabName!= null">
+                                    <ng-container *ngIf="userType != 'candidate' && item.cabDetails != undefined && item.cabDetails != 'NA'">
+                                        
+                                        {{item.cabDetails[0].cab_name}}
+                                    </ng-container>
+                                    <ng-container *ngIf="userType != 'candidate' && item.cabDetails != undefined && item.cabDetails == 'NA'">
+                                        
+                                        N/A
+                                    </ng-container>
+                                    <!-- <ng-container *ngIf="userType != 'candidate' && item.cabName && item.cabName != '' && item.cabName!= null">
                                         {{item.cabName}}
                                     </ng-container>
                                     <ng-container *ngIf="userType != 'candidate' && (!item.cabName || item.cabName == '' || item.cabName == null)">
                                         N/A
-                                    </ng-container>
+                                    </ng-container> -->
                                 </td>
                                 <td>
                                     <!-- <ng-container>
@@ -353,13 +361,18 @@
                                     <ng-container *ngIf="userType == 'candidate'">
                                         N/A
                                     </ng-container>
-
-                                    <ng-container *ngIf="userType != 'candidate' && item.cabCode && item.cabCode != '' && item.cabCode!= null">
+                                    <ng-container *ngIf="userType != 'candidate' && item.cabDetails != undefined && item.cabDetails != 'NA'">
+                                        {{item.cabDetails[0].cab_code}}
+                                    </ng-container>
+                                    <ng-container *ngIf="userType != 'candidate' && item.cabDetails != undefined && item.cabDetails == 'NA'">
+                                        N/A
+                                    </ng-container>
+                                    <!-- <ng-container *ngIf="userType != 'candidate' && item.cabCode && item.cabCode != '' && item.cabCode!= null">
                                         {{item.cabCode}}
                                     </ng-container>
                                     <ng-container *ngIf="userType != 'candidate' && (!item.cabCode || item.cabCode == '' || item.cabCode == null)">
                                         N/A
-                                    </ng-container>
+                                    </ng-container> -->
                                     
                                 </td> 
                                 <td>
@@ -471,10 +484,10 @@
                                         <span class="icon-wallet"></span>
                                     </a>
 
-                                    <a *ngIf="userType == 'operations'" href="javascript:void(0)" (click)="open(courseVoucher, item.application_fees.id, item.appNo)">
+                                    <!-- <a *ngIf="userType == 'operations'" href="javascript:void(0)" (click)="open(courseVoucher, item.application_fees.id, item.appNo)">
 
                                         <span class="icon-wallet"></span>
-                                    </a>
+                                    </a> -->
                                 </td>
                             </tr>
                         </ng-container>

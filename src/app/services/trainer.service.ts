@@ -337,8 +337,8 @@ getAccountLists() {
   return this.http.get(url, this._service.getReqHeaders());
 }
 
-getAccountDetails(id) {
-  let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.accountDetails+id;
+getAccountDetails(id: number, type: any) {
+  let url = `${this._service.apiServerUrl}` + '/' + this._constants.API_ENDPOINT.accountDetails+id+'?applicationType='+type;
   return this.http.get(url, this._service.getReqHeaders());
 }
 
