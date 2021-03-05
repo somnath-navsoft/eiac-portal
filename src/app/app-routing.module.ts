@@ -132,7 +132,7 @@ const routes: Routes = [
       { path: 'registration-status', component: RegistrationStatusComponent, canActivate: [AuthGuard] }, 
       { path: 'training-status', component: TrainingStatusComponent, canActivate: [AuthGuard] }, 
       { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard] },
-      { path: 'account-details/:id', component: AccountDetailsComponent, canActivate: [AuthGuard] },
+      { path: 'account-details/:id/:any', component: AccountDetailsComponent, canActivate: [AuthGuard] },
       { path: 'account-upload/:id', component: AccountUploadComponent, canActivate: [AuthGuard] },
       { path: 'onboarding-message-list', component: MessageComponent, canActivate: [AuthGuard] },
       { path: 'message-detail/:id', component: MessageDetailComponent, canActivate: [AuthGuard] },

@@ -15,6 +15,7 @@ import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 export class AccountDetailsComponent implements OnInit {
 
   accountDetailId:any;
+  accountDetailType:any;
   subscriptions: Subscription[] = [];
   loader:boolean = true;
   accountsData:any;
@@ -74,11 +75,12 @@ export class AccountDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fileName = 'acounts.xlsx'
-    this.accountDetailId = localStorage.getItem('accountDetailId');
+    this.fileName = 'acounts.xlsx';
+    this.accountDetailId    = localStorage.getItem('accountDetailId');
+    this.accountDetailType  = localStorage.getItem('accountDetailType');
 
     this.loader = false;
-    this.subscriptions.push(this._trainerService.getAccountDetails(this.accountDetailId)
+    this.subscriptions.push(this._trainerService.getAccountDetails(this.accountDetailId,this.accountDetailType)
       .subscribe(
         result => {
           this.loader = true;

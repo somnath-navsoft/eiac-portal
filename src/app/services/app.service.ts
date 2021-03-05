@@ -23,7 +23,6 @@ export class AppService {
   dashBoardPagination: any = 5;
   messagePagination: any = 10;
 
-  //http://192.168.3.94:8000/
 
   // public apiServerUrl         =   'http://192.168.7.28:8000/webservice';
   // public apiRequestUrl        =   'http://192.168.7.28:8000/';

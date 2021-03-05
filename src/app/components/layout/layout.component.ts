@@ -73,8 +73,10 @@ export class LayoutComponent implements OnInit {
         // this._service.addDynamicsVal(this.dynamicsVar);
         // console.log(splitForverifyAccount,'splitForverifyAccount');
         if(splitUrl[2] == 'account-details') {
+          //console.log(">>>AC Details: ", splitUrl);
           // this._service.setValueUrl(splitUrl[3]);
           localStorage.setItem('accountDetailId', splitUrl[3]);
+          localStorage.setItem('accountDetailType', splitUrl[4]);
         }
         if(splitUrl[2] == 'account-upload') {
           // this._service.setValueUrl(splitUrl[3]);
@@ -168,7 +170,7 @@ export class LayoutComponent implements OnInit {
         if(state.user != null && state.user.token != undefined && state.user.token != null) {
           
           let authUserData = this._service.decodeJWT(state.user.token);
-          console.log(authUserData,'@layout authUserData')
+          console.log(authUserData,'@layout authUserData') 
           if(state.user.token !=null && authUserData.isVerified == '0')
           {            
             this.isAuthenticated = false;
