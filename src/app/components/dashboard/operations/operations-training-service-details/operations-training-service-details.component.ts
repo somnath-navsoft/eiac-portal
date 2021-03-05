@@ -13,7 +13,7 @@ import { Observable, Subscription } from 'rxjs';
 export class OperationsTrainingServiceDetailsComponent implements OnInit {
 
   loader:boolean = false; 
-  subscriptions: Subscription[] = [];
+  subscriptions: Subscription[] = []; 
   routeId:any;
   serviceDetail:any;
   ownershipOfOrg:any;
@@ -68,16 +68,46 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
           // console.log(this.training_duration);
           // console.log(this.course_title);
 
+
+          //call service 
+          this.loader = false;
+          let url5 = this._service.apiServerUrl+"/"+'rate-master';
+          this._service.getwithoutData(url5)
+          .subscribe(
+            record =>  {
+                //console.log("@@@Rate call...", record);
+                this.loader = true;
+                let dataRec: any = record;
+                let feesPerTrainee: any;
+                let taxTrainee: any;
+                if(dataRec.records != undefined && dataRec.records.length > 0){
+                    if(dataRec.records[1].meta_title =='fees_per_day'){
+                      feesPerTrainee        = dataRec.records[1].value;
+                      this.fee_day_pertime1 = feesPerTrainee;
+                    }
+                    if(dataRec.records[2].meta_title =='tax'){
+                      taxTrainee            = dataRec.records[2].value;
+                      this.fee_day_pertime2 = taxTrainee;
+                    }
+                }                    
+                var training_duration_current = this.serviceDetail.training_duration;
+                this.noofParticipants         = this.participantTraineeDetails.length;
+                this.tutionFees               = feesPerTrainee * parseInt(this.noofParticipants) * parseInt(training_duration_current);
+
+                console.log(">>> ", feesPerTrainee, " :: ", this.noofParticipants, " :: ", training_duration_current);
+             
+                this.taxVat   = taxTrainee * this.tutionFees;
+                this.subTotal = this.tutionFees + this.taxVat;
+                
+            });
+
+          /*
           var training_duration_current = this.serviceDetail.training_duration;
           this.noofParticipants = this.participantTraineeDetails.length;
-          this.tutionFees = 1000 * parseInt(this.noofParticipants) * parseInt(training_duration_current);
-          // console.log(this.noofParticipants);
-          // console.log(training_duration_current);
-          // console.log(this.tutionFees);
+          this.tutionFees = 1000 * parseInt(this.noofParticipants) * parseInt(training_duration_current);        
           this.taxVat = 0.05 * this.tutionFees;
-          // this.knowledgeFees = 10 * this.noofParticipants;
-          // this.innovationFees = 10 * this.noofParticipants;
           this.subTotal = this.tutionFees + this.taxVat ;
+          */
         })
     )
   }
