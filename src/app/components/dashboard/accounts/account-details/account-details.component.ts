@@ -29,7 +29,7 @@ export class AccountDetailsComponent implements OnInit {
   pageData: any = {};
   pageTotal: number = 0;
 
-  selectType: any ='';
+  selectType: any = 'xls';
   exportAsConfig: ExportAsConfig;
 
   // exportAsConfig: ExportAsConfig = {
