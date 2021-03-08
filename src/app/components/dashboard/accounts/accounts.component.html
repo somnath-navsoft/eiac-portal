@@ -476,11 +476,11 @@
                                     <td><span>N/A</span></td>
                                 </ng-container>
                                 <td class="fnt-clr">
-                                    <a *ngIf="userType == 'cab_client' && item.totalPayment < 4" href="javascript:void(0)" routerLink="/dashboard/account-upload/{{item.appNo}}">
+                                    <a *ngIf="userType == 'cab_client' && item.totalPayment < 4" href="javascript:void(0)" routerLink="/dashboard/account-upload/{{item.appID}}">
                                         <span class="icon-wallet"></span>
                                     </a>
 
-                                    <a *ngIf="userType == 'candidate' && item.totalPayment < 1" href="javascript:void(0)" routerLink="/dashboard/account-upload/{{item.appNo}}">
+                                    <a *ngIf="userType == 'candidate' && item.totalPayment < 1" href="javascript:void(0)" routerLink="/dashboard/account-upload/{{item.appID}}">
                                         <span class="icon-wallet"></span>
                                     </a>
 

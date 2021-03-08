@@ -46,12 +46,19 @@
                                     </mat-form-field>
 
                                 </div>
-                                <div class="col-md-4">
+                                <!-- <div class="col-md-4">
                                     <mat-form-field class="cab-data">
                                         <mat-label>Payment Amount</mat-label>
                                         <input type="number" [ngModelOptions]="{standalone: true}" readonly
                                         matInput placeholder="Payment Amount" 
                                         [(ngModel)]="voucherSentData.amount">
+                                    </mat-form-field>
+                                </div> -->
+                                <div class="col-md-4  mt-3">
+                                    <mat-form-field class="cab-data cur-aed" [floatLabel]="'always'">
+                                        <input type="number" [ngModelOptions]="{standalone: true}" required="true"
+                                        matInput placeholder="Payment Amount" [(ngModel)]="voucherSentData.amount">
+                                        <span matPrefix>AED&nbsp;</span>
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -90,7 +97,7 @@
                                     <mat-form-field class="cab-data">
                                         <mat-label>Mobile Number</mat-label>
                                         <input type="text" [ngModelOptions]="{standalone: true}" 
-                                        matInput placeholder="Mobile Number" 
+                                        matInput placeholder="Mobile Number" maxlength="13" (keypress)="_service.inputFilter($event, _service.regExNumb)"
                                         [(ngModel)]="voucherSentData.mobile_no" required>
                                     </mat-form-field>
                                 </div>
@@ -101,6 +108,7 @@
                                         <span class="icon-attach attach-data"></span>
                                     </span>
                                     <p class="error" *ngIf="fileExist == false">Please Upload a valid file (ex: pdf)</p>
+                                    <a class="image_file_link" *ngIf="paymentFile == true" target="_blank" [href]="paymentFilePath">Click to view</a>
                                 </div>
 
                             </div>

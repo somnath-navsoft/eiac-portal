@@ -96,7 +96,7 @@ export class OperationsTrainingServiceDetailsComponent implements OnInit {
 
                 console.log(">>> ", feesPerTrainee, " :: ", this.noofParticipants, " :: ", training_duration_current);
              
-                this.taxVat   = taxTrainee * this.tutionFees;
+                this.taxVat   = this.tutionFees * taxTrainee / 100;
                 this.subTotal = this.tutionFees + this.taxVat;
                 
             });

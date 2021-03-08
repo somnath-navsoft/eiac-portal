@@ -74,13 +74,12 @@ export class LayoutComponent implements OnInit {
         // console.log(splitForverifyAccount,'splitForverifyAccount');
         if(splitUrl[2] == 'account-details') {
           //console.log(">>>AC Details: ", splitUrl);
-          // this._service.setValueUrl(splitUrl[3]);
           localStorage.setItem('accountDetailId', splitUrl[3]);
           localStorage.setItem('accountDetailType', splitUrl[4]);
         }
         if(splitUrl[2] == 'account-upload') {
-          // this._service.setValueUrl(splitUrl[3]);
           localStorage.setItem('accountUploadId', splitUrl[3]);
+          //localStorage.setItem('accountDetailType', splitUrl[4]);
         }
 
         //alert("...." + splitUrl[3] +" -- " + eval(splitUrl));
