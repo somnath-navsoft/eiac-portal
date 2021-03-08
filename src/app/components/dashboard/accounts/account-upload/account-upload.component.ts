@@ -5,15 +5,18 @@ import { Observable, Subscription } from 'rxjs';
 import { ToastrService} from 'ngx-toastr';
 import { TrainerService } from 'src/app/services/trainer.service';
 import { HttpClientModule, HttpClient } from "@angular/common/http";
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-account-upload',
   templateUrl: './account-upload.component.html',
   styleUrls: ['./account-upload.component.scss']
 })
+
 export class AccountUploadComponent implements OnInit {
 
   accountUploadId:any;
+  accountDetailType: any;
   voucherSentData:any = {};
   loader:boolean = true;
   paymentReceiptValidation:boolean = false;
@@ -21,8 +24,10 @@ export class AccountUploadComponent implements OnInit {
   voucherFile:any = new FormData();
   userEmail:any;
   userType:any;
+  paymentFilePath: string = '';
+  paymentFile: boolean = false;
 
-  constructor(private _service: AppService, private _constant: Constants, public toaster: ToastrService,
+  constructor(private _service: AppService, public sanitizer: DomSanitizer, private _constant: Constants, public toaster: ToastrService,
     private _trainerService: TrainerService, private http: HttpClient) { }
 
 
@@ -35,20 +40,26 @@ export class AccountUploadComponent implements OnInit {
         .toPromise()
         .then(
           rec => { // Success
-            //console.log(">>>> Retrn result: ",rec);
             resolve(rec);
+          },
+          error => {
+            reject(error);
           }
-        );
+        )
     });
     return promise;
   }  
 
+  getSantizeUrl(url : string) { 
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url); 
+  }
+
   ngOnInit() {
     this.accountUploadId = localStorage.getItem('accountUploadId');
-    let appID: any = this.accountUploadId;
+    let appID: any = this.accountUploadId; 
     this.userEmail = localStorage.getItem('email');
     this.userType = localStorage.getItem('type');
-    
+       
     let url = this._service.apiServerUrl+"/"+'accrediation-details-show/'+appID;
     let promiseResult: any = this.getAppInfo(url);
     if(promiseResult != undefined){
@@ -60,7 +71,22 @@ export class AccountUploadComponent implements OnInit {
                 this.voucherSentData.voucher_code = record.data.paymentDetails.voucher_no;
                 this.voucherSentData.payment_date = record.data.paymentDetails.voucher_date;
                 this.voucherSentData.amount       = record.data.paymentDetails.amount;
+
+                this.voucherSentData.transaction_no         = record.data.paymentDetails.transaction_no;
+                this.voucherSentData.payment_method         = record.data.paymentDetails.payment_method;
+                this.voucherSentData.payment_made_by        = record.data.paymentDetails.payment_made_by;
+                this.voucherSentData.mobile_no              = record.data.paymentDetails.mobile_no;
                 console.log(">>Voucher object: ", this.voucherSentData);
+                console.log("@ ", record.data.paymentDetails.payment_receipt);
+                if(record.data.paymentDetails.payment_receipt != undefined && record.data.paymentDetails.payment_receipt != ''){
+
+                  let filePath: any = this._constant.mediaPath + '/media/' + record.data.paymentDetails.payment_receipt;
+                  let pathData: any = this.getSantizeUrl(filePath);
+                  this.paymentFilePath = pathData.changingThisBreaksApplicationSecurity;
+                  this.paymentFile = true;
+                  console.log("@ ", record.data.paymentDetails.payment_receipt, " -- ", this.paymentFilePath);
+                }
+
             }
         }
       }, (error) => {
