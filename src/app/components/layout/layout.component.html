@@ -24,8 +24,18 @@
             <app-profile-completation></app-profile-completation>
         </ng-container>
     </ng-template>
-
-    
+    <span id="openAppDialog" (click)="suspendAlert(suspendBox)"></span>
+    <ng-template #suspendBox let-modal>
+        <div class="main_pop">
+            <div class="pop_close">
+                <span class="icon-close" (click)="closeDialog()"></span>
+            </div>
+            <div class="pop_thanks">
+                <h5>{{popupHeaderText}}</h5>
+                <p>{{popupBodyText}}</p>
+            </div>
+        </div>
+    </ng-template>
 
     <ng-template #authLess>
         <!-- Enter.... -->
