@@ -5,10 +5,10 @@ import { Observable, from } from 'rxjs';
 import { Router, NavigationEnd, ActivatedRoute} from '@angular/router'
 import { LogOut, LogInSuccess, LogInState } from '../../store/actions/auth.actions';
 import { filter} from 'rxjs/operators';
-
+import { ToastrService } from 'ngx-toastr';
 import { AppService } from '../../services/app.service'; 
 import { toInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
-//import { type } from 'os';
+import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'portal-layout',
@@ -27,10 +27,19 @@ export class LayoutComponent implements OnInit {
   pageId:any;
   verifyId:any;
   dynamicsVar:any;
+  modalOptions:NgbModalOptions;
+  closeResult: string;
 
-  constructor(private store: Store<AppState>, private router: Router,
-    public route: ActivatedRoute, private _service: AppService) { 
+  popupHeaderText: string ='';
+  popupBodyText: string ='';
+
+  constructor(private store: Store<AppState>, private router: Router, private modalService: NgbModal,
+    public route: ActivatedRoute, private _service: AppService, public toastr: ToastrService) { 
     let getToken = localStorage.getItem('token');
+    this.modalOptions = {
+      backdrop:'static',
+      backdropClass:'customBackdrop'
+    }
     if(getToken != '' && getToken != 'null'){
       // //console.log('>>> layout state status calling....');
       this.store.dispatch(new LogInState({token: getToken}));
@@ -66,8 +75,95 @@ export class LayoutComponent implements OnInit {
         // }
 
         var wholeUrl = data.urlAfterRedirects;
-        
         var splitUrl = wholeUrl.split('/');
+        console.log("@...URL: ", wholeUrl);
+        //alert("Layout...");
+        //Check Outside URL Access
+
+        let getLocalToken = localStorage.getItem('token');
+        let userToken: any = (getLocalToken != null) ? getLocalToken : '';
+        if (userToken !== '' && userToken != null)  {
+          let authUserData: any = this._service.decodeJWT(userToken);
+              console.log("@Auth Data: ", authUserData);
+              if(authUserData.user_type != 'cab_client'){
+                console.log(".>>>> Not cab client...");
+                if(wholeUrl == '/dashboard/cab_client/inspection-bodies-form'        || wholeUrl == '/dashboard/cab_client/testing-calibration-form' ||
+                   wholeUrl == '/dashboard/cab_client/certification-bodies-form'     || wholeUrl == '/dashboard/cab_client/health-care-form' || 
+                   wholeUrl == '/dashboard/cab_client/halal-conformity-form'         || wholeUrl == '/dashboard/cab_client/pt-providers-form' || 
+                   wholeUrl == '/dashboard/cab_client/no-objection-certificate-form' || wholeUrl == '/dashboard/cab_client/work-permit-form' ||
+                   wholeUrl == '/dashboard/cab_client/work-permit-form'              || wholeUrl == '/dashboard/cab_client/no-objection-certificate-form'){
+                    //sessionStorage.setItem("outaccess", 'yes');
+                    //this.toastr.error("You are not permit to submit....");
+                    //this.suspendAlert('suspendBox');
+                    setTimeout(()=>{
+                      let elem = document.getElementById('openAppDialog');
+                      //console.log("App dialog hash....", elem);
+                      this.popupHeaderText  = 'Restricted';
+                      this.popupBodyText    = 'Your account is not permitted to apply.';
+                      if(elem){
+                        elem.click();
+                      }
+                    }, 100)
+                    this.router.navigateByUrl('/dashboard/home');
+                }
+              }else{
+                console.log(".>>>> Cab client...");
+              //Check suspended
+              let servURL = this._service.apiServerUrl+"/"+'pillar_page/?data=accreditation_service&language_id=1&user_id='+parseInt(localStorage.getItem('userId'));
+              console.log("@SUSpend URL: ", servURL);
+              this._service.getwithoutData(servURL)
+              .subscribe(
+                res => {
+                  let dataRec: any = res;        
+                    let serviceList: any  = res['allServiceList'];
+                    let suspendedService: any[] =[];
+                    console.log(res,'@@@@ Serv list', " == ", serviceList);
+                    let getSuspended: any = dataRec.serviceStatus;
+                    let suspendIds: any = [];
+                    for(let key in getSuspended){
+                        let val: string = getSuspended[key];
+                        console.log(val[0], " -- ", key);
+                        if(val[0] === 'Suspended'){
+                          suspendIds.push({id: parseInt(key) });
+                        }
+                    }
+                    serviceList.forEach((item, key) => {
+                    let suspendId: any = suspendIds.find(rec => rec.id === item.service_page.id);
+                    console.log("@Found susps: ", suspendId);
+                    let metaData: string = '';
+                    if(item.service_page.meta_title != undefined && item.service_page.meta_title != ''){
+                      metaData = item.service_page.meta_title.toString();
+                      metaData += '-form';
+                    }
+                    if(suspendId != undefined){
+                      //serviceList[key]['suspend'] = true;
+                      suspendedService.push({title: item.title, meta: metaData})
+                    }else{
+                      //serviceList[key]['suspend'] = false;
+                    }
+          })
+          let supendSelected: boolean = false;
+          suspendedService.forEach(rec =>{
+               if(rec.meta === splitUrl[3]){
+                  supendSelected = true;
+                  //this.toastr.error("You are supended to submit selected application");
+                  setTimeout(()=>{
+                    let elem = document.getElementById('openAppDialog');
+                    this.popupHeaderText = 'Suspended';
+                    this.popupBodyText = 'Your account is temporarily suspended.';
+                    if(elem){
+                      elem.click();
+                    }
+                  }, 100)
+                  this.router.navigateByUrl('/dashboard/home');
+                  //return false;
+               } 
+          })
+          console.log('@@@@ Revised Serv list', " == ", suspendedService, " -- ", splitUrl[3], " -- ", supendSelected);
+          });
+
+              }
+        }    
         var splitForverifyAccount = wholeUrl.split('?');
         // this.dynamicsVar = '4';
         // this._service.addDynamicsVal(this.dynamicsVar);
@@ -156,6 +252,27 @@ export class LayoutComponent implements OnInit {
       // this.router.params.switchMap(params => { 
       // })
   }
+  closeDialog(){
+    this.modalService.dismissAll();
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
+  }
+  suspendAlert(content) { 
+    console.log("...", content); 
+    this.modalService.open(content, this.modalOptions).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
 
   ngOnInit() {
 
@@ -169,7 +286,7 @@ export class LayoutComponent implements OnInit {
         if(state.user != null && state.user.token != undefined && state.user.token != null) {
           
           let authUserData = this._service.decodeJWT(state.user.token);
-          console.log(authUserData,'@layout authUserData') 
+          //console.log(authUserData,'@layout authUserData') 
           if(state.user.token !=null && authUserData.isVerified == '0')
           {            
             this.isAuthenticated = false;
