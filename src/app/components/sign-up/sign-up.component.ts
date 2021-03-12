@@ -37,6 +37,35 @@ export class SignUpComponent implements OnInit {
     this.userData.userType = '';
   }
 
+  checkDisposableEmail(theEmail: any){
+    //https://gist.github.com/adamloving/4401361 == disposable emails
+      //console.log("@Email: ", theEmail.target.value.toString());
+      let emailReg: any             = /^([\w-\.]+@(([\w-]+\.)+[\w-]{2,4}))?$/;
+      let emailAddressVal: string   = theEmail.target.value.toString();
+      let bad_domains               = ['yopmail.com', 'zoemail.org', '2prong.com','clickemail.com','minutemail.com','prong.com','hosting.com','hosting.net','tags.com','ajaxapp.net',
+                                      'amiri.net','amiriindustries.com','anonbox.net','antispam.de','beefmilk.com','binkmail.com','dacoolest.com',
+                                      'dandikmail.com','deadaddress.com','deadspam.com','mailinator.com','fizmail.com','get1mail.com','frapmail.com','gishpuppy.com','gowikicars.com','gowikifilms.com','gowikinetwork.com','gowikitravel.com','haltospam.com','keepmymail.com','klzlk.com','kurzepost.de','mailcatch.com','mailinator.net','neomailbox.com','nowmymail.com','pookmail.com','zoaxe.com','zoemail.org','trash-amil.com','supermailer.jp','spambob.com','rejectmail.com',
+                                      'ourklips.com','moburl.com','spamify.com','tempalias.com','nobulk.com','sandelf.de','twinmail.de','wegwerfmail.de','jetable.net','greensloth.com','dodgit.com',
+                                      ];
+
+      if(this.Service.checkInput('email',emailAddressVal)){
+        let emailMatch: any                = emailAddressVal.match(emailReg);      
+        let domain: string                    = '';
+        console.log(">>> ", bad_domains.length);
+        if(typeof emailMatch == 'object' && emailMatch[2] != undefined && emailMatch[2] != null){
+          domain = emailMatch[2];
+        }
+        if(domain != ''){
+          for(var i = 0; i < bad_domains.length; i += 1) {
+            if(domain.toLowerCase() == bad_domains[i]){
+              this.toastr.warning("Sorry! we don't allow disposable email addresses.Please try a different email account.","", {timeOut: 5000});
+              this.userData.email = null;
+            }                
+          }
+        }
+      }            
+  }
+
   getRole(){
     // this.roleRecord = this._portalServ.getUserRole();
   }

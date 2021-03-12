@@ -117,8 +117,19 @@
                   <h5>Trade License No.</h5>
                 </div>
                 <div class="appln-details license_no">
-                  <span *ngIf="serviceDetail?.trade_license_number != null">{{serviceDetail?.trade_license_number}}</span>
+
+                  <span *ngIf="serviceDetail?.trade_license_number != null">
+                    <ng-container *ngIf="selectTradeLicPath != ''">
+                      <a href="{{selectTradeLicPath}}" target="_blank">{{serviceDetail?.trade_license_number}}</a>
+                    </ng-container>
+                    <ng-container *ngIf="selectTradeLicPath === ''">
+                      <a href="javascript:void(0);">{{serviceDetail?.trade_license_number}}</a>
+                    </ng-container>   
+                  </span>
                   <span *ngIf="serviceDetail?.trade_license_number == null">N/A</span>
+
+                  <!-- <span *ngIf="serviceDetail?.trade_license_number != null">{{serviceDetail?.trade_license_number}}</span>
+                  <span *ngIf="serviceDetail?.trade_license_number == null">N/A</span> -->
                 </div>
               </div>
             </div>
@@ -467,7 +478,7 @@
                                                     && !_service.isObjectKeyValueEmpty(nocTableScopeData.listOfIntEquip[0])">
           <div class="col-md-12">
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-md-12"> 
                 <div class="appln-subhdr">
                   <h5>LIST OF INSTRUMENTS AND EQUIPMENTS</h5>
                 </div>
