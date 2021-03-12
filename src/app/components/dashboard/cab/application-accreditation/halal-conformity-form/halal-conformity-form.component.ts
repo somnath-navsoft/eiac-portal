@@ -1609,18 +1609,16 @@ addSchemeRow(obj: any = [],index: number){
                   var newLoaction = [];
                   for(let key in hcab_location) {
                     // //console.log(hcab_location[key].value);
-                    console.log("@...", key, " :: ",  hcab_location[key].value.country, " -- ", hcab_location[key].value.city);
+                    //console.log("@...", key, " :: ",  hcab_location[key].value.country, " -- ", hcab_location[key].value.city);
                     if(hcab_location[key].value.location_type) {
                       if(hcab_location[key].value.country != undefined && hcab_location[key].value.country != ''){
-
+                            //console.log("@Country name: ", hcab_location[key].value.country);
+                            this.cityByCountryAll(hcab_location[key].value.country, parseInt(key));
                       }
                       newLoaction.push(hcab_location[key].value);
                     }
                   }
                   this.hcabOtherLocation = newLoaction;
-
-                  console.log(">>>> Location entery...", this.hcabOtherLocation);
-
                 }else{
                   this.step1Data.hcab_other_loc = '0';
                 }
