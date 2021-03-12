@@ -109,8 +109,9 @@
                             </div> -->
                             <div class="usr-details">
                                 <mat-form-field class="cab-data">
+                                    <!-- (keyup)="checkDisposableEmail($event)" -->
                                     <mat-label>Email Address</mat-label>
-                                    <input matInput name="email" (keyup)="checkDisposableEmail($event)" required [(ngModel)]="userData.email" placeholder="Email Address">
+                                    <input matInput name="email" required [(ngModel)]="userData.email" placeholder="Email Address">
                                 </mat-form-field>
                                 <mat-form-field class="cab-data">
                                     <mat-label>Name</mat-label>
