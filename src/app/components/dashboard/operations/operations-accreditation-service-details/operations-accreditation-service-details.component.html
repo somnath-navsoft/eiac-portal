@@ -280,7 +280,7 @@
                     <td *ngIf="serviceDetail?.form_meta == 'testing_calibration'">Is Testing/Calibration the main activity of the organization</td>
                     <td *ngIf="serviceDetail?.form_meta == 'halal_conformity_bodies'">Is Halal the main activity of the organization</td>
                     <td *ngIf="serviceDetail?.form_meta == 'pt_providers'">Is Proficiency the main activity of the organization</td>
-                    <!-- <td colspan="1">
+                    <!-- <td colspan="1"> 
                       {{ (serviceDetail?.is_main_activity == undefined && !serviceDetail?.is_main_activity) ? 'No' : 'Yes' }}
                     </td> -->
                     <td colspan="1" *ngIf="serviceDetail?.is_main_activity == true">
@@ -292,6 +292,18 @@
                     
                     <td colspan="2">{{serviceDetail?.is_main_activity_note}}</td>
                   </tr>
+                  <ng-container *ngIf="serviceDetail?.form_meta == 'halal_conformity_bodies' && serviceDetail?.is_staff_ownership != undefined">
+                    <tr>
+                      <td >Does HCAB or any of its staff have any ownership,business</td>
+                      <td colspan="1" *ngIf="serviceDetail?.is_staff_ownership == true">
+                        Yes
+                      </td>
+                      <td colspan="1" *ngIf="serviceDetail?.is_staff_ownership == false">
+                        No
+                      </td>
+                      <td colspan="2"  *ngIf="serviceDetail?.is_staff_ownership == false">{{serviceDetail?.is_staff_ownership_note}}</td>
+                    </tr>
+                  </ng-container>
                 </table>
               </div>
             </div>

@@ -4,7 +4,7 @@ import { TrainerService } from '../../../../services/trainer.service';
 import { Constants } from '../../../../services/constant.service';
 import { ToastrService, Overlay, OverlayContainer } from 'ngx-toastr';
 import { Observable, Subscription } from 'rxjs';
-
+import { HttpClientModule, HttpClient } from "@angular/common/http";
 @Component({
   selector: 'app-operations-registration-service-details',
   templateUrl: './operations-registration-service-details.component.html',
@@ -36,12 +36,18 @@ export class OperationsRegistrationServiceDetailsComponent implements OnInit {
   check_list:any;
   work_instruction:any;
 
+  userType: any;
+  userEmail: any;
+  selectTradeLicPath: any;
+
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService,
-    private _trainerService: TrainerService) { }
+    private _trainerService: TrainerService, private http: HttpClient) { }
 
   ngOnInit() {
     this.loader = true;
     this.routeId = localStorage.getItem('registrationId');
+    this.userType = localStorage.getItem('type');
+    this.userEmail = localStorage.getItem('email'); 
     this.loadData();
   }
 
@@ -51,8 +57,43 @@ export class OperationsRegistrationServiceDetailsComponent implements OnInit {
     return fname;
   }
 
-  loadData() {
+  getProfileData = () => {
+
+    console.log("step process....1: ");
+    let url = this._service.apiServerUrl+"/"+'profile-service/?userType='+this.userType+'&email='+this.userEmail;    
+
+    let promise: any =  new Promise((resolve, reject) => {
+      let apiURL = url;
+      this.http.get(apiURL)
+        .toPromise()
+        .then(
+          rec => { // Success
+            console.log(">>> step process....1.0: ", rec);
+            resolve(rec);
+          },
+          error => {
+            reject(error);
+          }
+        )
+    });
+    return promise;
+  }
+
+  loadData = async() => {
     this.loader = false;
+    let profileData: any;
+    console.log("step process....0");
+
+      let promiseResult: any =   this.getProfileData();
+      if(promiseResult != undefined){
+        await promiseResult.then((data) => {
+          console.log(">>> step process....1.1: ", data);
+          profileData = data;
+        });
+      }
+
+      console.log(">>> step process....1.2: ", profileData);
+
     this.subscriptions.push(this._trainerService.registrationDetailsService(this.routeId)
       .subscribe(
         result => {
@@ -142,13 +183,15 @@ export class OperationsRegistrationServiceDetailsComponent implements OnInit {
             }
 
           }
-
-
-          this.ownershipOfOrg = result['data']['ownershipOfOrg'];
+          
+          this.ownershipOfOrg = result['data']['ownershipOfOrg']; 
           this.ownOrgMembInfo = result['data']['bodMember'];
           this.paymentDetails = result['data'].paymentDetails;
           this.onBehalfApplicantDetails = result['data'].onBehalfApplicantDetails;
-          this.serviceDetail = result['data'];
+          this.serviceDetail = result['data'];        
+
+          console.log("step process....2:: ", profileData);
+          this.selectTradeLicPath = profileData.data.step1[0].trade_license != null ? this._constant.mediaPath +  profileData.data.step1[0].trade_license.toString() : '';
 
           var newwapdata = result['data'].wapData;
           // this.activity_section = wapdata.activity_section != null ? wapdata.activity_section : '';
