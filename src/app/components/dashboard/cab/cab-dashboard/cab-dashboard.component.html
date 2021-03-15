@@ -479,7 +479,7 @@
                         <div class="col-md-12">
                             <div class="tra_events">
                                 <div class="trainer_head">
-                                    <h4>Recent Updates</h4>
+                                    <h4>Recent Updates</h4> 
                                 </div>
                             </div>
                         </div>
@@ -605,7 +605,7 @@
                                                     [ngModelOptions]="{standalone: true}"
                                                     (ngModelChange)="setField($event)">
                                                     <mat-option *ngFor="let data of select_field" [value]="data.value">
-                                                        {{data.field}}</mat-option>
+                                                        {{data.field}}...</mat-option>
                                                 </mat-select>
                                                 <mat-error></mat-error>
                                             </mat-form-field>
@@ -613,17 +613,7 @@
 
                                         <div class="col-md-6"
                                             *ngIf="getUserType=='cab_client' || getUserType=='cab_code'">
-                                            <mat-form-field class="cab-data">
-                                                <!-- <input type="text" (click)="search($event.target.value)"
-                                                    (input)="search($event.target.value)"
-                                                    placeholder="{{selectedField}}" matInput required
-                                                    [matAutocomplete]="auto">
-                                                <mat-autocomplete #auto="matAutocomplete">
-                                                    <mat-option (onSelectionChange)="getValue(option.id)"
-                                                        *ngFor="let option of selectSearch" [value]="option.username">
-                                                        {{option.username}}
-                                                    </mat-option>
-                                                </mat-autocomplete> -->
+                                            <mat-form-field class="cab-data">                                               
                                                 <mat-chip-list #chipList >
                                                     <mat-chip
                                                       *ngFor="let option of selectedUser"
@@ -652,11 +642,7 @@
                                         </div>
                                         <div class="col-md-6"
                                             *ngIf="getUserType=='trainers' || getUserType=='operations'">
-                                            <mat-form-field class="cab-data" #matForm>
-                                                <!-- <input type="text" (click)="search($event.target.value)"
-                                                    (input)="search($event.target.value)"
-                                                    placeholder="{{selectedField}}" matInput required
-                                                    [matAutocomplete]="auto"> -->
+                                            <mat-form-field class="cab-data" #matForm>                                                
                                                     <mat-chip-list #chipList >
                                                         <mat-chip
                                                           *ngFor="let option of selectedUser"

@@ -77,8 +77,9 @@ export class LayoutComponent implements OnInit {
         var wholeUrl = data.urlAfterRedirects;
         var splitUrl = wholeUrl.split('/');
         console.log("@...URL: ", wholeUrl);
-        //alert("Layout...");
         //Check Outside URL Access
+
+        console.log("@Layout....");
 
         let getLocalToken = localStorage.getItem('token');
         let userToken: any = (getLocalToken != null) ? getLocalToken : '';
@@ -142,11 +143,10 @@ export class LayoutComponent implements OnInit {
                       //serviceList[key]['suspend'] = false;
                     }
           })
-          let supendSelected: boolean = false;
-          suspendedService.forEach(rec =>{
+               let supendSelected: boolean = false;
+               suspendedService.forEach(rec =>{
                if(rec.meta === splitUrl[3]){
                   supendSelected = true;
-                  //this.toastr.error("You are supended to submit selected application");
                   setTimeout(()=>{
                     let elem = document.getElementById('openAppDialog');
                     this.popupHeaderText = 'Suspended';
@@ -156,14 +156,21 @@ export class LayoutComponent implements OnInit {
                     }
                   }, 100)
                   this.router.navigateByUrl('/dashboard/home');
-                  //return false;
+               }else{
+                if(localStorage.getItem("redirectURL") != '' && localStorage.getItem("redirectURL") != null && 
+                  localStorage.getItem("redirectURL") != undefined){
+                  let urlRedirect: string = localStorage.getItem("redirectURL");
+                  localStorage.setItem("redirectURL",'');
+                  //console.log(">>>LOG In redirecting....", urlRedirect);
+                  this.router.navigateByUrl(urlRedirect);
+                }      
                } 
           })
           console.log('@@@@ Revised Serv list', " == ", suspendedService, " -- ", splitUrl[3], " -- ", supendSelected);
           });
 
-              }
-        }    
+        }
+      }    
         var splitForverifyAccount = wholeUrl.split('?');
         // this.dynamicsVar = '4';
         // this._service.addDynamicsVal(this.dynamicsVar);

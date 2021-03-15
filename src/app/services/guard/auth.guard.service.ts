@@ -14,10 +14,30 @@ export class AuthGuard implements CanActivate {
         this.token = (getLocalToken != null) ? getLocalToken : '';        
         console.log('Auth guard: 1',this.token);
         console.log("Auth guard..." + state.url + " == " +route.url);
-        //this.token == undefined || this.token == '' || 
-        //this.token == 'null' ||
+
+        /*if(state.url != null && 
+          (state.url == '/dashboard/cab_client/inspection-bodies-form' || state.url == '/dashboard/cab_client/certification-bodies-form' ||
+          state.url == '/dashboard/cab_client/health-care-form')){
+          // if(localStorage.getItem("redirectURL") == '' || localStorage.getItem("redirectURL") == null || 
+          // localStorage.getItem("redirectURL") == undefined){
+            localStorage.setItem("redirectURL", state.url);
+          //}            
+            if (this.token == '' || this.token == null)  {
+              console.log('Auth guard 2: ',this.token);
+              this.router.navigate(['/sign-in']);
+              return false;
+            }
+        }else if(state.url != null && state.url == '/sign-in'){
+            //localStorage.setItem("redirectURL", '');
+            if (this.token == '' || this.token == null)  {
+              console.log('Auth guard 2: ',this.token);
+              this.router.navigate(['/sign-in']);
+              return false;
+            }
+        }*/
         if (this.token == '' || this.token == null)  {
             console.log('Auth guard 2: ',this.token);
+            //this.router.navigate(['/sign-in/'], { queryParams: { returnUrl: state.url }});
             this.router.navigate(['/sign-in']);
             return false;
         }

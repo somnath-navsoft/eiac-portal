@@ -487,6 +487,10 @@ export class OperationsDashboardComponent implements OnInit {
     this.searchDetails = [];
     this.selectSearch = [];
     this.selectedField = value;
+
+
+    
+
     // cab_code,cab_client,candidate,assessors,trainers,super_admin
     if (this.selectedField == 'CAB Name') {
       this.getUserType = 'cab_client';

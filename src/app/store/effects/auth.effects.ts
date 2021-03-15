@@ -119,6 +119,14 @@ export class AuthEffects {
       localStorage.setItem('type', this._constants.logType);
       //this._appServ.updateStoreAuthenticated();
       // console.log(">>>Effects: Usertype parse: ",this._constants.logType );
+
+      // if(localStorage.getItem("redirectURL") != '' && localStorage.getItem("redirectURL") != null && 
+      //       localStorage.getItem("redirectURL") != undefined){
+      //       let urlRedirect: string = localStorage.getItem("redirectURL");
+      //       //localStorage.setItem("redirectURL",'');
+      //       console.log(">>>LOG In redirecting....", urlRedirect);
+      //       this.router.navigateByUrl(urlRedirect);
+      // }      
       let landURL = '/dashboard/' + this._constants.logType + '/home';
       // console.log(">>>Effects LAnd URL:",landURL );
       this.router.navigateByUrl(landURL);

@@ -123,6 +123,7 @@ const routes: Routes = [
   //{ path: 'log-in', component: LogInComponent, canActivate: [AuthCheck] },
   //component:DashboardComponent, canActivate: [AuthGuard],
   { path: 'sign-in', component: SigninComponent, canActivate: [AuthCheck] },
+  { path: 'sign-in/:any', component: SigninComponent, canActivate: [AuthCheck] },
   { path: 'dashboard',canActivate: [AuthGuard], 
     children: [
       //Trainers
