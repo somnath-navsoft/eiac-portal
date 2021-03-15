@@ -61,7 +61,7 @@ export class CabDashboardComponent implements OnInit {
   dashboardTradeLicExDate: any;
   dashboardTradeLicExStatus: boolean = false;
   licence_document_file: string;
-  licence_document_path: string;
+  licence_document_path: string; 
 
   constructor(public Service: AppService, public constant: Constants, public router: Router, public toastr: ToastrService) {
     this.config = {
@@ -253,16 +253,16 @@ export class CabDashboardComponent implements OnInit {
     ];
 
 
-    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=' + this.getUserType + '&searchKey=S')
-      .subscribe(
-        res => {
-          this.searchDetails = res['data'].user_list;
-          this.loader = true;;
-          // this.search(this.searchTerm);
+    // this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=' + this.getUserType + '&searchKey=S')
+    //   .subscribe(
+    //     res => {
+    //       this.searchDetails = res['data'].user_list;
+    //       this.loader = true;;
+    //       // this.search(this.searchTerm);
 
-        }, err => {
-          this.loader = true;
-        });
+    //     }, err => {
+    //       this.loader = true;
+    //     });
 
 
     this.userEmail = localStorage.getItem('email');
@@ -372,10 +372,13 @@ export class CabDashboardComponent implements OnInit {
   setField(value) {
     // this.search(this.searchTerm);
     this.selectedUser = [];
-    this.loader = false;
+    //this.loader = false;
     this.searchDetails = [];
     this.selectSearch = [];
     this.selectedField = value;
+
+    console.log("@Select: ", value);
+
     // cab_code,cab_client,candidate,assessors,trainers,super_admin
     if (this.selectedField == 'CAB Name') {
       this.getUserType = 'cab_client';
@@ -399,16 +402,16 @@ export class CabDashboardComponent implements OnInit {
       this.getUserType = 'operations';
     }
 
-    this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=' + this.getUserType + '&searchKey=S')
-      .subscribe(
-        res => {
-          this.searchDetails = res['data'].user_list;
-          this.loader = true;;
-          // this.search(this.searchTerm);
+    // this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=' + this.getUserType + '&searchKey=S')
+    //   .subscribe(
+    //     res => {
+    //       this.searchDetails = res['data'].user_list;
+    //       this.loader = true;;
+    //       // this.search(this.searchTerm);
 
-        }, err => {
-          this.loader = true;
-        });
+    //     }, err => {
+    //       this.loader = true;
+    //     });
 
   }
 
@@ -432,18 +435,46 @@ export class CabDashboardComponent implements OnInit {
 
   search(query: string) {
     // this.searchTerm = query;
-    let result = this.select(query);
+    /*let result = this.select(query);
     // this.searchDetails = result;
     if (query != '') {
       this.selectSearch = result;
     } else {
       this.selectSearch = [];
+    }*/
+    if (this.selectedUser.length > 0) {
+      this.selectSearch = [];
+      return;
     }
-
+    this.select(query);
   }
 
-  select(query: string): string[] {
+  select(query: string) {
+
     let result: string[] = [];
+    //let re = new RegExp(query, 'gi');
+    console.log("### ", query);
+    // if (this.subscription) {
+    //   this.subscription.unsubscribe();
+    // }
+    if (query != '') {
+      this.Service.getwithoutData(this.Service.apiServerUrl + "/" + 'message-user-list' + '?type=' + this.getUserType + '&searchKey=' + query)
+        .subscribe(
+          res => {
+            this.searchDetails = res['data'].user_list;
+            this.loader = true;
+            // this.search(this.searchTerm);
+            console.log("@get User: ", this.searchDetails);
+            this.selectSearch = this.searchDetails;
+
+          }, err => {
+            this.loader = true;
+          });
+    } else {
+      this.selectSearch = [];
+    }
+
+    /*let result: string[] = [];
     if (this.getUserType == 'cab_client' || this.getUserType == 'cab_code') {
       for (let a of this.searchDetails) {
         if (a.username.toLowerCase().indexOf(query) > -1) {
@@ -460,6 +491,7 @@ export class CabDashboardComponent implements OnInit {
 
     // this.searchDetails = result;
     return result;
+    */
   }
 
 

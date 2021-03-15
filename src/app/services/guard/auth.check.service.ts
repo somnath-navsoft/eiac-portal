@@ -12,7 +12,13 @@ export class AuthCheck implements CanActivate {
         this.token = (getLocalToken != null || getLocalToken != undefined) ? getLocalToken : '';
         // console.log('portal Auth check: 1',this.token, " ---> #", getLocalToken);
         //&& this.token  !== 'null'
+        console.log("Auth Check..." + state.url + " == " +route.url);
 
+        if(state.url != null && 
+            (state.url == '/dashboard/cab_client/inspection-bodies-form' || state.url == '/dashboard/cab_client/certification-bodies-form')) {
+            console.log("@redirect reset....");
+            //localStorage.setItem("redirectURL", state.url);
+        }
 
         let authUserData = this._service.decodeJWT(this.token);
         if(this.token  !== '' && authUserData.isVerified == '0')  {
@@ -38,6 +44,8 @@ export class AuthCheck implements CanActivate {
             let landURL = '/dashboard/'+logType+'/home';
             this.router.navigateByUrl(landURL);
             return false;           
+        }else{
+            console.log("@Token in check auth....");
         }
         return true;        
     }
