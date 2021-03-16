@@ -130,7 +130,12 @@ export class WorkPermitFormComponent implements OnInit {
   paypalSandboxToken: string = '';
   paymentMode: string = '';
 
-  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,public _trainerService:TrainerService,public sanitizer:DomSanitizer,private modalService: NgbModal) { }
+  constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,public _trainerService:TrainerService,public sanitizer:DomSanitizer,private modalService: NgbModal) { 
+    this.modalOptions = {
+      backdrop : 'static',
+      keyboard : false
+    }
+  }
 
   ngOnInit() {
     this.getWorkPermitId = localStorage.getItem('workPermitId');

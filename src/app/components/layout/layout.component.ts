@@ -91,8 +91,7 @@ export class LayoutComponent implements OnInit {
                 if(wholeUrl == '/dashboard/cab_client/inspection-bodies-form'        || wholeUrl == '/dashboard/cab_client/testing-calibration-form' ||
                    wholeUrl == '/dashboard/cab_client/certification-bodies-form'     || wholeUrl == '/dashboard/cab_client/health-care-form' || 
                    wholeUrl == '/dashboard/cab_client/halal-conformity-form'         || wholeUrl == '/dashboard/cab_client/pt-providers-form' || 
-                   wholeUrl == '/dashboard/cab_client/no-objection-certificate-form' || wholeUrl == '/dashboard/cab_client/work-permit-form' ||
-                   wholeUrl == '/dashboard/cab_client/work-permit-form'              || wholeUrl == '/dashboard/cab_client/no-objection-certificate-form'){
+                   wholeUrl == '/dashboard/cab_client/no-objection-certificate-form' || wholeUrl == '/dashboard/cab_client/work-permit-form'){
                     //sessionStorage.setItem("outaccess", 'yes');
                     //this.toastr.error("You are not permit to submit....");
                     //this.suspendAlert('suspendBox');
@@ -139,14 +138,51 @@ export class LayoutComponent implements OnInit {
                     if(suspendId != undefined){
                       //serviceList[key]['suspend'] = true;
                       suspendedService.push({title: item.title, meta: metaData})
-                    }else{
-                      //serviceList[key]['suspend'] = false;
                     }
           })
                let supendSelected: boolean = false;
-               suspendedService.forEach(rec =>{
+
+               console.log("@Suspended URL: ", suspendedService.length, " -- ", suspendedService);
+
+                if(suspendedService.length > 0){
+                  suspendedService.forEach(rec =>{
+                    if(rec.meta === splitUrl[3]){
+                       supendSelected = true;
+                       localStorage.setItem("suspendURL",'true');
+                       localStorage.setItem("redirectURL",'');
+                       setTimeout(()=>{
+                         let elem = document.getElementById('openAppDialog');
+                         this.popupHeaderText = 'Suspended';
+                         this.popupBodyText = 'Your account is temporarily suspended.';
+                         if(elem){
+                           elem.click();
+                         }
+                       }, 100)
+                       this.router.navigateByUrl('/dashboard/home');
+                   }else{
+                    if(localStorage.getItem("redirectURL") != '' && localStorage.getItem("redirectURL") != null && 
+                    localStorage.getItem("redirectURL") != undefined){
+                    let urlRedirect: string = localStorage.getItem("redirectURL");
+                    localStorage.setItem("redirectURL",'');
+                    console.log(">>>LOG In redirecting....", urlRedirect);
+                    this.router.navigateByUrl(urlRedirect);
+                  } 
+                   }
+                  });
+                }else{
+                  // if(localStorage.getItem("redirectURL") != '' && localStorage.getItem("redirectURL") != null && 
+                  //   localStorage.getItem("redirectURL") != undefined){
+                  //   let urlRedirect: string = localStorage.getItem("redirectURL");
+                  //   localStorage.setItem("redirectURL",'');
+                  //   console.log(">>>LOG In redirecting....", urlRedirect);
+                  //   this.router.navigateByUrl(urlRedirect);
+                  // }  
+                }
+
+              /* suspendedService.forEach(rec =>{
                if(rec.meta === splitUrl[3]){
                   supendSelected = true;
+                  localStorage.setItem("suspendURL",'true');
                   setTimeout(()=>{
                     let elem = document.getElementById('openAppDialog');
                     this.popupHeaderText = 'Suspended';
@@ -156,16 +192,18 @@ export class LayoutComponent implements OnInit {
                     }
                   }, 100)
                   this.router.navigateByUrl('/dashboard/home');
-               }else{
+              }
+              else{
                 if(localStorage.getItem("redirectURL") != '' && localStorage.getItem("redirectURL") != null && 
-                  localStorage.getItem("redirectURL") != undefined){
-                  let urlRedirect: string = localStorage.getItem("redirectURL");
-                  localStorage.setItem("redirectURL",'');
-                  //console.log(">>>LOG In redirecting....", urlRedirect);
-                  this.router.navigateByUrl(urlRedirect);
-                }      
+                localStorage.getItem("redirectURL") != undefined){
+                let urlRedirect: string = localStorage.getItem("redirectURL");
+                localStorage.setItem("redirectURL",'');
+                //console.log(">>>LOG In redirecting....", urlRedirect);
+                this.router.navigateByUrl(urlRedirect);
+              }  
                } 
-          })
+          })*/
+           
           console.log('@@@@ Revised Serv list', " == ", suspendedService, " -- ", splitUrl[3], " -- ", supendSelected);
           });
 
@@ -282,8 +320,12 @@ export class LayoutComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("@Layout...");
 
-
+    // let isTokenExpired: boolean = this._service.isTokenExpired()
+    // if(isTokenExpired){
+    //   this.isAuthenticated = false;
+    // }
     setTimeout(()=>{
       this.getState = this.store.select(selectAuthState);
       this.getState.subscribe((state) => {

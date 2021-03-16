@@ -66,14 +66,8 @@ export class AuthEffects {
     // }
     if(authUserData.isVerified == '0' && authUserData.profileComplete != '2')
     {
-      // localStorage.setItem('token', user.payload.token);
-      // this._appServ.getUserType();
-      // localStorage.setItem('type', this._constants.logType);
-      // console.log(authUserData,'authUserData');
       this.router.navigateByUrl('/sign-in');
       localStorage.setItem('token', '');
-      // this.toastr.error('Please complete your verification before Sign in','Validation Error', {timeOut: 30000});
-      // this.authService.appErrorStack.next('Please complete your verification before Sign in');
     }else if(authUserData.isCompleteness == '0')
     {
       console.log(authUserData,'@@@@authUserData');
@@ -86,15 +80,8 @@ export class AuthEffects {
       this._appServ.getUserType();
       localStorage.setItem('type', this._constants.logType);
       this.router.navigateByUrl('/profile-completion');
-
-      // let landURL = '/dashboard/' + this._constants.logType + '/home';
-      // this.router.navigateByUrl(landURL);
-
     }else if(authUserData.isCompleteness == '2')
     {
-      // localStorage.setItem('token', user.payload.token);
-      // this._appServ.getUserType();
-      // localStorage.setItem('type', this._constants.logType);
       console.log('####authEffects');
       localStorage.setItem('token', '');
       localStorage.setItem('email', '');
@@ -103,11 +90,10 @@ export class AuthEffects {
       localStorage.setItem('profileComplete', '');
       localStorage.setItem('userId', '');
       localStorage.setItem('type', '');
-      this.toastr.error('Hi Your profile is rejected by Admin','Validation Error', {timeOut: 30000});
-      this.router.navigateByUrl('/sign-in');
-      // localStorage.setItem('token', '');
-      
-      // this.authService.appErrorStack.next('Please complete your verification before Sign in');
+      //this.toastr.error('Your profile is rejected by Admin','Validation Error', {timeOut: 3000});
+      //this.authService.appErrorStack.next('#Hi Your profile is rejected by Admin');
+      this.store.dispatch(new LogInFailure({ error: 'Your profile is rejected by Admin' }));
+      this.router.navigateByUrl('/sign-in');      
     }else{
       localStorage.setItem('token', user.payload.token);
       localStorage.setItem('email', authUserData.email);
@@ -116,24 +102,10 @@ export class AuthEffects {
       localStorage.setItem('profileComplete', authUserData.isCompleteness);
       localStorage.setItem('userId', authUserData.user_id);
       this._appServ.getUserType();
-      localStorage.setItem('type', this._constants.logType);
-      //this._appServ.updateStoreAuthenticated();
-      // console.log(">>>Effects: Usertype parse: ",this._constants.logType );
-
-      // if(localStorage.getItem("redirectURL") != '' && localStorage.getItem("redirectURL") != null && 
-      //       localStorage.getItem("redirectURL") != undefined){
-      //       let urlRedirect: string = localStorage.getItem("redirectURL");
-      //       //localStorage.setItem("redirectURL",'');
-      //       console.log(">>>LOG In redirecting....", urlRedirect);
-      //       this.router.navigateByUrl(urlRedirect);
-      // }      
+      localStorage.setItem('type', this._constants.logType);           
       let landURL = '/dashboard/' + this._constants.logType + '/home';
-      // console.log(">>>Effects LAnd URL:",landURL );
       this.router.navigateByUrl(landURL);
-      //top.location.href = landURL;
-      // console.log(authUserData,'authUserData');
-    }
-    
+    }    
   }));
 
   @Effect({ dispatch: false })
@@ -168,9 +140,11 @@ export class AuthEffects {
           map(data => {
              console.log("Login Data: ", data);
              if( data != undefined && data.access != ''){
+               console.log("@Login Success....");
               this.store.dispatch(new LogInSuccess({token: data.access}));
              }
              if( data != undefined && data.status === 'error'){
+              console.log("@Login Errror....");
               return new LogInFailure({ error: data.message });
             }
           }          

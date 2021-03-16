@@ -188,7 +188,12 @@ export class PtProvidersFormComponent implements OnInit {
   paymentMode: string = '';
 
   constructor(public Service: AppService, public constant:Constants, private _customModal: CustomModalComponent,
-    public router: Router,public toastr: ToastrService,private modalService: NgbModal,public sanitizer:DomSanitizer,public _trainerService:TrainerService) { }
+    public router: Router,public toastr: ToastrService,private modalService: NgbModal,public sanitizer:DomSanitizer,public _trainerService:TrainerService) { 
+      this.modalOptions = {
+        backdrop : 'static',
+        keyboard : false
+      }
+    }
 
   getData(getVal: string){
     this.Service.mapboxToken = getVal;

@@ -159,7 +159,12 @@ export class NoObjectionFormComponent implements OnInit {
   req4thStep: boolean = false;
   
   constructor(public Service: AppService, public constant:Constants, public sanitizer: DomSanitizer , public router: Router,
-    public toastr: ToastrService, private modalService: NgbModal, private _trainerService: TrainerService,) { }
+    public toastr: ToastrService, private modalService: NgbModal, private _trainerService: TrainerService,) { 
+      this.modalOptions = {
+        backdrop : 'static',
+        keyboard : false
+      }
+    }
 
   ngOnInit() { 
     //this.meta.addTag({name: 'title', content: 'Angular Project, Create Angular Project'});
