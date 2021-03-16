@@ -103,6 +103,29 @@ function getFeesPerTrainee(training_days){
 */
 
 
+//Token expired session status
+getTokenExpirationDate(token: string): Date {
+  const decoded = jwt_decode(token);
+
+  if (decoded.exp === undefined) return null;
+
+  const date = new Date(0); 
+  date.setUTCSeconds(decoded.exp);
+  return date;
+}
+isTokenExpired(token?: string): boolean {
+  if(!token) token = this.getToken();
+  if(!token) return true;
+
+  const date = this.getTokenExpirationDate(token);
+  if(date === undefined) return false;
+  return !(date.valueOf() > new Date().valueOf());
+}
+
+
+
+//Token expired session status
+
 getAppID(){
   let currentTimeInSeconds=Math.floor(Date.now()/1000); //unix timestamp in seconds
   let currentTimeInMilliseconds=Date.now(); 

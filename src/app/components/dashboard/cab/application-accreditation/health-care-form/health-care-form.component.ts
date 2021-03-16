@@ -232,7 +232,12 @@ export class HealthCareFormComponent implements OnInit {
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService,
     private _customModal: CustomModalComponent,
-    private modalService: NgbModal,public sanitizer:DomSanitizer,public _trainerService:TrainerService) { }
+    private modalService: NgbModal,public sanitizer:DomSanitizer,public _trainerService:TrainerService) {
+      this.modalOptions = {
+        backdrop : 'static',
+        keyboard : false
+      }
+     }
 
 
     scrollPage(pageId: any){

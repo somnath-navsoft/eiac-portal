@@ -553,7 +553,7 @@ export class InspectionBodiesFormComponent implements OnInit {
   }
   agreeView(event){
     this.modalService.dismissAll();
-    this.authorizationList.undertaking_confirmTop2 = true;
+    this.authorizationList.undertaking_confirmTop2 = true; 
     this.readAccredAgreem = true;
     this.authorizeCheckCount(event, 'read');
   }

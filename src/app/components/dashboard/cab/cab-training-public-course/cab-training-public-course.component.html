@@ -572,9 +572,9 @@
                             <span id="openPayDialog" (click)="openView(payComp)"></span>
                             <ng-template #payComp let-modal>
                                 <div class="main_pop">
-                                    <div class="pop_close">
+                                    <!-- <div class="pop_close">
                                         <span class="icon-close"></span>
-                                    </div>
+                                    </div> -->
                                     <div class="pop_thanks">
                                         <h5>Thank you</h5>
                                         <p>Your Application has been received, please wait for the Proforma Invoice to be generated, to proceed with 
@@ -619,9 +619,9 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
-                                    <div class="button-content">
+                                    <!-- <div class="button-content">
                                         <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('authorization',headerSteps,'menu','proforma_invoice')">BACK</a>
-                                    </div>
+                                    </div> -->
                                     <div class="bttn_wrap" *ngIf="paymentFilePath != ''">
                                         <button class="submit-bttn submit-health mr-5">PROCEED TO PAYMENT</button>
                                         <button class="submit-bttn submit-health" type="button" (click)="step_payment()">UPDATE PAYMENT</button>
@@ -748,9 +748,9 @@
                                 <span id="openAppDialog" (click)="openView(appComp)"></span>
                                 <ng-template #appComp let-modal>
                                     <div class="main_pop">
-                                        <div class="pop_close" (click)="closeChecklistDialog()">
+                                        <!-- <div class="pop_close" (click)="closeChecklistDialog()">
                                             <span class="icon-close"></span>
-                                        </div>
+                                        </div> -->
                                         <div class="pop_thanks">
                                             <h5>Thank you</h5>
                                             <p>Your form has been successfully submitted and it is under review. We will update you shortly.</p>

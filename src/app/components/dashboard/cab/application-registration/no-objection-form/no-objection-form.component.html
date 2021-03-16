@@ -1180,9 +1180,9 @@
                             <span id="openPayDialog" (click)="openView(payComp)"></span>
                                 <ng-template #payComp let-modal>
                                     <div class="main_pop">
-                                        <div class="pop_close">
+                                        <!-- <div class="pop_close">
                                             <span class="icon-close"></span>
-                                        </div>
+                                        </div> -->
                                         <div class="pop_thanks">
                                             <h5>Thank you</h5>
                                             <p>Your Application has been received, please wait for the Proforma Invoice to be generated, to proceed with 
@@ -1225,8 +1225,8 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn"  type="button" 
-                                        (click)="Service.headerStepMove('authorization_application',headerSteps,'menu','proforma_invoice')">BACK</a>
+                                        <!-- <a href="javascript:void(0)" class="cancel-bttn"  type="button" 
+                                        (click)="Service.headerStepMove('authorization_application',headerSteps,'menu','proforma_invoice')">BACK</a> -->
                                         <!-- <button class="cancel-bttn" (click)="onSubmitProformaInvoice(ngForm7, true)" type="button">SAVE AS DRAFT</button> -->
                                     </div>
                                     <div class="bttn_wrap" *ngIf="paymentFilePath != ''">
@@ -1334,9 +1334,9 @@
                                 <span id="openAppDialog" (click)="openView(appComp)"></span>
                                 <ng-template #appComp let-modal>
                                     <div class="main_pop">
-                                        <div class="pop_close">
+                                        <!-- <div class="pop_close">
                                             <span class="icon-close"></span>
-                                        </div>
+                                        </div> -->
                                         <div class="pop_thanks">
                                             <h5>Thank you</h5>
                                             <p>Your Application has been submitted successfully and is under review. Please check the status and your dashboard for updates.</p>

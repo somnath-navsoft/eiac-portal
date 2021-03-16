@@ -225,7 +225,12 @@ export class TestingCalibrationFormComponent implements OnInit {
   constructor(public Service: AppService, public constant:Constants,public router: Router,
     public toastr: ToastrService,public _trainerService:TrainerService,
     private _customModal: CustomModalComponent,
-    private modalService: NgbModal,public sanitizer: DomSanitizer) { }
+    private modalService: NgbModal,public sanitizer: DomSanitizer) { 
+      this.modalOptions = {
+        backdrop : 'static',
+        keyboard : false
+      }
+    }
 
 
   /**********************

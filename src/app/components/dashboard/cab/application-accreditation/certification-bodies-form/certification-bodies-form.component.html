@@ -1589,7 +1589,7 @@
                                                     </div>
                                                     <span class="confirm">of the year</span>
                                                     <div class="recommend-year">
-                                                        <mat-select placeholder="Select" name="recommend_year"  [(ngModel)]="step5Data.recommend_year" required [ngStyle]="{'width':'75px'}">
+                                                        <mat-select placeholder="Select" name="recommend_year" [ngModelOptions]="{standalone: true}"  [(ngModel)]="step5Data.recommend_year" required [ngStyle]="{'width':'75px'}">
                                                             <mat-option [value]="item.value" *ngFor="let item of recommendYearValues; let k=index;">{{item.title}}</mat-option>
                                                         </mat-select>
                                                     </div>
@@ -1691,18 +1691,30 @@
                                     <button class="submit-bttn submit-health" >SUBMIT</button>
                                     <!-- <ng-container *ngIf="transactions.length">
                                         <div id="paypalPayment"></div>
-                                    </ng-container>                                                  -->
+                                    </ng-container> -->
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row"> 
+                        <!-- <ng-template #suspendBox let-modal>
+                            <div class="main_pop">
+                                <div class="pop_close">
+                                    <span class="icon-close" (click)="closeDialog()"></span>
+                                </div>
+                                <div class="pop_thanks">
+                                    <h5>Suspended</h5>
+                                    <p>Please contact EIAC to allow submission.</p>
+                                </div>
+                            </div>
+                        </ng-template> -->
+
+                        <!-- <div class="row">  -->
                             <span id="openPayDialog" (click)="openViewAuth(payComp)"></span>
                             <ng-template #payComp let-modal>
                                 <div class="main_pop">
-                                    <div class="pop_close">
+                                    <!-- <div class="pop_close">
                                         <span class="icon-close"></span>
-                                    </div>
+                                    </div> -->
                                     <div class="pop_thanks">
                                         <h5>Thank you</h5>
                                         <p>Your Application has been received, please wait for the Proforma Invoice to be generated, to proceed with 
@@ -1712,7 +1724,7 @@
                                     </div>
                                 </div>
                             </ng-template>
-                        </div>
+                        <!-- </div> -->
                     </form>
                     <ng-template #agreementView let-modal>
                         <div class="modal-header">
@@ -1800,7 +1812,7 @@
                             <div class="col-md-12">
                                 <div class="bttns-health bttn-staff">
                                     <div class="button-content">
-                                        <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice');">BACK</a> 
+                                        <!-- <a href="javascript:void(0)" class="cancel-bttn" type="button" (click)="Service.headerStepMove('undertaking_applicant',headerSteps,'menu','proforma_invoice');">BACK</a>  -->
                                         <!-- <button class="cancel-bttn" type="button" (click)="onSubmitProformaInvoice(ngForm8, true)">SAVE AS DRAFT</button> -->
                                         <!-- <button class="submit-bttn submit-health" (click)="Service.moveSteps('proforma_invoice','payment_update',headerSteps)">CONTINUE</button> -->
                                     </div>
@@ -1930,9 +1942,9 @@
                                 <span id="openAppDialog" (click)="openView(appComp)"></span>
                                 <ng-template #appComp let-modal>
                                     <div class="main_pop">
-                                        <div class="pop_close" (click)="closeChecklistDialog()">
+                                        <!-- <div class="pop_close" (click)="closeChecklistDialog()">
                                             <span class="icon-close"></span>
-                                        </div>
+                                        </div> -->
                                         <div class="pop_thanks">
                                             <h5>Thank you</h5>
                                             <p>Your Application has been submitted successfully and is under review. Please check the status and your dashboard for updates.</p>

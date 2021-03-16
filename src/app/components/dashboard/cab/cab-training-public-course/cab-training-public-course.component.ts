@@ -100,7 +100,12 @@ export class CabTrainingPublicCourseComponent implements OnInit {
 
   constructor(private Service: AppService, private http: HttpClient,
     public _toaster: ToastrService, private _router: Router, private _route: ActivatedRoute,
-    private _trainerService: TrainerService, private _constant: Constants,public sanitizer:DomSanitizer,private modalService: NgbModal) { }
+    private _trainerService: TrainerService, private _constant: Constants,public sanitizer:DomSanitizer,private modalService: NgbModal) { 
+      this.modalOptions = {
+        backdrop : 'static',
+        keyboard : false
+        }
+    }
 
   ngOnInit() {
     this.traningPublicId = localStorage.getItem('publicFormId');

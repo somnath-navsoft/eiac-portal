@@ -218,6 +218,10 @@ export class CertificationBodiesFormComponent implements OnInit {
   constructor(public Service: AppService, public constant:Constants,public router: Router,
     private _customModal: CustomModalComponent,
     public toastr: ToastrService,public _trainerService:TrainerService,private modalService: NgbModal,public sanitizer: DomSanitizer) {
+      this.modalOptions = {
+        backdrop : 'static',
+        keyboard : false
+      }
     this.today.setDate(this.today.getDate());
   }
 
@@ -265,6 +269,7 @@ export class CertificationBodiesFormComponent implements OnInit {
       });
 }
 ngOnInit() {
+  
 
   //console.log(">>step change....");
   let saveStep = 5-1;
@@ -349,7 +354,7 @@ ngOnInit() {
     {
       title:'application_complete', desc:'8. Application Complete', activeStep:false, stepComp:false, icon:'icon-document-pen', activeClass:''
     },
-  );
+  ); 
 
 
 //   this.headerSteps.forEach((item, key) => {
@@ -1679,12 +1684,12 @@ loadAppInfo(){
                 // this.readReviewChecklist= true;
 
                 // let visitRecomm = getData.data.recommend_visit.toString().replace(/["']/g, "");
-                // this.step5Data.recommend_visit = visitRecomm;//'second';
-                console.log(">>>> crecomm year: ", getData.data.recommend_year);
+                // this.step5Data.recommend_visit = visitRecomm;//'second';                
+              }
+              console.log(">>>> crecomm year: ", getData.data.recommend_year);
                 var d = new Date();
                 var yr = d.getFullYear();
                 this.step5Data.recommend_year = (getData.data.recommend_year != null) ? parseInt(getData.data.recommend_year) : yr;
-              }
 
               //Step 9
               if(res['data'].paymentDetails != null && typeof res['data'].paymentDetails === 'object'){
