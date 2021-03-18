@@ -605,7 +605,7 @@
                                                     [ngModelOptions]="{standalone: true}"
                                                     (ngModelChange)="setField($event)">
                                                     <mat-option *ngFor="let data of select_field" [value]="data.value">
-                                                        {{data.field}}...</mat-option>
+                                                        {{data.field}}</mat-option>
                                                 </mat-select>
                                                 <mat-error></mat-error>
                                             </mat-form-field>
@@ -629,7 +629,7 @@
                                                       [matAutocomplete]="auto"
                                                       [matChipInputFor]="chipList"                                                      
                                                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                                      (keypress)="enterInput($event)"
+                                                      (keypress)="enterInput($event)" (click)="enterInput($event)"
                                                       (matChipInputTokenEnd)="add($event)" (input)="search($event.target.value)">
                                                   </mat-chip-list>
                                                   <mat-autocomplete #auto="matAutocomplete">
@@ -658,7 +658,7 @@
                                                           [matAutocomplete]="auto"
                                                           [matChipInputFor]="chipList"
                                                           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                                          (keypress)="enterInput($event)"
+                                                          (keypress)="enterInput($event)" (click)="enterInputClick()"
                                                           (matChipInputTokenEnd)="add($event)" (input)="search($event.target.value)">
                                                       </mat-chip-list>
                                                 <mat-autocomplete #auto="matAutocomplete" >

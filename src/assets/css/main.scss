@@ -1097,7 +1097,7 @@ ul.bill-details li span { font-size: 16px; font-family: 'Dubai Regular'; color: 
 ul.bill-details li:first-child { border-right: 1px solid #C9C9C9; }
 
 // ================ACCREDITATION================== //
-.accreditation-container { border-radius: 5px; border: 1px solid #DFDFDF; background: #F9F9F9; text-align: center; font-size: 20px; font-family: 'Dubai Medium'; color: #3A3A3A; margin-bottom: 25px; }
+.accreditation-container { border-radius: 5px; border: 1px solid #DFDFDF; background: #F9F9F9; text-align: center; font-size: 20px; font-family: 'Dubai Medium'; color: #3A3A3A; margin-bottom: 25px; width: 100%; }
 .accreditation-container .acc-main { position: relative; }
 .accreditation-desc .accred_name p { margin: 0; padding: 20px; }
 .accreditation-container:hover .accreditation-desc.training_acc .accred_name { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -45%); color: #fff; font-size: 24px; }

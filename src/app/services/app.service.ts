@@ -106,11 +106,12 @@ function getFeesPerTrainee(training_days){
 //Token expired session status
 getTokenExpirationDate(token: string): Date {
   const decoded = jwt_decode(token);
-
   if (decoded.exp === undefined) return null;
-
   const date = new Date(0); 
   date.setUTCSeconds(decoded.exp);
+  //Manual Expire Hour input - Add 2 hours
+  // var date = new Date("2021-03-18 15:25:25");
+  // date.setTime(date.getTime() + (2*60*60*1000));
   return date;
 }
 isTokenExpired(token?: string): boolean {
