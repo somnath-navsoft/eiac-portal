@@ -40,11 +40,12 @@ export class ErrorInterceptor implements HttpInterceptor {
             localStorage.setItem('token', '');
             localStorage.setItem('type', '');
             localStorage.setItem('email','');
-            this._toastr.error("Your Session has expired, Please login again");
-            setTimeout(() => {
-              //window.top.location.href = '/sign-in';
-              //this._router.navigateByUrl('/sign-in')
-            }, 3000)            
+            //this._toastr.error("Your Session has expired, Please login again");
+            window.top.location.href = '/sign-in';
+            // setTimeout(() => {
+            //   //window.top.location.href = '/sign-in';
+            //   //this._router.navigateByUrl('/sign-in')
+            // }, 3000)            
         }
     }    
 
