@@ -108,7 +108,7 @@ getTokenExpirationDate(token: string): Date {
   const decoded = jwt_decode(token);
   if (decoded.exp === undefined) return null;
   const date = new Date(0); 
-  console.log(decoded.exp);
+  //console.log(decoded.exp);
   date.setUTCSeconds(decoded.exp);
   //Manual Expire Hour input - Add 2 hours
   // var date = new Date("2021-03-18 15:25:25");
