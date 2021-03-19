@@ -53,6 +53,8 @@ export class AccountsComponent implements OnInit {
   paymentReceiptValidation: boolean = true;
   closeResult: string;
 
+  acountsType: any[] = [];
+
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService, private exportAsService: ExportAsService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent,public router: Router) { }
 
@@ -131,7 +133,14 @@ export class AccountsComponent implements OnInit {
       {title: 'Under Process', value:'under_process'},
       {title: 'Complete', value:'complete'},
       {title: 'Draft', value:'draft'}
-    ]
+    ];
+
+    this.acountsType = [
+      {title: 'Preliminary Visit', value:'prelim_visit'},
+      {title: 'Document Review', value:'doc_review'},
+      {title: 'Assessment', value:'assessment'},
+      {title: 'Certification', value:'certification'},
+    ];
 
     this.loadPageData();
   }
@@ -378,8 +387,10 @@ export class AccountsComponent implements OnInit {
      
      let postObject: any = {};
      let is_valid: boolean = false;
-     if(this.voucherSentData['voucher_no'] != undefined && this.voucherSentData['amount'] != undefined &&
-      this.voucherSentData['voucher_date'] != undefined){
+     if((this.voucherSentData['voucher_no'] != undefined && this.voucherSentData['voucher_no'] != '') && 
+          this.voucherSentData['amount'] != undefined &&
+          this.voucherSentData['voucher_date'] != undefined && 
+          (this.voucherSentData['accountsType'] != undefined && this.voucherSentData['accountsType'] != '')){
         is_valid = true;
       }
       //console.log("Valid/Invalid: ", theForm.form.valid, " -- "," --", is_valid, " --", this.voucherSentData);
