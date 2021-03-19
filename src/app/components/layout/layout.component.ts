@@ -170,13 +170,13 @@ export class LayoutComponent implements OnInit {
                    }
                   });
                 }else{
-                  // if(localStorage.getItem("redirectURL") != '' && localStorage.getItem("redirectURL") != null && 
-                  //   localStorage.getItem("redirectURL") != undefined){
-                  //   let urlRedirect: string = localStorage.getItem("redirectURL");
-                  //   localStorage.setItem("redirectURL",'');
-                  //   console.log(">>>LOG In redirecting....", urlRedirect);
-                  //   this.router.navigateByUrl(urlRedirect);
-                  // }  
+                  if(localStorage.getItem("redirectURL") != '' && localStorage.getItem("redirectURL") != null && 
+                    localStorage.getItem("redirectURL") != undefined){
+                    let urlRedirect: string = localStorage.getItem("redirectURL");
+                    localStorage.setItem("redirectURL",'');
+                    console.log(">>>LOG In redirecting....", urlRedirect);
+                    this.router.navigateByUrl(urlRedirect);
+                  }  
                 }
 
               /* suspendedService.forEach(rec =>{

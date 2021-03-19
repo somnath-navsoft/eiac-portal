@@ -77,10 +77,17 @@ export class CabDashboardComponent implements OnInit {
   }
 
   enterInput(theEvt: any) {
+    console.log("@select....", this.selectSearch, " -- ", this.selectedUser);
     if (this.selectedUser.length > 0) {
       this.selectSearch = [];
       theEvt.preventDefault();
       return;
+    }
+  }
+  enterInputClick() {
+    console.log("@select....", this.selectSearch, " -- ", this.selectedUser);
+    if (this.selectSearch.length > 0) {
+      this.selectSearch = [];
     }
   }
 

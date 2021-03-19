@@ -657,12 +657,10 @@ export class OperationsDashboardComponent implements OnInit {
     }
   }
 
-  changeInput(theEvt: any){
+  changeInput(){
     console.log("@change input...");
-    if (this.selectedUser.length > 0) {
+    if(this.selectSearch.length > 0) {
       this.selectSearch = [];
-      theEvt.preventDefault();
-      return;
     }
   }
 

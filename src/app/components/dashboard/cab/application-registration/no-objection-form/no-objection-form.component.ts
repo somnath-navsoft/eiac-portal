@@ -1286,7 +1286,7 @@ export class NoObjectionFormComponent implements OnInit {
     let checkHalal: boolean = true;
     console.log(this.step2Data.cabTypeLaboratory_testing,  " -- ", this.step2Data.cabTypeLaboratory_calibration);
     let cabTypes: any = {};
-    cabTypes['lab'] = [];
+    cabTypes['LAB'] = [];
     cabTypes['IB'] = [];
     cabTypes['CB'] = [];
     cabTypes['HCAB'] = [];
@@ -1315,7 +1315,7 @@ export class NoObjectionFormComponent implements OnInit {
       checkHalal = false;
     }
 
-    cabTypes['lab'].push({
+    cabTypes['LAB'].push({
       'cabTypeLaboratory_testing':this.step2Data.cabTypeLaboratory_testing,
       'cabTypeLaboratory_calibration':this.step2Data.cabTypeLaboratory_calibration
     });
@@ -1339,26 +1339,34 @@ export class NoObjectionFormComponent implements OnInit {
               if(cabTypes[key].length){
                 if(!this.Service.isObjectEmpty(cabTypes[key][0])){
                   for(let key1 in cabTypes[key][0]){
-                    console.log(">>>... ", cabTypes[key][0][key1]);
+                    console.log(">>>... ", cabTypes[key][0][key1], " -- ", key);
                     if(cabTypes[key][0][key1]){
                       checkSelect.push({
-                        key1 : true
+                        key1 : true, type:key
                       })
                     }
                   }
-                }                  
+                }
               }
         }
     }
     console.log("@Check count: ", checkSelect);
     this.req4thStep  = false;
     if(checkSelect.length > 1){
-          this.req4thStep  = true;
+        let checkSelectionCB: any = checkSelect.filter(item => (item.type == 'CB'));
+        let checkSelectionMatchIB: any = checkSelect.filter(item => (item.type == 'IB'));
+        let checkSelectionMatchLAB: any = checkSelect.filter(item => (item.type == 'LAB'));
+        let checkSelectionMatchHCAB: any = checkSelect.filter(item => (item.type == 'HCAB'));
+        if(checkSelectionCB.length == 0){
+          if((checkSelectionMatchIB.length >=1) && (checkSelectionMatchLAB.length >=1) && (checkSelectionMatchHCAB.length >=1)){
+              console.log("@Required...");
+              this.req4thStep  = true;
+          }
+          console.log("@Filter: ", checkSelectionCB, " -- ", checkSelectionMatchIB, " :: ", checkSelectionMatchLAB, " :: ", checkSelectionMatchHCAB);
+        }
     }
-    this.step2Data.cab_type = cabTypes;//JSON.stringify(cabTypes);
+    this.step2Data.cab_type = cabTypes;
     console.log(">>>form status: ",theForm.form.valid ," -- ", this.step2Data);
-
-    //return; 
 
     if((checkLaboratory == true || checkInspection == true || checkCertification == true || checkHalal == true) && type == undefined){
       this.noObjectionBodyForm = {};      
