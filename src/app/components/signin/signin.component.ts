@@ -19,6 +19,8 @@ import { AuthService } from '../../services/auth.service';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
+
+
 //PortalBoardService
 @Component({
   selector: 'app-signin',
@@ -67,7 +69,7 @@ export class SigninComponent {
       password: new FormControl(''),
       userRole: new FormControl('',[Validators.required])
     });
-    this.getState = this.store.select(selectAuthState);
+    //this.getState = this.store.select(selectAuthState);
     
   }
 
@@ -204,7 +206,7 @@ checkStrongPasswordType(type: string){
         email: this.signin.get('email').value,
         password: this.signin.get('password').value
       };
-      this.store.dispatch(new LogIn(payload));
+      this.store.dispatch(new LogIn(payload));      
     }
   }
   ngOnInit() {

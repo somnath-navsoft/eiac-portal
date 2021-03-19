@@ -175,7 +175,11 @@ export class LayoutComponent implements OnInit {
                     let urlRedirect: string = localStorage.getItem("redirectURL");
                     localStorage.setItem("redirectURL",'');
                     console.log(">>>LOG In redirecting....", urlRedirect);
-                    this.router.navigateByUrl(urlRedirect);
+
+                      setTimeout(() => {
+                        console.log("@Now redirecting....");
+                        this.router.navigateByUrl(urlRedirect);
+                      },1500)                    
                   }  
                 }
 
@@ -208,7 +212,7 @@ export class LayoutComponent implements OnInit {
           });
 
         }
-      }    
+        }    
         var splitForverifyAccount = wholeUrl.split('?');
         // this.dynamicsVar = '4';
         // this._service.addDynamicsVal(this.dynamicsVar);
