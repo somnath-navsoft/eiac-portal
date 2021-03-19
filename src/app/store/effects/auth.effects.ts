@@ -102,8 +102,14 @@ export class AuthEffects {
       localStorage.setItem('profileComplete', authUserData.isCompleteness);
       localStorage.setItem('userId', authUserData.user_id);
       this._appServ.getUserType();
-      localStorage.setItem('type', this._constants.logType);           
-      let landURL = '/dashboard/' + this._constants.logType + '/home';
+      localStorage.setItem('type', this._constants.logType);    
+      ///alert('............');    
+      
+      let getRedirectURL = localStorage.getItem('redirectURL');
+      let landURL: any = '/dashboard/' + this._constants.logType + '/home';
+      if(getRedirectURL != undefined && getRedirectURL != null && getRedirectURL != ''){
+        landURL = getRedirectURL.toString();
+      }      
       this.router.navigateByUrl(landURL);
     }    
   }));
