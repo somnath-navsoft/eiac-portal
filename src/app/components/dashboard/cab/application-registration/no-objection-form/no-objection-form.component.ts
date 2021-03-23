@@ -203,7 +203,7 @@ export class NoObjectionFormComponent implements OnInit {
       title:'list_service_scope', desc:'3. List Of Services Scope', activeStep:false, stepComp:false, icon:'icon-google-doc', activeClass:''
       },
       {
-      title:'list_instrument_equipment', desc:'4. List of Instrument & Equipments', activeStep:false, stepComp:false, icon:'icon-task', activeClass:''
+      title:'list_instrument_equipment', desc:'4. List of Instruments & Equipments', activeStep:false, stepComp:false, icon:'icon-task', activeClass:''
       },
       {
         title:'list_staff', desc:'5. List of Staff', activeStep:false, stepComp:false, icon:'icon-sheet', activeClass:''

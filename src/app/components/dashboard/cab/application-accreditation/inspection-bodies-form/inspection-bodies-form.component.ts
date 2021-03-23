@@ -1812,7 +1812,7 @@ export class InspectionBodiesFormComponent implements OnInit {
           }
           //check review checklist checked
           if(this.authorizationList.undertaking_confirm2){
-            this.readReviewChecklist       = true;
+            //this.readReviewChecklist       = true;
           }
 
 

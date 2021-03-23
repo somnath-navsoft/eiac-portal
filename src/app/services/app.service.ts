@@ -35,8 +35,7 @@ export class AppService {
 
   public countryURL           =   "https://raw.githubusercontent.com/sagarshirbhate/Country-State-City-Database/master/Contries.json";
   public assetsBasePath       =   "https://uat-portal.eiac.gov.ae/assets/csc-json/";
-
-  //https://raw.githubusercontent.com/sagarshirbhate/Country-State-City-Database/master/Contries.json
+  public localCountryCodeURL  =   "assets/countryCodes.json";
 
   public regExName: any;
   public regExUrl: any;
@@ -80,6 +79,15 @@ export class AppService {
       let fname: any = fileName.split('/')[1].split('.')[0];
       console.log(fname);
       return fname;
+    }
+
+    getAllCountryCode(){
+      return this.http.get(this.localCountryCodeURL);
+    }
+
+    redirectDocumentPath(){
+      let url: string = this._constant.documentPath;
+      window.open(url,'');
     }
 
 /*

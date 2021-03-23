@@ -11,6 +11,8 @@ export class Constants{
 
 	public mediaPath: string 				= 'https://uat-service.eiac.gov.ae';
 
+	public documentPath: string 			= 'https://uat.eiac.gov.ae/documents/publications';
+
 	//trainerAPI: '/trainer',
 	//all_services: this.apiUrl + 'service_page/', 
 	public myvalue: any;
@@ -32,6 +34,7 @@ export class Constants{
 		trainerCourseByID: 'trainer/custom-course-dtls/',
 		trainerCourseDelete: 'trainer/course-delete/',
 		trainerCourseVoucherSave: 'webservice/proforma-details-save/',
+		accountTypeSave: 'webservice/accounts-payment/',
 		trainerCoursePageDetails : 'trainer/training-page-details/',
 		trainerCourseTypeDetails: 'trainer/training-course-type/',
 		trainingServList: 'training-list/',

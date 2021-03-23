@@ -53,6 +53,8 @@ export class AccountsComponent implements OnInit {
   paymentReceiptValidation: boolean = true;
   closeResult: string;
 
+  acountsType: any[] = [];
+
   constructor(private _service: AppService, private _constant: Constants, public _toaster: ToastrService, private exportAsService: ExportAsService,
     private _trainerService: TrainerService, private modalService: NgbModal, private _customModal: CustomModalComponent,public router: Router) { }
 
@@ -131,8 +133,14 @@ export class AccountsComponent implements OnInit {
       {title: 'Under Process', value:'under_process'},
       {title: 'Complete', value:'complete'},
       {title: 'Draft', value:'draft'}
-    ]
+    ];
 
+    this.acountsType = [
+      {title: 'Preliminary Visit', value:'prelim_visit'},
+      {title: 'Document Review', value:'document_review'},
+      {title: 'Assessment', value:'assessment'},
+      {title: 'Certification', value:'certification'},
+    ];
     this.loadPageData();
   }
 
@@ -332,7 +340,7 @@ export class AccountsComponent implements OnInit {
 
   //Voucher submit
   // Modal Actions
-  open(content, id: number, application_number:any) {
+  open(content, id: number, application_number:any, application_type: any) {
     //this.voucherSentData = {};
 
     console.log(">>Dtaa: ", application_number);
@@ -341,7 +349,10 @@ export class AccountsComponent implements OnInit {
       console.log(">>ID: ", id);
       this.voucherSentData['accreditation'] = id;
       this.voucherSentData['application_number'] = application_number;
+      //this.voucherSentData[application_type.toString()] = id;
+      this.voucherSentData['appType'] = application_type;
       //this.voucherSentData['index'] = key;
+      console.log("@Voucher...", this.voucherSentData);
     }
     this.paymentReceiptValidation = null;
     this.modalService.open(content, this.modalOptions).result.then((result) => {
@@ -378,8 +389,10 @@ export class AccountsComponent implements OnInit {
      
      let postObject: any = {};
      let is_valid: boolean = false;
-     if(this.voucherSentData['voucher_no'] != undefined && this.voucherSentData['amount'] != undefined &&
-      this.voucherSentData['voucher_date'] != undefined){
+     if((this.voucherSentData['voucher_no'] != undefined && this.voucherSentData['voucher_no'] != '') && 
+          this.voucherSentData['amount'] != undefined &&
+          this.voucherSentData['voucher_date'] != undefined && 
+          (this.voucherSentData['payment_meta'] != undefined && this.voucherSentData['payment_meta'] != '')){
         is_valid = true;
       }
       //console.log("Valid/Invalid: ", theForm.form.valid, " -- "," --", is_valid, " --", this.voucherSentData);
@@ -398,13 +411,36 @@ export class AccountsComponent implements OnInit {
 
           //console.log(">>> Date: ", (dtFormat), " -- ", this.voucherSentData['voucher_date'], " -- ", this.voucherSentData['voucher_date']._i);
           //console.log("@accred ID: ", this.voucherSentData['accreditation'])
+
+          console.log("@APP Type: ", this.voucherSentData['appType']);
+
           this.voucherFile.append('voucher_no',this.voucherSentData['voucher_no']);
           this.voucherFile.append('amount',this.voucherSentData['amount']);
           this.voucherFile.append('voucher_date',dtFormat);
-          this.voucherFile.append('accreditation',this.voucherSentData['accreditation']);
+          this.voucherFile.append('payment_meta',this.voucherSentData['payment_meta']);
+          this.voucherFile.append('payment_status','paid');
+
+          if(this.voucherSentData['appType'] != undefined && this.voucherSentData['appType'] != '' && 
+             this.voucherSentData['appType'] != null && this.voucherSentData['appType'] == 'accreditation_id'){
+              //this.voucherSentData['accreditation_id'] = this.voucherSentData['accreditation'];
+              this.voucherFile.append('accreditation',this.voucherSentData['accreditation']);
+          }
+          if(this.voucherSentData['appType'] != undefined && this.voucherSentData['appType'] != '' && 
+             this.voucherSentData['appType'] != null && this.voucherSentData['appType'] == 'training_request_id'){
+              this.voucherFile.append('training_request',this.voucherSentData['accreditation']);
+              //this.voucherFile.append('accreditation',null);
+          }
+          if(this.voucherSentData['appType'] != undefined && this.voucherSentData['appType'] != '' && 
+             this.voucherSentData['appType'] != null && this.voucherSentData['appType'] == 'reg_application_id'){
+              this.voucherFile.append('reg_application',this.voucherSentData['accreditation']);
+              //this.voucherFile.append('accreditation',null);
+          }
+          //this.voucherFile.append('accreditation',this.voucherSentData['accreditation']);
           this.voucherFile.append('application_number',this.voucherSentData['application_number']);
 
-          this.subscriptions.push(this._trainerService.courseVoucherSave((this.voucherFile))
+          //return;
+
+          this.subscriptions.push(this._trainerService.accountTypeSave((this.voucherFile))
           .subscribe(
              result => {
                let data: any = result;
@@ -414,7 +450,8 @@ export class AccountsComponent implements OnInit {
                   this.voucherFile = new FormData();
                   this.voucherSentData = {};
                   this.modalService.dismissAll();
-                  this._toaster.success("Invoice Uploaded Successfully",'Upload');
+                  this._toaster.success("Accounts Type Save Successfully",'Accounts Type');
+                  this.filterSearchReset('load');
                 }else{
                   this._toaster.warning(data.msg,'');
                 }

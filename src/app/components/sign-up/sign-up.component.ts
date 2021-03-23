@@ -4,6 +4,8 @@ import { Constants } from 'src/app/services/constant.service';
 import { AppService } from 'src/app/services/app.service';
 import { ToastrService } from 'ngx-toastr';
 
+import * as countryData from '../../../assets/csc-json/countryCodes.json';
+
 @Component({
   selector: 'portal-sign-up',
   templateUrl: './sign-up.component.html',
@@ -19,6 +21,8 @@ export class SignUpComponent implements OnInit {
   public passblock: boolean = false;
   public passConfBlock: boolean = false;
   loader:boolean = true;
+  public countryCodes: any;
+  public countryListCode: any[]=[];
 
   constructor(public Service: AppService, public constant:Constants,public router: Router,public toastr: ToastrService) { }
 
@@ -30,7 +34,11 @@ export class SignUpComponent implements OnInit {
     this.changePasswordForm.passwordStrength['cpassword'] = {};
     this.getRole();
     ////console.log(this.roleRecord);
-
+    this.countryCodes = (countryData as any).default;//this.Service.getAllCountryCode();
+      //console.log(">>> Country enter....", this.countryCodes[0].countries);
+    this.countryListCode = this.countryCodes[0]['countries'].filter(item => (item.code != '' && item.code != null))
+      //console.log(">>> filter Country enter....", this.countryListCode);
+    
     this.userData.name = '';
     this.userData.mobile = '';
     this.userData.code = '';
@@ -38,7 +46,7 @@ export class SignUpComponent implements OnInit {
   }
 
   checkDisposableEmail(theEmail: any){
-    //https://gist.github.com/adamloving/4401361 == disposable emails
+    //https://gist.github.com/adamloving/4401361 == disposable emails 
       //console.log("@Email: ", theEmail.target.value.toString());
       let emailReg: any             = /^([\w-\.]+@(([\w-]+\.)+[\w-]{2,4}))?$/;
       let emailAddressVal: string   = theEmail.target.value.toString();
@@ -131,7 +139,7 @@ export class SignUpComponent implements OnInit {
       return false;
     }
     if(this.userData.code  == '' ){
-      this.toastr.error("Please type any area code","Validation Error", {timeOut: 3000});
+      this.toastr.error("Please select any country code","Validation Error", {timeOut: 3000});
       return false;
     }
     if(this.userData.mobile  == '' ){
@@ -210,11 +218,26 @@ export class SignUpComponent implements OnInit {
     }
   }
 
+  getTipCode(code: string){
+    let getCodesData: any = this.countryListCode.find(item => item.code == code);
+    let showText: string = '';
+    if(typeof getCodesData == 'object'){
+      showText = getCodesData.name + ' ' + getCodesData.code;
+    }
+    console.log(getCodesData);
+    return showText;
+  }
+
   onSubmit(ngForm:any) {
     // //console.log(this.userData.cpassword,'password');
     if(this.isValid()){
       this.loader = false;
       this.userData.password = this.changePasswordForm.password;
+      //this.userData.mobile += this.userData.code;
+      let umob: any = this.userData.code + this.userData.mobile;
+      this.userData.mobile = umob.toString().replace('+','');
+      console.log(this.userData," -- ", this.userData.mobile);
+      //return;
       this.Service.post(this.Service.apiServerUrl+"/"+this.constant.API_ENDPOINT.signUp,this.userData)
         .subscribe(
           res => {
