@@ -94,6 +94,13 @@ export class TrainerService {
     const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.trainerCourseVoucherSave;
     return this.http.post(url, postData, this._service.getReqHeadersUpload());
   }
+
+  //Submit Accounty type
+  accountTypeSave(postData: any){
+    const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.accountTypeSave;
+    return this.http.post(url, postData, this._service.getReqHeadersUpload());
+  }
+
   //webservice/reg_status_change/2
   registrationVoucherSave(postData: any){
     const url = `${this.BASE_REQ_URL}` + this._constants.API_ENDPOINT.trainerCourseVoucherSave;

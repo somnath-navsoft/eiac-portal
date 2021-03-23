@@ -95,6 +95,7 @@ export class LayoutComponent implements OnInit {
                     //sessionStorage.setItem("outaccess", 'yes');
                     //this.toastr.error("You are not permit to submit....");
                     //this.suspendAlert('suspendBox');
+                    localStorage.setItem("redirectURL",'');
                     setTimeout(()=>{
                       let elem = document.getElementById('openAppDialog');
                       //console.log("App dialog hash....", elem);

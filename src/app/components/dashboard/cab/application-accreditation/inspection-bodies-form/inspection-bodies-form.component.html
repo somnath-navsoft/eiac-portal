@@ -28,7 +28,7 @@
                                             <span [ngClass]="(item.activeClass === 'user-done') ? 'icon-tick' : item.icon"></span>
                                         </div>                                        
                                         <div class="user-details-pending" id="course_header">
-                                            <span [innerHTML]="item.desc"></span>
+                                            <span [innerHTML]="item.desc" (click)="Service.headerStepMove(item.title, headerSteps,'menu')"></span>
                                         </div>
                                     </div>
                                     <div class="next-step" *ngIf="k < headerSteps.length-1">
@@ -1022,7 +1022,7 @@
                                                                     <tbody>
                                                                         <!-- (dynamicScopeFieldType[i1][p].inputType != null  && dynamicScopeFieldType[i1][p].inputType != '' && dynamicScopeFieldType[i1][p].inputType == 'multi_select') ? 'multiple' : '' -->
                                                                         <tr *ngFor="let item of dynamicScopeModel[scope.title]['fieldLines']; let k = index;">
-                                                                            <td>{{("0" + (k+1)).slice(-2)}}</td>
+                                                                            <td>{{("0" + (k+1)).slice(-2)}}</td> 
                                                                             <td *ngFor="let fieldsColumn of dynamicScopeFieldColumns[scope.title]; let p = index;">
 
                                                                                 <ng-container *ngIf="dynamicScopeFieldType[scope.title][p].inputType == 'text'">
@@ -1377,10 +1377,10 @@
                                                         <td>Quality manual</td>
                                                     </tr>
                                                     <tr>
-                                                        <td><mat-checkbox name="undertaking_confirm2" [disableRipple]="true"
-                                                            (click)="$event.preventDefault()" [(ngModel)]="authorizationList.undertaking_confirm2"></mat-checkbox></td>
-                                                        <td><span><a href="javascript:void(0)" title="Please review the checklist" alt="Please review the checklist" (click)="openView(checklistView, 'checklist')">Filled in Document Review Checklist</a></span> (for 1st submission only)&nbsp;&nbsp;<a class="info" href="javascript:void(0)"><span class="icon-info"></span> </a>&nbsp;<span [ngStyle]="{'font-size': '14px'}">Please review the checklist</span><br/>
-                                                            <p class="error" *ngIf="!readReviewChecklist && isApplicationSubmitted == true">Please review the checklist</p>                                                            
+                                                        <!-- (click)="$event.preventDefault()" [disableRipple]="true" || (click)="openView(checklistView, 'checklist')"-->
+                                                        <td><mat-checkbox name="undertaking_confirm2" [(ngModel)]="authorizationList.undertaking_confirm2"></mat-checkbox></td>
+                                                        <td><span><a (click)="Service.redirectDocumentPath()" href="javascript:void(0)" title="Please review the checklist" alt="Please review the checklist" >Filled in Document Review Checklist</a></span> (for 1st submission only)&nbsp;&nbsp;<a class="info" href="javascript:void(0)"><span class="icon-info"></span> </a>&nbsp;<span [ngStyle]="{'font-size': '14px'}">Please review the checklist</span><br/>
+                                                            <!-- <p class="error" *ngIf="!readReviewChecklist && isApplicationSubmitted == true">Please review the checklist</p>                                                             -->
                                                         </td>
                                                     </tr>
                                                     <tr>

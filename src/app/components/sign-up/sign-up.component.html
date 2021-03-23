@@ -119,8 +119,16 @@
                                 </mat-form-field>
                                 <div class="usr-mobile">
                                     <mat-form-field class="cab-data mobile-code mr-2">
-                                        <mat-label>code</mat-label>
-                                        <input matInput name="code" required [(ngModel)]="userData.code" placeholder="Code">
+                                        <mat-label>Country Code</mat-label>
+                                        <!--getCode(userData.code) <input matInput name="code" required [(ngModel)]="userData.code" placeholder="Code"> -->
+
+                                        <mat-select matTooltipPosition='above' [matTooltip] = "getTipCode(userData.code)" placeholder="Select" name="code"  [(ngModel)]="userData.code" required>
+                                            <mat-option value="{{item.code}}" title="{{item.name}}" *ngFor="let item of countryListCode">
+                                                <span [innerHTML]="item.name +' ' + item.code"></span>
+                                                <!-- {{item.code}} -->
+                                            </mat-option>
+                                        </mat-select>
+
                                         <!-- <mat-select placeholder="Select" name="code"  [(ngModel)]="userData.code" required>
                                             <mat-option value="">Select</mat-option>
                                             <mat-option value="+91">+91</mat-option>
